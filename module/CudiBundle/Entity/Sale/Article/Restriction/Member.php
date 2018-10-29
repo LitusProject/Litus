@@ -95,7 +95,7 @@ class Member extends \CudiBundle\Entity\Sale\Article\Restriction
         $membershipBooked = false;
         if ($organization !== null && isset($membershipArticle[$organization->getId()])) {
             foreach ($bookings as $booking) {
-                // TODO on cancellation of membership: remove all bookings that can no longer be booked
+                // TODO: Remove all bookings that can no longer be booked on cancellation of membership
 
                 if ($booking->getArticle()->getId() == $membershipArticle[$organization->getId()]) {
                     $membershipBooked = true;

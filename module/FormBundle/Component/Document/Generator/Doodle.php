@@ -53,7 +53,7 @@ class Doodle extends \CommonBundle\Component\Document\Generator\Csv
                 $result[] = $entry->getPersonInfo()->getEmail();
             }
 
-            $maxSlots = max(sizeof($entry->getFieldEntries()), $maxSlots);
+            $maxSlots = max(count($entry->getFieldEntries()), $maxSlots);
             foreach ($entry->getFieldEntries() as $fieldEntry) {
                 $result[] = $fieldEntry->getField()->getStartDate()->format('d/m/Y H:i');
                 $result[] = $fieldEntry->getField()->getEndDate()->format('d/m/Y H:i');

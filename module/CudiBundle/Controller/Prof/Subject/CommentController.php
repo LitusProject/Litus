@@ -35,7 +35,8 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
 {
     public function manageAction()
     {
-        if (!($subject = $this->getSubjectEntity())) {
+        $subject = $this->getSubjectEntity();
+        if ($subject === null) {
             return new ViewModel();
         }
 
@@ -135,7 +136,8 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        if (!($comment = $this->getCommentEntity())) {
+        $comment = $this->getCommentEntity();
+        if ($comment === null) {
             return new ViewModel();
         }
 
@@ -161,11 +163,12 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
      */
     private function getSubjectEntity($id = null)
     {
-        $id = $id ?? $this->getParam('id');
-
-        if (!($academicYear = $this->getCurrentAcademicYear())) {
+        $academicYear = $this->getCurrentAcademicYear();
+        if ($academicYear === null) {
             return;
         }
+
+        $id = $id ?? $this->getParam('id');
 
         $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')

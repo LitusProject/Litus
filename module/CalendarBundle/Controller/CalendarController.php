@@ -47,13 +47,14 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function viewAction()
     {
-        if (!($event = $this->getEventEntity())) {
+        $event = $this->getEventEntity();
+        if ($event === null) {
             return $this->notFoundAction();
         }
 
-        $hasShifts = sizeof($this->getEntityManager()
+        $shifts = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
-            ->findAllActiveByEvent($event)) > 0;
+            ->findAllActiveByEvent($event);
 
         $ticketEvent = $this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Event')
@@ -62,7 +63,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         return new ViewModel(
             array(
                 'event'       => $event,
-                'hasShifts'   => $hasShifts,
+                'hasShifts'   => count($shifts) > 0,
                 'ticketEvent' => $ticketEvent,
             )
         );
@@ -70,7 +71,8 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function posterAction()
     {
-        if (!($event = $this->getEventEntityByPoster())) {
+        $event = $this->getEventEntityByPoster();
+        if ($event === null) {
             return $this->notFoundAction();
         }
 

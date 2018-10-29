@@ -34,7 +34,8 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($company = $this->getCompanyEntity())) {
+        $company = $this->getCompanyEntity();
+        if ($company === null) {
             return new ViewModel();
         }
 
@@ -111,7 +112,8 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        if (!($company = $this->getCompanyEntity())) {
+        $company = $this->getCompanyEntity();
+        if ($company === null) {
             return new ViewModel();
         }
 
@@ -164,7 +166,8 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($logo = $this->getLogoEntity())) {
+        $logo = $this->getLogoEntity();
+        if ($logo === null) {
             return new ViewModel();
         }
 

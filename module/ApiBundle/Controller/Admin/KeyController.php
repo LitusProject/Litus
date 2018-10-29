@@ -86,7 +86,8 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
 
     public function editAction()
     {
-        if (!($key = $this->getKeyEntity())) {
+        $key = $this->getKeyEntity();
+        if ($key === null) {
             return new ViewModel();
         }
 
@@ -125,7 +126,8 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
     {
         $this->initAjax();
 
-        if (!($key = $this->getKeyEntity())) {
+        $key = $this->getKeyEntity();
+        if ($key === null) {
             return new ViewModel();
         }
 

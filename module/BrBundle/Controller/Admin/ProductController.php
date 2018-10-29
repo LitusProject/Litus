@@ -100,7 +100,8 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editAction()
     {
-        if (!($product = $this->getProductEntity())) {
+        $product = $this->getProductEntity();
+        if ($product === null) {
             return new ViewModel();
         }
 
@@ -140,7 +141,8 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($product = $this->getProductEntity())) {
+        $product = $this->getProductEntity();
+        if ($product === null) {
             return new ViewModel();
         }
 
@@ -156,7 +158,8 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
 
     public function companiesAction()
     {
-        if (!($product = $this->getProductEntity())) {
+        $product = $this->getProductEntity();
+        if ($product === null) {
             return new ViewModel();
         }
 
@@ -177,9 +180,10 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    public function companiescsvAction()
+    public function companiesCsvAction()
     {
-        if (!($product = $this->getProductEntity())) {
+        $product = $this->getProductEntity();
+        if ($product === null) {
             return new ViewModel();
         }
 

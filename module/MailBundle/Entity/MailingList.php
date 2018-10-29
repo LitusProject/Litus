@@ -83,6 +83,30 @@ abstract class MailingList
     }
 
     /**
+     * @return ArrayCollection
+     */
+    public function getEntries()
+    {
+        return $this->entries;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getAdmins()
+    {
+        return $this->admins;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getAdminRoles()
+    {
+        return $this->adminRoles;
+    }
+
+    /**
      * @return string
      */
     abstract public function getName();

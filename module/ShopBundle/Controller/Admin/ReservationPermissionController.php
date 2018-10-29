@@ -86,7 +86,9 @@ class ReservationPermissionController extends \CommonBundle\Component\Controller
     public function togglepermissionAction()
     {
         $this->initAjax();
-        if (!($reservationPermission = $this->getReservationPermissionEntity())) {
+
+        $reservationPermission = $this->getReservationPermissionEntity();
+        if ($reservationPermission === null) {
             return new ViewModel();
         }
         $reservationPermission->setReservationsAllowed(!$reservationPermission->getReservationsAllowed());
@@ -105,11 +107,13 @@ class ReservationPermissionController extends \CommonBundle\Component\Controller
     public function deleteAction()
     {
         $this->initAjax();
-        if (!($product = $this->getReservationPermissionEntity())) {
+
+        $product = $this->getReservationPermissionEntity();
+        if ($product === null) {
             return new ViewModel();
         }
-        $this->getEntityManager()->remove($product);
 
+        $this->getEntityManager()->remove($product);
         $this->getEntityManager()->flush();
 
         return new ViewModel(

@@ -141,7 +141,8 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     {
         $this->initAjax();
 
-        if (!($reservation = $this->getVanReservationEntity())) {
+        $reservation = $this->getVanReservationEntity();
+        if ($reservation === null) {
             return $this->notFoundAction();
         }
 
@@ -220,7 +221,8 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     {
         $this->initAjax();
 
-        if (!($reservation = $this->getVanReservationEntity())) {
+        $reservation = $this->getVanReservationEntity();
+        if ($reservation === null) {
             return $this->notFoundAction();
         }
 
@@ -236,7 +238,8 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
     public function moveAction()
     {
-        if (!($reservation = $this->getVanReservationEntity())) {
+        $reservation = $this->getVanReservationEntity();
+        if ($reservation === null) {
             return $this->notFoundAction();
         }
 
@@ -264,7 +267,6 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
         $this->initAjax();
 
         $reservations = $this->getReservations();
-
         if ($reservations === null) {
             return $this->notFoundAction();
         }
@@ -336,7 +338,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     }
 
     /**
-     * @return array
+     * @return array|null
      */
     private function getReservations()
     {
@@ -354,7 +356,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
             ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
             ->findAllByDates($startTime, $endTime);
 
-        if (empty($reservations)) {
+        if (count($reservations) == 0) {
             $reservations = array();
         }
 

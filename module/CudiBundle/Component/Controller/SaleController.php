@@ -49,7 +49,8 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
             $sessions = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Session')
                 ->findOpen();
-            if (sizeof($sessions) == 1) {
+
+            if (count($sessions) == 1) {
                 $this->redirect()->toRoute(
                     $this->getParam('controller'),
                     array(

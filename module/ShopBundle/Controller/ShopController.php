@@ -206,7 +206,8 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
 
     public function deleteReservationAction()
     {
-        if ($reservation = $this->getEntityById('ShopBundle\Entity\Reservation')) {
+        $reservation = $this->getReservationEntity();
+        if ($reservation === null) {
             $canBeDeleted = true;
             $canBeDeleted = $canBeDeleted && $reservation->getPerson()->getId() == $this->getPersonEntity()->getId();
             $canBeDeleted = $canBeDeleted && $reservation->getSalesSession()->getStartDate() > new DateTime();
@@ -245,6 +246,26 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
+     * @return \ShopBundle\Entity\Reservation|null
+     */
+    private function getReservationEntity()
+    {
+        $reservation = $this->getEntityById('ShopBundle\Entity\Reservation');
+
+        if (!($reservation instanceof Reservation)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No reservation was found!'
+            );
+            $this->redirect()->toRoute('shop');
+
+            return null;
+        }
+
+        return $reservation;
+    }
+
+    /**
      * @return boolean
      */
     private function canReserve()
@@ -253,10 +274,10 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             return false;
         }
 
-        //reservation permissions
         $reservationPermission = $this->getEntityManager()
             ->getRepository('ShopBundle\Entity\ReservationPermission')
             ->find($this->getPersonEntity());
+
         if ($reservationPermission) {
             return $reservationPermission->getReservationsAllowed();
         }
@@ -264,12 +285,10 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         $configRepository = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config');
 
-        //default permission
         if ($configRepository->getConfigValue('shop.reservation_default_permission')) {
             return true;
         }
 
-        //organization role
         if ($configRepository->getConfigValue('shop.reservation_organisation_status_permission_enabled')) {
             $status = $this->getPersonEntity()->getOrganizationStatus($this->getCurrentAcademicYear());
             if ($status->getStatus() == $configRepository->getConfigValue('shop.reservation_organisation_status_permission_status')) {
@@ -277,14 +296,12 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             }
         }
 
-        //total shifts
         if ($configRepository->getConfigValue('shop.reservation_shifts_general_enabled')) {
             if ($this->getTotalShiftCount() >= $configRepository->getConfigValue('shop.reservation_shifts_general_number')) {
                 return true;
             }
         }
 
-        //shifts for unit
         if ($configRepository->getConfigValue('shop.reservation_shifts_permission_enabled')) {
             if ($this->getUnitShiftCount($configRepository->getConfigValue('shop.reservation_shifts_unit_id')) >= $configRepository->getConfigValue('shop.reservation_shifts_number')) {
                 return true;
@@ -304,10 +321,12 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         $shifts = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findAllByPersonAsVolunteer($this->getPersonEntity(), $this->getCurrentAcademicYear());
+
         foreach ($shifts as $shift) {
             if ($shift->getStartDate() > $now) {
                 continue;
             }
+
             $shiftCount++;
         }
 
@@ -344,14 +363,13 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     private function getSalesSessionEntity()
     {
         $salesSession = $this->getEntityById('ShopBundle\Entity\SalesSession');
+
         if (!($salesSession instanceof SalesSession)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No session was found!'
             );
-            $this->redirect()->toRoute(
-                'shop'
-            );
+            $this->redirect()->toRoute('shop');
 
             return null;
         }

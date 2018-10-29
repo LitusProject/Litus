@@ -42,8 +42,8 @@
                                 <a href="{{ url('gallery_admin_gallery', {"action": "censorPhoto", "id": photo.getId()}) }}" class="delete censor">Censor</a>
                             {% endif %}
                         {% else %}
-                            {% if hasAccess('gallery_admin_gallery', 'unCensorPhoto') %}
-                                <a href="{{ url('gallery_admin_gallery', {"action": "unCensorPhoto", "id": photo.getId()}) }}" class="add">Uncensor</a>
+                            {% if hasAccess('gallery_admin_gallery', 'uncensorPhoto') %}
+                                <a href="{{ url('gallery_admin_gallery', {"action": "uncensorPhoto", "id": photo.getId()}) }}" class="add">Uncensor</a>
                             {% endif %}
                         {% endif %}
 

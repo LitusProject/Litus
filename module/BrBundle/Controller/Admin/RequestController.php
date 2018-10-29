@@ -50,7 +50,8 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
     public function approveAction()
     {
-        if (!($request = $this->getRequestEntity())) {
+        $request = $this->getRequestEntity();
+        if ($request === null) {
             return new ViewModel();
         }
 
@@ -76,7 +77,8 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
     public function rejectAction()
     {
-        if (!($request = $this->getRequestEntity())) {
+        $request = $this->getRequestEntity();
+        if ($request === null) {
             return new ViewModel();
         }
 

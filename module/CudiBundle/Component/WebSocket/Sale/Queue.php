@@ -207,7 +207,7 @@ class Queue
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findAllAssignedByPerson($person);
 
-        if (empty($bookings) && !$forced) {
+        if (count($bookings) == 0 && !$forced) {
             return json_encode(
                 (object) array(
                     'error' => 'noBookings',

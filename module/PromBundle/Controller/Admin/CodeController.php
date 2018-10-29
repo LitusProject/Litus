@@ -93,7 +93,8 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
 
     public function expireAction()
     {
-        if (!($code = $this->getReservationCodeEntity())) {
+        $code = $this->getReservationCodeEntity();
+        if ($code === null) {
             return new ViewModel();
         }
 
@@ -145,7 +146,8 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($code = $this->getReservationCodeEntity())) {
+        $code = $this->getReservationCodeEntity();
+        if ($code === null) {
             return new ViewModel();
         }
 

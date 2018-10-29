@@ -170,8 +170,6 @@ foreach ($usedStudies as $id) {
                 ->findOneById($map['academic_year']);
             unset($studiesAcademicYearsMap[$mapKey]);
             break;
-        } else {
-            $newStudiesAcademicYearsMap[] = $map;
         }
     }
     $studiesAcademicYearsMap = array_values($studiesAcademicYearsMap);

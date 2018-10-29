@@ -33,7 +33,8 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
 {
     public function manageAction()
     {
-        if (!($group = $this->getGroupEntity())) {
+        $group = $this->getGroupEntity();
+        if ($group === null) {
             return new ViewModel();
         }
 
@@ -67,7 +68,8 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
 
     public function addAction()
     {
-        if (!($group = $this->getGroupEntity())) {
+        $group = $this->getGroupEntity();
+        if ($group === null) {
             return new ViewModel();
         }
 
@@ -153,7 +155,8 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
     {
         $this->initAjax();
 
-        if (!($viewer = $this->getViewerMapEntity())) {
+        $viewer = $this->getViewerMapEntity();
+        if ($viewer === null) {
             return new ViewModel();
         }
 
@@ -209,7 +212,7 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
     {
         $group = $this->getEntityById('FormBundle\Entity\Node\Group');
 
-        if (!($group instanceof Group) || sizeof($group->getForms()) == 0) {
+        if (!($group instanceof Group) || count($group->getForms()) == 0) {
             $this->flashMessenger()->error(
                 'Error',
                 'No group was found!'

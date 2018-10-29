@@ -41,7 +41,12 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function viewAction()
     {
-        if (!($invoice = $this->getInvoiceEntity()) && !$invoice->hasContract()) {
+        $invoice = $this->getInvoiceEntity();
+        if ($invoice === null) {
+            return new ViewModel();
+        }
+
+        if (!$invoice->hasContract()) {
             return new ViewModel();
         }
 
@@ -185,7 +190,8 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
     public function historyAction()
     {
-        if (!($invoice = $this->getInvoiceEntity())) {
+        $invoice = $this->getInvoiceEntity();
+        if ($invoice == null) {
             return new ViewModel();
         }
 
@@ -275,7 +281,8 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editAction()
     {
-        if (!($invoice = $this->getInvoiceEntity(false))) {
+        $invoice = $this->getInvoiceEntity(false);
+        if ($invoice === null) {
             return new ViewModel();
         }
 
@@ -337,7 +344,8 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
     public function downloadAction()
     {
-        if (!($invoice = $this->getInvoiceEntity())) {
+        $invoice = $this->getInvoiceEntity();
+        if ($invoice === null) {
             return new ViewModel();
         }
 
@@ -379,9 +387,13 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        $date = DateTime::createFromFormat('d/m/Y', $this->getParam('date'));
+        $invoice = $this->getInvoiceEntity(false);
+        if ($invoice === null) {
+            return new ViewModel();
+        }
 
-        if (!($invoice = $this->getInvoiceEntity(false)) || !$date) {
+        $date = DateTime::createFromFormat('d/m/Y', $this->getParam('date'));
+        if ($date === null) {
             return new ViewModel();
         }
 
@@ -401,7 +413,8 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($invoice = $this->getInvoiceEntity())) {
+        $invoice = $this->getInvoiceEntity();
+        if ($invoice === null) {
             return new ViewModel();
         }
 

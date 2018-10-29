@@ -35,11 +35,13 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
 {
     public function addAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
-        if (!($subject = $this->getSubjectEntity())) {
+        $subject = $this->getSubjectEntity();
+        if ($subject === null) {
             return new ViewModel();
         }
 
@@ -100,7 +102,8 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
 
     public function editAction()
     {
-        if (!($mapping = $this->getSubjectMapEntity())) {
+        $mapping = $this->getSubjectMapEntity();
+        if ($mapping === null) {
             return new ViewModel();
         }
 
@@ -146,7 +149,8 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
     {
         $this->initAjax();
 
-        if (!($mapping = $this->getSubjectMapEntity())) {
+        $mapping = $this->getSubjectMapEntity();
+        if ($mapping === null) {
             return new ViewModel();
         }
 

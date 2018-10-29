@@ -131,9 +131,17 @@ class Group
     }
 
     /**
+     * @return boolean
+     */
+    public function isRemoved()
+    {
+        return $this->removed;
+    }
+
+    /**
      * @return self
      */
-    public function setRemoved()
+    public function remove()
     {
         $this->removed = true;
 

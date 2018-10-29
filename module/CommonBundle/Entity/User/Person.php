@@ -663,7 +663,8 @@ abstract class Person implements RoleAware
             $entityManager->persist($code);
             $this->setCode($code);
 
-            if (!($language = $this->getLanguage())) {
+            $language = $this->getLanguage();
+            if ($language === null) {
                 $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
                     ->findOneByAbbrev('en');
             }

@@ -42,7 +42,8 @@ class Booking
      */
     public static function sendAssignMail(EntityManager $entityManager, TransportInterface $mailTransport, $bookings, Person $person)
     {
-        if (!($language = $person->getLanguage())) {
+        $language = $person->getLanguage();
+        if ($language === null) {
             $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev('en');
         }
@@ -134,7 +135,8 @@ class Booking
      */
     public static function sendExpireWarningMail(EntityManager $entityManager, TransportInterface $mailTransport, $bookings, Person $person)
     {
-        if (!($language = $person->getLanguage())) {
+        $language = $person->getLanguage();
+        if ($language === null) {
             $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev('en');
         }
@@ -226,7 +228,8 @@ class Booking
      */
     public static function sendExpireMail(EntityManager $entityManager, TransportInterface $mailTransport, $bookings, Person $person)
     {
-        if (!($language = $person->getLanguage())) {
+        $language = $person->getLanguage();
+        if ($language === null) {
             $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev('en');
         }

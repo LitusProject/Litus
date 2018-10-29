@@ -88,7 +88,8 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
 
     public function editAction()
     {
-        if (!($notification = $this->getNotificationEntity())) {
+        $notification = $this->getNotificationEntity();
+        if ($notification === null) {
             return new ViewModel();
         }
 
@@ -128,7 +129,8 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
     {
         $this->initAjax();
 
-        if (!($notification = $this->getNotificationEntity())) {
+        $notification = $this->getNotificationEntity();
+        if ($notification === null) {
             return new ViewModel();
         }
 

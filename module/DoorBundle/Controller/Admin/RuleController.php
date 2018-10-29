@@ -90,7 +90,8 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($rule = $this->getRuleEntity())) {
+        $rule = $this->getRuleEntity();
+        if ($rule === null) {
             return new ViewModel();
         }
 
@@ -147,7 +148,8 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($rule = $this->getRuleEntity())) {
+        $rule = $this->getRuleEntity();
+        if ($rule === null) {
             return new ViewModel();
         }
 

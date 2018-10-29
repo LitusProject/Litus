@@ -245,7 +245,8 @@ abstract class Server
         } elseif ($f->getIsFin() && $f->getOpcode() == 0) {
             $user->appendBuffer($f);
 
-            if ($buffer = $user->getBuffer()) {
+            $buffer = $user->getBuffer();
+            if ($buffer !== null) {
                 $this->handleDataFrame($user, $buffer);
             }
 

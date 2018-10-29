@@ -37,7 +37,8 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
 {
     public function manageAction()
     {
-        if (!($session = $this->getSessionEntity())) {
+        $session = $this->getSessionEntity();
+        if ($session === null) {
             return new ViewModel();
         }
 
@@ -45,9 +46,12 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             ->getRepository('CudiBundle\Entity\Sale\Session\Restriction')
             ->findBySession($session);
 
-        $form = $this->getForm('cudi_sale_session_restriction_add', array(
-            'session' => $session,
-        ));
+        $form = $this->getForm(
+            'cudi_sale_session_restriction_add',
+            array(
+                'session' => $session,
+            )
+        );
 
         if ($this->getRequest()->isPost() && $session->isOpen()) {
             $form->setData($this->getRequest()->getPost());
@@ -107,7 +111,8 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
     {
         $this->initAjax();
 
-        if (!($restriction = $this->getRestrictionEntity())) {
+        $restriction = $this->getRestrictionEntity();
+        if ($restriction === null) {
             return new ViewModel();
         }
 

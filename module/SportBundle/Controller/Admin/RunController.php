@@ -100,12 +100,14 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
     public function editSpeedyGroupAction()
     {
-        if (!($group = $this->getGroupEntity())) {
+        $group = $this->getGroupEntity();
+        if ($group === null) {
             return new ViewModel();
         }
 
         $form = $this->getForm('sport_group_editspeedygroup', array('group' => $group));
         $form->setGroup($group);
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
@@ -139,11 +141,13 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
     public function editGroupAction()
     {
-        if (!($group = $this->getGroupEntity())) {
+        $group = $this->getGroupEntity();
+        if ($group === null) {
             return new ViewModel();
         }
 
         $form = $this->getForm('sport_group_edit');
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
@@ -290,7 +294,8 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
     public function editAction()
     {
-        if (!($runner = $this->getRunnerEntity())) {
+        $runner = $this->getRunnerEntity();
+        if ($runner === null) {
             return new ViewModel();
         }
 

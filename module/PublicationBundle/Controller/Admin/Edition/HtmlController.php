@@ -35,7 +35,8 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($publication = $this->getPublicationEntity())) {
+        $publication = $this->getPublicationEntity();
+        if ($publication === null) {
             return new ViewModel();
         }
 
@@ -57,7 +58,8 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        if (!($publication = $this->getPublicationEntity())) {
+        $publication = $this->getPublicationEntity();
+        if ($publication === null) {
             return new ViewModel();
         }
 
@@ -84,7 +86,8 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 
     public function uploadAction()
     {
-        if (!($publication = $this->getPublicationEntity())) {
+        $publication = $this->getPublicationEntity();
+        if ($publication === null) {
             return new ViewModel();
         }
 
@@ -204,7 +207,8 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($edition = $this->getHtmlEditionEntity())) {
+        $edition = $this->getHtmlEditionEntity();
+        if ($edition === null) {
             return new ViewModel();
         }
 

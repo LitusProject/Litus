@@ -38,7 +38,8 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
 {
     public function manageAction()
     {
-        if (!($article = $this->getSaleArticleEntity())) {
+        $article = $this->getSaleArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -112,7 +113,8 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
     {
         $this->initAjax();
 
-        if (!($restriction = $this->getRestrictionEntity())) {
+        $restriction = $this->getRestrictionEntity();
+        if ($restriction === null) {
             return new ViewModel();
         }
 

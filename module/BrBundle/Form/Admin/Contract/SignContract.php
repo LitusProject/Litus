@@ -21,7 +21,7 @@
 namespace BrBundle\Form\Admin\Contract;
 
 /**
- * generate a contract.
+ * Sign a contract.
  *
  * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>

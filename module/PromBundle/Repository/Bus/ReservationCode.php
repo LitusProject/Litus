@@ -34,7 +34,7 @@ class ReservationCode extends \CommonBundle\Component\Doctrine\ORM\EntityReposit
      * @param  string $code
      * @return boolean
      */
-    public function codeExist($code)
+    public function codeExists($code)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultCode = $query->select('c')
@@ -46,7 +46,7 @@ class ReservationCode extends \CommonBundle\Component\Doctrine\ORM\EntityReposit
             ->getQuery()
             ->getResult();
 
-        return (empty($resultCode) ? false : true);
+        return count($resultCode) > 0;
     }
 
     /**

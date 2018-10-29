@@ -103,7 +103,8 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
 
     public function editAction()
     {
-        if (!($openingHour = $this->getOpeningHourEntity())) {
+        $openingHour = $this->getOpeningHourEntity();
+        if ($openingHour === null) {
             return new ViewModel();
         }
 
@@ -142,7 +143,8 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
     {
         $this->initAjax();
 
-        if (!($openingHour = $this->getOpeningHourEntity())) {
+        $openingHour = $this->getOpeningHourEntity();
+        if ($openingHour === null) {
             return new ViewModel();
         }
 

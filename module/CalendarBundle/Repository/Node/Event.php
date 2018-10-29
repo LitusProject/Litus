@@ -51,9 +51,7 @@ class Event extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->setMaxResults($nbResults);
         }
 
-        $resultSet = $query->getQuery();
-
-        return $resultSet;
+        return $query->getQuery();
     }
 
     public function findAllOldQuery()

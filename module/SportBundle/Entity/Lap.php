@@ -116,6 +116,14 @@ class Lap
     }
 
     /**
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
+    public function getAcademicYear()
+    {
+        return $this->academicYear;
+    }
+
+    /**
      * @return Runner
      */
     public function getRunner()

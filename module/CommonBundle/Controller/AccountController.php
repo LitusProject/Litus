@@ -40,7 +40,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 {
     public function indexAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
@@ -98,7 +99,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function editAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
@@ -182,9 +184,6 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getData();
-                $organizationData = $formData['organization_info'];
-
                 if ($metaData === null) {
                     $metaData = $form->hydrateObject();
 
@@ -301,7 +300,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function studiesAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
@@ -313,7 +313,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function saveStudiesAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
@@ -328,7 +329,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function subjectsAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
@@ -344,11 +346,12 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function saveSubjectsAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $this->initAjax();
+
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
-
-        $this->initAjax();
 
         return $this->doSaveSubjectAction(
             $academic,
@@ -359,7 +362,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function activateAction()
     {
-        if (!($user = $this->getPersonEntity())) {
+        $user = $this->getPersonEntity();
+        if ($user === null) {
             return new ViewModel();
         }
 
@@ -403,7 +407,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function passbookAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
@@ -434,7 +439,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function uploadProfileImageAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 

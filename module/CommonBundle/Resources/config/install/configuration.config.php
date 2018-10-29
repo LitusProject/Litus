@@ -122,7 +122,7 @@ Student IT',
             'mailbox' => '1',
             'postal'  => '3001',
             'city'    => 'Heverlee',
-            'country' => 'Belgium', 
+            'country' => 'Belgium',
         )),
         'description' => 'The address of the organization',
     ),
@@ -455,7 +455,7 @@ You can remove any installed cookies from your computer or mobile device at any 
     ),
     array(
         'key'         => 'last_upgrade',
-        'value'       => '2018100900',
+        'value'       => '2018102901',
         'description' => 'The last Litus schema update performed on this system',
     ),
     array(
@@ -466,7 +466,7 @@ You can remove any installed cookies from your computer or mobile device at any 
     array(
         'key'         => 'common.poc',
         'value'       => '0',
-        'description' => 'Boolean that displays the pocers screen on the homepage',
+        'description' => 'Boolean that displays the POC\'ers screen on the homepage',
     ),
     array(
         'key'         => 'common.pocUrl',

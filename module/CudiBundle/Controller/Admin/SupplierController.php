@@ -85,7 +85,8 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
 
     public function editAction()
     {
-        if (!($supplier = $this->getSupplierEntity())) {
+        $supplier = $this->getSupplierEntity();
+        if ($supplier === null) {
             return new ViewModel();
         }
 

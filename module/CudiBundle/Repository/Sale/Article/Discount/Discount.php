@@ -90,11 +90,9 @@ class Discount extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->setParameter('organization', $organization);
         }
 
-        $resultSet = $query->setMaxResults(1)
+        return $query->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
-
-        return $resultSet;
     }
 
     /**

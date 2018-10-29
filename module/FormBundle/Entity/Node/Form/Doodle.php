@@ -67,7 +67,7 @@ class Doodle extends \FormBundle\Entity\Node\Form
             return true;
         }
 
-        return sizeof($formEntry->getFieldEntries()) == 0;
+        return count($formEntry->getFieldEntries()) == 0;
     }
 
     /**

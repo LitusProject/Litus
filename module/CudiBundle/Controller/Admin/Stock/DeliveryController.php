@@ -56,11 +56,13 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 
     public function supplierAction()
     {
-        if (!($supplier = $this->getSupplierEntity())) {
+        $supplier = $this->getSupplierEntity();
+        if ($supplier === null) {
             return new ViewModel();
         }
 
-        if (!($period = $this->getActiveStockPeriodEntity())) {
+        $period = $this->getActiveStockPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 
@@ -87,7 +89,8 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 
     public function addAction()
     {
-        if (!($period = $this->getActiveStockPeriodEntity())) {
+        $period = $this->getActiveStockPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 
@@ -183,11 +186,13 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($period = $this->getActiveStockPeriodEntity())) {
+        $period = $this->getActiveStockPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 
-        if (!($delivery = $this->getDeliveryEntity())) {
+        $delivery = $this->getDeliveryEntity();
+        if ($delivery === null) {
             return new ViewModel();
         }
 
@@ -246,7 +251,8 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($period = $this->getActiveStockPeriodEntity())) {
+        $period = $this->getActiveStockPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 

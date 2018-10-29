@@ -101,7 +101,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
         $currentOrganizations = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
-        if (sizeof($currentOrganizations) > 0) {
+        if (count($currentOrganizations) > 0) {
             return;
         }
 

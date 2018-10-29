@@ -49,7 +49,8 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
 
     public function viewAction()
     {
-        if (!($page = $this->getPageEntity())) {
+        $page = $this->getPageEntity();
+        if ($page === null) {
             return new ViewModel();
         }
 

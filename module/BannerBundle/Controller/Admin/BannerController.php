@@ -69,7 +69,8 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
 
     public function editAction()
     {
-        if (!($banner = $this->getBannerEntity())) {
+        $banner = $this->getBannerEntity();
+        if ($banner === null) {
             return new ViewModel();
         }
 
@@ -200,7 +201,8 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($banner = $this->getBannerEntity())) {
+        $banner = $this->getBannerEntity();
+        if ($banner === null) {
             return new ViewModel();
         }
 

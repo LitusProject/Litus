@@ -53,7 +53,8 @@ class ModuleGroup extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $this->stdExtract($object, self::$stdKeys);
 
-        if ($parent = $object->getParent()) {
+        $parent = $object->getParent();
+        if ($parent !== null) {
             $data['parent'] = array(
                 'id'    => $parent->getId(),
                 'value' => 'Phase ' . $parent->getPhase() . ' - ' . $parent->getTitle(),

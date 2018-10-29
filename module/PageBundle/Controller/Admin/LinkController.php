@@ -84,7 +84,8 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($link = $this->getLinkEntity())) {
+        $link = $this->getLinkEntity();
+        if ($link === null) {
             return new ViewModel();
         }
 
@@ -124,7 +125,8 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($link = $this->getLinkEntity())) {
+        $link = $this->getLinkEntity();
+        if ($link === null) {
             return new ViewModel();
         }
 

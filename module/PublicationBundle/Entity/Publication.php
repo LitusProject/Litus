@@ -92,6 +92,14 @@ class Publication
     }
 
     /**
+     * @return boolean
+     */
+    public function isDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
      * @return Publication This
      */
     public function delete()

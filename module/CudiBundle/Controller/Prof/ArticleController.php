@@ -54,7 +54,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
     public function addAction()
     {
-        if (!($academicYear = $this->getCurrentAcademicYear())) {
+        $academicYear = $this->getCurrentAcademicYear();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -130,17 +131,22 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
     public function addFromSubjectAction()
     {
-        if (!($academicYear = $this->getCurrentAcademicYear())) {
+        $academicYear = $this->getCurrentAcademicYear();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
-        if (!($subject = $this->getSubjectEntity())) {
+        $subject = $this->getSubjectEntity();
+        if ($subject === null) {
             return new ViewModel();
         }
 
-        $form = $this->getForm('cudi_prof_article_add-with-subject', array(
-            'subject' => $subject,
-        ));
+        $form = $this->getForm(
+            'cudi_prof_article_add-with-subject',
+            array(
+                'subject' => $subject,
+            )
+        );
         $formData = null;
 
         if ($this->getRequest()->isPost()) {
@@ -212,7 +218,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
     public function editAction()
     {
-        if (!($article = $this->getArticleEntity())) {
+        $article = $this->getArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -316,7 +323,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
     public function deleteAction()
     {
-        if (!($article = $this->getArticleEntity())) {
+        $article = $this->getArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -399,7 +407,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
      */
     private function getSubjectEntity()
     {
-        if (!($academicYear = $this->getCurrentAcademicYear())) {
+        $academicYear = $this->getCurrentAcademicYear();
+        if ($academicYear === null) {
             return;
         }
 

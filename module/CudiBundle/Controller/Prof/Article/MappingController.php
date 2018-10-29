@@ -36,11 +36,13 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
 {
     public function addAction()
     {
-        if (!($subject = $this->getSubjectEntity())) {
+        $subject = $this->getSubjectEntity();
+        if ($subject === null) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->getCurrentAcademicYear())) {
+        $academicYear = $this->getCurrentAcademicYear();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -52,7 +54,8 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             if ($form->isValid()) {
                 $formData = $form->getData();
 
-                if (!($article = $this->getArticleEntity($formData['article']['id']))) {
+                $article = $this->getArticleEntity($formData['article']['id']);
+                if ($article === null) {
                     return new ViewModel();
                 }
 
@@ -113,7 +116,8 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->getSubjectMapEntity())) {
+        $mapping = $this->getSubjectMapEntity();
+        if ($mapping === null) {
             return new ViewModel();
         }
 
@@ -144,7 +148,8 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->getSubjectMapEntity())) {
+        $mapping = $this->getSubjectMapEntity();
+        if ($mapping === null) {
             return new ViewModel();
         }
 
@@ -176,7 +181,8 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
      */
     private function getSubjectMapEntity()
     {
-        if (!($academicYear = $this->getCurrentAcademicYear())) {
+        $academicYear = $this->getCurrentAcademicYear();
+        if ($academicYear === null) {
             return;
         }
 
@@ -215,7 +221,8 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
      */
     private function getSubjectEntity()
     {
-        if (!($academicYear = $this->getCurrentAcademicYear())) {
+        $academicYear = $this->getCurrentAcademicYear();
+        if ($academicYear === null) {
             return;
         }
 

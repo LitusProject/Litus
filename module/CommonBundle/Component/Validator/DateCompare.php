@@ -88,10 +88,13 @@ class DateCompare extends \CommonBundle\Component\Validator\AbstractValidator
 
         if ($this->options['first_date'] == 'now') {
             $endDate = 'now';
-        } elseif ($endDate === null = self::getFormValue($context, $this->options['first_date'])) {
-            $this->error(self::NOT_VALID);
+        } else {
+            $endDate = self::getFormValue($context, $this->options['first_date']);
+            if ($endDate === null) {
+                $this->error(self::NOT_VALID);
 
-            return false;
+                return false;
+            }
         }
 
         if (DateTime::createFromFormat($this->options['format'], $value) <= DateTime::createFromFormat($this->options['format'], $endDate)) {

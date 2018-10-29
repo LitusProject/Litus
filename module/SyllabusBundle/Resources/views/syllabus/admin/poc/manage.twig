@@ -5,16 +5,16 @@
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
-    <div class="flashmessage success_message full_width pocgroup_removed_success hide">
+    <div class="flashmessage success_message full_width poc_group_removed_success hide">
         <div class="title">Success</div>
         <div class="content">
-            <p>The pocgroup was successfully removed!</p>
+            <p>The group was successfully removed!</p>
         </div>
     </div>
-    <div class="flashmessage error_message full_width pocgroup_removed_error hide">
+    <div class="flashmessage error_message full_width poc_group_removed_error hide">
         <div class="title">Error</div>
         <div class="content">
-            <p>An error occurred while trying to delete the pocgroup.</p>
+            <p>An error occurred while trying to delete the group.</p>
         </div>
     </div>
 
@@ -23,27 +23,27 @@
     <div id="controller_action">
         <table class="full_width manage">
             <tr>
-                <th>Poc group name</th>
-                <th width="70px">nb pocers</th>
-                <th width= "250px">email</th>
+                <th>Group Name</th>
+                <th width="70px">Number</th>
+                <th width="250px">Email</th>
                 <th width="70px">Actions</th>
             </tr>
 
-            {% for pocgroup in groups %}
-                <tr class="item item-{{ pocgroup.getId() }}">
-                    <td>{{ pocgroup.getName() }}</td>
-                    <td>{{ pocgroup.getNbOfPocers(currentAcademicYear) }}</td>
-                    <td>{{ pocgroup.getEmailAdressPoc(currentAcademicYear) }}</td>
+            {% for pocGroup in pocGroups %}
+                <tr class="item item-{{ pocGroup.getId() }}">
+                    <td>{{ pocGroup.getName() }}</td>
+                    <td>{{ pocGroup.getNbOfPocers(currentAcademicYear) }}</td>
+                    <td>{{ pocGroup.getEmailAdressPoc(currentAcademicYear) }}</td>
                     <td class="actions">
                         {% if hasAccess('syllabus_admin_poc', 'members') %}
-                                <a href="{{ url('syllabus_admin_poc', {"action": "members", "id": pocgroup.getId(),"academicyear": currentAcademicYear.getCode()}) }}" class="role_edit">Members</a>
+                                <a href="{{ url('syllabus_admin_poc', {"action": "members", "id": pocGroup.getId(),"academicyear": currentAcademicYear.getCode()}) }}" class="role_edit">Members</a>
                         {% endif %}
                         {% if hasAccess('syllabus_admin_poc', 'editEmail') %}
-                                <a href="{{ url('syllabus_admin_poc', {"action": "editEmail", "id": pocgroup.getId(),"academicyear": currentAcademicYear.getCode()}) }}" class="edit">Edit email</a>
+                                <a href="{{ url('syllabus_admin_poc', {"action": "editEmail", "id": pocGroup.getId(),"academicyear": currentAcademicYear.getCode()}) }}" class="edit">Edit email</a>
                         {% endif %}
 
                          {% if hasAccess('syllabus_admin_poc', 'delete') %}
-                                <a href="#" data-id="{{ pocgroup.getId() }}" data-title="{{ pocgroup.getName() }}" class="delete">Delete</a>
+                                <a href="#" data-id="{{ pocGroup.getId() }}" data-title="{{ pocGroup.getName() }}" class="delete">Delete</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -53,16 +53,16 @@
         {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
-    <div class="modal fade" id="removePocgroup" tabindex="-1">
+    <div class="modal fade" id="removePocGroup" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <span>Litus Admin</span>
-                    /Delete pocgroup
+                    /Delete POC Group
                 </div>
                 <div class="modal-body">
                     <p>
-                        You are about to delete the following group as a pocgroup and remove all its members: <b class="title"></b>!
+                        You are about to delete the following group as a POC group and remove all its members: <b class="title"></b>!
                         Please note that this operation cannot be undone!
                     </p>
                     <p>
@@ -88,28 +88,28 @@
         function openModal(e) {
             var $this = $(this);
             e.preventDefault();
-            var removePocgroup = $('#removePocgroup');
+            var removePocGroup = $('#removePocGroup');
             removePocgroup.find('.title').html($(this).data('title'));
             var id = $this.data('id');
-            removePocgroup.find('.delete').unbind('click').click(function () {
+            removePocGroup.find('.delete').unbind('click').click(function () {
                     $.post('{{ url('syllabus_admin_poc', {"action": "delete"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
-                        $('.pocgroup_removed_success').removeClass('hide');
+                        $('.poc_group_removed_success').removeClass('hide');
                         $('.item-' + id).remove();
-                        removePocgroup.modal('hide');
+                        removePocGroup.modal('hide');
                     } else {
                         errorRemove();
                     }
                 }, 'json').error(errorRemove);
             });
-            removePocgroup.modal();
+            removePocGroup.modal();
         }
 
         function errorRemove() {
             $('.flashmessage').addClass('hide');
-            $('.pocgroup_removed_error').removeClass('hide');
-            $('#removePocgroup').modal('hide');
+            $('.poc_group_removed_error').removeClass('hide');
+            $('#removePocGroup').modal('hide');
         }
     </script>
 {% endblock %}

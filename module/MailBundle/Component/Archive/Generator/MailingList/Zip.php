@@ -63,7 +63,7 @@ class Zip
         $zip = new ZipArchive();
         $now = new DateTime();
 
-        $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
+        $zip->open($archive->getFileName(), ZipArchive::CREATE);
         $zip->addFromString('GENERATED', $now->format('YmdHi') . PHP_EOL);
         $zip->close();
 
@@ -77,7 +77,7 @@ class Zip
                 $entriesString .= $entry->getEmailAddress() . PHP_EOL;
             }
 
-            $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
+            $zip->open($archive->getFileName(), ZipArchive::CREATE);
             $zip->addFromString($list->getName(), $entriesString);
             $zip->close();
         }

@@ -196,7 +196,7 @@ class SubjectMap extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     {
         $ids = array(0);
 
-        if (sizeof($groups) == 0) {
+        if (count($groups) == 0) {
             return $ids;
         }
 

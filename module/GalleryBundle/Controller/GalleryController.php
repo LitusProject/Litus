@@ -41,7 +41,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         $sorted = array();
         foreach ($albums as $album) {
-            if (sizeof($album->getPhotos()) == 0) {
+            if (count($album->getPhotos()) == 0) {
                 continue;
             }
 
@@ -90,7 +90,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         $albums = array();
         foreach ($albumsFound as $album) {
-            if (sizeof($album->getPhotos()) >= 0) {
+            if (count($album->getPhotos()) >= 0) {
                 $albums[] = $album;
             }
         }
@@ -110,7 +110,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function albumAction()
     {
-        if (!($album = $this->getAlbumEntity())) {
+        $album = $this->getAlbumEntity();
+        if ($album === null) {
             return $this->notFoundAction();
         }
 
@@ -141,7 +142,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             return $this->notFoundAction();
         }
 
-        if (!($photo = $this->getPhotoEntity())) {
+        $photo = $this->getPhotoEntity();
+        if ($photo === null) {
             return $this->notFoundAction();
         }
 
@@ -163,7 +165,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             return $this->notFoundAction();
         }
 
-        if (!($photo = $this->getPhotoEntity())) {
+        $photo = $this->getPhotoEntity();
+        if ($photo === null) {
             return $this->notFoundAction();
         }
 

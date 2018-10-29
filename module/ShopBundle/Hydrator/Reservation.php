@@ -37,9 +37,7 @@ class Reservation extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$stdKeys);
-
-        return $data;
+        return $this->stdExtract($object, self::$stdKeys);
     }
 
     protected function doHydrate(array $data, $object = null)
@@ -49,7 +47,6 @@ class Reservation extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $object->setTimestamp(new DateTime());
-
         $object->setNoShow(false);
 
         return $object;

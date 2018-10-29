@@ -173,7 +173,7 @@ class Entry extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 
     public function findCompletedByGroup(GroupEntity $group)
     {
-        if (sizeof($group->getForms()) == 0) {
+        if (count($group->getForms()) == 0) {
             return array();
         }
 
@@ -184,7 +184,7 @@ class Entry extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()] = $entry;
         }
 
-        $endEntries = $this->findAllByFormQuery($group->getForms()[sizeof($group->getForms()) - 1]->getForm())->getResult();
+        $endEntries = $this->findAllByFormQuery($group->getForms()[count($group->getForms()) - 1]->getForm())->getResult();
         $entries = array();
         foreach ($endEntries as $entry) {
             if ($entry->isDraft()) {
@@ -200,11 +200,11 @@ class Entry extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 
     public function findNotCompletedByGroup(GroupEntity $group)
     {
-        if (sizeof($group->getForms()) == 0) {
+        if (count($group->getForms()) == 0) {
             return array();
         }
 
-        $endEntries = $this->findAllByFormQuery($group->getForms()[sizeof($group->getForms()) - 1]->getForm())->getResult();
+        $endEntries = $this->findAllByFormQuery($group->getForms()[count($group->getForms()) - 1]->getForm())->getResult();
         $tmpEntries = array();
         foreach ($endEntries as $entry) {
             $tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()] = $entry;

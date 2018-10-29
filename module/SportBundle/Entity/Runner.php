@@ -201,6 +201,14 @@ class Runner
     }
 
     /**
+     * @return string
+     */
+    public function getRunnerIdentification()
+    {
+        return $this->runnerIdentification;
+    }
+
+    /**
      * @param  string $runnerIdentification
      * @return self
      */

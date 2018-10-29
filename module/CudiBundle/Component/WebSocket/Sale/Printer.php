@@ -75,21 +75,6 @@ class Printer
         self::doPrint($entityManager, $printer, $data);
     }
 
-    private static function articleSort($a, $b)
-    {
-        $aArticle = $a->getArticle()->getMainArticle();
-        $bArticle = $b->getArticle()->getMainArticle();
-        if ($aArticle->isExternal() == $bArticle->isExternal()) {
-            if ($aArticle->isExternal()) {
-                return strcasecmp($aArticle->getTitle(), $bArticle->getTitle());
-            } else {
-                return strcmp(substr($a->getArticle()->getBarcode(), 7), substr($b->getArticle()->getBarcode(), 7));
-            }
-        }
-
-        return $aArticle->isExternal() ? 1 : -1;
-    }
-
     /**
      * @param EntityManager   $entityManager
      * @param string          $printer

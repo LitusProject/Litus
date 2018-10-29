@@ -29,7 +29,8 @@ class CompanyController extends \BrBundle\Component\Controller\CorporateControll
 {
     public function editAction()
     {
-        if (!($company = $this->getCorporateEntity()->getCompany())) {
+        $company = $this->getCorporateEntity()->getCompany();
+        if ($company === null) {
             return new ViewModel();
         }
 

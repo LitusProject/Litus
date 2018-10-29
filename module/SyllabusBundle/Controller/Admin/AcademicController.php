@@ -68,11 +68,13 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -103,7 +105,8 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($study = $this->getStudyEnrollmentEntity())) {
+        $study = $this->getStudyEnrollmentEntity();
+        if ($study === null) {
             return new ViewModel();
         }
 
@@ -121,7 +124,8 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($subject = $this->getSubjectEnrollmentEntity())) {
+        $subject = $this->getSubjectEnrollmentEntity();
+        if ($subject === null) {
             return new ViewModel();
         }
 
@@ -137,11 +141,13 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function addStudyAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -217,11 +223,13 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function addSubjectAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 

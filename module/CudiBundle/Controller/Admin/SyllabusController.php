@@ -36,7 +36,8 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -71,9 +72,11 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
 
     public function listAction()
     {
-        if (!($study = $this->getStudyEntity())) {
+        $study = $this->getStudyEntity();
+        if ($study === null) {
             return new ViewModel();
         }
+
         $subject_mappings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article\SubjectMap')
             ->findAllByStudyAndAcademicYearQuery($study);
@@ -100,7 +103,8 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
 
     public function articlescsvAction()
     {
-        if (!($study = $this->getStudyEntity())) {
+        $study = $this->getStudyEntity();
+        if ($study === null) {
             return new ViewModel();
         }
 
@@ -152,7 +156,8 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
 
     public function typeaheadAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return;
         }
 
@@ -181,7 +186,8 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 

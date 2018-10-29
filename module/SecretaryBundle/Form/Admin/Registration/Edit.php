@@ -60,10 +60,7 @@ class Edit extends \SecretaryBundle\Form\Admin\Registration\Add
             ),
         ));
 
-        $this->get('payed')
-            ->setValue($this->getRegistration()->hasPayed());
-
-        $metaData = $this->getMetaData();
+        $this->get('payed')->setValue($this->getRegistration()->hasPayed());
 
         $organization = $this->getRegistration()->getAcademic()->getOrganization($this->getRegistration()->getAcademicYear());
         $this->get('organization')->setValue($organization ? $organization->getId() : 0);

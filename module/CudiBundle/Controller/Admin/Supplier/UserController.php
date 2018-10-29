@@ -33,7 +33,8 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($supplier = $this->getSupplierEntity())) {
+        $supplier = $this->getSupplierEntity();
+        if ($supplier === null) {
             return new ViewModel();
         }
 
@@ -60,7 +61,8 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        if (!($supplier = $this->getSupplierEntity())) {
+        $supplier = $this->getSupplierEntity();
+        if ($supplier === null) {
             return new ViewModel();
         }
 
@@ -110,7 +112,8 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($user = $this->getSupplierPersonEntity())) {
+        $user = $this->getSupplierPersonEntity();
+        if ($user === null) {
             return new ViewModel();
         }
 
@@ -151,7 +154,8 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($user = $this->getSupplierPersonEntity())) {
+        $user = $this->getSupplierPersonEntity();
+        if ($user === null) {
             return new ViewModel();
         }
 

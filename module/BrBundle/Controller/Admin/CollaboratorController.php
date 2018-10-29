@@ -85,7 +85,8 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
 
     public function editAction()
     {
-        if (!($collaborator = $this->getCollaboratorEntity())) {
+        $collaborator = $this->getCollaboratorEntity();
+        if ($collaborator === null) {
             return new ViewModel();
         }
 
@@ -124,7 +125,8 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
 
     public function retireAction()
     {
-        if (!($collaborator = $this->getCollaboratorEntity())) {
+        $collaborator = $this->getCollaboratorEntity();
+        if ($collaborator === null) {
             return new ViewModel();
         }
 
@@ -149,7 +151,8 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
 
     public function rehireAction()
     {
-        if (!($collaborator = $this->getCollaboratorEntity())) {
+        $collaborator = $this->getCollaboratorEntity();
+        if ($collaborator === null) {
             return new ViewModel();
         }
 

@@ -96,7 +96,8 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($quiz = $this->getQuizEntity())) {
+        $quiz = $this->getQuizEntity();
+        if ($quiz === null) {
             return new ViewModel();
         }
 
@@ -134,7 +135,8 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($quiz = $this->getQuizEntity())) {
+        $quiz = $this->getQuizEntity();
+        if ($quiz === null) {
             return new ViewModel();
         }
 

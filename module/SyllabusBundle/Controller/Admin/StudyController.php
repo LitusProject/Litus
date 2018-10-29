@@ -34,7 +34,8 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -69,7 +70,8 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -118,7 +120,8 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function viewAction()
     {
-        if (!($study = $this->getStudyEntity())) {
+        $study = $this->getStudyEntity();
+        if ($study === null) {
             return new ViewModel();
         }
 
@@ -148,7 +151,8 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($study = $this->getStudyEntity())) {
+        $study = $this->getStudyEntity();
+        if ($study === null) {
             return new ViewModel();
         }
 
@@ -204,7 +208,8 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($study = $this->getStudyEntity())) {
+        $study = $this->getStudyEntity();
+        if ($study === null) {
             return new ViewModel();
         }
 
@@ -222,7 +227,8 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -254,7 +260,8 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($study = $this->getStudyEntity())) {
+        $study = $this->getStudyEntity();
+        if ($study === null) {
             return new ViewModel();
         }
 
@@ -288,7 +295,8 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function typeaheadAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return;
         }
 

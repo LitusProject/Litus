@@ -34,12 +34,13 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function viewAction()
     {
-        if (!($group = $this->getGroupEntity())) {
+        $group = $this->getGroupEntity();
+        if ($group === null) {
             return $this->notFoundAction();
         }
 
         $now = new DateTime();
-        if ($now < $group->getStartDate() || $now > $group->getEndDate() || !$group->isActive() || sizeof($group->getForms()) == 0) {
+        if ($now < $group->getStartDate() || $now > $group->getEndDate() || !$group->isActive() || count($group->getForms()) == 0) {
             return new ViewModel(
                 array(
                     'message' => 'This form group is currently closed.',

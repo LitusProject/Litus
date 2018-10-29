@@ -38,7 +38,8 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($article = $this->getArticleEntity())) {
+        $article = $this->getArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -80,7 +81,8 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($article = $this->getArticleEntity())) {
+        $article = $this->getArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -148,7 +150,8 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($mapping = $this->getFileMappingEntity())) {
+        $mapping = $this->getFileMappingEntity();
+        if ($mapping === null) {
             return new ViewModel();
         }
 
@@ -190,7 +193,8 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->getFileMappingEntity())) {
+        $mapping = $this->getFileMappingEntity();
+        if ($mapping === null) {
             return new ViewModel();
         }
 
@@ -210,7 +214,8 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.file_path');
 
-        if (!($mapping = $this->getFileMappingEntity())) {
+        $mapping = $this->getFileMappingEntity();
+        if ($mapping === null) {
             return new ViewModel();
         }
 
@@ -237,7 +242,8 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 
     public function frontAction()
     {
-        if (!($article = $this->getSaleArticleEntity())) {
+        $article = $this->getSaleArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 

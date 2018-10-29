@@ -33,7 +33,8 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
 {
     public function manageAction()
     {
-        if (!($shift = $this->getShiftEntity())) {
+        $shift = $this->getShiftEntity();
+        if ($shift === null) {
             return new ViewModel();
         }
 
@@ -94,7 +95,8 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
     {
         $this->initAjax();
 
-        if (!($subscription = $this->getSubscriptionEntity())) {
+        $subscription = $this->getSubscriptionEntity();
+        if ($subscription === null) {
             return new ViewModel();
         }
 
@@ -121,7 +123,8 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shift.mail_name');
 
-        if (!($language = $subscription->getPerson()->getLanguage())) {
+        $language = $subscription->getPerson()->getLanguage();
+        if ($language === null) {
             $language = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev('en');
         }

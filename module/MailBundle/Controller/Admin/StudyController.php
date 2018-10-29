@@ -244,7 +244,7 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
      */
     private function getStudyEnrollments($studyIds)
     {
-        if (empty($studyIds)) {
+        if (count($studyIds) == 0) {
             return array();
         }
 
@@ -269,7 +269,7 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
      */
     private function getGroupEnrollments($groupIds)
     {
-        if (empty($groupIds)) {
+        if (count($groupIds) == 0) {
             return array(array(), array(), array());
         }
 

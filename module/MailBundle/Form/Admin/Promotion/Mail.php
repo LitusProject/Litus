@@ -57,7 +57,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ),
         ));
 
-        if (!empty($groupNames)) {
+        if (count($groupNames) > 0) {
             $this->add(array(
                 'type'       => 'select',
                 'name'       => 'groups',

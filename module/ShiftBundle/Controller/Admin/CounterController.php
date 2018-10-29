@@ -119,7 +119,8 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
 
     public function viewAction()
     {
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 

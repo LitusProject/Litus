@@ -52,11 +52,13 @@ EOT
      */
     protected function executeCommand()
     {
-        if (!($printer = $this->getPrinter())) {
+        $printer = $this->getPrinter();
+        if ($printer === null) {
             return 1;
         }
 
-        if (!($ticket = $this->getTicket())) {
+        $ticket = $this->getTicket();
+        if ($ticket === null) {
             return 2;
         }
 

@@ -52,7 +52,8 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($news = $this->getNewsEntity())) {
+        $news = $this->getNewsEntity();
+        if ($news === null) {
             return $this->notFoundAction();
         }
 

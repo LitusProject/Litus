@@ -79,7 +79,7 @@ class MailController extends \ApiBundle\Component\Controller\ActionController\Ap
             );
             $addressesString = implode(', ', $addresses);
 
-            if (!empty($addresses)) {
+            if (count($addresses) > 0) {
                 $data[] = array('name' => $list->getName(), 'addresses' => $addressesString);
             }
         }

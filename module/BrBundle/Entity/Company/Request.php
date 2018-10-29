@@ -88,6 +88,43 @@ abstract class Request
     }
 
     /**
+     * @param  \BrBundle\Entity\User\Person\Corporate $contact
+     * @return \BrBundle\Entity\Company\Request
+     */
+    public function setContact($contact)
+    {
+        $this->contact = $contact;
+
+        return $this;
+    }
+
+    /**
+     * @return \BrBundle\Entity\User\Person\Corporate
+     */
+    public function getContact()
+    {
+        return $this->contact;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreationTime()
+    {
+        return $this->creationTime;
+    }
+
+    /**
+     * @return \BrBundle\Entity\User\Person\Corporate
+     */
+    public function handled()
+    {
+        $this->handled = true;
+
+        return true;
+    }
+
+    /**
      * @return string
      */
     public function getStatus()
@@ -103,22 +140,6 @@ abstract class Request
         }
 
         return $result;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getCreationTime()
-    {
-        return $this->creationTime;
-    }
-
-    /**
-     * @return null
-     */
-    public function handled()
-    {
-        $this->handled = true;
     }
 
     /**

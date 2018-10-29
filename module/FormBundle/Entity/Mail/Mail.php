@@ -152,7 +152,7 @@ class Mail
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
-        if (sizeof($this->translations) == 0) {
+        if (count($this->translations) == 0) {
             return null;
         }
 

@@ -58,9 +58,7 @@ class Retour extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->setParameter('endDate', $period->getEndDate());
         }
 
-        $resultSet = $query->getQuery();
-
-        return $resultSet;
+        return $query->getQuery();
     }
 
     /**
@@ -87,10 +85,7 @@ class Retour extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->setParameter('endDate', $period->getEndDate());
         }
 
-        $resultSet = $query->getQuery()
-            ->getSingleScalarResult();
-
-        return $resultSet ? $resultSet : 0;
+        return $query->getQuery()->getSingleScalarResult();
     }
 
     /**
@@ -115,8 +110,6 @@ class Retour extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->setParameter('endDate', $period->getEndDate());
         }
 
-        $resultSet = $query->getQuery();
-
-        return $resultSet;
+        return $query->getQuery();
     }
 }

@@ -38,7 +38,8 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -110,11 +111,13 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
     public function membersAction()
     {
-        if (!($unit = $this->getUnitEntity())) {
+        $unit = $this->getUnitEntity();
+        if ($unit === null) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -232,7 +235,8 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($unit = $this->getUnitEntity())) {
+        $unit = $this->getUnitEntity();
+        if ($unit === null) {
             return new ViewModel();
         }
 
@@ -271,7 +275,8 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($unit = $this->getUnitEntity())) {
+        $unit = $this->getUnitEntity();
+        if ($unit === null) {
             return new ViewModel();
         }
 
@@ -292,7 +297,8 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($unitMap = $this->getUnitMapEntity())) {
+        $unitMap = $this->getUnitMapEntity();
+        if ($unitMap === null) {
             return new ViewModel();
         }
 

@@ -36,7 +36,8 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
 {
     public function manageAction()
     {
-        if (!($article = $this->getInternalArticleEntity())) {
+        $article = $this->getInternalArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -79,13 +80,14 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
 
     public function downloadAction()
     {
+        $mapping = $this->getFileMappingEntity();
+        if ($mapping === null) {
+            return new ViewModel();
+        }
+
         $filePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.file_path');
-
-        if (!($mapping = $this->getFileMappingEntity())) {
-            return new ViewModel();
-        }
 
         $file = $mapping->getFile();
 
@@ -110,15 +112,18 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
 
     public function uploadAction()
     {
-        if (!($article = $this->getInternalArticleEntity())) {
+        $article = $this->getInternalArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
         $form = $this->getForm('cudi_prof_file_add');
-        $form->setData(array_merge(
-            $this->getRequest()->getPost()->toArray(),
-            $this->getRequest()->getFiles()->toArray()
-        ));
+        $form->setData(
+            array_merge(
+                $this->getRequest()->getPost()->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            )
+        );
 
         if ($form->isValid()) {
             $formData = $form->getData();
@@ -143,8 +148,8 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
                 $article,
                 false
             );
-            $this->getEntityManager()->persist($file);
 
+            $this->getEntityManager()->persist($file);
             $this->getEntityManager()->flush();
 
             $mapping = $this->getEntityManager()
@@ -186,7 +191,8 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->getFileMappingEntity())) {
+        $mapping = $this->getFileMappingEntity();
+        if ($mapping === null) {
             return new ViewModel();
         }
 

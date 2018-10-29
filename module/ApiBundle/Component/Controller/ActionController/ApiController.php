@@ -414,11 +414,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
             $code = $this->getRequest()->getPost($field);
         }
 
-        $key = $this->getEntityManager()
+        return $this->getEntityManager()
             ->getRepository('ApiBundle\Entity\Key')
             ->findOneActiveByCode($code);
-
-        return $key;
     }
 
     /**
@@ -434,11 +432,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
             $code = $this->getRequest()->getPost($field);
         }
 
-        $accessToken = $this->getDocumentManager()
+        return $this->getDocumentManager()
             ->getRepository('ApiBundle\Document\Token\Access')
             ->findOneActiveByCode($code);
-
-        return $accessToken;
     }
 
     /**

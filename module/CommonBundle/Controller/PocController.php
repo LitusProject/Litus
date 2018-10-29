@@ -22,7 +22,6 @@ namespace CommonBundle\Controller;
 
 use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil;
 use CommonBundle\Entity\General\AcademicYear;
-use CommonBundle\Entity\User\Person\Academic;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -34,36 +33,18 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
 {
     public function overviewAction()
     {
-        //pocers
-
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
         $academicYear = $this->getAcademicYear();
-        $currentAcademicYear = $this->getCurrentAcademicYear();
-        //UNCOMMENT THIS IN CASE YOU WANT TO SHOW THE POCERS OF THE LOGGED IN PERSON
-        /**
-         $isLoggedIn = true;
-         if (!($academic = $this->getAcademicEntity())) {
-         $isLoggedIn = false;
-         }
-         $personalPocItem = null;
-         if ($isLoggedIn){
-         $pocersFromAcademic = $this->getEntityManager()
-         ->getRepository('SyllabusBundle\Entity\Poc')
-         ->findPocersByAcademicAndAcademicYear($academic, $currentAcademicYear);
-         $personalPocItem = $this-> organisePocList($pocersFromAcademic);
-         }
-         */
 
-        $pocList = $this->getEntityManager()
+        $pocs = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Poc')
             ->findAllByAcademicYear($academicYear);
-        $pocItem = $this->organisePocList($pocList);
+        $pocItem = $this->organisePocList($pocs);
 
         return new ViewModel(
             array(
-            //'isLoggedIn'  => $isLoggedIn,
                 'pocItem'             => $pocItem,
                 'academicYears'       => $academicYears,
                 'activeAcademicYear'  => $academicYear,
@@ -71,7 +52,6 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
                 'profilePath'         => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
-            //'personalPocItem'   => $personalPocItem,
             )
         );
     }
@@ -80,26 +60,32 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
     {
         $lastPocGroup = null;
         $pocGroupList = array();
+
         $pocItem = array();
-        foreach ($pocs as $pocer) {
-            $pocer->setEntityManager($this->getEntityManager());
+        foreach ($pocs as $poc) {
+            $poc->setEntityManager($this->getEntityManager());
+
             if ($lastPocGroup === null) {
-                $pocGroupList[] = $pocer;
-            } elseif ($lastPocGroup === $pocer->getGroupId()) {
-                $pocGroupList[] = $pocer;
-            } elseif ($lastPocGroup !== $pocer->getGroupId()) {
+                $pocGroupList[] = $poc;
+            } elseif ($lastPocGroup === $poc->getGroupId()) {
+                $pocGroupList[] = $poc;
+            } elseif ($lastPocGroup !== $poc->getGroupId()) {
                 $pocItem[] = array(
                     'groupId'      => $lastPocGroup,
                     'pocGroupList' => $pocGroupList,
                     'pocExample'   => $pocGroupList[0],
                 );
+
                 unset($pocGroupList);
+
                 $pocGroupList = array();
-                $pocGroupList[] = $pocer;
+                $pocGroupList[] = $poc;
             }
-            $lastPocGroup = $pocer->getGroupId();
+
+            $lastPocGroup = $poc->getGroupId();
         }
-        if (!empty($pocGroupList)) {
+
+        if (count($pocGroupList) > 0) {
             $pocItem[] = array(
                 'groupId'      => $lastPocGroup,
                 'pocGroupList' => $pocGroupList,
@@ -121,23 +107,5 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
         }
 
         return AcademicYearUtil::getOrganizationYear($this->getEntityManager(), $date);
-    }
-
-    /**
-     * @return Academic|null
-     */
-    private function getAcademicEntity()
-    {
-        if (!$this->getAuthentication()->isAuthenticated()) {
-            return null;
-        }
-
-        $academic = $this->getAuthentication()->getPersonObject();
-
-        if (!($academic instanceof Academic)) {
-            return;
-        }
-
-        return $academic;
     }
 }

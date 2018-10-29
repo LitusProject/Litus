@@ -114,7 +114,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             ->getRepository('PageBundle\Entity\Category')
             ->findAll();
 
-        if (empty($categories)) {
+        if (count($categories) == 0) {
             throw new RuntimeException('There needs to be at least one category before you can add a link');
         }
 

@@ -39,7 +39,8 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $this->initJson();
 
-        if (!($person = $this->getAcademicEntity())) {
+        $person = $this->getAcademicEntity();
+        if ($person === null) {
             return $this->error(401, 'The person was not found');
         }
 
@@ -65,11 +66,13 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
-        if (!($person = $this->getAcademicEntity())) {
+        $person = $this->getAcademicEntity();
+        if ($person === null) {
             return $this->error(401, 'The person was not found');
         }
 
-        if (!($article = $this->getArticleEntity())) {
+        $article = $this->getArticleEntity();
+        if ($article === null) {
             return $this->error(404, 'The article was not found');
         }
 
@@ -136,7 +139,8 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $this->initJson();
 
-        if (!($person = $this->getAcademicEntity())) {
+        $person = $this->getAcademicEntity();
+        if ($person === null) {
             return $this->error(401, 'The person was not found');
         }
 
@@ -215,11 +219,13 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             return $this->error(401, 'The access token is not valid');
         }
 
-        if (!($booking = $this->getBookingEntity())) {
+        $booking = $this->getBookingEntity();
+        if ($booking === null) {
             return $this->error(404, 'The booking was not found');
         }
 
-        if (!($booking->getArticle()->isUnbookable())) {
+        $booking->getArticle()->isUnbookable();
+        if ($booking === null) {
             return $this->error(404, 'This article cannot be unbooked');
         }
 
@@ -243,7 +249,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOpen();
 
-        if (sizeof($sessions) >= 1) {
+        if (count($sessions) > 0) {
             $session = $sessions[0];
             $result = array(
                 'status'        => 'open',
@@ -252,13 +258,14 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                     ->findNbBySession($session),
             );
 
-            if ($person = $this->getAcademicEntity()) {
+            $person = $this->getAcademicEntity();
+            if ($person !== null) {
                 $bookings = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
                     ->findAllAssignedByPerson($person);
 
                 $result['canSignIn'] = $session->canSignIn($this->getEntityManager(), $person);
-                $result['hasBookings'] = !empty($bookings);
+                $result['hasBookings'] = count($bookings) > 0;
             }
         } else {
             $result = array(
@@ -307,7 +314,8 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $this->initJson();
 
-        if (!($person = $this->getAcademicEntity())) {
+        $person = $this->getAcademicEntity();
+        if ($person === null) {
             return $this->error(401, 'The person was not found');
         }
 
@@ -315,7 +323,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOpen();
 
-        if (sizeof($sessions) == 0) {
+        if (count($sessions) == 0) {
             return $this->error(404, 'The is no open sale session');
         }
 
@@ -329,7 +337,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findAllAssignedByPerson($person);
 
-        if (empty($bookings)) {
+        if (count($bookings) == 0) {
             return $this->error(401, 'You cannot sign in');
         }
 
@@ -361,7 +369,8 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $this->initJson();
 
-        if (!($person = $this->getAcademicEntity())) {
+        $person = $this->getAcademicEntity();
+        if ($person === null) {
             return $this->error(401, 'The person was not found');
         }
 
@@ -369,7 +378,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOpen();
 
-        if (sizeof($sessions) == 0) {
+        if (count($sessions) == 0) {
             return $this->error(404, 'The is no open sale session');
         }
 
@@ -550,7 +559,8 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             return null;
         }
 
-        if (!($person = $this->getAccessToken()->getPerson($this->getEntityManager()))) {
+        $person = $this->getAccessToken()->getPerson($this->getEntityManager());
+        if ($person === null) {
             return null;
         }
 

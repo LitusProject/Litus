@@ -150,7 +150,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
             );
         }
 
-        if (sizeof($subjects) == 0) {
+        if (count($subjects) == 0) {
             $subjects[] = new Node(
                 'subject',
                 null,

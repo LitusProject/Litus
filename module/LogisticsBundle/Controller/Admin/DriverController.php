@@ -85,7 +85,8 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
 
     public function editAction()
     {
-        if (!($driver = $this->getDriverEntity())) {
+        $driver = $this->getDriverEntity();
+        if ($driver === null) {
             return new ViewModel();
         }
 
@@ -125,11 +126,12 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($driver = $this->getDriverEntity())) {
+        $driver = $this->getDriverEntity();
+        if ($driver === null) {
             return new ViewModel();
         }
 
-        $driver->setRemoved(true);
+        $driver->remove();
         $this->getEntityManager()->flush();
 
         return new ViewModel(

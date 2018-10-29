@@ -40,7 +40,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             $object = new EventEntity();
         }
 
-        $enableOptions = (isset($data['enable_options']) && $data['enable_options']) || sizeof($object->getOptions()) > 0;
+        $enableOptions = (isset($data['enable_options']) && $data['enable_options']) || count($object->getOptions()) > 0;
 
         $calendarEvent = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
@@ -165,7 +165,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         $data['generate_tickets'] = $object->areTicketsGenerated();
         $data['allow_remove'] = $object->allowRemove();
 
-        if (sizeof($object->getOptions()) == 0) {
+        if (count($object->getOptions()) == 0) {
             $data['prices']['price_members'] = number_format($object->getPriceMembers() / 100, 2);
             $data['prices']['price_non_members'] = $object->isOnlyMembers() ? '' : number_format($object->getPriceNonMembers() / 100, 2);
         } else {

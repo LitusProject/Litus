@@ -88,7 +88,8 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($slug = $this->getSlugEntity())) {
+        $slug = $this->getSlugEntity();
+        if ($slug === null) {
             return new ViewModel();
         }
 
@@ -128,7 +129,8 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($slug = $this->getSlugEntity())) {
+        $slug = $this->getSlugEntity();
+        if ($slug === null) {
             return new ViewModel();
         }
 
@@ -147,11 +149,13 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
+        $slugs = $this->search();
+
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $slugs = $this->search();
+        array_splice($slugs, $numResults);
 
         $result = array();
         foreach ($slugs as $slug) {

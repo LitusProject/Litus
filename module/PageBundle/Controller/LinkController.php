@@ -33,7 +33,8 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
 {
     public function viewAction()
     {
-        if (!($link = $this->getLinkEntity())) {
+        $link = $this->getLinkEntity();
+        if ($link === null) {
             return $this->notFoundAction();
         }
 

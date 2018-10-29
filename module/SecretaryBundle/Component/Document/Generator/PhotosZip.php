@@ -63,7 +63,7 @@ class PhotosZip
         $zip = new ZipArchive();
         $now = new DateTime();
 
-        $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
+        $zip->open($archive->getFileName(), ZipArchive::CREATE);
         $zip->addFromString('GENERATED', $now->format('YmdHi') . PHP_EOL);
         $zip->close();
 
@@ -75,7 +75,7 @@ class PhotosZip
             if ($promotion->getAcademic()->getPhotoPath()) {
                 $extension = $this->getExtension($filePath . $promotion->getAcademic()->getPhotoPath());
 
-                $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
+                $zip->open($archive->getFileName(), ZipArchive::CREATE);
                 $zip->addFile(
                     $filePath . $promotion->getAcademic()->getPhotoPath(),
                     $promotion->getAcademic()->getFirstName() . '_' . $promotion->getAcademic()->getLastName() . $extension

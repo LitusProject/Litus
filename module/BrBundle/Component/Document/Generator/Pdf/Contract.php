@@ -82,7 +82,8 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         $title = $this->contract->getTitle();
         $company = $this->contract->getOrder()->getCompany();
 
-        $locale = 'nl'; //TODO make this possible in both english and dutch
+        // TODO: Make this possible in both English and Dutch
+        $locale = 'nl';
         $this->translator->setLocale($locale);
 
         $formatter = new IntlDateFormatter($locale, IntlDateFormatter::FULL, IntlDateFormatter::NONE);
@@ -126,9 +127,14 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
             $paymentDetails[] = XmlNode::fromString($p->getXml());
         }
 
-        $sub_entries = unserialize($configs->getConfigValue('br.contract_below_entries'))['nl']; //TODO make this possible in both english and dutch.
-        $above_sign = unserialize($configs->getConfigValue('br.contract_above_signatures'))['nl']; //TODO make this possible in both english and dutch.
-        $above_sign_middle = unserialize($configs->getConfigValue('br.contract_above_signatures_middle'))['nl']; //TODO make this possible in both english and dutch.
+        // TODO: Make this possible in both English and Dutch
+        $sub_entries = unserialize($configs->getConfigValue('br.contract_below_entries'))['nl'];
+
+        // TODO: Make this possible in both English and Dutch
+        $above_sign = unserialize($configs->getConfigValue('br.contract_above_signatures'))['nl'];
+
+        // TODO: Make this possible in both English and Dutch
+        $above_sign_middle = unserialize($configs->getConfigValue('br.contract_above_signatures_middle'))['nl'];
 
         $contractText = '';
         foreach ($entries as $entry) {
@@ -147,8 +153,6 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
             $p->parse($contractText);
             $entry_s = XmlNode::fromString($p->getXml());
         }
-
-        $contact_person_signature = new XmlNode('entries', null, 'Empty Contract');
 
         $xml->append(
             new XmlNode(

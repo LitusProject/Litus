@@ -113,7 +113,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         $studies = array();
 
-        if (!empty($data['studies'])) {
+        if (count($data['studies']) > 0) {
             foreach ($data['studies'] as $id) {
                 if (isset($studies[$id])) {
                     continue;
@@ -272,7 +272,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         $subjects = array();
 
-        if (!empty($data['subjects'])) {
+        if (count($data['subjects']) > 0) {
             foreach ($data['subjects'] as $id) {
                 if (isset($subjects[$id])) {
                     continue;

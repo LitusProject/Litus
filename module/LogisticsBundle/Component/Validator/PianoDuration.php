@@ -78,7 +78,8 @@ class PianoDuration extends \CommonBundle\Component\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        if ($startDate === null = $this->getFormValue($context, $this->options['start_date'])) {
+        $startDate = $this->getFormValue($context, $this->options['start_date']);
+        if ($startDate === null) {
             $this->error(self::NO_START_DATE);
 
             return false;

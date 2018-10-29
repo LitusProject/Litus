@@ -35,7 +35,8 @@ class MailController extends \FormBundle\Component\Controller\FormController
     {
         $this->initAjax();
 
-        if (!($formSpecification = $this->getFormEntity())) {
+        $formSpecification = $this->getFormEntity();
+        if ($formSpecification === null) {
             return new ViewModel();
         }
 

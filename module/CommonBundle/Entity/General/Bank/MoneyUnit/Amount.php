@@ -83,6 +83,14 @@ class Amount
     }
 
     /**
+     * @return \CommonBundle\Entity\General\Bank\CashRegister
+     */
+    public function getCashRegister()
+    {
+        return $this->cashRegister;
+    }
+
+    /**
      * @return MoneyUnit
      */
     public function getUnit()

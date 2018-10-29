@@ -61,7 +61,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function setStartDate(DateTime $startDate)
     {
-        if (sizeof($this->forms) > 0) {
+        if (count($this->forms) > 0) {
             foreach ($this->forms as $form) {
                 $form->getForm()->setStartDate($startDate);
             }
@@ -75,7 +75,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function getStartDate()
     {
-        if (sizeof($this->forms) > 0) {
+        if (count($this->forms) > 0) {
             return $this->forms[0]->getForm()->getStartDate();
         }
     }
@@ -86,7 +86,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function setEndDate(DateTime $endDate)
     {
-        if (sizeof($this->forms) > 0) {
+        if (count($this->forms) > 0) {
             foreach ($this->forms as $form) {
                 $form->getForm()->setEndDate($endDate);
             }
@@ -100,7 +100,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function getEndDate()
     {
-        if (sizeof($this->forms) > 0) {
+        if (count($this->forms) > 0) {
             return $this->forms[0]->getForm()->getEndDate();
         }
     }
@@ -111,7 +111,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function setActive($active)
     {
-        if (sizeof($this->forms) > 0) {
+        if (count($this->forms) > 0) {
             foreach ($this->forms as $form) {
                 $form->getForm()->setActive($active);
             }
@@ -125,7 +125,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function isActive()
     {
-        if (sizeof($this->forms) > 0) {
+        if (count($this->forms) > 0) {
             return $this->forms[0]->getForm()->isActive();
         }
     }
@@ -136,7 +136,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function setMax($max)
     {
-        if (sizeof($this->forms) > 0) {
+        if (count($this->forms) > 0) {
             foreach ($this->forms as $form) {
                 $form->getForm()->setMax($max);
             }
@@ -150,7 +150,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function getMax()
     {
-        if (sizeof($this->forms) > 0) {
+        if (count($this->forms) > 0) {
             return $this->forms[0]->getForm()->getMax();
         }
     }
@@ -161,7 +161,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function setEditableByUser($editableByUser)
     {
-        if (sizeof($this->forms) > 0) {
+        if (count($this->forms) > 0) {
             foreach ($this->forms as $form) {
                 $form->getForm()->setEditableByUser($editableByUser);
             }
@@ -175,7 +175,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function isEditableByUser()
     {
-        if (sizeof($this->forms) > 0) {
+        if (count($this->forms) > 0) {
             return $this->forms[0]->getForm()->isEditableByUser();
         }
     }
@@ -186,7 +186,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function setNonMember($nonMember)
     {
-        if (sizeof($this->forms) > 0) {
+        if (count($this->forms) > 0) {
             foreach ($this->forms as $form) {
                 $form->getForm()->setNonMember($nonMember);
             }
@@ -200,7 +200,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function isNonMember()
     {
-        if (sizeof($this->forms) > 0) {
+        if (count($this->forms) > 0) {
             return $this->forms[0]->getForm()->isNonMember();
         }
     }
@@ -276,7 +276,7 @@ class Group extends \CommonBundle\Entity\Node
     public function getFormNumber(Form $form)
     {
         $i = 1;
-        if (sizeof($this->forms) == 0) {
+        if (count($this->forms) == 0) {
             return 0;
         }
 
@@ -334,7 +334,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function canBeViewedBy(Person $person = null)
     {
-        if (sizeof($this->forms) == 0) {
+        if (count($this->forms) == 0) {
             return false;
         }
 

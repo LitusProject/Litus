@@ -102,6 +102,14 @@ abstract class Barcode
     }
 
     /**
+     * @return DateTime
+     */
+    public function getCreationTime()
+    {
+        return $this->creationTime;
+    }
+
+    /**
      * @return integer
      */
     abstract public function getBarcode();
@@ -115,7 +123,7 @@ abstract class Barcode
             return 'ean12';
         }
 
-        if ($this instanceof QR) {
+        if ($this instanceof Qr) {
             return 'qr';
         }
     }

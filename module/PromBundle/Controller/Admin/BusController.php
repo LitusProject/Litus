@@ -91,7 +91,8 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
 
     public function deleteAction()
     {
-        if (!($bus = $this->getBusEntity())) {
+        $bus = $this->getBusEntity();
+        if ($bus === null) {
             return new ViewModel();
         }
 
@@ -159,7 +160,8 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
 
     public function viewAction()
     {
-        if (!($bus = $this->getBusEntity())) {
+        $bus = $this->getBusEntity();
+        if ($bus === null) {
             return new ViewModel();
         }
 

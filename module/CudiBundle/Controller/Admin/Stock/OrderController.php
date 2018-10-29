@@ -67,7 +67,8 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function overviewAction()
     {
-        if (!($period = $this->getActiveStockPeriodEntity())) {
+        $period = $this->getActiveStockPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 
@@ -102,7 +103,8 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function searchAction()
     {
-        if (!($period = $this->getActiveStockPeriodEntity())) {
+        $period = $this->getActiveStockPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 
@@ -140,11 +142,13 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function supplierAction()
     {
-        if (!($supplier = $this->getSupplierEntity())) {
+        $supplier = $this->getSupplierEntity();
+        if ($supplier === null) {
             return new ViewModel();
         }
 
-        if (!($period = $this->getActiveStockPeriodEntity())) {
+        $period = $this->getActiveStockPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 
@@ -171,7 +175,8 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($order = $this->getOrderEntity())) {
+        $order = $this->getOrderEntity();
+        if ($order === null) {
             return new ViewModel();
         }
 
@@ -179,9 +184,12 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CudiBundle\Entity\Supplier')
             ->findAll();
 
-        $form = $this->getForm('cudi_stock_order_comment', array(
-            'order' => $order,
-        ));
+        $form = $this->getForm(
+            'cudi_stock_order_comment',
+            array(
+                'order' => $order,
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -224,9 +232,12 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.article_barcode_prefix') . $this->getAcademicYearEntity()->getCode(true);
 
-        $form = $this->getForm('cudi_stock_order_add', array(
-            'barcode_prefix' => $prefix,
-        ));
+        $form = $this->getForm(
+            'cudi_stock_order_add',
+            array(
+                'barcode_prefix' => $prefix,
+            )
+        );
 
         $academicYear = $this->getAcademicYearEntity();
 
@@ -278,13 +289,17 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function editItemAction()
     {
-        if (!($item = $this->getOrderItemEntity())) {
+        $item = $this->getOrderItemEntity();
+        if ($item === null) {
             return new ViewModel();
         }
 
-        $form = $this->getForm('cudi_stock_order_edit', array(
-            'item' => $item,
-        ));
+        $form = $this->getForm(
+            'cudi_stock_order_edit',
+            array(
+                'item' => $item,
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -332,7 +347,8 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($item = $this->getOrderItemEntity())) {
+        $item = $this->getOrderItemEntity();
+        if ($item === null) {
             return new ViewModel();
         }
 
@@ -348,7 +364,8 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function placeAction()
     {
-        if (!($order = $this->getOrderEntity())) {
+        $order = $this->getOrderEntity();
+        if ($order === null) {
             return new ViewModel();
         }
 
@@ -374,7 +391,8 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function pdfAction()
     {
-        if (!($order = $this->getOrderEntity())) {
+        $order = $this->getOrderEntity();
+        if ($order === null) {
             return new ViewModel();
         }
 
@@ -400,7 +418,8 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function csvAction()
     {
-        if (!($order = $this->getOrderEntity())) {
+        $order = $this->getOrderEntity();
+        if ($order === null) {
             return new ViewModel();
         }
 
@@ -424,6 +443,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         $file = new CsvFile();
 
         $heading = array('Barcode', 'Title', 'RV', 'Binding', 'Color', '# Pages', 'Amount', 'Isbn', 'Author', 'Publisher');
+
         $results = array();
         foreach ($items as $item) {
             if ($item->getArticle()->getMainArticle()->isInternal()) {
@@ -440,7 +460,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                     OrderController::NOT_APPLICABLE,
                 );
             } else {
-                $result[] = array(
+                $results[] = array(
                     OrderController::NOT_APPLICABLE,
                     $item->getArticle()->getMainArticle()->getTitle(),
                     OrderController::NOT_APPLICABLE,
@@ -476,7 +496,13 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function exportAction()
     {
-        if (!($order = $this->getOrderEntity()) || !($date = $this->getParamDate())) {
+        $order = $this->getOrderEntity();
+        if ($order === null) {
+            return new ViewModel();
+        }
+
+        $date = $this->getParamDate();
+        if ($date === null) {
             return new ViewModel();
         }
 
@@ -522,12 +548,12 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function cancelAction()
     {
-        if (!($order = $this->getOrderEntity())) {
+        $order = $this->getOrderEntity();
+        if ($order === null) {
             return new ViewModel();
         }
 
         $order->setCanceled();
-
         $this->getEntityManager()->flush();
 
         $this->flashMessenger()->success(

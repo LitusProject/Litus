@@ -41,7 +41,8 @@ class FormController extends \FormBundle\Component\Controller\FormController
 {
     public function indexAction()
     {
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
@@ -63,18 +64,19 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function viewAction()
     {
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
-        if (!($form = $this->getFormEntity())) {
+        $form = $this->getFormEntity();
+        if ($form === null) {
             return new ViewModel();
         }
 
         $viewerMap = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\ViewerMap')
             ->findOneByPersonAndForm($person, $form);
-
         if (!$viewerMap) {
             $this->flashMessenger()->error(
                 'Error',
@@ -91,7 +93,6 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
         }
 
-        // Refetch fields to make sure they are ordered
         $fields = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Field')
             ->findAllByForm($form);
@@ -125,11 +126,13 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function addAction()
     {
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
-        if (!($formSpecification = $this->getFormEntity())) {
+        $formSpecification = $this->getFormEntity();
+        if ($formSpecification === null) {
             return new ViewModel();
         }
 
@@ -227,11 +230,13 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function editAction()
     {
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
-        if (!($formEntry = $this->getEntryEntity())) {
+        $formEntry = $this->getEntryEntity();
+        if ($formEntry === null) {
             return new ViewModel();
         }
 
@@ -319,7 +324,8 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function doodleAddAction()
     {
-        if (!($formSpecification = $this->getFormEntity())) {
+        $formSpecification = $this->getFormEntity();
+        if ($formSpecification === null) {
             return new ViewModel();
         }
 
@@ -394,11 +400,13 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function doodleAction()
     {
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
-        if (!($formEntry = $this->getEntryEntity())) {
+        $formEntry = $this->getEntryEntity();
+        if ($formEntry === null) {
             return new ViewModel();
         }
 
@@ -490,11 +498,13 @@ class FormController extends \FormBundle\Component\Controller\FormController
     {
         $this->initAjax();
 
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
-        if (!($formEntry = $this->getEntryEntity())) {
+        $formEntry = $this->getEntryEntity();
+        if ($formEntry === null) {
             return new ViewModel();
         }
 
@@ -522,7 +532,6 @@ class FormController extends \FormBundle\Component\Controller\FormController
         }
 
         $this->getEntityManager()->remove($formEntry);
-
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -534,11 +543,13 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function downloadAction()
     {
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
-        if (!($form = $this->getFormEntity())) {
+        $form = $this->getFormEntity();
+        if ($form === null) {
             return new ViewModel();
         }
 
@@ -626,7 +637,12 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function downloadFilesAction()
     {
-        if (!($field = $this->getFieldEntity()) || $field->getType() != 'file') {
+        $field = $this->getFieldEntity();
+        if ($field === null) {
+            return new ViewModel();
+        }
+
+        if ($field->getType() != 'file') {
             return new ViewModel();
         }
 

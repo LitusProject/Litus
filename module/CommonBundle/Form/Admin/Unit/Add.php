@@ -154,7 +154,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findBy(array(), array('name' => 'ASC'));
 
-        if (empty($organizations)) {
+        if (count($organizations) == 0) {
             throw new RuntimeException('There needs to be at least one organization before you can add a unit');
         }
 
@@ -212,7 +212,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $rolesArray[$role->getName()] = $role->getName();
         }
 
-        if (empty($rolesArray)) {
+        if (count($rolesArray) == 0) {
             throw new RuntimeException('There needs to be at least one role before you can add a unit');
         }
 

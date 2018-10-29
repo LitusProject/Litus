@@ -51,7 +51,8 @@ class MessageController extends \MailBundle\Component\Controller\AdminController
 
     public function editAction()
     {
-        if (!($message = $this->getMessageEntity())) {
+        $message = $this->getMessageEntity();
+        if ($message === null) {
             return new ViewModel();
         }
 
@@ -91,7 +92,8 @@ class MessageController extends \MailBundle\Component\Controller\AdminController
     {
         $this->initAjax();
 
-        if (!($message = $this->getMessageEntity())) {
+        $message = $this->getMessageEntity();
+        if ($message === null) {
             return new ViewModel();
         }
 

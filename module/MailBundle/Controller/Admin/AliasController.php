@@ -85,7 +85,8 @@ class AliasController extends \MailBundle\Component\Controller\AdminController
     {
         $this->initAjax();
 
-        if (!($alias = $this->getAliasEntity())) {
+        $alias = $this->getAliasEntity();
+        if ($alias === null) {
             return new ViewModel();
         }
 

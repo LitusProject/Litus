@@ -21,7 +21,6 @@
 namespace SyllabusBundle\Form\Admin\Poc;
 
 use SyllabusBundle\Entity\Group;
-use SyllabusBundle\Entity\Poc;
 
 /**
  * Add Poc
@@ -35,7 +34,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @var Group|null
      */
-    protected $pocgroup = null;
+    protected $pocGroup = null;
 
     public function init()
     {
@@ -66,18 +65,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      * @param  Group $pocGroup
      * @return self
      */
-    public function setPocgroup(Group $pocgroup)
+    public function setPocGroup(Group $pocGroup)
     {
-        $this->pocgroup = $pocgroup;
+        $this->pocGroup = $pocGroup;
 
         return $this;
     }
 
     /**
-     * @return poc
+     * @return Group
      */
-    public function getPocgroup(Group $pocgroup)
+    public function getPocGroup(Group $pocGroup)
     {
-        return $this->pocgroup;
+        return $this->pocGroup;
     }
 }

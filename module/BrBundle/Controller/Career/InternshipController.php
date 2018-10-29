@@ -83,7 +83,8 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
 
     public function viewAction()
     {
-        if (!($internship = $this->getInternshipEntity())) {
+        $internship = $this->getInternshipEntity();
+        if ($internship === null) {
             return new ViewModel();
         }
 

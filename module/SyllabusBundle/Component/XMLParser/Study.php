@@ -149,7 +149,7 @@ class Study
 
         foreach ($xml->fases->children() as $phase) {
             $phaseNumber = (int) $phase->attributes()->code;
-            if (sizeof($phase->toegestane_combinaties->children()) == 0) {
+            if (count($phase->toegestane_combinaties->children()) == 0) {
                 $externalId = $phaseNumber . ((int) $xml->attributes()->id);
                 $combination = $this->createCombination($phaseNumber, $externalId, $mainTitle);
 
@@ -262,7 +262,7 @@ class Study
                 if ((int) $group->attributes()->niveau > 1) {
                     if (isset($parents[$phase])) {
                         $moduleGroup->setParent($parents[$phase]);
-                    } elseif (sizeof($group->opleidingsonderdelen->children()) > 0) {
+                    } elseif (count($group->opleidingsonderdelen->children()) > 0) {
                         throw new RuntimeException('Module group ' . $externalId . ' has no parents.');
                     }
                 }
@@ -271,7 +271,7 @@ class Study
                 $groups['_' . $externalId] = $moduleGroup;
             }
 
-            if (sizeof($group->opleidingsonderdelen->children()) > 0) {
+            if (count($group->opleidingsonderdelen->children()) > 0) {
                 $this->createSubjects($group->opleidingsonderdelen, $currentParents);
             }
 
@@ -460,7 +460,7 @@ class Study
         foreach ($combinations as $combination) {
             $groups = array();
 
-            if (sizeof($combination['groups']) == 0) {
+            if (count($combination['groups']) == 0) {
                 foreach ($moduleGroups as $group) {
                     if ($group->getPhase() == $combination['entity']->getPhase() && $group->getParent() === null) {
                         $groups[] = $group;
@@ -475,7 +475,7 @@ class Study
                 }
 
                 $generalGroups = $this->getGeneralMandatoryGroups($combination['entity']->getPhase(), $moduleGroups);
-                if (!empty($generalGroups)) {
+                if (count($generalGroups) > 0) {
                     $groups = array_merge($groups, $generalGroups);
                 }
             }
@@ -507,7 +507,7 @@ class Study
     }
 
     /**
-     * @param  moduleGroup $group
+     * @param  ModuleGroup $group
      * @return boolean
      */
     private function isFullMandatoryBranch($group)

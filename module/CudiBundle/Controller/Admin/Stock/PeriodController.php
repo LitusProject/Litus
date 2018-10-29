@@ -115,7 +115,8 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($period = $this->getPeriodEntity())) {
+        $period = $this->getPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 
@@ -137,7 +138,8 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
 
     public function searchAction()
     {
-        if (!($period = $this->getPeriodEntity())) {
+        $period = $this->getPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 

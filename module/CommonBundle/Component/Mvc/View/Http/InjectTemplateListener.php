@@ -85,7 +85,7 @@ class InjectTemplateListener implements ListenerAggregateInterface
         }
 
         $template = $model->getTemplate();
-        if (!empty($template)) {
+        if ($template != '') {
             return;
         }
 

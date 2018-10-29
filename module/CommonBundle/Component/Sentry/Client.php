@@ -142,5 +142,7 @@ class Client
                 'username' => 'guest',
             );
         }
+
+        return $user;
     }
 }

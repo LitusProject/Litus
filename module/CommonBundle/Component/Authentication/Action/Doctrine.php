@@ -65,8 +65,9 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
             return;
         }
 
-        $result->getPersonObject()
-            ->setFailedLogins($result->getPersonObject()->getFailedLogins() + 1);
+        $result->getPersonObject()->setFailedLogins(
+            $result->getPersonObject()->getFailedLogins() + 1
+        );
 
         if ($result->getPersonObject()->getFailedLogins() >= 5 && $result->getPersonObject()->getCode() === null) {
             do {
@@ -79,11 +80,12 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
             $code = new Code($code);
             $this->entityManager->persist($code);
 
-            $result->getPersonObject()
-                ->setCode($code);
+            $result->getPersonObject()->setCode($code);
 
-            if (!($language = $result->getPersonObject()->getLanguage())) {
-                $language = $this->entityManager->getRepository('CommonBundle\Entity\General\Language')
+            $language = $result->getPersonObject()->getLanguage();
+            if ($language === null) {
+                $language = $this->entityManager
+                    ->getRepository('CommonBundle\Entity\General\Language')
                     ->findOneByAbbrev('en');
             }
 
@@ -126,8 +128,7 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
      */
     public function succeededAction(Result $result)
     {
-        $result->getPersonObject()
-            ->setFailedLogins(0);
+        $result->getPersonObject()->setFailedLogins(0);
         $this->entityManager->flush();
     }
 }

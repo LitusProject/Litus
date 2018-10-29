@@ -102,8 +102,8 @@ class Text extends \CommonBundle\Component\Form\Fieldset
         $specs['charsperline']['validators'][] = array(
             'name'    => 'TextField',
             'options' => array(
-                'multiline' => !empty($multilineValue) ? $this->get('multiline')->getValue() : false,
-                'lines'     => !empty($lineValue) ? $this->get('lines')->getValue() : null,
+                'multiline' => count($multilineValue) > 0 ? $this->get('multiline')->getValue() : false,
+                'lines'     => count($lineValue) > 0 ? $this->get('lines')->getValue() : null,
             ),
         );
 

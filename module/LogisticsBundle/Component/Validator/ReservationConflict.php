@@ -82,7 +82,8 @@ class ReservationConflict extends \CommonBundle\Component\Validator\AbstractVali
     {
         $this->setValue($value);
 
-        if ($startDate === null = self::getFormValue($context, $this->options['start_date'])) {
+        $startDate = self::getFormValue($context, $this->options['start_date']);
+        if ($startDate === null) {
             $this->error(self::NO_START_DATE);
 
             return false;

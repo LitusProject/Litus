@@ -80,7 +80,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($collaborator = $this->getCollaboratorEntity())) {
+        $collaborator = $this->getCollaboratorEntity();
+        if ($collaborator === null) {
             return new ViewModel();
         }
 
@@ -119,7 +120,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function productAction()
     {
-        if (!($order = $this->getOrderEntity(false))) {
+        $order = $this->getOrderEntity(false);
+        if ($order === null) {
             return new ViewModel();
         }
 
@@ -127,7 +129,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        if (!($collaborator = $this->getCollaboratorEntity())) {
+        if ($this->getCollaboratorEntity() === null) {
             return new ViewModel();
         }
 
@@ -176,7 +178,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($order = $this->getOrderEntity(false))) {
+        $order = $this->getOrderEntity(false);
+        if ($order === null) {
             return new ViewModel();
         }
 
@@ -184,7 +187,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        if (!($collaborator = $this->getCollaboratorEntity())) {
+        if ($this->getCollaboratorEntity() === null) {
             return new ViewModel();
         }
 
@@ -222,7 +225,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editProductAction()
     {
-        if (!($order = $this->getOrderEntity(false))) {
+        $order = $this->getOrderEntity(false);
+        if ($order === null) {
             return new ViewModel();
         }
 
@@ -230,7 +234,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        if (!($collaborator = $this->getCollaboratorEntity())) {
+        if ($this->getCollaboratorEntity() === null) {
             return new ViewModel();
         }
 
@@ -279,7 +283,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($order = $this->getOrderEntity())) {
+        $order = $this->getOrderEntity();
+        if ($order === null) {
             return new ViewModel();
         }
 
@@ -298,7 +303,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($entry = $this->getEntryEntity(false))) {
+        $entry = $this->getEntryEntity(false);
+        if ($entry === null) {
             return new ViewModel();
         }
 
@@ -351,7 +357,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function generateAction()
     {
-        if (!($order = $this->getOrderEntity(false))) {
+        $order = $this->getOrderEntity(false);
+        if ($order === null) {
             return new ViewModel();
         }
 

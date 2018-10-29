@@ -89,8 +89,6 @@ class Virtual extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->setParameter('endDate', $period->getEndDate());
         }
 
-        $resultSet = $query->getQuery();
-
-        return $resultSet;
+        return $query->getQuery();
     }
 }

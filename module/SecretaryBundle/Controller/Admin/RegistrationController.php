@@ -42,7 +42,8 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -79,7 +80,8 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
     public function barcodeAction()
     {
-        if (!($registration = $this->getRegistrationEntity())) {
+        $registration = $this->getRegistrationEntity();
+        if ($registration === null) {
             return new ViewModel();
         }
 
@@ -151,7 +153,8 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
     public function addAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -303,7 +306,8 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
     public function editAction()
     {
-        if (!($registration = $this->getRegistrationEntity())) {
+        $registration = $this->getRegistrationEntity();
+        if ($registration === null) {
             return new ViewModel();
         }
 
@@ -439,7 +443,8 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
     {
         $this->initAjax();
 
-        if (!($registration = $this->getRegistrationEntity())) {
+        $registration = $this->getRegistrationEntity();
+        if ($registration === null) {
             return new ViewModel();
         }
 
@@ -472,13 +477,17 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
     public function searchAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $this->initAjax();
+
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
         $organization = $this->getOrganizationEntity();
-
-        $this->initAjax();
+        if ($organization === null) {
+            return new ViewModel();
+        }
 
         switch ($this->getParam('field')) {
             case 'university_identification':

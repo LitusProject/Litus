@@ -220,7 +220,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOpen();
 
-        if (sizeof($sessions) >= 1) {
+        if (count($sessions) > 0) {
             $cudi['currentSession'] = $sessions[0];
 
             $cudi['currentStudents'] = $this->getEntityManager()
@@ -295,7 +295,8 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function getMyPocers()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return array(
                 'enable' => $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
@@ -303,6 +304,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'pocItem' => null,
             );
         }
+
         $currentAcademicYear = $this->getCurrentAcademicYear();
 
         $pocers = $this->getEntityManager()
@@ -329,11 +331,11 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             }
             $lastPocGroup = $pocer->getGroupId();
         }
-        if (!empty($pocGroupList)) {
+        if (count($pocGroupList) > 0) {
             $pocItem[] = array(
                 'groupId'      => $lastPocGroup,
                 'pocGroupList' => $pocGroupList,
-                'pocExample'  => $pocGroupList[0],
+                'pocExample'   => $pocGroupList[0],
             );
         }
 

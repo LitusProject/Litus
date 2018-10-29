@@ -304,7 +304,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $laps[] = $this->jsonLap($lap, 'next');
         }
 
-        $queueSize = sizeof($nextLaps);
+        $queueSize = count($nextLaps);
 
         $fastestLap = $this->getFastestLap();
         $officialResults = $this->getOfficialResults();

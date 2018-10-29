@@ -82,18 +82,4 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->addSubmit('Register for Tombola');
     }
-
-    private function getDepartments()
-    {
-        $departments = $this->getEntityManager()
-            ->getRepository('SportBundle\Entity\Department')
-            ->findAll();
-
-        $array = array('0' => '');
-        foreach ($departments as $department) {
-            $array[$department->getId()] = $department->getName();
-        }
-
-        return $array;
-    }
 }

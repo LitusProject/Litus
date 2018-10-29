@@ -33,7 +33,8 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
 {
     public function manageAction()
     {
-        if (!($company = $this->getCompanyEntity())) {
+        $company = $this->getCompanyEntity();
+        if ($company === null) {
             return new ViewModel();
         }
 
@@ -59,7 +60,8 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
 
     public function addAction()
     {
-        if (!($company = $this->getCompanyEntity())) {
+        $company = $this->getCompanyEntity();
+        if ($company === null) {
             return new ViewModel();
         }
 
@@ -107,7 +109,8 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
 
     public function editAction()
     {
-        if (!($job = $this->getJobEntity())) {
+        $job = $this->getJobEntity();
+        if ($job === null) {
             return new ViewModel();
         }
 
@@ -149,7 +152,8 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
     {
         $this->initAjax();
 
-        if (!($job = $this->getJobEntity())) {
+        $job = $this->getJobEntity();
+        if ($job === null) {
             return new ViewModel();
         }
 

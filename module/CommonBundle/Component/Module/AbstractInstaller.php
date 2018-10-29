@@ -255,7 +255,7 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
                 );
 
                 $this->getEntityManager()->persist($role);
-            } elseif (!empty($config['parents'])) {
+            } elseif (count($config['parents']) > 0) {
                 $role->setParents($parents);
             }
 

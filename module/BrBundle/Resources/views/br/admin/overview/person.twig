@@ -37,7 +37,7 @@
                     <td>&euro; {{entry['paid']}}</td>
                     <td class="actions">
                         {% if hasAccess('br_admin_overview', 'view') %}
-                            <a href="{{ url('br_admin_overview', {"action": "personview", "id": entry['person'].getId()}) }}" class="view">View</a>
+                            <a href="{{ url('br_admin_overview', {"action": "personView", "id": entry['person'].getId()}) }}" class="view">View</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -61,7 +61,7 @@
                     <td>&euro; {{entry['paid']}}</td>
                     <td class="actions">
                         {% if hasAccess('br_admin_overview', 'view') %}
-                            <a href="{{ url('br_admin_overview', {"action": "personview", "id": entry['person'].getId()}) }}" class="view">View</a>
+                            <a href="{{ url('br_admin_overview', {"action": "personView", "id": entry['person'].getId()}) }}" class="view">View</a>
                         {% endif %}
                     </td>
                 </tr>

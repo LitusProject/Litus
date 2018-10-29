@@ -54,7 +54,7 @@ abstract class Hydrator implements HydratorInterface, ServiceLocatorAwareInterfa
      */
     private static function flatten(array $array = null)
     {
-        if (empty($array)) {
+        if (count($array) == 0) {
             return array();
         }
 
@@ -164,7 +164,7 @@ abstract class Hydrator implements HydratorInterface, ServiceLocatorAwareInterfa
         /** @var \Zend\Hydrator\ClassMethods $hydrator */
         $hydrator = $this->getHydrator('classmethods');
 
-        if (empty($keys)) {
+        if (count($keys) == 0) {
             return $hydrator->hydrate($data, $object);
         }
 
@@ -195,7 +195,7 @@ abstract class Hydrator implements HydratorInterface, ServiceLocatorAwareInterfa
 
         /** @var \Zend\Hydrator\ClassMethods $hydrator */
         $hydrator = clone $originalHydrator;
-        if (!empty($keys)) {
+        if (count($keys) > 0) {
             $hydrator->addFilter('keys', function ($property) use ($hydrator, $keys, $object) {
                 $method = explode('::', $property)[1];
 

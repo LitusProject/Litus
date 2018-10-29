@@ -130,7 +130,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($shift = $this->getShiftEntity())) {
+        $shift = $this->getShiftEntity();
+        if ($shift === null) {
             return new ViewModel();
         }
 
@@ -220,7 +221,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($shift = $this->getShiftEntity())) {
+        $shift = $this->getShiftEntity();
+        if ($shift === null) {
             return new ViewModel();
         }
 
@@ -269,7 +271,6 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $this->getEntityManager()->remove(
             $shift->prepareRemove()
         );
-
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -323,7 +324,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function pdfAction()
     {
-        if (!($event = $this->getEventEntity())) {
+        $event = $this->getEventEntity();
+        if ($event === null) {
             return new ViewModel();
         }
 

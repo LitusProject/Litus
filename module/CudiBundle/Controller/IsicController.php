@@ -29,83 +29,12 @@ use Zend\View\Model\ViewModel;
 
 class IsicController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
-    private function isMember($academic)
-    {
-        $academicYear = $this->getCurrentAcademicYear();
-
-        return $academic->isMember($academicYear) || $academic->isPraesidium($academicYear);
-    }
-
-    private function isEnabled()
-    {
-        $bookingsEnabled = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('cudi.enable_bookings');
-
-        if ($bookingsEnabled == 0) {
-            return new ViewModel(
-                array(
-                    'status' => 'disabled',
-                )
-            );
-        }
-
-        $articleID = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('cudi.isic_sale_article');
-        if ($articleID === '0') {
-            return new ViewModel(
-                array(
-                    'status' => 'disabled',
-                )
-            );
-        }
-
-        return $articleID;
-    }
-
-    private function checkAccess()
-    {
-        if (!$this->getAuthentication()->isAuthenticated()) {
-            return new ViewModel(
-                array(
-                    'status' => 'noauth',
-                )
-            );
-        }
-
-        $academic = $this->getAuthentication()->getPersonObject();
-
-        if (!($academic instanceof Academic)) {
-            return new ViewModel(
-                array(
-                    'status' => 'noaccess',
-                )
-            );
-        }
-
-        return $academic;
-    }
-
-    private function hasPersonOrderedAlready($person)
-    {
-        if ($this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\IsicCard')
-                        ->findByPersonAndYearQuery($person, $this->getCurrentAcademicYear())
-                        ->getResult()) {
-            return new ViewModel(
-                array(
-                    'status' => 'doubleorder',
-                )
-            );
-        }
-    }
-
     public function formAction()
     {
         $serviceUrl = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('cudi.isic_service_url');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.isic_service_url');
+
         $client = new SoapClient($serviceUrl);
 
         $academic = $this->checkAccess();
@@ -307,5 +236,70 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
                 'additionalConditions' => $additionalConditions[$this->getLanguage()->getAbbrev()],
             )
         );
+    }
+
+    private function checkAccess()
+    {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            return new ViewModel(
+                array(
+                    'status' => 'noauth',
+                )
+            );
+        }
+
+        $academic = $this->getAuthentication()->getPersonObject();
+
+        if (!($academic instanceof Academic)) {
+            return new ViewModel(
+                array(
+                    'status' => 'noaccess',
+                )
+            );
+        }
+
+        return $academic;
+    }
+
+    private function hasPersonOrderedAlready($person)
+    {
+        if ($this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\IsicCard')
+                        ->findByPersonAndYearQuery($person, $this->getCurrentAcademicYear())
+                        ->getResult()) {
+            return new ViewModel(
+                array(
+                    'status' => 'doubleorder',
+                )
+            );
+        }
+    }
+
+    private function isEnabled()
+    {
+        $bookingsEnabled = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('cudi.enable_bookings');
+
+        if ($bookingsEnabled == 0) {
+            return new ViewModel(
+                array(
+                    'status' => 'disabled',
+                )
+            );
+        }
+
+        $articleID = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('cudi.isic_sale_article');
+        if ($articleID === '0') {
+            return new ViewModel(
+                array(
+                    'status' => 'disabled',
+                )
+            );
+        }
+
+        return $articleID;
     }
 }

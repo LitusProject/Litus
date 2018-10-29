@@ -39,7 +39,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 {
     public function indexAction()
     {
-        if (!($formSpecification = $this->getFormEntity())) {
+        $formSpecification = $this->getFormEntity();
+        if ($formSpecification === null) {
             return $this->notFoundAction();
         }
 
@@ -230,7 +231,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($entry = $this->getEntryEntity())) {
+        $entry = $this->getEntryEntity();
+        if ($entry === null) {
             return $this->notFoundAction();
         }
 
@@ -276,7 +278,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     public function doodleAction()
     {
-        if (!($formSpecification = $this->getFormEntity())) {
+        $formSpecification = $this->getFormEntity();
+        if ($formSpecification === null) {
             return $this->notFoundAction();
         }
 
@@ -416,7 +419,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     public function saveDoodleAction()
     {
-        if (!($formSpecification = $this->getFormEntity())) {
+        $formSpecification = $this->getFormEntity();
+        if ($formSpecification === null) {
             return $this->notFoundAction();
         }
 
@@ -544,7 +548,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($formEntry = $this->getEntryEntity())) {
+        $formEntry = $this->getEntryEntity();
+        if ($formEntry === null) {
             return $this->notFoundAction();
         }
 
@@ -665,7 +670,12 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     public function loginAction()
     {
-        if (!($form = $this->getFormEntity()) || $this->getParam('key') === null || $this->getAuthentication()->isAuthenticated()) {
+        $form = $this->getFormEntity();
+        if ($form === null) {
+            return $this->notFoundAction();
+        }
+
+        if ($this->getParam('key') === null) {
             return $this->notFoundAction();
         }
 
@@ -811,7 +821,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             'current_draft'              => false,
             'next_form'                  => 0,
             'completed_after_current'    => 0,
-            'total_forms'                => sizeof($group->getForms()),
+            'total_forms'                => count($group->getForms()),
         );
 
         if ($this->getAuthentication()->isAuthenticated()) {
@@ -825,11 +835,11 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     ->findDraftVersionByFormAndPerson($groupForm->getForm(), $this->getAuthentication()->getPersonObject());
 
                 if ($data['current_form'] == $group->getFormNumber($groupForm->getForm())) {
-                    $data['current_completed'] = (sizeof($formEntry) > 0) && $draftVersion === null;
+                    $data['current_completed'] = count($formEntry) > 0 && $draftVersion === null;
                     $data['current_draft'] = $draftVersion !== null;
                 } elseif ($data['current_form'] > $group->getFormNumber($groupForm->getForm())) {
                     $data['previous_form'] = $groupForm->getForm()->getId();
-                    if (sizeof($formEntry) > 0 && $draftVersion === null) {
+                    if (count($formEntry) > 0 && $draftVersion === null) {
                         $data['completed_before_current']++;
                     } else {
                         $data['uncompleted_before_current']++;
@@ -838,7 +848,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         }
                     }
                 } else {
-                    if (sizeof($formEntry) > 0 && $draftVersion === null) {
+                    if (count($formEntry) > 0 && $draftVersion === null) {
                         $data['completed_after_current']++;
                     }
                     if ($data['next_form'] == 0) {
@@ -869,12 +879,12 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 }
 
                 if ($data['current_form'] == $group->getFormNumber($groupForm->getForm())) {
-                    $data['current_completed'] = (sizeof($formEntry) > 0) && !isset($draftVersion);
+                    $data['current_completed'] = count($formEntry) > 0 && !isset($draftVersion);
                     $data['current_draft'] = isset($draftVersion);
                 } elseif ($data['current_form'] > $group->getFormNumber($groupForm->getForm())) {
                     $data['previous_form'] = $groupForm->getForm()->getId();
 
-                    if (sizeof($formEntry) > 0 && !isset($draftVersion)) {
+                    if (count($formEntry) > 0 && !isset($draftVersion)) {
                         $data['completed_before_current']++;
                     } else {
                         $data['uncompleted_before_current']++;
@@ -883,7 +893,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         }
                     }
                 } else {
-                    if (sizeof($formEntry) > 0 && !isset($draftVersion)) {
+                    if (count($formEntry) > 0 && !isset($draftVersion)) {
                         $data['completed_after_current']++;
                     }
                     if ($data['next_form'] == 0) {

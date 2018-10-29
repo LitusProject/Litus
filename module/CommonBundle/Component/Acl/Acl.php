@@ -72,7 +72,7 @@ class Acl extends \Zend\Permissions\Acl\Acl
     /**
      * Adding a resource retrieved from the database as well as its children.
      *
-     * @param  resource $resource The resource that should be added
+     * @param  Resource $resource The resource that should be added
      * @return void
      */
     private function addResourceEntity(Resource $resource)

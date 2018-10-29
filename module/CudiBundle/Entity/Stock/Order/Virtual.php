@@ -106,4 +106,12 @@ class Virtual
 
         return $this;
     }
+
+    /**
+     * @return DateTime
+     */
+    public function getDateCreated()
+    {
+        return $this->dateCreated;
+    }
 }

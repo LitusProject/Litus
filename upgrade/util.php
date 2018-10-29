@@ -50,39 +50,9 @@ function getConfigValue($connection, $name)
  * @param  string   $name
  * @return null
  */
-function removeConfigKey($connection, $name)
+function publishConfigValue($connection, $name)
 {
-    pg_query($connection, 'DELETE FROM general.config WHERE key = \'' . $name . '\'');
-}
-
-/**
- * @param  resource    $connection
- * @param  string      $oldName
- * @param  string      $newName
- * @param  string|null $description
- * @return null
- */
-function renameConfigKey($connection, $oldName, $newName, $description = null)
-{
-    pg_query($connection, 'UPDATE general.config SET key = \'' . $newName . '\' WHERE key = \'' . $oldName . '\'');
-    if ($description !== null) {
-        pg_query($connection, 'UPDATE general.config SET description = \'' . $description . '\' WHERE key = \'' . $newName . '\'');
-    }
-}
-
-/**
- * @param  resource    $connection
- * @param  string      $name
- * @param  string      $newValue
- * @param  string|null $description
- * @return null
- */
-function updateConfigValue($connection, $name, $newValue, $description = null)
-{
-    pg_query($connection, 'UPDATE general.config SET value = \'' . $newValue . '\' WHERE key = \'' . $name . '\'');
-    if ($description !== null) {
-        pg_query($connection, 'UPDATE general.config SET description = \'' . $description . '\' WHERE key = \'' . $name . '\'');
-    }
+    pg_query($connection, 'UPDATE general.config SET published = TRUE WHERE key = \'' . $name . '\'');
 }
 
 /**
@@ -90,9 +60,31 @@ function updateConfigValue($connection, $name, $newValue, $description = null)
  * @param  string   $name
  * @return null
  */
-function publishConfigValue($connection, $name)
+function removeConfigKey($connection, $name)
 {
-    pg_query($connection, 'UPDATE general.config SET published = TRUE WHERE key = \'' . $name . '\'');
+    pg_query($connection, 'DELETE FROM general.config WHERE key = \'' . $name . '\'');
+}
+
+/**
+ * @param  resource $connection
+ * @param  string   $oldName
+ * @param  string   $newName
+ * @return null
+ */
+function renameConfigKey($connection, $oldName, $newName)
+{
+    pg_query($connection, 'UPDATE general.config SET key = \'' . $newName . '\' WHERE key = \'' . $oldName . '\'');
+}
+
+/**
+ * @param  resource $connection
+ * @param  string   $name
+ * @param  string   $description
+ * @return null
+ */
+function updateConfigDescription($connection, $name, $description)
+{
+    pg_query($connection, 'UPDATE general.config SET description = \'' . $description . '\' WHERE key = \'' . $name . '\'');
 }
 
 /**
@@ -104,6 +96,17 @@ function publishConfigValue($connection, $name)
 function updateConfigKey($connection, $name, $value)
 {
     pg_query($connection, 'UPDATE general.config SET value = \'' . $value . '\' WHERE key = \'' . $name . '\'');
+}
+
+/**
+ * @param  resource $connection
+ * @param  string   $name
+ * @param  string   $newValue
+ * @return null
+ */
+function updateConfigValue($connection, $name, $newValue)
+{
+    pg_query($connection, 'UPDATE general.config SET value = \'' . $newValue . '\' WHERE key = \'' . $name . '\'');
 }
 
 /**

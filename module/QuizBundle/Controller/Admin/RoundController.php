@@ -35,7 +35,8 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($quiz = $this->getQuizEntity())) {
+        $quiz = $this->getQuizEntity();
+        if ($quiz === null) {
             return new ViewModel();
         }
 
@@ -61,7 +62,8 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($quiz = $this->getQuizEntity())) {
+        $quiz = $this->getQuizEntity();
+        if ($quiz === null) {
             return new ViewModel();
         }
 
@@ -112,7 +114,8 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($round = $this->getRoundEntity())) {
+        $round = $this->getRoundEntity();
+        if ($round === null) {
             return new ViewModel();
         }
 
@@ -151,12 +154,12 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($round = $this->getRoundEntity())) {
+        $round = $this->getRoundEntity();
+        if ($round === null) {
             return new ViewModel();
         }
 
         $this->getEntityManager()->remove($round);
-
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -171,7 +174,9 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
     public function sortAction()
     {
         $this->initAjax();
-        if (!($quiz = $this->getQuizEntity())) {
+
+        $quiz = $this->getQuizEntity();
+        if ($quiz === null) {
             return new ViewModel();
         }
 

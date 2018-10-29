@@ -63,9 +63,10 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-    public function personviewAction()
+    public function personViewAction()
     {
-        if (!($person = $this->getCollaboratorEntity())) {
+        $person = $this->getCollaboratorEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
@@ -192,9 +193,10 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-    public function companyviewAction()
+    public function companyViewAction()
     {
-        if (!($company = $this->getCompanyEntity())) {
+        $company = $this->getCompanyEntity();
+        if ($company === null) {
             return new ViewModel();
         }
 
@@ -286,7 +288,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
             $collection[] = array(
                 'company'  => $company,
-                'amount'   => sizeof($contracts),
+                'amount'   => count($contracts),
                 'invoiceN' => $invoiceN,
                 'contract' => $contracted,
                 'invoiced' => $invoiced,
@@ -360,7 +362,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
             $ccollection[] = array(
                 'person'     => $person,
-                'camount'    => sizeof($contracts),
+                'camount'    => count($contracts),
                 'iamount'    => $invoiceN,
                 'invoiced'   => $invoiced,
                 'contracted' => $contracted,

@@ -116,6 +116,14 @@ class Code
     /**
      * @return DateTime
      */
+    public function getCreationTime()
+    {
+        return $this->creationTime;
+    }
+
+    /**
+     * @return DateTime
+     */
     public function getExpirationTime()
     {
         return $this->expirationTime;

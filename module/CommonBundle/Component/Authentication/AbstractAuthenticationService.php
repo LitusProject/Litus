@@ -34,10 +34,12 @@ use Zend\Http\PhpEnvironment\Response;
  */
 abstract class AbstractAuthenticationService extends \Zend\Authentication\AuthenticationService
 {
+    // phpcs:disable SlevomatCodingStandard.Classes.UnusedPrivateElements.WriteOnlyProperty
     /**
      * @var string The namespace the storage handlers will use
      */
     private $namespace = '';
+    // phpcs:enable
 
     /**
      * @var string The name of the cookie

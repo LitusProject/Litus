@@ -200,13 +200,11 @@ class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->setParameter('master', $master);
         }
 
-        $resultSet = $query->setParameter('type', $type)
+        return $query->setParameter('type', $type)
             ->setParameter('now', new DateTime())
             ->orderBy('c.name', 'ASC')
             ->addOrderBy('v.name', 'ASC')
             ->getQuery();
-
-        return $resultSet;
     }
 
     /**
@@ -252,12 +250,10 @@ class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->setParameter('master', $master);
         }
 
-        $resultSet = $query->setParameter('type', $type)
+        return $query->setParameter('type', $type)
             ->setParameter('now', new DateTime())
             ->orderBy('v.dateUpdated', 'DESC')
             ->getQuery();
-
-        return $resultSet;
     }
 
     /**
@@ -304,11 +300,9 @@ class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->setParameter('master', $master);
         }
 
-        $resultSet = $query->setParameter('type', $type)
+        return $query->setParameter('type', $type)
             ->setParameter('now', new DateTime())
             ->orderBy('v.name', 'ASC')
             ->getQuery();
-
-        return $resultSet;
     }
 }

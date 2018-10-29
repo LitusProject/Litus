@@ -33,7 +33,8 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
 {
     public function manageAction()
     {
-        if (!($article = $this->getSaleArticleEntity())) {
+        $article = $this->getSaleArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -119,7 +120,8 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($discount = $this->getDiscountEntity())) {
+        $discount = $this->getDiscountEntity();
+        if ($discount === null) {
             return new ViewModel();
         }
 

@@ -50,7 +50,8 @@ class PassengerController extends \CommonBundle\Component\Controller\ActionContr
 
     public function deleteAction()
     {
-        if (!($passenger = $this->getPassengerEntity())) {
+        $passenger = $this->getPassengerEntity();
+        if ($passenger === null) {
             return new ViewModel();
         }
 
@@ -69,7 +70,8 @@ class PassengerController extends \CommonBundle\Component\Controller\ActionContr
 
     public function removeBusAction()
     {
-        if (!($passenger = $this->getPassengerEntity())) {
+        $passenger = $this->getPassengerEntity();
+        if ($passenger === null) {
             return new ViewModel();
         }
 

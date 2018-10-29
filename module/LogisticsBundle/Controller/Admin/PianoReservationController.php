@@ -78,7 +78,8 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
                             ->getConfigValue('logistics.piano_new_reservation_confirmed')
                     );
 
-                    if (!($language = $reservation->getPlayer()->getLanguage())) {
+                    $language = $reservation->getPlayer()->getLanguage();
+                    if ($language === null) {
                         $language = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Language')
                             ->findOneByAbbrev('en');
@@ -161,7 +162,8 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
 
     public function editAction()
     {
-        if (!($reservation = $this->getPianoReservationEntity())) {
+        $reservation = $this->getPianoReservationEntity();
+        if ($reservation === null) {
             return new ViewModel();
         }
 
@@ -178,7 +180,8 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
                             ->getConfigValue('logistics.piano_new_reservation_confirmed')
                     );
 
-                    if (!($language = $reservation->getPlayer()->getLanguage())) {
+                    $language = $reservation->getPlayer()->getLanguage();
+                    if ($language === null) {
                         $language = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Language')
                             ->findOneByAbbrev('en');
@@ -253,7 +256,8 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
     {
         $this->initAjax();
 
-        if (!($reservation = $this->getPianoReservationEntity())) {
+        $reservation = $this->getPianoReservationEntity();
+        if ($reservation === null) {
             return new ViewModel();
         }
 

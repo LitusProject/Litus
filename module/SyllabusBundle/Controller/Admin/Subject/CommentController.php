@@ -36,7 +36,8 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -63,7 +64,8 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
 
     public function subjectAction()
     {
-        if (!($subject = $this->getSubjectEntity())) {
+        $subject = $this->getSubjectEntity();
+        if ($subject === null) {
             return new ViewModel();
         }
 
@@ -112,7 +114,8 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
 
     public function replyAction()
     {
-        if (!($comment = $this->getCommentEntity())) {
+        $comment = $this->getCommentEntity();
+        if ($comment === null) {
             return new ViewModel();
         }
 
@@ -197,7 +200,8 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($comment = $this->getCommentEntity())) {
+        $comment = $this->getCommentEntity();
+        if ($comment === null) {
             return new ViewModel();
         }
 

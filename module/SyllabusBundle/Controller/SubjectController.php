@@ -32,7 +32,8 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function typeaheadAction()
     {
-        if (!($academicYear = $this->getAcademicYear())) {
+        $academicYear = $this->getAcademicYear();
+        if ($academicYear === null) {
             return $this->notFoundAction();
         }
 

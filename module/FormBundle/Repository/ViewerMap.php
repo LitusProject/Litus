@@ -137,7 +137,7 @@ class ViewerMap extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 
     public function findOneByPersonAndGroup(Person $person, Group $group)
     {
-        if (sizeof($group->getForms()) == 0) {
+        if (count($group->getForms()) == 0) {
             return null;
         }
 

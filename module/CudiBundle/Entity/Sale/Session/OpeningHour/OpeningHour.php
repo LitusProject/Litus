@@ -69,6 +69,7 @@ class OpeningHour
      *
      * @ORM\Column(type="datetime")
      */
+    // TODO: Rename to creationTime
     private $timestamp;
 
     /**
@@ -100,6 +101,7 @@ class OpeningHour
     /**
      * @return DateTime
      */
+    // TODO: Rename to getStartDate()
     public function getStart()
     {
         return $this->startDate;
@@ -109,6 +111,7 @@ class OpeningHour
      * @param  DateTime $startDate
      * @return self
      */
+    // TODO: Rename to setStartDate()
     public function setStart(DateTime $startDate)
     {
         $this->startDate = $startDate;
@@ -119,6 +122,7 @@ class OpeningHour
     /**
      * @return DateTime
      */
+    // TODO: Rename to getEndDate()
     public function getEnd()
     {
         return $this->endDate;
@@ -128,6 +132,7 @@ class OpeningHour
      * @param  DateTime $endDate
      * @return self
      */
+    // TODO: Rename to setEndDate()
     public function setEnd(DateTime $endDate)
     {
         $this->endDate = $endDate;
@@ -141,6 +146,15 @@ class OpeningHour
     public function getPerson()
     {
         return $this->person;
+    }
+
+    /**
+     * @return DateTime
+     */
+    // TODO: Rename to getCreationTime()
+    public function getTimestamp()
+    {
+        return $this->timestamp;
     }
 
     /**

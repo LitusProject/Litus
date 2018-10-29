@@ -83,7 +83,8 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
 
     public function viewAction()
     {
-        if (!($vacancy = $this->getVacancyEntity())) {
+        $vacancy = $this->getVacancyEntity();
+        if ($vacancy === null) {
             return new ViewModel();
         }
 

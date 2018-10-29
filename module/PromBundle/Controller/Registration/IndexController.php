@@ -76,7 +76,8 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
 
     public function createAction()
     {
-        if (!($code = $this->getReservationCodeEntity())) {
+        $code = $this->getReservationCodeEntity();
+        if ($code === null) {
             return new ViewModel();
         }
 
@@ -157,7 +158,8 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
 
     public function manageAction()
     {
-        if (!($code = $this->getReservationCodeEntity(false))) {
+        $code = $this->getReservationCodeEntity(false);
+        if ($code === null) {
             return new ViewModel();
         }
 
@@ -166,7 +168,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
             ->findPassengerByCode($code);
 
         $passenger = null;
-        if (sizeof($passengers) > 0) {
+        if (count($passengers) > 0) {
             $passenger = $passengers[0];
         }
 
@@ -257,7 +259,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
             ->findPassengerByCode($code);
 
         $passenger = null;
-        if (sizeof($passengers) > 0) {
+        if (count($passengers) > 0) {
             $passenger = $passengers[0];
         }
 

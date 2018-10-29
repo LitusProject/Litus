@@ -85,7 +85,7 @@ class Articles
                 ->getConfigValue('cudi.tshirt_article')
         );
 
-        $hasShirt = false;
+        $hasTshirt = false;
         foreach ($tshirts as $tshirt) {
             $booking = $entityManager
                 ->getRepository('CudiBundle\Entity\Sale\Booking')
@@ -98,7 +98,7 @@ class Articles
                 );
 
             if ($booking !== null) {
-                $hasShirt = true;
+                $hasTshirt = true;
                 break;
             }
         }
@@ -111,13 +111,15 @@ class Articles
             ->findOneActive();
         $currentPeriod->setEntityManager($entityManager);
 
-        if (!empty($tshirts) && !$hasShirt && isset($options['tshirtSize'])) {
+        if (count($tshirts) > 0 && !$hasTshirt && isset($options['tshirtSize'])) {
+            $tshirtArticle = $entityManager
+                ->getRepository('CudiBundle\Entity\Sale\Article')
+                ->findOneById($tshirts[$options['tshirtSize']]);
+
             $booking = new Booking(
                 $entityManager,
                 $academic,
-                $entityManager
-                    ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findOneById($tshirts[$options['tshirtSize']]),
+                $tshirtArticle,
                 'booked',
                 1,
                 true

@@ -225,7 +225,8 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
     private function getCities()
     {
         if ($this->getCache() !== null) {
-            if (($result = $this->getCache()->getItem('Litus_CommonBundle_Entity_General_Address_Cities_Streets')) !== null) {
+            $result = $this->getCache()->getItem('Litus_CommonBundle_Streets');
+            if ($result !== null) {
                 return $result;
             }
         }
@@ -249,7 +250,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
 
         if ($this->getCache() !== null) {
             $this->getCache()->setItem(
-                'Litus_CommonBundle_Entity_General_Address_Cities_Streets',
+                'Litus_CommonBundle_Streets',
                 array(
                     $optionsCity,
                     $optionsStreet,
@@ -273,10 +274,11 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
             unset($specs['other']);
 
             if (is_array($specs['street'])) {
-                foreach ($specs['street'] as $city => $streetSpecification) {
+                foreach (array_keys($specs['street']) as $city) {
                     if ($city == 'type') {
                         continue;
                     }
+
                     $specs['street'][$city]['required'] = $this->isRequired() && ($city == 'street_' . $this->get('city')->getValue());
                 }
             }

@@ -33,7 +33,8 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($article = $this->getSaleArticleEntity())) {
+        $article = $this->getSaleArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -87,7 +88,12 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($barcode = $this->getBarcodeEntity()) || $barcode->isMain()) {
+        $barcode = $this->getBarcodeEntity();
+        if ($barcode === null) {
+            return new ViewModel();
+        }
+
+        if ($barcode->isMain()) {
             return new ViewModel();
         }
 

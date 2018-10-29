@@ -108,7 +108,8 @@ class Product extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         foreach ($goodProducts as $product) {
             $goodProductIds[] = $product->getId();
         }
-        $resultSet = $query->select('p')
+
+        return $query->select('p')
             ->from('ShopBundle\Entity\Product', 'p')
             ->where(
                 $query->expr()->orX(
@@ -120,7 +121,5 @@ class Product extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->setParameter('available', true)
             ->getQuery()
             ->getResult();
-
-        return $resultSet;
     }
 }

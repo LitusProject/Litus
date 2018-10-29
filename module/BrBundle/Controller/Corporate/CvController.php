@@ -34,7 +34,8 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 {
     public function groupedAction()
     {
-        if (!($person = $this->getCorporateEntity())) {
+        $person = $this->getCorporateEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
@@ -43,18 +44,18 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
         if (!in_array($academicYear, $person->getCompany()->getCvBookYears())) {
             if ($this->getParam('academicyear') === null
-                    && sizeof($person->getCompany()->getCvBookYears()) > 0) {
+                    && count($person->getCompany()->getCvBookYears()) > 0) {
                 $this->redirect()->toRoute(
                     'br_corporate_cv',
                     array(
                         'action'       => 'grouped',
-                        'academicyear' => $person->getCompany()->getCvBookYears()[sizeof($person->getCompany()->getCvBookYears()) - 1]->getCode(),
+                        'academicyear' => $person->getCompany()->getCvBookYears()[count($person->getCompany()->getCvBookYears()) - 1]->getCode(),
                     )
                 );
 
                 return new ViewModel();
             } elseif ($this->getParam('academicyear') === null
-                    && sizeof($person->getCompany()->getCvBookArchiveYears()) > 0) {
+                    && count($person->getCompany()->getCvBookArchiveYears()) > 0) {
                 $onlyArchive = true;
             } else {
                 $this->flashMessenger()->error(
@@ -89,7 +90,8 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
     public function listAction()
     {
-        if (!($person = $this->getCorporateEntity())) {
+        $person = $this->getCorporateEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
@@ -98,18 +100,18 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
         if (!in_array($academicYear, $person->getCompany()->getCvBookYears())) {
             if ($this->getParam('academicyear') === null
-                    && sizeof($person->getCompany()->getCvBookYears()) > 0) {
+                    && count($person->getCompany()->getCvBookYears()) > 0) {
                 $this->redirect()->toRoute(
                     'br_corporate_cv',
                     array(
                         'action'       => 'list',
-                        'academicyear' => $person->getCompany()->getCvBookYears()[sizeof($person->getCompany()->getCvBookYears()) - 1]->getCode(),
+                        'academicyear' => $person->getCompany()->getCvBookYears()[count($person->getCompany()->getCvBookYears()) - 1]->getCode(),
                     )
                 );
 
                 return new ViewModel();
             } elseif ($this->getParam('academicyear') === null
-                    && sizeof($person->getCompany()->getCvBookArchiveYears()) > 0) {
+                    && count($person->getCompany()->getCvBookArchiveYears()) > 0) {
                 $onlyArchive = true;
             } else {
                 $this->flashMessenger()->error(
@@ -146,7 +148,8 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
     {
         $this->initAjax();
 
-        if (!($person = $this->getCorporateEntity())) {
+        $person = $this->getCorporateEntity()
+        if ($person === null) {
             return new ViewModel();
         }
 
@@ -203,7 +206,8 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
     public function downloadArchiveAction()
     {
-        if (!($person = $this->getCorporateEntity())) {
+        $person = $this->getCorporateEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 

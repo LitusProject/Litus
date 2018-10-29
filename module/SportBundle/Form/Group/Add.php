@@ -32,7 +32,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     protected $hydrator = 'SportBundle\Hydrator\Group';
 
-    protected $happyHours1, $happyHours2;
+    protected $happyHours1;
+    protected $happyHours2;
 
     protected function getHappyHours1()
     {

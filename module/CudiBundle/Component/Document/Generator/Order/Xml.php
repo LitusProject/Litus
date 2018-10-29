@@ -75,7 +75,7 @@ class Xml
                 continue;
             }
 
-            $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
+            $zip->open($archive->getFileName(), ZipArchive::CREATE);
             $xmlFile = new TmpFile();
             if ($xmlFormat == 'default') {
                 $this->generateXml($item, $xmlFile);
@@ -120,17 +120,18 @@ class Xml
             return;
         }
 
-        $num = 1;
+        $number = 1;
         $attachments = array(
             new Node(
                 'Attachment',
                 array(
-                    'AttachmentKey' => 'File' . ($num++),
+                    'AttachmentKey' => 'File ' . $number,
                     'FileName'      => 'front_' . $item->getArticle()->getId() . '.pdf',
                 ),
                 null
             ),
         );
+        $number++;
 
         $mappings = $this->entityManager
             ->getRepository('CudiBundle\Entity\File\Mapping')
@@ -139,11 +140,13 @@ class Xml
             $attachments[] = new Node(
                 'Attachment',
                 array(
-                    'AttachmentKey' => 'File' . ($num++),
+                    'AttachmentKey' => 'File ' . $number,
                     'FileName'      => $mapping->getFile()->getName(),
                 ),
                 null
             );
+
+            $number++;
         }
 
         switch ($mainArticle->getBinding()->getCode()) {

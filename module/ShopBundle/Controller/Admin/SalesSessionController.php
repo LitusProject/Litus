@@ -88,6 +88,7 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
     public function addAction()
     {
         $products = $this->getAvailableProducts();
+
         $form = $this->getForm(
             'shop_salesSession_add',
             array(
@@ -141,9 +142,11 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
 
     public function editAction()
     {
-        if (!($salesSession = $this->getSalesSessionEntity())) {
+        $salesSession = $this->getSalesSessionEntity();
+        if ($salesSession === null) {
             return new ViewModel();
         }
+
         $products = $this->getAvailableAndStockAndReservationProducts($salesSession);
         $form = $this->getForm(
             'shop_salesSession_edit',
@@ -214,11 +217,13 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
     public function deleteAction()
     {
         $this->initAjax();
-        if (!($salesSession = $this->getSalesSessionEntity())) {
+
+        $salesSession = $this->getSalesSessionEntity();
+        if ($salesSession === null) {
             return new ViewModel();
         }
-        $this->getEntityManager()->remove($salesSession);
 
+        $this->getEntityManager()->remove($salesSession);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -324,6 +329,7 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
     private function getSalesSessionEntity()
     {
         $salesSession = $this->getEntityById('ShopBundle\Entity\SalesSession');
+
         if (!($salesSession instanceof SalesSession)) {
             $this->flashMessenger()->error(
                 'Error',

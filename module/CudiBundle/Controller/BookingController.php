@@ -34,7 +34,8 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function viewAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity()
+        if ($academic === null) {
             return $this->notFoundAction();
         }
 
@@ -59,11 +60,12 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($booking = $this->getBookingEntity())) {
+        $booking = $this->getBookingEntity();
+        if ($booking === null) {
             return $this->notFoundAction();
         }
 
-        if (!($booking->getArticle()->isUnbookable())) {
+        if (!$booking->getArticle()->isUnbookable()) {
             $this->flashMessenger()->error(
                 'Error',
                 'The given booking cannot be cancelled!'
@@ -95,6 +97,11 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
     public function bookAction()
     {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
+            return $this->notFoundAction();
+        }
+
         $enableBookings = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_bookings');
@@ -104,10 +111,6 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.bookings_closed_exceptions')
         );
-
-        if (!($academic = $this->getAcademicEntity())) {
-            return $this->notFoundAction();
-        }
 
         $currentYear = $this->getCurrentAcademicYear();
 
@@ -251,7 +254,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
                         foreach ($saleArticle->getRestrictions() as $restriction) {
                             if ($restriction->getType() == 'amount') {
-                                $amount = sizeof(
+                                $amount = count(
                                     $this->getEntityManager()
                                         ->getRepository('CudiBundle\Entity\Sale\Booking')
                                         ->findAllSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
@@ -260,6 +263,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                                             $this->getCurrentAcademicYear()
                                         )
                                 );
+
                                 if ($amount + $formValue > $restriction->getValue()) {
                                     $formValue = $restriction->getValue() - $amount;
                                 }
@@ -348,7 +352,8 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return $this->notFoundAction();
         }
 
@@ -445,7 +450,8 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return $this->notFoundAction();
         }
 
@@ -544,7 +550,8 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return $this->notFoundAction();
         }
 
@@ -590,11 +597,12 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
      */
     private function getBookingEntity()
     {
-        if ($this->getParam('id') === null || !is_numeric($this->getParam('id'))) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return;
         }
 
-        if (!($academic = $this->getAcademicEntity())) {
+        if ($this->getParam('id') === null || !is_numeric($this->getParam('id'))) {
             return;
         }
 

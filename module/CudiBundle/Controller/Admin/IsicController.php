@@ -32,7 +32,8 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -57,7 +58,8 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($isicCard = $this->getIsicCardEntity())) {
+        $isicCard = $this->getIsicCardEntity();
+        if ($isicCard === null) {
             return new ViewModel();
         }
 
@@ -80,7 +82,8 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($isicCard = $this->getIsicCardEntity())) {
+        $isicCard = $this->getIsicCardEntity();
+        if ($isicCard === null) {
             return new ViewModel();
         }
 
@@ -104,7 +107,8 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($isicCard = $this->getIsicCardEntity())) {
+        $isicCard = $this->getIsicCardEntity();
+        if ($isicCard === null) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -156,7 +160,8 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($isicCard = $this->getIsicCardEntity())) {
+        $isicCard = $this->getIsicCardEntity();
+        if ($isicCard === null) {
             return new ViewModel();
         }
 
@@ -180,7 +185,8 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 

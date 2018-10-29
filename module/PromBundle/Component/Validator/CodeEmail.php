@@ -81,7 +81,7 @@ class CodeEmail extends \CommonBundle\Component\Validator\AbstractValidator
             ->findPassengerByCode($code);
 
         $passenger = null;
-        if (sizeof($passengers) > 0) {
+        if (count($passengers) > 0) {
             $passenger = $passengers[0];
         }
 

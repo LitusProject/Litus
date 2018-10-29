@@ -71,7 +71,8 @@ class Analytics
             'period' => $period,
         );
 
-        if (($data = $this->getData($parameters)) === null) {
+        $data = $this->getData($parameters);
+        if ($data === null) {
             return null;
         }
 
@@ -95,7 +96,8 @@ class Analytics
             'lastMinutes' => $lastMinutes,
         );
 
-        if (($data = $this->getData($parameters)) === null) {
+        $data = $this->getData($parameters);
+        if ($data === null) {
             return array(
                 'visits'  => 'N/A',
                 'actions' => 'N/A',

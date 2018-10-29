@@ -45,7 +45,7 @@ abstract class AbstractValidator extends \Zend\Validator\AbstractValidator imple
             return null;
         }
         if (is_array($path)) {
-            if (empty($path)) {
+            if (count($path) == 0) {
                 return $context instanceof ElementInterface ? $context->getValue() : $context;
             }
 

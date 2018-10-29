@@ -21,7 +21,7 @@
 namespace BrBundle\Form\Admin\Invoice;
 
 /**
- * generate a manual invoice.
+ * Generate a manual invoice.
  *
  * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
  */

@@ -138,7 +138,8 @@ class CvController extends \BrBundle\Component\Controller\CvController
     {
         $this->initAjax();
 
-        if (!($entry = $this->getEntryEntity())) {
+        $entry = $this->getEntryEntity();
+        if ($entry === null) {
             return new ViewModel();
         }
 

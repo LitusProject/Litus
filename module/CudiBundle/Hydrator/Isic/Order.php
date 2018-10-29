@@ -37,11 +37,7 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
 
     private function convertBase64($file)
     {
-        $type = pathinfo($file['name'], PATHINFO_EXTENSION);
-        $data = file_get_contents($file['tmp_name']);
-        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-
-        return base64_encode($data);
+        return base64_encode(file_get_contents($file['tmp_name']));
     }
 
     protected function doHydrate(array $data, $object = null)

@@ -91,7 +91,7 @@ class AdminRole extends \CommonBundle\Component\Form\Admin\Form
             }
         }
 
-        if (empty($rolesArray)) {
+        if (count($rolesArray) == 0) {
             throw new RuntimeException('There needs to be at least one role before you can map a role');
         }
 

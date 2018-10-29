@@ -283,7 +283,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->getRepository('CommonBundle\Entity\General\Organization\Unit')
             ->findAllActive();
 
-        if (empty($units)) {
+        if (count($units) == 0) {
             throw new RuntimeException('There needs to be at least one unit before you can add a shift');
         }
 
@@ -323,7 +323,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->getRepository('CommonBundle\Entity\General\Location')
             ->findAllActive();
 
-        if (empty($locations)) {
+        if (count($locations) == 0) {
             throw new RuntimeException('There needs to be at least one location before you can add a shift');
         }
 
@@ -351,7 +351,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             }
         }
 
-        if (empty($rolesArray)) {
+        if (count($rolesArray) == 0) {
             throw new RuntimeException('There needs to be at least one role before you can add a page');
         }
 

@@ -38,15 +38,18 @@ use Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
  */
 class Fieldset extends \Zend\Form\Fieldset implements FieldsetInterface, ServiceLocatorAwareInterface
 {
+    use ElementTrait {
+        ElementTrait::setRequired as setElementRequired;
+    }
+
+    use FieldsetTrait {
+        FieldsetTrait::setRequired insteadof ElementTrait;
+    }
+
     use ServiceLocatorAwareTrait;
 
     use CacheTrait;
     use DoctrineTrait;
-
-    use ElementTrait, FieldsetTrait {
-        FieldsetTrait::setRequired insteadof ElementTrait;
-        ElementTrait::setRequired as setElementRequired;
-    }
 
     /**
      * @param string|null $name

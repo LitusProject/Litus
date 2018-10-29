@@ -89,7 +89,8 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($news = $this->getNewsEntity())) {
+        $news = $this->getNewsEntity();
+        if ($news === null) {
             return new ViewModel();
         }
 
@@ -129,7 +130,8 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($news = $this->getNewsEntity())) {
+        $news = $this->getNewsEntity();
+        if ($news === null) {
             return new ViewModel();
         }
 

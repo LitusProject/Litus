@@ -69,7 +69,8 @@ EOT
 
     private function findAllBookable(array &$subjects, DateTime $date, AcademicYear $academicYear)
     {
-        $logs = $this->getEntityManager()->getRepository('CudiBundle\Entity\Log\Article\Sale\Bookable')
+        $logs = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Log\Article\Sale\Bookable')
             ->findAllAfter($date);
         $this->writeln('Found <comment>' . count($logs) . '</comment> log entries for Bookable.');
 
@@ -216,7 +217,8 @@ EOT
                 ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
                 ->findAllByAcademicAndAcademicYear($subscription->getPerson(), $academicYear);
 
-            if (!($language = $subscription->getPerson()->getLanguage())) {
+            $language = $subscription->getPerson()->getLanguage();
+            if ($language === null) {
                 $language = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findOneByAbbrev('en');

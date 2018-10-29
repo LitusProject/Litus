@@ -257,6 +257,14 @@ class Booking
     }
 
     /**
+     * @return DateTime|null
+     */
+    public function getAssignmentDate()
+    {
+        return $this->assignmentDate;
+    }
+
+    /**
      * @param DateTime $saleDate
      *
      * @return self

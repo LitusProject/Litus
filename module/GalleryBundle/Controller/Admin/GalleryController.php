@@ -95,7 +95,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editAction()
     {
-        if (!($album = $this->getAlbumEntity())) {
+        $album = $this->getAlbumEntity();
+        if ($album === null) {
             return new ViewModel();
         }
 
@@ -134,7 +135,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($album = $this->getAlbumEntity())) {
+        $album = $this->getAlbumEntity();
+        if ($album === null) {
             return new ViewModel();
         }
 
@@ -153,7 +155,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function photosAction()
     {
-        if (!($album = $this->getAlbumEntity())) {
+        $album = $this->getAlbumEntity();
+        if ($album === null) {
             return new ViewModel();
         }
 
@@ -178,7 +181,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function addPhotosAction()
     {
-        if (!($album = $this->getAlbumEntity())) {
+        $album = $this->getAlbumEntity();
+        if ($album === null) {
             return new ViewModel();
         }
 
@@ -191,7 +195,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function deletePhotoAction()
     {
-        if (!($photo = $this->getPhotoEntity())) {
+        $photo = $this->getPhotoEntity();
+        if ($photo === null) {
             return new ViewModel();
         }
 
@@ -221,7 +226,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
     public function uploadAction()
     {
         if ($this->getRequest()->isPost()) {
-            if (!($album = $this->getAlbumEntity())) {
+            $album = $this->getAlbumEntity();
+            if ($album === null) {
                 $this->getResponse()->setStatusCode(500);
 
                 return new ViewModel(
@@ -335,7 +341,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function censorPhotoAction()
     {
-        if (!($photo = $this->getPhotoEntity())) {
+        $photo = $this->getPhotoEntity();
+        if ($photo === null) {
             return new ViewModel();
         }
 
@@ -352,9 +359,10 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel();
     }
 
-    public function unCensorPhotoAction()
+    public function uncensorPhotoAction()
     {
-        if (!($photo = $this->getPhotoEntity())) {
+        $photo = $this->getPhotoEntity();
+        if ($photo === null) {
             return new ViewModel();
         }
 

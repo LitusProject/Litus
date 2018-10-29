@@ -123,7 +123,8 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
     public function entriesAction()
     {
-        if (!($list = $this->getMailingListEntity())) {
+        $list = $this->getMailingListEntity();
+        if ($list === null) {
             return new ViewModel();
         }
 
@@ -194,7 +195,8 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
     public function adminsAction()
     {
-        if (!($list = $this->getMailingListEntity())) {
+        $list = $this->getMailingListEntity();
+        if ($list === null) {
             return new ViewModel();
         }
 
@@ -282,7 +284,8 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     {
         $this->initAjax();
 
-        if (!($list = $this->getMailingListEntity())) {
+        $list = $this->getMailingListEntity();
+        if ($list === null) {
             return new ViewModel();
         }
 
@@ -304,7 +307,8 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     {
         $this->initAjax();
 
-        if (!($entry = $this->getMailingListEntryEntity())) {
+        $entry = $this->getMailingListEntryEntity();
+        if ($entry === null) {
             return new ViewModel();
         }
 
@@ -324,7 +328,8 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
     public function deleteAllEntriesAction()
     {
-        if (!($list = $this->getMailingListEntity())) {
+        $list = $this->getMailingListEntity();
+        if ($list === null) {
             return new ViewModel();
         }
 
@@ -358,7 +363,8 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     {
         $this->initAjax();
 
-        if (!($admin = $this->getAdminMapEntity())) {
+        $admin = $this->getAdminMapEntity();
+        if ($admin === null) {
             return new ViewModel();
         }
 
@@ -380,7 +386,8 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     {
         $this->initAjax();
 
-        if (!($adminRole = $this->getAdminRoleMapEntity())) {
+        $adminRole = $this->getAdminRoleMapEntity();
+        if ($adminRole === null) {
             return new ViewModel();
         }
 

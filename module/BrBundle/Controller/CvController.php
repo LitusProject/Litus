@@ -314,7 +314,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
             ->findAllByAcademicAndAcademicYear($person, $this->getCurrentAcademicYear());
 
-        if (empty($studies)) {
+        if (count($studies) == 0) {
             $content .= '<li>' . $this->getTranslator()->translate('Your studies') . '</li>';
         }
 

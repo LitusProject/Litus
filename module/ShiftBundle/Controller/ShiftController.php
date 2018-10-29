@@ -46,7 +46,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $unitSearchForm = $this->getForm('shift_shift_search_unit');
         $dateSearchForm = $this->getForm('shift_shift_search_date');
 
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return $this->notFoundAction();
         }
 
@@ -216,7 +217,17 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($shift = $this->getShiftEntity()) || !($person = $this->getPersonEntity())) {
+        $shift = $this->getShiftEntity();
+        if ($shift === null) {
+            return new ViewModel(
+                array(
+                    'result' => (object) array('status' => 'error'),
+                )
+            );
+        }
+
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -238,11 +249,10 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 ->getConfigValue('shift.insurance_enabled')
         );
 
-        $hasReadInsurance = true;
         if ($insuranceEnabled) {
             $insurance = $this->getEntityManager()
-            ->getRepository('ShiftBundle\Entity\User\Person\Insurance')
-            ->findOneByPersonAndAcademicYear($person, $this->getCurrentAcademicYear());
+                ->getRepository('ShiftBundle\Entity\User\Person\Insurance')
+                ->findOneByPersonAndAcademicYear($person, $this->getCurrentAcademicYear());
 
             if ($insurance === null) {
                 $insurance = new Insurance($person, true, $this->getCurrentAcademicYear());
@@ -277,7 +287,17 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($shift = $this->getShiftEntity()) || !($person = $this->getPersonEntity())) {
+        $shift = $this->getShiftEntity();
+        if ($shift === null) {
+            return new ViewModel(
+                array(
+                    'result' => (object) array('status' => 'error'),
+                )
+            );
+        }
+
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -306,7 +326,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('shift.mail_name');
 
-                    if (!($language = $volunteer->getPerson()->getLanguage())) {
+                    $language = $volunteer->getPerson()->getLanguage();
+                    if ($language === null) {
                         $language = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Language')
                             ->findOneByAbbrev('en');
@@ -369,7 +390,17 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($shift = $this->getShiftEntity()) || !($person = $this->getPersonEntity())) {
+        $shift = $this->getShiftEntity();
+        if ($shift === null) {
+            return new ViewModel(
+                array(
+                    'result' => (object) array('status' => 'error'),
+                )
+            );
+        }
+
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -390,9 +421,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $this->getEntityManager()->remove($remove);
         }
 
-        /**
-         * @TODO If a responsible signs out, and there's another praesidium member signed up as a volunteer, promote him
-         */
+        // TODO: If a responsible signs out, and there's another praesidium member signed up as a volunteer, promote him
 
         $this->getEntityManager()->flush();
 
@@ -480,7 +509,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function historyAction()
     {
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return $this->notFoundAction();
         }
 
@@ -542,7 +572,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         $ranking = false;
         $shiftsToNextRanking = 0;
-        if (!empty($rankingCriteria)) {
+        if (count($rankingCriteria) > 0) {
             $ranking = false;
             $shiftsToNextRanking = $rankingCriteria[0]['limit'] - $shiftsAsVolunteerCount;
 

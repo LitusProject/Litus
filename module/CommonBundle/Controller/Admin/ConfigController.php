@@ -63,7 +63,8 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
 
     public function editAction()
     {
-        if (!($entry = $this->getConfigEntity())) {
+        $entry = $this->getConfigEntity();
+        if ($entry === null) {
             return new ViewModel();
         }
 

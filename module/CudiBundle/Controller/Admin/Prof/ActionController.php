@@ -85,7 +85,8 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($action = $this->getActionEntity())) {
+        $action = $this->getActionEntity();
+        if ($action === null) {
             return new ViewModel();
         }
 
@@ -100,12 +101,12 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function refuseAction()
     {
-        if (!($action = $this->getActionEntity())) {
+        $action = $this->getActionEntity();
+        if ($action === null) {
             return new ViewModel();
         }
 
         $action->setRefused($this->getAuthentication()->getPersonObject());
-
         $this->getEntityManager()->flush();
 
         $this->flashMessenger()->success(
@@ -125,7 +126,8 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function confirmAction()
     {
-        if (!($action = $this->getActionEntity())) {
+        $action = $this->getActionEntity();
+        if ($action === null) {
             return new ViewModel();
         }
 
@@ -189,7 +191,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                 $action->getEntity()->setIsProf(false);
                 $this->getEntityManager()->persist(new SubjectMapAddedLog($this->getAuthentication()->getPersonObject(), $action->getEntity()));
             } else {
-                $action->getEntity()->setRemoved();
+                $action->getEntity()->remove();
             }
         } elseif ($action->getEntityName() == 'file') {
             if ($action->getAction() == 'add') {
@@ -203,12 +205,11 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
                 return new ViewModel();
             } else {
-                $action->getEntity()->setRemoved();
+                $action->getEntity()->remove();
             }
         }
 
         $action->setCompleted($this->getAuthentication()->getPersonObject());
-
         $this->getEntityManager()->flush();
 
         $this->flashMessenger()->success(
@@ -228,7 +229,8 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function confirmArticleAction()
     {
-        if (!($action = $this->getActionEntity())) {
+        $action = $this->getActionEntity();
+        if ($action === null) {
             return new ViewModel();
         }
 
@@ -294,7 +296,8 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function confirmFileAction()
     {
-        if (!($action = $this->getActionEntity())) {
+        $action = $this->getActionEntity();
+        if ($action === null) {
             return new ViewModel();
         }
 
@@ -322,7 +325,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                     'cudi_admin_prof_action',
                     array(
                         'action' => 'manage',
-                    )                
+                    )
                 );
 
                 return new ViewModel();

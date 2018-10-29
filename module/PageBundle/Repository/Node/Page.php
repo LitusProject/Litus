@@ -97,11 +97,9 @@ class Page extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->setParameter('parent', $parent);
         }
 
-        $resultSet = $query->setMaxResults(1)
+        return $query->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
-
-        return $resultSet;
     }
 
     public function findAllByTitleQuery($title)

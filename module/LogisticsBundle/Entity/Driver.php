@@ -129,6 +129,14 @@ class Driver
     }
 
     /**
+     * @return boolean
+     */
+    public function isRemoved()
+    {
+        return $this->removed;
+    }
+
+    /**
      * @param  boolean $removed
      * @return self
      */
@@ -140,10 +148,12 @@ class Driver
     }
 
     /**
-     * @return boolean
+     * @return self
      */
-    public function isRemoved()
+    public function remove()
     {
-        return $this->removed;
+        $this->removed = true;
+
+        return $this;
     }
 }

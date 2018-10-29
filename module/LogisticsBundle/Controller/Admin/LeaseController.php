@@ -84,7 +84,8 @@ class LeaseController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($item = $this->getItemEntity())) {
+        $item = $this->getItemEntity();
+        if ($item === null) {
             return new ViewModel();
         }
 
@@ -121,7 +122,8 @@ class LeaseController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($item = $this->getItemEntity())) {
+        $item = $this->getItemEntity();
+        if ($item === null) {
             return new ViewModel();
         }
 

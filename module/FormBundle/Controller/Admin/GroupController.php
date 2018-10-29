@@ -116,7 +116,8 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($group = $this->getGroupEntity())) {
+        $group = $this->getGroupEntity();
+        if ($group === null) {
             return new ViewModel();
         }
 
@@ -176,7 +177,8 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($group = $this->getGroupEntity())) {
+        $group = $this->getGroupEntity();
+        if ($group === null) {
             return new ViewModel();
         }
 
@@ -211,7 +213,8 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function formsAction()
     {
-        if (!($group = $this->getGroupEntity())) {
+        $group = $this->getGroupEntity();
+        if ($group === null) {
             return new ViewModel();
         }
 
@@ -244,7 +247,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('FormBundle\Entity\Node\Form')
                     ->findOneById($formData['form']);
 
-                if (sizeof($group->getForms()) > 0) {
+                if (count($group->getForms()) > 0) {
                     $form->setStartDate($group->getStartDate())
                         ->setEndDate($group->getEndDate())
                         ->setActive($group->isActive())
@@ -275,14 +278,15 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                     }
                 }
 
-                if (sizeof($group->getForms()) > 0) {
-                    $order = $group->getForms()[sizeof($group->getForms()) - 1]->getOrder() + 1;
+                if (count($group->getForms()) > 0) {
+                    $order = $group->getForms()[count($group->getForms()) - 1]->getOrder() + 1;
                 } else {
                     $order = 1;
                 }
 
-                $this->getEntityManager()->persist(new Mapping($form, $group, $order));
-
+                $this->getEntityManager()->persist(
+                    new Mapping($form, $group, $order)
+                );
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -314,7 +318,8 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($group = $this->getGroupEntity())) {
+        $group = $this->getGroupEntity();
+        if ($group === null) {
             return new ViewModel();
         }
 
@@ -366,7 +371,8 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($mapping = $this->getMappingEntity())) {
+        $mapping = $this->getMappingEntity();
+        if ($mapping === null) {
             return new ViewModel();
         }
 

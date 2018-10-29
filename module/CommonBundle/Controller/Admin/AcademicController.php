@@ -34,7 +34,12 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 {
     public function manageAction()
     {
-        if ($this->getParam('field') !== null && ($academics = $this->search())) {
+        $academics = $this->search();
+        if ($academics === null) {
+            return new ViewModel();
+        }
+
+        if ($this->getParam('field') !== null) {
             $paginator = $this->paginator()->createFromQuery(
                 $academics,
                 $this->getParam('page')
@@ -108,7 +113,8 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
@@ -146,7 +152,8 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function activateAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
@@ -178,7 +185,8 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
@@ -189,8 +197,8 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         foreach ($sessions as $session) {
             $session->deactivate();
         }
-        $academic->disableLogin();
 
+        $academic->disableLogin();
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -202,7 +210,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function typeaheadAction()
     {
-        //$this->initAjax();
+        $this->initAjax();
 
         $academics = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
@@ -315,19 +323,16 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
-
-        /*if(!$person->isMember($this->getCurrentAcademicYear())){
-            return new ViewModel();
-        }*/
 
         Printer::membershipCard(
             $this->getEntityManager(),
             $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('cudi.card_printer'),
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.card_printer'),
             $academic,
             $this->getCurrentAcademicYear()
         );

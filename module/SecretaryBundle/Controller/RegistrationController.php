@@ -348,7 +348,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
     public function editAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             $this->redirect()->toRoute(
                 'secretary_registration',
                 array(
@@ -441,9 +442,6 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getData();
-                $organizationData = $formData['organization_info'];
-
                 if ($metaData === null) {
                     $metaData = $form->hydrateObject();
 
@@ -581,7 +579,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
     public function studiesAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             $this->redirect()->toRoute(
                 'secretary_registration',
                 array(
@@ -602,7 +601,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
     {
         $this->initAjax();
 
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -619,7 +619,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
     public function subjectsAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             $this->redirect()->toRoute(
                 'secretary_registration',
                 array(
@@ -644,7 +645,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
     {
         $this->initAjax();
 
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -661,7 +663,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
     public function completeAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             $this->redirect()->toRoute(
                 'secretary_registration',
                 array(

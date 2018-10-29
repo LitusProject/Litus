@@ -28,9 +28,11 @@ use Zend\Stdlib\ArrayUtils;
 
 class Collection extends \Zend\Form\Element\Collection implements FieldsetInterface, ServiceLocatorAwareInterface
 {
-    use ElementTrait, FieldsetTrait {
-        FieldsetTrait::setRequired insteadof ElementTrait;
+    use ElementTrait {
         ElementTrait::setRequired as setElementRequired;
+    }
+    use FieldsetTrait {
+        FieldsetTrait::setRequired insteadof ElementTrait;
     }
 
     use ServiceLocatorAwareTrait;

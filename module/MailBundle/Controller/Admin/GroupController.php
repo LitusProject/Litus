@@ -44,19 +44,24 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
 
     public function sendAction()
     {
-        if (!($type = $this->getType())) {
+        $type = $this->getType();
+        if ($type === null) {
             return new ViewModel();
         }
 
         if ($type == 'organization') {
-            if (!($status = $this->getOrganizationStatus())) {
+            $status = $this->getOrganizationStatus();
+            if ($status === null) {
                 return new ViewModel();
             }
+
             $statuses = OrganizationStatus::$possibleStatuses;
         } else {
-            if (!($status = $this->getUniversityStatus())) {
+            $status = $this->getUniversityStatus();
+            if ($status === null) {
                 return new ViewModel();
             }
+
             $statuses = UniversityStatus::$possibleStatuses;
         }
 

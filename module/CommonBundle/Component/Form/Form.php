@@ -42,15 +42,18 @@ use Zend\InputFilter\InputInterface;
  */
 abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface, ServiceLocatorAwareInterface, ZendFieldsetInterface
 {
+    use ElementTrait {
+        ElementTrait::setRequired as setElementRequired;
+    }
+
+    use FieldsetTrait {
+        FieldsetTrait::setRequired insteadof ElementTrait;
+    }
+
     use ServiceLocatorAwareTrait;
 
     use DoctrineTrait;
     use HydratorPluginManagerTrait;
-
-    use ElementTrait, FieldsetTrait {
-        FieldsetTrait::setRequired insteadof ElementTrait;
-        ElementTrait::setRequired as setElementRequired;
-    }
 
     /**
      * @param string|integer|null $name    Optional name for the element
@@ -186,7 +189,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
 
     private function injectSelfInValidators(InputFilterInterface $filter)
     {
-        foreach ($filter->getInputs() as $key => $input) {
+        foreach ($filter->getInputs() as $input) {
             if ($input instanceof InputInterface) {
                 foreach ($input->getValidatorChain()->getValidators() as $validator) {
                     if ($validator['instance'] instanceof FormAwareInterface) {

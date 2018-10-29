@@ -99,7 +99,8 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
     public function viewAction()
     {
-        if (!($contract = $this->getContractEntity())) {
+        $contract = $this->getContractEntity();
+        if ($contract === null) {
             return new ViewModel();
         }
 
@@ -112,7 +113,8 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
     public function historyAction()
     {
-        if (!($contract = $this->getContractEntity())) {
+        $contract = $this->getContractEntity();
+        if ($contract === null) {
             return new ViewModel();
         }
 
@@ -175,7 +177,8 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($contract = $this->getContractEntity(false))) {
+        $contract = $this->getContractEntity(false);
+        if ($contract === null) {
             return new ViewModel();
         }
 
@@ -220,7 +223,8 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($contract = $this->getContractEntity())) {
+        $contract = $this->getContractEntity();
+        if ($contract === null) {
             return new ViewModel();
         }
 
@@ -266,7 +270,8 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
     public function signAction()
     {
-        if (!($contract = $this->getContractEntity(false))) {
+        $contract = $this->getContractEntity(false);
+        if ($contract === null) {
             return new ViewModel();
         }
 
@@ -316,7 +321,8 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
     public function downloadAction()
     {
-        if (!($contract = $this->getContractEntity())) {
+        $contract = $this->getContractEntity();
+        if ($contract === null) {
             return new ViewModel();
         }
 

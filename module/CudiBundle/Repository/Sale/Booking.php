@@ -65,10 +65,7 @@ class Booking extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->setParameter('endDate', $period->getEndDate());
         }
 
-        $resultSet = $query->orderBy('b.bookDate', 'DESC')
-            ->getQuery();
-
-        return $resultSet;
+        return $query->orderBy('b.bookDate', 'DESC')->getQuery();
     }
 
     /**
@@ -99,10 +96,7 @@ class Booking extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->setParameter('endDate', $period->getEndDate());
         }
 
-        $resultSet = $query->orderBy('b.bookDate', 'DESC')
-            ->getQuery();
-
-        return $resultSet;
+        return $query->orderBy('b.bookDate', 'DESC')->getQuery();
     }
 
     /**
@@ -129,10 +123,7 @@ class Booking extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->setParameter('endDate', $period->getEndDate());
         }
 
-        $resultSet = $query->orderBy('b.bookDate', 'DESC')
-            ->getQuery();
-
-        return $resultSet;
+        return $query->orderBy('b.bookDate', 'DESC')->getQuery();
     }
 
     /**
@@ -183,10 +174,7 @@ class Booking extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->setParameter('endDate', $period->getEndDate());
         }
 
-        $resultSet = $query->orderBy('b.bookDate', 'DESC')
-            ->getQuery();
-
-        return $resultSet;
+        return $query->orderBy('b.bookDate', 'DESC')->getQuery();
     }
 
     /**
@@ -240,10 +228,7 @@ class Booking extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->setParameter('endDate', $period->getEndDate());
         }
 
-        $resultSet = $query->orderBy('b.bookDate', 'DESC')
-            ->getQuery();
-
-        return $resultSet;
+        return $query->orderBy('b.bookDate', 'DESC')->getQuery();
     }
 
     /**
@@ -273,10 +258,7 @@ class Booking extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->setParameter('endDate', $period->getEndDate());
         }
 
-        $resultSet = $query->orderBy('b.bookDate', 'DESC')
-            ->getQuery();
-
-        return $resultSet;
+        return $query->orderBy('b.bookDate', 'DESC')->getQuery();
     }
 
     /**
@@ -339,10 +321,7 @@ class Booking extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->setParameter('endDate', $period->getEndDate());
         }
 
-        $resultSet = $query->orderBy('b.bookDate', 'DESC')
-            ->getQuery();
-
-        return $resultSet;
+        return $query->orderBy('b.bookDate', 'DESC')->getQuery();
     }
 
     /**
@@ -391,10 +370,7 @@ class Booking extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->setParameter('endDate', $period->getEndDate());
         }
 
-        $resultSet = $query->orderBy('b.bookDate', 'DESC')
-            ->getQuery();
-
-        return $resultSet;
+        return $query->orderBy('b.bookDate', 'DESC')->getQuery();
     }
 
     /**
@@ -441,10 +417,7 @@ class Booking extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->setParameter('endDate', $period->getEndDate());
         }
 
-        $resultSet = $query->orderBy('b.bookDate', 'DESC')
-            ->getQuery();
-
-        return $resultSet;
+        return $query->orderBy('b.bookDate', 'DESC')->getQuery();
     }
 
     /**
@@ -475,10 +448,7 @@ class Booking extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->setParameter('endDate', $period->getEndDate());
         }
 
-        $resultSet = $query->orderBy('b.bookDate', 'DESC')
-            ->getQuery();
-
-        return $resultSet;
+        return $query->orderBy('b.bookDate', 'DESC')->getQuery();
     }
 
     /**
@@ -509,10 +479,7 @@ class Booking extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->setParameter('endDate', $period->getEndDate());
         }
 
-        $resultSet = $query->orderBy('b.bookDate', 'DESC')
-            ->getQuery();
-
-        return $resultSet;
+        return $query->orderBy('b.bookDate', 'DESC')->getQuery();
     }
 
     /**
@@ -542,10 +509,7 @@ class Booking extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->setParameter('endDate', $period->getEndDate());
         }
 
-        $resultSet = $query->orderBy('b.bookDate', 'DESC')
-            ->getQuery();
-
-        return $resultSet;
+        return $query->orderBy('b.bookDate', 'DESC')->getQuery();
     }
 
     /**
@@ -573,10 +537,7 @@ class Booking extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->setParameter('endDate', $period->getEndDate());
         }
 
-        $resultSet = $query->orderBy('b.bookDate', 'ASC')
-            ->getQuery();
-
-        return $resultSet;
+        return $query->orderBy('b.bookDate', 'ASC')->getQuery();
     }
 
     /**
@@ -607,9 +568,7 @@ class Booking extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->setParameter('endDate', $period->getEndDate());
         }
 
-        $resultSet = $query->getQuery();
-
-        return $resultSet;
+        return $query->getQuery();
     }
 
     /**
@@ -666,11 +625,9 @@ class Booking extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->setParameter('endDate', $end);
         }
 
-        $resultSet = $query->setMaxResults(1)
+        return $query->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
-
-        return $resultSet;
     }
 
     /**
@@ -716,11 +673,9 @@ class Booking extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->setParameter('endDate', $end);
         }
 
-        $resultSet = $query->setMaxResults(1)
+        return $query->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
-
-        return $resultSet;
     }
 
     /**
@@ -759,11 +714,9 @@ class Booking extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->setParameter('endDate', $period->getEndDate());
         }
 
-        $resultSet = $query->setMaxResults(1)
+        return $query->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
-
-        return $resultSet;
     }
 
     /**
@@ -824,11 +777,9 @@ class Booking extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->setParameter('endDate', $end);
         }
 
-        $resultSet = $query->setMaxResults(1)
+        return $query->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
-
-        return $resultSet;
     }
 
     /**
@@ -875,10 +826,7 @@ class Booking extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->setParameter('endDate', $end);
         }
 
-        $resultSet = $query->getQuery()
-            ->getResult();
-
-        return $resultSet;
+        return $query->getQuery()->getResult();
     }
 
     /**
@@ -942,9 +890,7 @@ class Booking extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->setParameter('endDate', $period->getEndDate());
         }
 
-        $resultSet = $query->getQuery();
-
-        return $resultSet;
+        return $query->getQuery();
     }
 
     /**
@@ -1267,7 +1213,7 @@ class Booking extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             BookingMail::sendExpireMail($this->getEntityManager(), $mailTransport, $person['bookings'], $person['person']);
         }
 
-        return sizeof($bookings);
+        return count($bookings);
     }
 
     /**

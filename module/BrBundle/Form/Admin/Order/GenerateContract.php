@@ -23,7 +23,7 @@ namespace BrBundle\Form\Admin\Order;
 use BrBundle\Entity\Product\Order;
 
 /**
- * generate a contract.
+ * Generate a contract.
  *
  * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>

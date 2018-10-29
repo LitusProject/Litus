@@ -35,13 +35,12 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function indexAction()
     {
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return $this->notFoundAction();
         }
 
         $form = $this->getForm('logistics_piano-reservation_add');
-
-        $reservations = $this->getReservations();
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -49,7 +48,7 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
 
             $startDate = null;
             $endDate = null;
-            foreach ($form->getWeeks() as $key => $week) {
+            foreach (array_keys($form->getWeeks()) as $key) {
                 if (isset($formData['week_' . $key]['submit'])) {
                     $weekIndex = $key;
 
@@ -96,7 +95,7 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('logistics.piano_auto_confirm_immediatly');
 
-                if ((sizeof($otherReservations) == 0 && $reservation->getStartDate() > $deadline) || $autoConfirm) {
+                if ((count($otherReservations) == 0 && $reservation->getStartDate() > $deadline) || $autoConfirm) {
                     $reservation->setConfirmed();
                 }
 
@@ -124,7 +123,7 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'form'         => $form,
-                'reservations' => $reservations,
+                'reservations' => $this->getReservations(),
             )
         );
     }
@@ -146,7 +145,8 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function getReservations()
     {
-        if ($person = $this->getPersonEntity()) {
+        $person = $this->getPersonEntity();
+        if ($person !== null) {
             return $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
                 ->findAllByDatesAndPerson(
@@ -178,7 +178,8 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
             );
         }
 
-        if (!($language = $person->getLanguage())) {
+        $language = $person->getLanguage();
+        if ($language === null) {
             $language = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev('en');

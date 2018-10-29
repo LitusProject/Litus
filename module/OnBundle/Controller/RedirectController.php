@@ -31,7 +31,8 @@ class RedirectController extends \CommonBundle\Component\Controller\ActionContro
 {
     public function indexAction()
     {
-        if (!($slug = $this->getSlug())) {
+        $slug = $this->getSlug();
+        if ($slug === null) {
             return $this->notFoundAction();
         }
 

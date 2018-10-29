@@ -39,7 +39,8 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($formSpecification = $this->getFormEntity())) {
+        $formSpecification = $this->getFormEntity();
+        if ($formSpecification === null) {
             return new ViewModel();
         }
 
@@ -71,7 +72,8 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($formSpecification = $this->getFormEntity())) {
+        $formSpecification = $this->getFormEntity();
+        if ($formSpecification === null) {
             return new ViewModel();
         }
 
@@ -176,7 +178,8 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($field = $this->getFieldEntity())) {
+        $field = $this->getFieldEntity();
+        if ($field === null) {
             return new ViewModel();
         }
 
@@ -241,7 +244,8 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($field = $this->getFieldEntity())) {
+        $field = $this->getFieldEntity();
+        if ($field === null) {
             return new ViewModel();
         }
 
@@ -282,10 +286,6 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
     public function sortAction()
     {
         $this->initAjax();
-
-        if (!($formSpecification = $this->getFormEntity())) {
-            return new ViewModel();
-        }
 
         if (!$this->getRequest()->isPost()) {
             return new ViewModel();

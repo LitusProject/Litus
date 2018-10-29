@@ -76,7 +76,7 @@ class Amount extends \CudiBundle\Entity\Sale\Article\Restriction
     {
         $academicYear = AcademicYear::getUniversityYear($entityManager);
 
-        $amount = sizeof(
+        $amount = count(
             $entityManager
                 ->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findAllSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(

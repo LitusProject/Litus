@@ -93,7 +93,8 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
     public function membersAction()
     {
-        if (!($role = $this->getRoleEntity())) {
+        $role = $this->getRoleEntity();
+        if ($role === null) {
             return new ViewModel();
         }
 
@@ -111,7 +112,8 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($role = $this->getRoleEntity())) {
+        $role = $this->getRoleEntity();
+        if ($role === null) {
             return new ViewModel();
         }
 
@@ -152,7 +154,8 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($role = $this->getRoleEntity())) {
+        $role = $this->getRoleEntity();
+        if ($role === null) {
             return new ViewModel();
         }
 
@@ -163,8 +166,8 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         foreach ($users as $user) {
             $user->removeRole($role);
         }
-        $this->getEntityManager()->remove($role);
 
+        $this->getEntityManager()->remove($role);
         $this->getEntityManager()->flush();
 
         $this->updateCache();
@@ -180,11 +183,13 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($role = $this->getRoleEntity())) {
+        $role = $this->getRoleEntity();
+        if ($role === null) {
             return new ViewModel();
         }
 
-        if (!($member = $this->getPersonEntity())) {
+        $member = $this->getPersonEntity();
+        if ($member === null) {
             return new ViewModel();
         }
 

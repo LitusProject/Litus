@@ -134,7 +134,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($article = $this->getArticleEntity())) {
+        $article = $this->getArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -198,7 +199,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($saleArticle = $this->getSaleArticleEntity())) {
+        $saleArticle = $this->getSaleArticleEntity();
+        if ($saleArticle === null) {
             return new ViewModel();
         }
 
@@ -274,7 +276,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function viewAction()
     {
-        if (!($saleArticle = $this->getSaleArticleEntity())) {
+        $saleArticle = $this->getSaleArticleEntity();
+        if ($saleArticle === null) {
             return new ViewModel();
         }
 
@@ -292,7 +295,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($saleArticle = $this->getSaleArticleEntity())) {
+        $saleArticle = $this->getSaleArticleEntity();
+        if ($saleArticle === null) {
             return new ViewModel();
         }
 
@@ -308,7 +312,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function assignAllAction()
     {
-        if (!($saleArticle = $this->getSaleArticleEntity())) {
+        $saleArticle = $this->getSaleArticleEntity();
+        if ($saleArticle === null) {
             return new ViewModel();
         }
 
@@ -369,7 +374,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function historyAction()
     {
-        if (!($article = $this->getSaleArticleEntity())) {
+        $article = $this->getSaleArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -423,7 +429,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function mailAction()
     {
-        if (!($saleArticle = $this->getSaleArticleEntity())) {
+        $saleArticle = $this->getSaleArticleEntity();
+        if ($saleArticle === null) {
             return new ViewModel();
         }
 
@@ -473,7 +480,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
                 $this->flashMessenger()->success(
                     'SUCCESS',
-                    'The email was successfully send to ' . sizeof($persons) . ' academics!'
+                    'The email was successfully sent to ' . count($persons) . ' academics!'
                 );
 
                 $this->redirect()->toRoute(
@@ -496,7 +503,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function cancelBookingsAction()
     {
-        if (!($saleArticle = $this->getSaleArticleEntity())) {
+        $saleArticle = $this->getSaleArticleEntity();
+        if ($saleArticle === null) {
             return new ViewModel();
         }
 

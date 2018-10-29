@@ -177,36 +177,6 @@ class SaleItem extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     }
 
     /**
-     * @param  array        $ids
-     * @param  AcademicYear $academicYear
-     * @return array
-     */
-    private function selectOnlyMembers($ids, AcademicYear $academicYear)
-    {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('a.id')
-            ->from('SecretaryBundle\Entity\Registration', 'r')
-            ->innerJoin('r.academic', 'a')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->in('r.academic', $ids),
-                    $query->expr()->eq('r.academicYear', ':academicYear'),
-                    $query->expr()->eq('r.payed', 'true')
-                )
-            )
-            ->setParameter('academicYear', $academicYear)
-            ->getQuery()
-            ->getResult();
-
-        $ids = array(0);
-        foreach ($resultSet as $item) {
-            $ids[] = $item['id'];
-        }
-
-        return $ids;
-    }
-
-    /**
      * @param  Supplier          $supplier
      * @param  AcademicYear      $academicYear
      * @param  Organization|null $organization

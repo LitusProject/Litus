@@ -34,7 +34,8 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
 {
     public function manageAction()
     {
-        if (!($article = $this->getArticleEntity())) {
+        $article = $this->getArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -92,7 +93,8 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->getCommentMappingEntity())) {
+        $mapping = $this->getCommentMappingEntity();
+        if ($mapping === null) {
             return new ViewModel();
         }
 

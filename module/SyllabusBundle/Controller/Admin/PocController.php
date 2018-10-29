@@ -35,16 +35,19 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
+
         $pocsWithIndicator = $this->getEntityManager()
                 ->getRepository('SyllabusBundle\Entity\Poc')
                 ->findAllPocsWithIndicatorByAcademicYear($academicYear);
-        $groups = array();
+
+        $pocGroups = array();
         foreach ($pocsWithIndicator as $poc) {
             $poc->getGroupId()->setEntityManager($this->getEntityManager());
-            $groups[] = $poc->getGroupId();
+            $pocGroups[] = $poc->getGroupId();
         }
 
         $academicYears = $this->getEntityManager()
@@ -56,20 +59,24 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
 
                 'academicYears'       => $academicYears,
                 'currentAcademicYear' => $academicYear,
-                'groups'              => $groups,
+                'pocGroups'           => $pocGroups,
             )
         );
     }
 
     public function membersAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
-        if (!($pocgroup = $this->getGroupEntity())) {
+
+        $pocGroup = $this->getGroupEntity();
+        if ($pocGroup === null) {
             return new ViewModel();
         }
-        $form = $this->getForm('syllabus_poc_add', array('pocgroup' => $pocgroup));
+
+        $form = $this->getForm('syllabus_poc_add', array('poc_group' => $pocGroup));
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -77,15 +84,14 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
             if ($form->isValid()) {
                 $poc = $form->hydrateObject();
                 $poc->setAcademicYear($academicYear);
-                $poc->setGroupId($pocgroup);
+                $poc->setGroupId($pocGroup);
 
                 $this->getEntityManager()->persist($poc);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
                     'Succes',
-                    'The pocer was successfully added to ' . $pocgroup->getName() . '!'
+                    'The POC\'er was successfully added to ' . $pocGroup->getName() . '!'
                 );
 
                 $this->redirect()->toRoute(
@@ -93,7 +99,7 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
                     array(
                         'action'       => 'members',
                         'academicyear' => $academicYear->getCode(),
-                        'id'           => $pocgroup->getId(),
+                        'id'           => $pocGroup->getId(),
                     )
                 );
 
@@ -103,12 +109,12 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
 
         $pocers = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Poc')
-            ->findPocersFromGroupAndAcademicYear($pocgroup, $academicYear);
+            ->findPocersFromGroupAndAcademicYear($pocGroup, $academicYear);
 
         return new ViewModel(
             array(
                 'form'     => $form,
-                'pocgroup' => $pocgroup,
+                'pocGroup' => $pocGroup,
                 'pocers'   => $pocers,
             )
         );
@@ -116,15 +122,19 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
 
     public function editEmailAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
-        if (!($pocgroup = $this->getGroupEntity())) {
+
+        $pocGroup = $this->getGroupEntity();
+        if ($pocGroup === null) {
             return new ViewModel();
         }
+
         $pocIndicator = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Poc')
-            ->findIndicatorFromGroupAndAcademicYear($pocgroup, $academicYear);
+            ->findIndicatorFromGroupAndAcademicYear($pocGroup, $academicYear);
 
         $form = $this->getForm('syllabus_poc_editEmail', array('poc' => $pocIndicator));
         if ($this->getRequest()->isPost()) {
@@ -160,24 +170,27 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
         );
     }
 
-    /**
-     * deletes the pocgroup
-     */
     public function deleteAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
-            return new ViewModel();
-        }
         $this->initAjax();
-        if (!($pocgroup = $this->getGroupEntity())) {
+
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
+
+        $pocGroup = $this->getGroupEntity();
+        if ($pocGroup === null) {
+            return new ViewModel();
+        }
+
         $pocs = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Poc')
-            ->findPocersFromGroupAndAcademicYearWithIndicator($pocgroup, $academicYear);
+            ->findPocersFromGroupAndAcademicYearWithIndicator($pocGroup, $academicYear);
         foreach ($pocs as $poc) {
             $this->getEntityManager()->remove($poc);
         }
+
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -190,9 +203,12 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
     public function deleteMemberAction()
     {
         $this->initAjax();
-        if (!($poc = $this->getPocEntity())) {
+
+        $poc = $this->getPocEntity();
+        if ($poc === null) {
             return new ViewModel();
         }
+
         $this->getEntityManager()->remove($poc);
         $this->getEntityManager()->flush();
 
@@ -213,7 +229,7 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
         if (!($poc instanceof Poc)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No poc was found!'
+                'No POC was found!'
             );
             $this->redirect()->toRoute(
                 'syllabus_admin_poc',
@@ -233,12 +249,12 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
      */
     private function getGroupEntity()
     {
-        $pocgroup = $this->getEntityById('SyllabusBundle\Entity\Group');
+        $group = $this->getEntityById('SyllabusBundle\Entity\Group');
 
-        if (!($pocgroup instanceof Group)) {
+        if (!($group instanceof Group)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No pocgroup was found!'
+                'No group was found!'
             );
 
             $this->redirect()->toRoute(
@@ -251,7 +267,7 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
             return;
         }
 
-        return $pocgroup;
+        return $group;
     }
 
     /**

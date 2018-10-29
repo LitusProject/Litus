@@ -34,7 +34,8 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -69,7 +70,8 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
 
     public function addAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -115,11 +117,13 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
 
     public function viewAction()
     {
-        if (!($moduleGroup = $this->getModuleGroupEntity())) {
+        $moduleGroup = $this->getModuleGroupEntity();
+        if ($moduleGroup === null) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -149,11 +153,13 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
 
     public function editAction()
     {
-        if (!($moduleGroup = $this->getModuleGroupEntity())) {
+        $moduleGroup = $this->getModuleGroupEntity();
+        if ($moduleGroup === null) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -262,11 +268,13 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
     {
         $this->initAjax();
 
-        if (!($moduleGroup = $this->getModuleGroupEntity())) {
+        $moduleGroup = $this->getModuleGroupEntity();
+        if ($moduleGroup === null) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 

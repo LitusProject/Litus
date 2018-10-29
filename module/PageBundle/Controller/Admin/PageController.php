@@ -111,7 +111,8 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($page = $this->getPageEntity())) {
+        $page = $this->getPageEntity();
+        if ($page === null) {
             return new ViewModel();
         }
 
@@ -164,7 +165,8 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($page = $this->getPageEntity())) {
+        $page = $this->getPageEntity();
+        if ($page === null) {
             return new ViewModel();
         }
 

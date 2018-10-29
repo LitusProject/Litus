@@ -34,7 +34,8 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($company = $this->getCompanyEntity())) {
+        $company = $this->getCompanyEntity();
+        if ($company === null) {
             return;
         }
 
@@ -61,7 +62,8 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        if (!($company = $this->getCompanyEntity())) {
+        $company = $this->getCompanyEntity();
+        if ($company === null) {
             return;
         }
 
@@ -114,7 +116,8 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($user = $this->getCorporateEntity())) {
+        $user = $this->getCorporateEntity();
+        if ($user === null) {
             return;
         }
 
@@ -154,7 +157,8 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 
     public function activateAction()
     {
-        if (!($user = $this->getCorporateEntity())) {
+        $user = $this->getCorporateEntity();
+        if ($user === null) {
             return new ViewModel();
         }
 
@@ -188,7 +192,8 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($user = $this->getCorporateEntity())) {
+        $user = $this->getCorporateEntity();
+        if ($user === null) {
             return new ViewModel();
         }
         $this->getEntityManager()

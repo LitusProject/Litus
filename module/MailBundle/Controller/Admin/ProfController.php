@@ -78,7 +78,8 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                         continue;
                     }
 
-                    if (!($subjects = $this->getSubjects($status->getPerson(), $academicYear, $semester))) {
+                    $subjects = $this->getSubjects($status->getPerson(), $academicYear, $semester);
+                    if ($subjects === null) {
                         continue;
                     }
 
@@ -201,7 +202,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
             }
         }
 
-        if (empty($subjects)) {
+        if (count($subjects) == 0) {
             return null;
         }
 

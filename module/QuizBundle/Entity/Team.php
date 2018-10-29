@@ -131,4 +131,12 @@ class Team
 
         return $this;
     }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getPoints()
+    {
+        return $this->points;
+    }
 }

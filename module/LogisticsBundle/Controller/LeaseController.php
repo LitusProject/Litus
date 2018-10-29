@@ -56,7 +56,8 @@ class LeaseController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
     public function showAction()
     {
-        if (!($lease = $this->getLeaseEntity())) {
+        $lease = $this->getLeaseEntity();
+        if ($lease === null) {
             return new ViewModel();
         }
 
@@ -69,7 +70,8 @@ class LeaseController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
     public function historyAction()
     {
-        if (!($item = $this->getItemEntity($this->getRequest()->getQuery('searchItem')['id']))) {
+        $item = $this->getItemEntity($this->getRequest()->getQuery('searchItem')['id']);
+        if ($item === null) {
             return new ViewModel();
         }
 
@@ -132,7 +134,8 @@ class LeaseController extends \LogisticsBundle\Component\Controller\LogisticsCon
      */
     private function handleLeaseForm()
     {
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return;
         }
 
@@ -186,7 +189,8 @@ class LeaseController extends \LogisticsBundle\Component\Controller\LogisticsCon
      */
     private function handleReturnForm()
     {
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return;
         }
 

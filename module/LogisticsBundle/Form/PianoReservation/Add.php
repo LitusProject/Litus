@@ -212,7 +212,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 }
             }
 
-            if (sizeof($listStart) > 0 && sizeof($listEnd) > 0) {
+            if (count($listStart) > 0 && count($listEnd) > 0) {
                 if (!isset($weeks[$now->format('W')])) {
                     $end = (clone $now);
                     $end->add(new DateInterval('P6D'));

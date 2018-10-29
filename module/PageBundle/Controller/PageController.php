@@ -34,13 +34,14 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 {
     public function viewAction()
     {
-        if (!($page = $this->getPageEntity())) {
+        $page = $this->getPageEntity();
+        if ($page === null) {
             return $this->notFoundAction();
         }
 
         $submenu = $this->buildSubmenu($page);
         $parent = $page->getParent();
-        if (empty($submenu) && $parent !== null) {
+        if (count($submenu) == 0 && $parent !== null) {
             $submenu = $this->buildSubmenu($parent);
         }
 

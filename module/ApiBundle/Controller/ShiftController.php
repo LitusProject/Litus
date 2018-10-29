@@ -38,7 +38,8 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
     {
         $this->initJson();
 
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return $this->error(401, 'The access token is not valid');
         }
 
@@ -96,11 +97,13 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return $this->error(401, 'The access token is not valid');
         }
 
-        if (!($shift = $this->getShiftEntity())) {
+        $shift = $this->getShiftEntity();
+        if ($shift === null) {
             return $this->error(404, 'The shift was not found');
         }
 
@@ -135,11 +138,13 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return $this->error(401, 'The access token is not valid');
         }
 
-        if (!($shift = $this->getShiftEntity())) {
+        $shift = $this->getShiftEntity();
+        if ($shift === null) {
             return $this->error(404, 'The shift was not found');
         }
 
@@ -160,7 +165,8 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('shift.mail_name');
 
-                    if (!($language = $volunteer->getPerson()->getLanguage())) {
+                    $language = $volunteer->getPerson()->getLanguage();
+                    if ($language === null) {
                         $language = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Language')
                             ->findOneByAbbrev('en');
@@ -219,11 +225,13 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return $this->error(401, 'The access token is not valid');
         }
 
-        if (!($shift = $this->getShiftEntity())) {
+        $shift = $this->getShiftEntity();
+        if ($shift === null) {
             return $this->error(404, 'The shift was not found');
         }
 
@@ -236,9 +244,7 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
             $this->getEntityManager()->remove($remove);
         }
 
-        /**
-         * @TODO If a responsible signs out, and there's another praesidium member signed up as a volunteer, promote him
-         */
+        // TODO:  If a responsible signs out, and there's another praesidium member signed up as a volunteer, promote him
 
         $this->getEntityManager()->flush();
 

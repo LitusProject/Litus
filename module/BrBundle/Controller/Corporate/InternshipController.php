@@ -34,7 +34,8 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 {
     public function overviewAction()
     {
-        if (!($person = $this->getCorporateEntity())) {
+        $person = $this->getCorporateEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
@@ -73,7 +74,8 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 
     public function addAction()
     {
-        if (!($person = $this->getCorporateEntity())) {
+        $person = $this->getCorporateEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
@@ -144,11 +146,13 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 
     public function editAction()
     {
-        if (!($oldJob = $this->getInternshipEntity())) {
+        $oldJob = $this->getInternshipEntity();
+        if ($oldJob === null) {
             return new ViewModel();
         }
 
-        if (!($person = $this->getCorporateEntity())) {
+        $person = $this->getCorporateEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
@@ -196,7 +200,7 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
                         ->getRepository('BrBundle\Entity\Company\Request\RequestInternship')
                         ->findUnhandledRequestsByJob($oldJob);
 
-                    if (empty($unhandledRequest)) {
+                    if (count($unhandledRequest) == 0) {
                         $oldRequest = $this->getEntityManager()
                             ->getRepository('BrBundle\Entity\Company\Request\RequestInternship')
                             ->findOneByJob($oldJob->getId());
@@ -237,11 +241,13 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 
     public function deleteAction()
     {
-        if (!($internship = $this->getInternshipEntity())) {
+        $internship = $this->getInternshipEntity();
+        if ($internship === null) {
             return new ViewModel();
         }
 
-        if (!($person = $this->getCorporateEntity())) {
+        $person = $this->getCorporateEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
@@ -279,7 +285,8 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 
     public function deleteRequestAction()
     {
-        if (!($request = $this->getRequestEntity())) {
+        $request = $this->getRequestEntity();
+        if ($request === null) {
             $this->redirect()->toRoute(
                 'br_corporate_internship',
                 array(

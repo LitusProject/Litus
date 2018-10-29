@@ -38,7 +38,8 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -73,7 +74,8 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -129,16 +131,24 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
-        if (!($group = $this->getGroupEntity())) {
+        $group = $this->getGroupEntity();
+        if ($group === null) {
             return new ViewModel();
         }
-        $isPocGroup = $group->getIsPocGroup($academicYear);
 
-        $form = $this->getForm('syllabus_group_edit', array('group' => $group,'academicYear' => $academicYear,'isPocGroup' => $isPocGroup));
+        $form = $this->getForm(
+            'syllabus_group_edit',
+            array(
+                'group'        => $group,
+                'academicYear' => $academicYear,
+                'isPocGroup'   => $group->getIsPocGroup($academicYear)
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -146,9 +156,8 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             if ($form->isValid()) {
                 $data = $form->getData();
 
-                $isPocGroup = $group->getIsPocGroup($academicYear);
                 if ($data['poc_group']) {
-                    if (!$isPocGroup) {
+                    if (!$group->getIsPocGroup($academicYear)) {
                         $this->addPocGroup($group, $academicYear);
                     }
                 }
@@ -189,11 +198,13 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function studiesAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
-        if (!($group = $this->getGroupEntity())) {
+        $group = $this->getGroupEntity();
+        if ($group === null) {
             return new ViewModel();
         }
 
@@ -275,11 +286,12 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($group = $this->getGroupEntity())) {
+        $group = $this->getGroupEntity();
+        if ($group === null) {
             return new ViewModel();
         }
 
-        $group->setRemoved();
+        $group->remove();
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -293,7 +305,8 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($mapping = $this->getStudyMapEntity())) {
+        $mapping = $this->getStudyMapEntity();
+        if ($mapping === null) {
             return new ViewModel();
         }
 
@@ -309,11 +322,13 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function exportAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
-        if (!($group = $this->getGroupEntity())) {
+        $group = $this->getGroupEntity();
+        if ($group === null) {
             return new ViewModel();
         }
 
