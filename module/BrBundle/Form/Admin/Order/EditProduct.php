@@ -49,46 +49,50 @@ class EditProduct extends \BrBundle\Form\Admin\Order\AddProduct
         $this->remove('new_product');
         $this->remove('new_product_amount');
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'edit_product',
-            'label'      => 'Product',
-            'required'   => true,
-            'value'      => strval($this->entry->getProduct()->getId()),
-            'attributes' => array(
-                'options' => $this->createProductArray(),
-                'disable' => 'disable',
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'edit_product',
+                'label'      => 'Product',
+                'required'   => true,
+                'value'      => strval($this->entry->getProduct()->getId()),
+                'attributes' => array(
+                    'options' => $this->createProductArray(),
+                    'disable' => 'disable',
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'edit_product_amount',
-            'label'      => 'Amount',
-            'required'   => true,
-            'attributes' => array(
-                'value' => $this->entry->getQuantity(),
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'Int',
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'edit_product_amount',
+                'label'      => 'Amount',
+                'required'   => true,
+                'attributes' => array(
+                    'value' => $this->entry->getQuantity(),
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
                         ),
-                        array(
-                            'name'    => 'Between',
-                            'options' => array(
-                                'min' => 1,
-                                'max' => self::MAX_ORDER_NUMBER,
+                        'validators' => array(
+                            array(
+                                'name' => 'Int',
+                            ),
+                            array(
+                                'name'    => 'Between',
+                                'options' => array(
+                                    'min' => 1,
+                                    'max' => self::MAX_ORDER_NUMBER,
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->remove('product_add')
             ->addSubmit('Save', 'product_edit');

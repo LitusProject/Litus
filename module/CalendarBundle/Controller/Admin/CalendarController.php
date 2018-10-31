@@ -222,10 +222,12 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         $form = $this->getForm('calendar_event_poster');
 
         if ($this->getRequest()->isPost()) {
-            $form->setData(array_merge_recursive(
-                $this->getRequest()->getPost()->toArray(),
-                $this->getRequest()->getFiles()->toArray()
-            ));
+            $form->setData(
+                array_merge_recursive(
+                    $this->getRequest()->getPost()->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
 
             if ($form->isValid()) {
                 $formData = $form->getData();
@@ -280,9 +282,11 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             ->getConfigValue('calendar.poster_path') . '/';
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Type' => mime_content_type($filePath . $event->getPoster()),
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Type' => mime_content_type($filePath . $event->getPoster()),
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         $handle = fopen($filePath . $event->getPoster(), 'r');

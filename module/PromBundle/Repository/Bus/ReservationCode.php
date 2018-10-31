@@ -82,6 +82,6 @@ class ReservationCode extends \CommonBundle\Component\Doctrine\ORM\EntityReposit
             ->orderBy('c.id')
             ->setParameter('year', $academicYear)
             ->getQuery()
-        ->getResult();
+            ->getResult();
     }
 }

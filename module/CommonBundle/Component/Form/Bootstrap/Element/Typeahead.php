@@ -31,38 +31,42 @@ class Typeahead extends \CommonBundle\Component\Form\Fieldset
 {
     public function init()
     {
-        $this->add(array(
-            'type'     => 'hidden',
-            'name'     => 'id',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'int'),
+        $this->add(
+            array(
+                'type'     => 'hidden',
+                'name'     => 'id',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'int'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'value',
-            'required'   => true,
-            'attributes' => array(
-                'autocomplete' => 'off',
-                'data-provide' => 'typeahead',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'value',
+                'required'   => true,
+                'attributes' => array(
+                    'autocomplete' => 'off',
+                    'data-provide' => 'typeahead',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
     }
 
     public function getValue()

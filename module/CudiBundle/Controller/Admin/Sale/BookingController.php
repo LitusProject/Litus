@@ -239,10 +239,13 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             $this->getParam('page')
         );
 
-        $mailForm = $this->getForm('cudi_mail_send', array(
-            'email' => $booking->getPerson()->getEmail(),
-            'name'  => $booking->getPerson()->getFullName(),
-        ));
+        $mailForm = $this->getForm(
+            'cudi_mail_send',
+            array(
+                'email' => $booking->getPerson()->getEmail(),
+                'name'  => $booking->getPerson()->getFullName(),
+            )
+        );
         $mailForm->setAttribute('action', $this->url()->fromRoute('cudi_admin_mail'));
 
         return new ViewModel(

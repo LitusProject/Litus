@@ -35,35 +35,39 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'textarea',
-            'name'     => 'text',
-            'label'    => 'Comment',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'     => 'textarea',
+                'name'     => 'text',
+                'label'    => 'Comment',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'type',
-            'label'      => 'Type',
-            'required'   => true,
-            'attributes' => array(
-                'data-help' => 'The comment type defines the visibility of the comment:
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'type',
+                'label'      => 'Type',
+                'required'   => true,
+                'attributes' => array(
+                    'data-help' => 'The comment type defines the visibility of the comment:
                 <ul>
                     <li><b>Internal:</b> These comments will only be visible in the admin</li>
                     <li><b>External:</b> These comments will only be visible in \'Prof App\' and in the admin</li>
                     <li><b>Site:</b> These comments will also be visible on the website</li>
                 </ul>',
-                'options' => Comment::$possibleTypes,
-            ),
-        ));
+                    'options' => Comment::$possibleTypes,
+                ),
+            )
+        );
 
         $this->addSubmit('Add', 'comment_add');
     }

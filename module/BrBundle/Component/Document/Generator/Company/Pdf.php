@@ -76,10 +76,12 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
             $all_users = array();
             $company_users = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\User\Person\Corporate')
-                ->findBy(array(
-                    'canLogin' => 'true',
-                    'company'  => $company->getId(),
-                ));
+                ->findBy(
+                    array(
+                        'canLogin' => 'true',
+                        'company'  => $company->getId(),
+                    )
+                );
 
             foreach ($company_users as $user) {
                 $all_users[] = new Node(

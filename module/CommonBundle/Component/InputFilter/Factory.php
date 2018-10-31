@@ -28,8 +28,9 @@ class Factory extends \Zend\InputFilter\Factory
     public function createInput($inputSpecification)
     {
         if (is_array($inputSpecification)
-                && isset($inputSpecification['type'])
-                && is_array($inputSpecification['type'])) {
+            && isset($inputSpecification['type'])
+            && is_array($inputSpecification['type'])
+        ) {
             return $this->createInputFilter($inputSpecification);
         }
 
@@ -42,8 +43,9 @@ class Factory extends \Zend\InputFilter\Factory
     public function createInputFilter($inputFilterSpecification)
     {
         if (!is_array($inputFilterSpecification)
-                || !isset($inputFilterSpecification['type'])
-                || !is_array($inputFilterSpecification['type'])) {
+            || !isset($inputFilterSpecification['type'])
+            || !is_array($inputFilterSpecification['type'])
+        ) {
             return parent::createInputFilter($inputFilterSpecification);
         }
 

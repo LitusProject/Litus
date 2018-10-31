@@ -216,133 +216,135 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
 
         $total = $totalExclusive + $totalVat;
 
-        $xml->append(new XmlNode(
-            'invoice',
-            array(
-                'payment_days' => (String) $paymentDays,
-            ),
-            array(
-                new XmlNode(
-                    'title',
-                    null,
-                    array(
-                        new XmlNode('invoice_number', null, $invoiceNb),
-                        new XmlNode('invoice_date', null, $invoiceDate),
-                        new XmlNode('expiration_date', null, $dueDate),
-                        new XmlNode('vat_client', null, $clientVat),
-                        new XmlNode('reference', null, $reference),
-                    )
+        $xml->append(
+            new XmlNode(
+                'invoice',
+                array(
+                    'payment_days' => (String) $paymentDays,
                 ),
+                array(
+                    new XmlNode(
+                        'title',
+                        null,
+                        array(
+                            new XmlNode('invoice_number', null, $invoiceNb),
+                            new XmlNode('invoice_date', null, $invoiceDate),
+                            new XmlNode('expiration_date', null, $dueDate),
+                            new XmlNode('vat_client', null, $clientVat),
+                            new XmlNode('reference', null, $reference),
+                        )
+                    ),
 
-                new XmlNode(
-                    'our_union',
-                    null,
-                    array(
-                        new XmlNode('name', null, $unionName),
-                        new XmlNode(
-                            'address',
-                            null,
-                            array(
-                                new XmlNode(
-                                    'street',
-                                    null,
-                                    $unionAddressArray['street']
-                                ),
-                                new XmlNode(
-                                    'number',
-                                    null,
-                                    $unionAddressArray['number']
-                                ),
-                                new XmlNode(
-                                    'mailbox',
-                                    null,
-                                    $unionAddressArray['mailbox']
-                                ),
-                                new XmlNode(
-                                    'postal',
-                                    null,
-                                    $unionAddressArray['postal']
-                                ),
-                                new XmlNode(
-                                    'city',
-                                    null,
-                                    $unionAddressArray['city']
-                                ),
-                                new XmlNode(
-                                    'country',
-                                    null,
-                                    $unionAddressArray['country']
-                                ),
-                            )
-                        ),
-                        new XmlNode('logo', null, $logo),
-                        new XmlNode('vat_number', null, $unionVat),
-                    )
-                ),
+                    new XmlNode(
+                        'our_union',
+                        null,
+                        array(
+                            new XmlNode('name', null, $unionName),
+                            new XmlNode(
+                                'address',
+                                null,
+                                array(
+                                    new XmlNode(
+                                        'street',
+                                        null,
+                                        $unionAddressArray['street']
+                                    ),
+                                    new XmlNode(
+                                        'number',
+                                        null,
+                                        $unionAddressArray['number']
+                                    ),
+                                    new XmlNode(
+                                        'mailbox',
+                                        null,
+                                        $unionAddressArray['mailbox']
+                                    ),
+                                    new XmlNode(
+                                        'postal',
+                                        null,
+                                        $unionAddressArray['postal']
+                                    ),
+                                    new XmlNode(
+                                        'city',
+                                        null,
+                                        $unionAddressArray['city']
+                                    ),
+                                    new XmlNode(
+                                        'country',
+                                        null,
+                                        $unionAddressArray['country']
+                                    ),
+                                )
+                            ),
+                            new XmlNode('logo', null, $logo),
+                            new XmlNode('vat_number', null, $unionVat),
+                        )
+                    ),
 
-                new XmlNode(
-                    'company',
-                    array('contact_person' => $companyContactPerson),
-                    array(
-                        new XmlNode('name', null, $companyName),
-                        new XmlNode(
-                            'address',
-                            null,
-                            array(
-                                new XmlNode(
-                                    'street',
-                                    null,
-                                    $company->getInvoiceAddress()->getStreet()
-                                ),
-                                new XmlNode(
-                                    'number',
-                                    null,
-                                    $company->getInvoiceAddress()->getNumber()
-                                ),
-                                new XmlNode(
-                                    'mailbox',
-                                    null,
-                                    $company->getInvoiceAddress()->getMailbox()
-                                ),
-                                new XmlNode(
-                                    'postal',
-                                    null,
-                                    $company->getInvoiceAddress()->getPostal()
-                                ),
-                                new XmlNode(
-                                    'city',
-                                    null,
-                                    $company->getInvoiceAddress()->getCity()
-                                ),
-                                new XmlNode(
-                                    'country',
-                                    null,
-                                    $company->getInvoiceAddress()->getCountry()
-                                ),
-                            )
-                        ),
-                    )
-                ),
+                    new XmlNode(
+                        'company',
+                        array('contact_person' => $companyContactPerson),
+                        array(
+                            new XmlNode('name', null, $companyName),
+                            new XmlNode(
+                                'address',
+                                null,
+                                array(
+                                    new XmlNode(
+                                        'street',
+                                        null,
+                                        $company->getInvoiceAddress()->getStreet()
+                                    ),
+                                    new XmlNode(
+                                        'number',
+                                        null,
+                                        $company->getInvoiceAddress()->getNumber()
+                                    ),
+                                    new XmlNode(
+                                        'mailbox',
+                                        null,
+                                        $company->getInvoiceAddress()->getMailbox()
+                                    ),
+                                    new XmlNode(
+                                        'postal',
+                                        null,
+                                        $company->getInvoiceAddress()->getPostal()
+                                    ),
+                                    new XmlNode(
+                                        'city',
+                                        null,
+                                        $company->getInvoiceAddress()->getCity()
+                                    ),
+                                    new XmlNode(
+                                        'country',
+                                        null,
+                                        $company->getInvoiceAddress()->getCountry()
+                                    ),
+                                )
+                            ),
+                        )
+                    ),
 
-                new XmlNode('entries', null, $entries),
+                    new XmlNode('entries', null, $entries),
 
-                new XmlNode(
-                    'total',
-                    null,
-                    array(
-                        new XmlNode('vat_type_explanation', null, $vatTypeExplanation),
-                        new XmlNode('price_excl', null, XmlNode::fromString('<euro/>' . number_format($totalExclusive, 2))),
-                        new XmlNode('price_vat', null, XmlNode::fromString('<euro/>' . number_format($totalVat, 2))),
-                        new XmlNode('price_incl', null, XmlNode::fromString('<euro/>' . number_format($total, 2))),
-                    )
-                ),
+                    new XmlNode(
+                        'total',
+                        null,
+                        array(
+                            new XmlNode('vat_type_explanation', null, $vatTypeExplanation),
+                            new XmlNode('price_excl', null, XmlNode::fromString('<euro/>' . number_format($totalExclusive, 2))),
+                            new XmlNode('price_vat', null, XmlNode::fromString('<euro/>' . number_format($totalVat, 2))),
+                            new XmlNode('price_incl', null, XmlNode::fromString('<euro/>' . number_format($total, 2))),
+                        )
+                    ),
 
-                new XmlNode('sub_entries', null, $subEntries),
+                    new XmlNode('sub_entries', null, $subEntries),
 
-                new XmlNode('footer'),
+                    new XmlNode('footer'),
 
-                new XmlNode('sale_conditions_nl'),
+                    new XmlNode('sale_conditions_nl'),
+                )
             )
-        ));
+        );
     }
 }

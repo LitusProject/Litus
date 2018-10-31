@@ -36,47 +36,53 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'host',
-            'label'      => 'Host',
-            'required'   => true,
-            'attributes' => array(
-                'data-help' => 'The host from which the API can be accessed with the key.',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name'    => 'Hostname',
-                            'options' => array(
-                                'allow' => HostnameValidator::ALLOW_ALL,
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'host',
+                'label'      => 'Host',
+                'required'   => true,
+                'attributes' => array(
+                    'data-help' => 'The host from which the API can be accessed with the key.',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name'    => 'Hostname',
+                                'options' => array(
+                                    'allow' => HostnameValidator::ALLOW_ALL,
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'check_host',
-            'label' => 'Check Host',
-            'value' => true,
-        ));
+        $this->add(
+            array(
+                'type'  => 'checkbox',
+                'name'  => 'check_host',
+                'label' => 'Check Host',
+                'value' => true,
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'roles',
-            'label'      => 'Groups',
-            'attributes' => array(
-                'multiple' => true,
-                'options'  => $this->createRolesArray(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'roles',
+                'label'      => 'Groups',
+                'attributes' => array(
+                    'multiple' => true,
+                    'options'  => $this->createRolesArray(),
+                ),
+            )
+        );
 
         $this->addSubmit('Add', 'key_add');
     }

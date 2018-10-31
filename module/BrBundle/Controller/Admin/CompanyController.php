@@ -229,10 +229,12 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             ->getConfigValue('br.public_logo_path');
 
         if ($this->getRequest()->isPost()) {
-            $form->setData(array_merge_recursive(
-                $this->getRequest()->getPost()->toArray(),
-                $this->getRequest()->getFiles()->toArray()
-            ));
+            $form->setData(
+                array_merge_recursive(
+                    $this->getRequest()->getPost()->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
 
             if ($form->isValid()) {
                 $formData = $form->getData();
@@ -286,8 +288,8 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             ->getConfigValue('search_max_results');
 
         $companies = $this->search()
-                ->setMaxResults($numResults)
-                ->getResult();
+            ->setMaxResults($numResults)
+            ->getResult();
 
         $result = array();
         foreach ($companies as $company) {
@@ -318,10 +320,12 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         foreach ($companies as $company) {
             $company_users = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\User\Person\Corporate')
-                ->findBy(array(
-                    'canLogin' => 'true',
-                    'company'  => $company->getId(),
-                ));
+                ->findBy(
+                    array(
+                        'canLogin' => 'true',
+                        'company'  => $company->getId(),
+                    )
+                );
 
             foreach ($company_users as $user) {
                 $results[] = array($company->getName(), $company->getPhoneNumber(), $user->getFullName(), $user->getUsername(), $user->getEmail(), ' ' . $user->getPhoneNumber());
@@ -335,10 +339,12 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         $document->generateDocument($file);
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="contacts_list.csv"',
-            'Content-Type'        => 'text/csv',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="contacts_list.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -355,10 +361,12 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         $document->generate();
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="contacts_list.pdf"',
-            'Content-Type'        => 'application/pdf',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="contacts_list.pdf"',
+                'Content-Type'        => 'application/pdf',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(

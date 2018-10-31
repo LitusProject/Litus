@@ -35,7 +35,8 @@ class CacheResult extends \CommonBundle\Component\Console\Command
         $this
             ->setName('sport:cache-result')
             ->setDescription('fetch and store the results of the competition')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The %command.name% command fetches the results of the competition and stores
 them in a cache.
 EOT

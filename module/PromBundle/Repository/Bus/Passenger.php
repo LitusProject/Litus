@@ -66,8 +66,8 @@ class Passenger extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             )
             ->setParameter('year', $academicYear)
             ->setParameter('email', $email)
-        ->getQuery()
-        ->getOneOrNullResult();
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     /**

@@ -40,11 +40,12 @@ class ImportAliases extends \CommonBundle\Component\Console\Command
             ->setDescription('import alias files')
             ->addOption('flush', 'f', null, 'flush the created aliases to the database')
             ->addArgument('file', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'the files to import')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The %command.name% command imports the given alias <fg=blue>files</fg=blue> and stores them
 if the <fg=blue>--flush</fg=blue> flag is given.
 EOT
-        );
+            );
     }
 
     protected function executeCommand()

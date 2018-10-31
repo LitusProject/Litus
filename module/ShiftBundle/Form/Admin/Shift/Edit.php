@@ -40,16 +40,20 @@ class Edit extends \ShiftBundle\Form\Admin\Shift\Add
 
         if (!$this->shift->canEditDates()) {
             $this->remove('start_date')
-                ->add(array(
-                    'type' => 'hidden',
-                    'name' => 'start_date',
-                ));
+                ->add(
+                    array(
+                        'type' => 'hidden',
+                        'name' => 'start_date',
+                    )
+                );
 
             $this->remove('end_date')
-                ->add(array(
-                    'type' => 'hidden',
-                    'name' => 'end_date',
-                ));
+                ->add(
+                    array(
+                        'type' => 'hidden',
+                        'name' => 'end_date',
+                    )
+                );
         }
 
         $this->remove('submit')

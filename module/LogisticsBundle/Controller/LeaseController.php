@@ -208,9 +208,11 @@ class LeaseController extends \LogisticsBundle\Component\Controller\LogisticsCon
                         ->getRepository('LogisticsBundle\Entity\Lease\Item')
                         ->findOneById($data['returnItem']['id']);
 
-                    $lease = current($this->getEntityManager()
-                        ->getRepository('LogisticsBundle\Entity\Lease\Lease')
-                        ->findUnreturnedByItem($item));
+                    $lease = current(
+                        $this->getEntityManager()
+                            ->getRepository('LogisticsBundle\Entity\Lease\Lease')
+                            ->findUnreturnedByItem($item)
+                    );
 
                     $lease->setReturned(true)
                         ->setReturnedAmount($data['returned_amount'])

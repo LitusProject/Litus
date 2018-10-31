@@ -81,9 +81,11 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             ->getConfigValue('calendar.poster_path') . '/';
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Type' => mime_content_type($filePath . $event->getPoster()),
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Type' => mime_content_type($filePath . $event->getPoster()),
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         $handle = fopen($filePath . $event->getPoster(), 'r');
@@ -202,10 +204,12 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     public function exportAction()
     {
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="icalendar.ics"',
-            'Content-Type'        => 'text/calendar',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'inline; filename="icalendar.ics"',
+                'Content-Type'        => 'text/calendar',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         $icsFile = new TmpFile();

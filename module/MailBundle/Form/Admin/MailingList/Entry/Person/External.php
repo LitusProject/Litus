@@ -40,67 +40,75 @@ class External extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'first_name',
-            'label'    => 'First Name',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'last_name',
-            'label'    => 'Last Name',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'email_address',
-            'label'    => 'Email',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'EmailAddress',
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'first_name',
+                'label'    => 'First Name',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
                         ),
-                        array(
-                            'name'    => 'EntryExternal',
-                            'options' => array(
-                                'list' => $this->getList(),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'last_name',
+                'label'    => 'Last Name',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'email_address',
+                'label'    => 'Email',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'EmailAddress',
+                            ),
+                            array(
+                                'name'    => 'EntryExternal',
+                                'options' => array(
+                                    'list' => $this->getList(),
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'submit',
-            'name'       => 'external_add',
-            'value'      => 'Add',
-            'attributes' => array(
-                'class' => 'mail_add',
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'submit',
+                'name'       => 'external_add',
+                'value'      => 'Add',
+                'attributes' => array(
+                    'class' => 'mail_add',
+                ),
+            )
+        );
     }
 
     /**

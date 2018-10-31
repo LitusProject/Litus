@@ -902,10 +902,12 @@ class Booking extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('b')
             ->from('CudiBundle\Entity\Sale\Booking', 'b')
-            ->where($query->expr()->andX(
-                $query->expr()->eq('b.person', ':person'),
-                $query->expr()->eq('b.status', '\'sold\'')
-            ))
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('b.person', ':person'),
+                    $query->expr()->eq('b.status', '\'sold\'')
+                )
+            )
             ->setParameter(':person', $person->getId())
             ->getQuery();
     }
@@ -1196,8 +1198,8 @@ class Booking extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $persons[$booking->getPerson()->getId()]['bookings'][] = $booking;
 
             $enableAssignment = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('cudi.enable_automatic_assignment');
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.enable_automatic_assignment');
 
             if ($enableAssignment) {
                 $this->getEntityManager()

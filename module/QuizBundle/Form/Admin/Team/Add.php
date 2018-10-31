@@ -50,48 +50,52 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         parent::init();
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'name',
-            'label'    => 'Name',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'name',
+                'label'    => 'Name',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'number',
-            'label'    => 'Team Number',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'Int',
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'number',
+                'label'    => 'Team Number',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
                         ),
-                        array(
-                            'name' => 'PositiveNumber',
-                        ),
-                        array(
-                            'name'    => 'TeamNumber',
-                            'options' => array(
-                                'quiz' => $this->quiz,
-                                'team' => $this->team,
+                        'validators' => array(
+                            array(
+                                'name' => 'Int',
+                            ),
+                            array(
+                                'name' => 'PositiveNumber',
+                            ),
+                            array(
+                                'name'    => 'TeamNumber',
+                                'options' => array(
+                                    'quiz' => $this->quiz,
+                                    'team' => $this->team,
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Add', 'add');
     }

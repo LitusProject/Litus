@@ -387,8 +387,10 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     {
         return $this->getEntityManager()
             ->getRepository('ShopBundle\Entity\Product\SessionStockEntry')
-            ->findBy(array(
-                'salesSession' => $salesSession,
-            ));
+            ->findBy(
+                array(
+                    'salesSession' => $salesSession,
+                )
+            );
     }
 }

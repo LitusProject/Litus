@@ -149,8 +149,8 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     private function getPocUrl()
     {
         return $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('common.pocUrl');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.pocUrl');
     }
 
     /**
@@ -159,8 +159,8 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     private function getPocUrlOverview()
     {
         return $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('common.pocUrlOverview');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.pocUrlOverview');
     }
 
     /**
@@ -299,8 +299,8 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         if ($academic === null) {
             return array(
                 'enable' => $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('common.poc'),
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.poc'),
                 'pocItem' => null,
             );
         }
@@ -342,8 +342,8 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         return
             array(
                 'enable' => $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('common.poc'),
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.poc'),
                 'pocItem' => $pocItem,
             );
     }

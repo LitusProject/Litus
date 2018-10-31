@@ -41,10 +41,11 @@ class AllInstall extends \CommonBundle\Component\Console\Command
         $this
             ->setName('install:all')
             ->setDescription('Install all modules.')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The <info>%command.name%</info> command installs all the modules.
 EOT
-        );
+            );
     }
 
     protected function executeCommand()

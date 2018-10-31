@@ -287,10 +287,12 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         $document->generate();
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="cv-' . $person->getFullName() . '.pdf"',
-            'Content-type'        => 'application/pdf',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="cv-' . $person->getFullName() . '.pdf"',
+                'Content-type'        => 'application/pdf',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -318,7 +320,8 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
 
         $address = $person->getSecondaryAddress();
         if ($address === null || $address->getStreet() == '' || $address->getNumber() == ''
-                || $address->getPostal() == '' || $address->getCity() == '' || $address->getCountryCode() == '') {
+            || $address->getPostal() == '' || $address->getCity() == '' || $address->getCountryCode() == ''
+        ) {
             $content .= '<li>' . $this->getTranslator()->translate('Your address') . '</li>';
         }
 

@@ -48,11 +48,12 @@ class Parser extends \CommonBundle\Component\Console\Command
         $this
             ->setName('mail:parse')
             ->setDescription('parse a mail from input')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The %command.name% command reads <comment>php://stdin</comment>, parses
 incoming mail and stores it in the document storage.
 EOT
-        );
+            );
     }
 
     protected function executeCommand()

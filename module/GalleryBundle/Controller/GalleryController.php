@@ -122,7 +122,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         $allowCensor = false;
         if ($this->getAuthentication()->isAuthenticated()) {
             if ($this->getAuthentication()->getPersonObject()->isPraesidium($this->getCurrentAcademicYear())
-                && $this->hasAccess()->toResourceAction('gallery', 'censor') && $this->hasAccess()->toResourceAction('gallery', 'uncensor')) {
+                && $this->hasAccess()->toResourceAction('gallery', 'censor') && $this->hasAccess()->toResourceAction('gallery', 'uncensor')
+            ) {
                 $allowCensor = true;
             }
         }

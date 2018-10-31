@@ -219,9 +219,12 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             'isMapping' => false,
         );
 
-        $form = $this->getForm('cudi_booking_booking', array(
-            'articles' => $allArticles,
-        ));
+        $form = $this->getForm(
+            'cudi_booking_booking',
+            array(
+                'articles' => $allArticles,
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());

@@ -25,8 +25,8 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAware\HydratorPluginMana
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\SessionContainerTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
-use CommonBundle\Component\Validator\FormAwareInterface;
 use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Component\Validator\FormAwareInterface;
 use RuntimeException;
 use Zend\Form\FieldsetInterface as ZendFieldsetInterface;
 use Zend\Form\FormInterface;
@@ -141,11 +141,13 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
      */
     public function addFieldset($label, $name)
     {
-        $this->add(array(
-            'type'  => 'fieldset',
-            'name'  => $name,
-            'label' => $label,
-        ));
+        $this->add(
+            array(
+                'type'  => 'fieldset',
+                'name'  => $name,
+                'label' => $label,
+            )
+        );
 
         return $this->get($name);
     }

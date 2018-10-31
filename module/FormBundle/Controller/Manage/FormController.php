@@ -178,10 +178,12 @@ class FormController extends \FormBundle\Component\Controller\FormController
         );
 
         if ($this->getRequest()->isPost()) {
-            $form->setData(array_merge_recursive(
-                $this->getRequest()->getPost()->toArray(),
-                $this->getRequest()->getFiles()->toArray()
-            ));
+            $form->setData(
+                array_merge_recursive(
+                    $this->getRequest()->getPost()->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
 
             if ($form->isValid()) {
                 $formData = $form->getData();
@@ -288,10 +290,12 @@ class FormController extends \FormBundle\Component\Controller\FormController
         );
 
         if ($this->getRequest()->isPost()) {
-            $form->setData(array_merge_recursive(
-                $this->getRequest()->getPost()->toArray(),
-                $this->getRequest()->getFiles()->toArray()
-            ));
+            $form->setData(
+                array_merge_recursive(
+                    $this->getRequest()->getPost()->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
 
             if ($form->isValid()) {
                 $this->getEntityManager()->flush();
@@ -589,10 +593,12 @@ class FormController extends \FormBundle\Component\Controller\FormController
         $document->generateDocument($file);
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="results.csv"',
-            'Content-Type'        => 'text/csv',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="results.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -617,11 +623,13 @@ class FormController extends \FormBundle\Component\Controller\FormController
         }
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="' . $fieldEntry->getReadableValue() . '"',
-            'Content-Type'        => mime_content_type($filePath),
-            'Content-Length'      => filesize($filePath),
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="' . $fieldEntry->getReadableValue() . '"',
+                'Content-Type'        => mime_content_type($filePath),
+                'Content-Length'      => filesize($filePath),
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         $handle = fopen($filePath, 'r');
@@ -654,11 +662,13 @@ class FormController extends \FormBundle\Component\Controller\FormController
         new ZipGenerator($tmpFile, $this->getEntityManager(), $this->getLanguage(), $entries);
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="files_' . $field->getId() . '.zip"',
-            'Content-Type'        => mime_content_type($tmpFile->getFileName()),
-            'Content-Length'      => filesize($tmpFile->getFileName()),
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'inline; filename="files_' . $field->getId() . '.zip"',
+                'Content-Type'        => mime_content_type($tmpFile->getFileName()),
+                'Content-Length'      => filesize($tmpFile->getFileName()),
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(

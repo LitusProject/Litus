@@ -430,8 +430,8 @@ class Contract
     public function getFullContractNumber(EntityManager $entityManager)
     {
         $academicYear = $entityManager
-                ->getRepository('CommonBundle\Entity\General\AcademicYear')
-                ->findOneByDate($this->getDate());
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByDate($this->getDate());
 
         $contractYearCode = unserialize(
             $entityManager

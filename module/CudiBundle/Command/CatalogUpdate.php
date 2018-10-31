@@ -39,10 +39,11 @@ class CatalogUpdate extends \CommonBundle\Component\Console\Command
             ->setAliases(array('cudi:update-catalog'))
             ->setDescription('Update the catalog.')
             ->addOption('mail', 'm', null, 'Send mails to users to notify them of the update.')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The <info>%command.name%</info> command updates the catalog and notifies the users of the changes.
 EOT
-        );
+            );
     }
 
     protected function executeCommand()
@@ -200,8 +201,8 @@ EOT
 
         $sendMails = $this->getOption('mail');
         $mailEnabled = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('cudi.catalog_update_mail_enabled') === '1';
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.catalog_update_mail_enabled') === '1';
 
         if ($sendMails && !$mailEnabled) {
             $sendMails = false;

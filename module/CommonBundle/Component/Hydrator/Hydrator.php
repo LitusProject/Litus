@@ -196,21 +196,25 @@ abstract class Hydrator implements HydratorInterface, ServiceLocatorAwareInterfa
         /** @var \Zend\Hydrator\ClassMethods $hydrator */
         $hydrator = clone $originalHydrator;
         if (count($keys) > 0) {
-            $hydrator->addFilter('keys', function ($property) use ($hydrator, $keys, $object) {
-                $method = explode('::', $property)[1];
+            $hydrator->addFilter(
+                'keys',
+                function ($property) use ($hydrator, $keys, $object) {
+                    $method = explode('::', $property)[1];
 
-                $attribute = $method;
-                if (preg_match('/^get/', $method)) {
-                    $attribute = substr($method, 3);
-                    if (!property_exists($object, $attribute)) {
-                        $attribute = lcfirst($attribute);
+                    $attribute = $method;
+                    if (preg_match('/^get/', $method)) {
+                        $attribute = substr($method, 3);
+                        if (!property_exists($object, $attribute)) {
+                            $attribute = lcfirst($attribute);
+                        }
                     }
-                }
 
-                $attribute = $hydrator->extractName($attribute, $object);
+                    $attribute = $hydrator->extractName($attribute, $object);
 
-                return in_array($attribute, $keys);
-            }, FilterComposite::CONDITION_AND);
+                    return in_array($attribute, $keys);
+                },
+                FilterComposite::CONDITION_AND
+            );
         }
 
         return $hydrator->extract($object);

@@ -36,59 +36,68 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'typeahead',
-            'name'       => 'article',
-            'label'      => 'Article',
-            'required'   => true,
-            'value'      => $this->barcodePrefix,
-            'attributes' => array(
-                'id'    => 'article',
-                'style' => 'width: 400px;',
-            ),
-            'options' => array(
-                'input' => array(
-                    'validators' => array(
-                        array('name' => 'TypeaheadSaleArticle'),
+        $this->add(
+            array(
+                'type'       => 'typeahead',
+                'name'       => 'article',
+                'label'      => 'Article',
+                'required'   => true,
+                'value'      => $this->barcodePrefix,
+                'attributes' => array(
+                    'id'    => 'article',
+                    'style' => 'width: 400px;',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'validators' => array(
+                            array('name' => 'TypeaheadSaleArticle'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'number',
-            'label'      => 'Number',
-            'required'   => true,
-            'attributes' => array(
-                'autocomplete' => 'off',
-                'id'           => 'order_number',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'Int',
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'number',
+                'label'      => 'Number',
+                'required'   => true,
+                'attributes' => array(
+                    'autocomplete' => 'off',
+                    'id'           => 'order_number',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
                         ),
-                        array(
-                            'name'    => 'Greaterthan',
-                            'options' => array(
-                                'min' => 0,
+                        'validators' => array(
+                            array(
+                                'name' => 'Int',
+                            ),
+                            array(
+                                'name'    => 'Greaterthan',
+                                'options' => array(
+                                    'min' => 0,
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->addSubmit('Add', 'stock_add', 'add', array(
-            'data-help' => '<p>The article will be added to the order queue. This way a group of articles can be ordered for the same supplier.<p>
+        $this->addSubmit(
+            'Add',
+            'stock_add',
+            'add',
+            array(
+                'data-help' => '<p>The article will be added to the order queue. This way a group of articles can be ordered for the same supplier.<p>
                 <p>To finish the order, you have to \'place\' it, this can be done by editing the order.</p>',
-            'id' => 'stock_add',
-        ));
+                'id' => 'stock_add',
+            )
+        );
     }
 
     /**

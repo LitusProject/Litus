@@ -214,8 +214,9 @@ class Entry extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 
         $entries = array();
         foreach ($startEntries as $entry) {
-            if (!isset($tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()]) ||
-                    $tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()]->isDraft()) {
+            if (!isset($tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()]) 
+                || $tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()]->isDraft()
+            ) {
                 $entries[] = $entry;
             }
         }

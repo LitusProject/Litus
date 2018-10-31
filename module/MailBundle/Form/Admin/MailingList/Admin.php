@@ -40,42 +40,48 @@ class Admin extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'typeahead',
-            'name'     => 'person',
-            'label'    => 'Name',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'validators' => array(
-                        array(
-                            'name' => 'TypeaheadPerson',
-                        ),
-                        array(
-                            'name'    => 'AdminMap',
-                            'options' => array(
-                                'list' => $this->getList(),
+        $this->add(
+            array(
+                'type'     => 'typeahead',
+                'name'     => 'person',
+                'label'    => 'Name',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name' => 'TypeaheadPerson',
+                            ),
+                            array(
+                                'name'    => 'AdminMap',
+                                'options' => array(
+                                    'list' => $this->getList(),
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'edit_admin',
-            'label' => 'Can Edit Admins',
-        ));
+        $this->add(
+            array(
+                'type'  => 'checkbox',
+                'name'  => 'edit_admin',
+                'label' => 'Can Edit Admins',
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'submit',
-            'name'       => 'admin_map',
-            'value'      => 'Add',
-            'attributes' => array(
-                'class' => 'mail_add',
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'submit',
+                'name'       => 'admin_map',
+                'value'      => 'Add',
+                'attributes' => array(
+                    'class' => 'mail_add',
+                ),
+            )
+        );
     }
 
     /**

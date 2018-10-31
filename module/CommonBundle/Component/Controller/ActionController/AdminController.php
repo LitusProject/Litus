@@ -203,10 +203,11 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             $newSubmenu = array();
 
             natsort($submenu['subtitle']);
+            $nbSubtitles = count($submenu['subtitle']);
 
             $newSubmenu['subtitle'] = $submenu['subtitle'][0];
-            for ($i = 1; $i < count($submenu['subtitle']); $i++) {
-                if ($i == (count($submenu['subtitle']) - 1)) {
+            for ($i = 1; $i < $nbSubtitles; $i++) {
+                if ($i == ($nbSubtitles - 1)) {
                     $newSubmenu['subtitle'] .= ' & ' . $submenu['subtitle'][$i];
                     break;
                 }

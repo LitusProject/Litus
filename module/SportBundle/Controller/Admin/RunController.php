@@ -239,14 +239,14 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             ->findByAcademicYear($this->getAcademicYearEntity());
 
         $rewardTimeLimit = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('sport.reward_time_limit');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('sport.reward_time_limit');
 
         $rewardRunners = array();
         foreach ($laps as $lap) {
             if ($lap->getEndTime() !== null
-                    && $this->convertDateIntervalToSeconds($lap->getLapTime()) <= $rewardTimeLimit
-                ) {
+                && $this->convertDateIntervalToSeconds($lap->getLapTime()) <= $rewardTimeLimit
+            ) {
                 $runner = $lap->getRunner();
                 $runner->setEntityManager($this->getEntityManager());
                 if (isset($rewardRunners[$runner->getId()])) {
@@ -359,8 +359,8 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
     public function runnersAction()
     {
         $runners = $this->getEntityManager()
-                ->getRepository('SportBundle\Entity\Lap')
-                ->getRunnersAndCount($this->getAcademicYearEntity());
+            ->getRepository('SportBundle\Entity\Lap')
+            ->getRunnersAndCount($this->getAcademicYearEntity());
 
         $runnersList = array();
         foreach ($runners as $runner) {

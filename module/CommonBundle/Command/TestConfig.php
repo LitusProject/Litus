@@ -30,10 +30,11 @@ class TestConfig extends \CommonBundle\Component\Console\Command
         $this
             ->setName('common:test-config')
             ->setDescription('Test configuration values.')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The <info>%command.name%</info> command tests all serialized configuration values.
 EOT
-        );
+            );
     }
 
     protected function executeCommand()

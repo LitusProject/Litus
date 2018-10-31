@@ -61,7 +61,8 @@ class Factory extends \Zend\Form\Factory implements ServiceLocatorAwareInterface
         }
 
         if ($data === null && is_array($spec)
-                && isset($spec['options']['data'])) {
+            && isset($spec['options']['data'])
+        ) {
             $data = $spec['options']['data'];
         }
 

@@ -41,89 +41,103 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'name',
-            'label'    => 'Name',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'name',
+                'label'    => 'Name',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'mail',
-            'label'    => 'Mail',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'EmailAddress'),
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'mail',
+                'label'    => 'Mail',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'EmailAddress'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $organizations = $this->createOrganizationsArray();
 
         if (count($organizations) > 1) {
-            $this->add(array(
-                'type'       => 'select',
-                'name'       => 'organization',
-                'label'      => 'Organization',
-                'attributes' => array(
-                    'options' => $organizations,
-                ),
-            ));
+            $this->add(
+                array(
+                    'type'       => 'select',
+                    'name'       => 'organization',
+                    'label'      => 'Organization',
+                    'attributes' => array(
+                        'options' => $organizations,
+                    ),
+                )
+            );
         }
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'parent',
-            'label'      => 'Parent',
-            'attributes' => array(
-                'options' => $this->createUnitsArray(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'parent',
+                'label'      => 'Parent',
+                'attributes' => array(
+                    'options' => $this->createUnitsArray(),
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'roles',
-            'label'      => 'Roles',
-            'attributes' => array(
-                'data-help' => 'The roles for the members of this unit.',
-                'multiple'  => true,
-                'options'   => $this->createRolesArray(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'roles',
+                'label'      => 'Roles',
+                'attributes' => array(
+                    'data-help' => 'The roles for the members of this unit.',
+                    'multiple'  => true,
+                    'options'   => $this->createRolesArray(),
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'coordinator_roles',
-            'label'      => 'Coordinator Roles',
-            'attributes' => array(
-                'data-help' => 'The roles for the coordinator of this unit.',
-                'multiple'  => true,
-                'options'   => $this->createRolesArray(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'coordinator_roles',
+                'label'      => 'Coordinator Roles',
+                'attributes' => array(
+                    'data-help' => 'The roles for the coordinator of this unit.',
+                    'multiple'  => true,
+                    'options'   => $this->createRolesArray(),
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'displayed',
-            'label'      => 'Displayed',
-            'attributes' => array(
-                'data-help' => 'Flag whether this unit will be displayed on the website.',
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'checkbox',
+                'name'       => 'displayed',
+                'label'      => 'Displayed',
+                'attributes' => array(
+                    'data-help' => 'Flag whether this unit will be displayed on the website.',
+                ),
+            )
+        );
 
         $this->addSubmit('Add', 'unit_add');
 

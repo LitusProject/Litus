@@ -35,7 +35,8 @@ class TestPrinter extends \CommonBundle\Component\Console\Command
             ->setDescription('Tests the printers.')
             ->addArgument('printer', InputArgument::REQUIRED, 'the printer name')
             ->addArgument('ticket', InputArgument::REQUIRED, 'the ticket type')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The <info>%command.name%</info> command sends a test ticket to a printer.
 
 The printer to test is set by the <comment>printer</comment> argument. Possible values
@@ -44,7 +45,7 @@ are defined by the '<fg=blue>cudi.printers</fg=blue>' configuration entry.
 The type of the ticket to send is set by the <comment>ticket</comment> argument. Possible values
 are '<fg=blue>signin</fg=blue>', '<fg=blue>collect</fg=blue>' and '<fg=blue>sale</fg=blue>'.
 EOT
-        );
+            );
     }
 
     /**

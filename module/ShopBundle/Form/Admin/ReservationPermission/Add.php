@@ -33,31 +33,35 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'typeahead',
-            'name'     => 'person',
-            'label'    => 'User',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'TypeaheadPerson'),
+        $this->add(
+            array(
+                'type'     => 'typeahead',
+                'name'     => 'person',
+                'label'    => 'User',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'TypeaheadPerson'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'reservationsAllowed',
-            'label'      => 'Reservations allowed',
-            'attributes' => array(
-                'data-help' => 'Enabling this option will allow this client to reserve articles.',
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'checkbox',
+                'name'       => 'reservationsAllowed',
+                'label'      => 'Reservations allowed',
+                'attributes' => array(
+                    'data-help' => 'Enabling this option will allow this client to reserve articles.',
+                ),
+            )
+        );
 
         $this->addSubmit('Add', 'add');
     }

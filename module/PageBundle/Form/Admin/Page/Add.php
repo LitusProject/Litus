@@ -42,48 +42,54 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'category',
-            'label'      => 'Category',
-            'required'   => true,
-            'attributes' => array(
-                'id'      => 'category',
-                'options' => $this->createCategoriesArray(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'category',
+                'label'      => 'Category',
+                'required'   => true,
+                'attributes' => array(
+                    'id'      => 'category',
+                    'options' => $this->createCategoriesArray(),
+                ),
+            )
+        );
 
         $categories = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Category')
             ->findAll();
 
         foreach ($categories as $category) {
-            $this->add(array(
-                'type'       => 'select',
-                'name'       => 'parent_' . $category->getId(),
-                'label'      => 'Parent',
-                'attributes' => array(
-                    'class' => 'parent',
-                    'id'    => 'parent_' . $category->getId(),
-                ),
-                'options' => array(
-                    'options' => $this->createPagesArray($category),
-                ),
-            ));
+            $this->add(
+                array(
+                    'type'       => 'select',
+                    'name'       => 'parent_' . $category->getId(),
+                    'label'      => 'Parent',
+                    'attributes' => array(
+                        'class' => 'parent',
+                        'id'    => 'parent_' . $category->getId(),
+                    ),
+                    'options' => array(
+                        'options' => $this->createPagesArray($category),
+                    ),
+                )
+            );
         }
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'edit_roles',
-            'label'      => 'Edit Roles',
-            'required'   => true,
-            'attributes' => array(
-                'multiple' => true,
-            ),
-            'options' => array(
-                'options' => $this->createEditRolesArray(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'edit_roles',
+                'label'      => 'Edit Roles',
+                'required'   => true,
+                'attributes' => array(
+                    'multiple' => true,
+                ),
+                'options' => array(
+                    'options' => $this->createEditRolesArray(),
+                ),
+            )
+        );
 
         $this->addSubmit('Add', 'page_add');
 
@@ -94,44 +100,48 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
     protected function addTab(FieldsetInterface $container, Language $language, $isDefault)
     {
-        $container->add(array(
-            'type'       => 'text',
-            'name'       => 'title',
-            'label'      => 'Title',
-            'required'   => $isDefault,
-            'attributes' => array(
-                'width' => '400px',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name'    => 'PageTitle',
-                            'options' => array(
-                                'exclude' => $this->getPage() ? $this->getPage()->getName() : '',
+        $container->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'title',
+                'label'      => 'Title',
+                'required'   => $isDefault,
+                'attributes' => array(
+                    'width' => '400px',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name'    => 'PageTitle',
+                                'options' => array(
+                                    'exclude' => $this->getPage() ? $this->getPage()->getName() : '',
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $container->add(array(
-            'type'     => 'textarea',
-            'name'     => 'content',
-            'label'    => 'Content',
-            'required' => $isDefault,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $container->add(
+            array(
+                'type'     => 'textarea',
+                'name'     => 'content',
+                'label'    => 'Content',
+                'required' => $isDefault,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
     }
 
     private function createCategoriesArray()

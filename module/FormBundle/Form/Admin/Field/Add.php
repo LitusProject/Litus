@@ -59,89 +59,85 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'type',
-            'label'      => 'Type',
-            'required'   => true,
-            'attributes' => array(
-                'id'      => 'form_type',
-                'options' => $this->form instanceof Doodle ? array('timeslot' => 'Time Slot') : Field::$possibleTypes,
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'type',
+                'label'      => 'Type',
+                'required'   => true,
+                'attributes' => array(
+                    'id'      => 'form_type',
+                    'options' => $this->form instanceof Doodle ? array('timeslot' => 'Time Slot') : Field::$possibleTypes,
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'order',
-            'label'      => 'Order',
-            'required'   => true,
-            'attributes' => array(
-                'id'        => 'order',
-                'data-help' => 'The display order of the fields, lower numbers are displayed first.',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'Int'),
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'order',
+                'label'      => 'Order',
+                'required'   => true,
+                'attributes' => array(
+                    'id'        => 'order',
+                    'data-help' => 'The display order of the fields, lower numbers are displayed first.',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
+                        ),
                     ),
                 ),
             ),
         ));
 
-        $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'required',
-            'label'      => 'Required',
-            'attributes' => array(
-                'id' => 'required',
-            ),
-            'options' => array(
-                'input' => array(
-                    'validators' => array(
-                        array('name' => 'FieldRequired'),
-                    ),
+        $this->add(
+            array(
+                'type'       => 'form_field_field_text',
+                'name'       => 'text_form',
+                'label'      => 'String Options',
+                'attributes' => array(
+                    'class' => 'string_form extra_form hide',
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'form_field_field_text',
-            'name'       => 'text_form',
-            'label'      => 'String Options',
-            'attributes' => array(
-                'class' => 'string_form extra_form hide',
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'form_field_field_dropdown',
+                'name'       => 'dropdown_form',
+                'label'      => 'Options',
+                'attributes' => array(
+                    'class' => 'dropdown_form extra_form hide',
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'form_field_field_dropdown',
-            'name'       => 'dropdown_form',
-            'label'      => 'Options',
-            'attributes' => array(
-                'class' => 'dropdown_form extra_form hide',
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'form_field_field_file',
+                'name'       => 'file_form',
+                'label'      => 'File Options',
+                'attributes' => array(
+                    'class' => 'file_form extra_form hide',
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'form_field_field_file',
-            'name'       => 'file_form',
-            'label'      => 'File Options',
-            'attributes' => array(
-                'class' => 'file_form extra_form hide',
-            ),
-        ));
-
-        $this->add(array(
-            'type'       => 'form_field_field_timeslot',
-            'name'       => 'timeslot_form',
-            'label'      => 'Time Slot Options',
-            'attributes' => array(
-                'class' => 'timeslot_form extra_form hide',
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'form_field_field_timeslot',
+                'name'       => 'timeslot_form',
+                'label'      => 'Time Slot Options',
+                'attributes' => array(
+                    'class' => 'timeslot_form extra_form hide',
+                ),
+            )
+        );
 
         $this->add(array(
             'type'       => 'fieldset',
@@ -161,17 +157,84 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                         'options' => $this->getVisibilityOptions(),
                     ),
                 ),
-                array(
-                    'type'       => 'select',
-                    'name'       => 'value',
-                    'label'      => 'Is',
-                    'required'   => true,
-                    'attributes' => array(
-                        'id' => 'visible_value',
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'form_field_field_text',
+                'name'       => 'text_form',
+                'label'      => 'String Options',
+                'attributes' => array(
+                    'class' => 'string_form extra_form hide',
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'form_field_field_dropdown',
+                'name'       => 'dropdown_form',
+                'label'      => 'Options',
+                'attributes' => array(
+                    'class' => 'dropdown_form extra_form hide',
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'form_field_field_file',
+                'name'       => 'file_form',
+                'label'      => 'File Options',
+                'attributes' => array(
+                    'class' => 'file_form extra_form hide',
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'form_field_field_timeslot',
+                'name'       => 'timeslot_form',
+                'label'      => 'Time Slot Options',
+                'attributes' => array(
+                    'class' => 'timeslot_form extra_form hide',
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'fieldset',
+                'name'       => 'visibility',
+                'label'      => 'Visibility',
+                'attributes' => array(
+                    'id' => 'visibility',
+                ),
+                'elements' => array(
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'if',
+                        'label'      => 'Visible If',
+                        'required'   => true,
+                        'attributes' => array(
+                            'id'      => 'visible_if',
+                            'options' => $this->getVisibilityOptions(),
+                        ),
+                    ),
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'value',
+                        'label'      => 'Is',
+                        'required'   => true,
+                        'attributes' => array(
+                            'id' => 'visible_value',
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Add', 'field_add');
         $this->addSubmit('Add And Repeat', 'field_add', 'submit_repeat');
@@ -203,22 +266,24 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
      */
     protected function addTab(FieldsetInterface $container, Language $language, $isDefault)
     {
-        $container->add(array(
-            'type'       => 'text',
-            'name'       => 'label',
-            'label'      => 'Label',
-            'required'   => $isDefault,
-            'attributes' => array(
-                'class' => 'field_label',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $container->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'label',
+                'label'      => 'Label',
+                'required'   => $isDefault,
+                'attributes' => array(
+                    'class' => 'field_label',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
     }
 
     /**

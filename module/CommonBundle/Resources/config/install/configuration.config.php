@@ -116,14 +116,16 @@ Student IT',
     ),
     array(
         'key'   => 'organization_address_array',
-        'value' => serialize(array(
-            'street'  => 'Studentenwijk Arenberg',
-            'number'  => '6',
-            'mailbox' => '1',
-            'postal'  => '3001',
-            'city'    => 'Heverlee',
-            'country' => 'Belgium',
-        )),
+        'value' => serialize(
+            array(
+                'street'  => 'Studentenwijk Arenberg',
+                'number'  => '6',
+                'mailbox' => '1',
+                'postal'  => '3001',
+                'city'    => 'Heverlee',
+                'country' => 'Belgium',
+            )
+        ),
         'description' => 'The address of the organization',
     ),
     array(

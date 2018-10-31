@@ -58,11 +58,13 @@ class Article extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('a')
             ->from('CudiBundle\Entity\Article', 'a')
-            ->where($query->expr()->andX(
-                $query->expr()->like($query->expr()->lower('a.title'), ':title'),
-                $query->expr()->eq('a.isHistory', 'false'),
-                $query->expr()->eq('a.isProf', 'false')
-            ))
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->like($query->expr()->lower('a.title'), ':title'),
+                    $query->expr()->eq('a.isHistory', 'false'),
+                    $query->expr()->eq('a.isProf', 'false')
+                )
+            )
             ->setParameter('title', '%' . strtolower($title) . '%')
             ->orderBy('a.title', 'ASC')
             ->getQuery();

@@ -25,7 +25,6 @@ use BrBundle\Entity\Cv\Util;
 use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Component\Util\Xml\Generator;
 use CommonBundle\Component\Util\Xml\Node;
-use CommonBundle\Entity\General\AcademicYear;
 use Doctrine\ORM\EntityManager;
 use Zend\Mvc\I18n\Translator;
 

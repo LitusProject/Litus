@@ -31,40 +31,46 @@ class SelectOptions extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'radio',
-            'name'       => 'articles',
-            'label'      => 'Articles',
-            'required'   => true,
-            'value'      => 'all',
-            'attributes' => array(
-                'options' => array(
-                    'all'      => 'All',
-                    'internal' => 'Internal',
-                    'external' => 'External',
+        $this->add(
+            array(
+                'type'       => 'radio',
+                'name'       => 'articles',
+                'label'      => 'Articles',
+                'required'   => true,
+                'value'      => 'all',
+                'attributes' => array(
+                    'options' => array(
+                        'all'      => 'All',
+                        'internal' => 'Internal',
+                        'external' => 'External',
+                    ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'radio',
-            'name'       => 'order',
-            'label'      => 'Order',
-            'required'   => true,
-            'value'      => 'barcode',
-            'attributes' => array(
-                'options' => array(
-                    'barcode' => 'Barcode',
-                    'title'   => 'Title',
+        $this->add(
+            array(
+                'type'       => 'radio',
+                'name'       => 'order',
+                'label'      => 'Order',
+                'required'   => true,
+                'value'      => 'barcode',
+                'attributes' => array(
+                    'options' => array(
+                        'barcode' => 'Barcode',
+                        'title'   => 'Title',
+                    ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'in_stock',
-            'label' => 'Only In Stock',
-        ));
+        $this->add(
+            array(
+                'type'  => 'checkbox',
+                'name'  => 'in_stock',
+                'label' => 'Only In Stock',
+            )
+        );
 
         $this->addSubmit('Select', 'view', 'select');
     }

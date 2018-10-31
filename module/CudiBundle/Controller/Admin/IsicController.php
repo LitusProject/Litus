@@ -126,11 +126,11 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
 
         if (!$isicCard->hasPaid()) {
             $serviceUrl = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('cudi.isic_service_url');
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.isic_service_url');
             $client = new SoapClient($serviceUrl);
             $config = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config');
+                ->getRepository('CommonBundle\Entity\General\Config');
 
             $arguments = array();
             $arguments['username'] = $config->getConfigValue('cudi.isic_username');
@@ -205,7 +205,7 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
             $item->number = $card->getCardNumber();
             $item->person = $card->getPerson()->getFullName();
             $item->status = $card->getBooking()->getStatus();
-            $item->year = $card->getAcademicYear()->getStartDate()->format('Y') . ' - ' . $card->getAcademicYear()->getEndDate()->format('Y') ;
+            $item->year = $card->getAcademicYear()->getStartDate()->format('Y') . ' - ' . $card->getAcademicYear()->getEndDate()->format('Y');
             $item->isPaid = $card->hasPaid();
             $item->booking = $card->getBooking()->getId();
             $result[] = $item;

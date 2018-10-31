@@ -69,9 +69,11 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         $feedFile = new TmpFile();
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Type' => 'application/rss+xml',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Type' => 'application/rss+xml',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         new FeedGenerator($feedFile, $this->getEntityManager(), $this->getLanguage(), $this->getRequest(), $this->url());

@@ -34,48 +34,54 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
     protected function initBeforeTabs()
     {
-        $this->add(array(
-            'type'     => 'datetime',
-            'name'     => 'start',
-            'label'    => 'Start',
-            'required' => true,
-        ));
+        $this->add(
+            array(
+                'type'     => 'datetime',
+                'name'     => 'start',
+                'label'    => 'Start',
+                'required' => true,
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'datetime',
-            'name'     => 'end',
-            'label'    => 'End',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'validators' => array(
-                        array(
-                            'name'    => 'DateCompare',
-                            'options' => array(
-                                'first_date' => 'start',
-                                'format'     => 'd/m/Y H:i',
+        $this->add(
+            array(
+                'type'     => 'datetime',
+                'name'     => 'end',
+                'label'    => 'End',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name'    => 'DateCompare',
+                                'options' => array(
+                                    'first_date' => 'start',
+                                    'format'     => 'd/m/Y H:i',
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
     }
 
     protected function addTab(FieldsetInterface $container, Language $language, $isDefault)
     {
-        $container->add(array(
-            'type'    => 'text',
-            'name'    => 'comment',
-            'label'   => 'Comment',
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $container->add(
+            array(
+                'type'    => 'text',
+                'name'    => 'comment',
+                'label'   => 'Comment',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
     }
 
     protected function initAfterTabs()

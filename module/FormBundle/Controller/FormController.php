@@ -137,9 +137,11 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
-        $entriesCount = count($this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Entry')
-            ->findAllByForm($formSpecification));
+        $entriesCount = count(
+            $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\Entry')
+                ->findAllByForm($formSpecification)
+        );
 
         if ($formSpecification->getMax() != 0 && $entriesCount >= $formSpecification->getMax()) {
             return new ViewModel(
@@ -176,10 +178,12 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         if ($this->getRequest()->isPost()) {
-            $form->setData(array_merge_recursive(
-                $this->getRequest()->getPost()->toArray(),
-                $this->getRequest()->getFiles()->toArray()
-            ));
+            $form->setData(
+                array_merge_recursive(
+                    $this->getRequest()->getPost()->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
 
             $isDraft = $this->getRequest()->getPost()->get('save_as_draft') !== null;
 
@@ -623,10 +627,12 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         );
 
         if ($this->getRequest()->isPost()) {
-            $form->setData(array_merge_recursive(
-                $this->getRequest()->getPost()->toArray(),
-                $this->getRequest()->getFiles()->toArray()
-            ));
+            $form->setData(
+                array_merge_recursive(
+                    $this->getRequest()->getPost()->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
 
             $isDraft = $this->getRequest()->getPost()->get('save_as_draft') !== null;
 
@@ -715,11 +721,13 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="' . $fieldEntry->getReadableValue() . '"',
-            'Content-Type'        => mime_content_type($filePath),
-            'Content-Length'      => filesize($filePath),
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="' . $fieldEntry->getReadableValue() . '"',
+                'Content-Type'        => mime_content_type($filePath),
+                'Content-Length'      => filesize($filePath),
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         $handle = fopen($filePath, 'r');

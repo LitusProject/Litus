@@ -300,7 +300,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             ) {
                 if ($this->getAuthentication()->isAuthenticated()) {
                     if ($authenticationHandler['controller'] == $this->getParam('controller')
-                            && $authenticationHandler['action'] == $this->getParam('action')
+                        && $authenticationHandler['action'] == $this->getParam('action')
                     ) {
                         return $this->redirectAfterAuthentication();
                     }
@@ -308,7 +308,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             } else {
                 if (!$this->getAuthentication()->isAuthenticated()) {
                     if ($authenticationHandler['controller'] != $this->getParam('controller')
-                            && $authenticationHandler['action'] != $this->getParam('action')
+                        && $authenticationHandler['action'] != $this->getParam('action')
                     ) {
                         return $this->redirect()->toRoute(
                             $authenticationHandler['auth_route']

@@ -57,13 +57,15 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Admin\Form
         } else {
             $defaultLanguage = Locale::getDefault();
 
-            $this->add(array(
-                'type'       => 'tabs',
-                'name'       => $prefix . 'languages',
-                'attributes' => array(
-                    'id' => $prefix . 'languages',
-                ),
-            ));
+            $this->add(
+                array(
+                    'type'       => 'tabs',
+                    'name'       => $prefix . 'languages',
+                    'attributes' => array(
+                        'id' => $prefix . 'languages',
+                    ),
+                )
+            );
 
             $tabs = $this->get($prefix . 'languages');
             $tabContent = $this->createTabContent();
@@ -89,10 +91,12 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Admin\Form
      */
     private function createTabContent()
     {
-        $this->add(array(
-            'type' => 'tabcontent',
-            'name' => $this->getPrefix() . 'tab_content',
-        ));
+        $this->add(
+            array(
+                'type' => 'tabcontent',
+                'name' => $this->getPrefix() . 'tab_content',
+            )
+        );
 
         return $this->get($this->getPrefix() . 'tab_content');
     }
@@ -104,10 +108,12 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Admin\Form
      */
     private function createTabPane(TabContent $tabContent, $name)
     {
-        $tabContent->add(array(
-            'type' => 'tabpane',
-            'name' => $name,
-        ));
+        $tabContent->add(
+            array(
+                'type' => 'tabpane',
+                'name' => $name,
+            )
+        );
 
         return $tabContent->get($name);
     }

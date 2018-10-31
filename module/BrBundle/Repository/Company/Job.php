@@ -183,21 +183,21 @@ class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->andWhere(
                 $query->expr()->eq('v.sector', ':sector')
             )
-            ->setParameter('sector', $sector);
+                ->setParameter('sector', $sector);
         }
 
         if ($location !== null) {
             $query->andWhere(
                 $query->expr()->eq('v.location', ':location')
             )
-            ->setParameter('location', $location);
+                ->setParameter('location', $location);
         }
 
         if ($master !== null) {
             $query->andWhere(
                 $query->expr()->eq('v.master', ':master')
             )
-            ->setParameter('master', $master);
+                ->setParameter('master', $master);
         }
 
         return $query->setParameter('type', $type)
@@ -233,21 +233,21 @@ class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->andWhere(
                 $query->expr()->eq('v.sector', ':sector')
             )
-            ->setParameter('sector', $sector);
+                ->setParameter('sector', $sector);
         }
 
         if ($location !== null) {
             $query->andWhere(
                 $query->expr()->eq('v.location', ':location')
             )
-            ->setParameter('location', $location);
+                ->setParameter('location', $location);
         }
 
         if ($master !== null) {
             $query->andWhere(
                 $query->expr()->eq('v.master', ':master')
             )
-            ->setParameter('master', $master);
+                ->setParameter('master', $master);
         }
 
         return $query->setParameter('type', $type)
@@ -283,21 +283,21 @@ class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->andWhere(
                 $query->expr()->eq('v.sector', ':sector')
             )
-            ->setParameter('sector', $sector);
+                ->setParameter('sector', $sector);
         }
 
         if ($location !== null) {
             $query->andWhere(
                 $query->expr()->eq('v.location', ':location')
             )
-            ->setParameter('location', $location);
+                ->setParameter('location', $location);
         }
 
         if ($master !== null) {
             $query->andWhere(
                 $query->expr()->eq('v.master', ':master')
             )
-            ->setParameter('master', $master);
+                ->setParameter('master', $master);
         }
 
         return $query->setParameter('type', $type)

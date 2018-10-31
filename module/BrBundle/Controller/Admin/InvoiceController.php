@@ -64,8 +64,8 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
         if ($invoiceYear == null) {
             $invoiceYear = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.invoice_year_number');
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.invoice_year_number');
         }
 
         $invoicePrefixes = $this->getEntityManager()
@@ -144,10 +144,12 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
         $document->generateDocument($file);
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="contracts.csv"',
-            'Content-Type'        => 'text/csv',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="contracts.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -160,9 +162,9 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
     public function payedListAction()
     {
         $invoices = $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Invoice')
-                        ->findAllPayedQuery()
-                        ->getResult();
+            ->getRepository('BrBundle\Entity\Invoice')
+            ->findAllPayedQuery()
+            ->getResult();
 
         $invoiceData = array();
         foreach ($invoices as $invoice) {
@@ -304,8 +306,8 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
             if ($form->isValid()) {
                 if (isset($formData['file']) && !($formData['file']['tmp_name'] == '')) {
                     $filePath = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('br.file_path') . '/invoices/'
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('br.file_path') . '/invoices/'
                     . $invoice->getInvoiceNumberPrefix();
 
                     do {
@@ -371,10 +373,12 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
         $companyName = $invoice->getCompany()->getName();
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="' . $invoiceNb . ' ' . $companyName . '.pdf"',
-            'Content-Type'        => 'application/pdf',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="' . $invoiceNb . ' ' . $companyName . '.pdf"',
+                'Content-Type'        => 'application/pdf',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(

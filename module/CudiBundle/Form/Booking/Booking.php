@@ -44,34 +44,36 @@ class Booking extends \CommonBundle\Component\Form\Bootstrap\Form
         foreach ($this->articles as $article) {
             $saleArticle = $article['article'];
 
-            $this->add(array(
-                'type'       => 'hidden',
-                'name'       => 'article-' . $saleArticle->getId(),
-                'attributes' => array(
-                    'class'       => 'input-very-mini',
-                    'id'          => 'article-' . $saleArticle->getId(),
-                    'placeholder' => '0',
-                ),
-                'options' => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'Digits',
+            $this->add(
+                array(
+                    'type'       => 'hidden',
+                    'name'       => 'article-' . $saleArticle->getId(),
+                    'attributes' => array(
+                        'class'       => 'input-very-mini',
+                        'id'          => 'article-' . $saleArticle->getId(),
+                        'placeholder' => '0',
+                    ),
+                    'options' => array(
+                        'input' => array(
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
                             ),
-                            array(
-                                'name'    => 'Between',
-                                'options' => array(
-                                    'min' => 0,
-                                    'max' => self::MAX_BOOKING_NUMBER,
+                            'validators' => array(
+                                array(
+                                    'name' => 'Digits',
+                                ),
+                                array(
+                                    'name'    => 'Between',
+                                    'options' => array(
+                                        'min' => 0,
+                                        'max' => self::MAX_BOOKING_NUMBER,
+                                    ),
                                 ),
                             ),
                         ),
                     ),
-                ),
-            ));
+                )
+            );
         }
 
         $this->addSubmit('Book', 'btn btn-primary pull-right');

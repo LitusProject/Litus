@@ -92,14 +92,16 @@ class Academic extends \CommonBundle\Hydrator\User\Person
                 $object->setUsername($data['university']['identification']);
             }
 
-            $object->setRoles(array(
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Acl\Role')
-                    ->findOneByName('guest'),
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Acl\Role')
-                    ->findOneByName('student'),
-            ));
+            $object->setRoles(
+                array(
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\Acl\Role')
+                        ->findOneByName('guest'),
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\Acl\Role')
+                        ->findOneByName('student'),
+                )
+            );
         }
 
         if (count($data['university']['status']) > 0) {

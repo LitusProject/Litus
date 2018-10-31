@@ -291,9 +291,12 @@ abstract class Person implements RoleAware
 
     public function getSystemRoles()
     {
-        return array_filter($this->getFlattenedRoles(), function (Role $role) {
-            return $role->getSystem();
-        });
+        return array_filter(
+            $this->getFlattenedRoles(),
+            function (Role $role) {
+                return $role->getSystem();
+            }
+        );
     }
 
     /**
@@ -598,7 +601,8 @@ abstract class Person implements RoleAware
                         return true;
                     }
                 }
-            )) {
+            )
+            ) {
                 return false;
             }
         }

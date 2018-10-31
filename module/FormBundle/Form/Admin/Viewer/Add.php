@@ -34,31 +34,37 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'typeahead',
-            'name'     => 'person',
-            'label'    => 'Person',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'validators' => array(
-                        array('name' => 'TypeaheadPerson'),
+        $this->add(
+            array(
+                'type'     => 'typeahead',
+                'name'     => 'person',
+                'label'    => 'Person',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'validators' => array(
+                            array('name' => 'TypeaheadPerson'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'edit',
-            'label' => 'Can Edit/Delete entries',
-        ));
+        $this->add(
+            array(
+                'type'  => 'checkbox',
+                'name'  => 'edit',
+                'label' => 'Can Edit/Delete entries',
+            )
+        );
 
-        $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'mail',
-            'label' => 'Can Mail Participants',
-        ));
+        $this->add(
+            array(
+                'type'  => 'checkbox',
+                'name'  => 'mail',
+                'label' => 'Can Mail Participants',
+            )
+        );
 
         $this->addSubmit('Add', 'add');
     }

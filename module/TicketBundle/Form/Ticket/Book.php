@@ -56,83 +56,37 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->setAttribute('id', 'ticket_sale_form');
 
         if ($this->event->getOptions()->isEmpty()) {
-            $this->add(array(
-                'type'       => 'select',
-                'name'       => 'number_member',
-                'label'      => 'Number Member',
-                'attributes' => array(
-                    'options' => $this->getNumberOptions(),
-                ),
-                'options' => array(
-                    'input' => array(
-                        'required'   => true,
-                        'validators' => array(
-                            array(
-                                'name'    => 'NumberTickets',
-                                'options' => array(
-                                    'event'  => $this->event,
-                                    'person' => $this->person,
+            $this->add(
+                array(
+                    'type'       => 'select',
+                    'name'       => 'number_member',
+                    'label'      => 'Number Member',
+                    'attributes' => array(
+                        'options' => $this->getNumberOptions(),
+                    ),
+                    'options' => array(
+                        'input' => array(
+                            'required'   => true,
+                            'validators' => array(
+                                array(
+                                    'name'    => 'NumberTickets',
+                                    'options' => array(
+                                        'event'  => $this->event,
+                                        'person' => $this->person,
+                                    ),
                                 ),
                             ),
                         ),
                     ),
-                ),
-            ));
+                )
+            );
 
             if (!$this->event->isOnlyMembers()) {
-                $this->add(array(
-                    'type'       => 'select',
-                    'name'       => 'number_non_member',
-                    'label'      => 'Number Non Member',
-                    'attributes' => array(
-                        'options' => $this->getNumberOptions(),
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'required'   => true,
-                            'validators' => array(
-                                array(
-                                    'name'    => 'NumberTickets',
-                                    'options' => array(
-                                        'event'  => $this->event,
-                                        'person' => $this->person,
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                ));
-            }
-        } else {
-            foreach ($this->event->getOptions() as $option) {
-                $this->add(array(
-                    'type'       => 'select',
-                    'name'       => 'option_' . $option->getId() . '_number_member',
-                    'label'      => ucfirst($option->getName()) . ' (Member)',
-                    'attributes' => array(
-                        'options' => $this->getNumberOptions(),
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'required'   => true,
-                            'validators' => array(
-                                array(
-                                    'name'    => 'NumberTickets',
-                                    'options' => array(
-                                        'event'  => $this->event,
-                                        'person' => $this->person,
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                ));
-
-                if (!$this->event->isOnlyMembers()) {
-                    $this->add(array(
+                $this->add(
+                    array(
                         'type'       => 'select',
-                        'name'       => 'option_' . $option->getId() . '_number_non_member',
-                        'label'      => ucfirst($option->getName()) . ' (Non Member)',
+                        'name'       => 'number_non_member',
+                        'label'      => 'Number Non Member',
                         'attributes' => array(
                             'options' => $this->getNumberOptions(),
                         ),
@@ -150,7 +104,61 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                                 ),
                             ),
                         ),
-                    ));
+                    )
+                );
+            }
+        } else {
+            foreach ($this->event->getOptions() as $option) {
+                $this->add(
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'option_' . $option->getId() . '_number_member',
+                        'label'      => ucfirst($option->getName()) . ' (Member)',
+                        'attributes' => array(
+                            'options' => $this->getNumberOptions(),
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'required'   => true,
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'NumberTickets',
+                                        'options' => array(
+                                            'event'  => $this->event,
+                                            'person' => $this->person,
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    )
+                );
+
+                if (!$this->event->isOnlyMembers()) {
+                    $this->add(
+                        array(
+                            'type'       => 'select',
+                            'name'       => 'option_' . $option->getId() . '_number_non_member',
+                            'label'      => ucfirst($option->getName()) . ' (Non Member)',
+                            'attributes' => array(
+                                'options' => $this->getNumberOptions(),
+                            ),
+                            'options' => array(
+                                'input' => array(
+                                    'required'   => true,
+                                    'validators' => array(
+                                        array(
+                                            'name'    => 'NumberTickets',
+                                            'options' => array(
+                                                'event'  => $this->event,
+                                                'person' => $this->person,
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        )
+                    );
                 }
             }
         }

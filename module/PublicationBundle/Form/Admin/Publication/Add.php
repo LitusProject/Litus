@@ -40,27 +40,29 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'title',
-            'label'    => 'Title',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name'    => 'PublicationTitle',
-                            'options' => array(
-                                'exclude' => $this->publication !== null ? $this->publication->getId() : null,
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'title',
+                'label'    => 'Title',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name'    => 'PublicationTitle',
+                                'options' => array(
+                                    'exclude' => $this->publication !== null ? $this->publication->getId() : null,
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Add', 'publication_add');
     }

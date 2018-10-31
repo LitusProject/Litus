@@ -251,11 +251,11 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                         }
 
                         $enableAssignment = $this->getEntityManager()
-                                ->getRepository('CommonBundle\Entity\General\Config')
-                                ->getConfigValue('cudi.enable_automatic_assignment') &&
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('cudi.enable_automatic_assignment') &&
                             $this->getEntityManager()
-                                ->getRepository('CommonBundle\Entity\General\Config')
-                                ->getConfigValue('cudi.enable_assign_after_stock_update');
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('cudi.enable_assign_after_stock_update');
 
                         if ($enableAssignment) {
                             $this->getEntityManager()
@@ -325,11 +325,11 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                     $this->getEntityManager()->flush();
 
                     $enableAssignment = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('cudi.enable_automatic_assignment') &&
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('cudi.enable_automatic_assignment') &&
                         $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('cudi.enable_assign_after_stock_update');
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('cudi.enable_assign_after_stock_update');
 
                     if ($enableAssignment) {
                         $this->getEntityManager()
@@ -458,10 +458,12 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                 $document->generate();
 
                 $headers = new Headers();
-                $headers->addHeaders(array(
-                    'Content-Disposition' => 'attachment; filename="stock.pdf"',
-                    'Content-Type'        => 'application/pdf',
-                ));
+                $headers->addHeaders(
+                    array(
+                        'Content-Disposition' => 'attachment; filename="stock.pdf"',
+                        'Content-Type'        => 'application/pdf',
+                    )
+                );
                 $this->getResponse()->setHeaders($headers);
 
                 return new ViewModel(
@@ -517,9 +519,12 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                 $articles[] = $item;
             }
 
-            $form = $this->getForm('cudi_stock_bulk-update', array(
-                'articles' => $articles,
-            ));
+            $form = $this->getForm(
+                'cudi_stock_bulk-update',
+                array(
+                    'articles' => $articles,
+                )
+            );
 
             if ($this->getRequest()->isPost()) {
                 $form->setData($this->getRequest()->getPost());
@@ -554,11 +559,11 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                             }
 
                             $enableAssignment = $this->getEntityManager()
-                                    ->getRepository('CommonBundle\Entity\General\Config')
-                                    ->getConfigValue('cudi.enable_automatic_assignment') &&
+                                ->getRepository('CommonBundle\Entity\General\Config')
+                                ->getConfigValue('cudi.enable_automatic_assignment') &&
                                 $this->getEntityManager()
-                                    ->getRepository('CommonBundle\Entity\General\Config')
-                                    ->getConfigValue('cudi.enable_assign_after_stock_update');
+                                ->getRepository('CommonBundle\Entity\General\Config')
+                                ->getConfigValue('cudi.enable_assign_after_stock_update');
 
                             if ($enableAssignment) {
                                 $this->getEntityManager()

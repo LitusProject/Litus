@@ -40,104 +40,120 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'datetime',
-            'name'     => 'start_date',
-            'label'    => 'Start Date',
-            'required' => true,
-        ));
+        $this->add(
+            array(
+                'type'     => 'datetime',
+                'name'     => 'start_date',
+                'label'    => 'Start Date',
+                'required' => true,
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'datetime',
-            'name'     => 'end_date',
-            'label'    => 'End Date',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'validators' => array(
-                        array(
-                            'name'    => 'DateCompare',
-                            'options' => array(
-                                'first_date' => 'start_date',
-                                'format'     => 'd/m/Y H:i',
+        $this->add(
+            array(
+                'type'     => 'datetime',
+                'name'     => 'end_date',
+                'label'    => 'End Date',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name'    => 'DateCompare',
+                                'options' => array(
+                                    'first_date' => 'start_date',
+                                    'format'     => 'd/m/Y H:i',
+                                ),
                             ),
+
                         ),
-
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'reason',
-            'label'    => 'Reason',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'reason',
+                'label'    => 'Reason',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'    => 'text',
-            'name'    => 'load',
-            'label'   => 'Load',
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'    => 'text',
+                'name'    => 'load',
+                'label'   => 'Load',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'    => 'textarea',
-            'name'    => 'additional_info',
-            'label'   => 'Additional Info',
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'    => 'textarea',
+                'name'    => 'additional_info',
+                'label'   => 'Additional Info',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'driver',
-            'label'      => 'Driver',
-            'attributes' => array(
-                'options' => $this->getDriversArray(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'driver',
+                'label'      => 'Driver',
+                'attributes' => array(
+                    'options' => $this->getDriversArray(),
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'typeahead',
-            'name'     => 'passenger',
-            'label'    => 'Passenger',
-            'required' => false,
-            'options'  => array(
-                'input' => array(
-                    'validators' => array(
-                        array('name' => 'TypeaheadPerson'),
+        $this->add(
+            array(
+                'type'     => 'typeahead',
+                'name'     => 'passenger',
+                'label'    => 'Passenger',
+                'required' => false,
+                'options'  => array(
+                    'input' => array(
+                        'validators' => array(
+                            array('name' => 'TypeaheadPerson'),
+                        ),
                     ),
                 ),
-            ),
-        ));
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'car',
-            'label'      => 'Car',
-            'attributes' => array(
-                'options' => $this->returnYesNoArray(),
-            ),
-        ));
+            )
+        );
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'car',
+                'label'      => 'Car',
+                'attributes' => array(
+                    'options' => $this->returnYesNoArray(),
+                ),
+            )
+        );
 
         $this->addSubmit('Add', 'reservation_add');
 

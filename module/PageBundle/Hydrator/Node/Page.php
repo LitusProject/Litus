@@ -52,16 +52,16 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
             }
 
             $orphanedCategories = $this->getEntityManager()
-                    ->getRepository('PageBundle\Entity\Category')
-                    ->findByParent($object->getId());
+                ->getRepository('PageBundle\Entity\Category')
+                ->findByParent($object->getId());
 
             foreach ($orphanedCategories as $orphanedCategory) {
                 $orphanedCategory->setParent($newPage);
             }
 
             $orphanedLinks = $this->getEntityManager()
-                    ->getRepository('PageBundle\Entity\Link')
-                    ->findByParent($object->getId());
+                ->getRepository('PageBundle\Entity\Link')
+                ->findByParent($object->getId());
 
             foreach ($orphanedLinks as $orphanedLink) {
                 $orphanedLink->setParent($newPage);

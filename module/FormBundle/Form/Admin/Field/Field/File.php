@@ -31,22 +31,24 @@ class File extends \CommonBundle\Component\Form\Fieldset
     {
         parent::init();
 
-        $this->add(array(
-            'type'    => 'text',
-            'name'    => 'max_size',
-            'label'   => 'Maximum Size (in MB)',
-            'value'   => 5,
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'Int'),
+        $this->add(
+            array(
+                'type'    => 'text',
+                'name'    => 'max_size',
+                'label'   => 'Maximum Size (in MB)',
+                'value'   => 5,
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
     }
 
     public function setRequired($required = true)

@@ -337,10 +337,12 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         $csvGenerator->generateDocument($exportFile);
 
         $this->getResponse()->getHeaders()
-            ->addHeaders(array(
-                'Content-Disposition' => 'attachment; filename="' . $group->getName() . '_' . $academicYear->getCode() . '.csv"',
-                'Content-Type'        => 'text/csv',
-            ));
+            ->addHeaders(
+                array(
+                    'Content-Disposition' => 'attachment; filename="' . $group->getName() . '_' . $academicYear->getCode() . '.csv"',
+                    'Content-Type'        => 'text/csv',
+                )
+            );
 
         return new ViewModel(
             array(

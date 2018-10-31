@@ -96,10 +96,12 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
         $form = $this->getForm('cudi_isic_order', $academic);
 
         if ($this->getRequest()->isPost()) {
-            $form->setData(array_merge_recursive(
-                $this->getRequest()->getPost()->toArray(),
-                $this->getRequest()->getFiles()->toArray()
-            ));
+            $form->setData(
+                array_merge_recursive(
+                    $this->getRequest()->getPost()->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
 
             if ($form->isValid()) {
                 $arguments = $form->hydrateObject();
@@ -150,8 +152,8 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
                 $capture = array();
                 if (preg_match($regex, $result, $capture)) {
                     $article = $this->getEntityManager()
-                            ->getRepository('CudiBundle\Entity\Sale\Article')
-                            ->findOneById($articleID);
+                        ->getRepository('CudiBundle\Entity\Sale\Article')
+                        ->findOneById($articleID);
 
                     $booking = new Booking(
                         $this->getEntityManager(),
@@ -219,13 +221,13 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $article = $this->getEntityManager()
-                            ->getRepository('CudiBundle\Entity\Sale\Article')
-                            ->findOneById($articleID);
+            ->getRepository('CudiBundle\Entity\Sale\Article')
+            ->findOneById($articleID);
 
         $additionalConditions = unserialize(
             $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('cudi.isic_Guido_conditions')
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.isic_Guido_conditions')
         );
 
         return new ViewModel(
@@ -263,10 +265,8 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
 
     private function hasPersonOrderedAlready($person)
     {
-        if ($this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\IsicCard')
-                        ->findByPersonAndYearQuery($person, $this->getCurrentAcademicYear())
-                        ->getResult()) {
+        if ($this->getEntityManager()            ->getRepository('CudiBundle\Entity\IsicCard')            ->findByPersonAndYearQuery($person, $this->getCurrentAcademicYear())            ->getResult()
+        ) {
             return new ViewModel(
                 array(
                     'status' => 'doubleorder',
@@ -278,8 +278,8 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
     private function isEnabled()
     {
         $bookingsEnabled = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('cudi.enable_bookings');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.enable_bookings');
 
         if ($bookingsEnabled == 0) {
             return new ViewModel(
@@ -290,8 +290,8 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $articleID = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('cudi.isic_sale_article');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.isic_sale_article');
         if ($articleID === '0') {
             return new ViewModel(
                 array(

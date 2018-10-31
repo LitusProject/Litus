@@ -94,10 +94,12 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
         $form = $this->getForm('publication_edition_html_add', array('publication' => $publication));
         $formData = $this->getRequest()->getPost();
 
-        $form->setData(array_merge_recursive(
-            $formData->toArray(),
-            $this->getRequest()->getFiles()->toArray()
-        ));
+        $form->setData(
+            array_merge_recursive(
+                $formData->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            )
+        );
 
         $date = self::loadDate($formData['date']);
 

@@ -33,23 +33,25 @@ class ModuleGroup extends \CommonBundle\Component\Form\Fieldset
 
         $this->setLabel('Module Group');
 
-        $this->add(array(
-            'type'       => 'typeahead',
-            'name'       => 'module_group',
-            'required'   => false,
-            'attributes' => array(
-                'style' => 'width: 400px;',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'TypeaheadStudyModuleGroup'),
+        $this->add(
+            array(
+                'type'       => 'typeahead',
+                'name'       => 'module_group',
+                'required'   => false,
+                'attributes' => array(
+                    'style' => 'width: 400px;',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'TypeaheadStudyModuleGroup'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
     }
 }

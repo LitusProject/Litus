@@ -45,18 +45,20 @@ class Edit extends \ShopBundle\Form\Admin\SalesSession\Add
                 ->getRepository('ShopBundle\Entity\Product\SessionStockEntry')
                 ->getProductAvailability($product, $this->salesSession);
 
-            $this->add(array(
-                'type'    => 'number',
-                'name'    => $product->getId() . '-quantity',
-                'options' => array(
-                    'label' => $product->getName(),
-                ),
-                'attributes' => array(
-                    'min'   => '0',
-                    'max'   => '100',
-                    'value' => $currentAvailability,
-                ),
-            ));
+            $this->add(
+                array(
+                    'type'    => 'number',
+                    'name'    => $product->getId() . '-quantity',
+                    'options' => array(
+                        'label' => $product->getName(),
+                    ),
+                    'attributes' => array(
+                        'min'   => '0',
+                        'max'   => '100',
+                        'value' => $currentAvailability,
+                    ),
+                )
+            );
         }
         $this->remove('session_add')
             ->addSubmit('Save', 'edit');

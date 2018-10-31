@@ -33,18 +33,20 @@ class Retour extends \CudiBundle\Form\Admin\Stock\Delivery\Add
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'textarea',
-            'name'     => 'comment',
-            'label'    => 'Comment',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'     => 'textarea',
+                'name'     => 'comment',
+                'label'    => 'Comment',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
     }
 }

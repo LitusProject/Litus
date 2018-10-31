@@ -222,11 +222,13 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
         $file = $mapping->getFile();
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="' . $file->getName() . '"',
-            'Content-Type'        => 'application/octet-stream',
-            'Content-Length'      => filesize($filePath . $file->getPath()),
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="' . $file->getName() . '"',
+                'Content-Type'        => 'application/octet-stream',
+                'Content-Length'      => filesize($filePath . $file->getPath()),
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         $handle = fopen($filePath . $file->getPath(), 'r');
@@ -252,10 +254,12 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
         $document->generate();
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="front.pdf"',
-            'Content-Type'        => 'application/pdf',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="front.pdf"',
+                'Content-Type'        => 'application/pdf',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(

@@ -46,32 +46,36 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
 
         parent::init();
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'key',
-            'label'      => 'Key',
-            'attributes' => array(
-                'disabled' => true,
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'key',
+                'label'      => 'Key',
+                'attributes' => array(
+                    'disabled' => true,
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => strlen($this->config->getValue()) > 40 ? 'textarea' : 'text',
-            'name'       => 'value',
-            'label'      => 'Value',
-            'required'   => true,
-            'attributes' => array(
-                'id' => 'config_value',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                        array('name' => 'StripCarriageReturn'),
+        $this->add(
+            array(
+                'type'       => strlen($this->config->getValue()) > 40 ? 'textarea' : 'text',
+                'name'       => 'value',
+                'label'      => 'Value',
+                'required'   => true,
+                'attributes' => array(
+                    'id' => 'config_value',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                            array('name' => 'StripCarriageReturn'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Save', 'config_edit');
 

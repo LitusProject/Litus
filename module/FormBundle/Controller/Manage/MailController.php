@@ -60,9 +60,12 @@ class MailController extends \FormBundle\Component\Controller\FormController
             $defaultFromAddress = $formSpecification->getMail()->getFrom();
         }
 
-        $form = $this->getForm('form_manage_mail_send', array(
-            'defaultFromAddress' => $defaultFromAddress,
-        ));
+        $form = $this->getForm(
+            'form_manage_mail_send',
+            array(
+                'defaultFromAddress' => $defaultFromAddress,
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();

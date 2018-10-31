@@ -98,8 +98,8 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $next_round_number = $this->getEntityManager()
-                ->getRepository('QuizBundle\Entity\Round')
-                ->getNextRoundOrderForQuiz($quiz);
+            ->getRepository('QuizBundle\Entity\Round')
+            ->getNextRoundOrderForQuiz($quiz);
 
         $form->get('order')
             ->setValue($next_round_number);
@@ -197,11 +197,13 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
 
         $this->getEntityManager()->flush();
 
-        return new ViewModel(array(
-            'result' => array(
-                'status' => 'success',
-            ),
-        ));
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success',
+                ),
+            )
+        );
     }
 
     /**

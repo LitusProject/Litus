@@ -27,7 +27,7 @@ $entityManager = $app->getServiceManager()->get('doctrineormentitymanager');
 $year = $entityManager->getRepository('CommonBundle\Entity\General\AcademicYear')->findOneByDate(new DateTime());
 
 $registrations = $entityManager->getRepository('SecretaryBundle\Entity\Registration')
-                    ->findByAcademicYear($year);
+    ->findByAcademicYear($year);
 
 foreach ($registrations as $registration) {
     if ($registration->hasPayed() && !$registration->isCancelled()) {

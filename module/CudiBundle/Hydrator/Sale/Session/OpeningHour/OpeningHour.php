@@ -58,8 +58,9 @@ class OpeningHour extends \CommonBundle\Component\Hydrator\Hydrator
             $abbrev = $language->getAbbrev();
 
             if (isset($data['tab_content'])
-                    && isset($data['tab_content']['tab_' . $abbrev])
-                    && isset($data['tab_content']['tab_' . $abbrev]['comment'])) {
+                && isset($data['tab_content']['tab_' . $abbrev])
+                && isset($data['tab_content']['tab_' . $abbrev]['comment'])
+            ) {
                 $object->setComment($language, $data['tab_content']['tab_' . $abbrev]['comment']);
             } else {
                 $object->setComment($language, null);

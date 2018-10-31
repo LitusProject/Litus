@@ -197,7 +197,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
         $this->getEntityManager()
-             ->remove($user);
+            ->remove($user);
         $this->getEntityManager()->flush();
 
         return new ViewModel(

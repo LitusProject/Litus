@@ -40,13 +40,14 @@ class Mail extends \CommonBundle\Component\Console\Command
             ->setName('form:mail')
             ->setDescription('renders (and sends) reminder mails for forms')
             ->addOption('mail', 'm', null, 'send the reminder mails')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The %command.name% command generates reminder mails for forms and sends them
 if the <fg=blue>--mail</fg=blue> flag is given.
 
 The <fg=blue>--mail</fg=blue> flag is ignored if APPLICATON_ENV is "<comment>development</comment>"
 EOT
-        );
+            );
     }
 
     protected function executeCommand()
@@ -88,8 +89,10 @@ EOT
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findOneByAbbrev('en');
 
-        $this->writeln('Form <comment>' . $form->getTitle($english)
-            . '</comment>: TimeSlot <comment>' . $timeSlot->getLabel($english) . '</comment>');
+        $this->writeln(
+            'Form <comment>' . $form->getTitle($english)
+            . '</comment>: TimeSlot <comment>' . $timeSlot->getLabel($english) . '</comment>'
+        );
 
         $entries = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Entry')

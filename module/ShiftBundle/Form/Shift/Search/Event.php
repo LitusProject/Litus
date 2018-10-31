@@ -48,18 +48,20 @@ class Event extends \CommonBundle\Component\Form\Bootstrap\Form
 
         parent::init();
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'event',
-            'attributes' => array(
-                'options' => $this->createEventsArray(),
-            ),
-            'options' => array(
-                'input' => array(
-                    'required' => true,
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'event',
+                'attributes' => array(
+                    'options' => $this->createEventsArray(),
                 ),
-            ),
-        ));
+                'options' => array(
+                    'input' => array(
+                        'required' => true,
+                    ),
+                ),
+            )
+        );
 
         $this->remove('csrf');
     }

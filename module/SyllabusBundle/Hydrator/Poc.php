@@ -30,9 +30,11 @@ class Poc extends \CommonBundle\Component\Hydrator\Hydrator
             $object = new PocEntity();
         }
 
-        $object->setAcademic($this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\User\Person\Academic')
-            ->findOneById($data['person']['id']));
+        $object->setAcademic(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                ->findOneById($data['person']['id'])
+        );
 
         return $object;
     }

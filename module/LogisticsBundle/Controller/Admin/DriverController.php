@@ -34,8 +34,8 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
     {
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Driver')
-            ->findAllQuery(),
+                ->getRepository('LogisticsBundle\Entity\Driver')
+                ->findAllQuery(),
             $this->getParam('page')
         );
 

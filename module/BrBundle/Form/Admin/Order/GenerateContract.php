@@ -41,78 +41,88 @@ class GenerateContract extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'title',
-            'label'    => 'Contract Title',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'title',
+                'label'    => 'Contract Title',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'payment_days',
-            'label'    => 'Payment Days',
-            'required' => true,
-            'value'    => 30,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'Int'),
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'payment_days',
+                'label'    => 'Payment Days',
+                'required' => true,
+                'value'    => 30,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'    => 'textarea',
-            'name'    => 'payment_details',
-            'label'   => 'Payment Details',
-            'value'   => $this->getPaymentDetailsText(),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'    => 'textarea',
+                'name'    => 'payment_details',
+                'label'   => 'Payment Details',
+                'value'   => $this->getPaymentDetailsText(),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'    => 'textarea',
-            'name'    => 'auto_discount_text',
-            'label'   => 'Auto Discount Text',
-            'value'   => $this->getAutoDiscountText(),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'    => 'textarea',
+                'name'    => 'auto_discount_text',
+                'label'   => 'Auto Discount Text',
+                'value'   => $this->getAutoDiscountText(),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'    => 'textarea',
-            'name'    => 'discount_text',
-            'label'   => 'Discount Text',
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'    => 'textarea',
+                'name'    => 'discount_text',
+                'label'   => 'Discount Text',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Generate Contract', 'contract_edit');
     }
@@ -134,8 +144,8 @@ class GenerateContract extends \CommonBundle\Component\Form\Admin\Form
     {
         if (isset($this->order) && $this->order->getAutoDiscountPercentage() > 0) {
             return $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.contract_auto_discount_text');
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.contract_auto_discount_text');
         }
 
         return '';

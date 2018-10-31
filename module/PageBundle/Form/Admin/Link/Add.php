@@ -39,36 +39,40 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'category',
-            'label'      => 'Category',
-            'required'   => true,
-            'attributes' => array(
-                'id' => 'category',
-            ),
-            'options' => array(
-                'options' => $this->createCategoriesArray(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'category',
+                'label'      => 'Category',
+                'required'   => true,
+                'attributes' => array(
+                    'id' => 'category',
+                ),
+                'options' => array(
+                    'options' => $this->createCategoriesArray(),
+                ),
+            )
+        );
 
         $categories = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Category')
             ->findAll();
 
         foreach ($categories as $category) {
-            $this->add(array(
-                'type'       => 'select',
-                'name'       => 'parent_' . $category->getId(),
-                'label'      => 'Parent',
-                'attributes' => array(
-                    'id'    => 'parent_' . $category->getId(),
-                    'class' => 'parent',
-                ),
-                'options' => array(
-                    'options' => $this->createPagesArray($category),
-                ),
-            ));
+            $this->add(
+                array(
+                    'type'       => 'select',
+                    'name'       => 'parent_' . $category->getId(),
+                    'label'      => 'Parent',
+                    'attributes' => array(
+                        'id'    => 'parent_' . $category->getId(),
+                        'class' => 'parent',
+                    ),
+                    'options' => array(
+                        'options' => $this->createPagesArray($category),
+                    ),
+                )
+            );
         }
 
         $this->addSubmit('Add', 'link_add');
@@ -76,36 +80,40 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
     protected function addTab(FieldsetInterface $container, Language $language, $isDefault)
     {
-        $container->add(array(
-            'type'     => 'text',
-            'name'     => 'name',
-            'label'    => 'Name',
-            'required' => $isDefault,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $container->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'name',
+                'label'    => 'Name',
+                'required' => $isDefault,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $container->add(array(
-            'type'     => 'text',
-            'name'     => 'url',
-            'label'    => 'URL',
-            'required' => $isDefault,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'Uri'),
+        $container->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'url',
+                'label'    => 'URL',
+                'required' => $isDefault,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Uri'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
     }
 
     private function createCategoriesArray()

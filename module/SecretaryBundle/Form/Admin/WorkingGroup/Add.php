@@ -28,19 +28,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'typeahead',
-            'name'     => 'person',
-            'label'    => 'Account',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'validators' => array(
-                        array('name' => 'TypeaheadPerson'),
+        $this->add(
+            array(
+                'type'     => 'typeahead',
+                'name'     => 'person',
+                'label'    => 'Account',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'validators' => array(
+                            array('name' => 'TypeaheadPerson'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Add', 'user_add');
     }

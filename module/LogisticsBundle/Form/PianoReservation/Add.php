@@ -44,87 +44,89 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->weeks = $this->getTimeSlots();
 
         foreach ($this->weeks as $key => $week) {
-            $this->add(array(
-                'type'     => 'fieldset',
-                'name'     => 'week_' . $key,
-                'elements' => array(
-                    array(
-                        'type'       => 'select',
-                        'name'       => 'start_date',
-                        'label'      => 'Start Date',
-                        'attributes' => array(
-                            'options' => $week['slotsStart'],
-                        ),
-                        'options' => array(
-                            'input' => array(
-                                'required' => true,
-                                'filters'  => array(
-                                    array('name' => 'StringTrim'),
-                                ),
-                                'validators' => array(
-                                    array(
-                                        'name'    => 'Date',
-                                        'options' => array(
-                                            'format' => 'd/m/Y H:i',
+            $this->add(
+                array(
+                    'type'     => 'fieldset',
+                    'name'     => 'week_' . $key,
+                    'elements' => array(
+                        array(
+                            'type'       => 'select',
+                            'name'       => 'start_date',
+                            'label'      => 'Start Date',
+                            'attributes' => array(
+                                'options' => $week['slotsStart'],
+                            ),
+                            'options' => array(
+                                'input' => array(
+                                    'required' => true,
+                                    'filters'  => array(
+                                        array('name' => 'StringTrim'),
+                                    ),
+                                    'validators' => array(
+                                        array(
+                                            'name'    => 'Date',
+                                            'options' => array(
+                                                'format' => 'd/m/Y H:i',
+                                            ),
                                         ),
                                     ),
                                 ),
                             ),
                         ),
-                    ),
-                    array(
-                        'type'       => 'select',
-                        'name'       => 'end_date',
-                        'label'      => 'End Date',
-                        'attributes' => array(
-                            'options' => $week['slotsEnd'],
-                        ),
-                        'options' => array(
-                            'input' => array(
-                                'required' => true,
-                                'filters'  => array(
-                                    array('name' => 'StringTrim'),
-                                ),
-                                'validators' => array(
-                                    array(
-                                        'name'    => 'Date',
-                                        'options' => array(
-                                            'format' => 'd/m/Y H:i',
-                                        ),
+                        array(
+                            'type'       => 'select',
+                            'name'       => 'end_date',
+                            'label'      => 'End Date',
+                            'attributes' => array(
+                                'options' => $week['slotsEnd'],
+                            ),
+                            'options' => array(
+                                'input' => array(
+                                    'required' => true,
+                                    'filters'  => array(
+                                        array('name' => 'StringTrim'),
                                     ),
-                                    array(
-                                        'name'    => 'DateCompare',
-                                        'options' => array(
-                                            'first_date' => 'start_date',
-                                            'format'     => 'd/m/Y H:i',
+                                    'validators' => array(
+                                        array(
+                                            'name'    => 'Date',
+                                            'options' => array(
+                                                'format' => 'd/m/Y H:i',
+                                            ),
                                         ),
-                                    ),
-                                    array(
-                                        'name'    => 'PianoReservationConflict',
-                                        'options' => array(
-                                            'start_date' => 'start_date',
-                                            'format'     => 'd/m/Y H:i',
-                                            'resource'   => PianoReservation::PIANO_RESOURCE_NAME,
+                                        array(
+                                            'name'    => 'DateCompare',
+                                            'options' => array(
+                                                'first_date' => 'start_date',
+                                                'format'     => 'd/m/Y H:i',
+                                            ),
                                         ),
-                                    ),
-                                    array(
-                                        'name'    => 'PianoDuration',
-                                        'options' => array(
-                                            'start_date' => 'start_date',
-                                            'format'     => 'd/m/Y H:i',
+                                        array(
+                                            'name'    => 'PianoReservationConflict',
+                                            'options' => array(
+                                                'start_date' => 'start_date',
+                                                'format'     => 'd/m/Y H:i',
+                                                'resource'   => PianoReservation::PIANO_RESOURCE_NAME,
+                                            ),
+                                        ),
+                                        array(
+                                            'name'    => 'PianoDuration',
+                                            'options' => array(
+                                                'start_date' => 'start_date',
+                                                'format'     => 'd/m/Y H:i',
+                                            ),
                                         ),
                                     ),
                                 ),
                             ),
                         ),
+                        array(
+                            'type'  => 'submit',
+                            'name'  => 'submit',
+                            'value' => 'Book',
+                        ),
                     ),
-                    array(
-                        'type'  => 'submit',
-                        'name'  => 'submit',
-                        'value' => 'Book',
-                    ),
-                ),
-            ));
+                )
+            );
         }
     }
 

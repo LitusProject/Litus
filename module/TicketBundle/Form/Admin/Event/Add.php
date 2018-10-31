@@ -35,220 +35,248 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->setAttribute('class', $this->getAttribute('class') . ' half_width');
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'event',
-            'label'      => 'Event',
-            'required'   => true,
-            'attributes' => array(
-                'options' => $this->createEventsArray(),
-            ),
-            'options' => array(
-                'input' => array(
-                    'filter' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'Activity'),
-                    ),
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'event',
+                'label'      => 'Event',
+                'required'   => true,
+                'attributes' => array(
+                    'options' => $this->createEventsArray(),
                 ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'     => 'checkbox',
-            'name'     => 'active',
-            'label'    => 'Active',
-            'required' => false,
-        ));
-
-        $this->add(array(
-            'type'     => 'checkbox',
-            'name'     => 'bookable',
-            'label'    => 'Bookable',
-            'required' => false,
-        ));
-
-        $this->add(array(
-            'type'     => 'checkbox',
-            'name'     => 'bookable_praesidium',
-            'label'    => 'Bookable For Praesidium',
-            'required' => false,
-        ));
-
-        $this->add(array(
-            'type'     => 'datetime',
-            'name'     => 'bookings_close_date',
-            'label'    => 'Bookings Close Date',
-            'required' => false,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name'    => 'Date',
-                            'options' => array(
-                                'format' => 'd/m/Y H:i',
-                            ),
+                'options' => array(
+                    'input' => array(
+                        'filter' => array(
+                            array('name' => 'StringTrim'),
                         ),
-                        array(
-                            'name'    => 'DateCompare',
-                            'options' => array(
-                                'first_date' => 'now',
-                                'format'     => 'd/m/Y H:i',
-                            ),
-                        ),
-                        array(
-                            'name'    => 'BookingCloseData',
-                            'options' => array(
-                                'format' => 'd/m/Y H:i',
-                            ),
+                        'validators' => array(
+                            array('name' => 'Activity'),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'checkbox',
-            'name'     => 'generate_tickets',
-            'label'    => 'Generate Tickets (needed to print out ticket)',
-            'required' => false,
-        ));
+        $this->add(
+            array(
+                'type'     => 'checkbox',
+                'name'     => 'active',
+                'label'    => 'Active',
+                'required' => false,
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'number_of_tickets',
-            'label'    => 'Number Of Tickets (0: No Limit)',
-            'value'    => 0,
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'int'),
-                        array(
-                            'name'    => 'greaterthan',
-                            'options' => array(
-                                'min' => 0,
+        $this->add(
+            array(
+                'type'     => 'checkbox',
+                'name'     => 'bookable',
+                'label'    => 'Bookable',
+                'required' => false,
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'checkbox',
+                'name'     => 'bookable_praesidium',
+                'label'    => 'Bookable For Praesidium',
+                'required' => false,
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'datetime',
+                'name'     => 'bookings_close_date',
+                'label'    => 'Bookings Close Date',
+                'required' => false,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name'    => 'Date',
+                                'options' => array(
+                                    'format' => 'd/m/Y H:i',
+                                ),
+                            ),
+                            array(
+                                'name'    => 'DateCompare',
+                                'options' => array(
+                                    'first_date' => 'now',
+                                    'format'     => 'd/m/Y H:i',
+                                ),
+                            ),
+                            array(
+                                'name'    => 'BookingCloseData',
+                                'options' => array(
+                                    'format' => 'd/m/Y H:i',
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'limit_per_person',
-            'label'    => 'Maximum Number Of Tickets Per Person (0: No Limit)',
-            'value'    => 0,
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'int'),
-                    ),
-                ),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'     => 'checkbox',
+                'name'     => 'generate_tickets',
+                'label'    => 'Generate Tickets (needed to print out ticket)',
+                'required' => false,
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'checkbox',
-            'name'     => 'allow_remove',
-            'label'    => 'Allow Users To Remove Reservations',
-            'required' => false,
-        ));
-
-        $this->add(array(
-            'type'     => 'checkbox',
-            'name'     => 'only_members',
-            'label'    => 'Only Members',
-            'required' => false,
-        ));
-
-        $this->add(array(
-            'type'     => 'hidden',
-            'name'     => 'enable_options_hidden',
-            'required' => false,
-        ));
-
-        $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'enable_options',
-            'label'      => 'Enable Options',
-            'required'   => false,
-            'attributes' => array(
-                'id' => 'enable_options',
-            ),
-        ));
-
-        $this->add(array(
-            'type'       => 'fieldset',
-            'name'       => 'prices',
-            'label'      => 'Prices',
-            'attributes' => array(
-                'class' => 'half_width',
-            ),
-            'elements' => array(
-                array(
-                    'type'     => 'text',
-                    'name'     => 'price_members',
-                    'label'    => 'Price Members',
-                    'required' => true,
-                    'options'  => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array('name' => 'Price'),
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'number_of_tickets',
+                'label'    => 'Number Of Tickets (0: No Limit)',
+                'value'    => 0,
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'int'),
+                            array(
+                                'name'    => 'greaterthan',
+                                'options' => array(
+                                    'min' => 0,
+                                ),
                             ),
                         ),
                     ),
                 ),
-                array(
-                    'type'       => 'text',
-                    'name'       => 'price_non_members',
-                    'label'      => 'Price Non Members',
-                    'required'   => true,
-                    'attributes' => array(
-                        'class' => 'price_non_members',
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'limit_per_person',
+                'label'    => 'Maximum Number Of Tickets Per Person (0: No Limit)',
+                'value'    => 0,
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'int'),
+                        ),
                     ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'checkbox',
+                'name'     => 'allow_remove',
+                'label'    => 'Allow Users To Remove Reservations',
+                'required' => false,
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'checkbox',
+                'name'     => 'only_members',
+                'label'    => 'Only Members',
+                'required' => false,
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'hidden',
+                'name'     => 'enable_options_hidden',
+                'required' => false,
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'checkbox',
+                'name'       => 'enable_options',
+                'label'      => 'Enable Options',
+                'required'   => false,
+                'attributes' => array(
+                    'id' => 'enable_options',
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'fieldset',
+                'name'       => 'prices',
+                'label'      => 'Prices',
+                'attributes' => array(
+                    'class' => 'half_width',
+                ),
+                'elements' => array(
+                    array(
+                        'type'     => 'text',
+                        'name'     => 'price_members',
+                        'label'    => 'Price Members',
+                        'required' => true,
+                        'options'  => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array('name' => 'Price'),
+                                ),
                             ),
-                            'validators' => array(
-                                array('name' => 'Price'),
+                        ),
+                    ),
+                    array(
+                        'type'       => 'text',
+                        'name'       => 'price_non_members',
+                        'label'      => 'Price Non Members',
+                        'required'   => true,
+                        'attributes' => array(
+                            'class' => 'price_non_members',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array('name' => 'Price'),
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'    => 'collection',
-            'name'    => 'options',
-            'label'   => 'Options',
-            'options' => array(
-                'count'                  => 0,
-                'should_create_template' => true,
-                'allow_add'              => true,
-                'target_element'         => array(
-                    'type' => 'ticket_event_option',
+        $this->add(
+            array(
+                'type'    => 'collection',
+                'name'    => 'options',
+                'label'   => 'Options',
+                'options' => array(
+                    'count'                  => 0,
+                    'should_create_template' => true,
+                    'allow_add'              => true,
+                    'target_element'         => array(
+                        'type' => 'ticket_event_option',
+                    ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Add', 'shift_add');
     }

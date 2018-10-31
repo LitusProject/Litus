@@ -81,8 +81,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $hasReadInsurance = true;
         if ($insuranceEnabled) {
             $insurance = $this->getEntityManager()
-            ->getRepository('ShiftBundle\Entity\User\Person\Insurance')
-            ->findOneByPersonAndAcademicYear($person, $this->getCurrentAcademicYear());
+                ->getRepository('ShiftBundle\Entity\User\Person\Insurance')
+                ->findOneByPersonAndAcademicYear($person, $this->getCurrentAcademicYear());
 
             if ($insurance === null || !$insurance->hasReadInsurance()) {
                 $hasReadInsurance = false;
@@ -438,10 +438,12 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     public function exportAction()
     {
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="icalendar.ics"',
-            'Content-Type'        => 'text/calendar',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'inline; filename="icalendar.ics"',
+                'Content-Type'        => 'text/calendar',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         $suffix = $this->getEntityManager()

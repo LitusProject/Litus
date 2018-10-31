@@ -321,10 +321,12 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     public function exportAction()
     {
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="icalendar.ics"',
-            'Content-Type'        => 'text/calendar',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'inline; filename="icalendar.ics"',
+                'Content-Type'        => 'text/calendar',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         $icsFile = new TmpFile();

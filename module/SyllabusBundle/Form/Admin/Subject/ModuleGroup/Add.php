@@ -61,38 +61,42 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         parent::init();
 
-        $this->add(array(
-            'type'       => 'typeahead',
-            'name'       => 'module_group',
-            'label'      => 'Module Group',
-            'required'   => true,
-            'attributes' => array(
-                'id'    => 'module_group',
-                'style' => 'width: 400px;',
-            ),
-            'options' => array(
-                'input' => array(
-                    'validators' => array(
-                        array(
-                            'name' => 'TypeaheadStudyModuleGroup',
-                        ),
-                        array(
-                            'name'    => 'SubjectModuleGroup',
-                            'options' => array(
-                                'subject'       => $this->subject,
-                                'academic_year' => $this->academicYear,
+        $this->add(
+            array(
+                'type'       => 'typeahead',
+                'name'       => 'module_group',
+                'label'      => 'Module Group',
+                'required'   => true,
+                'attributes' => array(
+                    'id'    => 'module_group',
+                    'style' => 'width: 400px;',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name' => 'TypeaheadStudyModuleGroup',
+                            ),
+                            array(
+                                'name'    => 'SubjectModuleGroup',
+                                'options' => array(
+                                    'subject'       => $this->subject,
+                                    'academic_year' => $this->academicYear,
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'mandatory',
-            'label' => 'Mandatory',
-        ));
+        $this->add(
+            array(
+                'type'  => 'checkbox',
+                'name'  => 'mandatory',
+                'label' => 'Mandatory',
+            )
+        );
 
         $this->addSubmit('Add', 'add');
     }

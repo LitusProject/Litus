@@ -35,45 +35,17 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
 
         list($cities, $streets) = $this->getCities();
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'city',
-            'label'      => 'City',
-            'attributes' => array(
-                'options' => $cities,
-                'class'   => 'city',
-            ),
-            'options' => array(
-                'input' => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name'    => 'NotEmpty',
-                            'options' => array(
-                                'zero', 'string',
-                            ),
-                        ),
-                    ),
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'city',
+                'label'      => 'City',
+                'attributes' => array(
+                    'options' => $cities,
+                    'class'   => 'city',
                 ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'       => 'fieldset',
-            'name'       => 'other',
-            'attributes' => array(
-                'class' => 'other',
-            ),
-            'elements' => array(
-                array(
-                    'type'    => 'text',
-                    'name'    => 'postal',
-                    'label'   => 'Postal Code',
-                    'options' => array(
+                'options' => array(
+                    'input' => array(
                         'input' => array(
                             'filters' => array(
                                 array('name' => 'StringTrim'),
@@ -81,44 +53,76 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
                         ),
                         'validators' => array(
                             array(
-                                'name'    => 'Alnum',
+                                'name'    => 'NotEmpty',
                                 'options' => array(
-                                    'allowWhiteSpace' => true,
+                                    'zero', 'string',
                                 ),
                             ),
                         ),
                     ),
                 ),
-                array(
-                    'type'     => 'text',
-                    'name'     => 'city',
-                    'label'    => 'City',
-                    'required' => true,
-                    'options'  => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                        ),
-                    ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'fieldset',
+                'name'       => 'other',
+                'attributes' => array(
+                    'class' => 'other',
                 ),
-                array(
-                    'type'    => 'text',
-                    'name'    => 'street',
-                    'label'   => 'Street',
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
+                'elements' => array(
+                    array(
+                        'type'    => 'text',
+                        'name'    => 'postal',
+                        'label'   => 'Postal Code',
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
                             ),
                             'validators' => array(
-                                array('name' => 'NotEmpty'),
+                                array(
+                                    'name'    => 'Alnum',
+                                    'options' => array(
+                                        'allowWhiteSpace' => true,
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'     => 'text',
+                        'name'     => 'city',
+                        'label'    => 'City',
+                        'required' => true,
+                        'options'  => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'    => 'text',
+                        'name'    => 'street',
+                        'label'   => 'Street',
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array('name' => 'NotEmpty'),
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $streetSelects = array();
 
@@ -149,52 +153,58 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
             );
         }
 
-        $this->add(array(
-            'type'     => 'fieldset',
-            'name'     => 'street',
-            'elements' => $streetSelects,
-        ));
+        $this->add(
+            array(
+                'type'     => 'fieldset',
+                'name'     => 'street',
+                'elements' => $streetSelects,
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'number',
-            'label'      => 'Number',
-            'attributes' => array(
-                'class' => 'number',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name'    => 'Alnum',
-                            'options' => array(
-                                'allowWhiteSpace' => true,
-                            ),
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'number',
+                'label'      => 'Number',
+                'attributes' => array(
+                    'class' => 'number',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
                         ),
-                        array('name' => 'NotZero'),
+                        'validators' => array(
+                            array(
+                                'name'    => 'Alnum',
+                                'options' => array(
+                                    'allowWhiteSpace' => true,
+                                ),
+                            ),
+                            array('name' => 'NotZero'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'mailbox',
-            'label'      => 'Mailbox',
-            'attributes' => array(
-                'class' => 'mailbox',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'mailbox',
+                'label'      => 'Mailbox',
+                'attributes' => array(
+                    'class' => 'mailbox',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
     }
 
     public function setRequired($required = true)

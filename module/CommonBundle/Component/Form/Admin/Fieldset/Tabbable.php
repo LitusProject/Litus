@@ -59,13 +59,15 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Fieldset implements
         } else {
             $defaultLanguage = Locale::getDefault();
 
-            $this->add(array(
-                'type'       => 'tabs',
-                'name'       => 'languages',
-                'attributes' => array(
-                    'id' => 'languages',
-                ),
-            ));
+            $this->add(
+                array(
+                    'type'       => 'tabs',
+                    'name'       => 'languages',
+                    'attributes' => array(
+                        'id' => 'languages',
+                    ),
+                )
+            );
 
             $tabs = $this->get('languages');
             $tabContent = $this->createTabContent();
@@ -91,10 +93,12 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Fieldset implements
      */
     private function createTabContent()
     {
-        $this->add(array(
-            'type' => 'tabcontent',
-            'name' => 'tab_content',
-        ));
+        $this->add(
+            array(
+                'type' => 'tabcontent',
+                'name' => 'tab_content',
+            )
+        );
 
         return $this->get('tab_content');
     }
@@ -106,10 +110,12 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Fieldset implements
      */
     private function createTabPane(TabContent $tabContent, $name)
     {
-        $tabContent->add(array(
-            'type' => 'tabpane',
-            'name' => $name,
-        ));
+        $tabContent->add(
+            array(
+                'type' => 'tabpane',
+                'name' => $name,
+            )
+        );
 
         return $tabContent->get($name);
     }

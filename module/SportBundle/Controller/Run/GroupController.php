@@ -91,14 +91,19 @@ class GroupController extends \SportBundle\Component\Controller\RunController
         $happyHours1 = $this->generateHappyHours(20);
         $happyHours2 = $this->generateHappyHours(8);
         if (count($happyHours1) == 0 || count($happyHours2) == 0) {
-            return new ViewModel(array(
-                'full' => true,
-            ));
+            return new ViewModel(
+                array(
+                    'full' => true,
+                )
+            );
         } else {
-            $form = $this->getForm('sport_group_add', array(
-                'happyHours1' => $happyHours1,
-                'happyHours2' => $happyHours2,
-            ));
+            $form = $this->getForm(
+                'sport_group_add',
+                array(
+                    'happyHours1' => $happyHours1,
+                    'happyHours2' => $happyHours2,
+                )
+            );
 
             if ($this->getRequest()->isPost()) {
                 $formData = $this->getRequest()->getPost();

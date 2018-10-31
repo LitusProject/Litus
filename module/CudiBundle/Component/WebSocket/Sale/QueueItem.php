@@ -212,8 +212,8 @@ class QueueItem
         );
 
         $isicArticle = $this->entityManager
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('cudi.isic_sale_article');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.isic_sale_article');
 
         $soldArticles = array();
 
@@ -246,7 +246,7 @@ class QueueItem
 
                 if (!$isicCard->hasPaid()) {
                     $config = $this->entityManager
-                    ->getRepository('CommonBundle\Entity\General\Config');
+                        ->getRepository('CommonBundle\Entity\General\Config');
 
                     $serviceUrl = $config->getConfigValue('cudi.isic_service_url');
                     $client = new SoapClient($serviceUrl);

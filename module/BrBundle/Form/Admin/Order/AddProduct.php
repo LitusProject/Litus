@@ -47,50 +47,56 @@ class AddProduct extends \BrBundle\Form\Admin\Order\Add
                 continue;
             }
             $this->remove($element->getName());
-            $this->add(array(
-                'type'     => 'hidden',
-                'name'     => $element->getName(),
-                'value'    => $element->getValue(),
-                'required' => $element->isRequired(),
-                'options'  => $element->getOptions(),
-            ));
+            $this->add(
+                array(
+                    'type'     => 'hidden',
+                    'name'     => $element->getName(),
+                    'value'    => $element->getValue(),
+                    'required' => $element->isRequired(),
+                    'options'  => $element->getOptions(),
+                )
+            );
         }
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'new_product',
-            'label'      => 'Product',
-            'required'   => true,
-            'attributes' => array(
-                'options' => $this->createProductArray(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'new_product',
+                'label'      => 'Product',
+                'required'   => true,
+                'attributes' => array(
+                    'options' => $this->createProductArray(),
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'new_product_amount',
-            'label'    => 'Amount',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'Int',
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'new_product_amount',
+                'label'    => 'Amount',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
                         ),
-                        array(
-                            'name'    => 'Between',
-                            'options' => array(
-                                'min' => 1,
-                                'max' => self::MAX_ORDER_NUMBER,
+                        'validators' => array(
+                            array(
+                                'name' => 'Int',
+                            ),
+                            array(
+                                'name'    => 'Between',
+                                'options' => array(
+                                    'min' => 1,
+                                    'max' => self::MAX_ORDER_NUMBER,
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->remove('submit')
             ->addSubmit('Add', 'product_add');

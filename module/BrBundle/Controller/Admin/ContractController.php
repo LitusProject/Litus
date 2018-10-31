@@ -42,9 +42,9 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
     public function manageAction()
     {
         $contracts = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Contract')
-                ->findAllNewUnsignedQuery()
-                ->getResult();
+            ->getRepository('BrBundle\Entity\Contract')
+            ->findAllNewUnsignedQuery()
+            ->getResult();
 
         $contractData = array();
 
@@ -71,9 +71,9 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
     public function signedListAction()
     {
         $contracts = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Contract')
-                ->findAllSignedQuery()
-                ->getResult();
+            ->getRepository('BrBundle\Entity\Contract')
+            ->findAllSignedQuery()
+            ->getResult();
 
         $contractData = array();
 
@@ -162,10 +162,12 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         $document->generateDocument($file);
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="contracts.csv"',
-            'Content-Type'        => 'text/csv',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="contracts.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -342,10 +344,12 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         $companyName = $contract->getCompany()->getName();
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="' . $contractNb . ' ' . $companyName . '.pdf"',
-            'Content-Type'        => 'application/pdf',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="' . $contractNb . ' ' . $companyName . '.pdf"',
+                'Content-Type'        => 'application/pdf',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(

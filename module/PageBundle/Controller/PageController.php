@@ -64,11 +64,13 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="' . $this->getParam('name') . '"',
-            'Content-Type'        => mime_content_type($filePath),
-            'Content-Length'      => filesize($filePath),
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'inline; filename="' . $this->getParam('name') . '"',
+                'Content-Type'        => mime_content_type($filePath),
+                'Content-Length'      => filesize($filePath),
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         $handle = fopen($filePath, 'r');

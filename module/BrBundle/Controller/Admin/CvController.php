@@ -41,8 +41,8 @@ class CvController extends \BrBundle\Component\Controller\CvController
 
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Cv\Entry')
-            ->findAllByAcademicYearQuery($academicYear),
+                ->getRepository('BrBundle\Entity\Cv\Entry')
+                ->findAllByAcademicYearQuery($academicYear),
             $this->getParam('page')
         );
 
@@ -76,10 +76,12 @@ class CvController extends \BrBundle\Component\Controller\CvController
         $document->generate();
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="cvbook-' . $year->getCode(true) . '.pdf"',
-            'Content-type'        => 'application/pdf',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="cvbook-' . $year->getCode(true) . '.pdf"',
+                'Content-type'        => 'application/pdf',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -121,10 +123,12 @@ class CvController extends \BrBundle\Component\Controller\CvController
         $document->generateDocument($file);
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="academics.csv"',
-            'Content-Type'        => 'text/csv',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="academics.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(

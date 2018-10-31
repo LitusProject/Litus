@@ -39,38 +39,44 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'select',
-            'name'     => 'edition',
-            'label'    => 'Edition',
-            'required' => true,
-            'options'  => array(
-                'options' => $this->createEditionsArray(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'     => 'select',
+                'name'     => 'edition',
+                'label'    => 'Edition',
+                'required' => true,
+                'options'  => array(
+                    'options' => $this->createEditionsArray(),
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'test',
-            'label' => 'Test Mail',
-        ));
+        $this->add(
+            array(
+                'type'  => 'checkbox',
+                'name'  => 'test',
+                'label' => 'Test Mail',
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'subject',
-            'label'      => 'Subject',
-            'required'   => true,
-            'attributes' => array(
-                'style' => 'width: 400px;',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'subject',
+                'label'      => 'Subject',
+                'required'   => true,
+                'attributes' => array(
+                    'style' => 'width: 400px;',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Send', 'mail');
     }

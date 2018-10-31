@@ -45,7 +45,7 @@ class DateLocalized extends \Zend\View\Helper\AbstractHelper implements ServiceL
      */
     public function __invoke(DateTime $date = null, $format = '')
     {
-        if (null === $date) {
+        if ($date === null) {
             return '';
         }
 

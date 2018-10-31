@@ -34,10 +34,11 @@ class AclCleanup extends \CommonBundle\Component\Console\Command
             ->setName('common:acl-cleanup')
             ->setDescription('Cleanup old acl actions and resources.')
             ->addOption('flush', 'f', null, 'Stores the result in the database.')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The <info>%command.name%</info> command removes old acl actions and resources
 EOT
-        );
+            );
     }
 
     /**

@@ -461,10 +461,13 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 ->getRepository('SportBundle\Entity\Runner')
                 ->findOneById($runners[$index]['runner']);
 
-            array_push($mostLaps, array(
-                'name' => $runner->getFullName(),
-                'laps' => $runners[$index]['lapCount'],
-            ));
+            array_push(
+                $mostLaps,
+                array(
+                    'name' => $runner->getFullName(),
+                    'laps' => $runners[$index]['lapCount'],
+                )
+            );
             $nbResults++;
             $index++;
         }

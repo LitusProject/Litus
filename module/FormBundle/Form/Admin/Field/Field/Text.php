@@ -31,59 +31,65 @@ class Text extends \CommonBundle\Component\Form\Fieldset
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'multiline',
-            'label'      => 'Multiline',
-            'attributes' => array(
-                'data-help' => 'Allow multiple lines in the field (textarea).',
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'checkbox',
+                'name'       => 'multiline',
+                'label'      => 'Multiline',
+                'attributes' => array(
+                    'data-help' => 'Allow multiple lines in the field (textarea).',
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'charsperline',
-            'label'      => 'Maximum Characters per Line (or Infinite)',
-            'attributes' => array(
-                'data-help' => 'The maximum numbers of characters on one line. Zero is infinite.',
-            ),
-            'options' => array(
-                'input' => array(
-                    'allow_empty'       => false,
-                    'continue_if_empty' => true,
-                    'filters'           => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name'    => 'NotEmpty',
-                            'options' => array(
-                                'null',
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'charsperline',
+                'label'      => 'Maximum Characters per Line (or Infinite)',
+                'attributes' => array(
+                    'data-help' => 'The maximum numbers of characters on one line. Zero is infinite.',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'allow_empty'       => false,
+                        'continue_if_empty' => true,
+                        'filters'           => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name'    => 'NotEmpty',
+                                'options' => array(
+                                    'null',
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'lines',
-            'label'      => 'Maximum Number of Lines (Multiline Fields Only)',
-            'attributes' => array(
-                'data-help' => 'The maximum numbers of lines. Zero is infinite.',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'Int'),
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'lines',
+                'label'      => 'Maximum Number of Lines (Multiline Fields Only)',
+                'attributes' => array(
+                    'data-help' => 'The maximum numbers of lines. Zero is infinite.',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
     }
 
     public function getInputFilterSpecification()

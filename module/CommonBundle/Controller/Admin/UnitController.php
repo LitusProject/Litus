@@ -136,10 +136,12 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $academicForm->setData($formData);
-            $externalForm->setData(array_merge_recursive(
-                $formData->toArray(),
-                $this->getRequest()->getFiles()->toArray()
-            ));
+            $externalForm->setData(
+                array_merge_recursive(
+                    $formData->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
 
             if ($formData['mapType'] == 'academic' && $academicForm->isValid()) {
                 $academic = $this->getEntityManager()

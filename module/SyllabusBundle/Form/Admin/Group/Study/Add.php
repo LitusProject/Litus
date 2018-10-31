@@ -36,24 +36,26 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'studies',
-            'label'      => 'Studies',
-            'required'   => true,
-            'attributes' => array(
-                'multiple' => true,
-                'style'    => 'max-width: 100%;height: 600px;',
-                'options'  => $this->getStudyNames(),
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'studies',
+                'label'      => 'Studies',
+                'required'   => true,
+                'attributes' => array(
+                    'multiple' => true,
+                    'style'    => 'max-width: 100%;height: 600px;',
+                    'options'  => $this->getStudyNames(),
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Add', 'add');
     }

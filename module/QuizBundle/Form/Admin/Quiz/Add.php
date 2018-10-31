@@ -34,30 +34,34 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'name',
-            'label'    => 'Name',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'name',
+                'label'    => 'Name',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'edit_roles',
-            'label'      => 'Edit Roles',
-            'required'   => true,
-            'attributes' => array(
-                'multiple' => true,
-                'options'  => $this->createEditRolesArray(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'edit_roles',
+                'label'      => 'Edit Roles',
+                'required'   => true,
+                'attributes' => array(
+                    'multiple' => true,
+                    'options'  => $this->createEditRolesArray(),
+                ),
+            )
+        );
 
         $this->addSubmit('Add', 'add');
     }

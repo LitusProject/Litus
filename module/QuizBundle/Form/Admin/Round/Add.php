@@ -51,66 +51,72 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         parent::init();
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'name',
-            'label'    => 'Name',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'name',
+                'label'    => 'Name',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'max_points',
-            'label'    => 'Maximum Points',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'Int'),
-                        array('name' => 'PositiveNumber'),
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'max_points',
+                'label'    => 'Maximum Points',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
+                            array('name' => 'PositiveNumber'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'order',
-            'label'    => 'Round Number',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'Int',
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'order',
+                'label'    => 'Round Number',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
                         ),
-                        array(
-                            'name' => 'PositiveNumber',
-                        ),
-                        array(
-                            'name'    => 'RoundNumber',
-                            'options' => array(
-                                'quiz'  => $this->quiz,
-                                'round' => $this->round,
+                        'validators' => array(
+                            array(
+                                'name' => 'Int',
+                            ),
+                            array(
+                                'name' => 'PositiveNumber',
+                            ),
+                            array(
+                                'name'    => 'RoundNumber',
+                                'options' => array(
+                                    'quiz'  => $this->quiz,
+                                    'round' => $this->round,
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Add', 'add');
     }

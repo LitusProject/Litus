@@ -20,8 +20,6 @@
 
 namespace ShiftBundle\Component\Document\Generator\Counter;
 
-use Doctrine\ORM\EntityManager;
-
 /**
  * Csv
  *

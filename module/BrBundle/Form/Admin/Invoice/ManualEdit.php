@@ -40,34 +40,36 @@ class ManualEdit extends \BrBundle\Form\Admin\Invoice\ManualAdd
 
         $this->remove('file');
 
-        $this->add(array(
-            'type'       => 'file',
-            'name'       => 'file',
-            'label'      => 'Change File',
-            'required'   => false,
-            'attributes' => array(
-                'data-help' => 'The file can be of any type and has a filesize limit of ' . self::FILE_SIZE . '.',
-                'size'      => 256,
-            ),
-            'options' => array(
-                'input' => array(
-                    'validators' => array(
-                        array(
-                            'name'    => 'FileExtension',
-                            'options' => array(
-                                'extension' => 'pdf',
+        $this->add(
+            array(
+                'type'       => 'file',
+                'name'       => 'file',
+                'label'      => 'Change File',
+                'required'   => false,
+                'attributes' => array(
+                    'data-help' => 'The file can be of any type and has a filesize limit of ' . self::FILE_SIZE . '.',
+                    'size'      => 256,
+                ),
+                'options' => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name'    => 'FileExtension',
+                                'options' => array(
+                                    'extension' => 'pdf',
+                                ),
                             ),
-                        ),
-                        array(
-                            'name'    => 'FileSize',
-                            'options' => array(
-                                'max' => self::FILE_SIZE,
+                            array(
+                                'name'    => 'FileSize',
+                                'options' => array(
+                                    'max' => self::FILE_SIZE,
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->remove('submit')
             ->addSubmit('Save', 'invoice_edit');

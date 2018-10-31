@@ -123,13 +123,19 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         $termsAndConditions = $this->getTermsAndConditions();
 
         if ($metaData !== null) {
-            $form = $this->getForm('common_account_edit', array(
-                'meta_data' => $metaData,
-            ));
+            $form = $this->getForm(
+                'common_account_edit',
+                array(
+                    'meta_data' => $metaData,
+                )
+            );
         } else {
-            $form = $this->getForm('common_account_edit', array(
-                'academic' => $academic,
-            ));
+            $form = $this->getForm(
+                'common_account_edit',
+                array(
+                    'academic' => $academic,
+                )
+            );
         }
 
         $ids = unserialize(
@@ -142,9 +148,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->getConfigValue('secretary.isic_membership') == 1;
         $isicRedirect = false;
         $isicOrder = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\IsicCard')
-                        ->findByPersonAndYearQuery($academic, $this->getCurrentAcademicYear())
-                        ->getResult();
+            ->getRepository('CudiBundle\Entity\IsicCard')
+            ->findByPersonAndYearQuery($academic, $this->getCurrentAcademicYear())
+            ->getResult();
 
         $membershipArticles = array();
         foreach ($ids as $organization => $id) {
@@ -423,11 +429,13 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         $membership->createPass();
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="membership.pkpass"',
-            'Content-Type'        => 'application/vnd.apple.pkpass',
-            'Content-Length'      => filesize($pass->getFileName()),
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'inline; filename="membership.pkpass"',
+                'Content-Type'        => 'application/vnd.apple.pkpass',
+                'Content-Length'      => filesize($pass->getFileName()),
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -447,10 +455,12 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         $form = $this->getForm('common_account_profile');
 
         if ($this->getRequest()->isPost()) {
-            $form->setData(array_merge_recursive(
-                $this->getRequest()->getPost()->toArray(),
-                $this->getRequest()->getFiles()->toArray()
-            ));
+            $form->setData(
+                array_merge_recursive(
+                    $this->getRequest()->getPost()->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
 
             $filePath = 'public' . $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')

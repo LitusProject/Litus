@@ -129,8 +129,8 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin implements Se
     public function createFromEntity($entity, $currentPage, array $conditions = array(), array $orderBy = array())
     {
         $qb = $this->getEntityManager()
-                ->getRepository($entity)
-                ->createQueryBuilder('e');
+            ->getRepository($entity)
+            ->createQueryBuilder('e');
         foreach (array_keys($conditions) as $fieldName) {
             $qb->andWhere('e.' . $fieldName . ' = :' . $fieldName);
         }

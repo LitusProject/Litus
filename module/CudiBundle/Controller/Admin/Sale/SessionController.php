@@ -104,9 +104,12 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
         $session->setEntityManager($this->getEntityManager());
 
-        $form = $this->getForm('cudi_sale_session_comment', array(
-            'session' => $session,
-        ));
+        $form = $this->getForm(
+            'cudi_sale_session_comment',
+            array(
+                'session' => $session,
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -164,9 +167,12 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOneByCashRegister($cashRegister);
 
-        $form = $this->getForm('cudi_sale_session_edit', array(
-            'cash_register' => $cashRegister,
-        ));
+        $form = $this->getForm(
+            'cudi_sale_session_edit',
+            array(
+                'cash_register' => $cashRegister,
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -208,9 +214,12 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
         $session->setEntityManager($this->getEntityManager());
 
-        $form = $this->getForm('cudi_sale_session_close', array(
-            'cash_register' => $session->getOpenRegister(),
-        ));
+        $form = $this->getForm(
+            'cudi_sale_session_close',
+            array(
+                'cash_register' => $session->getOpenRegister(),
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());

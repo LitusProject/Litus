@@ -36,120 +36,132 @@ class Add extends \CommonBundle\Component\Form\Fieldset
 
         $this->addClass('address');
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'street',
-            'label'      => 'Street',
-            'attributes' => array(
-                'class' => 'street',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'street',
+                'label'      => 'Street',
+                'attributes' => array(
+                    'class' => 'street',
                 ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'number',
-            'label'      => 'Number',
-            'attributes' => array(
-                'class' => 'number',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name'    => 'Alnum',
-                            'options' => array(
-                                'allowWhiteSpace' => true,
-                            ),
-                        ),
-                        array('name' => 'NotZero'),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'mailbox',
-            'label'      => 'Mailbox',
-            'attributes' => array(
-                'class' => 'mailbox',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'postal',
-            'label'      => 'Postal Code',
-            'attributes' => array(
-                'class' => 'postal',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name'    => 'Alnum',
-                            'options' => array(
-                                'allowWhiteSpace' => true,
-                            ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'city',
-            'label'      => 'City',
-            'attributes' => array(
-                'class' => 'city',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'number',
+                'label'      => 'Number',
+                'attributes' => array(
+                    'class' => 'number',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name'    => 'Alnum',
+                                'options' => array(
+                                    'allowWhiteSpace' => true,
+                                ),
+                            ),
+                            array('name' => 'NotZero'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'country',
-            'label'      => 'Country',
-            'attributes' => array(
-                'class'   => 'country',
-                'options' => $this->getCountries(),
-            ),
-            'value'   => 'BE',
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'mailbox',
+                'label'      => 'Mailbox',
+                'attributes' => array(
+                    'class' => 'mailbox',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'postal',
+                'label'      => 'Postal Code',
+                'attributes' => array(
+                    'class' => 'postal',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name'    => 'Alnum',
+                                'options' => array(
+                                    'allowWhiteSpace' => true,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'city',
+                'label'      => 'City',
+                'attributes' => array(
+                    'class' => 'city',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'country',
+                'label'      => 'Country',
+                'attributes' => array(
+                    'class'   => 'country',
+                    'options' => $this->getCountries(),
+                ),
+                'value'   => 'BE',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
     }
 
     public function setRequired($required = true)

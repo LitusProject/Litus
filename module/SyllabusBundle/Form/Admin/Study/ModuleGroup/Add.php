@@ -40,105 +40,117 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'title',
-            'label'      => 'Title',
-            'required'   => true,
-            'attributes' => array(
-                'style' => 'width: 400px;',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'title',
+                'label'      => 'Title',
+                'required'   => true,
+                'attributes' => array(
+                    'style' => 'width: 400px;',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'external_id',
-            'label'    => 'External Id',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'int'),
-                        array(
-                            'name'    => 'StudyModuleGroupExternalId',
-                            'options' => array(
-                                'exclude' => $this->moduleGroup,
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'external_id',
+                'label'    => 'External Id',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'int'),
+                            array(
+                                'name'    => 'StudyModuleGroupExternalId',
+                                'options' => array(
+                                    'exclude' => $this->moduleGroup,
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'phase',
-            'label'    => 'Phase',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'Int'),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'language',
-            'label'    => 'Language',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'mandatory',
-            'label' => 'Mandatory',
-        ));
-
-        $this->add(array(
-            'type'       => 'typeahead',
-            'name'       => 'parent',
-            'label'      => 'Parent',
-            'required'   => false,
-            'attributes' => array(
-                'id'    => 'parent',
-                'style' => 'width: 400px;',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'TypeaheadStudyModuleGroup',
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'phase',
+                'label'    => 'Phase',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'language',
+                'label'    => 'Language',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'  => 'checkbox',
+                'name'  => 'mandatory',
+                'label' => 'Mandatory',
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'typeahead',
+                'name'       => 'parent',
+                'label'      => 'Parent',
+                'required'   => false,
+                'attributes' => array(
+                    'id'    => 'parent',
+                    'style' => 'width: 400px;',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'TypeaheadStudyModuleGroup',
+                            ),
+                        ),
+                    ),
+                ),
+            )
+        );
 
         $this->addSubmit('Add', 'add');
     }

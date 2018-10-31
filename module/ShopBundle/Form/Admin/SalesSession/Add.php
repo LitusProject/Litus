@@ -38,74 +38,84 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'datetime',
-            'name'     => 'start_date',
-            'label'    => 'Start Date',
-            'required' => true,
-        ));
+        $this->add(
+            array(
+                'type'     => 'datetime',
+                'name'     => 'start_date',
+                'label'    => 'Start Date',
+                'required' => true,
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'datetime',
-            'name'     => 'end_date',
-            'label'    => 'End Date',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'validators' => array(
-                        array(
-                            'name'    => 'DateCompare',
-                            'options' => array(
-                                'first_date' => 'start_date',
-                                'format'     => 'd/m/Y H:i',
+        $this->add(
+            array(
+                'type'     => 'datetime',
+                'name'     => 'end_date',
+                'label'    => 'End Date',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name'    => 'DateCompare',
+                                'options' => array(
+                                    'first_date' => 'start_date',
+                                    'format'     => 'd/m/Y H:i',
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'reservations_possible',
-            'label'      => 'Reservations Possible',
-            'attributes' => array(
-                'data-help' => 'Enabling this option will allow clients to reserve articles for this sales session.',
-                'value'     => true,
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'checkbox',
+                'name'       => 'reservations_possible',
+                'label'      => 'Reservations Possible',
+                'attributes' => array(
+                    'data-help' => 'Enabling this option will allow clients to reserve articles for this sales session.',
+                    'value'     => true,
+                ),
+            )
+        );
 
         foreach ($this->products as $product) {
-            $this->add(array(
-                'type'    => 'number',
-                'name'    => $product->getId() . '-quantity',
-                'options' => array(
-                    'label' => $product->getName(),
-                ),
-                'attributes' => array(
-                    'min'   => '0',
-                    'max'   => '100',
-                    'value' => 0,
-                ),
-            ));
+            $this->add(
+                array(
+                    'type'    => 'number',
+                    'name'    => $product->getId() . '-quantity',
+                    'options' => array(
+                        'label' => $product->getName(),
+                    ),
+                    'attributes' => array(
+                        'min'   => '0',
+                        'max'   => '100',
+                        'value' => 0,
+                    ),
+                )
+            );
         }
 
-        $this->add(array(
-            'type'       => 'textarea',
-            'name'       => 'remarks',
-            'label'      => 'Remarks',
-            'required'   => false,
-            'attributes' => array(
-                'rows' => 5,
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'       => 'textarea',
+                'name'       => 'remarks',
+                'label'      => 'Remarks',
+                'required'   => false,
+                'attributes' => array(
+                    'rows' => 5,
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Add', 'add');
     }

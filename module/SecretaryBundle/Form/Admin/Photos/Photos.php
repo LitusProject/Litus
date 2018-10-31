@@ -31,16 +31,18 @@ class Photos extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'academic_year',
-            'label'      => 'Academic Year',
-            'required'   => true,
-            'attributes' => array(
-                'id'      => 'academic_year',
-                'options' => $this->getAcademicYears(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'academic_year',
+                'label'      => 'Academic Year',
+                'required'   => true,
+                'attributes' => array(
+                    'id'      => 'academic_year',
+                    'options' => $this->getAcademicYears(),
+                ),
+            )
+        );
 
         $this->addSubmit('Download Photos', 'download');
     }

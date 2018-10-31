@@ -44,68 +44,76 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'name',
-            'label'      => 'Name',
-            'required'   => true,
-            'attributes' => array(
-                'size' => 70,
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name'    => 'GroupName',
-                            'options' => array(
-                                'exclude' => $this->group,
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'name',
+                'label'      => 'Name',
+                'required'   => true,
+                'attributes' => array(
+                    'size' => 70,
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name'    => 'GroupName',
+                                'options' => array(
+                                    'exclude' => $this->group,
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'cv_book',
-            'label' => 'Show in CV Book',
-        ));
+        $this->add(
+            array(
+                'type'  => 'checkbox',
+                'name'  => 'cv_book',
+                'label' => 'Show in CV Book',
+            )
+        );
 
-        $this->add(array(
-            'type'    => 'textarea',
-            'name'    => 'extra_members',
-            'label'   => 'Extra Members',
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'MultiMail'),
+        $this->add(
+            array(
+                'type'    => 'textarea',
+                'name'    => 'extra_members',
+                'label'   => 'Extra Members',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'MultiMail'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'    => 'textarea',
-            'name'    => 'excluded_members',
-            'label'   => 'Excluded Members',
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'MultiMail'),
+        $this->add(
+            array(
+                'type'    => 'textarea',
+                'name'    => 'excluded_members',
+                'label'   => 'Excluded Members',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'MultiMail'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Add', 'add');
     }

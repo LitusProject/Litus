@@ -46,19 +46,21 @@ class Edit extends \SecretaryBundle\Form\Admin\Registration\Add
 
         $this->remove('person');
 
-        $this->add(array(
-            'type'    => 'checkbox',
-            'name'    => 'cancel',
-            'label'   => 'Cancelled',
-            'value'   => $this->getRegistration()->isCancelled(),
-            'options' => array(
-                'input' => array(
-                    'validators' => array(
-                        array('name' => 'CancelRegistration'),
+        $this->add(
+            array(
+                'type'    => 'checkbox',
+                'name'    => 'cancel',
+                'label'   => 'Cancelled',
+                'value'   => $this->getRegistration()->isCancelled(),
+                'options' => array(
+                    'input' => array(
+                        'validators' => array(
+                            array('name' => 'CancelRegistration'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->get('payed')->setValue($this->getRegistration()->hasPayed());
 

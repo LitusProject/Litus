@@ -88,8 +88,8 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
                 ->findAllArticlesByPeriod($previous);
             foreach ($articles as $article) {
                 $value = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Stock\Period\Value\Start')
-                        ->findValueByArticleAndPeriod($article, $previous) + $previous->getNbDelivered($article) - $previous->getNbSold($article);
+                    ->getRepository('CudiBundle\Entity\Stock\Period\Value\Start')
+                    ->findValueByArticleAndPeriod($article, $previous) + $previous->getNbDelivered($article) - $previous->getNbSold($article);
 
                 $start = new StartValue($article, $new, ($value < 0 ? 0 : $value));
                 $this->getEntityManager()->persist($start);

@@ -38,10 +38,12 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
         $form = $this->getForm('mail_promotion_mail');
 
         if ($this->getRequest()->isPost()) {
-            $form->setData(array_merge_recursive(
-                $this->getRequest()->getPost()->toArray(),
-                $this->getRequest()->getFiles()->toArray()
-            ));
+            $form->setData(
+                array_merge_recursive(
+                    $this->getRequest()->getPost()->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
 
             if ($form->isValid()) {
                 $formData = $form->getData();
@@ -69,9 +71,12 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
 
                             foreach ($studies as $study) {
                                 if ($study->getStudy()->getPhase() == 2) {
-                                    $enrollments = array_merge($enrollments, $this->getEntityManager()
-                                        ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                                        ->findAllByStudy($study->getStudy()));
+                                    $enrollments = array_merge(
+                                        $enrollments,
+                                        $this->getEntityManager()
+                                            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+                                            ->findAllByStudy($study->getStudy())
+                                    );
                                 }
                             }
                         }

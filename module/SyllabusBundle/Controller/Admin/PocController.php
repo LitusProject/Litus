@@ -41,8 +41,8 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
         }
 
         $pocsWithIndicator = $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Entity\Poc')
-                ->findAllPocsWithIndicatorByAcademicYear($academicYear);
+            ->getRepository('SyllabusBundle\Entity\Poc')
+            ->findAllPocsWithIndicatorByAcademicYear($academicYear);
 
         $pocGroups = array();
         foreach ($pocsWithIndicator as $poc) {

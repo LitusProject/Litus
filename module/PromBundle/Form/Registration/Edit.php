@@ -20,7 +20,6 @@
 
 namespace PromBundle\Form\Registration;
 
-use CommonBundle\Component\Util\AcademicYear;
 use PromBundle\Entity\Bus\Passenger;
 
 /**
@@ -68,99 +67,111 @@ class Edit extends \PromBundle\Form\Registration\Add
             }
         }
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'first_name',
-            'label'      => 'First Name',
-            'value'      => $firstName,
-            'attributes' => array(
-                'disabled' => true,
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'first_name',
+                'label'      => 'First Name',
+                'value'      => $firstName,
+                'attributes' => array(
+                    'disabled' => true,
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'last_name',
-            'label'      => 'Last Name',
-            'value'      => $lastName,
-            'attributes' => array(
-                'disabled' => true,
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'last_name',
+                'label'      => 'Last Name',
+                'value'      => $lastName,
+                'attributes' => array(
+                    'disabled' => true,
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'email',
-            'label'      => 'Email',
-            'value'      => $email,
-            'attributes' => array(
-                'disabled' => true,
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'email',
+                'label'      => 'Email',
+                'value'      => $email,
+                'attributes' => array(
+                    'disabled' => true,
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'ticket_code',
-            'label'      => 'Ticket Code',
-            'value'      => $code,
-            'attributes' => array(
-                'disabled' => true,
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'ticket_code',
+                'label'      => 'Ticket Code',
+                'value'      => $code,
+                'attributes' => array(
+                    'disabled' => true,
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'first_bus',
-            'label'      => 'Go Bus',
-            'required'   => true,
-            'value'      => $firstBus,
-            'attributes' => array(
-                'id'      => 'first_bus',
-                'options' => $this->getFirstBusses(),
-            ),
-            'options' => array(
-                'input' => array(
-                    'validators' => array(
-                        array(
-                            'name' => 'BusSelected',
-                        ),
-                        array(
-                            'name'    => 'BusSeats',
-                            'options' => array(
-                                'bus' => $firstBusEntity,
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'first_bus',
+                'label'      => 'Go Bus',
+                'required'   => true,
+                'value'      => $firstBus,
+                'attributes' => array(
+                    'id'      => 'first_bus',
+                    'options' => $this->getFirstBusses(),
+                ),
+                'options' => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name' => 'BusSelected',
+                            ),
+                            array(
+                                'name'    => 'BusSeats',
+                                'options' => array(
+                                    'bus' => $firstBusEntity,
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'second_bus',
-            'label'      => 'Return Bus',
-            'required'   => true,
-            'value'      => $secondBus,
-            'attributes' => array(
-                'id'      => 'second_bus',
-                'options' => $this->getSecondBusses(),
-            ),
-            'options' => array(
-                'input' => array(
-                    'validators' => array(
-                        array(
-                            'name' => 'BusSelected',
-                        ),
-                        array(
-                            'name'    => 'BusSeats',
-                            'options' => array(
-                                'bus' => $secondBusEntity,
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'second_bus',
+                'label'      => 'Return Bus',
+                'required'   => true,
+                'value'      => $secondBus,
+                'attributes' => array(
+                    'id'      => 'second_bus',
+                    'options' => $this->getSecondBusses(),
+                ),
+                'options' => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name' => 'BusSelected',
+                            ),
+                            array(
+                                'name'    => 'BusSeats',
+                                'options' => array(
+                                    'bus' => $secondBusEntity,
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Save Reservation', 'btn btn-default');
     }

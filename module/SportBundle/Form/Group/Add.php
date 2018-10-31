@@ -58,45 +58,47 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     public function init()
     {
         parent::init();
-        $this->add(array(
-            'type'       => 'fieldset',
-            'name'       => 'group_information',
-            'label'      => 'Group Information',
-            'attributes' => array(
-                'id' => 'group_information',
-            ),
-            'elements' => array(
-                array(
-                    'type'     => 'text',
-                    'name'     => 'name',
-                    'label'    => 'Group Name',
-                    'required' => true,
-                    'options'  => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'       => 'fieldset',
+                'name'       => 'group_information',
+                'label'      => 'Group Information',
+                'attributes' => array(
+                    'id' => 'group_information',
+                ),
+                'elements' => array(
+                    array(
+                        'type'     => 'text',
+                        'name'     => 'name',
+                        'label'    => 'Group Name',
+                        'required' => true,
+                        'options'  => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
                             ),
                         ),
                     ),
-                ),
-                array(
-                    'type'       => 'select',
-                    'name'       => 'happy_hour_one',
-                    'label'      => 'First Happy Hour',
-                    'attributes' => array(
-                        'options' => $this->getHappyHours1(),
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'happy_hour_one',
+                        'label'      => 'First Happy Hour',
+                        'attributes' => array(
+                            'options' => $this->getHappyHours1(),
+                        ),
+                    ),
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'happy_hour_two',
+                        'label'      => 'Second Happy Hour',
+                        'attributes' => array(
+                            'options' => $this->getHappyHours2(),
+                        ),
                     ),
                 ),
-                array(
-                    'type'       => 'select',
-                    'name'       => 'happy_hour_two',
-                    'label'      => 'Second Happy Hour',
-                    'attributes' => array(
-                        'options' => $this->getHappyHours2(),
-                    ),
-                ),
-            ),
-        ));
+            )
+        );
 
         foreach (Group::$allMembers as $i => $memberNb) {
             $this->generateMemberForm($memberNb, ($i < 2));
@@ -110,70 +112,72 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
      */
     private function generateMemberForm($memberNb, $required = false)
     {
-        $this->add(array(
-            'type'       => 'fieldset',
-            'name'       => 'user_' . $memberNb,
-            'label'      => 'Runner ' . ucfirst($memberNb),
-            'attributes' => array(
-                'id' => 'user_' . $memberNb,
-            ),
-            'elements' => array(
-                array(
-                    'type'       => 'text',
-                    'name'       => 'university_identification',
-                    'label'      => 'R-number',
-                    'attributes' => array(
-                        'id' => 'university_identification_' . $memberNb,
-                    ),
-                    'required' => $required,
-                    'options'  => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array('name' => 'UniversityIdentification'),
+        $this->add(
+            array(
+                'type'       => 'fieldset',
+                'name'       => 'user_' . $memberNb,
+                'label'      => 'Runner ' . ucfirst($memberNb),
+                'attributes' => array(
+                    'id' => 'user_' . $memberNb,
+                ),
+                'elements' => array(
+                    array(
+                        'type'       => 'text',
+                        'name'       => 'university_identification',
+                        'label'      => 'R-number',
+                        'attributes' => array(
+                            'id' => 'university_identification_' . $memberNb,
+                        ),
+                        'required' => $required,
+                        'options'  => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array('name' => 'UniversityIdentification'),
+                                ),
                             ),
                         ),
                     ),
-                ),
-                array(
-                    'type'     => 'text',
-                    'name'     => 'first_name',
-                    'label'    => 'First Name',
-                    'required' => $required,
-                    'options'  => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
+                    array(
+                        'type'     => 'text',
+                        'name'     => 'first_name',
+                        'label'    => 'First Name',
+                        'required' => $required,
+                        'options'  => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
                             ),
                         ),
                     ),
-                ),
-                array(
-                    'type'     => 'text',
-                    'name'     => 'last_name',
-                    'label'    => 'Last Name',
-                    'required' => $required,
-                    'options'  => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
+                    array(
+                        'type'     => 'text',
+                        'name'     => 'last_name',
+                        'label'    => 'Last Name',
+                        'required' => $required,
+                        'options'  => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
                             ),
                         ),
                     ),
-                ),
-                array(
-                    'type'       => 'select',
-                    'name'       => 'department',
-                    'label'      => 'Department',
-                    'requied'    => $required,
-                    'attributes' => array(
-                        'options' => $this->getDepartments(),
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'department',
+                        'label'      => 'Department',
+                        'requied'    => $required,
+                        'attributes' => array(
+                            'options' => $this->getDepartments(),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
     }
 
     private function getDepartments()

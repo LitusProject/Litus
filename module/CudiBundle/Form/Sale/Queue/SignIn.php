@@ -31,31 +31,37 @@ class SignIn extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'username',
-            'label'      => 'Student Number',
-            'required'   => true,
-            'attributes' => array(
-                'autocomplete' => 'off',
-                'id'           => 'username',
-                'placeholder'  => 'Student Number',
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'username',
+                'label'      => 'Student Number',
+                'required'   => true,
+                'attributes' => array(
+                    'autocomplete' => 'off',
+                    'id'           => 'username',
+                    'placeholder'  => 'Student Number',
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'button',
-            'name'       => 'submit',
-            'label'      => 'Sign In',
-            'attributes' => array(
-                'id' => 'signin',
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'button',
+                'name'       => 'submit',
+                'label'      => 'Sign In',
+                'attributes' => array(
+                    'id' => 'signin',
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'  => 'reset',
-            'name'  => 'cancel',
-            'value' => 'Cancel',
-        ));
+        $this->add(
+            array(
+                'type'  => 'reset',
+                'name'  => 'cancel',
+                'value' => 'Cancel',
+            )
+        );
     }
 }

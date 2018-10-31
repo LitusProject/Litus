@@ -138,8 +138,8 @@ class Articles
         }
 
         $dissableAssignment = $entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('cudi.dissable_registration_articles_2nd_stock_period');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.dissable_registration_articles_2nd_stock_period');
 
         if (!($dissableAssignment == '1' && ($currentPeriod->getStartDate()->format('n') < 4 || $currentPeriod->getStartDate()->format('n') > 11))) {
             $registrationArticles = unserialize(

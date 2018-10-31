@@ -294,7 +294,8 @@ class Academic extends \CommonBundle\Entity\User\Person
                         return true;
                     }
                 }
-            )) {
+            )
+            ) {
                 return false;
             }
         }

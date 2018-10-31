@@ -38,61 +38,67 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->setAttribute('id', 'deliveryForm');
 
-        $this->add(array(
-            'type'       => 'hidden',
-            'name'       => 'add_with_virtual_order',
-            'attributes' => array(
-                'id' => 'addWithVirtualOrder',
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'hidden',
+                'name'       => 'add_with_virtual_order',
+                'attributes' => array(
+                    'id' => 'addWithVirtualOrder',
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'typeahead',
-            'name'       => 'article',
-            'label'      => 'Article',
-            'required'   => true,
-            'value'      => $this->barcodePrefix,
-            'attributes' => array(
-                'id'    => 'article',
-                'style' => 'width: 400px;',
-            ),
-            'options' => array(
-                'input' => array(
-                    'validators' => array(
-                        array('name' => 'TypeaheadSaleArticle'),
+        $this->add(
+            array(
+                'type'       => 'typeahead',
+                'name'       => 'article',
+                'label'      => 'Article',
+                'required'   => true,
+                'value'      => $this->barcodePrefix,
+                'attributes' => array(
+                    'id'    => 'article',
+                    'style' => 'width: 400px;',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'validators' => array(
+                            array('name' => 'TypeaheadSaleArticle'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'number',
-            'label'      => 'Number',
-            'required'   => true,
-            'attributes' => array(
-                'autocomplete' => 'off',
-                'id'           => 'delivery_number',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'Int',
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'number',
+                'label'      => 'Number',
+                'required'   => true,
+                'attributes' => array(
+                    'autocomplete' => 'off',
+                    'id'           => 'delivery_number',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
                         ),
-                        array(
-                            'name'    => 'GreaterThan',
-                            'options' => array(
-                                'min' => 0,
+                        'validators' => array(
+                            array(
+                                'name' => 'Int',
+                            ),
+                            array(
+                                'name'    => 'GreaterThan',
+                                'options' => array(
+                                    'min' => 0,
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Add', 'stock_add', 'add', array('id' => 'stock_add'));
     }

@@ -44,7 +44,8 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
         if (!in_array($academicYear, $person->getCompany()->getCvBookYears())) {
             if ($this->getParam('academicyear') === null
-                    && count($person->getCompany()->getCvBookYears()) > 0) {
+                && count($person->getCompany()->getCvBookYears()) > 0
+            ) {
                 $this->redirect()->toRoute(
                     'br_corporate_cv',
                     array(
@@ -55,7 +56,8 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
                 return new ViewModel();
             } elseif ($this->getParam('academicyear') === null
-                    && count($person->getCompany()->getCvBookArchiveYears()) > 0) {
+                && count($person->getCompany()->getCvBookArchiveYears()) > 0
+            ) {
                 $onlyArchive = true;
             } else {
                 $this->flashMessenger()->error(
@@ -100,7 +102,8 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
         if (!in_array($academicYear, $person->getCompany()->getCvBookYears())) {
             if ($this->getParam('academicyear') === null
-                    && count($person->getCompany()->getCvBookYears()) > 0) {
+                && count($person->getCompany()->getCvBookYears()) > 0
+            ) {
                 $this->redirect()->toRoute(
                     'br_corporate_cv',
                     array(
@@ -111,7 +114,8 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
                 return new ViewModel();
             } elseif ($this->getParam('academicyear') === null
-                    && count($person->getCompany()->getCvBookArchiveYears()) > 0) {
+                && count($person->getCompany()->getCvBookArchiveYears()) > 0
+            ) {
                 $onlyArchive = true;
             } else {
                 $this->flashMessenger()->error(
@@ -248,11 +252,13 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         }
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="cv-' . $archiveYear['full_year'] . '.pdf"',
-            'Content-Type'        => 'application/octet-stream',
-            'Content-Length'      => filesize($filePath . $archiveYear['file']),
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'inline; filename="cv-' . $archiveYear['full_year'] . '.pdf"',
+                'Content-Type'        => 'application/octet-stream',
+                'Content-Length'      => filesize($filePath . $archiveYear['file']),
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         $handle = fopen($filePath . $archiveYear['file'], 'r');

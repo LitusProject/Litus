@@ -60,13 +60,13 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         $date = new DateTime();
         $startOffset = new DateInterval(
             $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('start_academic_year_offset')
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('start_academic_year_offset')
         );
         $endOffset = new DateInterval(
             $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('secretary.date_info_message_interval')
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.date_info_message_interval')
         );
 
         $startNewUniversityYear = $academicYear->getUniversityEndDate()->sub($startOffset);

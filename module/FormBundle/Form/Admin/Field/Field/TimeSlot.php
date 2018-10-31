@@ -32,65 +32,73 @@ class TimeSlot extends \CommonBundle\Component\Form\Admin\Fieldset\Tabbable
 {
     public function init()
     {
-        $this->add(array(
-            'type'     => 'datetime',
-            'name'     => 'start_date',
-            'label'    => 'Start Date',
-            'required' => true,
-        ));
+        $this->add(
+            array(
+                'type'     => 'datetime',
+                'name'     => 'start_date',
+                'label'    => 'Start Date',
+                'required' => true,
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'datetime',
-            'name'     => 'end_date',
-            'label'    => 'End Date',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'validators' => array(
-                        array(
-                            'name'    => 'DateCompare',
-                            'options' => array(
-                                'first_date' => 'start_date',
-                                'format'     => 'd/m/Y H:i',
+        $this->add(
+            array(
+                'type'     => 'datetime',
+                'name'     => 'end_date',
+                'label'    => 'End Date',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name'    => 'DateCompare',
+                                'options' => array(
+                                    'first_date' => 'start_date',
+                                    'format'     => 'd/m/Y H:i',
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         parent::init();
     }
 
     protected function addTab(FieldsetInterface $container, Language $language, $isDefault)
     {
-        $container->add(array(
-            'type'     => 'text',
-            'name'     => 'location',
-            'label'    => 'Location',
-            'required' => false,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $container->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'location',
+                'label'    => 'Location',
+                'required' => false,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $container->add(array(
-            'type'     => 'text',
-            'name'     => 'extra_info',
-            'label'    => 'Extra Information',
-            'required' => false,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $container->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'extra_info',
+                'label'    => 'Extra Information',
+                'required' => false,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
     }
 
     public function getInputFilterSpecification()

@@ -77,11 +77,13 @@ class PhotosController extends \CommonBundle\Component\Controller\ActionControll
                 $zip->generateArchive($archive);
 
                 $headers = new Headers();
-                $headers->addHeaders(array(
-                    'Content-Disposition' => 'inline; filename="promotions_' . $academicYear->getCode() . '.zip"',
-                    'Content-Type'        => mime_content_type($archive->getFileName()),
-                    'Content-Length'      => filesize($archive->getFileName()),
-                ));
+                $headers->addHeaders(
+                    array(
+                        'Content-Disposition' => 'inline; filename="promotions_' . $academicYear->getCode() . '.zip"',
+                        'Content-Type'        => mime_content_type($archive->getFileName()),
+                        'Content-Length'      => filesize($archive->getFileName()),
+                    )
+                );
 
                 $this->getResponse()->setHeaders($headers);
 

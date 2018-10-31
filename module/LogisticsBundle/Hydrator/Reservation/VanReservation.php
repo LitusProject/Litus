@@ -60,8 +60,8 @@ class VanReservation extends \CommonBundle\Component\Hydrator\Hydrator
         $driver = null;
         if (array_key_exists('driver', $data)) {
             $driver = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Driver')
-            ->findOneById($data['driver']);
+                ->getRepository('LogisticsBundle\Entity\Driver')
+                ->findOneById($data['driver']);
         }
 
         if ($data['passenger']['id'] != '') {

@@ -105,7 +105,7 @@ class Page extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->andWhere(
                 $query->expr()->eq('c.sector', ':sector')
             )
-            ->setParameter('sector', $sector);
+                ->setParameter('sector', $sector);
         }
 
         return $query->getQuery();

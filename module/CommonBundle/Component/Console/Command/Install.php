@@ -41,10 +41,11 @@ abstract class Install extends \CommonBundle\Component\Console\Command
         $this
             ->setName('install:' . str_replace('bundle', '', strtolower($this->module)))
             ->setDescription('Install the ' . $this->module . '.')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The <info>%command.name%</info> command installs the $this->module module.
 EOT
-        );
+            );
     }
 
     /**

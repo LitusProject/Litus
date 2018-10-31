@@ -40,10 +40,12 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
         $form = $this->getForm('mail_study_mail', array('academicYear' => $currentYear));
 
         if ($this->getRequest()->isPost()) {
-            $form->setData(array_merge_recursive(
-                $this->getRequest()->getPost()->toArray(),
-                $this->getRequest()->getFiles()->toArray()
-            ));
+            $form->setData(
+                array_merge_recursive(
+                    $this->getRequest()->getPost()->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
 
             if ($form->isValid()) {
                 $formData = $form->getData();
@@ -255,9 +257,12 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                 ->getRepository('SyllabusBundle\Entity\Study')
                 ->findOneById($studyId);
 
-            $enrollments = array_merge($enrollments, $this->getEntityManager()
-                ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                ->findAllByStudy($study));
+            $enrollments = array_merge(
+                $enrollments,
+                $this->getEntityManager()
+                    ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+                    ->findAllByStudy($study)
+            );
         }
 
         return $enrollments;
@@ -297,9 +302,12 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                 ->findAllByGroupAndAcademicYear($group, $this->getCurrentAcademicYear(false));
 
             foreach ($studies as $study) {
-                $enrollments = array_merge($enrollments, $this->getEntityManager()
-                    ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                    ->findAllByStudy($study->getStudy()));
+                $enrollments = array_merge(
+                    $enrollments,
+                    $this->getEntityManager()
+                        ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+                        ->findAllByStudy($study->getStudy())
+                );
             }
         }
 

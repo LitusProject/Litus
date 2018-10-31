@@ -79,53 +79,59 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
         $editable = $this->form->canBeSavedBy($this->person) || $this->forceEdit;
 
         if ($this->person === null) {
-            $this->add(array(
-                'type'     => 'text',
-                'name'     => 'first_name',
-                'label'    => 'First Name',
-                'required' => true,
-                'value'    => $this->guestInfo ? $this->guestInfo->getFirstName() : '',
-                'options'  => array(
-                    'input' => array(
-                        'filter' => array(
-                            array('name' => 'StringTrim'),
+            $this->add(
+                array(
+                    'type'     => 'text',
+                    'name'     => 'first_name',
+                    'label'    => 'First Name',
+                    'required' => true,
+                    'value'    => $this->guestInfo ? $this->guestInfo->getFirstName() : '',
+                    'options'  => array(
+                        'input' => array(
+                            'filter' => array(
+                                array('name' => 'StringTrim'),
+                            ),
                         ),
                     ),
-                ),
-            ));
+                )
+            );
 
-            $this->add(array(
-                'type'     => 'text',
-                'name'     => 'last_name',
-                'label'    => 'Last Name',
-                'required' => true,
-                'value'    => $this->guestInfo ? $this->guestInfo->getLastName() : '',
-                'options'  => array(
-                    'input' => array(
-                        'filter' => array(
-                            array('name' => 'StringTrim'),
+            $this->add(
+                array(
+                    'type'     => 'text',
+                    'name'     => 'last_name',
+                    'label'    => 'Last Name',
+                    'required' => true,
+                    'value'    => $this->guestInfo ? $this->guestInfo->getLastName() : '',
+                    'options'  => array(
+                        'input' => array(
+                            'filter' => array(
+                                array('name' => 'StringTrim'),
+                            ),
                         ),
                     ),
-                ),
-            ));
+                )
+            );
 
-            $this->add(array(
-                'type'     => 'text',
-                'name'     => 'email',
-                'label'    => 'Email',
-                'required' => true,
-                'value'    => $this->guestInfo ? $this->guestInfo->getEmail() : '',
-                'options'  => array(
-                    'input' => array(
-                        'filter' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array('name' => 'EmailAddress'),
+            $this->add(
+                array(
+                    'type'     => 'text',
+                    'name'     => 'email',
+                    'label'    => 'Email',
+                    'required' => true,
+                    'value'    => $this->guestInfo ? $this->guestInfo->getEmail() : '',
+                    'options'  => array(
+                        'input' => array(
+                            'filter' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array('name' => 'EmailAddress'),
+                            ),
                         ),
                     ),
-                ),
-            ));
+                )
+            );
         }
 
         $occupiedSlots = $this->getOccupiedSlots();
@@ -275,8 +281,9 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->occupiedSlots = array();
         foreach ($formEntries as $formEntry) {
-            if (($this->person !== null && $formEntry->getCreationPerson() == $this->person) ||
-                ($this->guestInfo !== null && $formEntry->getGuestInfo() == $this->guestInfo)) {
+            if (($this->person !== null && $formEntry->getCreationPerson() == $this->person) 
+                || ($this->guestInfo !== null && $formEntry->getGuestInfo() == $this->guestInfo)
+            ) {
                 continue;
             }
 

@@ -83,8 +83,8 @@ class Resource
     public function getChildren(EntityManager $entityManager)
     {
         return $entityManager
-                ->getRepository('CommonBundle\Entity\Acl\Resource')
-                ->findByParent($this->getName());
+            ->getRepository('CommonBundle\Entity\Acl\Resource')
+            ->findByParent($this->getName());
     }
 
     /**
@@ -96,7 +96,7 @@ class Resource
     public function getActions(EntityManager $entityManager)
     {
         return $entityManager
-                ->getRepository('CommonBundle\Entity\Acl\Action')
-                ->findByResource($this->getName());
+            ->getRepository('CommonBundle\Entity\Acl\Action')
+            ->findByResource($this->getName());
     }
 }

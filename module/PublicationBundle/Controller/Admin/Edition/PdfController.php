@@ -93,10 +93,12 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
         $form = $this->getForm('publication_edition_pdf_add', array('publication' => $publication));
         $formData = $this->getRequest()->getPost();
 
-        $form->setData(array_merge_recursive(
-            $formData->toArray(),
-            $this->getRequest()->getFiles()->toArray()
-        ));
+        $form->setData(
+            array_merge_recursive(
+                $formData->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            )
+        );
 
         $date = self::loadDate($formData['date']);
 
@@ -190,11 +192,13 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
             ->getConfigValue('publication.public_pdf_directory');
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="' . $edition->getTitle() . '"',
-            'Content-Type'        => 'application/pdf',
-            'Content-Length'      => filesize($filePath . $edition->getFileName()),
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="' . $edition->getTitle() . '"',
+                'Content-Type'        => 'application/pdf',
+                'Content-Length'      => filesize($filePath . $edition->getFileName()),
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         $handle = fopen($filePath . $edition->getFileName(), 'r');

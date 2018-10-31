@@ -46,34 +46,38 @@ class MailingList extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'select',
-            'name'     => 'entry',
-            'label'    => 'List',
-            'required' => true,
-            'options'  => array(
-                'options' => $this->createEntriesArray(),
-                'input'   => array(
-                    'validators' => array(
-                        array(
-                            'name'    => 'EntryMailingList',
-                            'options' => array(
-                                'list' => $this->getList(),
+        $this->add(
+            array(
+                'type'     => 'select',
+                'name'     => 'entry',
+                'label'    => 'List',
+                'required' => true,
+                'options'  => array(
+                    'options' => $this->createEntriesArray(),
+                    'input'   => array(
+                        'validators' => array(
+                            array(
+                                'name'    => 'EntryMailingList',
+                                'options' => array(
+                                    'list' => $this->getList(),
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'submit',
-            'name'       => 'list_add',
-            'value'      => 'Add',
-            'attributes' => array(
-                'class' => 'mail_add',
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'submit',
+                'name'       => 'list_add',
+                'value'      => 'Add',
+                'attributes' => array(
+                    'class' => 'mail_add',
+                ),
+            )
+        );
     }
 
     private function createEntriesArray()

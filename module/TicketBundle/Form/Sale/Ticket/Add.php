@@ -42,194 +42,154 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->setAttribute('id', 'ticket_sale_form');
 
-        $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'force',
-            'label'      => 'Force (Ignore limits)',
-            'required'   => false,
-            'attributes' => array(
-                'id' => 'force',
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'checkbox',
+                'name'       => 'force',
+                'label'      => 'Force (Ignore limits)',
+                'required'   => false,
+                'attributes' => array(
+                    'id' => 'force',
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'is_guest',
-            'label'      => 'Is Guest',
-            'required'   => false,
-            'attributes' => array(
-                'id' => 'is_guest',
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'checkbox',
+                'name'       => 'is_guest',
+                'label'      => 'Is Guest',
+                'required'   => false,
+                'attributes' => array(
+                    'id' => 'is_guest',
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'fieldset',
-            'name'     => 'person_form',
-            'label'    => 'Person',
-            'elements' => array(
-                array(
-                    'type'     => 'typeahead',
-                    'name'     => 'person',
-                    'label'    => 'Person',
-                    'required' => true,
-                    'options'  => array(
-                        'input' => array(
-                            'validators' => array(
-                                array('name' => 'TypeaheadPerson'),
+        $this->add(
+            array(
+                'type'     => 'fieldset',
+                'name'     => 'person_form',
+                'label'    => 'Person',
+                'elements' => array(
+                    array(
+                        'type'     => 'typeahead',
+                        'name'     => 'person',
+                        'label'    => 'Person',
+                        'required' => true,
+                        'options'  => array(
+                            'input' => array(
+                                'validators' => array(
+                                    array('name' => 'TypeaheadPerson'),
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'fieldset',
-            'name'     => 'guest_form',
-            'label'    => 'Guest',
-            'elements' => array(
-                array(
-                    'type'       => 'text',
-                    'name'       => 'guest_first_name',
-                    'label'      => 'First Name',
-                    'required'   => true,
-                    'attributes' => array(
-                        'id' => 'guest_first_name',
+        $this->add(
+            array(
+                'type'     => 'fieldset',
+                'name'     => 'guest_form',
+                'label'    => 'Guest',
+                'elements' => array(
+                    array(
+                        'type'       => 'text',
+                        'name'       => 'guest_first_name',
+                        'label'      => 'First Name',
+                        'required'   => true,
+                        'attributes' => array(
+                            'id' => 'guest_first_name',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                            ),
+                        ),
                     ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
+                    array(
+                        'type'       => 'text',
+                        'name'       => 'guest_last_name',
+                        'label'      => 'Last Name',
+                        'required'   => true,
+                        'attributes' => array(
+                            'id' => 'guest_last_name',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'       => 'text',
+                        'name'       => 'guest_email',
+                        'label'      => 'Email',
+                        'required'   => true,
+                        'attributes' => array(
+                            'id' => 'guest_email',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array('name' => 'EmailAddress'),
+                                ),
                             ),
                         ),
                     ),
                 ),
-                array(
-                    'type'       => 'text',
-                    'name'       => 'guest_last_name',
-                    'label'      => 'Last Name',
-                    'required'   => true,
-                    'attributes' => array(
-                        'id' => 'guest_last_name',
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                        ),
-                    ),
-                ),
-                array(
-                    'type'       => 'text',
-                    'name'       => 'guest_email',
-                    'label'      => 'Email',
-                    'required'   => true,
-                    'attributes' => array(
-                        'id' => 'guest_email',
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array('name' => 'EmailAddress'),
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        ));
+            )
+        );
 
         $optionsForm = $this->addFieldset('Options', 'options_form');
 
         if ($this->event->getOptions()->isEmpty()) {
-            $optionsForm->add(array(
-                'type'       => 'select',
-                'name'       => 'number_member',
-                'label'      => 'Number Member',
-                'required'   => true,
-                'attributes' => array(
-                    'class'      => 'ticket_option',
-                    'id'         => 'number_member',
-                    'data-price' => $this->event->getPriceMembers(),
-                    'options'    => $this->getNumberOptions(),
-                ),
-                'options' => array(
-                    'input' => array(
-                        'validators' => array(
-                            array(
-                                'name'    => 'NumberTickets',
-                                'options' => array(
-                                    'event' => $this->event,
+            $optionsForm->add(
+                array(
+                    'type'       => 'select',
+                    'name'       => 'number_member',
+                    'label'      => 'Number Member',
+                    'required'   => true,
+                    'attributes' => array(
+                        'class'      => 'ticket_option',
+                        'id'         => 'number_member',
+                        'data-price' => $this->event->getPriceMembers(),
+                        'options'    => $this->getNumberOptions(),
+                    ),
+                    'options' => array(
+                        'input' => array(
+                            'validators' => array(
+                                array(
+                                    'name'    => 'NumberTickets',
+                                    'options' => array(
+                                        'event' => $this->event,
+                                    ),
                                 ),
                             ),
                         ),
                     ),
-                ),
-            ));
+                )
+            );
 
             if (!$this->event->isOnlyMembers()) {
-                $optionsForm->add(array(
-                    'type'       => 'select',
-                    'name'       => 'number_non_member',
-                    'label'      => 'Number Non Member',
-                    'attributes' => array(
-                        'class'      => 'ticket_option',
-                        'id'         => 'number_non_member',
-                        'data-price' => $this->event->getPriceNonMembers(),
-                        'options'    => $this->getNumberOptions(),
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'validators' => array(
-                                array(
-                                    'name'    => 'NumberTickets',
-                                    'options' => array(
-                                        'event' => $this->event,
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                ));
-            }
-        } else {
-            foreach ($this->event->getOptions() as $option) {
-                $optionsForm->add(array(
-                    'type'       => 'select',
-                    'name'       => 'option_' . $option->getId() . '_number_member',
-                    'label'      => ucfirst($option->getName()) . ' (Member)',
-                    'attributes' => array(
-                        'class'      => 'ticket_option',
-                        'id'         => 'option_' . $option->getId() . '_number_member',
-                        'data-price' => $option->getPriceMembers(),
-                        'options'    => $this->getNumberOptions(),
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'validators' => array(
-                                array(
-                                    'name'    => 'NumberTickets',
-                                    'options' => array(
-                                        'event' => $this->event,
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                ));
-
-                if (!$this->event->isOnlyMembers()) {
-                    $optionsForm->add(array(
+                $optionsForm->add(
+                    array(
                         'type'       => 'select',
-                        'name'       => 'option_' . $option->getId() . '_number_non_member',
-                        'label'      => ucfirst($option->getName()) . ' (Non Member)',
+                        'name'       => 'number_non_member',
+                        'label'      => 'Number Non Member',
                         'attributes' => array(
                             'class'      => 'ticket_option',
-                            'id'         => 'option_' . $option->getId() . '_number_non_member',
-                            'data-price' => $option->getPriceNonMembers(),
+                            'id'         => 'number_non_member',
+                            'data-price' => $this->event->getPriceNonMembers(),
                             'options'    => $this->getNumberOptions(),
                         ),
                         'options' => array(
@@ -244,19 +204,77 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 ),
                             ),
                         ),
-                    ));
+                    )
+                );
+            }
+        } else {
+            foreach ($this->event->getOptions() as $option) {
+                $optionsForm->add(
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'option_' . $option->getId() . '_number_member',
+                        'label'      => ucfirst($option->getName()) . ' (Member)',
+                        'attributes' => array(
+                            'class'      => 'ticket_option',
+                            'id'         => 'option_' . $option->getId() . '_number_member',
+                            'data-price' => $option->getPriceMembers(),
+                            'options'    => $this->getNumberOptions(),
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'NumberTickets',
+                                        'options' => array(
+                                            'event' => $this->event,
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    )
+                );
+
+                if (!$this->event->isOnlyMembers()) {
+                    $optionsForm->add(
+                        array(
+                            'type'       => 'select',
+                            'name'       => 'option_' . $option->getId() . '_number_non_member',
+                            'label'      => ucfirst($option->getName()) . ' (Non Member)',
+                            'attributes' => array(
+                                'class'      => 'ticket_option',
+                                'id'         => 'option_' . $option->getId() . '_number_non_member',
+                                'data-price' => $option->getPriceNonMembers(),
+                                'options'    => $this->getNumberOptions(),
+                            ),
+                            'options' => array(
+                                'input' => array(
+                                    'validators' => array(
+                                        array(
+                                            'name'    => 'NumberTickets',
+                                            'options' => array(
+                                                'event' => $this->event,
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        )
+                    );
                 }
             }
         }
 
-        $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'payed',
-            'label'      => 'Payed',
-            'attributes' => array(
-                'id' => 'payed',
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'checkbox',
+                'name'       => 'payed',
+                'label'      => 'Payed',
+                'attributes' => array(
+                    'id' => 'payed',
+                ),
+            )
+        );
 
         $this->addSubmit('Sale', 'sale_tickets', 'sale', array('id' => 'sale_tickets'));
     }

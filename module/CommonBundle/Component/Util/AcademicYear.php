@@ -134,9 +134,11 @@ class AcademicYear
             }
 
             // One semester is 13 weeks long
-            $christmas->sub(new DateInterval(
-                'P' . (13 * 7) . 'D'
-            ));
+            $christmas->sub(
+                new DateInterval(
+                    'P' . (13 * 7) . 'D'
+                )
+            );
 
             $currentDate = clone $date;
             $currentDate->sub(
@@ -144,9 +146,11 @@ class AcademicYear
             );
         } while ($christmas > $date);
 
-        $christmas->sub(new DateInterval(
-            'P' . $delta . 'D'
-        ));
+        $christmas->sub(
+            new DateInterval(
+                'P' . $delta . 'D'
+            )
+        );
 
         return $christmas;
     }

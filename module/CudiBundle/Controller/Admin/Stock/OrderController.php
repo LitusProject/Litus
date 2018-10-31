@@ -403,10 +403,12 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         $filename = 'order ' . $order->getDateOrdered()->format('Ymd') . '.pdf';
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename=' . $filename,
-            'Content-Type'        => 'application/pdf',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename=' . $filename,
+                'Content-Type'        => 'application/pdf',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -481,10 +483,12 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         $filename = 'order ' . $order->getDateOrdered()->format('Ymd') . '.csv';
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename=' . $filename,
-            'Content-Type'        => 'text/csv',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename=' . $filename,
+                'Content-Type'        => 'text/csv',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -532,11 +536,13 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         }
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="order.zip"',
-            'Content-Type'        => 'application/zip',
-            'Content-Length'      => filesize($archive->getFileName()),
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="order.zip"',
+                'Content-Type'        => 'application/zip',
+                'Content-Length'      => filesize($archive->getFileName()),
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(

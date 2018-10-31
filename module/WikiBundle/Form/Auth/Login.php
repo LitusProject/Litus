@@ -39,33 +39,55 @@ class Login extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->setAttribute('id', 'login');
 
         if ($this->username !== null) {
-            $this->add(array(
-                'type'       => 'text',
-                'name'       => 'username_visible',
-                'label'      => 'Username',
-                'value'      => $this->username,
-                'attributes' => array(
-                    'disabled' => 'disabled',
-                ),
-                'options' => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
+            $this->add(
+                array(
+                    'type'       => 'text',
+                    'name'       => 'username_visible',
+                    'label'      => 'Username',
+                    'value'      => $this->username,
+                    'attributes' => array(
+                        'disabled' => 'disabled',
+                    ),
+                    'options' => array(
+                        'input' => array(
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
                         ),
                     ),
-                ),
-            ));
+                )
+            );
 
-            $this->add(array(
-                'type'  => 'hidden',
-                'name'  => 'username',
-                'value' => $this->username,
-            ));
+            $this->add(
+                array(
+                    'type'  => 'hidden',
+                    'name'  => 'username',
+                    'value' => $this->username,
+                )
+            );
         } else {
-            $this->add(array(
-                'type'     => 'text',
-                'name'     => 'username',
-                'label'    => 'Username',
+            $this->add(
+                array(
+                    'type'     => 'text',
+                    'name'     => 'username',
+                    'label'    => 'Username',
+                    'required' => true,
+                    'options'  => array(
+                        'input' => array(
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                )
+            );
+        }
+
+        $this->add(
+            array(
+                'type'     => 'password',
+                'name'     => 'password',
+                'label'    => 'Password',
                 'required' => true,
                 'options'  => array(
                     'input' => array(
@@ -74,38 +96,28 @@ class Login extends \CommonBundle\Component\Form\Bootstrap\Form
                         ),
                     ),
                 ),
-            ));
-        }
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'password',
-            'name'     => 'password',
-            'label'    => 'Password',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
+        $this->add(
+            array(
+                'type'  => 'hidden',
+                'name'  => 'remember_me',
+                'value' => true,
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'checkbox',
+                'name'       => 'remember_me_visible',
+                'label'      => 'Remember Me',
+                'value'      => true,
+                'attributes' => array(
+                    'disabled' => 'disabled',
                 ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'  => 'hidden',
-            'name'  => 'remember_me',
-            'value' => true,
-        ));
-
-        $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'remember_me_visible',
-            'label'      => 'Remember Me',
-            'value'      => true,
-            'attributes' => array(
-                'disabled' => 'disabled',
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Login', 'btn btn-default pull-right');
     }

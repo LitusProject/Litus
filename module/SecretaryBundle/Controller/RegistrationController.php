@@ -176,10 +176,13 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
                     ->findLastByUniversityIdentification($this->getParam('identification'));
 
-                $form = $this->getForm('secretary_registration_add', array(
-                    'identification' => $this->getParam('identification'),
-                    'extra_info'     => $code !== null ? unserialize($code->getInfo()) : array(),
-                ));
+                $form = $this->getForm(
+                    'secretary_registration_add',
+                    array(
+                        'identification' => $this->getParam('identification'),
+                        'extra_info'     => $code !== null ? unserialize($code->getInfo()) : array(),
+                    )
+                );
 
                 $formData = $this->getRequest()->getPost()->toArray();
                 $formData['academic']['university_identification'] = $this->getParam('identification');
@@ -320,10 +323,13 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
                     ->findLastByUniversityIdentification($this->getParam('identification'));
 
-                $form = $this->getForm('secretary_registration_add', array(
-                    'identification' => $this->getParam('identification'),
-                    'extra_info'     => $code !== null ? unserialize($code->getInfo()) : array(),
-                ));
+                $form = $this->getForm(
+                    'secretary_registration_add',
+                    array(
+                        'identification' => $this->getParam('identification'),
+                        'extra_info'     => $code !== null ? unserialize($code->getInfo()) : array(),
+                    )
+                );
 
                 return new ViewModel(
                     array(
@@ -399,9 +405,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getConfigValue('secretary.isic_membership') == 1;
         $isicRedirect = false;
         $isicOrder = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\IsicCard')
-                        ->findByPersonAndYearQuery($academic, $this->getCurrentAcademicYear())
-                        ->getResult();
+            ->getRepository('CudiBundle\Entity\IsicCard')
+            ->findByPersonAndYearQuery($academic, $this->getCurrentAcademicYear())
+            ->getResult();
 
         $membershipArticles = array();
         foreach ($ids as $organization => $id) {

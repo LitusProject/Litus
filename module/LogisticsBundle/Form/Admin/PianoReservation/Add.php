@@ -42,111 +42,121 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'typeahead',
-            'name'     => 'player',
-            'label'    => 'Player',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'validators' => array(
-                        array('name' => 'TypeaheadPerson'),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'start_date',
-            'label'      => 'Start Date',
-            'required'   => true,
-            'attributes' => array(
-                'options' => $this->getTimeSlots(true),
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name'    => 'Date',
-                            'options' => array(
-                                'format' => 'd/m/Y H:i',
-                            ),
+        $this->add(
+            array(
+                'type'     => 'typeahead',
+                'name'     => 'player',
+                'label'    => 'Player',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'validators' => array(
+                            array('name' => 'TypeaheadPerson'),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'end_date',
-            'label'      => 'End Date',
-            'required'   => true,
-            'attributes' => array(
-                'options' => $this->getTimeSlots(false),
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name'    => 'Date',
-                            'options' => array(
-                                'format' => 'd/m/Y H:i',
-                            ),
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'start_date',
+                'label'      => 'Start Date',
+                'required'   => true,
+                'attributes' => array(
+                    'options' => $this->getTimeSlots(true),
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
                         ),
-                        array(
-                            'name'    => 'DateCompare',
-                            'options' => array(
-                                'first_date' => 'start_date',
-                                'format'     => 'd/m/Y H:i',
-                            ),
-                        ),
-                        array(
-                            'name'    => 'PianoReservationConflict',
-                            'options' => array(
-                                'start_date'     => 'start_date',
-                                'format'         => 'd/m/Y H:i',
-                                'resource'       => PianoReservation::PIANO_RESOURCE_NAME,
-                                'reservation_id' => $this->reservation !== null ? $this->reservation->getId() : null,
-                            ),
-                        ),
-                        array(
-                            'name'    => 'PianoDuration',
-                            'options' => array(
-                                'start_date' => 'start_date',
-                                'format'     => 'd/m/Y H:i',
+                        'validators' => array(
+                            array(
+                                'name'    => 'Date',
+                                'options' => array(
+                                    'format' => 'd/m/Y H:i',
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'    => 'textarea',
-            'name'    => 'additional_info',
-            'label'   => 'Additional Info',
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'end_date',
+                'label'      => 'End Date',
+                'required'   => true,
+                'attributes' => array(
+                    'options' => $this->getTimeSlots(false),
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name'    => 'Date',
+                                'options' => array(
+                                    'format' => 'd/m/Y H:i',
+                                ),
+                            ),
+                            array(
+                                'name'    => 'DateCompare',
+                                'options' => array(
+                                    'first_date' => 'start_date',
+                                    'format'     => 'd/m/Y H:i',
+                                ),
+                            ),
+                            array(
+                                'name'    => 'PianoReservationConflict',
+                                'options' => array(
+                                    'start_date'     => 'start_date',
+                                    'format'         => 'd/m/Y H:i',
+                                    'resource'       => PianoReservation::PIANO_RESOURCE_NAME,
+                                    'reservation_id' => $this->reservation !== null ? $this->reservation->getId() : null,
+                                ),
+                            ),
+                            array(
+                                'name'    => 'PianoDuration',
+                                'options' => array(
+                                    'start_date' => 'start_date',
+                                    'format'     => 'd/m/Y H:i',
+                                ),
+                            ),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'confirmed',
-            'label' => 'Confirmed',
-        ));
+        $this->add(
+            array(
+                'type'    => 'textarea',
+                'name'    => 'additional_info',
+                'label'   => 'Additional Info',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'  => 'checkbox',
+                'name'  => 'confirmed',
+                'label' => 'Confirmed',
+            )
+        );
 
         $this->addSubmit('Add', 'reservation_add');
 

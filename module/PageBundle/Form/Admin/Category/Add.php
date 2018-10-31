@@ -37,36 +37,40 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'parent',
-            'label'      => 'Parent',
-            'attributes' => array(
-                'id' => 'parent',
-            ),
-            'options' => array(
-                'options' => $this->createPagesArray(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'parent',
+                'label'      => 'Parent',
+                'attributes' => array(
+                    'id' => 'parent',
+                ),
+                'options' => array(
+                    'options' => $this->createPagesArray(),
+                ),
+            )
+        );
 
         $this->addSubmit('Add', 'category_add');
     }
 
     protected function addTab(FieldsetInterface $container, Language $language, $isDefault)
     {
-        $container->add(array(
-            'type'     => 'text',
-            'name'     => 'name',
-            'label'    => 'Name',
-            'required' => $isDefault,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $container->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'name',
+                'label'    => 'Name',
+                'required' => $isDefault,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
     }
 
     private function createPagesArray()

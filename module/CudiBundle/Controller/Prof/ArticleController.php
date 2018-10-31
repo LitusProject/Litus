@@ -224,8 +224,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
         }
 
         $history = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Article\History')
-                    ->findOneByPrecursor($article);
+            ->getRepository('CudiBundle\Entity\Article\History')
+            ->findOneByPrecursor($article);
 
         if (isset($history)) {
             $this->redirect()->toRoute(

@@ -43,12 +43,14 @@ class EditSpeedyGroup extends \CommonBundle\Component\Form\Admin\Form
             $value = false;
         }
 
-        $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'isSpeedyGroup',
-            'label' => 'Is this group a speedy group ?',
-            'value' => $value,
-        ));
+        $this->add(
+            array(
+                'type'  => 'checkbox',
+                'name'  => 'isSpeedyGroup',
+                'label' => 'Is this group a speedy group ?',
+                'value' => $value,
+            )
+        );
 
         $this->addSubmit('Edit speedygroup', 'edit');
     }

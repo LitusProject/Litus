@@ -65,10 +65,12 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         $data = str_replace('{{ members }}', json_encode($membersJson), $data);
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="registrations.html"',
-            'Content-Type'        => 'text/html',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="registrations.html"',
+                'Content-Type'        => 'text/html',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(

@@ -40,9 +40,9 @@ class Poc extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('p', 'g')
             ->from('SyllabusBundle\Entity\Poc', 'p')
-             ->where(
+            ->where(
 
-             )
+            )
             ->innerJoin('p.groupId', 'g')
             ->orderBy('g.name', 'ASC')
             ->getQuery();
@@ -138,9 +138,11 @@ class Poc extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 
         $studyMaps = $query->select('m')
             ->from('SyllabusBundle\Entity\Group\StudyMap', 'm')
-            ->where($query->expr()->andX(
-                $query->expr()->in('m.study', $idsOfStudiesOfEnrollment)
-            ))
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->in('m.study', $idsOfStudiesOfEnrollment)
+                )
+            )
             ->getQuery()
             ->getResult();
 
@@ -197,10 +199,12 @@ class Poc extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('p')
             ->from('SyllabusBundle\Entity\poc', 'p')
-            ->where($query->expr()->andX(
-                $query->expr()->eq('p.academicYear', ':academicYear'),
-                $query->expr()->eq('p.indicator', 'true')
-            ))
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('p.academicYear', ':academicYear'),
+                    $query->expr()->eq('p.indicator', 'true')
+                )
+            )
             ->setParameter('academicYear', $academicYear)
             ->innerJoin('p.groupId', 'g')
             ->orderBy('g.name', 'ASC')
@@ -238,11 +242,13 @@ class Poc extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('p')
             ->from('SyllabusBundle\Entity\poc', 'p')
-            ->where($query->expr()->andX(
-                $query->expr()->eq('p.academicYear', ':academicYear'),
-                $query->expr()->eq('p.indicator', 'true'),
-                $query->expr()->eq('p.groupId', ':group')
-            ))
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('p.academicYear', ':academicYear'),
+                    $query->expr()->eq('p.indicator', 'true'),
+                    $query->expr()->eq('p.groupId', ':group')
+                )
+            )
             ->setParameter('academicYear', $academicYear)
             ->setParameter('group', $group)
             ->innerJoin('p.groupId', 'g')

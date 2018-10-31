@@ -75,180 +75,182 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             $universityEmail = explode('@', $extra['email'])[0];
         }
 
-        $this->add(array(
-            'type'     => 'fieldset',
-            'name'     => 'academic',
-            'label'    => 'Personal',
-            'elements' => array(
-                array(
-                    'type'       => 'text',
-                    'name'       => 'first_name',
-                    'label'      => 'First Name',
-                    'required'   => true,
-                    'value'      => $extra['first_name'] ?? '',
-                    'attributes' => array(
-                        'id' => 'first_name',
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
+        $this->add(
+            array(
+                'type'     => 'fieldset',
+                'name'     => 'academic',
+                'label'    => 'Personal',
+                'elements' => array(
+                    array(
+                        'type'       => 'text',
+                        'name'       => 'first_name',
+                        'label'      => 'First Name',
+                        'required'   => true,
+                        'value'      => $extra['first_name'] ?? '',
+                        'attributes' => array(
+                            'id' => 'first_name',
                         ),
-                    ),
-                ),
-                array(
-                    'type'       => 'text',
-                    'name'       => 'last_name',
-                    'label'      => 'Last Name',
-                    'required'   => true,
-                    'value'      => $extra['last_name'] ?? '',
-                    'attributes' => array(
-                        'id' => 'last_name',
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                        ),
-                    ),
-                ),
-                array(
-                    'type'       => 'text',
-                    'name'       => 'birthday',
-                    'label'      => 'Birthday',
-                    'required'   => true,
-                    'attributes' => array(
-                        'placeholder' => 'dd/mm/yyyy',
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name'    => 'Date',
-                                    'options' => array(
-                                        'format' => 'd/m/Y',
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-                array(
-                    'type'       => 'select',
-                    'name'       => 'sex',
-                    'label'      => 'Sex',
-                    'attributes' => array(
                         'options' => array(
-                            'm' => 'M',
-                            'f' => 'F',
-                        ),
-                    ),
-                ),
-                array(
-                    'type'       => 'text',
-                    'name'       => 'phone_number',
-                    'label'      => 'Phone Number',
-                    'attributes' => array(
-                        'placeholder' => '+CCAAANNNNNN',
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array('name' => 'PhoneNumber'),
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
                             ),
                         ),
                     ),
-                ),
-                array(
-                    'type'     => 'fieldset',
-                    'name'     => 'university',
-                    'elements' => array(
-                        array(
-                            'type'  => 'hidden',
-                            'name'  => 'identification',
-                            'value' => $this->identification,
+                    array(
+                        'type'       => 'text',
+                        'name'       => 'last_name',
+                        'label'      => 'Last Name',
+                        'required'   => true,
+                        'value'      => $extra['last_name'] ?? '',
+                        'attributes' => array(
+                            'id' => 'last_name',
                         ),
-                        array(
-                            'type'       => 'text',
-                            'name'       => 'identification_visible',
-                            'label'      => 'University Identification',
-                            'value'      => $this->identification,
-                            'attributes' => array(
-                                'disabled' => true,
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
                             ),
                         ),
-                        array(
-                            'type'       => 'text',
-                            'name'       => 'email',
-                            'label'      => 'University E-mail',
-                            'value'      => $universityEmail,
-                            'required'   => true,
-                            'attributes' => array(
-                                'id' => 'university_email',
-                            ),
-                            'options' => array(
-                                'input' => array(
-                                    'filters' => array(
-                                        array('name' => 'StringTrim'),
-                                    ),
-                                    'validators' => array(
-                                        array('name' => 'NoAt'),
+                    ),
+                    array(
+                        'type'       => 'text',
+                        'name'       => 'birthday',
+                        'label'      => 'Birthday',
+                        'required'   => true,
+                        'attributes' => array(
+                            'placeholder' => 'dd/mm/yyyy',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'Date',
+                                        'options' => array(
+                                            'format' => 'd/m/Y',
+                                        ),
                                     ),
                                 ),
                             ),
                         ),
                     ),
-                ),
-                array(
-                    'type'     => 'text',
-                    'name'     => 'personal_email',
-                    'label'    => 'Personal E-mail',
-                    'required' => true,
-                    'options'  => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array('name' => 'EmailAddress'),
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'sex',
+                        'label'      => 'Sex',
+                        'attributes' => array(
+                            'options' => array(
+                                'm' => 'M',
+                                'f' => 'F',
                             ),
                         ),
                     ),
+                    array(
+                        'type'       => 'text',
+                        'name'       => 'phone_number',
+                        'label'      => 'Phone Number',
+                        'attributes' => array(
+                            'placeholder' => '+CCAAANNNNNN',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array('name' => 'PhoneNumber'),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'     => 'fieldset',
+                        'name'     => 'university',
+                        'elements' => array(
+                            array(
+                                'type'  => 'hidden',
+                                'name'  => 'identification',
+                                'value' => $this->identification,
+                            ),
+                            array(
+                                'type'       => 'text',
+                                'name'       => 'identification_visible',
+                                'label'      => 'University Identification',
+                                'value'      => $this->identification,
+                                'attributes' => array(
+                                    'disabled' => true,
+                                ),
+                            ),
+                            array(
+                                'type'       => 'text',
+                                'name'       => 'email',
+                                'label'      => 'University E-mail',
+                                'value'      => $universityEmail,
+                                'required'   => true,
+                                'attributes' => array(
+                                    'id' => 'university_email',
+                                ),
+                                'options' => array(
+                                    'input' => array(
+                                        'filters' => array(
+                                            array('name' => 'StringTrim'),
+                                        ),
+                                        'validators' => array(
+                                            array('name' => 'NoAt'),
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'     => 'text',
+                        'name'     => 'personal_email',
+                        'label'    => 'Personal E-mail',
+                        'required' => true,
+                        'options'  => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array('name' => 'EmailAddress'),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'  => 'checkbox',
+                        'name'  => 'primary_email',
+                        'label' => 'I want to receive e-mail at my personal e-mail address',
+                        'value' => true,
+                    ),
+                    array(
+                        'type'  => 'checkbox',
+                        'name'  => 'is_international',
+                        'label' => 'I am an international student',
+                        'value' => false,
+                    ),
+                    array(
+                        'type'     => 'common_address_add-primary',
+                        'name'     => 'primary_address',
+                        'label'    => 'Primary Address&mdash;Student Room or Home',
+                        'required' => true,
+                    ),
+                    array(
+                        'type'     => 'common_address_add',
+                        'name'     => 'secondary_address',
+                        'label'    => 'Secondary Address&mdash;Home',
+                        'required' => true,
+                    ),
                 ),
-                array(
-                    'type'  => 'checkbox',
-                    'name'  => 'primary_email',
-                    'label' => 'I want to receive e-mail at my personal e-mail address',
-                    'value' => true,
-                ),
-                array(
-                    'type'  => 'checkbox',
-                    'name'  => 'is_international',
-                    'label' => 'I am an international student',
-                    'value' => false,
-                ),
-                array(
-                    'type'     => 'common_address_add-primary',
-                    'name'     => 'primary_address',
-                    'label'    => 'Primary Address&mdash;Student Room or Home',
-                    'required' => true,
-                ),
-                array(
-                    'type'     => 'common_address_add',
-                    'name'     => 'secondary_address',
-                    'label'    => 'Secondary Address&mdash;Home',
-                    'required' => true,
-                ),
-            ),
-        ));
+            )
+        );
 
         $registrationEnabled = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -264,58 +266,60 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.isic_membership');
 
-        $this->add(array(
-            'type'       => 'fieldset',
-            'name'       => 'organization_info',
-            'label'      => 'Student Organization',
-            'attributes' => array(
-                'id' => 'organization_info',
-            ),
-            'elements' => array(
-                array(
-                    'type'       => 'select',
-                    'name'       => 'organization',
-                    'label'      => 'Student Organization',
-                    'attributes' => array(
-                        'id'      => 'organization',
-                        'options' => $this->getOrganizations(),
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'required' => count($this->getOrganizations()) > 1,
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'       => 'fieldset',
+                'name'       => 'organization_info',
+                'label'      => 'Student Organization',
+                'attributes' => array(
+                    'id' => 'organization_info',
+                ),
+                'elements' => array(
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'organization',
+                        'label'      => 'Student Organization',
+                        'attributes' => array(
+                            'id'      => 'organization',
+                            'options' => $this->getOrganizations(),
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'required' => count($this->getOrganizations()) > 1,
+                                'filters'  => array(
+                                    array('name' => 'StringTrim'),
+                                ),
                             ),
                         ),
                     ),
-                ),
-                array(
-                    'type'       => count($memberShipArticles) == 0 && $isicMembership == '0' ? 'hidden' : 'checkbox',
-                    'name'       => 'become_member',
-                    'label'      => 'I want to become a member of the student association in academic year { year } (&euro; { price })',
-                    'value'      => count($memberShipArticles) == 0 && $isicMembership == '0' ? false : true,
-                    'attributes' => array(
-                        'id'       => 'become_member',
-                        'disabled' => $registrationEnabled != 1,
+                    array(
+                        'type'       => count($memberShipArticles) == 0 && $isicMembership == '0' ? 'hidden' : 'checkbox',
+                        'name'       => 'become_member',
+                        'label'      => 'I want to become a member of the student association in academic year { year } (&euro; { price })',
+                        'value'      => count($memberShipArticles) == 0 && $isicMembership == '0' ? false : true,
+                        'attributes' => array(
+                            'id'       => 'become_member',
+                            'disabled' => $registrationEnabled != 1,
+                        ),
                     ),
-                ),
-                array(
-                    'type'       => 'checkbox',
-                    'name'       => 'conditions',
-                    'label'      => 'I have read and agree with the terms and conditions',
-                    'attributes' => array(
-                        'id' => 'conditions',
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'validators' => array(
-                                array(
-                                    'name'    => 'identical',
-                                    'options' => array(
-                                        'token'    => true,
-                                        'strict'   => false,
-                                        'messages' => array(
-                                            Identical::NOT_SAME => 'You must agree to the terms and conditions.',
+                    array(
+                        'type'       => 'checkbox',
+                        'name'       => 'conditions',
+                        'label'      => 'I have read and agree with the terms and conditions',
+                        'attributes' => array(
+                            'id' => 'conditions',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'identical',
+                                        'options' => array(
+                                            'token'    => true,
+                                            'strict'   => false,
+                                            'messages' => array(
+                                                Identical::NOT_SAME => 'You must agree to the terms and conditions.',
+                                            ),
                                         ),
                                     ),
                                 ),
@@ -323,8 +327,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Register', 'btn btn-primary', 'register');
 

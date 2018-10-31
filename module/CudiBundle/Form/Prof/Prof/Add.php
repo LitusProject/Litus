@@ -31,22 +31,24 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'typeahead',
-            'name'       => 'prof',
-            'label'      => 'Docent',
-            'required'   => true,
-            'attributes' => array(
-                'id' => 'prof',
-            ),
-            'options' => array(
-                'input' => array(
-                    'validators' => array(
-                        array('name' => 'TypeaheadPerson'),
+        $this->add(
+            array(
+                'type'       => 'typeahead',
+                'name'       => 'prof',
+                'label'      => 'Docent',
+                'required'   => true,
+                'attributes' => array(
+                    'id' => 'prof',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'validators' => array(
+                            array('name' => 'TypeaheadPerson'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Add');
     }

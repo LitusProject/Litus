@@ -31,32 +31,36 @@ class Article extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'typeahead',
-            'name'       => 'article',
-            'label'      => 'Article',
-            'required'   => true,
-            'attributes' => array(
-                'id'    => 'article',
-                'style' => 'width: 400px;',
-            ),
-            'options' => array(
-                'input' => array(
-                    'validators' => array(
-                        array('name' => 'typeahead_sale_article'),
+        $this->add(
+            array(
+                'type'       => 'typeahead',
+                'name'       => 'article',
+                'label'      => 'Article',
+                'required'   => true,
+                'attributes' => array(
+                    'id'    => 'article',
+                    'style' => 'width: 400px;',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'validators' => array(
+                            array('name' => 'typeahead_sale_article'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'submit',
-            'name'       => 'submit',
-            'value'      => 'Search',
-            'attributes' => array(
-                'class' => 'booking',
-                'id'    => 'search',
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'submit',
+                'name'       => 'submit',
+                'value'      => 'Search',
+                'attributes' => array(
+                    'class' => 'booking',
+                    'id'    => 'search',
+                ),
+            )
+        );
     }
 }

@@ -87,9 +87,12 @@ class TombolaController extends \SportBundle\Component\Controller\RunController
     public function indexAction()
     {
         $happyHours = $this->generateHappyHours(20);
-        $form = $this->getForm('sport_tombola_add', array(
-            'happyHours' => $happyHours,
-        ));
+        $form = $this->getForm(
+            'sport_tombola_add',
+            array(
+                'happyHours' => $happyHours,
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -153,8 +156,8 @@ class TombolaController extends \SportBundle\Component\Controller\RunController
 
         if (strlen($this->getParam('university_identification')) == 8) {
             $runner = $this->getEntityManager()
-                    ->getRepository('SportBundle\Entity\Runner')
-                    ->findOneByRunnerIdentification($this->getParam('university_identification'));
+                ->getRepository('SportBundle\Entity\Runner')
+                ->findOneByRunnerIdentification($this->getParam('university_identification'));
 
             if ($runner === null) {
                 $runner = $this->getEntityManager()

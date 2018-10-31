@@ -45,12 +45,15 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
         $result->supplier = $this->getSupplierEntity();
         $result->loginForm = $this->getForm('common_auth_login')
             ->setAttribute('class', '')
-            ->setAttribute('action', $this->url()->fromRoute(
-                'cudi_supplier_auth',
-                array(
-                    'action' => 'login',
+            ->setAttribute(
+                'action',
+                $this->url()->fromRoute(
+                    'cudi_supplier_auth',
+                    array(
+                        'action' => 'login',
+                    )
                 )
-            ));
+            );
 
         $result->organizationUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')

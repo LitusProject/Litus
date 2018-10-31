@@ -36,10 +36,11 @@ class ExpireWarning extends \CommonBundle\Component\Console\Command
             ->setAliases(array('cudi:warn-expire'))
             ->setDescription('Warn users when reservations are about to expire.')
             ->addOption('mail', 'm', null, 'Send the users a warning e-mail.')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The <info>%command.name%</info> command warns users when their reservations are about to expire.
 EOT
-        );
+            );
     }
 
     protected function executeCommand()
@@ -56,8 +57,10 @@ EOT
         $end = clone $start;
         $end->add(new DateInterval('P1D'));
 
-        $this->writeln('Looking for bookings expiring between <comment>'
-            . $start->format('d M Y') . '</comment> and <comment>' . $end->format('d M Y') . '</comment>...');
+        $this->writeln(
+            'Looking for bookings expiring between <comment>'
+            . $start->format('d M Y') . '</comment> and <comment>' . $end->format('d M Y') . '</comment>...'
+        );
 
         $bookings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')
@@ -72,8 +75,10 @@ EOT
             $persons[$booking->getPerson()->getId()]['bookings'][] = $booking;
         }
 
-        $this->writeln('Found <comment>' . count($bookings) . '</comment> bookings belonging to <comment>'
-            . count($persons) . '</comment> people.');
+        $this->writeln(
+            'Found <comment>' . count($bookings) . '</comment> bookings belonging to <comment>'
+            . count($persons) . '</comment> people.'
+        );
 
         if ($this->getOption('mail')) {
             $this->write('Sending mails...');

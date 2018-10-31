@@ -43,49 +43,53 @@ class Update extends \CommonBundle\Component\Form\Admin\Form
 
         parent::init();
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'number',
-            'label'      => 'Number',
-            'required'   => true,
-            'value'      => $this->article->getStockValue(),
-            'attributes' => array(
-                'autocomplete' => 'off',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'Int',
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'number',
+                'label'      => 'Number',
+                'required'   => true,
+                'value'      => $this->article->getStockValue(),
+                'attributes' => array(
+                    'autocomplete' => 'off',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
                         ),
-                        array(
-                            'name'    => 'GreaterThan',
-                            'options' => array(
-                                'min'       => 0,
-                                'inclusive' => true,
+                        'validators' => array(
+                            array(
+                                'name' => 'Int',
+                            ),
+                            array(
+                                'name'    => 'GreaterThan',
+                                'options' => array(
+                                    'min'       => 0,
+                                    'inclusive' => true,
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'textarea',
-            'name'     => 'comment',
-            'label'    => 'Comment',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'     => 'textarea',
+                'name'     => 'comment',
+                'label'    => 'Comment',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Update', 'stock_edit', 'updateStock');
     }

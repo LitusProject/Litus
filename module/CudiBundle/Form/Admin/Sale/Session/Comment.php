@@ -43,19 +43,21 @@ class Comment extends \CommonBundle\Component\Form\Admin\Form
 
         parent::init();
 
-        $this->add(array(
-            'type'    => 'textarea',
-            'name'    => 'comment',
-            'label'   => 'Comment',
-            'value'   => $this->session->getComment(),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'    => 'textarea',
+                'name'    => 'comment',
+                'label'   => 'Comment',
+                'value'   => $this->session->getComment(),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Edit Comment', 'sale_edit');
     }

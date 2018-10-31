@@ -35,14 +35,15 @@ class Config extends \CommonBundle\Component\Console\Command
             ->setDescription('Get configuration values.')
             ->addArgument('action', InputArgument::REQUIRED, 'the action to take (test|get)')
             ->addArgument('key', InputArgument::REQUIRED, 'the name of the configuration value')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The <info>%command.name%</info> command gets or sets configuration values.
 
 For <comment>test</comment> and <comment>get</comment>:
     The exit status is 0 if the configuration entry exists, 1 otherwise.
     <comment>test</comment> does not output anything, <comment>get</comment> outputs the value.
 EOT
-        );
+            );
     }
 
     protected function executeCommand()

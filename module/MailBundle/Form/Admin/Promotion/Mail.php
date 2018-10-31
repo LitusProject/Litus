@@ -44,144 +44,158 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             }
         }
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'to',
-            'label'      => 'To',
-            'required'   => true,
-            'attributes' => array(
-                'multiple' => true,
-            ),
-            'options' => array(
-                'options' => $this->createPromotionsArray(),
-            ),
-        ));
-
-        if (count($groupNames) > 0) {
-            $this->add(array(
+        $this->add(
+            array(
                 'type'       => 'select',
-                'name'       => 'groups',
-                'label'      => 'Groups',
+                'name'       => 'to',
+                'label'      => 'To',
+                'required'   => true,
                 'attributes' => array(
                     'multiple' => true,
-                    'options'  => $groupNames,
                 ),
-            ));
+                'options' => array(
+                    'options' => $this->createPromotionsArray(),
+                ),
+            )
+        );
+
+        if (count($groupNames) > 0) {
+            $this->add(
+                array(
+                    'type'       => 'select',
+                    'name'       => 'groups',
+                    'label'      => 'Groups',
+                    'attributes' => array(
+                        'multiple' => true,
+                        'options'  => $groupNames,
+                    ),
+                )
+            );
         }
 
-        $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'test',
-            'label' => 'Test Mail',
-        ));
+        $this->add(
+            array(
+                'type'  => 'checkbox',
+                'name'  => 'test',
+                'label' => 'Test Mail',
+            )
+        );
 
-        $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'html',
-            'label' => 'HTML Mail',
-        ));
+        $this->add(
+            array(
+                'type'  => 'checkbox',
+                'name'  => 'html',
+                'label' => 'HTML Mail',
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'bcc',
-            'label'      => 'Additional BCC',
-            'attributes' => array(
-                'style' => 'width: 400px;',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'MultiMail'),
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'bcc',
+                'label'      => 'Additional BCC',
+                'attributes' => array(
+                    'style' => 'width: 400px;',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'MultiMail'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $storedMessages = $this->getStoredMessages();
         if (1 <= count($storedMessages)) {
-            $this->add(array(
-                'type'     => 'fieldset',
-                'name'     => 'selected_message',
-                'label'    => 'Select Message',
-                'elements' => array(
-                    array(
-                        'type'       => 'select',
-                        'name'       => 'stored_message',
-                        'label'      => 'Stored Message',
-                        'attributes' => array(
-                            'style' => 'max-width: 100%;',
-                        ),
-                        'options' => array(
-                            'options' => $storedMessages,
+            $this->add(
+                array(
+                    'type'     => 'fieldset',
+                    'name'     => 'selected_message',
+                    'label'    => 'Select Message',
+                    'elements' => array(
+                        array(
+                            'type'       => 'select',
+                            'name'       => 'stored_message',
+                            'label'      => 'Stored Message',
+                            'attributes' => array(
+                                'style' => 'max-width: 100%;',
+                            ),
+                            'options' => array(
+                                'options' => $storedMessages,
+                            ),
                         ),
                     ),
-                ),
-            ));
+                )
+            );
         }
 
-        $this->add(array(
-            'type'     => 'fieldset',
-            'name'     => 'compose_message',
-            'label'    => 'Compose Message',
-            'elements' => array(
-                array(
-                    'type'       => 'text',
-                    'name'       => 'subject',
-                    'label'      => 'Subject',
-                    'required'   => true,
-                    'attributes' => array(
-                        'style' => 'width: 400px;',
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'     => 'fieldset',
+                'name'     => 'compose_message',
+                'label'    => 'Compose Message',
+                'elements' => array(
+                    array(
+                        'type'       => 'text',
+                        'name'       => 'subject',
+                        'label'      => 'Subject',
+                        'required'   => true,
+                        'attributes' => array(
+                            'style' => 'width: 400px;',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
                             ),
                         ),
                     ),
-                ),
-                array(
-                    'type'       => 'textarea',
-                    'name'       => 'message',
-                    'label'      => 'Message',
-                    'required'   => true,
-                    'attributes' => array(
-                        'style' => 'width: 500px; height: 200px;',
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
+                    array(
+                        'type'       => 'textarea',
+                        'name'       => 'message',
+                        'label'      => 'Message',
+                        'required'   => true,
+                        'attributes' => array(
+                            'style' => 'width: 500px; height: 200px;',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
                             ),
                         ),
                     ),
-                ),
-                array(
-                    'type'       => 'file',
-                    'name'       => 'file',
-                    'label'      => 'Attachments',
-                    'attributes' => array(
-                        'multiple'  => true,
-                        'data-help' => 'The maximum file size is ' . self::FILE_SIZE . '.',
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'validators' => array(
-                                array(
-                                    'name'    => 'FileSize',
-                                    'options' => array(
-                                        'max' => self::FILE_SIZE,
+                    array(
+                        'type'       => 'file',
+                        'name'       => 'file',
+                        'label'      => 'Attachments',
+                        'attributes' => array(
+                            'multiple'  => true,
+                            'data-help' => 'The maximum file size is ' . self::FILE_SIZE . '.',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'FileSize',
+                                        'options' => array(
+                                            'max' => self::FILE_SIZE,
+                                        ),
                                     ),
                                 ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Send', 'mail', 'Send');
     }

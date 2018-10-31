@@ -40,15 +40,17 @@ class EditEmail extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'emailAdress',
-            'label'      => 'POC Email Address',
-            'required'   => true,
-            'attributes' => array(
-                'size' => 70,
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'emailAdress',
+                'label'      => 'POC Email Address',
+                'required'   => true,
+                'attributes' => array(
+                    'size' => 70,
+                ),
+            )
+        );
 
         $this->addSubmit('Save', 'edit');
     }

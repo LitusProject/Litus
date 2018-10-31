@@ -45,40 +45,42 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'fieldset',
-            'name'       => 'information',
-            'label'      => 'Information',
-            'attributes' => array(
-                'id' => 'information',
-            ),
-            'elements' => array(
-                array(
-                    'type'       => 'text',
-                    'name'       => 'university_identification',
-                    'label'      => 'R-number',
-                    'attributes' => array(
-                        'id'           => 'university_identification',
-                        'autocomplete' => 'off',
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'       => 'fieldset',
+                'name'       => 'information',
+                'label'      => 'Information',
+                'attributes' => array(
+                    'id' => 'information',
+                ),
+                'elements' => array(
+                    array(
+                        'type'       => 'text',
+                        'name'       => 'university_identification',
+                        'label'      => 'R-number',
+                        'attributes' => array(
+                            'id'           => 'university_identification',
+                            'autocomplete' => 'off',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
                             ),
                         ),
                     ),
-                ),
-                array(
-                    'type'       => 'select',
-                    'name'       => 'happy_hour',
-                    'label'      => 'Happy Hour',
-                    'attributes' => array(
-                        'options' => $this->getHappyHours(),
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'happy_hour',
+                        'label'      => 'Happy Hour',
+                        'attributes' => array(
+                            'options' => $this->getHappyHours(),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Register for Tombola');
     }
