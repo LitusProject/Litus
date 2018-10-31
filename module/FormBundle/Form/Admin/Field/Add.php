@@ -92,8 +92,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->add(
             array(
@@ -139,22 +139,24 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             )
         );
 
-        $this->add(array(
-            'type'       => 'fieldset',
-            'name'       => 'visibility',
-            'label'      => 'Visibility',
-            'attributes' => array(
-                'id' => 'visibility',
-            ),
-            'elements' => array(
-                array(
-                    'type'       => 'select',
-                    'name'       => 'if',
-                    'label'      => 'Visible If',
-                    'required'   => true,
-                    'attributes' => array(
-                        'id'      => 'visible_if',
-                        'options' => $this->getVisibilityOptions(),
+        $this->add(
+            array(
+                'type'       => 'fieldset',
+                'name'       => 'visibility',
+                'label'      => 'Visibility',
+                'attributes' => array(
+                    'id' => 'visibility',
+                ),
+                'elements' => array(
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'if',
+                        'label'      => 'Visible If',
+                        'required'   => true,
+                        'attributes' => array(
+                            'id'      => 'visible_if',
+                            'options' => $this->getVisibilityOptions(),
+                        ),
                     ),
                 ),
             )
