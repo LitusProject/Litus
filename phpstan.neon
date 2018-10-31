@@ -1,0 +1,11 @@
+parameters:
+    level: 0
+    paths:
+        - bin/
+        - module/
+        - public/
+        - shibboleth/
+
+    includes:
+        - vendor/phpstan/phpstan-doctrine/extension.neon
+
