@@ -32,7 +32,7 @@ class EditEmail extends \CommonBundle\Component\Form\Admin\Form
     protected $hydrator = 'SyllabusBundle\Hydrator\Poc';
 
     /**
-     * @var Group|null
+     * @var \SyllabusBundle\Entity\Poc|null
      */
     protected $poc = null;
 

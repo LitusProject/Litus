@@ -79,8 +79,8 @@ class Page extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 
     /**
      * @param  AcademicYear $academicYear
-     * @param  name         $name
-     * @param  sector       $sector
+     * @param  string       $name
+     * @param  string       $sector
      * @return \Doctrine\ORM\Query
      */
     public function findAllActiveBySearchQuery(AcademicYear $academicYear, $name = '%%', $sector = '')

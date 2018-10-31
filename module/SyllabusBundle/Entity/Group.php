@@ -198,14 +198,6 @@ class Group
     }
 
     /**
-     * @return EntityManager
-     */
-    public function getEntityManager()
-    {
-        return $this->entityManager;
-    }
-
-    /**
      * @param  AcademicYear $academicYear
      * @return integer
      */
@@ -233,8 +225,8 @@ class Group
     public function getIsPocGroup(AcademicYear $academicYear)
     {
         return $this->entityManager
-         ->getRepository('SyllabusBundle\Entity\Poc')
-         ->getIsPocGroup($this, $academicYear);
+            ->getRepository('SyllabusBundle\Entity\Poc')
+            ->getIsPocGroup($this, $academicYear);
     }
 
     /**
@@ -243,7 +235,7 @@ class Group
      */
     public function getEmailAdressPoc(AcademicYear $academicYear)
     {
-        $pocIndicator = $this->getEntityManager()
+        $pocIndicator = $this->entityManager
             ->getRepository('SyllabusBundle\Entity\Poc')
             ->findIndicatorFromGroupAndAcademicYear($this, $academicYear);
 

@@ -27,6 +27,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * An order of several products.
@@ -66,7 +67,7 @@ class Order
     private $contract;
 
     /**
-     * @var ContractInvoice The invoice accompanying this order
+     * @var \BrBundle\Entity\Invoice\ContractInvoice The invoice accompanying this order
      *
      * @ORM\OneToOne(
      *      targetEntity="BrBundle\Entity\Invoice\ContractInvoice",

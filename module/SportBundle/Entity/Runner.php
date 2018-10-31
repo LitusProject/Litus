@@ -97,7 +97,7 @@ class Runner
     private $department;
 
     /**
-     * @var HappyHour The happy hour for the tombola
+     * @var string The happy hour for the tombola
      *
      * @ORM\Column(name="happy_hour", type="string", nullable=true)
      */

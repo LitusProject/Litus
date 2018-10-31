@@ -23,7 +23,7 @@ namespace NewsBundle\Entity\Node;
 use CommonBundle\Component\Util\StringUtil;
 use CommonBundle\Entity\General\Language;
 use Doctrine\ORM\Mapping as ORM;
-use Markdown_Parser;
+use Parsedown;
 
 /**
  * This entity stores the node item.
@@ -142,8 +142,8 @@ class Translation
      */
     public function getSummary($length = 100)
     {
-        $parser = new Markdown_Parser();
-        $summary = $parser->transform($this->content);
+        $parsedown = new Parsedown();
+        $summary = $parsedown->text($this->content);
 
         return StringUtil::truncate($summary, $length, '...');
     }

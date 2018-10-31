@@ -53,15 +53,15 @@ class FormElementManager extends \Zend\Form\FormElementManager
     private $data;
 
     /**
-     * @param boolean                                 $isAdmin
-     * @param ConfigInterface|ContainerInterface|null $configInstanceOrParentLocator
-     * @param array                                   $config
+     * @param boolean                                                      $isAdmin
+     * @param \Zend\ServiceManager\ConfigInterface|ContainerInterface|null $configInstanceOrParentLocator
+     * @param array                                                        $config
      */
     public function __construct($isAdmin, $configInstanceOrParentLocator = null, array $config = array())
     {
         // Add initializer before the parent constructor, because we want this
         // to be the bottom of the stack before parent::__construct is called.
-        $this->addInitializer(array($this, 'injectServiceLocator'), false);
+        $this->addInitializer(array($this, 'injectServiceLocator'));
 
         $this->isAdmin = $isAdmin;
         $this->hydrator = new ClassMethodsHydrator();

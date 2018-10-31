@@ -33,7 +33,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Mail
 {
     /**
-     * @var The mail unique identifier
+     * @var integer The mail unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue

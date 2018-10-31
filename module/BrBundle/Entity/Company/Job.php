@@ -25,7 +25,7 @@ use CommonBundle\Component\Util\StringUtil;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
-use Markdown_Parser;
+use Parsedown;
 
 /**
  * This is the entity for an job.
@@ -88,14 +88,14 @@ class Job
 
     /**
      * @var string The location (eg. province) where the job is located
-     * 
+     *
      * @ORM\Column(type="text", nullable=true)
      */
     private $location;
 
     /**
      * @var string The master for which this job is meant
-     * 
+     *
      * @ORM\Column(type="text", nullable=true)
      */
     private $master;
@@ -390,8 +390,8 @@ class Job
      */
     public function getSummary($length = 50)
     {
-        $parser = new Markdown_Parser();
-        $summary = $parser->transform($this->getDescription());
+        $parsedown = new Parsedown();
+        $summary = $parsedown->text($this->getDescription());
 
         return StringUtil::truncate($summary, $length, '...');
     }

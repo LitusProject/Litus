@@ -72,15 +72,4 @@ class CompanyMap extends \CommonBundle\Component\Form\Admin\Form
 
         return $companyArray;
     }
-
-    /**
-     * @param  Event $company
-     * @return self
-     */
-    public function setCompany(Event $company)
-    {
-        $this->company = $company;
-
-        return $this;
-    }
 }

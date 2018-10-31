@@ -336,6 +336,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 if ($formData['payed'] == true && !$formData['cancel']) {
                     $status = $registration->getAcademic()
                         ->getOrganizationStatus($this->getCurrentAcademicYear());
+
                     if ($status === null) {
                         $registration->getAcademic()
                             ->addOrganizationStatus(
@@ -353,8 +354,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 } else {
                     $status = $registration->getAcademic()
                         ->getOrganizationStatus($this->getCurrentAcademicYear());
+
                     if ($status === null) {
-                        $booking->getAcademic()
+                        $registration->getAcademic()
                             ->addOrganizationStatus(
                                 new OrganizationStatus(
                                     $registration->getAcademic(),

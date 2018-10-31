@@ -48,12 +48,11 @@ class Cv extends \CommonBundle\Component\Document\Generator\Pdf
 
     /**
      * @param EntityManager $entityManager The EntityManager instance
-     * @param AcademicYear  $year          The academic year for which to generate the book.
      * @param Academic      $academic      The academic for which to generate the book.
      * @param TmpFile       $file          The file to write to
      * @param Translator    $translator    The translator
      */
-    public function __construct(EntityManager $entityManager, AcademicYear $year, Entry $entry, TmpFile $file, Translator $translator)
+    public function __construct(EntityManager $entityManager, Entry $entry, TmpFile $file, Translator $translator)
     {
         $filePath = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')

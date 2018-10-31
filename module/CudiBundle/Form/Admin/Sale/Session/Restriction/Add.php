@@ -23,6 +23,7 @@ namespace CudiBundle\Form\Admin\Sale\Session\Restriction;
 use CommonBundle\Component\Util\AcademicYear;
 use CudiBundle\Entity\Sale\Session;
 use CudiBundle\Entity\Sale\Session\Restriction\Year as YearRestriction;
+use RuntimeException;
 
 /**
  * Add Sale Session content
@@ -39,7 +40,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     public function init()
     {
         if ($this->session === null) {
-            throw new LogicException('Cannot add a restriction to a null sale session');
+            throw new RuntimeException('Cannot add a restriction to a null sale session');
         }
 
         parent::init();

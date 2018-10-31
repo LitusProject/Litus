@@ -21,12 +21,12 @@
 namespace CommonBundle\Component\Console;
 
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\ConfigTrait;
-use CommonBundle\Component\ServiceManager\ServiceLocatorAware\ConsoleTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\MailTransportTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\SentryTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use CommonBundle\Component\Util\AcademicYear;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Output\OutputInterface as Output;
 
@@ -35,7 +35,6 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     use ServiceLocatorAwareTrait;
 
     use ConfigTrait;
-    use ConsoleTrait;
     use DoctrineTrait;
     use MailTransportTrait;
     use SentryTrait;
@@ -143,5 +142,20 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     protected function hasArgument($name)
     {
         return $this->input->hasArgument($name);
+    }
+
+    /**
+     * Get the current academic year.
+     *
+     * @param  boolean $organization
+     * @return AcademicYear
+     */
+    protected function getCurrentAcademicYear($organization = false)
+    {
+        if ($organization) {
+            return AcademicYear::getOrganizationYear($this->getEntityManager());
+        }
+
+        return AcademicYear::getUniversityYear($this->getEntityManager());
     }
 }

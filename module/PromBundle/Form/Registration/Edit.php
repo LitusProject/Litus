@@ -20,6 +20,7 @@
 
 namespace PromBundle\Form\Registration;
 
+use CommonBundle\Component\Util\AcademicYear;
 use PromBundle\Entity\Bus\Passenger;
 
 /**
@@ -162,42 +163,6 @@ class Edit extends \PromBundle\Form\Registration\Add
         ));
 
         $this->addSubmit('Save Reservation', 'btn btn-default');
-    }
-
-    /**
-     * @return array
-     */
-    protected function getFirstBusses()
-    {
-        $busses = $this->getEntityManager()
-            ->getRepository('PromBundle\Entity\Bus')
-            ->getGoBusses($this->getCurrentAcademicYear());
-
-        $array = array('0' => 'None Selected');
-        foreach ($busses as $bus) {
-            $seatsLeft = $bus->getTotalSeats() - $bus->getReservedSeats();
-            $array[$bus->getId()] = $bus->getDepartureTime()->format('d/m/Y H:i') . ' | ' . $seatsLeft . ' seats left';
-        }
-
-        return $array;
-    }
-
-    /**
-     * @return array
-     */
-    protected function getSecondBusses()
-    {
-        $busses = $this->getEntityManager()
-            ->getRepository('PromBundle\Entity\Bus')
-            ->getReturnBusses($this->getCurrentAcademicYear());
-
-        $array = array('0' => 'None Selected');
-        foreach ($busses as $bus) {
-            $seatsLeft = $bus->getTotalSeats() - $bus->getReservedSeats();
-            $array[$bus->getId()] = $bus->getDepartureTime()->format('d/m/Y H:i') . ' | ' . $seatsLeft . ' seats left';
-        }
-
-        return $array;
     }
 
     /**

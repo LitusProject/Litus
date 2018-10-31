@@ -45,7 +45,7 @@ return Config::create(
                 'saleArticleRestrictionExists' => Component\Validator\Sale\Article\Restriction\Exists::class,
                 'SaleArticleRestrictionExists' => Component\Validator\Sale\Article\Restriction\Exists::class,
                 'salesessionrestrictionexists' => Component\Validator\Sale\Session\Restriction\Exists::class,
-                'SaleSessionRestrictionExists' => Component\Validator\Sale\Session\Restriction\Exists::class,
+                'saleSessionRestrictionExists' => Component\Validator\Sale\Session\Restriction\Exists::class,
                 'SaleSessionRestrictionExists' => Component\Validator\Sale\Session\Restriction\Exists::class,
                 'salesessionrestrictionvalues' => Component\Validator\Sale\Session\Restriction\Values::class,
                 'saleSessionRestrictionValues' => Component\Validator\Sale\Session\Restriction\Values::class,

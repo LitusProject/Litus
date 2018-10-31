@@ -99,10 +99,12 @@ abstract class Server
                 gc_collect_cycles();
             }
 
-            $changed = $this->sockets;
-            stream_select($changed, $write, $except, null);
+            $read = $this->sockets;
+            $write = array();
+            $except = array();
+            stream_select($read, $write, $except, null);
 
-            foreach ($changed as $socket) {
+            foreach ($read as $socket) {
                 if ($socket == $this->master) {
                     $this->addUserSocket(stream_socket_accept($this->master));
                 } else {

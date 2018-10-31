@@ -108,14 +108,14 @@ class QueueItem
     private $payMethod;
 
     /**
-     * @var ArrayCollection The sold items
+     * @var \Doctrine\Common\Collections\ArrayCollection The sold items
      *
      * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sale\SaleItem", mappedBy="queueItem")
      */
     private $saleItems;
 
     /**
-     * @var ArrayCollection The return items
+     * @var \Doctrine\Common\Collections\ArrayCollection The return items
      *
      * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sale\ReturnItem", mappedBy="queueItem")
      */
@@ -345,7 +345,7 @@ class QueueItem
     }
 
     /**
-     * @return ArrayCollection
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getSaleItems()
     {
@@ -353,7 +353,7 @@ class QueueItem
     }
 
     /**
-     * @return ArrayCollection
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getReturnItems()
     {

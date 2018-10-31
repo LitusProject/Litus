@@ -73,7 +73,7 @@ class ContractInvoice extends \BrBundle\Entity\Invoice
     }
 
     /**
-     * @return DateTime
+     * @return \DateTime
      */
     public function getExpirationTime()
     {

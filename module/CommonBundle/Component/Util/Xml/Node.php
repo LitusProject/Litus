@@ -21,6 +21,7 @@
 namespace CommonBundle\Component\Util\Xml;
 
 use CommonBundle\Component\Util\Utf8;
+use InvalidArgumentException;
 
 /**
  * This class represents an XML node.
@@ -75,7 +76,7 @@ class Node
             } elseif (is_array($content)) {
                 foreach ($content as $part) {
                     if (is_string($part)) {
-                        $this->content .= $this - _escape($part);
+                        $this->content .= $this->escape($part);
                     } elseif ($part instanceof Node) {
                         $this->content .= $part->__toString();
                     } else {

@@ -22,6 +22,7 @@ namespace BrBundle\Hydrator\Cv;
 
 use BrBundle\Entity\Cv\Experience as CvExperienceEntity;
 use BrBundle\Entity\Cv\Language as CvLanguageEntity;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 use CommonBundle\Entity\General\Address as AddressEntity;
 
 /**
@@ -35,7 +36,7 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
     protected function doHydrate(array $data, $object = null)
     {
         if ($object === null) {
-            throw new InvalidObjectException('Cannot create a contract');
+            throw new InvalidObjectException('Cannot create an entry');
         }
 
         $person = $object->getAcademic();

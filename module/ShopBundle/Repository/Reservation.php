@@ -53,7 +53,7 @@ class Reservation extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     }
 
     /**
-     * @param $salesSession
+     * @param  \ShopBundle\Entity\SalesSession $salesSession
      * @return \Doctrine\ORM\Query
      */
     public function findBySalesSessionQuery($salesSession)
@@ -70,6 +70,10 @@ class Reservation extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery();
     }
 
+    /**
+     * @param  \ShopBundle\Entity\SalesSession $salesSession
+     * @return \Doctrine\ORM\Query
+     */
     public function getTotalByProductBySalesQuery($salesSession)
     {
         $q = 'SELECT p.id, p.name, SUM(r.amount) FROM shop.reservations as r INNER JOIN shop.products as p ON r.product=p.id WHERE r.session=:sessId GROUP BY p.id';
@@ -81,7 +85,7 @@ class Reservation extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     }
 
     /**
-     * @param  Person $person
+     * @param  \CommonBundle\Entity\User\Person $person
      * @return integer
      */
     public function getNoShowSessionCount($person)

@@ -80,20 +80,17 @@ EOT
     {
         $now = new DateTime();
 
-        return parent::write(
+        parent::write(
             sprintf('[<%1$s>%2$s</%1$s>] %3$s', $this->getLogNameTag(), $now->format('Ymd H:i:s'), $str),
             $raw
         );
     }
 
-    /**
-     * @param string $str
-     */
     public function writeln($str, $raw = false)
     {
         $now = new DateTime();
 
-        return parent::writeln(
+        parent::writeln(
             sprintf('[<%1$s>%2$s</%1$s>] %3$s', $this->getLogNameTag(), $now->format('Ymd H:i:s'), $str),
             $raw
         );

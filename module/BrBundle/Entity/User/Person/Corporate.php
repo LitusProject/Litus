@@ -90,7 +90,7 @@ class Corporate extends \CommonBundle\Entity\User\Person
         }
 
         if (!$this->canHaveCorporateStatus()) {
-            throw RuntimeException('The corporate status cannot be set');
+            throw new RuntimeException('The corporate status cannot be set');
         }
 
         $this->corporateStatuses->add($corporateStatus);

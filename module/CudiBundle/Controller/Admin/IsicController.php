@@ -21,7 +21,7 @@
 namespace CudiBundle\Controller\Admin;
 
 use CommonBundle\Entity\General\AcademicYear;
-use Cudibundle\Entity\IsicCard;
+use CudiBundle\Entity\IsicCard;
 use Zend\Soap\Client as SoapClient;
 use Zend\View\Model\ViewModel;
 

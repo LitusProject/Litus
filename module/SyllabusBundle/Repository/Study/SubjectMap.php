@@ -22,7 +22,7 @@ namespace SyllabusBundle\Repository\Study;
 
 use CommonBundle\Entity\General\AcademicYear;
 use Doctrine\ORM\Query;
-use SyllabusBundel\Entity\Study\SubjectMap as SubjectMapEntity;
+use SyllabusBundle\Entity\Study\SubjectMap as SubjectMapEntity;
 use SyllabusBundle\Entity\Study as StudyEntity;
 use SyllabusBundle\Entity\Study\ModuleGroup as ModuleGroupEntity;
 use SyllabusBundle\Entity\Subject as SubjectEntity;
@@ -234,7 +234,7 @@ class SubjectMap extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
      * @param  ModuleGroupEntity $moduleGroup
      * @param  SubjectEntity     $subject
      * @param  AcademicYear      $academicYear
-     * @return SubjectMapEntity
+     * @return \SyllabusBundle\Entity\Study\SubjectMap
      */
     public function findOneByModuleGroupSubjectAndAcademicYear(ModuleGroupEntity $moduleGroup, SubjectEntity $subject, AcademicYear $academicYear)
     {
@@ -282,7 +282,7 @@ class SubjectMap extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     /**
      * @param  string       $name
      * @param  AcademicYear $academicYear
-     * @return Query
+     * @return \Doctrine\ORM\Query
      */
     public function findAllSubjectsByNameQuery($name, AcademicYear $academicYear)
     {

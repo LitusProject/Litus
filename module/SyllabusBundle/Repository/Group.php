@@ -102,7 +102,7 @@ class Group extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     /**
      * @return \Doctrine\ORM\Query
      */
-    public function findAllPocGroupsByAcademicYear(AcademicYear $AcademicYear)
+    public function findAllPocGroupsByAcademicYear(AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('g')

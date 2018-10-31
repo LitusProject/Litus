@@ -21,6 +21,7 @@
 namespace SyllabusBundle\Form\Admin\Subject\ModuleGroup;
 
 use CommonBundle\Entity\General\AcademicYear;
+use RuntimeException;
 use SyllabusBundle\Entity\Study\SubjectMap;
 use SyllabusBundle\Entity\Subject;
 
@@ -51,10 +52,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     public function init()
     {
         if ($this->subject === null) {
-            throw new LogicException('No subject was given to add a module group to');
+            throw new RuntimeException('No subject was given to add a module group to');
         }
+
         if ($this->academicYear === null) {
-            throw new LogicException('No academic year was given');
+            throw new RuntimeException('No academic year was given');
         }
 
         parent::init();

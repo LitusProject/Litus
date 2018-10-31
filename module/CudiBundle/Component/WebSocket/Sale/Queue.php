@@ -22,7 +22,8 @@ namespace CudiBundle\Component\WebSocket\Sale;
 
 use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Component\WebSocket\User;
-use CudiBundle\Entity\Sale\QueueItem as EntityQueueItem;
+use CudiBundle\Entity\Sale\Booking;
+use CudiBundle\Entity\Sale\QueueItem as QueueItemEntity;
 use CudiBundle\Entity\Sale\Session;
 use Doctrine\ORM\EntityManager;
 
@@ -220,7 +221,7 @@ class Queue
             ->findOneByPersonNotSold($session, $person);
 
         if ($queueItem == null) {
-            $queueItem = new EntityQueueItem($this->entityManager, $person, $session);
+            $queueItem = new QueueItemEntity($this->entityManager, $person, $session);
 
             $this->entityManager->persist($queueItem);
             $this->entityManager->flush();
@@ -641,10 +642,17 @@ class Queue
     }
 
     /**
-     * @return \CommonBundle\Entity\General\AcademicYear
+     * Get the current academic year.
+     *
+     * @param  boolean $organization
+     * @return AcademicYear
      */
-    private function getCurrentAcademicYear()
+    protected function getCurrentAcademicYear($organization = false)
     {
+        if ($organization) {
+            return AcademicYear::getOrganizationYear($this->entityManager);
+        }
+
         return AcademicYear::getUniversityYear($this->entityManager);
     }
 }

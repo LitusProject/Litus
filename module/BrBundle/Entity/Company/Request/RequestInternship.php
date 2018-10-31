@@ -23,6 +23,7 @@ namespace BrBundle\Entity\Company\Request;
 use BrBundle\Entity\Company\Job;
 use BrBundle\Entity\User\Person\Corporate;
 use Doctrine\ORM\Mapping as ORM;
+use RuntimeException;
 
 /**
  * This is the entity for an event.
@@ -94,7 +95,7 @@ class RequestInternship extends \BrBundle\Entity\Company\Request
     private function setRequestType($type)
     {
         if (!in_array($type, self::$possibleRequests)) {
-            throw new Exception('The requested type does not exist for the vacancy requests');
+            throw new RuntimeException('The requested type does not exist for the vacancy requests');
         }
 
         $this->requestType = $type;

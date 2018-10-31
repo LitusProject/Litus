@@ -148,7 +148,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
     {
         $this->initAjax();
 
-        $person = $this->getCorporateEntity()
+        $person = $this->getCorporateEntity();
         if ($person === null) {
             return new ViewModel();
         }

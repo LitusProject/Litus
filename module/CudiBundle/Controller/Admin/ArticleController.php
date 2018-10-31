@@ -20,7 +20,7 @@
 
 namespace CudiBundle\Controller\Admin;
 
-use Cudibundle\Entity\Article;
+use CudiBundle\Entity\Article;
 use CudiBundle\Entity\Article\External;
 use CudiBundle\Entity\Article\History;
 use CudiBundle\Entity\Article\Internal;

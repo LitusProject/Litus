@@ -346,7 +346,6 @@ return Config::create(
                         Component\Form\Admin\Element\Hidden::class    => ElementFactory::class,
                         Component\Form\Admin\Element\Password::class  => ElementFactory::class,
                         Component\Form\Admin\Element\Radio::class     => ElementFactory::class,
-                        Component\Form\Admin\Element\Reset::class     => ElementFactory::class,
                         Component\Form\Admin\Element\Select::class    => ElementFactory::class,
                         Component\Form\Admin\Element\Tabs::class      => ElementFactory::class,
                         Component\Form\Admin\Element\Text::class      => ElementFactory::class,

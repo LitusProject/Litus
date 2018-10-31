@@ -18,7 +18,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SyllabusBundle\Component\Validator\Group;
+namespace SyllabusBundle\Component\Validator;
 
 /**
  * Matches the given group name against the database to check whether it is
@@ -26,7 +26,7 @@ namespace SyllabusBundle\Component\Validator\Group;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Name extends \CommonBundle\Component\Validator\AbstractValidator
+class GroupName extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 

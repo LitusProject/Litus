@@ -97,7 +97,7 @@ class VisitController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return Query|null
+     * @return \Doctrine\ORM\Query|null
      */
     private function search()
     {

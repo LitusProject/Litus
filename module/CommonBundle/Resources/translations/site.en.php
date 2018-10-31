@@ -34,8 +34,6 @@ return array(
     'Account'                       => 'Account',
     'KU Leuven&mdash;Central Login' => 'KU Leuven&mdash;Central Login',
     'Language'                      => 'Language',
-    'Dutch'                         => 'Nederlands',
-    'English'                       => 'English',
 
     'Links'    => 'Links',
     'Partners' => 'Partners',
@@ -50,7 +48,6 @@ return array(
     'Username'    => 'Username',
     'Password'    => 'Password',
     'Remember Me' => 'Remember Me',
-    'Login'       => 'Login',
 
     'You have been successfully logged in!'                              => 'You have been successfully logged in!',
     'The given username and password did not match. Please try again.'   => 'The given username and password did not match. Please try again.',
@@ -58,7 +55,6 @@ return array(
     'Something went wrong while logging you in. Please try again later.' => 'Something went wrong while logging you in. Please try again later.',
 
     'Activate'                                                                                                         => 'Activate',
-    'Password'                                                                                                         => 'Password',
     'Verify Password'                                                                                                  => 'Verify Password',
     'Your account was succesfully activated!'                                                                          => 'Your account was succesfully activated!',
     'Overview'                                                                                                         => 'Overview',

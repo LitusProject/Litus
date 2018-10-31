@@ -22,6 +22,7 @@ namespace ShopBundle\Controller;
 
 use DateInterval;
 use DateTime;
+use ShopBundle\Entity\Reservation;
 use ShopBundle\Entity\SalesSession;
 use Zend\View\Model\ViewModel;
 
@@ -32,36 +33,7 @@ use Zend\View\Model\ViewModel;
  */
 class ShopController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
-    /**
-     * @return string
-     */
-    private function getShopName()
-    {
-        return $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('shop.name');
-    }
-
-    /**
-     * @return SalesSession[]
-     */
-    private function getSalesSessions()
-    {
-        $interval = new DateInterval(
-            $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('shop.reservation_threshold')
-        );
-
-        $startDate = new DateTime();
-        $endDate = clone $startDate;
-        $endDate->add($interval);
-
-        return $this->getEntityManager()
-            ->getRepository('ShopBundle\Entity\SalesSession')
-            ->findAllReservationsPossibleInterval($startDate, $endDate);
-    }
-
+    // TODO: Rename to reserveProductsAction()
     public function reserveproductsAction()
     {
         $canReserve = $this->canReserve();
@@ -234,38 +206,6 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person|null
-     */
-    private function getPersonEntity()
-    {
-        if (!$this->getAuthentication()->isAuthenticated()) {
-            return;
-        }
-
-        return $this->getAuthentication()->getPersonObject();
-    }
-
-    /**
-     * @return \ShopBundle\Entity\Reservation|null
-     */
-    private function getReservationEntity()
-    {
-        $reservation = $this->getEntityById('ShopBundle\Entity\Reservation');
-
-        if (!($reservation instanceof Reservation)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No reservation was found!'
-            );
-            $this->redirect()->toRoute('shop');
-
-            return null;
-        }
-
-        return $reservation;
-    }
-
-    /**
      * @return boolean
      */
     private function canReserve()
@@ -309,6 +249,38 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         }
 
         return false;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\User\Person|null
+     */
+    private function getPersonEntity()
+    {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            return;
+        }
+
+        return $this->getAuthentication()->getPersonObject();
+    }
+
+    /**
+     * @return \ShopBundle\Entity\Reservation|null
+     */
+    private function getReservationEntity()
+    {
+        $reservation = $this->getEntityById('ShopBundle\Entity\Reservation');
+
+        if (!($reservation instanceof Reservation)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No reservation was found!'
+            );
+            $this->redirect()->toRoute('shop');
+
+            return null;
+        }
+
+        return $reservation;
     }
 
     /**
@@ -378,8 +350,38 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @param $salesSession
-     * @return SessionStockEntry[]
+     * @return array
+     */
+    private function getSalesSessions()
+    {
+        $interval = new DateInterval(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shop.reservation_threshold')
+        );
+
+        $startDate = new DateTime();
+        $endDate = clone $startDate;
+        $endDate->add($interval);
+
+        return $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\SalesSession')
+            ->findAllReservationsPossibleInterval($startDate, $endDate);
+    }
+
+    /**
+     * @return string
+     */
+    private function getShopName()
+    {
+        return $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shop.name');
+    }
+
+    /**
+     * @param  SalesSession $salesSession
+     * @return array
      */
     private function getStockEntries($salesSession)
     {

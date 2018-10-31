@@ -22,10 +22,7 @@ namespace CommonBundle\Component\ServiceManager\ServiceLocatorAware;
 
 /**
  * A trait to define some common methods for classes with a ServiceLocator.
- * This trait requires the class to implement
- * CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface.
  *
- * @see CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
 
@@ -40,7 +37,7 @@ trait ConfigTrait
     }
 
     /**
-     * @return ServiceLocatorInterface
+     * @return \Zend\ServiceManager\ServiceLocatorInterface
      */
     abstract public function getServiceLocator();
 }

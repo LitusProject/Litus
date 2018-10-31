@@ -24,7 +24,7 @@ use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use IllegalArgumentException;
+use InvalidArgumentException;
 
 /**
  * This entity stores a responsible for a shift.
@@ -61,7 +61,7 @@ class Responsible
     /**
      * @param  Person       $person
      * @param  AcademicYear $academicYear
-     * @throws IllegalArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct(Person $person, AcademicYear $academicYear)
     {

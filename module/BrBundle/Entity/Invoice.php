@@ -331,16 +331,6 @@ abstract class Invoice
     }
 
     /**
-     * @return boolean
-     */
-    public function isExpired()
-    {
-        $now = new DateTime();
-
-        return !$this->isPaid() && $now > $this->getExpirationTime();
-    }
-
-    /**
      * @return DateTime
      */
     public function getPaidTime()

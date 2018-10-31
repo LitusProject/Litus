@@ -29,10 +29,9 @@ use Doctrine\ORM\EntityManager;
 class Csv extends \CommonBundle\Component\Document\Generator\Csv
 {
     /**
-     * @param EntityManager $entityManager
-     * @param array         $volunteers
+     * @param array $volunteers
      */
-    public function __construct(EntityManager $entityManager, $volunteers)
+    public function __construct($volunteers)
     {
         $headers = array('First Name', 'Last Name');
 

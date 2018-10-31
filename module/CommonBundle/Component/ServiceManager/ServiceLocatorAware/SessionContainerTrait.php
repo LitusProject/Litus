@@ -22,25 +22,22 @@ namespace CommonBundle\Component\ServiceManager\ServiceLocatorAware;
 
 /**
  * A trait to define some common methods for classes with a ServiceLocator.
- * This trait requires the class to implement
- * CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface.
  *
- * @see CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
 
-trait ConsoleTrait
+trait SessionContainerTrait
 {
     /**
-     * @return Console
+     * @return \Zend\Session\Container
      */
-    public function getConsole()
+    public function getSessionContainer()
     {
-        return $this->getServiceLocator()->get('Console');
+        return $this->getServiceLocator()->get('session_container');
     }
 
     /**
-     * @return ServiceLocatorInterface
+     * @return \Zend\ServiceManager\ServiceLocatorInterface
      */
     abstract public function getServiceLocator();
 }

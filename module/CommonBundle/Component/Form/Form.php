@@ -22,9 +22,11 @@ namespace CommonBundle\Component\Form;
 
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\HydratorPluginManagerTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\SessionContainerTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use CommonBundle\Component\Validator\FormAwareInterface;
+use CommonBundle\Component\Util\AcademicYear;
 use RuntimeException;
 use Zend\Form\FieldsetInterface as ZendFieldsetInterface;
 use Zend\Form\FormInterface;
@@ -54,6 +56,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
 
     use DoctrineTrait;
     use HydratorPluginManagerTrait;
+    use SessionContainerTrait;
 
     /**
      * @param string|integer|null $name    Optional name for the element
@@ -216,5 +219,20 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
         }
 
         return $this->filter;
+    }
+
+    /**
+     * Get the current academic year.
+     *
+     * @param  boolean $organization
+     * @return AcademicYear
+     */
+    protected function getCurrentAcademicYear($organization = false)
+    {
+        if ($organization) {
+            return AcademicYear::getOrganizationYear($this->getEntityManager());
+        }
+
+        return AcademicYear::getUniversityYear($this->getEntityManager());
     }
 }

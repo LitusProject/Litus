@@ -22,7 +22,7 @@ namespace SecretaryBundle\Repository\Syllabus;
 
 use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person\Academic;
-use SyllabusBUndle\Entity\Study;
+use SyllabusBundle\Entity\Study;
 
 /**
  * StudyEnrollment

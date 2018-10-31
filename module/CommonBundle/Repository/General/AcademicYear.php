@@ -61,7 +61,7 @@ class AcademicYear extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     }
 
     /**
-     * @param  dateTime $date
+     * @param  \DateTime $date
      * @return \CommonBundle\Entity\General\AcademicYear|null
      */
     public function findOneByDate($date)

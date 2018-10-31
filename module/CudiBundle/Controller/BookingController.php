@@ -34,7 +34,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function viewAction()
     {
-        $academic = $this->getAcademicEntity()
+        $academic = $this->getAcademicEntity();
         if ($academic === null) {
             return $this->notFoundAction();
         }

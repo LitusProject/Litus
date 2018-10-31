@@ -280,11 +280,9 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         }
 
         $file = new TmpFile();
-        $year = $this->getCurrentAcademicYear();
 
         $translator = $this->getTranslator();
-
-        $document = new CvGenerator($this->getEntityManager(), $year, $entry, $file, $translator);
+        $document = new CvGenerator($this->getEntityManager(), $entry, $file, $translator);
 
         $document->generate();
 

@@ -29,6 +29,8 @@ use LogisticsBundle\Entity\Driver;
  *
  * A reservation is associated with a certain resource and locks it from a given start date to a given end date.
  *
+ * TOOD: Refactor to subclasses for van, car, and bike.
+ *
  * @ORM\Entity(repositoryClass="LogisticsBundle\Repository\Reservation\VanReservation")
  * @ORM\Table(name="logistics.reservations_van")
  */
@@ -60,14 +62,14 @@ class VanReservation extends \LogisticsBundle\Entity\Reservation\Reservation
     private $load;
 
     /**
-     * @var text Y or N to indicate whether this is a car reservation, boolean could not be used for unkown reasons
+     * @var string Y or N to indicate whether this is a car reservation, boolean could not be used for unkown reasons
      *
      * @ORM\Column(type="text", nullable=true)
      */
     private $car;
 
     /**
-     *@var text Y or N to indicate whether this is a bike reservation, boolean could not be used for unknown reasons
+     *@var string Y or N to indicate whether this is a bike reservation, boolean could not be used for unknown reasons
      *
      *@ORM\Column(type="text", nullable=true)
      */
@@ -161,7 +163,7 @@ class VanReservation extends \LogisticsBundle\Entity\Reservation\Reservation
      * @param  boolean $bike
      * @return self
      */
-    public function setBike($car)
+    public function setBike($bike)
     {
         $this->bike = $bike;
 

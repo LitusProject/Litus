@@ -32,14 +32,14 @@ use RuntimeException;
 class HydratorPluginManager extends \Zend\Hydrator\HydratorPluginManager
 {
     /**
-     * @param ConfigInterface|ContainerInterface|null $configInstanceOrParentLocator
-     * @param array                                   $config
+     * @param \Zend\ServiceManager\ConfigInterface|ContainerInterface|null $configInstanceOrParentLocator
+     * @param array                                                        $config
      */
     public function __construct($configInstanceOrParentLocator = null, array $config = array())
     {
         // Add initializer before the parent constructor, because we want this
         // to be the bottom of the stack before parent::__construct is called.
-        $this->addInitializer(array($this, 'injectServiceLocator'), false);
+        $this->addInitializer(array($this, 'injectServiceLocator'));
 
         parent::__construct($configInstanceOrParentLocator, $config);
     }

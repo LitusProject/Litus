@@ -19,5 +19,3 @@
  */
 
 renameAclAction($connection, 'gallery_admin_gallery', 'unCensorPhoto', 'uncensorPhoto');
-
-updateConfigDescription($connection, '')

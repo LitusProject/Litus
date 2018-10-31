@@ -183,7 +183,7 @@ class Subject
 
     /**
      * @param  AcademicYear $academicYear
-     * @return StudentEnrollment|null
+     * @return \SyllabusBundle\Entity\Subject\StudentEnrollment|null
      */
     public function getEnrollment(AcademicYear $academicYear)
     {

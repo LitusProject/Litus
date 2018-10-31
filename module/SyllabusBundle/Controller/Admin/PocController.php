@@ -220,7 +220,7 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
     }
 
     /**
-     * @return Study|null
+     * @return \SyllabusBundle\Entity\Poc|null
      */
     private function getPocEntity()
     {
@@ -245,7 +245,7 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
     }
 
     /**
-     * @return Study|null
+     * @return \SyllabusBundle\Entity\Group|null
      */
     private function getGroupEntity()
     {

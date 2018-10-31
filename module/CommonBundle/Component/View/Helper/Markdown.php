@@ -36,7 +36,6 @@ class Markdown extends \Zend\View\Helper\AbstractHelper
     public function __invoke(string $text)
     {
         $parsedown = new Parsedown();
-        $parsedown->setSafeMode(true);
 
         return $parsedown->text($text);
     }

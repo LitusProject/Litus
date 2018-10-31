@@ -20,9 +20,6 @@
 
 namespace CudiBundle\Command;
 
-use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil;
-use CommonBundle\Entity\General\AcademicYear;
-
 /**
  * Disable bookings
  */
@@ -68,21 +65,5 @@ EOT
     protected function getLogName()
     {
         return 'DisableBookingsOutOfStock';
-    }
-
-    /**
-     * Get the current academic year.
-     *
-     * @param  boolean|null $organization
-     * @return AcademicYear
-     */
-    public function getCurrentAcademicYear($organization = null)
-    {
-        $startAcademicYear = AcademicYearUtil::getStartOfAcademicYear();
-        $startAcademicYear->setTime(0, 0);
-
-        return $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($startAcademicYear);
     }
 }

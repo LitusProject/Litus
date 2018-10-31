@@ -23,6 +23,7 @@ namespace CommonBundle\Component\Validator;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use CommonBundle\Component\Util\AcademicYear;
 use Zend\Form\ElementInterface;
 
 /**
@@ -79,5 +80,20 @@ abstract class AbstractValidator extends \Zend\Validator\AbstractValidator imple
         }
 
         return $context[$step];
+    }
+
+    /**
+     * Get the current academic year.
+     *
+     * @param  boolean $organization
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
+    protected function getCurrentAcademicYear($organization = false)
+    {
+        if ($organization) {
+            return AcademicYear::getOrganizationYear($this->getEntityManager());
+        }
+
+        return AcademicYear::getUniversityYear($this->getEntityManager());
     }
 }

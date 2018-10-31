@@ -81,7 +81,7 @@ EOT
             $this->logMessage($str);
         }
 
-        return parent::write($str, $raw);
+        parent::write($str, $raw);
     }
 
     /**
@@ -95,7 +95,7 @@ EOT
             $this->logMessage($str);
         }
 
-        return parent::writeln($str, $raw);
+        parent::writeln($str, $raw);
     }
 
     /**

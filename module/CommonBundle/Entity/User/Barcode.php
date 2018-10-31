@@ -82,7 +82,6 @@ abstract class Barcode
     {
         $this->person = $person;
         $this->creationTime = new DateTime();
-        $this->valid = true;
     }
 
     /**

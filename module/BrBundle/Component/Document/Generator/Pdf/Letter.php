@@ -26,7 +26,7 @@ use CommonBundle\Component\Util\Xml\Generator as XmlGenerator;
 use CommonBundle\Component\Util\Xml\Node as XmlNode;
 use Doctrine\ORM\EntityManager;
 
-class Letter extends \BrBundle\Component\Document\Generator\Pdf\CommonBundle\Component\Document\Generator\Pdf
+class Letter extends \CommonBundle\Component\Document\Generator\Pdf
 {
     /**
      * @var \BrBundle\Entity\Contract
@@ -36,6 +36,7 @@ class Letter extends \BrBundle\Component\Document\Generator\Pdf\CommonBundle\Com
     public function __construct(EntityManager $entityManager, ContractEntity $contract)
     {
         parent::__construct(
+            $entityManager,
             $entityManager->getRepository('CommonBUndle\Entity\General\Config')
                 ->getConfigValue('br.pdf_generator_path') . '/contract/letter.xsl',
             $entityManager->getRepository('CommonBUndle\Entity\General\Config')

@@ -125,7 +125,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
             ->getRepository('CommonBundle\Entity\General\Address')
             ->findOneById($configuration->getConfigValue('cudi.billing_address'));
 
-        $academicYear = $this->getCurrentAcademicYear();
+        $academicYear = $this->getCurrentAcademicYear(true);
 
         $subjects = array();
         $mappings = $this->getEntityManager()
@@ -275,10 +275,15 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
     /**
      * Get the current academic year.
      *
-     * @return \CommonBundle\Entity\General\AcademicYear
+     * @param  boolean $organization
+     * @return AcademicYear
      */
-    private function getCurrentAcademicYear()
+    protected function getCurrentAcademicYear($organization = false)
     {
-        return AcademicYear::getOrganizationYear($this->getEntityManager());
+        if ($organization) {
+            return AcademicYear::getOrganizationYear($this->getEntityManager());
+        }
+
+        return AcademicYear::getUniversityYear($this->getEntityManager());
     }
 }

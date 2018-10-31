@@ -23,7 +23,7 @@ namespace CudiBundle\Controller\Admin;
 use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Entity\General\AcademicYear;
 use CudiBundle\Component\Document\Generator\Stock as StockGenerator;
-use Cudibundle\Entity\Sale\Article as SaleArticle;
+use CudiBundle\Entity\Sale\Article as SaleArticle;
 use CudiBundle\Entity\Stock\Delivery;
 use CudiBundle\Entity\Stock\Order\Virtual as VirtualOrder;
 use CudiBundle\Entity\Stock\Period;

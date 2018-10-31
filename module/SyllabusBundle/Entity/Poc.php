@@ -64,13 +64,19 @@ class Poc
     private $academic;
 
     /**
-     * @var boolean whether or not this is just an indicator that there exists a poc group with this group this academic year
-     * @ORM\Column(name="indicator", type="boolean",options={"default" : 0})
+     * @var boolean Whether or not this is just an indicator that there exists a POC group with this group this academic year
+     *
+     * @ORM\Column(name="indicator", type="boolean", options={"default" : 0})
      */
     private $indicator;
 
     /**
-     * @var the email adress of the poc. Only the indicator email adress is showed in the admin
+     * @var EntityManager The EntityManager instance
+     */
+    protected $entityManager;
+
+    /**
+     * @var string The email adress of the POC
      *
      * @ORM\Column(type="string",nullable=true)
      */
@@ -128,7 +134,7 @@ class Poc
     }
 
     /**
-     * @return BigInteger
+     * @return integer
      */
     public function getGroupId()
     {
@@ -136,7 +142,7 @@ class Poc
     }
 
     /**
-     * @param $group
+     * @param  integer $group
      * @return self
      */
     public function setGroupId(Group $groupId)
@@ -155,7 +161,7 @@ class Poc
     }
 
     /**
-     * @param $group
+     * @param  boolean $indicator
      * @return self
      */
     public function setIndicator($indicator)
@@ -164,11 +170,6 @@ class Poc
 
         return $this;
     }
-
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $entityManager;
 
     /**
      * @param  EntityManager $entityManager
@@ -190,8 +191,8 @@ class Poc
             return $this->emailAdress;
         } else {
             $pocIndicator = $this->entityManager
-            ->getRepository('SyllabusBundle\Entity\Poc')
-            ->findIndicatorFromGroupAndAcademicYear($this->getGroupId(), $this->getAcademicYear());
+                ->getRepository('SyllabusBundle\Entity\Poc')
+                ->findIndicatorFromGroupAndAcademicYear($this->getGroupId(), $this->getAcademicYear());
 
             return $pocIndicator->getEmailAdress();
         }

@@ -46,7 +46,6 @@ return Config::create(
                 'typeaheadDriver'          => Component\Validator\Typeahead\Driver::class,
                 'TypeaheadDriver'          => Component\Validator\Typeahead\Driver::class,
                 'typeaheadlease'           => Component\Validator\Typeahead\Lease::class,
-                'typeaheadlease'           => Component\Validator\Typeahead\Lease::class,
                 'typeaheadLease'           => Component\Validator\Typeahead\Lease::class,
                 'TypeaheadLease'           => Component\Validator\Typeahead\Lease::class,
             ),

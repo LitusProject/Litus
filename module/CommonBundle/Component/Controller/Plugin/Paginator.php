@@ -233,7 +233,7 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin implements Se
             'fullWidth'          => $fullWidth,
             'matchedRouteName'   => $controller->getEvent()->getRouteMatch()->getMatchedRouteName(),
             'matchedRouteParams' => $params,
-            'query'              => coutn($query) > 0 ? ('?' . $query->toString()) : '',
+            'query'              => count($query) > 0 ? ('?' . $query->toString()) : '',
             'pages'              => $this->paginator->getPages(),
         );
     }

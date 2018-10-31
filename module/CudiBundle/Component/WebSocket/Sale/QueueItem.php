@@ -542,10 +542,17 @@ class QueueItem
     }
 
     /**
-     * @return \CommonBundle\Entity\General\AcademicYear
+     * Get the current academic year.
+     *
+     * @param  boolean $organization
+     * @return AcademicYear
      */
-    private function getCurrentAcademicYear()
+    protected function getCurrentAcademicYear($organization = false)
     {
+        if ($organization) {
+            return AcademicYear::getOrganizationYear($this->entityManager);
+        }
+
         return AcademicYear::getUniversityYear($this->entityManager);
     }
 }

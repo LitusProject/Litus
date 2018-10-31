@@ -51,11 +51,11 @@ class ApplicationFactory implements FactoryInterface
 
         if (getenv('APPLICATION_ENV') == 'production') {
             $events = new EventDispatcher();
-            $events->addListener(ConsoleEvents::ERROR, array($services->get('sentry'), 'logConsoleErrorEvent'));
+            $events->addListener(ConsoleEvents::ERROR, array($container->get('sentry'), 'logConsoleErrorEvent'));
 
             $application->setDispatcher($events);
 
-            $errorHandler = new Raven_ErrorHandler($services->get('raven_client'));
+            $errorHandler = new Raven_ErrorHandler($container->get('raven_client'));
             $errorHandler->registerErrorHandler()
                 ->registerExceptionHandler()
                 ->registerShutdownFunction();

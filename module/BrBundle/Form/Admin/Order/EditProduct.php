@@ -32,7 +32,9 @@ use LogicException;
 class EditProduct extends \BrBundle\Form\Admin\Order\AddProduct
 {
     /**
-     * @var entry|null The order entry to edit.
+     * @var OrderEntry|null The order entry to edit
+     *
+     * TODO: Rename to $orderEntry
      */
     private $entry;
 

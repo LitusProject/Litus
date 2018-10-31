@@ -75,7 +75,7 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 
     public function addAction()
     {
-        $person = $this->getCorporateEntity()
+        $person = $this->getCorporateEntity();
         if ($person === null) {
             return new ViewModel();
         }

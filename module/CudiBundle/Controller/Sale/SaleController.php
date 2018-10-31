@@ -20,6 +20,7 @@
 
 namespace CudiBundle\Controller\Sale;
 
+use CudiBundle\Entity\Sale\Booking;
 use CudiBundle\Entity\Sale\QueueItem;
 use CudiBundle\Entity\Sale\ReturnItem;
 use Zend\View\Model\ViewModel;

@@ -22,8 +22,10 @@ namespace BrBundle\Entity\Invoice;
 
 use BrBundle\Entity\Collaborator;
 use BrBundle\Entity\Company;
+use DateInterval;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Invoice\ManualInvoice")
@@ -245,11 +247,11 @@ class ManualInvoice extends \BrBundle\Entity\Invoice
     }
 
     /**
-     * @return DateTime
+     * @return \DateTime
      */
     public function getExpirationTime()
     {
-        $expireTime = 'P' . $this->getOrder()->getContract()->getPaymentDays() . 'D';
+        $expireTime = 'P' . $this->getPaymentDays() . 'D';
 
         return $this->getCreationTime()->add(new DateInterval($expireTime));
     }

@@ -117,7 +117,7 @@ class Factory extends \Zend\Form\Factory implements ServiceLocatorAwareInterface
             }
         }
 
-        return parent::prepareAndInjectElements($elements, $fieldset, $method);
+        parent::prepareAndInjectElements($elements, $fieldset, $method);
     }
 
     public function getInputFilterFactory()

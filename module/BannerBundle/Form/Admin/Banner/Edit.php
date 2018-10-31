@@ -28,9 +28,9 @@ namespace BannerBundle\Form\Admin\Banner;
  */
 class Edit extends \BannerBundle\Form\Admin\Banner\Add
 {
-    public function init()
+    public function init($fileRequired = false)
     {
-        parent::init(false);
+        parent::init($fileRequired);
 
         $this->remove('submit')
             ->addSubmit('Save', 'banner_edit');

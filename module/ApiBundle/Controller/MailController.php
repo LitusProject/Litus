@@ -21,7 +21,6 @@
 namespace ApiBundle\Controller;
 
 use CommonBundle\Component\Util\File\TmpFile;
-use MailBundle\Component\Archive\Generator\MailingList\Tar;
 use MailBundle\Component\Archive\Generator\MailingList\Zip;
 use RuntimeException;
 use Zend\Http\Headers;
@@ -104,31 +103,7 @@ class MailController extends \ApiBundle\Component\Controller\ActionController\Ap
 
     public function listsArchiveAction()
     {
-        $lists = $this->getEntityManager()
-            ->getRepository('MailBundle\Entity\MailingList')
-            ->findAll();
-
-        if (count($lists) == 0) {
-            throw new RuntimeException('There needs to be at least one list before an archive can be created');
-        }
-
-        $archive = new TmpFile();
-        $generator = $this->getParam('type') != 'zip' ? new Tar($this->getEntityManager(), $lists) : new Zip($this->getEntityManager(), $lists);
-        $generator->generateArchive($archive);
-
-        $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="lists.' . ($this->getParam('type') != 'zip' ? 'tar.gz' : 'zip') . '"',
-            'Content-Type'        => mime_content_type($archive->getFileName()),
-            'Content-Length'      => filesize($archive->getFileName()),
-        ));
-        $this->getResponse()->setHeaders($headers);
-
-        return new ViewModel(
-            array(
-                'data' => $archive->getContent(),
-            )
-        );
+        throw new RuntimeException('The listsArchive endpoint has been deprecated');
     }
 
     public function getListsArchiveAction()

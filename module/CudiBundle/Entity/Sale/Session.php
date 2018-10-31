@@ -89,7 +89,7 @@ class Session
     private $comment;
 
     /**
-     * @var ArrayCollection The restrictions of this sale session
+     * @var \Doctrine\Common\Collections\ArrayCollection The restrictions of this sale session
      *
      * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sale\Session\Restriction", mappedBy="session")
      */

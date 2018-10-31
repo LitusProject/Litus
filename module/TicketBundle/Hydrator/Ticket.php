@@ -20,6 +20,7 @@
 
 namespace TicketBundle\Hydrator;
 
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 use TicketBundle\Component\Ticket\Ticket as TicketBook;
 use TicketBundle\Entity\GuestInfo;
 

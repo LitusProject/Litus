@@ -29,7 +29,7 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\FormFactoryTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\MailTransportTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\RouterTrait;
-use CommonBundle\Component\ServiceManager\ServiceLocatorAware\SessionStorageTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\SessionContainerTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\TranslatorTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\ViewRendererTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
@@ -64,7 +64,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     use FormFactoryTrait;
     use MailTransportTrait;
     use RouterTrait;
-    use SessionStorageTrait;
+    use SessionContainerTrait;
     use TranslatorTrait;
     use ViewRendererTrait;
 

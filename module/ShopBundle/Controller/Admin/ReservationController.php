@@ -49,7 +49,7 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
         $result = $this->getEntityManager()
             ->getRepository('ShopBundle\Entity\Reservation')
             ->getTotalByProductBySalesQuery($salesSession);
-//        $paginator_total = $this->paginator()->createFromArray($result, $this->getParam('page_total'));
+        // $paginator_total = $this->paginator()->createFromArray($result, $this->getParam('page_total'));
 
         return new ViewModel(
             array(
@@ -63,12 +63,12 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
 
     public function deleteAction()
     {
-        $reseration = $this->getReservationEntity();
+        $reservation = $this->getReservationEntity();
         if ($reservation === null) {
             return new ViewModel();
         }
 
-        $this->getEntityManager()->remove($reseration);
+        $this->getEntityManager()->remove($reservation);
         $this->getEntityManager()->flush();
 
         return new ViewModel(

@@ -205,7 +205,7 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
                             ->getRepository('BrBundle\Entity\Company\Request\RequestInternship')
                             ->findOneByJob($oldJob->getId());
 
-                        $request = new RequestVacancy($job, 'edit reject', $person, $oldRequest->getEditJob());
+                        $request = new RequestInternship($job, 'edit reject', $person, $oldRequest->getEditJob());
                         $this->getEntityManager()->persist($request);
 
                         if (isset($oldRequest)) {
@@ -338,7 +338,7 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
     }
 
     /**
-     * @return RequestVacancy|null
+     * @return \BrBundle\Entity\Company\Request\RequestInternship|null
      */
     private function getRequestEntity()
     {

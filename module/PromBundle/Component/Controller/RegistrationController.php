@@ -20,6 +20,7 @@
 
 namespace PromBundle\Component\Controller;
 
+use CommonBundle\Entity\General\Language;
 use Zend\Mvc\MvcEvent;
 
 /**

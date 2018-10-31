@@ -20,7 +20,7 @@
 
 namespace ShiftBundle\Form\Admin\Shift;
 
-use Shiftbundle\Entity\Shift;
+use ShiftBundle\Entity\Shift;
 
 /**
  * Edit Shift
@@ -30,7 +30,7 @@ use Shiftbundle\Entity\Shift;
 class Edit extends \ShiftBundle\Form\Admin\Shift\Add
 {
     /**
-     * @var Shift|null The shift to edit.
+     * @var Shift|null The shift to edit
      */
     private $shift;
 

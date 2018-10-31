@@ -54,7 +54,7 @@ class City
     private $name;
 
     /**
-     * @var \Doctrine\Common\Collection\ArrayCollection The streets in the city
+     * @var \Doctrine\Common\Collections\ArrayCollection The streets in the city
      *
      * @ORM\OneToMany(targetEntity="CommonBundle\Entity\General\Address\Street", mappedBy="city")
      * @ORM\OrderBy({"name" = "ASC"})
@@ -96,7 +96,7 @@ class City
     }
 
     /**
-     * @return \Doctrine\Common\Collection\ArrayCollection
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getStreets()
     {

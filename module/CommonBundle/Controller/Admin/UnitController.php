@@ -56,6 +56,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             $members = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
                 ->findBy(array('unit' => $unit, 'academicYear' => $academicYear));
+
             if (isset($members[0])) {
                 array_push($unitsWithMembers, $unit);
                 unset($units[$key]);
@@ -376,7 +377,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return UnitMap|null
+     * @return \CommonBundle\Entity\User\Person\Organization\UnitMap|null
      */
     private function getUnitMapEntity()
     {

@@ -20,14 +20,15 @@
 
 namespace CudiBundle\Command;
 
-use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil;
 use CommonBundle\Entity\General\AcademicYear;
 use DateInterval;
 use DateTime;
 use Zend\Mail\Message as Mail;
 
 /**
- * Updates catalog
+ * CatalogUpdate
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class CatalogUpdate extends \CommonBundle\Component\Console\Command
 {
@@ -49,7 +50,7 @@ EOT
         $date = new DateTime();
         $date->sub(new DateInterval('P1D'));
 
-        $academicYear = $this->getCurrentAcademicYear();
+        $academicYear = $this->getCurrentAcademicYear(true);
         $subjects = array();
 
         $this->findAllBookable($subjects, $date, $academicYear);
@@ -298,16 +299,5 @@ EOT
         } else {
             $this->writeln('<comment>' . $counter . '</comment> mails would have been sent.');
         }
-    }
-
-    /**
-     * Get the current academic year.
-     *
-     * @param  boolean|null $organization
-     * @return AcademicYear
-     */
-    public function getCurrentAcademicYear($organization = null)
-    {
-        return AcademicYearUtil::getOrganizationYear($this->getEntityManager());
     }
 }

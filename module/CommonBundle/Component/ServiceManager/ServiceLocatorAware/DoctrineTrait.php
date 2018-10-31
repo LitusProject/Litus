@@ -22,17 +22,14 @@ namespace CommonBundle\Component\ServiceManager\ServiceLocatorAware;
 
 /**
  * A trait to define some common methods for classes with a ServiceLocator.
- * This trait requires the class to implement
- * CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface.
  *
- * @see CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
 
 trait DoctrineTrait
 {
     /**
-     * @return DocumentManager
+     * @return \Doctrine\ODM\MongoDB\DocumentManager
      */
     public function getDocumentManager()
     {
@@ -40,7 +37,7 @@ trait DoctrineTrait
     }
 
     /**
-     * @return EntityManager
+     * @return \Doctrine\ORM\EntityManager
      */
     public function getEntityManager()
     {
@@ -48,7 +45,7 @@ trait DoctrineTrait
     }
 
     /**
-     * @return ServiceLocatorInterface
+     * @return \Zend\ServiceManager\ServiceLocatorInterface
      */
     abstract public function getServiceLocator();
 }

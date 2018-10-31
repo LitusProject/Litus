@@ -39,9 +39,14 @@ class Reserve extends \CommonBundle\Component\Form\Admin\Form
 
         foreach ($this->stockEntries as $stockEntry) {
             $product = $stockEntry->getProduct();
-            $availability = max(0, $this->getEntityManager()
-                ->getRepository('ShopBundle\Entity\Product\SessionStockEntry')
-                ->getRealAvailability($product, $this->salesSession));
+
+            $availability = max(
+                0,
+                $this->getEntityManager()
+                    ->getRepository('ShopBundle\Entity\Product\SessionStockEntry')
+                    ->getRealAvailability($product, $this->salesSession)
+            );
+
             $this->add(array(
                 'type'       => 'number',
                 'name'       => 'product-' . $product->getId(),
@@ -59,7 +64,7 @@ class Reserve extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-     * @param SessionStockEntry[] $stockEntries
+     * @param array $stockEntries
      */
     public function setStockEntries($stockEntries)
     {
@@ -67,7 +72,7 @@ class Reserve extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-     * @param SalesSession $salesSession
+     * @param \ShopBundle\Entity\SalesSession $salesSession
      */
     public function setSalesSession($salesSession)
     {

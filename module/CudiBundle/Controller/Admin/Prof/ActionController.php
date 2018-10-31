@@ -318,7 +318,6 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                     ->getFile()->setDescription($formData['description']);
 
                 $action->setCompleted($this->getAuthentication()->getPersonObject());
-
                 $this->getEntityManager()->flush();
 
                 $this->redirect()->toRoute(

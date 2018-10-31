@@ -393,7 +393,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->findAllNamesByAcademicYearQuery($this->getAcademicYear())->getResult();
 
         $file = new CsvFile();
-        $document = new CsvGenerator($this->getEntityManager(), $volunteers);
+        $document = new CsvGenerator($volunteers);
         $document->generateDocument($file);
 
         $filename = 'Volunteers.csv';

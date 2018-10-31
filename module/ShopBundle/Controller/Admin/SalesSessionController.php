@@ -65,26 +65,6 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
-    /**
-     * @return Product[]
-     */
-    protected function getAvailableProducts()
-    {
-        return $this->getEntityManager()
-            ->getRepository('ShopBundle\Entity\Product')
-            ->findAllAvailable();
-    }
-
-    /**
-     * @return Product[]
-     */
-    protected function getAvailableAndStockAndReservationProducts($salesSession)
-    {
-        return $this->getEntityManager()
-            ->getRepository('ShopBundle\Entity\Product')
-            ->findAvailableAndStockAndReservation($salesSession);
-    }
-
     public function addAction()
     {
         $products = $this->getAvailableProducts();
@@ -266,6 +246,7 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
+    // TOOD: Rename to oldSearchAction()
     public function oldsearchAction()
     {
         $this->initAjax();
@@ -274,7 +255,7 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $salesSessions = $this->searchold()
+        $salesSessions = $this->searchOld()
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -313,7 +294,7 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
     /**
      * @return \Doctrine\ORM\Query|null
      */
-    private function searchold()
+    private function searchOld()
     {
         switch ($this->getParam('field')) {
             case 'remarks':
@@ -321,6 +302,26 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
                     ->getRepository('ShopBundle\Entity\SalesSession')
                     ->findAllOldByRemarksQuery($this->getParam('string'));
         }
+    }
+
+    /**
+     * @return array
+     */
+    protected function getAvailableProducts()
+    {
+        return $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\Product')
+            ->findAllAvailable();
+    }
+
+    /**
+     * @return array
+     */
+    protected function getAvailableAndStockAndReservationProducts($salesSession)
+    {
+        return $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\Product')
+            ->findAvailableAndStockAndReservation($salesSession);
     }
 
     /**

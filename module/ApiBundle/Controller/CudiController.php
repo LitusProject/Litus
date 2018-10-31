@@ -551,7 +551,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
     }
 
     /**
-     * @return Academic|null
+     * @return \CommonBundle\Entity\User\Person\Academic|null
      */
     private function getAcademicEntity()
     {

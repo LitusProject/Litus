@@ -203,8 +203,22 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             $newSubmenu = array();
 
             natsort($submenu['subtitle']);
-            $lastSubtitle = array_pop($submenu['subtitle']);
-            $newSubmenu['subtitle'] = implode(', ', $submenu['subtitle']) . ' & ' . $lastSubtitle;
+
+            $newSubmenu['subtitle'] = $submenu['subtitle'][0];
+            for ($i = 1; $i < count($submenu['subtitle']); $i++) {
+                if ($i == (count($submenu['subtitle']) - 1)) {
+                    $newSubmenu['subtitle'] .= ' & ' . $submenu['subtitle'][$i];
+                    break;
+                }
+
+                $newLength = strlen($newSubmenu['subtitle']) + strlen($submenu['subtitle'][$i]) + 5;
+                if ($newLength > 25) {
+                    $newSubmenu['subtitle'] .= ', ' . $submenu['subtitle'][$i] . ', ...';
+                    break;
+                }
+
+                $newSubmenu['subtitle'] .= ', ' . $submenu['subtitle'][$i];
+            }
 
             $active = false;
             $newSubmenuItems = new NamedPriorityQueue();

@@ -18,7 +18,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Component\Validator;
+namespace CudiBundle\Component\Validator\Sale;
 
 use CommonBundle\Component\Form\Form;
 use CommonBundle\Component\Validator\FormAwareInterface;

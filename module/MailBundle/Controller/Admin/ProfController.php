@@ -23,7 +23,7 @@ namespace MailBundle\Controller\Admin;
 use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person;
 use DateTime;
-use Markdown_Parser;
+use Parsedown;
 use Zend\Mail\Message;
 use Zend\Mime\Message as MimeMessage;
 use Zend\Mime\Mime;
@@ -85,8 +85,8 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
 
                     $body = str_replace('{{ subjects }}', $subjects, $formData['message']);
 
-                    $parser = new Markdown_Parser();
-                    $body = nl2br($parser->transform($body));
+                    $parsedown = new Parsedown();
+                    $body = nl2br($parsedown->text($body));
                     $body = preg_replace('/<([a-z\/]+)><br \/>\n<br \/>\n<([a-z]+)>/is', '<$1><$2>', $body);
                     $body = preg_replace('/<([a-z\/]+)><br \/>\n<([a-z]+)>/is', '<$1><$2>', $body);
                     $part = new Part($body);

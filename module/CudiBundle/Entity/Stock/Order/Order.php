@@ -70,7 +70,7 @@ class Order
     private $dateDelivery;
 
     /**
-     * @var ArrayCollection The items ordered
+     * @var \Doctrine\Common\Collections\ArrayCollection The items ordered
      *
      * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Stock\Order\Item", mappedBy="order")
      */
@@ -166,7 +166,7 @@ class Order
     }
 
     /**
-     * @return ArrayCollection
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getItems()
     {

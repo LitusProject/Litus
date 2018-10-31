@@ -25,6 +25,7 @@ use ApiBundle\Document\Token\Access as AccessToken;
 use ApiBundle\Document\Token\Refresh as RefreshToken;
 use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter;
 use CommonBundle\Component\Authentication\Authentication;
+use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -343,10 +344,10 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
             $shibbolethUrl = unserialize($shibbolethUrl);
 
             if (getenv('SERVED_BY') === false) {
-                throw new Exception\ShibbolethUrlException('The SERVED_BY environment variable does not exist');
+                throw new ShibbolethUrlException('The SERVED_BY environment variable does not exist');
             }
             if (!isset($shibbolethUrl[getenv('SERVED_BY')])) {
-                throw new Exception\ShibbolethUrlException('Array key ' . getenv('SERVED_BY') . ' does not exist');
+                throw new ShibbolethUrlException('Array key ' . getenv('SERVED_BY') . ' does not exist');
             }
 
             $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];

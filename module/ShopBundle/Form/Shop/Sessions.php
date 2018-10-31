@@ -32,13 +32,14 @@ class Sessions extends \CommonBundle\Component\Form\Admin\Form
     use TranslatorTrait;
 
     /**
-     * @var SalesSession[]
+     * @var array
      */
     private $salesSessions = array();
 
     public function init()
     {
         parent::init();
+
         $this->add(array(
             'type'       => 'select',
             'name'       => 'salesSession',
@@ -49,11 +50,12 @@ class Sessions extends \CommonBundle\Component\Form\Admin\Form
                 'options' => $this->createSalesSessionsArray(),
             ),
         ));
+
         $this->addSubmit('Reserve', 'submit');
     }
 
     /**
-     * @return SalesSession[]
+     * @return array
      */
     private function createSalesSessionsArray()
     {
@@ -68,7 +70,7 @@ class Sessions extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-     * @param SalesSession[] $salesSessions
+     * @param array $salesSessions
      */
     public function setSalesSessions($salesSessions)
     {

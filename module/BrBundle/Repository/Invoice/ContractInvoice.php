@@ -20,7 +20,7 @@
 
 namespace BrBundle\Repository\Invoice;
 
-use BrBundle\Entity\Order;
+use BrBundle\Entity\Product\Order;
 
 /**
  * ContractInvoice

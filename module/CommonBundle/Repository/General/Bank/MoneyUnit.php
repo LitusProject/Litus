@@ -30,7 +30,7 @@ class MoneyUnit extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
     /**
      * @param  integer $unit
-     * @return CommonBundle\Entity\General\Bank\MoneyUnit|null
+     * @return \CommonBundle\Entity\General\Bank\MoneyUnit|null
      */
     public function findOneByUnit($unit)
     {
