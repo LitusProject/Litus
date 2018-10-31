@@ -33,6 +33,7 @@ use CommonBundle\Component\Module\Config;
 use CommonBundle\Component\Module\Service\AbstractInstallerFactory;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\Validator\Service\AbstractValidatorFactory;
+use CommonBundle\Component\View\Helper\Service\AbstractHelperFactory;
 use CommonBundle\Entity\User\Person;
 use CommonBundle\Entity\User\Session;
 use Interop\Container\ContainerInterface;
@@ -229,15 +230,8 @@ return Config::create(
             'display_exceptions' => in_array(getenv('APPLICATION_ENV'), array('development', 'staging')),
         ),
         'view_helpers' => array(
-            'invokables' => array(
-                Component\View\Helper\DateLocalized::class,
-                Component\View\Helper\GetClass::class,
-                Component\View\Helper\GetParam::class,
-                Component\View\Helper\HasAccess::class,
-                Component\View\Helper\HideEmail::class,
-                Component\View\Helper\Markdown::class,
-                Component\View\Helper\StaticMap::class,
-                Component\View\Helper\Url::class,
+            'abstract_factories' => array(
+                AbstractHelperFactory::class,
             ),
             'aliases' => array(
                 'datelocalized' => Component\View\Helper\DateLocalized::class,
