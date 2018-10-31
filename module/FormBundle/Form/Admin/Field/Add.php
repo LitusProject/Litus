@@ -111,7 +111,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $this->add(array(
             'type'       => 'form_field_field_text',
-            'name'       => 'text_form',
+            'name'       => 'string_form',
             'label'      => 'String Options',
             'attributes' => array(
                 'class' => 'text_form extra_form hide',
