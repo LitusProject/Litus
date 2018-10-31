@@ -25,6 +25,10 @@ phpcs() {
     vendor/bin/phpcs -q --runtime-set ignore_warnings_on_exit true --report=summary
 }
 
+phpstan() {
+    vendor/bin/phpstan --no-progress
+}
+
 install() {
     init_database
 
@@ -32,15 +36,20 @@ install() {
     php bin/console.php install:all
 }
 
+update() {
+    bin/update.sh
+}
+
 case $1 in
     analyze)
         phpcs
+        phpstan
         ;;
     install)
         install
-        bin/update.sh
+        update
         ;;
     *)
-        echo "Unknown Travis test: '$1'" >&2
+        exit 1
         ;;
 esac
