@@ -16,6 +16,8 @@ cache:
         - vendor/
 
 before_install:
+    - yes | pecl install imagick
+    - yes | pecl install mailparse
     - phpenv config-add travis/config/php.ini
 install:
     - travis/bin/install.sh
