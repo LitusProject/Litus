@@ -1,24 +1,26 @@
 language: php
+services:
+    - mongodb
+
 node_js:
     - node
 php:
     - 7.2
 
-services:
-    - mongodb
-
 cache:
+    apt: true
     directories:
-        - vendor
-        - $HOME/.composer/cache
+        - $HOME/.composer/cache/
+        - phpcs/
+        - phpstan/
+        - vendor/
 
+before_install:
+    - phpenv config-add travis/config/php.ini
+install:
+    - travis/bin/install.sh
+
+script: travis/bin/test.sh $LITUS_TEST
 env:
     - LITUS_TEST=analyze
     - LITUS_TEST=install
-
-before_install: phpenv config-add travis/config/php.ini
-
-install: travis/bin/install.sh
-
-script: travis/bin/test.sh $LITUS_TEST
-

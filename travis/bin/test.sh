@@ -22,11 +22,15 @@ EOF
 }
 
 phpcs() {
-    vendor/bin/phpcs -q --runtime-set ignore_warnings_on_exit true --report=summary
+    if [ ! -d phpcs/ ]; then
+        mkdir phpcs/
+    fi
+
+    vendor/bin/phpcs -q --cache=phpcs/cache.json --report=source --runtime-set ignore_warnings_on_exit true
 }
 
 phpstan() {
-    vendor/bin/phpstan --no-progress
+    vendor/bin/phpstan analyze --no-progress
 }
 
 install() {

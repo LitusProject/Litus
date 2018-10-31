@@ -1,4 +1,5 @@
 parameters:
+    tmpDir: phpstan/
     level: 0
     paths:
         - bin/
