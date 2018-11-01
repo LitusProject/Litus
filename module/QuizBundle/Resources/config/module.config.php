@@ -31,9 +31,13 @@ return Config::create(
     ),
     array(
         'validators' => array(
-            'invokables' => array(
-                'quiz_round_unique' => 'QuizBundle\Component\Validator\Round\Unique',
-                'quiz_team_unique'  => 'QuizBundle\Component\Validator\Team\Unique',
+            'aliases' => array(
+                'roundnumber' => Component\Validator\RoundNumber::class,
+                'roundNumber' => Component\Validator\RoundNumber::class,
+                'RoundNumber' => Component\Validator\RoundNumber::class,
+                'teamnumber'  => Component\Validator\TeamNumber::class,
+                'teamNumber'  => Component\Validator\TeamNumber::class,
+                'TeamNumber'  => Component\Validator\TeamNumber::class,
             ),
         ),
     )

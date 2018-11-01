@@ -28,7 +28,7 @@ class Supplier extends \CommonBundle\Hydrator\User\Person
     {
         $data['roles'] = array('supplier');
 
-        if (null === $object) {
+        if ($object === null) {
             $object = new SupplierEntity();
             $object->setUsername($data['username']);
         }

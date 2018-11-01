@@ -18,7 +18,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-ini_set('memory_limit','500M');
+ini_set('memory_limit', '500M');
 
 include 'init_autoloader.php';
 $app = Zend\Mvc\Application::init(include 'config/application.config.php');
@@ -115,7 +115,7 @@ pg_query($connection, 'DELETE FROM syllabus.studies');
 
 // Build the new syllabus structure
 echo ' -> Build new syllabus structure' . PHP_EOL;
-exec('./bin/litus.sh orm:schema-tool:update --force', $output, $returnValue);
+exec('php bin/doctrine.php orm:schema-tool:update --force', $output, $returnValue);
 
 if ($returnValue !== 0) {
     echo ' Failed to update database, please try it manualy. This script can be run again afterwards.' . PHP_EOL;
@@ -123,6 +123,7 @@ if ($returnValue !== 0) {
 }
 
 echo ' -> Migrate studies' . PHP_EOL;
+
 function createStudyFullTitle($data)
 {
     global $studies;
@@ -134,6 +135,7 @@ function createStudyFullTitle($data)
 
     return trim(preg_replace('/\s\s+/', ' ', $title . $data['title']));
 }
+
 $addedModuleGroups = array();
 foreach ($usedStudies as $id) {
     $studyData = $studies['_' . $id];
@@ -168,8 +170,6 @@ foreach ($usedStudies as $id) {
                 ->findOneById($map['academic_year']);
             unset($studiesAcademicYearsMap[$mapKey]);
             break;
-        } else {
-            $newStudiesAcademicYearsMap[] = $map;
         }
     }
     $studiesAcademicYearsMap = array_values($studiesAcademicYearsMap);

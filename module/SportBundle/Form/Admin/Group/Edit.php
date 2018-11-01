@@ -31,29 +31,33 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'typeahead',
-            'name'     => 'person',
-            'label'    => 'Runner',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'validators' => array(
-                        array('name' => 'typeahead_person'),
+        $this->add(
+            array(
+                'type'     => 'typeahead',
+                'name'     => 'person',
+                'label'    => 'Runner',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'validators' => array(
+                            array('name' => 'TypeaheadPerson'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'department',
-            'label'      => 'Department',
-            'required'   => true,
-            'attributes' => array(
-                'options' => $this->getDepartments(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'department',
+                'label'      => 'Department',
+                'required'   => true,
+                'attributes' => array(
+                    'options' => $this->getDepartments(),
+                ),
+            )
+        );
 
         $this->addSubmit('Add Runner', 'product_add');
     }

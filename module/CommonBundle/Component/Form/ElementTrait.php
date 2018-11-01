@@ -98,7 +98,7 @@ trait ElementTrait
 
     /**
      * @param  string $option
-     * @return bool
+     * @return boolean
      */
     public function hasOption($option)
     {
@@ -138,7 +138,7 @@ trait ElementTrait
     public function prepareElement(FormInterface $form)
     {
         if (!$this->hasAttribute('id')) {
-            $this->setAttribute('id', md5($this->getName() . rand() . rand()));
+            $this->setAttribute('id', md5(uniqid(rand(), true)));
         }
     }
 
@@ -152,13 +152,13 @@ trait ElementTrait
     abstract public function setAttribute($name, $value);
 
     /**
-     * @param  string     $name
+     * @param  string $name
      * @return mixed|null
      */
     abstract public function getAttribute($name);
 
     /**
-     * @param  string  $name
+     * @param  string $name
      * @return boolean
      */
     abstract public function hasAttribute($name);

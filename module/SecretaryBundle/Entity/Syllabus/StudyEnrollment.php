@@ -20,10 +20,10 @@
 
 namespace SecretaryBundle\Entity\Syllabus;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person\Academic,
-    Doctrine\ORM\Mapping as ORM,
-    SyllabusBundle\Entity\Study;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person\Academic;
+use Doctrine\ORM\Mapping as ORM;
+use SyllabusBundle\Entity\Study;
 
 /**
  * This entity stores the node item.
@@ -34,7 +34,7 @@ use CommonBundle\Entity\General\AcademicYear,
 class StudyEnrollment
 {
     /**
-     * @var int The ID of the enrollment
+     * @var integer The ID of the enrollment
      *
      * @ORM\Id
      * @ORM\GeneratedValue

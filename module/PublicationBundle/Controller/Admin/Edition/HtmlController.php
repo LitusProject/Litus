@@ -20,11 +20,11 @@
 
 namespace PublicationBundle\Controller\Admin\Edition;
 
-use DateTime,
-    PublicationBundle\Entity\Edition\Html as HtmlEdition,
-    PublicationBundle\Entity\Publication,
-    Zend\View\Model\ViewModel,
-    ZipArchive;
+use DateTime;
+use PublicationBundle\Entity\Edition\Html as HtmlEdition;
+use PublicationBundle\Entity\Publication;
+use Zend\View\Model\ViewModel;
+use ZipArchive;
 
 /**
  * HtmlController
@@ -35,7 +35,8 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($publication = $this->getPublicationEntity())) {
+        $publication = $this->getPublicationEntity();
+        if ($publication === null) {
             return new ViewModel();
         }
 
@@ -57,7 +58,8 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        if (!($publication = $this->getPublicationEntity())) {
+        $publication = $this->getPublicationEntity();
+        if ($publication === null) {
             return new ViewModel();
         }
 
@@ -84,17 +86,20 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 
     public function uploadAction()
     {
-        if (!($publication = $this->getPublicationEntity())) {
+        $publication = $this->getPublicationEntity();
+        if ($publication === null) {
             return new ViewModel();
         }
 
         $form = $this->getForm('publication_edition_html_add', array('publication' => $publication));
         $formData = $this->getRequest()->getPost();
 
-        $form->setData(array_merge_recursive(
-            $formData->toArray(),
-            $this->getRequest()->getFiles()->toArray()
-        ));
+        $form->setData(
+            array_merge_recursive(
+                $formData->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            )
+        );
 
         $date = self::loadDate($formData['date']);
 
@@ -118,7 +123,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
                 ->getRepository('PublicationBundle\Entity\Edition\Pdf')
                 ->findOneById($formData['pdf_version']);
 
-            $host = (('on' === $this->getRequest()->getServer('HTTPS', 'off')) ? 'https' : 'http')
+            $host = ($this->getRequest()->getServer('HTTPS', 'off') === 'on' ? 'https' : 'http')
                 . '://'
                 . $this->getRequest()->getServer('HTTP_HOST');
             $html = preg_replace(
@@ -148,7 +153,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 
             $zip = new ZipArchive();
 
-            if (true === $zip->open($zipFileName)) {
+            if ($zip->open($zipFileName) === true) {
                 $zip->extractTo($filePath . $fileName);
                 $zip->close();
                 unlink($zipFileName);
@@ -204,7 +209,8 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($edition = $this->getHtmlEditionEntity())) {
+        $edition = $this->getHtmlEditionEntity();
+        if ($edition === null) {
             return new ViewModel();
         }
 
@@ -296,7 +302,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @param  string        $date
+     * @param  string $date
      * @return DateTime|null
      */
     private static function loadDate($date)

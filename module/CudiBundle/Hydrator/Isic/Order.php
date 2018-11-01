@@ -37,11 +37,7 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
 
     private function convertBase64($file)
     {
-        $type = pathinfo($file['name'], PATHINFO_EXTENSION);
-        $data = file_get_contents($file['tmp_name']);
-        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-
-        return base64_encode($data);
+        return base64_encode(file_get_contents($file['tmp_name']));
     }
 
     protected function doHydrate(array $data, $object = null)
@@ -65,12 +61,12 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
         $result['Year'] = $data['studies']['year'];
 
         $result['Optin'] = '0';
-        if(isset($data['optins']['newsletter'])) {
+        if (isset($data['optins']['newsletter'])) {
             $result['Optin'] = $data['optins']['newsletter'];
         }
 
         $result['partnerOptin'] = '0';
-        if(isset($data['optins']['partners'])) {
+        if (isset($data['optins']['partners'])) {
             $result['partnerOptin'] = $data['optins']['partners'];
         }
 
@@ -84,7 +80,7 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
@@ -93,9 +89,7 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
         $data['personal_info'] = $this->stdExtract($object, array(self::$stdKeysPersonal));
         $data['contact_details'] = $this->stdExtract($object, array(self::$stdKeysContact));
 
-        $data['personal_info']['birthday'] = $object->getBirthday() !== null
-            ? $object->getBirthday()->format('d/m/Y')
-            : '';
+        $data['personal_info']['birthday'] = $object->getBirthday() !== null ? $object->getBirthday()->format('d/m/Y') : '';
 
         $hydratorAddress = $this->getHydrator('CommonBundle\Hydrator\General\Address');
         $data['address'] = $hydratorAddress->extract($object->getSecondaryAddress());

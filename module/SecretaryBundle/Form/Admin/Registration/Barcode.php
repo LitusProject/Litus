@@ -20,9 +20,9 @@
 
 namespace SecretaryBundle\Form\Admin\Registration;
 
-use CommonBundle\Entity\User\Barcode as BarcodeEntity,
-    CommonBundle\Entity\User\Person,
-    LogicException;
+use CommonBundle\Entity\User\Barcode as BarcodeEntity;
+use CommonBundle\Entity\User\Person;
+use LogicException;
 
 /**
  * Academic Barcode form
@@ -38,49 +38,53 @@ class Barcode extends \CommonBundle\Component\Form\Admin\Form
 
     public function init()
     {
-        if (null === $this->getPerson()) {
+        if ($this->getPerson() === null) {
             throw new LogicException('Cannot add a barcode to a null person.');
         }
 
         parent::init();
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'type',
-            'label'      => 'Type',
-            'required'   => true,
-            'attributes' => array(
-                'options' => BarcodeEntity::$possibleTypes,
-            ),
-            'value' => $this->getPerson()->getBarcode() ? $this->getPerson()->getBarcode()->getType() : '',
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'type',
+                'label'      => 'Type',
+                'required'   => true,
+                'attributes' => array(
+                    'options' => BarcodeEntity::$possibleTypes,
+                ),
+                'value' => $this->getPerson()->getBarcode() ? $this->getPerson()->getBarcode()->getType() : '',
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'barcode',
-            'label'      => 'Barcode',
-            'required'   => true,
-            'attributes' => array(
-                'class'     => 'disableEnter',
-                'autofocus' => true,
-            ),
-            'value'   => $this->getPerson()->getBarcode() ? $this->getPerson()->getBarcode()->getBarcode() : '',
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name'    => 'person_barcode',
-                            'options' => array(
-                                'person' => $this->getPerson(),
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'barcode',
+                'label'      => 'Barcode',
+                'required'   => true,
+                'attributes' => array(
+                    'class'     => 'disableEnter',
+                    'autofocus' => true,
+                ),
+                'value'   => $this->getPerson()->getBarcode() ? $this->getPerson()->getBarcode()->getBarcode() : '',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name'    => 'PersonBarcode',
+                                'options' => array(
+                                    'person' => $this->getPerson(),
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Add', 'secretary');
     }

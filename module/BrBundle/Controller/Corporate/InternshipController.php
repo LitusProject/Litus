@@ -20,12 +20,10 @@
 
 namespace BrBundle\Controller\Corporate;
 
-use BrBundle\Entity\Company,
-    BrBundle\Entity\Company\Job,
-    BrBundle\Entity\Company\Request\RequestInternship,
-    BrBundle\Entity\User\Person\Corporate,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use BrBundle\Entity\Company\Job;
+use BrBundle\Entity\Company\Request\RequestInternship;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * InternshipController
@@ -36,7 +34,8 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 {
     public function overviewAction()
     {
-        if (!($person = $this->getCorporateEntity())) {
+        $person = $this->getCorporateEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
@@ -75,7 +74,8 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 
     public function addAction()
     {
-        if (!($person = $this->getCorporateEntity())) {
+        $person = $this->getCorporateEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
@@ -115,9 +115,9 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
                 $mail->setBody($link)
                     ->setFrom($mailAddress, $mailName)
                     ->addTo($mailAddress, $mailName)
-                    ->setSubject("New Vacancy Request " . $person->getCompany()->getName());
+                    ->setSubject('New Vacancy Request ' . $person->getCompany()->getName());
 
-                if ('development' != getenv('APPLICATION_ENV')) {
+                if (getenv('APPLICATION_ENV') != 'development') {
                     $this->getMailTransport()->send($mail);
                 }
 
@@ -146,11 +146,13 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 
     public function editAction()
     {
-        if (!($oldJob = $this->getInternshipEntity())) {
+        $oldJob = $this->getInternshipEntity();
+        if ($oldJob === null) {
             return new ViewModel();
         }
 
-        if (!($person = $this->getCorporateEntity())) {
+        $person = $this->getCorporateEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
@@ -198,12 +200,12 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
                         ->getRepository('BrBundle\Entity\Company\Request\RequestInternship')
                         ->findUnhandledRequestsByJob($oldJob);
 
-                    if (empty($unhandledRequest)) {
+                    if (count($unhandledRequest) == 0) {
                         $oldRequest = $this->getEntityManager()
                             ->getRepository('BrBundle\Entity\Company\Request\RequestInternship')
                             ->findOneByJob($oldJob->getId());
 
-                        $request = new RequestVacancy($job, 'edit reject', $person, $oldRequest->getEditJob());
+                        $request = new RequestInternship($job, 'edit reject', $person, $oldRequest->getEditJob());
                         $this->getEntityManager()->persist($request);
 
                         if (isset($oldRequest)) {
@@ -239,11 +241,13 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 
     public function deleteAction()
     {
-        if (!($internship = $this->getInternshipEntity())) {
+        $internship = $this->getInternshipEntity();
+        if ($internship === null) {
             return new ViewModel();
         }
 
-        if (!($person = $this->getCorporateEntity())) {
+        $person = $this->getCorporateEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
@@ -281,7 +285,8 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 
     public function deleteRequestAction()
     {
-        if (!($request = $this->getRequestEntity())) {
+        $request = $this->getRequestEntity();
+        if ($request === null) {
             $this->redirect()->toRoute(
                 'br_corporate_internship',
                 array(
@@ -333,7 +338,7 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
     }
 
     /**
-     * @return RequestVacancy|null
+     * @return \BrBundle\Entity\Company\Request\RequestInternship|null
      */
     private function getRequestEntity()
     {

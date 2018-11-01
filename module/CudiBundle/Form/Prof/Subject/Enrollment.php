@@ -38,28 +38,28 @@ class Enrollment extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'students',
-            'label'      => 'Students',
-            'required'   => true,
-            'value'      => null !== $this->enrollment ? $this->enrollment->getNumber() : '',
-            'attributes' => array(
-                'autocomplete' => 'off',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'int',
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'students',
+                'label'      => 'Students',
+                'required'   => true,
+                'value'      => $this->enrollment !== null ? $this->enrollment->getNumber() : '',
+                'attributes' => array(
+                    'autocomplete' => 'off',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Update');
     }

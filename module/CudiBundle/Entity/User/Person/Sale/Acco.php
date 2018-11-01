@@ -20,8 +20,8 @@
 
 namespace CudiBundle\Entity\User\Person\Sale;
 
-use CommonBundle\Entity\User\Person,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Person;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores Acco information for a person.

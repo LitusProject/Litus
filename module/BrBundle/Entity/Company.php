@@ -20,13 +20,12 @@
 
 namespace BrBundle\Entity;
 
-use BrBundle\Entity\Company\Page,
-    BrBundle\Entity\User\Person\Corporate,
-    CommonBundle\Component\Util\Url,
-    CommonBundle\Entity\General\Address,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+use BrBundle\Entity\Company\Page;
+use CommonBundle\Component\Util\Url;
+use CommonBundle\Entity\General\Address;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * This is the entity for a company.
@@ -125,7 +124,7 @@ class Company
     private $logo;
 
     /**
-     * @var bool Whether or not this is an active company
+     * @var boolean Whether or not this is an active company
      *
      * @ORM\Column(type="boolean")
      */
@@ -167,18 +166,18 @@ class Company
      * @var array The possible masters for students
      */
     const POSSIBLE_MASTERS = array(
-        'architectural engineering'     => 'Architectural Engineering',
-        'biomedical engineering'        => 'Biomedical Engineering',
-        'chemical engineering'          => 'Chemical Engineering',
-        'civil engineering'             => 'Civil Engineering',
-        'computer science engineering'  => 'Computer Science Engineering',
-        'electrical engineering'        => 'Electrical Engineering',
-        'energy engineering'            => 'Energy Engineering',
-        'logistics engineering'         => 'Logistics Engineering',
-        'materials engineering'         => 'Materials Engineering',
-        'mathematical engineering'      => 'Mathematical Engineering',
-        'mechanical engineering'        => 'Mechanical Engineering',
-        'nanoengineering'               => 'Nanoengineering'
+        'architectural engineering'    => 'Architectural Engineering',
+        'biomedical engineering'       => 'Biomedical Engineering',
+        'chemical engineering'         => 'Chemical Engineering',
+        'civil engineering'            => 'Civil Engineering',
+        'computer science engineering' => 'Computer Science Engineering',
+        'electrical engineering'       => 'Electrical Engineering',
+        'energy engineering'           => 'Energy Engineering',
+        'logistics engineering'        => 'Logistics Engineering',
+        'materials engineering'        => 'Materials Engineering',
+        'mathematical engineering'     => 'Mathematical Engineering',
+        'mechanical engineering'       => 'Mechanical Engineering',
+        'nanoengineering'              => 'Nanoengineering',
     );
 
     /**
@@ -210,11 +209,11 @@ class Company
         'antwerp'         => 'Antwerp',
         'brussels'        => 'Brussels',
         'east flanders'   => 'East Flanders',
-        'flemish brabant' => 'Flemish Brabant', 
+        'flemish brabant' => 'Flemish Brabant',
         'limburg'         => 'Limburg',
         'west flanders'   => 'West Flanders',
         'wallonia'        => 'Wallonia',
-        'abroad'          => 'Abroad'
+        'abroad'          => 'Abroad',
     );
 
     public function __construct()
@@ -226,7 +225,7 @@ class Company
     }
 
     /**
-     * @param  string  $sector
+     * @param  string $sector
      * @return boolean
      */
     public static function isValidSector($sector)
@@ -235,7 +234,7 @@ class Company
     }
 
     /**
-     * @param  string  $sector
+     * @param  string $sector
      * @return boolean
      */
     public static function isValidLocation($location)
@@ -244,7 +243,7 @@ class Company
     }
 
     /**
-     * @param  string  $master
+     * @param  string $master
      * @return boolean
      */
     public static function isValidMaster($master)
@@ -464,7 +463,7 @@ class Company
     public function getFullWebsite()
     {
         $result = $this->getWebsite();
-        if (false === strpos($result, 'http://')) {
+        if (strpos($result, 'http://') === false) {
             $result = 'http://' . $result;
         }
 
@@ -524,7 +523,7 @@ class Company
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isActive()
     {
@@ -584,13 +583,13 @@ class Company
      */
     public function getCvBookArchiveYears()
     {
-        if (null === $this->cvBookArchiveYears || '' == $this->cvBookArchiveYears) {
+        if ($this->cvBookArchiveYears === null || $this->cvBookArchiveYears == '') {
             return array();
         }
 
         try {
             return unserialize($this->cvBookArchiveYears);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return array();
         }
     }

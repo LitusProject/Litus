@@ -20,21 +20,15 @@
 
 namespace CudiBundle\Form\Admin\Article;
 
-use LogicException;
-
 /**
  * Duplicate of Article
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Duplicate extends Add
+class Duplicate extends \CudiBundle\Form\Admin\Article\Add
 {
     public function init()
     {
-        if (null === $this->article) {
-            throw new LogicException('Cannot duplicate a null article');
-        }
-
         parent::init();
 
         $this->remove('subject_form');

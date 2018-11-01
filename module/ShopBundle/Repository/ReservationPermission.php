@@ -20,13 +20,11 @@
 
 namespace ShopBundle\Repository;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository;
-
 /**
  * Reservation Permission
  * @author Floris Kint <floris.kint@litus.cc>
  */
-class ReservationPermission extends EntityRepository
+class ReservationPermission extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
     /**
      * @param $name

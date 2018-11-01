@@ -20,14 +20,14 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Component\Document\Generator\Pdf\Overview as PdfGenerator,
-    BrBundle\Entity\Collaborator,
-    BrBundle\Entity\Company,
-    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
-    CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use BrBundle\Component\Document\Generator\Pdf\Overview as PdfGenerator;
+use BrBundle\Entity\Collaborator;
+use BrBundle\Entity\Company;
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * OverviewController.
@@ -63,9 +63,10 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-    public function personviewAction()
+    public function personViewAction()
     {
-        if (!($person = $this->getCollaboratorEntity())) {
+        $person = $this->getCollaboratorEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
@@ -159,10 +160,12 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         $document->generateDocument($file);
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="contracts_overview.csv"',
-            'Content-Type'        => 'text/csv',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="contracts_overview.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -171,6 +174,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             )
         );
     }
+
     public function pdfAction()
     {
         $file = new TmpFile();
@@ -178,10 +182,12 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         $document->generate();
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="contracts_overview.pdf"',
-            'Content-Type'        => 'application/pdf',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="contracts_overview.pdf"',
+                'Content-Type'        => 'application/pdf',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -191,9 +197,10 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-    public function companyviewAction()
+    public function companyViewAction()
     {
-        if (!($company = $this->getCompanyEntity())) {
+        $company = $this->getCompanyEntity();
+        if ($company === null) {
             return new ViewModel();
         }
 
@@ -253,16 +260,16 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             foreach ($contracts as $contract) {
                 $contract->getOrder()->setEntityManager($this->getEntityManager());
                 $value = $contract->getOrder()->getTotalCostExclusive();
-                $contracted = $contracted + $value;
-                $totalContracted = $totalContracted + $value;
+                $contracted += $value;
+                $totalContracted += $value;
 
                 if ($contract->isSigned()) {
-                    $invoiced = $invoiced + $value;
-                    $totalSigned = $totalSigned + $value;
+                    $invoiced += $value;
+                    $totalSigned += $value;
 
                     if ($contract->getOrder()->getInvoice()->isPaid()) {
-                        $paid = $paid + $value;
-                        $totalPaid = $totalPaid + $value;
+                        $paid += $value;
+                        $totalPaid += $value;
                     }
                 }
             }
@@ -273,19 +280,19 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
             foreach ($invoices as $invoice) {
                 $value = $invoice->getExclusivePrice();
-                $totalSigned = $totalSigned + $value;
-                $invoiced = $invoiced + $value;
-                $invoiceN = $invoiceN + 1;
+                $totalSigned += $value;
+                $invoiced += $value;
+                $invoiceN += 1;
 
                 if ($invoice->isPaid()) {
-                    $paid = $paid + $value;
-                    $totalPaid = $totalPaid + $value;
+                    $paid += $value;
+                    $totalPaid += $value;
                 }
             }
 
             $collection[] = array(
                 'company'  => $company,
-                'amount'   => sizeof($contracts),
+                'amount'   => count($contracts),
                 'invoiceN' => $invoiceN,
                 'contract' => $contracted,
                 'invoiced' => $invoiced,
@@ -294,7 +301,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         }
         $totals = array('amount' => $companyNmbr, 'contract' => $totalContracted, 'paid' => $totalPaid, 'signed' => $totalSigned);
 
-        return [$collection, $totals];
+        return array($collection, $totals);
     }
 
     /**
@@ -316,7 +323,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             ->getRepository('BrBundle\Entity\Contract')
             ->findContractAuthorsByYear($currentYear);
 
-        echo "<script>console.log(".json_encode($ids).")</script>";
+        echo '<script>console.log(' . json_encode($ids) . ')</script>';
 
         $ccollection = array();
         foreach ($ids as $id) {
@@ -341,25 +348,25 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                 ++$contractNmbr;
                 $contract->getOrder()->setEntityManager($this->getEntityManager());
                 $value = $contract->getOrder()->getTotalCostExclusive();
-                $contracted = $contracted + $value;
-                $totalContracted = $totalContracted + $value;
+                $contracted += $value;
+                $totalContracted += $value;
 
                 if ($contract->isSigned()) {
-                    $invoiced = $invoiced + $value;
-                    $totalInvoiced = $totalInvoiced + $value;
-                    $invoiceNmbr = $invoiceNmbr + 1;
-                    $invoiceN = $invoiceN + 1;
+                    $invoiced += $value;
+                    $totalInvoiced += $value;
+                    $invoiceNmbr += 1;
+                    $invoiceN += 1;
 
                     if ($contract->getOrder()->getInvoice()->isPaid()) {
-                        $paid = $paid + $value;
-                        $totalPaid = $totalPaid + $value;
+                        $paid += $value;
+                        $totalPaid += $value;
                     }
                 }
             }
 
             $ccollection[] = array(
                 'person'     => $person,
-                'camount'    => sizeof($contracts),
+                'camount'    => count($contracts),
                 'iamount'    => $invoiceN,
                 'invoiced'   => $invoiced,
                 'contracted' => $contracted,
@@ -388,14 +395,14 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
             foreach ($invoices as $invoice) {
                 $value = $invoice->getExclusivePrice();
-                $totalMInvoiced = $totalMInvoiced + $value;
-                $invoiced = $invoiced + $value;
-                $manualNmbr = $manualNmbr + 1;
-                $invoiceN = $invoiceN + 1;
+                $totalMInvoiced += $value;
+                $invoiced += $value;
+                $manualNmbr += 1;
+                $invoiceN += 1;
 
                 if ($invoice->isPaid()) {
-                    $paid = $paid + $value;
-                    $totalPaid = $totalPaid + $value;
+                    $paid += $value;
+                    $totalPaid += $value;
                 }
             }
 
@@ -417,7 +424,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             'mamount'    => $manualNmbr,
         );
 
-        return [$ccollection, $mcollection, $totals];
+        return array($ccollection, $mcollection, $totals);
     }
 
     /**

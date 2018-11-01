@@ -20,10 +20,10 @@
 
 namespace DoorBundle\Controller\Admin;
 
-use DateInterval,
-    DateTime,
-    DoorBundle\Document\Rule,
-    Zend\View\Model\ViewModel;
+use DateInterval;
+use DateTime;
+use DoorBundle\Document\Rule;
+use Zend\View\Model\ViewModel;
 
 /**
  * RuleController
@@ -90,7 +90,8 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($rule = $this->getRuleEntity())) {
+        $rule = $this->getRuleEntity();
+        if ($rule === null) {
             return new ViewModel();
         }
 
@@ -147,7 +148,8 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($rule = $this->getRuleEntity())) {
+        $rule = $this->getRuleEntity();
+        if ($rule === null) {
             return new ViewModel();
         }
 
@@ -199,7 +201,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
      */
     private function getLogGraph()
     {
-        if (null !== $this->getCache()) {
+        if ($this->getCache() !== null) {
             if ($this->getCache()->hasItem('CommonBundle_Controller_RuleController_LogGraph')) {
                 $now = new DateTime();
                 if ($this->getCache()->getItem('CommonBundle_Controller_RuleController_LogGraph')['expirationTime'] > $now) {

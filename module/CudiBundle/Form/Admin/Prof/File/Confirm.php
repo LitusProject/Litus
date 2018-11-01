@@ -20,8 +20,8 @@
 
 namespace CudiBundle\Form\Admin\Prof\File;
 
-use CudiBundle\Entity\File\Mapping as FileMapping,
-    LogicException;
+use CudiBundle\Entity\File\Mapping as FileMapping;
+use LogicException;
 
 /**
  * Confirm File add action
@@ -37,7 +37,7 @@ class Confirm extends \CommonBundle\Component\Form\Admin\Form
 
     public function init()
     {
-        if (null === $this->mapping) {
+        if ($this->mapping === null) {
             throw new LogicException('Cannot confirm a null mapping');
         }
 
@@ -45,32 +45,36 @@ class Confirm extends \CommonBundle\Component\Form\Admin\Form
 
         $this->setAttribute('id', 'uploadFile');
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'description',
-            'label'      => 'Description',
-            'required'   => true,
-            'value'      => $this->mapping->getFile()->getDescription(),
-            'attributes' => array(
-                'size' => 70,
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'description',
+                'label'      => 'Description',
+                'required'   => true,
+                'value'      => $this->mapping->getFile()->getDescription(),
+                'attributes' => array(
+                    'size' => 70,
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'printable',
-            'label'      => 'Printable',
-            'attributes' => array(
-                'data-help' => 'Enabling this option will cause the file to be exported by exporting an order. This way these files will be also send to the supplier.',
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'checkbox',
+                'name'       => 'printable',
+                'label'      => 'Printable',
+                'attributes' => array(
+                    'data-help' => 'Enabling this option will cause the file to be exported by exporting an order. This way these files will be also send to the supplier.',
+                ),
+            )
+        );
 
         $this->addSubmit('Confirm', 'file_add');
     }

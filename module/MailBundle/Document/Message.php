@@ -20,9 +20,9 @@
 
 namespace MailBundle\Document;
 
-use DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
  * This entity stores an e-mail message, received through our own
@@ -162,7 +162,7 @@ class Message
      */
     public function setBody($body)
     {
-        $this->body = utf8_encode(str_replace(chr( 194 ) . chr( 160 ), ' ', $body));
+        $this->body = utf8_encode(str_replace(chr(194) . chr(160), ' ', $body));
 
         return $this;
     }

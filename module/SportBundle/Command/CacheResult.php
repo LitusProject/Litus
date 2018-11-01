@@ -35,7 +35,8 @@ class CacheResult extends \CommonBundle\Component\Console\Command
         $this
             ->setName('sport:cache-result')
             ->setDescription('fetch and store the results of the competition')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The %command.name% command fetches the results of the competition and stores
 them in a cache.
 EOT
@@ -58,7 +59,7 @@ EOT
             $fileContents = @file_get_contents($resultPage, false, stream_context_create($options));
             $resultPage = json_decode($fileContents);
 
-            if (false !== $fileContents && null !== $resultPage) {
+            if ($fileContents !== false && $resultPage !== null) {
                 file_put_contents('data/cache/run-' . md5('run_result_page'), $fileContents);
                 $this->writeln('Succesfully cached the result page');
 
@@ -80,20 +81,17 @@ EOT
     {
         $now = new DateTime();
 
-        return parent::write(
+        parent::write(
             sprintf('[<%1$s>%2$s</%1$s>] %3$s', $this->getLogNameTag(), $now->format('Ymd H:i:s'), $str),
             $raw
         );
     }
 
-    /**
-     * @param string $str
-     */
     public function writeln($str, $raw = false)
     {
         $now = new DateTime();
 
-        return parent::writeln(
+        parent::writeln(
             sprintf('[<%1$s>%2$s</%1$s>] %3$s', $this->getLogNameTag(), $now->format('Ymd H:i:s'), $str),
             $raw
         );

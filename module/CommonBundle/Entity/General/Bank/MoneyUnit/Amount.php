@@ -20,9 +20,9 @@
 
 namespace CommonBundle\Entity\General\Bank\MoneyUnit;
 
-use CommonBundle\Entity\General\Bank\CashRegister,
-    CommonBundle\Entity\General\Bank\MoneyUnit,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\Bank\CashRegister;
+use CommonBundle\Entity\General\Bank\MoneyUnit;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\Bank\MoneyUnit\Amount")
@@ -56,7 +56,7 @@ class Amount
     private $unit;
 
     /**
-     * @var int The number of units
+     * @var integer The number of units
      *
      * @ORM\Column(type="integer")
      */
@@ -65,7 +65,7 @@ class Amount
     /**
      * @param CashRegister The cash register this amount is assigned to
      * @param MoneyUnit The unit for which this is the amount
-     * @param int $amount The number of units
+     * @param integer                                                   $amount The number of units
      */
     public function __construct(CashRegister $register, MoneyUnit $unit, $amount)
     {
@@ -80,6 +80,14 @@ class Amount
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\General\Bank\CashRegister
+     */
+    public function getCashRegister()
+    {
+        return $this->cashRegister;
     }
 
     /**

@@ -20,9 +20,9 @@
 
 namespace CommonBundle\Entity\User;
 
-use DateTime,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * We store all sessions in the database, so that we have a tidbit more information and
@@ -78,25 +78,25 @@ class Session
     private $ip;
 
     /**
-     * @var bool Whether or not the user is logged in
+     * @var boolean Whether or not the user is logged in
      *
      * @ORM\Column(type="boolean")
      */
     private $active;
 
     /**
-     * @var bool The type of this session
+     * @var boolean The type of this session
      *
      * @ORM\Column(type="boolean")
      */
     private $shibboleth;
 
     /**
-     * @param Person       $person
-     * @param string       $userAgent
-     * @param string       $ip
-     * @param bool         $shibboleth
-     * @param DateTime|int $expirationTime
+     * @param Person           $person
+     * @param string           $userAgent
+     * @param string           $ip
+     * @param boolean          $shibboleth
+     * @param DateTime|integer $expirationTime
      */
     public function __construct(Person $person, $userAgent, $ip, $shibboleth, $expirationTime = 3600)
     {
@@ -109,7 +109,7 @@ class Session
         } else {
             $expirationTime = is_int($expirationTime) ? $expirationTime : 3600;
             $this->expirationTime = new DateTime(
-                'now ' . (($expirationTime < 0) ? '-' : '+') . abs($expirationTime) . ' seconds'
+                'now ' . ($expirationTime < 0 ? '-' : '+') . abs($expirationTime) . ' seconds'
             );
         }
 
@@ -204,7 +204,7 @@ class Session
      * @param  EntityManager $entityManager The EntityManager instance
      * @param  string        $userAgent     The user agent that should be checked
      * @param  string        $ip            The IP currently used to connect to the site
-     * @return bool|string
+     * @return boolean|string
      */
     public function validate(EntityManager $entityManager, $userAgent, $ip)
     {

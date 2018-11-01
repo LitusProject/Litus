@@ -20,9 +20,11 @@
 
 namespace BrBundle\Hydrator\Cv;
 
-use BrBundle\Entity\Cv\Experience as CvExperienceEntity,
-    BrBundle\Entity\Cv\Language as CvLanguageEntity,
-    CommonBundle\Entity\General\Address as AddressEntity;
+use BrBundle\Entity\Cv\Experience as CvExperienceEntity;
+use BrBundle\Entity\Cv\Language as CvLanguageEntity;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+use CommonBundle\Entity\General\Address as AddressEntity;
+
 /**
  * This hydrator hydrates/extracts Cv entry data.
  *
@@ -33,8 +35,8 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
-            throw new InvalidObjectException('Cannot create a contract');
+        if ($object === null) {
+            throw new InvalidObjectException('Cannot create an entry');
         }
 
         $person = $object->getAcademic();
@@ -47,9 +49,11 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
             ->setEmail($person->getPersonalEmail())
             ->setPriorStudy($data['studies']['prior_degree'])
             ->setPriorGrade($data['studies']['prior_grade'] * 100)
-            ->setStudy($this->getEntityManager()
-                ->getRepository('SyllabusBundle\Entity\Study')
-                ->findOneById($data['studies']['degree']))
+            ->setStudy(
+                $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\Study')
+                    ->findOneById($data['studies']['degree'])
+            )
             ->setGrade($data['studies']['grade'] * 100)
             ->setBachelorStart($data['studies']['bachelor_start'])
             ->setBachelorEnd($data['studies']['bachelor_end'])
@@ -69,7 +73,7 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
             ->setAbout($data['profile']['about']);
 
         $address = $object->getAddress();
-        if (null === $address) {
+        if ($address === null) {
             $address = new AddressEntity();
             $object->setAddress($address);
         }
@@ -91,7 +95,7 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
         $this->getEntityManager()->flush();
 
         foreach ($data['languages'] as $languageData) {
-            if (!isset($languageData['language_name']) || '' === $languageData['language_name']) {
+            if (!isset($languageData['language_name']) || $languageData['language_name'] === '') {
                 continue;
             }
 
@@ -115,7 +119,7 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
         $this->getEntityManager()->flush();
 
         foreach ($data['capabilities']['experiences'] as $experienceData) {
-            if (!isset($experienceData['experience_function']) || '' === $experienceData['experience_function']) {
+            if (!isset($experienceData['experience_function']) || $experienceData['experience_function'] === '') {
                 continue;
             }
 
@@ -135,7 +139,7 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 

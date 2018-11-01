@@ -20,10 +20,9 @@
 
 namespace LogisticsBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Person;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a driver.
@@ -68,7 +67,7 @@ class Driver
     private $removed;
 
     /**
-     * @param Person $person The person to mark as a driver
+     * @param Person                          $person The person to mark as a driver
      * @param $color The color for this driver
      */
     public function __construct(Person $person)
@@ -130,6 +129,14 @@ class Driver
     }
 
     /**
+     * @return boolean
+     */
+    public function isRemoved()
+    {
+        return $this->removed;
+    }
+
+    /**
      * @param  boolean $removed
      * @return self
      */
@@ -141,10 +148,12 @@ class Driver
     }
 
     /**
-     * @return boolean
+     * @return self
      */
-    public function isRemoved()
+    public function remove()
     {
-        return $this->removed;
+        $this->removed = true;
+
+        return $this;
     }
 }

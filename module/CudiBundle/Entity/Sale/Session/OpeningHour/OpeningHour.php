@@ -20,12 +20,12 @@
 
 namespace CudiBundle\Entity\Sale\Session\OpeningHour;
 
-use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM,
-    Locale;
+use CommonBundle\Entity\General\Language;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Locale;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Session\OpeningHour\OpeningHour")
@@ -69,6 +69,7 @@ class OpeningHour
      *
      * @ORM\Column(type="datetime")
      */
+    // TODO: Rename to creationTime
     private $timestamp;
 
     /**
@@ -100,6 +101,7 @@ class OpeningHour
     /**
      * @return DateTime
      */
+    // TODO: Rename to getStartDate()
     public function getStart()
     {
         return $this->startDate;
@@ -109,6 +111,7 @@ class OpeningHour
      * @param  DateTime $startDate
      * @return self
      */
+    // TODO: Rename to setStartDate()
     public function setStart(DateTime $startDate)
     {
         $this->startDate = $startDate;
@@ -119,6 +122,7 @@ class OpeningHour
     /**
      * @return DateTime
      */
+    // TODO: Rename to getEndDate()
     public function getEnd()
     {
         return $this->endDate;
@@ -128,6 +132,7 @@ class OpeningHour
      * @param  DateTime $endDate
      * @return self
      */
+    // TODO: Rename to setEndDate()
     public function setEnd(DateTime $endDate)
     {
         $this->endDate = $endDate;
@@ -144,14 +149,23 @@ class OpeningHour
     }
 
     /**
-     * @param  Language|null    $language
-     * @param  boolean          $allowFallback
+     * @return DateTime
+     */
+    // TODO: Rename to getCreationTime()
+    public function getTimestamp()
+    {
+        return $this->timestamp;
+    }
+
+    /**
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return Translation|null
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
         foreach ($this->translations as $translation) {
-            if (null !== $language && $translation->getLanguage() == $language) {
+            if ($language !== null && $translation->getLanguage() == $language) {
                 return $translation;
             }
 
@@ -175,7 +189,7 @@ class OpeningHour
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation) {
+        if ($translation !== null) {
             return $translation->getComment();
         }
 
@@ -191,12 +205,12 @@ class OpeningHour
     {
         $translation = $this->getTranslation($language, false);
 
-        if (null === $comment) {
+        if ($comment === null) {
             if ($translation !== null) {
                 $this->translations->removeElement($translation);
             }
         } else {
-            if (null === $translation) {
+            if ($translation === null) {
                 $this->translations->add(new Translation($this, $language, $comment));
             } else {
                 $translation->setComment($comment);

@@ -20,15 +20,13 @@
 
 namespace ShopBundle\Repository;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    DateTime;
-use Doctrine\ORM\Query\ResultSetMapping;
+use DateTime;
 
 /**
  * Reservation
  * @author Floris Kint <floris.kint@litus.cc>
  */
-class Reservation extends EntityRepository
+class Reservation extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
     /**
      * @param $person
@@ -55,7 +53,7 @@ class Reservation extends EntityRepository
     }
 
     /**
-     * @param $salesSession
+     * @param  \ShopBundle\Entity\SalesSession $salesSession
      * @return \Doctrine\ORM\Query
      */
     public function findBySalesSessionQuery($salesSession)
@@ -72,20 +70,23 @@ class Reservation extends EntityRepository
             ->getQuery();
     }
 
-    public function getTotalByProductBySalesQuery($salesSession) {
+    /**
+     * @param  \ShopBundle\Entity\SalesSession $salesSession
+     * @return \Doctrine\ORM\Query
+     */
+    public function getTotalByProductBySalesQuery($salesSession)
+    {
         $q = 'SELECT p.id, p.name, SUM(r.amount) FROM shop.reservations as r INNER JOIN shop.products as p ON r.product=p.id WHERE r.session=:sessId GROUP BY p.id';
         $em = $this->getEntityManager();
         $stmt = $em->getConnection()->prepare($q);
         $stmt->bindValue('sessId', $salesSession->getId());
         $stmt->execute();
-        $res = $stmt->fetchAll();
-
-        return $res;
+        return $stmt->fetchAll();
     }
 
     /**
-     * @param  Person $person
-     * @return int
+     * @param  \CommonBundle\Entity\User\Person $person
+     * @return integer
      */
     public function getNoShowSessionCount($person)
     {

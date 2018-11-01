@@ -20,10 +20,10 @@
 
 namespace CommonBundle\Component\Util;
 
-use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    DateInterval,
-    DateTime,
-    Doctrine\ORM\EntityManager;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+use DateInterval;
+use DateTime;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Utility class containing methods used to retrieve the academic year
@@ -100,7 +100,7 @@ class AcademicYear
      *
      * @static
      * @param  DateTime|null $date  the date, if null, the current date is used.
-     * @param  int           $delta the start of the academic year is modified by -delta days, defaults to 0.
+     * @param  integer       $delta the start of the academic year is modified by -delta days, defaults to 0.
      * @return DateTime      the start of the academic year
      */
     public static function getStartOfAcademicYear(DateTime $date = null, $delta = 0)
@@ -120,7 +120,7 @@ class AcademicYear
 
         do {
             $christmas = new DateTime(
-                ($currentDate->format('y')) . '-12-25'
+                $currentDate->format('y') . '-12-25'
             );
 
             $weekDay = $christmas->format('N');
@@ -134,9 +134,11 @@ class AcademicYear
             }
 
             // One semester is 13 weeks long
-            $christmas->sub(new DateInterval(
-                'P' . (13 * 7) . 'D'
-            ));
+            $christmas->sub(
+                new DateInterval(
+                    'P' . (13 * 7) . 'D'
+                )
+            );
 
             $currentDate = clone $date;
             $currentDate->sub(
@@ -144,9 +146,11 @@ class AcademicYear
             );
         } while ($christmas > $date);
 
-        $christmas->sub(new DateInterval(
-            'P' . $delta . 'D'
-        ));
+        $christmas->sub(
+            new DateInterval(
+                'P' . $delta . 'D'
+            )
+        );
 
         return $christmas;
     }
@@ -172,13 +176,13 @@ class AcademicYear
      * Returns the start of the Academic year for the given Academic year.
      *
      * @static
-     * @param  string   $academicYear The academic year in yyzz format
+     * @param  string $academicYear The academic year in yyzz format
      * @return DateTime
      */
     public static function getDateTime($academicYear)
     {
         $startYear = new DateTime(
-            (substr($academicYear, 0, (strpos($academicYear, '-') === false ? 2 : 4))) . '-12-1'
+            substr($academicYear, 0, (strpos($academicYear, '-') === false ? 2 : 4)) . '-12-1'
         );
 
         return self::getStartOfAcademicYear($startYear);
@@ -211,8 +215,8 @@ class AcademicYear
     }
 
     /**
-     * @param  EntityManager      $entityManager
-     * @param  DateTime|null      $date
+     * @param  EntityManager $entityManager
+     * @param  DateTime|null $date
      * @return AcademicYearEntity
      */
     public static function getUniversityYear(EntityManager $entityManager, DateTime $date = null)
@@ -231,7 +235,7 @@ class AcademicYear
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findOneByUniversityStart($startAcademicYear);
 
-        if (null === $academicYear) {
+        if ($academicYear === null) {
             $organizationStart = str_replace(
                 '{{ year }}',
                 $startAcademicYear->format('Y'),
@@ -248,8 +252,8 @@ class AcademicYear
     }
 
     /**
-     * @param  EntityManager      $entityManager
-     * @param  DateTime|null      $date
+     * @param  EntityManager $entityManager
+     * @param  DateTime|null $date
      * @return AcademicYearEntity
      */
     public static function getOrganizationYear(EntityManager $entityManager, DateTime $date = null)
@@ -277,7 +281,7 @@ class AcademicYear
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findOneByUniversityStart($startAcademicYear);
 
-        if (null === $academicYear) {
+        if ($academicYear === null) {
             $organizationStart = str_replace(
                 '{{ year }}',
                 $startAcademicYear->format('Y'),

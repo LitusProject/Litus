@@ -20,13 +20,12 @@
 
 namespace CudiBundle\Controller\Admin;
 
-use CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    CommonBundle\Entity\General\AcademicYear,
-    Cudibundle\Entity\Article,
-    SyllabusBundle\Entity\Study,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use CommonBundle\Entity\General\AcademicYear;
+use SyllabusBundle\Entity\Study;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * SyllabusController
@@ -37,11 +36,12 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $studies = $this->searchStudies($academicYear);
         }
 
@@ -69,11 +69,14 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
             )
         );
     }
+
     public function listAction()
     {
-        if (!($study = $this->getStudyEntity())) {
+        $study = $this->getStudyEntity();
+        if ($study === null) {
             return new ViewModel();
         }
+
         $subject_mappings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article\SubjectMap')
             ->findAllByStudyAndAcademicYearQuery($study);
@@ -100,7 +103,8 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
 
     public function articlescsvAction()
     {
-        if (!($study = $this->getStudyEntity())) {
+        $study = $this->getStudyEntity();
+        if ($study === null) {
             return new ViewModel();
         }
 
@@ -137,10 +141,12 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
         $document->generateDocument($file);
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="' . $study->getTitle() . '_books.csv"',
-            'Content-Type'        => 'text/csv',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="' . $study->getTitle() . '_books.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -152,7 +158,8 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
 
     public function typeaheadAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return;
         }
 
@@ -181,7 +188,8 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -210,7 +218,7 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
     }
 
     /**
-     * @param  AcademicYearEntity       $academicYear
+     * @param  AcademicYearEntity $academicYear
      * @return \Doctrine\ORM\Query|null
      */
     private function search(AcademicYear $academicYear)
@@ -224,7 +232,7 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
     }
 
     /**
-     * @param  AcademicYearEntity       $academicYear
+     * @param  AcademicYearEntity $academicYear
      * @return \Doctrine\ORM\Query|null
      */
     private function searchStudies(AcademicYear $academicYear)

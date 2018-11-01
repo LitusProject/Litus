@@ -19,5 +19,5 @@
  */
 
 return array(
-    'install.prom' => 'PromBundle\Command\Install',
+    'install_prom' => 'PromBundle\Command\Install',
 );

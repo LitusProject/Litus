@@ -41,14 +41,14 @@ class SalesSession
     private $id;
 
     /**
-     * @var datetime The start date of this sales session
+     * @var \DateTime The start date of this sales session
      *
      * @ORM\Column(type="datetime")
      */
     private $startDate;
 
     /**
-     * @var datetime The end date of this sales session
+     * @var \DateTime The end date of this sales session
      *
      * @ORM\Column(type="datetime")
      */
@@ -76,8 +76,11 @@ class SalesSession
         return $this->id;
     }
 
+    // TODO: Rename to SaleSession
+    // TODO: Add __construct()
+
     /**
-     * @param  datetime $startDate
+     * @param  \DateTime $startDate
      * @return self
      */
     public function setStartDate($startDate)
@@ -88,7 +91,7 @@ class SalesSession
     }
 
     /**
-     * @return datetime
+     * @return \DateTime
      */
     public function getStartDate()
     {
@@ -96,7 +99,7 @@ class SalesSession
     }
 
     /**
-     * @param  datetime $endDate
+     * @param  \DateTime $endDate
      * @return self
      */
     public function setEndDate($endDate)
@@ -107,7 +110,7 @@ class SalesSession
     }
 
     /**
-     * @return datetime
+     * @return \DateTime
      */
     public function getEndDate()
     {

@@ -20,9 +20,9 @@
 
 namespace FormBundle\Controller\Admin;
 
-use FormBundle\Entity\Node\Form,
-    FormBundle\Entity\ViewerMap,
-    Zend\View\Model\ViewModel;
+use FormBundle\Entity\Node\Form;
+use FormBundle\Entity\ViewerMap;
+use Zend\View\Model\ViewModel;
 
 /**
  * ViewerController
@@ -33,7 +33,8 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
 {
     public function manageAction()
     {
-        if (!($formSpecification = $this->getFormEntity())) {
+        $formSpecification = $this->getFormEntity();
+        if ($formSpecification === null) {
             return new ViewModel();
         }
 
@@ -72,7 +73,8 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
 
     public function addAction()
     {
-        if (!($formSpecification = $this->getFormEntity())) {
+        $formSpecification = $this->getFormEntity();
+        if ($formSpecification === null) {
             return new ViewModel();
         }
 
@@ -96,7 +98,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             ->getRepository('FormBundle\Entity\Node\Group\Mapping')
             ->findOneByForm($formSpecification);
 
-        if (null !== $group) {
+        if ($group !== null) {
             $this->flashMessenger()->error(
                 'Error',
                 'This form is in a group, you cannot edit the viewer here!'
@@ -135,7 +137,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
                         )
                     );
 
-                if (null !== $repositoryCheck) {
+                if ($repositoryCheck !== null) {
                     $this->flashMessenger()->error(
                         'Error',
                         'This user has already been given access to this list!'
@@ -177,7 +179,8 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($viewer = $this->getViewerMapEntity())) {
+        $viewer = $this->getViewerMapEntity();
+        if ($viewer === null) {
             return new ViewModel();
         }
 
@@ -201,7 +204,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             ->getRepository('FormBundle\Entity\Node\Group\Mapping')
             ->findOneByForm($viewer->getForm());
 
-        if (null !== $group) {
+        if ($group !== null) {
             $this->flashMessenger()->error(
                 'Error',
                 'This form is in a group, you cannot edit the viewer here!'

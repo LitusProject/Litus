@@ -33,32 +33,38 @@ class Login extends \CommonBundle\Component\Form\Admin\Form
 
         $this->setAttribute('id', 'login');
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'username',
-            'attributes' => array(
-                'placeholder' => 'username',
-                'autofocus'   => true,
-                'id'          => 'username',
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'username',
+                'attributes' => array(
+                    'placeholder' => 'username',
+                    'autofocus'   => true,
+                    'id'          => 'username',
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'password',
-            'name'       => 'password',
-            'attributes' => array(
-                'placeholder' => 'password',
-                'id'          => 'password',
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'password',
+                'name'       => 'password',
+                'attributes' => array(
+                    'placeholder' => 'password',
+                    'id'          => 'password',
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'remember_me',
-            'label'      => 'Remember Me',
-            'attributes' => array(
-                'id' => 'remember_me',
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'checkbox',
+                'name'       => 'remember_me',
+                'label'      => 'Remember Me',
+                'attributes' => array(
+                    'id' => 'remember_me',
+                ),
+            )
+        );
     }
 }

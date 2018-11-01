@@ -20,9 +20,9 @@
 
 namespace BrBundle\Form\Admin\Order;
 
-use BrBundle\Entity\Company,
-    BrBundle\Entity\Product\Order,
-    CommonBundle\Entity\General\AcademicYear;
+use BrBundle\Entity\Company;
+use BrBundle\Entity\Product\Order;
+use CommonBundle\Entity\General\AcademicYear;
 
 /**
  * Add a order.
@@ -48,71 +48,79 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'company',
-            'label'      => 'Company',
-            'required'   => true,
-            'attributes' => array(
-                'id'      => 'company',
-                'options' => $this->getCompanyArray(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'company',
+                'label'      => 'Company',
+                'required'   => true,
+                'attributes' => array(
+                    'id'      => 'company',
+                    'options' => $this->getCompanyArray(),
+                ),
+            )
+        );
 
         $companies = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
             ->findAll();
 
         foreach ($companies as $company) {
-            $this->add(array(
-                'type'       => 'select',
-                'name'       => 'contact_' . $company->getId(),
-                'label'      => 'Contact',
-                'required'   => true,
-                'attributes' => array(
-                    'class'   => 'company_contact',
-                    'id'      => 'company_contact_' . $company->getId(),
-                    'options' => $this->getContactArray($company),
-                ),
-                'options' => array(
-                    'input' => array(
-                        'required' => false,
+            $this->add(
+                array(
+                    'type'       => 'select',
+                    'name'       => 'contact_' . $company->getId(),
+                    'label'      => 'Contact',
+                    'required'   => true,
+                    'attributes' => array(
+                        'class'   => 'company_contact',
+                        'id'      => 'company_contact_' . $company->getId(),
+                        'options' => $this->getContactArray($company),
                     ),
-                ),
-            ));
+                    'options' => array(
+                        'input' => array(
+                            'required' => false,
+                        ),
+                    ),
+                )
+            );
         }
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'discount',
-            'label'    => 'Discount (in cents)',
-            'required' => true,
-            'value'    => 0,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'digits'),
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'discount',
+                'label'    => 'Discount (in cents)',
+                'required' => true,
+                'value'    => 0,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'auto_discount',
-            'label'      => 'Automatic Discount',
-            'value'      => true,
-            'attributes' => array(
-                'data-help' => "This checkbox can enable/disable the autodiscount even if an automated discount would be applicable. If no automated discount would be applied this checkbox doesn't matter",
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'checkbox',
+                'name'       => 'auto_discount',
+                'label'      => 'Automatic Discount',
+                'value'      => true,
+                'attributes' => array(
+                    'data-help' => "This checkbox can enable/disable the autodiscount even if an automated discount would be applicable. If no automated discount would be applied this checkbox doesn't matter",
+                ),
+            )
+        );
 
         $this->addSubmit('Add Products', 'product_add');
 
-        if (null !== $this->order) {
+        if ($this->order !== null) {
             $this->bind($this->order);
         }
     }

@@ -20,19 +20,22 @@
 
 namespace CommonBundle\Component\Form;
 
-use Traversable,
-    Zend\Form\FormInterface,
-    Zend\Stdlib\ArrayUtils;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use Traversable;
+use Zend\Form\FormInterface;
+use Zend\Stdlib\ArrayUtils;
 
-class Collection extends \Zend\Form\Element\Collection implements FieldsetInterface, \CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface
+class Collection extends \Zend\Form\Element\Collection implements FieldsetInterface, ServiceLocatorAwareInterface
 {
-    use ElementTrait, FieldsetTrait {
-        FieldsetTrait::setRequired insteadof ElementTrait;
+    use ElementTrait {
         ElementTrait::setRequired as setElementRequired;
     }
+    use FieldsetTrait {
+        FieldsetTrait::setRequired insteadof ElementTrait;
+    }
 
-    use \CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait;
+    use ServiceLocatorAwareTrait;
 
     public function showAs()
     {
@@ -49,7 +52,7 @@ class Collection extends \Zend\Form\Element\Collection implements FieldsetInterf
     /**
      * Set a hash of element names/messages to use when validation fails
      *
-     * @param  array|\Traversable                 $messages
+     * @param  array|\Traversable $messages
      * @return Collection
      * @throws Exception\InvalidArgumentException
      */
@@ -94,7 +97,7 @@ class Collection extends \Zend\Form\Element\Collection implements FieldsetInterf
     /**
      * Checks if this fieldset can bind data
      *
-     * @return bool
+     * @return boolean
      */
     public function allowValueBinding()
     {

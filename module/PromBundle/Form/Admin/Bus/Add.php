@@ -33,56 +33,62 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'datetime',
-            'name'     => 'departure_time',
-            'label'    => 'Departure Time',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'validators' => array(
-                        array(
-                            'name'    => 'date_compare',
-                            'options' => array(
-                                'first_date' => 'now',
-                                'format'     => 'd/m/Y H:i',
+        $this->add(
+            array(
+                'type'     => 'datetime',
+                'name'     => 'departure_time',
+                'label'    => 'Departure Time',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name'    => 'DateCompare',
+                                'options' => array(
+                                    'first_date' => 'now',
+                                    'format'     => 'd/m/Y H:i',
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'total_seats',
-            'label'    => 'Total passengers',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'int'),
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'total_seats',
+                'label'    => 'Total passengers',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'direction',
-            'label'      => 'Go or Return',
-            'required'   => true,
-            'attributes' => array(
-                'id'      => 'direction',
-                'options' => array(
-                    'Go'     => 'Go',
-                    'Return' => 'Return',
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'direction',
+                'label'      => 'Go or Return',
+                'required'   => true,
+                'attributes' => array(
+                    'id'      => 'direction',
+                    'options' => array(
+                        'Go'     => 'Go',
+                        'Return' => 'Return',
+                    ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Add', 'bus_add');
     }

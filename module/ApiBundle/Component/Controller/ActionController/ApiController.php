@@ -20,17 +20,28 @@
 
 namespace ApiBundle\Component\Controller\ActionController;
 
-use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver,
-    CommonBundle\Component\Controller\DoctrineAware,
-    CommonBundle\Component\Controller\Exception\RuntimeException,
-    CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\General\Visit,
-    Zend\Http\Header\HeaderInterface,
-    Zend\Mvc\MvcEvent,
-    Zend\Uri\UriFactory,
-    Zend\Validator\AbstractValidator,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Acl\Acl;
+use CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver;
+use CommonBundle\Component\Controller\Exception\RuntimeException;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\AuthenticationTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\CacheTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\FormFactoryTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\MailTransportTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\RouterTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\SessionContainerTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\TranslatorTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\ViewRendererTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\General\Language;
+use CommonBundle\Entity\General\Visit;
+use Zend\Http\Header\HeaderInterface;
+use Zend\Mvc\MvcEvent;
+use Zend\Uri\UriFactory;
+use Zend\Validator\AbstractValidator;
+use Zend\View\Model\ViewModel;
 
 /**
  * We extend the CommonBundle controller.
@@ -43,8 +54,20 @@ use CommonBundle\Component\Acl\Acl,
  * @method \Zend\Http\PhpEnvironment\Response getResponse()
  * @method \Zend\Http\PhpEnvironment\Request getRequest()
  */
-class ApiController extends \Zend\Mvc\Controller\AbstractActionController implements DoctrineAware
+class ApiController extends \Zend\Mvc\Controller\AbstractActionController implements ServiceLocatorAwareInterface
 {
+    use ServiceLocatorAwareTrait;
+
+    use AuthenticationTrait;
+    use CacheTrait;
+    use DoctrineTrait;
+    use FormFactoryTrait;
+    use MailTransportTrait;
+    use RouterTrait;
+    use SessionContainerTrait;
+    use TranslatorTrait;
+    use ViewRendererTrait;
+
     /**
      * @var \CommonBundle\Component\Acl\Driver\HasAccess The access driver
      */
@@ -63,8 +86,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     public function onDispatch(MvcEvent $e)
     {
-        $this->getServiceLocator()
-            ->get('Zend\View\Renderer\PhpRenderer')
+        $this->getViewRenderer()
             ->plugin('headMeta')
             ->setCharset('utf-8');
 
@@ -77,7 +99,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
 
         $this->logVisit();
 
-        if (false !== getenv('SERVED_BY')) {
+        if (getenv('SERVED_BY') !== false) {
             $this->getResponse()
                 ->getHeaders()
                 ->addHeaderLine('X-Served-By', getenv('SERVED_BY'));
@@ -87,14 +109,14 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         $result->setTerminal(true);
 
         if ($this->validateKey() || $this->validateOAuth()) {
-            if ('development' != getenv('APPLICATION_ENV')) {
+            if (getenv('APPLICATION_ENV') != 'development') {
                 $this->hasAccess()->setDriver($this->hasAccessDriver);
             }
 
-            if (
-                !$this->hasAccess()->toResourceAction(
-                    $this->getParam('controller'), $this->getParam('action')
-                )
+            if (!$this->hasAccess()->toResourceAction(
+                $this->getParam('controller'),
+                $this->getParam('action')
+            )
             ) {
                 $error = $this->error(401, 'You do not have sufficient permissions to access this resource');
                 $error->setOptions($result->getOptions());
@@ -110,7 +132,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
             return $error;
         }
 
-        if (false !== getenv('SERVED_BY')) {
+        if (getenv('SERVED_BY') !== false) {
             $this->getResponse()
                 ->getHeaders()
                 ->addHeaderLine('X-Served-By', getenv('SERVED_BY'));
@@ -126,8 +148,8 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     /**
      * Returns an error message.
      *
-     * @param  integer                    $code    The HTTP status code
-     * @param  string                     $message The error message
+     * @param  integer $code    The HTTP status code
+     * @param  string  $message The error message
      * @return \Zend\View\Model\ViewModel
      */
     public function error($code, $message)
@@ -194,10 +216,10 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
                         ->getConfigValue('fallback_language')
                 );
 
-            if (null !== $fallbackLanguage) {
+            if ($fallbackLanguage !== null) {
                 \Locale::setDefault($fallbackLanguage->getAbbrev());
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             throw new RuntimeException('Unable to initialize fallback language.');
         }
     }
@@ -209,11 +231,11 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     private function initViewHelpers()
     {
-        $renderer = $this->getServiceLocator()->get('Zend\View\Renderer\PhpRenderer');
+        $renderer = $this->getViewRenderer();
 
         $renderer->plugin('url')
             ->setLanguage($this->getLanguage())
-            ->setRouter($this->getServiceLocator()->get('router'));
+            ->setRouter($this->getRouter());
 
         // HasAccess View Helper
         $renderer->plugin('hasAccess')->setDriver(
@@ -262,11 +284,11 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     }
 
     /**
-     * @return null
+     * @return void
      */
     private function initAuthenticationService()
     {
-        $this->getServiceLocator()->get('authentication_service')
+        $this->getAuthenticationService()
             ->setRequest($this->getRequest())
             ->setResponse($this->getResponse());
     }
@@ -323,7 +345,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     private function isAuthorizeAction()
     {
-        return ('authorize' == $this->getParam('action') || 'shibboleth' == $this->getParam('action')) && 'api_oauth' == $this->getParam('controller');
+        return ($this->getParam('action') == 'authorize' || $this->getParam('action') == 'shibboleth') && $this->getParam('controller') == 'api_oauth';
     }
 
     /**
@@ -333,7 +355,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     private function isOAuthAction()
     {
-        return 'api_oauth' == $this->getParam('controller');
+        return $this->getParam('controller') == 'api_oauth';
     }
 
     /**
@@ -343,7 +365,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     private function getAcl()
     {
-        if (null !== $this->getCache()) {
+        if ($this->getCache() !== null) {
             if (!$this->getCache()->hasItem('CommonBundle_Component_Acl_Acl')) {
                 $acl = new Acl(
                     $this->getEntityManager()
@@ -361,42 +383,10 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     }
 
     /**
-     * We want an easy method to retrieve the Authentication from
-     * the DI container.
-     *
-     * @return \CommonBundle\Component\Authentication\Authentication
-     */
-    public function getAuthentication()
-    {
-        return $this->getServiceLocator()->get('authentication');
-    }
-
-    /**
-     * We want an easy method to retrieve the Authentication Service
-     * from the DI container.
-     *
-     * @return \CommonBundle\Component\Authentication\AbstractAuthenticationService
-     */
-    public function getAuthenticationService()
-    {
-        return $this->getServiceLocator()->get('authentication_doctrineservice');
-    }
-
-    /**
-     * We want an easy method to retrieve the Cache from
-     * the DI container.
-     *
-     * @return \Zend\Cache\Storage\StorageInterface
-     */
-    public function getCache()
-    {
-        return $this->getServiceLocator()->get('cache');
-    }
-
-    /**
      * Get the current academic year.
      *
-     * @return \CommonBundle\Entity\General\AcademicYear
+     * @param  boolean $organization
+     * @return AcademicYear
      */
     protected function getCurrentAcademicYear($organization = false)
     {
@@ -408,31 +398,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     }
 
     /**
-     * We want an easy method to retrieve the DocumentManager from
-     * the DI container.
-     *
-     * @return \Doctrine\ODM\MongoDB\DocumentManager
-     */
-    public function getDocumentManager()
-    {
-        return $this->getServiceLocator()->get('doctrine.documentmanager.odm_default');
-    }
-
-    /**
-     * We want an easy method to retrieve the EntityManager from
-     * the DI container.
-     *
-     * @return \Doctrine\ORM\EntityManager
-     */
-    public function getEntityManager()
-    {
-        return $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-    }
-
-    /**
      * Helper method that retrieves the API key.
      *
-     * @param  string                $field The name of the field that contains the key
+     * @param  string $field The name of the field that contains the key
      * @return \ApiBundle\Entity\Key
      */
     protected function getKey($field = 'key')
@@ -442,35 +410,31 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         }
 
         $code = $this->getRequest()->getQuery($field);
-        if (null === $code && $this->getRequest()->isPost()) {
+        if ($code === null && $this->getRequest()->isPost()) {
             $code = $this->getRequest()->getPost($field);
         }
 
-        $key = $this->getEntityManager()
+        return $this->getEntityManager()
             ->getRepository('ApiBundle\Entity\Key')
             ->findOneActiveByCode($code);
-
-        return $key;
     }
 
     /**
      * Helper method that retrieves the OAuth 2 access token.
      *
-     * @param  string                           $field The name of the field that contains the access token
+     * @param  string $field The name of the field that contains the access token
      * @return \ApiBundle\Document\Token\Access
      */
     protected function getAccessToken($field = 'access_token')
     {
         $code = $this->getRequest()->getQuery($field);
-        if (null === $code && $this->getRequest()->isPost()) {
+        if ($code === null && $this->getRequest()->isPost()) {
             $code = $this->getRequest()->getPost($field);
         }
 
-        $accessToken = $this->getDocumentManager()
+        return $this->getDocumentManager()
             ->getRepository('ApiBundle\Document\Token\Access')
             ->findOneActiveByCode($code);
-
-        return $accessToken;
     }
 
     /**
@@ -480,13 +444,13 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     protected function getLanguage()
     {
-        if ('' != $this->getRequest()->getPost('language', '')) {
+        if ($this->getRequest()->getPost('language', '') != '') {
             return $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev($this->getRequest()->getPost('language'));
         }
 
-        if (null !== $this->language) {
+        if ($this->language !== null) {
             return $this->language;
         }
 
@@ -501,9 +465,10 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
                 ->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev('nl');
 
-            if (null === $language) {
+            if ($language === null) {
                 $language = new Language(
-                    'nl', 'Nederlands'
+                    'nl',
+                    'Nederlands'
                 );
 
                 $this->getEntityManager()->persist($language);
@@ -529,55 +494,13 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     }
 
     /**
-     * Retrieve the common session storage from the DI container.
-     *
-     * @return \Zend\Session\Container
-     */
-    public function getSessionStorage()
-    {
-        return $this->getServiceLocator()->get('common_sessionstorage');
-    }
-
-    /**
-     * We want an easy method to retrieve the Mail Transport from
-     * the DI container.
-     *
-     * @return \Zend\Mail\Transport\TransportInterface
-     */
-    public function getMailTransport()
-    {
-        return $this->getServiceLocator()->get('mail_transport');
-    }
-
-    /**
-     * We want an easy method to retrieve the Translator from
-     * the DI container.
-     *
-     * @return \Zend\Mvc\I18n\Translator
-     */
-    public function getTranslator()
-    {
-        return $this->getServiceLocator()->get('translator');
-    }
-
-    /**
-     * @return \CommonBundle\Component\Form\Factory
-     */
-    protected function getFormFactory()
-    {
-        return $this->getServiceLocator()->get('formfactory.bootstrap');
-    }
-
-    /**
-     * @param  string                            $name
-     * @param  array|object|null                 $data
+     * @param  string            $name
+     * @param  array|object|null $data
      * @return \CommonBundle\Component\Form\Form
      */
     public function getForm($name, $data = null)
     {
-        $form = $this->getFormFactory()->create(array('type' => $name), $data);
-
-        return $form;
+        return $this->getFormFactory()->create(array('type' => $name), $data);
     }
 
     /**
@@ -587,7 +510,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     private function validateKey()
     {
-        if ('development' == getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') == 'development') {
             return true;
         }
 
@@ -602,7 +525,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         }
 
         $key = $this->getKey();
-        if (null === $key) {
+        if ($key === null) {
             return false;
         }
 
@@ -630,7 +553,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     private function validateOAuth()
     {
-        if ('development' == getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') == 'development') {
             return true;
         }
 
@@ -645,7 +568,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         }
 
         $accessToken = $this->getAccessToken();
-        if (null === $accessToken) {
+        if ($accessToken === null) {
             return false;
         }
 

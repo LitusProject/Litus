@@ -20,10 +20,10 @@
 
 namespace CommonBundle\Entity\User\Barcode;
 
-use CommonBundle\Entity\User\Person,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException,
-    Zend\Validator\Barcode as BarcodeValidator;
+use CommonBundle\Entity\User\Person;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
+use Zend\Validator\Barcode as BarcodeValidator;
 
 /**
  * This entity stores an EAN12 barcode.
@@ -79,28 +79,28 @@ class Ean12 extends \CommonBundle\Entity\User\Barcode
     /**
      * @return integer
      */
-    public function getPrintableBarcode() {
+    public function getPrintableBarcode()
+    {
         $ean12 = $this->barcode;
         $split = str_split($ean12);
 
         $weight1 = 0;
         $weight3 = 0;
-        for($i = 0; $i < 6; $i++){
-            $weight1 += (int) $split[$i*2];
-            $weight3 += (int) $split[$i*2+1];
+        for ($i = 0; $i < 6; $i++) {
+            $weight1 += (int) $split[$i * 2];
+            $weight3 += (int) $split[$i * 2 + 1];
         }
-        $sum = 1*$weight1 + 3*$weight3;
-        $checkdigit = (10 - ($sum % 10)) % 10;
+        $sum = 1 * $weight1 + 3 * $weight3;
+        $checkdigit = 10 - ($sum % 10) % 10;
 
-        $ean13 = 10*$ean12 + $checkdigit;
-
-        return $ean13;
+        return 10 * $ean12 + $checkdigit;
     }
 
     /**
      * @return integer
      */
-    public static function generate($entityManager) {
+    public static function generate($entityManager)
+    {
         $validator = new BarcodeValidator(
             array(
                 'adapter'     => 'EAN12',
@@ -115,8 +115,8 @@ class Ean12 extends \CommonBundle\Entity\User\Barcode
                 ->getRepository('CommonBundle\Entity\User\Barcode\Ean12')
                 ->findOneByBarcode($ean12);
 
-            $done = (null === $barcode) && ($validator->isValid(strval($ean12)));
-        } while(!$done);
+            $done = ($barcode === null) && $validator->isValid(strval($ean12));
+        } while (!$done);
 
         return $ean12;
     }

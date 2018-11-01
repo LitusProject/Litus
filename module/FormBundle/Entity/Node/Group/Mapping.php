@@ -20,9 +20,9 @@
 
 namespace FormBundle\Entity\Node\Group;
 
-use Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Node\Form,
-    FormBundle\Entity\Node\Group;
+use Doctrine\ORM\Mapping as ORM;
+use FormBundle\Entity\Node\Form;
+use FormBundle\Entity\Node\Group;
 
 /**
  * This entity stores mapping of forms and groups
@@ -33,7 +33,7 @@ use Doctrine\ORM\Mapping as ORM,
 class Mapping
 {
     /**
-     * @var int The ID of this mapping
+     * @var integer The ID of this mapping
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -58,7 +58,7 @@ class Mapping
     private $group;
 
     /**
-     * @var int The order of this form
+     * @var integer The order of this form
      *
      * @ORM\Column(name="group_order", type="smallint")
      */

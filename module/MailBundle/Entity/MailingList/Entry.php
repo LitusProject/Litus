@@ -20,8 +20,8 @@
 
 namespace MailBundle\Entity\MailingList;
 
-use Doctrine\ORM\Mapping as ORM,
-    MailBundle\Entity\MailingList;
+use Doctrine\ORM\Mapping as ORM;
+use MailBundle\Entity\MailingList;
 
 /**
  * This is the entity for a list entry.
@@ -39,7 +39,7 @@ use Doctrine\ORM\Mapping as ORM,
 abstract class Entry
 {
     /**
-     * @var int The entry's unique identifier
+     * @var integer The entry's unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -66,7 +66,7 @@ abstract class Entry
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {

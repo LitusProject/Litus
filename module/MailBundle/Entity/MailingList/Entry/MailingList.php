@@ -20,8 +20,8 @@
 
 namespace MailBundle\Entity\MailingList\Entry;
 
-use Doctrine\ORM\Mapping as ORM,
-    MailBundle\Entity\MailingList as MailingListEntity;
+use Doctrine\ORM\Mapping as ORM;
+use MailBundle\Entity\MailingList as MailingListEntity;
 
 /**
  * This is the entity for the list entry of a list.

@@ -20,10 +20,10 @@
 
 namespace SportBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity represents a group of friends.
@@ -34,7 +34,7 @@ use CommonBundle\Entity\General\AcademicYear,
 class Department
 {
     /**
-     * @var int The ID of this department
+     * @var integer The ID of this department
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -149,7 +149,7 @@ class Department
             ->findByAcadmicYearAndDepartment($academicYear, $this);
 
         foreach ($laps as $lap) {
-            if (null === $lap->getEndTime()) {
+            if ($lap->getEndTime() === null) {
                 continue;
             }
 

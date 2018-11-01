@@ -34,10 +34,11 @@ class RecalculateStock extends \CommonBundle\Component\Console\Command
             ->setAliases(array('cudi:recalculate-stock'))
             ->setDescription('Recalculate the stock.')
             ->addOption('flush', 'f', null, 'Stores the result in the database.')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The <info>%command.name%</info> command recalculates the stock and stores it if <comment>--flush</comment> is given.
 EOT
-        );
+            );
     }
 
     protected function executeCommand()
@@ -86,18 +87,17 @@ EOT
                 continue;
             }
 
-            $number = $startRepository->findValueByArticleAndPeriod($article, $period)
-                + $period->getNbDelivered($article) - $period->getNbSold($article)
-                + $deltaRepository->findTotalByArticleAndPeriod($article, $period)
-                - $retourRepository->findTotalByArticleAndPeriod($article, $period);
+            $number = $startRepository->findValueByArticleAndPeriod($article, $period) + $period->getNbDelivered($article) - $period->getNbSold($article) + $deltaRepository->findTotalByArticleAndPeriod($article, $period) - $retourRepository->findTotalByArticleAndPeriod($article, $period);
 
             if ($number < 0) {
                 $number = 0;
             }
 
             if ($article->getStockValue() != $number) {
-                $this->writeln('Updated "' . $article->getMainArticle()->getTitle() . '": <comment>'
-                    . $article->getStockValue() . '</comment> to <comment>' . $number . '</comment>');
+                $this->writeln(
+                    'Updated "' . $article->getMainArticle()->getTitle() . '": <comment>'
+                    . $article->getStockValue() . '</comment> to <comment>' . $number . '</comment>'
+                );
                 $article->setStockValue($number);
             }
 

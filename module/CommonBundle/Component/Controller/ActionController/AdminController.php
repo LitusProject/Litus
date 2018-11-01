@@ -20,10 +20,11 @@
 
 namespace CommonBundle\Component\Controller\ActionController;
 
-use CommonBundle\Component\Util\NamedPriorityQueue,
-    CommonBundle\Entity\General\Language,
-    Zend\Mvc\MvcEvent,
-    Zend\Validator\AbstractValidator;
+use CommonBundle\Component\Form\Factory;
+use CommonBundle\Component\Util\NamedPriorityQueue;
+use CommonBundle\Entity\General\Language;
+use Zend\Mvc\MvcEvent;
+use Zend\Validator\AbstractValidator;
 
 /**
  * We extend the CommonBundle controller.
@@ -54,15 +55,13 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
                 ->getRepository('CudiBundle\Entity\Stock\Period')
                 ->findOneActive();
 
-            $result->createNewStockPeriod = (
-                null === $period
+            $result->createNewStockPeriod = ($period === null
                 || ($period->getStartDate()->format('Y') < date('Y') && (($period->getStartDate()->format('n') < 12) || ($period->getStartDate()->format('j') <= 15)))
-                || $period->getStartDate() < $this->getCurrentAcademicYear()->getStartDate()
-            );
+                || $period->getStartDate() < $this->getCurrentAcademicYear()->getStartDate());
         }
 
         $result->servedBy = null;
-        if (false !== getenv('SERVED_BY')) {
+        if (getenv('SERVED_BY') !== false) {
             $result->servedBy = ucfirst(getenv('SERVED_BY'));
         }
 
@@ -96,7 +95,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
      */
     protected function getLanguage()
     {
-        if (null !== $this->language) {
+        if ($this->language !== null) {
             return $this->language;
         }
 
@@ -104,9 +103,10 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findOneByAbbrev('en');
 
-        if (null === $language) {
+        if ($language === null) {
             $language = new Language(
-                'en', 'English'
+                'en',
+                'English'
             );
 
             $this->getEntityManager()->persist($language);
@@ -179,13 +179,11 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function getMenu()
     {
-        $config = $this->getServiceLocator()->get('Config');
-        $config = $config['litus']['admin'];
+        $config = $this->getConfig()['litus']['admin'];
 
         $currentController = $this->getParam('controller');
 
         $general = array();
-
         foreach ($config['general'] as $name => $submenu) {
             $newSubmenu = new NamedPriorityQueue();
 
@@ -198,14 +196,30 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             }
         }
 
-        $submenus = array();
+        uksort($general, 'strnatcmp');
 
+        $submenus = array();
         foreach ($config['submenus'] as $name => $submenu) {
             $newSubmenu = array();
 
             natsort($submenu['subtitle']);
-            $lastSubtitle = array_pop($submenu['subtitle']);
-            $newSubmenu['subtitle'] = implode(', ', $submenu['subtitle']) . ' & ' . $lastSubtitle;
+            $nbSubtitles = count($submenu['subtitle']);
+
+            $newSubmenu['subtitle'] = $submenu['subtitle'][0];
+            for ($i = 1; $i < $nbSubtitles; $i++) {
+                if ($i == ($nbSubtitles - 1)) {
+                    $newSubmenu['subtitle'] .= ' & ' . $submenu['subtitle'][$i];
+                    break;
+                }
+
+                $newLength = strlen($newSubmenu['subtitle']) + strlen($submenu['subtitle'][$i]) + 5;
+                if ($newLength > 25) {
+                    $newSubmenu['subtitle'] .= ', ' . $submenu['subtitle'][$i] . ', ...';
+                    break;
+                }
+
+                $newSubmenu['subtitle'] .= ', ' . $submenu['subtitle'][$i];
+            }
 
             $active = false;
             $newSubmenuItems = new NamedPriorityQueue();
@@ -248,6 +262,11 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
      */
     protected function getFormFactory()
     {
-        return $this->getServiceLocator()->get('formfactory.admin');
+        return $this->getServiceLocator()->build(
+            Factory::class,
+            array(
+                'isAdmin' => true,
+            )
+        );
     }
 }

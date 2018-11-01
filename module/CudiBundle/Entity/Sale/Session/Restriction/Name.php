@@ -20,17 +20,16 @@
 
 namespace CudiBundle\Entity\Sale\Session\Restriction;
 
-use CommonBundle\Entity\User\Person,
-    CudiBundle\Entity\Sale\Session,
-    CudiBundle\Entity\Sale\Session\Restriction,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Person;
+use CudiBundle\Entity\Sale\Session;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Session\Restriction\Name")
  * @ORM\Table(name="cudi.sales_session_restriction_name")
  */
-class Name extends Restriction
+class Name extends \CudiBundle\Entity\Sale\Session\Restriction
 {
     /**
      * @var string The start value of restriction

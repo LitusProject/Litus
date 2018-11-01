@@ -20,8 +20,8 @@
 
 namespace LogisticsBundle\Entity\Reservation;
 
-use CommonBundle\Entity\User\Person,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Person;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a reservation.
@@ -31,7 +31,7 @@ use CommonBundle\Entity\User\Person,
  * @ORM\Entity(repositoryClass="LogisticsBundle\Repository\Reservation\PianoReservation")
  * @ORM\Table(name="logistics.reservations_piano")
  */
-class PianoReservation extends Reservation
+class PianoReservation extends \LogisticsBundle\Entity\Reservation\Reservation
 {
     const PIANO_RESOURCE_NAME = 'Piano';
 

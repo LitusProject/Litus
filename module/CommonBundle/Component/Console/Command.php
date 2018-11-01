@@ -20,17 +20,24 @@
 
 namespace CommonBundle\Component\Console;
 
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
-    Exception,
-    Raven_ErrorHandler,
-    Symfony\Component\Console\Input\InputInterface as Input,
-    Symfony\Component\Console\Output\OutputInterface as Output,
-    Zend\ServiceManager\ServiceLocatorAwareTrait as ZendServiceLocatorAwareTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\ConfigTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\MailTransportTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\SentryTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use CommonBundle\Component\Util\AcademicYear;
+use Symfony\Component\Console\Input\InputInterface as Input;
+use Symfony\Component\Console\Output\OutputInterface as Output;
 
-abstract class Command extends \Symfony\Component\Console\Command\Command implements \CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface
+abstract class Command extends \Symfony\Component\Console\Command\Command implements ServiceLocatorAwareInterface
 {
-    use ZendServiceLocatorAwareTrait;
     use ServiceLocatorAwareTrait;
+
+    use ConfigTrait;
+    use DoctrineTrait;
+    use MailTransportTrait;
+    use SentryTrait;
 
     /**
      * @var Input
@@ -43,30 +50,18 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     protected $output;
 
     /**
-     * @return int|void
+     * @return integer|void
      */
     protected function execute(Input $input, Output $output)
     {
         $this->input = $input;
         $this->output = $output;
 
-        if ('production' == getenv('APPLICATION_ENV')) {
-            $errorHandler = new Raven_ErrorHandler($this->getServiceLocator()->get('raven_client'));
-            $errorHandler->registerErrorHandler()
-                ->registerExceptionHandler()
-                ->registerShutdownFunction();
-        }
-
-        try {
-            return $this->executeCommand();
-        } catch (Exception $e) {
-            $this->write($e, true);
-            return 1;
-        }
+        return $this->executeCommand();
     }
 
     /**
-     * @return int|void
+     * @return integer|void
      */
     abstract protected function executeCommand();
 
@@ -86,7 +81,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     /**
      * @param  string  $string the string to write
      * @param  boolean $raw    whether to output the string raw
-     * @return null
+     * @return void
      */
     public function write($string, $raw = false)
     {
@@ -102,11 +97,11 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     /**
      * @param  string  $string the string to write
      * @param  boolean $raw    whether to output the string raw
-     * @return null
+     * @return void
      */
     public function writeln($string, $raw = false)
     {
-        if ($raw || false === $this->getLogName()) {
+        if ($raw || $this->getLogName() === false) {
             $this->output->writeln($string);
         } else {
             $this->output->writeln(
@@ -150,18 +145,17 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     }
 
     /**
-     * @return \Zend\Console\Console
+     * Get the current academic year.
+     *
+     * @param  boolean $organization
+     * @return AcademicYear
      */
-    protected function getConsole()
+    protected function getCurrentAcademicYear($organization = false)
     {
-        return $this->getServiceLocator()->get('Console');
-    }
+        if ($organization) {
+            return AcademicYear::getOrganizationYear($this->getEntityManager());
+        }
 
-    /**
-     * @return \Symfony\Component\Console\Helper\QuestionHelper
-     */
-    protected function getQuestion()
-    {
-        return $this->getHelperSet()->get('question');
+        return AcademicYear::getUniversityYear($this->getEntityManager());
     }
 }

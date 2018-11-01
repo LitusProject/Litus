@@ -20,13 +20,12 @@
 
 namespace BrBundle\Entity\Cv;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Address,
-    CommonBundle\Entity\User\Person\Academic,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM,
-    SyllabusBundle\Entity\Study;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\General\Address;
+use CommonBundle\Entity\User\Person\Academic;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
+use SyllabusBundle\Entity\Study;
 
 /**
  * This is the entity for a cv entry.
@@ -37,7 +36,7 @@ use CommonBundle\Entity\General\AcademicYear,
 class Entry
 {
     /**
-     * @var int The entry's ID
+     * @var integer The entry's ID
      *
      * @ORM\Id
      * @ORM\Column(type="bigint")
@@ -119,7 +118,7 @@ class Entry
     private $priorStudy;
 
     /**
-     * @var int The prior grade
+     * @var integer The prior grade
      *
      * @ORM\Column(name="prior_grade", type="bigint")
      */
@@ -134,35 +133,35 @@ class Entry
     private $study;
 
     /**
-     * @var int The grade of the current study.
+     * @var integer The grade of the current study.
      *
      * @ORM\Column(name="grade", type="bigint")
      */
     private $grade;
 
     /**
-     * @var int The user's personal email
+     * @var integer The user's personal email
      *
      * @ORM\Column(name="bachelor_start", type="integer")
      */
     private $bachelorStart;
 
     /**
-     * @var int The user's personal email
+     * @var integer The user's personal email
      *
      * @ORM\Column(name="bachelor_end", type="integer")
      */
     private $bachelorEnd;
 
     /**
-     * @var int The user's personal email
+     * @var integer The user's personal email
      *
      * @ORM\Column(name="master_start", type="integer")
      */
     private $masterStart;
 
     /**
-     * @var int The user's personal email
+     * @var integer The user's personal email
      *
      * @ORM\Column(name="master_end", type="integer")
      */
@@ -776,19 +775,22 @@ class Entry
         $sorted = count($experiences) == 0;
 
         while (!$sorted) {
-            $indexSmalest = 0;
-            for ($i = 0; $i < count($experiences); $i++) {
-                if ($experiences[$i]->getEndYear() == $experiences[$indexSmalest]->getEndYear()) {
-                    if ($experiences[$i]->getStartYear() > $experiences[$indexSmalest]->getStartYear()) {
-                        $indexSmalest = $i;
-                    } elseif ($experiences[$i]->getEndYear() >= $experiences[$indexSmalest]->getEndYear()) {
-                        $indexSmalest = $i;
+            $nbExperiences = count($experiences);
+
+            $indexSmallest = 0;
+            for ($i = 0; $i < $nbExperiences; $i++) {
+                if ($experiences[$i]->getEndYear() == $experiences[$indexSmallest]->getEndYear()) {
+                    if ($experiences[$i]->getStartYear() > $experiences[$indexSmallest]->getStartYear()) {
+                        $indexSmallest = $i;
+                    } elseif ($experiences[$i]->getEndYear() >= $experiences[$indexSmallest]->getEndYear()) {
+                        $indexSmallest = $i;
                     }
                 }
             }
-            $result[] = $experiences[$indexSmalest];
-            unset($experiences[$indexSmalest]);
-            $experiences = array_values($experiences);
+
+            $result[] = $experiences[$indexSmallest];
+            array_splice($experiences, $indexSmallest, 1);
+
             $sorted = count($experiences) == 0;
         }
 
@@ -809,11 +811,7 @@ class Entry
             return false;
         }
 
-        if ($experiences[0]->getType() !== null || $experiences[0]->getStartYear() !== null || $experiences[0]->getEndYear() !== null) {
-            return false;
-        }
-
-        return true;
+        return $experiences[0]->getType() === null && $experiences[0]->getStartYear() === null && $experiences[0]->getEndYear() === null;
     }
 
     /**

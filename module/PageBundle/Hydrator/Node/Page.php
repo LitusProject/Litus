@@ -20,9 +20,9 @@
 
 namespace PageBundle\Hydrator\Node;
 
-use Locale,
-    PageBundle\Entity\Node\Page as PageEntity,
-    PageBundle\Entity\Node\Translation as TranslationEntity;
+use Locale;
+use PageBundle\Entity\Node\Page as PageEntity;
+use PageBundle\Entity\Node\Translation as TranslationEntity;
 
 /**
  * This hydrator hydrates/extracts page data.
@@ -36,7 +36,7 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
     {
         $newPage = new PageEntity($this->getPersonEntity());
 
-        if (null !== $object && null !== $object->getName()) {
+        if ($object !== null && $object->getName() !== null) {
             $object->close();
 
             $newPage->setName($object->getName());
@@ -52,16 +52,16 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
             }
 
             $orphanedCategories = $this->getEntityManager()
-                    ->getRepository('PageBundle\Entity\Category')
-                    ->findByParent($object->getId());
+                ->getRepository('PageBundle\Entity\Category')
+                ->findByParent($object->getId());
 
             foreach ($orphanedCategories as $orphanedCategory) {
                 $orphanedCategory->setParent($newPage);
             }
 
             $orphanedLinks = $this->getEntityManager()
-                    ->getRepository('PageBundle\Entity\Link')
-                    ->findByParent($object->getId());
+                ->getRepository('PageBundle\Entity\Link')
+                ->findByParent($object->getId());
 
             foreach ($orphanedLinks as $orphanedLink) {
                 $orphanedLink->setParent($newPage);
@@ -87,7 +87,7 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
             ->setEditRoles($editRoles)
             ->setName($data['tab_content']['tab_' . $fallbackLanguage]['title']);
 
-        if ('' != $data['parent_' . $category->getId()]) {
+        if ($data['parent_' . $category->getId()] != '') {
             $parent = $this->getEntityManager()
                 ->getRepository('PageBundle\Entity\Node\Page')
                 ->findOneById($data['parent_' . $category->getId()]);
@@ -100,11 +100,11 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
 
             $translationData = $data['tab_content']['tab_' . $language->getAbbrev()];
 
-            if (null !== $translation) {
+            if ($translation !== null) {
                 $translation->setTitle($translationData['title'])
                     ->setContent($translationData['content']);
             } else {
-                if ('' != $translationData['title'] && '' != $translationData['content']) {
+                if ($translationData['title'] != '' && $translationData['content'] != '') {
                     $translation = new TranslationEntity(
                         $newPage,
                         $language,
@@ -122,7 +122,7 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
@@ -140,7 +140,7 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
             $data['edit_roles'][] = $role->getName();
         }
 
-        $data['parent_' . $object->getCategory()->getId()] = null !== $object->getParent() ? $object->getParent()->getId() : '';
+        $data['parent_' . $object->getCategory()->getId()] = $object->getParent() !== null ? $object->getParent()->getId() : '';
 
         return $data;
     }

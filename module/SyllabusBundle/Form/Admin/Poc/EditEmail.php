@@ -32,31 +32,29 @@ class EditEmail extends \CommonBundle\Component\Form\Admin\Form
     protected $hydrator = 'SyllabusBundle\Hydrator\Poc';
 
     /**
-     * @var Group|null
+     * @var \SyllabusBundle\Entity\Poc|null
      */
     protected $poc = null;
 
     public function init()
     {
-        if (null === $this->poc) {
-            throw new LogicException('Cannot edit null poc');
-        }
-
         parent::init();
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'emailAdress',
-            'label'      => 'Email adress of this years poc',
-            'required'   => true,
-            'attributes' => array(
-                'size'  => 70,
-                'value' => $this->poc->getEmailAdress(),
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'emailAdress',
+                'label'      => 'POC Email Address',
+                'required'   => true,
+                'attributes' => array(
+                    'size' => 70,
+                ),
+            )
+        );
 
-            ),)
-            );
         $this->addSubmit('Save', 'edit');
     }
+
     public function setPoc(Poc $poc)
     {
         $this->poc = $poc;

@@ -25,15 +25,15 @@ namespace DoorBundle\Form\Admin\Rule;
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Edit extends Add
+class Edit extends \DoorBundle\Form\Admin\Rule\Add
 {
     public function init()
     {
         parent::init();
 
-        $this->remove('academic')
-            ->remove('submit');
+        $this->remove('academic');
 
-        $this->addSubmit('Save', 'rule_edit');
+        $this->remove('submit')
+            ->addSubmit('Save', 'rule_edit');
     }
 }

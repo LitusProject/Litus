@@ -36,14 +36,12 @@ class Access extends \ApiBundle\Repository\Token
     public function findOneActiveByCode($code)
     {
         $query = $this->createQueryBuilder();
-        $resultSet = $query->field('code')
+        return $query->field('code')
             ->equals($code)
             ->field('expirationTime')
             ->gt(new DateTime())
             ->getQuery()
             ->execute()
             ->getSingleResult();
-
-        return $resultSet;
     }
 }

@@ -20,13 +20,12 @@
 
 namespace CommonBundle\Component\Form;
 
-use CommonBundle\Component\Util\StringUtil,
-    RuntimeException,
-    Zend\Form\FormFactoryAwareInterface,
-    Zend\ServiceManager\ConfigInterface,
-    Zend\ServiceManager\ServiceLocatorAwareInterface,
-    Zend\ServiceManager\ServiceLocatorInterface,
-    Zend\Stdlib\Hydrator\ClassMethods as ClassMethodHydrator;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\Util\StringUtil;
+use Interop\Container\ContainerInterface;
+use RuntimeException;
+use Zend\Form\FormFactoryAwareInterface;
+use Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 /**
  * @author Bram Gotink <bram.gotink@litus.cc>
@@ -34,9 +33,9 @@ use CommonBundle\Component\Util\StringUtil,
 class FormElementManager extends \Zend\Form\FormElementManager
 {
     /**
-     * @var string the pattern to match
+     * @var string
      */
-    const PATTERN = '/^([^_]+)(_admin)?_(([^_]+_)+[^_]+)$/';
+    const NAME_REGEX = '/^([^_]+)(_admin)?_(([^_]+_)+[^_]+)$/';
 
     /**
      * @var boolean Whether this is an admin form element manager
@@ -44,12 +43,7 @@ class FormElementManager extends \Zend\Form\FormElementManager
     private $isAdmin;
 
     /**
-     * @var ServiceLocatorInterface The main service locator
-     */
-    private $mainServiceLocator;
-
-    /**
-     * @var ClassMethodHydrator Hydrator to inject data into the form
+     * @var ClassMethodsHydrator
      */
     private $hydrator;
 
@@ -59,71 +53,76 @@ class FormElementManager extends \Zend\Form\FormElementManager
     private $data;
 
     /**
-     * @param ConfigInterface         $config
-     * @param boolean                 $isAdmin
-     * @param ServiceLocatorInterface $mainServiceLocator
+     * @param boolean                                                      $isAdmin
+     * @param \Zend\ServiceManager\ConfigInterface|ContainerInterface|null $configInstanceOrParentLocator
+     * @param array                                                        $config
      */
-    public function __construct(ConfigInterface $config, $isAdmin, ServiceLocatorInterface $mainServiceLocator)
+    public function __construct($isAdmin, $configInstanceOrParentLocator = null, array $config = array())
     {
-        // before parent constructor, because we want this to be the bottom of the
-        // stack before parent::__construct is called as that will add $element->init()
-        // as the final initializer in the stack.
-        $this->addInitializer(array($this, 'injectServiceLocator'), false);
+        // Add initializer before the parent constructor, because we want this
+        // to be the bottom of the stack before parent::__construct is called.
+        $this->addInitializer(array($this, 'injectServiceLocator'));
 
-        parent::__construct($config);
+        $this->isAdmin = $isAdmin;
+        $this->hydrator = new ClassMethodsHydrator();
 
-        $this->isAdmin = (bool) $isAdmin;
-        $this->mainServiceLocator = $mainServiceLocator;
-        $this->hydrator = new ClassMethodHydrator();
-
-        $this->addInitializer(array($this, 'hydrateElement'));
+        parent::__construct($configInstanceOrParentLocator, $config);
+        $this->addInitializer(array($this, 'hydrate'));
     }
 
     /**
-     * Inject the factory to any element that implements FormFactoryAwareInterface
+     * Inject the factory into any element implementing
+     * FormFactoryAwareInterface.
      *
-     * @param  object $element
-     * @return null
+     * @param  ContainerInterface $container
+     * @param  mixed              $instance
+     * @return void
      */
-    public function injectFactory($element)
+    public function injectFactory(ContainerInterface $container, $instance)
     {
-        if ($element instanceof FormFactoryAwareInterface) {
-            $element->setFormFactory(new Factory($this));
-            $factory = $element->getFormFactory();
+        if (!$instance instanceof FormFactoryAwareInterface) {
+            return;
+        }
 
-            if ($this->mainServiceLocator instanceof ServiceLocatorInterface
-                && $this->mainServiceLocator->has('InputFilterManager')
-            ) {
-                $inputFilters = $this->mainServiceLocator->get('InputFilterManager');
-                $factory->getInputFilterFactory()->setInputFilterManager($inputFilters);
-            }
+        $instance->setFormFactory(new Factory($this));
+
+        if ($container->has('InputFilterManager')) {
+            $instance->getFormFactory()
+                ->getInputFilterFactory()
+                ->setInputFilterManager($container->get('InputFilterManager'));
         }
     }
 
     /**
-     * Inject the main Service Locator into the form element
+     * Inject the service locator into any element implementing
+     * ServiceLocatorAwareInterface.
      *
-     * @param  object $element
-     * @return null
+     * @param  ContainerInterface $container
+     * @param  mixed              $instance
+     * @return void
      */
-    public function injectServiceLocator($element)
+    public function injectServiceLocator(ContainerInterface $container, $instance)
     {
-        if ($element instanceof ServiceLocatorAwareInterface) {
-            $element->setServiceLocator($this->mainServiceLocator);
+        if (!$instance instanceof ServiceLocatorAwareInterface) {
+            return;
         }
+
+        $instance->setServiceLocator($container);
     }
 
     /**
      * Hydrate the element with the given data, if any.
      *
-     * @param  object $element
-     * @return null
+     * @param  ContainerInterface $container
+     * @param  mixed              $instance
+     * @return void
      */
-    public function hydrateElement($element)
+    public function hydrate(ContainerInterface $container, $instance)
     {
-        if (null !== $this->data) {
-            $this->hydrator->hydrate($this->data, $element);
+        if ($this->data !== null) {
+            $this->hydrator->hydrate($this->data, $instance);
         }
+
         $this->data = null;
     }
 
@@ -141,30 +140,27 @@ class FormElementManager extends \Zend\Form\FormElementManager
     /**
      * @param  string       $name
      * @param  string|array $options
-     * @param  bool         $usePeeringServiceManagers
+     * @param  boolean      $usePeeringServiceManagers
      * @return object|array
      */
     public function get($name, $options = array(), $usePeeringServiceManagers = true)
     {
-        if ($this->has($name)) {
-            return parent::get($name, $options, $usePeeringServiceManagers);
+        if (!$this->has($name)) {
+            $matches = array();
+            if (!preg_match(self::NAME_REGEX, $name, $matches)) {
+                throw new RuntimeException('Unknown form element: ' . $name);
+            }
+
+            if (!$this->isAdmin && $matches[2] != '') {
+                throw new RuntimeException('Cannot create admin form element through non-admin FormElementManager');
+            }
+
+            $bundle = StringUtil::underscoredToCamelCase($matches[1]) . 'Bundle\Form\\';
+            $type = $this->isAdmin ? 'Admin\\' : '';
+            $form = implode('\\', array_map('CommonBundle\Component\Util\StringUtil::underscoredToCamelCase', explode('_', $matches[3])));
+
+            $this->setInvokableClass($name, $bundle . $type . $form);
         }
-
-        $matches = array();
-
-        if (!preg_match(self::PATTERN, $name, $matches)) {
-            throw new RuntimeException('Unknown form element: ' . $name);
-        }
-
-        if (!$this->isAdmin && '' != $matches[2]) {
-            throw new RuntimeException('Cannot create admin form through non-admin FormElementManager');
-        }
-
-        $bundle = StringUtil::underscoredToCamelCase($matches[1]) . 'Bundle\Form\\';
-        $type = $this->isAdmin ? 'Admin\\' : '';
-        $form = implode('\\', array_map('CommonBundle\Component\Util\StringUtil::underscoredToCamelCase', explode('_', $matches[3])));
-
-        $this->setInvokableClass($name, $bundle . $type . $form);
 
         return parent::get($name, $options, $usePeeringServiceManagers);
     }

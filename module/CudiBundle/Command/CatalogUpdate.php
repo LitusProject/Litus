@@ -20,14 +20,15 @@
 
 namespace CudiBundle\Command;
 
-use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
-    CommonBundle\Entity\General\AcademicYear,
-    DateInterval,
-    DateTime,
-    Zend\Mail\Message as Mail;
+use CommonBundle\Entity\General\AcademicYear;
+use DateInterval;
+use DateTime;
+use Zend\Mail\Message as Mail;
 
 /**
- * Updates catalog
+ * CatalogUpdate
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class CatalogUpdate extends \CommonBundle\Component\Console\Command
 {
@@ -38,10 +39,11 @@ class CatalogUpdate extends \CommonBundle\Component\Console\Command
             ->setAliases(array('cudi:update-catalog'))
             ->setDescription('Update the catalog.')
             ->addOption('mail', 'm', null, 'Send mails to users to notify them of the update.')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The <info>%command.name%</info> command updates the catalog and notifies the users of the changes.
 EOT
-        );
+            );
     }
 
     protected function executeCommand()
@@ -49,7 +51,7 @@ EOT
         $date = new DateTime();
         $date->sub(new DateInterval('P1D'));
 
-        $academicYear = $this->getCurrentAcademicYear();
+        $academicYear = $this->getCurrentAcademicYear(true);
         $subjects = array();
 
         $this->findAllBookable($subjects, $date, $academicYear);
@@ -69,7 +71,8 @@ EOT
 
     private function findAllBookable(array &$subjects, DateTime $date, AcademicYear $academicYear)
     {
-        $logs = $this->getEntityManager()->getRepository('CudiBundle\Entity\Log\Article\Sale\Bookable')
+        $logs = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Log\Article\Sale\Bookable')
             ->findAllAfter($date);
         $this->writeln('Found <comment>' . count($logs) . '</comment> log entries for Bookable.');
 
@@ -197,16 +200,16 @@ EOT
         $counter = 0;
 
         $sendMails = $this->getOption('mail');
-        $mailEnabled = '1' === $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('cudi.catalog_update_mail_enabled');
+        $mailEnabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.catalog_update_mail_enabled') === '1';
 
         if ($sendMails && !$mailEnabled) {
             $sendMails = false;
             $this->writeln('<error>WARNING:</error> The mails will not be sent because they are disabled.');
         }
 
-        if ($sendMails && 'development' == getenv('APPLICATION_ENV')) {
+        if ($sendMails && getenv('APPLICATION_ENV') == 'development') {
             $sendMails = false;
             $this->writeln('<error>WARNING:</error> The mails will not be sent because the application is running in development mode.');
         }
@@ -216,7 +219,8 @@ EOT
                 ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
                 ->findAllByAcademicAndAcademicYear($subscription->getPerson(), $academicYear);
 
-            if (!($language = $subscription->getPerson()->getLanguage())) {
+            $language = $subscription->getPerson()->getLanguage();
+            if ($language === null) {
                 $language = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findOneByAbbrev('en');
@@ -296,16 +300,5 @@ EOT
         } else {
             $this->writeln('<comment>' . $counter . '</comment> mails would have been sent.');
         }
-    }
-
-    /**
-     * Get the current academic year.
-     *
-     * @param  boolean|null $organization
-     * @return AcademicYear
-     */
-    public function getCurrentAcademicYear($organization = null)
-    {
-        return AcademicYearUtil::getOrganizationYear($this->getEntityManager());
     }
 }

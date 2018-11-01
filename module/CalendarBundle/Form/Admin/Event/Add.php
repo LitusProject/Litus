@@ -20,9 +20,9 @@
 
 namespace CalendarBundle\Form\Admin\Event;
 
-use CalendarBundle\Entity\Node\Event as EventEntity,
-    CommonBundle\Component\Form\FieldsetInterface,
-    CommonBundle\Entity\General\Language;
+use CalendarBundle\Entity\Node\Event as EventEntity;
+use CommonBundle\Component\Form\FieldsetInterface;
+use CommonBundle\Entity\General\Language;
 
 /**
  * Add an event.
@@ -42,107 +42,117 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'datetime',
-            'name'       => 'start_date',
-            'label'      => 'Start Date',
-            'required'   => true,
-            'attributes' => array(
-                'placeholder' => 'dd/mm/yyyy hh:mm',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'       => 'datetime',
+                'name'       => 'start_date',
+                'label'      => 'Start Date',
+                'required'   => true,
+                'attributes' => array(
+                    'placeholder' => 'dd/mm/yyyy hh:mm',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'datetime',
-            'name'       => 'end_date',
-            'label'      => 'End Date',
-            'required'   => false,
-            'attributes' => array(
-                'placeholder' => 'dd/mm/yyyy hh:mm',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name'    => 'date_compare',
-                            'options' => array(
-                                'first_date' => 'start_date',
-                                'format'     => 'd/m/Y H:i',
+        $this->add(
+            array(
+                'type'       => 'datetime',
+                'name'       => 'end_date',
+                'label'      => 'End Date',
+                'required'   => false,
+                'attributes' => array(
+                    'placeholder' => 'dd/mm/yyyy hh:mm',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name'    => 'DateCompare',
+                                'options' => array(
+                                    'first_date' => 'start_date',
+                                    'format'     => 'd/m/Y H:i',
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Add', 'calendar_add');
 
-        if (null !== $this->getEvent()) {
+        if ($this->getEvent() !== null) {
             $this->bind($this->getEvent());
         }
     }
 
     protected function addTab(FieldsetInterface $container, Language $language, $isDefault)
     {
-        $container->add(array(
-            'type'     => 'text',
-            'name'     => 'title',
-            'label'    => 'Title',
-            'required' => $isDefault,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name'    => 'calendar_event_name',
-                            'options' => array(
-                                'event' => $this->getEvent(),
+        $container->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'title',
+                'label'    => 'Title',
+                'required' => $isDefault,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name'    => 'EventName',
+                                'options' => array(
+                                    'event' => $this->getEvent(),
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $container->add(array(
-            'type'     => 'text',
-            'name'     => 'location',
-            'label'    => 'Location',
-            'required' => $isDefault,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $container->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'location',
+                'label'    => 'Location',
+                'required' => $isDefault,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $container->add(array(
-            'type'     => 'textarea',
-            'name'     => 'content',
-            'label'    => 'Content',
-            'required' => $isDefault,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $container->add(
+            array(
+                'type'     => 'textarea',
+                'name'     => 'content',
+                'label'    => 'Content',
+                'required' => $isDefault,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
     }
 
     /**

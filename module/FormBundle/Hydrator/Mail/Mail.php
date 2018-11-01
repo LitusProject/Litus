@@ -20,8 +20,8 @@
 
 namespace FormBundle\Hydrator\Mail;
 
-use FormBundle\Entity\Mail\Mail as MailEntity,
-    FormBundle\Entity\Mail\Translation as TranslationEntity;
+use FormBundle\Entity\Mail\Mail as MailEntity;
+use FormBundle\Entity\Mail\Translation as TranslationEntity;
 
 class Mail extends \CommonBundle\Component\Hydrator\Hydrator
 {
@@ -29,7 +29,7 @@ class Mail extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $object = new MailEntity();
         }
 
@@ -40,7 +40,7 @@ class Mail extends \CommonBundle\Component\Hydrator\Hydrator
             $mailData = $data['tab_content']['tab_' . $language->getAbbrev()];
             $translation = $object->getTranslation($language, false);
 
-            if (null === $translation) {
+            if ($translation === null) {
                 $translation = new TranslationEntity(
                     $object,
                     $language,
@@ -59,7 +59,7 @@ class Mail extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 

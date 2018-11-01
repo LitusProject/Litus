@@ -35,7 +35,7 @@ class Location extends \CommonBundle\Component\Hydrator\Hydrator
         /** @var \CommonBundle\Hydrator\General\Address $hydrator */
         $hydrator = $this->getHydrator('CommonBundle\Hydrator\General\Address');
 
-        if (null === $object) {
+        if ($object === null) {
             return array(
                 'address' => $hydrator->extract(null),
             );
@@ -52,7 +52,7 @@ class Location extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $object = new LocationEntity();
         }
 

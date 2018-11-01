@@ -20,11 +20,11 @@
 
 namespace CommonBundle\Component\Mvc\View\Http;
 
-use Zend\EventManager\EventManagerInterface as Events,
-    Zend\EventManager\ListenerAggregateInterface,
-    Zend\Filter\Word\CamelCaseToDash as CamelCaseToDashFilter,
-    Zend\Mvc\MvcEvent,
-    Zend\View\Model\ModelInterface as ViewModel;
+use Zend\EventManager\EventManagerInterface;
+use Zend\EventManager\ListenerAggregateInterface;
+use Zend\Filter\Word\CamelCaseToDash as CamelCaseToDashFilter;
+use Zend\Mvc\MvcEvent;
+use Zend\View\Model\ModelInterface as ViewModel;
 
 class InjectTemplateListener implements ListenerAggregateInterface
 {
@@ -48,9 +48,9 @@ class InjectTemplateListener implements ListenerAggregateInterface
      * @param  Events $events
      * @return void
      */
-    public function attach(Events $events)
+    public function attach(EventManagerInterface $events, $priority = 1)
     {
-        $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'injectTemplate'), -90);
+        $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'injectTemplate'), $priority);
     }
 
     /**
@@ -59,7 +59,7 @@ class InjectTemplateListener implements ListenerAggregateInterface
      * @param  Events $events
      * @return void
      */
-    public function detach(Events $events)
+    public function detach(EventManagerInterface $events)
     {
         foreach ($this->listeners as $index => $listener) {
             if ($events->detach($listener)) {
@@ -85,7 +85,7 @@ class InjectTemplateListener implements ListenerAggregateInterface
         }
 
         $template = $model->getTemplate();
-        if (!empty($template)) {
+        if ($template != '') {
             return;
         }
 
@@ -105,7 +105,7 @@ class InjectTemplateListener implements ListenerAggregateInterface
         $template .= $this->inflectName($controller);
 
         $action = $routeMatch->getParam('action');
-        if (null !== $action) {
+        if ($action !== null) {
             $template .= '/' . $this->inflectName($action);
         }
         $model->setTemplate($template);
@@ -157,8 +157,8 @@ class InjectTemplateListener implements ListenerAggregateInterface
             $controller = substr($controller, strrpos($controller, 'Controller\\') + strlen('Controller\\'));
         }
 
-        if ((10 < strlen($controller))
-            && ('Controller' == substr($controller, -10))
+        if (10 < strlen($controller)
+            && (substr($controller, -10) == 'Controller')
         ) {
             $controller = substr($controller, 0, -10);
         }

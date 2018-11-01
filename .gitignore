@@ -2,7 +2,7 @@
 config/database.config.php
 config/sentry.config.php
 
-# We don't want cached data in our repository
+# We don't want data in our repository
 data/banner/images
 data/br/companies
 data/br/files
@@ -22,9 +22,9 @@ public/_publications/pdf
 public/_publications/html
 public/_br/img
 
-# Exclude Composer configuration and dependencies
+# Exclude dependencies
 vendor/
-composer.phar
 
-# Code Style Fixer
-.php_cs.cache
+# Output from external tools
+phpcs/
+phpstan/

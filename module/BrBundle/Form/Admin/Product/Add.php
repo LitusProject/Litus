@@ -41,136 +41,154 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'name',
-            'label'    => 'Name',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name'    => 'product_name',
-                            'options' => array(
-                                'product' => $this->product,
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'name',
+                'label'    => 'Name',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name'    => 'ProductName',
+                                'options' => array(
+                                    'product' => $this->product,
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'textarea',
-            'name'     => 'description',
-            'label'    => 'Description',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'     => 'textarea',
+                'name'     => 'description',
+                'label'    => 'Description',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'price',
-            'label'    => 'Price (in cents)',
-            'required' => true,
-            'value'    => 0,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'price'),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'refund',
-            'label' => 'Refund',
-        ));
-
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'vat_type',
-            'label'      => 'VAT Type',
-            'required'   => true,
-            'attributes' => array(
-                'options' => $this->getVatTypes(),
-            ),
-        ));
-
-        $this->add(array(
-            'type'    => 'text',
-            'name'    => 'invoice_description',
-            'label'   => 'Invoice Text',
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'price',
+                'label'    => 'Price (in cents)',
+                'required' => true,
+                'value'    => 0,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Price'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'    => 'textarea',
-            'name'    => 'contract_text',
-            'label'   => 'Contract Text',
-            'value'   => $this->getContractText(),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'contract_bullet'),
+        $this->add(
+            array(
+                'type'  => 'checkbox',
+                'name'  => 'refund',
+                'label' => 'Refund',
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'vat_type',
+                'label'      => 'VAT Type',
+                'required'   => true,
+                'attributes' => array(
+                    'options' => $this->getVatTypes(),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'    => 'text',
+                'name'    => 'invoice_description',
+                'label'   => 'Invoice Text',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'event',
-            'label'      => 'Event',
-            'attributes' => array(
-                'id'      => 'event',
-                'options' => $this->createEventsArray(),
-            ),
-        ));
-
-        $this->add(array(
-            'type'       => 'date',
-            'name'       => 'delivery_date',
-            'label'      => 'Delivery Date',
-            'required'   => false,
-            'attributes' => array(
-                'id' => 'delivery_date',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'    => 'textarea',
+                'name'    => 'contract_text',
+                'label'   => 'Contract Text',
+                'value'   => $this->getContractText(),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'ContractBullet'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'event',
+                'label'      => 'Event',
+                'attributes' => array(
+                    'id'      => 'event',
+                    'options' => $this->createEventsArray(),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'date',
+                'name'       => 'delivery_date',
+                'label'      => 'Delivery Date',
+                'required'   => false,
+                'attributes' => array(
+                    'id' => 'delivery_date',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
 
         $this->addSubmit('Add', 'product_add');
 
-        if (null !== $this->product) {
+        if ($this->product !== null) {
             $this->bind($this->product);
         }
     }

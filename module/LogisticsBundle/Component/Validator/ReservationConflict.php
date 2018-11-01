@@ -55,7 +55,7 @@ class ReservationConflict extends \CommonBundle\Component\Validator\AbstractVali
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -82,7 +82,8 @@ class ReservationConflict extends \CommonBundle\Component\Validator\AbstractVali
     {
         $this->setValue($value);
 
-        if (null === $startDate = self::getFormValue($context, $this->options['start_date'])) {
+        $startDate = self::getFormValue($context, $this->options['start_date']);
+        if ($startDate === null) {
             $this->error(self::NO_START_DATE);
 
             return false;

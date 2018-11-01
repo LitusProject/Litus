@@ -21,7 +21,7 @@
 return array(
     'routes' => array(
         'syllabus_admin_update' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/syllabus/update[/:action[/:id]][/]',
                 'constraints' => array(
@@ -35,7 +35,7 @@ return array(
             ),
         ),
         'syllabus_admin_academic' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/syllabus/academic[/:action[/:id][/page/:page][/:academicyear][/:field/:string]][/]',
                 'constraints' => array(
@@ -53,7 +53,7 @@ return array(
             ),
         ),
         'syllabus_admin_group' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/syllabus/group[/:action[/:id][/page/:page][/:academicyear]][/]',
                 'constraints' => array(
@@ -69,7 +69,7 @@ return array(
             ),
         ),
         'syllabus_admin_poc' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/syllabus/poc[/:action[/:id][/page/:page][/:academicyear]][/]',
                 'constraints' => array(
@@ -86,7 +86,7 @@ return array(
         ),
 
         'syllabus_admin_study' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/syllabus/study[/:action[/:id][/:academicyear][/:field/:string][/page/:page]][/]',
                 'constraints' => array(
@@ -104,7 +104,7 @@ return array(
             ),
         ),
         'syllabus_admin_study_typeahead' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/syllabus/study/typeahead/:academicyear[/:string][/]',
                 'constraints' => array(
@@ -118,7 +118,7 @@ return array(
             ),
         ),
         'syllabus_admin_study_module_group' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/syllabus/study/module_group[/:action[/:id][/:academicyear][/:field/:string][/page/:page]][/]',
                 'constraints' => array(
@@ -136,7 +136,7 @@ return array(
             ),
         ),
         'syllabus_admin_study_module_group_typeahead' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/syllabus/study/module_group/typeahead[/:string][/]',
                 'constraints' => array(
@@ -149,7 +149,7 @@ return array(
             ),
         ),
         'syllabus_admin_subject' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/syllabus/subject[/:action[/:id][/:academicyear][/:field/:string][/page/:page]][/]',
                 'constraints' => array(
@@ -167,7 +167,7 @@ return array(
             ),
         ),
         'syllabus_admin_subject_module_group' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/syllabus/subject/module_group[/:action[/:id][/:academicyear]][/]',
                 'constraints' => array(
@@ -181,7 +181,7 @@ return array(
             ),
         ),
         'syllabus_admin_subject_comment' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/syllabus/subject/comments[/:action[/:id][/:academicyear][/page/:page]][/]',
                 'constraints' => array(
@@ -197,7 +197,7 @@ return array(
             ),
         ),
         'syllabus_admin_subject_typeahead' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/syllabus/subject/typeahead/:academicyear[/:string][/]',
                 'constraints' => array(
@@ -211,7 +211,7 @@ return array(
             ),
         ),
         'syllabus_admin_subject_prof' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/syllabus/subject/prof[/:action[/:id]][/:academicyear][/]',
                 'constraints' => array(
@@ -226,7 +226,7 @@ return array(
             ),
         ),
         'syllabus_admin_subject_prof_typeahead' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/syllabus/prof/typeahead[/:string][/]',
                 'constraints' => array(
@@ -239,7 +239,7 @@ return array(
             ),
         ),
         'subject_typeahead' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/syllabus/subject/typeahead/:academicyear[/:string][/]',
                 'constraints' => array(

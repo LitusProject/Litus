@@ -20,7 +20,7 @@
 
 return array(
     'general' => array(
-        'on' => array(
+        'general_3' => array(
             'on_admin_slug' => array('title' => 'Slugs'),
         ),
     ),

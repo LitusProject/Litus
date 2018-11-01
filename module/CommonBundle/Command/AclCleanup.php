@@ -34,10 +34,11 @@ class AclCleanup extends \CommonBundle\Component\Console\Command
             ->setName('common:acl-cleanup')
             ->setDescription('Cleanup old acl actions and resources.')
             ->addOption('flush', 'f', null, 'Stores the result in the database.')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The <info>%command.name%</info> command removes old acl actions and resources
 EOT
-        );
+            );
     }
 
     /**
@@ -126,9 +127,7 @@ EOT
      */
     private function getModules()
     {
-        $config = $this->getServiceLocator()
-            ->get('Config');
-        $config = $config['litus']['install'];
+        $config = $this->getConfig()['litus']['install'];
 
         // CommonBundle has to be first
         return array_merge(
@@ -151,7 +150,7 @@ EOT
         $modules = $this->getModules();
 
         foreach ($modules as $module) {
-            $acl = array_merge($acl, $this->getAclConfiguration($module));
+            $acl = array_merge($acl, $this->getAclConfig($module));
         }
 
         return $acl;
@@ -161,14 +160,13 @@ EOT
      * @param  string $module
      * @return array
      */
-    private function getAclConfiguration($module)
+    private function getAclConfig($module)
     {
-        $configuration = $this->getServiceLocator()->get('Config');
-        $configuration = $configuration['litus']['install'];
-        $configuration = array_change_key_case($configuration);
+        $config = $this->getConfig()['litus']['install'];
+        $config = array_change_key_case($config);
 
-        if (isset($configuration[strtolower($module)]['acl'])) {
-            return include $configuration[strtolower($module)]['acl'];
+        if (isset($config[strtolower($module)]['acl'])) {
+            return include $config[strtolower($module)]['acl'];
         }
 
         return array();

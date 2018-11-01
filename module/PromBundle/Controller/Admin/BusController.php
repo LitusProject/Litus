@@ -20,15 +20,12 @@
 
 namespace PromBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    DateTime,
-    PromBundle\Component\Document\Generator\Bus\Csv as CsvGenerator,
-    PromBundle\Entity\Bus,
-    PromBundle\Entity\Bus\Passenger,
-    PromBundle\Entity\Bus\ReservationCode,
-    Zend\Http\Headers,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use PromBundle\Component\Document\Generator\Bus\Csv as CsvGenerator;
+use PromBundle\Entity\Bus;
+use Zend\Http\Headers;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * BusController
@@ -94,7 +91,8 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
 
     public function deleteAction()
     {
-        if (!($bus = $this->getBusEntity())) {
+        $bus = $this->getBusEntity();
+        if ($bus === null) {
             return new ViewModel();
         }
 
@@ -117,7 +115,7 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
             ->addTo($mailData['from'])
             ->setSubject($mailData['subject']);
 
-        if ('development' != getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);
         }
 
@@ -147,10 +145,12 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
         $filename = 'PassengerList.csv';
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
-            'Content-Type'        => 'text/csv',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -162,7 +162,8 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
 
     public function viewAction()
     {
-        if (!($bus = $this->getBusEntity())) {
+        $bus = $this->getBusEntity();
+        if ($bus === null) {
             return new ViewModel();
         }
 

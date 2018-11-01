@@ -31,8 +31,8 @@ class Utf8
      * Convert a UTF-8 string to HTML.
      *
      * @static
-     * @param  string                             $utf8       The string in UTF-8 charset
-     * @param  boolean                            $encodeTags True will convert "<" to "&lt;", default value is false
+     * @param  string  $utf8       The string in UTF-8 charset
+     * @param  boolean $encodeTags True will convert "<" to "&lt;", default value is false
      * @return string|null
      * @throws Exception\InvalidArgumentException The given first parameter was not a string
      */
@@ -55,7 +55,7 @@ class Utf8
             $ascii = ord($char);
             if ($ascii < 128) {
                 // One-byte character
-                $result .= ($encodeTags) ? htmlentities($char) : $char;
+                $result .= $encodeTags ? htmlentities($char) : $char;
             } elseif ($ascii >= 192 && $ascii < 224) {
                 // Two-byte character
                 $ascii1 = ord($utf8[$i + 1]);

@@ -20,19 +20,21 @@
 
 namespace LogisticsBundle\Entity\Reservation;
 
-use CommonBundle\Entity\User\Person,
-    Doctrine\ORM\Mapping as ORM,
-    LogisticsBundle\Entity\Driver;
+use CommonBundle\Entity\User\Person;
+use Doctrine\ORM\Mapping as ORM;
+use LogisticsBundle\Entity\Driver;
 
 /**
  * This is the entity for a reservation.
  *
  * A reservation is associated with a certain resource and locks it from a given start date to a given end date.
  *
+ * TOOD: Refactor to subclasses for van, car, and bike.
+ *
  * @ORM\Entity(repositoryClass="LogisticsBundle\Repository\Reservation\VanReservation")
  * @ORM\Table(name="logistics.reservations_van")
  */
-class VanReservation extends Reservation
+class VanReservation extends \LogisticsBundle\Entity\Reservation\Reservation
 {
     const VAN_RESOURCE_NAME = 'Van';
 
@@ -60,14 +62,14 @@ class VanReservation extends Reservation
     private $load;
 
     /**
-     * @var text Y or N to indicate whether this is a car reservation, boolean could not be used for unkown reasons
+     * @var string Y or N to indicate whether this is a car reservation, boolean could not be used for unkown reasons
      *
-     * @ORM\Column(type="text",nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $car;
 
     /**
-     *@var text Y or N to indicate whether this is a bike reservation, boolean could not be used for unknown reasons
+     *@var string Y or N to indicate whether this is a bike reservation, boolean could not be used for unknown reasons
      *
      *@ORM\Column(type="text", nullable=true)
      */
@@ -145,6 +147,25 @@ class VanReservation extends Reservation
     public function setCar($car)
     {
         $this->car = $car;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getBike()
+    {
+        return $this->bike;
+    }
+
+    /**
+     * @param  boolean $bike
+     * @return self
+     */
+    public function setBike($bike)
+    {
+        $this->bike = $bike;
 
         return $this;
     }

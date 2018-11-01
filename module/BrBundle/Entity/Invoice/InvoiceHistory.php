@@ -20,9 +20,9 @@
 
 namespace BrBundle\Entity\Invoice;
 
-use BrBundle\Entity\Invoice,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use BrBundle\Entity\Invoice;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Invoice\InvoiceHistory")
@@ -56,7 +56,7 @@ class InvoiceHistory
     private $entries;
 
     /**
-     * @var int The version of the invoice this entry belongs too.
+     * @var integer The version of the invoice this entry belongs too.
      *
      * @ORM\Column(type="integer")
      */
@@ -79,7 +79,7 @@ class InvoiceHistory
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -103,7 +103,7 @@ class InvoiceHistory
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getVersion()
     {

@@ -43,7 +43,7 @@ class Publication extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -69,8 +69,8 @@ class Publication extends \CommonBundle\Component\Validator\AbstractValidator
             ->getRepository('PublicationBundle\Entity\Publication')
             ->findOneByTitle($value);
 
-        if (null !== $publication) {
-            if (null === $this->options['exclude'] || $publication->getId() !== $this->options['exclude']) {
+        if ($publication !== null) {
+            if ($this->options['exclude'] === null || $publication->getId() !== $this->options['exclude']) {
                 $this->error(self::TITLE_EXISTS);
 
                 return false;

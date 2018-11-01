@@ -20,21 +20,20 @@
 
 namespace SyllabusBundle\Component\XMLParser;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Entity\User\Status\University as UniversityStatus,
-    Doctrine\ORM\EntityManager,
-    RuntimeException,
-    SimpleXMLElement,
-    SyllabusBundle\Entity\Study as StudyEntity,
-    SyllabusBundle\Entity\Study\Combination,
-    SyllabusBundle\Entity\Study\ModuleGroup,
-    SyllabusBundle\Entity\Study\SubjectMap,
-    SyllabusBundle\Entity\Subject,
-    SyllabusBundle\Entity\Subject\ProfMap,
-    Zend\Http\Client as HttpClient,
-    Zend\Mail\Transport\TransportInterface,
-    finfo;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\User\Person\Academic;
+use CommonBundle\Entity\User\Status\University as UniversityStatus;
+use Doctrine\ORM\EntityManager;
+use RuntimeException;
+use SimpleXMLElement;
+use SyllabusBundle\Entity\Study as StudyEntity;
+use SyllabusBundle\Entity\Study\Combination;
+use SyllabusBundle\Entity\Study\ModuleGroup;
+use SyllabusBundle\Entity\Study\SubjectMap;
+use SyllabusBundle\Entity\Subject;
+use SyllabusBundle\Entity\Subject\ProfMap;
+use Zend\Http\Client as HttpClient;
+use Zend\Mail\Transport\TransportInterface;
 
 /**
  * Study
@@ -150,7 +149,7 @@ class Study
 
         foreach ($xml->fases->children() as $phase) {
             $phaseNumber = (int) $phase->attributes()->code;
-            if (sizeof($phase->toegestane_combinaties->children()) == 0) {
+            if (count($phase->toegestane_combinaties->children()) == 0) {
                 $externalId = $phaseNumber . ((int) $xml->attributes()->id);
                 $combination = $this->createCombination($phaseNumber, $externalId, $mainTitle);
 
@@ -188,9 +187,9 @@ class Study
     }
 
     /**
-     * @param  int         $phase
-     * @param  int         $id
-     * @param  string      $title
+     * @param  integer $phase
+     * @param  integer $id
+     * @param  string  $title
      * @return Combination
      */
     private function createCombination($phase, $id, $title)
@@ -199,7 +198,7 @@ class Study
             ->getRepository('SyllabusBundle\Entity\Study\Combination')
             ->findOneByExternalId($id);
 
-        if (null === $combination) {
+        if ($combination === null) {
             $combination = new Combination();
             $this->getEntityManager()->persist($combination);
         }
@@ -212,7 +211,7 @@ class Study
             ->getRepository('SyllabusBundle\Entity\Study')
             ->findOneByCombinationAndAcademicYear($combination, $this->academicYear);
 
-        if (null === $study) {
+        if ($study === null) {
             $study = new StudyEntity();
             $study->setCombination($combination)
                 ->setAcademicYear($this->academicYear);
@@ -249,7 +248,7 @@ class Study
                     ->getRepository('SyllabusBundle\Entity\Study\ModuleGroup')
                     ->findOneByExternalId($externalId);
 
-                if (null === $moduleGroup) {
+                if ($moduleGroup === null) {
                     $moduleGroup = new ModuleGroup();
                     $this->getEntityManager()->persist($moduleGroup);
                 }
@@ -263,7 +262,7 @@ class Study
                 if ((int) $group->attributes()->niveau > 1) {
                     if (isset($parents[$phase])) {
                         $moduleGroup->setParent($parents[$phase]);
-                    } elseif (sizeof($group->opleidingsonderdelen->children()) > 0) {
+                    } elseif (count($group->opleidingsonderdelen->children()) > 0) {
                         throw new RuntimeException('Module group ' . $externalId . ' has no parents.');
                     }
                 }
@@ -272,7 +271,7 @@ class Study
                 $groups['_' . $externalId] = $moduleGroup;
             }
 
-            if (sizeof($group->opleidingsonderdelen->children()) > 0) {
+            if (count($group->opleidingsonderdelen->children()) > 0) {
                 $this->createSubjects($group->opleidingsonderdelen, $currentParents);
             }
 
@@ -298,7 +297,7 @@ class Study
                 ->getRepository('SyllabusBundle\Entity\Subject')
                 ->findOneByCode($code);
 
-            if (null === $subject) {
+            if ($subject === null) {
                 if (isset($this->subjectCache[$code])) {
                     $subject = $this->subjectCache[$code];
                 } else {
@@ -344,7 +343,7 @@ class Study
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findOneByUniversityIdentification($identification);
 
-            if (null === $prof) {
+            if ($prof === null) {
                 if (isset($this->profCache[$identification])) {
                     $prof = $this->profCache[$identification];
                 } else {
@@ -397,7 +396,7 @@ class Study
                 ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
                 ->findOneBySubjectAndProfAndAcademicYear($subject, $prof, $this->academicYear);
 
-            if (null === $map) {
+            if ($map === null) {
                 if (!isset($maps[$prof->getUniversityIdentification()])) {
                     $map = new ProfMap($subject, $prof, $this->academicYear);
                     $this->getEntityManager()->persist($map);
@@ -461,9 +460,9 @@ class Study
         foreach ($combinations as $combination) {
             $groups = array();
 
-            if (sizeof($combination['groups']) == 0) {
+            if (count($combination['groups']) == 0) {
                 foreach ($moduleGroups as $group) {
-                    if ($group->getPhase() == $combination['entity']->getPhase() && null === $group->getParent()) {
+                    if ($group->getPhase() == $combination['entity']->getPhase() && $group->getParent() === null) {
                         $groups[] = $group;
                         break;
                     }
@@ -476,7 +475,7 @@ class Study
                 }
 
                 $generalGroups = $this->getGeneralMandatoryGroups($combination['entity']->getPhase(), $moduleGroups);
-                if (!empty($generalGroups)) {
+                if (count($generalGroups) > 0) {
                     $groups = array_merge($groups, $generalGroups);
                 }
             }
@@ -486,8 +485,8 @@ class Study
     }
 
     /**
-     * @param  int   $phase
-     * @param  array $moduleGroups
+     * @param  integer $phase
+     * @param  array   $moduleGroups
      * @return array
      */
     private function getGeneralMandatoryGroups($phase, $moduleGroups)
@@ -497,7 +496,7 @@ class Study
         //for each child node in the same phase check if branch is fully mandatory
         foreach ($moduleGroups as $group) {
             if ($phase == $group->getPhase() && count($group->getChildren()) == 0) {
-                if ( $this->isFullMandatoryBranch($group) ) {
+                if ($this->isFullMandatoryBranch($group)) {
                     $groups[] = $group;
                 } else {
                 }
@@ -508,14 +507,14 @@ class Study
     }
 
     /**
-     * @param  moduleGroup $group
+     * @param  ModuleGroup $group
      * @return boolean
      */
     private function isFullMandatoryBranch($group)
     {
         $result = false;
         if ($group->isMandatory()) {
-            if (null !== $group->getParent()) {
+            if ($group->getParent() !== null) {
                 $result = $this->isFullMandatoryBranch($group->getParent());
             } else {
                 return true;

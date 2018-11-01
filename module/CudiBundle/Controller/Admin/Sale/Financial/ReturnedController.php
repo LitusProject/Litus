@@ -20,10 +20,10 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Financial;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CudiBundle\Entity\Sale\Article as SaleArticle,
-    CudiBundle\Entity\Sale\Session,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\General\AcademicYear;
+use CudiBundle\Entity\Sale\Article as SaleArticle;
+use CudiBundle\Entity\Sale\Session;
+use Zend\View\Model\ViewModel;
 
 /**
  * ReturnedController
@@ -35,7 +35,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
     public function individualAction()
     {
         $academicYear = $this->getAcademicYearEntity();
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $records = $this->individualSearch($academicYear);
         }
 
@@ -113,7 +113,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
     }
 
     /**
-     * @param  AcademicYear             $academicYear
+     * @param  AcademicYear $academicYear
      * @return \Doctrine\ORM\Query|null
      */
     private function individualSearch(AcademicYear $academicYear)
@@ -169,7 +169,8 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
 
     public function sessionAction()
     {
-        if (!($session = $this->getSessionEntity())) {
+        $session = $this->getSessionEntity();
+        if ($session === null) {
             return new ViewModel();
         }
 
@@ -183,7 +184,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $records = $this->sessionSearch($session);
         }
 
@@ -214,7 +215,8 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($session = $this->getSessionEntity())) {
+        $session = $this->getSessionEntity();
+        if ($session === null) {
             return new ViewModel();
         }
 
@@ -251,7 +253,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
     }
 
     /**
-     * @param  Session                  $session
+     * @param  Session $session
      * @return \Doctrine\ORM\Query|null
      */
     private function sessionSearch(Session $session)
@@ -279,7 +281,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
     public function articlesAction()
     {
         $academicYear = $this->getAcademicYearEntity();
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $records = $this->articlesSearch($academicYear);
         }
 
@@ -350,7 +352,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
     }
 
     /**
-     * @param  AcademicYear             $academicYear
+     * @param  AcademicYear $academicYear
      * @return \Doctrine\ORM\Query|null
      */
     private function articlesSearch(AcademicYear $academicYear)
@@ -377,7 +379,8 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
 
     public function articleAction()
     {
-        if (!($article = $this->getSaleArticleEntity())) {
+        $article = $this->getSaleArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -391,7 +394,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $records = $this->articleSearch($article, $this->getAcademicYearEntity());
         }
 
@@ -426,7 +429,8 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($article = $this->getSaleArticleEntity())) {
+        $article = $this->getSaleArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -465,8 +469,8 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
     }
 
     /**
-     * @param  SaleArticle              $article
-     * @param  AcademicYear             $academicYear
+     * @param  SaleArticle  $article
+     * @param  AcademicYear $academicYear
      * @return \Doctrine\ORM\Query|null
      */
     private function articleSearch(SaleArticle $article, AcademicYear $academicYear)

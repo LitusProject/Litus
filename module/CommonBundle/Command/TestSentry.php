@@ -20,8 +20,6 @@
 
 namespace CommonBundle\Command;
 
-use Zend\Log\Logger;
-
 /**
  * Tests connection to Sentry.
  */
@@ -32,18 +30,18 @@ class TestSentry extends \CommonBundle\Component\Console\Command
         $this
             ->setName('common:test-sentry')
             ->setDescription('Test connection to Sentry.')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The <info>%command.name%</info> command tests the connection to the Sentry server.
 EOT
-        );
+            );
     }
 
     protected function executeCommand()
     {
-        $this->getServiceLocator()->get('sentry')
-            ->logMessage(
-                'Saying hi to the cutest error robot ever!'
-            );
+        $this->getSentry()->logMessage(
+            'Saying hi to the cutest error robot ever!'
+        );
     }
 
     protected function getLogName()

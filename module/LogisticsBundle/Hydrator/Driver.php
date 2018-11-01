@@ -28,7 +28,7 @@ class Driver extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
@@ -45,12 +45,12 @@ class Driver extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $object = $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Driver')
                 ->findOneByPerson($data['person']['id']);
 
-            if (null === $object) {
+            if ($object === null) {
                 $person = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Academic')
                     ->findOneById($data['person']['id']);

@@ -20,12 +20,12 @@
 
 namespace CudiBundle\Component\Document\Generator;
 
-use CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\Xml\Generator,
-    CommonBundle\Component\Util\Xml\Node,
-    CommonBundle\Entity\General\AcademicYear,
-    DateTime,
-    Doctrine\ORM\EntityManager;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\Xml\Generator;
+use CommonBundle\Component\Util\Xml\Node;
+use CommonBundle\Entity\General\AcademicYear;
+use DateTime;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Financial
@@ -182,16 +182,16 @@ class Financial extends \CommonBundle\Component\Document\Generator\Pdf
                             'name' => $cudi_name,
                         ),
                         array(
-                             new Node(
-                                 'mail',
-                                 null,
-                                 $cudi_mail
-                             ),
-                             new Node(
-                                 'phone',
-                                 null,
-                                 $person->getPhoneNumber()
-                             ),
+                            new Node(
+                                'mail',
+                                null,
+                                $cudi_mail
+                            ),
+                            new Node(
+                                'phone',
+                                null,
+                                $person->getPhoneNumber()
+                            ),
                         )
                     ),
                     new Node(

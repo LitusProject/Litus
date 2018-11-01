@@ -25,7 +25,7 @@ namespace OnBundle\Form\Admin\Slug;
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Edit extends Add
+class Edit extends \OnBundle\Form\Admin\Slug\Add
 {
     public function init()
     {
@@ -35,7 +35,7 @@ class Edit extends Add
         $nameField = $this->get('name');
         $nameField->setRequired();
 
-        $this->remove('submit');
-        $this->addSubmit('Save', 'slug_edit');
+        $this->remove('submit')
+            ->addSubmit('Save', 'slug_edit');
     }
 }

@@ -20,25 +20,29 @@
 
 namespace CommonBundle\Component\Module;
 
-use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Component\Console\Command,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
-    CommonBundle\Entity\Acl\Action,
-    CommonBundle\Entity\Acl\Resource,
-    CommonBundle\Entity\Acl\Role,
-    CommonBundle\Entity\General\Config as ConfigEntity,
-    Exception,
-    LogicException,
-    Zend\ServiceManager\ServiceLocatorAwareTrait as ZendServiceLocatorAwareTrait;
+use CommonBundle\Component\Acl\Acl;
+use CommonBundle\Component\Console\Command;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\CacheTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\ConfigTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use CommonBundle\Entity\Acl\Action;
+use CommonBundle\Entity\Acl\Resource;
+use CommonBundle\Entity\Acl\Role;
+use CommonBundle\Entity\General\Config as ConfigEntity;
+use RuntimeException;
 
 /**
  * Installs a module.
  */
 abstract class AbstractInstaller implements ServiceLocatorAwareInterface
 {
-    use ZendServiceLocatorAwareTrait;
     use ServiceLocatorAwareTrait;
+
+    use CacheTrait;
+    use ConfigTrait;
+    use DoctrineTrait;
 
     /**
      * @var string the module name
@@ -52,7 +56,7 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
 
     public function __construct()
     {
-        $calledClass = get_called_class();
+        $calledClass = static::class;
 
         $this->module = substr($calledClass, 0, strpos($calledClass, '\\', 1));
     }
@@ -64,7 +68,7 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
      */
     public function install()
     {
-        $configuration = $this->getConfiguration();
+        $configuration = $this->getModuleConfig();
 
         $this->preInstall();
 
@@ -108,8 +112,8 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
     }
 
     /**
-     * @param  string $string
-     * @param  bool   $raw
+     * @param  string  $string
+     * @param  boolean $raw
      * @return void
      */
     protected function write($string, $raw = false)
@@ -120,8 +124,8 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
     }
 
     /**
-     * @param  string $string
-     * @param  bool   $raw
+     * @param  string  $string
+     * @param  boolean $raw
      * @return void
      */
     protected function writeln($string, $raw = false)
@@ -145,23 +149,22 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
     /**
      * @return array
      */
-    private function getConfiguration()
+    private function getModuleConfig()
     {
-        $configuration = $this->getServiceLocator()->get('Config');
-        $configuration = $configuration['litus']['install'];
-        $configuration = array_change_key_case($configuration);
+        $config = $this->getConfig()['litus']['install'];
+        $config = array_change_key_case($config);
 
         $key = strtolower($this->module);
-        if (array_key_exists($key, $configuration)) {
-            $configuration = $configuration[$key];
-        } elseif (array_key_exists(str_replace('bundle', '', $key), $configuration)) {
+        if (array_key_exists($key, $config)) {
+            $moduleConfig = $config[$key];
+        } elseif (array_key_exists(str_replace('bundle', '', $key), $config)) {
             $key = str_replace('bundle', '', $key);
-            $configuration = $configuration[$key];
+            $moduleConfig = $config[$key];
         } else {
-            throw new LogicException('Module ' . $this->module . ' does not have any configured installation files.');
+            throw new RuntimeException('Module ' . $this->module . ' does not have any configured installation files.');
         }
 
-        return $configuration;
+        return $moduleConfig;
     }
 
     /**
@@ -178,7 +181,7 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
     }
 
     /**
-     * Install the config values
+     * Install the config values.
      *
      * @param array $config The configuration values
      */
@@ -192,7 +195,7 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->findOneByKey($item['key']);
 
-                if (null === $entry) {
+                if ($entry === null) {
                     $entry = new ConfigEntity($item['key'], $item['value']);
                     $entry->setDescription($item['description']);
 
@@ -204,7 +207,7 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
                 } else {
                     $entry->setDescription($item['description']);
                 }
-            } catch (Exception $e) {
+            } catch (\Throwable $e) {
                 $entry = new ConfigEntity($item['key'], $item['value']);
                 $entry->setDescription($item['description']);
 
@@ -242,15 +245,17 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
                 }
             }
 
-            if (null === $role) {
+            if ($role === null) {
                 $system = array_key_exists('system', $config) ? $config['system'] : false;
 
                 $role = new Role(
-                    $roleName, $system, $parents
+                    $roleName,
+                    $system,
+                    $parents
                 );
 
                 $this->getEntityManager()->persist($role);
-            } elseif (!empty($config['parents'])) {
+            } elseif (array_key_exists('parents', $config) && count($config['parents']) > 0) {
                 $role->setParents($parents);
             }
 
@@ -284,7 +289,7 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
                 ->getRepository('CommonBundle\Entity\Acl\Resource')
                 ->findOneByName($module);
 
-            if (null === $repositoryCheck) {
+            if ($repositoryCheck === null) {
                 $moduleResource = new Resource($module);
                 $this->getEntityManager()->persist($moduleResource);
             } else {
@@ -296,7 +301,7 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
                     ->getRepository('CommonBundle\Entity\Acl\Resource')
                     ->findOneBy(array('name' => $route, 'parent' => $module));
 
-                if (null === $repositoryCheck) {
+                if ($repositoryCheck === null) {
                     $routeResource = new Resource(
                         $route,
                         $moduleResource
@@ -312,7 +317,7 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
                         ->getRepository('CommonBundle\Entity\Acl\Action')
                         ->findOneBy(array('name' => $action, 'resource' => $route));
 
-                    if (null === $repositoryCheck) {
+                    if ($repositoryCheck === null) {
                         $actionResource = new Action(
                             $action,
                             $routeResource
@@ -325,7 +330,7 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
         }
         $this->getEntityManager()->flush();
 
-        if (null !== $this->getCache() && $this->getCache()->hasItem('acl')) {
+        if ($this->getCache() !== null && $this->getCache()->hasItem('acl')) {
             $this->getCache()->replaceItem(
                 'acl',
                 new Acl(

@@ -20,12 +20,12 @@
 
 namespace BrBundle\Entity\Company;
 
-use BrBundle\Entity\Company,
-    CommonBundle\Component\Util\StringUtil,
-    DateTime,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException,
-    Markdown_Parser;
+use BrBundle\Entity\Company;
+use CommonBundle\Component\Util\StringUtil;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
+use Parsedown;
 
 /**
  * This is the entity for an job.
@@ -88,14 +88,14 @@ class Job
 
     /**
      * @var string The location (eg. province) where the job is located
-     * 
+     *
      * @ORM\Column(type="text", nullable=true)
      */
     private $location;
-    
+
     /**
      * @var string The master for which this job is meant
-     * 
+     *
      * @ORM\Column(type="text", nullable=true)
      */
     private $master;
@@ -209,7 +209,7 @@ class Job
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isRemoved()
     {
@@ -217,11 +217,11 @@ class Job
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isApproved()
     {
-        if (null === $this->approved) {
+        if ($this->approved === null) {
             return true;
         }
 
@@ -242,7 +242,7 @@ class Job
      */
     public function setName($name)
     {
-        if (null === $name || !is_string($name)) {
+        if ($name === null || !is_string($name)) {
             throw new InvalidArgumentException('Invalid name');
         }
 
@@ -265,7 +265,7 @@ class Job
      */
     public function setType($type)
     {
-        if (null === $type || !is_string($type)) {
+        if ($type === null || !is_string($type)) {
             throw new InvalidArgumentException('Invalid type');
         }
 
@@ -390,8 +390,8 @@ class Job
      */
     public function getSummary($length = 50)
     {
-        $parser = new Markdown_Parser();
-        $summary = $parser->transform($this->getDescription());
+        $parsedown = new Parsedown();
+        $summary = $parsedown->text($this->getDescription());
 
         return StringUtil::truncate($summary, $length, '...');
     }
@@ -507,7 +507,6 @@ class Job
         return Company::POSSIBLE_LOCATIONS[$this->location];
     }
 
-
     /**
      * @param  string $location
      * @return Job
@@ -530,7 +529,6 @@ class Job
     {
         return $this->location;
     }
-
 
     /**
      * @param  string $sector

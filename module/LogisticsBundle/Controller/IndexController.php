@@ -20,13 +20,13 @@
 
 namespace LogisticsBundle\Controller;
 
-use CommonBundle\Component\Util\File\TmpFile as TmpFile,
-    DateTime,
-    LogisticsBundle\Component\Document\Generator\Ics as IcsGenerator,
-    LogisticsBundle\Document\Token,
-    LogisticsBundle\Entity\Reservation\VanReservation,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\File\TmpFile;
+use DateTime;
+use LogisticsBundle\Component\Document\Generator\Ics as IcsGenerator;
+use LogisticsBundle\Document\Token;
+use LogisticsBundle\Entity\Reservation\VanReservation;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * @author Niels Avonds <niels.avonds@litus.cc>
@@ -44,7 +44,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                 ->findOneByPerson($this->getAuthentication()->getPersonObject());
         }
 
-        if (null === $token && $this->getAuthentication()->isAuthenticated()) {
+        if ($token === null && $this->getAuthentication()->isAuthenticated()) {
             $token = new Token(
                 $this->getAuthentication()->getPersonObject()
             );
@@ -81,7 +81,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                     'color' => '#444444',
                     'name'  => '',
                 );
-                if (null !== $driver) {
+                if ($driver !== null) {
                     $driverArray['id'] = $driver->getPerson()->getId();
                     $driverArray['color'] = $driver->getColor();
                     $driverArray['name'] = $driver->getPerson()->getFullname();
@@ -89,7 +89,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
                 $passengerName = '';
                 $passengerId = '';
-                if (null !== $passenger) {
+                if ($passenger !== null) {
                     $passengerName = $passenger->getFullname();
                     $passengerId = $passenger->getId();
                 }
@@ -141,7 +141,8 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     {
         $this->initAjax();
 
-        if (!($reservation = $this->getVanReservationEntity())) {
+        $reservation = $this->getVanReservationEntity();
+        if ($reservation === null) {
             return $this->notFoundAction();
         }
 
@@ -158,7 +159,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                     'color' => '#444444',
                     'name'  => '',
                 );
-                if (null !== $driver) {
+                if ($driver !== null) {
                     $driverArray['id'] = $driver->getPerson()->getId();
                     $driverArray['color'] = $driver->getColor();
                     $driverArray['name'] = $driver->getPerson()->getFullname();
@@ -168,7 +169,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
                 $passengerName = '';
                 $passengerId = '';
-                if (null !== $passenger) {
+                if ($passenger !== null) {
                     $passengerName = $passenger->getFullname();
                     $passengerId = $passenger->getId();
                 }
@@ -220,7 +221,8 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     {
         $this->initAjax();
 
-        if (!($reservation = $this->getVanReservationEntity())) {
+        $reservation = $this->getVanReservationEntity();
+        if ($reservation === null) {
             return $this->notFoundAction();
         }
 
@@ -236,7 +238,8 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
     public function moveAction()
     {
-        if (!($reservation = $this->getVanReservationEntity())) {
+        $reservation = $this->getVanReservationEntity();
+        if ($reservation === null) {
             return $this->notFoundAction();
         }
 
@@ -264,8 +267,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
         $this->initAjax();
 
         $reservations = $this->getReservations();
-
-        if (null === $reservations) {
+        if ($reservations === null) {
             return $this->notFoundAction();
         }
 
@@ -277,7 +279,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                 'color' => '#444444',
                 'name'  => '',
             );
-            if (null !== $driver) {
+            if ($driver !== null) {
                 $driverArray['id'] = $driver->getPerson()->getId();
                 $driverArray['color'] = $driver->getColor();
                 $driverArray['name'] = $driver->getPerson()->getFullname();
@@ -287,7 +289,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
             $passengerName = '';
             $passengerId = '';
-            if (null !== $passenger) {
+            if ($passenger !== null) {
                 $passengerName = $passenger->getFullname();
                 $passengerId = $passenger->getId();
             }
@@ -319,10 +321,12 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     public function exportAction()
     {
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="icalendar.ics"',
-            'Content-Type'        => 'text/calendar',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'inline; filename="icalendar.ics"',
+                'Content-Type'        => 'text/calendar',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         $icsFile = new TmpFile();
@@ -336,11 +340,11 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     }
 
     /**
-     * @return array
+     * @return array|null
      */
     private function getReservations()
     {
-        if (null === $this->getParam('start') || null === $this->getParam('end')) {
+        if ($this->getParam('start') === null || $this->getParam('end') === null) {
             return;
         }
 
@@ -354,7 +358,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
             ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
             ->findAllByDates($startTime, $endTime);
 
-        if (empty($reservations)) {
+        if (count($reservations) == 0) {
             $reservations = array();
         }
 

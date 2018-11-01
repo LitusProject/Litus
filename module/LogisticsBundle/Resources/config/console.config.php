@@ -19,5 +19,5 @@
  */
 
 return array(
-    'install.logistics' => 'LogisticsBundle\Command\Install',
+    'install_logistics' => 'LogisticsBundle\Command\Install',
 );

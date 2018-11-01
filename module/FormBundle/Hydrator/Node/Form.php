@@ -20,9 +20,9 @@
 
 namespace FormBundle\Hydrator\Node;
 
-use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
-    FormBundle\Entity\Node\Form\Doodle as DoodleEntity,
-    FormBundle\Entity\Node\Translation\Form as TranslationEntity;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+use FormBundle\Entity\Node\Form\Doodle as DoodleEntity;
+use FormBundle\Entity\Node\Translation\Form as TranslationEntity;
 
 class Form extends \CommonBundle\Component\Hydrator\Hydrator
 {
@@ -30,11 +30,11 @@ class Form extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             throw new InvalidObjectException('Cannot create a form');
         }
 
-        if (null !== $object->getId()) {
+        if ($object->getId() !== null) {
             // Check if this is a new form
             $group = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Group\Mapping')
@@ -43,7 +43,7 @@ class Form extends \CommonBundle\Component\Hydrator\Hydrator
             $group = null;
         }
 
-        if (null === $group) {
+        if ($group === null) {
             $object->setStartDate(self::loadDateTime($data['start_date']))
                 ->setEndDate(self::loadDateTime($data['end_date']))
                 ->setActive($data['active'])
@@ -85,10 +85,10 @@ class Form extends \CommonBundle\Component\Hydrator\Hydrator
 
         foreach ($this->getLanguages() as $language) {
             $translationData = $data['tab_content']['tab_' . $language->getAbbrev()];
-            if ('' != $translationData['title'] && '' != $translationData['introduction'] && '' != $translationData['submittext']) {
+            if ($translationData['title'] != '' && $translationData['introduction'] != '' && $translationData['submittext'] != '') {
                 $translation = $object->getTranslation($language, false);
 
-                if (null === $translation) {
+                if ($translation === null) {
                     $translation = new TranslationEntity(
                         $object,
                         $language,
@@ -118,7 +118,7 @@ class Form extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $mailContent = unserialize(
                 $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')

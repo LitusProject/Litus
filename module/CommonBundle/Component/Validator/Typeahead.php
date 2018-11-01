@@ -20,7 +20,7 @@
 
 namespace CommonBundle\Component\Validator;
 
-abstract class Typeahead extends AbstractValidator
+abstract class Typeahead extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
@@ -45,7 +45,7 @@ abstract class Typeahead extends AbstractValidator
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -70,7 +70,7 @@ abstract class Typeahead extends AbstractValidator
     {
         $this->setValue($value);
 
-        if (null == $context['id']) {
+        if ($context['id'] == null) {
             $this->error(self::NOT_VALID);
 
             return false;
@@ -80,7 +80,7 @@ abstract class Typeahead extends AbstractValidator
             ->getRepository($this->options['entity'])
             ->findOneById($context['id']);
 
-        if (null === $this->entityObject) {
+        if ($this->entityObject === null) {
             $this->error(self::NOT_VALID);
 
             return false;

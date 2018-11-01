@@ -20,15 +20,14 @@
 
 namespace ShopBundle\Form\Admin\SalesSession;
 
-use LogicException,
-    ShopBundle\Entity\SalesSession;
+use ShopBundle\Entity\SalesSession;
 
 /**
  * Edit SalesSession
  *
  * @author Floris Kint <floris.kint@litus.cc>
  */
-class Edit extends Add
+class Edit extends \ShopBundle\Form\Admin\SalesSession\Add
 {
     /**
      * @var SalesSession The session to edit.
@@ -37,10 +36,6 @@ class Edit extends Add
 
     public function init()
     {
-        if (null === $this->salesSession) {
-            throw new LogicException('Cannot edit a null shift');
-        }
-
         parent::init();
 
         foreach ($this->products as $product) {
@@ -50,18 +45,20 @@ class Edit extends Add
                 ->getRepository('ShopBundle\Entity\Product\SessionStockEntry')
                 ->getProductAvailability($product, $this->salesSession);
 
-            $this->add(array(
-                'type'    => 'number',
-                'name'    => $product->getId() . '-quantity',
-                'options' => array(
-                    'label' => $product->getName(),
-                ),
-                'attributes' => array(
-                    'min'   => '0',
-                    'max'   => '100',
-                    'value' => $currentAvailability,
-                ),
-            ));
+            $this->add(
+                array(
+                    'type'    => 'number',
+                    'name'    => $product->getId() . '-quantity',
+                    'options' => array(
+                        'label' => $product->getName(),
+                    ),
+                    'attributes' => array(
+                        'min'   => '0',
+                        'max'   => '100',
+                        'value' => $currentAvailability,
+                    ),
+                )
+            );
         }
         $this->remove('session_add')
             ->addSubmit('Save', 'edit');

@@ -20,11 +20,11 @@
 
 namespace ApiBundle\Document\Code;
 
-use ApiBundle\Entity\Key,
-    CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
-    Doctrine\ORM\EntityManager;
+use ApiBundle\Entity\Key;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Doctrine\ORM\EntityManager;
 
 /**
  * This entity represents an authorization code used in OAuth 2.0.
@@ -81,9 +81,9 @@ class Authorization
     private $exchangeTime;
 
     /**
-     * @param Person $person
-     * @param Key    $key
-     * @param int    $expirationTime
+     * @param Person  $person
+     * @param Key     $key
+     * @param integer $expirationTime
      */
     public function __construct(Person $person, Key $key, $expirationTime = self::DEFAULT_EXPIRATION_TIME)
     {
@@ -92,7 +92,7 @@ class Authorization
         $this->person = $person->getId();
         $this->key = $key->getId();
         $this->expirationTime = new DateTime(
-            'now ' . (($expirationTime < 0) ? '-' : '+') . abs($expirationTime) . ' seconds'
+            'now ' . ($expirationTime < 0 ? '-' : '+') . abs($expirationTime) . ' seconds'
         );
     }
 
@@ -165,7 +165,7 @@ class Authorization
      */
     public function hasBeenExchanged()
     {
-        return null !== $this->exchangeTime;
+        return $this->exchangeTime !== null;
     }
 
     /**

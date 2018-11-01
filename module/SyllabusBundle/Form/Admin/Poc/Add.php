@@ -20,9 +20,7 @@
 
 namespace SyllabusBundle\Form\Admin\Poc;
 
-use SyllabusBundle\Entity\Group,
-    SyllabusBundle\Entity\Poc,
-    SyllabusBundle\Repository\Group as GroupRepository;
+use SyllabusBundle\Entity\Group;
 
 /**
  * Add Poc
@@ -36,29 +34,31 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @var Group|null
      */
-    protected $pocgroup = null;
+    protected $pocGroup = null;
 
     public function init()
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'typeahead',
-            'name'       => 'person',
-            'label'      => 'POC\'er',
-            'required'   => true,
-            'attributes' => array(
-                'id'    => 'person',
-                'style' => 'width: 400px;',
-            ),
-            'options' => array(
-                'input' => array(
-                    'validators' => array(
-                        array('name' => 'typeahead_person'),
+        $this->add(
+            array(
+                'type'       => 'typeahead',
+                'name'       => 'person',
+                'label'      => 'POC\'er',
+                'required'   => true,
+                'attributes' => array(
+                    'id'    => 'person',
+                    'style' => 'width: 400px;',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'validators' => array(
+                            array('name' => 'TypeaheadPerson'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Add', 'user_add');
     }
@@ -67,18 +67,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      * @param  Group $pocGroup
      * @return self
      */
-    public function setPocgroup(Group $pocgroup)
+    public function setPocGroup(Group $pocGroup)
     {
-        $this->pocgroup = $pocgroup;
+        $this->pocGroup = $pocGroup;
 
         return $this;
     }
 
     /**
-     * @return poc
+     * @return Group
      */
-    public function getPocgroup(Group $pocgroup)
+    public function getPocGroup(Group $pocGroup)
     {
-        return $this->pocgroup;
+        return $this->pocGroup;
     }
 }

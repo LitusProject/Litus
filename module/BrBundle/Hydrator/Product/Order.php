@@ -20,12 +20,9 @@
 
 namespace BrBundle\Hydrator\Product;
 
-use BrBundle\Entity\Contract as ContractEntity,
-    BrBundle\Entity\Contract\ContractEntry as ContractEntryEntity,
-    BrBundle\Entity\Contract\ContractHistory as ContractHistoryEntity,
-    BrBundle\Entity\Product\Order as OrderEntity,
-    BrBundle\Entity\Product\OrderEntry as OrderEntryEntity,
-    CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+use BrBundle\Entity\Product\Order as OrderEntity;
+use BrBundle\Entity\Product\OrderEntry as OrderEntryEntity;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 
 /**
  * This hydrator hydrates/extracts Order data.
@@ -42,11 +39,11 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             throw new InvalidObjectException('Cannot create an order');
         }
 
-        if (null !== $object->getContact() && $object->hasContract()) {
+        if ($object->getContact() !== null && $object->hasContract()) {
             $object->setOld();
 
             $company = $object->getContract()->getCompany();
@@ -113,7 +110,7 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 

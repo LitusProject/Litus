@@ -20,11 +20,11 @@
 
 namespace CudiBundle\Controller\Prof\Subject;
 
-use SyllabusBundle\Entity\Subject,
-    SyllabusBundle\Entity\Subject\Comment,
-    SyllabusBundle\Entity\Subject\ProfMap,
-    SyllabusBundle\Entity\Subject\Reply,
-    Zend\View\Model\ViewModel;
+use SyllabusBundle\Entity\Subject;
+use SyllabusBundle\Entity\Subject\Comment;
+use SyllabusBundle\Entity\Subject\ProfMap;
+use SyllabusBundle\Entity\Subject\Reply;
+use Zend\View\Model\ViewModel;
 
 /**
  * CommentController
@@ -35,7 +35,8 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
 {
     public function manageAction()
     {
-        if (!($subject = $this->getSubjectEntity())) {
+        $subject = $this->getSubjectEntity();
+        if ($subject === null) {
             return new ViewModel();
         }
 
@@ -135,7 +136,8 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        if (!($comment = $this->getCommentEntity())) {
+        $comment = $this->getCommentEntity();
+        if ($comment === null) {
             return new ViewModel();
         }
 
@@ -156,16 +158,17 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     }
 
     /**
-     * @param  int|null     $id
+     * @param  integer|null $id
      * @return Subject|null
      */
     private function getSubjectEntity($id = null)
     {
-        $id = $id === null ? $this->getParam('id') : $id;
-
-        if (!($academicYear = $this->getCurrentAcademicYear())) {
+        $academicYear = $this->getCurrentAcademicYear();
+        if ($academicYear === null) {
             return;
         }
+
+        $id = $id ?? $this->getParam('id');
 
         $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
@@ -202,7 +205,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     {
         $comment = $this->getEntityById('SyllabusBundle\Entity\Subject\Comment');
 
-        if (!($comment instanceof Comment) || null === $this->getSubjectEntity($comment->getSubject()->getId())) {
+        if (!($comment instanceof Comment) || $this->getSubjectEntity($comment->getSubject()->getId()) === null) {
             $this->flashMessenger()->error(
                 'Error',
                 'No comment was found!'

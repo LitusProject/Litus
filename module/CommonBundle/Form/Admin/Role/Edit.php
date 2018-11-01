@@ -20,21 +20,15 @@
 
 namespace CommonBundle\Form\Admin\Role;
 
-use LogicException;
-
 /**
  * Edit Role
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Edit extends Add
+class Edit extends \CommonBundle\Form\Admin\Role\Add
 {
     public function init()
     {
-        if (null === $this->role) {
-            throw new LogicException('Cannot edit a null role');
-        }
-
         parent::init();
 
         $this->remove('name');

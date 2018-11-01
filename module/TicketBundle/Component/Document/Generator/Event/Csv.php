@@ -20,8 +20,8 @@
 
 namespace TicketBundle\Component\Document\Generator\Event;
 
-use Doctrine\ORM\EntityManager,
-    TicketBundle\Entity\Event;
+use Doctrine\ORM\EntityManager;
+use TicketBundle\Entity\Event;
 
 /**
  * Csv

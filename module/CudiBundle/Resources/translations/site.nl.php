@@ -75,7 +75,5 @@ return array(
     'Disable catalog update mails'                              => 'Desactiveer catalogus update e-mails',
 
     'Color'  => 'Kleur',
-    'Status' => 'Status',
-    'Booked' => 'Gereserveerd',
     'Bought' => 'Aangekocht',
 );

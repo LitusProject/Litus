@@ -20,12 +20,12 @@
 
 namespace SportBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
-    DateInterval,
-    DateTime,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    SportBundle\Entity\Department;
+use CommonBundle\Entity\General\AcademicYear;
+use DateInterval;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+use SportBundle\Entity\Department;
 
 /**
  * This entity represents a lap.
@@ -36,7 +36,7 @@ use CommonBundle\Entity\General\AcademicYear,
 class Lap
 {
     /**
-     * @var int The ID of this lap
+     * @var integer The ID of this lap
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -113,6 +113,14 @@ class Lap
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
+    public function getAcademicYear()
+    {
+        return $this->academicYear;
     }
 
     /**
@@ -219,11 +227,11 @@ class Lap
      */
     public function getLapTime()
     {
-        if (null === $this->startTime) {
+        if ($this->startTime === null) {
             return new DateInterval('PT0S');
         }
 
-        if (null !== $this->endTime) {
+        if ($this->endTime !== null) {
             $lapTime = $this->endTime->diff($this->startTime);
         } else {
             $now = new DateTime();

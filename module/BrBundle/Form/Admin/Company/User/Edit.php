@@ -20,8 +20,6 @@
 
 namespace BrBundle\Form\Admin\Company\User;
 
-use CommonBundle\Entity\User\Person;
-
 /**
  * Edit a user's data.
  *

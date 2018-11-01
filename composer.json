@@ -1,46 +1,89 @@
 {
     "minimum-stability": "dev",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/LitusProject/dbal"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/LitusProject/EdpMarkdown"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/LitusProject/zendframework"
-        }
-    ],
+    "prefer-stable": true,
     "require": {
-        "zendframework/zendframework": "dev-master as 2.4.13",
-        "zendframework/zend-developer-tools": "@stable",
+        "zendframework/zend-authentication": "^2.6",
+        "zendframework/zend-cache": "^2.8",
+        "zendframework/zend-eventmanager": "^3.2",
+        "zendframework/zend-file": "^2.8",
+        "zendframework/zend-filter": "^2.8",
+        "zendframework/zend-form": "^2.12",
+        "zendframework/zend-http": "^2.8",
+        "zendframework/zend-i18n": "^2.9",
+        "zendframework/zend-i18n-resources": "^2.6",
+        "zendframework/zend-inputfilter": "^2.8",
+        "zendframework/zend-mail": "^2.10",
+        "zendframework/zend-math": "^3.1",
+        "zendframework/zend-mime": "^2.7",
+        "zendframework/zend-mvc": "^3.1",
+        "zendframework/zend-mvc-i18n": "^1.1",
+        "zendframework/zend-mvc-plugin-flashmessenger": "^1.1",
+        "zendframework/zend-paginator": "^2.8",
+        "zendframework/zend-permissions-acl": "^2.7",
+        "zendframework/zend-router": "^3.2",
+        "zendframework/zend-serializer": "^2.9",
+        "zendframework/zend-servicemanager": "^3.3",
+        "zendframework/zend-session": "^2.8",
+        "zendframework/zend-soap": "^2.7",
+        "zendframework/zend-stdlib": "^3.2",
+        "zendframework/zend-uri": "^2.6",
+        "zendframework/zend-validator": "^2.10",
+        "zendframework/zend-view": "^2.10",
 
-        "alcaeus/mongo-php-adapter": "@stable",
         "doctrine/doctrine-orm-module": "@stable",
         "doctrine/doctrine-mongo-odm-module": "@stable",
-        "EvanDotPro/EdpMarkdown": "dev-master",
-        "kriswallsmith/assetic": "1.0.5",
-        "packagist/yuicompressor-bin": "@stable",
-        "widmogrod/zf2-assetic-module": "1.3.4",
-        "zf-commons/zfc-twig": "@stable",
 
-        "twitter/bootstrap": "~3.0.0",
-        "sentry/sentry": "@stable"
+        "alcaeus/mongo-php-adapter": "^1.1",
+        "erusev/parsedown": "^1.7",
+        "ocramius/package-versions": "^1.3",
+        "oxcom/zend-twig": "^0.1.7",
+        "packagelist/yuicompressor-bin": "^2.4",
+        "sentry/sentry": "^1.9",
+        "symfony/console": "^3.4",
+        "symfony/event-dispatcher": "^3.4",
+        "widmogrod/zf2-assetic-module": "^2.4",
+
+        "twitter/bootstrap": "^3.3"
     },
     "require-dev": {
-        "litus/php-cs-fixer": "dev-master"
+        "zendframework/zend-developer-tools": "^1.2",
+
+        "phpstan/phpstan": "^0.10.5",
+        "phpstan/phpstan-doctrine": "^0.10.0",
+        "squizlabs/php_codesniffer": "^3.3",
+        "slevomat/coding-standard": "^4.8"
+    },
+    "provide": {
+        "ext-mongo": "^1.5"
     },
     "autoload": {
         "psr-4": {
-            "": "module/"
-        }
-    },
-    "config": {
-        "platform": {
-            "ext-mongo": "1.6.16"
+            "ApiBundle\\": "module/ApiBundle",
+            "BannerBundle\\": "module/BannerBundle",
+            "BootstrapBundle\\": "module/BootstrapBundle",
+            "BrBundle\\": "module/BrBundle",
+            "CalendarBundle\\": "module/CalendarBundle",
+            "CommonBundle\\": "module/CommonBundle",
+            "CudiBundle\\": "module/CudiBundle",
+            "DoorBundle\\": "module/DoorBundle",
+            "FormBundle\\": "module/FormBundle",
+            "GalleryBundle\\": "module/GalleryBundle",
+            "LogisticsBundle\\": "module/LogisticsBundle",
+            "MailBundle\\": "module/MailBundle",
+            "NewsBundle\\": "module/NewsBundle",
+            "NotificationBundle\\": "module/NotificationBundle",
+            "OnBundle\\": "module/OnBundle",
+            "QuizBundle\\": "module/QuizBundle",
+            "PageBundle\\": "module/PageBundle",
+            "PromBundle\\": "module/PromBundle",
+            "PublicationBundle\\": "module/PublicationBundle",
+            "SecretaryBundle\\": "module/SecretaryBundle",
+            "ShiftBundle\\": "module/ShiftBundle",
+            "ShopBundle\\": "module/ShopBundle",
+            "SportBundle\\": "module/SportBundle",
+            "SyllabusBundle\\": "module/SyllabusBundle",
+            "TicketBundle\\": "module/TicketBundle",
+            "WikiBundle\\": "module/WikiBundle"
         }
     }
 }

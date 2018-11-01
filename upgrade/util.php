@@ -38,51 +38,11 @@ function addConfigKey($connection, $name, $value, $description)
 function getConfigValue($connection, $name)
 {
     $result = pg_query($connection, 'SELECT value FROM general.config WHERE key = \'' . $name . '\'');
-    if (0 == pg_num_rows($result)) {
+    if (pg_num_rows($result) == 0) {
         throw new \RuntimeException('The config key ' . $name . ' does not exist');
     }
 
     return pg_fetch_row($result)[0];
-}
-
-/**
- * @param  resource $connection
- * @param  string   $name
- * @return null
- */
-function removeConfigKey($connection, $name)
-{
-    pg_query($connection, 'DELETE FROM general.config WHERE key = \'' . $name . '\'');
-}
-
-/**
- * @param  resource    $connection
- * @param  string      $oldName
- * @param  string      $newName
- * @param  string|null $description
- * @return null
- */
-function renameConfigKey($connection, $oldName, $newName, $description = null)
-{
-    pg_query($connection, 'UPDATE general.config SET key = \'' . $newName . '\' WHERE key = \'' . $oldName . '\'');
-    if (null !== $description) {
-        pg_query($connection, 'UPDATE general.config SET description = \'' . $description . '\' WHERE key = \'' . $newName . '\'');
-    }
-}
-
-/**
- * @param  resource    $connection
- * @param  string      $name
- * @param  string      $newValue
- * @param  string|null $description
- * @return null
- */
-function updateConfigValue($connection, $name, $newValue, $description = null)
-{
-    pg_query($connection, 'UPDATE general.config SET value = \'' . $newValue . '\' WHERE key = \'' . $name . '\'');
-    if (null !== $description) {
-        pg_query($connection, 'UPDATE general.config SET description = \'' . $description . '\' WHERE key = \'' . $name . '\'');
-    }
 }
 
 /**
@@ -98,12 +58,55 @@ function publishConfigValue($connection, $name)
 /**
  * @param  resource $connection
  * @param  string   $name
+ * @return null
+ */
+function removeConfigKey($connection, $name)
+{
+    pg_query($connection, 'DELETE FROM general.config WHERE key = \'' . $name . '\'');
+}
+
+/**
+ * @param  resource $connection
+ * @param  string   $oldName
+ * @param  string   $newName
+ * @return null
+ */
+function renameConfigKey($connection, $oldName, $newName)
+{
+    pg_query($connection, 'UPDATE general.config SET key = \'' . $newName . '\' WHERE key = \'' . $oldName . '\'');
+}
+
+/**
+ * @param  resource $connection
+ * @param  string   $name
+ * @param  string   $description
+ * @return null
+ */
+function updateConfigDescription($connection, $name, $description)
+{
+    pg_query($connection, 'UPDATE general.config SET description = \'' . $description . '\' WHERE key = \'' . $name . '\'');
+}
+
+/**
+ * @param  resource $connection
+ * @param  string   $name
  * @param  string   $value
  * @return null
  */
 function updateConfigKey($connection, $name, $value)
 {
     pg_query($connection, 'UPDATE general.config SET value = \'' . $value . '\' WHERE key = \'' . $name . '\'');
+}
+
+/**
+ * @param  resource $connection
+ * @param  string   $name
+ * @param  string   $newValue
+ * @return null
+ */
+function updateConfigValue($connection, $name, $newValue)
+{
+    pg_query($connection, 'UPDATE general.config SET value = \'' . $newValue . '\' WHERE key = \'' . $name . '\'');
 }
 
 /**
@@ -115,7 +118,7 @@ function updateConfigKey($connection, $name, $value)
 function removeAclAction($connection, $resource, $action)
 {
     $result = pg_query($connection, 'SELECT id FROM acl.actions WHERE resource = \'' . $resource . '\' AND name = \'' . $action . '\'');
-    if (0 == pg_num_rows($result)) {
+    if (pg_num_rows($result) == 0) {
         throw new \RuntimeException('The ACL action ' . $resource . '.' . $action . ' does not exist');
     }
 
@@ -135,7 +138,7 @@ function removeAclAction($connection, $resource, $action)
 function renameAclAction($connection, $resource, $action, $newAction)
 {
     $result = pg_query($connection, 'SELECT id FROM acl.actions WHERE resource = \'' . $resource . '\' AND name = \'' . $action . '\'');
-    if (0 == pg_num_rows($result)) {
+    if (pg_num_rows($result) == 0) {
         throw new \RuntimeException('The ACL action ' . $resource . '.' . $action . ' does not exist');
     }
 

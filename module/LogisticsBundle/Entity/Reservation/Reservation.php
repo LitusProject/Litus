@@ -20,9 +20,9 @@
 
 namespace LogisticsBundle\Entity\Reservation;
 
-use CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a reservation.
@@ -41,7 +41,7 @@ use CommonBundle\Entity\User\Person,
 abstract class Reservation
 {
     /**
-     * @var int The reservation's unique identifier
+     * @var integer The reservation's unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -105,7 +105,7 @@ abstract class Reservation
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {

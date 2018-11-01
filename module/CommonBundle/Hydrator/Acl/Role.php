@@ -20,14 +20,14 @@
 
 namespace CommonBundle\Hydrator\Acl;
 
-use CommonBundle\Entity\Acl\Action as ActionEntity,
-    CommonBundle\Entity\Acl\Role as RoleEntity;
+use CommonBundle\Entity\Acl\Action as ActionEntity;
+use CommonBundle\Entity\Acl\Role as RoleEntity;
 
 class Role extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
@@ -40,7 +40,7 @@ class Role extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $object = new RoleEntity($data['name']);
         }
 

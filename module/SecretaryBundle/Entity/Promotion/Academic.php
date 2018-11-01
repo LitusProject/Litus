@@ -20,9 +20,9 @@
 
 namespace SecretaryBundle\Entity\Promotion;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person\Academic as AcademicPerson,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person\Academic as AcademicPerson;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a promotion.

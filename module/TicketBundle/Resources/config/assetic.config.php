@@ -18,6 +18,10 @@
  * @license http://litus.cc/LICENSE
  */
 
+namespace TicketBundle;
+
+use CommonBundle\Component\Assetic\Filter\Less as LessFilter;
+
 return array(
     'controllers' => array(
         'ticket_admin_event' => array(
@@ -77,7 +81,11 @@ return array(
             'assets' => array(
                 'ticket/less/base.less',
             ),
-            'filters' => array('less'),
+            'filters' => array(
+                '?LessFilter' => array(
+                    'name' => LessFilter::class,
+                ),
+            ),
             'options' => array(
                 'output' => 'ticket_css.css',
             ),

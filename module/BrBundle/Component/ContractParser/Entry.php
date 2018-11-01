@@ -97,7 +97,7 @@ class Entry implements Node
         }
 
         if ($indent == $this->indent) {
-            if ('*' == $text[0]) {
+            if ($text[0] == '*') {
                 $this->parseEntry($text);
             } else {
                 $this->parseText($text);
@@ -129,13 +129,13 @@ class Entry implements Node
 
     /**
      * @param  string $line
-     * @return int
+     * @return integer
      */
     protected function nbSpacesLeadingLine($line)
     {
         $l = strlen($line);
-        for ($i = 0 ; $i < $l ; $i++) {
-            if (' ' != $line[$i]) {
+        for ($i = 0; $i < $l; $i++) {
+            if ($line[$i] != ' ') {
                 break;
             }
         }

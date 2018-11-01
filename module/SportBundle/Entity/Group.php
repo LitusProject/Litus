@@ -20,10 +20,10 @@
 
 namespace SportBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity represents a group of friends.
@@ -36,7 +36,7 @@ class Group
     public static $allMembers = array('one', 'two', 'three', 'four', 'five');
 
     /**
-     * @var int The ID of this group
+     * @var integer The ID of this group
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -201,7 +201,7 @@ class Group
             $member->setEntityManager($this->entityManager);
 
             foreach ($member->getLaps($academicYear) as $lap) {
-                if (null === $lap->getEndTime()) {
+                if ($lap->getEndTime() === null) {
                     continue;
                 }
 
@@ -229,19 +229,15 @@ class Group
 
     public function isNightShift($happyHour)
     {
-        if ($happyHour === "0204") {
+        if ($happyHour === '0204') {
             return true;
         }
-        if ($happyHour === "0406") {
+        if ($happyHour === '0406') {
             return true;
         }
-        if ($happyHour === "0608") {
+        if ($happyHour === '0608') {
             return true;
         }
-        if ($happyHour === "0810") {
-            return true;
-        }
-
-        return false;
+        return $happyHour === '0810';
     }
 }

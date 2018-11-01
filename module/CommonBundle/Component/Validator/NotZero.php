@@ -25,7 +25,7 @@ namespace CommonBundle\Component\Validator;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class NotZero extends AbstractValidator
+class NotZero extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 

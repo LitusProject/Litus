@@ -20,15 +20,15 @@
 
 namespace ShiftBundle\Controller\Admin;
 
-use CalendarBundle\Entity\Node\Event,
-    CommonBundle\Component\Util\File\TmpFile,
-    DateInterval,
-    DateTime,
-    ShiftBundle\Component\Document\Generator\Event\Pdf as PdfGenerator,
-    ShiftBundle\Entity\Shift,
-    Zend\Http\Headers,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use CalendarBundle\Entity\Node\Event;
+use CommonBundle\Component\Util\File\TmpFile;
+use DateInterval;
+use DateTime;
+use ShiftBundle\Component\Document\Generator\Event\Pdf as PdfGenerator;
+use ShiftBundle\Entity\Shift;
+use Zend\Http\Headers;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * ShiftController
@@ -130,7 +130,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($shift = $this->getShiftEntity())) {
+        $shift = $this->getShiftEntity();
+        if ($shift === null) {
             return new ViewModel();
         }
 
@@ -187,7 +188,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     $mail->addBcc($responsible->getPerson()->getEmail(), $responsible->getPerson()->getFullName());
                 }
 
-                if ('development' != getenv('APPLICATION_ENV')) {
+                if (getenv('APPLICATION_ENV') != 'development') {
                     $this->getMailTransport()->send($mail);
                 }
 
@@ -220,7 +221,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($shift = $this->getShiftEntity())) {
+        $shift = $this->getShiftEntity();
+        if ($shift === null) {
             return new ViewModel();
         }
 
@@ -262,14 +264,13 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $mail->addBcc($responsible->getPerson()->getEmail(), $responsible->getPerson()->getFullName());
         }
 
-        if ('development' != getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);
         }
 
         $this->getEntityManager()->remove(
             $shift->prepareRemove()
         );
-
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -323,7 +324,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function pdfAction()
     {
-        if (!($event = $this->getEventEntity())) {
+        $event = $this->getEventEntity();
+        if ($event === null) {
             return new ViewModel();
         }
 
@@ -332,10 +334,12 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $document->generate();
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="shift_list.pdf"',
-            'Content-Type'        => 'application/pdf',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="shift_list.pdf"',
+                'Content-Type'        => 'application/pdf',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -426,7 +430,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param  string        $date
+     * @param  string $date
      * @return DateTime|null
      */
     private static function loadDate($date)

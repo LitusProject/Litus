@@ -25,13 +25,13 @@ namespace ApiBundle\Form\Admin\Key;
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Edit extends Add
+class Edit extends \ApiBundle\Form\Admin\Key\Add
 {
     public function init()
     {
         parent::init();
 
-        $this->remove('submit');
-        $this->addSubmit('Save', 'key_edit');
+        $this->remove('submit')
+            ->addSubmit('Save', 'key_edit');
     }
 }

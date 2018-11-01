@@ -20,16 +20,16 @@
 
 namespace FormBundle\Form\SpecifiedForm;
 
-use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
-    FormBundle\Component\Exception\UnsupportedTypeException,
-    FormBundle\Entity\Field\Checkbox as CheckboxFieldEntity,
-    FormBundle\Entity\Field\Dropdown as DropdownFieldEntity,
-    FormBundle\Entity\Field\File as FileFieldEntity,
-    FormBundle\Entity\Field\Text as StringFieldEntity,
-    FormBundle\Entity\Node\Entry as EntryEntity,
-    FormBundle\Entity\Node\Form\Form as FormEntity,
-    FormBundle\Entity\Node\GuestInfo as GuestInfoEntity;
+use CommonBundle\Entity\General\Language;
+use CommonBundle\Entity\User\Person;
+use FormBundle\Component\Exception\UnsupportedTypeException;
+use FormBundle\Entity\Field\Checkbox as CheckboxFieldEntity;
+use FormBundle\Entity\Field\Dropdown as DropdownFieldEntity;
+use FormBundle\Entity\Field\File as FileFieldEntity;
+use FormBundle\Entity\Field\Text as StringFieldEntity;
+use FormBundle\Entity\Node\Entry as EntryEntity;
+use FormBundle\Entity\Node\Form\Form as FormEntity;
+use FormBundle\Entity\Node\GuestInfo as GuestInfoEntity;
 
 /**
  * Specifield Form Add
@@ -77,56 +77,60 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             return;
         }
 
-        if (null === $this->person) {
-            $this->add(array(
-                'type'     => 'text',
-                'name'     => 'first_name',
-                'label'    => 'First Name',
-                'required' => true,
-                'value'    => $this->guestInfo ? $this->guestInfo->getFirstName() : '',
-                'options'  => array(
-                    'input' => array(
-                        'filter' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
-                ),
-            ));
-
-            $this->add(array(
-                'type'     => 'text',
-                'name'     => 'last_name',
-                'label'    => 'Last Name',
-                'required' => true,
-                'value'    => $this->guestInfo ? $this->guestInfo->getLastName() : '',
-                'options'  => array(
-                    'input' => array(
-                        'filter' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
-                ),
-            ));
-
-            $this->add(array(
-                'type'     => 'text',
-                'name'     => 'email',
-                'label'    => 'Email',
-                'required' => true,
-                'value'    => $this->guestInfo ? $this->guestInfo->getEmail() : '',
-                'options'  => array(
-                    'input' => array(
-                        'filter' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'EmailAddress',
+        if ($this->person === null) {
+            $this->add(
+                array(
+                    'type'     => 'text',
+                    'name'     => 'first_name',
+                    'label'    => 'First Name',
+                    'required' => true,
+                    'value'    => $this->guestInfo ? $this->guestInfo->getFirstName() : '',
+                    'options'  => array(
+                        'input' => array(
+                            'filter' => array(
+                                array('name' => 'StringTrim'),
                             ),
                         ),
                     ),
-                ),
-            ));
+                )
+            );
+
+            $this->add(
+                array(
+                    'type'     => 'text',
+                    'name'     => 'last_name',
+                    'label'    => 'Last Name',
+                    'required' => true,
+                    'value'    => $this->guestInfo ? $this->guestInfo->getLastName() : '',
+                    'options'  => array(
+                        'input' => array(
+                            'filter' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                )
+            );
+
+            $this->add(
+                array(
+                    'type'     => 'text',
+                    'name'     => 'email',
+                    'label'    => 'Email',
+                    'required' => true,
+                    'value'    => $this->guestInfo ? $this->guestInfo->getEmail() : '',
+                    'options'  => array(
+                        'input' => array(
+                            'filter' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array('name' => 'EmailAddress'),
+                            ),
+                        ),
+                    ),
+                )
+            );
         }
 
         $fields = $this->getEntityManager()
@@ -162,7 +166,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
                     $specification['options']['input']['validators'] = array(
                         array(
-                            'name'    => 'field_line_length',
+                            'name'    => 'FieldLineLength',
                             'options' => array(
                                 'chars_per_line' => $fieldSpecification->getLineLength(),
                                 'lines'          => $fieldSpecification->getLines(),
@@ -179,7 +183,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 $specification['type'] = 'file';
                 $specification['options']['input']['validators'] = array(
                     array(
-                        'name'    => 'filesize',
+                        'name'    => 'FileSize',
                         'options' => array(
                             'max' => $fieldSpecification->getMaxSize() . 'MB',
                         ),
@@ -189,7 +193,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 throw new UnsupportedTypeException('This field type is unknown!');
             }
 
-            if (null !== $fieldSpecification->getVisibilityDecissionField()) {
+            if ($fieldSpecification->getVisibilityDecissionField() !== null) {
                 $specification['attributes']['data-visible_if_element'] = $fieldSpecification->getVisibilityDecissionField()->getId();
                 $specification['attributes']['data-visible_if_value'] = $fieldSpecification->getVisibilityValue();
             }
@@ -202,7 +206,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->addSubmit($this->form->getSubmitText($this->language));
 
-        if (null !== $this->entry) {
+        if ($this->entry !== null) {
             $this->bind($this->entry);
 
             foreach ($this->entry->getFieldEntries() as $fieldEntry) {

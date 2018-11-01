@@ -20,10 +20,10 @@
 
 namespace BrBundle\Controller\Admin\Company;
 
-use BrBundle\Entity\Company,
-    BrBundle\Entity\Company\Logo,
-    Imagick,
-    Zend\View\Model\ViewModel;
+use BrBundle\Entity\Company;
+use BrBundle\Entity\Company\Logo;
+use Imagick;
+use Zend\View\Model\ViewModel;
 
 /**
  * LogoController
@@ -34,7 +34,8 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($company = $this->getCompanyEntity())) {
+        $company = $this->getCompanyEntity();
+        if ($company === null) {
             return new ViewModel();
         }
 
@@ -111,17 +112,20 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        if (!($company = $this->getCompanyEntity())) {
+        $company = $this->getCompanyEntity();
+        if ($company === null) {
             return new ViewModel();
         }
 
         $form = $this->getForm('br_company_logo_add', array('company' => $company));
 
         if ($this->getRequest()->isPost()) {
-            $form->setData(array_merge_recursive(
-                $this->getRequest()->getPost()->toArray(),
-                $this->getRequest()->getFiles()->toArray()
-            ));
+            $form->setData(
+                array_merge_recursive(
+                    $this->getRequest()->getPost()->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
 
             if ($form->isValid()) {
                 $formData = $form->getData();
@@ -164,7 +168,8 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($logo = $this->getLogoEntity())) {
+        $logo = $this->getLogoEntity();
+        if ($logo === null) {
             return new ViewModel();
         }
 

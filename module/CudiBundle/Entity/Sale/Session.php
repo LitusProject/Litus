@@ -20,13 +20,13 @@
 
 namespace CudiBundle\Entity\Sale;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\General\Bank\CashRegister,
-    CommonBundle\Entity\General\Organization,
-    CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\General\Bank\CashRegister;
+use CommonBundle\Entity\General\Organization;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Session")
@@ -89,7 +89,7 @@ class Session
     private $comment;
 
     /**
-     * @var ArrayCollection The restrictions of this sale session
+     * @var \Doctrine\Common\Collections\ArrayCollection The restrictions of this sale session
      *
      * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sale\Session\Restriction", mappedBy="session")
      */
@@ -132,6 +132,7 @@ class Session
 
         return $this;
     }
+
     /**
      * @return DateTime
      */
@@ -210,7 +211,7 @@ class Session
      */
     public function isOpen()
     {
-        if (null === $this->getCloseDate()) {
+        if ($this->getCloseDate() === null) {
             return true;
         }
 

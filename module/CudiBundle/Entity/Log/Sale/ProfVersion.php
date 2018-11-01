@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Entity\Log\Sale;
 
-use CommonBundle\Entity\User\Person,
-    CudiBundle\Entity\Sale\Article,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Person;
+use CudiBundle\Entity\Sale\Article;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Log\Sale\ProfVersion")

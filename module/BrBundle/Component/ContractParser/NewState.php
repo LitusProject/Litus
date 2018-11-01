@@ -23,10 +23,10 @@ namespace BrBundle\Component\ContractParser;
 /**
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
-class NewState extends EntryState
+class NewState extends \BrBundle\Component\ContractParser\EntryState
 {
     /**
-     * @param  string           $text
+     * @param  string $text
      * @return LastEntriesState
      */
     public function addEntry($text)
@@ -39,7 +39,7 @@ class NewState extends EntryState
     }
 
     /**
-     * @param  string        $text
+     * @param  string $text
      * @return LastTextState
      */
     public function addText($text)

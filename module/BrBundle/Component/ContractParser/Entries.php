@@ -23,7 +23,7 @@ namespace BrBundle\Component\ContractParser;
 /**
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
-class Entries extends EntryItem
+class Entries extends \BrBundle\Component\ContractParser\EntryItem
 {
     /**
      * @var Entry
@@ -40,7 +40,7 @@ class Entries extends EntryItem
      */
     public function __construct($text)
     {
-        $this->entries = [];
+        $this->entries = array();
         $this->lastEntry = new Entry($text);
         $this->entries[] = $this->lastEntry;
     }

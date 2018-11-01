@@ -20,8 +20,8 @@
 
 namespace PageBundle\Controller\Admin;
 
-use PageBundle\Entity\Category,
-    Zend\View\Model\ViewModel;
+use PageBundle\Entity\Category;
+use Zend\View\Model\ViewModel;
 
 /**
  * CategoryController
@@ -87,7 +87,8 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($category = $this->getCategoryEntity())) {
+        $category = $this->getCategoryEntity();
+        if ($category === null) {
             return new ViewModel();
         }
 
@@ -127,7 +128,8 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($category = $this->getCategoryEntity())) {
+        $category = $this->getCategoryEntity();
+        if ($category === null) {
             return new ViewModel();
         }
 

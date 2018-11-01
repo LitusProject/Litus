@@ -20,8 +20,8 @@
 
 namespace TicketBundle\Component\Validator;
 
-use CommonBundle\Component\Form\Form,
-    CommonBundle\Component\Validator\FormAwareInterface;
+use CommonBundle\Component\Form\Form;
+use CommonBundle\Component\Validator\FormAwareInterface;
 
 /**
  * Check whether number of member + number of non member does not exceed max
@@ -58,7 +58,7 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -118,18 +118,18 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
             $person = $this->options['person'];
         }
 
-        if (null === $person && !$this->form->get('is_guest')->getValue()) {
+        if ($person === null && !$this->form->get('is_guest')->getValue()) {
             $this->error(self::NOT_VALID);
 
             return false;
         }
 
-        if (null !== $person) {
+        if ($person !== null) {
             $tickets = $this->getEntityManager()
                 ->getRepository('TicketBundle\Entity\Ticket')
                 ->findAllByEventAndPerson($this->options['event'], $person);
 
-            if ($number + sizeof($tickets) > $this->options['event']->getLimitPerPerson() && $this->options['event']->getLimitPerPerson() != 0) {
+            if ($number + count($tickets) > $this->options['event']->getLimitPerPerson() && $this->options['event']->getLimitPerPerson() != 0) {
                 $this->error(self::EXCEEDS_MAX_PERSON);
 
                 return false;

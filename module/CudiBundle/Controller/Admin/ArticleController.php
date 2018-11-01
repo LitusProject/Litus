@@ -20,14 +20,14 @@
 
 namespace CudiBundle\Controller\Admin;
 
-use CudiBundle\Entity\Article\External,
-    CudiBundle\Entity\Article\History,
-    CudiBundle\Entity\Article\Internal,
-    CudiBundle\Entity\Article\SubjectMap,
-    CudiBundle\Entity\Comment\Mapping as CommentMapping,
-    CudiBundle\Entity\Log\Article\SubjectMap\Added as SubjectMapAddedLog,
-    Cudibundle\Entity\Article,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Article;
+use CudiBundle\Entity\Article\External;
+use CudiBundle\Entity\Article\History;
+use CudiBundle\Entity\Article\Internal;
+use CudiBundle\Entity\Article\SubjectMap;
+use CudiBundle\Entity\Comment\Mapping as CommentMapping;
+use CudiBundle\Entity\Log\Article\SubjectMap\Added as SubjectMapAddedLog;
+use Zend\View\Model\ViewModel;
 
 /**
  * ArticleController
@@ -40,7 +40,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $academicYear = $this->getAcademicYearEntity();
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $articles = $this->search();
         }
 
@@ -91,7 +91,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                         ->findOneByArticleAndSubjectAndAcademicYear($article, $subject, $academicYear);
 
-                    if (null === $mapping) {
+                    if ($mapping === null) {
                         $mapping = new SubjectMap($article, $subject, $academicYear, $formData['subject_form']['mandatory']);
                         $this->getEntityManager()->persist($mapping);
                         $this->getEntityManager()->persist(new SubjectMapAddedLog($this->getAuthentication()->getPersonObject(), $mapping));
@@ -131,7 +131,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($article = $this->getArticleEntity())) {
+        $article = $this->getArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -187,7 +188,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($article = $this->getArticleEntity())) {
+        $article = $this->getArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -203,7 +205,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function historyAction()
     {
-        if (!($article = $this->getArticleEntity())) {
+        $article = $this->getArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -221,9 +224,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function searchAction()
     {
-        $academicYear = $this->getAcademicYearEntity();
-
         $this->initAjax();
+
+        $academicYear = $this->getAcademicYearEntity();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -260,7 +263,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $academicYear = $this->getAcademicYearEntity();
 
-        if (!($article = $this->getArticleEntity())) {
+        $article = $this->getArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -313,7 +317,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function convertToExternalAction()
     {
-        if (!($previous = $this->getArticleEntity())) {
+        $previous = $this->getArticleEntity();
+        if ($previous === null) {
             return new ViewModel();
         }
 
@@ -396,7 +401,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function convertToInternalAction()
     {
-        if (!($previous = $this->getArticleEntity())) {
+        $previous = $this->getArticleEntity();
+        if ($previous === null) {
             return new ViewModel();
         }
 

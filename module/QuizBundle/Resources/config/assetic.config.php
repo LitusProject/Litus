@@ -18,6 +18,10 @@
  * @license http://litus.cc/LICENSE
  */
 
+namespace QuizBundle;
+
+use CommonBundle\Component\Assetic\Filter\Less as LessFilter;
+
 return array(
     'controllers' => array(
         'quiz_admin_quiz' => array(
@@ -57,7 +61,11 @@ return array(
             'assets' => array(
                 'quiz/less/base.less',
             ),
-            'filters' => array('less'),
+            'filters' => array(
+                '?LessFilter' => array(
+                    'name' => LessFilter::class,
+                ),
+            ),
             'options' => array(
                 'output' => 'quiz_css.css',
             ),

@@ -20,21 +20,31 @@
 
 namespace CommonBundle\Component\Hydrator;
 
-use DateTime,
-    RecursiveArrayIterator,
-    RecursiveIteratorIterator,
-    RuntimeException,
-    Zend\Stdlib\Hydrator\Filter\FilterComposite;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\AuthenticationTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\HydratorPluginManagerTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use CommonBundle\Component\Util\AcademicYear;
+use DateTime;
+use RecursiveArrayIterator;
+use RecursiveIteratorIterator;
+use RuntimeException;
+use Zend\Hydrator\Filter\FilterComposite;
+use Zend\Hydrator\HydratorInterface;
 
 /**
  * A common superclass for hydrators.
  *
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface
+abstract class Hydrator implements HydratorInterface, ServiceLocatorAwareInterface
 {
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait;
-    use \CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+    use ServiceLocatorAwareTrait;
+
+    use AuthenticationTrait;
+    use DoctrineTrait;
+    use HydratorPluginManagerTrait;
 
     /**
      * Flattens an array( of arrays)+? of strings into an array of strings
@@ -44,7 +54,7 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
      */
     private static function flatten(array $array = null)
     {
-        if (empty($array)) {
+        if (count($array) == 0) {
             return array();
         }
 
@@ -61,12 +71,12 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
 
     public function __construct()
     {
-        if (false === $this->entity) {
-            $entity = get_class($this);
+        if ($this->entity === false) {
+            $entity = static::class;
             $entity = explode('\\', $entity, 3);
 
-            if ('Hydrator' != $entity[1]) {
-                throw new RuntimeException('Class ' . get_class($this) . ' should be placed in namespace ' . $entity[0] . '\Hydrator');
+            if ($entity[1] != 'Hydrator') {
+                throw new RuntimeException('Class ' . static::class . ' should be placed in namespace ' . $entity[0] . '\Hydrator');
             }
             $entity[1] = 'Entity';
 
@@ -83,7 +93,7 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
     abstract protected function doExtract($object = null);
 
     /**
-     * @param  object|null                      $object The object to extract data from, or null
+     * @param  object|null $object The object to extract data from, or null
      * @return array                            The object's data, if any
      * @throws Exception\InvalidObjectException If the object is of the wrong class
      */
@@ -104,8 +114,8 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
     abstract protected function doHydrate(array $array, $object = null);
 
     /**
-     * @param  array                            $array  The data, if any
-     * @param  object|null                      $object The object to hydrate, or null
+     * @param  array       $array  The data, if any
+     * @param  object|null $object The object to hydrate, or null
      * @return object                           The hydrated object or a new instance if $object is null
      * @throws Exception\InvalidObjectException If the object is of the wrong class
      * @throws \InvalidArgumentException        If the array contains illegal data
@@ -124,7 +134,7 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
      */
     private function checkType($object = null, $method = '')
     {
-        if (null !== $object && null !== $this->entity) {
+        if ($object !== null && $this->entity !== null) {
             if (!($object instanceof $this->entity)) {
                 throw new Exception\InvalidObjectException(
                     sprintf(
@@ -151,10 +161,10 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
     {
         $keys = self::flatten($keys);
 
-        /** @var \Zend\Stdlib\Hydrator\ClassMethods $hydrator */
+        /** @var \Zend\Hydrator\ClassMethods $hydrator */
         $hydrator = $this->getHydrator('classmethods');
 
-        if (empty($keys)) {
+        if (count($keys) == 0) {
             return $hydrator->hydrate($data, $object);
         }
 
@@ -170,62 +180,68 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
      */
     protected function stdExtract($object = null, array $keys = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
         static $originalHydrator = null;
 
-        if (null === $originalHydrator) {
+        if ($originalHydrator === null) {
             $originalHydrator = $this->getHydrator('classmethods');
             $originalHydrator->setNamingStrategy(new NamingStrategy\RemoveIs());
         }
 
         $keys = self::flatten($keys);
 
-        /** @var \Zend\Stdlib\Hydrator\ClassMethods $hydrator */
+        /** @var \Zend\Hydrator\ClassMethods $hydrator */
         $hydrator = clone $originalHydrator;
-        if (!empty($keys)) {
-            $hydrator->addFilter('keys', function ($property) use ($hydrator, $keys, $object) {
-                $method = explode('::', $property)[1];
+        if (count($keys) > 0) {
+            $hydrator->addFilter(
+                'keys',
+                function ($property) use ($hydrator, $keys, $object) {
+                    $method = explode('::', $property)[1];
 
-                $attribute = $method;
-                if (preg_match('/^get/', $method)) {
-                    $attribute = substr($method, 3);
-                    if (!property_exists($object, $attribute)) {
-                        $attribute = lcfirst($attribute);
+                    $attribute = $method;
+                    if (preg_match('/^get/', $method)) {
+                        $attribute = substr($method, 3);
+                        if (!property_exists($object, $attribute)) {
+                            $attribute = lcfirst($attribute);
+                        }
                     }
-                }
 
-                $attribute = $hydrator->extractName($attribute, $object);
+                    $attribute = $hydrator->extractName($attribute, $object);
 
-                return in_array($attribute, $keys);
-            }, FilterComposite::CONDITION_AND);
+                    return in_array($attribute, $keys);
+                },
+                FilterComposite::CONDITION_AND
+            );
         }
 
         return $hydrator->extract($object);
     }
 
     /**
-     * @param  string                                  $name
-     * @return \Zend\Stdlib\Hydrator\HydratorInterface
+     * Get the current academic year.
+     *
+     * @param  boolean $organization
+     * @return AcademicYear
      */
-    public function getHydrator($name)
+    public function getCurrentAcademicYear($organization = false)
     {
-        return $this->getServiceLocator()
-            ->get('litus.hydratormanager')
-            ->get($name);
+        if ($organization) {
+            return AcademicYear::getOrganizationYear($this->getEntityManager());
+        }
+
+        return AcademicYear::getUniversityYear($this->getEntityManager());
     }
 
     /**
-     * We want an easy method to retrieve the Authentication from
-     * the DI container.
-     *
-     * @return \CommonBundle\Component\Authentication\Authentication
+     * @param  string $name
+     * @return HydratorInterface
      */
-    public function getAuthentication()
+    public function getHydrator($name)
     {
-        return $this->getServiceLocator()->get('authentication');
+        return $this->getHydratorPluginManager()->get($name);
     }
 
     /**
@@ -240,7 +256,7 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
 
     /**
      * Loads the given date, ignoring the time.
-     * @param  string        $date
+     * @param  string $date
      * @return DateTime|null
      */
     protected static function loadDate($date)
@@ -250,7 +266,7 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
 
     /**
      * Loads the given date and time.
-     * @param  string        $date
+     * @param  string $date
      * @return DateTime|null
      */
     protected static function loadDateTime($date)
@@ -260,7 +276,7 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
 
     /**
      * Loads the given time, ignoring the date.
-     * @param  string        $date
+     * @param  string $date
      * @return DateTime|null
      */
     protected static function loadTime($date)

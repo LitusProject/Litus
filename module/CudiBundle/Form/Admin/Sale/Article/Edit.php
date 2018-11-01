@@ -20,21 +20,15 @@
 
 namespace CudiBundle\Form\Admin\Sale\Article;
 
-use LogicException;
-
 /**
  * Edit Sale Article
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends Add
+class Edit extends \CudiBundle\Form\Admin\Sale\Article\Add
 {
     public function init()
     {
-        if (null === $this->article) {
-            throw new LogicException('Cannot edit a null sale article.');
-        }
-
         parent::init();
 
         $this->remove('submit')

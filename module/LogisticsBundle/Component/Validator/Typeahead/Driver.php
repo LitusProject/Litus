@@ -58,7 +58,7 @@ class Driver extends \CommonBundle\Component\Validator\Typeahead\Person
             ->getRepository('LogisticsBundle\Entity\Driver')
             ->findOneById($person->getId());
 
-        if (null !== $driver) {
+        if ($driver !== null) {
             $this->error(self::DRIVER_EXISTS);
 
             return false;

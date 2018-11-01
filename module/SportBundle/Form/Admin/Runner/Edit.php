@@ -34,22 +34,24 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'runner_identification',
-            'label'      => 'Runner Identification',
-            'attributes' => array(
-                'autocomplete' => 'off',
-            ),
-            'options' => array(
-                'input' => array(
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'runner_identification',
+                'label'      => 'Runner Identification',
+                'attributes' => array(
+                    'autocomplete' => 'off',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Save', 'edit');
     }

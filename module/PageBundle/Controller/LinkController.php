@@ -20,8 +20,8 @@
 
 namespace PageBundle\Controller;
 
-use PageBundle\Entity\Link,
-    Zend\View\Model\ViewModel;
+use PageBundle\Entity\Link;
+use Zend\View\Model\ViewModel;
 
 /**
  * LinkController
@@ -33,7 +33,8 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
 {
     public function viewAction()
     {
-        if (!($link = $this->getLinkEntity())) {
+        $link = $this->getLinkEntity();
+        if ($link === null) {
             return $this->notFoundAction();
         }
 

@@ -32,16 +32,11 @@ class Message extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected $entity = 'MailBundle\Document\Message';
 
-    /**
-     * @static @var string[] Key attributes to hydrate using the standard method.
-     */
     private static $stdKeys = array('subject', 'body');
 
     protected function doHydrate(array $data, $object = null)
     {
-        // SlugDocument requires the Person that created it, so
-        // we cannot create an object here.
-        if (null === $object) {
+        if ($object === null) {
             throw new InvalidObjectException();
         }
 
@@ -50,12 +45,10 @@ class Message extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$stdKeys);
-
-        return $data;
+        return $this->stdExtract($object, self::$stdKeys);
     }
 }

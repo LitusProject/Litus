@@ -36,91 +36,99 @@ class Doodle extends \FormBundle\Form\SpecifiedForm\Doodle
         $this->remove('email');
         $this->remove('save_as_draft');
 
-        $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'is_guest',
-            'label'      => 'Is Guest',
-            'attributes' => array(
-                'id' => 'is_guest',
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'checkbox',
+                'name'       => 'is_guest',
+                'label'      => 'Is Guest',
+                'attributes' => array(
+                    'id' => 'is_guest',
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'fieldset',
-            'name'     => 'person_form',
-            'label'    => 'Person',
-            'elements' => array(
-                array(
-                    'type'     => 'typeahead',
-                    'name'     => 'person',
-                    'label'    => 'Person',
-                    'required' => true,
-                    'options'  => array(
-                        'input' => array(
-                            'validators' => array(
-                                array('name' => 'typeahead_person'),
+        $this->add(
+            array(
+                'type'     => 'fieldset',
+                'name'     => 'person_form',
+                'label'    => 'Person',
+                'elements' => array(
+                    array(
+                        'type'     => 'typeahead',
+                        'name'     => 'person',
+                        'label'    => 'Person',
+                        'required' => true,
+                        'options'  => array(
+                            'input' => array(
+                                'validators' => array(
+                                    array('name' => 'TypeaheadPerson'),
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'fieldset',
-            'name'     => 'guest_form',
-            'label'    => 'Guest',
-            'elements' => array(
-                array(
-                    'type'     => 'text',
-                    'name'     => 'first_name',
-                    'label'    => 'First Name',
-                    'required' => true,
-                    'options'  => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'     => 'fieldset',
+                'name'     => 'guest_form',
+                'label'    => 'Guest',
+                'elements' => array(
+                    array(
+                        'type'     => 'text',
+                        'name'     => 'first_name',
+                        'label'    => 'First Name',
+                        'required' => true,
+                        'options'  => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'     => 'text',
+                        'name'     => 'last_name',
+                        'label'    => 'Last Name',
+                        'required' => true,
+                        'options'  => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'     => 'text',
+                        'name'     => 'email',
+                        'label'    => 'Email',
+                        'required' => true,
+                        'options'  => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array('name' => 'EmailAddress'),
+                                ),
                             ),
                         ),
                     ),
                 ),
-                array(
-                    'type'     => 'text',
-                    'name'     => 'last_name',
-                    'label'    => 'Last Name',
-                    'required' => true,
-                    'options'  => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                        ),
-                    ),
-                ),
-                array(
-                    'type'     => 'text',
-                    'name'     => 'email',
-                    'label'    => 'Email',
-                    'required' => true,
-                    'options'  => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array('name' => 'EmailAddress'),
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'  => 'fieldset',
-            'name'  => 'fields_form',
-            'label' => 'Form',
-        ));
+        $this->add(
+            array(
+                'type'  => 'fieldset',
+                'name'  => 'fields_form',
+                'label' => 'Form',
+            )
+        );
 
         $fieldsForm = $this->get('fields_form');
 

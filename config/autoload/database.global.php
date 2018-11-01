@@ -19,7 +19,7 @@
  */
 
 if (!file_exists(__DIR__ . '/../database.config.php')) {
-    throw new RuntimeException(
+    throw new \RuntimeException(
         'The database configuration file (' . (__DIR__ . '/../database.config.php') . ') was not found'
     );
 }
@@ -40,7 +40,7 @@ return array(
                     $memcached = new \Memcached();
 
                     if (!$memcached->addServer('localhost', 11211)) {
-                        throw now \RuntimeException('Failed to connect to the memcached server');
+                        throw new \RuntimeException('Failed to connect to the memcached server');
                     }
 
                     $cache->setMemcached($memcached);

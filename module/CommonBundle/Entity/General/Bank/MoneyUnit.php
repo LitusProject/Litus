@@ -31,7 +31,7 @@ use Doctrine\ORM\Mapping as ORM;
 class MoneyUnit
 {
     /**
-     * @var int The unit's ID
+     * @var integer The unit's ID
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -40,7 +40,7 @@ class MoneyUnit
     private $id;
 
     /**
-     * @var int The unit's size
+     * @var integer The unit's size
      *
      * @ORM\Column(type="integer")
      */
@@ -55,7 +55,7 @@ class MoneyUnit
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -63,7 +63,7 @@ class MoneyUnit
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getUnit()
     {

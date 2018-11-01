@@ -20,15 +20,14 @@
 
 namespace SecretaryBundle\Controller;
 
-use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
-    CommonBundle\Component\Authentication\Authentication,
-    CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
-    CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
-    SecretaryBundle\Entity\Organization\MetaData,
-    SecretaryBundle\Entity\Registration,
-    Zend\Mvc\MvcEvent,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter;
+use CommonBundle\Component\Authentication\Authentication;
+use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException;
+use CommonBundle\Entity\User\Person\Academic;
+use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
+use SecretaryBundle\Entity\Registration;
+use Zend\Mvc\MvcEvent;
+use Zend\View\Model\ViewModel;
 
 /**
  * RegistrationController
@@ -40,7 +39,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
     /**
      * Execute the request.
      *
-     * @param  MvcEvent                                                          $e The MVC event
+     * @param  MvcEvent $e The MVC event
      * @return array
      * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
      */
@@ -70,8 +69,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             );
         }
 
-        if (null !== $this->getParam('identification')) {
-            if ('u' == substr($this->getParam('identification'), 0, 1)) {
+        if ($this->getParam('identification') !== null) {
+            if (substr($this->getParam('identification'), 0, 1) == 'u') {
                 $this->flashMessenger()->warn(
                     'WARNING',
                     'As a professor, you do not have to register. An account has already been created automatically for you.'
@@ -91,7 +90,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findOneByUniversityIdentification($this->getParam('identification'));
 
-            if (null !== $academic && null !== $academic->getOrganizationStatus($this->getCurrentAcademicYear())) {
+            if ($academic !== null && $academic->getOrganizationStatus($this->getCurrentAcademicYear()) !== null) {
                 $this->flashMessenger()->warn(
                     'WARNING',
                     'You have already registered for this academic year.'
@@ -107,7 +106,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         $this->getAuthenticationService()
                     );
                     $authentication->authenticate(
-                        $this->getParam('identification'), '', true
+                        $this->getParam('identification'),
+                        '',
+                        true
                     );
                 }
 
@@ -134,7 +135,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
         $termsAndConditions = $this->getTermsAndConditions();
 
-        if (null !== $academic) {
+        if ($academic !== null) {
             $this->authenticate();
 
             $this->redirect()->toRoute(
@@ -175,10 +176,13 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
                     ->findLastByUniversityIdentification($this->getParam('identification'));
 
-                $form = $this->getForm('secretary_registration_add', array(
-                    'identification' => $this->getParam('identification'),
-                    'extra_info'     => null !== $code ? unserialize($code->getInfo()) : array(),
-                ));
+                $form = $this->getForm(
+                    'secretary_registration_add',
+                    array(
+                        'identification' => $this->getParam('identification'),
+                        'extra_info'     => $code !== null ? unserialize($code->getInfo()) : array(),
+                    )
+                );
 
                 $formData = $this->getRequest()->getPost()->toArray();
                 $formData['academic']['university_identification'] = $this->getParam('identification');
@@ -186,7 +190,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 $form->setData($formData);
 
                 if (isset($formData['organization_info']['organization'])) {
-                    if (0 == $formData['organization_info']['organization'] && $enableOtherOrganization) {
+                    if ($formData['organization_info']['organization'] == 0 && $enableOtherOrganization) {
                         $selectedOrganization = null;
                     } else {
                         $selectedOrganization = $this->getEntityManager()
@@ -261,13 +265,15 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         $this->getAuthenticationService()
                     );
 
-                    if (null !== $code) {
+                    if ($code !== null) {
                         $this->getEntityManager()->remove($code);
                     }
                     $this->getEntityManager()->flush();
 
                     $authentication->authenticate(
-                        $this->getParam('identification'), '', true
+                        $this->getParam('identification'),
+                        '',
+                        true
                     );
 
                     if ($isicRedirect) {
@@ -317,10 +323,13 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
                     ->findLastByUniversityIdentification($this->getParam('identification'));
 
-                $form = $this->getForm('secretary_registration_add', array(
-                    'identification' => $this->getParam('identification'),
-                    'extra_info'     => null !== $code ? unserialize($code->getInfo()) : array(),
-                ));
+                $form = $this->getForm(
+                    'secretary_registration_add',
+                    array(
+                        'identification' => $this->getParam('identification'),
+                        'extra_info'     => $code !== null ? unserialize($code->getInfo()) : array(),
+                    )
+                );
 
                 return new ViewModel(
                     array(
@@ -345,7 +354,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
     public function editAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             $this->redirect()->toRoute(
                 'secretary_registration',
                 array(
@@ -378,7 +388,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
         $termsAndConditions = $this->getTermsAndConditions();
 
-        if (null !== $metaData) {
+        if ($metaData !== null) {
             $form = $this->getForm('secretary_registration_edit', array('meta_data' => $metaData));
         } else {
             $form = $this->getForm('secretary_registration_edit', array('academic' => $academic));
@@ -395,9 +405,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getConfigValue('secretary.isic_membership') == 1;
         $isicRedirect = false;
         $isicOrder = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\IsicCard')
-                        ->findByPersonAndYearQuery($academic, $this->getCurrentAcademicYear())
-                        ->getResult();
+            ->getRepository('CudiBundle\Entity\IsicCard')
+            ->findByPersonAndYearQuery($academic, $this->getCurrentAcademicYear())
+            ->getResult();
 
         $membershipArticles = array();
         foreach ($ids as $organization => $id) {
@@ -413,16 +423,14 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             if ($metaData && $metaData->becomeMember()) {
                 $formData['organization_info']['become_member'] = true;
             } else {
-                $formData['organization_info']['become_member'] = isset($formData['organization_info']['become_member'])
-                    ? $formData['organization_info']['become_member']
-                    : 0;
+                $formData['organization_info']['become_member'] = $formData['organization_info']['become_member'] ?? 0;
             }
             $formData['organization_info']['conditions'] = true;
 
             $organizationData = $formData['organization_info'];
 
             if (isset($organizationData['organization'])) {
-                if (0 == $organizationData['organization'] && $enableOtherOrganization) {
+                if ($organizationData['organization'] == 0 && $enableOtherOrganization) {
                     $selectedOrganization = null;
                 } else {
                     $selectedOrganization = $this->getEntityManager()
@@ -440,10 +448,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getData();
-                $organizationData = $formData['organization_info'];
-
-                if (null === $metaData) {
+                if ($metaData === null) {
                     $metaData = $form->hydrateObject();
 
                     $this->getEntityManager()->persist($metaData);
@@ -459,7 +464,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     );
                 }
 
-                if (null !== $selectedOrganization) {
+                if ($selectedOrganization !== null) {
                     $this->setOrganization(
                         $academic,
                         $this->getCurrentAcademicYear(),
@@ -481,7 +486,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             ->findOneById($articleId);
                     }
 
-                    if ($metaData->becomeMember() && null !== $selectedOrganization) {
+                    if ($metaData->becomeMember() && $selectedOrganization !== null) {
                         if ($isicMembership && $isicOrder == null) {
                             $isicRedirect = true;
                         } else {
@@ -497,7 +502,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                                     $this->getCurrentAcademicYear()
                                 );
 
-                            if (null !== $booking && $isicOrder->getBooking() !== $booking) {
+                            if ($booking !== null && $isicOrder->getBooking() !== $booking) {
                                 $this->getEntityManager()->remove($booking);
                             }
                         }
@@ -513,7 +518,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     ->getRepository('SecretaryBundle\Entity\Registration')
                     ->findOneByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
-                if (null === $registration) {
+                if ($registration === null) {
                     $registration = new Registration(
                         $academic,
                         $this->getCurrentAcademicYear()
@@ -580,7 +585,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
     public function studiesAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             $this->redirect()->toRoute(
                 'secretary_registration',
                 array(
@@ -601,7 +607,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
     {
         $this->initAjax();
 
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -618,7 +625,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
     public function subjectsAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             $this->redirect()->toRoute(
                 'secretary_registration',
                 array(
@@ -643,7 +651,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
     {
         $this->initAjax();
 
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -660,7 +669,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
     public function completeAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             $this->redirect()->toRoute(
                 'secretary_registration',
                 array(
@@ -736,7 +746,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
             ->findLastByUniversityIdentification($this->getParam('identification'));
 
-        return (null !== $code || 'development' == getenv('APPLICATION_ENV'));
+        return $code !== null || getenv('APPLICATION_ENV') == 'development';
     }
 
     /**
@@ -748,10 +758,10 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_url');
 
-        if (false !== @unserialize($shibbolethUrl)) {
+        if (@unserialize($shibbolethUrl) !== false) {
             $shibbolethUrl = unserialize($shibbolethUrl);
 
-            if (false === getenv('SERVED_BY')) {
+            if (getenv('SERVED_BY') === false) {
                 throw new ShibbolethUrlException('The SERVED_BY environment variable does not exist');
             }
             if (!isset($shibbolethUrl[getenv('SERVED_BY')])) {
@@ -782,12 +792,14 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
             ->findLastByUniversityIdentification($this->getParam('identification'));
 
-        if (null !== $code) {
+        if ($code !== null) {
             $this->getEntityManager()->remove($code);
             $this->getEntityManager()->flush();
 
             $authentication->authenticate(
-                $this->getParam('identification'), '', true
+                $this->getParam('identification'),
+                '',
+                true
             );
         }
     }

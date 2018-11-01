@@ -33,44 +33,45 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'name',
-            'label'    => 'Name',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'validators' => array(),
-                ),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'name',
+                'label'    => 'Name',
+                'required' => true,
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'sell_price',
-            'label'    => 'Sell Price',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'price'),
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'sell_price',
+                'label'    => 'Sell Price',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Price'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'available',
-            'label'      => 'Available',
-            'attributes' => array(
-                'data-help' => 'Enabling this option will allow clients to reserve this article.',
-                'value'     => true,
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'checkbox',
+                'name'       => 'available',
+                'label'      => 'Available',
+                'attributes' => array(
+                    'data-help' => 'Enabling this option will allow clients to reserve this article.',
+                    'value'     => true,
+                ),
+            )
+        );
 
         $this->addSubmit('Add', 'add');
     }

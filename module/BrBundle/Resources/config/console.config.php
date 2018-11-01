@@ -19,5 +19,5 @@
  */
 
 return array(
-    'install.br' => 'BrBundle\Command\Install',
+    'install_br' => 'BrBundle\Command\Install',
 );

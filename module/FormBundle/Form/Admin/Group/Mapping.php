@@ -31,15 +31,17 @@ class Mapping extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'form',
-            'label'      => 'Form',
-            'required'   => true,
-            'attributes' => array(
-                'options' => $this->getActiveForms(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'form',
+                'label'      => 'Form',
+                'required'   => true,
+                'attributes' => array(
+                    'options' => $this->getActiveForms(),
+                ),
+            )
+        );
 
         $this->addSubmit('Add', 'form_add');
     }
@@ -60,7 +62,7 @@ class Mapping extends \CommonBundle\Component\Form\Admin\Form
                 ->getRepository('FormBundle\Entity\Node\Group\Mapping')
                 ->findOneByForm($form);
 
-            if (null == $group) {
+            if ($group == null) {
                 $options[$form->getId()] = $form->getTitle($language);
             }
         }

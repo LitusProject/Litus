@@ -21,11 +21,11 @@
 namespace CommonBundle\Component\Form\Bootstrap\Element;
 
 /**
- * A date picker element
+ * Date form element
  *
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class Date extends Text
+class Date extends \CommonBundle\Component\Form\Bootstrap\Element\Text
 {
     public function init()
     {

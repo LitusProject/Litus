@@ -35,45 +35,17 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
 
         list($cities, $streets) = $this->getCities();
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'city',
-            'label'      => 'City',
-            'attributes' => array(
-                'options' => $cities,
-                'class'   => 'city',
-            ),
-            'options' => array(
-                'input' => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name'    => 'notEmpty',
-                            'options' => array(
-                                'zero', 'string',
-                            ),
-                        ),
-                    ),
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'city',
+                'label'      => 'City',
+                'attributes' => array(
+                    'options' => $cities,
+                    'class'   => 'city',
                 ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'       => 'fieldset',
-            'name'       => 'other',
-            'attributes' => array(
-                'class' => 'other',
-            ),
-            'elements' => array(
-                array(
-                    'type'    => 'text',
-                    'name'    => 'postal',
-                    'label'   => 'Postal Code',
-                    'options' => array(
+                'options' => array(
+                    'input' => array(
                         'input' => array(
                             'filters' => array(
                                 array('name' => 'StringTrim'),
@@ -81,44 +53,76 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
                         ),
                         'validators' => array(
                             array(
-                                'name'    => 'alnum',
+                                'name'    => 'NotEmpty',
                                 'options' => array(
-                                    'allowWhiteSpace' => true,
+                                    'zero', 'string',
                                 ),
                             ),
                         ),
                     ),
                 ),
-                array(
-                    'type'     => 'text',
-                    'name'     => 'city',
-                    'label'    => 'City',
-                    'required' => true,
-                    'options'  => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                        ),
-                    ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'fieldset',
+                'name'       => 'other',
+                'attributes' => array(
+                    'class' => 'other',
                 ),
-                array(
-                    'type'    => 'text',
-                    'name'    => 'street',
-                    'label'   => 'Street',
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
+                'elements' => array(
+                    array(
+                        'type'    => 'text',
+                        'name'    => 'postal',
+                        'label'   => 'Postal Code',
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
                             ),
                             'validators' => array(
-                                array('name' => 'notEmpty'),
+                                array(
+                                    'name'    => 'Alnum',
+                                    'options' => array(
+                                        'allowWhiteSpace' => true,
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'     => 'text',
+                        'name'     => 'city',
+                        'label'    => 'City',
+                        'required' => true,
+                        'options'  => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'    => 'text',
+                        'name'    => 'street',
+                        'label'   => 'Street',
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array('name' => 'NotEmpty'),
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $streetSelects = array();
 
@@ -138,7 +142,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
                         ),
                         'validators' => array(
                             array(
-                                'name'    => 'notEmpty',
+                                'name'    => 'NotEmpty',
                                 'options' => array(
                                     'zero', 'string',
                                 ),
@@ -149,52 +153,58 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
             );
         }
 
-        $this->add(array(
-            'type'     => 'fieldset',
-            'name'     => 'street',
-            'elements' => $streetSelects,
-        ));
+        $this->add(
+            array(
+                'type'     => 'fieldset',
+                'name'     => 'street',
+                'elements' => $streetSelects,
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'number',
-            'label'      => 'Number',
-            'attributes' => array(
-                'class' => 'number',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name'    => 'alnum',
-                            'options' => array(
-                                'allowWhiteSpace' => true,
-                            ),
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'number',
+                'label'      => 'Number',
+                'attributes' => array(
+                    'class' => 'number',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
                         ),
-                        array('name' => 'not_zero'),
+                        'validators' => array(
+                            array(
+                                'name'    => 'Alnum',
+                                'options' => array(
+                                    'allowWhiteSpace' => true,
+                                ),
+                            ),
+                            array('name' => 'NotZero'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'mailbox',
-            'label'      => 'Mailbox',
-            'attributes' => array(
-                'class' => 'mailbox',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'mailbox',
+                'label'      => 'Mailbox',
+                'attributes' => array(
+                    'class' => 'mailbox',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
     }
 
     public function setRequired($required = true)
@@ -224,8 +234,9 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
 
     private function getCities()
     {
-        if (null !== $this->getCache()) {
-            if (null !== ($result = $this->getCache()->getItem('Litus_CommonBundle_Entity_General_Address_Cities_Streets'))) {
+        if ($this->getCache() !== null) {
+            $result = $this->getCache()->getItem('Litus_CommonBundle_Streets');
+            if ($result !== null) {
                 return $result;
             }
         }
@@ -247,9 +258,9 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
 
         $optionsCity['other'] = 'Other';
 
-        if (null !== $this->getCache()) {
+        if ($this->getCache() !== null) {
             $this->getCache()->setItem(
-                'Litus_CommonBundle_Entity_General_Address_Cities_Streets',
+                'Litus_CommonBundle_Streets',
                 array(
                     $optionsCity,
                     $optionsStreet,
@@ -264,7 +275,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
     {
         $specs = parent::getInputFilterSpecification();
 
-        if ('' === $this->get('city')->getValue() && !$this->isRequired()) {
+        if ($this->get('city')->getValue() === '' && !$this->isRequired()) {
             // empty form
             return array();
         }
@@ -273,10 +284,11 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
             unset($specs['other']);
 
             if (is_array($specs['street'])) {
-                foreach ($specs['street'] as $city => $streetSpecification) {
-                    if ('type' == $city) {
+                foreach (array_keys($specs['street']) as $city) {
+                    if ($city == 'type') {
                         continue;
                     }
+
                     $specs['street'][$city]['required'] = $this->isRequired() && ($city == 'street_' . $this->get('city')->getValue());
                 }
             }

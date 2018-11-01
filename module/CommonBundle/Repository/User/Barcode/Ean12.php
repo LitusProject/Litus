@@ -20,8 +20,6 @@
 
 namespace CommonBundle\Repository\User\Barcode;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository;
-
 /**
  * Ean12
  *
@@ -31,7 +29,7 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 class Ean12 extends \CommonBundle\Repository\User\Barcode
 {
     /**
-     * @param  string|int                                   $barcode
+     * @param  string|integer $barcode
      * @return \CommonBundle\Entity\User\Barcode\Ean12|null
      */
     public function findOneByBarcode($barcode)
@@ -48,7 +46,7 @@ class Ean12 extends \CommonBundle\Repository\User\Barcode
         }
 
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('b')
+        return $query->select('b')
             ->from('CommonBundle\Entity\User\Barcode\Ean12', 'b')
             ->where(
                 $query->expr()->eq('b.barcode', ':barcode')
@@ -57,7 +55,5 @@ class Ean12 extends \CommonBundle\Repository\User\Barcode
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
-
-        return $resultSet;
     }
 }

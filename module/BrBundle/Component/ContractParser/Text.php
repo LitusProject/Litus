@@ -23,7 +23,7 @@ namespace BrBundle\Component\ContractParser;
 /**
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
-class Text extends EntryItem
+class Text extends \BrBundle\Component\ContractParser\EntryItem
 {
     /**
      * @var string

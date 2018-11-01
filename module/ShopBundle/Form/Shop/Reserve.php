@@ -20,8 +20,6 @@
 
 namespace ShopBundle\Form\Shop;
 
-use Zend\Form\Element;
-
 /**
  * Reserve
  *
@@ -41,27 +39,34 @@ class Reserve extends \CommonBundle\Component\Form\Admin\Form
 
         foreach ($this->stockEntries as $stockEntry) {
             $product = $stockEntry->getProduct();
-            $availability = max(0, $this->getEntityManager()
-                ->getRepository('ShopBundle\Entity\Product\SessionStockEntry')
-                ->getRealAvailability($product, $this->salesSession));
-            $this->add(array(
-                'type'       => 'number',
-                'name'       => 'product-' . $product->getId(),
-                'label'      => $product->getName() . ' (&euro; ' . sprintf('%0.2f', $product->getSellPrice()) . ')',
-                'attributes' => array(
-                    'value' => '0',
-                    'min'   => '0',
-                    'max'   => $availability,
-                    'class' => 'product-amount form-control',
-                ),
-            ));
+
+            $availability = max(
+                0,
+                $this->getEntityManager()
+                    ->getRepository('ShopBundle\Entity\Product\SessionStockEntry')
+                    ->getRealAvailability($product, $this->salesSession)
+            );
+
+            $this->add(
+                array(
+                    'type'       => 'number',
+                    'name'       => 'product-' . $product->getId(),
+                    'label'      => $product->getName() . ' (&euro; ' . sprintf('%0.2f', $product->getSellPrice()) . ')',
+                    'attributes' => array(
+                        'value' => '0',
+                        'min'   => '0',
+                        'max'   => $availability,
+                        'class' => 'product-amount form-control',
+                    ),
+                )
+            );
         }
 
         $this->addSubmit('Reserve', 'submit');
     }
 
     /**
-     * @param SessionStockEntry[] $stockEntries
+     * @param array $stockEntries
      */
     public function setStockEntries($stockEntries)
     {
@@ -69,7 +74,7 @@ class Reserve extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-     * @param SalesSession $salesSession
+     * @param \ShopBundle\Entity\SalesSession $salesSession
      */
     public function setSalesSession($salesSession)
     {

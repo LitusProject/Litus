@@ -31,7 +31,7 @@ class Booking extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        $object = new BookingEntity(
+        return new BookingEntity(
             $this->getEntityManager(),
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
@@ -43,7 +43,5 @@ class Booking extends \CommonBundle\Component\Hydrator\Hydrator
             $data['amount'],
             true
         );
-
-        return $object;
     }
 }

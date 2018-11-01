@@ -37,7 +37,7 @@ class Academic extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $academic = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findOneById($data['person']['id']);
@@ -50,7 +50,7 @@ class Academic extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 

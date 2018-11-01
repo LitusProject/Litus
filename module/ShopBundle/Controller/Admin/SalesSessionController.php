@@ -20,10 +20,9 @@
 
 namespace ShopBundle\Controller\Admin;
 
-use DateTime,
-    ShopBundle\Entity\Product\SessionStockEntry,
-    ShopBundle\Entity\SalesSession,
-    Zend\View\Model\ViewModel;
+use ShopBundle\Entity\Product\SessionStockEntry;
+use ShopBundle\Entity\SalesSession;
+use Zend\View\Model\ViewModel;
 
 /**
  * SalesSessionController
@@ -66,33 +65,16 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
-    /**
-     * @return Product[]
-     */
-    protected function getAvailableProducts()
-    {
-        return $this->getEntityManager()
-            ->getRepository('ShopBundle\Entity\Product')
-            ->findAllAvailable();
-    }
-
-    /**
-     * @return Product[]
-     */
-    protected function getAvailableAndStockAndReservationProducts($salesSession)
-    {
-        return $this->getEntityManager()
-            ->getRepository('ShopBundle\Entity\Product')
-            ->findAvailableAndStockAndReservation($salesSession);
-    }
-
     public function addAction()
     {
         $products = $this->getAvailableProducts();
-        $form = $this->getForm('shop_salesSession_add',
+
+        $form = $this->getForm(
+            'shop_salesSession_add',
             array(
                 'products' => $products,
-            ));
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -140,15 +122,19 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
 
     public function editAction()
     {
-        if (!($salesSession = $this->getSalesSessionEntity())) {
+        $salesSession = $this->getSalesSessionEntity();
+        if ($salesSession === null) {
             return new ViewModel();
         }
+
         $products = $this->getAvailableAndStockAndReservationProducts($salesSession);
-        $form = $this->getForm('shop_salesSession_edit',
+        $form = $this->getForm(
+            'shop_salesSession_edit',
             array(
                 'salesSession' => $salesSession,
                 'products'     => $products,
-            ));
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -211,11 +197,13 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
     public function deleteAction()
     {
         $this->initAjax();
-        if (!($salesSession = $this->getSalesSessionEntity())) {
+
+        $salesSession = $this->getSalesSessionEntity();
+        if ($salesSession === null) {
             return new ViewModel();
         }
-        $this->getEntityManager()->remove($salesSession);
 
+        $this->getEntityManager()->remove($salesSession);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -258,6 +246,7 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
+    // TOOD: Rename to oldSearchAction()
     public function oldsearchAction()
     {
         $this->initAjax();
@@ -266,7 +255,7 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $salesSessions = $this->searchold()
+        $salesSessions = $this->searchOld()
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -305,7 +294,7 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
     /**
      * @return \Doctrine\ORM\Query|null
      */
-    private function searchold()
+    private function searchOld()
     {
         switch ($this->getParam('field')) {
             case 'remarks':
@@ -316,11 +305,32 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
     }
 
     /**
+     * @return array
+     */
+    protected function getAvailableProducts()
+    {
+        return $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\Product')
+            ->findAllAvailable();
+    }
+
+    /**
+     * @return array
+     */
+    protected function getAvailableAndStockAndReservationProducts($salesSession)
+    {
+        return $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\Product')
+            ->findAvailableAndStockAndReservation($salesSession);
+    }
+
+    /**
      * @return SalesSession|null
      */
     private function getSalesSessionEntity()
     {
         $salesSession = $this->getEntityById('ShopBundle\Entity\SalesSession');
+
         if (!($salesSession instanceof SalesSession)) {
             $this->flashMessenger()->error(
                 'Error',

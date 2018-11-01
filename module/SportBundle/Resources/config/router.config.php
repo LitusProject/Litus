@@ -21,7 +21,7 @@
 return array(
     'routes' => array(
         'sport_admin_run' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/run[/:action[/:id]][/page/:page][/]',
                 'constraints' => array(
@@ -36,7 +36,7 @@ return array(
             ),
         ),
         'sport_run_index' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/run[/:action][/]',
                 'constraints' => array(
@@ -50,7 +50,7 @@ return array(
             ),
         ),
         'sport_run_group' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/run/group[/:action[/:university_identification]][/]',
                 'constraints' => array(
@@ -65,7 +65,7 @@ return array(
             ),
         ),
         'sport_run_queue' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/run/queue[/:action[/:university_identification]][/]',
                 'constraints' => array(
@@ -80,7 +80,7 @@ return array(
             ),
         ),
         'sport_run_tombola' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/run/tombola[/:action[/:university_identification]][/]',
                 'constraints' => array(
@@ -95,7 +95,7 @@ return array(
             ),
         ),
         'sport_run_screen' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/run/screen[/:action][/]',
                 'constraints' => array(
@@ -109,7 +109,7 @@ return array(
             ),
         ),
         'sport_run_screen_outside' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/run/screenoutside[/:action][/]',
                 'constraints' => array(

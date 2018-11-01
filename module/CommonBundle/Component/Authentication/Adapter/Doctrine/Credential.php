@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Component\Authentication\Adapter\Doctrine;
 
-use CommonBundle\Component\Authentication\Result\Doctrine as Result,
-    Doctrine\ORM\QueryBuilder;
+use CommonBundle\Component\Authentication\Result\Doctrine as Result;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * An authentication adapter using Doctrine.

@@ -20,31 +20,18 @@
 
 namespace CudiBundle\Form\Admin\Article;
 
-use LogicException;
-
 /**
  * Edit Article
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends Add
+class Edit extends \CudiBundle\Form\Admin\Article\Add
 {
     public function init()
     {
-        if (null === $this->article) {
-            throw new LogicException('Cannot edit a null article');
-        }
-
         parent::init();
 
         $this->remove('subject_form');
-
-    //    [COMMENT]: No idea why this is in here. Removed it on request by organisations
-    //    if ($this->article->getType() == 'common') {
-    //        /** @var \CommonBundle\Component\Form\Fieldset $articleFieldset */
-    //        $articleFieldset = $this->get('article');
-    //        $articleFieldset->remove('type');
-    //    }
 
         $this->remove('submit')
             ->addSubmit('Save', 'article_edit');

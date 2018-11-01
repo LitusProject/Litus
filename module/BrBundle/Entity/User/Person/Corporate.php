@@ -20,13 +20,13 @@
 
 namespace BrBundle\Entity\User\Person;
 
-use BrBundle\Entity\Company,
-    BrBundle\Entity\User\Status\Corporate as CorporateStatus,
-    CommonBundle\Component\Util\AcademicYear,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException,
-    RuntimeException;
+use BrBundle\Entity\Company;
+use BrBundle\Entity\User\Status\Corporate as CorporateStatus;
+use CommonBundle\Component\Util\AcademicYear;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
+use RuntimeException;
 
 /**
  * This is a person that represents a contact in a company.
@@ -78,19 +78,19 @@ class Corporate extends \CommonBundle\Entity\User\Person
     /**
      * Adds a corporate status to the list, if possible.
      *
-     * @param  CorporateStatus          $corporateStatus
+     * @param  CorporateStatus $corporateStatus
      * @return self
      * @throws InvalidArgumentException
      * @throws RuntimeException
      */
     public function addCorporateStatus(CorporateStatus $corporateStatus)
     {
-        if (null === $corporateStatus) {
+        if ($corporateStatus === null) {
             throw new InvalidArgumentException('Invalid status');
         }
 
         if (!$this->canHaveCorporateStatus()) {
-            throw RuntimeException('The corporate status cannot be set');
+            throw new RuntimeException('The corporate status cannot be set');
         }
 
         $this->corporateStatuses->add($corporateStatus);
@@ -102,7 +102,7 @@ class Corporate extends \CommonBundle\Entity\User\Person
      * If this person already has a corporate status for this academic year, a new
      * one cannot be set.
      *
-     * @return bool
+     * @return boolean
      */
     public function canHaveCorporateStatus()
     {

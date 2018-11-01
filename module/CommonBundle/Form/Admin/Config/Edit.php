@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Form\Admin\Config;
 
-use CommonBundle\Entity\General\Config,
-    LogicException;
+use CommonBundle\Entity\General\Config;
+use LogicException;
 
 /**
  * Edit Configuration
@@ -40,38 +40,42 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
 
     public function init()
     {
-        if (null === $this->config) {
+        if ($this->config === null) {
             throw new LogicException('Cannot edit a null config');
         }
 
         parent::init();
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'key',
-            'label'      => 'Key',
-            'attributes' => array(
-                'disabled' => true,
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'key',
+                'label'      => 'Key',
+                'attributes' => array(
+                    'disabled' => true,
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => strlen($this->config->getValue()) > 40 ? 'textarea' : 'text',
-            'name'       => 'value',
-            'label'      => 'Value',
-            'required'   => true,
-            'attributes' => array(
-                'id' => 'config_value',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                        array('name' => 'stripcarriagereturn'),
+        $this->add(
+            array(
+                'type'       => strlen($this->config->getValue()) > 40 ? 'textarea' : 'text',
+                'name'       => 'value',
+                'label'      => 'Value',
+                'required'   => true,
+                'attributes' => array(
+                    'id' => 'config_value',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                            array('name' => 'StripCarriageReturn'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Save', 'config_edit');
 

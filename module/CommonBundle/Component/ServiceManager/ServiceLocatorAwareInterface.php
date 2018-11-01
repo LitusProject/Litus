@@ -20,52 +20,21 @@
 
 namespace CommonBundle\Component\ServiceManager;
 
-interface ServiceLocatorAwareInterface extends \Zend\ServiceManager\ServiceLocatorAwareInterface
+use Zend\ServiceManager\ServiceLocatorInterface;
+
+interface ServiceLocatorAwareInterface
 {
     /**
-     * We want an easy method to retrieve the DocumentManager from
-     * the DI container.
+     * The ServiceLocatorWareInterface was deprecated in ZF3 because the framework
+     * maintainers consider it an anti-pattern. However, since our codebase heavily
+     * depends on the service locator, we've reintroduced it through an initializer.
      *
-     * @return \Doctrine\ODM\MongoDB\DocumentManager
+     * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocator
      */
-    public function getDocumentManager();
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator);
 
     /**
-     * We want an easy method to retrieve the EntityManager from
-     * the DI container.
-     *
-     * @return \Doctrine\ORM\EntityManager
+     * @return \Zend\ServiceManager\ServiceLocatorInterface
      */
-    public function getEntityManager();
-
-    /**
-     * We want an easy method to retrieve the Cache from
-     * the DI container.
-     *
-     * @return \Zend\Cache\Storage\StorageInterface
-     */
-    public function getCache();
-
-    /**
-     * Get the current academic year.
-     *
-     * @param  boolean|null                              $organization
-     * @return \CommonBundle\Entity\General\AcademicYear
-     */
-    public function getCurrentAcademicYear($organization = null);
-
-    /**
-     * We want an easy method to retrieve the Mail Transport from
-     * the DI container.
-     *
-     * @return \Zend\Mail\Transport\TransportInterface
-     */
-    public function getMailTransport();
-
-    /**
-     * Retrieve the common session storage from the DI container.
-     *
-     * @return \Zend\Session\Container
-     */
-    public function getSessionStorage();
+    public function getServiceLocator();
 }

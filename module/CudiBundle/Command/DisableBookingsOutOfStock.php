@@ -20,8 +20,6 @@
 
 namespace CudiBundle\Command;
 
-use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
-    CommonBundle\Entity\General\AcademicYear;
 /**
  * Disable bookings
  */
@@ -33,10 +31,11 @@ class DisableBookingsOutOfStock extends \CommonBundle\Component\Console\Command
             ->setName('cudi:disable-bookings-out-of-stock')
             ->setDescription('Disable bookings for articles which aren\'t in stock.')
             ->addOption('flush', 'f', null, 'Stores the result in the database.')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The <info>%command.name%</info> command disables bookings for articles which has a stock value of 0.
 EOT
-        );
+            );
     }
 
     protected function executeCommand()
@@ -67,23 +66,5 @@ EOT
     protected function getLogName()
     {
         return 'DisableBookingsOutOfStock';
-    }
-
-    /**
-     * Get the current academic year.
-     *
-     * @param  boolean|null $organization
-     * @return AcademicYear
-     */
-    public function getCurrentAcademicYear($organization = null)
-    {
-        $startAcademicYear = AcademicYearUtil::getStartOfAcademicYear();
-        $startAcademicYear->setTime(0, 0);
-
-        $academicYear = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($startAcademicYear);
-
-        return $academicYear;
     }
 }

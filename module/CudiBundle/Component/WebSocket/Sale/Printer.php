@@ -20,11 +20,11 @@
 
 namespace CudiBundle\Component\WebSocket\Sale;
 
-use CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Entity\General\AcademicYear as AcademicYear,
-    CudiBundle\Entity\Sale\QueueItem as EntityQueueItem,
-    Doctrine\ORM\EntityManager,
-    CommonBundle\Entity\User\Barcode\Ean12 as Ean12;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Barcode\Ean12;
+use CommonBundle\Entity\User\Person\Academic;
+use CudiBundle\Entity\Sale\QueueItem as EntityQueueItem;
+use Doctrine\ORM\EntityManager;
 
 class Printer
 {
@@ -44,7 +44,7 @@ class Printer
         $printCollect = (int) $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.print_collect_as_signin');
-        if (1 === $printCollect) {
+        if ($printCollect === 1) {
             return self::collectTicket($entityManager, $printer, $queueItem, $bookings);
         }
 
@@ -75,21 +75,6 @@ class Printer
         self::doPrint($entityManager, $printer, $data);
     }
 
-    private static function articleSort($a, $b)
-    {
-        $aArticle = $a->getArticle()->getMainArticle();
-        $bArticle = $b->getArticle()->getMainArticle();
-        if ($aArticle->isExternal() == $bArticle->isExternal()) {
-            if ($aArticle->isExternal()) {
-                return strcasecmp($aArticle->getTitle(), $bArticle->getTitle());
-            } else {
-                return strcmp(substr($a->getArticle()->getBarcode(), 7), substr($b->getArticle()->getBarcode(), 7));
-            }
-        }
-
-        return $aArticle->isExternal() ? 1 : -1;
-    }
-
     /**
      * @param EntityManager   $entityManager
      * @param string          $printer
@@ -103,7 +88,7 @@ class Printer
             return;
         }
 
-        usort($bookings, array(__CLASS__, 'articleSort'));
+        usort($bookings, array(self::class, 'articleSort'));
 
         $articles = array();
         $totalPrice = 0;
@@ -173,9 +158,9 @@ class Printer
     }
 
     /**
-     * @param EntityManager   $entityManager
-     * @param string          $printer
-     * @param Person          $person
+     * @param EntityManager $entityManager
+     * @param string        $printer
+     * @param Person        $person
      */
     public static function membershipCard(EntityManager $entityManager, $printer, Academic $academic, AcademicYear $year)
     {
@@ -187,7 +172,7 @@ class Printer
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('organization_short_name');
 
-        $comment = $organization.' '.$year->getCode();
+        $comment = $organization . ' ' . $year->getCode();
 
         $barcode = $entityManager
             ->getRepository('CommonBundle\Entity\User\Barcode')
@@ -235,7 +220,7 @@ class Printer
         }
 
         $data['title'] = $entityManager->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('cudi.ticket_title');
+            ->getConfigValue('cudi.ticket_title');
 
         $data = json_encode(
             (object) array(

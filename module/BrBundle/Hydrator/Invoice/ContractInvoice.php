@@ -20,8 +20,8 @@
 
 namespace BrBundle\Hydrator\Invoice;
 
-use BrBundle\Entity\Invoice\InvoiceEntry as InvoiceEntryEntity,
-    CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+use BrBundle\Entity\Invoice\InvoiceEntry as InvoiceEntryEntity;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 
 /**
  * This hydrator hydrates/extracts Invoice data.
@@ -38,7 +38,7 @@ class ContractInvoice extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             throw new InvalidObjectException('Cannot create an invoice');
         }
 
@@ -62,7 +62,7 @@ class ContractInvoice extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 

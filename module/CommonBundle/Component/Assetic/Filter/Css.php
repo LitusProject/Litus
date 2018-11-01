@@ -24,6 +24,6 @@ class Css extends \Assetic\Filter\Yui\CssCompressorFilter
 {
     public function __construct()
     {
-        parent::__construct('vendor/packagist/yuicompressor-bin/bin/yuicompressor.jar');
+        parent::__construct('vendor/packagelist/yuicompressor-bin/bin/yuicompressor.jar');
     }
 }

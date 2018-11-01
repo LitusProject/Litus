@@ -46,7 +46,7 @@ class CompanyName extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -74,7 +74,7 @@ class CompanyName extends \CommonBundle\Component\Validator\AbstractValidator
             ->getRepository('BrBundle\Entity\Company')
             ->findOneBySlug(Url::createSlug($value));
 
-        if (null === $company || ($this->options['company'] && ($company == $this->options['company'] || !$company->isActive()))) {
+        if ($company === null || ($this->options['company'] && ($company == $this->options['company'] || !$company->isActive()))) {
             return true;
         }
 

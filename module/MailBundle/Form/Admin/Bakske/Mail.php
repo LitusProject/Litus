@@ -20,8 +20,8 @@
 
 namespace MailBundle\Form\Admin\Bakske;
 
-use CommonBundle\Entity\General\AcademicYear,
-    RuntimeException;
+use CommonBundle\Entity\General\AcademicYear;
+use RuntimeException;
 
 /**
  * Send Mail
@@ -39,38 +39,44 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'select',
-            'name'     => 'edition',
-            'label'    => 'Edition',
-            'required' => true,
-            'options'  => array(
-                'options' => $this->createEditionsArray(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'     => 'select',
+                'name'     => 'edition',
+                'label'    => 'Edition',
+                'required' => true,
+                'options'  => array(
+                    'options' => $this->createEditionsArray(),
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'test',
-            'label' => 'Test Mail',
-        ));
+        $this->add(
+            array(
+                'type'  => 'checkbox',
+                'name'  => 'test',
+                'label' => 'Test Mail',
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'subject',
-            'label'      => 'Subject',
-            'required'   => true,
-            'attributes' => array(
-                'style' => 'width: 400px;',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'subject',
+                'label'      => 'Subject',
+                'required'   => true,
+                'attributes' => array(
+                    'style' => 'width: 400px;',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Send', 'mail');
     }
@@ -89,7 +95,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ->getRepository('PublicationBundle\Entity\Edition\Html')
             ->findAllByPublicationAndAcademicYear($publication, $this->getAcademicYear());
 
-        if (empty($editions)) {
+        if (count($editions) == 0) {
             throw new RuntimeException('There needs to be at least one edition before you can mail it');
         }
 

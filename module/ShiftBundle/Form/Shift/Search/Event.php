@@ -20,8 +20,8 @@
 
 namespace ShiftBundle\Form\Shift\Search;
 
-use CommonBundle\Entity\General\Language,
-    LogicException;
+use CommonBundle\Entity\General\Language;
+use LogicException;
 
 /**
  * Search Event
@@ -42,24 +42,26 @@ class Event extends \CommonBundle\Component\Form\Bootstrap\Form
 
     public function init()
     {
-        if (null === $this->language) {
+        if ($this->language === null) {
             throw new LogicException('Language needs to be set.');
         }
 
         parent::init();
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'event',
-            'attributes' => array(
-                'options' => $this->createEventsArray(),
-            ),
-            'options' => array(
-                'input' => array(
-                    'required' => true,
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'event',
+                'attributes' => array(
+                    'options' => $this->createEventsArray(),
                 ),
-            ),
-        ));
+                'options' => array(
+                    'input' => array(
+                        'required' => true,
+                    ),
+                ),
+            )
+        );
 
         $this->remove('csrf');
     }

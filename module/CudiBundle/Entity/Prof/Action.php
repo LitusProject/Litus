@@ -20,10 +20,10 @@
 
 namespace CudiBundle\Entity\Prof;
 
-use CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Prof\Action")
@@ -148,15 +148,15 @@ class Action
      */
     public function getEntity()
     {
-        if ('article' == $this->entity) {
+        if ($this->entity == 'article') {
             return $this->entityManager
                 ->getRepository('CudiBundle\Entity\Article')
                 ->findOneById($this->entityId);
-        } elseif ('file' == $this->entity) {
+        } elseif ($this->entity == 'file') {
             return $this->entityManager
                 ->getRepository('CudiBundle\Entity\File\Mapping')
                 ->findOneById($this->entityId);
-        } elseif ('mapping' == $this->entity) {
+        } elseif ($this->entity == 'mapping') {
             return $this->entityManager
                 ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                 ->findOneById($this->entityId);
@@ -188,15 +188,15 @@ class Action
      */
     public function getPreviousEntity()
     {
-        if ('article' == $this->entity) {
+        if ($this->entity == 'article') {
             return $this->entityManager
                 ->getRepository('CudiBundle\Entity\Article')
                 ->findOneById($this->previousId);
-        } elseif ('file' == $this->entity) {
+        } elseif ($this->entity == 'file') {
             return $this->entityManager
                 ->getRepository('CudiBundle\Entity\File\Mapping')
                 ->findOneById($this->previousId);
-        } elseif ('mapping' == $this->entity) {
+        } elseif ($this->entity == 'mapping') {
             return $this->entityManager
                 ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                 ->findOneById($this->previousId);

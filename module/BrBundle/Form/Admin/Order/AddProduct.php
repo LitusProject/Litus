@@ -26,7 +26,7 @@ namespace BrBundle\Form\Admin\Order;
  * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class AddProduct extends Add
+class AddProduct extends \BrBundle\Form\Admin\Order\Add
 {
     /**
      * @var array The currently used products
@@ -42,59 +42,64 @@ class AddProduct extends Add
     {
         parent::init();
 
-        $this->remove('submit');
-
         foreach ($this->getElements() as $element) {
             if (in_array($element->getName(), array('csrf'))) {
                 continue;
             }
             $this->remove($element->getName());
-            $this->add(array(
-                'type'     => 'hidden',
-                'name'     => $element->getName(),
-                'value'    => $element->getValue(),
-                'required' => $element->isRequired(),
-                'options'  => $element->getOptions(),
-            ));
+            $this->add(
+                array(
+                    'type'     => 'hidden',
+                    'name'     => $element->getName(),
+                    'value'    => $element->getValue(),
+                    'required' => $element->isRequired(),
+                    'options'  => $element->getOptions(),
+                )
+            );
         }
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'new_product',
-            'label'      => 'Product',
-            'required'   => true,
-            'attributes' => array(
-                'options' => $this->createProductArray(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'new_product',
+                'label'      => 'Product',
+                'required'   => true,
+                'attributes' => array(
+                    'options' => $this->createProductArray(),
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'new_product_amount',
-            'label'    => 'Amount',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'int',
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'new_product_amount',
+                'label'    => 'Amount',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
                         ),
-                        array(
-                            'name'    => 'between',
-                            'options' => array(
-                                'min' => 1,
-                                'max' => self::MAX_ORDER_NUMBER,
+                        'validators' => array(
+                            array(
+                                'name' => 'Int',
+                            ),
+                            array(
+                                'name'    => 'Between',
+                                'options' => array(
+                                    'min' => 1,
+                                    'max' => self::MAX_ORDER_NUMBER,
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->addSubmit('Add', 'product_add');
+        $this->remove('submit')
+            ->addSubmit('Add', 'product_add');
     }
 
     /**

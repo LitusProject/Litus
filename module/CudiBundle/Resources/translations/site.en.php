@@ -75,7 +75,5 @@ return array(
     'Disable catalog update mails'                              => 'Disable catalog update mails',
 
     'Color'  => 'Color',
-    'Status' => 'Status',
-    'Booked' => 'Booked',
     'Bought' => 'Bought',
 );

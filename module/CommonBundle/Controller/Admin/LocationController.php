@@ -20,9 +20,9 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Entity\General\Location,
-    Zend\Http\Client,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\General\Location;
+use Zend\Http\Client;
+use Zend\View\Model\ViewModel;
 
 /**
  * LocationController
@@ -94,7 +94,8 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($location = $this->getLocationEntity())) {
+        $location = $this->getLocationEntity();
+        if ($location === null) {
             return new ViewModel();
         }
 
@@ -133,7 +134,8 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($location = $this->getLocationEntity())) {
+        $location = $this->getLocationEntity();
+        if ($location === null) {
             return new ViewModel();
         }
 

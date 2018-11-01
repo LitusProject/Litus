@@ -37,7 +37,7 @@ use Doctrine\ORM\Mapping as ORM;
 abstract class Alias
 {
     /**
-     * @var int The entry's unique identifier
+     * @var integer The entry's unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -63,7 +63,7 @@ abstract class Alias
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {

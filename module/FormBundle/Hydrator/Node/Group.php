@@ -20,8 +20,9 @@
 
 namespace FormBundle\Hydrator\Node;
 
-use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
-    FormBundle\Entity\Node\Group\Mapping as MappingEntity;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+use FormBundle\Entity\Node\Group\Mapping as MappingEntity;
+use FormBundle\Entity\Node\Translation\Group as GroupTranslationEntity;
 
 class Group extends \CommonBundle\Component\Hydrator\Hydrator
 {
@@ -29,7 +30,7 @@ class Group extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             throw new InvalidObjectException('Cannot create a form');
         }
 
@@ -37,9 +38,9 @@ class Group extends \CommonBundle\Component\Hydrator\Hydrator
             $languageData = $data['tab_content']['tab_' . $language->getAbbrev()];
             $translation = $object->getTranslation($language, false);
 
-            if ('' != $languageData['title'] && '' != $languageData['introduction']) {
-                if (null === $translation) {
-                    $translation = new GroupTranslation(
+            if ($languageData['title'] != '' && $languageData['introduction'] != '') {
+                if ($translation === null) {
+                    $translation = new GroupTranslationEntity(
                         $object,
                         $language,
                         $languageData['title'],
@@ -78,7 +79,7 @@ class Group extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
@@ -90,7 +91,7 @@ class Group extends \CommonBundle\Component\Hydrator\Hydrator
         foreach ($this->getLanguages() as $language) {
             $translation = $object->getTranslation($language, false);
 
-            if (null !== $translation) {
+            if ($translation !== null) {
                 $data['tab_content']['tab_' . $language->getAbbrev()] = array(
                     'title'        => $translation->getTitle(),
                     'introduction' => $translation->getIntroduction(),

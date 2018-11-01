@@ -20,11 +20,11 @@
 
 namespace CudiBundle\Controller\Admin\Sale;
 
-use CommonBundle\Component\Util\File\TmpFile,
-    CudiBundle\Component\Document\Generator\Financial as FinancialGenerator,
-    DateTime,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\File\TmpFile;
+use CudiBundle\Component\Document\Generator\Financial as FinancialGenerator;
+use DateTime;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * FinancialController
@@ -215,10 +215,12 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
         $filename = 'financial_' . $now->format('Y_m_d') . '.pdf';
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
-            'Content-Type'        => 'application/pdf',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+                'Content-Type'        => 'application/pdf',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(

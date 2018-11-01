@@ -30,8 +30,8 @@ return Config::create(
     ),
     array(
         'validators' => array(
-            'invokables' => array(
-                'page_title' => 'PageBundle\Component\Validator\Title',
+            'aliases' => array(
+                'PageTitle' => Component\Validator\PageTitle::class,
             ),
         ),
     )

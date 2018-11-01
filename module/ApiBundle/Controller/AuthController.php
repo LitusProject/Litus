@@ -20,9 +20,8 @@
 
 namespace ApiBundle\Controller;
 
-use CommonBundle\Entity\User\Person,
-    CommonBundle\Entity\User\Person\Academic,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Person;
+use Zend\View\Model\ViewModel;
 
 /**
  * AuthController
@@ -35,7 +34,8 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $this->initJson();
 
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return $this->error(404, 'The person was not found');
         }
 
@@ -49,16 +49,10 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
             ->findOneById($person->getId());
 
-        if (null !== $academic) {
-            $result['university_status'] = (null !== $academic->getUniversityStatus($this->getCurrentAcademicYear()))
-                ? $academic->getUniversityStatus($this->getCurrentAcademicYear())->getStatus()
-                : '';
-            $result['organization_status'] = (null !== $academic->getOrganizationStatus($this->getCurrentAcademicYear(true)))
-                ? $academic->getOrganizationStatus($this->getCurrentAcademicYear(true))->getStatus()
-                : '';
-            $result['in_workinggroup'] = (null !== $academic->isInWorkingGroup())
-                ? $academic->isInWorkingGroup()
-                : false;
+        if ($academic !== null) {
+            $result['university_status'] = $academic->getUniversityStatus($this->getCurrentAcademicYear()) !== null ? $academic->getUniversityStatus($this->getCurrentAcademicYear())->getStatus() : '';
+            $result['organization_status'] = $academic->getOrganizationStatus($this->getCurrentAcademicYear(true)) !== null ? $academic->getOrganizationStatus($this->getCurrentAcademicYear(true))->getStatus() : '';
+            $result['in_workinggroup'] = $academic->isInWorkingGroup() ?? false;
         }
 
         return new ViewModel(
@@ -78,11 +72,11 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
      */
     private function getPersonEntity()
     {
-        if (null !== $this->getAccessToken()) {
+        if ($this->getAccessToken() !== null) {
             return $this->getAccessToken()->getPerson($this->getEntityManager());
         }
 
-        if (null !== $this->getRequest()->getPost('session')) {
+        if ($this->getRequest()->getPost('session') !== null) {
             $session = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Session')
                 ->findOneById($this->getRequest()->getPost('session'));
@@ -90,7 +84,7 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
             return $session->getPerson();
         }
 
-        if (null !== $this->getRequest()->getPost('username')) {
+        if ($this->getRequest()->getPost('username') !== null) {
             return $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person')
                 ->findOneByUsername($this->getRequest()->getPost('username'));

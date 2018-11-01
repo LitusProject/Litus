@@ -21,7 +21,7 @@
 return array(
     'routes' => array(
         'common_admin_academic' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/academic[/:action[/:id][/:field/:string][/page/:page]][/]',
                 'constraints' => array(
@@ -38,7 +38,7 @@ return array(
             ),
         ),
         'common_admin_academic_typeahead' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/academic/typeahead[/:string][/]',
                 'constraints' => array(
@@ -51,7 +51,7 @@ return array(
             ),
         ),
         'common_admin_person_typeahead' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/person/typeahead[/:string][/]',
                 'constraints' => array(
@@ -64,7 +64,7 @@ return array(
             ),
         ),
         'common_admin_auth' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/auth[/:action[/identification/:identification[/hash/:hash]]][/]',
                 'constraints' => array(
@@ -79,7 +79,7 @@ return array(
             ),
         ),
         'common_admin_cache' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cache[/:action[/page/:page]][/]',
                 'constraints' => array(
@@ -93,7 +93,7 @@ return array(
             ),
         ),
         'common_admin_config' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/config[/:action[/key/:key]][/]',
                 'constraints' => array(
@@ -107,7 +107,7 @@ return array(
             ),
         ),
         'common_admin_index' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'    => '/admin[/]',
                 'defaults' => array(
@@ -117,7 +117,7 @@ return array(
             ),
         ),
         'common_admin_location' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/location[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -132,7 +132,7 @@ return array(
             ),
         ),
         'common_admin_role' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/role[/:action[/name/:name[/:id]][/page/:page]][/]',
                 'constraints' => array(
@@ -148,7 +148,7 @@ return array(
             ),
         ),
         'common_admin_session' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/session/:action[/:id][/]',
                 'constraints' => array(
@@ -162,7 +162,7 @@ return array(
             ),
         ),
         'common_admin_unit' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/unit[/:action[/:id][/page/:page]][/:academicyear][/]',
                 'constraints' => array(
@@ -178,7 +178,7 @@ return array(
             ),
         ),
         'common_admin_visit' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/visit[/:action[/:id][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
@@ -195,7 +195,7 @@ return array(
             ),
         ),
         'common_index' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language][/]',
                 'constraints' => array(
@@ -208,7 +208,7 @@ return array(
             ),
         ),
         'common_account' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/account[/:action[/code/:code][/image/:image][/return/:return]][/]',
                 'constraints' => array(
@@ -226,7 +226,7 @@ return array(
             ),
         ),
         'common_session' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/session[/:action[/:id]][/]',
                 'constraints' => array(
@@ -241,7 +241,7 @@ return array(
             ),
         ),
         'common_auth' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/auth[/:action[/identification/:identification[/hash/:hash]]][/]',
                 'constraints' => array(
@@ -257,7 +257,7 @@ return array(
             ),
         ),
         'common_robots' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/robots.txt',
                 'constraints' => array(
@@ -269,7 +269,7 @@ return array(
             ),
         ),
         'common_praesidium' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/praesidium[/:action[/:academicyear]][/]',
                 'constraints' => array(
@@ -283,7 +283,7 @@ return array(
             ),
         ),
         'common_poc' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/poc[/:action[/:academicyear]][/]',
                 'constraints' => array(
@@ -297,7 +297,7 @@ return array(
             ),
         ),
         'common_privacy' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/privacy[/:action][/]',
                 'constraints' => array(

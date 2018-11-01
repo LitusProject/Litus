@@ -33,7 +33,7 @@ class Litus extends \Zend\Uri\Uri
      * User Info part is not used in Litus URIs.
      *
      * @see    Uri::setUserInfo()
-     * @param  string                         $userInfo
+     * @param  string $userInfo
      * @return \ApiBundle\Component\Uri\Litus
      */
     public function setUserInfo($userInfo)
@@ -45,7 +45,7 @@ class Litus extends \Zend\Uri\Uri
      * Fragment part is not used in Litus URIs.
      *
      * @see    Uri::setFragment()
-     * @param  string                         $fragment
+     * @param  string $fragment
      * @return \ApiBundle\Component\Uri\Litus
      */
     public function setFragment($fragment)

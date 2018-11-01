@@ -20,42 +20,48 @@
 
 namespace ShopBundle\Form\Shop;
 
-use Zend\Form\Element;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\TranslatorTrait;
 
 /**
- * Reserve
+ * Sessions
  *
  * @author Floris Kint <floris.kint@litus.cc>
  */
 class Sessions extends \CommonBundle\Component\Form\Admin\Form
 {
+    use TranslatorTrait;
+
     /**
-     * @var SalesSession[]
+     * @var array
      */
     private $salesSessions = array();
 
     public function init()
     {
         parent::init();
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'salesSession',
-            'label'      => 'Sales Session',
-            'required'   => true,
-            'escape'     => false,
-            'attributes' => array(
-                'options' => $this->createSalesSessionsArray(),
-            ),
-        ));
+
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'salesSession',
+                'label'      => 'Sales Session',
+                'required'   => true,
+                'escape'     => false,
+                'attributes' => array(
+                    'options' => $this->createSalesSessionsArray(),
+                ),
+            )
+        );
+
         $this->addSubmit('Reserve', 'submit');
     }
 
     /**
-     * @return SalesSession[]
+     * @return array
      */
     private function createSalesSessionsArray()
     {
-        $translator = $this->getServiceLocator()->get('translator');
+        $translator = $this->getTranslator();
 
         $result = array();
         foreach ($this->salesSessions as $session) {
@@ -66,7 +72,7 @@ class Sessions extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-     * @param SalesSession[] $salesSessions
+     * @param array $salesSessions
      */
     public function setSalesSessions($salesSessions)
     {

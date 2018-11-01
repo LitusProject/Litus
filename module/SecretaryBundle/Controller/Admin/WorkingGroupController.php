@@ -20,8 +20,8 @@
 
 namespace SecretaryBundle\Controller\Admin;
 
-use CommonBundle\Entity\User\Person\Academic,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Person\Academic;
+use Zend\View\Model\ViewModel;
 
 class WorkingGroupController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
@@ -88,7 +88,8 @@ class WorkingGroupController extends \CommonBundle\Component\Controller\ActionCo
     {
         $this->initAjax();
 
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 

@@ -20,8 +20,8 @@
 
 namespace CudiBundle\Component\Controller;
 
-use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
-    Zend\Mvc\MvcEvent;
+use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException;
+use Zend\Mvc\MvcEvent;
 
 /**
  * We extend the CommonBundle controller.
@@ -33,7 +33,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     /**
      * Execute the request.
      *
-     * @param  MvcEvent                                                          $e The MVC event
+     * @param  MvcEvent $e The MVC event
      * @return array
      * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
      */
@@ -88,10 +88,10 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_url');
 
-        if (false !== @unserialize($shibbolethUrl)) {
+        if (@unserialize($shibbolethUrl) !== false) {
             $shibbolethUrl = unserialize($shibbolethUrl);
 
-            if (false === getenv('SERVED_BY')) {
+            if (getenv('SERVED_BY') === false) {
                 throw new ShibbolethUrlException('The SERVED_BY environment variable does not exist');
             }
             if (!isset($shibbolethUrl[getenv('SERVED_BY')])) {

@@ -20,8 +20,8 @@
 
 namespace PublicationBundle\Controller\Edition;
 
-use PublicationBundle\Entity\Edition\Html as HtmlEdition,
-    Zend\View\Model\ViewModel;
+use PublicationBundle\Entity\Edition\Html as HtmlEdition;
+use Zend\View\Model\ViewModel;
 
 /**
  * HtmlController
@@ -32,7 +32,8 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 {
     public function viewAction()
     {
-        if (!($edition = $this->getHtmlEditionEntity())) {
+        $edition = $this->getHtmlEditionEntity();
+        if ($edition === null) {
             return new ViewModel();
         }
 

@@ -20,13 +20,13 @@
 
 namespace LogisticsBundle\Controller;
 
-use CommonBundle\Entity\User\Person,
-    DateInterval,
-    DateTime,
-    IntlDateFormatter,
-    LogisticsBundle\Entity\Reservation\PianoReservation,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Person;
+use DateInterval;
+use DateTime;
+use IntlDateFormatter;
+use LogisticsBundle\Entity\Reservation\PianoReservation;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * @author Kristof Mariën <kristof.marien@litus.cc>
@@ -35,13 +35,12 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function indexAction()
     {
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return $this->notFoundAction();
         }
 
         $form = $this->getForm('logistics_piano-reservation_add');
-
-        $reservations = $this->getReservations();
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -49,7 +48,7 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
 
             $startDate = null;
             $endDate = null;
-            foreach ($form->getWeeks() as $key => $week) {
+            foreach (array_keys($form->getWeeks()) as $key) {
                 if (isset($formData['week_' . $key]['submit'])) {
                     $weekIndex = $key;
 
@@ -96,7 +95,7 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('logistics.piano_auto_confirm_immediatly');
 
-                if ((sizeof($otherReservations) == 0 && $reservation->getStartDate() > $deadline) || $autoConfirm) {
+                if ((count($otherReservations) == 0 && $reservation->getStartDate() > $deadline) || $autoConfirm) {
                     $reservation->setConfirmed();
                 }
 
@@ -124,7 +123,7 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'form'         => $form,
-                'reservations' => $reservations,
+                'reservations' => $this->getReservations(),
             )
         );
     }
@@ -146,7 +145,8 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function getReservations()
     {
-        if ($person = $this->getPersonEntity()) {
+        $person = $this->getPersonEntity();
+        if ($person !== null) {
             return $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
                 ->findAllByDatesAndPerson(
@@ -178,7 +178,8 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
             );
         }
 
-        if (!($language = $person->getLanguage())) {
+        $language = $person->getLanguage();
+        if ($language === null) {
             $language = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev('en');
@@ -199,8 +200,12 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
         $mail = new Message();
         $mail->setEncoding('UTF-8')
             ->setBody(
-                str_replace('{{ name }}', $person->getFullName(),
-                    str_replace('{{ start }}', $formatterDate->format($reservation->getStartDate()),
+                str_replace(
+                    '{{ name }}',
+                    $person->getFullName(),
+                    str_replace(
+                        '{{ start }}',
+                        $formatterDate->format($reservation->getStartDate()),
                         str_replace('{{ end }}', $formatterDate->format($reservation->getEndDate()), $message)
                     )
                 )
@@ -224,13 +229,13 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
             )
             ->setSubject($subject);
 
-        if ('development' != getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);
         }
     }
 
     /**
-     * @param  string        $date
+     * @param  string $date
      * @return DateTime|null
      */
     private static function loadDate($date)

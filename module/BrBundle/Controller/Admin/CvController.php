@@ -20,13 +20,13 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Component\Document\Generator\Pdf\CvBook as CvBookGenerator,
-    BrBundle\Entity\Cv\Entry,
-    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
-    CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use BrBundle\Component\Document\Generator\Pdf\CvBook as CvBookGenerator;
+use BrBundle\Entity\Cv\Entry;
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * CvController
@@ -41,8 +41,8 @@ class CvController extends \BrBundle\Component\Controller\CvController
 
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Cv\Entry')
-            ->findAllByAcademicYearQuery($academicYear),
+                ->getRepository('BrBundle\Entity\Cv\Entry')
+                ->findAllByAcademicYearQuery($academicYear),
             $this->getParam('page')
         );
 
@@ -76,10 +76,12 @@ class CvController extends \BrBundle\Component\Controller\CvController
         $document->generate();
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="cvbook-' . $year->getCode(true) . '.pdf"',
-            'Content-type'        => 'application/pdf',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="cvbook-' . $year->getCode(true) . '.pdf"',
+                'Content-type'        => 'application/pdf',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -103,9 +105,9 @@ class CvController extends \BrBundle\Component\Controller\CvController
             $address = $entry->getAddress();
             $addressString = $address->getStreet() . ' ' . $address->getNumber();
             if ($address->getMailbox()) {
-                $addressString = $addressString . ' (' . $address->getMailbox() . ')';
+                $addressString .= ' (' . $address->getMailbox() . ')';
             }
-            $addressString = $addressString . ', ' . $address->getPostal() . ' ' . $address->getCity() . ' ' . $address->getCountry();
+            $addressString .= ', ' . $address->getPostal() . ' ' . $address->getCity() . ' ' . $address->getCountry();
 
             $results[] = array(
                 $entry->getFirstName(),
@@ -121,10 +123,12 @@ class CvController extends \BrBundle\Component\Controller\CvController
         $document->generateDocument($file);
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="academics.csv"',
-            'Content-Type'        => 'text/csv',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="academics.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -138,7 +142,8 @@ class CvController extends \BrBundle\Component\Controller\CvController
     {
         $this->initAjax();
 
-        if (!($entry = $this->getEntryEntity())) {
+        $entry = $this->getEntryEntity();
+        if ($entry === null) {
             return new ViewModel();
         }
 

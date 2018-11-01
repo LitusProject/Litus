@@ -26,14 +26,13 @@ namespace PageBundle\Form\Admin\Link;
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Edit extends Add
+class Edit extends \PageBundle\Form\Admin\Link\Add
 {
     public function init()
     {
         parent::init();
 
-        $this->remove('submit');
-
-        $this->addSubmit('Save', 'link_edit');
+        $this->remove('submit')
+            ->addSubmit('Save', 'link_edit');
     }
 }

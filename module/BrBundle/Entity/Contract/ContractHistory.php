@@ -20,9 +20,9 @@
 
 namespace BrBundle\Entity\Contract;
 
-use BrBundle\Entity\Contract,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use BrBundle\Entity\Contract;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Contract\ContractHistory")
@@ -56,7 +56,7 @@ class ContractHistory
     private $entries;
 
     /**
-     * @var int The version of the contract this entry belongs too.
+     * @var integer The version of the contract this entry belongs too.
      *
      * @ORM\Column(type="integer")
      */
@@ -73,7 +73,7 @@ class ContractHistory
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -97,7 +97,7 @@ class ContractHistory
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getVersion()
     {

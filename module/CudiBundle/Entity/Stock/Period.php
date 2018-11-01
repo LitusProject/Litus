@@ -20,11 +20,11 @@
 
 namespace CudiBundle\Entity\Stock;
 
-use CommonBundle\Entity\User\Person,
-    CudiBundle\Entity\Sale\Article,
-    DateTime,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Person;
+use CudiBundle\Entity\Sale\Article;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Stock\Period")

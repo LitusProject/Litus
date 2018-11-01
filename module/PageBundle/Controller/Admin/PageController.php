@@ -20,10 +20,12 @@
 
 namespace PageBundle\Controller\Admin;
 
-use PageBundle\Entity\Node\Page,
-    Zend\File\Transfer\Adapter\Http as FileUpload,
-    Zend\Validator\File\IsImage as IsImageValidator,
-    Zend\View\Model\ViewModel;
+use PageBundle\Entity\Node\Page;
+use Zend\Filter\File\RenameUpload as RenameUploadFilter;
+use Zend\Validator\File\IsImage as IsImageValidator;
+use Zend\Validator\File\UploadFile as UploadFileValidator;
+use Zend\Validator\ValidatorChain;
+use Zend\View\Model\ViewModel;
 
 /**
  * PageController
@@ -35,7 +37,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $pages = $this->search();
         }
 
@@ -109,22 +111,23 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($page = $this->getPageEntity())) {
+        $page = $this->getPageEntity();
+        if ($page === null) {
             return new ViewModel();
         }
 
-        if (null !== $page->getEndTime()) {
+        if ($page->getEndTime() !== null) {
             $activeVersion = $this->getEntityManager()
                 ->getRepository('PageBundle\Entity\Node\Page')
                 ->findOneByName($page->getName());
 
             $this->redirect()->toRoute(
-                    'page_admin_page',
-                    array(
-                        'action' => 'edit',
-                        'id'     => $activeVersion->getId(),
-                    )
-                );
+                'page_admin_page',
+                array(
+                    'action' => 'edit',
+                    'id'     => $activeVersion->getId(),
+                )
+            );
         }
 
         $form = $this->getForm('page_page_edit', array('page' => $page));
@@ -162,7 +165,8 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($page = $this->getPageEntity())) {
+        $page = $this->getPageEntity();
+        if ($page === null) {
             return new ViewModel();
         }
 
@@ -182,15 +186,20 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
     public function uploadAction()
     {
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
+            $form = $this->getRequest()->getPost();
 
-            $upload = new FileUpload();
-
-            if ('image' == $formData['type']) {
-                $upload->addValidator(new IsImageValidator(array('image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/gif')));
+            $validatorChain = new ValidatorChain();
+            $validatorChain->attach(new UploadFileValidator());
+            if ($form['type'] == 'image') {
+                $validatorChain->attach(
+                    new IsImageValidator(
+                        array('image/gif', 'image/jpeg', 'image/png')
+                    )
+                );
             }
 
-            if ($upload->isValid()) {
+            $file = $this->getRequest()->getFiles()['file'];
+            if ($validatorChain->isValid($file)) {
                 $filePath = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('page.file_path') . '/';
@@ -199,8 +208,9 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                     $fileName = sha1(uniqid());
                 } while (file_exists($filePath . $fileName));
 
-                $upload->addFilter('Rename', $filePath . $fileName);
-                $upload->receive();
+                $renameUploadFilter = new RenameUploadFilter();
+                $renameUploadFilter->setTarget($filePath . $fileName)
+                    ->filter($file);
 
                 $url = $this->url()->fromRoute(
                     'page_file',

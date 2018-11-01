@@ -19,5 +19,5 @@
  */
 
 return array(
-    'install.gallery' => 'GalleryBundle\Command\Install',
+    'install_gallery' => 'GalleryBundle\Command\Install',
 );

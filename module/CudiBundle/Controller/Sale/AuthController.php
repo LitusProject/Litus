@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Controller\Sale;
 
-use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
-    CommonBundle\Component\Authentication\Authentication,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter;
+use CommonBundle\Component\Authentication\Authentication;
+use Zend\View\Model\ViewModel;
 
 /**
  * AuthController
@@ -45,7 +45,9 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                 $this->getAuthentication()->forget();
 
                 $this->getAuthentication()->authenticate(
-                    $formData['username'], $formData['password'], $formData['remember_me']
+                    $formData['username'],
+                    $formData['password'],
+                    $formData['remember_me']
                 );
 
                 if ($this->getAuthentication()->isAuthenticated()) {
@@ -83,7 +85,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
     {
         $session = $this->getAuthentication()->forget();
 
-        if (null !== $session && $session->isShibboleth()) {
+        if ($session !== null && $session->isShibboleth()) {
             $shibbolethLogoutUrl = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('shibboleth_logout_url');
@@ -100,7 +102,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
 
     public function shibbolethAction()
     {
-        if ((null !== $this->getParam('identification')) && (null !== $this->getParam('hash'))) {
+        if ($this->getParam('identification') !== null && $this->getParam('hash') !== null) {
             $authentication = new Authentication(
                 new ShibbolethAdapter(
                     $this->getEntityManager(),
@@ -114,7 +116,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                 ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
                 ->findLastByUniversityIdentification($this->getParam('identification'));
 
-            if (null !== $code) {
+            if ($code !== null) {
                 if ($code->validate($this->getParam('hash'))) {
                     $this->getEntityManager()->remove($code);
                     $this->getEntityManager()->flush();
@@ -122,7 +124,10 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                     $this->getAuthentication()->forget();
 
                     $authentication->authenticate(
-                        $this->getParam('identification'), '', true, true
+                        $this->getParam('identification'),
+                        '',
+                        true,
+                        true
                     );
 
                     if ($authentication->isAuthenticated()) {
@@ -135,7 +140,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                                 ->findOneByUniversityIdentification($this->getParam('identification'));
 
-                            if (null !== $academic && null === $academic->getOrganizationStatus($this->getCurrentAcademicYear())) {
+                            if ($academic !== null && $academic->getOrganizationStatus($this->getCurrentAcademicYear()) === null) {
                                 $this->redirect()->toRoute(
                                     'secretary_registration'
                                 );
@@ -144,7 +149,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                             }
                         }
 
-                        if (null !== $code->getRedirect()) {
+                        if ($code->getRedirect() !== null) {
                             $this->redirect()->toUrl(
                                 $code->getRedirect()
                             );

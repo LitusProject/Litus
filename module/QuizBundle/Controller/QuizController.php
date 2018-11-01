@@ -20,12 +20,12 @@
 
 namespace QuizBundle\Controller;
 
-use CommonBundle\Entity\User\Person,
-    QuizBundle\Entity\Point,
-    QuizBundle\Entity\Quiz,
-    QuizBundle\Entity\Round,
-    QuizBundle\Entity\Team,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Person;
+use QuizBundle\Entity\Point;
+use QuizBundle\Entity\Quiz;
+use QuizBundle\Entity\Round;
+use QuizBundle\Entity\Team;
+use Zend\View\Model\ViewModel;
 
 /**
  * QuizController
@@ -38,7 +38,8 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($quiz = $this->getQuizEntity())) {
+        $quiz = $this->getQuizEntity();
+        if ($quiz === null) {
             return new ViewModel();
         }
 
@@ -73,7 +74,13 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($team = $this->getTeamEntity()) || !($round = $this->getRoundEntity())) {
+        $team = $this->getTeamEntity();
+        if ($team === null) {
+            return new ViewModel();
+        }
+
+        $round = $this->getRoundEntity();
+        if ($round === null) {
             return new ViewModel();
         }
 
@@ -117,7 +124,8 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($quiz = $this->getQuizEntity())) {
+        $quiz = $this->getQuizEntity();
+        if ($quiz === null) {
             return new ViewModel();
         }
 
@@ -196,7 +204,8 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
      */
     private function getQuizEntity()
     {
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return;
         }
 
@@ -226,7 +235,8 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
      */
     private function getRoundEntity()
     {
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return;
         }
 
@@ -256,7 +266,8 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
      */
     private function getTeamEntity()
     {
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return;
         }
 

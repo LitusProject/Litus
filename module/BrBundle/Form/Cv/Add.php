@@ -20,8 +20,8 @@
 
 namespace BrBundle\Form\Cv;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person\Academic;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person\Academic;
 
 /**
  * Add Cv
@@ -59,492 +59,506 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         list($currentYear, $allYears) = $this->getYears();
 
-        $this->add(array(
-            'type'     => 'fieldset',
-            'name'     => 'studies',
-            'label'    => 'Education',
-            'elements' => array(
-                array(
-                    'type'       => 'textarea',
-                    'name'       => 'prior_degree',
-                    'label'      => 'Prior Degree (e.g. Bachelor in Engineering, Industrial Engineering, ...)',
-                    'required'   => true,
-                    'attributes' => array(
-                        'rows'       => 2,
-                        'class'      => 'count',
-                        'data-count' => 100,
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'     => 'fieldset',
+                'name'     => 'studies',
+                'label'    => 'Education',
+                'elements' => array(
+                    array(
+                        'type'       => 'textarea',
+                        'name'       => 'prior_degree',
+                        'label'      => 'Prior Degree (e.g. Bachelor in Engineering, Industrial Engineering, ...)',
+                        'required'   => true,
+                        'attributes' => array(
+                            'rows'       => 2,
+                            'class'      => 'count',
+                            'data-count' => 100,
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'FieldLength',
+                                        'options' => array(
+                                            'max_length'      => 100,
+                                            'new_line_length' => 75,
+                                        ),
+                                    ),
+                                ),
                             ),
-                            'validators' => array(
-                                array(
-                                    'name'    => 'field_length',
-                                    'options' => array(
-                                        'max_length'      => 100,
-                                        'new_line_length' => 75,
+                        ),
+                    ),
+                    array(
+                        'type'       => 'text',
+                        'name'       => 'prior_grade',
+                        'label'      => 'Grade for the Prior Degree (e.g. 65.48)',
+                        'required'   => false,
+                        'empty-data' => '0',
+                        'options'    => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'Decimal',
+                                        'options' => array(
+                                            'max_after_decimal' => '2',
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'bachelor_start',
+                        'label'      => 'Started Prior Degree In',
+                        'required'   => true,
+                        'value'      => $currentYear - 4,
+                        'attributes' => array(
+                            'options' => $allYears,
+                        ),
+                    ),
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'bachelor_end',
+                        'label'      => 'Ended Prior Degree In',
+                        'required'   => true,
+                        'value'      => $currentYear - 1,
+                        'attributes' => array(
+                            'options' => $allYears,
+                        ),
+                    ),
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'degree',
+                        'label'      => 'Primary Degree',
+                        'required'   => true,
+                        'attributes' => array(
+                            'options' => $this->getStudyMap(),
+                        ),
+                    ),
+                    array(
+                        'type'       => 'text',
+                        'name'       => 'grade',
+                        'label'      => '(Provisional) Grade for the Current Degree (e.g. 65.48)',
+                        'required'   => false,
+                        'empty-data' => '0',
+                        'options'    => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'Decimal',
+                                        'options' => array(
+                                            'max_after_decimal' => '2',
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'master_start',
+                        'label'      => 'Started Master In',
+                        'required'   => true,
+                        'value'      => $currentYear - 1,
+                        'attributes' => array(
+                            'options' => $allYears,
+                        ),
+                    ),
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'master_end',
+                        'label'      => 'Will End Master In',
+                        'required'   => true,
+                        'value'      => $currentYear + 1,
+                        'attributes' => array(
+                            'options' => $allYears,
+                        ),
+                    ),
+                    array(
+                        'type'       => 'textarea',
+                        'name'       => 'additional_diplomas',
+                        'label'      => 'Additional Diplomas (e.g. driver\'s license)',
+                        'attributes' => array(
+                            'rows'       => 2,
+                            'class'      => 'count',
+                            'data-count' => 100,
+                            'style'      => 'resize: none;',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'FieldLength',
+                                        'options' => array(
+                                            'max_length'      => 100,
+                                            'new_line_length' => 75,
+                                        ),
                                     ),
                                 ),
                             ),
                         ),
                     ),
                 ),
-                array(
-                    'type'       => 'text',
-                    'name'       => 'prior_grade',
-                    'label'      => 'Grade for the Prior Degree (e.g. 65.48)',
-                    'required'   => false,
-                    'empty-data' => '0',
-                    'options'    => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name'    => 'decimal',
-                                    'options' => array(
-                                        'max_after_decimal' => '2',
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-                array(
-                    'type'       => 'select',
-                    'name'       => 'bachelor_start',
-                    'label'      => 'Started Prior Degree In',
-                    'required'   => true,
-                    'value'      => $currentYear - 4,
-                    'attributes' => array(
-                        'options' => $allYears,
-                    ),
-                ),
-                array(
-                    'type'       => 'select',
-                    'name'       => 'bachelor_end',
-                    'label'      => 'Ended Prior Degree In',
-                    'required'   => true,
-                    'value'      => $currentYear - 1,
-                    'attributes' => array(
-                        'options' => $allYears,
-                    ),
-                ),
-                array(
-                    'type'       => 'select',
-                    'name'       => 'degree',
-                    'label'      => 'Primary Degree',
-                    'required'   => true,
-                    'attributes' => array(
-                        'options' => $this->getStudyMap(),
-                    ),
-                ),
-                array(
-                    'type'       => 'text',
-                    'name'       => 'grade',
-                    'label'      => '(Provisional) Grade for the Current Degree (e.g. 65.48)',
-                    'required'   => false,
-                    'empty-data' => '0',
-                    'options'    => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name'    => 'decimal',
-                                    'options' => array(
-                                        'max_after_decimal' => '2',
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-                array(
-                    'type'       => 'select',
-                    'name'       => 'master_start',
-                    'label'      => 'Started Master In',
-                    'required'   => true,
-                    'value'      => $currentYear - 1,
-                    'attributes' => array(
-                        'options' => $allYears,
-                    ),
-                ),
-                array(
-                    'type'       => 'select',
-                    'name'       => 'master_end',
-                    'label'      => 'Will End Master In',
-                    'required'   => true,
-                    'value'      => $currentYear + 1,
-                    'attributes' => array(
-                        'options' => $allYears,
-                    ),
-                ),
-                array(
-                    'type'       => 'textarea',
-                    'name'       => 'additional_diplomas',
-                    'label'      => 'Additional Diplomas (e.g. driver\'s license)',
-                    'attributes' => array(
-                        'rows'       => 2,
-                        'class'      => 'count',
-                        'data-count' => 100,
-                        'style'      => 'resize: none;',
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name'    => 'field_length',
-                                    'options' => array(
-                                        'max_length'      => 100,
-                                        'new_line_length' => 75,
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'fieldset',
-            'name'     => 'erasmus',
-            'label'    => 'Erasmus (Optional)',
-            'elements' => array(
-                array(
-                    'type'       => 'text',
-                    'name'       => 'period',
-                    'label'      => 'Period',
-                    'attributes' => array(
-                        'class'      => 'count',
-                        'data-count' => 50,
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'     => 'fieldset',
+                'name'     => 'erasmus',
+                'label'    => 'Erasmus (Optional)',
+                'elements' => array(
+                    array(
+                        'type'       => 'text',
+                        'name'       => 'period',
+                        'label'      => 'Period',
+                        'attributes' => array(
+                            'class'      => 'count',
+                            'data-count' => 50,
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'FieldLength',
+                                        'options' => array(
+                                            'max_length'      => 50,
+                                            'new_line_length' => 75,
+                                        ),
+                                    ),
+                                ),
                             ),
-                            'validators' => array(
-                                array(
-                                    'name'    => 'field_length',
-                                    'options' => array(
-                                        'max_length'      => 50,
-                                        'new_line_length' => 75,
+                        ),
+                    ),
+                    array(
+                        'type'       => 'text',
+                        'name'       => 'location',
+                        'label'      => 'Location',
+                        'attributes' => array(
+                            'class'      => 'count',
+                            'data-count' => 50,
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'FieldLength',
+                                        'options' => array(
+                                            'max_length'      => 50,
+                                            'new_line_length' => 75,
+                                        ),
                                     ),
                                 ),
                             ),
                         ),
                     ),
                 ),
-                array(
-                    'type'       => 'text',
-                    'name'       => 'location',
-                    'label'      => 'Location',
-                    'attributes' => array(
-                        'class'      => 'count',
-                        'data-count' => 50,
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name'    => 'field_length',
-                                    'options' => array(
-                                        'max_length'      => 50,
-                                        'new_line_length' => 75,
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'    => 'collection',
-            'name'    => 'languages',
-            'label'   => 'Languages (max. 4)',
-            'options' => array(
-                'count'                  => 0,
-                'should_create_template' => true,
-                'allow_add'              => true,
-                'target_element'         => array(
-                    'type' => 'br_cv_language',
-                ),
-            ),
-            'elements' => array(
-                array(
-                    'type'       => 'textarea',
-                    'name'       => 'extra',
-                    'label'      => 'Extra Information (Year Abroad, Born Outside Belgium, ...)',
-                    'attributes' => array(
-                        'rows'       => 2,
-                        'class'      => 'count',
-                        'data-count' => 100,
-                        'style'      => 'resize: none;',
+        $this->add(
+            array(
+                'type'    => 'collection',
+                'name'    => 'languages',
+                'label'   => 'Languages (max. 4)',
+                'options' => array(
+                    'count'                  => 0,
+                    'should_create_template' => true,
+                    'allow_add'              => true,
+                    'target_element'         => array(
+                        'type' => 'br_cv_language',
                     ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name'    => 'field_length',
-                                    'options' => array(
-                                        'max_length'      => 100,
-                                        'new_line_length' => 75,
+                ),
+                'elements' => array(
+                    array(
+                        'type'       => 'textarea',
+                        'name'       => 'extra',
+                        'label'      => 'Extra Information (Year Abroad, Born Outside Belgium, ...)',
+                        'attributes' => array(
+                            'rows'       => 2,
+                            'class'      => 'count',
+                            'data-count' => 100,
+                            'style'      => 'resize: none;',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'FieldLength',
+                                        'options' => array(
+                                            'max_length'      => 100,
+                                            'new_line_length' => 75,
+                                        ),
                                     ),
                                 ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'fieldset',
-            'name'     => 'capabilities',
-            'label'    => 'Capabilities',
-            'elements' => array(
-                array(
-                    'type'       => 'textarea',
-                    'name'       => 'computer_skills',
-                    'label'      => 'Computer Skills',
-                    'required'   => true,
-                    'attributes' => array(
-                        'rows'       => 4,
-                        'class'      => 'count',
-                        'data-count' => 250,
-                        'style'      => 'resize: none;',
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name'    => 'field_length',
-                                    'options' => array(
-                                        'max_length'      => 250,
-                                        'new_line_length' => 75,
+        $this->add(
+            array(
+                'type'     => 'fieldset',
+                'name'     => 'capabilities',
+                'label'    => 'Capabilities',
+                'elements' => array(
+                    array(
+                        'type'       => 'textarea',
+                        'name'       => 'computer_skills',
+                        'label'      => 'Computer Skills',
+                        'required'   => true,
+                        'attributes' => array(
+                            'rows'       => 4,
+                            'class'      => 'count',
+                            'data-count' => 250,
+                            'style'      => 'resize: none;',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'FieldLength',
+                                        'options' => array(
+                                            'max_length'      => 250,
+                                            'new_line_length' => 75,
+                                        ),
                                     ),
                                 ),
                             ),
                         ),
                     ),
-                ),
-                array(
-                    'type'    => 'collection',
-                    'name'    => 'experiences',
-                    'label'   => 'Experiences, Projects (e.g. Internship, Holiday Jobs) (Max 4)',
-                    'options' => array(
-                        'count'                  => 0,
-                        'should_create_template' => true,
-                        'allow_add'              => true,
-                        'target_element'         => array(
-                            'type' => 'br_cv_experience',
+                    array(
+                        'type'    => 'collection',
+                        'name'    => 'experiences',
+                        'label'   => 'Experiences, Projects (e.g. Internship, Holiday Jobs) (Max 4)',
+                        'options' => array(
+                            'count'                  => 0,
+                            'should_create_template' => true,
+                            'allow_add'              => true,
+                            'target_element'         => array(
+                                'type' => 'br_cv_experience',
+                            ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'fieldset',
-            'name'     => 'thesis',
-            'label'    => 'Thesis',
-            'elements' => array(
-                array(
-                    'type'       => 'textarea',
-                    'name'       => 'summary',
-                    'label'      => 'Summary',
-                    'required'   => true,
-                    'attributes' => array(
-                        'rows'       => 5,
-                        'class'      => 'count',
-                        'data-count' => 250,
-                        'style'      => 'resize: none;',
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name'    => 'field_length',
-                                    'options' => array(
-                                        'max_length'      => 250,
-                                        'new_line_length' => 75,
+        $this->add(
+            array(
+                'type'     => 'fieldset',
+                'name'     => 'thesis',
+                'label'    => 'Thesis',
+                'elements' => array(
+                    array(
+                        'type'       => 'textarea',
+                        'name'       => 'summary',
+                        'label'      => 'Summary',
+                        'required'   => true,
+                        'attributes' => array(
+                            'rows'       => 5,
+                            'class'      => 'count',
+                            'data-count' => 250,
+                            'style'      => 'resize: none;',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'FieldLength',
+                                        'options' => array(
+                                            'max_length'      => 250,
+                                            'new_line_length' => 75,
+                                        ),
                                     ),
                                 ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'fieldset',
-            'name'     => 'future',
-            'label'    => 'Future',
-            'elements' => array(
-                array(
-                    'type'       => 'text',
-                    'name'       => 'field_of_interest',
-                    'label'      => 'Field Of Interest',
-                    'required'   => true,
-                    'attributes' => array(
-                        'class'      => 'count',
-                        'data-count' => 50,
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'     => 'fieldset',
+                'name'     => 'future',
+                'label'    => 'Future',
+                'elements' => array(
+                    array(
+                        'type'       => 'text',
+                        'name'       => 'field_of_interest',
+                        'label'      => 'Field Of Interest',
+                        'required'   => true,
+                        'attributes' => array(
+                            'class'      => 'count',
+                            'data-count' => 50,
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'FieldLength',
+                                        'options' => array(
+                                            'max_length'      => 50,
+                                            'new_line_length' => 75,
+                                        ),
+                                    ),
+                                ),
                             ),
-                            'validators' => array(
-                                array(
-                                    'name'    => 'field_length',
-                                    'options' => array(
-                                        'max_length'      => 50,
-                                        'new_line_length' => 75,
+                        ),
+                    ),
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'mobility_europe',
+                        'label'      => 'Mobility Europe (Would you be able to travel within Europe? How often?)',
+                        'required'   => true,
+                        'value'      => 'No',
+                        'attributes' => array(
+                            'options' => self::$mobilityAnswers,
+                        ),
+                    ),
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'mobility_world',
+                        'label'      => 'Mobility World (Would you be able to travel around the world? How often?)',
+                        'required'   => true,
+                        'value'      => 'No',
+                        'attributes' => array(
+                            'options' => self::$mobilityAnswers,
+                        ),
+                    ),
+                    array(
+                        'type'       => 'textarea',
+                        'name'       => 'career_expectations',
+                        'label'      => 'Career Expectations',
+                        'required'   => true,
+                        'attributes' => array(
+                            'rows'       => 2,
+                            'class'      => 'count',
+                            'data-count' => 200,
+                            'style'      => 'resize: none;',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'FieldLength',
+                                        'options' => array(
+                                            'max_length'      => 200,
+                                            'new_line_length' => 75,
+                                        ),
                                     ),
                                 ),
                             ),
                         ),
                     ),
                 ),
-                array(
-                    'type'       => 'select',
-                    'name'       => 'mobility_europe',
-                    'label'      => 'Mobility Europe (Would you be able to travel within Europe? How often?)',
-                    'required'   => true,
-                    'value'      => 'No',
-                    'attributes' => array(
-                        'options' => self::$mobilityAnswers,
-                    ),
-                ),
-                array(
-                    'type'       => 'select',
-                    'name'       => 'mobility_world',
-                    'label'      => 'Mobility World (Would you be able to travel around the world? How often?)',
-                    'required'   => true,
-                    'value'      => 'No',
-                    'attributes' => array(
-                        'options' => self::$mobilityAnswers,
-                    ),
-                ),
-                array(
-                    'type'       => 'textarea',
-                    'name'       => 'career_expectations',
-                    'label'      => 'Career Expectations',
-                    'required'   => true,
-                    'attributes' => array(
-                        'rows'       => 2,
-                        'class'      => 'count',
-                        'data-count' => 200,
-                        'style'      => 'resize: none;',
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name'    => 'field_length',
-                                    'options' => array(
-                                        'max_length'      => 200,
-                                        'new_line_length' => 75,
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'fieldset',
-            'name'     => 'profile',
-            'label'    => 'Profile',
-            'elements' => array(
-                array(
-                    'type'       => 'textarea',
-                    'name'       => 'hobbies',
-                    'label'      => 'Hobbies',
-                    'required'   => true,
-                    'attributes' => array(
-                        'rows'       => 3,
-                        'class'      => 'count',
-                        'data-count' => 100,
-                        'style'      => 'resize: none;',
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'     => 'fieldset',
+                'name'     => 'profile',
+                'label'    => 'Profile',
+                'elements' => array(
+                    array(
+                        'type'       => 'textarea',
+                        'name'       => 'hobbies',
+                        'label'      => 'Hobbies',
+                        'required'   => true,
+                        'attributes' => array(
+                            'rows'       => 3,
+                            'class'      => 'count',
+                            'data-count' => 100,
+                            'style'      => 'resize: none;',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'FieldLength',
+                                        'options' => array(
+                                            'max_length'      => 100,
+                                            'new_line_length' => 75,
+                                        ),
+                                    ),
+                                ),
                             ),
-                            'validators' => array(
-                                array(
-                                    'name'    => 'field_length',
-                                    'options' => array(
-                                        'max_length'      => 100,
-                                        'new_line_length' => 75,
+                        ),
+                    ),
+                    array(
+                        'type'       => 'textarea',
+                        'name'       => 'about',
+                        'label'      => 'About Me',
+                        'required'   => true,
+                        'attributes' => array(
+                            'rows'       => 2,
+                            'class'      => 'count',
+                            'data-count' => 200,
+                            'style'      => 'resize: none;',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'FieldLength',
+                                        'options' => array(
+                                            'max_length'      => 200,
+                                            'new_line_length' => 75,
+                                        ),
                                     ),
                                 ),
                             ),
                         ),
                     ),
                 ),
-                array(
-                    'type'       => 'textarea',
-                    'name'       => 'about',
-                    'label'      => 'About Me',
-                    'required'   => true,
-                    'attributes' => array(
-                        'rows'       => 2,
-                        'class'      => 'count',
-                        'data-count' => 200,
-                        'style'      => 'resize: none;',
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name'    => 'field_length',
-                                    'options' => array(
-                                        'max_length'      => 200,
-                                        'new_line_length' => 75,
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Add');
 

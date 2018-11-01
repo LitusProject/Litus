@@ -20,19 +20,17 @@
 
 namespace CudiBundle\Component\WebSocket\Sale;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Component\WebSocket\User,
-    CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
-    CommonBundle\Entity\User\Barcode\Ean12 as Ean12,
-    CudiBundle\Component\WebSocket\Sale\Printer as Printer,
-    CudiBundle\Entity\IsicCard,
-    CudiBundle\Entity\Sale\Booking,
-    CudiBundle\Entity\Sale\SaleItem,
-    CudiBundle\Entity\User\Person\Sale\Acco as AccoCard,
-    Doctrine\ORM\EntityManager,
-    SecretaryBundle\Entity\Registration,
-    Zend\Soap\Client as SoapClient;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Component\WebSocket\User;
+use CommonBundle\Entity\User\Person\Academic;
+use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
+use CudiBundle\Component\WebSocket\Sale\Printer;
+use CudiBundle\Entity\Sale\Booking;
+use CudiBundle\Entity\Sale\SaleItem;
+use CudiBundle\Entity\User\Person\Sale\Acco as AccoCard;
+use Doctrine\ORM\EntityManager;
+use SecretaryBundle\Entity\Registration;
+use Zend\Soap\Client as SoapClient;
 
 /**
  * QueueItem Object
@@ -214,8 +212,8 @@ class QueueItem
         );
 
         $isicArticle = $this->entityManager
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('cudi.isic_sale_article');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.isic_sale_article');
 
         $soldArticles = array();
 
@@ -248,7 +246,7 @@ class QueueItem
 
                 if (!$isicCard->hasPaid()) {
                     $config = $this->entityManager
-                    ->getRepository('CommonBundle\Entity\General\Config');
+                        ->getRepository('CommonBundle\Entity\General\Config');
 
                     $serviceUrl = $config->getConfigValue('cudi.isic_service_url');
                     $client = new SoapClient($serviceUrl);
@@ -276,7 +274,7 @@ class QueueItem
                 $status = $booking->getPerson()
                     ->getOrganizationStatus($this->getCurrentAcademicYear());
 
-                if (null === $status) {
+                if ($status === null) {
                     $booking->getPerson()
                         ->addOrganizationStatus(
                             new OrganizationStatus(
@@ -286,7 +284,7 @@ class QueueItem
                             )
                         );
                 } else {
-                    if ('non_member' === $status->getStatus()) {
+                    if ($status->getStatus() === 'non_member') {
                         $status->setStatus('member');
                     }
                 }
@@ -295,7 +293,7 @@ class QueueItem
                     ->getRepository('SecretaryBundle\Entity\Registration')
                     ->findOneByAcademicAndAcademicYear($booking->getPerson(), $this->getCurrentAcademicYear());
 
-                if (null === $registration) {
+                if ($registration === null) {
                     $academic = $booking->getPerson();
                     if (!($academic instanceof Academic)) {
                         continue;
@@ -346,7 +344,7 @@ class QueueItem
             if (in_array($booking->getArticle()->getId(), $memberShipArticles)) {
                 $status = $booking->getPerson()
                     ->getOrganizationStatus($this->getCurrentAcademicYear());
-                if (null === $status) {
+                if ($status === null) {
                     $booking->getPerson()
                         ->addOrganizationStatus(
                             new OrganizationStatus(
@@ -356,7 +354,7 @@ class QueueItem
                             )
                         );
                 } else {
-                    if ('non_member' === $status->getStatus()) {
+                    if ($status->getStatus() === 'non_member') {
                         $status->setStatus('member');
                     }
                 }
@@ -365,7 +363,7 @@ class QueueItem
                     ->getRepository('SecretaryBundle\Entity\Registration')
                     ->findOneByAcademicAndAcademicYear($booking->getPerson(), $this->getCurrentAcademicYear());
 
-                if (null === $registration) {
+                if ($registration === null) {
                     $academic = $booking->getPerson();
                     if (!($academic instanceof Academic)) {
                         continue;
@@ -399,7 +397,7 @@ class QueueItem
                     }
                 }
 
-                $number = (isset($bestDiscount) && $bestDiscount->applyOnce()) ? 1 : $soldArticle['number'];
+                $number = isset($bestDiscount) && $bestDiscount->applyOnce() ? 1 : $soldArticle['number'];
                 $saleItem = new SaleItem(
                     $soldArticle['article'],
                     $number,
@@ -483,7 +481,7 @@ class QueueItem
                     'number'    => $booking->getNumber(),
                     'status'    => $booking->getStatus(),
                     'sellable'  => $booking->getArticle()->isSellable(),
-                    'collected' => isset($this->articles->{$booking->getArticle()->getId()}) ? $this->articles->{$booking->getArticle()->getId()} : 0,
+                    'collected' => $this->articles->{$booking->getArticle()->getId()} ?? 0,
                     'discounts' => array(),
                 );
 
@@ -544,10 +542,17 @@ class QueueItem
     }
 
     /**
-     * @return \CommonBundle\Entity\General\AcademicYear
+     * Get the current academic year.
+     *
+     * @param  boolean $organization
+     * @return AcademicYear
      */
-    private function getCurrentAcademicYear()
+    protected function getCurrentAcademicYear($organization = false)
     {
+        if ($organization) {
+            return AcademicYear::getOrganizationYear($this->entityManager);
+        }
+
         return AcademicYear::getUniversityYear($this->entityManager);
     }
 }

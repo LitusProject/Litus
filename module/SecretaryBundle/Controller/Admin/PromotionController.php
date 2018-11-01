@@ -20,12 +20,12 @@
 
 namespace SecretaryBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
-    CommonBundle\Entity\General\AcademicYear,
-    SecretaryBundle\Entity\Promotion,
-    SecretaryBundle\Entity\Promotion\Academic,
-    SecretaryBundle\Entity\Promotion\External,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil;
+use CommonBundle\Entity\General\AcademicYear;
+use SecretaryBundle\Entity\Promotion;
+use SecretaryBundle\Entity\Promotion\Academic;
+use SecretaryBundle\Entity\Promotion\External;
+use Zend\View\Model\ViewModel;
 
 /**
  * PromotionController
@@ -40,11 +40,12 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $paginator = $this->paginator()->createFromArray(
                 $this->search($academicYear),
                 $this->getParam('page')
@@ -76,7 +77,8 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
     {
         $this->initAjax();
 
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -112,7 +114,8 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -219,7 +222,8 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
     {
         $this->initAjax();
 
-        if (!($promotion = $this->getPromotionEntity())) {
+        $promotion = $this->getPromotionEntity();
+        if ($promotion === null) {
             return new ViewModel();
         }
 
@@ -235,7 +239,8 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
 
     public function updateAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -314,12 +319,12 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
     private function getAcademicYearEntity()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') !== null) {
             $date = AcademicYearUtil::getDateTime($this->getParam('academicyear'));
         }
         $academicYear = AcademicYearUtil::getUniversityYear($this->getEntityManager(), $date);
 
-        if (null === $academicYear) {
+        if ($academicYear === null) {
             $this->flashMessenger()->error(
                 'Error',
                 'No academic year was found!'

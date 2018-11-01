@@ -34,14 +34,15 @@ $connection = pg_connect(
 
 $result = pg_query($connection, 'SELECT value FROM general.config WHERE key = \'last_upgrade\'');
 
-if (0 == pg_num_rows($result)) {
-    echo 'Please run `php public/index.php install:all` before attempting to upgrade' . PHP_EOL;
+if (pg_num_rows($result) == 0) {
+    echo 'Please run `php bin/console.php install:all` before attempting to upgrade' . PHP_EOL;
     exit(1);
 }
 
 $result = pg_query($connection, 'SELECT value FROM general.config WHERE key = \'last_upgrade\'');
 $lastUpgrade = pg_fetch_row($result)[0];
 
+$files = array();
 foreach (new DirectoryIterator(__DIR__ . '/scripts') as $fileInfo) {
     if ($fileInfo->isDot() || $fileInfo->getFilename() === 'README.md') {
         continue;

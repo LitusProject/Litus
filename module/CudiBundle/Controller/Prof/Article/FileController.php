@@ -20,12 +20,12 @@
 
 namespace CudiBundle\Controller\Prof\Article;
 
-use CudiBundle\Entity\Article\Internal as InternalArticle,
-    CudiBundle\Entity\File\File,
-    CudiBundle\Entity\File\Mapping,
-    CudiBundle\Entity\Prof\Action,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Article\Internal as InternalArticle;
+use CudiBundle\Entity\File\File;
+use CudiBundle\Entity\File\Mapping;
+use CudiBundle\Entity\Prof\Action;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * FileController
@@ -36,7 +36,8 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
 {
     public function manageAction()
     {
-        if (!($article = $this->getInternalArticleEntity())) {
+        $article = $this->getInternalArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -79,22 +80,25 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
 
     public function downloadAction()
     {
+        $mapping = $this->getFileMappingEntity();
+        if ($mapping === null) {
+            return new ViewModel();
+        }
+
         $filePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.file_path');
 
-        if (!($mapping = $this->getFileMappingEntity())) {
-            return new ViewModel();
-        }
-
         $file = $mapping->getFile();
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="' . $file->getName() . '"',
-            'Content-Type'        => 'application/octet-stream',
-            'Content-Length'      => filesize($filePath . $file->getPath()),
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="' . $file->getName() . '"',
+                'Content-Type'        => 'application/octet-stream',
+                'Content-Length'      => filesize($filePath . $file->getPath()),
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         $handle = fopen($filePath . $file->getPath(), 'r');
@@ -110,15 +114,18 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
 
     public function uploadAction()
     {
-        if (!($article = $this->getInternalArticleEntity())) {
+        $article = $this->getInternalArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
         $form = $this->getForm('cudi_prof_file_add');
-        $form->setData(array_merge(
-            $this->getRequest()->getPost()->toArray(),
-            $this->getRequest()->getFiles()->toArray()
-        ));
+        $form->setData(
+            array_merge(
+                $this->getRequest()->getPost()->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            )
+        );
 
         if ($form->isValid()) {
             $formData = $form->getData();
@@ -143,8 +150,8 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
                 $article,
                 false
             );
-            $this->getEntityManager()->persist($file);
 
+            $this->getEntityManager()->persist($file);
             $this->getEntityManager()->flush();
 
             $mapping = $this->getEntityManager()
@@ -186,7 +193,8 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->getFileMappingEntity())) {
+        $mapping = $this->getFileMappingEntity();
+        if ($mapping === null) {
             return new ViewModel();
         }
 

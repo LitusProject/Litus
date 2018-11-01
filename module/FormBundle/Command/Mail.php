@@ -20,11 +20,11 @@
 
 namespace FormBundle\Command;
 
-use DateInterval,
-    DateTime,
-    FormBundle\Entity\Field\TimeSlot,
-    FormBundle\Entity\Node\Form\Doodle,
-    Zend\Mail\Message;
+use DateInterval;
+use DateTime;
+use FormBundle\Entity\Field\TimeSlot;
+use FormBundle\Entity\Node\Form\Doodle;
+use Zend\Mail\Message;
 
 /**
  * RenderMail
@@ -40,18 +40,19 @@ class Mail extends \CommonBundle\Component\Console\Command
             ->setName('form:mail')
             ->setDescription('renders (and sends) reminder mails for forms')
             ->addOption('mail', 'm', null, 'send the reminder mails')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The %command.name% command generates reminder mails for forms and sends them
 if the <fg=blue>--mail</fg=blue> flag is given.
 
 The <fg=blue>--mail</fg=blue> flag is ignored if APPLICATON_ENV is "<comment>development</comment>"
 EOT
-        );
+            );
     }
 
     protected function executeCommand()
     {
-        if ($this->getOption('mail') && 'development' == getenv('APPLICATION_ENV')) {
+        if ($this->getOption('mail') && getenv('APPLICATION_ENV') == 'development') {
             $this->writeln('<fg=red;options=bold>Warning:</fg=red;options=bold> APPLICATION_ENV is development, --mail is ignored');
         }
 
@@ -88,8 +89,10 @@ EOT
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findOneByAbbrev('en');
 
-        $this->writeln('Form <comment>' . $form->getTitle($english)
-            . '</comment>: TimeSlot <comment>' . $timeSlot->getLabel($english) . '</comment>');
+        $this->writeln(
+            'Form <comment>' . $form->getTitle($english)
+            . '</comment>: TimeSlot <comment>' . $timeSlot->getLabel($english) . '</comment>'
+        );
 
         $entries = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Entry')
@@ -117,7 +120,7 @@ EOT
                 $mail->addBcc($mailAddress);
             }
 
-            if ('development' != getenv('APPLICATION_ENV') && $this->getOption('mail')) {
+            if (getenv('APPLICATION_ENV') != 'development' && $this->getOption('mail')) {
                 $this->getMailTransport()->send($mail);
             }
         }

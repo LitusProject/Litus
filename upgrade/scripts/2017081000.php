@@ -29,4 +29,4 @@ pg_query($connection, 'DROP TABLE IF EXISTS br.contracts');
 pg_query($connection, 'DROP TABLE IF EXISTS br.invoices');
 pg_query($connection, 'DROP TABLE IF EXISTS br.orders');
 
-exec('./bin/litus.sh orm:schema-tool:update --force', $output, $returnValue);
+exec('php bin/doctrine.php orm:schema-tool:update --force', $output, $returnValue);

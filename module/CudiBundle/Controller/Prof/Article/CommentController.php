@@ -20,10 +20,10 @@
 
 namespace CudiBundle\Controller\Prof\Article;
 
-use CudiBundle\Entity\Article,
-    CudiBundle\Entity\Comment\Comment,
-    CudiBundle\Entity\Comment\Mapping,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Article;
+use CudiBundle\Entity\Comment\Comment;
+use CudiBundle\Entity\Comment\Mapping;
+use Zend\View\Model\ViewModel;
 
 /**
  * CommentController
@@ -34,7 +34,8 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
 {
     public function manageAction()
     {
-        if (!($article = $this->getArticleEntity())) {
+        $article = $this->getArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -92,7 +93,8 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->getCommentMappingEntity())) {
+        $mapping = $this->getCommentMappingEntity();
+        if ($mapping === null) {
             return new ViewModel();
         }
 
@@ -113,12 +115,12 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     }
 
     /**
-     * @param  int|null     $id
+     * @param  integer|null $id
      * @return Article|null
      */
     private function getArticleEntity($id = null)
     {
-        $id = $id === null ? $this->getParam('id', 0) : $id;
+        $id = $id ?? $this->getParam('id', 0);
 
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
@@ -151,7 +153,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     {
         $mapping = $this->getEntityById('CudiBundle\Entity\Comment\Mapping');
 
-        if (!($mapping instanceof Mapping) || null === $this->getArticleEntity($mapping->getArticle()->getId())) {
+        if (!($mapping instanceof Mapping) || $this->getArticleEntity($mapping->getArticle()->getId()) === null) {
             $this->flashMessenger()->error(
                 'Error',
                 'No mapping was found!'

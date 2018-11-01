@@ -31,7 +31,7 @@ use CommonBundle\Component\Form\Admin\Element\Csrf;
 abstract class Form extends \CommonBundle\Component\Form\Form
 {
     /**
-     * @param null|string|int $name Optional name for the element
+     * @param string|integer|null $name Optional name for the element
      */
     public function __construct($name = null)
     {

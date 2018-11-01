@@ -20,14 +20,14 @@
 
 namespace SyllabusBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    SyllabusBundle\Component\Document\Generator\Group as CsvGenerator,
-    SyllabusBundle\Entity\Group,
-    SyllabusBundle\Entity\Group\StudyMap,
-    SyllabusBundle\Entity\Poc as PocEntity,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+use SyllabusBundle\Component\Document\Generator\Group as CsvGenerator;
+use SyllabusBundle\Entity\Group;
+use SyllabusBundle\Entity\Group\StudyMap;
+use SyllabusBundle\Entity\Poc as PocEntity;
+use Zend\View\Model\ViewModel;
 
 /**
  * GroupController
@@ -38,7 +38,8 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -73,7 +74,8 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -117,7 +119,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    public function addPocGroup(Group $groupEntity,AcademicYearEntity $academicYear)
+    public function addPocGroup(Group $groupEntity, AcademicYearEntity $academicYear)
     {
         $object = new PocEntity();
         $object->setAcademicYear($academicYear);
@@ -126,18 +128,27 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         $this->getEntityManager()->persist($object);
         $this->getEntityManager()->flush();
     }
+
     public function editAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
-        if (!($group = $this->getGroupEntity())) {
+        $group = $this->getGroupEntity();
+        if ($group === null) {
             return new ViewModel();
         }
-        $isPocGroup = $group->getIsPocGroup($academicYear);
 
-        $form = $this->getForm('syllabus_group_edit', array('group' => $group,'academicYear' => $academicYear,'isPocGroup' => $isPocGroup));
+        $form = $this->getForm(
+            'syllabus_group_edit',
+            array(
+                'group'        => $group,
+                'academicYear' => $academicYear,
+                'isPocGroup'   => $group->getIsPocGroup($academicYear)
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -145,10 +156,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             if ($form->isValid()) {
                 $data = $form->getData();
 
-                $isPocGroup = $group->getIsPocGroup($academicYear);
                 if ($data['poc_group']) {
-                    if (!$isPocGroup) {
-                        $this->addPocGroup($group,$academicYear);
+                    if (!$group->getIsPocGroup($academicYear)) {
+                        $this->addPocGroup($group, $academicYear);
                     }
                 }
 
@@ -188,11 +198,13 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function studiesAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
-        if (!($group = $this->getGroupEntity())) {
+        $group = $this->getGroupEntity();
+        if ($group === null) {
             return new ViewModel();
         }
 
@@ -220,7 +232,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                             ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
                             ->findOneByStudyGroup($study, $group);
 
-                        if (null === $map) {
+                        if ($map === null) {
                             $this->getEntityManager()->persist(new StudyMap($study, $group));
                         }
                     }
@@ -274,11 +286,12 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($group = $this->getGroupEntity())) {
+        $group = $this->getGroupEntity();
+        if ($group === null) {
             return new ViewModel();
         }
 
-        $group->setRemoved();
+        $group->remove();
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -292,7 +305,8 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($mapping = $this->getStudyMapEntity())) {
+        $mapping = $this->getStudyMapEntity();
+        if ($mapping === null) {
             return new ViewModel();
         }
 
@@ -308,11 +322,13 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function exportAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
-        if (!($group = $this->getGroupEntity())) {
+        $group = $this->getGroupEntity();
+        if ($group === null) {
             return new ViewModel();
         }
 
@@ -321,10 +337,12 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         $csvGenerator->generateDocument($exportFile);
 
         $this->getResponse()->getHeaders()
-            ->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="' . $group->getName() . '_' . $academicYear->getCode() . '.csv"',
-            'Content-Type'        => 'text/csv',
-        ));
+            ->addHeaders(
+                array(
+                    'Content-Disposition' => 'attachment; filename="' . $group->getName() . '_' . $academicYear->getCode() . '.csv"',
+                    'Content-Type'        => 'text/csv',
+                )
+            );
 
         return new ViewModel(
             array(
@@ -393,7 +411,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     private function getAcademicYearEntity()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') !== null) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
         }
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);

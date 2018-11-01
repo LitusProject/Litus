@@ -20,8 +20,8 @@
 
 namespace MailBundle\Controller\Admin;
 
-use MailBundle\Entity\Alias,
-    Zend\View\Model\ViewModel;
+use MailBundle\Entity\Alias;
+use Zend\View\Model\ViewModel;
 
 class AliasController extends \MailBundle\Component\Controller\AdminController
 {
@@ -85,7 +85,8 @@ class AliasController extends \MailBundle\Component\Controller\AdminController
     {
         $this->initAjax();
 
-        if (!($alias = $this->getAliasEntity())) {
+        $alias = $this->getAliasEntity();
+        if ($alias === null) {
             return new ViewModel();
         }
 

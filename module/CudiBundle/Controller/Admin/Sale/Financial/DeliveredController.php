@@ -20,10 +20,10 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Financial;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CudiBundle\Entity\Sale\Article as SaleArticle,
-    CudiBundle\Entity\Supplier,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\General\AcademicYear;
+use CudiBundle\Entity\Sale\Article as SaleArticle;
+use CudiBundle\Entity\Supplier;
+use Zend\View\Model\ViewModel;
 
 /**
  * DeliveredController
@@ -35,7 +35,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
     public function individualAction()
     {
         $academicYear = $this->getAcademicYearEntity();
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $records = $this->individualSearch($academicYear);
         }
 
@@ -99,7 +99,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
     }
 
     /**
-     * @param  AcademicYear             $academicYear
+     * @param  AcademicYear $academicYear
      * @return \Doctrine\ORM\Query|null
      */
     private function individualSearch(AcademicYear $academicYear)
@@ -119,7 +119,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
     public function articlesAction()
     {
         $academicYear = $this->getAcademicYearEntity();
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $records = $this->articlesSearch($academicYear);
         }
 
@@ -190,7 +190,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
     }
 
     /**
-     * @param  AcademicYear             $academicYear
+     * @param  AcademicYear $academicYear
      * @return \Doctrine\ORM\Query|null
      */
     private function articlesSearch(AcademicYear $academicYear)
@@ -217,7 +217,8 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
 
     public function articleAction()
     {
-        if (!($article = $this->getSaleArticleEntity())) {
+        $article = $this->getSaleArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -276,7 +277,8 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
 
     public function supplierAction()
     {
-        if (!($supplier = $this->getSupplierEntity())) {
+        $supplier = $this->getSupplierEntity();
+        if ($supplier === null) {
             return new ViewModel();
         }
 
@@ -286,7 +288,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $records = $this->supplierSearch($supplier, $this->getAcademicYearEntity());
         }
 
@@ -316,7 +318,8 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($supplier = $this->getSupplierEntity())) {
+        $supplier = $this->getSupplierEntity();
+        if ($supplier === null) {
             return new ViewModel();
         }
 
@@ -350,8 +353,8 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
     }
 
     /**
-     * @param  Supplier                 $supplier
-     * @param  AcademicYear             $academicYear
+     * @param  Supplier     $supplier
+     * @param  AcademicYear $academicYear
      * @return \Doctrine\ORM\Query|null
      */
     private function supplierSearch(Supplier $supplier, AcademicYear $academicYear)

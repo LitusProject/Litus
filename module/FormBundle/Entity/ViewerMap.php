@@ -20,9 +20,9 @@
 
 namespace FormBundle\Entity;
 
-use CommonBundle\Entity\User\Person,
-    Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Node\Form;
+use CommonBundle\Entity\User\Person;
+use Doctrine\ORM\Mapping as ORM;
+use FormBundle\Entity\Node\Form;
 
 /**
  * This entity stores the node item.

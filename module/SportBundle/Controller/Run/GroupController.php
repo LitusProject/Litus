@@ -20,8 +20,8 @@
 
 namespace SportBundle\Controller\Run;
 
-use SportBundle\Entity\Group,
-    Zend\View\Model\ViewModel;
+use SportBundle\Entity\Group;
+use Zend\View\Model\ViewModel;
 
 /**
  * GroupController
@@ -91,14 +91,19 @@ class GroupController extends \SportBundle\Component\Controller\RunController
         $happyHours1 = $this->generateHappyHours(20);
         $happyHours2 = $this->generateHappyHours(8);
         if (count($happyHours1) == 0 || count($happyHours2) == 0) {
-            return new ViewModel(array(
-                'full' => true,
-            ));
+            return new ViewModel(
+                array(
+                    'full' => true,
+                )
+            );
         } else {
-            $form = $this->getForm('sport_group_add', array(
-                'happyHours1' => $happyHours1,
-                'happyHours2' => $happyHours2,
-            ));
+            $form = $this->getForm(
+                'sport_group_add',
+                array(
+                    'happyHours1' => $happyHours1,
+                    'happyHours2' => $happyHours2,
+                )
+            );
 
             if ($this->getRequest()->isPost()) {
                 $formData = $this->getRequest()->getPost();
@@ -111,7 +116,7 @@ class GroupController extends \SportBundle\Component\Controller\RunController
                         ->getRepository('SportBundle\Entity\Runner')
                         ->findOneByUniversityIdentification($memberData['university_identification']);
 
-                    if (null === $runner) {
+                    if ($runner === null) {
                         $runner = $this->getEntityManager()
                             ->getRepository('SportBundle\Entity\Runner')
                             ->findOneByRunnerIdentification($memberData['university_identification']);
@@ -121,8 +126,7 @@ class GroupController extends \SportBundle\Component\Controller\RunController
                         $alreadyInGroup = true;
                     }
 
-                    if (
-                        '' != $memberData['university_identification']
+                    if ($memberData['university_identification'] != ''
                         && !isset($memberData['first_name'])
                         && !isset($memberData['last_name'])
                     ) {
@@ -143,7 +147,7 @@ class GroupController extends \SportBundle\Component\Controller\RunController
                             new Group($this->getCurrentAcademicYear())
                         );
 
-                        if (null !== $group) {
+                        if ($group !== null) {
                             $this->getEntityManager()->persist($group);
 
                             $this->getEntityManager()->flush();
@@ -188,7 +192,7 @@ class GroupController extends \SportBundle\Component\Controller\RunController
     {
         $this->initAjax();
 
-        if (8 == strlen($this->getParam('university_identification'))) {
+        if (strlen($this->getParam('university_identification')) == 8) {
             $person = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findOneByUniversityIdentification($this->getParam('university_identification'));
@@ -199,7 +203,7 @@ class GroupController extends \SportBundle\Component\Controller\RunController
                     ->findOneByRunnerIdentification($this->getParam('university_identification'));
             }
 
-            if (null !== $person) {
+            if ($person !== null) {
                 return new ViewModel(
                     array(
                         'result' => (object) array(

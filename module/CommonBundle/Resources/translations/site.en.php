@@ -34,8 +34,6 @@ return array(
     'Account'                       => 'Account',
     'KU Leuven&mdash;Central Login' => 'KU Leuven&mdash;Central Login',
     'Language'                      => 'Language',
-    'Dutch'                         => 'Nederlands',
-    'English'                       => 'English',
 
     'Links'    => 'Links',
     'Partners' => 'Partners',
@@ -50,7 +48,6 @@ return array(
     'Username'    => 'Username',
     'Password'    => 'Password',
     'Remember Me' => 'Remember Me',
-    'Login'       => 'Login',
 
     'You have been successfully logged in!'                              => 'You have been successfully logged in!',
     'The given username and password did not match. Please try again.'   => 'The given username and password did not match. Please try again.',
@@ -58,7 +55,6 @@ return array(
     'Something went wrong while logging you in. Please try again later.' => 'Something went wrong while logging you in. Please try again later.',
 
     'Activate'                                                                                                         => 'Activate',
-    'Password'                                                                                                         => 'Password',
     'Verify Password'                                                                                                  => 'Verify Password',
     'Your account was succesfully activated!'                                                                          => 'Your account was succesfully activated!',
     'Overview'                                                                                                         => 'Overview',
@@ -115,9 +111,9 @@ return array(
 
     'Student IT uses cookies to increase the ease of this website. By using the website or by pressing "Continue", you give the permission to use cookies. If you want more information about cookies and how they are used, you can view <a href="%url%">our privacy policy</a> here.' => 'Student IT uses cookies to increase the ease of this website. By using the website or by pressing "Continue", you give the permission to use cookies. If you want more information about cookies and how they are used, you can view <a href="%url%">our privacy policy</a> here.',
 
-    'Privacy Policy'                => 'Privacy Policy',
+    'Privacy Policy' => 'Privacy Policy',
 
-    'Wiki'                          => 'Exam Wiki',
+    'Wiki' => 'Exam Wiki',
 
     'International Student'         => 'International Student',
     'I am an international student' => 'I am an international student',

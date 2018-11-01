@@ -20,16 +20,18 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Component\Document\Generator\Company\Pdf as PdfGenerator,
-    BrBundle\Entity\Company,
-    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
-    CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    Imagick,
-    Zend\File\Transfer\Adapter\Http as FileUpload,
-    Zend\Http\Headers,
-    Zend\Validator\File\IsImage as IsImageValidator,
-    Zend\View\Model\ViewModel;
+use BrBundle\Component\Document\Generator\Company\Pdf as PdfGenerator;
+use BrBundle\Entity\Company;
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use Imagick;
+use Zend\Filter\File\RenameUpload as RenameUploadFilter;
+use Zend\Http\Headers;
+use Zend\Validator\File\IsImage as IsImageValidator;
+use Zend\Validator\File\UploadFile as UploadFileValidator;
+use Zend\Validator\ValidatorChain;
+use Zend\View\Model\ViewModel;
 
 /**
  * CompanyController
@@ -41,7 +43,8 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function manageAction()
     {
-        if (null !== $this->getParam('field') && ($companies = $this->search())) {
+        $companies = $this->search();
+        if ($this->getParam('field') !== null && $companies !== null) {
             $paginator = $this->paginator()->createFromQuery(
                 $companies,
                 $this->getParam('page')
@@ -106,7 +109,8 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editAction()
     {
-        if (!($company = $this->getCompanyEntity())) {
+        $company = $this->getCompanyEntity();
+        if ($company === null) {
             return new ViewModel();
         }
 
@@ -147,7 +151,8 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($company = $this->getCompanyEntity())) {
+        $company = $this->getCompanyEntity();
+        if ($company === null) {
             return new ViewModel();
         }
 
@@ -164,15 +169,20 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
     public function uploadAction()
     {
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
+            $form = $this->getRequest()->getPost();
 
-            $upload = new FileUpload();
-
-            if ('image' == $formData['type']) {
-                $upload->addValidator(new IsImageValidator(array('image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/gif')));
+            $validatorChain = new ValidatorChain();
+            $validatorChain->attach(new UploadFileValidator());
+            if ($form['type'] == 'image') {
+                $validatorChain->attach(
+                    new IsImageValidator(
+                        array('image/gif', 'image/jpeg', 'image/png')
+                    )
+                );
             }
 
-            if ($upload->isValid()) {
+            $file = $this->getRequest()->getFiles()['file'];
+            if ($validatorChain->isValid($file)) {
                 $filePath = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('br.file_path') . '/';
@@ -181,8 +191,9 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                     $fileName = sha1(uniqid());
                 } while (file_exists($filePath . $fileName));
 
-                $upload->addFilter('Rename', $filePath . $fileName);
-                $upload->receive();
+                $renameUploadFilter = new RenameUploadFilter();
+                $renameUploadFilter->setTarget($filePath . $fileName)
+                    ->filter($file);
 
                 $url = $this->url()->fromRoute(
                     'br_career_file',
@@ -206,7 +217,8 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editLogoAction()
     {
-        if (!($company = $this->getCompanyEntity())) {
+        $company = $this->getCompanyEntity();
+        if ($company === null) {
             return new ViewModel();
         }
 
@@ -217,10 +229,12 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             ->getConfigValue('br.public_logo_path');
 
         if ($this->getRequest()->isPost()) {
-            $form->setData(array_merge_recursive(
-                $this->getRequest()->getPost()->toArray(),
-                $this->getRequest()->getFiles()->toArray()
-            ));
+            $form->setData(
+                array_merge_recursive(
+                    $this->getRequest()->getPost()->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
 
             if ($form->isValid()) {
                 $formData = $form->getData();
@@ -274,8 +288,8 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             ->getConfigValue('search_max_results');
 
         $companies = $this->search()
-                ->setMaxResults($numResults)
-                ->getResult();
+            ->setMaxResults($numResults)
+            ->getResult();
 
         $result = array();
         foreach ($companies as $company) {
@@ -306,10 +320,12 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         foreach ($companies as $company) {
             $company_users = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\User\Person\Corporate')
-                ->findBy(array(
-                    'canLogin' => 'true',
-                    'company'  => $company->getId(),
-                ));
+                ->findBy(
+                    array(
+                        'canLogin' => 'true',
+                        'company'  => $company->getId(),
+                    )
+                );
 
             foreach ($company_users as $user) {
                 $results[] = array($company->getName(), $company->getPhoneNumber(), $user->getFullName(), $user->getUsername(), $user->getEmail(), ' ' . $user->getPhoneNumber());
@@ -323,10 +339,12 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         $document->generateDocument($file);
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="contacts_list.csv"',
-            'Content-Type'        => 'text/csv',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="contacts_list.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -343,10 +361,12 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         $document->generate();
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="contacts_list.pdf"',
-            'Content-Type'        => 'application/pdf',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="contacts_list.pdf"',
+                'Content-Type'        => 'application/pdf',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(

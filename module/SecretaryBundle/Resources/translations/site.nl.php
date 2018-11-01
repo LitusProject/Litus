@@ -73,7 +73,6 @@ return array(
     'Your studies were successfully saved!'       => 'Je studierichtingen zijn succesvol opgeslagen!',
     'An error occurred while saving your studies' => 'Er is een fout ogetreden tijdens het opslagen van je studierichtingen',
 
-    'Choose Your Subjects'                          => 'Kies Je Vakken',
     'Complete Your Registration'                    => 'Voltooi Je Inschrijving',
     'Your subjects were successfully saved!'        => 'Je vakken zijn succesvol opgeslagen!',
     'An error occurred while saving your subjects!' => 'Er is een fout opgetreden tijdens het opslagen van je vakken!',

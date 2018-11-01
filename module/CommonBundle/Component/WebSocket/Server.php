@@ -44,8 +44,6 @@ abstract class Server
     const OP_PING = 0x9;
     const OP_PONG = 0xa;
 
-    /**
-     */
     public function __construct($file)
     {
         $this->file = $file;
@@ -101,16 +99,18 @@ abstract class Server
                 gc_collect_cycles();
             }
 
-            $changed = $this->sockets;
-            stream_select($changed, $write, $except, null);
+            $read = $this->sockets;
+            $write = array();
+            $except = array();
+            stream_select($read, $write, $except, null);
 
-            foreach ($changed as $socket) {
+            foreach ($read as $socket) {
                 if ($socket == $this->master) {
                     $this->addUserSocket(stream_socket_accept($this->master));
                 } else {
                     $buffer = fread($socket, 2048);
 
-                    if (false === $buffer || strlen($buffer) === 0) {
+                    if ($buffer === false || strlen($buffer) === 0) {
                         $this->removeUserSocket($socket);
                     } else {
                         $user = $this->getUserBySocket($socket);
@@ -201,7 +201,7 @@ abstract class Server
 
         try {
             socket_close($socket);
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             // Do nothing
         }
 
@@ -247,7 +247,8 @@ abstract class Server
         } elseif ($f->getIsFin() && $f->getOpcode() == 0) {
             $user->appendBuffer($f);
 
-            if ($buffer = $user->getBuffer()) {
+            $buffer = $user->getBuffer();
+            if ($buffer !== null) {
                 $this->handleDataFrame($user, $buffer);
             }
 

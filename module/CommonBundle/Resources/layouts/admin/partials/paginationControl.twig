@@ -2,7 +2,7 @@
     <table class="pagination {% if paginationControl.fullWidth %}full_width{% endif %}">
         <tr>
             <td>
-                {% if paginationControl.pages.previous is not sameas(null) %}
+                {% if paginationControl.pages.previous is not same as(null) %}
                     <a href="{{ url(paginationControl.matchedRouteName, {"page": paginationControl.pages.first}|merge(paginationControl.matchedRouteParams)) }}">&larr; First</a>
                 {% else %}
                     {% if 1 != paginationControl.pages.pageCount and 1 != paginationControl.pages.current %}
@@ -10,7 +10,7 @@
                     {% endif %}
                 {% endif %}
 
-                {% if paginationControl.pages.previous is not sameas(null) %}
+                {% if paginationControl.pages.previous is not same as(null) %}
                     <a href="{{ url(paginationControl.matchedRouteName, {"page": paginationControl.pages.previous}|merge(paginationControl.matchedRouteParams)) }}">&laquo; Previous</a>
                 {% endif %}
             </td>
@@ -20,11 +20,11 @@
             </td>
 
             <td>
-                {% if paginationControl.pages.next is not sameas(null) %}
+                {% if paginationControl.pages.next is not same as(null) %}
                     <a href="{{ url(paginationControl.matchedRouteName, {"page": paginationControl.pages.next}|merge(paginationControl.matchedRouteParams)) }}">Next &raquo;</a>
                 {% endif %}
 
-                {% if paginationControl.pages.next is not sameas(null) %}
+                {% if paginationControl.pages.next is not same as(null) %}
                     <a href="{{ url(paginationControl.matchedRouteName, {"page": paginationControl.pages.last}|merge(paginationControl.matchedRouteParams)) }}">Last &rarr;</a>
                 {% else %}
                     {% if 1 != paginationControl.pages.pageCount and paginationControl.pages.current != paginationControl.pages.pageCount %}

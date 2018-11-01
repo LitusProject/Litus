@@ -61,16 +61,16 @@ return array(
             'manage', 'delete', 'export', 'exportAcademics',
         ),
         'br_admin_invoice' => array(
-            'history', 'view', 'edit', 'manage', 'download', 'payed', 'pay', 'manualAdd', 'csv', 'payedList'
+            'history', 'view', 'edit', 'manage', 'download', 'payed', 'pay', 'manualAdd', 'csv', 'payedList',
         ),
         'br_admin_order' => array(
             'product', 'edit', 'delete', 'deleteProduct', 'editProduct', 'view', 'add', 'old', 'manage', 'signed', 'generate',
         ),
         'br_admin_overview' => array(
-            'person', 'company', 'view', 'personview', 'companyview', 'pdf', 'csv',
+            'person', 'company', 'view', 'personView', 'companyView', 'pdf', 'csv',
         ),
         'br_admin_product' => array(
-            'add', 'delete', 'manage', 'edit', 'old', 'companiescsv', 'companies',
+            'add', 'delete', 'manage', 'edit', 'old', 'companiesCsv', 'companies',
         ),
         'br_admin_request' => array(
             'reject', 'approve', 'manage', 'view',

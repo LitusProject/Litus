@@ -181,7 +181,7 @@ class Message
                 }
             }
 
-            if (null !== $attachment) {
+            if ($attachment !== null) {
                 $attachments[] = $attachment;
             }
         }
@@ -222,7 +222,7 @@ class Message
     /**
      * Find the content-type of a part.
      *
-     * @param  array  $part The part we want to query
+     * @param  array $part The part we want to query
      * @return string
      */
     private function getPartContentType($part)
@@ -230,7 +230,7 @@ class Message
         $contentType = '';
         if (isset($part['content-type'])) {
             $contentType = $part['content-type'];
-            if (false !== strpos($contentType, ';')) {
+            if (strpos($contentType, ';') !== false) {
                 $contentType = substr($contentType, 0, strpos($contentType, ';'));
             }
         }
@@ -241,7 +241,7 @@ class Message
     /**
      * Find the content-disposition of a part.
      *
-     * @param  array  $part The part we want to query
+     * @param  array $part The part we want to query
      * @return string
      */
     private function getPartContentDisposition($part)
@@ -257,7 +257,7 @@ class Message
     /**
      * Retrieve a part's body.
      *
-     * @param  array  $part The part we want to query
+     * @param  array $part The part we want to query
      * @return string
      */
     private function getPartBody($part)

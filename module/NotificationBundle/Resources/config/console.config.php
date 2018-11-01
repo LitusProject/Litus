@@ -19,5 +19,5 @@
  */
 
 return array(
-    'install.notification' => 'NotificationBundle\Command\Install',
+    'install_notification' => 'NotificationBundle\Command\Install',
 );

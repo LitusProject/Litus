@@ -20,10 +20,10 @@
 
 namespace CommonBundle\Entity\General\Organization;
 
-use CommonBundle\Entity\Acl\Role,
-    CommonBundle\Entity\General\Organization,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\Acl\Role;
+use CommonBundle\Entity\General\Organization;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores a unit of the organization.
@@ -209,9 +209,7 @@ class Unit
     public function getRoles($mergeParentRoles = true)
     {
         return array_merge(
-            $mergeParentRoles && null !== $this->getParent()
-                ? $this->getParent()->getRoles()
-                : array(),
+            $mergeParentRoles && $this->getParent() !== null ? $this->getParent()->getRoles() : array(),
             $this->roles->toArray()
         );
     }
@@ -245,9 +243,7 @@ class Unit
     public function getCoordinatorRoles($mergeParentRoles = true)
     {
         return array_merge(
-            $mergeParentRoles && null !== $this->getParent()
-                ? $this->getParent()->getCoordinatorRoles()
-                : array(),
+            $mergeParentRoles && $this->getParent() !== null ? $this->getParent()->getCoordinatorRoles() : array(),
             $this->coordinatorRoles->toArray()
         );
     }

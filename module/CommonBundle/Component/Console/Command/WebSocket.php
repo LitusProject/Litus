@@ -37,18 +37,19 @@ abstract class WebSocket extends \CommonBundle\Component\Console\Command
             ->addOption('run', 'r', null, 'Run the WebSocket')
             ->addOption('is-enabled', null, null, 'Checks whether the WebSocket is enabled')
             ->setDescription('Runs the ' . $name . ' websocket.')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The <info>%command.name%</info> command runs the $name websocket.
 
 Call
-    php public/index.php <info>%command.name%</info> <comment>--run</comment>
+    php bin/console.php <info>%command.name%</info> <comment>--run</comment>
 to run the socket.
 
 Call
-    php public/index.php <info>%command.name%</info> <comment>--is-enabled</comment>
+    php bin/console.php <info>%command.name%</info> <comment>--is-enabled</comment>
 to check whether the socket is enabled (return value 0) or disabled (return value 1).
 EOT
-        );
+            );
     }
 
     protected function executeCommand()
@@ -64,7 +65,7 @@ EOT
         }
 
         $socket = $this->createSocket();
-        if (null === $socket) {
+        if ($socket === null) {
             return 2;
         }
 
@@ -77,7 +78,7 @@ EOT
     }
 
     /**
-     * @return bool whether the socket is enabled
+     * @return boolean whether the socket is enabled
      */
     abstract protected function isSocketEnabled();
 
@@ -96,7 +97,7 @@ EOT
      */
     private function getModuleName()
     {
-        $calledClass = get_called_class();
+        $calledClass = static::class;
         $module = substr($calledClass, 0, strpos($calledClass, '\\', 1));
 
         return str_replace(array('bundle', 'module'), '', strtolower($module));

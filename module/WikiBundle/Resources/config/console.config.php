@@ -19,5 +19,5 @@
  */
 
 return array(
-    'install.wiki' => 'WikiBundle\Command\Install',
+    'install_wiki' => 'WikiBundle\Command\Install',
 );

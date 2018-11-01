@@ -20,11 +20,11 @@
 
 namespace NewsBundle\Controller;
 
-use CommonBundle\Component\Util\File\TmpFile as TmpFile,
-    NewsBundle\Component\Document\Generator\Feed as FeedGenerator,
-    NewsBundle\Entity\Node\News,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\File\TmpFile;
+use NewsBundle\Component\Document\Generator\Feed as FeedGenerator;
+use NewsBundle\Entity\Node\News;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * NewsController
@@ -52,7 +52,8 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($news = $this->getNewsEntity())) {
+        $news = $this->getNewsEntity();
+        if ($news === null) {
             return $this->notFoundAction();
         }
 
@@ -68,9 +69,11 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         $feedFile = new TmpFile();
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Type' => 'application/rss+xml',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Type' => 'application/rss+xml',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         new FeedGenerator($feedFile, $this->getEntityManager(), $this->getLanguage(), $this->getRequest(), $this->url());

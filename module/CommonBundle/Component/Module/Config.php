@@ -109,6 +109,7 @@ namespace CommonBundle\Component\Module;
  *
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
+
 class Config
 {
     /**
@@ -271,41 +272,36 @@ class Config
     public static function create(array $settings, array $override = array())
     {
         $directory = $settings['directory'];
-        $module = $settings['namespace'];
-
         $routerConfig = self::load($directory, 'router.config.php');
 
-        return array_merge_recursive(array(
-            'router' => array(
-                'routes' => array_key_exists('routes', $routerConfig) ? $routerConfig['routes'] : array(),
-            ),
-            'controllers' => array(
-                'invokables' => array_key_exists('controllers', $routerConfig) ? $routerConfig['controllers'] : array(),
-            ),
+        return array_merge_recursive(
+            array(
+                'router' => array(
+                    'routes' => array_key_exists('routes', $routerConfig) ? $routerConfig['routes'] : array(),
+                ),
+                'controllers' => array(
+                    'invokables' => array_key_exists('controllers', $routerConfig) ? $routerConfig['controllers'] : array(),
+                ),
 
-            'translator' => array(
-                'translation_file_patterns' => self::createTranslationConfig($settings),
-            ),
+                'translator' => array(
+                    'translation_file_patterns' => self::createTranslationConfig($settings),
+                ),
 
-            'doctrine' => array(
-                'driver' => self::createDoctrineConfig($settings),
-            ),
+                'doctrine' => array(
+                    'driver' => self::createDoctrineConfig($settings),
+                ),
 
-            'service_manager' => array(
-                'invokables' => array(
-                    'litus.install.' . $module => $module . '\Component\Module\Installer',
+                'assetic_configuration' => self::createAsseticConfig($settings),
+
+                'view_manager' => self::createViewManagerConfig($settings),
+
+                'litus' => array(
+                    'admin'   => self::load($directory, 'admin.config.php'),
+                    'install' => self::createInstallConfig($settings),
+                    'console' => self::load($directory, 'console.config.php'),
                 ),
             ),
-
-            'assetic_configuration' => self::createAsseticConfig($settings),
-
-            'view_manager' => self::createViewManagerConfig($settings),
-
-            'litus' => array(
-                'admin'   => self::load($directory, 'admin.config.php'),
-                'install' => self::createInstallConfig($settings),
-                'console' => self::load($directory, 'console.config.php'),
-            ),
-        ), $override);
+            $override
+        );
     }
 }

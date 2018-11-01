@@ -20,12 +20,10 @@
 
 namespace BrBundle\Controller\Corporate;
 
-use BrBundle\Entity\Company,
-    BrBundle\Entity\Company\Job,
-    BrBundle\Entity\Company\Request\RequestVacancy,
-    BrBundle\Entity\User\Person\Corporate,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use BrBundle\Entity\Company\Job;
+use BrBundle\Entity\Company\Request\RequestVacancy;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * VacancyController
@@ -37,7 +35,8 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 {
     public function overviewAction()
     {
-        if (!($person = $this->getCorporateEntity())) {
+        $person = $this->getCorporateEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
@@ -76,11 +75,12 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 
     public function addAction()
     {
-        $form = $this->getForm('br_corporate_job_add');
-
-        if (!($person = $this->getCorporateEntity())) {
+        $person = $this->getCorporateEntity();
+        if ($person === null) {
             return new ViewModel();
         }
+
+        $form = $this->getForm('br_corporate_job_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -116,9 +116,9 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
                 $mail->setBody($link)
                     ->setFrom($mailAddress, $mailName)
                     ->addTo($mailAddress, $mailName)
-                    ->setSubject("New Vacancy Request " . $person->getCompany()->getName());
+                    ->setSubject('New Vacancy Request ' . $person->getCompany()->getName());
 
-                if ('development' != getenv('APPLICATION_ENV')) {
+                if (getenv('APPLICATION_ENV') != 'development') {
                     $this->getMailTransport()->send($mail);
                 }
 
@@ -147,11 +147,13 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 
     public function editAction()
     {
-        if (!($oldJob = $this->getVacancyEntity())) {
+        $oldJob = $this->getVacancyEntity();
+        if ($oldJob === null) {
             return new ViewModel();
         }
 
-        if (!($person = $this->getCorporateEntity())) {
+        $person = $this->getCorporateEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
@@ -199,7 +201,7 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
                         ->getRepository('BrBundle\Entity\Company\Request\RequestVacancy')
                         ->findUnhandledRequestsByJob($oldJob);
 
-                    if (empty($unhandledRequest)) {
+                    if (count($unhandledRequest) == 0) {
                         $oldRequest = $this->getEntityManager()
                             ->getRepository('BrBundle\Entity\Company\Request\RequestVacancy')
                             ->findOneByJob($oldJob->getId());
@@ -240,11 +242,13 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 
     public function deleteAction()
     {
-        if (!($vacancy = $this->getVacancyEntity())) {
+        $vacancy = $this->getVacancyEntity();
+        if ($vacancy === null) {
             return new ViewModel();
         }
 
-        if (!($person = $this->getCorporateEntity())) {
+        $person = $this->getCorporateEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
@@ -282,7 +286,8 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 
     public function deleteRequestAction()
     {
-        if (!($request = $this->getRequestEntity())) {
+        $request = $this->getRequestEntity();
+        if ($request === null) {
             $this->redirect()->toRoute(
                 'br_corporate_vacancy',
                 array(
@@ -360,7 +365,6 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 
         return $request;
     }
-
 
     /**
      * @return array

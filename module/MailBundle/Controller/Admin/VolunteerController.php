@@ -20,12 +20,12 @@
 
 namespace MailBundle\Controller\Admin;
 
-use CommonBundle\Entity\General\AcademicYear,
-    Zend\Mail\Message,
-    Zend\Mime\Message as MimeMessage,
-    Zend\Mime\Mime,
-    Zend\Mime\Part,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\General\AcademicYear;
+use Zend\Mail\Message;
+use Zend\Mime\Message as MimeMessage;
+use Zend\Mime\Mime;
+use Zend\Mime\Part;
+use Zend\View\Model\ViewModel;
 
 /**
  * VolunteerController
@@ -70,7 +70,7 @@ class VolunteerController extends \MailBundle\Component\Controller\AdminControll
                     $mail->addBcc($volunteer->getEmail(), $volunteer->getFullName());
                 }
 
-                if ('development' != getenv('APPLICATION_ENV')) {
+                if (getenv('APPLICATION_ENV') != 'development') {
                     $this->getMailTransport()->send($mail);
                 }
 
@@ -110,7 +110,7 @@ class VolunteerController extends \MailBundle\Component\Controller\AdminControll
                 ->getConfigValue('shift.ranking_criteria')
         );
 
-        if ('none' == $minRank) {
+        if ($minRank == 'none') {
             $volunteers = $this->getEntityManager()
                 ->getRepository('ShiftBundle\Entity\Shift\Volunteer')
                 ->findAllByCountMinimum($academicYear, 1);

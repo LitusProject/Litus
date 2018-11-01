@@ -30,14 +30,12 @@ class Template extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
         $data = $this->stdExtract($object, self::$stdKeys);
-        $data['organization'] = null === $object->getOrganization()
-            ? '0'
-            : $object->getOrganization()->getId();
+        $data['organization'] = $object->getOrganization() === null ? '0' : $object->getOrganization()->getId();
         $data['apply_once'] = $object->applyOnce();
         $data['value'] = number_format($object->getValue() / 100.0, 2);
 
@@ -46,12 +44,12 @@ class Template extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $object = new TemplateEntity();
         }
 
         $organization = null;
-        if (isset($data['organization']) && 0 != $data['organization']) {
+        if (isset($data['organization']) && $data['organization'] != 0) {
             $organization = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Organization')
                 ->findOneById($data['organization']);

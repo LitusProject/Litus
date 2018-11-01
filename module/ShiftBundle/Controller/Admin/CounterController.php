@@ -20,13 +20,13 @@
 
 namespace ShiftBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    CommonBundle\Entity\User\Person,
-    DateTime,
-    ShiftBundle\Component\Document\Generator\Counter\Csv as CsvGenerator,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use ShiftBundle\Component\Document\Generator\Counter\Csv as CsvGenerator;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * CounterController
@@ -119,7 +119,8 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
 
     public function viewAction()
     {
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
@@ -158,7 +159,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findOneById($this->getParam('id'));
 
-        if (null === $shift) {
+        if ($shift === null) {
             return new ViewModel();
         }
 
@@ -166,14 +167,14 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneById($this->getParam('person'));
 
-        if (null === $person) {
+        if ($person === null) {
             return new ViewModel();
         }
 
         foreach ($shift->getVolunteers() as $volunteer) {
             if ($volunteer->getPerson() == $person) {
                 $volunteer->setPayed(
-                    'true' == $this->getParam('payed') ? true : false
+                    $this->getParam('payed') == 'true' ? true : false
                 );
             }
         }
@@ -197,7 +198,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findOneById($this->getParam('id'));
 
-        if (null === $shift) {
+        if ($shift === null) {
             return new ViewModel();
         }
 
@@ -205,7 +206,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneById($this->getParam('person'));
 
-        if (null === $person) {
+        if ($person === null) {
             return new ViewModel();
         }
 
@@ -299,7 +300,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneById($this->getParam('person'));
 
-        if (null === $person) {
+        if ($person === null) {
             return new ViewModel();
         }
 
@@ -332,12 +333,12 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
     private function getAcademicYear()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') !== null) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
         }
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
-        if (null === $academicYear) {
+        if ($academicYear === null) {
             $this->flashMessenger()->error(
                 'Error',
                 'No academic year was found!'
@@ -383,7 +384,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
     }
 
     /**
-     * @return Array
+     * @return array
      */
     public function exportAction()
     {
@@ -392,16 +393,18 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->findAllNamesByAcademicYearQuery($this->getAcademicYear())->getResult();
 
         $file = new CsvFile();
-        $document = new CsvGenerator($this->getEntityManager(), $volunteers);
+        $document = new CsvGenerator($volunteers);
         $document->generateDocument($file);
 
         $filename = 'Volunteers.csv';
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
-            'Content-Type'        => 'text/csv',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(

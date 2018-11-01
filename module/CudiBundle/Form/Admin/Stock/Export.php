@@ -25,7 +25,7 @@ namespace CudiBundle\Form\Admin\Stock;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Export extends SelectOptions
+class Export extends \CudiBundle\Form\Admin\Stock\SelectOptions
 {
     public function init()
     {

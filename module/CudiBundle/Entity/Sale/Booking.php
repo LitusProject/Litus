@@ -20,12 +20,12 @@
 
 namespace CudiBundle\Entity\Sale;
 
-use CommonBundle\Entity\User\Person,
-    DateInterval,
-    DateTime,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+use CommonBundle\Entity\User\Person;
+use DateInterval;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Booking")
@@ -257,6 +257,14 @@ class Booking
     }
 
     /**
+     * @return DateTime|null
+     */
+    public function getAssignmentDate()
+    {
+        return $this->assignmentDate;
+    }
+
+    /**
      * @param DateTime $saleDate
      *
      * @return self
@@ -293,8 +301,8 @@ class Booking
     }
 
     /**
-     * @param  string                   $status
-     * @param  EntityManager            $entityManager
+     * @param  string        $status
+     * @param  EntityManager $entityManager
      * @throws InvalidArgumentException
      * @return self
      */

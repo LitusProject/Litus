@@ -50,7 +50,7 @@ class Lease extends \CommonBundle\Component\Validator\Typeahead
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {

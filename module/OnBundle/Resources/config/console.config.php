@@ -19,5 +19,5 @@
  */
 
 return array(
-    'install.on' => 'OnBundle\Command\Install',
+    'install_on' => 'OnBundle\Command\Install',
 );

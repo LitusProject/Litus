@@ -20,9 +20,9 @@
 
 namespace FormBundle\Controller\Admin;
 
-use FormBundle\Entity\Node\Group,
-    FormBundle\Entity\ViewerMap,
-    Zend\View\Model\ViewModel;
+use FormBundle\Entity\Node\Group;
+use FormBundle\Entity\ViewerMap;
+use Zend\View\Model\ViewModel;
 
 /**
  * GroupViewerController
@@ -33,7 +33,8 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
 {
     public function manageAction()
     {
-        if (!($group = $this->getGroupEntity())) {
+        $group = $this->getGroupEntity();
+        if ($group === null) {
             return new ViewModel();
         }
 
@@ -67,7 +68,8 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
 
     public function addAction()
     {
-        if (!($group = $this->getGroupEntity())) {
+        $group = $this->getGroupEntity();
+        if ($group === null) {
             return new ViewModel();
         }
 
@@ -109,7 +111,7 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
                         )
                     );
 
-                if (null !== $repositoryCheck) {
+                if ($repositoryCheck !== null) {
                     $this->flashMessenger()->error(
                         'Error',
                         'This user has already been given access to this list!'
@@ -153,7 +155,8 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
     {
         $this->initAjax();
 
-        if (!($viewer = $this->getViewerMapEntity())) {
+        $viewer = $this->getViewerMapEntity();
+        if ($viewer === null) {
             return new ViewModel();
         }
 
@@ -177,7 +180,7 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
             ->getRepository('FormBundle\Entity\Node\Group\Mapping')
             ->findOneByForm($viewer->getForm());
 
-        if (null == $group) {
+        if ($group == null) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -209,7 +212,7 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
     {
         $group = $this->getEntityById('FormBundle\Entity\Node\Group');
 
-        if (!($group instanceof Group) || sizeof($group->getForms()) == 0) {
+        if (!($group instanceof Group) || count($group->getForms()) == 0) {
             $this->flashMessenger()->error(
                 'Error',
                 'No group was found!'

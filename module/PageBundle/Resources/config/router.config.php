@@ -21,7 +21,7 @@
 return array(
     'routes' => array(
         'page_admin_page' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/site/page[/:action[/:id][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
@@ -38,7 +38,7 @@ return array(
             ),
         ),
         'page_admin_category' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/site/page/category[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -53,7 +53,7 @@ return array(
             ),
         ),
         'page_admin_link' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/site/page/link[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -69,7 +69,7 @@ return array(
         ),
 
         'page_link' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/link[/:id][/]',
                 'constraints' => array(
@@ -83,7 +83,7 @@ return array(
             ),
         ),
         'page' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/page[/parent/:parent][/name/:name][/]',
                 'constraints' => array(
@@ -98,7 +98,7 @@ return array(
             ),
         ),
         'page_file' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/page/file/:name[/]',
                 'constraints' => array(

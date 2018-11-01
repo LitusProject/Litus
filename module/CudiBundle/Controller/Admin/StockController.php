@@ -20,16 +20,16 @@
 
 namespace CudiBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Entity\General\AcademicYear,
-    CudiBundle\Component\Document\Generator\Stock as StockGenerator,
-    CudiBundle\Entity\Stock\Delivery,
-    CudiBundle\Entity\Stock\Order\Virtual as VirtualOrder,
-    CudiBundle\Entity\Stock\Period,
-    CudiBundle\Entity\Stock\Period\Value\Delta,
-    Cudibundle\Entity\Sale\Article as SaleArticle,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Entity\General\AcademicYear;
+use CudiBundle\Component\Document\Generator\Stock as StockGenerator;
+use CudiBundle\Entity\Sale\Article as SaleArticle;
+use CudiBundle\Entity\Stock\Delivery;
+use CudiBundle\Entity\Stock\Order\Virtual as VirtualOrder;
+use CudiBundle\Entity\Stock\Period;
+use CudiBundle\Entity\Stock\Period\Value\Delta;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * StockController
@@ -40,14 +40,15 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($period = $this->getActiveStockPeriodEntity())) {
+        $period = $this->getActiveStockPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 
         $academicYear = $this->getAcademicYearEntity();
         $semester = $this->getSemester();
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $articles = $this->search($academicYear, $semester);
         }
 
@@ -74,11 +75,12 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
     public function notDeliveredAction()
     {
-        if (!($period = $this->getActiveStockPeriodEntity())) {
+        $period = $this->getActiveStockPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $articles = $this->searchNotDelivered($period);
         }
 
@@ -104,7 +106,8 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
     public function searchAction()
     {
-        if (!($period = $this->getActiveStockPeriodEntity())) {
+        $period = $this->getActiveStockPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 
@@ -150,7 +153,8 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
     public function searchNotDeliveredAction()
     {
-        if (!($period = $this->getActiveStockPeriodEntity())) {
+        $period = $this->getActiveStockPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 
@@ -194,11 +198,13 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($period = $this->getActiveStockPeriodEntity())) {
+        $period = $this->getActiveStockPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 
-        if (!($article = $this->getSaleArticleEntity())) {
+        $article = $this->getSaleArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -245,11 +251,11 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                         }
 
                         $enableAssignment = $this->getEntityManager()
-                                ->getRepository('CommonBundle\Entity\General\Config')
-                                ->getConfigValue('cudi.enable_automatic_assignment') &&
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('cudi.enable_automatic_assignment') &&
                             $this->getEntityManager()
-                                ->getRepository('CommonBundle\Entity\General\Config')
-                                ->getConfigValue('cudi.enable_assign_after_stock_update');
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('cudi.enable_assign_after_stock_update');
 
                         if ($enableAssignment) {
                             $this->getEntityManager()
@@ -319,11 +325,11 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                     $this->getEntityManager()->flush();
 
                     $enableAssignment = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('cudi.enable_automatic_assignment') &&
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('cudi.enable_automatic_assignment') &&
                         $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('cudi.enable_assign_after_stock_update');
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('cudi.enable_assign_after_stock_update');
 
                     if ($enableAssignment) {
                         $this->getEntityManager()
@@ -364,11 +370,13 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($period = $this->getActiveStockPeriodEntity())) {
+        $period = $this->getActiveStockPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 
-        if (!($article = $this->getSaleArticleEntity())) {
+        $article = $this->getSaleArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -382,11 +390,13 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
     public function deltaAction()
     {
-        if (!($period = $this->getActiveStockPeriodEntity())) {
+        $period = $this->getActiveStockPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 
-        if (!($article = $this->getSaleArticleEntity())) {
+        $article = $this->getSaleArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -448,10 +458,12 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                 $document->generate();
 
                 $headers = new Headers();
-                $headers->addHeaders(array(
-                    'Content-Disposition' => 'attachment; filename="stock.pdf"',
-                    'Content-Type'        => 'application/pdf',
-                ));
+                $headers->addHeaders(
+                    array(
+                        'Content-Disposition' => 'attachment; filename="stock.pdf"',
+                        'Content-Type'        => 'application/pdf',
+                    )
+                );
                 $this->getResponse()->setHeaders($headers);
 
                 return new ViewModel(
@@ -465,7 +477,8 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
     public function bulkUpdateAction()
     {
-        if (!($period = $this->getActiveStockPeriodEntity())) {
+        $period = $this->getActiveStockPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 
@@ -506,9 +519,12 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                 $articles[] = $item;
             }
 
-            $form = $this->getForm('cudi_stock_bulk-update', array(
-                'articles' => $articles,
-            ));
+            $form = $this->getForm(
+                'cudi_stock_bulk-update',
+                array(
+                    'articles' => $articles,
+                )
+            );
 
             if ($this->getRequest()->isPost()) {
                 $form->setData($this->getRequest()->getPost());
@@ -543,11 +559,11 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                             }
 
                             $enableAssignment = $this->getEntityManager()
-                                    ->getRepository('CommonBundle\Entity\General\Config')
-                                    ->getConfigValue('cudi.enable_automatic_assignment') &&
+                                ->getRepository('CommonBundle\Entity\General\Config')
+                                ->getConfigValue('cudi.enable_automatic_assignment') &&
                                 $this->getEntityManager()
-                                    ->getRepository('CommonBundle\Entity\General\Config')
-                                    ->getConfigValue('cudi.enable_assign_after_stock_update');
+                                ->getRepository('CommonBundle\Entity\General\Config')
+                                ->getConfigValue('cudi.enable_assign_after_stock_update');
 
                             if ($enableAssignment) {
                                 $this->getEntityManager()
@@ -585,8 +601,8 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
     }
 
     /**
-     * @param  AcademicYear             $academicYear
-     * @param  int                      $semester
+     * @param  AcademicYear $academicYear
+     * @param  integer      $semester
      * @return \Doctrine\ORM\Query|null
      */
     private function search(AcademicYear $academicYear, $semester = 0)
@@ -608,7 +624,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
     }
 
     /**
-     * @param  Period     $period
+     * @param  Period $period
      * @return array|null
      */
     private function searchNotDelivered(Period $period)
@@ -656,7 +672,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return int
+     * @return integer
      */
     private function getSemester()
     {

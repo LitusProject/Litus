@@ -19,5 +19,5 @@
  */
 
 return array(
-    'install.secretary' => 'SecretaryBundle\Command\Install',
+    'install_secretary' => 'SecretaryBundle\Command\Install',
 );

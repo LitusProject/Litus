@@ -32,8 +32,8 @@ return Config::create(
     ),
     array(
         'validators' => array(
-            'invokables' => array(
-                'on_slug_name' => 'OnBundle\Component\Validator\Name',
+            'aliases' => array(
+                'SlugName' => Component\Validator\SlugName::class,
             ),
         ),
     )

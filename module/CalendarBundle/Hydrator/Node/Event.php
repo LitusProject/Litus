@@ -20,9 +20,9 @@
 
 namespace CalendarBundle\Hydrator\Node;
 
-use CalendarBundle\Entity\Node\Event as EventEntity,
-    CalendarBundle\Entity\Node\Translation as TranslationEntity,
-    CommonBundle\Component\Hydrator\Exception\InvalidDateException;
+use CalendarBundle\Entity\Node\Event as EventEntity;
+use CalendarBundle\Entity\Node\Translation as TranslationEntity;
+use CommonBundle\Component\Hydrator\Exception\InvalidDateException;
 
 /**
  * This hydrator hydrates/extracts event data.
@@ -34,13 +34,13 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $object = new EventEntity($this->getPersonEntity());
         }
 
         $startDate = self::loadDateTime($data['start_date']);
 
-        if (null === $startDate) {
+        if ($startDate === null) {
             throw new InvalidDateException();
         }
 
@@ -52,19 +52,19 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
 
             $translationData = $data['tab_content']['tab_' . $language->getAbbrev()];
 
-            if (null !== $translation) {
+            if ($translation !== null) {
                 $translation->setLocation($translationData['location'])
                     ->setTitle($translationData['title'])
                     ->setContent($translationData['content']);
             } else {
-                if ('' != $translationData['location'] && '' != $translationData['title'] && '' != $translationData['content']) {
+                if ($translationData['location'] != '' && $translationData['title'] != '' && $translationData['content'] != '') {
                     $translation = new TranslationEntity(
-                            $object,
-                            $language,
-                            $translationData['location'],
-                            $translationData['title'],
-                            $translationData['content']
-                        );
+                        $object,
+                        $language,
+                        $translationData['location'],
+                        $translationData['title'],
+                        $translationData['content']
+                    );
                     $object->addTranslation($translation);
                 }
             }
@@ -77,14 +77,14 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
         $data = array();
 
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
-        if (null !== $object->getEndDate()) {
+        if ($object->getEndDate() !== null) {
             $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
         }
 

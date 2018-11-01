@@ -20,10 +20,9 @@
 
 namespace SyllabusBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    SyllabusBundle\Entity\Poc;
+use CommonBundle\Entity\General\AcademicYear;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Group")
@@ -132,9 +131,17 @@ class Group
     }
 
     /**
+     * @return boolean
+     */
+    public function isRemoved()
+    {
+        return $this->removed;
+    }
+
+    /**
      * @return self
      */
-    public function setRemoved()
+    public function remove()
     {
         $this->removed = true;
 
@@ -191,14 +198,6 @@ class Group
     }
 
     /**
-     * @return EntityManager
-     */
-    public function getEntityManager()
-    {
-        return $this->entityManager;
-    }
-
-    /**
      * @param  AcademicYear $academicYear
      * @return integer
      */
@@ -211,7 +210,7 @@ class Group
 
     /**
      * @param  AcademicYear $academicYear
-     * @return int
+     * @return integer
      */
     public function getNbOfPocers(AcademicYear $academicYear)
     {
@@ -226,18 +225,19 @@ class Group
     public function getIsPocGroup(AcademicYear $academicYear)
     {
         return $this->entityManager
-         ->getRepository('SyllabusBundle\Entity\Poc')
-         ->getIsPocGroup($this, $academicYear);
+            ->getRepository('SyllabusBundle\Entity\Poc')
+            ->getIsPocGroup($this, $academicYear);
     }
+
     /**
      * @param  AcademicYear $academicYear
      * @return string
      */
     public function getEmailAdressPoc(AcademicYear $academicYear)
     {
-        $pocIndicator = $this->getEntityManager()
+        $pocIndicator = $this->entityManager
             ->getRepository('SyllabusBundle\Entity\Poc')
-            ->findIndicatorFromGroupAndAcademicYear($this,$academicYear);
+            ->findIndicatorFromGroupAndAcademicYear($this, $academicYear);
 
         return $pocIndicator->getEmailAdress();
     }

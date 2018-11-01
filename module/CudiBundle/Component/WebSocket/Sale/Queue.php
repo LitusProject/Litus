@@ -20,11 +20,12 @@
 
 namespace CudiBundle\Component\WebSocket\Sale;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Component\WebSocket\User,
-    CudiBundle\Entity\Sale\QueueItem as EntityQueueItem,
-    CudiBundle\Entity\Sale\Session,
-    Doctrine\ORM\EntityManager;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Component\WebSocket\User;
+use CudiBundle\Entity\Sale\Booking;
+use CudiBundle\Entity\Sale\QueueItem as QueueItemEntity;
+use CudiBundle\Entity\Sale\Session;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Queue Object
@@ -90,7 +91,7 @@ class Queue
             $repository->findAllByStatus($session, 'signed_in')
         );
 
-        $json = json_encode(
+        return json_encode(
             (object) array(
                 'queue' => array(
                     'selling'    => $selling,
@@ -100,17 +101,15 @@ class Queue
                 ),
             )
         );
-
-        return $json;
     }
 
     /**
-     * @param  string      $id The queue item id
+     * @param  string $id The queue item id
      * @return string|null
      */
     public function getJsonQueueItem($id)
     {
-        if (null == $id) {
+        if ($id == null) {
             return;
         }
 
@@ -187,7 +186,7 @@ class Queue
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
             ->findOneByUsername($universityIdentification);
 
-        if (null == $person) {
+        if ($person == null) {
             return json_encode(
                 (object) array(
                     'error' => 'person',
@@ -209,7 +208,7 @@ class Queue
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findAllAssignedByPerson($person);
 
-        if (empty($bookings) && !$forced) {
+        if (count($bookings) == 0 && !$forced) {
             return json_encode(
                 (object) array(
                     'error' => 'noBookings',
@@ -221,8 +220,8 @@ class Queue
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneByPersonNotSold($session, $person);
 
-        if (null == $queueItem) {
-            $queueItem = new EntityQueueItem($this->entityManager, $person, $session);
+        if ($queueItem == null) {
+            $queueItem = new QueueItemEntity($this->entityManager, $person, $session);
 
             $this->entityManager->persist($queueItem);
             $this->entityManager->flush();
@@ -257,9 +256,9 @@ class Queue
     }
 
     /**
-     * @param  User        $user
-     * @param  integer     $id
-     * @param  boolean     $bulk
+     * @param  User    $user
+     * @param  integer $id
+     * @param  boolean $bulk
      * @return string|null
      */
     public function startCollecting(User $user, $id, $bulk = false)
@@ -309,7 +308,7 @@ class Queue
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_collect_scanning');
 
-        if (!$enableCollectScanning || !isset($this->queueItems[$id]) || null == $articles) {
+        if (!$enableCollectScanning || !isset($this->queueItems[$id]) || $articles == null) {
             return;
         }
 
@@ -346,7 +345,7 @@ class Queue
         $paydesk = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\PayDesk')
             ->findOneByCode($user->getExtraData('paydesk'));
-        if (null !== $paydesk) {
+        if ($paydesk !== null) {
             $item->setPayDesk($paydesk);
         }
 
@@ -362,7 +361,7 @@ class Queue
     }
 
     /**
-     * @param  int  $id
+     * @param  integer $id
      * @return null
      */
     public function cancelSale($id)
@@ -407,7 +406,7 @@ class Queue
     }
 
     /**
-     * @param  int  $id
+     * @param  integer $id
      * @return null
      */
     public function setHold($id)
@@ -425,7 +424,7 @@ class Queue
     }
 
     /**
-     * @param  int  $id
+     * @param  integer $id
      * @return null
      */
     public function setUnhold($id)
@@ -443,8 +442,8 @@ class Queue
     }
 
     /**
-     * @param  int    $id
-     * @param  int    $articleId
+     * @param  integer $id
+     * @param  integer $articleId
      * @return string
      */
     public function addArticle($id, $articleId)
@@ -541,7 +540,7 @@ class Queue
     }
 
     /**
-     * @param  int  $id
+     * @param  integer $id
      * @return null
      */
     public function undoSale($id)
@@ -643,10 +642,17 @@ class Queue
     }
 
     /**
-     * @return \CommonBundle\Entity\General\AcademicYear
+     * Get the current academic year.
+     *
+     * @param  boolean $organization
+     * @return AcademicYear
      */
-    private function getCurrentAcademicYear()
+    protected function getCurrentAcademicYear($organization = false)
     {
+        if ($organization) {
+            return AcademicYear::getOrganizationYear($this->entityManager);
+        }
+
         return AcademicYear::getUniversityYear($this->entityManager);
     }
 }

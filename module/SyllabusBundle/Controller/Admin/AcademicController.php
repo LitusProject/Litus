@@ -20,12 +20,12 @@
 
 namespace SyllabusBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    CommonBundle\Entity\User\Person\Academic,
-    SecretaryBundle\Entity\Syllabus\StudyEnrollment,
-    SecretaryBundle\Entity\Syllabus\SubjectEnrollment,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+use CommonBundle\Entity\User\Person\Academic;
+use SecretaryBundle\Entity\Syllabus\StudyEnrollment;
+use SecretaryBundle\Entity\Syllabus\SubjectEnrollment;
+use Zend\View\Model\ViewModel;
 
 /**
  * AcademicController
@@ -36,7 +36,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 {
     public function manageAction()
     {
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $academics = $this->search();
 
             $paginator = $this->paginator()->createFromArray(
@@ -68,11 +68,13 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -103,7 +105,8 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($study = $this->getStudyEnrollmentEntity())) {
+        $study = $this->getStudyEnrollmentEntity();
+        if ($study === null) {
             return new ViewModel();
         }
 
@@ -121,7 +124,8 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($subject = $this->getSubjectEnrollmentEntity())) {
+        $subject = $this->getSubjectEnrollmentEntity();
+        if ($subject === null) {
             return new ViewModel();
         }
 
@@ -137,11 +141,13 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function addStudyAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -165,7 +171,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
                     ->findOneByAcademicAndStudy($academic, $study);
 
-                if (null === $enrollment) {
+                if ($enrollment === null) {
                     $this->getEntityManager()->persist(new StudyEnrollment($academic, $study));
                 }
 
@@ -179,7 +185,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                             ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
                             ->findOneByAcademicAndAcademicYearAndSubject($academic, $academicYear, $mapping->getSubject());
 
-                        if (null === $enrollment) {
+                        if ($enrollment === null) {
                             $this->getEntityManager()->persist(new SubjectEnrollment($academic, $academicYear, $mapping->getSubject()));
                         }
                     }
@@ -217,11 +223,13 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function addSubjectAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -245,7 +253,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
                     ->findOneByAcademicAndAcademicYearAndSubject($academic, $academicYear, $subject);
 
-                if (null === $enrollment) {
+                if ($enrollment === null) {
                     $this->getEntityManager()->persist(new SubjectEnrollment($academic, $academicYear, $subject));
                 }
 
@@ -297,9 +305,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 $item = (object) array();
                 $item->id = $academic->getId();
                 $item->username = $academic->getUsername();
-                $item->universityIdentification = (
-                    null !== $academic->getUniversityIdentification() ? $academic->getUniversityIdentification() : ''
-                );
+                $item->universityIdentification = ($academic->getUniversityIdentification() ?? '');
                 $item->fullName = $academic->getFullName();
                 $item->email = $academic->getEmail();
 
@@ -417,7 +423,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     private function getAcademicYearEntity()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') !== null) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
         }
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);

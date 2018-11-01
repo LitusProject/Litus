@@ -32,76 +32,78 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'fieldset',
-            'name'       => 'information',
-            'label'      => 'Information',
-            'attributes' => array(
-                'id' => 'information',
-            ),
-            'elements' => array(
-                array(
-                    'type'       => 'text',
-                    'name'       => 'university_identification',
-                    'label'      => 'University Identification',
-                    'attributes' => array(
-                        'id'           => 'university_identification',
-                        'autocomplete' => 'off',
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'       => 'fieldset',
+                'name'       => 'information',
+                'label'      => 'Information',
+                'attributes' => array(
+                    'id' => 'information',
+                ),
+                'elements' => array(
+                    array(
+                        'type'       => 'text',
+                        'name'       => 'university_identification',
+                        'label'      => 'University Identification',
+                        'attributes' => array(
+                            'id'           => 'university_identification',
+                            'autocomplete' => 'off',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
                             ),
                         ),
                     ),
-                ),
-                array(
-                    'type'       => 'text',
-                    'name'       => 'first_name',
-                    'label'      => 'First Name',
-                    'required'   => true,
-                    'attributes' => array(
-                        'id'           => 'first_name',
-                        'autocomplete' => 'off',
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
+                    array(
+                        'type'       => 'text',
+                        'name'       => 'first_name',
+                        'label'      => 'First Name',
+                        'required'   => true,
+                        'attributes' => array(
+                            'id'           => 'first_name',
+                            'autocomplete' => 'off',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
                             ),
                         ),
                     ),
-                ),
-                array(
-                    'type'       => 'text',
-                    'name'       => 'last_name',
-                    'label'      => 'Last Name',
-                    'required'   => true,
-                    'attributes' => array(
-                        'id'           => 'last_name',
-                        'autocomplete' => 'off',
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
+                    array(
+                        'type'       => 'text',
+                        'name'       => 'last_name',
+                        'label'      => 'Last Name',
+                        'required'   => true,
+                        'attributes' => array(
+                            'id'           => 'last_name',
+                            'autocomplete' => 'off',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
                             ),
                         ),
                     ),
-                ),
-                array(
-                    'type'       => 'select',
-                    'name'       => 'departments',
-                    'label'      => 'Departments',
-                    'required'   => true,
-                    'attributes' => array(
-                        'id'      => 'departments',
-                        'options' => $this->getDepartments(),
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'departments',
+                        'label'      => 'Departments',
+                        'required'   => true,
+                        'attributes' => array(
+                            'id'      => 'departments',
+                            'options' => $this->getDepartments(),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Queue', '', 'queue');
         $this->get('queue')->setAttribute('id', 'queue');

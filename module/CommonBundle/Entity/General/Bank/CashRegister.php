@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Entity\General\Bank;
 
-use Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * A class that is used to store the contents of a counted register
@@ -91,7 +91,7 @@ class CashRegister
     /**
      * Get the register's total amount.
      *
-     * @return int
+     * @return integer
      */
     public function getTotalAmount()
     {
@@ -112,7 +112,7 @@ class CashRegister
      * Get the amount for a unit.
      *
      * @param  MoneyUnit $unit The unit for which we want to get the amount
-     * @return int
+     * @return integer
      */
     public function getAmountForUnit(MoneyUnit $unit)
     {
@@ -129,7 +129,7 @@ class CashRegister
      * Set the amount for a unit.
      *
      * @param MoneyUnit $unit
-     * @param int       $newAmount
+     * @param integer   $newAmount
      *
      * @return self
      */
@@ -143,7 +143,7 @@ class CashRegister
             }
         }
 
-        if (null === $previous) {
+        if ($previous === null) {
             $this->moneyUnitAmounts[] = new MoneyUnit\Amount($this, $unit, $newAmount);
         } else {
             $previous->setAmount($newAmount);
@@ -156,7 +156,7 @@ class CashRegister
      * Get 100 times the amount for a bank device.
      *
      * @param  BankDevice $device The device for which we want to get the amount
-     * @return int
+     * @return integer
      */
     public function getAmountForDevice(BankDevice $device)
     {
@@ -187,7 +187,7 @@ class CashRegister
             }
         }
 
-        if (null === $previous) {
+        if ($previous === null) {
             $this->bankDeviceAmounts[] = new BankDevice\Amount($this, $device, $newAmount);
         } else {
             $previous->setAmount($newAmount);

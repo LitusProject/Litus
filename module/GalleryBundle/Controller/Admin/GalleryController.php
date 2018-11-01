@@ -20,14 +20,15 @@
 
 namespace GalleryBundle\Controller\Admin;
 
-use GalleryBundle\Entity\Album\Album,
-    GalleryBundle\Entity\Album\Photo,
-    Imagick,
-    ImagickPixel,
-    Zend\File\Transfer\Adapter\Http as FileUpload,
-    Zend\Validator\File\IsImage as ImageValidator,
-    Zend\Validator\File\Size as SizeValidator,
-    Zend\View\Model\ViewModel;
+use GalleryBundle\Entity\Album\Album;
+use GalleryBundle\Entity\Album\Photo;
+use Imagick;
+use ImagickPixel;
+use Zend\Validator\File\IsImage as IsImageValidator;
+use Zend\Validator\File\Size as SizeValidator;
+use Zend\Validator\File\UploadFile as UploadFileValidator;
+use Zend\Validator\ValidatorChain;
+use Zend\View\Model\ViewModel;
 
 /**
  * GalleryController
@@ -94,7 +95,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editAction()
     {
-        if (!($album = $this->getAlbumEntity())) {
+        $album = $this->getAlbumEntity();
+        if ($album === null) {
             return new ViewModel();
         }
 
@@ -133,7 +135,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($album = $this->getAlbumEntity())) {
+        $album = $this->getAlbumEntity();
+        if ($album === null) {
             return new ViewModel();
         }
 
@@ -152,7 +155,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function photosAction()
     {
-        if (!($album = $this->getAlbumEntity())) {
+        $album = $this->getAlbumEntity();
+        if ($album === null) {
             return new ViewModel();
         }
 
@@ -177,7 +181,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function addPhotosAction()
     {
-        if (!($album = $this->getAlbumEntity())) {
+        $album = $this->getAlbumEntity();
+        if ($album === null) {
             return new ViewModel();
         }
 
@@ -190,7 +195,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function deletePhotoAction()
     {
-        if (!($photo = $this->getPhotoEntity())) {
+        $photo = $this->getPhotoEntity();
+        if ($photo === null) {
             return new ViewModel();
         }
 
@@ -219,95 +225,107 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function uploadAction()
     {
-        if (!($album = $this->getAlbumEntity())) {
-            return new ViewModel();
-        }
+        if ($this->getRequest()->isPost()) {
+            $album = $this->getAlbumEntity();
+            if ($album === null) {
+                $this->getResponse()->setStatusCode(500);
 
-        $filePath = 'public' . $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('gallery.path') . '/' . $album->getId() . '/';
-
-        if (!file_exists($filePath . 'thumbs/')) {
-            if (!file_exists($filePath)) {
-                mkdir($filePath);
-            }
-            mkdir($filePath . 'thumbs/');
-        }
-
-        $upload = new FileUpload();
-        $upload->addValidator(new SizeValidator(array('max' => '15mb')));
-        $upload->addValidator(new ImageValidator(array('mimeType' => 'image/jpeg')));
-
-        if ($upload->isValid()) {
-            $upload->receive();
-
-            do {
-                $filename = sha1(uniqid()) . '.jpg';
-            } while (file_exists($filePath . $filename));
-
-            $image = new Imagick($upload->getFileName());
-
-            $exif = exif_read_data($upload->getFileName());
-            unlink($upload->getFileName());
-
-            if (isset($exif['Orientation'])) {
-                switch ($exif['Orientation']) {
-                    case 1: // nothing
-                        break;
-                    case 2: // horizontal flip
-                        $image->flopImage();
-                        break;
-                    case 3: // 180 rotate
-                        $image->rotateImage(new ImagickPixel(), 180);
-                        break;
-                    case 4: // vertical flip
-                        $image->flipImage();
-                        break;
-                    case 5: // vertical flip + 90 rotate clockwise
-                        $image->flipImage();
-                        $image->rotateImage(new ImagickPixel(), 90);
-                        break;
-                    case 6: // 90 rotate clockwise
-                        $image->rotateImage(new ImagickPixel(), 90);
-                        break;
-                    case 7: // horizontal flip + 90 rotate clockwise
-                        $image->flopImage();
-                        $image->rotateImage(new ImagickPixel(), 90);
-                        break;
-                    case 8:    // 90 rotate counter clockwise
-                        $image->rotateImage(new ImagickPixel(), -90);
-                        break;
-                }
-            }
-
-            $image->scaleImage(640, 480, true);
-            $thumb = clone $image;
-            if ($album->hasWatermark()) {
-                $watermark = new Imagick();
-                $watermark->readImage(
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('gallery.watermark_path')
+                return new ViewModel(
+                    array(
+                        'result' => array(
+                            'status' => 'error',
+                        ),
+                    )
                 );
-                $watermark->scaleImage(57, 48);
-                $image->compositeImage($watermark, Imagick::COMPOSITE_OVER, 0, $image->getImageHeight() - 50);
             }
-            $image->writeImage($filePath . $filename);
 
-            $thumb->cropThumbnailImage(150, 150);
-            $thumb->writeImage($filePath . 'thumbs/' . $filename);
+            $validatorChain = new ValidatorChain();
+            $validatorChain->attach(new UploadFileValidator());
+            $validatorChain->attach(new SizeValidator(array('max' => '15mb')));
+            $validatorChain->attach(new IsImageValidator(array('image/jpeg')));
 
-            $photo = new Photo($album, $filename);
-            $this->getEntityManager()->persist($photo);
-            $this->getEntityManager()->flush();
+            $file = $this->getRequest()->getFiles()['file'];
+            if ($validatorChain->isValid($file)) {
+                $filePath = 'public' . $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('gallery.path') . '/' . $album->getId() . '/';
 
-            return new ViewModel(
-                array(
-                    'result' => array(
-                        'status' => 'success',
-                    ),
-                )
-            );
+                if (!file_exists($filePath . 'thumbs/')) {
+                    if (!file_exists($filePath)) {
+                        mkdir($filePath);
+                    }
+
+                    mkdir($filePath . 'thumbs/');
+                }
+
+                do {
+                    $fileName = sha1(uniqid());
+                } while (file_exists($filePath . $fileName));
+
+                $image = new Imagick($file['tmp_name']);
+
+                $exif = exif_read_data($file['tmp_name']);
+                unlink($file['tmp_name']);
+
+                if (isset($exif['Orientation'])) {
+                    switch ($exif['Orientation']) {
+                        case 1:
+                            break;
+                        case 2:
+                            $image->flopImage();
+                            break;
+                        case 3:
+                            $image->rotateImage(new ImagickPixel(), 180);
+                            break;
+                        case 4:
+                            $image->flipImage();
+                            break;
+                        case 5:
+                            $image->flipImage();
+                            $image->rotateImage(new ImagickPixel(), 90);
+                            break;
+                        case 6:
+                            $image->rotateImage(new ImagickPixel(), 90);
+                            break;
+                        case 7:
+                            $image->flopImage();
+                            $image->rotateImage(new ImagickPixel(), 90);
+                            break;
+                        case 8:
+                            $image->rotateImage(new ImagickPixel(), -90);
+                            break;
+                    }
+                }
+
+                $image->scaleImage(640, 480, true);
+                $thumb = clone $image;
+                if ($album->hasWatermark()) {
+                    $watermark = new Imagick();
+                    $watermark->readImage(
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('gallery.watermark_path')
+                    );
+                    $watermark->scaleImage(57, 48);
+                    $image->compositeImage($watermark, Imagick::COMPOSITE_OVER, 0, $image->getImageHeight() - 50);
+                }
+                $image->writeImage($filePath . $fileName);
+
+                $thumb->cropThumbnailImage(150, 150);
+                $thumb->writeImage($filePath . 'thumbs/' . $fileName);
+
+                $photo = new Photo($album, $fileName);
+                $this->getEntityManager()->persist($photo);
+                $this->getEntityManager()->flush();
+
+                return new ViewModel(
+                    array(
+                        'result' => array(
+                            'status' => 'success',
+                        ),
+                    )
+                );
+            }
         }
 
         $this->getResponse()->setStatusCode(500);
@@ -323,7 +341,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function censorPhotoAction()
     {
-        if (!($photo = $this->getPhotoEntity())) {
+        $photo = $this->getPhotoEntity();
+        if ($photo === null) {
             return new ViewModel();
         }
 
@@ -340,9 +359,10 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel();
     }
 
-    public function unCensorPhotoAction()
+    public function uncensorPhotoAction()
     {
-        if (!($photo = $this->getPhotoEntity())) {
+        $photo = $this->getPhotoEntity();
+        if ($photo === null) {
             return new ViewModel();
         }
 

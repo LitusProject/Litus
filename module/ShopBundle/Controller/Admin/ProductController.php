@@ -20,8 +20,8 @@
 
 namespace ShopBundle\Controller\Admin;
 
-use ShopBundle\Entity\Product,
-    Zend\View\Model\ViewModel;
+use ShopBundle\Entity\Product;
+use Zend\View\Model\ViewModel;
 
 /**
  * ProductController
@@ -85,7 +85,8 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editAction()
     {
-        if (!($product = $this->getProductEntity())) {
+        $product = $this->getProductEntity();
+        if ($product === null) {
             return new ViewModel();
         }
 
@@ -124,11 +125,13 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
     public function deleteAction()
     {
         $this->initAjax();
-        if (!($product = $this->getProductEntity())) {
+
+        $product = $this->getProductEntity();
+        if ($product === null) {
             return new ViewModel();
         }
-        $this->getEntityManager()->remove($product);
 
+        $this->getEntityManager()->remove($product);
         $this->getEntityManager()->flush();
 
         return new ViewModel(

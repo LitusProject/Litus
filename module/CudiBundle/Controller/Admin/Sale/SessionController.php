@@ -20,10 +20,10 @@
 
 namespace CudiBundle\Controller\Admin\Sale;
 
-use CommonBundle\Component\Util\WebSocket as WebSocketUtil,
-    CommonBundle\Entity\General\Bank\CashRegister,
-    CudiBundle\Entity\Sale\Session,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\WebSocket as WebSocketUtil;
+use CommonBundle\Entity\General\Bank\CashRegister;
+use CudiBundle\Entity\Sale\Session;
+use Zend\View\Model\ViewModel;
 
 /**
  * SessionController
@@ -97,15 +97,19 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($session = $this->getSessionEntity())) {
+        $session = $this->getSessionEntity();
+        if ($session === null) {
             return new ViewModel();
         }
 
         $session->setEntityManager($this->getEntityManager());
 
-        $form = $this->getForm('cudi_sale_session_comment', array(
-            'session' => $session,
-        ));
+        $form = $this->getForm(
+            'cudi_sale_session_comment',
+            array(
+                'session' => $session,
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -154,7 +158,8 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function editRegisterAction()
     {
-        if (!($cashRegister = $this->getCashRegisterEntity())) {
+        $cashRegister = $this->getCashRegisterEntity();
+        if ($cashRegister === null) {
             return new ViewModel();
         }
 
@@ -162,9 +167,12 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOneByCashRegister($cashRegister);
 
-        $form = $this->getForm('cudi_sale_session_edit', array(
-            'cash_register' => $cashRegister,
-        ));
+        $form = $this->getForm(
+            'cudi_sale_session_edit',
+            array(
+                'cash_register' => $cashRegister,
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -199,15 +207,19 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function closeAction()
     {
-        if (!($session = $this->getSessionEntity())) {
+        $session = $this->getSessionEntity();
+        if ($session === null) {
             return new ViewModel();
         }
 
         $session->setEntityManager($this->getEntityManager());
 
-        $form = $this->getForm('cudi_sale_session_close', array(
-            'cash_register' => $session->getOpenRegister(),
-        ));
+        $form = $this->getForm(
+            'cudi_sale_session_close',
+            array(
+                'cash_register' => $session->getOpenRegister(),
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -236,12 +248,12 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                 );
 
                 $this->redirect()->toRoute(
-                       'cudi_admin_sales_session',
-                       array(
-                           'action' => 'edit',
-                           'id'     => $session->getId(),
-                       )
-                   );
+                    'cudi_admin_sales_session',
+                    array(
+                        'action' => 'edit',
+                        'id'     => $session->getId(),
+                    )
+                );
 
                 return new ViewModel();
             }
@@ -257,7 +269,8 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function queueItemsAction()
     {
-        if (!($session = $this->getSessionEntity())) {
+        $session = $this->getSessionEntity();
+        if ($session === null) {
             return new ViewModel();
         }
 

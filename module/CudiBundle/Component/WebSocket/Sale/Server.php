@@ -20,10 +20,10 @@
 
 namespace CudiBundle\Component\WebSocket\Sale;
 
-use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Component\WebSocket\User,
-    DateTime,
-    Doctrine\ORM\EntityManager;
+use CommonBundle\Component\Acl\Acl;
+use CommonBundle\Component\WebSocket\User;
+use DateTime;
+use Doctrine\ORM\EntityManager;
 
 /**
  * This is the server to handle all requests by the websocket protocol for the Queue.
@@ -73,7 +73,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
 
         $command = json_decode($data);
 
-        if (null == $command) {
+        if ($command == null) {
             return;
         }
 
@@ -95,7 +95,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                     return;
                 }
 
-                if ('development' != getenv('APPLICATION_ENV')) {
+                if (getenv('APPLICATION_ENV') != 'development') {
                     if (!isset($command->authSession)) {
                         $this->removeUser($user);
                         $now = new DateTime();
@@ -113,17 +113,18 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                         $acl = new Acl($this->entityManager);
 
                         foreach ($authSession->getPerson()->getRoles() as $role) {
-                            if (
-                                $role->isAllowed(
-                                    $acl, 'cudi_sale_sale', 'sale'
-                                )
+                            if ($role->isAllowed(
+                                $acl,
+                                'cudi_sale_sale',
+                                'sale'
+                            )
                             ) {
                                 $allowed = true;
                             }
                         }
                     }
 
-                    if (null == $authSession || !$allowed) {
+                    if ($authSession == null || !$allowed) {
                         $this->removeUser($user);
                         $now = new DateTime();
                         echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
@@ -192,7 +193,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
      */
     private function sendQueue(User $user)
     {
-        if (null == $user->getExtraData('session')) {
+        if ($user->getExtraData('session') == null) {
             return;
         }
 
@@ -223,12 +224,12 @@ class Server extends \CommonBundle\Component\WebSocket\Server
 
     /**
      * Send queue to all users
-     * @param  int  $id
+     * @param  integer $id
      * @return null
      */
     private function sendQueueItemToAll($id)
     {
-        if (null === $id) {
+        if ($id === null) {
             return;
         }
 
@@ -259,7 +260,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
      */
     private function gotAction(User $user, $command)
     {
-        if (null == $user->getExtraData('session')) {
+        if ($user->getExtraData('session') == null) {
             return;
         }
 
@@ -285,7 +286,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                 $this->sendQueueItemToAll($command->id);
                 break;
             case 'stopCollecting':
-                $this->stopCollecting($command->id, isset($command->articles) ? $command->articles : null);
+                $this->stopCollecting($command->id, $command->articles ?? null);
                 $this->sendQueueItemToAll($command->id);
                 break;
             case 'startSale':
@@ -322,9 +323,9 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
-     * @param  User     $user
-     * @param  string   $universityIdentification
-     * @return int|null
+     * @param  User   $user
+     * @param  string $universityIdentification
+     * @return integer|null
      */
     private function signIn(User $user, $universityIdentification)
     {
@@ -362,9 +363,9 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
-     * @param  User     $user
-     * @param  string   $universityIdentification
-     * @return int|null
+     * @param  User   $user
+     * @param  string $universityIdentification
+     * @return integer|null
      */
     private function addToQueue(User $user, $universityIdentification)
     {
@@ -386,7 +387,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
 
     /**
      * @param  User    $user
-     * @param  int     $id
+     * @param  integer $id
      * @param  boolean $bulk
      * @return null
      */
@@ -412,7 +413,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
-     * @param  int        $id
+     * @param  integer    $id
      * @param  array|null $articles
      * @return null
      */
@@ -422,7 +423,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
-     * @param  int  $id
+     * @param  integer $id
      * @return null
      */
     private function cancelCollecting($id)
@@ -431,8 +432,8 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
-     * @param  User $user
-     * @param  int  $id
+     * @param  User    $user
+     * @param  integer $id
      * @return null
      */
     private function startSale(User $user, $id)
@@ -441,7 +442,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
-     * @param  int  $id
+     * @param  integer $id
      * @return null
      */
     private function cancelSale($id)
@@ -450,18 +451,18 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
-     * @param  User   $user
-     * @param  int    $id
-     * @param  array  $articles
-     * @param  array  $discounts
-     * @param  string $payMethod
+     * @param  User    $user
+     * @param  integer $id
+     * @param  array   $articles
+     * @param  array   $discounts
+     * @param  string  $payMethod
      * @return null
      */
     private function concludeSale(User $user, $id, $articles, $discounts, $payMethod)
     {
         $saleItems = $this->queue->concludeSale($id, $articles, $discounts, $payMethod);
 
-        if (null == $saleItems) {
+        if ($saleItems == null) {
             return;
         }
 
@@ -475,11 +476,10 @@ class Server extends \CommonBundle\Component\WebSocket\Server
             $item,
             $saleItems
         );
-
     }
 
     /**
-     * @param  int  $id
+     * @param  integer $id
      * @return null
      */
     private function hold($id)
@@ -488,7 +488,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
-     * @param  int  $id
+     * @param  integer $id
      * @return null
      */
     private function unhold($id)
@@ -497,8 +497,8 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
-     * @param  int    $id
-     * @param  string $comment
+     * @param  integer $id
+     * @param  string  $comment
      * @return null
      */
     private function saveComment($id, $comment)
@@ -512,9 +512,9 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
-     * @param  User $user
-     * @param  int  $id
-     * @param  int  $articleId
+     * @param  User    $user
+     * @param  integer $id
+     * @param  integer $articleId
      * @return null
      */
     private function addArticle(User $user, $id, $articleId)
@@ -524,8 +524,8 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
-     * @param  User $user
-     * @param  int  $id
+     * @param  User    $user
+     * @param  integer $id
      * @return null
      */
     private function undoSale(User $user, $id)

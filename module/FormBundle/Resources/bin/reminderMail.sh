@@ -1,9 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# A very small wrapper around our reminder mail script
-#
+if [ -z "$APPLICATION_ENV" ]; then
+    export APPLICATION_ENV=production
+fi
 
 SCRIPT_DIRECTORY=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-cd "${SCRIPT_DIRECTORY}/../../"
+cd "$SCRIPT_DIRECTORY/../../"
 
-APPLICATION_ENV="production" php public/index.php form:mail --mail
+php bin/console.php form:mail --mail

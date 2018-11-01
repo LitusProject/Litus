@@ -20,10 +20,10 @@
 
 namespace SyllabusBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    SyllabusBundle\Entity\Subject,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+use SyllabusBundle\Entity\Subject;
+use Zend\View\Model\ViewModel;
 
 /**
  * SubjectController
@@ -34,11 +34,12 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $subjects = $this->search();
         }
 
@@ -69,7 +70,8 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
     public function addAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -116,11 +118,13 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
     public function viewAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
-        if (!($subject = $this->getSubjectEntity())) {
+        $subject = $this->getSubjectEntity();
+        if ($subject === null) {
             return new ViewModel();
         }
 
@@ -154,11 +158,13 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
-        if (!($subject = $this->getSubjectEntity())) {
+        $subject = $this->getSubjectEntity();
+        if ($subject === null) {
             return new ViewModel();
         }
 
@@ -306,7 +312,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     private function getAcademicYearEntity()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') !== null) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
         }
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);

@@ -20,10 +20,10 @@
 
 namespace BrBundle\Entity\Invoice;
 
-use BrBundle\Entity\Invoice,
-    BrBundle\Entity\Product\OrderEntry,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+use BrBundle\Entity\Invoice;
+use BrBundle\Entity\Product\OrderEntry;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * An entry of an invoice.
@@ -34,7 +34,7 @@ use BrBundle\Entity\Invoice,
 class InvoiceEntry
 {
     /**
-     * @var int A generated ID
+     * @var integer A generated ID
      *
      * @ORM\Id
      * @ORM\Column(type="bigint")
@@ -66,14 +66,14 @@ class InvoiceEntry
     private $orderEntry;
 
     /**
-     * @var int The position number of the entry in the invoice
+     * @var integer The position number of the entry in the invoice
      *
      * @ORM\Column(type="integer")
      */
     private $position;
 
     /**
-     * @var int The version of the contract this entry belongs too.
+     * @var integer The version of the contract this entry belongs too.
      *
      * @ORM\Column(type="integer")
      */
@@ -82,8 +82,8 @@ class InvoiceEntry
     /**
      * @param Invoice    $invoice    The invoice of which this entry is part.
      * @param OrderEntry $orderEntry The order entry corresponding to this invoice entry.
-     * @param int        $position   The position number of the entry in the invoice
-     * @param int        $version    The version of the contract this entry belongs too
+     * @param integer    $position   The position number of the entry in the invoice
+     * @param integer    $version    The version of the contract this entry belongs too
      */
     public function __construct(Invoice $invoice, OrderEntry $orderEntry, $position, $version)
     {
@@ -95,7 +95,7 @@ class InvoiceEntry
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getVersion()
     {
@@ -103,7 +103,7 @@ class InvoiceEntry
     }
 
     /**
-     * @param int $versionNmbr
+     * @param integer $versionNmbr
      */
     private function setVersion($versionNmbr)
     {
@@ -134,7 +134,7 @@ class InvoiceEntry
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -166,7 +166,7 @@ class InvoiceEntry
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getPosition()
     {

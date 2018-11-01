@@ -20,6 +20,7 @@
 
 namespace PromBundle\Component\Controller;
 
+use CommonBundle\Entity\General\Language;
 use Zend\Mvc\MvcEvent;
 
 /**
@@ -51,7 +52,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
      */
     protected function getLanguage()
     {
-        if (null !== $this->language) {
+        if ($this->language !== null) {
             return $this->language;
         }
 
@@ -59,9 +60,10 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findOneByAbbrev('en');
 
-        if (null === $language) {
+        if ($language === null) {
             $language = new Language(
-                'en', 'English'
+                'en',
+                'English'
             );
 
             $this->getEntityManager()->persist($language);

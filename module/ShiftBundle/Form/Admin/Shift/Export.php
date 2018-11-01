@@ -31,16 +31,18 @@ class Export extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'event',
-            'label'      => 'Event',
-            'required'   => true,
-            'attributes' => array(
-                'id'      => 'event',
-                'options' => $this->createEventsArray(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'event',
+                'label'      => 'Event',
+                'required'   => true,
+                'attributes' => array(
+                    'id'      => 'event',
+                    'options' => $this->createEventsArray(),
+                ),
+            )
+        );
 
         $this->addSubmit('Export', 'download');
     }

@@ -31,11 +31,19 @@ return Config::create(
     ),
     array(
         'validators' => array(
-            'invokables' => array(
-                'form_max_timeslots'  => 'FormBundle\Component\Validator\MaxTimeSlot',
-                'form_field_required' => 'FormBundle\Component\Validator\Required',
-                'form_text_field'   => 'FormBundle\Component\Validator\TextField',
-                'form_timeslot'       => 'FormBundle\Component\Validator\TimeSlot',
+            'aliases' => array(
+                'maxtimeslots'  => Component\Validator\MaxTimeSlots::class,
+                'maxTimeSlots'  => Component\Validator\MaxTimeSlots::class,
+                'MaxTimeSlot'   => Component\Validator\MaxTimeSlots::class,
+                'fieldrequired' => Component\Validator\FieldRequired::class,
+                'fieldRequired' => Component\Validator\FieldRequired::class,
+                'FieldRequired' => Component\Validator\FieldRequired::class,
+                'textfield'     => Component\Validator\TextField::class,
+                'textField'     => Component\Validator\TextField::class,
+                'TextField'     => Component\Validator\TextField::class,
+                'timeslot'      => Component\Validator\TimeSlot::class,
+                'timeSlot'      => Component\Validator\TimeSlot::class,
+                'TimeSlot'      => Component\Validator\TimeSlot::class,
             ),
         ),
     )

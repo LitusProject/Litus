@@ -25,7 +25,7 @@ namespace CudiBundle\Form\Admin\Stock\Delivery;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class AddDirect extends Add
+class AddDirect extends \CudiBundle\Form\Admin\Stock\Delivery\Add
 {
     public function init()
     {

@@ -20,15 +20,15 @@
 
 namespace FormBundle\Controller\Admin;
 
-use FormBundle\Component\Exception\UnsupportedTypeException,
-    FormBundle\Entity\Field,
-    FormBundle\Entity\Field\Checkbox as CheckboxField,
-    FormBundle\Entity\Field\Dropdown as DropdownField,
-    FormBundle\Entity\Field\File as FileField,
-    FormBundle\Entity\Field\Text as StringField,
-    FormBundle\Entity\Field\TimeSlot as TimeSlotField,
-    FormBundle\Entity\Node\Form,
-    Zend\View\Model\ViewModel;
+use FormBundle\Component\Exception\UnsupportedTypeException;
+use FormBundle\Entity\Field;
+use FormBundle\Entity\Field\Checkbox as CheckboxField;
+use FormBundle\Entity\Field\Dropdown as DropdownField;
+use FormBundle\Entity\Field\File as FileField;
+use FormBundle\Entity\Field\Text as StringField;
+use FormBundle\Entity\Field\TimeSlot as TimeSlotField;
+use FormBundle\Entity\Node\Form;
+use Zend\View\Model\ViewModel;
 
 /**
  * FieldController
@@ -39,7 +39,8 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($formSpecification = $this->getFormEntity())) {
+        $formSpecification = $this->getFormEntity();
+        if ($formSpecification === null) {
             return new ViewModel();
         }
 
@@ -71,7 +72,8 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($formSpecification = $this->getFormEntity())) {
+        $formSpecification = $this->getFormEntity();
+        if ($formSpecification === null) {
             return new ViewModel();
         }
 
@@ -143,7 +145,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                     'The field was successfully created!'
                 );
 
-                if (null !== $this->getRequest()->getPost()->get('submit_repeat')) {
+                if ($this->getRequest()->getPost()->get('submit_repeat') !== null) {
                     $this->redirect()->toRoute(
                         'form_admin_form_field',
                         array(
@@ -176,7 +178,8 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($field = $this->getFieldEntity())) {
+        $field = $this->getFieldEntity();
+        if ($field === null) {
             return new ViewModel();
         }
 
@@ -241,7 +244,8 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($field = $this->getFieldEntity())) {
+        $field = $this->getFieldEntity();
+        if ($field === null) {
             return new ViewModel();
         }
 
@@ -282,10 +286,6 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
     public function sortAction()
     {
         $this->initAjax();
-
-        if (!($formSpecification = $this->getFormEntity())) {
-            return new ViewModel();
-        }
 
         if (!$this->getRequest()->isPost()) {
             return new ViewModel();

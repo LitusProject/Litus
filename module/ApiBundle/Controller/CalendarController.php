@@ -20,8 +20,8 @@
 
 namespace ApiBundle\Controller;
 
-use Imagick,
-    Zend\View\Model\ViewModel;
+use Imagick;
+use Zend\View\Model\ViewModel;
 
 /**
  * CalendarController
@@ -63,7 +63,8 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
     {
         $this->initJson();
 
-        if (!($poster = $this->getPoster())) {
+        $poster = $this->getPoster();
+        if ($poster === null) {
             return $this->error(404, 'No poster key was provided with the request');
         }
 

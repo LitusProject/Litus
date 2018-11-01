@@ -20,9 +20,8 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
-use LogisticsBundle\Entity\Driver,
-    LogisticsBundle\Entity\Reservation\VanReservation,
-    Zend\View\Model\ViewModel;
+use LogisticsBundle\Entity\Reservation\VanReservation;
+use Zend\View\Model\ViewModel;
 
 class VanReservationController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
@@ -118,7 +117,8 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
 
     public function editAction()
     {
-        if (!($reservation = $this->getVanReservationEntity())) {
+        $reservation = $this->getVanReservationEntity();
+        if ($reservation === null) {
             return new ViewModel();
         }
 
@@ -157,7 +157,8 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
     {
         $this->initAjax();
 
-        if (!($reservation = $this->getVanReservationEntity())) {
+        $reservation = $this->getVanReservationEntity();
+        if ($reservation === null) {
             return new ViewModel();
         }
 
@@ -175,7 +176,8 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
     {
         $this->initAjax();
 
-        if (!($reservation = $this->getVanReservationEntity())) {
+        $reservation = $this->getVanReservationEntity();
+        if ($reservation === null) {
             return new ViewModel();
         }
 
@@ -201,7 +203,8 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
     {
         $this->initAjax();
 
-        if (!($reservation = $this->getVanReservationEntity())) {
+        $reservation = $this->getVanReservationEntity();
+        if ($reservation === null) {
             return new ViewModel();
         }
 

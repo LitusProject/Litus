@@ -20,18 +20,17 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Component\Document\Generator\Pdf\Invoice as InvoiceGenerator,
-    BrBundle\Entity\Invoice,
-    BrBundle\Entity\Invoice\ContractInvoice,
-    BrBundle\Entity\Invoice\InvoiceHistory,
-    BrBundle\Entity\Invoice\ManualInvoice,
-    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
-    CommonBundle\Component\Util\File as FileUtil,
-    CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    DateTime,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use BrBundle\Component\Document\Generator\Pdf\Invoice as InvoiceGenerator;
+use BrBundle\Entity\Invoice;
+use BrBundle\Entity\Invoice\InvoiceHistory;
+use BrBundle\Entity\Invoice\ManualInvoice;
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File as FileUtil;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use DateTime;
+use RuntimeException;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * InvoiceController
@@ -43,7 +42,12 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function viewAction()
     {
-        if (!($invoice = $this->getInvoiceEntity()) && !$invoice->hasContract()) {
+        $invoice = $this->getInvoiceEntity();
+        if ($invoice === null) {
+            return new ViewModel();
+        }
+
+        if (!$invoice->hasContract()) {
             return new ViewModel();
         }
 
@@ -58,19 +62,18 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
     {
         $invoiceYear = $this->getParam('invoiceyear');
 
-        if($invoiceYear == null){
+        if ($invoiceYear == null) {
             $invoiceYear = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.invoice_year_number');
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.invoice_year_number');
         }
-        
 
         $invoicePrefixes = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Invoice')
             ->findAllInvoicePrefixes();
 
-        $invoiceYears = [];
-        foreach($invoicePrefixes as $invoicePrefix){
+        $invoiceYears = array();
+        foreach ($invoicePrefixes as $invoicePrefix) {
             $invoiceYears[] = substr($invoicePrefix['invoiceNumberPrefix'], 0, 4);
         }
         $invoiceYears = array_unique($invoiceYears);
@@ -80,7 +83,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
             ->findAllUnPayedByInvoiceYearQuery($invoiceYear)
             ->getResult();
 
-        $invoiceData = [];
+        $invoiceData = array();
         foreach ($invoices as $invoice) {
             $value = 0;
             if ($invoice->hasContract()) {
@@ -89,7 +92,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
             } else {
                 $value = $invoice->getPrice() / 100;
             }
-            $invoiceData[] = array("invoice" => $invoice, "value" => $value);
+            $invoiceData[] = array('invoice' => $invoice, 'value' => $value);
         }
 
         $paginator = $this->paginator()->createFromArray(
@@ -102,7 +105,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
                 'invoiceYears'      => $invoiceYears,
                 'activeInvoiceYear' => $invoiceYear,
                 'paginator'         => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true)
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
@@ -141,10 +144,12 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
         $document->generateDocument($file);
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="contracts.csv"',
-            'Content-Type'        => 'text/csv',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="contracts.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -157,11 +162,11 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
     public function payedListAction()
     {
         $invoices = $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Invoice')
-                        ->findAllPayedQuery()
-                        ->getResult();
+            ->getRepository('BrBundle\Entity\Invoice')
+            ->findAllPayedQuery()
+            ->getResult();
 
-        $invoiceData = [];
+        $invoiceData = array();
         foreach ($invoices as $invoice) {
             $value = 0;
             if ($invoice->hasContract()) {
@@ -170,7 +175,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
             } else {
                 $value = $invoice->getPrice();
             }
-            $invoiceData[] = array("invoice" => $invoice, "value" => $value);
+            $invoiceData[] = array('invoice' => $invoice, 'value' => $value);
         }
 
         $paginator = $this->paginator()->createFromArray(
@@ -188,7 +193,8 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
     public function historyAction()
     {
-        if (!($invoice = $this->getInvoiceEntity())) {
+        $invoice = $this->getInvoiceEntity();
+        if ($invoice == null) {
             return new ViewModel();
         }
 
@@ -278,7 +284,8 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editAction()
     {
-        if (!($invoice = $this->getInvoiceEntity(false))) {
+        $invoice = $this->getInvoiceEntity(false);
+        if ($invoice === null) {
             return new ViewModel();
         }
 
@@ -299,8 +306,8 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
             if ($form->isValid()) {
                 if (isset($formData['file']) && !($formData['file']['tmp_name'] == '')) {
                     $filePath = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('br.file_path') . '/invoices/'
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('br.file_path') . '/invoices/'
                     . $invoice->getInvoiceNumberPrefix();
 
                     do {
@@ -340,7 +347,8 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
     public function downloadAction()
     {
-        if (!($invoice = $this->getInvoiceEntity())) {
+        $invoice = $this->getInvoiceEntity();
+        if ($invoice === null) {
             return new ViewModel();
         }
 
@@ -365,10 +373,12 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
         $companyName = $invoice->getCompany()->getName();
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="' . $invoiceNb . ' ' . $companyName . '.pdf"',
-            'Content-Type'        => 'application/pdf',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="' . $invoiceNb . ' ' . $companyName . '.pdf"',
+                'Content-Type'        => 'application/pdf',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -382,9 +392,13 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        $date = DateTime::createFromFormat('d/m/Y', $this->getParam('date'));
+        $invoice = $this->getInvoiceEntity(false);
+        if ($invoice === null) {
+            return new ViewModel();
+        }
 
-        if (!($invoice = $this->getInvoiceEntity(false)) || !$date) {
+        $date = DateTime::createFromFormat('d/m/Y', $this->getParam('date'));
+        if ($date === null) {
             return new ViewModel();
         }
 
@@ -404,11 +418,12 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($invoice = $this->getInvoiceEntity())) {
+        $invoice = $this->getInvoiceEntity();
+        if ($invoice === null) {
             return new ViewModel();
         }
 
-        if ('true' == $this->getParam('payed')) {
+        if ($this->getParam('payed') == 'true') {
             $invoice->setPayed();
         }
 
@@ -424,8 +439,8 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
     }
 
     /**
-     * @param  boolean      $allowPaid
-     * @return Invoice|null
+     * @param  boolean $allowPaid
+     * @return \BrBundle\Entity\Invoice|null
      */
     private function getInvoiceEntity($allowPaid = true)
     {
@@ -467,7 +482,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
     }
 
     /**
-     * @return Collaborator|null
+     * @return \BrBundle\Entity\Collaborator|null
      */
     private function getCollaboratorEntity()
     {
@@ -491,7 +506,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('BrBundle\Entity\Collaborator')
             ->findCollaboratorByPersonId($this->getAuthentication()->getPersonObject()->getId());
 
-        if (null === $collaborator) {
+        if ($collaborator === null) {
             $this->flashMessenger()->error(
                 'Error',
                 'You are not a collaborator, so you cannot add or edit invoices.'

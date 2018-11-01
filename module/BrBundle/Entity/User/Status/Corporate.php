@@ -20,10 +20,10 @@
 
 namespace BrBundle\Entity\User\Status;
 
-use BrBundle\Entity\User\Person\Corporate as CorporatePerson,
-    CommonBundle\Component\Util\AcademicYear,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+use BrBundle\Entity\User\Person\Corporate as CorporatePerson;
+use CommonBundle\Component\Util\AcademicYear;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * A classification of a user based on his status at our Alma Mater.
@@ -42,7 +42,7 @@ class Corporate
     );
 
     /**
-     * @var int The ID of this corporate status
+     * @var integer The ID of this corporate status
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -75,8 +75,8 @@ class Corporate
     private $year;
 
     /**
-     * @param  CorporatePerson          $person The person that should be given the status
-     * @param  string                   $status The status that should be given to the person
+     * @param  CorporatePerson $person The person that should be given the status
+     * @param  string          $status The status that should be given to the person
      * @throws InvalidArgumentException
      */
     public function __construct(CorporatePerson $person, $status)
@@ -116,7 +116,7 @@ class Corporate
      */
     public static function isValidPerson(CorporatePerson $person)
     {
-        return (null !== $person) && $person->canHaveCorporateStatus();
+        return ($person !== null) && $person->canHaveCorporateStatus();
     }
 
     /**
@@ -128,7 +128,7 @@ class Corporate
     }
 
     /**
-     * @param  string    $status string the status to set
+     * @param  string $status string the status to set
      * @return Corporate
      */
     public function setStatus($status)
@@ -144,7 +144,7 @@ class Corporate
      * Checks whether the given status is valid.
      *
      * @param  string $status string A status
-     * @return bool
+     * @return boolean
      */
     public static function isValidStatus($status)
     {

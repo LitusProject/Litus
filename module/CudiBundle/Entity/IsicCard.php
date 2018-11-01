@@ -20,11 +20,10 @@
 
 namespace CudiBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person,
-    CudiBundle\Entity\Sale\Booking,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person;
+use CudiBundle\Entity\Sale\Booking;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\IsicCard")
@@ -42,7 +41,7 @@ class IsicCard
     private $id;
 
     /**
-     * @var The owner of the card
+     * @var \CommonBundle\Entity\User\Person The owner of the card
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
@@ -64,7 +63,7 @@ class IsicCard
     private $hasPaid;
 
     /**
-     * @var The academic year the card is valid
+     * @var \CudiBundle\Entity\Sale\Booking The academic year the card is valid
      *
      * @ORM\OneToOne(targetEntity="CudiBundle\Entity\Sale\Booking")
      * @ORM\JoinColumn(name="booking", referencedColumnName="id")
@@ -72,7 +71,7 @@ class IsicCard
     private $booking;
 
     /**
-     * @var The academic year the card is valid
+     * @var \CommonBundle\Entity\General\AcademicYear The academic year the card is valid
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
      * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
@@ -128,7 +127,7 @@ class IsicCard
         return $this->academicYear;
     }
 
-    public function setAcademicYear()
+    public function setAcademicYear($academicYear)
     {
         $this->academicYear = $academicYear;
     }

@@ -115,15 +115,18 @@ Student IT',
         'description' => 'The path to the logo of the organization',
     ),
     array(
-            'key'   => 'organization_address_array',
-            'value' => serialize(array(
-                            'street'  => 'Studentenwijk Arenberg',
-                            'number'  => '6',
-                            'mailbox' => '1',
-                            'postal'  => '3001',
-                            'city'    => 'Heverlee',
-                            'country' => 'Belgium', )),
-            'description' => 'The address of the organization',
+        'key'   => 'organization_address_array',
+        'value' => serialize(
+            array(
+                'street'  => 'Studentenwijk Arenberg',
+                'number'  => '6',
+                'mailbox' => '1',
+                'postal'  => '3001',
+                'city'    => 'Heverlee',
+                'country' => 'Belgium',
+            )
+        ),
+        'description' => 'The address of the organization',
     ),
     array(
         'key'         => 'organization_url',
@@ -454,7 +457,7 @@ You can remove any installed cookies from your computer or mobile device at any 
     ),
     array(
         'key'         => 'last_upgrade',
-        'value'       => '2018100900',
+        'value'       => '2018102901',
         'description' => 'The last Litus schema update performed on this system',
     ),
     array(
@@ -465,9 +468,9 @@ You can remove any installed cookies from your computer or mobile device at any 
     array(
         'key'         => 'common.poc',
         'value'       => '0',
-        'description' => 'Boolean that displays the pocers screen on the homepage',
+        'description' => 'Boolean that displays the POC\'ers screen on the homepage',
     ),
-     array(
+    array(
         'key'         => 'common.pocUrl',
         'value'       => '#',
         'description' => 'The url to the poc info page',

@@ -41,10 +41,11 @@ class AllInstall extends \CommonBundle\Component\Console\Command
         $this
             ->setName('install:all')
             ->setDescription('Install all modules.')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The <info>%command.name%</info> command installs all the modules.
 EOT
-        );
+            );
     }
 
     protected function executeCommand()
@@ -76,9 +77,7 @@ EOT
 
     private function getModules()
     {
-        $config = $this->getServiceLocator()
-            ->get('Config');
-        $config = $config['litus']['install'];
+        $config = $this->getConfig()['litus']['install'];
 
         // CommonBundle has to be first
         return array_merge(
@@ -98,12 +97,10 @@ EOT
 
         $this->currentModule = $module;
 
-        $installer = $this->getServiceLocator()
-            ->get('litus.install.' . $module);
-
-        $installer->setCommand($this);
-
-        $installer->install();
+        $this->getServiceLocator()
+            ->get($module . '\Component\Module\Installer')
+            ->setCommand($this)
+            ->install();
 
         $this->currentModule = null;
     }

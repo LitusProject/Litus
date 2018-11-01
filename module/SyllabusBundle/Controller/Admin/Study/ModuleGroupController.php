@@ -20,10 +20,10 @@
 
 namespace SyllabusBundle\Controller\Admin\Study;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    SyllabusBundle\Entity\Study\ModuleGroup,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+use SyllabusBundle\Entity\Study\ModuleGroup;
+use Zend\View\Model\ViewModel;
 
 /**
  * ModuleGroupController
@@ -34,11 +34,12 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $moduleGroups = $this->search();
         }
 
@@ -69,7 +70,8 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
 
     public function addAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -115,15 +117,17 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
 
     public function viewAction()
     {
-        if (!($moduleGroup = $this->getModuleGroupEntity())) {
+        $moduleGroup = $this->getModuleGroupEntity();
+        if ($moduleGroup === null) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $mappings = $this->searchSubject($moduleGroup, $academicYear);
         }
 
@@ -149,15 +153,17 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
 
     public function editAction()
     {
-        if (!($moduleGroup = $this->getModuleGroupEntity())) {
+        $moduleGroup = $this->getModuleGroupEntity();
+        if ($moduleGroup === null) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $mappings = $this->searchSubject($moduleGroup, $academicYear);
         }
 
@@ -262,11 +268,13 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
     {
         $this->initAjax();
 
-        if (!($moduleGroup = $this->getModuleGroupEntity())) {
+        $moduleGroup = $this->getModuleGroupEntity();
+        if ($moduleGroup === null) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -312,8 +320,8 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
     }
 
     /**
-     * @param  ModuleGroup              $moduleGroup
-     * @param  AcademicYearEntity       $academicYear
+     * @param  ModuleGroup        $moduleGroup
+     * @param  AcademicYearEntity $academicYear
      * @return \Doctrine\ORM\Query|null
      */
     private function searchSubject(ModuleGroup $moduleGroup, AcademicYearEntity $academicYear)
@@ -362,7 +370,7 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
     private function getAcademicYearEntity()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') !== null) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
         }
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);

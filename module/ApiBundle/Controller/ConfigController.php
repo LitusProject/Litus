@@ -20,9 +20,9 @@
 
 namespace ApiBundle\Controller;
 
-use DateInterval,
-    DateTime,
-    Zend\View\Model\ViewModel;
+use DateInterval;
+use DateTime;
+use Zend\View\Model\ViewModel;
 
 /**
  * ConfigController
@@ -48,10 +48,10 @@ class ConfigController extends \ApiBundle\Component\Controller\ActionController\
                 $nowWithInterval->add(new DateInterval($entry->getValue()));
 
                 $value = $nowWithInterval->getTimestamp() - $now->getTimestamp();
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 try {
                     $value = unserialize($entry->getValue());
-                } catch (\Exception $e) {
+                } catch (\Throwable $e) {
                     $value = $entry->getValue();
                 }
             }

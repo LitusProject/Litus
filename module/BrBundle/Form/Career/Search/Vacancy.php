@@ -41,49 +41,57 @@ class Vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
     /**
      * @var Array of all possible sectors, locations and masters.
      */
-    const POSSIBLE_SECTORS = array('all'=>'All') + Company::POSSIBLE_SECTORS;
-    const POSSIBLE_LOCATIONS = array('all'=>'All') + Company::POSSIBLE_LOCATIONS;
-    const POSSIBLE_MASTERS = array('all'=>'All') + Company::POSSIBLE_MASTERS;
+    const POSSIBLE_SECTORS = array('all' => 'All') + Company::POSSIBLE_SECTORS;
+    const POSSIBLE_LOCATIONS = array('all' => 'All') + Company::POSSIBLE_LOCATIONS;
+    const POSSIBLE_MASTERS = array('all' => 'All') + Company::POSSIBLE_MASTERS;
 
     public function init()
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'searchType',
-            'required'   => true,
-            'attributes' => array(
-                'options' => $this->createSearchTypeArray(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'searchType',
+                'required'   => true,
+                'attributes' => array(
+                    'options' => $this->createSearchTypeArray(),
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'sector',
-            'required'   => true,
-            'attributes' => array(
-                'options' => Vacancy::POSSIBLE_SECTORS,
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'sector',
+                'required'   => true,
+                'attributes' => array(
+                    'options' => Vacancy::POSSIBLE_SECTORS,
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'location',
-            'required'   => true,
-            'attributes' => array(
-                'options' => Vacancy::POSSIBLE_LOCATIONS,
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'location',
+                'required'   => true,
+                'attributes' => array(
+                    'options' => Vacancy::POSSIBLE_LOCATIONS,
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'master',
-            'required'   => true,
-            'attributes' => array(
-                'options' => Vacancy::POSSIBLE_MASTERS,
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'master',
+                'required'   => true,
+                'attributes' => array(
+                    'options' => Vacancy::POSSIBLE_MASTERS,
+                ),
+            )
+        );
 
         $this->addSubmit('Search');
         $this->get('submit')->setAttribute('class', 'btn btn-default');

@@ -17,6 +17,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
+
 namespace CommonBundle\Component\Authentication\Service\Exception;
 
 /**

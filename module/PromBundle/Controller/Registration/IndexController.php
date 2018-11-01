@@ -17,14 +17,15 @@
  *
  * @license http://litus.cc/LICENSE
  */
+
 namespace PromBundle\Controller\Registration;
 
-use CommonBundle\Component\Form\Form,
-    PromBundle\Entity\Bus,
-    PromBundle\Entity\Bus\Passenger,
-    PromBundle\Entity\Bus\ReservationCode,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Form\Form;
+use PromBundle\Entity\Bus;
+use PromBundle\Entity\Bus\Passenger;
+use PromBundle\Entity\Bus\ReservationCode;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * IndexController
@@ -75,7 +76,8 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
 
     public function createAction()
     {
-        if (!($code = $this->getReservationCodeEntity())) {
+        $code = $this->getReservationCodeEntity();
+        if ($code === null) {
             return new ViewModel();
         }
 
@@ -156,7 +158,8 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
 
     public function manageAction()
     {
-        if (!($code = $this->getReservationCodeEntity(false))) {
+        $code = $this->getReservationCodeEntity(false);
+        if ($code === null) {
             return new ViewModel();
         }
 
@@ -165,7 +168,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
             ->findPassengerByCode($code);
 
         $passenger = null;
-        if (sizeof($passengers) > 0) {
+        if (count($passengers) > 0) {
             $passenger = $passengers[0];
         }
 
@@ -222,7 +225,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
             ->getRepository('PromBundle\Entity\Bus\ReservationCode')
             ->getRegistrationCodeByCode($createFormData['create']['ticket_code']);
 
-        if (null !== $code) {
+        if ($code !== null) {
             setcookie(
                 self::$cookieNamespace,
                 $code->getCode(),
@@ -256,11 +259,11 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
             ->findPassengerByCode($code);
 
         $passenger = null;
-        if (sizeof($passengers) > 0) {
+        if (count($passengers) > 0) {
             $passenger = $passengers[0];
         }
 
-        if (null !== $passenger && $manageFormData['manage']['email'] == $passenger->getEmail()) {
+        if ($passenger !== null && $manageFormData['manage']['email'] == $passenger->getEmail()) {
             setcookie(
                 self::$cookieNamespace,
                 $code->getCode(),
@@ -298,13 +301,13 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
             ->addBcc($mailData['from'])
             ->setSubject($mailData['subject']);
 
-        if ('development' != getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);
         }
     }
 
     /**
-     * @param  boolean              $checkUsed
+     * @param  boolean $checkUsed
      * @return ReservationCode|null
      */
     private function getReservationCodeEntity($checkUsed = true)

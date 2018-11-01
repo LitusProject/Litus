@@ -20,9 +20,9 @@
 
 namespace ShiftBundle\Hydrator;
 
-use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
-    ShiftBundle\Entity\Shift\Responsible as ResponsibleEntity,
-    ShiftBundle\Entity\Shift\Volunteer as VolunteerEntity;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+use ShiftBundle\Entity\Shift\Responsible as ResponsibleEntity;
+use ShiftBundle\Entity\Shift\Volunteer as VolunteerEntity;
 
 class Subscriber extends \CommonBundle\Component\Hydrator\Hydrator
 {
@@ -35,7 +35,7 @@ class Subscriber extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             throw new InvalidObjectException();
         }
 

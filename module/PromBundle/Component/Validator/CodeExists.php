@@ -44,7 +44,7 @@ class CodeExists extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -58,7 +58,7 @@ class CodeExists extends \CommonBundle\Component\Validator\AbstractValidator
     }
 
     /**
-     * Returns true if no matching record is found in the database.
+     * Returns true if a matching record is found in the database.
      *
      * @param  string     $value   The value of the field that will be validated
      * @param  array|null $context The context of the field that will be validated
@@ -68,16 +68,16 @@ class CodeExists extends \CommonBundle\Component\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $codeExist = $this->getEntityManager()
+        $codeExists = $this->getEntityManager()
             ->getRepository('PromBundle\Entity\Bus\ReservationCode')
-            ->codeExist($value);
+            ->codeExists($value);
 
-        if ($codeExist) {
-            return true;
+        if (!$codeExists) {
+            $this->error(self::NOT_VALID);
+
+            return false;
         }
 
-        $this->error(self::NOT_VALID);
-
-        return false;
+        return true;
     }
 }

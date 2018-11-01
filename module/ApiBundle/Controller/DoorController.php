@@ -20,10 +20,9 @@
 
 namespace ApiBundle\Controller;
 
-use CommonBundle\Entity\User\Person\Academic,
-    DoorBundle\Document\Log,
-    DoorBundle\Document\Rule,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Person\Academic;
+use DoorBundle\Document\Log;
+use Zend\View\Model\ViewModel;
 
 /**
  * DoorController
@@ -46,7 +45,7 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->getRepository('CommonBundle\Entity\User\Status\Organization')
             ->findAllByStatus('praesidium', $this->getCurrentAcademicYear(true));
 
-        $statuses = array_merge($statuses1,$statuses2);
+        $statuses = array_merge($statuses1, $statuses2);
 
         foreach ($statuses as $status) {
             $identification = $status->getPerson()->getUniversityIdentification();
@@ -98,7 +97,8 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $this->initJson();
 
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return $this->error(404, 'The person does not exist');
         }
 
@@ -119,7 +119,7 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
      */
     private function getAcademicEntity()
     {
-        if (null !== $this->getRequest()->getPost('academic')) {
+        if ($this->getRequest()->getPost('academic') !== null) {
             return $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findOneById($this->getRequest()->getPost('academic'));

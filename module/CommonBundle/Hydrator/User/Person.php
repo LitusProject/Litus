@@ -20,9 +20,9 @@
 
 namespace CommonBundle\Hydrator\User;
 
-use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
-    CommonBundle\Entity\User\Barcode\Ean12 as Barcode,
-    CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+use CommonBundle\Entity\User\Barcode\Ean12 as Barcode;
+use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
 
 abstract class Person extends \CommonBundle\Component\Hydrator\Hydrator
 {
@@ -36,7 +36,7 @@ abstract class Person extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
@@ -48,24 +48,18 @@ abstract class Person extends \CommonBundle\Component\Hydrator\Hydrator
         $data['system_roles'] = $this->rolesToData($object->getSystemRoles());
 
         $data['organization'] = array(
-            'barcode' => null !== $object->getBarcode()
-                    ? $object->getBarcode()->getBarcode()
-                    : '',
-            'status' => null !== $object->getOrganizationStatus($academicYear)
-                    ? $object->getOrganizationStatus($academicYear)->getStatus()
-                    : null,
+            'barcode' => $object->getBarcode() !== null ? $object->getBarcode()->getBarcode() : '',
+            'status' => $object->getOrganizationStatus($academicYear) !== null ? $object->getOrganizationStatus($academicYear)->getStatus() : null,
         );
 
-        $data['code'] = null !== $object->getCode()
-            ? $object->getCode()->getCode()
-            : null;
+        $data['code'] = $object->getCode() !== null ? $object->getCode()->getCode() : null;
 
         return $data;
     }
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             throw new InvalidObjectException('Cannot create a person');
         }
 
@@ -78,8 +72,8 @@ abstract class Person extends \CommonBundle\Component\Hydrator\Hydrator
         if (isset($data['organization'])) {
             $academicYear = $this->getCurrentAcademicYear();
 
-            if ('' != $data['organization']['status']) {
-                if (null !== $object->getOrganizationStatus($academicYear)) {
+            if ($data['organization']['status'] != '') {
+                if ($object->getOrganizationStatus($academicYear) !== null) {
                     $object->getOrganizationStatus($academicYear)
                         ->setStatus($data['organization']['status']);
                 } else {
@@ -92,7 +86,7 @@ abstract class Person extends \CommonBundle\Component\Hydrator\Hydrator
                     );
                 }
             } else {
-                if (null !== $object->getOrganizationStatus($academicYear)) {
+                if ($object->getOrganizationStatus($academicYear) !== null) {
                     $status = $object->getOrganizationStatus($academicYear);
 
                     $object->removeOrganizationStatus($status);
@@ -100,9 +94,9 @@ abstract class Person extends \CommonBundle\Component\Hydrator\Hydrator
                 }
             }
 
-            if ('' != $data['organization']['barcode']) {
+            if ($data['organization']['barcode'] != '') {
                 $code = $data['organization']['barcode'];
-                if (null !== $object->getBarcode()) {
+                if ($object->getBarcode() !== null) {
                     if ($object->getBarcode()->getBarcode() != $code) {
                         $object->addBarcode(
                             new Barcode($object, $code)

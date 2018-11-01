@@ -40,121 +40,124 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'datetime',
-            'name'     => 'start_date',
-            'label'    => 'Start Date',
-            'required' => true,
-        ));
+        $this->add(
+            array(
+                'type'     => 'datetime',
+                'name'     => 'start_date',
+                'label'    => 'Start Date',
+                'required' => true,
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'datetime',
-            'name'     => 'end_date',
-            'label'    => 'End Date',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'validators' => array(
-                        array(
-                            'name'    => 'date_compare',
-                            'options' => array(
-                                'first_date' => 'start_date',
-                                'format'     => 'd/m/Y H:i',
+        $this->add(
+            array(
+                'type'     => 'datetime',
+                'name'     => 'end_date',
+                'label'    => 'End Date',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name'    => 'DateCompare',
+                                'options' => array(
+                                    'first_date' => 'start_date',
+                                    'format'     => 'd/m/Y H:i',
+                                ),
                             ),
+
                         ),
-
                     ),
                 ),
-            ),
-        ));
-        /**
-         * Copy paste this code in the validators above to check for reservation conflicts
-         * Was requested to remove by logistics in 2016-2017.
-         * array(
-         'name' => 'logistics_reservation_conflict',
-         'options' => array(
-         'start_date' => 'start_date',
-         'format' => 'd/m/Y H:i',
-         'resource' => VanReservation::VAN_RESOURCE_NAME,
-         'reservation_id' => null === $this->reservation ? 0 : $this->reservation->getId(),
-         ),
-         ),
-         */
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'reason',
-            'label'    => 'Reason',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'reason',
+                'label'    => 'Reason',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'    => 'text',
-            'name'    => 'load',
-            'label'   => 'Load',
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'    => 'text',
+                'name'    => 'load',
+                'label'   => 'Load',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'    => 'textarea',
-            'name'    => 'additional_info',
-            'label'   => 'Additional Info',
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'    => 'textarea',
+                'name'    => 'additional_info',
+                'label'   => 'Additional Info',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'driver',
-            'label'      => 'Driver',
-            'attributes' => array(
-                'options' => $this->getDriversArray(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'driver',
+                'label'      => 'Driver',
+                'attributes' => array(
+                    'options' => $this->getDriversArray(),
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'typeahead',
-            'name'     => 'passenger',
-            'label'    => 'Passenger',
-            'required' => false,
-            'options'  => array(
-                'input' => array(
-                    'validators' => array(
-                        array('name' => 'typeahead_person'),
+        $this->add(
+            array(
+                'type'     => 'typeahead',
+                'name'     => 'passenger',
+                'label'    => 'Passenger',
+                'required' => false,
+                'options'  => array(
+                    'input' => array(
+                        'validators' => array(
+                            array('name' => 'TypeaheadPerson'),
+                        ),
                     ),
                 ),
-            ),
-        ));
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'car',
-            'label'      => 'Car',
-            'attributes' => array(
-                'options' => $this->returnYesNoArray(),
-            ),
-        ));
+            )
+        );
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'car',
+                'label'      => 'Car',
+                'attributes' => array(
+                    'options' => $this->returnYesNoArray(),
+                ),
+            )
+        );
 
         $this->addSubmit('Add', 'reservation_add');
 
-        if (null !== $this->reservation) {
+        if ($this->reservation !== null) {
             $this->bind($this->reservation);
         }
     }
@@ -185,8 +188,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         return $driversArray;
     }
+
     private function returnYesNoArray()
     {
-        return array("N","Y");
+        return array('N','Y');
     }
 }

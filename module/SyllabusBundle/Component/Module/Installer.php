@@ -20,10 +20,10 @@
 
 namespace SyllabusBundle\Component\Module;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    DateInterval,
-    DateTime;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+use DateInterval;
+use DateTime;
 
 /**
  * SyllabusBundle installer
@@ -60,7 +60,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
         );
         $organizationStart = new DateTime($organizationStart);
 
-        if (null === $academicYear) {
+        if ($academicYear === null) {
             $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
             $this->getEntityManager()->persist($academicYear);
             $this->getEntityManager()->flush();
@@ -74,7 +74,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
             $academicYear = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\AcademicYear')
                 ->findOneByStart($organizationStart);
-            if (null == $academicYear) {
+            if ($academicYear == null) {
                 $startAcademicYear = AcademicYear::getEndOfAcademicYear(
                     $organizationStart
                 );

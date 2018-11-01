@@ -39,7 +39,7 @@ class SessionController extends \CommonBundle\Component\Controller\ActionControl
 
         $status = 'error';
 
-        if (null !== $session && $session !== $this->getAuthentication()->getSessionObject()) {
+        if ($session !== null && $session !== $this->getAuthentication()->getSessionObject()) {
             $session->deactivate();
             $this->getEntityManager()->flush();
 

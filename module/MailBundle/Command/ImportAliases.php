@@ -20,9 +20,9 @@
 
 namespace MailBundle\Command;
 
-use MailBundle\Entity\Alias\Academic as AcademicAlias,
-    MailBundle\Entity\Alias\External as ExternalAlias,
-    Symfony\Component\Console\Input\InputArgument;
+use MailBundle\Entity\Alias\Academic as AcademicAlias;
+use MailBundle\Entity\Alias\External as ExternalAlias;
+use Symfony\Component\Console\Input\InputArgument;
 
 /**
  * ImportAliases
@@ -40,11 +40,12 @@ class ImportAliases extends \CommonBundle\Component\Console\Command
             ->setDescription('import alias files')
             ->addOption('flush', 'f', null, 'flush the created aliases to the database')
             ->addArgument('file', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'the files to import')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The %command.name% command imports the given alias <fg=blue>files</fg=blue> and stores them
 if the <fg=blue>--flush</fg=blue> flag is given.
 EOT
-        );
+            );
     }
 
     protected function executeCommand()
@@ -54,7 +55,7 @@ EOT
             $files = array($files);
         }
 
-        // get PWD of shell that called public/index.php
+        // get PWD of shell that called bin/console.php
         // the PWD of php itself is changed in said file
         $pwd = getenv('PWD');
 
@@ -89,7 +90,7 @@ EOT
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findOneByEmail($mail);
 
-            if (null !== $academic) {
+            if ($academic !== null) {
                 $this->writeln('Academic: ' . $academic->getFullName());
 
                 $newAlias = new AcademicAlias($alias, $academic);

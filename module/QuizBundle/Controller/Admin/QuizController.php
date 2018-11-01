@@ -20,8 +20,8 @@
 
 namespace QuizBundle\Controller\Admin;
 
-use QuizBundle\Entity\Quiz,
-    Zend\View\Model\ViewModel;
+use QuizBundle\Entity\Quiz;
+use Zend\View\Model\ViewModel;
 
 /**
  * QuizController
@@ -45,7 +45,8 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $paginator = $this->paginator()->createFromArray(
-            $quizes, $this->getParam('page')
+            $quizes,
+            $this->getParam('page')
         );
 
         return new ViewModel(
@@ -95,7 +96,8 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($quiz = $this->getQuizEntity())) {
+        $quiz = $this->getQuizEntity();
+        if ($quiz === null) {
             return new ViewModel();
         }
 
@@ -133,7 +135,8 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($quiz = $this->getQuizEntity())) {
+        $quiz = $this->getQuizEntity();
+        if ($quiz === null) {
             return new ViewModel();
         }
 

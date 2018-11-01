@@ -20,21 +20,20 @@
 
 namespace CudiBundle\Entity\Sale\Article\Restriction;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\User\Person,
-    CudiBundle\Entity\Sale\Article,
-    CudiBundle\Entity\Sale\Article\Restriction,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\User\Person;
+use CudiBundle\Entity\Sale\Article;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Article\Restriction\Amount")
  * @ORM\Table(name="cudi.sales_articles_restrictions_amount")
  */
-class Amount extends Restriction
+class Amount extends \CudiBundle\Entity\Sale\Article\Restriction
 {
     /**
-     * @var int The value of the restriction
+     * @var integer The value of the restriction
      *
      * @ORM\Column(type="smallint")
      */
@@ -42,7 +41,7 @@ class Amount extends Restriction
 
     /**
      * @param Article $article The article of the restriction
-     * @param int     $value   The value of the restriction
+     * @param integer $value   The value of the restriction
      */
     public function __construct(Article $article, $value)
     {
@@ -77,14 +76,14 @@ class Amount extends Restriction
     {
         $academicYear = AcademicYear::getUniversityYear($entityManager);
 
-        $amount = sizeof(
+        $amount = count(
             $entityManager
                 ->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findAllSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
                     $this->getArticle(),
                     $person,
                     $academicYear
-            )
+                )
         );
 
         return $amount < $this->value;

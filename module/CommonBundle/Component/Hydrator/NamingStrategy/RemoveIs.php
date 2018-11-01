@@ -25,13 +25,13 @@ namespace CommonBundle\Component\Hydrator\NamingStrategy;
  *
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class RemoveIs extends \Zend\Stdlib\Hydrator\NamingStrategy\UnderscoreNamingStrategy
+class RemoveIs extends \Zend\Hydrator\NamingStrategy\UnderscoreNamingStrategy
 {
     public function extract($name)
     {
         $extracted = parent::extract($name);
 
-        if (0 !== strpos($extracted, 'is_')) {
+        if (strpos($extracted, 'is_') !== 0) {
             return $extracted;
         }
 

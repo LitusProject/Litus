@@ -20,22 +20,17 @@
 
 namespace BrBundle\Controller\Corporate;
 
-use BrBundle\Entity\Company,
-    BrBundle\Entity\Company\Job,
-    BrBundle\Entity\Company\Request\RequestVacancy,
-    BrBundle\Entity\User\Person\Corporate,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use Zend\View\Model\ViewModel;
 
 /**
  * CompanyController
  */
 class CompanyController extends \BrBundle\Component\Controller\CorporateController
 {
-
     public function editAction()
     {
-        if (!($company = $this->getCorporateEntity()->getCompany())) {
+        $company = $this->getCorporateEntity()->getCompany();
+        if ($company === null) {
             return new ViewModel();
         }
 
@@ -66,10 +61,8 @@ class CompanyController extends \BrBundle\Component\Controller\CorporateControll
 
         return new ViewModel(
             array(
-                'form'    => $form,
+                'form' => $form,
             )
         );
     }
-
-
 }

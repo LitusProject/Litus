@@ -1,6 +1,8 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
+    {% import _self as self %}
+
     {% include 'cudi/admin/sale/article/partials/navigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
@@ -18,9 +20,9 @@
             </tr>
 
             {% for item in history %}
-                {{ _self.printArticle(item.getPrecursor()) }}
+                {{ self.printArticle(item.getPrecursor()) }}
             {% endfor %}
-            {{ _self.printArticle(current) }}
+            {{ self.printArticle(current) }}
         </table>
 
         {% include 'admin/partials/paginationControl.twig' %}

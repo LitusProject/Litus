@@ -20,9 +20,9 @@
 
 namespace MailBundle\Command;
 
-use MailBundle\Component\Parser\Message as MessageParser,
-    MailBundle\Document\Message,
-    MailBundle\Document\Message\Attachment;
+use MailBundle\Component\Parser\Message as MessageParser;
+use MailBundle\Document\Message;
+use MailBundle\Document\Message\Attachment;
 
 /**
  * Parser
@@ -48,11 +48,12 @@ class Parser extends \CommonBundle\Component\Console\Command
         $this
             ->setName('mail:parse')
             ->setDescription('parse a mail from input')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The %command.name% command reads <comment>php://stdin</comment>, parses
 incoming mail and stores it in the document storage.
 EOT
-        );
+            );
     }
 
     protected function executeCommand()
@@ -73,29 +74,29 @@ EOT
     /**
      * @param  string  $str
      * @param  boolean $raw
-     * @return null
+     * @return void
      */
     public function write($str, $raw = false)
     {
-        if ($this->getServiceLocator()->has('sentry')) {
+        if ($this->hasSentry()) {
             $this->logMessage($str);
-        } else {
-            return parent::write($str, $raw);
         }
+
+        parent::write($str, $raw);
     }
 
     /**
      * @param  string  $str
      * @param  boolean $raw
-     * @return null
+     * @return void
      */
     public function writeln($str, $raw = false)
     {
-        if ($this->getServiceLocator()->has('sentry')) {
+        if ($this->hasSentry()) {
             $this->logMessage($str);
-        } else {
-            return parent::writeln($str, $raw);
         }
+
+        parent::writeln($str, $raw);
     }
 
     /**
@@ -104,8 +105,7 @@ EOT
      */
     private function logMessage($str)
     {
-        $this->getServiceLocator()->get('sentry')
-            ->logMessage($str);
+        $this->getSentry()->logMessage($str);
     }
 
     /**
@@ -160,7 +160,7 @@ EOT
         $body = null;
         if (count($parser->getBody()) > 1) {
             foreach ($parser->getBody() as $itBody) {
-                if ('html' == $itBody['type']) {
+                if ($itBody['type'] == 'html') {
                     $body = $itBody;
                     break;
                 }
@@ -169,7 +169,7 @@ EOT
             $body = $parser->getBody()[0];
         }
 
-        if (null !== $body) {
+        if ($body !== null) {
             $newMessage = new Message(
                 $body['type'],
                 substr($parser->getSubject(), 7),

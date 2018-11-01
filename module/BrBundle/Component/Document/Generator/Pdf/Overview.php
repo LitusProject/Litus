@@ -18,28 +18,12 @@
  * @license http://litus.cc/LICENSE
  */
 
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @license http://litus.cc/LICENSE
- */
-
 namespace BrBundle\Component\Document\Generator\Pdf;
 
-use CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\Xml\Generator,
-    CommonBundle\Component\Util\Xml\Node as Node,
-    Doctrine\ORM\EntityManager;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\Xml\Generator;
+use CommonBundle\Component\Util\Xml\Node;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Generate an overview pdf.
@@ -146,18 +130,18 @@ class Overview extends \CommonBundle\Component\Document\Generator\Pdf
             foreach ($contracts as $contract) {
                 $contract->getOrder()->setEntityManager($this->getEntityManager());
                 $value = $contract->getOrder()->getTotalCostExclusive();
-                $contracted = $contracted + $value;
-                $totalContracted = $totalContracted + $value;
+                $contracted += $value;
+                $totalContracted += $value;
 
                 $isPaid = false;
                 if ($contract->isSigned()) {
-                    $signed = $signed + $value;
-                    $totalSigned = $totalSigned + $value;
+                    $signed += $value;
+                    $totalSigned += $value;
 
                     if ($contract->getOrder()->getInvoice()->isPaid()) {
                         $isPaid = true;
-                        $paid = $paid + $value;
-                        $totalPaid = $totalPaid + $value;
+                        $paid += $value;
+                        $totalPaid += $value;
                     }
                 }
 
@@ -238,7 +222,7 @@ class Overview extends \CommonBundle\Component\Document\Generator\Pdf
                     new Node(
                         'amount',
                         array(),
-                        sizeof($contracts) . ''
+                        count($contracts) . ''
                     ),
                     new Node(
                         'contracted',

@@ -20,8 +20,8 @@
 
 namespace FormBundle\Controller\Manage;
 
-use FormBundle\Entity\Node\Group,
-    Zend\View\Model\ViewModel;
+use FormBundle\Entity\Node\Group;
+use Zend\View\Model\ViewModel;
 
 /**
  * GroupController
@@ -32,7 +32,8 @@ class GroupController extends \FormBundle\Component\Controller\FormController
 {
     public function indexAction()
     {
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
@@ -49,11 +50,13 @@ class GroupController extends \FormBundle\Component\Controller\FormController
 
     public function viewAction()
     {
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
-        if (!($group = $this->getGroupEntity())) {
+        $group = $this->getGroupEntity();
+        if ($group === null) {
             return new ViewModel();
         }
 

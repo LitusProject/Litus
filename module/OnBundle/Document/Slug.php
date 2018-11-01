@@ -20,9 +20,9 @@
 
 namespace OnBundle\Document;
 
-use CommonBundle\Entity\User\Person,
-    Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
-    Doctrine\ORM\EntityManager;
+use CommonBundle\Entity\User\Person;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Doctrine\ORM\EntityManager;
 
 /**
  * This entity stores a slug, and the URL it should redirect to.
@@ -64,7 +64,7 @@ class Slug
     private $url;
 
     /**
-     * @var int How many times this slug was hit
+     * @var integer How many times this slug was hit
      *
      * @ODM\Field(type="increment")
      */
@@ -137,7 +137,7 @@ class Slug
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getHits()
     {

@@ -20,9 +20,9 @@
 
 namespace ShiftBundle\Document;
 
-use CommonBundle\Entity\User\Person,
-    Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
-    Doctrine\ORM\EntityManager;
+use CommonBundle\Entity\User\Person;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Doctrine\ORM\EntityManager;
 
 /**
  * This entity stores a token used to generate a vCalendar so that we can create
@@ -51,7 +51,7 @@ class Token
     private $hash;
 
     /**
-     * @var int The person associated with this token
+     * @var integer The person associated with this token
      *
      * @ODM\Field(type="int")
      */

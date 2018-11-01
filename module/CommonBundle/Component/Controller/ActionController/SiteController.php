@@ -20,9 +20,9 @@
 
 namespace CommonBundle\Component\Controller\ActionController;
 
-use PageBundle\Entity\Node\Page,
-    Zend\Http\Request as HttpRequest,
-    Zend\Mvc\MvcEvent;
+use PageBundle\Entity\Node\Page;
+use Zend\Http\Request as HttpRequest;
+use Zend\Mvc\MvcEvent;
 
 /**
  * We extend the CommonBundle controller.
@@ -40,7 +40,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
      */
     public function onDispatch(MvcEvent $e)
     {
-        $this->getServiceLocator()->get('Zend\View\Renderer\PhpRenderer')
+        $this->getViewRenderer()
             ->plugin('headMeta')
             ->appendName('viewport', 'width=device-width, initial-scale=1.0');
 
@@ -48,8 +48,8 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('common.ios_app_id');
 
-        if ('' != $iosAppId) {
-            $this->getServiceLocator()->get('Zend\View\Renderer\PhpRenderer')
+        if ($iosAppId != '') {
+            $this->getViewRenderer()
                 ->plugin('headMeta')
                 ->appendName('apple-itunes-app', 'app-id=' . $iosAppId);
         }
@@ -173,7 +173,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
 
             $sort = array();
             foreach ($menu[$i]['items'] as $key => $value) {
-                $sort[$key] = isset($value['title']) ? $value['title'] : $value['name'];
+                $sort[$key] = $value['title'] ?? $value['name'];
             }
 
             array_multisort($sort, $menu[$i]['items']);
@@ -187,7 +187,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
 
         $sort = array();
         foreach ($menu as $key => $value) {
-            $sort[$key] = isset($value['title']) ? $value['title'] : $value['name'];
+            $sort[$key] = $value['title'] ?? $value['name'];
         }
 
         array_multisort($sort, $menu);
@@ -198,7 +198,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
     /**
      * Build a pages submenu.
      *
-     * @param  Page  $page The page
+     * @param  Page $page The page
      * @return array
      */
     protected function buildSubmenu(Page $page)
@@ -270,7 +270,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
 
             $sort = array();
             foreach ($submenu[$i]['items'] as $key => $value) {
-                $sort[$key] = isset($value['title']) ? $value['title'] : $value['name'];
+                $sort[$key] = $value['title'] ?? $value['name'];
             }
 
             array_multisort($sort, $submenu[$i]['items']);
@@ -280,7 +280,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
 
         $sort = array();
         foreach ($submenu as $key => $value) {
-            $sort[$key] = isset($value['title']) ? $value['title'] : $value['name'];
+            $sort[$key] = $value['title'] ?? $value['name'];
         }
 
         array_multisort($sort, $submenu);
@@ -299,10 +299,10 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_url');
 
-        if (false !== @unserialize($shibbolethUrl)) {
+        if (@unserialize($shibbolethUrl) !== false) {
             $shibbolethUrl = unserialize($shibbolethUrl);
 
-            if (false === getenv('SERVED_BY')) {
+            if (getenv('SERVED_BY') === false) {
                 throw new Exception\ShibbolethUrlException('The SERVED_BY environment variable does not exist');
             }
             if (!isset($shibbolethUrl[getenv('SERVED_BY')])) {

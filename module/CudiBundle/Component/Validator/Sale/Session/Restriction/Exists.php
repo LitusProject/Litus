@@ -45,7 +45,7 @@ class Exists extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -71,21 +71,21 @@ class Exists extends \CommonBundle\Component\Validator\AbstractValidator
         $this->setValue($value);
 
         $restriction = null;
-        if ('name' == $value) {
+        if ($value == 'name') {
             $restriction = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Session\Restriction\Name')
                 ->findOneBySession($this->options['session']);
-        } elseif ('year' == $value) {
+        } elseif ($value == 'year') {
             $restriction = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Session\Restriction\Year')
                 ->findOneBySession($this->options['session']);
-        } elseif ('study' == $value) {
+        } elseif ($value == 'study') {
             $restriction = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Session\Restriction\Study')
                 ->findOneBySession($this->options['session']);
         }
 
-        if (null == $restriction) {
+        if ($restriction == null) {
             return true;
         }
 

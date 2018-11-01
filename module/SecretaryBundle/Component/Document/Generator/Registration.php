@@ -20,9 +20,9 @@
 
 namespace SecretaryBundle\Component\Document\Generator;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Organization,
-    Doctrine\ORM\EntityManager;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\General\Organization;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Registration
@@ -68,7 +68,7 @@ class Registration extends \CommonBundle\Component\Document\Generator\Csv
                 ->getRepository('SecretaryBundle\Entity\Registration')
                 ->findOneByAcademicAndAcademicYear($academic, $academicYear);
 
-            if (null === $registration || !$registration->hasPayed()) {
+            if ($registration === null || !$registration->hasPayed()) {
                 continue;
             }
 

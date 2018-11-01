@@ -20,12 +20,12 @@
 
 namespace CommonBundle\Entity\User\Person;
 
-use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    CommonBundle\Entity\General\Address,
-    CommonBundle\Entity\User\Status\University as UniversityStatus,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+use CommonBundle\Entity\General\Address;
+use CommonBundle\Entity\User\Status\University as UniversityStatus;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for an academic person, e.g. a student or professor.
@@ -267,7 +267,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param  AcademicYearEntity    $academicYear
+     * @param  AcademicYearEntity $academicYear
      * @return UniversityStatus|null
      */
     public function getUniversityStatus(AcademicYearEntity $academicYear)
@@ -294,7 +294,8 @@ class Academic extends \CommonBundle\Entity\User\Person
                         return true;
                     }
                 }
-            )) {
+            )
+            ) {
                 return false;
             }
         }
@@ -361,7 +362,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param  AcademicYearEntity                        $academicYear
+     * @param  AcademicYearEntity $academicYear
      * @return \CommonBundle\Entity\General\Organization
      */
     public function getOrganization(AcademicYearEntity $academicYear)
@@ -376,7 +377,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param  AcademicYearEntity                             $academicYear
+     * @param  AcademicYearEntity $academicYear
      * @return \CommonBundle\Entity\General\Organization\Unit
      */
     public function getUnit(AcademicYearEntity $academicYear)
@@ -398,7 +399,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     {
         return array_merge(
             parent::getRoles(),
-            true === $mergeUnitRoles ? $this->getUnitRoles() : array()
+            $mergeUnitRoles === true ? $this->getUnitRoles() : array()
         );
     }
 

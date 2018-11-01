@@ -20,10 +20,10 @@
 
 namespace CudiBundle\Controller\Admin\Stock;
 
-use CudiBundle\Entity\Stock\Delivery,
-    CudiBundle\Entity\Stock\Order\Virtual as VirtualOrder,
-    CudiBundle\Entity\Supplier,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Stock\Delivery;
+use CudiBundle\Entity\Stock\Order\Virtual as VirtualOrder;
+use CudiBundle\Entity\Supplier;
+use Zend\View\Model\ViewModel;
 
 /**
  * DeliveryController
@@ -56,11 +56,13 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 
     public function supplierAction()
     {
-        if (!($supplier = $this->getSupplierEntity())) {
+        $supplier = $this->getSupplierEntity();
+        if ($supplier === null) {
             return new ViewModel();
         }
 
-        if (!($period = $this->getActiveStockPeriodEntity())) {
+        $period = $this->getActiveStockPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 
@@ -87,7 +89,8 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 
     public function addAction()
     {
-        if (!($period = $this->getActiveStockPeriodEntity())) {
+        $period = $this->getActiveStockPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 
@@ -97,9 +100,12 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.article_barcode_prefix') . $this->getAcademicYearEntity()->getCode(true);
 
-        $form = $this->getForm('cudi_stock_delivery_add', array(
-            'barcode_prefix' => $prefix,
-        ));
+        $form = $this->getForm(
+            'cudi_stock_delivery_add',
+            array(
+                'barcode_prefix' => $prefix,
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -126,11 +132,11 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
                 $this->getEntityManager()->flush();
 
                 $enableAssignment = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('cudi.enable_automatic_assignment') &&
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.enable_automatic_assignment') &&
                     $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('cudi.enable_assign_after_stock_update');
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.enable_assign_after_stock_update');
 
                 if ($enableAssignment) {
                     $this->getEntityManager()
@@ -183,11 +189,13 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($period = $this->getActiveStockPeriodEntity())) {
+        $period = $this->getActiveStockPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 
-        if (!($delivery = $this->getDeliveryEntity())) {
+        $delivery = $this->getDeliveryEntity();
+        if ($delivery === null) {
             return new ViewModel();
         }
 
@@ -246,7 +254,8 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($period = $this->getActiveStockPeriodEntity())) {
+        $period = $this->getActiveStockPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 

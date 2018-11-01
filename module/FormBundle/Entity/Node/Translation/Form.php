@@ -20,9 +20,9 @@
 
 namespace FormBundle\Entity\Node\Translation;
 
-use CommonBundle\Entity\General\Language,
-    Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Node\Form as FormEntity;
+use CommonBundle\Entity\General\Language;
+use Doctrine\ORM\Mapping as ORM;
+use FormBundle\Entity\Node\Form as FormEntity;
 
 /**
  * This entity stores the node item.
@@ -33,7 +33,7 @@ use CommonBundle\Entity\General\Language,
 class Form
 {
     /**
-     * @var int The ID of this tanslation
+     * @var integer The ID of this tanslation
      *
      * @ORM\Id
      * @ORM\GeneratedValue

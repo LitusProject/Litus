@@ -20,10 +20,10 @@
 
 namespace QuizBundle\Entity;
 
-use CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a quiz.
@@ -34,7 +34,7 @@ use CommonBundle\Entity\User\Person,
 class Quiz
 {
     /**
-     * @var int The entry's unique identifier
+     * @var integer The entry's unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -104,7 +104,7 @@ class Quiz
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -173,7 +173,7 @@ class Quiz
      */
     public function canBeEditedBy(Person $person = null)
     {
-        if (null === $person) {
+        if ($person === null) {
             return false;
         }
 

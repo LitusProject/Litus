@@ -24,9 +24,9 @@ use ShopBundle\Entity\Product as ProductEntity;
 
 /**
  * Class Product
+ *
  * @author Floris Kint <floris.kint@litus.cc>
  */
-
 class Product extends \CommonBundle\Component\Hydrator\Hydrator
 {
     private static $stdKeys = array(
@@ -40,7 +40,7 @@ class Product extends \CommonBundle\Component\Hydrator\Hydrator
      */
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
@@ -51,13 +51,13 @@ class Product extends \CommonBundle\Component\Hydrator\Hydrator
     }
 
     /**
-     * @param  array           $data
-     * @param  ProductEntity | $object
+     * @param  array              $data
+     * @param  ProductEntity|null $object
      * @return ProductEntity
      */
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $object = new ProductEntity();
         }
 

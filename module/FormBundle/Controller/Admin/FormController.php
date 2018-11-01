@@ -20,11 +20,11 @@
 
 namespace FormBundle\Controller\Admin;
 
-use FormBundle\Entity\Node\Form,
-    FormBundle\Entity\Node\Form\Doodle,
-    FormBundle\Entity\Node\Form\Form as RegularForm,
-    FormBundle\Entity\ViewerMap,
-    Zend\View\Model\ViewModel;
+use FormBundle\Entity\Node\Form;
+use FormBundle\Entity\Node\Form\Doodle;
+use FormBundle\Entity\Node\Form\Form as RegularForm;
+use FormBundle\Entity\ViewerMap;
+use Zend\View\Model\ViewModel;
 
 /**
  * FormController
@@ -102,7 +102,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $map = new ViewerMap($formEntity, $this->getAuthentication()->getPersonObject(), true, true);
 
                 $this->getEntityManager()->persist($map);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -131,7 +130,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($formSpecification = $this->getFormEntity())) {
+        $formSpecification = $this->getFormEntity();
+        if ($formSpecification === null) {
             return new ViewModel();
         }
 
@@ -196,7 +196,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($form = $this->getFormEntity())) {
+        $form = $this->getFormEntity();
+        if ($form === null) {
             return new ViewModel();
         }
 

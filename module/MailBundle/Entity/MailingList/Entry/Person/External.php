@@ -60,7 +60,7 @@ class External extends \MailBundle\Entity\MailingList\Entry\Person
     }
 
     /**
-     * @param  string   $firstName
+     * @param  string $firstName
      * @return External
      */
     public function setFirstName($firstName)
@@ -79,7 +79,7 @@ class External extends \MailBundle\Entity\MailingList\Entry\Person
     }
 
     /**
-     * @param  string   $lastName
+     * @param  string $lastName
      * @return External
      */
     public function setLastName($lastName)
@@ -98,7 +98,7 @@ class External extends \MailBundle\Entity\MailingList\Entry\Person
     }
 
     /**
-     * @param  string   $email
+     * @param  string $email
      * @return External
      */
     public function setEmailAddress($email)

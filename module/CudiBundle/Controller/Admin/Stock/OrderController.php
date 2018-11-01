@@ -21,18 +21,18 @@
 namespace CudiBundle\Controller\Admin\Stock;
 
 use CommonBundle\Component\Acl\Driver\Exception\RuntimeException;
-use CommonBundle\Component\Util\File\TmpFile,
-    CudiBundle\Component\Document\Generator\Order\Pdf as OrderPdfGenerator,
-    CudiBundle\Component\Document\Generator\Order\Xml as OrderXmlGenerator,
-    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    CudiBundle\Entity\Stock\Order\Item as OrderItem,
-    CudiBundle\Entity\Stock\Order\Order,
-    CudiBundle\Entity\Stock\Period,
-    CudiBundle\Entity\Supplier,
-    DateTime,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use CudiBundle\Component\Document\Generator\Order\Pdf as OrderPdfGenerator;
+use CudiBundle\Component\Document\Generator\Order\Xml as OrderXmlGenerator;
+use CudiBundle\Entity\Stock\Order\Item as OrderItem;
+use CudiBundle\Entity\Stock\Order\Order;
+use CudiBundle\Entity\Stock\Period;
+use CudiBundle\Entity\Supplier;
+use DateTime;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * OrderController
@@ -41,8 +41,7 @@ use CommonBundle\Component\Util\File\TmpFile,
  */
 class OrderController extends \CudiBundle\Component\Controller\ActionController
 {
-
-    const NOT_APPLICABLE = "/";
+    const NOT_APPLICABLE = '/';
 
     public function manageAction()
     {
@@ -68,11 +67,12 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function overviewAction()
     {
-        if (!($period = $this->getActiveStockPeriodEntity())) {
+        $period = $this->getActiveStockPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $orders = $this->search($period);
         }
 
@@ -103,7 +103,8 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function searchAction()
     {
-        if (!($period = $this->getActiveStockPeriodEntity())) {
+        $period = $this->getActiveStockPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 
@@ -141,11 +142,13 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function supplierAction()
     {
-        if (!($supplier = $this->getSupplierEntity())) {
+        $supplier = $this->getSupplierEntity();
+        if ($supplier === null) {
             return new ViewModel();
         }
 
-        if (!($period = $this->getActiveStockPeriodEntity())) {
+        $period = $this->getActiveStockPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 
@@ -172,7 +175,8 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($order = $this->getOrderEntity())) {
+        $order = $this->getOrderEntity();
+        if ($order === null) {
             return new ViewModel();
         }
 
@@ -180,9 +184,12 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CudiBundle\Entity\Supplier')
             ->findAll();
 
-        $form = $this->getForm('cudi_stock_order_comment', array(
-            'order' => $order,
-        ));
+        $form = $this->getForm(
+            'cudi_stock_order_comment',
+            array(
+                'order' => $order,
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -225,9 +232,12 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.article_barcode_prefix') . $this->getAcademicYearEntity()->getCode(true);
 
-        $form = $this->getForm('cudi_stock_order_add', array(
-            'barcode_prefix' => $prefix,
-        ));
+        $form = $this->getForm(
+            'cudi_stock_order_add',
+            array(
+                'barcode_prefix' => $prefix,
+            )
+        );
 
         $academicYear = $this->getAcademicYearEntity();
 
@@ -244,7 +254,6 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                 $item = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Stock\Order\Order')
                     ->addNumberByArticle($article, $formData['number'], $this->getAuthentication()->getPersonObject());
-
 
                 $this->getEntityManager()->flush();
 
@@ -280,13 +289,17 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function editItemAction()
     {
-        if (!($item = $this->getOrderItemEntity())) {
+        $item = $this->getOrderItemEntity();
+        if ($item === null) {
             return new ViewModel();
         }
 
-        $form = $this->getForm('cudi_stock_order_edit', array(
-            'item' => $item,
-        ));
+        $form = $this->getForm(
+            'cudi_stock_order_edit',
+            array(
+                'item' => $item,
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -334,7 +347,8 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($item = $this->getOrderItemEntity())) {
+        $item = $this->getOrderItemEntity();
+        if ($item === null) {
             return new ViewModel();
         }
 
@@ -350,7 +364,8 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function placeAction()
     {
-        if (!($order = $this->getOrderEntity())) {
+        $order = $this->getOrderEntity();
+        if ($order === null) {
             return new ViewModel();
         }
 
@@ -376,7 +391,8 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function pdfAction()
     {
-        if (!($order = $this->getOrderEntity())) {
+        $order = $this->getOrderEntity();
+        if ($order === null) {
             return new ViewModel();
         }
 
@@ -387,10 +403,12 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         $filename = 'order ' . $order->getDateOrdered()->format('Ymd') . '.pdf';
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename=' . $filename,
-            'Content-Type'        => 'application/pdf',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename=' . $filename,
+                'Content-Type'        => 'application/pdf',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -398,18 +416,18 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                 'data' => $file->getContent(),
             )
         );
-
-
     }
 
-    public function csvAction() {
-        if (!($order = $this->getOrderEntity())) {
+    public function csvAction()
+    {
+        $order = $this->getOrderEntity();
+        if ($order === null) {
             return new ViewModel();
         }
 
         $sortOrder = $this->getParam('order');
         $items = null;
-        switch($sortOrder) {
+        switch ($sortOrder) {
             case 'barcode':
                 $items = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Stock\Order\Item')
@@ -421,12 +439,13 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                     ->findAllByOrderOnAlpha($order);
                 break;
             default:
-                new RuntimeException("Unknown sorting order");
+                new RuntimeException('Unknown sorting order');
         }
 
         $file = new CsvFile();
 
         $heading = array('Barcode', 'Title', 'RV', 'Binding', 'Color', '# Pages', 'Amount', 'Isbn', 'Author', 'Publisher');
+
         $results = array();
         foreach ($items as $item) {
             if ($item->getArticle()->getMainArticle()->isInternal()) {
@@ -443,7 +462,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                     OrderController::NOT_APPLICABLE,
                 );
             } else {
-                $result[] = array(
+                $results[] = array(
                     OrderController::NOT_APPLICABLE,
                     $item->getArticle()->getMainArticle()->getTitle(),
                     OrderController::NOT_APPLICABLE,
@@ -456,7 +475,6 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                     $item->getArticle()->getMainArticle()->getPublishers(),
                 );
             }
-
         }
 
         $document = new CsvGenerator($heading, $results);
@@ -465,10 +483,12 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         $filename = 'order ' . $order->getDateOrdered()->format('Ymd') . '.csv';
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename=' . $filename,
-            'Content-Type'        => 'text/csv',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename=' . $filename,
+                'Content-Type'        => 'text/csv',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -476,12 +496,17 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                 'data' => $file->getContent(),
             )
         );
-
     }
 
     public function exportAction()
     {
-        if (!($order = $this->getOrderEntity()) || !($date = $this->getParamDate())) {
+        $order = $this->getOrderEntity();
+        if ($order === null) {
+            return new ViewModel();
+        }
+
+        $date = $this->getParamDate();
+        if ($date === null) {
             return new ViewModel();
         }
 
@@ -511,11 +536,13 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         }
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="order.zip"',
-            'Content-Type'        => 'application/zip',
-            'Content-Length'      => filesize($archive->getFileName()),
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="order.zip"',
+                'Content-Type'        => 'application/zip',
+                'Content-Length'      => filesize($archive->getFileName()),
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -527,12 +554,12 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function cancelAction()
     {
-        if (!($order = $this->getOrderEntity())) {
+        $order = $this->getOrderEntity();
+        if ($order === null) {
             return new ViewModel();
         }
 
         $order->setCanceled();
-
         $this->getEntityManager()->flush();
 
         $this->flashMessenger()->success(
@@ -552,7 +579,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
     }
 
     /**
-     * @param  Period                   $period
+     * @param  Period $period
      * @return \Doctrine\ORM\Query|null
      */
     private function search(Period $period)

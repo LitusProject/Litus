@@ -20,11 +20,9 @@
 
 namespace ShiftBundle\Controller\Admin;
 
-use ShiftBundle\Entity\Shift,
-    ShiftBundle\Entity\Shift\Responsible,
-    ShiftBundle\Entity\Shift\Volunteer,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use ShiftBundle\Entity\Shift;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * ShiftController
@@ -35,7 +33,8 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
 {
     public function manageAction()
     {
-        if (!($shift = $this->getShiftEntity())) {
+        $shift = $this->getShiftEntity();
+        if ($shift === null) {
             return new ViewModel();
         }
 
@@ -50,7 +49,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             if ($form->isValid()) {
                 $subscriber = $form->hydrateObject($shift);
 
-                if (null === $subscriber) {
+                if ($subscriber === null) {
                     $this->flashMessenger()->error(
                         'Error',
                         'Unable to add the given person to the shift!'
@@ -96,7 +95,8 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
     {
         $this->initAjax();
 
-        if (!($subscription = $this->getSubscriptionEntity())) {
+        $subscription = $this->getSubscriptionEntity();
+        if ($subscription === null) {
             return new ViewModel();
         }
 
@@ -123,7 +123,8 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shift.mail_name');
 
-        if (!($language = $subscription->getPerson()->getLanguage())) {
+        $language = $subscription->getPerson()->getLanguage();
+        if ($language === null) {
             $language = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev('en');
         }
@@ -146,7 +147,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             ->addTo($subscription->getPerson()->getEmail(), $subscription->getPerson()->getFullName())
             ->setSubject($subject);
 
-        if ('development' != getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);
         }
 
@@ -197,7 +198,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
 
         $subscription = $repository->findOneById($this->getParam('id', 0));
 
-        if (null === $subscription) {
+        if ($subscription === null) {
             $this->flashMessenger()->error(
                 'Error',
                 'No subscription with the given ID was found!'

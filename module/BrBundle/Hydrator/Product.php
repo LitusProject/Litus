@@ -20,8 +20,8 @@
 
 namespace BrBundle\Hydrator;
 
-use BrBundle\Entity\Product as ProductEntity,
-    CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+use BrBundle\Entity\Product as ProductEntity;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 
 /**
  * This hydrator hydrates/extracts Product data.
@@ -38,14 +38,14 @@ class Product extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             throw new InvalidObjectException('Cannot create a product');
         }
 
         if ($object->getName() != null) {
             $orderEntry = $this->getEntityManager()
-                    ->getRepository('BrBundle\Entity\Product\OrderEntry')
-                    ->findOneByProduct($object->getId());
+                ->getRepository('BrBundle\Entity\Product\OrderEntry')
+                ->findOneByProduct($object->getId());
 
             if ($orderEntry !== null) {
                 $object->setOld();
@@ -57,11 +57,11 @@ class Product extends \CommonBundle\Component\Hydrator\Hydrator
             }
         }
 
-        if ('' != $data['delivery_date']) {
+        if ($data['delivery_date'] != '') {
             $object->setDeliveryDate(self::loadDate($data['delivery_date']));
         }
 
-        if ('' != $data['event']) {
+        if ($data['event'] != '') {
             $object->setEvent(
                 $this->getEntityManager()
                     ->getRepository('CalendarBundle\Entity\Node\Event')
@@ -76,7 +76,7 @@ class Product extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 

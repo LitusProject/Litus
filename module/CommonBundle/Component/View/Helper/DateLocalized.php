@@ -20,40 +20,22 @@
 
 namespace CommonBundle\Component\View\Helper;
 
-use DateTime,
-    IntlDateFormatter,
-    Zend\I18n\Translator\Translator,
-    Zend\I18n\Translator\TranslatorAwareInterface,
-    Zend\I18n\Translator\TranslatorInterface,
-    Zend\Mvc\I18n\Translator as MvcTranslator;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\TranslatorTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use DateTime;
+use IntlDateFormatter;
 
 /**
  * A view helper that allows us to easily translate the date.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class DateLocalized extends \Zend\View\Helper\AbstractHelper implements TranslatorAwareInterface
+class DateLocalized extends \Zend\View\Helper\AbstractHelper implements ServiceLocatorAwareInterface
 {
-    /**
-     * Translator (optional)
-     *
-     * @var TranslatorInterface
-     */
-    protected $translator;
+    use ServiceLocatorAwareTrait;
 
-    /**
-     * Translator text domain (optional)
-     *
-     * @var string
-     */
-    protected $translatorTextDomain = 'default';
-
-    /**
-     * Whether translator should be used
-     *
-     * @var bool
-     */
-    protected $translatorEnabled = true;
+    use TranslatorTrait;
 
     /**
      * @param DateTime|null $date
@@ -63,13 +45,12 @@ class DateLocalized extends \Zend\View\Helper\AbstractHelper implements Translat
      */
     public function __invoke(DateTime $date = null, $format = '')
     {
-        $translator = $this->getTranslator();
-        if (null === $date || null === $translator || !($translator instanceof Translator || $translator instanceof MvcTranslator)) {
+        if ($date === null) {
             return '';
         }
 
         $formatter = new IntlDateFormatter(
-            $translator->getLocale(),
+            $this->getTranslator()->getLocale(),
             IntlDateFormatter::NONE,
             IntlDateFormatter::NONE,
             date_default_timezone_get(),
@@ -78,95 +59,5 @@ class DateLocalized extends \Zend\View\Helper\AbstractHelper implements Translat
         );
 
         return $formatter->format($date);
-    }
-
-    /**
-     * Sets translator to use in helper
-     *
-     * @param  TranslatorInterface|null $translator [optional] translator.
-     *                                              Default is null, which sets no translator.
-     * @param  string|null              $textDomain [optional] text domain
-     *                                              Default is null, which skips setTranslatorTextDomain
-     * @return DateLocalized
-     */
-    public function setTranslator(TranslatorInterface $translator = null, $textDomain = null)
-    {
-        $this->translator = $translator;
-        if (null !== $textDomain) {
-            $this->setTranslatorTextDomain($textDomain);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Returns translator used in helper
-     *
-     * @return null|TranslatorInterface
-     */
-    public function getTranslator()
-    {
-        if (! $this->isTranslatorEnabled()) {
-            return null;
-        }
-
-        return $this->translator;
-    }
-
-    /**
-     * Checks if the helper has a translator
-     *
-     * @return bool
-     */
-    public function hasTranslator()
-    {
-        return (bool) $this->getTranslator();
-    }
-
-    /**
-     * Sets whether translator is enabled and should be used
-     *
-     * @param  bool          $enabled [optional] whether translator should be used.
-     *                                Default is true.
-     * @return DateLocalized
-     */
-    public function setTranslatorEnabled($enabled = true)
-    {
-        $this->translatorEnabled = (bool) $enabled;
-
-        return $this;
-    }
-
-    /**
-     * Returns whether translator is enabled and should be used
-     *
-     * @return bool
-     */
-    public function isTranslatorEnabled()
-    {
-        return $this->translatorEnabled;
-    }
-
-    /**
-     * Set translation text domain
-     *
-     * @param  string        $textDomain
-     * @return DateLocalized
-     */
-    public function setTranslatorTextDomain($textDomain = 'default')
-    {
-        $this->translatorTextDomain = $textDomain;
-
-        return $this;
-    }
-
-    /**
-     * Return the translation text domain
-     *
-     * @return string
-     */
-    public function getTranslatorTextDomain()
-    {
-        return $this->translatorTextDomain;
     }
 }

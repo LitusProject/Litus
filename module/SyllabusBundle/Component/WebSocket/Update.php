@@ -20,12 +20,12 @@
 
 namespace SyllabusBundle\Component\WebSocket;
 
-use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Component\WebSocket\User,
-    DateTime,
-    Doctrine\ORM\EntityManager,
-    SyllabusBundle\Component\XMLParser\Study as StudyParser,
-    Zend\Mail\Transport\TransportInterface;
+use CommonBundle\Component\Acl\Acl;
+use CommonBundle\Component\WebSocket\User;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use SyllabusBundle\Component\XMLParser\Study as StudyParser;
+use Zend\Mail\Transport\TransportInterface;
 
 /**
  * This is the server to handle all requests by the websocket protocol for the Queue.
@@ -93,7 +93,7 @@ class Update extends \CommonBundle\Component\WebSocket\Server
             return;
         }
 
-        if ('development' != getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') != 'development') {
             if (!isset($command->authSession)) {
                 $this->removeUser($user);
                 $now = new DateTime();
@@ -111,17 +111,18 @@ class Update extends \CommonBundle\Component\WebSocket\Server
                 $acl = new Acl($this->entityManager);
 
                 foreach ($authSession->getPerson()->getRoles() as $role) {
-                    if (
-                        $role->isAllowed(
-                            $acl, 'syllabus_admin_update', 'updateNow'
-                        )
+                    if ($role->isAllowed(
+                        $acl,
+                        'syllabus_admin_update',
+                        'updateNow'
+                    )
                     ) {
                         $allowed = true;
                     }
                 }
             }
 
-            if (null == $authSession || !$allowed) {
+            if ($authSession == null || !$allowed) {
                 $this->removeUser($user);
                 $now = new DateTime();
                 echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session' . PHP_EOL;
@@ -132,7 +133,7 @@ class Update extends \CommonBundle\Component\WebSocket\Server
 
         $this->addAuthenticated($user->getSocket());
 
-        if ($command->command == 'update' && 'done' == $this->status) {
+        if ($command->command == 'update' && $this->status == 'done') {
             $this->entityManager->clear();
             $this->status = 'updating';
             $this->parser->update();
@@ -162,11 +163,11 @@ class Update extends \CommonBundle\Component\WebSocket\Server
 
     /**
      * @param string      $type
-     * @param null|string $extra
+     * @param string|null $extra
      */
     public function callback($type, $extra = null)
     {
-        if ('development' == getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') == 'development') {
             echo 'Callback: ' . $type . ' (' . $extra . ')' . PHP_EOL;
         }
 

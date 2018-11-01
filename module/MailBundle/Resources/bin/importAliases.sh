@@ -1,9 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# A very small wrapper around our e-mail alias importer
-#
+if [ -z "$APPLICATION_ENV" ]; then
+    export APPLICATION_ENV=production
+fi
 
 SCRIPT_DIRECTORY=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-MAIN_DIRECTORY=$(cd "$SCRIPT_DIRECTORY/../../" && pwd)
+cd "$SCRIPT_DIRECTORY/../../"
 
-php "$MAIN_DIRECTORY"/public/index.php mail:import-aliases "$@";
+php bin/console.php mail:import-aliases "$@"

@@ -20,11 +20,11 @@
 
 namespace CommonBundle\Entity\User;
 
-use CommonBundle\Entity\User\Barcode\Ean12,
-    CommonBundle\Entity\User\Barcode\Qr,
-    CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Barcode\Ean12;
+use CommonBundle\Entity\User\Barcode\Qr;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores a user's barcode.
@@ -50,7 +50,7 @@ abstract class Barcode
     );
 
     /**
-     * @var int The ID of this credential
+     * @var integer The ID of this credential
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -82,11 +82,10 @@ abstract class Barcode
     {
         $this->person = $person;
         $this->creationTime = new DateTime();
-        $this->valid = true;
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -99,6 +98,14 @@ abstract class Barcode
     public function getPerson()
     {
         return $this->person;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getCreationTime()
+    {
+        return $this->creationTime;
     }
 
     /**
@@ -115,7 +122,7 @@ abstract class Barcode
             return 'ean12';
         }
 
-        if ($this instanceof QR) {
+        if ($this instanceof Qr) {
             return 'qr';
         }
     }

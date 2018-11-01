@@ -20,10 +20,10 @@
 
 namespace CommonBundle\Controller;
 
-use CommonBundle\Entity\User\Person\Academic as Academic,
-    DateInterval,
-    DateTime,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Person\Academic;
+use DateInterval;
+use DateTime;
+use Zend\View\Model\ViewModel;
 
 /**
  * IndexController
@@ -77,12 +77,12 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         $fileContents = @file_get_contents('data/cache/run-' . md5('run_result_page'));
 
         $resultPage = null;
-        if (false !== $fileContents) {
+        if ($fileContents !== false) {
             $resultPage = (array) json_decode($fileContents);
         }
 
         $returnArray = null;
-        if (null !== $resultPage) {
+        if ($resultPage !== null) {
             $teamId = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('sport.run_team_id');
@@ -96,9 +96,9 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 }
             }
 
-            if (null !== $teamData) {
+            if ($teamData !== null) {
                 $behind = 0;
-                if (null !== $currentPlace && $currentPlace > 0) {
+                if ($currentPlace !== null && $currentPlace > 0) {
                     $firstData = $resultPage['teams'][0];
                     $behind = round(($firstData->laps + $firstData->position) - ($teamData->laps + $teamData->position), 2);
                 }
@@ -130,35 +130,37 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 ->findAllOpenByPerson($this->getAuthentication()->getPersonObject());
 
             foreach ($bookings as $key => $booking) {
-                if ('assigned' != $booking->getStatus()) {
+                if ($booking->getStatus() != 'assigned') {
                     unset($bookings[$key]);
                 }
             }
 
-            if (0 == count($bookings)) {
+            if (count($bookings) == 0) {
                 $bookings = null;
             }
         }
 
         return $bookings;
     }
+
     /**
      * @return string|null
      */
     private function getPocUrl()
     {
         return $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('common.pocUrl');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.pocUrl');
     }
+
     /**
      * @return string|null
      */
     private function getPocUrlOverview()
     {
         return $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('common.pocUrlOverview');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.pocUrlOverview');
     }
 
     /**
@@ -218,7 +220,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOpen();
 
-        if (sizeof($sessions) >= 1) {
+        if (count($sessions) > 0) {
             $cudi['currentSession'] = $sessions[0];
 
             $cudi['currentStudents'] = $this->getEntityManager()
@@ -242,7 +244,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('common.enable_piwik');
 
-        if ('development' == getenv('APPLICATION_ENV') || !$enablePiwik) {
+        if (getenv('APPLICATION_ENV') == 'development' || !$enablePiwik) {
             return null;
         }
 
@@ -293,14 +295,16 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function getMyPocers()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return array(
-            'enable' => $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('common.poc'),
-            'pocItem' => null,
+                'enable' => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.poc'),
+                'pocItem' => null,
             );
         }
+
         $currentAcademicYear = $this->getCurrentAcademicYear();
 
         $pocers = $this->getEntityManager()
@@ -319,26 +323,28 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 $pocItem[] = array(
                     'groupId'      => $lastPocGroup,
                     'pocGroupList' => $pocGroupList,
-                     'pocExample'  => $pocGroupList[0],);
+                    'pocExample'  => $pocGroupList[0],
+                );
                 unset($pocGroupList);
                 $pocGroupList = array();
                 $pocGroupList[] = $pocer;
             }
             $lastPocGroup = $pocer->getGroupId();
         }
-        if (!empty($pocGroupList)) {
+        if (count($pocGroupList) > 0) {
             $pocItem[] = array(
-                    'groupId'      => $lastPocGroup,
-                    'pocGroupList' => $pocGroupList,
-                     'pocExample'  => $pocGroupList[0],);
+                'groupId'      => $lastPocGroup,
+                'pocGroupList' => $pocGroupList,
+                'pocExample'   => $pocGroupList[0],
+            );
         }
 
         return
             array(
-            'enable' => $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('common.poc'),
-            'pocItem' => $pocItem,
+                'enable' => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.poc'),
+                'pocItem' => $pocItem,
             );
     }
 

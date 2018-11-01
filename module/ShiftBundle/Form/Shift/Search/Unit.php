@@ -36,18 +36,20 @@ class Unit extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'unit',
-            'attributes' => array(
-                'options' => $this->createUnitsArray(),
-            ),
-            'options' => array(
-                'input' => array(
-                    'required' => true,
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'unit',
+                'attributes' => array(
+                    'options' => $this->createUnitsArray(),
                 ),
-            ),
-        ));
+                'options' => array(
+                    'input' => array(
+                        'required' => true,
+                    ),
+                ),
+            )
+        );
     }
 
     private function createUnitsArray()

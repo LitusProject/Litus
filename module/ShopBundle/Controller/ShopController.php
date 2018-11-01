@@ -20,10 +20,11 @@
 
 namespace ShopBundle\Controller;
 
-use DateInterval,
-    DateTime,
-    ShopBundle\Entity\SalesSession,
-    Zend\View\Model\ViewModel;
+use DateInterval;
+use DateTime;
+use ShopBundle\Entity\Reservation;
+use ShopBundle\Entity\SalesSession;
+use Zend\View\Model\ViewModel;
 
 /**
  * ShopController
@@ -32,38 +33,7 @@ use DateInterval,
  */
 class ShopController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
-    /**
-     * @return string
-     */
-    private function getShopName()
-    {
-        return $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('shop.name');
-    }
-
-    /**
-     * @return SalesSession[]
-     */
-    private function getSalesSessions()
-    {
-        $interval = new DateInterval(
-            $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('shop.reservation_threshold')
-        );
-
-        $startDate = new DateTime();
-        $endDate = clone $startDate;
-        $endDate->add($interval);
-
-        $salesSessions = $this->getEntityManager()
-            ->getRepository('ShopBundle\Entity\SalesSession')
-            ->findAllReservationsPossibleInterval($startDate, $endDate);
-
-        return $salesSessions;
-    }
-
+    // TODO: Rename to reserveProductsAction()
     public function reserveproductsAction()
     {
         $canReserve = $this->canReserve();
@@ -79,11 +49,13 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         $salesSession = $this->getSalesSessionEntity();
         $stockEntries = $this->getStockEntries($salesSession);
 
-        $reserveForm = $this->getForm('shop_shop_reserve',
+        $reserveForm = $this->getForm(
+            'shop_shop_reserve',
             array(
                 'stockEntries' => $stockEntries,
                 'salesSession' => $salesSession,
-            ));
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -154,10 +126,12 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $salesSessions = $this->getSalesSessions();
-        $sessionsForm = $this->getForm('shop_shop_sessions',
+        $sessionsForm = $this->getForm(
+            'shop_shop_sessions',
             array(
                 'salesSessions' => $salesSessions,
-            ));
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -204,7 +178,8 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
 
     public function deleteReservationAction()
     {
-        if ($reservation = $this->getEntityById('ShopBundle\Entity\Reservation')) {
+        $reservation = $this->getReservationEntity();
+        if ($reservation === null) {
             $canBeDeleted = true;
             $canBeDeleted = $canBeDeleted && $reservation->getPerson()->getId() == $this->getPersonEntity()->getId();
             $canBeDeleted = $canBeDeleted && $reservation->getSalesSession()->getStartDate() > new DateTime();
@@ -231,6 +206,52 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
+     * @return boolean
+     */
+    private function canReserve()
+    {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            return false;
+        }
+
+        $reservationPermission = $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\ReservationPermission')
+            ->find($this->getPersonEntity());
+
+        if ($reservationPermission) {
+            return $reservationPermission->getReservationsAllowed();
+        }
+
+        $configRepository = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config');
+
+        if ($configRepository->getConfigValue('shop.reservation_default_permission')) {
+            return true;
+        }
+
+        if ($configRepository->getConfigValue('shop.reservation_organisation_status_permission_enabled')) {
+            $status = $this->getPersonEntity()->getOrganizationStatus($this->getCurrentAcademicYear());
+            if ($status->getStatus() == $configRepository->getConfigValue('shop.reservation_organisation_status_permission_status')) {
+                return true;
+            }
+        }
+
+        if ($configRepository->getConfigValue('shop.reservation_shifts_general_enabled')) {
+            if ($this->getTotalShiftCount() >= $configRepository->getConfigValue('shop.reservation_shifts_general_number')) {
+                return true;
+            }
+        }
+
+        if ($configRepository->getConfigValue('shop.reservation_shifts_permission_enabled')) {
+            if ($this->getUnitShiftCount($configRepository->getConfigValue('shop.reservation_shifts_unit_id')) >= $configRepository->getConfigValue('shop.reservation_shifts_number')) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * @return \CommonBundle\Entity\User\Person|null
      */
     private function getPersonEntity()
@@ -243,57 +264,27 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return bool
+     * @return \ShopBundle\Entity\Reservation|null
      */
-    private function canReserve()
+    private function getReservationEntity()
     {
-        if (!$this->getAuthentication()->isAuthenticated()) {
-            return false;
+        $reservation = $this->getEntityById('ShopBundle\Entity\Reservation');
+
+        if (!($reservation instanceof Reservation)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No reservation was found!'
+            );
+            $this->redirect()->toRoute('shop');
+
+            return null;
         }
 
-        //reservation permissions
-        $reservationPermission = $this->getEntityManager()
-            ->getRepository('ShopBundle\Entity\ReservationPermission')
-            ->find($this->getPersonEntity());
-        if ($reservationPermission) {
-            return $reservationPermission->getReservationsAllowed();
-        }
-
-        $configRepository = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config');
-
-        //default permission
-        if ($configRepository->getConfigValue('shop.reservation_default_permission')) {
-            return true;
-        }
-
-        //organization role
-        if ($configRepository->getConfigValue('shop.reservation_organisation_status_permission_enabled')) {
-            $status = $this->getPersonEntity()->getOrganizationStatus($this->getCurrentAcademicYear());
-            if ($status->getStatus() == $configRepository->getConfigValue('shop.reservation_organisation_status_permission_status')) {
-                return true;
-            }
-        }
-
-        //total shifts
-        if ($configRepository->getConfigValue('shop.reservation_shifts_general_enabled')) {
-            if ($this->getTotalShiftCount() >= $configRepository->getConfigValue('shop.reservation_shifts_general_number')) {
-                return true;
-            }
-        }
-
-        //shifts for unit
-        if ($configRepository->getConfigValue('shop.reservation_shifts_permission_enabled')) {
-            if ($this->getUnitShiftCount($configRepository->getConfigValue('shop.reservation_shifts_unit_id')) >= $configRepository->getConfigValue('shop.reservation_shifts_number')) {
-                return true;
-            }
-        }
-
-        return false;
+        return $reservation;
     }
 
     /**
-     * @return int
+     * @return integer
      */
     private function getTotalShiftCount()
     {
@@ -302,10 +293,12 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         $shifts = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findAllByPersonAsVolunteer($this->getPersonEntity(), $this->getCurrentAcademicYear());
+
         foreach ($shifts as $shift) {
             if ($shift->getStartDate() > $now) {
                 continue;
             }
+
             $shiftCount++;
         }
 
@@ -314,7 +307,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
 
     /**
      * @param $unitId
-     * @return int
+     * @return integer
      */
     private function getUnitShiftCount($unitId)
     {
@@ -342,14 +335,13 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     private function getSalesSessionEntity()
     {
         $salesSession = $this->getEntityById('ShopBundle\Entity\SalesSession');
+
         if (!($salesSession instanceof SalesSession)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No session was found!'
             );
-            $this->redirect()->toRoute(
-                'shop'
-            );
+            $this->redirect()->toRoute('shop');
 
             return null;
         }
@@ -358,15 +350,47 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @param $salesSession
-     * @return SessionStockEntry[]
+     * @return array
+     */
+    private function getSalesSessions()
+    {
+        $interval = new DateInterval(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shop.reservation_threshold')
+        );
+
+        $startDate = new DateTime();
+        $endDate = clone $startDate;
+        $endDate->add($interval);
+
+        return $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\SalesSession')
+            ->findAllReservationsPossibleInterval($startDate, $endDate);
+    }
+
+    /**
+     * @return string
+     */
+    private function getShopName()
+    {
+        return $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shop.name');
+    }
+
+    /**
+     * @param  SalesSession $salesSession
+     * @return array
      */
     private function getStockEntries($salesSession)
     {
         return $this->getEntityManager()
             ->getRepository('ShopBundle\Entity\Product\SessionStockEntry')
-            ->findBy(array(
-                'salesSession' => $salesSession,
-            ));
+            ->findBy(
+                array(
+                    'salesSession' => $salesSession,
+                )
+            );
     }
 }

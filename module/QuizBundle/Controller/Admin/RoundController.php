@@ -20,9 +20,9 @@
 
 namespace QuizBundle\Controller\Admin;
 
-use QuizBundle\Entity\Quiz,
-    QuizBundle\Entity\Round,
-    Zend\View\Model\ViewModel;
+use QuizBundle\Entity\Quiz;
+use QuizBundle\Entity\Round;
+use Zend\View\Model\ViewModel;
 
 /**
  * RoundController
@@ -35,7 +35,8 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($quiz = $this->getQuizEntity())) {
+        $quiz = $this->getQuizEntity();
+        if ($quiz === null) {
             return new ViewModel();
         }
 
@@ -61,7 +62,8 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($quiz = $this->getQuizEntity())) {
+        $quiz = $this->getQuizEntity();
+        if ($quiz === null) {
             return new ViewModel();
         }
 
@@ -96,8 +98,8 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $next_round_number = $this->getEntityManager()
-                ->getRepository('QuizBundle\Entity\Round')
-                ->getNextRoundOrderForQuiz($quiz);
+            ->getRepository('QuizBundle\Entity\Round')
+            ->getNextRoundOrderForQuiz($quiz);
 
         $form->get('order')
             ->setValue($next_round_number);
@@ -112,7 +114,8 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($round = $this->getRoundEntity())) {
+        $round = $this->getRoundEntity();
+        if ($round === null) {
             return new ViewModel();
         }
 
@@ -151,12 +154,12 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($round = $this->getRoundEntity())) {
+        $round = $this->getRoundEntity();
+        if ($round === null) {
             return new ViewModel();
         }
 
         $this->getEntityManager()->remove($round);
-
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -171,7 +174,9 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
     public function sortAction()
     {
         $this->initAjax();
-        if (!($quiz = $this->getQuizEntity())) {
+
+        $quiz = $this->getQuizEntity();
+        if ($quiz === null) {
             return new ViewModel();
         }
 
@@ -192,11 +197,13 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
 
         $this->getEntityManager()->flush();
 
-        return new ViewModel(array(
-            'result' => array(
-                'status' => 'success',
-            ),
-        ));
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success',
+                ),
+            )
+        );
     }
 
     /**

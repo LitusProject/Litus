@@ -28,24 +28,22 @@ class Rule extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $repository = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Academic');
 
-            $academic = ('' == $data['academic']['id'])
-                ? $repository->findOneByUsername($data['academic'])
-                : $repository->findOneById($data['academic']['id']);
+            $academic = $data['academic']['id'] == '' ? $repository->findOneByUsername($data['academic']) : $repository->findOneById($data['academic']['id']);
 
             $object = new RuleDocument(
                 $academic
             );
         }
 
-        if (isset($data['start_time']) && null !== $data['start_time']) {
+        if (isset($data['start_time']) && $data['start_time'] !== null) {
             $object->setStartTime(self::loadTime($data['start_time'])->format('Hi'));
         }
 
-        if (isset($data['end_time']) && null !== $data['end_time']) {
+        if (isset($data['end_time']) && $data['end_time'] !== null) {
             $object->setEndTime(self::loadTime($data['end_time'])->format('Hi'));
         }
 
@@ -55,7 +53,7 @@ class Rule extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
@@ -77,7 +75,7 @@ class Rule extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * Prints an integer time as hh:mm
      *
-     * @param  int|null $time
+     * @param  integer|null $time
      * @return string
      */
     private static function printTime($time)

@@ -20,9 +20,9 @@
 
 namespace QuizBundle\Controller\Admin;
 
-use QuizBundle\Entity\Quiz,
-    QuizBundle\Entity\Team,
-    Zend\View\Model\ViewModel;
+use QuizBundle\Entity\Quiz;
+use QuizBundle\Entity\Team;
+use Zend\View\Model\ViewModel;
 
 /**
  * TeamController
@@ -35,7 +35,8 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($quiz = $this->getQuizEntity())) {
+        $quiz = $this->getQuizEntity();
+        if ($quiz === null) {
             return new ViewModel();
         }
 
@@ -61,7 +62,8 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        if (!($quiz = $this->getQuizEntity())) {
+        $quiz = $this->getQuizEntity();
+        if ($quiz === null) {
             return new ViewModel();
         }
 
@@ -95,12 +97,11 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
             }
         }
 
-        $next_team_number = $this->getEntityManager()
+        $nextTeamNumber = $this->getEntityManager()
             ->getRepository('QuizBundle\Entity\Team')
             ->getNextTeamNumberForQuiz($quiz);
 
-        $form->get('number')
-            ->setValue($next_team_number);
+        $form->get('number')->setValue($nextTeamNumber);
 
         return new ViewModel(
             array(
@@ -112,7 +113,8 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($team = $this->getTeamEntity())) {
+        $team = $this->getTeamEntity();
+        if ($team === null) {
             return new ViewModel();
         }
 
@@ -151,12 +153,12 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($team = $this->getTeamEntity())) {
+        $team = $this->getTeamEntity();
+        if ($team === null) {
             return new ViewModel();
         }
 
         $this->getEntityManager()->remove($team);
-
         $this->getEntityManager()->flush();
 
         return new ViewModel(

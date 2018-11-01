@@ -26,7 +26,7 @@ namespace FormBundle\Form\Admin\Field;
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Edit extends Add
+class Edit extends \FormBundle\Form\Admin\Field\Add
 {
     public function init()
     {
@@ -41,10 +41,9 @@ class Edit extends Add
         $visibilityFieldset = $this->get('visibility');
         $visibilityFieldset->get('value')->setAttribute('data-current_value', $this->field->getVisibilityValue());
 
-        $this->remove('submit');
-        $this->remove('submit_repeat');
-
-        $this->addSubmit('Save', 'form_edit');
+        $this->remove('submit')
+            ->remove('submit_repeat')
+            ->addSubmit('Save', 'form_edit');
 
         $this->bind($this->field);
     }

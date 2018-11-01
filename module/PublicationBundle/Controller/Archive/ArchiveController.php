@@ -20,9 +20,9 @@
 
 namespace PublicationBundle\Controller\Archive;
 
-use CommonBundle\Entity\General\AcademicYear,
-    PublicationBundle\Entity\Publication,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\General\AcademicYear;
+use PublicationBundle\Entity\Publication;
+use Zend\View\Model\ViewModel;
 
 /**
  * IndexController
@@ -46,7 +46,8 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
 
     public function yearAction()
     {
-        if (!($publication = $this->getPublicationEntity())) {
+        $publication = $this->getPublicationEntity();
+        if ($publication === null) {
             return new ViewModel();
         }
 
@@ -64,11 +65,13 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
 
     public function viewAction()
     {
-        if (!($publication = $this->getPublicationEntity())) {
+        $publication = $this->getPublicationEntity();
+        if ($publication === null) {
             return new ViewModel();
         }
 
-        if (!($year = $this->getAcademicYearEntity())) {
+        $year = $this->getAcademicYearEntity();
+        if ($year === null) {
             return new ViewModel();
         }
 

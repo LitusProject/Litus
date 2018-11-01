@@ -20,18 +20,19 @@
 
 namespace CommonBundle\Component\Form;
 
-use CommonBundle\Component\InputFilter\Factory as InputFilterFactory,
-    Zend\Form\ElementInterface as OriginalElementInterface,
-    Zend\Form\FieldsetInterface as OriginalFieldsetInterface;
+use CommonBundle\Component\InputFilter\Factory as InputFilterFactory;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use Zend\Form\ElementInterface as ZendElementInterface;
+use Zend\Form\FieldsetInterface as ZendFieldsetInterface;
 
 /**
- * Creates forms
- *
  * @author Bram Gotink <bram.gotink@litus.cc>
- * @method FormElementManager getFormElementManager()
  */
-class Factory extends \Zend\Form\Factory
+class Factory extends \Zend\Form\Factory implements ServiceLocatorAwareInterface
 {
+    use ServiceLocatorAwareTrait;
+
     /**
      * @param FormElementManager $elementManager
      */
@@ -49,8 +50,8 @@ class Factory extends \Zend\Form\Factory
      *          set<Key>, with <Key> the array key of the value.
      * - object: the object will be bound to the object
      *
-     * @param  array|\Traversable          $spec
-     * @param  array|object|null           $data
+     * @param  array|\Traversable $spec
+     * @param  array|object|null  $data
      * @return \Zend\Form\ElementInterface
      */
     public function create($spec, $data = null)
@@ -59,8 +60,9 @@ class Factory extends \Zend\Form\Factory
             return $spec['instance'];
         }
 
-        if (null === $data && is_array($spec)
-                && isset($spec['options']['data'])) {
+        if ($data === null && is_array($spec)
+            && isset($spec['options']['data'])
+        ) {
             $data = $spec['options']['data'];
         }
 
@@ -77,15 +79,13 @@ class Factory extends \Zend\Form\Factory
         }
     }
 
-    public function configureElement(OriginalElementInterface $element, $spec)
+    public function configureElement(ZendElementInterface $element, $spec)
     {
         parent::configureElement($element, $spec);
 
-        if (($element instanceof ElementInterface)) {
+        if ($element instanceof ElementInterface) {
             $element->setRequired(
-                isset($spec['required'])
-                ? (bool) $spec['required']
-                : false
+                isset($spec['required']) ? (bool) $spec['required'] : false
             );
         }
 
@@ -100,11 +100,11 @@ class Factory extends \Zend\Form\Factory
         return $element;
     }
 
-    protected function prepareAndInjectElements($elements, OriginalFieldsetInterface $fieldset, $method)
+    protected function prepareAndInjectElements($elements, ZendFieldsetInterface $fieldset, $method)
     {
         if (is_array($elements)) {
             foreach ($elements as $k => $v) {
-                if ($v instanceof OriginalElementInterface) {
+                if ($v instanceof ZendElementInterface) {
                     $elements[$k] = array(
                         'spec' => array(
                             'instance' => $v,
@@ -118,12 +118,12 @@ class Factory extends \Zend\Form\Factory
             }
         }
 
-        return parent::prepareAndInjectElements($elements, $fieldset, $method);
+        parent::prepareAndInjectElements($elements, $fieldset, $method);
     }
 
     public function getInputFilterFactory()
     {
-        if (null === $this->inputFilterFactory) {
+        if ($this->inputFilterFactory === null) {
             $this->setInputFilterFactory(new InputFilterFactory());
         }
 

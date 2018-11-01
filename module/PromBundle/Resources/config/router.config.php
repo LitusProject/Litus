@@ -21,7 +21,7 @@
 return array(
     'routes' => array(
         'prom_admin_bus' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/prom/bus[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -36,7 +36,7 @@ return array(
             ),
         ),
         'prom_admin_code' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/prom/code[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -51,7 +51,7 @@ return array(
             ),
         ),
         'prom_admin_passenger' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/prom/passenger[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -66,7 +66,7 @@ return array(
             ),
         ),
         'prom_registration_index' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/prom/registration[/:action[/:code]][/]',
                 'constraints' => array(

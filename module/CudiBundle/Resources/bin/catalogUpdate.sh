@@ -1,9 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# A very small wrapper around our catelog update script
-#
+if [ -z "$APPLICATION_ENV" ]; then
+    export APPLICATION_ENV=production
+fi
 
 SCRIPT_DIRECTORY=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 cd "$SCRIPT_DIRECTORY/../../"
 
-APPLICATION_ENV="production" php public/index.php cudi:update-catalog -m
+php bin/console.php cudi:update-catalog -m

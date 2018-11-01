@@ -25,13 +25,13 @@ namespace BrBundle\Form\Admin\Company;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends Add
+class Edit extends \BrBundle\Form\Admin\Company\Add
 {
     public function init()
     {
         parent::init();
 
-        $this->remove('submit');
-        $this->addSubmit('Save', 'company_edit');
+        $this->remove('submit')
+            ->addSubmit('Save', 'company_edit');
     }
 }

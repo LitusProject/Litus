@@ -18,6 +18,10 @@
  * @license http://litus.cc/LICENSE
  */
 
+namespace PublicationBundle;
+
+use CommonBundle\Component\Assetic\Filter\Less as LessFilter;
+
 return array(
     'controllers' => array(
         'publication_admin_publication' => array(
@@ -76,7 +80,11 @@ return array(
             'assets' => array(
                 'archive/less/archive.less',
             ),
-            'filters' => array('less'),
+            'filters' => array(
+                '?LessFilter' => array(
+                    'name' => LessFilter::class,
+                ),
+            ),
             'options' => array(
                 'output' => 'archive_css.css',
             ),

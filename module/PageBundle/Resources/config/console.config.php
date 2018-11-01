@@ -19,5 +19,5 @@
  */
 
 return array(
-    'install.page' => 'PageBundle\Command\Install',
+    'install_page' => 'PageBundle\Command\Install',
 );

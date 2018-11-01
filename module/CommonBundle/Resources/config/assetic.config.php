@@ -18,6 +18,12 @@
  * @license http://litus.cc/LICENSE
  */
 
+namespace CommonBundle;
+
+use CommonBundle\Component\Assetic\Filter\Css as CssFilter;
+use CommonBundle\Component\Assetic\Filter\Js as JsFilter;
+use CommonBundle\Component\Assetic\Filter\Less as LessFilter;
+
 return array(
     'controllers' => array(
         'common_admin_academic' => array(
@@ -193,19 +199,31 @@ return array(
                 'common/js/jquery.min.js',
                 'common/js/bootstrap-fileinput.min.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
         'common_jqueryui' => array(
             'assets' => array(
                 'common/js/jquery-ui.min.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
         'common_jqueryui_css' => array(
             'assets' => array(
                 'common/css/jquery-ui.min.css',
             ),
-            'filters' => array('css'),
+            'filters' => array(
+                '?CssFilter' => array(
+                    'name' => CssFilter::class,
+                ),
+            ),
             'options' => array(
                 'output' => 'jquery-ui.min.css',
             ),
@@ -214,13 +232,21 @@ return array(
             'assets' => array(
                 'common/js/jquery-ui-timepicker-addon.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
         'common_jqueryui_datepicker_css' => array(
             'assets' => array(
                 'common/css/jquery-ui-timepicker-addon.css',
             ),
-            'filters' => array('css'),
+            'filters' => array(
+                '?CssFilter' => array(
+                    'name' => CssFilter::class,
+                ),
+            ),
             'options' => array(
                 'output' => 'jquery-ui-timepicker-addon.css',
             ),
@@ -229,75 +255,123 @@ return array(
             'assets' => array(
                 'common/js/jquery.sortable-table.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
         'common_jquery_form' => array(
             'assets' => array(
                 'common/js/jquery.form.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
         'common_form_upload_progress' => array(
             'assets' => array(
                 'common/js/formUploadProgress.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
         'common_permanent_modal' => array(
             'assets' => array(
                 'common/js/permanentModal.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
         'common_socket' => array(
             'assets' => array(
                 'common/js/socket.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
         'common_fieldcount' => array(
             'assets' => array(
                 'common/js/fieldcount.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
         'common_remote_typeahead' => array(
             'assets' => array(
                 'common/js/typeaheadRemote.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
         'common_spin_js' => array(
             'assets' => array(
                 'common/js/spin.min.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
         'common_holder_js' => array(
             'assets' => array(
                 'common/js/holder.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
         'common_chart_js' => array(
             'assets' => array(
                 'common/js/chart.min.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
         'common_serialize_js' => array(
             'assets' => array(
                 'common/js/serialize.js',
                 'common/js/unserialize.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
 
         'admin_css' => array(
             'assets' => array(
                 'admin/less/base.less',
             ),
-            'filters' => array('less'),
+            'filters' => array(
+                '?LessFilter' => array(
+                    'name' => LessFilter::class,
+                ),
+            ),
             'options' => array(
                 'output' => 'admin_css.css',
             ),
@@ -306,21 +380,33 @@ return array(
             'assets' => array(
                 'admin/js/*.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
 
         'display_form_error_js' => array(
             'assets' => array(
                 'site/js/displayFormErrors.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
 
         'site_css' => array(
             'assets' => array(
                 'site/less/base.less',
             ),
-            'filters' => array('less'),
+            'filters' => array(
+                '?LessFilter' => array(
+                    'name' => LessFilter::class,
+                ),
+            ),
             'options' => array(
                 'output' => 'site_css.css',
             ),
@@ -330,14 +416,22 @@ return array(
             'assets' => array(
                 'common/js/bootstrap-rowlink.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
 
         'gollum_css' => array(
             'assets' => array(
                 'gollum/css/editor.css',
             ),
-            'filters' => array('css'),
+            'filters' => array(
+                '?CssFilter' => array(
+                    'name' => CssFilter::class,
+                ),
+            ),
             'options' => array(
                 'output' => 'gollum_css.css',
             ),
@@ -347,20 +441,32 @@ return array(
                 'gollum/js/editor.js',
                 'gollum/js/markdown.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
 
         'jcrop_js' => array(
             'assets' => array(
                 'common/js/jcrop.min.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
         'jcrop_css' => array(
             'assets' => array(
                 'common/css/jcrop.min.css',
             ),
-            'filters' => array('css'),
+            'filters' => array(
+                '?CssFilter' => array(
+                    'name' => CssFilter::class,
+                ),
+            ),
             'options' => array(
                 'output' => 'jcrop_css.css',
             ),
@@ -370,13 +476,21 @@ return array(
             'assets' => array(
                 'common/js/resizableColumns.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
         'resizableColumns_css' => array(
             'assets' => array(
                 'common/css/resizableColumns.css',
             ),
-            'filters' => array('css'),
+            'filters' => array(
+                '?CssFilter' => array(
+                    'name' => CssFilter::class,
+                ),
+            ),
             'options' => array(
                 'output' => 'resizableColumns_css.css',
             ),
