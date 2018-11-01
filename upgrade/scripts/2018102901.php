@@ -18,4 +18,4 @@
  * @license http://litus.cc/LICENSE
  */
 
-updateConfigDescription($connection, 'common.poc', 'Boolean that displays the POC\'ers screen on the homepage');
+updateConfigDescription($connection, 'common.poc', 'Boolean that displays the POC\'\'ers screen on the homepage');
