@@ -3,6 +3,7 @@
     <config name="installed_paths" value="vendor/slevomat/coding-standard"/>
 
     <file>bin/</file>
+    <file>config/</file>
     <file>module/</file>
     <file>public/</file>
     <file>shibboleth/</file>
