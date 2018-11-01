@@ -32,8 +32,8 @@ class Version
      */
     public static function getCommitHash()
     {
-        if (file_exists(__DIR__ . '../../../../COMMIT')) {
-            return substr(file_get_contents(__DIR__ . '../../../../COMMIT'), 0, 8);
+        if (file_exists(__DIR__ . '/../../../../COMMIT')) {
+            return substr(file_get_contents(__DIR__ . '/../../../../COMMIT'), 0, 8);
         }
 
         $commitHash = substr(trim(exec('git rev-parse HEAD')), 0, 8);
