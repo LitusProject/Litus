@@ -18,7 +18,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-return array(
+$modules = array(
     'Zend\Cache',
     'Zend\Filter',
     'Zend\Form',
@@ -35,7 +35,6 @@ return array(
     'DoctrineModule',
     'DoctrineORMModule',
     'DoctrineMongoODMModule',
-    'ZendDeveloperTools',
     'ZendTwig',
 
     'ApiBundle',
@@ -65,3 +64,14 @@ return array(
     'TicketBundle',
     'WikiBundle',
 );
+
+if (getenv('APPLICATION_ENV') == 'development') {
+    array_splice(
+        $modules,
+        array_search('ZendTwig', $modules),
+        0,
+        'ZendDeveloperTools'
+    );
+}
+
+return $modules;
