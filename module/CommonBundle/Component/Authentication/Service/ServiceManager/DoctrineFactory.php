@@ -22,6 +22,7 @@ namespace CommonBundle\Component\Authentication\Service\ServiceManager;
 
 use CommonBundle\Component\Authentication\Action\Doctrine as DoctrineAction;
 use CommonBundle\Component\Authentication\Service\Doctrine as DoctrineService;
+use CommonBundle\Entity\User\Session;
 use Interop\Container\ContainerInterface;
 use Zend\Authentication\Storage\Session as SessionStorage;
 use Zend\ServiceManager\Factory\FactoryInterface;
@@ -53,7 +54,7 @@ class DoctrineFactory implements FactoryInterface
 
         return new DoctrineService(
             $container->get('doctrine.entitymanager.orm_default'),
-            SessionStorage::class,
+            Session::class,
             2678400,
             $sessionStorage,
             'Litus_Auth',
