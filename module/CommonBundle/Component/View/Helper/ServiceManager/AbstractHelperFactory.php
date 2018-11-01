@@ -18,20 +18,19 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Validator\Service;
+namespace CommonBundle\Component\View\Helper\ServiceManager;
 
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
-use CommonBundle\Component\Validator\AbstractValidator;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\AbstractFactoryInterface;
-use Zend\Validator\AbstractValidator as ZendAbstractValidator;
+use Zend\View\Helper\AbstractHelper;
 
 /**
  * Abstract factory instantiating an installer.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class AbstractValidatorFactory implements AbstractFactoryInterface
+class AbstractHelperFactory implements AbstractFactoryInterface
 {
     /**
      * @param  ContainerInterface $container
@@ -41,11 +40,7 @@ class AbstractValidatorFactory implements AbstractFactoryInterface
     public function canCreate(ContainerInterface $container, $requestedName)
     {
         if (class_exists($requestedName)) {
-            if (in_array(AbstractValidator::class, class_parents($requestedName), true)) {
-                return true;
-            }
-
-            return in_array(ZendAbstractValidator::class, class_parents($requestedName), true);
+            return in_array(AbstractHelper::class, class_parents($requestedName), true);
         }
 
         return false;
@@ -55,15 +50,15 @@ class AbstractValidatorFactory implements AbstractFactoryInterface
      * @param  ContainerInterface $container
      * @param  string             $requestedName
      * @param  array|null         $options
-     * @return AbstractValidator
+     * @return AbstractHelper
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $validator = new $requestedName($options);
-        if ($validator instanceof ServiceLocatorAwareInterface) {
-            $validator->setServiceLocator($container);
+        $helper = new $requestedName($options);
+        if ($helper instanceof ServiceLocatorAwareInterface) {
+            $helper->setServiceLocator($container);
         }
 
-        return $validator;
+        return $helper;
     }
 }

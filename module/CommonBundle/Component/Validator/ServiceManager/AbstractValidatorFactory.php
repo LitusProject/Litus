@@ -18,19 +18,20 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Module\Service;
+namespace CommonBundle\Component\Validator\ServiceManager;
 
-use CommonBundle\Component\Module\AbstractInstaller;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\Validator\AbstractValidator;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\AbstractFactoryInterface;
+use Zend\Validator\AbstractValidator as ZendAbstractValidator;
 
 /**
  * Abstract factory instantiating an installer.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class AbstractInstallerFactory implements AbstractFactoryInterface
+class AbstractValidatorFactory implements AbstractFactoryInterface
 {
     /**
      * @param  ContainerInterface $container
@@ -40,7 +41,11 @@ class AbstractInstallerFactory implements AbstractFactoryInterface
     public function canCreate(ContainerInterface $container, $requestedName)
     {
         if (class_exists($requestedName)) {
-            return in_array(AbstractInstaller::class, class_parents($requestedName), true);
+            if (in_array(AbstractValidator::class, class_parents($requestedName), true)) {
+                return true;
+            }
+
+            return in_array(ZendAbstractValidator::class, class_parents($requestedName), true);
         }
 
         return false;
@@ -50,15 +55,15 @@ class AbstractInstallerFactory implements AbstractFactoryInterface
      * @param  ContainerInterface $container
      * @param  string             $requestedName
      * @param  array|null         $options
-     * @return AbstractInstaller
+     * @return AbstractValidator
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $installer = new $requestedName();
-        if ($installer instanceof ServiceLocatorAwareInterface) {
-            $installer->setServiceLocator($container);
+        $validator = new $requestedName($options);
+        if ($validator instanceof ServiceLocatorAwareInterface) {
+            $validator->setServiceLocator($container);
         }
 
-        return $installer;
+        return $validator;
     }
 }

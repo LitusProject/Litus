@@ -18,19 +18,19 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\View\Helper\Service;
+namespace CommonBundle\Component\Module\ServiceManager;
 
+use CommonBundle\Component\Module\AbstractInstaller;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\AbstractFactoryInterface;
-use Zend\View\Helper\AbstractHelper;
 
 /**
  * Abstract factory instantiating an installer.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class AbstractHelperFactory implements AbstractFactoryInterface
+class AbstractInstallerFactory implements AbstractFactoryInterface
 {
     /**
      * @param  ContainerInterface $container
@@ -40,7 +40,7 @@ class AbstractHelperFactory implements AbstractFactoryInterface
     public function canCreate(ContainerInterface $container, $requestedName)
     {
         if (class_exists($requestedName)) {
-            return in_array(AbstractHelper::class, class_parents($requestedName), true);
+            return in_array(AbstractInstaller::class, class_parents($requestedName), true);
         }
 
         return false;
@@ -50,15 +50,15 @@ class AbstractHelperFactory implements AbstractFactoryInterface
      * @param  ContainerInterface $container
      * @param  string             $requestedName
      * @param  array|null         $options
-     * @return AbstractHelper
+     * @return AbstractInstaller
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $helper = new $requestedName($options);
-        if ($helper instanceof ServiceLocatorAwareInterface) {
-            $helper->setServiceLocator($container);
+        $installer = new $requestedName();
+        if ($installer instanceof ServiceLocatorAwareInterface) {
+            $installer->setServiceLocator($container);
         }
 
-        return $helper;
+        return $installer;
     }
 }

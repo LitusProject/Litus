@@ -18,6 +18,9 @@
  * @license http://litus.cc/LICENSE
  */
 
+use Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver as ODMAnnotationDriver;
+use Doctrine\ORM\Mapping\Driver\AnnotationDriver as ORMAnnotationDriver;
+
 if (!file_exists(__DIR__ . '/../database.config.php')) {
     throw new \RuntimeException(
         'The database configuration file (' . (__DIR__ . '/../database.config.php') . ') was not found'
@@ -27,38 +30,13 @@ if (!file_exists(__DIR__ . '/../database.config.php')) {
 $databaseConfig = include __DIR__ . '/../database.config.php';
 
 return array(
-    'service_manager' => array(
-        'factories' => array(
-            'doctrine.cache.orm_default' => function () {
-                if (getenv('APPLICATION_ENV') == 'production') {
-                    if (!extension_loaded('memcached')) {
-                        throw new \RuntimeException('Litus requires the memcached extension to be loaded');
-                    }
-
-                    $cache = new \Doctrine\Common\Cache\MemcachedCache();
-                    $cache->setNamespace(getenv('ORGANIZATION') . '_LITUS');
-                    $memcached = new \Memcached();
-
-                    if (!$memcached->addServer('localhost', 11211)) {
-                        throw new \RuntimeException('Failed to connect to the memcached server');
-                    }
-
-                    $cache->setMemcached($memcached);
-                } else {
-                    $cache = new \Doctrine\Common\Cache\ArrayCache();
-                }
-
-                return $cache;
-            },
-        ),
-    ),
     'doctrine' => array(
         'cache' => array(
             'memcached' => array(
-                'namespace' => getenv('ORGANIZATION') . '_LITUS',
-            ),
-            'array' => array(
-                'namespace' => getenv('ORGANIZATION') . '_LITUS',
+                'namespace' => getenv('ORGANIZATION') . '_Doctrine',
+                'servers'   => array(
+                    array('localhost', 11211),
+                ),
             ),
         ),
         'configuration' => array(
@@ -70,11 +48,12 @@ return array(
                 'default_db'         => $databaseConfig['document']['dbname'],
             ),
             'orm_default' => array(
+                'metadataCache'    => getenv('APPLICATION_ENV') != 'development' ? 'memcached' : 'array',
+                'queryCache'       => getenv('APPLICATION_ENV') != 'development' ? 'memcached' : 'array',
+                'resultCache'      => getenv('APPLICATION_ENV') != 'development' ? 'memcached' : 'array',
+                'hydration_cache'  => getenv('APPLICATION_ENV') != 'development' ? 'memcached' : 'array',
                 'generate_proxies' => getenv('APPLICATION_ENV') == 'development',
                 'proxyDir'         => 'data/proxies/',
-                'metadataCache'    => 'orm_default',
-                'queryCache'       => 'orm_default',
-                'resultCache'      => 'orm_default',
             ),
         ),
         'connection' => array(
@@ -99,10 +78,10 @@ return array(
         ),
         'driver' => array(
             'odm_annotation_driver' => array(
-                'class' => 'Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver',
+                'class' => ODMAnnotationDriver::class,
             ),
             'orm_annotation_driver' => array(
-                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'class' => ORMAnnotationDriver::class,
             ),
         ),
     ),

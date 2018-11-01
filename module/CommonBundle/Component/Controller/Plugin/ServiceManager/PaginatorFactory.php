@@ -18,7 +18,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Controller\Plugin\Service;
+namespace CommonBundle\Component\Controller\Plugin\ServiceManager;
 
 use CommonBundle\Component\Controller\Plugin\Paginator;
 use Interop\Container\ContainerInterface;

@@ -18,7 +18,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Console\Service;
+namespace CommonBundle\Component\Console\ServiceManager;
 
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\Version\Version;

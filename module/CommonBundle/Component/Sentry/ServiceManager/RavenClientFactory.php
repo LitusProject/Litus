@@ -18,41 +18,48 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Form\Service;
+namespace CommonBundle\Component\Sentry\ServiceManager;
 
-use CommonBundle\Component\Form\Factory;
-use CommonBundle\Component\Form\FormElementManager;
 use Interop\Container\ContainerInterface;
-use Zend\Filter\FilterChain;
+use Raven_Client;
+use RuntimeException;
 use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\Validator\ValidatorChain;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * A factory class for form factories.
+ * Factory to create the Raven_Client instance.
  *
- * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class FactoryFactory implements FactoryInterface
+class RavenClientFactory implements FactoryInterface
 {
+    /**
+     * @param  ContainerInterface $container
+     * @param  string             $requestedName
+     * @param  array|null         $options
+     * @return Raven_Client
+     */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         $config = $container->get('Config');
-        $config = $config['litus']['forms'][$options['isAdmin'] ? 'admin' : 'bootstrap'];
+        if (!isset($config['sentry'])) {
+            throw new RuntimeException('Could not find Sentry config');
+        }
 
-        $factory = new Factory(
-            new FormElementManager($options['isAdmin'], $container, $config)
+        $sentryConfig = $config['sentry'];
+
+        return new Raven_Client(
+            $sentryConfig['dsn'],
+            $sentryConfig['options']
         );
+    }
 
-        $filterChain = new FilterChain();
-        $filterChain->setPluginManager($container->get('FilterManager'));
-
-        $validatorChain = new ValidatorChain();
-        $validatorChain->setPluginManager($container->get('ValidatorManager'));
-
-        $factory->getInputFilterFactory()
-            ->setDefaultFilterChain($filterChain)
-            ->setDefaultValidatorChain($validatorChain);
-
-        return $factory;
+    /**
+     * @param  ServiceLocatorInterface $locator
+     * @return Raven_Client
+     */
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        return $this($serviceLocator, 'Raven_Client');
     }
 }

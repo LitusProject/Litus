@@ -18,42 +18,38 @@
  * @license http://litus.cc/LICENSE
  */
 
-return array(
-    'service_manager' => array(
-        'factories' => array(
-            'cache' => function () {
-                if (getenv('APPLICATION_ENV') != 'development') {
-                    if (!extension_loaded('memcached')) {
-                        throw new \RuntimeException('Litus requires the memcached extension to be loaded');
-                    }
+if (getenv('APPLICATION_ENV') != 'development') {
+    if (!extension_loaded('memcached')) {
+        throw new RuntimeException('Litus requires the memcached extension to be loaded');
+    }
 
-                    return \Zend\Cache\StorageFactory::factory(
-                        array(
-                            'adapter' => array(
-                                'name'    => 'memcached',
-                                'options' => array(
-                                    'ttl'       => 0,
-                                    'namespace' => getenv('ORGANIZATION') . '_LITUS',
-                                    'servers'   => array(
-                                        array('localhost', 11211),
-                                    ),
-                                ),
-                            ),
-                        )
-                    );
-                } else {
-                    return \Zend\Cache\StorageFactory::factory(
-                        array(
-                            'adapter' => array(
-                                'name'    => 'memory',
-                                'options' => array(
-                                    'ttl' => 0,
-                                ),
-                            ),
-                        )
-                    );
-                }
-            },
+    return array(
+        'cache' => array(
+            'storage' => array(
+                'adapter' => array(
+                    'name'    => 'memcached',
+                    'options' => array(
+                        'ttl'       => 0,
+                        'namespace' => getenv('ORGANIZATION') . '_Litus',
+                        'servers'   => array(
+                            array('localhost', 11211),
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    );
+}
+
+return array(
+    'cache' => array(
+        'storage' => array(
+            'adapter' => array(
+                'name'    => 'memory',
+                'options' => array(
+                    'ttl' => 0,
+                ),
+            ),
         ),
     ),
 );

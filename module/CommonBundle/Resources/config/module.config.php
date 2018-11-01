@@ -20,25 +20,33 @@
 
 namespace CommonBundle;
 
-use CommonBundle\Component\Authentication\Action\Doctrine as DoctrineAction;
 use CommonBundle\Component\Authentication\Adapter\Doctrine\Credential as DoctrineCredentialAdapter;
+use CommonBundle\Component\Authentication\Adapter\Doctrine\ServiceManager\CredentialFactory as DoctrineCredentialAdapterFactory;
 use CommonBundle\Component\Authentication\Authentication;
 use CommonBundle\Component\Authentication\Service\Doctrine as DoctrineService;
-use CommonBundle\Component\Console\Service\ApplicationFactory as ConsoleApplicationFactory;
-use CommonBundle\Component\Controller\Plugin\Service\PaginatorFactory as PaginatorPluginFactory;
+use CommonBundle\Component\Authentication\Service\ServiceManager\DoctrineFactory as DoctrineServiceFactory;
+use CommonBundle\Component\Authentication\ServiceManager\AuthenticationFactory;
+use CommonBundle\Component\Cache\ServiceManager\StorageFactory as CacheStorageFactory;
+use CommonBundle\Component\Console\ServiceManager\ApplicationFactory as ConsoleApplicationFactory;
+use CommonBundle\Component\Controller\Plugin\ServiceManager\PaginatorFactory;
+use CommonBundle\Component\Controller\ServiceManager\AbstractActionControllerInitializer;
+use CommonBundle\Component\Doctrine\Common\Cache\ServiceManager\MemcachedCacheFactory as DoctrineMemcachedCacheFactory;
 use CommonBundle\Component\Form\Factory as FormFactory;
-use CommonBundle\Component\Form\Service\FactoryFactory as FormFactoryFactory;
+use CommonBundle\Component\Form\ServiceManager\FactoryFactory as FormFactoryFactory;
 use CommonBundle\Component\Hydrator\HydratorPluginManager;
+use CommonBundle\Component\Hydrator\ServiceManager\HydratorPluginManagerFactory;
 use CommonBundle\Component\Module\Config;
-use CommonBundle\Component\Module\Service\AbstractInstallerFactory;
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
-use CommonBundle\Component\Validator\Service\AbstractValidatorFactory;
-use CommonBundle\Component\View\Helper\Service\AbstractHelperFactory;
-use CommonBundle\Entity\User\Person;
-use CommonBundle\Entity\User\Session;
-use Interop\Container\ContainerInterface;
+use CommonBundle\Component\Module\ServiceManager\AbstractInstallerFactory;
+use CommonBundle\Component\Sentry\Client as SentryClient;
+use CommonBundle\Component\Sentry\ServiceManager\ClientFactory as SentryClientFactory;
+use CommonBundle\Component\Sentry\ServiceManager\RavenClientFactory;
+use CommonBundle\Component\Session\ServiceManager\ContainerFactory as SessionContainerFactory;
+use CommonBundle\Component\Validator\ServiceManager\AbstractValidatorFactory;
+use CommonBundle\Component\View\Helper\ServiceManager\AbstractHelperFactory;
+use Doctrine\Common\Cache\MemcachedCache as DoctrineMemcachedCache;
+use Raven_Client;
 use Symfony\Component\Console\Application as ConsoleApplication;
-use Zend\Authentication\Storage\Session as SessionStorage;
+use Zend\Cache\Storage\StorageInterface as CacheStorage;
 use Zend\Form\ElementFactory;
 use Zend\I18n\Translator\Resources as TranslatorResources;
 use Zend\Mail\Transport\Sendmail;
@@ -56,65 +64,23 @@ return Config::create(
     array(
         'controllers' => array(
             'initializers' => array(
-                function (ContainerInterface $container, $instance) {
-                    if (!$instance instanceof ServiceLocatorAwareInterface) {
-                        return;
-                    }
-
-                    $instance->setServiceLocator($container);
-                },
+                AbstractActionControllerInitializer::class,
             ),
         ),
         'service_manager' => array(
             'factories' => array(
-                Authentication::class => function ($serviceManager) {
-                    return new Authentication(
-                        $serviceManager->get('authentication_credential_adapter'),
-                        $serviceManager->get('authentication_service')
-                    );
-                },
-                DoctrineCredentialAdapter::class => function ($serviceManager) {
-                    return new DoctrineCredentialAdapter(
-                        $serviceManager->get('doctrine.entitymanager.orm_default'),
-                        Person::class,
-                        'username'
-                    );
-                },
-                DoctrineService::class => function ($serviceManager) {
-                    $sessionStorage = new SessionStorage(
-                        (getenv('ORGANIZATION') !== false ? getenv('ORGANIZATION') . '_' : '') . 'Litus_Auth'
-                    );
-
-                    return new DoctrineService(
-                        $serviceManager->get('doctrine.entitymanager.orm_default'),
-                        Session::class,
-                        2678400,
-                        $sessionStorage,
-                        'Litus_Auth',
-                        'Session',
-                        $serviceManager->get(DoctrineAction::class)
-                    );
-                },
-                DoctrineAction::class => function ($serviceManager) {
-                    return new DoctrineAction(
-                        $serviceManager->get('doctrine.entitymanager.orm_default'),
-                        $serviceManager->get('mail_transport')
-                    );
-                },
-
-                SessionContainer::class => function () {
-                    return new SessionContainer(
-                        (getenv('ORGANIZATION') !== false ? getenv('ORGANIZATION') . '_' : '') . 'Litus'
-                    );
-                },
-
-                HydratorPluginManager::class => function ($serviceManager) {
-                    return new HydratorPluginManager($serviceManager);
-                },
-
-                ConsoleApplication::class => ConsoleApplicationFactory::class,
-                FormFactory::class        => FormFactoryFactory::class,
-                Sendmail::class           => InvokableFactory::class,
+                Authentication::class            => AuthenticationFactory::class,
+                CacheStorage::class              => CacheStorageFactory::class,
+                ConsoleApplication::class        => ConsoleApplicationFactory::class,
+                DoctrineCredentialAdapter::class => DoctrineCredentialAdapterFactory::class,
+                DoctrineMemcachedCache::class    => DoctrineMemcachedCacheFactory::class,
+                DoctrineService::class           => DoctrineServiceFactory::class,
+                FormFactory::class               => FormFactoryFactory::class,
+                HydratorPluginManager::class     => HydratorPluginManagerFactory::class,
+                Raven_Client::class              => RavenClientFactory::class,
+                Sendmail::class                  => InvokableFactory::class,
+                SentryClient::class              => SentryClientFactory::class,
+                SessionContainer::class          => SessionContainerFactory::class,
             ),
             'abstract_factories' => array(
                 AbstractInstallerFactory::class,
@@ -123,12 +89,16 @@ return Config::create(
                 'authentication'                    => Authentication::class,
                 'authentication_credential_adapter' => DoctrineCredentialAdapter::class,
                 'authentication_service'            => DoctrineService::class,
+                'cache'                             => CacheStorage::class,
+                'console'                           => ConsoleApplication::class,
+                'hydrator_plugin_manager'           => HydratorPluginManager::class,
+                'mail_transport'                    => Sendmail::class,
+                'raven_client'                      => Raven_Client::class,
+                'sentry'                            => SentryClient::class,
+                'session_container'                 => SessionContainer::class,
+                'translator'                        => MvcTranslator::class,
 
-                'console'                 => ConsoleApplication::class,
-                'hydrator_plugin_manager' => HydratorPluginManager::class,
-                'mail_transport'          => Sendmail::class,
-                'session_container'       => SessionContainer::class,
-                'translator'              => MvcTranslator::class,
+                'doctrine.cache.memcached'          => DoctrineMemcachedCache::class,
             ),
         ),
 
@@ -136,7 +106,7 @@ return Config::create(
             'factories' => array(
                 Component\Controller\Plugin\HasAccess::class      => InvokableFactory::class,
                 Component\Controller\Plugin\FlashMessenger::class => InvokableFactory::class,
-                Component\Controller\Plugin\Paginator::class      => PaginatorPluginFactory::class,
+                Component\Controller\Plugin\Paginator::class      => PaginatorFactory::class,
                 Component\Controller\Plugin\Url::class            => InvokableFactory::class,
             ),
             'aliases' => array(

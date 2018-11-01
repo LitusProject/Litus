@@ -18,16 +18,25 @@
  * @license http://litus.cc/LICENSE
  */
 
-if (getenv('APPLICATION_ENV') != 'development') {
-    if (!file_exists(__DIR__ . '/../sentry.config.php')) {
-        throw new RuntimeException(
-            'The Sentry configuration file (' . (__DIR__ . '/../sentry.config.php') . ') was not found'
-        );
+namespace CommonBundle\Component\Controller\ServiceManager;
+
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Initializer\InitializerInterface;
+
+class AbstractActionControllerInitializer implements InitializerInterface
+{
+    /**
+     * @param  ContainerInterface $container
+     * @param  object             $instance
+     * @return void
+     */
+    public function __invoke(ContainerInterface $container, $instance)
+    {
+        if (!$instance instanceof ServiceLocatorAwareInterface) {
+            return;
+        }
+
+        $instance->setServiceLocator($container);
     }
-
-    return array(
-        'sentry' => $sentryConfig
-    );
 }
-
-return array();
