@@ -30,7 +30,7 @@ return array(
     'service_manager' => array(
         'factories' => array(
             'doctrine.cache.orm_default' => function () {
-                if ('production' == getenv('APPLICATION_ENV')) {
+                if (getenv('APPLICATION_ENV') == 'production') {
                     if (!extension_loaded('memcached')) {
                         throw new \RuntimeException('Litus requires the memcached extension to be loaded');
                     }
@@ -63,14 +63,14 @@ return array(
         ),
         'configuration' => array(
             'odm_default' => array(
-                  'generate_proxies'   => true,
-                  'proxy_dir'          => 'data/proxies',
-                  'generate_hydrators' => true,
-                  'hydrator_dir'       => 'data/hydrators',
-                  'default_db'         => $databaseConfig['document']['dbname'],
+                'generate_proxies'   => true,
+                'proxy_dir'          => 'data/proxies',
+                'generate_hydrators' => true,
+                'hydrator_dir'       => 'data/hydrators',
+                'default_db'         => $databaseConfig['document']['dbname'],
             ),
             'orm_default' => array(
-                'generate_proxies' => ('development' == getenv('APPLICATION_ENV')),
+                'generate_proxies' => getenv('APPLICATION_ENV') == 'development',
                 'proxyDir'         => 'data/proxies/',
                 'metadataCache'    => 'orm_default',
                 'queryCache'       => 'orm_default',

@@ -31,10 +31,10 @@ return array(
             realpath(__DIR__) . '/autoload/{{,*.}global,{,*.}local}.php',
         ),
 
-        'config_cache_enabled' => ('development' != getenv('APPLICATION_ENV')),
+        'config_cache_enabled' => getenv('APPLICATION_ENV') != 'development',
         'config_cache_key'     => 'application.config.cache',
 
-        'module_map_cache_enabled' => ('development' != getenv('APPLICATION_ENV')),
+        'module_map_cache_enabled' => getenv('APPLICATION_ENV') != 'development',
         'module_map_cache_key'     => 'application.module.cache',
 
         'cache_dir' => 'data/cache/',

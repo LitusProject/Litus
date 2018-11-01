@@ -22,7 +22,7 @@ return array(
     'service_manager' => array(
         'factories' => array(
             'cache' => function () {
-                if (('development' != getenv('APPLICATION_ENV'))) {
+                if (getenv('APPLICATION_ENV') != 'development') {
                     if (!extension_loaded('memcached')) {
                         throw new \RuntimeException('Litus requires the memcached extension to be loaded');
                     }

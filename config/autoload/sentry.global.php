@@ -18,7 +18,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-if ('development' != getenv('APPLICATION_ENV')) {
+if (getenv('APPLICATION_ENV') != 'development') {
     if (!file_exists(__DIR__ . '/../sentry.config.php')) {
         throw new RuntimeException(
             'The Sentry configuration file (' . (__DIR__ . '/../sentry.config.php') . ') was not found'
