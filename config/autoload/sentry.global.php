@@ -26,7 +26,7 @@ if (getenv('APPLICATION_ENV') != 'development') {
     }
 
     return array(
-        'sentry' => include __DIR__ . '/../sentry.config.php';
+        'sentry' => include __DIR__ . '/../sentry.config.php',
     );
 }
 
