@@ -33,7 +33,7 @@ return array(
     'doctrine' => array(
         'cache' => array(
             'memcached' => array(
-                'namespace' => getenv('ORGANIZATION') . '_Doctrine',
+                'namespace' => getenv('ORGANIZATION') . '_Litus_Doctrine',
                 'servers'   => array(
                     array('localhost', 11211),
                 ),
