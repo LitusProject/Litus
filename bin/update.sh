@@ -13,6 +13,9 @@ do
   fi
 done
 
+# cache
+rm data/cache/*
+
 # upgrade
 ./bin/upgrade.sh
 
@@ -27,4 +30,5 @@ php bin/console.php install:all
 touch module/*/Resources/assets/*/less/base.less
 php bin/assetic.php build
 
-php bin/console.php common:acl-cleanup --flush
+# acl
+php bin/console.php common:acl:cleanup --flush

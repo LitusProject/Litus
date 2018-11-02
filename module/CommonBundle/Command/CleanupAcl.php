@@ -23,7 +23,7 @@ namespace CommonBundle\Command;
 /**
  * Cleanup of Acl
  */
-class AclCleanup extends \CommonBundle\Component\Console\Command
+class CleanupAcl extends \CommonBundle\Component\Console\Command
 {
     /**
      * @return null
@@ -31,8 +31,8 @@ class AclCleanup extends \CommonBundle\Component\Console\Command
     protected function configure()
     {
         $this
-            ->setName('common:acl-cleanup')
-            ->setDescription('Cleanup old acl actions and resources.')
+            ->setName('common:cleanup-acl')
+            ->setDescription('Cleanup old ACL actions and resources.')
             ->addOption('flush', 'f', null, 'Stores the result in the database.')
             ->setHelp(
                 <<<EOT
@@ -110,7 +110,7 @@ EOT
         }
 
         if (!$removedEntities) {
-            $this->writeln('Nothing removed, acl was clean.');
+            $this->writeln('Nothing removed, ACL was clean.');
         }
     }
 
@@ -119,7 +119,7 @@ EOT
      */
     protected function getLogName()
     {
-        return 'AclCleanup';
+        return 'CleanupAcl';
     }
 
     /**

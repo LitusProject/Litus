@@ -21,12 +21,12 @@
 namespace CommonBundle\Command;
 
 /**
- * AllInstallController calls all other installations.
+ * Run all installers.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class AllInstall extends \CommonBundle\Component\Console\Command
+class InstallAll extends \CommonBundle\Component\Console\Command
 {
     /**
      * @var string|null The name of the module currently being installed.
@@ -63,7 +63,7 @@ EOT
             return $this->currentModule;
         }
 
-        return 'AllInstall';
+        return 'InstallAll';
     }
 
     protected function getLogNameTag()
