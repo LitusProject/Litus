@@ -19,23 +19,22 @@
  */
 
 return array(
-    'modules' => require __DIR__ . '/modules.config.php',
+    'modules' => include __DIR__ . '/modules.config.php',
 
     'module_listener_options' => array(
         'module_paths' => array(
-            './module',
-            './vendor',
+            'module/',
+            'vendor/',
         ),
 
         'config_glob_paths' => array(
-            realpath(__DIR__) . '/autoload/{{,*.}global,{,*.}local}.php',
+            'config/autoload/{{,*.}global,{,*.}local}.php',
         ),
 
-        'config_cache_enabled' => getenv('APPLICATION_ENV') != 'development',
-        'config_cache_key'     => 'application.config.cache',
-
+        'config_cache_enabled'     => getenv('APPLICATION_ENV') != 'development',
+        'config_cache_key'         => 'litus',
         'module_map_cache_enabled' => getenv('APPLICATION_ENV') != 'development',
-        'module_map_cache_key'     => 'application.module.cache',
+        'module_map_cache_key'     => 'litus',
 
         'cache_dir' => 'data/cache/',
     ),

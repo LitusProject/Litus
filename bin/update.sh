@@ -14,8 +14,8 @@ do
 done
 
 # cache
-rm data/cache/*
-rm public/_assetic/*
+rm -rf data/cache/*
+rm -rf public/_assetic/*
 
 # upgrade
 ./bin/upgrade.sh
