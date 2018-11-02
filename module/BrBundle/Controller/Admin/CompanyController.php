@@ -43,13 +43,19 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function manageAction()
     {
-        $companies = $this->search();
-        if ($this->getParam('field') !== null && $companies !== null) {
+        if ($this->getParam('field') !== null) {
+            $companies = $this->search();
+            if ($companies === null) {
+                return new ViewModel();
+            }
+
             $paginator = $this->paginator()->createFromQuery(
                 $companies,
                 $this->getParam('page')
             );
-        } else {
+        }
+
+        if (!isset($paginator)) {
             $paginator = $this->paginator()->createFromEntity(
                 'BrBundle\Entity\Company',
                 $this->getParam('page'),

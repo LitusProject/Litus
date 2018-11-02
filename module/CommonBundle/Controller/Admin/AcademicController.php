@@ -34,12 +34,12 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 {
     public function manageAction()
     {
-        $academics = $this->search();
-        if ($academics === null) {
-            return new ViewModel();
-        }
-
         if ($this->getParam('field') !== null) {
+            $academics = $this->search();
+            if ($academics === null) {
+                return new ViewModel();
+            }
+
             $paginator = $this->paginator()->createFromQuery(
                 $academics,
                 $this->getParam('page')
