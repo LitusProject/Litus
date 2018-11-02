@@ -15,6 +15,7 @@ done
 
 # cache
 rm data/cache/*
+rm public/_assetic/*
 
 # upgrade
 ./bin/upgrade.sh
@@ -27,8 +28,7 @@ php bin/doctrine.php orm:generate-proxies data/proxies/
 php bin/console.php install:all
 
 # assetic
-touch module/*/Resources/assets/*/less/base.less
 php bin/assetic.php build
 
 # acl
-php bin/console.php common:acl:cleanup --flush
+php bin/console.php common:cleanup-acl --flush
