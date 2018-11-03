@@ -32,9 +32,6 @@ use Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
  * them to.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
- *
- * @method \CommonBundle\Component\Form\FieldsetTrait setRequired(boolean $flag = true)
- * @method \CommonBundle\Component\Form\ElementTrait setElementRequired(boolean $flag = true)
  */
 class Fieldset extends \Zend\Form\Fieldset implements FieldsetInterface, ServiceLocatorAwareInterface
 {
@@ -86,8 +83,9 @@ class Fieldset extends \Zend\Form\Fieldset implements FieldsetInterface, Service
     }
 
     /**
-     * Ensures state is ready for use. Here, we append the name of the fieldsets to every elements in order to avoid
-     * name clashes if the same fieldset is used multiple times
+     * Ensures state is ready for use. Here, we append the name of the fieldsets
+     * to every elements in order to avoid name clashes if the same fieldset is
+     * used multiple times
      *
      * @param  FormInterface $form
      * @return mixed|void

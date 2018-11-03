@@ -71,7 +71,6 @@ class Factory extends \Zend\Form\Factory implements ServiceLocatorAwareInterface
 
             return parent::create($spec);
         } else {
-            // object, not null
             $form = parent::create($spec);
             $form->bind($data);
 

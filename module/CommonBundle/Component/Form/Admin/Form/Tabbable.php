@@ -138,6 +138,9 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Admin\Form
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getPrefix()
     {
         if ($this->prefix === null || $this->prefix == '') {
@@ -172,7 +175,7 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Admin\Form
     abstract protected function addTab(FieldsetInterface $container, Language $language, $isDefault);
 
     /**
-     * @return Language[]
+     * @return array
      */
     protected function getLanguages()
     {

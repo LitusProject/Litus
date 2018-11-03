@@ -32,8 +32,6 @@ class Tabs extends \Zend\Form\Element implements \CommonBundle\Component\Form\El
     use ElementTrait;
 
     /**
-     * Seed attributes
-     *
      * @var array
      */
     protected $attributes = array(
@@ -41,18 +39,6 @@ class Tabs extends \Zend\Form\Element implements \CommonBundle\Component\Form\El
         'tabs'  => array(),
         'class' => '',
     );
-
-    /**
-     * @param array $tabs
-     *
-     * @return Tabs
-     */
-    public function setTabs($tabs = array())
-    {
-        $this->attributes['tabs'] = $tabs;
-
-        return $this;
-    }
 
     /**
      * @return array
@@ -63,13 +49,26 @@ class Tabs extends \Zend\Form\Element implements \CommonBundle\Component\Form\El
     }
 
     /**
-     * @param array $tab
-     *
+     * @param  array $tabs
+     * @return Tabs
+     */
+    public function setTabs($tabs = array())
+    {
+        $this->attributes['tabs'] = $tabs;
+
+        return $this;
+    }
+
+    /**
+     * @param  array $tab
      * @return Tabs
      */
     public function addTab($tab)
     {
-        $this->attributes['tabs'] = array_merge($this->attributes['tabs'], $tab);
+        $this->attributes['tabs'] = array_merge(
+            $this->attributes['tabs'],
+            $tab
+        );
 
         return $this;
     }

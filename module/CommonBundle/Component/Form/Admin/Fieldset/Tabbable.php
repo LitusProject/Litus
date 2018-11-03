@@ -54,7 +54,6 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Fieldset implements
 
         if (count($languages) === 1) {
             $this->initBeforeTabs();
-
             $this->addTab($this, $languages[0], true);
         } else {
             $defaultLanguage = Locale::getDefault();
@@ -76,16 +75,29 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Fieldset implements
 
             foreach ($languages as $language) {
                 $abbrev = $language->getAbbrev();
-
                 $pane = $this->createTabPane($tabContent, 'tab_' . $abbrev);
 
                 $this->addTab($pane, $language, $abbrev == $defaultLanguage);
 
-                $tabs->addTab(array($language->getName() => '[' . $tabContent->getName() . '][' . 'tab_' . $abbrev . ']'));
+                $tabs->addTab(
+                    array(
+                        $language->getName() => '[' . $tabContent->getName() . '][' . 'tab_' . $abbrev . ']'
+                    )
+                );
             }
         }
 
         $this->initAfterTabs();
+    }
+
+    /**
+     * @return array
+     */
+    protected function getLanguages()
+    {
+        return $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Language')
+            ->findAll();
     }
 
     /**
@@ -121,6 +133,15 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Fieldset implements
     }
 
     /**
+     * @param  string $id The id of the tab content
+     * @return string
+     */
+    private function escapeTabContentId($id)
+    {
+        return str_replace(array('[', ']'), array('\\[', '\\]'), $id);
+    }
+
+    /**
      * Prepare the form element (mostly used for rendering purposes)
      *
      * @param  FormInterface $form
@@ -137,15 +158,6 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Fieldset implements
         parent::prepareElement($form);
 
         $this->get('languages')->setAttribute('id', $this->get('languages')->getName());
-    }
-
-    /**
-     * @param  string $id The id of the tab content
-     * @return string
-     */
-    private function escapeTabContentId($id)
-    {
-        return str_replace(array('[', ']'), array('\\[', '\\]'), $id);
     }
 
     /**
@@ -171,14 +183,4 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Fieldset implements
      * @return null
      */
     abstract protected function addTab(FieldsetInterface $container, Language $language, $isDefault);
-
-    /**
-     * @return Language[]
-     */
-    protected function getLanguages()
-    {
-        return $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findAll();
-    }
 }

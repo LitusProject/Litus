@@ -86,20 +86,14 @@ class Typeahead extends \CommonBundle\Component\Form\Fieldset
         if ($name == 'name') {
             parent::setAttribute($name, $value);
         } else {
-            $this->get('value')->setAttribute($name, $value);
+            if ($this->has('value')) {
+                $this->get('value')->setAttribute($name, $value);
+            }
         }
 
         return $this;
     }
 
-    /**
-     * Specifies whether this element is a required field.
-     *
-     * Also sets the HTML5 'required' attribute.
-     *
-     * @param  boolean $flag
-     * @return self
-     */
     public function setRequired($flag = true)
     {
         parent::setRequired($flag);
@@ -111,7 +105,9 @@ class Typeahead extends \CommonBundle\Component\Form\Fieldset
 
         $labelAttributes = $field->getLabelAttributes() ?: array();
         if (isset($labelAttributes['class'])) {
-            $labelAttributes['class'] .= ' ' . ($flag ? 'required' : 'optional');
+            if (strpos($labelAttributes['class'], 'required') === false) {
+                $labelAttributes['class'] .= ' ' . ($flag ? 'required' : 'optional');
+            }
         } else {
             $labelAttributes['class'] = ($flag ? 'required' : 'optional');
         }
