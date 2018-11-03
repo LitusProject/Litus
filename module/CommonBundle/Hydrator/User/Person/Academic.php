@@ -37,22 +37,17 @@ class Academic extends \CommonBundle\Hydrator\User\Person
             return $data;
         }
 
-        /** @var \CommonBundle\Hydrator\General\Address $hydratorAddress */
         $hydratorAddress = $this->getHydrator('CommonBundle\Hydrator\General\Address');
-
-        /** @var \CommonBundle\Hydrator\General\PrimaryAddress $hydratorPrimaryAddress */
         $hydratorPrimaryAddress = $this->getHydrator('CommonBundle\Hydrator\General\PrimaryAddress');
 
-        $data['roles'] = $this->rolesToData($object->getRoles(false));
-
-        $data['primary_email'] = $object->getEmail() === $object->getPersonalEmail();
-
-        $data['is_international'] = $object->isInternational();
-
-        $data['birthday'] = $object->getBirthday() !== null ? $object->getBirthday()->format('d/m/Y') : '';
-
-        $data['secondary_address'] = $hydratorAddress->extract($object->getSecondaryAddress());
-        $data['primary_address'] = $hydratorPrimaryAddress->extract($object->getPrimaryAddress());
+        $data = array(
+            'roles'             => $this->rolesToData($object->getRoles(false)),
+            'primary_email'     => $object->getEmail() === $object->getPersonalEmail(),
+            'is_international'  => $object->isInternational(),
+            'birthday'          => $object->getBirthday() !== null ? $object->getBirthday()->format('d/m/Y') : '',
+            'secondary_address' => $hydratorAddress->extract($object->getSecondaryAddress()),
+            'primary_address'   => $hydratorPrimaryAddress->extract($object->getPrimaryAddress()),
+        );
 
         $data = array_merge(
             $data,
@@ -104,7 +99,7 @@ class Academic extends \CommonBundle\Hydrator\User\Person
             );
         }
 
-        if (count($data['university']['status']) > 0) {
+        if (isset($data['university']['status'])) {
             if ($object->getUniversityStatus($academicYear) !== null) {
                 $object->getUniversityStatus($academicYear)
                     ->setStatus($data['university']['status']);
@@ -146,22 +141,19 @@ class Academic extends \CommonBundle\Hydrator\User\Person
         if (isset($data['birthday'])) {
             $object->setBirthday(self::loadDate($data['birthday']));
         }
+
         $object->setUniversityEmail($universityEmail)
             ->setUniversityIdentification($data['university']['identification']);
 
-        /** @var \CommonBundle\Hydrator\General\Address $hydratorAddress */
         $hydratorAddress = $this->getHydrator('CommonBundle\Hydrator\General\Address');
-
-        /** @var \CommonBundle\Hydrator\General\PrimaryAddress $hydratorPrimaryAddress */
-        $hydratorPrimaryAddress = $this->getHydrator('CommonBundle\Hydrator\General\PrimaryAddress');
-
-        if (isset($data['secondary_address']) && is_array($data['secondary_address']) && count($data['secondary_address']['city']) > 0) {
+        if (isset($data['secondary_address']) && is_array($data['secondary_address']) && isset($data['secondary_address']['city'])) {
             $object->setSecondaryAddress(
                 $hydratorAddress->hydrate($data['secondary_address'], $object->getSecondaryAddress())
             );
         }
 
-        if (isset($data['primary_address']) && is_array($data['primary_address']) && count($data['primary_address']['city']) > 0) {
+        $hydratorPrimaryAddress = $this->getHydrator('CommonBundle\Hydrator\General\PrimaryAddress');
+        if (isset($data['primary_address']) && is_array($data['primary_address']) && isset($data['primary_address']['city'])) {
             $object->setPrimaryAddress(
                 $hydratorPrimaryAddress->hydrate($data['primary_address'], $object->getPrimaryAddress())
             );
