@@ -15,9 +15,18 @@
                 lightVersion: {% if lightVersion %}true{% else %}false{% endif %},
                 personTypeahead: '{{ url("common_admin_academic_typeahead")}}',
                 articleTypeahead: '{{ url("cudi_admin_sales_article_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
-                membershipArticles: [{% for article in membershipArticles %}
-                    {'id': {{ article.getId() }}, 'barcode': {{ article.getBarcode() }}, 'title': '{{ article.getMainArticle().getTitle() }}', 'price': {{ article.getSellPrice() }} },
-                {% endfor %}],
+                membershipArticles: [
+                    {% for article in membershipArticles %}
+                        {% if article.getId() is defined %}
+                            {
+                                'id': {{ article.getId() }},
+                                'barcode': '{{ article.getBarcode() }}',
+                                'title': '{{ article.getMainArticle().getTitle() }}',
+                                'price': {{ article.getSellPrice() }}
+                            },
+                        {% endif %}
+                    {% endfor %}
+                ],
 
                 tPrint: {% if printCollectAsSignin %}'Collect'{% else %}'Print'{% endif %},
                 tPrintNext: {% if printCollectAsSignin %}'Collect Next'{% else %}'Print Next'{% endif %},

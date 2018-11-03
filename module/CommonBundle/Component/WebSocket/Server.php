@@ -199,10 +199,8 @@ abstract class Server
             unset($this->authenticated[(int) $socket]);
         }
 
-        try {
-            socket_close($socket);
-        } catch (\Throwable $e) {
-            // Do nothing
+        if (get_resource_type($socket) == 'stream') {
+            fclose($socket);
         }
 
         foreach ($this->sockets as $key => $value) {
