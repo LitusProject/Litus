@@ -40,7 +40,7 @@
                 </ul>
             {% elseif element.getAttribute('type') == 'file' %}
                 {% if element.getAttribute('data-type') == 'image' %}
-                    <div class="form-group {% if element.getMessages()|length > 0 %}has-error{% endif %} {% if element.isRequired() %}required{% endif %}">
+                    <div class="form-group row {% if element.getMessages()|length > 0 %}has-error{% endif %} {% if element.isRequired() %}required{% endif %}">
                         {{ formLabel().openTag(element) }}
                             {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
                         {{ formLabel().closeTag() }}
@@ -64,7 +64,7 @@
                         </div>
                     </div>
                 {% elseif element.getAttribute('data-type') == 'small' %}
-                    <div class="form-group {% if element.getMessages()|length > 0 %}has-error{% endif %} {% if element.isRequired() %}required{% endif %}" style="width: 100%">
+                    <div class="form-group row {% if element.getMessages()|length > 0 %}has-error{% endif %} {% if element.isRequired() %}required{% endif %}" style="width: 100%">
                         {{ formLabel().openTag(element) }}
                             {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
                         {{ formLabel().closeTag() }}
@@ -84,7 +84,7 @@
                         </div>
                     </div>
                 {% else %}
-                    <div class="form-group {% if element.getMessages()|length > 0 %}has-error{% endif %} {% if element.isRequired() %}required{% endif %}">
+                    <div class="form-group row {% if element.getMessages()|length > 0 %}has-error{% endif %} {% if element.isRequired() %}required{% endif %}">
                         {{ formLabel().openTag(element) }}
                             {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
                         {{ formLabel().closeTag() }}
@@ -118,7 +118,7 @@
         {% endfor %}
         {% if buttons|length > 0 %}
             {% if fieldset.getDisplayFormActions() %}
-                <div class="form-group">
+                <div class="form-group row">
                     <div class="col-sm-offset-2 col-sm-10">
             {% endif %}
                 {% for button in buttons %}
@@ -134,7 +134,7 @@
 
 {% macro renderCheckbox(element) %}
     {% autoescape false %}
-        <div class="form-group {% if element.getMessages()|length > 0 %}has-error{% endif %} {% if element.isRequired() %}required{% endif %}">
+        <div class="form-group row {% if element.getMessages()|length > 0 %}has-error{% endif %} {% if element.isRequired() %}required{% endif %}">
             <div class="col-sm-offset-2 col-sm-10">
                 <div class="checkbox">
                     {{ formLabel().openTag(element) }}
@@ -154,7 +154,7 @@
 
 {% macro renderOther(element) %}
     {% autoescape false %}
-        <div class="form-group {% if element.getMessages()|length > 0 %}has-error{% endif %} {% if element.isRequired() %}required{% endif %}">
+        <div class="form-group row {% if element.getMessages()|length > 0 %}has-error{% endif %} {% if element.isRequired() %}required{% endif %}">
             {{ formLabel().openTag(element) }}
                 {% if element.getLabel != '' %}{{ translate(element.getLabel()) }}{% endif %}
             {{ formLabel().closeTag() }}
