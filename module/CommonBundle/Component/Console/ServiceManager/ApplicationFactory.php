@@ -82,7 +82,7 @@ class ApplicationFactory implements FactoryInterface
      */
     private function addCommands(Application $application, ContainerInterface $container)
     {
-        $config = $container->get('Config');
+        $config = $container->get('config');
         $config = $config['litus']['console'];
 
         $commands = array();

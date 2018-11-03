@@ -46,7 +46,7 @@ class MemcachedCacheFactory implements FactoryInterface
             throw new RuntimeException('The memcached extension is not loaded');
         }
 
-        $config = $container->get('Config');
+        $config = $container->get('config');
         if (!isset($config['doctrine']['cache']['memcached'])) {
             throw new RuntimeException('Could not find Doctrine memcached configuration');
         }

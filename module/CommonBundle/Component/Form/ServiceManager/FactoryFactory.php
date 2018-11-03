@@ -36,7 +36,7 @@ class FactoryFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $config = $container->get('Config');
+        $config = $container->get('config');
         $config = $config['litus']['forms'][$options['isAdmin'] ? 'admin' : 'bootstrap'];
 
         $factory = new Factory(

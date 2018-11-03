@@ -33,7 +33,7 @@ trait ConfigTrait
      */
     public function getConfig()
     {
-        return $this->getServiceLocator()->get('Config');
+        return $this->getServiceLocator()->get('config');
     }
 
     /**
