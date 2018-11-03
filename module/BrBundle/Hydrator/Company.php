@@ -42,7 +42,6 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
             $object = new CompanyEntity();
         }
 
-        /** @var \CommonBundle\Hydrator\General\Address $hydrator */
         $hydrator = $this->getHydrator('CommonBundle\Hydrator\General\Address');
 
         $object->setAddress(
@@ -129,7 +128,6 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
         $data['invoice']['invoice_name'] = $object->getRawInvoiceName();
         $data['invoice']['invoice_vat_number'] = $object->getRawInvoiceVatNumber();
 
-        /** @var \CommonBundle\Hydrator\General\Address $hydrator */
         $hydrator = $this->getHydrator('CommonBundle\Hydrator\General\Address');
 
         $data['address'] = $hydrator->extract($object->getAddress());

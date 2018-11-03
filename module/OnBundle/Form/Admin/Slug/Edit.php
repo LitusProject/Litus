@@ -31,7 +31,6 @@ class Edit extends \OnBundle\Form\Admin\Slug\Add
     {
         parent::init();
 
-        /** @var \CommonBundle\Component\Form\Admin\Element\Text $nameField */
         $nameField = $this->get('name');
         $nameField->setRequired();
 

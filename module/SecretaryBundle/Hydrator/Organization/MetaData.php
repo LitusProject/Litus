@@ -34,7 +34,6 @@ class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        /** @var \CommonBundle\Hydrator\User\Person\Academic $hydrator */
         $hydrator = $this->getHydrator('CommonBundle\Hydrator\User\Person\Academic');
 
         $data = array(
@@ -44,7 +43,7 @@ class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data['organization_info']['become_member'] = $object->becomeMember();
 
-        // sure thing, if we're here, the user already checked the conditions
+        // Sure thing, if we're here, the user already checked the conditions
         $data['organization_info']['conditions'] = true;
 
         $organization = $object->getAcademic()
@@ -58,7 +57,6 @@ class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
     {
         $year = $this->getCurrentAcademicYear(false);
 
-        /** @var \CommonBundle\Hydrator\User\Person\Academic $hydrator */
         $hydrator = $this->getHydrator('CommonBundle\Hydrator\User\Person\Academic');
 
         if ($object === null) {

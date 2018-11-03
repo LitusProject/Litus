@@ -52,7 +52,6 @@ class Factory extends \Zend\InputFilter\Factory
         $typeInput = $inputFilterSpecification['type'];
         $inputFilterSpecification['type'] = 'inputfilter';
 
-        /** @var \Zend\InputFilter\InputFilterInterface $inputFilter */
         $inputFilter = parent::createInputFilter($inputFilterSpecification);
 
         $inputFilter->add(

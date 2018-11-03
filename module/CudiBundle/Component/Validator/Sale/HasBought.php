@@ -58,9 +58,7 @@ class HasBought extends \CommonBundle\Component\Validator\AbstractValidator impl
     {
         $this->setValue($value);
 
-        /** @var \CommonBundle\Component\Form\Bootstrap\Element\TypeAhead $personField */
         $personField = $this->form->get('person');
-
         if ($personField->get('id')->getValue() == '' || $context['id'] == null) {
             $this->error(self::NOT_VALID);
 

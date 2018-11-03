@@ -83,7 +83,6 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
     {
         $this->setValue($value);
 
-        /** @var \CommonBundle\Component\Form\Fieldset $optionsForm */
         $optionsForm = $this->form->has('options_form') ? $this->form->get('options_form') : $this->form;
 
         $number = 0;
@@ -108,7 +107,6 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
             return false;
         }
 
-        /** @var \CommonBundle\Component\Form\Fieldset $personFieldset */
         $personFieldset = $this->form->get('person_form');
         if ($this->options['person'] == null && is_numeric($personFieldset->get('person')->getValue())) {
             $person = $this->getEntityManager()

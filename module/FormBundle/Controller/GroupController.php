@@ -132,7 +132,6 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function isCookieSet()
     {
-        /** @var \Zend\Http\Header\Cookie $cookies */
         $cookies = $this->getRequest()->getHeader('Cookie');
 
         return $cookies->offsetExists(GuestInfo::$cookieNamespace);
@@ -143,7 +142,6 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function getCookie()
     {
-        /** @var \Zend\Http\Header\Cookie $cookies */
         $cookies = $this->getRequest()->getHeader('Cookie');
 
         return $cookies[GuestInfo::$cookieNamespace];

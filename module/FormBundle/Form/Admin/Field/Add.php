@@ -379,19 +379,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $type = $this->getType();
 
         if ($type == 'string') {
-            /** @var \FormBundle\Form\Admin\Field\Field\String $stringForm */
             $stringForm = $this->get('text_form');
             $stringForm->setRequired();
         } elseif ($type == 'dropdown') {
-            /** @var \FormBundle\Form\Admin\Field\Field\Dropdown $dropdownForm */
             $dropdownForm = $this->get('dropdown_form');
             $dropdownForm->setRequired();
         } elseif ($type == 'file') {
-            /** @var \FormBundle\Form\Admin\Field\Field\File $fileForm */
             $fileForm = $this->get('file_form');
             $fileForm->setRequired();
         } elseif ($type == 'timeslot') {
-            /** @var \FormBundle\Form\Admin\Field\Field\TimeSlot $timeSlotForm */
             $timeSlotForm = $this->get('timeslot_form');
             $timeSlotForm->setRequired();
         }

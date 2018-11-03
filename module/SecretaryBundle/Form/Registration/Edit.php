@@ -37,7 +37,6 @@ class Edit extends \SecretaryBundle\Form\Registration\Add
         if ($academic->getOrganizationStatus($academicYear) !== null
             && $academic->getOrganizationStatus($academicYear)->getStatus() == 'praesidium'
         ) {
-            /** @var \CommonBundle\Component\Form\Fieldset $organizationInfoFieldset */
             $organizationInfoFieldset = $this->get('organization_info');
             $organizationInfoFieldset->get('become_member')
                 ->setValue(false)

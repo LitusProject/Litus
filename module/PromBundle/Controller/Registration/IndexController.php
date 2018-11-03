@@ -356,7 +356,6 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
      */
     private function getCookie()
     {
-        /** @var \Zend\Http\Header\Cookie $cookies */
         $cookies = $this->getRequest()->getHeader('Cookie');
 
         return $cookies[self::$cookieNamespace];

@@ -211,22 +211,19 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
     {
         parent::setRequired($required);
 
-        /** @var \CommonBundle\Component\Form\Bootstrap\Element $street */
         $street = $this->get('street');
-        /** @var \CommonBundle\Component\Form\Bootstrap\Element $number */
-        $number = $this->get('number');
-        /** @var \CommonBundle\Component\Form\Bootstrap\Element $mailbox */
-        $mailbox = $this->get('mailbox');
-        /** @var \CommonBundle\Component\Form\Bootstrap\Element $city */
-        $city = $this->get('city');
-        /** @var \CommonBundle\Component\Form\Fieldset $other */
-        $other = $this->get('other');
-
         $street->setRequired($required);
+
+        $number = $this->get('number');
         $number->setRequired($required);
+
+        $mailbox = $this->get('mailbox');
         $mailbox->setRequired(false);
+
+        $city = $this->get('city');
         $city->setRequired($required);
 
+        $other = $this->get('other');
         $other->setRequired($required);
 
         return $this;

@@ -235,9 +235,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         $specs = parent::getInputFilterSpecification();
 
         if ($this->has('selected_message')) {
-            /** @var \CommonBundle\Component\Form\Fieldset $selectedMessageFieldset */
             $selectedMessageFieldset = $this->get('selected_message');
-
             if ($selectedMessageFieldset->get('stored_message')->getValue() != '') {
                 $specs['compose_message']['subject']['required'] = false;
                 $specs['compose_message']['message']['required'] = false;

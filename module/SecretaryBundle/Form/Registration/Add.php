@@ -334,23 +334,24 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         if ($this->metaData !== null) {
             if ($this->metaData->becomeMember()) {
-                /** @var \CommonBundle\Component\Form\Fieldset $organizationInfoFieldset */
                 $organizationInfoFieldset = $this->get('organization_info');
                 if ($organizationInfoFieldset->has('organization')) {
                     $organizationInfoFieldset->get('organization')
                         ->setAttribute('disabled', true);
                 }
+
                 $organizationInfoFieldset->get('become_member')
                     ->setAttribute('disabled', true);
+
                 $organizationInfoFieldset->get('conditions')
                     ->setValue(true)
                     ->setAttribute('disabled', true);
+
                 $this->conditionsChecked = true;
             }
 
             $this->bind($this->metaData);
         } elseif ($this->academic !== null) {
-            /** @var \CommonBundle\Component\Form\Fieldset $academicFieldset */
             $academicFieldset = $this->get('academic');
             $academicFieldset->populateValues(
                 $this->getHydratorPluginManager()

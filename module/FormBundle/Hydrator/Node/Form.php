@@ -60,7 +60,6 @@ class Form extends \CommonBundle\Component\Hydrator\Hydrator
 
         $object->setMultiple($data['multiple']);
 
-        /** @var \FormBundle\Hydrator\Mail\Mail $hydrator */
         $hydrator = $this->getHydrator('FormBundle\Hydrator\Mail\Mail');
 
         if ($object instanceof DoodleEntity) {
@@ -162,7 +161,6 @@ class Form extends \CommonBundle\Component\Hydrator\Hydrator
         $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
         $data['mail'] = $object->hasMail();
 
-        /** @var \FormBundle\Hydrator\Mail\Mail $hydrator */
         $hydrator = $this->getHydrator('FormBundle\Hydrator\Mail\Mail');
 
         if ($object->hasMail()) {

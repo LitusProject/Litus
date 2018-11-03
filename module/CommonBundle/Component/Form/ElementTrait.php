@@ -23,10 +23,9 @@ namespace CommonBundle\Component\Form;
 use Zend\Form\FormInterface;
 
 /**
+ * ElementTrait
+ *
  * @author Bram Gotink <bram.gotink@litus.cc>
- * @method string getName()
- * @method mixed getOption(string $option)
- * @property array options
  */
 trait ElementTrait
 {

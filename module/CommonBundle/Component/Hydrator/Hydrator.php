@@ -159,16 +159,20 @@ abstract class Hydrator implements HydratorInterface, ServiceLocatorAwareInterfa
      */
     protected function stdHydrate(array $data, $object, array $keys = null)
     {
-        $keys = self::flatten($keys);
-
-        /** @var \Zend\Hydrator\ClassMethods $hydrator */
         $hydrator = $this->getHydrator('classmethods');
 
+        $keys = self::flatten($keys);
         if (count($keys) == 0) {
             return $hydrator->hydrate($data, $object);
         }
 
-        return $hydrator->hydrate(array_intersect_key($data, array_flip($keys)), $object);
+        return $hydrator->hydrate(
+            array_intersect_key(
+                $data,
+                array_flip($keys)
+            ),
+            $object
+        );
     }
 
     /**
@@ -191,10 +195,9 @@ abstract class Hydrator implements HydratorInterface, ServiceLocatorAwareInterfa
             $originalHydrator->setNamingStrategy(new NamingStrategy\RemoveIs());
         }
 
-        $keys = self::flatten($keys);
-
-        /** @var \Zend\Hydrator\ClassMethods $hydrator */
         $hydrator = clone $originalHydrator;
+
+        $keys = self::flatten($keys);
         if (count($keys) > 0) {
             $hydrator->addFilter(
                 'keys',

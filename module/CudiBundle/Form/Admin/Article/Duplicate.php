@@ -33,7 +33,6 @@ class Duplicate extends \CudiBundle\Form\Admin\Article\Add
 
         $this->remove('subject_form');
 
-        /** @var \CommonBundle\Component\Form\Fieldset $articleFieldset */
         $articleFieldset = $this->get('article');
         $articleFieldset->get('type')
             ->setAttribute('disabled', true);
@@ -45,7 +44,7 @@ class Duplicate extends \CudiBundle\Form\Admin\Article\Add
         $this->remove('submit')
             ->addSubmit('Add', 'article_add');
 
-        // don't bind to the article, but extract its data
+        // Don't bind to the article, but extract its data
         $this->setData($this->getHydrator()->extract($this->article));
     }
 

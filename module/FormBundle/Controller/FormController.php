@@ -957,7 +957,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
      */
     private function isCookieSet()
     {
-        /** @var \Zend\Http\Header\Cookie $cookies */
         $cookies = $this->getRequest()->getHeader('Cookie');
 
         return isset($cookies) && is_object($cookies) && $cookies->offsetExists(GuestInfo::$cookieNamespace);
@@ -968,7 +967,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
      */
     private function getCookie()
     {
-        /** @var \Zend\Http\Header\Cookie $cookies */
         $cookies = $this->getRequest()->getHeader('Cookie');
 
         return $cookies[GuestInfo::$cookieNamespace];
