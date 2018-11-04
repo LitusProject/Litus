@@ -78,7 +78,7 @@ Student IT',
                     'subject' => 'Student IT Account Geactiveerd',
                     'content' => 'Beste {{ name }},
 
-Een account werd voor u aangemaakt met gebruikersnaam{{ username }}.
+Een account werd voor u aangemaakt met gebruikersnaam {{ username }}.
 Klik hier om deze te activeren: http://litus/account/activate/code/{{ code }}
 
 Met vriendelijke groeten,
