@@ -88,7 +88,7 @@ trap on_usr1 SIGUSR1
 
 # socket function
 function socket() {
-    if [ ! php bin/console.php "socket:$1" --is-enabled ]; then
+    if ! php bin/console.php "socket:$1" --is-enabled; then
         return
     fi
 
