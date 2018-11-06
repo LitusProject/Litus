@@ -7,7 +7,16 @@
 
     {% include 'secretary/registration/partials/navigation.twig' %}
 
-    {% if form %}
+    {% if registerShibbolethUrl %}
+        <div style="text-align: center;">
+            <p style="text-align: center;">
+                {% autoescape false %}
+                    {{ translate('To register, please login first with your KU Leuven account.') }}
+                {% endautoescape %}
+            </p>
+            <a class="btn btn-info" href="{{ registerShibbolethUrl }}">{% autoescape false %}{{ translate('KU Leuven&mdash;Central Login') }}{% endautoescape  %}</a>
+        </div>
+    {% else %}
         {% if (organizations|length > 1 or enableOtherOrganization) and not isPost %}
             <div id="organizationSelector">
                 <p style="text-align: center;">{{ translate('Choose your study:') }}</p>
@@ -29,227 +38,221 @@
                 </ul>
             </div>
         {% endif %}
+
         <div id="registerForm"{% if (organizations|length > 1 or enableOtherOrganization) and not isPost %} style="display: none;"{% endif %}>
             {% import 'site/partials/form.twig' as forms %}
             {{ forms.renderForm(form) }}
         </div>
-    {% else %}
-        <div style="text-align: center;">
-            <p style="text-align: center;">
-                {% autoescape false %}
-                    {{ translate('To register, please login first with your KU Leuven account.') }}
-                {% endautoescape %}
-            </p>
-            <a class="btn btn-info" href="{{ registerShibbolethUrl }}">{% autoescape false %}{{ translate('KU Leuven&mdash;Central Login') }}{% endautoescape  %}</a>
+
+        <div id="modalMemberWarning" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a class="close" data-dismiss="modal">&times;</a>
+                        <h4>{{ translate('Become a Member') }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            {{ translate('You haven\'t checked the option to become a member. Being a member has many advantages.') }}
+                        </p>
+                        <p>
+                            {{ translate('Are you sure you want to continue?') }}
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary confirm">{{ translate('Yes') }}</button>
+                        <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modalTermsAndCoditions" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a class="close" data-dismiss="modal">&times;</a>
+                        <h4>{{ translate('Terms and Conditions') }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            {{ markdown(termsAndConditions) }}
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default" data-dismiss="modal">{{ translate('Close') }}</button>
+                    </div>
+                </div>
+            </div>
         </div>
     {% endif %}
-
-    <div id="modalMemberWarning" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <a class="close" data-dismiss="modal">&times;</a>
-                    <h4>{{ translate('Become a Member') }}</h4>
-                </div>
-                <div class="modal-body">
-                    <p>
-                        {{ translate('You haven\'t checked the option to become a member. Being a member has many advantages.') }}
-                    </p>
-                    <p>
-                        {{ translate('Are you sure you want to continue?') }}
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary confirm">{{ translate('Yes') }}</button>
-                    <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="modalTermsAndCoditions" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <a class="close" data-dismiss="modal">&times;</a>
-                    <h4>{{ translate('Terms and Conditions') }}</h4>
-                </div>
-                <div class="modal-body">
-                    <p>
-                        {{ markdown(termsAndConditions) }}
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-default" data-dismiss="modal">{{ translate('Close') }}</button>
-                </div>
-            </div>
-        </div>
-    </div>
 {% endblock %}
 
 {% block content_script %}
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var membershipArticles = {
-                {% for organization, membershipArticle in membershipArticles %}
-                    '{{ organization }}': {{ (membershipArticle.getSellPrice()/100)|number_format(2) }},
-                {% endfor %}
-            };
+    {% if not registerShibbolethUrl %}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var membershipArticles = {
+                    {% for organization, membershipArticle in membershipArticles %}
+                        '{{ organization }}': {{ (membershipArticle.getSellPrice()/100)|number_format(2) }},
+                    {% endfor %}
+                };
 
-            var $form = $('#registerForm');
+                var $form = $('#registerForm');
 
-            $form.find('#become_member').closest('.form-group').click(function (e) {
-                toggleMember();
-            });
+                $form.find('#become_member').closest('.form-group').click(function (e) {
+                    toggleMember();
+                });
 
-            {% if (organizations|length > 1 or enableOtherOrganization) and not isPost %}
-                $('#organizationSelector a').click(function (e) {
-                    $('#organizationSelector').hide();
-                    $form
-                        .show()
-                        .find('#organization')
-                        .val($(this).data('id'))
+                {% if (organizations|length > 1 or enableOtherOrganization) and not isPost %}
+                    $('#organizationSelector a').click(function (e) {
+                        $('#organizationSelector').hide();
+                        $form
+                            .show()
+                            .find('#organization')
+                            .val($(this).data('id'))
+                            .closest('.form-group')
+                                .hide();
+
+                        if ($(this).data('id') == 0) {
+                            $form.find('#become_member')
+                                .closest('.form-group')
+                                    .hide()
+                                .end()
+                                .attr('checked', false);
+                        } else {
+                            $form.find('#become_member')
+                                .closest('.form-group')
+                                    .show();
+
+                            if ($form.find('#become_member').is(':visible')) {
+                                $form.find('#become_member')
+                                    .closest('label')
+                                        .html(
+                                            $form.find('#become_member')
+                                                .closest('label')
+                                                .html()
+                                                .replace('{ price }', membershipArticles[$(this).data('id')])
+                                                .replace('{ year }', '{{ academicYear.getCode() }}')
+                                        );
+                            }
+                        }
+
+                        return false;
+                    });
+                {% else %}
+                    $form.find('#organization')
                         .closest('.form-group')
                             .hide();
 
-                    if ($(this).data('id') == 0) {
+                    if ($form.find('#become_member').is(':visible')) {
                         $form.find('#become_member')
-                            .closest('.form-group')
-                                .hide()
-                            .end()
-                            .attr('checked', false);
-                    } else {
-                        $form.find('#become_member')
-                            .closest('.form-group')
-                                .show();
+                            .closest('label')
+                            .html(
+                                $form.find('#become_member')
+                                    .closest('label')
+                                    .html()
+                                    .replace('{ price }', membershipArticles[$('#registerForm #organization').val()])
+                                    .replace('{ year }', '{{ academicYear.getCode() }}')
+                            );
+                    }
+                {% endif %}
 
-                        if ($form.find('#become_member').is(':visible')) {
-                            $form.find('#become_member')
-                                .closest('label')
-                                    .html(
-                                        $form.find('#become_member')
-                                            .closest('label')
-                                            .html()
-                                            .replace('{ price }', membershipArticles[$(this).data('id')])
-                                            .replace('{ year }', '{{ academicYear.getCode() }}')
-                                    );
-                        }
+                $('#conditions').parent().append(
+                    conditionsLink = $('<a>', {'href': '#'}).html('&mdash;{{ translate('Read Them') }}')
+                );
+                conditionsLink.click(function (e) {
+                    $('#modalTermsAndCoditions').modal();
+
+                    return false;
+                });
+
+                $('#register').click(function (e) {
+                    if (!$form.find('#become_member').is(':checked') && $form.find('#organization').val() != 0) {
+                        $('#modalMemberWarning')
+                            .modal()
+                            .find('.confirm')
+                                .one('click', function () {
+                                    $form.submit();
+                            });
+                    } else {
+                        $form.submit();
                     }
 
                     return false;
                 });
-            {% else %}
+
+                {% if selectedOrganization %}
+                    $('#organization > option[value="{{ selectedOrganization.getId() }}"]').click();
+                {% elseif isPost %}
+                    $('#organization > option[value="0"]').click();
+                {% endif %}
+
+                $form.find('.primary-address .city').change(cityChange);
+                $form.find('#become_member').change(toggleMember);
+                toggleMember();
+                cityChange();
+
+                $('#university_email').wrap('<div class=\"input-group\" />');
+                $('#university_email').after('<span class=\"input-group-addon\">{{ studentDomain }}</span>');
+
+                $('#first_name, #last_name').blur(nameChange);
+            });
+
+            function nameChange() {
+                $('#university_email').val($('#first_name').val().toLowerCase() + "." + $('#last_name').val().toLowerCase().replace(/ /g, ""));
+            }
+
+            function cityChange() {
+                var $primaryAddress = $('.primary-address');
+
+                var city = $primaryAddress
+                    .find('.city option:selected')
+                    .val();
+
+                $primaryAddress
+                    .find('.other')
+                        .hide()
+                    .end()
+                    .find('.street, .number, .mailbox')
+                        .closest('.form-group')
+                            .hide();
+
+                if (city === 'other') {
+                    $primaryAddress
+                        .find('.other')
+                            .show()
+                        .end()
+                        .find('.number, .mailbox')
+                            .closest('.form-group')
+                                .show();
+                } else if (city != 0) {
+                    $primaryAddress
+                        .find('.street-' + city + ', .number, .mailbox')
+                            .closest('.form-group')
+                                .show();
+                }
+            }
+
+            function toggleMember() {
+                var $form = $('#register_form');
+
+                if ($form.find('#become_member').is(':checked'))
+                    $form.find('#organization_info .form-group').show();
+                else
+                    $form.find('#organization_info .form-group').hide();
+
+                $form.find('#become_member')
+                    .closest('.form-group')
+                        .toggle($('#register_form').find('#organization').val() !== '0');
+
+                $form.find('#conditions')
+                    .closest('.form-group')
+                        .show();
                 $form.find('#organization')
                     .closest('.form-group')
                         .hide();
-
-                if ($form.find('#become_member').is(':visible')) {
-                    $form.find('#become_member')
-                        .closest('label')
-                        .html(
-                            $form.find('#become_member')
-                                .closest('label')
-                                .html()
-                                .replace('{ price }', membershipArticles[$('#registerForm #organization').val()])
-                                .replace('{ year }', '{{ academicYear.getCode() }}')
-                        );
-                }
-            {% endif %}
-
-            $('#conditions').parent().append(
-                conditionsLink = $('<a>', {'href': '#'}).html('&mdash;{{ translate('Read Them') }}')
-            );
-            conditionsLink.click(function (e) {
-                $('#modalTermsAndCoditions').modal();
-
-                return false;
-            });
-
-            $('#register').click(function (e) {
-                if (!$form.find('#become_member').is(':checked') && $form.find('#organization').val() != 0) {
-                    $('#modalMemberWarning')
-                        .modal()
-                        .find('.confirm')
-                            .one('click', function () {
-                                $form.submit();
-                        });
-                } else {
-                    $form.submit();
-                }
-
-                return false;
-            });
-
-            {% if selectedOrganization %}
-                $('#organization > option[value="{{ selectedOrganization.getId() }}"]').click();
-            {% elseif isPost %}
-                $('#organization > option[value="0"]').click();
-            {% endif %}
-
-            $form.find('.primary-address .city').change(cityChange);
-            $form.find('#become_member').change(toggleMember);
-            toggleMember();
-            cityChange();
-
-            $('#university_email').wrap('<div class=\"input-group\" />');
-            $('#university_email').after('<span class=\"input-group-addon\">{{ studentDomain }}</span>');
-
-            $('#first_name, #last_name').blur(nameChange);
-        });
-
-        function nameChange() {
-            $('#university_email').val($('#first_name').val().toLowerCase() + "." + $('#last_name').val().toLowerCase().replace(/ /g, ""));
-        }
-
-        function cityChange() {
-            var $primaryAddress = $('.primary-address');
-
-            var city = $primaryAddress
-                .find('.city option:selected')
-                .val();
-
-            $primaryAddress
-                .find('.other')
-                    .hide()
-                .end()
-                .find('.street, .number, .mailbox')
-                    .closest('.form-group')
-                        .hide();
-
-            if (city === 'other') {
-                $primaryAddress
-                    .find('.other')
-                        .show()
-                    .end()
-                    .find('.number, .mailbox')
-                        .closest('.form-group')
-                            .show();
-            } else if (city != 0) {
-                $primaryAddress
-                    .find('.street-' + city + ', .number, .mailbox')
-                        .closest('.form-group')
-                            .show();
             }
-        }
-
-        function toggleMember() {
-            var $form = $('#register_form');
-
-            if ($form.find('#become_member').is(':checked'))
-                $form.find('#organization_info .form-group').show();
-            else
-                $form.find('#organization_info .form-group').hide();
-
-            $form.find('#become_member')
-                .closest('.form-group')
-                    .toggle($('#register_form').find('#organization').val() !== '0');
-
-            $form.find('#conditions')
-                .closest('.form-group')
-                    .show();
-            $form.find('#organization')
-                .closest('.form-group')
-                    .hide();
-        }
-    </script>
+        </script>
+    {% endif %}
 {% endblock %}
