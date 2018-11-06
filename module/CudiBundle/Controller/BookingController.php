@@ -127,6 +127,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             if (!isset($booked[$booking->getArticle()->getId()])) {
                 $booked[$booking->getArticle()->getId()] = 0;
             }
+
             $booked[$booking->getArticle()->getId()] += $booking->getNumber();
         }
 
@@ -139,6 +140,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             if (!isset($sold[$booking->getArticle()->getId()])) {
                 $sold[$booking->getArticle()->getId()] = 0;
             }
+
             $sold[$booking->getArticle()->getId()] += $booking->getNumber();
         }
 
@@ -338,15 +340,17 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
         $searchForm = $this->getForm('cudi_booking_search');
 
+        $isSubscribed = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Article\Notification\Subscription')
+            ->findOneByPerson($academic) !== null;
+
         return new ViewModel(
             array(
                 'subjectArticleMap' => $result,
                 'form'              => $form,
                 'searchForm'        => $searchForm,
-                'isSubscribed'      => $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Article\Notification\Subscription')
-                    ->findOneByPerson($academic) !== null,
-                'isic' => $this->getIsic(),
+                'isSubscribed'      => $isSubscribed,
+                'isic'              => $this->getIsic(),
             )
         );
     }
