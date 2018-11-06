@@ -189,6 +189,7 @@ class Config
     {
         // include view by default
         $hasView = !array_key_exists('has_views', $settings) || $settings['has_views'];
+
         // don't include layout by default
         $hasLayout = array_key_exists('has_layouts', $settings) && $settings['has_layouts'];
 

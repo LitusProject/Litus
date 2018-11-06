@@ -34,14 +34,17 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
 {
     protected function postInstall()
     {
-        $this->write('Installing Resources...');
+        $this->write('Installing resources...');
         $this->installResources();
         $this->writeln(' done.', true);
     }
 
     private function installResources()
     {
-        $resources = array(VanReservation::VAN_RESOURCE_NAME, PianoReservation::PIANO_RESOURCE_NAME);
+        $resources = array(
+            VanReservation::VAN_RESOURCE_NAME,
+            PianoReservation::PIANO_RESOURCE_NAME
+        );
 
         foreach ($resources as $name) {
             $resource = $this->getEntityManager()

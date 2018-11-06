@@ -35,7 +35,7 @@ class DestroyAccount extends \CommonBundle\Component\Console\Command
         $this
             ->setName('common:destroy-account')
             ->setDescription('Destroy the personal data of an account.')
-            ->addArgument('id', InputArgument::REQUIRED, 'The id of the account')
+            ->addArgument('id', InputArgument::REQUIRED, 'The ID of the account')
             ->setHelp(
                 <<<EOT
 The <info>%command.name%</info> command destroys the personal data (address, name, ...) from an account.

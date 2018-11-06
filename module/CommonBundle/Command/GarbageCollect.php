@@ -30,12 +30,12 @@ class GarbageCollect extends \CommonBundle\Component\Console\Command
         $this
             ->setName('common:gc')
             ->setDescription('Perform Garbage Collection on Sessions.')
-            ->addOption('all', 'a', null, 'Garbage Collect all sessions')
-            ->addOption('sessions', 'se', null, 'Garbage Collect password sessions')
-            ->addOption('shibboleth', 'sh', null, 'Garbage Collect shibboleth sessions')
+            ->addOption('all', 'a', null, 'Process all sessions')
+            ->addOption('sessions', 'se', null, 'Process password sessions')
+            ->addOption('shibboleth', 'sh', null, 'Process Shibboleth sessions')
             ->setHelp(
                 <<<EOT
-The <info>%command.name%</info> command removes the expired password sessions and/or shibboleth sessions.
+The <info>%command.name%</info> command removes the expired password sessions and/or Shibboleth sessions.
 EOT
             );
     }

@@ -87,6 +87,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
                 $street = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Address\Street')
                     ->findOneByCityAndName($city, $streetData['name']);
+
                 if ($street === null) {
                     $this->getEntityManager()->persist(new Street($city, $streetData['register'], $streetData['name']));
                 }
@@ -101,6 +102,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
         $currentOrganizations = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
+
         if (count($currentOrganizations) > 0) {
             return;
         }

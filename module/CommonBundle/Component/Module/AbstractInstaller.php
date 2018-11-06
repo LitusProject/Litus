@@ -73,19 +73,19 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
         $this->preInstall();
 
         if (array_key_exists('configuration', $configuration)) {
-            $this->write('Installing configuration ...');
+            $this->write('Installing configuration...');
             $this->installConfig($configuration['configuration']);
             $this->writeln(' done.', true);
         }
 
         if (array_key_exists('acl', $configuration)) {
-            $this->write('Installing acl ...');
+            $this->write('Installing ACL...');
             $this->installAcl($configuration['acl']);
             $this->writeln(' done.', true);
         }
 
         if (array_key_exists('roles', $configuration)) {
-            $this->write('Installing roles ...');
+            $this->write('Installing roles...');
             $this->installRoles($configuration['roles']);
             $this->writeln(' done.', true);
         }

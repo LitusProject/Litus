@@ -93,7 +93,7 @@ EOT
 
     private function installModule($module)
     {
-        $this->writeln('Installing module <comment>' . $module . '</comment>');
+        $this->writeln('Installing <comment>' . $module . '</comment>');
 
         $this->currentModule = $module;
 

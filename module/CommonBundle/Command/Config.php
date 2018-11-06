@@ -33,8 +33,8 @@ class Config extends \CommonBundle\Component\Console\Command
         $this
             ->setName('common:config')
             ->setDescription('Get configuration values.')
-            ->addArgument('action', InputArgument::REQUIRED, 'the action to take (test|get)')
-            ->addArgument('key', InputArgument::REQUIRED, 'the name of the configuration value')
+            ->addArgument('action', InputArgument::REQUIRED, 'The action to take (test|get)')
+            ->addArgument('key', InputArgument::REQUIRED, 'The name of the configuration value')
             ->setHelp(
                 <<<EOT
 The <info>%command.name%</info> command gets or sets configuration values.
