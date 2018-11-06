@@ -24,7 +24,7 @@ use RuntimeException;
 use Symfony\Component\Console\Input\InputArgument;
 
 /**
- * Performs garbage collection on the sessions.
+ * Configuration value utilities.
  */
 class Config extends \CommonBundle\Component\Console\Command
 {
@@ -32,12 +32,12 @@ class Config extends \CommonBundle\Component\Console\Command
     {
         $this
             ->setName('common:config')
-            ->setDescription('Get configuration values.')
+            ->setDescription('Configuration value utilities')
             ->addArgument('action', InputArgument::REQUIRED, 'The action to take (test|get)')
             ->addArgument('key', InputArgument::REQUIRED, 'The name of the configuration value')
             ->setHelp(
                 <<<EOT
-The <info>%command.name%</info> command gets or sets configuration values.
+The <info>%command.name%</info> command provides configuration value utilities.
 
 For <comment>test</comment> and <comment>get</comment>:
     The exit status is 0 if the configuration entry exists, 1 otherwise.

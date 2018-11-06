@@ -21,5 +21,5 @@
 return array(
     'install_form' => 'FormBundle\Command\Install',
 
-    'form_mail' => 'FormBundle\Command\Mail',
+    'form_reminders' => 'FormBundle\Command\Reminders',
 );

@@ -32,7 +32,7 @@ class CleanupAcl extends \CommonBundle\Component\Console\Command
     {
         $this
             ->setName('common:cleanup-acl')
-            ->setDescription('Cleanup old ACL actions and resources.')
+            ->setDescription('Cleanup old ACL actions and resources')
             ->addOption('flush', 'f', null, 'Store the result in the database')
             ->setHelp(
                 <<<EOT

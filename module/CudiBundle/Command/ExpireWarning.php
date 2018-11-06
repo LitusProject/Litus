@@ -33,9 +33,8 @@ class ExpireWarning extends \CommonBundle\Component\Console\Command
     {
         $this
             ->setName('cudi:expire-warning')
-            ->setAliases(array('cudi:warn-expire'))
-            ->setDescription('Warn users when reservations are about to expire.')
-            ->addOption('mail', 'm', null, 'Send the users a warning e-mail.')
+            ->setDescription('Warn users when reservations are about to expire')
+            ->addOption('mail', 'm', null, 'Send the users a warning mail')
             ->setHelp(
                 <<<EOT
 The <info>%command.name%</info> command warns users when their reservations are about to expire.
@@ -58,8 +57,7 @@ EOT
         $end->add(new DateInterval('P1D'));
 
         $this->writeln(
-            'Looking for bookings expiring between <comment>'
-            . $start->format('d M Y') . '</comment> and <comment>' . $end->format('d M Y') . '</comment>...'
+            'Searching for bookings expiring between <comment>' . $start->format('d M Y') . '</comment> and <comment>' . $end->format('d M Y') . '</comment>...'
         );
 
         $bookings = $this->getEntityManager()
@@ -76,24 +74,20 @@ EOT
         }
 
         $this->writeln(
-            'Found <comment>' . count($bookings) . '</comment> bookings belonging to <comment>'
-            . count($persons) . '</comment> people.'
+            'Found <comment>' . count($bookings) . '</comment> bookings belonging to <comment>' . count($persons) . '</comment> people.'
         );
 
         if ($this->getOption('mail')) {
-            $this->write('Sending mails...');
-            $count = 0;
-
             foreach ($persons as $person) {
-                $count++;
-                if ($count % 3 === 0) {
-                    $this->write("\r" . 'Sending mail no. <comment>' . $count . '</comment>');
-                }
-
-                Booking::sendExpireWarningMail($this->getEntityManager(), $this->getMailTransport(), $person['bookings'], $person['person']);
+                Booking::sendExpireWarningMail(
+                    $this->getEntityManager(),
+                    $this->getMailTransport(),
+                    $person['bookings'],
+                    $person['person']
+                );
             }
 
-            $this->writeln("\r" . 'Done.                                        ');
+            $this->writeln('Sent <comment>' . count($persons) . '</comment> warning mails');
         }
     }
 

@@ -36,10 +36,9 @@ class ImportAliases extends \CommonBundle\Component\Console\Command
     {
         $this
             ->setName('mail:import-aliases')
-            ->setAliases(array('mail:aliases:import'))
-            ->setDescription('import alias files')
-            ->addOption('flush', 'f', null, 'flush the created aliases to the database')
-            ->addArgument('file', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'the files to import')
+            ->setDescription('Import alias files')
+            ->addOption('flush', 'f', null, 'Flush the created aliases to the database')
+            ->addArgument('file', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'The files to import')
             ->setHelp(
                 <<<EOT
 The %command.name% command imports the given alias <fg=blue>files</fg=blue> and stores them

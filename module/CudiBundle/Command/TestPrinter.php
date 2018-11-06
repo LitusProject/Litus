@@ -31,10 +31,9 @@ class TestPrinter extends \CommonBundle\Component\Console\Command
     {
         $this
             ->setName('cudi:test-printer')
-            ->setAliases(array('cudi:printer:test'))
-            ->setDescription('Tests the printers.')
-            ->addArgument('printer', InputArgument::REQUIRED, 'the printer name')
-            ->addArgument('ticket', InputArgument::REQUIRED, 'the ticket type')
+            ->setDescription('Tests the printers')
+            ->addArgument('printer', InputArgument::REQUIRED, 'The printer name')
+            ->addArgument('ticket', InputArgument::REQUIRED, 'The ticket type')
             ->setHelp(
                 <<<EOT
 The <info>%command.name%</info> command sends a test ticket to a printer.

@@ -22,10 +22,8 @@ return array(
     'install_all'    => CommonBundle\Command\InstallAll::class,
     'install_common' => CommonBundle\Command\Install::class,
 
-    'common_cleanup_acl'     => CommonBundle\Command\CleanupAcl::class,
-    'common_config'          => CommonBundle\Command\Config::class,
-    'common_gc'              => CommonBundle\Command\GarbageCollect::class,
-    'common_test_config'     => CommonBundle\Command\TestConfig::class,
-    'common_test_sentry'     => CommonBundle\Command\TestSentry::class,
-    'common_destroy_account' => CommonBundle\Command\DestroyAccount::class,
+    'common_cleanup_acl'      => CommonBundle\Command\CleanupAcl::class,
+    'common_cleanup_sessions' => CommonBundle\Command\CleanupSessions::class,
+    'common_config'           => CommonBundle\Command\Config::class,
+    'common_destroy_account'  => CommonBundle\Command\DestroyAccount::class,
 );

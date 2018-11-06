@@ -21,49 +21,31 @@
 namespace CommonBundle\Command;
 
 /**
- * Performs garbage collection on the sessions.
+ * Cleans up expired sessions.
  */
-class GarbageCollect extends \CommonBundle\Component\Console\Command
+class CleanupSessions extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
         $this
-            ->setName('common:gc')
-            ->setDescription('Perform Garbage Collection on Sessions.')
-            ->addOption('all', 'a', null, 'Process all sessions')
-            ->addOption('sessions', 'se', null, 'Process password sessions')
-            ->addOption('shibboleth', 'sh', null, 'Process Shibboleth sessions')
+            ->setName('common:cleanup-sessions')
+            ->setDescription('Cleanup expired sessions and Shibboleth codes')
             ->setHelp(
                 <<<EOT
-The <info>%command.name%</info> command removes the expired password sessions and/or Shibboleth sessions.
+The <info>%command.name%</info> command removes expired sessions and Shibboleth codes.
 EOT
             );
     }
 
     protected function executeCommand()
     {
-        $doneSomething = false;
-
-        if ($this->getOption('all') || $this->getOption('sessions')) {
-            $this->gcSessions();
-            $doneSomething = true;
-        }
-
-        if ($this->getOption('all') || $this->getOption('shibboleth')) {
-            $this->gcShibboleth();
-            $doneSomething = true;
-        }
-
-        if (!$doneSomething) {
-            $this->writeln('<error>Error:</error> you must give at least one option.');
-
-            return 1;
-        }
+        $this->gcSessions();
+        $this->gcShibboleth();
     }
 
     protected function getLogName()
     {
-        return 'GarbageCollect';
+        return 'CleanupSessions';
     }
 
     private function gcSessions()

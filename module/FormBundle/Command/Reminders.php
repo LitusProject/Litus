@@ -27,25 +27,22 @@ use FormBundle\Entity\Node\Form\Doodle;
 use Zend\Mail\Message;
 
 /**
- * RenderMail
+ * Send reminder mails for forms.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class Mail extends \CommonBundle\Component\Console\Command
+class Reminders extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
         $this
-            ->setName('form:mail')
-            ->setDescription('renders (and sends) reminder mails for forms')
-            ->addOption('mail', 'm', null, 'send the reminder mails')
+            ->setName('form:reminders')
+            ->setDescription('Send reminder mails for forms')
+            ->addOption('mail', 'm', null, 'Send the users a reminder')
             ->setHelp(
                 <<<EOT
-The %command.name% command generates reminder mails for forms and sends them
-if the <fg=blue>--mail</fg=blue> flag is given.
-
-The <fg=blue>--mail</fg=blue> flag is ignored if APPLICATON_ENV is "<comment>development</comment>"
+The %command.name% command sends users reminder mails for forms.
 EOT
             );
     }
@@ -74,7 +71,7 @@ EOT
 
     protected function getLogName()
     {
-        return 'FormMail';
+        return 'Reminders';
     }
 
     private function sendMailForTimeSlot(TimeSlot $timeSlot)
@@ -90,8 +87,7 @@ EOT
             ->findOneByAbbrev('en');
 
         $this->writeln(
-            'Form <comment>' . $form->getTitle($english)
-            . '</comment>: TimeSlot <comment>' . $timeSlot->getLabel($english) . '</comment>'
+            'Form <comment>' . $form->getTitle($english) . '</comment>: TimeSlot <comment>' . $timeSlot->getLabel($english) . '</comment>'
         );
 
         $entries = $this->getEntityManager()
@@ -101,28 +97,32 @@ EOT
         foreach ($entries as $entry) {
             $this->writeln('Reminder for ' . $entry->getFormEntry()->getPersonInfo()->getFullName());
 
-            $form->setEntityManager($this->getEntityManager());
-            $mailAddress = $form->getReminderMail()->getFrom();
+            if ($this->getOption('mail')) {
+                $form->setEntityManager($this->getEntityManager());
+                $mailAddress = $form->getReminderMail()->getFrom();
 
-            $language = $english;
-            if ($entry->getFormEntry()->getCreationPerson()) {
-                $language = $entry->getFormEntry()->getCreationPerson()->getLanguage();
-            }
+                $language = $english;
+                if ($entry->getFormEntry()->getCreationPerson()) {
+                    $language = $entry->getFormEntry()->getCreationPerson()->getLanguage();
+                }
 
-            $mail = new Message();
-            $mail->setEncoding('UTF-8')
-                ->setBody($form->getCompletedReminderMailBody($entry->getFormEntry(), $language))
-                ->setFrom($mailAddress)
-                ->setSubject($form->getReminderMail()->getSubject())
-                ->addTo($entry->getFormEntry()->getPersonInfo()->getEmail(), $entry->getFormEntry()->getPersonInfo()->getFullName());
+                $mail = new Message();
+                $mail->setEncoding('UTF-8')
+                    ->setBody($form->getCompletedReminderMailBody($entry->getFormEntry(), $language))
+                    ->setFrom($mailAddress)
+                    ->setSubject($form->getReminderMail()->getSubject())
+                    ->addTo($entry->getFormEntry()->getPersonInfo()->getEmail(), $entry->getFormEntry()->getPersonInfo()->getFullName());
 
-            if ($form->getReminderMail()->getBcc()) {
-                $mail->addBcc($mailAddress);
-            }
+                if ($form->getReminderMail()->getBcc()) {
+                    $mail->addBcc($mailAddress);
+                }
 
-            if (getenv('APPLICATION_ENV') != 'development' && $this->getOption('mail')) {
                 $this->getMailTransport()->send($mail);
             }
+        }
+
+        if ($this->getOption('mail')) {
+            $this->writeln('Sent <comment>' . count($entries) . '</comment> reminders');
         }
     }
 }

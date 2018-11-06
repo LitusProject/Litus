@@ -25,12 +25,12 @@ use MailBundle\Document\Message;
 use MailBundle\Document\Message\Attachment;
 
 /**
- * Parser
+ * Parse mail from input.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class Parser extends \CommonBundle\Component\Console\Command
+class Parse extends \CommonBundle\Component\Console\Command
 {
     const COMMAND_STORE = '001';
 
@@ -47,7 +47,7 @@ class Parser extends \CommonBundle\Component\Console\Command
     {
         $this
             ->setName('mail:parse')
-            ->setDescription('parse a mail from input')
+            ->setDescription('Parse mail from input')
             ->setHelp(
                 <<<EOT
 The %command.name% command reads <comment>php://stdin</comment>, parses

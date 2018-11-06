@@ -28,18 +28,13 @@ abstract class WebSocket extends \CommonBundle\Component\Console\Command
         $module = $this->getModuleName();
 
         $this
-            ->setName($module . ':' . $name . '-socket')
-            ->setAliases(
-                array(
-                    'socket:' . $module . ':' . $name,
-                )
-            )
+            ->setName('socket:' . $module . ':' . $name)
+            ->setDescription('Starts the ' . $name . ' WebSocket')
             ->addOption('run', 'r', null, 'Run the WebSocket')
             ->addOption('is-enabled', null, null, 'Checks whether the WebSocket is enabled')
-            ->setDescription('Runs the ' . $name . ' websocket.')
             ->setHelp(
                 <<<EOT
-The <info>%command.name%</info> command runs the $name websocket.
+The <info>%command.name%</info> command starts the $name WebSocket.
 
 Call
     php bin/console.php <info>%command.name%</info> <comment>--run</comment>

@@ -9,7 +9,7 @@
 set -m
 
 SCRIPT_DIRECTORY=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-cd "$SCRIPT_DIRECTORY"; cd ..;
+cd "$SCRIPT_DIRECTORY/../"
 
 # check litus configuration
 if ! php bin/console.php common:config test socket_path || ! php bin/console.php common:config test socket_log; then

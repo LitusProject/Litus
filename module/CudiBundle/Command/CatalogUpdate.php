@@ -35,10 +35,9 @@ class CatalogUpdate extends \CommonBundle\Component\Console\Command
     protected function configure()
     {
         $this
-            ->setName('cudi:catalog:update')
-            ->setAliases(array('cudi:update-catalog'))
-            ->setDescription('Update the catalog.')
-            ->addOption('mail', 'm', null, 'Send mails to users to notify them of the update.')
+            ->setName('cudi:update-catalog')
+            ->setDescription('Update the catalog')
+            ->addOption('mail', 'm', null, 'Send mails to users to notify them of the update')
             ->setHelp(
                 <<<EOT
 The <info>%command.name%</info> command updates the catalog and notifies the users of the changes.
@@ -136,6 +135,7 @@ EOT
         $logs = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Log\Article\SubjectMap\Added')
             ->findAllAfter($date);
+
         $this->writeln('Found <comment>' . count($logs) . '</comment> log entries for Added articles.');
 
         foreach ($logs as $log) {
