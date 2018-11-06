@@ -77,7 +77,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                 'name' => 'Int',
                             ),
                             array(
-                                'name'    => 'Greaterthan',
+                                'name'    => 'GreaterThan',
                                 'options' => array(
                                     'min' => 0,
                                 ),
