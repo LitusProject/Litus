@@ -19,12 +19,24 @@
  */
 
 return array(
-    'install_all'    => CommonBundle\Command\InstallAll::class,
-    'install_common' => CommonBundle\Command\Install::class,
-
-    'common_cleanup_acl'      => CommonBundle\Command\CleanupAcl::class,
-    'common_cleanup_sessions' => CommonBundle\Command\CleanupSessions::class,
-    'common_config'           => CommonBundle\Command\Config::class,
-    'common_cron'             => CommonBundle\Command\Cron::class,
-    'common_destroy_account'  => CommonBundle\Command\DestroyAccount::class,
+    'cron' => array(
+        'jobs' => array(
+            'common:gc' => array(
+                'command'  => 'php bin/console.php common:cleanup-sessions',
+                'schedule' => '* * * * *',
+            ),
+            'cudi:catalog-update' => array(
+                'command'  => 'php bin/console.php cudi:update-catalog -m',
+                'schedule' => '0 2 * * *',
+            ),
+            'cudi:expire-warning' => array(
+                'command'  => 'php bin/console.php cudi:expire-warning -m',
+                'schedule' => '0 2 * * *',
+            ),
+            'form:mail' => array(
+                'command'  => 'php bin/console.php form:reminders -m',
+                'schedule' => '0 2 * * *',
+            )
+        ),
+    ),
 );

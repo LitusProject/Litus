@@ -231,6 +231,11 @@ Student IT',
         'description' => 'The location of pid/socket files',
     ),
     array(
+        'key'         => 'common.cron_log',
+        'value'       => '/var/log/litus/cron.log',
+        'description' => 'The absolute path of the cron logfile',
+    ),
+    array(
         'key'         => 'common.geocoding_api_url',
         'value'       => 'http://maps.googleapis.com/maps/api/geocode/',
         'description' => 'The URL to Google\'s geocoding API',
@@ -457,7 +462,7 @@ You can remove any installed cookies from your computer or mobile device at any 
     ),
     array(
         'key'         => 'last_upgrade',
-        'value'       => '2018102901',
+        'value'       => '2018112901',
         'description' => 'The last Litus schema update performed on this system',
     ),
     array(
