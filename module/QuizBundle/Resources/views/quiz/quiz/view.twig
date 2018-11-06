@@ -25,17 +25,13 @@
             </tr>
         </thead>
         <tbody>
-            {% for teamid in total_points|keys %}
+            {% for teamId in total_points|keys %}
                 <tr>
                     <td class="rank">{{ loop.index }}</td>
-                    <td class="team">{{ teams[teamid].getName() }}</td>
+                    <td class="team">{{ teams[teamId].getName() }}</td>
                     {% for round in rounds %}
                         <td class="round">
-                            {% if points[teamid][round.getId()] is not defined %}
-                                0
-                            {% else %}
-                                {{ points[teamid][round.getId()] }}
-                            {% endif %}
+                            {{ points[teamId][round.getId()] ?? 0 }}
                         </td>
                     {% endfor %}
                 </tr>
