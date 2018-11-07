@@ -49,10 +49,6 @@ EOT
 
     protected function executeCommand()
     {
-        if ($this->getOption('mail') && getenv('APPLICATION_ENV') == 'development') {
-            $this->writeln('<fg=red;options=bold>Warning:</fg=red;options=bold> APPLICATION_ENV is development, --mail is ignored');
-        }
-
         $start = new DateTime();
         $start->setTime(0, 0);
         $start->add(new DateInterval('P1D'));
@@ -86,18 +82,22 @@ EOT
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findOneByAbbrev('en');
 
-        $this->writeln(
-            'Form <comment>' . $form->getTitle($english) . '</comment>: TimeSlot <comment>' . $timeSlot->getLabel($english) . '</comment>'
-        );
+        $this->writeln('Form <comment>' . $form->getTitle($english) . '</comment>: TimeSlot <comment>' . $timeSlot->getLabel($english) . '</comment>');
 
         $entries = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Entry')
             ->findAllByField($timeSlot);
 
-        foreach ($entries as $entry) {
-            $this->writeln('Reminder for ' . $entry->getFormEntry()->getPersonInfo()->getFullName());
+        $sendMails = $this->getOption('mail');
+        if ($sendMails && getenv('APPLICATION_ENV') == 'development') {
+            $sendMails = false;
+            $this->writeln('<error>The mails will not be sent because the application is running in development mode!</error>');
+        }
 
-            if ($this->getOption('mail')) {
+        foreach ($entries as $entry) {
+            $this->writeln('Sending reminder for ' . $entry->getFormEntry()->getPersonInfo()->getFullName());
+
+            if ($sendMails) {
                 $form->setEntityManager($this->getEntityManager());
                 $mailAddress = $form->getReminderMail()->getFrom();
 
@@ -121,8 +121,10 @@ EOT
             }
         }
 
-        if ($this->getOption('mail')) {
-            $this->writeln('Sent <comment>' . count($entries) . '</comment> reminders');
+        if ($sendMails) {
+            $this->writeln('<comment>' . count($entries) . '</comment> mails have been sent');
+        } else {
+            $this->writeln('<comment>' . count($entries) . '</comment> mails would have been sent');
         }
     }
 }

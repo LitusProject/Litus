@@ -33,9 +33,6 @@ class InstallAll extends \CommonBundle\Component\Console\Command
      */
     private $currentModule = null;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure()
     {
         $this
@@ -43,7 +40,7 @@ class InstallAll extends \CommonBundle\Component\Console\Command
             ->setDescription('Install all modules')
             ->setHelp(
                 <<<EOT
-The <info>%command.name%</info> command installs all the modules.
+The <info>%command.name%</info> command installs all modules.
 EOT
             );
     }

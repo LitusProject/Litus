@@ -46,8 +46,6 @@ EOT
      */
     protected function executeCommand()
     {
-        $removedEntities = false;
-
         $allActions = $this->getAllActions();
 
         $currentActions = $this->getEntityManager()
@@ -58,6 +56,7 @@ EOT
             ->getRepository('CommonBundle\Entity\Acl\Role')
             ->findAll();
 
+        $removedEntities = false;
         foreach ($currentActions as $action) {
             $parent = $action->getResource()->getParent()->getName();
             $resource = $action->getResource()->getName();
@@ -66,7 +65,7 @@ EOT
                 continue;
             }
 
-            $this->writeln('Removing action <comment>' . $parent . '.' . $resource . '.' . $actionName . '</comment>.');
+            $this->writeln('Removing action <comment>' . $parent . '.' . $resource . '.' . $actionName . '</comment>');
 
             foreach ($roles as $role) {
                 $role->removeAction($action);
@@ -90,13 +89,13 @@ EOT
                     continue;
                 }
 
-                $this->writeln('Removing resource <comment>' . $resource->getParent()->getName() . '.' . $resource->getName() . '</comment>.');
+                $this->writeln('Removing resource <comment>' . $resource->getParent()->getName() . '.' . $resource->getName() . '</comment>');
             } else {
                 if (isset($allActions[$resource->getName()])) {
                     continue;
                 }
 
-                $this->writeln('Removing resource <comment>' . $resource->getName() . '</comment>.');
+                $this->writeln('Removing resource <comment>' . $resource->getName() . '</comment>');
             }
 
             $this->getEntityManager()->remove($resource);
@@ -106,11 +105,11 @@ EOT
         if ($this->getOption('flush')) {
             $this->write('Flushing entity manager...');
             $this->getEntityManager()->flush();
-            $this->writeln(' done.', true);
+            $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
         }
 
         if (!$removedEntities) {
-            $this->writeln('Nothing removed, ACL was clean.');
+            $this->writeln('Nothing removed, ACL was clean');
         }
     }
 

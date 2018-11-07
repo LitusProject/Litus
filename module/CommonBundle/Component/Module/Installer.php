@@ -37,15 +37,15 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
     {
         $this->write('Installing languages...');
         $this->installLanguages();
-        $this->writeln(' done.', true);
+        $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
 
         $this->write('Installing streets...');
         $this->installStreets();
-        $this->writeln(' done.', true);
+        $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
 
         $this->write('Installing organizations...');
         $this->installOrganizations();
-        $this->writeln(' done.', true);
+        $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
     }
 
     private function installLanguages()

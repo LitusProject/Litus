@@ -120,7 +120,7 @@ EOT
             }
 
             $this->getEntityManager()->flush();
-            $this->writeln('Account of <comment>' . $fullName . '</comment> was destroyed.');
+            $this->writeln('Account of <comment>' . $fullName . '</comment> was destroyed!');
         }
     }
 }

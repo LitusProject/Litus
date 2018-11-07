@@ -59,14 +59,12 @@ EOT
             $fileContents = @file_get_contents($resultPage, false, stream_context_create($options));
             $resultPage = json_decode($fileContents);
 
+            $this->write('Caching the result page...');
             if ($fileContents !== false && $resultPage !== null) {
                 file_put_contents('data/cache/run-' . md5('run_result_page'), $fileContents);
-                $this->writeln('Succesfully cached the result page');
-
-                $delay = (int) $resultPage->update;
-                sleep($delay ? $delay : 3);
+                $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
             } else {
-                $this->writeln('Failed to cache the result page');
+                $this->writeln(" <fg=red>\u{2717}</fg=red>", true);
                 sleep(3);
             }
         }
@@ -74,26 +72,6 @@ EOT
 
     protected function getLogName()
     {
-        return 'CacheSportResult';
-    }
-
-    public function write($str, $raw = false)
-    {
-        $now = new DateTime();
-
-        parent::write(
-            sprintf('[<%1$s>%2$s</%1$s>] %3$s', $this->getLogNameTag(), $now->format('Ymd H:i:s'), $str),
-            $raw
-        );
-    }
-
-    public function writeln($str, $raw = false)
-    {
-        $now = new DateTime();
-
-        parent::writeln(
-            sprintf('[<%1$s>%2$s</%1$s>] %3$s', $this->getLogNameTag(), $now->format('Ymd H:i:s'), $str),
-            $raw
-        );
+        return 'CacheResult';
     }
 }

@@ -75,19 +75,19 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
         if (array_key_exists('configuration', $configuration)) {
             $this->write('Installing configuration...');
             $this->installConfig($configuration['configuration']);
-            $this->writeln(' done.', true);
+            $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
         }
 
         if (array_key_exists('acl', $configuration)) {
             $this->write('Installing ACL...');
             $this->installAcl($configuration['acl']);
-            $this->writeln(' done.', true);
+            $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
         }
 
         if (array_key_exists('roles', $configuration)) {
             $this->write('Installing roles...');
             $this->installRoles($configuration['roles']);
-            $this->writeln(' done.', true);
+            $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
         }
 
         $this->postInstall();
@@ -328,6 +328,7 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
                 }
             }
         }
+
         $this->getEntityManager()->flush();
 
         if ($this->getCache() !== null && $this->getCache()->hasItem('acl')) {

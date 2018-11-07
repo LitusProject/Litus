@@ -34,7 +34,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
     {
         $this->write('Installing Departments...');
         $this->installDepartments();
-        $this->writeln(' done.', true);
+        $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
     }
 
     private function installDepartments()

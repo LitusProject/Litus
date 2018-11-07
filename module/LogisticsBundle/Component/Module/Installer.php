@@ -36,7 +36,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
     {
         $this->write('Installing resources...');
         $this->installResources();
-        $this->writeln(' done.', true);
+        $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
     }
 
     private function installResources()

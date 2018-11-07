@@ -42,33 +42,33 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
 {
     protected function postInstall()
     {
-        $this->write('Installing Addresses...');
+        $this->write('Installing addresses...');
         $this->installAddresses();
-        $this->writeln(' done.', true);
+        $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
 
-        $this->write('Installing Bindings...');
+        $this->write('Installing bindings...');
         $this->installBinding();
-        $this->writeln(' done.', true);
+        $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
 
-        $this->write('Installing Academic Years...');
+        $this->write('Installing academic year...');
         $this->installAcademicYear();
-        $this->writeln(' done.', true);
+        $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
 
         $this->write('Installing Colors...');
         $this->installColor();
-        $this->writeln(' done.', true);
+        $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
 
-        $this->write('Installing Money Units...');
+        $this->write('Installing money units...');
         $this->installMoneyUnit();
-        $this->writeln(' done.', true);
+        $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
 
-        $this->write('Installing Bank Devices...');
+        $this->write('Installing bank devices...');
         $this->installBankDevice();
-        $this->writeln(' done.', true);
+        $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
 
-        $this->write('Installing Pay Desks...');
+        $this->write('Installing pay desks...');
         $this->installPayDesks();
-        $this->writeln(' done.', true);
+        $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
     }
 
     private function installBinding()

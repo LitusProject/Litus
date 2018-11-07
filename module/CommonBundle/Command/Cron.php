@@ -43,15 +43,17 @@ EOT
 
     protected function executeCommand()
     {
-        $logFile = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.cron_log');
-
         $jobs = $this->getConfig()['cron']['jobs'];
         foreach ($jobs as $job) {
             $cron = CronExpression::factory($job['schedule']);
             if ($cron->isDue()) {
-                exec(sprintf('%s 1>> "%s" 2>&1 &', $job['command'], $logFile));
+                $command = sprintf(
+                    '%s 1>> "%s" 2>&1 &',
+                    $job['command'],
+                    $this->getLogFile()
+                );
+
+                exec($command);
             }
         }
     }
@@ -59,5 +61,12 @@ EOT
     protected function getLogName()
     {
         return 'Cron';
+    }
+
+    private function getLogFile()
+    {
+        return $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.cron_log');
     }
 }

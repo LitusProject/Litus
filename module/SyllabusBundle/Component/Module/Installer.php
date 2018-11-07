@@ -35,9 +35,9 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
 {
     protected function postInstall()
     {
-        $this->write('Installing Academic Year...');
+        $this->write('Installing academic year...');
         $this->installAcademicYear();
-        $this->writeln(' done.', true);
+        $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
     }
 
     private function installAcademicYear()

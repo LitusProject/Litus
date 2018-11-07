@@ -47,6 +47,7 @@ EOT
         $period = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->findOneActive();
+
         $period->setEntityManager($this->getEntityManager());
 
         foreach ($articles as $article) {
@@ -59,7 +60,7 @@ EOT
         if ($this->getOption('flush')) {
             $this->write('Flushing entity manager...');
             $this->getEntityManager()->flush();
-            $this->writeln(' done.', true);
+            $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
         }
     }
 

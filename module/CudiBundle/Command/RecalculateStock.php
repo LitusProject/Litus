@@ -63,7 +63,7 @@ EOT
         if ($this->getOption('flush')) {
             $this->write('Flushing entity manager...');
             $this->getEntityManager()->flush();
-            $this->writeln(' done.', true);
+            $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
         }
     }
 
@@ -93,11 +93,8 @@ EOT
             }
 
             if ($article->getStockValue() != $number) {
-                $this->writeln(
-                    'Updated "' . $article->getMainArticle()->getTitle() . '": <comment>'
-                    . $article->getStockValue() . '</comment> to <comment>' . $number . '</comment>'
-                );
                 $article->setStockValue($number);
+                $this->writeln('Updated "' . $article->getMainArticle()->getTitle() . '": <comment>' . $article->getStockValue() . '</comment> to <comment>' . $number . '</comment>');
             }
 
             $nbToMuchAssigned = $period->getNbAssigned($article) - $article->getStockValue();

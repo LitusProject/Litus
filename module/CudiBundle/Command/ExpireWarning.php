@@ -56,9 +56,7 @@ EOT
         $end = clone $start;
         $end->add(new DateInterval('P1D'));
 
-        $this->writeln(
-            'Searching for bookings expiring between <comment>' . $start->format('d M Y') . '</comment> and <comment>' . $end->format('d M Y') . '</comment>...'
-        );
+        $this->writeln('Searching for bookings expiring between <comment>' . $start->format('d M Y') . '</comment> and <comment>' . $end->format('d M Y') . '</comment>...');
 
         $bookings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')
@@ -73,11 +71,15 @@ EOT
             $persons[$booking->getPerson()->getId()]['bookings'][] = $booking;
         }
 
-        $this->writeln(
-            'Found <comment>' . count($bookings) . '</comment> bookings belonging to <comment>' . count($persons) . '</comment> people.'
-        );
+        $this->writeln('Found <comment>' . count($bookings) . '</comment> bookings belonging to <comment>' . count($persons) . '</comment> people.');
 
-        if ($this->getOption('mail')) {
+        $sendMails = $this->getOption('mail');
+        if ($sendMails && getenv('APPLICATION_ENV') == 'development') {
+            $sendMails = false;
+            $this->writeln('<error>The mails will not be sent because the application is running in development mode!</error>');
+        }
+
+        if ($sendMails) {
             foreach ($persons as $person) {
                 Booking::sendExpireWarningMail(
                     $this->getEntityManager(),
@@ -86,8 +88,12 @@ EOT
                     $person['person']
                 );
             }
+        }
 
-            $this->writeln('Sent <comment>' . count($persons) . '</comment> warning mails');
+        if ($sendMails) {
+            $this->writeln('<comment>' . count($persons) . '</comment> mails have been sent');
+        } else {
+            $this->writeln('<comment>' . count($persons) . '</comment> mails would have been sent');
         }
     }
 

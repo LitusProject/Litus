@@ -65,7 +65,7 @@ EOT
         if ($this->getOption('flush')) {
             $this->write('Flushing to database...');
             $this->getEntityManager()->flush();
-            $this->writeln(' done.', true);
+            $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
         }
     }
 
@@ -91,11 +91,9 @@ EOT
 
             if ($academic !== null) {
                 $this->writeln('Academic: ' . $academic->getFullName());
-
                 $newAlias = new AcademicAlias($alias, $academic);
             } else {
                 $this->writeln('External: ' . $mail);
-
                 $newAlias = new ExternalAlias($alias, $mail);
             }
 

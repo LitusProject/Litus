@@ -58,7 +58,7 @@ EOT
         $this->findAllAdded($subjects, $date);
         $this->findAllRemoved($subjects, $date);
 
-        $this->writeln('A total of <comment>' . count($subjects) . '</comment> subjects is affected.');
+        $this->writeln('A total of <comment>' . count($subjects) . '</comment> subjects is affected');
 
         $this->notifySubscribers($subjects, $academicYear);
     }
@@ -73,7 +73,8 @@ EOT
         $logs = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Log\Article\Sale\Bookable')
             ->findAllAfter($date);
-        $this->writeln('Found <comment>' . count($logs) . '</comment> log entries for Bookable.');
+
+        $this->writeln('Found <comment>' . count($logs) . '</comment> log entries for <info>Bookable</info>');
 
         foreach ($logs as $log) {
             $article = $log->getArticle($this->getEntityManager());
@@ -104,7 +105,7 @@ EOT
         $logs = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Log\Article\Sale\Unbookable')
             ->findAllAfter($date);
-        $this->writeln('Found <comment>' . count($logs) . '</comment> log entries for Unbookable.');
+        $this->writeln('Found <comment>' . count($logs) . '</comment> log entries for <info>Unbookable</info>');
 
         foreach ($logs as $log) {
             $article = $log->getArticle($this->getEntityManager());
@@ -136,7 +137,7 @@ EOT
             ->getRepository('CudiBundle\Entity\Log\Article\SubjectMap\Added')
             ->findAllAfter($date);
 
-        $this->writeln('Found <comment>' . count($logs) . '</comment> log entries for Added articles.');
+        $this->writeln('Found <comment>' . count($logs) . '</comment> log entries for <info>Added</info>');
 
         foreach ($logs as $log) {
             $subjectMap = $log->getSubjectMap($this->getEntityManager());
@@ -162,7 +163,7 @@ EOT
         $logs = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Log\Article\SubjectMap\Removed')
             ->findAllAfter($date);
-        $this->writeln('Found <comment>' . count($logs) . '</comment> log entries for Removed articles.');
+        $this->writeln('Found <comment>' . count($logs) . '</comment> log entries for <info>Removed</info>');
 
         foreach ($logs as $log) {
             $subjectMap = $log->getSubjectMap($this->getEntityManager());
@@ -206,12 +207,12 @@ EOT
 
         if ($sendMails && !$mailEnabled) {
             $sendMails = false;
-            $this->writeln('<error>WARNING:</error> The mails will not be sent because they are disabled.');
+            $this->writeln('<error>The mails will not be sent because they are disabled!</error>');
         }
 
         if ($sendMails && getenv('APPLICATION_ENV') == 'development') {
             $sendMails = false;
-            $this->writeln('<error>WARNING:</error> The mails will not be sent because the application is running in development mode.');
+            $this->writeln('<error>The mails will not be sent because the application is running in development mode!</error>');
         }
 
         foreach ($subscribers as $subscription) {
@@ -296,9 +297,9 @@ EOT
         }
 
         if ($sendMails) {
-            $this->writeln('<comment>' . $counter . '</comment> mails have been sent.');
+            $this->writeln('<comment>' . $counter . '</comment> mails have been sent');
         } else {
-            $this->writeln('<comment>' . $counter . '</comment> mails would have been sent.');
+            $this->writeln('<comment>' . $counter . '</comment> mails would have been sent');
         }
     }
 }

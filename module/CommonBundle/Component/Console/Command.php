@@ -27,6 +27,7 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAware\SentryTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use CommonBundle\Component\Util\AcademicYear;
+use DateTime;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Output\OutputInterface as Output;
 
@@ -73,14 +74,30 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     /**
      * @return string
      */
-    protected function getLogNameTag()
+    protected function getLogFormat()
     {
-        return 'fg=green;options=bold';
+        return '<%1$s>[%2$s]</%1$s> <%3$s>[%4$18s]</%3$s> %5$s';
     }
 
     /**
-     * @param  string  $string the string to write
-     * @param  boolean $raw    whether to output the string raw
+     * @return string
+     */
+    protected function getLogDateTag()
+    {
+        return 'options=bold';
+    }
+
+    /**
+     * @return string
+     */
+    protected function getLogNameTag()
+    {
+        return 'fg=blue;options=bold';
+    }
+
+    /**
+     * @param  string  $string The string to write
+     * @param  boolean $raw    Whether to output the string raw
      * @return void
      */
     public function write($string, $raw = false)
@@ -89,23 +106,37 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
             $this->output->write($string);
         } else {
             $this->output->write(
-                sprintf('[<%1$s>%2$20s</%1$s>] %3$s', $this->getLogNameTag(), $this->getLogName(), $string)
+                sprintf(
+                    $this->getLogFormat(),
+                    $this->getLogDateTag(),
+                    (new DateTime())->format('d/m/Y H:i:s'),
+                    $this->getLogNameTag(),
+                    $this->getLogName(),
+                    $string
+                )
             );
         }
     }
 
     /**
-     * @param  string  $string the string to write
-     * @param  boolean $raw    whether to output the string raw
+     * @param  string  $string The string to write
+     * @param  boolean $raw    Whether to output the string raw
      * @return void
      */
     public function writeln($string, $raw = false)
     {
-        if ($raw || $this->getLogName() === false) {
+        if ($raw) {
             $this->output->writeln($string);
         } else {
             $this->output->writeln(
-                sprintf('[<%1$s>%2$20s</%1$s>] %3$s', $this->getLogNameTag(), $this->getLogName(), $string)
+                sprintf(
+                    $this->getLogFormat(),
+                    $this->getLogDateTag(),
+                    (new DateTime())->format('d/m/Y H:i:s'),
+                    $this->getLogNameTag(),
+                    $this->getLogName(),
+                    $string
+                )
             );
         }
     }
