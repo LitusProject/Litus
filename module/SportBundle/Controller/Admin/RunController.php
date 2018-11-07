@@ -21,7 +21,6 @@
 namespace SportBundle\Controller\Admin;
 
 use CommonBundle\Component\Util\AcademicYear;
-use CommonBundle\Component\Util\WebSocket as WebSocketUtil;
 use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
 use DateInterval;
 use DateTime;

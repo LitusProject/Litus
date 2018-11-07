@@ -71,12 +71,14 @@ EOT
 
             $this->write('Starting <comment>' . $command->getName() . '</comment>...');
 
-            $this->manager->fork(function(Process $p) use ($command) {
-                $command->run(
-                    new StringInput('--run'),
-                    new StreamOutput(fopen($this->getLogFile(), 'a', false))
-                );
-            });
+            $this->manager->fork(
+                function (Process $p) use ($command) {
+                    $command->run(
+                        new StringInput('--run'),
+                        new StreamOutput(fopen($this->getLogFile(), 'a', false))
+                    );
+                }
+            );
 
             $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
         }

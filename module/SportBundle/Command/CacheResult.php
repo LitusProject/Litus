@@ -20,8 +20,6 @@
 
 namespace SportBundle\Command;
 
-use DateTime;
-
 /**
  * Cache the JSON of the official result page.
  *
