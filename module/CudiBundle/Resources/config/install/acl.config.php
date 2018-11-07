@@ -75,7 +75,7 @@ return array(
             'article', 'articleSearch', 'articlesSearch', 'articles', 'individualSearch', 'individual', 'sessionSearch', 'session', 'sessions',
         ),
         'cudi_admin_sales_session' => array(
-            'add', 'close', 'edit', 'editRegister', 'manage', 'queueItems', 'killSocket',
+            'add', 'close', 'edit', 'editRegister', 'manage', 'queueItems',
         ),
         'cudi_admin_sales_session_restriction' => array(
             'delete', 'manage',

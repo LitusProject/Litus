@@ -27,4 +27,5 @@ return array(
     'common_config'           => CommonBundle\Command\Config::class,
     'common_cron'             => CommonBundle\Command\Cron::class,
     'common_destroy_account'  => CommonBundle\Command\DestroyAccount::class,
+    'common_sockets'          => CommonBundle\Command\Sockets::class,
 );

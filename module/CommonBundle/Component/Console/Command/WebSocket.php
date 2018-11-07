@@ -24,8 +24,8 @@ abstract class WebSocket extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
-        $name = strtolower($this->getCommandName());
         $module = $this->getModuleName();
+        $name = strtolower($this->getCommandName());
 
         $this
             ->setName('socket:' . $module . ':' . $name)
@@ -73,14 +73,14 @@ EOT
     }
 
     /**
+     * @return string The name of this WebSocket, used in the commands
+     */
+    abstract protected function getCommandName();
+
+    /**
      * @return boolean whether the socket is enabled
      */
     abstract protected function isSocketEnabled();
-
-    /**
-     * @return string the name of this websocket, used in the commands.
-     */
-    abstract protected function getCommandName();
 
     /**
      * @return \CommonBundle\Component\WebSocket\Server|null
@@ -88,7 +88,7 @@ EOT
     abstract protected function createSocket();
 
     /**
-     * @return string the name of the bundle of this websocket.
+     * @return string The name of the bundle of this WebSocket
      */
     private function getModuleName()
     {

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4c493424a535dcaed65ba576c9ee283d",
-    "content-hash": "63c29ee67733ccad8df0c6a366c204e5",
+    "hash": "bff43d79c4536c4b0b6d2052fac5cbce",
+    "content-hash": "0b28bfa4ddd61240d5afddaef437465f",
     "packages": [
         {
             "name": "alcaeus/mongo-php-adapter",
@@ -1516,6 +1516,68 @@
                 "minification"
             ],
             "time": "2016-11-11 18:43:20"
+        },
+        {
+            "name": "misterion/ko-process",
+            "version": "v0.5.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/misterion/ko-process.git",
+                "reference": "943e1f9034a330c334cf99ebb4336e806c2ec1d2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/misterion/ko-process/zipball/943e1f9034a330c334cf99ebb4336e806c2ec1d2",
+                "reference": "943e1f9034a330c334cf99ebb4336e806c2ec1d2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "php-mock/php-mock-phpunit": "0.2",
+                "phpunit/phpunit": "~4.0.0"
+            },
+            "suggest": {
+                "ext-pcntl": "*",
+                "ext-posix": "*",
+                "ext-proctitle": "*",
+                "ext-sysvsem": "Required for using the Semaphore class",
+                "ext-sysvshm": "Required for using the SharedMemory class"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Ko": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nikolay Bondarenko",
+                    "email": "misterionkell@gmail.com"
+                }
+            ],
+            "description": "Simple pcntl fork wrapper and process manager",
+            "homepage": "https://github.com/misterion/ko-process",
+            "keywords": [
+                "AMQP",
+                "Thread",
+                "background",
+                "cli",
+                "exit_code",
+                "fork",
+                "pcntl",
+                "posix",
+                "semaphore",
+                "shared memory",
+                "signal",
+                "utility"
+            ],
+            "time": "2016-04-04 14:02:48"
         },
         {
             "name": "mongodb/mongodb",

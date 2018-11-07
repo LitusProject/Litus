@@ -286,17 +286,6 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
         );
     }
 
-    public function killSocketAction()
-    {
-        $this->initAjax();
-
-        return new ViewModel(
-            array(
-                'result' => WebSocketUtil::kill($this->getEntityManager(), 'cudi:sale-queue'),
-            )
-        );
-    }
-
     /**
      * @return Session|null
      */

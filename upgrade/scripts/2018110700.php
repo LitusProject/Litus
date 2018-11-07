@@ -18,25 +18,8 @@
  * @license http://litus.cc/LICENSE
  */
 
-return array(
-    'sportbundle' => array(
-        'sport_admin_run' => array(
-            'edit', 'editGroup', 'departments', 'groups', 'identification', 'laps', 'queue', 'reward', 'runner', 'update', 'next', 'delete','editSpeedyGroup',
-        ),
-        'sport_run_group' => array(
-            'add', 'getName',
-        ),
-        'sport_run_index' => array(
-            'index',
-        ),
-        'sport_run_queue' => array(
-            'index', 'getName',
-        ),
-        'sport_run_screen' => array(
-            'index',
-        ),
-        'sport_run_screen_outside' => array(
-            'index',
-        ),
-    ),
-);
+renameConfigKey($connection, 'socket_log', 'common.sockets_log');
+removeConfigKey($connection, 'socket_path');
+
+removeAclAction($connection, 'cudi_admin_sales_session', 'killSocket');
+removeAclAction($connection, 'sport_admin_run', 'killSocket');

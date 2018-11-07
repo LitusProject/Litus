@@ -221,19 +221,14 @@ Student IT',
         'description' => 'The abbreviation of the language that will be used of no other translation is present',
     ),
     array(
-        'key'         => 'socket_log',
-        'value'       => '/var/log/litus/sockets.log',
-        'description' => 'The absolute path of the socket logfile',
-    ),
-    array(
-        'key'         => 'socket_path',
-        'value'       => '/var/run/litus',
-        'description' => 'The location of pid/socket files',
-    ),
-    array(
         'key'         => 'common.cron_log',
         'value'       => '/var/log/litus/cron.log',
         'description' => 'The absolute path of the cron logfile',
+    ),
+    array(
+        'key'         => 'common.sockets_log',
+        'value'       => '/var/log/litus/sockets.log',
+        'description' => 'The absolute path of the sockets logfile',
     ),
     array(
         'key'         => 'common.geocoding_api_url',

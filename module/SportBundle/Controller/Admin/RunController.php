@@ -331,17 +331,6 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         );
     }
 
-    public function killSocketAction()
-    {
-        $this->initAjax();
-
-        return new ViewModel(
-            array(
-                'result' => WebSocketUtil::kill($this->getEntityManager(), 'sport:run-queue'),
-            )
-        );
-    }
-
     public function updateAction()
     {
         return new ViewModel(

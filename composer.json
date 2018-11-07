@@ -35,6 +35,7 @@
 
         "alcaeus/mongo-php-adapter": "^1.1",
         "erusev/parsedown": "^1.7",
+        "misterion/ko-process": "^0.5.3",
         "mtdowling/cron-expression": "^1.2",
         "ocramius/package-versions": "^1.3",
         "oxcom/zend-twig": "^0.1.7",
