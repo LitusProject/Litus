@@ -3,4 +3,4 @@
 SCRIPT_DIRECTORY=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 cd "$SCRIPT_DIRECTORY/../"
 
-php bin/console.php common:sessions
+php bin/console.php common:sockets
