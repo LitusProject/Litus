@@ -25,6 +25,15 @@ if (getenv('APPLICATION_ENV') === false) {
     putenv('APPLICATION_ENV=development');
 }
 
+if (getenv('ORGANIZATION') !== false) {
+    $organization = ucfirst(getenv('ORGANIZATION'));
+    if (strlen(getenv('ORGANIZATION')) < 5) {
+        $organization = strtoupper(getenv('ORGANIZATION'));
+    }
+
+    putenv('ORGANIZATION=' . $organization);
+}
+
 /**
  * This makes our life easier when dealing with paths. Everything is relative
  * to the application root now.

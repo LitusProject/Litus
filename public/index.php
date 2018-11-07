@@ -25,6 +25,15 @@ if (getenv('APPLICATION_ENV') === false) {
     putenv('APPLICATION_ENV=development');
 }
 
+if (getenv('ORGANIZATION') !== false) {
+    $organization = ucfirst(getenv('ORGANIZATION'));
+    if (strlen(getenv('ORGANIZATION')) < 5) {
+        $organization = strtoupper(getenv('ORGANIZATION'));
+    }
+
+    putenv('ORGANIZATION=' . $organization);
+}
+
 if (getenv('APPLICATION_ENV') == 'development') {
     ini_set('display_errors', true);
     error_reporting(E_ALL);
