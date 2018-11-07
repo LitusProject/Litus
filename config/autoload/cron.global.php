@@ -21,19 +21,19 @@
 return array(
     'cron' => array(
         'jobs' => array(
-            'common:gc' => array(
+            array(
                 'command'  => 'php bin/console.php common:cleanup-sessions',
                 'schedule' => '* * * * *',
             ),
-            'cudi:catalog-update' => array(
+            array(
                 'command'  => 'php bin/console.php cudi:update-catalog -m',
                 'schedule' => '0 2 * * *',
             ),
-            'cudi:expire-warning' => array(
+            array(
                 'command'  => 'php bin/console.php cudi:expire-warning -m',
                 'schedule' => '0 2 * * *',
             ),
-            'form:mail' => array(
+            array(
                 'command'  => 'php bin/console.php form:reminders -m',
                 'schedule' => '0 2 * * *',
             )
