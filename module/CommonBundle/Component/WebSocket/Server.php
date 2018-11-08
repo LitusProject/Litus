@@ -104,6 +104,10 @@ abstract class Server
 
     private function destroySocket()
     {
+        if (is_resource($this->master)) {
+            fclose($this->master);
+        }
+
         foreach ($this->sockets as $socket) {
             if ($socket == $this->master) {
                 continue;
@@ -112,11 +116,6 @@ abstract class Server
             $this->removeUserSocket($socket);
         }
 
-        if (!is_resource($this->master)) {
-            return;
-        }
-
-        fclose($this->master);
         $this->master = null;
     }
 
@@ -223,10 +222,6 @@ abstract class Server
      */
     private function removeUserSocket($socket)
     {
-        if (!is_resource($socket)) {
-            return;
-        }
-
         foreach ($this->users as $key => $value) {
             if ($value->getSocket() == $socket) {
                 unset($this->users[$key]);
@@ -238,13 +233,15 @@ abstract class Server
             unset($this->authenticated[(int) $socket]);
         }
 
+        if (is_resource($socket)) {
+            fclose($socket);
+        }
+
         foreach ($this->sockets as $key => $value) {
             if ($value == $socket) {
                 unset($this->sockets[$key]);
             }
         }
-
-        fclose($socket);
     }
 
     /**
