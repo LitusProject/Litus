@@ -21,6 +21,8 @@
 namespace CommonBundle\Command;
 
 use Cron\CronExpression;
+use Ko\Process;
+use Ko\ProcessManager;
 
 /**
  * Run configured cron jobs.
@@ -43,19 +45,28 @@ EOT
 
     protected function executeCommand()
     {
+        $manager = new ProcessManager();
+        $logFile = $this->getLogFile();
+
         $jobs = $this->getConfig()['cron']['jobs'];
         foreach ($jobs as $job) {
             $cron = CronExpression::factory($job['schedule']);
             if ($cron->isDue()) {
-                $command = sprintf(
-                    '%s 1>> "%s" 2>&1 &',
-                    $job['command'],
-                    $this->getLogFile()
-                );
+                $manager->fork(
+                    function (Process $p) use ($job, $logFile) {
+                        $command = sprintf(
+                            '%s >> %s 2>&1',
+                            $job['command'],
+                            $logFile
+                        );
 
-                exec($command);
+                        exec($command);
+                    }
+                );
             }
         }
+
+        $manager->wait();
     }
 
     protected function getLogName()
