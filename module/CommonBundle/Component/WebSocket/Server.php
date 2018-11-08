@@ -20,22 +20,22 @@
 
 namespace CommonBundle\Component\WebSocket;
 
-use Exception;
+use RuntimeException;
 
 /**
- * This is the server to handle all requests by the websocket protocol.
+ * This is the server to handle all requests by the WebSocket protocol.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 abstract class Server
 {
-    private $file;
+    private $master;
 
     private $users;
     private $sockets;
-    private $master;
-
     private $authenticated;
+
+    private $command;
 
     const OP_CONT = 0x0;
     const OP_TEXT = 0x1;
@@ -46,23 +46,37 @@ abstract class Server
 
     public function __construct($file)
     {
-        $this->file = $file;
+        $this->master = null;
+
         $this->users = array();
         $this->sockets = array();
         $this->authenticated = array();
 
-        $this->createSocket();
+        $this->registerSignalHandlers();
+        $this->createSocket($file);
+    }
+
+    /**
+     * Register process signal handlers
+     */
+    private function registerSignalHandlers()
+    {
+        pcntl_async_signals(true);
+
+        pcntl_signal(SIGTERM, function () {
+            $this->destroySocket();
+        });
     }
 
     /**
      * Create the master socket
      */
-    private function createSocket()
+    private function createSocket($file)
     {
         $err = $errno = 0;
 
-        $isFile = strpos($this->file, 'unix://') === 0;
-        $fileName = substr($this->file, strlen('unix://'));
+        $isFile = strpos($file, 'unix://') === 0;
+        $fileName = substr($file, strlen('unix://'));
 
         if ($isFile) {
             if (file_exists($fileName)) {
@@ -74,7 +88,7 @@ abstract class Server
             }
         }
 
-        $this->master = stream_socket_server($this->file, $errno, $err, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN);
+        $this->master = stream_socket_server($file, $errno, $err, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN);
 
         if ($isFile) {
             chmod($fileName, 0777);
@@ -82,9 +96,27 @@ abstract class Server
 
         $this->sockets[] = $this->master;
 
-        if ($this->master == false) {
-            throw new Exception('Socket could not be created: ' . $err);
+        if ($this->master === false) {
+            throw new RuntimeException('Socket could not be created: ' . $err);
         }
+    }
+
+    private function destroySocket()
+    {
+        foreach ($this->sockets as $socket) {
+            if ($socket == $this->master) {
+                continue;
+            }
+
+            $this->removeUserSocket($socket);
+        }
+
+        if (!is_resource($this->master)) {
+            return;
+        }
+
+        fclose($this->master);
+        $this->master = null;
     }
 
     /**
@@ -92,19 +124,20 @@ abstract class Server
      */
     public function process()
     {
-        while (true) {
+        do {
             clearstatcache();
-
-            if (function_exists('gc_collect_cycles')) {
-                gc_collect_cycles();
-            }
+            gc_collect_cycles();
 
             $read = $this->sockets;
             $write = array();
             $except = array();
-            stream_select($read, $write, $except, null);
+            @stream_select($read, $write, $except, null);
 
             foreach ($read as $socket) {
+                if (!is_resource($socket)) {
+                    continue;
+                }
+
                 if ($socket == $this->master) {
                     $this->addUserSocket(stream_socket_accept($this->master));
                 } else {
@@ -125,7 +158,7 @@ abstract class Server
                     }
                 }
             }
-        }
+        } while ($this->master !== null);
     }
 
     /**
@@ -136,9 +169,10 @@ abstract class Server
      */
     private function addUserSocket($socket)
     {
-        if (!$socket) {
+        if ($socket === false) {
             return;
         }
+
         $this->users[] = new User($socket);
         $this->sockets[] = $socket;
     }
@@ -188,6 +222,10 @@ abstract class Server
      */
     private function removeUserSocket($socket)
     {
+        if (!is_resource($socket)) {
+            return;
+        }
+
         foreach ($this->users as $key => $value) {
             if ($value->getSocket() == $socket) {
                 unset($this->users[$key]);
@@ -199,15 +237,13 @@ abstract class Server
             unset($this->authenticated[(int) $socket]);
         }
 
-        if (get_resource_type($socket) == 'stream') {
-            fclose($socket);
-        }
-
         foreach ($this->sockets as $key => $value) {
             if ($value == $socket) {
                 unset($this->sockets[$key]);
             }
         }
+
+        fclose($socket);
     }
 
     /**
