@@ -1,11 +1,10 @@
 /**
- * Icons
- *
- * Copyright 2011 Litus
- * Licensed under the
+ * Layout
  *
  * Author: Robin De Bruin <info@serayo.com>
  * Author: Pieter Maene <pieter.maene@litus.cc>
+ *
+ * License: https://litus.cc/LICENSE
  */
 
 // Base
@@ -132,7 +131,7 @@ h2 {
         }
 
         ul {
-            padding-bottom: 2 * @defaultSpacing - 1;
+            padding-bottom: 2*@defaultSpacing - 1;
 
             li {
                 text-indent: @tIndent;
@@ -229,7 +228,7 @@ h2 {
 // Controller Content
 #content_controller {
     float: right;
-    width: @layoutWidth - (@leftSidebarWidth + 2 * @defaultSpacing);
+    width: @layoutWidth - (@leftSidebarWidth + 2*@defaultSpacing);
     min-height: @contentHeight;
     height: auto !important;
     height: @contentHeight;
@@ -244,7 +243,7 @@ h2 {
 
         .title {
             float: left;
-            margin-top: @iconHeight / 2;
+            margin-top: @iconHeight/2;
 
             span {
                 margin-left: 0;
@@ -272,7 +271,7 @@ h2 {
         #controller_nav {
             display: block;
             float: right;
-            margin-top: @iconHeight / 4 - 2;
+            margin-top: @iconHeight/4 - 2;
 
             li {
                 display: inline;
@@ -324,11 +323,11 @@ h2 {
             margin: 5px 0 0 5px;
             .box-shadow(0 0 5px 2px #7F7C7C);
 
-            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - 10;
+            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4*@defaultSpacing) - 10;
         }
 
         .chart {
-            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - 10;
+            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4*@defaultSpacing) - 10;
         }
 
         .form {
@@ -336,8 +335,8 @@ h2 {
 
             .row {
                 clear: both;
-                padding-top: 2 * @defaultSpacing;
-                width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
+                padding-top: 2*@defaultSpacing;
+                width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4*@defaultSpacing);
 
                 .label {
                     float: left;
@@ -349,14 +348,14 @@ h2 {
 
                 .field {
                     float: right;
-                    width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - (@formLabelWidth + 2 * @defaultSpacing);
+                    width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4*@defaultSpacing) - (@formLabelWidth + 2*@defaultSpacing);
                     text-align: left;
                 }
             }
 
             .errors {
                 clear: both;
-                margin-left: @formLabelWidth + 4 * @defaultSpacing;
+                margin-left: @formLabelWidth + 4*@defaultSpacing;
                 padding-top: @formSpacing;
 
                 li {
@@ -382,7 +381,7 @@ h2 {
         }
 
         .pagination {
-            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
+            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4*@defaultSpacing);
 
             tr {
                 td {
@@ -417,10 +416,10 @@ h2 {
 
         .sortable {
             ul {
-                margin: 2 * @defaultSpacing;
+                margin: 2*@defaultSpacing;
 
                 li {
-                    margin: @defaultSpacing / 2 0;
+                    margin: @defaultSpacing/2 0;
                     padding-left: @iconWidth + 4;
 
                     .disableSelect;
@@ -434,8 +433,8 @@ h2 {
     }
 
     .flashmessage {
-        width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
-        margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
+        width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4*@defaultSpacing);
+        margin: 0 @defaultSpacing 2*@defaultSpacing 0;
 
         .title {
             display: block;
@@ -453,7 +452,7 @@ h2 {
             color: @cWhite;
 
             p {
-                margin-top: 2 * @defaultSpacing;
+                margin-top: 2*@defaultSpacing;
 
                 a {
                     text-decoration: none;
@@ -514,24 +513,24 @@ h2 {
     }
 
     .full_width {
-        width: @layoutWidth - (@leftSidebarWidth + 3 * @defaultSpacing) !important;
+        width: @layoutWidth - (@leftSidebarWidth + 3*@defaultSpacing) !important;
     }
 
     .three_quarter_width {
-        width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) !important;
+        width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4*@defaultSpacing) !important;
     }
 
     .table_default_width {
-        width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 5 * @defaultSpacing) !important;
+        width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 5*@defaultSpacing) !important;
     }
 
     .half_width {
-        width: (@layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing))/2 !important;
+        width: (@layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4*@defaultSpacing))/2 !important;
         float: left;
         margin-right: @defaultSpacing;
 
         .gollum-editor {
-            width: (@layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing))*3/4 !important;
+            width: (@layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4*@defaultSpacing))*3/4 !important;
         }
     }
 
@@ -541,7 +540,7 @@ h2 {
         width: @sideboxWidth;
 
         .sidebox {
-            margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
+            margin: 0 @defaultSpacing 2*@defaultSpacing 0;
 
             .title {
                 display: block;
@@ -562,7 +561,7 @@ h2 {
                 background: @cSideboxBackground;
 
                 p {
-                    margin-top: 2 * @defaultSpacing;
+                    margin-top: 2*@defaultSpacing;
 
                     a {
                         display: block;
@@ -625,11 +624,11 @@ ul.errors {
 
 footer {
     position: relative;
-    width: @layoutWidth - 4 * @defaultSpacing;
+    width: @layoutWidth - 4*@defaultSpacing;
     height: @footerHeight;
     margin: 0 auto;
     line-height: @footerHeight;
-    text-indent: 2 * @defaultSpacing;
+    text-indent: 2*@defaultSpacing;
     color: @cText;
     font-size: @tSizeSmall;
     background: url(@iBorder) repeat-x 0 0;
@@ -646,7 +645,7 @@ footer {
 
     .right {
         float: right;
-        margin-right: 2 * @defaultSpacing;
+        margin-right: 2*@defaultSpacing;
     }
 }
 
@@ -679,7 +678,7 @@ dl {
     height: @iconHeight;
     margin-right: 10px;
     cursor: pointer;
-    background: url(@iIcons) no-repeat 0 -31 * @iconHeight;
+    background: url(@iIcons) no-repeat 0 -31*@iconHeight;
 }
 
 .info-button {

@@ -1,23 +1,21 @@
 /**
- * Litus
+ * Tables
  *
- * Copyright 2011 Litus
- * Licensed under the
- *
- * Source: Twitter Bootstrap (https://twitter.github.com/bootstrap)
- *
+ * Author: Robin De Bruin <info@serayo.com>
  * Author: Pieter Maene <pieter.maene@litus.cc>
+ *
+ * License: https://litus.cc/LICENSE
  */
 
 table {
-    width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
+    width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4*@defaultSpacing);
     padding: 0;
     border-collapse: separate;
     font-size: @tSize;
     table-layout: fixed;
 
     th {
-        padding-right: 2 * @defaultSpacing;
+        padding-right: 2*@defaultSpacing;
         height: @tableHeaderHeight;
         line-height: @tableHeaderHeight;
         text-indent: @tIndent;
@@ -37,14 +35,14 @@ table {
             height: @tableRowHeight;
             overflow: hidden;
             white-space: nowrap;
-            padding-right: 2 * @defaultSpacing;
+            padding-right: 2*@defaultSpacing;
             text-indent: @tIndent;
             text-align: left;
             vertical-align: middle;
             background: @cTableBackground url(@iTableBackground) no-repeat right -@tableHeaderHeight;
 
             a {
-                margin-top: @defaultSpacing / 2;
+                margin-top: @defaultSpacing/2;
                 padding-right: @defaultSpacing;
                 text-decoration: none;
                 color: @cText;
@@ -63,7 +61,7 @@ table {
     tbody {
         tr:last-child {
             td {
-                background: @cTableBackground url(@iTableBackground) no-repeat right -2 * @tableHeaderHeight;
+                background: @cTableBackground url(@iTableBackground) no-repeat right -2*@tableHeaderHeight;
             }
 
             td:last-child {
@@ -122,7 +120,7 @@ table:not(.pagination):not(.no-hover) {
 
     a {
         font-weight: bold;
-        margin-top: @defaultSpacing / 2;
+        margin-top: @defaultSpacing/2;
         padding-right: @defaultSpacing;
         text-decoration: none;
         color: @cWhite;

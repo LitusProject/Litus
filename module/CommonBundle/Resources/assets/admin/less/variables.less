@@ -1,10 +1,10 @@
 /**
  * Variables
  *
- * Copyright 2011 Litus
- * Licensed under the
- *
+ * Author: Robin De Bruin <info@serayo.com>
  * Author: Pieter Maene <pieter.maene@litus.cc>
+ *
+ * License: https://litus.cc/LICENSE
  */
 
 // Colors
@@ -138,7 +138,7 @@
 .opacity(@opacity) {
   opacity: @opacity;
   // IE8 filter
-  @opacity-ie: (@opacity * 100);
+  @opacity-ie: (100*@opacity);
   filter: ~"alpha(opacity=@{opacity-ie})";
 }
 
