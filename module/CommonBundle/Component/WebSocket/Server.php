@@ -35,8 +35,6 @@ abstract class Server
     private $sockets;
     private $authenticated;
 
-    private $command;
-
     const OP_CONT = 0x0;
     const OP_TEXT = 0x1;
     const OP_BIN = 0x2;
@@ -63,9 +61,12 @@ abstract class Server
     {
         pcntl_async_signals(true);
 
-        pcntl_signal(SIGTERM, function () {
-            $this->destroySocket();
-        });
+        pcntl_signal(
+            SIGTERM,
+            function () {
+                $this->destroySocket();
+            }
+        );
     }
 
     /**
