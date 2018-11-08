@@ -21,7 +21,7 @@
 namespace CommonBundle\Component\WebSocket;
 
 /**
- * This is the frame send over the websocket.
+ * This is the frame send over the WebSocket.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */

@@ -220,22 +220,22 @@ Student IT Cudi
     array(
         'key'         => 'cudi.queue_socket_file',
         'value'       => 'tcp://127.0.0.1:8899',
-        'description' => 'The file used for the websocket of the queue',
+        'description' => 'The file used for the WebSocket of the queue',
     ),
     array(
         'key'         => 'cudi.queue_socket_public',
         'value'       => ':8899',
-        'description' => 'The public address for the websocket of the queue',
+        'description' => 'The public address for the WebSocket of the queue',
+    ),
+    array(
+        'key'         => 'cudi.queue_socket_key',
+        'value'       => md5(uniqid(rand(), true)),
+        'description' => 'The key used for the WebSocket of the queue',
     ),
     array(
         'key'         => 'cudi.queue_socket_enabled',
         'value'       => '1',
         'description' => 'Whether the cudi queue socket is enabled',
-    ),
-    array(
-        'key'         => 'cudi.queue_socket_key',
-        'value'       => md5(uniqid(rand(), true)),
-        'description' => 'The key used for the websocket of the queue',
     ),
     array(
         'key'   => 'cudi.purchase_prices',

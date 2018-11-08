@@ -21,7 +21,7 @@
 namespace CommonBundle\Component\WebSocket;
 
 /**
- * This is the user who is connected to the websocket.
+ * This is the user who is connected to the WebSocket.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */

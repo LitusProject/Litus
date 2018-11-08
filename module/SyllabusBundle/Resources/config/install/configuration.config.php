@@ -22,17 +22,17 @@ return array(
     array(
         'key'         => 'syllabus.update_socket_file',
         'value'       => 'tcp://127.0.0.1:8898',
-        'description' => 'The file used for the websocket of the syllabus update',
+        'description' => 'The file used for the WebSocket of the syllabus update',
     ),
     array(
         'key'         => 'syllabus.update_socket_public',
         'value'       => ':8898',
-        'description' => 'The public address for the websocket of the syllabus update',
+        'description' => 'The public address for the WebSocket of the syllabus update',
     ),
     array(
         'key'         => 'syllabus.update_socket_key',
         'value'       => md5(uniqid(rand(), true)),
-        'description' => 'The key used for the websocket of the queue',
+        'description' => 'The key used for the WebSocket of the queue',
     ),
     array(
         'key'         => 'syllabus.update_socket_enabled',

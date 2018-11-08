@@ -30,7 +30,8 @@ use SportBundle\Entity\Lap;
 use SportBundle\Entity\Runner;
 
 /**
- * This is the server to handle all requests by the websocket protocol for the Queue.
+ * This is the server to handle all requests by the WebSocket protocol
+ * for the Queue.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
