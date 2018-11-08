@@ -33,11 +33,6 @@ use Symfony\Component\Console\Output\StreamOutput;
  */
 class Sockets extends \CommonBundle\Component\Console\Command
 {
-    /**
-     * @var \Ko\ProcessManager
-     */
-    private $manager;
-
     protected function configure()
     {
         $this
@@ -52,7 +47,8 @@ EOT
 
     protected function executeCommand()
     {
-        $this->manager = new ProcessManager();
+        $manager = new ProcessManager();
+        $logFile = fopen($this->getLogFile(), 'a', false);
 
         $commands = $this->getApplication()->all('socket');
         foreach ($commands as $command) {
@@ -71,11 +67,11 @@ EOT
 
             $this->write('Starting <comment>' . $command->getName() . '</comment>...');
 
-            $this->manager->fork(
-                function (Process $p) use ($command) {
+            $manager->fork(
+                function (Process $p) use ($command, $logFile) {
                     $command->run(
                         new StringInput('--run'),
-                        new StreamOutput(fopen($this->getLogFile(), 'a', false))
+                        new StreamOutput($logFile)
                     );
                 }
             );
@@ -83,7 +79,7 @@ EOT
             $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
         }
 
-        $this->manager->wait();
+        $manager->wait();
     }
 
     protected function getLogName()
