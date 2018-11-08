@@ -69,10 +69,11 @@ class Acl extends \Zend\Permissions\Acl\Acl
         }
     }
 
+    // phpcs: disable Squiz.Commenting.FunctionComment.IncorrectParamVarName
     /**
      * Adding a resource retrieved from the database as well as its children.
      *
-     * @param  resource $resource The resource that should be added
+     * @param  Resource $resource The resource that should be added
      * @return void
      */
     private function addResourceEntity(Resource $resource)
@@ -86,6 +87,7 @@ class Acl extends \Zend\Permissions\Acl\Acl
             $this->addResourceEntity($childResource);
         }
     }
+    // phpcs:enable
 
     /**
      * Load roles from the database.
