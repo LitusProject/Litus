@@ -30,15 +30,10 @@ abstract class WebSocket extends \CommonBundle\Component\Console\Command
         $this
             ->setName('socket:' . $module . ':' . $name)
             ->setDescription('Starts the ' . $name . ' WebSocket')
-            ->addOption('run', 'r', null, 'Run the WebSocket')
             ->addOption('is-enabled', null, null, 'Checks whether the WebSocket is enabled')
             ->setHelp(
                 <<<EOT
 The <info>%command.name%</info> command starts the $name WebSocket.
-
-Call
-    php bin/console.php <info>%command.name%</info> <comment>--run</comment>
-to run the socket.
 
 Call
     php bin/console.php <info>%command.name%</info> <comment>--is-enabled</comment>
@@ -53,23 +48,12 @@ EOT
             return $this->isSocketEnabled() ? 0 : 1;
         }
 
-        if (!$this->getOption('run')) {
-            $this->writeln('Please add -r or --run to run the socket');
-
+        $socket = $this->createSocket();
+        if ($socket === null) {
             return 1;
         }
 
-        $socket = $this->createSocket();
-        if ($socket === null) {
-            return 2;
-        }
-
         $socket->process();
-    }
-
-    protected function getLogName()
-    {
-        return ucfirst($this->getCommandName()) . 'Socket';
     }
 
     /**

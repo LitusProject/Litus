@@ -67,11 +67,6 @@ EOT
         }
     }
 
-    protected function getLogName()
-    {
-        return 'RecalculateStock';
-    }
-
     private function updateArticles(StockPeriod $period, array $articles, array $membershipArticles)
     {
         $em = $this->getEntityManager();

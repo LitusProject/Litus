@@ -69,11 +69,6 @@ EOT
         }
     }
 
-    protected function getLogName()
-    {
-        return 'ImportAlias';
-    }
-
     /**
      * @param string $file
      */

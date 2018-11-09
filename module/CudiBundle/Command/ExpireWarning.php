@@ -96,9 +96,4 @@ EOT
             $this->writeln('<comment>' . count($persons) . '</comment> mails would have been sent');
         }
     }
-
-    protected function getLogName()
-    {
-        return 'ExpireWarning';
-    }
 }

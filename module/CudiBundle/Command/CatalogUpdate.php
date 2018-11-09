@@ -63,11 +63,6 @@ EOT
         $this->notifySubscribers($subjects, $academicYear);
     }
 
-    protected function getLogName()
-    {
-        return 'CatalogUpdate';
-    }
-
     private function findAllBookable(array &$subjects, DateTime $date, AcademicYear $academicYear)
     {
         $logs = $this->getEntityManager()

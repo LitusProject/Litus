@@ -43,11 +43,6 @@ EOT
         $this->gcShibboleth();
     }
 
-    protected function getLogName()
-    {
-        return 'CleanupSessions';
-    }
-
     private function gcSessions()
     {
         $em = $this->getEntityManager();

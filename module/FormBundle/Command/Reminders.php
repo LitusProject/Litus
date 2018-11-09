@@ -65,11 +65,6 @@ EOT
         }
     }
 
-    protected function getLogName()
-    {
-        return 'Reminders';
-    }
-
     private function sendMailForTimeSlot(TimeSlot $timeSlot)
     {
         $form = $timeSlot->getForm();

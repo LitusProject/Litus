@@ -69,11 +69,6 @@ EOT
         $manager->wait();
     }
 
-    protected function getLogName()
-    {
-        return 'Cron';
-    }
-
     private function getLogFile()
     {
         return $this->getEntityManager()

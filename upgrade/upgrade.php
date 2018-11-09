@@ -33,9 +33,8 @@ $connection = pg_connect(
 );
 
 $result = pg_query($connection, 'SELECT value FROM general.config WHERE key = \'last_upgrade\'');
-
 if (pg_num_rows($result) == 0) {
-    echo 'Please run `php bin/console.php install:all` before attempting to upgrade' . PHP_EOL;
+    echo "\033[0;31mPlease run `php bin/console.php install:all` before attempting to upgrade\033[0;0m" . PHP_EOL;
     exit(1);
 }
 
@@ -58,13 +57,20 @@ $options = getopt('f:');
 // Run
 include 'util.php';
 
+$counter = 0;
 foreach ($files as $file) {
-    if ($file <= $lastUpgrade . '.php' && !(isset($options['f']) && $options['f'] . '.php' == $file)) {
+    if ($file <= $lastUpgrade . '.php' && !(isset($options['f']) && $file == $options['f'] . '.php')) {
         continue;
     }
 
-    echo 'Upgrade ' . substr($file, 0, strrpos($file, '.')) . PHP_EOL;
+    $counter++;
+
+    echo "Upgrade \033[0;33m" . substr($file, 0, strrpos($file, '.')) . "\033[0;0m" . PHP_EOL;
     include __DIR__ . '/scripts/' . $file;
+}
+
+if ($counter == 0) {
+    echo "\033[0;32mThere were no new upgrades available\033[0;0m" . PHP_EOL;
 }
 
 pg_query($connection, 'UPDATE general.config SET value = \'' . substr($file, 0, strrpos($file, '.')) . '\' WHERE key = \'last_upgrade\'');

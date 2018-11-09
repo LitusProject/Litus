@@ -60,16 +60,28 @@ EOT
             return $this->currentModule;
         }
 
-        return 'InstallAll';
+        return parent::getLogName();
+    }
+
+    protected function getLogNameLength()
+    {
+        return max(
+            array_map(
+                function ($value) {
+                    return strlen($value);
+                },
+                $this->getModules()
+            )
+        );
     }
 
     protected function getLogNameTag()
     {
         if ($this->currentModule !== null) {
             return 'fg=blue';
-        } else {
-            return parent::getLogNameTag();
         }
+
+        return parent::getLogNameTag();
     }
 
     private function getModules()

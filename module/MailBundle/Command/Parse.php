@@ -64,14 +64,6 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getLogName()
-    {
-        return 'MailParser';
-    }
-
-    /**
      * @param  string  $str
      * @param  boolean $raw
      * @return void

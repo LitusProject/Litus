@@ -63,9 +63,4 @@ EOT
             $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
         }
     }
-
-    protected function getLogName()
-    {
-        return 'DisableBookingsOutOfStock';
-    }
 }

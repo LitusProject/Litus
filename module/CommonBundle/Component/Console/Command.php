@@ -28,6 +28,8 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use CommonBundle\Component\Util\AcademicYear;
 use DateTime;
+use Ko\Mixin\ProcessTitle;
+use ReflectionClass;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Output\OutputInterface as Output;
 
@@ -39,6 +41,8 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     use DoctrineTrait;
     use MailTransportTrait;
     use SentryTrait;
+
+    use ProcessTitle;
 
     /**
      * @var Input
@@ -58,6 +62,8 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
         $this->input = $input;
         $this->output = $output;
 
+        $this->setProcessTitle('litus: ' . $this->getName());
+
         return $this->executeCommand();
     }
 
@@ -69,14 +75,14 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     /**
      * @return string
      */
-    abstract protected function getLogName();
-
-    /**
-     * @return string
-     */
     protected function getLogFormat()
     {
-        return '<%1$s>[%2$s]</%1$s> <%3$s>[%4$18s]</%3$s> %5$s';
+        $nameLength = $this->getLogNameLength();
+        if ($nameLength > 0) {
+            return '<%1$s>[%2$s]</%1$s> <%3$s>[%4$' . $nameLength . 's]</%3$s> %5$s';
+        }
+
+        return '<%1$s>[%2$s]</%1$s> <%3$s>[%4$s]</%3$s> %5$s';
     }
 
     /**
@@ -90,9 +96,25 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     /**
      * @return string
      */
+    protected function getLogNameLength()
+    {
+        return 0;
+    }
+
+    /**
+     * @return string
+     */
     protected function getLogNameTag()
     {
         return 'fg=blue;options=bold';
+    }
+
+    /**
+     * @return string
+     */
+    protected function getLogName()
+    {
+        return (new ReflectionClass($this))->getShortName();
     }
 
     /**

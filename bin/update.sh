@@ -1,5 +1,26 @@
 #!/usr/bin/env bash
 
+header() {
+    COLUMNS=$(tput cols)
+    if [ $COLUMNS -gt 120 ]; then
+      COLUMNS=120
+    fi
+
+    if $2; then
+      echo ""
+    fi
+
+    printf "=%.0s" $(eval echo "{1..$COLUMNS}")
+    printf "\n"
+
+    printf "%*s\n" $(((${#line} + $COLUMNS)/2)) "$1"
+
+    printf "=%.0s" $(eval echo "{1..$COLUMNS}")
+    printf "\n"
+
+    echo ""
+}
+
 # fail on subcommand
 set -e
 
@@ -18,17 +39,21 @@ rm -rf data/cache/*
 rm -rf public/_assetic/*
 
 # upgrade
+header "Upgrade" false
 ./bin/upgrade.sh
 
 # doctrine
+header "Doctrine" true
+
 php bin/doctrine.php orm:schema-tool:update --force
 php bin/doctrine.php orm:generate-proxies data/proxies/
 
-# install
-php bin/console.php install:all
+# installation
+header "Installation" true
 
-# assetic
+php bin/console.php install:all
 php bin/assetic.php build
 
-# acl
+# cleanup
+header "Cleanup" true
 php bin/console.php common:cleanup-acl --flush

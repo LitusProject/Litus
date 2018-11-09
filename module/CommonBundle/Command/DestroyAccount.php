@@ -48,11 +48,6 @@ EOT
         $this->destroy($this->getArgument('id'));
     }
 
-    protected function getLogName()
-    {
-        return 'DestroyAccount';
-    }
-
     private function destroy($id)
     {
         $person = $this->getEntityManager()

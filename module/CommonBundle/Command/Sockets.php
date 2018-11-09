@@ -35,8 +35,7 @@ class Sockets extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
-        $this
-            ->setName('common:sockets')
+        $this->setName('common:sockets')
             ->setDescription('Start all WebSockets')
             ->setHelp(
                 <<<EOT
@@ -70,7 +69,7 @@ EOT
             $manager->fork(
                 function (Process $p) use ($command, $logFile) {
                     $command->run(
-                        new StringInput('--run'),
+                        new StringInput(''),
                         new StreamOutput($logFile)
                     );
                 }
@@ -80,11 +79,6 @@ EOT
         }
 
         $manager->wait();
-    }
-
-    protected function getLogName()
-    {
-        return 'Sockets';
     }
 
     private function getLogFile()

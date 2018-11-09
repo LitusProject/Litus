@@ -114,14 +114,6 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getLogName()
-    {
-        return 'CleanupAcl';
-    }
-
-    /**
      * @return array
      */
     private function getModules()

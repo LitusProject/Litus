@@ -67,9 +67,4 @@ EOT
             }
         }
     }
-
-    protected function getLogName()
-    {
-        return 'CacheResult';
-    }
 }

@@ -66,14 +66,6 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getLogName()
-    {
-        return 'TestPrinter';
-    }
-
-    /**
      * @return string|null
      */
     private function getPrinter()

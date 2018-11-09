@@ -61,7 +61,7 @@ EOT
 
                 return 1;
             } else {
-                $this->writeln($config->getValue());
+                $this->writeln($config->getValue(), true);
 
                 return 0;
             }
@@ -70,10 +70,5 @@ EOT
         } else {
             throw new RuntimeException('Invalid action: ' . $action);
         }
-    }
-
-    protected function getLogName()
-    {
-        return false;
     }
 }
