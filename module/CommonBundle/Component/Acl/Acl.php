@@ -76,6 +76,7 @@ class Acl extends \Zend\Permissions\Acl\Acl
      * @param  Resource $resource The resource that should be added
      * @return void
      */
+    // phpcs:enable
     private function addResourceEntity(Resource $resource)
     {
         $this->addResource(
@@ -87,7 +88,6 @@ class Acl extends \Zend\Permissions\Acl\Acl
             $this->addResourceEntity($childResource);
         }
     }
-    // phpcs:enable
 
     /**
      * Load roles from the database.
