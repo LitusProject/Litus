@@ -269,9 +269,10 @@ abstract class Article
      */
     public function setYearPublished($yearPublished)
     {
-        if (count($yearPublished) == 0) {
+        if ((int) $yearPublished == 0) {
             $yearPublished = null;
         }
+
         $this->yearPublished = $yearPublished;
 
         return $this;
