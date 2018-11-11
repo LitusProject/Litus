@@ -40,13 +40,16 @@ class Academic extends \CommonBundle\Hydrator\User\Person
         $hydratorAddress = $this->getHydrator('CommonBundle\Hydrator\General\Address');
         $hydratorPrimaryAddress = $this->getHydrator('CommonBundle\Hydrator\General\PrimaryAddress');
 
-        $data = array(
-            'roles'             => $this->rolesToData($object->getRoles(false)),
-            'primary_email'     => $object->getEmail() === $object->getPersonalEmail(),
-            'is_international'  => $object->isInternational(),
-            'birthday'          => $object->getBirthday() !== null ? $object->getBirthday()->format('d/m/Y') : '',
-            'secondary_address' => $hydratorAddress->extract($object->getSecondaryAddress()),
-            'primary_address'   => $hydratorPrimaryAddress->extract($object->getPrimaryAddress()),
+        $data = array_merge(
+            $data,
+            array(
+                'roles'             => $this->rolesToData($object->getRoles(false)),
+                'primary_email'     => $object->getEmail() === $object->getPersonalEmail(),
+                'is_international'  => $object->isInternational(),
+                'birthday'          => $object->getBirthday() !== null ? $object->getBirthday()->format('d/m/Y') : '',
+                'secondary_address' => $hydratorAddress->extract($object->getSecondaryAddress()),
+                'primary_address'   => $hydratorPrimaryAddress->extract($object->getPrimaryAddress()),
+            )
         );
 
         $data = array_merge(
