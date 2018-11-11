@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 header() {
-    COLUMNS=$(tput cols)
+    COLUMNS=$(tty -s && tput cols)
+    COLUMNS=${COLUMNS:-80}
     if [ $COLUMNS -gt 120 ]; then
       COLUMNS=120
     fi
