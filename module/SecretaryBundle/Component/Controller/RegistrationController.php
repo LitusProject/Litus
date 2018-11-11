@@ -112,8 +112,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         }
 
         $studies = array();
-
-        if (count($data['studies']) > 0) {
+        if (isset($data['studies'])) {
             foreach ($data['studies'] as $id) {
                 if (isset($studies[$id])) {
                     continue;
@@ -141,7 +140,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     }
                 }
             }
+        }
 
+        if (count($studies) > 0) {
             if ($academic->getUniversityStatus($academicYear) === null && $academic->canHaveUniversityStatus($academicYear)) {
                 $academic->addUniversityStatus(
                     new UniversityStatus(
@@ -156,6 +157,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 $academic->removeUniversityStatus($academic->getUniversityStatus($academicYear));
             }
         }
+
         $this->getEntityManager()->flush();
 
         return new ViewModel(
