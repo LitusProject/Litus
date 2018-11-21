@@ -31,18 +31,12 @@ class ExpireWarning extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
-        $this
-            ->setName('cudi:expire-warning')
+        $this->setName('cudi:expire-warning')
             ->setDescription('Warn users when reservations are about to expire')
-            ->addOption('mail', 'm', null, 'Send the users a warning mail')
-            ->setHelp(
-                <<<EOT
-The <info>%command.name%</info> command warns users when their reservations are about to expire.
-EOT
-            );
+            ->addOption('mail', 'm', null, 'Send the users a warning mail');
     }
 
-    protected function executeCommand()
+    protected function invoke()
     {
         $interval = new DateInterval(
             $this->getEntityManager()

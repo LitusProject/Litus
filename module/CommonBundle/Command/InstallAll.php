@@ -35,23 +35,15 @@ class InstallAll extends \CommonBundle\Component\Console\Command
 
     protected function configure()
     {
-        $this
-            ->setName('install:all')
-            ->setDescription('Install all modules')
-            ->setHelp(
-                <<<EOT
-The <info>%command.name%</info> command installs all modules.
-EOT
-            );
+        $this->setName('install:all')
+            ->setDescription('Install all modules');
     }
 
-    protected function executeCommand()
+    protected function invoke()
     {
         foreach ($this->getModules() as $module) {
             $this->installModule($module);
         }
-
-        $this->writeln('Installation completed successfully!');
     }
 
     protected function getLogName()

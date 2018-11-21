@@ -33,17 +33,11 @@ class Cron extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
-        $this
-            ->setName('common:cron')
-            ->setDescription('Run configured cron jobs')
-            ->setHelp(
-                <<<EOT
-The <info>%command.name%</info> command runs all configured cron jobs.
-EOT
-            );
+        $this->setName('common:cron')
+            ->setDescription('Run configured cron jobs');
     }
 
-    protected function executeCommand()
+    protected function invoke()
     {
         $manager = new ProcessManager();
         $logFile = $this->getLogFile();

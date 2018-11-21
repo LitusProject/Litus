@@ -34,18 +34,12 @@ class CatalogUpdate extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
-        $this
-            ->setName('cudi:update-catalog')
+        $this->setName('cudi:update-catalog')
             ->setDescription('Update the catalog')
-            ->addOption('mail', 'm', null, 'Send mails to users to notify them of the update')
-            ->setHelp(
-                <<<EOT
-The <info>%command.name%</info> command updates the catalog and notifies the users of the changes.
-EOT
-            );
+            ->addOption('mail', 'm', null, 'Send mails to users to notify them of the update');
     }
 
-    protected function executeCommand()
+    protected function invoke()
     {
         $date = new DateTime();
         $date->sub(new DateInterval('P1D'));

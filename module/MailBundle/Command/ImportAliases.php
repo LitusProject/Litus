@@ -34,30 +34,20 @@ class ImportAliases extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
-        $this
-            ->setName('mail:import-aliases')
+        $this->setName('mail:import-aliases')
             ->setDescription('Import alias files')
             ->addOption('flush', 'f', null, 'Flush the created aliases to the database')
-            ->addArgument('file', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'The files to import')
-            ->setHelp(
-                <<<EOT
-The %command.name% command imports the given alias <fg=blue>files</fg=blue> and stores them
-if the <fg=blue>--flush</fg=blue> flag is given.
-EOT
-            );
+            ->addArgument('file', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'The files to import');
     }
 
-    protected function executeCommand()
+    protected function invoke()
     {
         $files = $this->getArgument('file');
         if (!is_array($files)) {
             $files = array($files);
         }
 
-        // get PWD of shell that called bin/console.php
-        // the PWD of php itself is changed in said file
         $pwd = getenv('PWD');
-
         foreach ($files as $file) {
             $this->loadFile($pwd . '/' . $file);
         }
@@ -69,9 +59,6 @@ EOT
         }
     }
 
-    /**
-     * @param string $file
-     */
     private function loadFile($file)
     {
         foreach (file($file) as $line) {

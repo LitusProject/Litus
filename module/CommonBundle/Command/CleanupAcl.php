@@ -30,21 +30,15 @@ class CleanupAcl extends \CommonBundle\Component\Console\Command
      */
     protected function configure()
     {
-        $this
-            ->setName('common:cleanup-acl')
+        $this->setName('common:cleanup-acl')
             ->setDescription('Cleanup old ACL actions and resources')
-            ->addOption('flush', 'f', null, 'Store the result in the database')
-            ->setHelp(
-                <<<EOT
-The <info>%command.name%</info> command removes old ACL actions and resources
-EOT
-            );
+            ->addOption('flush', 'f', null, 'Store the result in the database');
     }
 
     /**
      * @return null
      */
-    protected function executeCommand()
+    protected function invoke()
     {
         $allActions = $this->getAllActions();
 

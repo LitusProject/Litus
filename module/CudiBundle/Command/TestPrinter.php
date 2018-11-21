@@ -24,33 +24,15 @@ use Symfony\Component\Console\Input\InputArgument;
 
 class TestPrinter extends \CommonBundle\Component\Console\Command
 {
-    /**
-     * @return null
-     */
     protected function configure()
     {
-        $this
-            ->setName('cudi:test-printer')
+        $this->setName('cudi:test-printer')
             ->setDescription('Tests the printers')
             ->addArgument('printer', InputArgument::REQUIRED, 'The printer name')
-            ->addArgument('ticket', InputArgument::REQUIRED, 'The ticket type')
-            ->setHelp(
-                <<<EOT
-The <info>%command.name%</info> command sends a test ticket to a printer.
-
-The printer to test is set by the <comment>printer</comment> argument. Possible values
-are defined by the '<fg=blue>cudi.printers</fg=blue>' configuration entry.
-
-The type of the ticket to send is set by the <comment>ticket</comment> argument. Possible values
-are '<fg=blue>signin</fg=blue>', '<fg=blue>collect</fg=blue>' and '<fg=blue>sale</fg=blue>'.
-EOT
-            );
+            ->addArgument('ticket', InputArgument::REQUIRED, 'The ticket type');
     }
 
-    /**
-     * @return integer|null
-     */
-    protected function executeCommand()
+    protected function invoke()
     {
         $printer = $this->getPrinter();
         if ($printer === null) {
@@ -66,7 +48,7 @@ EOT
     }
 
     /**
-     * @return string|null
+     * @return string
      */
     private function getPrinter()
     {
@@ -92,7 +74,7 @@ EOT
     }
 
     /**
-     * @return integer|null
+     * @return integer
      */
     private function getTicket()
     {
@@ -117,7 +99,6 @@ EOT
     /**
      * @param  string  $printer
      * @param  integer $ticket
-     * @return null
      */
     private function send($printer, $ticket)
     {

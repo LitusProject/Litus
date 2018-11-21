@@ -45,20 +45,53 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
     use DoctrineTrait;
 
     /**
-     * @var string the module name
+     * @var string
      */
     private $module;
 
     /**
-     * @var Command|null the command that executes the installer, if any
+     * @var Command
      */
     private $command;
 
     public function __construct()
     {
-        $calledClass = static::class;
+        $this->module = substr(static::class, 0, strpos(static::class, '\\', 1));
+    }
 
-        $this->module = substr($calledClass, 0, strpos($calledClass, '\\', 1));
+    /**
+     * @param  Command $command
+     * @return self
+     */
+    public function setCommand(Command $command)
+    {
+        $this->command = $command;
+
+        return $this;
+    }
+
+    /**
+     * @param  string  $string
+     * @param  boolean $raw
+     * @return void
+     */
+    protected function write($string, $raw = false)
+    {
+        if ($this->command !== null) {
+            $this->command->write($string, $raw);
+        }
+    }
+
+    /**
+     * @param  string  $string
+     * @param  boolean $raw
+     * @return void
+     */
+    protected function writeln($string, $raw = false)
+    {
+        if ($this->command !== null) {
+            $this->command->writeln($string, $raw);
+        }
     }
 
     /**
@@ -109,41 +142,6 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
      */
     protected function postInstall()
     {
-    }
-
-    /**
-     * @param  string  $string
-     * @param  boolean $raw
-     * @return void
-     */
-    protected function write($string, $raw = false)
-    {
-        if ($this->command !== null) {
-            $this->command->write($string, $raw);
-        }
-    }
-
-    /**
-     * @param  string  $string
-     * @param  boolean $raw
-     * @return void
-     */
-    protected function writeln($string, $raw = false)
-    {
-        if ($this->command !== null) {
-            $this->command->writeln($string, $raw);
-        }
-    }
-
-    /**
-     * @param  Command $command
-     * @return self
-     */
-    public function setCommand(Command $command)
-    {
-        $this->command = $command;
-
-        return $this;
     }
 
     /**

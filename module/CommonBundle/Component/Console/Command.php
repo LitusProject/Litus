@@ -23,13 +23,14 @@ namespace CommonBundle\Component\Console;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\ConfigTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\MailTransportTrait;
-use CommonBundle\Component\ServiceManager\ServiceLocatorAware\SentryTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\SentryClientTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use CommonBundle\Component\Util\AcademicYear;
 use DateTime;
 use Ko\Mixin\ProcessTitle;
 use ReflectionClass;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Output\OutputInterface as Output;
 
@@ -40,7 +41,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     use ConfigTrait;
     use DoctrineTrait;
     use MailTransportTrait;
-    use SentryTrait;
+    use SentryClientTrait;
 
     use ProcessTitle;
 
@@ -62,15 +63,63 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
         $this->input = $input;
         $this->output = $output;
 
+        $formatter = $this->output->getFormatter();
+        $formatter->setStyle('error', new OutputFormatterStyle('red'));
+        $formatter->setStyle('info', new OutputFormatterStyle('blue'));
+        $formatter->setStyle('comment', new OutputFormatterStyle('yellow'));
+        $formatter->setStyle('question', new OutputFormatterStyle('white'));
+
         $this->setProcessTitle('litus: ' . $this->getName());
 
-        return $this->executeCommand();
+        return $this->invoke();
     }
 
     /**
      * @return integer|void
      */
-    abstract protected function executeCommand();
+    abstract protected function invoke();
+
+        /**
+     * @param  string $name
+     * @return mixed
+     */
+    protected function getArgument($name)
+    {
+        return $this->input->getArgument($name);
+    }
+
+    /**
+     * @return boolean
+     */
+    protected function hasArgument($name)
+    {
+        return $this->input->hasArgument($name);
+    }
+
+    /**
+     * @param  string $name
+     * @return mixed
+     */
+    protected function getOption($name)
+    {
+        return $this->input->getOption($name);
+    }
+
+    /**
+     * @return boolean
+     */
+    protected function hasOption($name)
+    {
+        return $this->input->hasOption($name);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return $this->input->getOptions();
+    }
 
     /**
      * @return string
@@ -164,41 +213,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     }
 
     /**
-     * @param  string $name
-     * @return mixed
-     */
-    protected function getOption($name)
-    {
-        return $this->input->getOption($name);
-    }
-
-    /**
-     * @return boolean
-     */
-    protected function hasOption($name)
-    {
-        return $this->input->hasOption($name);
-    }
-
-    /**
-     * @param  string $name
-     * @return mixed
-     */
-    protected function getArgument($name)
-    {
-        return $this->input->getArgument($name);
-    }
-
-    /**
-     * @return boolean
-     */
-    protected function hasArgument($name)
-    {
-        return $this->input->hasArgument($name);
-    }
-
-    /**
-     * Get the current academic year.
+     * Get the current academic year
      *
      * @param  boolean $organization
      * @return AcademicYear

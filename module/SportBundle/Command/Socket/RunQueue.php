@@ -27,11 +27,16 @@ use SportBundle\Component\WebSocket\Run\Queue as RunQueueSocket;
  *
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class RunQueue extends \CommonBundle\Component\Console\Command\WebSocket
+class RunQueue extends \CommonBundle\Component\Console\Command\Socket
 {
-    protected function createSocket()
+    protected function getSocket()
     {
         return new RunQueueSocket($this->getEntityManager());
+    }
+
+    protected function getSocketUri()
+    {
+        return '';
     }
 
     protected function getCommandName()

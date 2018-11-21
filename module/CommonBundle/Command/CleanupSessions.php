@@ -27,17 +27,11 @@ class CleanupSessions extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
-        $this
-            ->setName('common:cleanup-sessions')
-            ->setDescription('Cleanup expired sessions and Shibboleth codes')
-            ->setHelp(
-                <<<EOT
-The <info>%command.name%</info> command removes expired sessions and Shibboleth codes.
-EOT
-            );
+        $this->setName('common:cleanup-sessions')
+            ->setDescription('Cleanup expired sessions and Shibboleth codes');
     }
 
-    protected function executeCommand()
+    protected function invoke()
     {
         $this->gcSessions();
         $this->gcShibboleth();

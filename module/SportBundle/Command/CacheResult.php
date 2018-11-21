@@ -30,18 +30,11 @@ class CacheResult extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
-        $this
-            ->setName('sport:cache-result')
-            ->setDescription('Fetch and store the competition results')
-            ->setHelp(
-                <<<EOT
-The %command.name% command fetches the results of the competition and stores
-them in a cache.
-EOT
-            );
+        $this->setName('sport:cache-result')
+            ->setDescription('Fetch and store the competition results');
     }
 
-    protected function executeCommand()
+    protected function invoke()
     {
         while (true) {
             $resultPage = $this->getEntityManager()

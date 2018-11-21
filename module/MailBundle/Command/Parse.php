@@ -35,8 +35,6 @@ class Parse extends \CommonBundle\Component\Console\Command
     const COMMAND_STORE = '001';
 
     /**
-     * The available commands
-     *
      * @var array
      */
     public static $commands = array(
@@ -45,18 +43,11 @@ class Parse extends \CommonBundle\Component\Console\Command
 
     protected function configure()
     {
-        $this
-            ->setName('mail:parse')
-            ->setDescription('Parse mail from input')
-            ->setHelp(
-                <<<EOT
-The %command.name% command reads <comment>php://stdin</comment>, parses
-incoming mail and stores it in the document storage.
-EOT
-            );
+        $this->setName('mail:parse')
+            ->setDescription('Parse mail from input');
     }
 
-    protected function executeCommand()
+    protected function invoke()
     {
         $this->parseMessage(
             $this->readMail()
@@ -64,13 +55,12 @@ EOT
     }
 
     /**
-     * @param  string  $str
-     * @param  boolean $raw
-     * @return void
+     * @param string  $str
+     * @param boolean $raw
      */
     public function write($str, $raw = false)
     {
-        if ($this->hasSentry()) {
+        if (getenv('APPLICATION_ENV') != 'development') {
             $this->logMessage($str);
         }
 
@@ -78,13 +68,12 @@ EOT
     }
 
     /**
-     * @param  string  $str
-     * @param  boolean $raw
-     * @return void
+     * @param string  $str
+     * @param boolean $raw
      */
     public function writeln($str, $raw = false)
     {
-        if ($this->hasSentry()) {
+        if (getenv('APPLICATION_ENV') != 'development') {
             $this->logMessage($str);
         }
 
@@ -92,12 +81,11 @@ EOT
     }
 
     /**
-     * @param  string $str
-     * @return null
+     * @param string $str
      */
     private function logMessage($str)
     {
-        $this->getSentry()->logMessage($str);
+        $this->getSentryClient()->logMessage($str);
     }
 
     /**
@@ -135,8 +123,7 @@ EOT
     }
 
     /**
-     * @param  MessageParser $parser
-     * @return null
+     * @param MessageParser $parser
      */
     private function storeMessage(MessageParser $parser)
     {
