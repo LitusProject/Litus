@@ -29,12 +29,12 @@ interface ServiceLocatorAwareInterface
      * maintainers consider it an anti-pattern. However, since our codebase heavily
      * depends on the service locator, we've reintroduced it through an initializer.
      *
-     * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocator
+     * @param ServiceLocatorInterface $serviceLocator
      */
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator);
 
     /**
-     * @return \Zend\ServiceManager\ServiceLocatorInterface
+     * @return ServiceLocatorInterface
      */
     public function getServiceLocator();
 }

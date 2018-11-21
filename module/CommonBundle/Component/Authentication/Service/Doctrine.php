@@ -129,9 +129,11 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
                 }
             }
         } else {
-            $session = $this->entityManager->getRepository($this->entityName)->findOneById(
-                $this->getIdentity()
-            );
+            $session = $this->entityManager
+                ->getRepository($this->entityName)
+                ->findOneById(
+                    $this->getIdentity()
+                );
 
             if ($session !== null) {
                 $sessionValidation = $session->validate(

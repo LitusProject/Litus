@@ -27,11 +27,11 @@ trait ServiceLocatorAwareTrait
     /**
      * @var ServiceLocatorInterface
      */
-    protected $serviceLocator = null;
+    protected $serviceLocator;
 
     /**
      * @param  ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @return self
      */
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {

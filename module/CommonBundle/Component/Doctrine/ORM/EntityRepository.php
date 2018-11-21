@@ -107,7 +107,7 @@ abstract class EntityRepository extends \Doctrine\ORM\EntityRepository
         }
 
         if (!$query instanceof Query) {
-            throw new LogicException(static::class . '::' . $method . ' must return an instance of Doctrine\ORM\Query.');
+            throw new LogicException(static::class . '::' . $method . ' must return an instance of Doctrine\ORM\Query');
         }
 
         return $query->getResult();
