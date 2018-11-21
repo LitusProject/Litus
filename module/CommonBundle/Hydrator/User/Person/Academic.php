@@ -84,7 +84,7 @@ class Academic extends \CommonBundle\Hydrator\User\Person
 
         if ($object === null) {
             $object = new AcademicEntity();
-            if (isset($data['username'])) {
+            if (isset($data['username']) && $data['username'] != '') {
                 $object->setUsername($data['username']);
             } else {
                 $object->setUsername($data['university']['identification']);
@@ -102,7 +102,7 @@ class Academic extends \CommonBundle\Hydrator\User\Person
             );
         }
 
-        if (isset($data['university']['status'])) {
+        if (isset($data['university']['status']) && $data['university']['status'] != '') {
             if ($object->getUniversityStatus($academicYear) !== null) {
                 $object->getUniversityStatus($academicYear)
                     ->setStatus($data['university']['status']);
@@ -129,19 +129,17 @@ class Academic extends \CommonBundle\Hydrator\User\Person
             ->getConfigValue('student_email_domain');
 
         $universityEmail = preg_replace('/[^a-z0-9\.@]/i', '', iconv('UTF-8', 'US-ASCII//TRANSLIT', $data['university']['email'])) . $studentDomain;
-        if (isset($data['primary_email'])) {
-            if ($data['primary_email']) {
-                $data['email'] = $data['personal_email'];
-            } else {
-                $data['email'] = $universityEmail;
-            }
+        if (isset($data['primary_email']) && $data['primary_email'] != '') {
+            $data['email'] = $data['personal_email'];
+        } else {
+            $data['email'] = $universityEmail;
         }
 
-        if (isset($data['organization']) && is_array($data['organization']) && isset($data['organization']['is_in_workinggroup'])) {
+        if (isset($data['organization']) && isset($data['organization']['is_in_workinggroup']) && $data['organization']['is_in_workinggroup']) {
             $object->setIsInWorkingGroup($data['organization']['is_in_workinggroup']);
         }
 
-        if (isset($data['birthday'])) {
+        if (isset($data['birthday']) && $data['birthday'] != '') {
             $object->setBirthday(self::loadDate($data['birthday']));
         }
 
@@ -149,14 +147,14 @@ class Academic extends \CommonBundle\Hydrator\User\Person
             ->setUniversityIdentification($data['university']['identification']);
 
         $hydratorAddress = $this->getHydrator('CommonBundle\Hydrator\General\Address');
-        if (isset($data['secondary_address']) && is_array($data['secondary_address']) && isset($data['secondary_address']['city'])) {
+        if (isset($data['secondary_address']) && isset($data['secondary_address']['city']) && $data['secondary_address']['city'] != '') {
             $object->setSecondaryAddress(
                 $hydratorAddress->hydrate($data['secondary_address'], $object->getSecondaryAddress())
             );
         }
 
         $hydratorPrimaryAddress = $this->getHydrator('CommonBundle\Hydrator\General\PrimaryAddress');
-        if (isset($data['primary_address']) && is_array($data['primary_address']) && isset($data['primary_address']['city'])) {
+        if (isset($data['primary_address']) && isset($data['primary_address']['city']) && $data['primary_address']['city'] != '') {
             $object->setPrimaryAddress(
                 $hydratorPrimaryAddress->hydrate($data['primary_address'], $object->getPrimaryAddress())
             );
