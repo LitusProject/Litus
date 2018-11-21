@@ -18,10 +18,10 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Component\WebSocket\Sale;
+namespace CudiBundle\Component\Socket\Sale;
 
 use CommonBundle\Component\Util\AcademicYear;
-use CommonBundle\Component\WebSocket\User;
+use CommonBundle\Component\Socket\User;
 use CudiBundle\Entity\Sale\Booking;
 use CudiBundle\Entity\Sale\QueueItem as QueueItemEntity;
 use CudiBundle\Entity\Sale\Session;
@@ -66,8 +66,7 @@ class Queue
     }
 
     /**
-     * @param Session $session The sale session
-     *
+     * @param  Session $session The sale session
      * @return string
      */
     public function getJsonQueue(Session $session)
@@ -105,7 +104,7 @@ class Queue
 
     /**
      * @param  string $id The queue item id
-     * @return string|null
+     * @return string
      */
     public function getJsonQueueItem($id)
     {
@@ -237,10 +236,10 @@ class Queue
      * @param  User $user
      * @return null
      */
-    public function unlockByUser(User $user)
+    public function unlock(User $user)
     {
         foreach ($this->queueItems as $item) {
-            if ($item->getUser()->getSocket() == $user->getSocket()) {
+            if ($item->getUser() === $user) {
                 $item = $this->entityManager
                     ->getRepository('CudiBundle\Entity\Sale\QueueItem')
                     ->findOneById($item->getId());
@@ -250,6 +249,7 @@ class Queue
                 } elseif ($item->getStatus() == 'selling') {
                     $item->setStatus('collected');
                 }
+
                 $this->entityManager->flush();
             }
         }
@@ -325,8 +325,8 @@ class Queue
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
-        $item->setStatus('signed_in')
-            ->setCollectPrinted(false);
+        $item->setStatus('signed_in')->setCollectPrinted(false);
+
         $this->entityManager->flush();
     }
 
@@ -342,9 +342,11 @@ class Queue
             ->findOneById($id);
 
         $item->setStatus('selling');
+
         $paydesk = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\PayDesk')
-            ->findOneByCode($user->getExtraData('paydesk'));
+            ->findOneByCode($user->paydesk);
+
         if ($paydesk !== null) {
             $item->setPayDesk($paydesk);
         }
@@ -355,6 +357,10 @@ class Queue
             $this->queueItems[$id] = new QueueItem($this->entityManager, $user, $id);
         } else {
             $this->queueItems[$id]->setUser($user);
+        }
+
+        foreach ($this->queueItems as $queueItem) {
+            var_dump(serialize(get_class($queueItem)));
         }
 
         return $this->queueItems[$id]->getSaleInfo();
@@ -549,8 +555,7 @@ class Queue
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
-        $item->setPayMethod(null)
-            ->setStatus('collected');
+        $item->setPayMethod(null)->setStatus('collected');
 
         $saleItems = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\SaleItem')

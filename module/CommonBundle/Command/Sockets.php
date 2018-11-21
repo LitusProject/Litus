@@ -36,37 +36,20 @@ class Sockets extends \CommonBundle\Component\Console\Command
     protected function configure()
     {
         $this->setName('common:sockets')
-            ->setDescription('Start all WebSockets')
-            ->setHelp(
-                <<<EOT
-The <info>%command.name%</info> command starts all WebSockets.
-EOT
-            );
+            ->setDescription('Start all WebSockets');
     }
 
-    protected function executeCommand()
+    protected function invoke()
     {
-        $manager = new ProcessManager();
+        $processManager = new ProcessManager();
         $logFile = fopen($this->getLogFile(), 'a', false);
 
         $commands = $this->getApplication()->all('socket');
         foreach ($commands as $command) {
-            $isEnabled = $command->run(
-                new StringInput('--is-enabled'),
-                new NullOutput()
-            );
-
-            if ($isEnabled === 1) {
-                continue;
-            }
-
             // Close parent connection to force reconnection in child process
-            $connection = $this->getEntityManager()->getConnection();
-            $connection->close();
+            $this->getEntityManager()->getConnection()->close();
 
-            $this->write('Starting <comment>' . $command->getName() . '</comment>...');
-
-            $manager->fork(
+            $processManager->fork(
                 function (Process $p) use ($command, $logFile) {
                     $command->run(
                         new StringInput(''),
@@ -74,11 +57,9 @@ EOT
                     );
                 }
             );
-
-            $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
         }
 
-        $manager->wait();
+        $processManager->wait();
     }
 
     private function getLogFile()

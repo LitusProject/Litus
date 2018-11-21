@@ -132,56 +132,60 @@
 
         $this.append(
             $('<div>', {'class': 'saleScreen'}).append(
-                wrapper = $('<div>', {'class': 'row wrapper'}).append(
-                    customer = $('<div>', {'class': 'col-md-7 customer'}).append(
-                        $('<div>', {'class': 'row title'}).html(settings.tCurrentCustomer),
-                        $('<div>', {'class': 'row customerName'}).append(
-                            $('<span>', {'class': 'name'}).html(data.person.name),
-                            ' ',
-                            $('<span>', {'class': 'university_identification'}).html('(' + data.person.universityIdentification + ')')
-                        ),
-                        $('<div>', {'class': 'row actions'}).append(
-                            editComment = $('<button>', {'class': 'btn btn-info'}).append(
-                                $('<i>', {'class': 'glyphicon glyphicon-comment'}),
-                                settings.tComments
-                            ),
-                            printNextInQueue = $('<button>', {'class': 'btn btn-primary', 'data-key': 118}).append(
-                                $('<i>', {'class': 'glyphicon glyphicon-print'}),
-                                settings.tPrintNext + ' - F7'
-                            ),
-                            showQueue = $('<button>', {'class': 'btn btn-primary', 'data-key': 119}).append(
-                                $('<i>', {'class': 'glyphicon glyphicon-eye-open'}),
-                                settings.tQueue + ' - F8'
-                            ),
-                            conclude = $('<button>', {'class': 'btn btn-success', 'data-key': 120}).append(
-                                $('<i>', {'class': 'glyphicon glyphicon-ok-circle'}),
-                                settings.tConclude + ' - F9'
-                            ),
-                            cancel = $('<button>', {'class': 'btn btn-danger', 'data-key': 121}).append(
-                                $('<i>', {'class': 'glyphicon glyphicon-remove'}),
-                                settings.tCancel + ' - F10'
+                $('<div>', {'class': 'row wrapper'}).append(
+                    $('<div>', {'class': 'display'}).append(
+                        customer = $('<div>', {'class': 'col-md-7 customer'}).append(
+                            $('<div>', {'class': 'row title'}).html(settings.tCurrentCustomer),
+                            $('<div>', {'class': 'row customerName'}).append(
+                                $('<span>', {'class': 'name'}).html(data.person.name),
+                                ' ',
+                                $('<span>', {'class': 'university_identification'}).html('(' + data.person.universityIdentification + ')')
                             )
                         )
-                    ),
-                    $('<div>', {'class': 'col-md-12'}).append(
+                    )
+                ),
+                $('<div>', {'class': 'row wrapper'}).append(
+                    $('<div>', {'class': 'actions'}).append(
+                        editComment = $('<button>', {'class': 'btn btn-info'}).append(
+                            $('<i>', {'class': 'glyphicon glyphicon-comment'}),
+                            settings.tComments
+                        ),
+                        printNextInQueue = $('<button>', {'class': 'btn btn-primary', 'data-key': 118}).append(
+                            $('<i>', {'class': 'glyphicon glyphicon-print'}),
+                            settings.tPrintNext + ' - F7'
+                        ),
+                        showQueue = $('<button>', {'class': 'btn btn-primary', 'data-key': 119}).append(
+                            $('<i>', {'class': 'glyphicon glyphicon-eye-open'}),
+                            settings.tQueue + ' - F8'
+                        ),
+                        conclude = $('<button>', {'class': 'btn btn-success', 'data-key': 120}).append(
+                            $('<i>', {'class': 'glyphicon glyphicon-ok-circle'}),
+                            settings.tConclude + ' - F9'
+                        ),
+                        cancel = $('<button>', {'class': 'btn btn-danger', 'data-key': 121}).append(
+                            $('<i>', {'class': 'glyphicon glyphicon-remove'}),
+                            settings.tCancel + ' - F10'
+                        ),
                         addArticle = $('<button>', {'class': 'btn btn-info pull-right', 'data-key': 116}).append(
                             $('<i>', {'class': 'glyphicon glyphicon-plus-sign'}),
                             settings.tAddArticle + ' - F5'
                         )
                     )
                 ),
-                $('<table>', {'class': 'table table-striped'}).append(
-                    $('<thead>').append(
-                        $('<tr>').append(
-                            $('<th>', {'class': 'barcode'}).html(settings.tBarcode),
-                            $('<th>', {'class': 'title'}).html(settings.tTitle),
-                            $('<th>', {'class': 'status'}).html(settings.tStatus),
-                            $('<th>', {'class': 'number'}).html(settings.tNumber),
-                            $('<th>', {'class': 'price'}).html(settings.tPrice),
-                            $('<th>', {'class': 'actions'}).html(settings.tActions)
-                        )
-                    ),
-                    $('<tbody>', {'class': 'articles'})
+                $('<div>', {'class': 'row'}).append(
+                    $('<table>', {'class': 'table table-striped'}).append(
+                        $('<thead>').append(
+                            $('<tr>').append(
+                                $('<th>', {'class': 'barcode'}).html(settings.tBarcode),
+                                $('<th>', {'class': 'title'}).html(settings.tTitle),
+                                $('<th>', {'class': 'status'}).html(settings.tStatus),
+                                $('<th>', {'class': 'number'}).html(settings.tNumber),
+                                $('<th>', {'class': 'price'}).html(settings.tPrice),
+                                $('<th>', {'class': 'actions'}).html(settings.tActions)
+                            )
+                        ),
+                        $('<tbody>', {'class': 'articles'})
+                    )
                 )
             )
         );
@@ -193,7 +197,7 @@
         if (settings.isSell) {
             customer.after(
                 $('<div>', {'class': 'col-md-2 discounts'}).append(
-                    'Discounts:',
+                    'Discounts',
                     options = $('<div>', {'class': 'options'})
                 ),
                 $('<div>', {'class': 'col-md-3 money'}).append(

@@ -18,13 +18,13 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Component\WebSocket\Sale;
+namespace CudiBundle\Component\Socket\Sale;
 
 use CommonBundle\Component\Util\AcademicYear;
-use CommonBundle\Component\WebSocket\User;
+use CommonBundle\Component\Socket\User;
 use CommonBundle\Entity\User\Person\Academic;
 use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
-use CudiBundle\Component\WebSocket\Sale\Printer;
+use CudiBundle\Component\Socket\Sale\Printer;
 use CudiBundle\Entity\Sale\Booking;
 use CudiBundle\Entity\Sale\SaleItem;
 use CudiBundle\Entity\User\Person\Sale\Acco as AccoCard;
@@ -40,14 +40,14 @@ use Zend\Soap\Client as SoapClient;
 class QueueItem
 {
     /**
-     * @var integer The id of the sale session
-     */
-    private $id;
-
-    /**
      * @var EntityManager
      */
     private $entityManager;
+
+    /**
+     * @var integer The id of the sale session
+     */
+    private $id;
 
     /**
      * @var User
@@ -66,6 +66,7 @@ class QueueItem
     public function __construct(EntityManager $entityManager, User $user, $id)
     {
         $this->entityManager = $entityManager;
+
         $this->id = $id;
         $this->user = $user;
         $this->articles = array();

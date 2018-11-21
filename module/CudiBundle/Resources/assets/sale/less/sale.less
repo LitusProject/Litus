@@ -61,6 +61,53 @@
 
 
 .saleScreen {
+    .wrapper {
+        margin-bottom: 10px;
+    }
+
+    .display {
+        display: flex;
+
+        .customer {
+            .title {
+                margin-bottom: 10px;
+            }
+
+            .customerName {
+                margin-left: 30px;
+            }
+
+            .name {
+                font-size: 30px;
+                font-weight: bold;
+            }
+        }
+
+        .money {
+            margin: auto 0;
+            font-weight: bold;
+            text-align: right;
+
+            .total {
+                font-size: 55px;
+            }
+        }
+
+        .discounts {
+            .options {
+                padding-left: 35px;
+            }
+        }
+    }
+
+    .actions {
+        margin: 0;
+
+        button {
+            margin-right: 5px;
+        }
+    }
+
     .table {
         .barcode {
             width: 110px;
@@ -93,50 +140,6 @@
 
             tr.inactive {
                 color: @cGray;
-            }
-        }
-    }
-
-    .wrapper {
-        margin-bottom: 10px;
-
-        .money {
-            font-weight: bold;
-            text-align: right;
-
-            .total {
-                font-size: 55px;
-                line-height: 80px;
-            }
-        }
-
-        .customer {
-            .title {
-                margin: 0 0 10px 0;
-            }
-
-            .customerName {
-                margin: 0 0 10px 30px;
-            }
-
-            .name {
-                font-size: 30px;
-                line-height: 30px;
-                font-weight: bold;
-            }
-
-            .actions {
-                margin: 0;
-
-                button {
-                    margin-right: 5px;
-                }
-            }
-        }
-
-        .discounts {
-            .options {
-                padding-left:10px;
             }
         }
     }

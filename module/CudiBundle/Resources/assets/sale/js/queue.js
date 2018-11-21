@@ -15,7 +15,7 @@
         tPrintNext: 'Print Next',
         tSellNext: 'Sell Next',
         tNotFoundInQueue: '<i><b>{{ name }}</b> was not found in the queue.</i>',
-        tAddToQueue: 'Add to queue',
+        tAddToQueue: 'Add to Queue',
         tErrorAddPerson: 'The person could not be added to the queue',
         tErrorAddPersonType: {'person': 'The person was not found', 'noBookings': 'There were no bookings for this person'},
         tNoNextToPrint: 'There is no next item to print',
@@ -175,32 +175,33 @@
             if (pattern.test(filter)) {
                 var found = false;
                 $this.find('tbody tr').each(function () {
-                    if ($(this).data('info').university_identification.toLowerCase().indexOf(filter) == 0)
+                    if ($(this).data('info') && $(this).data('info').universityIdentification.toLowerCase().indexOf(filter) == 0)
                         found = true;
-                    return !found;
                 });
 
                 if (!found) {
-                    $this.find('tbody').append(
-                        $('<tr>', {'id': 'addToQueue'}).append(
-                            $('<td>', {'class': 'number'}),
-                            $('<td>', {'class': 'name'}).html(
-                                settings.tNotFoundInQueue.replace('{{ name }}', filter)
-                            ),
-                            $('<td>', {'class': 'status'}),
-                            $('<td>', {'class': 'actions'}).append(
-                                $('<button>', {'class': 'btn btn-success'}).html(settings.tAddToQueue).data('id', filter).click(function () {
-                                    settings.sendToSocket(
-                                        JSON.stringify({
-                                            'command': 'action',
-                                            'action': 'addToQueue',
-                                            'universityIdentification': filter,
-                                        })
-                                    );
-                                })
+                    if ($this.find('tbody #addToQueue').length == 0) {
+                        $this.find('tbody').append(
+                            $('<tr>', {'id': 'addToQueue'}).append(
+                                $('<td>', {'class': 'number'}),
+                                $('<td>', {'class': 'name'}).html(
+                                    settings.tNotFoundInQueue.replace('{{ name }}', filter)
+                                ),
+                                $('<td>', {'class': 'status'}),
+                                $('<td>', {'class': 'actions'}).append(
+                                    $('<button>', {'class': 'btn btn-success'}).html(settings.tAddToQueue).data('id', filter).click(function () {
+                                        settings.sendToSocket(
+                                            JSON.stringify({
+                                                'command': 'action',
+                                                'action': 'addToQueue',
+                                                'universityIdentification': filter,
+                                            })
+                                        );
+                                    })
+                                )
                             )
-                        )
-                    );
+                        );
+                    }
                 } else {
                     $this.find('tbody #addToQueue').remove();
                 }

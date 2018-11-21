@@ -34,6 +34,8 @@
         "doctrine/doctrine-mongo-odm-module": "@stable",
 
         "alcaeus/mongo-php-adapter": "^1.1",
+        "cboden/ratchet": "^0.4.1",
+        "clue/redis-react": "^2.2",
         "colinmollenhour/credis": "^1.10",
         "erusev/parsedown": "^1.7",
         "league/uri-parser": "^1.4",

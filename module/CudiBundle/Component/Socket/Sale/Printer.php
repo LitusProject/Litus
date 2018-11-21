@@ -18,12 +18,12 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Component\WebSocket\Sale;
+namespace CudiBundle\Component\Socket\Sale;
 
 use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Barcode\Ean12;
 use CommonBundle\Entity\User\Person\Academic;
-use CudiBundle\Entity\Sale\QueueItem as EntityQueueItem;
+use CudiBundle\Entity\Sale\QueueItem as QueueItemEntity;
 use Doctrine\ORM\EntityManager;
 
 class Printer
@@ -31,10 +31,10 @@ class Printer
     /**
      * @param EntityManager   $entityManager
      * @param string          $printer
-     * @param EntityQueueItem $queueItem
+     * @param QueueItemEntity $queueItem
      * @param array           $bookings
      */
-    public static function signInTicket(EntityManager $entityManager, $printer, EntityQueueItem $queueItem, $bookings)
+    public static function signInTicket(EntityManager $entityManager, $printer, QueueItemEntity $queueItem, $bookings)
     {
         $academic = $queueItem->getPerson();
         if (!($academic instanceof Academic)) {
@@ -78,17 +78,15 @@ class Printer
     /**
      * @param EntityManager   $entityManager
      * @param string          $printer
-     * @param EntityQueueItem $queueItem
+     * @param QueueItemEntity $queueItem
      * @param array           $bookings
      */
-    public static function collectTicket(EntityManager $entityManager, $printer, EntityQueueItem $queueItem, $bookings)
+    public static function collectTicket(EntityManager $entityManager, $printer, QueueItemEntity $queueItem, $bookings)
     {
         $academic = $queueItem->getPerson();
         if (!($academic instanceof Academic)) {
             return;
         }
-
-        usort($bookings, array(self::class, 'articleSort'));
 
         $articles = array();
         $totalPrice = 0;
@@ -120,10 +118,10 @@ class Printer
     /**
      * @param EntityManager   $entityManager
      * @param string          $printer
-     * @param EntityQueueItem $queueItem
+     * @param QueueItemEntity $queueItem
      * @param array           $saleItems
      */
-    public static function saleTicket(EntityManager $entityManager, $printer, EntityQueueItem $queueItem, $saleItems)
+    public static function saleTicket(EntityManager $entityManager, $printer, QueueItemEntity $queueItem, $saleItems)
     {
         $academic = $queueItem->getPerson();
         if (!($academic instanceof Academic)) {

@@ -20,30 +20,40 @@
 
 namespace SyllabusBundle\Command\Socket;
 
+use SyllabusBundle\Component\Socket\Update as UpdateSocket;
+
 /**
- * Update command.
+ * Update
  *
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
-
-use SyllabusBundle\Component\WebSocket\Update as UpdateSocket;
-
-class Update extends \CommonBundle\Component\Console\Command\WebSocket
+class Update extends \CommonBundle\Component\Console\Command\Socket
 {
-    protected function createSocket()
-    {
-        return new UpdateSocket($this->getEntityManager(), $this->getMailTransport());
-    }
-
     protected function getCommandName()
     {
         return 'update';
+    }
+
+    protected function getSocket()
+    {
+        return new UpdateSocket(
+            $this->getServiceLocator(),
+            $this
+        );
+    }
+
+    protected function getSocketUri()
+    {
+        return $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('syllabus.update_socket_file');
     }
 
     protected function isSocketEnabled()
     {
         return $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('syllabus.update_socket_enabled') === '1';
+            ->getConfigValue('syllabus.update_socket_enabled');
     }
 }

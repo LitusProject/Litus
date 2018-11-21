@@ -20,29 +20,40 @@
 
 namespace CudiBundle\Command\Socket;
 
-use CudiBundle\Component\WebSocket\Sale\Server as SaleQueueSocket;
+use CudiBundle\Component\Socket\Sale as SaleSocket;
 
 /**
- * SaleQueue
+ * Sale
  *
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class SaleQueue extends \CommonBundle\Component\Console\Command\WebSocket
+class Sale extends \CommonBundle\Component\Console\Command\Socket
 {
-    protected function createSocket()
-    {
-        return new SaleQueueSocket($this->getEntityManager());
-    }
-
     protected function getCommandName()
     {
-        return 'sale-queue';
+        return 'sale';
+    }
+
+    protected function getSocket()
+    {
+        return new SaleSocket(
+            $this->getServiceLocator(),
+            $this
+        );
+    }
+
+    protected function getSocketUri()
+    {
+        return $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.queue_socket_file');
     }
 
     protected function isSocketEnabled()
     {
         return $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.queue_socket_enabled') === '1';
+            ->getConfigValue('cudi.queue_socket_enabled');
     }
 }

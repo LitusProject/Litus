@@ -18,7 +18,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SyllabusBundle\Component\XMLParser;
+namespace SyllabusBundle\Component\Parser;
 
 use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Entity\User\Person\Academic;
@@ -53,9 +53,9 @@ class Study
     private $mailTransport;
 
     /**
-     * @var array
+     * @var mixed
      */
-    private $callback;
+    private $redisClient;
 
     /**
      * @var \CommonBundle\Entity\General\AcademicYear
@@ -78,15 +78,16 @@ class Study
     private $activeCombinations;
 
     /**
-     * @param EntityManager      $entityManager
-     * @param TransportInterface $mailTransport
-     * @param array              $callback
+     * @param EntityManager        $entityManager
+     * @param TransportInterface   $mailTransport
+     * @param RedisClientInterface $redisClient
      */
-    public function __construct(EntityManager $entityManager, TransportInterface $mailTransport, $callback)
+    public function __construct(EntityManager $entityManager, TransportInterface $mailTransport, $redisClient)
     {
         $this->entityManager = $entityManager;
         $this->mailTransport = $mailTransport;
-        $this->callback = $callback;
+        $this->redisClient = $redisClient;
+
         $this->academicYear = $this->getAcademicYear();
         $this->activeCombinations = array();
     }
@@ -96,7 +97,11 @@ class Study
      */
     public function update()
     {
-        if ($this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')->getConfigValue('syllabus.enable_update') != '1') {
+        $isEnabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('syllabus.enable_update');
+
+        if (!$isEnabled) {
             return;
         }
 
@@ -135,6 +140,8 @@ class Study
         }
 
         $this->postCleanUpAcademicYear();
+
+        $this->callback('done');
     }
 
     /**
@@ -418,8 +425,7 @@ class Study
         );
         $client = new HttpClient();
         $client->setOptions(array('sslcapath' => '/etc/ssl/certs'));
-        $response = $client->setUri('http://www.kuleuven.be/wieiswie/nl/person/' . $identification)
-            ->send();
+        $response = $client->setUri('http://www.kuleuven.be/wieiswie/nl/person/' . $identification)->send();
 
         preg_match('/String.fromCharCode\(([\(\d,+\)]+)\)/', $response->getBody(), $matches);
 
@@ -580,7 +586,15 @@ class Study
      */
     private function callback($type, $extra = null)
     {
-        call_user_func($this->callback, $type, $extra);
+        $this->redisClient->publish(
+            'syllabus_parser_study',
+            $this->redisClient->_serialize(
+                array(
+                    'type'  => $type,
+                    'extra' => trim($extra),
+                )
+            )
+        );
     }
 
     /**
