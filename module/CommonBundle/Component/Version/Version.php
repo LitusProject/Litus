@@ -28,19 +28,35 @@ namespace CommonBundle\Component\Version;
 class Version
 {
     /**
+     * @param  integer|null $length
      * @return string
      */
-    public static function getCommitHash()
+    public static function getCommitHash($length = null)
     {
         if (file_exists(__DIR__ . '/../../../../COMMIT')) {
-            return substr(file_get_contents(__DIR__ . '/../../../../COMMIT'), 0, 8);
-        }
+            $commitHash = trim(file_get_contents(__DIR__ . '/../../../../COMMIT'));
+            if ($length !== null) {
+                $commitHash = substr($commitHash, 0, $length);
+            }
+        } else {
+            $commitHash = trim(exec('git rev-parse HEAD'));
+            if ($length !== null) {
+                $commitHash = substr($commitHash, 0, $length);
+            }
 
-        $commitHash = substr(trim(exec('git rev-parse HEAD')), 0, 8);
-        if (exec('git status --short') != '') {
-            $commitHash .= '-dirty';
+            if (exec('git status --short') != '') {
+                $commitHash .= '-dirty';
+            }
         }
 
         return $commitHash;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getShortCommitHash()
+    {
+        return static::getCommitHash(8);
     }
 }

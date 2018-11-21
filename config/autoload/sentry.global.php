@@ -18,6 +18,8 @@
  * @license http://litus.cc/LICENSE
  */
 
+use CommonBundle\Component\Version\Version;
+
 if (getenv('APPLICATION_ENV') != 'development') {
     if (!file_exists(__DIR__ . '/../sentry.config.php')) {
         throw new RuntimeException(
@@ -25,8 +27,19 @@ if (getenv('APPLICATION_ENV') != 'development') {
         );
     }
 
+    $sentryConfig = include __DIR__ . '/../sentry.config.php';
+
     return array(
-        'sentry' => include __DIR__ . '/../sentry.config.php',
+        'sentry' => array(
+            'dsn'     => $sentryConfig['dsn'],
+            'options' => array_merge(
+                array(
+                    'name'    => gethostname(),
+                    'version' => Version::getCommitHash(),
+                ),
+                $sentryConfig['options']
+            ),
+        ),
     );
 }
 

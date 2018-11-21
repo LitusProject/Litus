@@ -118,7 +118,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         return array(
             'php'   => $phpVersion[0],
             'zf'    => $zfVersion[0],
-            'litus' => Version::getCommitHash(),
+            'litus' => Version::getShortCommitHash(),
         );
     }
 

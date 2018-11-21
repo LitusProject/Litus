@@ -45,7 +45,7 @@ class ApplicationFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $application = new Application('Litus', Version::getCommitHash());
+        $application = new Application('Litus', Version::getShortCommitHash());
         $application->setCatchExceptions(true);
         $application->setAutoExit(false);
 
