@@ -35,8 +35,8 @@ class Module
         $sharedEvents = $events->getSharedManager();
 
         if (getenv('APPLICATION_ENV') == 'production') {
-            $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($services->get('sentry'), 'logMvcEvent'));
-            $events->attach(MvcEvent::EVENT_RENDER_ERROR, array($services->get('sentry'), 'logMvcEvent'));
+            $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($services->get('sentry_client'), 'logMvcEvent'));
+            $events->attach(MvcEvent::EVENT_RENDER_ERROR, array($services->get('sentry_client'), 'logMvcEvent'));
 
             $errorHandler = new Raven_ErrorHandler($services->get('raven_client'));
             $errorHandler->registerErrorHandler()

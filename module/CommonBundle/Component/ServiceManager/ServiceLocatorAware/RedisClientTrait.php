@@ -18,21 +18,26 @@
  * @license http://litus.cc/LICENSE
  */
 
-return array(
-    'document' => array(
-        'server'   => 'localhost',
-        'port'     => 27017,
-        'user'     => 'litus',
-        'password' => 'huQeyU8te3aXusaz',
-        'dbname'   => 'litus',
-        'options'  => array(),
-    ),
-    'relational' => array(
-        'driver'   => 'Doctrine\DBAL\Driver\PDOPgSql\Driver',
-        'host'     => 'localhost',
-        'port'     => 5432,
-        'user'     => 'litus',
-        'password' => 'huQeyU8te3aXusaz',
-        'dbname'   => 'litus',
-    ),
-);
+namespace CommonBundle\Component\ServiceManager\ServiceLocatorAware;
+
+/**
+ * A trait to define some common methods for classes with a ServiceLocator.
+ *
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ */
+
+trait RedisClientTrait
+{
+    /**
+     * @return \CommonBundle\Component\Redis\Client
+     */
+    public function getRedisClient()
+    {
+        return $this->getServiceLocator()->get('redis_client');
+    }
+
+    /**
+     * @return \Zend\ServiceManager\ServiceLocatorInterface
+     */
+    abstract public function getServiceLocator();
+}

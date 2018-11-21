@@ -51,7 +51,7 @@ class ApplicationFactory implements FactoryInterface
 
         if (getenv('APPLICATION_ENV') == 'production') {
             $events = new EventDispatcher();
-            $events->addListener(ConsoleEvents::ERROR, array($container->get('sentry'), 'logConsoleErrorEvent'));
+            $events->addListener(ConsoleEvents::ERROR, array($container->get('sentry_client'), 'logConsoleErrorEvent'));
 
             $application->setDispatcher($events);
 

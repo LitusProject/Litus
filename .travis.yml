@@ -1,6 +1,7 @@
 language: php
 services:
     - mongodb
+    - redis-server
 
 node_js:
     - node

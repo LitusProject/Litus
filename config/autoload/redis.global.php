@@ -18,21 +18,12 @@
  * @license http://litus.cc/LICENSE
  */
 
+if (!file_exists(__DIR__ . '/../redis.config.php')) {
+    throw new RuntimeException(
+        'The Redis configuration file (' . (__DIR__ . '/../redis.config.php') . ') was not found'
+    );
+}
+
 return array(
-    'document' => array(
-        'server'   => 'localhost',
-        'port'     => 27017,
-        'user'     => 'litus',
-        'password' => 'huQeyU8te3aXusaz',
-        'dbname'   => 'litus',
-        'options'  => array(),
-    ),
-    'relational' => array(
-        'driver'   => 'Doctrine\DBAL\Driver\PDOPgSql\Driver',
-        'host'     => 'localhost',
-        'port'     => 5432,
-        'user'     => 'litus',
-        'password' => 'huQeyU8te3aXusaz',
-        'dbname'   => 'litus',
-    ),
+    'redis' => include __DIR__ . '/../redis.config.php'
 );

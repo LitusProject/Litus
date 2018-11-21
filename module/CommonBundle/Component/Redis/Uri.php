@@ -18,34 +18,30 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\ServiceManager\ServiceLocatorAware;
+namespace CommonBundle\Component\Redis;
 
-/**
- * A trait to define some common methods for classes with a ServiceLocator.
- *
- * @author Pieter Maene <pieter.maene@litus.cc>
- */
-
-trait SentryTrait
-{
+class Uri {
     /**
-     * @return boolean
+     * @param  array  $components
+     * @return string
      */
-    protected function hasSentry()
+    public static function build($components)
     {
-        return $this->getServiceLocator()->has('sentry');
-    }
+        $uri = 'redis://';
+        if (isset($components['password']) && $components['password'] != '') {
+            $uri .= ':' . $components['password'] . '@';
+        }
 
-    /**
-     * @return \CommonBundle\Component\Sentry\Client
-     */
-    protected function getSentry()
-    {
-        return $this->getServiceLocator()->get('sentry');
-    }
+        $uri .= $components['host'];
 
-    /**
-     * @return \Zend\ServiceManager\ServiceLocatorInterface
-     */
-    abstract public function getServiceLocator();
+        if (isset($components['port'])) {
+            $uri .= ':' . $components['port'];
+        }
+
+        if (isset($components['database']) && $components['database'] != '') {
+            $uri .= '/' . $components['database'];
+        }
+
+        return $uri;
+    }
 }

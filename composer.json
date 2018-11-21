@@ -34,7 +34,9 @@
         "doctrine/doctrine-mongo-odm-module": "@stable",
 
         "alcaeus/mongo-php-adapter": "^1.1",
+        "colinmollenhour/credis": "^1.10",
         "erusev/parsedown": "^1.7",
+        "league/uri-parser": "^1.4",
         "misterion/ko-process": "^0.5.3",
         "mtdowling/cron-expression": "^1.2",
         "ocramius/package-versions": "^1.3",

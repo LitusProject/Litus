@@ -30,20 +30,22 @@ use CommonBundle\Component\Cache\ServiceManager\StorageFactory as CacheStorageFa
 use CommonBundle\Component\Console\ServiceManager\ApplicationFactory as ConsoleApplicationFactory;
 use CommonBundle\Component\Controller\Plugin\ServiceManager\PaginatorFactory;
 use CommonBundle\Component\Controller\ServiceManager\AbstractActionControllerInitializer;
-use CommonBundle\Component\Doctrine\Common\Cache\ServiceManager\MemcachedCacheFactory as DoctrineMemcachedCacheFactory;
+use CommonBundle\Component\Doctrine\Common\Cache\ServiceManager\RedisCacheFactory as DoctrineRedisCacheFactory;
 use CommonBundle\Component\Form\Factory as FormFactory;
 use CommonBundle\Component\Form\ServiceManager\FactoryFactory as FormFactoryFactory;
 use CommonBundle\Component\Hydrator\HydratorPluginManager;
 use CommonBundle\Component\Hydrator\ServiceManager\HydratorPluginManagerFactory;
 use CommonBundle\Component\Module\Config;
 use CommonBundle\Component\Module\ServiceManager\AbstractInstallerFactory;
+use CommonBundle\Component\Redis\Client as RedisClient;
+use CommonBundle\Component\Redis\ServiceManager\ClientFactory as RedisClientFactory;
 use CommonBundle\Component\Sentry\Client as SentryClient;
 use CommonBundle\Component\Sentry\ServiceManager\ClientFactory as SentryClientFactory;
 use CommonBundle\Component\Sentry\ServiceManager\RavenClientFactory;
 use CommonBundle\Component\Session\ServiceManager\ContainerFactory as SessionContainerFactory;
 use CommonBundle\Component\Validator\ServiceManager\AbstractValidatorFactory;
 use CommonBundle\Component\View\Helper\ServiceManager\AbstractHelperFactory;
-use Doctrine\Common\Cache\MemcachedCache as DoctrineMemcachedCache;
+use Doctrine\Common\Cache\RedisCache as DoctrineRedisCache;
 use Raven_Client;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Zend\Cache\Storage\StorageInterface as CacheStorage;
@@ -73,11 +75,12 @@ return Config::create(
                 CacheStorage::class              => CacheStorageFactory::class,
                 ConsoleApplication::class        => ConsoleApplicationFactory::class,
                 DoctrineCredentialAdapter::class => DoctrineCredentialAdapterFactory::class,
-                DoctrineMemcachedCache::class    => DoctrineMemcachedCacheFactory::class,
+                DoctrineRedisCache::class        => DoctrineRedisCacheFactory::class,
                 DoctrineService::class           => DoctrineServiceFactory::class,
                 FormFactory::class               => FormFactoryFactory::class,
                 HydratorPluginManager::class     => HydratorPluginManagerFactory::class,
                 Raven_Client::class              => RavenClientFactory::class,
+                RedisClient::class               => RedisClientFactory::class,
                 Sendmail::class                  => InvokableFactory::class,
                 SentryClient::class              => SentryClientFactory::class,
                 SessionContainer::class          => SessionContainerFactory::class,
@@ -91,14 +94,15 @@ return Config::create(
                 'authentication_service'            => DoctrineService::class,
                 'cache'                             => CacheStorage::class,
                 'console'                           => ConsoleApplication::class,
+                'redis_client'                      => RedisClient::class,
                 'hydrator_plugin_manager'           => HydratorPluginManager::class,
                 'mail_transport'                    => Sendmail::class,
                 'raven_client'                      => Raven_Client::class,
-                'sentry'                            => SentryClient::class,
+                'sentry_client'                     => SentryClient::class,
                 'session_container'                 => SessionContainer::class,
                 'translator'                        => MvcTranslator::class,
 
-                'doctrine.cache.memcached'          => DoctrineMemcachedCache::class,
+                'doctrine.cache.redis' => DoctrineRedisCache::class,
             ),
         ),
 

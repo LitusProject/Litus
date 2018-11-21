@@ -18,21 +18,24 @@
  * @license http://litus.cc/LICENSE
  */
 
+$libOptions = array();
+if (extension_loaded('redis')) {
+    $serializer = Redis::SERIALIZER_PHP;
+    if (extension_loaded('igbinary')) {
+        $serializer = Redis::SERIALIZER_IGBINARY;
+    }
+
+    $libOptions = array(
+        Redis::OPT_SERIALIZER => $serializer,
+    );
+}
+
 return array(
-    'document' => array(
-        'server'   => 'localhost',
-        'port'     => 27017,
-        'user'     => 'litus',
-        'password' => 'huQeyU8te3aXusaz',
-        'dbname'   => 'litus',
-        'options'  => array(),
-    ),
-    'relational' => array(
-        'driver'   => 'Doctrine\DBAL\Driver\PDOPgSql\Driver',
-        'host'     => 'localhost',
-        'port'     => 5432,
-        'user'     => 'litus',
-        'password' => 'huQeyU8te3aXusaz',
-        'dbname'   => 'litus',
-    ),
+    'host'          => 'localhost',
+    'port'          => 6379,
+    'timeout'       => null,
+    'persistent_id' => '',
+    'password'      => '',
+    'database'      => 0,
+    'lib_options'   => $libOptions,
 );

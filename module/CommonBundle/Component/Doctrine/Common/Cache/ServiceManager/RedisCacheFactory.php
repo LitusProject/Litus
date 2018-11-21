@@ -20,57 +20,66 @@
 
 namespace CommonBundle\Component\Doctrine\Common\Cache\ServiceManager;
 
-use Doctrine\Common\Cache\MemcachedCache;
+use Doctrine\Common\Cache\RedisCache;
 use Interop\Container\ContainerInterface;
-use Memcached;
+use Redis;
 use RuntimeException;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * Factory to create the Doctrine memcached cache instance.
+ * Factory to create the Doctrine Redis cache instance.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class MemcachedCacheFactory implements FactoryInterface
+class RedisCacheFactory implements FactoryInterface
 {
     /**
      * @param  ContainerInterface $container
      * @param  string             $requestedName
      * @param  array|null         $options
-     * @return MemcachedCache
+     * @return RedisCache
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        if (!extension_loaded('memcached')) {
-            throw new RuntimeException('The memcached extension is not loaded');
-        }
-
         $config = $container->get('config');
-        if (!isset($config['doctrine']['cache']['memcached'])) {
-            throw new RuntimeException('Could not find Doctrine memcached configuration');
+        if (!isset($config['redis'])) {
+            throw new RuntimeException('Could not find Redis configuration');
         }
 
-        $memcachedConfig = $config['doctrine']['cache']['memcached'];
-
-        $memcached = new Memcached();
-        if (!$memcached->addServers($memcachedConfig['servers'])) {
-            throw new RuntimeException('Failed to connect to the memcached servers');
+        $redis = new Redis();
+        if (isset($config['redis']['persistent_id'])) {
+            $connect = $redis->pconnect(
+                $config['redis']['host'],
+                $config['redis']['port'],
+                $config['redis']['timeout'],
+                $config['redis']['persistent_id']
+            );
+        } else {
+            $connect = $redis->connect(
+                $config['redis']['host'],
+                $config['redis']['port'],
+                $config['redis']['timeout']
+            );
         }
 
-        $memcachedCache = new MemcachedCache();
-        $memcachedCache->setNamespace($memcachedConfig['namespace']);
-        $memcachedCache->setMemcached($memcached);
+        if (!$connect) {
+            throw new RuntimeException('Failed to connect to Redis server');
+        }
 
-        return $memcachedCache;
+        $redisCache = new RedisCache();
+        $redisCache->setNamespace($config['doctrine']['cache']['redis']['namespace']);
+        $redisCache->setRedis($redis);
+
+        return $redisCache;
     }
 
     /**
      * @param  ServiceLocatorInterface $locator
-     * @return MemcachedCache
+     * @return RedisCache
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        return $this($serviceLocator, 'Doctrine\Common\Cache\MemcachedCache');
+        return $this($serviceLocator, 'Doctrine\Common\Cache\RedisCache');
     }
 }

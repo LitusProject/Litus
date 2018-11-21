@@ -27,16 +27,20 @@ if (!file_exists(__DIR__ . '/../database.config.php')) {
     );
 }
 
+if (!file_exists(__DIR__ . '/../redis.config.php')) {
+    throw new RuntimeException(
+        'The Redis configuration file (' . (__DIR__ . '/../redis.config.php') . ') was not found'
+    );
+}
+
 $databaseConfig = include __DIR__ . '/../database.config.php';
+$redisConfig = include __DIR__ . '/../redis.config.php';
 
 return array(
     'doctrine' => array(
         'cache' => array(
-            'memcached' => array(
-                'namespace' => getenv('ORGANIZATION') . '_Litus_Doctrine',
-                'servers'   => array(
-                    array('localhost', 11211),
-                ),
+            'redis' => array(
+                'namespace' => 'cache:doctrine',
             ),
         ),
         'configuration' => array(
@@ -48,12 +52,12 @@ return array(
                 'default_db'         => $databaseConfig['document']['dbname'],
             ),
             'orm_default' => array(
-                'metadataCache'    => getenv('APPLICATION_ENV') != 'development' ? 'memcached' : 'array',
-                'queryCache'       => getenv('APPLICATION_ENV') != 'development' ? 'memcached' : 'array',
-                'resultCache'      => getenv('APPLICATION_ENV') != 'development' ? 'memcached' : 'array',
-                'hydration_cache'  => getenv('APPLICATION_ENV') != 'development' ? 'memcached' : 'array',
+                'metadata_cache'   => getenv('APPLICATION_ENV') != 'development' ? 'redis' : 'array',
+                'query_cache'      => getenv('APPLICATION_ENV') != 'development' ? 'redis' : 'array',
+                'result_cache'     => getenv('APPLICATION_ENV') != 'development' ? 'redis' : 'array',
+                'hydration_cache'  => getenv('APPLICATION_ENV') != 'development' ? 'redis' : 'array',
                 'generate_proxies' => getenv('APPLICATION_ENV') == 'development',
-                'proxyDir'         => 'data/proxies/',
+                'proxy_dir'        => 'data/proxies/',
             ),
         ),
         'connection' => array(

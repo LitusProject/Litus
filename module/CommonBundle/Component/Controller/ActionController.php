@@ -29,8 +29,9 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAware\ConfigTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\FormFactoryTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\MailTransportTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\RedisClientTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\RouterTrait;
-use CommonBundle\Component\ServiceManager\ServiceLocatorAware\SentryTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\SentryClientTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\SessionContainerTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\TranslatorTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\ViewRendererTrait;
@@ -61,8 +62,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     use DoctrineTrait;
     use FormFactoryTrait;
     use MailTransportTrait;
+    use RedisClientTrait;
     use RouterTrait;
-    use SentryTrait;
+    use SentryClientTrait;
     use SessionContainerTrait;
     use TranslatorTrait;
     use ViewRendererTrait;
@@ -462,7 +464,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     protected function logMessage($message)
     {
         if (getenv('APPLICATION_ENV') != 'development') {
-            $this->getSentry()->logMessage($message);
+            $this->getSentryClient()->logMessage($message);
         }
     }
 
