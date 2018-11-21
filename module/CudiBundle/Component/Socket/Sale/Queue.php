@@ -20,8 +20,8 @@
 
 namespace CudiBundle\Component\Socket\Sale;
 
-use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Component\Socket\User;
+use CommonBundle\Component\Util\AcademicYear;
 use CudiBundle\Entity\Sale\Booking;
 use CudiBundle\Entity\Sale\QueueItem as QueueItemEntity;
 use CudiBundle\Entity\Sale\Session;

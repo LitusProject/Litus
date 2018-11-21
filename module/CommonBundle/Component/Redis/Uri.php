@@ -20,9 +20,10 @@
 
 namespace CommonBundle\Component\Redis;
 
-class Uri {
+class Uri
+{
     /**
-     * @param  array  $components
+     * @param  array $components
      * @return string
      */
     public static function build($components)

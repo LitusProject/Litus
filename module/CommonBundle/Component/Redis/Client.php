@@ -44,8 +44,8 @@ class Client
             $config['password']
         );
 
-        foreach($config['lib_options'] as $option => $value) {
-            $this->credisClient->setOption($option);
+        foreach ($config['lib_options'] as $key => $value) {
+            $this->credisClient->setOption($key, $value);
         }
     }
 

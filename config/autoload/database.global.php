@@ -27,14 +27,7 @@ if (!file_exists(__DIR__ . '/../database.config.php')) {
     );
 }
 
-if (!file_exists(__DIR__ . '/../redis.config.php')) {
-    throw new RuntimeException(
-        'The Redis configuration file (' . (__DIR__ . '/../redis.config.php') . ') was not found'
-    );
-}
-
 $databaseConfig = include __DIR__ . '/../database.config.php';
-$redisConfig = include __DIR__ . '/../redis.config.php';
 
 return array(
     'doctrine' => array(

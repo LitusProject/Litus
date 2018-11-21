@@ -22,7 +22,6 @@ namespace CommonBundle\Component\Console\Command;
 
 use CommonBundle\Component\React\EventLoop\LoopAwareInterface;
 use CommonBundle\Component\React\Socket\Server;
-use Closure;
 use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
 use Ratchet\WebSocket\WsServer;

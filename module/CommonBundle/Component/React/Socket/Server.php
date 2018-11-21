@@ -31,7 +31,8 @@ class Server
      * @param  LoopInterface $loop The React loop to run the socket on
      * @return Server
      */
-    public static function factory($uri, LoopInterface $loop) {
+    public static function factory($uri, LoopInterface $loop)
+    {
         $parser = new Parser();
         if ($parser($uri)['scheme'] == 'unix') {
             if (file_exists($parser($uri)['path'])) {

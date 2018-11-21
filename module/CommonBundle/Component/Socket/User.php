@@ -177,7 +177,7 @@ class User implements ConnectionInterface
      * @param string $name
      * @param mixed  $value
      */
-    public function __set ($name, $value)
+    public function __set($name, $value)
     {
         $this->data[$name] = $value;
     }

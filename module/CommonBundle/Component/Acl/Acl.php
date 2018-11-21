@@ -69,7 +69,7 @@ class Acl extends \Zend\Permissions\Acl\Acl
         }
     }
 
-    // phpcs: disable Squiz.Commenting.FunctionComment.IncorrectParamVarName
+    // phpcs:disable Squiz.Commenting.FunctionComment.IncorrectParamVarName
     /**
      * Adding a resource retrieved from the database as well as its children.
      *

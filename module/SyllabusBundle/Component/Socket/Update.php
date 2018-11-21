@@ -22,7 +22,6 @@ namespace SyllabusBundle\Component\Socket;
 
 use Clue\React\Redis\Client as RedisClient;
 use Clue\React\Redis\Factory as RedisFactory;
-use CommonBundle\Component\Acl\Acl;
 use CommonBundle\Component\Console\Command;
 use CommonBundle\Component\Ratchet\Redis\MessageComponentInterface as RedisMessageComponentInterface;
 use CommonBundle\Component\React\EventLoop\LoopAwareInterface;
@@ -108,7 +107,9 @@ class Update extends \CommonBundle\Component\Socket\Server implements LoopAwareI
 
                 $this->redisClient = $client;
             },
+            // phpcs:disable SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly
             function (Exception $e) {
+            // phpcs:enable
                 $this->onRedisError($e);
             }
         );
@@ -213,7 +214,9 @@ class Update extends \CommonBundle\Component\Socket\Server implements LoopAwareI
     /**
      * @param Exception $e
      */
+    // phpcs:disable SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly
     public function onRedisError(Exception $e)
+    // phpcs:enable
     {
         if (getenv('APPLICATION_ENV') != 'development') {
             $this->getSentryClient()->logException($e);

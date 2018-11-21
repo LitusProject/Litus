@@ -20,7 +20,6 @@
 
 namespace CudiBundle\Component\Socket;
 
-use CommonBundle\Component\Acl\Acl;
 use CommonBundle\Component\Console\Command;
 use CommonBundle\Component\Socket\User;
 use CudiBundle\Component\Socket\Sale\Printer;

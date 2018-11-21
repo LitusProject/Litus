@@ -39,8 +39,9 @@ class Bytes
      * @param  integer $decimals The number of decimal places
      * @return string
      */
-    function format($bytes, $decimals = 2) {
+    public static function format($bytes, $decimals = 2)
+    {
         $factor = floor((strlen($bytes) - 1) / 3);
-        return sprintf("%.{$decimals}f", $bytes/pow(1024, $factor)) . @self::UNITS[$factor];
+        return sprintf('%.{' . $decimals . '}f', $bytes / pow(1024, $factor)) . @self::UNITS[$factor];
     }
 }

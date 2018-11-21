@@ -20,8 +20,8 @@
 
 namespace CudiBundle\Component\Socket\Sale;
 
-use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Component\Socket\User;
+use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Entity\User\Person\Academic;
 use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
 use CudiBundle\Component\Socket\Sale\Printer;
