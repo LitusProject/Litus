@@ -185,8 +185,6 @@ class Update extends \CommonBundle\Component\Socket\Server implements LoopAwareI
 
                 $this->processManager->fork(
                     function (Process $p) {
-                        $p->setProcessTitle('litus:syllabus:study-parser');
-
                         // Close parent connection to force reconnection in child process
                         $this->getEntityManager()->getConnection()->close();
 
