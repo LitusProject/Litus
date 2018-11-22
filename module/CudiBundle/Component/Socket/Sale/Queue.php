@@ -359,10 +359,6 @@ class Queue
             $this->queueItems[$id]->setUser($user);
         }
 
-        foreach ($this->queueItems as $queueItem) {
-            var_dump(serialize(get_class($queueItem)));
-        }
-
         return $this->queueItems[$id]->getSaleInfo();
     }
 
