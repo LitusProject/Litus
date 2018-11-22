@@ -166,9 +166,7 @@ abstract class Server implements MessageComponentInterface, ServiceLocatorAwareI
      * @param ConnectionInterface $conn
      * @param Exception           $e
      */
-    // phpcs:disable SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly
     public function onError(ConnectionInterface $conn, Exception $e)
-    // phpcs:enable
     {
         if (getenv('APPLICATION_ENV') != 'development') {
             $this->getSentryClient()->logException($e);

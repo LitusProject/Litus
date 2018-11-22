@@ -68,7 +68,7 @@ class Client
             case Redis::SERIALIZER_PHP:
                 return serialize($value);
 
-            case REDIS::SERIALIZER_IGBINARY:
+            case Redis::SERIALIZER_IGBINARY:
                 return igbinary_serialize($value);
 
             default:
@@ -86,7 +86,7 @@ class Client
             case Redis::SERIALIZER_PHP:
                 return unserialize($str);
 
-            case REDIS::SERIALIZER_IGBINARY:
+            case Redis::SERIALIZER_IGBINARY:
                 return igbinary_unserialize($str);
 
             default:

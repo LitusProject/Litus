@@ -29,7 +29,5 @@ interface ComponentInterface
     /**
      * @param Exception $e
      */
-    // phpcs:disable SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly
     public function onRedisError(Exception $e);
-    // phpcs:enable
 }

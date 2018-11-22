@@ -212,9 +212,7 @@ class Update extends \CommonBundle\Component\Socket\Server implements LoopAwareI
     /**
      * @param Exception $e
      */
-    // phpcs:disable SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly
     public function onRedisError(Exception $e)
-    // phpcs:enable
     {
         if (getenv('APPLICATION_ENV') != 'development') {
             $this->getSentryClient()->logException($e);
