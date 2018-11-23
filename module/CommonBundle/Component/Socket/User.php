@@ -20,6 +20,7 @@
 
 namespace CommonBundle\Component\Socket;
 
+use CommonBundle\Component\Acl\Acl;
 use Doctrine\ORM\EntityManager;
 use Ratchet\ConnectionInterface;
 

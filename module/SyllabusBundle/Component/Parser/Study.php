@@ -20,6 +20,7 @@
 
 namespace SyllabusBundle\Component\Parser;
 
+use CommonBundle\Component\Redis\Client as RedisClient;
 use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Entity\User\Person\Academic;
 use CommonBundle\Entity\User\Status\University as UniversityStatus;
@@ -80,9 +81,9 @@ class Study
     /**
      * @param EntityManager        $entityManager
      * @param TransportInterface   $mailTransport
-     * @param RedisClientInterface $redisClient
+     * @param RedisClient          $redisClient
      */
-    public function __construct(EntityManager $entityManager, TransportInterface $mailTransport, $redisClient)
+    public function __construct(EntityManager $entityManager, TransportInterface $mailTransport, RedisClient $redisClient)
     {
         $this->entityManager = $entityManager;
         $this->mailTransport = $mailTransport;

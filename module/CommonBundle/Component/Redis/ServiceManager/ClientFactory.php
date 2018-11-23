@@ -37,7 +37,7 @@ class ClientFactory implements FactoryInterface
      * @param  ContainerInterface $container
      * @param  string             $requestedName
      * @param  array|null         $options
-     * @return Credis_Client
+     * @return Client
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
@@ -51,10 +51,10 @@ class ClientFactory implements FactoryInterface
 
     /**
      * @param  ServiceLocatorInterface $locator
-     * @return Credis_Client
+     * @return Client
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        return $this($serviceLocator, 'Credis_Client');
+        return $this($serviceLocator, 'CommonBundle\Component\Redis\Client');
     }
 }
