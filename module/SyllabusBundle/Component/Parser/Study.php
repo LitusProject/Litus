@@ -588,7 +588,7 @@ class Study
     {
         $this->redisClient->publish(
             'syllabus_parser_study',
-            $this->redisClient->_serialize(
+            $this->redisClient->serialize(
                 array(
                     'type'  => $type,
                     'extra' => trim($extra),

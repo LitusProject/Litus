@@ -229,7 +229,7 @@ class Update extends \CommonBundle\Component\Socket\Server implements LoopAwareI
     {
         switch ($channel) {
             case self::REDIS_CHANNELS[StudyParser::class]:
-                $payload = $this->getRedisClient()->_unserialize($payload);
+                $payload = $this->getRedisClient()->unserialize($payload);
                 if ($payload['type'] == 'done') {
                     $this->redisClient->unsubscribe();
                 }

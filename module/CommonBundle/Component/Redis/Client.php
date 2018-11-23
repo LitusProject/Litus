@@ -62,7 +62,7 @@ class Client
      * @param  mixed $value
      * @return string
      */
-    public function _serialize($value)
+    public function serialize($value)
     {
         switch ($this->config['lib_options'][Redis::OPT_SERIALIZER]) {
             case Redis::SERIALIZER_PHP:
@@ -80,7 +80,7 @@ class Client
      * @param  string $str
      * @return mixed
      */
-    public function _unserialize($str)
+    public function unserialize($str)
     {
         switch ($this->config['lib_options'][Redis::OPT_SERIALIZER]) {
             case Redis::SERIALIZER_PHP:
@@ -95,8 +95,9 @@ class Client
     }
 
     /**
-     * @param string $name
-     * @param
+     * @param  string $name
+     * @param  array  $args
+     * @return mixed
      */
     public function __call($name, $args)
     {
