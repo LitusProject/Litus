@@ -30,26 +30,6 @@ return array(
         'description' => 'The ID of the organization on the official result page',
     ),
     array(
-        'key'         => 'sport.queue_socket_file',
-        'value'       => 'tcp://127.0.0.1:8897',
-        'description' => 'The file used for the WebSocket of the queue',
-    ),
-    array(
-        'key'         => 'sport.queue_socket_public',
-        'value'       => ':8897',
-        'description' => 'The public address for the WebSocket of the queue',
-    ),
-    array(
-        'key'         => 'sport.queue_socket_key',
-        'value'       => md5(uniqid(rand(), true)),
-        'description' => 'The public address for the WebSocket of the queue',
-    ),
-    array(
-        'key'         => 'sport.queue_socket_enabled',
-        'value'       => '0',
-        'description' => 'Whether the sport run queue socket is enabled',
-    ),
-    array(
         'key'   => 'sport.points_criteria',
         'value' => serialize(
             array(

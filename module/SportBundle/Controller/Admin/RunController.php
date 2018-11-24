@@ -35,20 +35,6 @@ use Zend\View\Model\ViewModel;
  */
 class RunController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
-    public function queueAction()
-    {
-        return new ViewModel(
-            array(
-                'socketUrl'   => $this->getSocketUrl(),
-                'authSession' => $this->getAuthentication()
-                    ->getSessionObject(),
-                'key' => $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('sport.queue_socket_key'),
-            )
-        );
-    }
-
     public function lapsAction()
     {
         $paginator = $this->paginator()->createFromQuery(
@@ -330,20 +316,6 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         );
     }
 
-    public function updateAction()
-    {
-        return new ViewModel(
-            array(
-                'socketUrl'   => $this->getSocketUrl(),
-                'authSession' => $this->getAuthentication()
-                    ->getSessionObject(),
-                'key' => $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('sport.queue_socket_key'),
-            )
-        );
-    }
-
     public function runnersAction()
     {
         $runners = $this->getEntityManager()
@@ -457,18 +429,6 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         }
 
         return $academicYear;
-    }
-
-    /**
-     * Returns the WebSocket URL.
-     *
-     * @return string
-     */
-    protected function getSocketUrl()
-    {
-        return $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('sport.queue_socket_public');
     }
 
     /**

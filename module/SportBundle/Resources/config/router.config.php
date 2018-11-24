@@ -31,106 +31,13 @@ return array(
                 ),
                 'defaults' => array(
                     'controller' => 'sport_admin_run',
-                    'action'     => 'queue',
-                ),
-            ),
-        ),
-        'sport_run_index' => array(
-            'type'    => 'Zend\Router\Http\Segment',
-            'options' => array(
-                'route'       => '[/:language]/run[/:action][/]',
-                'constraints' => array(
-                    'language' => '[a-z]{2}',
-                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                ),
-                'defaults' => array(
-                    'controller' => 'sport_run_index',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
-        'sport_run_group' => array(
-            'type'    => 'Zend\Router\Http\Segment',
-            'options' => array(
-                'route'       => '[/:language]/run/group[/:action[/:university_identification]][/]',
-                'constraints' => array(
-                    'language'                  => '[a-z]{2}',
-                    'action'                    => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'university_identification' => '[a-z]{1}[0-9]{7}',
-                ),
-                'defaults' => array(
-                    'controller' => 'sport_run_group',
-                    'action'     => 'add',
-                ),
-            ),
-        ),
-        'sport_run_queue' => array(
-            'type'    => 'Zend\Router\Http\Segment',
-            'options' => array(
-                'route'       => '[/:language]/run/queue[/:action[/:university_identification]][/]',
-                'constraints' => array(
-                    'language'                  => '[a-z]{2}',
-                    'action'                    => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'university_identification' => '[a-z0-9]{1}[0-9]{7}',
-                ),
-                'defaults' => array(
-                    'controller' => 'sport_run_queue',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
-        'sport_run_tombola' => array(
-            'type'    => 'Zend\Router\Http\Segment',
-            'options' => array(
-                'route'       => '[/:language]/run/tombola[/:action[/:university_identification]][/]',
-                'constraints' => array(
-                    'language'                  => '[a-z]{2}',
-                    'action'                    => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'university_identification' => '[a-z0-9]{1}[0-9]{7}',
-                ),
-                'defaults' => array(
-                    'controller' => 'sport_run_tombola',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
-        'sport_run_screen' => array(
-            'type'    => 'Zend\Router\Http\Segment',
-            'options' => array(
-                'route'       => '[/:language]/run/screen[/:action][/]',
-                'constraints' => array(
-                    'language' => '[a-z]{2}',
-                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                ),
-                'defaults' => array(
-                    'controller' => 'sport_run_screen',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
-        'sport_run_screen_outside' => array(
-            'type'    => 'Zend\Router\Http\Segment',
-            'options' => array(
-                'route'       => '[/:language]/run/screenoutside[/:action][/]',
-                'constraints' => array(
-                    'language' => '[a-z]{2}',
-                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                ),
-                'defaults' => array(
-                    'controller' => 'sport_run_screen_outside',
-                    'action'     => 'index',
+                    'action'     => 'laps',
                 ),
             ),
         ),
     ),
 
     'controllers' => array(
-        'sport_admin_run'          => 'SportBundle\Controller\Admin\RunController',
-        'sport_run_index'          => 'SportBundle\Controller\Run\IndexController',
-        'sport_run_group'          => 'SportBundle\Controller\Run\GroupController',
-        'sport_run_queue'          => 'SportBundle\Controller\Run\QueueController',
-        'sport_run_screen'         => 'SportBundle\Controller\Run\ScreenController',
-        'sport_run_screen_outside' => 'SportBundle\Controller\Run\ScreenOutsideController',
-        'sport_run_tombola'        => 'SportBundle\Controller\Run\TombolaController',
+        'sport_admin_run' => 'SportBundle\Controller\Admin\RunController',
     ),
 );
