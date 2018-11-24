@@ -491,6 +491,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             return new ViewModel();
         }
 
+        $registrations = array();
         switch ($this->getParam('field')) {
             case 'university_identification':
                 $registrations = $this->getEntityManager()

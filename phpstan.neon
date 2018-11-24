@@ -1,6 +1,6 @@
 parameters:
     tmpDir: phpstan/
-    level: 0
+    level: 1
     paths:
         - bin/
         - module/

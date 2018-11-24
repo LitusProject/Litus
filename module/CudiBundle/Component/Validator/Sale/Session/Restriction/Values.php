@@ -88,7 +88,7 @@ class Values extends \CommonBundle\Component\Validator\AbstractValidator
             return true;
         }
 
-        if (($context !== null) && isset($context) && array_key_exists($this->options['start_value'], $context)) {
+        if (($context !== null) && array_key_exists($this->options['start_value'], $context)) {
             $startValue = $context[$this->options['start_value']];
             $this->startValue = $startValue;
         } else {

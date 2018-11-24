@@ -155,6 +155,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
             $this->getEntityManager()->flush();
         }
+
         $eventCompanyMaps = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Event\CompanyMap')
             ->findAllByEvent($event);
@@ -173,12 +174,12 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        $reservation = $this->getVanReservationEntity();
-        if ($reservation === null) {
+        $event = $this->getEventEntity();
+        if ($event === null) {
             return new ViewModel();
         }
 
-        $this->getEntityManager()->remove($reservation);
+        $this->getEntityManager()->remove($event);
         $this->getEntityManager()->flush();
 
         return new ViewModel(

@@ -75,8 +75,7 @@ class TimeSlot extends \CommonBundle\Component\Validator\AbstractValidator
         $this->setValue($value);
 
         $valid = true;
-
-        if (isset($value) && $value && $this->options['person'] !== null) {
+        if ($this->options['person'] !== null) {
             $occupation = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Field\TimeSlot')
                 ->findOneOccupationByPersonAndTime($this->options['person'], $this->options['timeslot']->getStartDate(), $this->options['timeslot']->getEndDate());
@@ -89,7 +88,11 @@ class TimeSlot extends \CommonBundle\Component\Validator\AbstractValidator
 
             $conflictingSlots = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Field\TimeSlot')
-                ->findAllConflictingByFormAndTime($this->options['timeslot']->getForm(), $this->options['timeslot']->getStartDate(), $this->options['timeslot']->getEndDate());
+                ->findAllConflictingByFormAndTime(
+                    $this->options['timeslot']->getForm(),
+                    $this->options['timeslot']->getStartDate(),
+                    $this->options['timeslot']->getEndDate()
+                );
 
             // No overlap with other selections in this form
             foreach ($conflictingSlots as $conflictingSlot) {
