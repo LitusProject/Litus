@@ -79,9 +79,9 @@ class Study
     private $activeCombinations;
 
     /**
-     * @param EntityManager        $entityManager
-     * @param TransportInterface   $mailTransport
-     * @param RedisClient          $redisClient
+     * @param EntityManager      $entityManager
+     * @param TransportInterface $mailTransport
+     * @param RedisClient        $redisClient
      */
     public function __construct(EntityManager $entityManager, TransportInterface $mailTransport, RedisClient $redisClient)
     {
