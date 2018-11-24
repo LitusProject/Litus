@@ -21,6 +21,7 @@
 return array(
     'dsn'     => 'https://61238ecf9b0d318bd431673db627592b:1fe5b3bd982d40fbb3c93a99f2d5192f@localhost/1',
     'options' => array(
+        'name'     => gethostname(),
         'app_path' => '/var/www/litus',
     ),
 );
