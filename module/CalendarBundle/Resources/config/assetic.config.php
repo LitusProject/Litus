@@ -18,6 +18,11 @@
  * @license http://litus.cc/LICENSE
  */
 
+namespace CalendarBundle;
+
+use CommonBundle\Component\Assetic\Filter\Js as JsFilter;
+use CommonBundle\Component\Assetic\Filter\Less as LessFilter;
+
 return array(
     'controllers' => array(
         'calendar_admin_calendar' => array(
@@ -69,7 +74,11 @@ return array(
             'assets' => array(
                 'calendar/less/calendar.less',
             ),
-            'filters' => array('less'),
+            'filters' => array(
+                '?LessFilter' => array(
+                    'name' => LessFilter::class,
+                ),
+            ),
             'options' => array(
                 'output' => 'calendar_css.css',
             ),
@@ -78,7 +87,11 @@ return array(
             'assets' => array(
                 'calendar/js/calendar.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
     ),
 );

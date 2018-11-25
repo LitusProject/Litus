@@ -20,8 +20,8 @@
 
 namespace TicketBundle\Controller\Sale;
 
-use TicketBundle\Entity\Ticket,
-    Zend\View\Model\ViewModel;
+use TicketBundle\Entity\Ticket;
+use Zend\View\Model\ViewModel;
 
 /**
  * TicketController
@@ -55,7 +55,8 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
     {
         $this->initAjax();
 
-        if (!($ticket = $this->getTicketEntity())) {
+        $ticket = $this->getTicketEntity();
+        if ($ticket === null) {
             return new ViewModel();
         }
 
@@ -73,7 +74,12 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
     {
         $this->initAjax();
 
-        if (!($ticket = $this->getTicketEntity()) || !$ticket->getEvent()->areTicketsGenerated()) {
+        $ticket = $this->getTicketEntity();
+        if ($ticket === null) {
+            return new ViewModel();
+        }
+
+        if (!$ticket->getEvent()->areTicketsGenerated()) {
             return new ViewModel();
         }
 
@@ -91,7 +97,8 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
     {
         $this->initAjax();
 
-        if (!($ticket = $this->getTicketEntity())) {
+        $ticket = $this->getTicketEntity();
+        if ($ticket === null) {
             return new ViewModel();
         }
 
@@ -109,7 +116,8 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
     {
         $this->initAjax();
 
-        if (!($ticket = $this->getTicketEntity())) {
+        $ticket = $this->getTicketEntity();
+        if ($ticket === null) {
             return new ViewModel();
         }
 

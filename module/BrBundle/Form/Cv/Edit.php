@@ -27,7 +27,7 @@ use BrBundle\Entity\Cv\Entry as CvEntry;
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Edit extends Add
+class Edit extends \BrBundle\Form\Cv\Add
 {
     /**
      * @var CvEntry
@@ -38,11 +38,10 @@ class Edit extends Add
     {
         parent::init();
 
-        $this->remove('submit');
+        $this->remove('submit')
+            ->addSubmit('Save Changes');
 
-        $this->addSubmit('Save Changes');
-
-        if (null !== $this->entry) {
+        if ($this->entry !== null) {
             $this->bind($this->entry);
         }
     }

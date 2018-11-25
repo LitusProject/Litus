@@ -20,8 +20,8 @@
 
 namespace QuizBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a team.
@@ -32,7 +32,7 @@ use Doctrine\Common\Collections\ArrayCollection,
 class Team
 {
     /**
-     * @var int The entry's unique identifier
+     * @var integer The entry's unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -56,7 +56,7 @@ class Team
     private $quiz;
 
     /**
-     * @var int The number of the team
+     * @var integer The number of the team
      *
      * @ORM\Column(type="smallint")
      */
@@ -79,7 +79,7 @@ class Team
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -114,7 +114,7 @@ class Team
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getNumber()
     {
@@ -122,7 +122,7 @@ class Team
     }
 
     /**
-     * @param  int  $number
+     * @param  integer $number
      * @return self
      */
     public function setNumber($number)
@@ -130,5 +130,13 @@ class Team
         $this->number = $number;
 
         return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getPoints()
+    {
+        return $this->points;
     }
 }

@@ -19,5 +19,5 @@
  */
 
 return array(
-    'install.calendar' => 'CalendarBundle\Command\Install',
+    'install_calendar' => 'CalendarBundle\Command\Install',
 );

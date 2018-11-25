@@ -20,9 +20,9 @@
 
 namespace CommonBundle\Entity;
 
-use CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores the node item.
@@ -44,7 +44,7 @@ use CommonBundle\Entity\User\Person,
 abstract class Node
 {
     /**
-     * @var int The ID of this node
+     * @var integer The ID of this node
      *
      * @ORM\Id
      * @ORM\GeneratedValue

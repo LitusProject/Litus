@@ -20,18 +20,18 @@
 
 namespace SportBundle\Component\WebSocket\Run;
 
-use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Component\WebSocket\User,
-    CommonBundle\Entity\User\Person,
-    DateInterval,
-    DateTime,
-    Doctrine\ORM\EntityManager,
-    SportBundle\Entity\Lap,
-    SportBundle\Entity\Runner;
+use CommonBundle\Component\Acl\Acl;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Component\WebSocket\User;
+use DateInterval;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use SportBundle\Entity\Lap;
+use SportBundle\Entity\Runner;
 
 /**
- * This is the server to handle all requests by the websocket protocol for the Queue.
+ * This is the server to handle all requests by the WebSocket protocol
+ * for the Queue.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
@@ -43,7 +43,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     private $entityManager;
 
     /**
-     * @var int Minimum runtime required (in seconds)
+     * @var integer Minimum runtime required (in seconds)
      */
     private static $minLapTime = 50;
 
@@ -87,7 +87,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         $command = json_decode($data);
 
-        if (null == $command) {
+        if ($command == null) {
             return;
         }
 
@@ -106,7 +106,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     return;
                 }
 
-                if ('development' != getenv('APPLICATION_ENV')) {
+                if (getenv('APPLICATION_ENV') != 'development') {
                     if (!isset($command->authSession)) {
                         $this->removeUser($user);
                         $now = new DateTime();
@@ -124,9 +124,10 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                         $acl = new Acl($this->entityManager);
 
                         foreach ($authSession->getPerson()->getRoles() as $role) {
-                            if (
-                            $role->isAllowed(
-                                $acl, 'sport_run_screen', 'index'
+                            if ($role->isAllowed(
+                                $acl,
+                                'sport_run_screen',
+                                'index'
                             )
                             ) {
                                 $allowed = true;
@@ -134,7 +135,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                         }
                     }
 
-                    if (null == $authSession || !$allowed) {
+                    if ($authSession == null || !$allowed) {
                         $this->removeUser($user);
                         $now = new DateTime();
                         echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
@@ -212,14 +213,14 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      */
     private function addToQueue($data)
     {
-        if ('' != $data->universityIdentification
-            && '' == $data->firstName
-            && '' == $data->lastName
+        if ($data->universityIdentification != ''
+            && $data->firstName == ''
+            && $data->lastName == ''
         ) {
             $academic = $this->entityManager
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findOneByUniversityIdentification($data->universityIdentification);
-            if (null !== $academic) {
+            if ($academic !== null) {
                 $data->firstName = $academic->getFirstName();
                 $data->lastName = $academic->getLastName();
             }
@@ -229,7 +230,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('SportBundle\Entity\Runner')
             ->findOneByUniversityIdentification($data->universityIdentification);
 
-        if (null === $runner) {
+        if ($runner === null) {
             $runner = $this->entityManager
                 ->getRepository('SportBundle\Entity\Runner')
                 ->findOneByRunnerIdentification($data->universityIdentification);
@@ -239,13 +240,13 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $department = $this->entityManager
                 ->getRepository('SportBundle\Entity\Department')
                 ->findOneById($data->department);
-        } elseif (null !== $runner) {
+        } elseif ($runner !== null) {
             $department = $runner->getDepartment();
         } else {
             $department = null;
         }
 
-        if (null === $runner) {
+        if ($runner === null) {
             $academic = $this->entityManager
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findOneByUniversityIdentification($data->universityIdentification);
@@ -261,7 +262,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
             $runner->setRunnerIdentification($data->universityIdentification);
         } else {
-            if (null !== $department) {
+            if ($department !== null) {
                 $runner->setDepartment($department);
             }
         }
@@ -304,7 +305,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $laps[] = $this->jsonLap($lap, 'next');
         }
 
-        $queueSize = sizeof($nextLaps);
+        $queueSize = count($nextLaps);
 
         $fastestLap = $this->getFastestLap();
         $officialResults = $this->getOfficialResults();
@@ -333,13 +334,13 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
-     * @param  Lap|null    $lap
-     * @param  string      $state
+     * @param  Lap|null $lap
+     * @param  string   $state
      * @return object|null
      */
     private function jsonLap(Lap $lap = null, $state = '')
     {
-        if (null === $lap) {
+        if ($lap === null) {
             return null;
         }
 
@@ -352,7 +353,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             'firstName'        => $lap->getRunner()->getFirstName(),
             'lastName'         => $lap->getRunner()->getLastName(),
             'registrationTime' => $lap->getRegistrationTime()->format('d/m/Y H:i:s'),
-            'lapTime'          => (null !== $lap->getStartTime()) ? $lap->getLapTime()->format('%i:%S') : '',
+            'lapTime'          => $lap->getStartTime() !== null ? $lap->getLapTime()->format('%i:%S') : '',
             'points'           => $lap->getPoints(),
             'runnerLapCount'   => $lap->getRunner()->getStartedLapsCount($this->getAcademicYear()),
             'state'            => $state,
@@ -377,11 +378,11 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      */
     private function startLap()
     {
-        if (null !== $this->getCurrentLap()) {
+        if ($this->getCurrentLap() !== null) {
             $this->getCurrentLap()->stop();
         }
 
-        if (null !== $this->getNextLap()) {
+        if ($this->getNextLap() !== null) {
             $this->getNextLap()->start();
         }
 
@@ -389,7 +390,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
-     * @return null|Lap
+     * @return Lap|null
      */
     private function getCurrentLap()
     {
@@ -399,7 +400,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
-     * @return null|Lap
+     * @return Lap|null
      */
     private function getNextLap()
     {
@@ -409,7 +410,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
-     * @return null|array
+     * @return array|null
      */
     private function getFastestLap()
     {
@@ -444,7 +445,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
-     * @param  int   $number
+     * @param  integer $number
      * @return array
      */
     private function getMostFrequentRunners($number = 3)
@@ -461,7 +462,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 ->getRepository('SportBundle\Entity\Runner')
                 ->findOneById($runners[$index]['runner']);
 
-            array_push($mostLaps, array(
+            array_push(
+                $mostLaps,
+                array(
                     'name' => $runner->getFullName(),
                     'laps' => $runners[$index]['lapCount'],
                 )
@@ -489,7 +492,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $fileContents = @file_get_contents('data/cache/run-' . md5('run_result_page'));
 
         $resultPage = null;
-        if (false !== $fileContents) {
+        if ($fileContents !== false) {
             $resultPage = (array) json_decode($fileContents);
         }
 
@@ -512,9 +515,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 'status'  => $resultPage['status'],
                 'message' => $resultPage['message'],
             );
-            if (null !== $teamData) {
+            if ($teamData !== null) {
                 $difference = 0;
-                if (null !== $currentPlace) {
+                if ($currentPlace !== null) {
                     if ($currentPlace != 0) {
                         $firstData = $resultPage['teams'][0];
                         $difference = round(($firstData->laps + $firstData->position) - ($teamData->laps + $teamData->position), 2);
@@ -544,7 +547,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
-     * @param  int        $number
+     * @param  integer $number
      * @return array|null
      */
     private function getGroupsOfFriends($number = 5)
@@ -597,7 +600,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
-     * @return int
+     * @return integer
      */
     private function convertDateIntervalToSeconds(DateInterval $interval)
     {

@@ -20,9 +20,9 @@
 
 namespace FormBundle\Entity\Mail;
 
-use CommonBundle\Entity\General\Language,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\Language;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores the node item.
@@ -33,7 +33,7 @@ use CommonBundle\Entity\General\Language,
 class Mail
 {
     /**
-     * @var The mail unique identifier
+     * @var integer The mail unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -122,7 +122,7 @@ class Mail
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation) {
+        if ($translation !== null) {
             return $translation->getSubject();
         }
 
@@ -138,7 +138,7 @@ class Mail
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation) {
+        if ($translation !== null) {
             return $translation->getContent();
         }
 
@@ -146,18 +146,18 @@ class Mail
     }
 
     /**
-     * @param  Language|null                            $language
-     * @param  boolean                                  $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return \FormBundle\Entity\Mail\Translation|null
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
-        if (sizeof($this->translations) == 0) {
+        if (count($this->translations) == 0) {
             return null;
         }
 
         foreach ($this->translations as $translation) {
-            if (null !== $language && $translation->getLanguage() == $language && strlen($translation->getSubject()) > 0) {
+            if ($language !== null && $translation->getLanguage() == $language && strlen($translation->getSubject()) > 0) {
                 return $translation;
             }
 

@@ -19,57 +19,23 @@
  */
 
 return array(
-    'modules' => array(
-        'AsseticBundle',
-        'EdpMarkdown',
-        'DoctrineModule',
-        'DoctrineORMModule',
-        'DoctrineMongoODMModule',
-        'ZendDeveloperTools',
-        'ZfcTwig',
+    'modules' => include __DIR__ . '/modules.config.php',
 
-        'BootstrapBundle',
-
-        'CommonBundle',
-
-        'BrBundle',
-        'CudiBundle',
-        'MailBundle',
-        'ShiftBundle',
-        'ShopBundle',
-        'SportBundle',
-        'PromBundle',
-        'SyllabusBundle',
-        'TicketBundle',
-
-        'LogisticsBundle',
-        'SecretaryBundle',
-
-        'BannerBundle',
-        'CalendarBundle',
-        'NewsBundle',
-        'NotificationBundle',
-        'PageBundle',
-        'GalleryBundle',
-
-        'FormBundle',
-        'PublicationBundle',
-
-        'ApiBundle',
-        'DoorBundle',
-        'OnBundle',
-
-        'WikiBundle',
-
-        'QuizBundle',
-    ),
     'module_listener_options' => array(
-        'config_glob_paths' => array(
-            'config/autoload/{,*.}{global,local}.php',
-        ),
         'module_paths' => array(
-            './module',
-            './vendor',
+            'module/',
+            'vendor/',
         ),
+
+        'config_glob_paths' => array(
+            'config/autoload/{{,*.}global,{,*.}local}.php',
+        ),
+
+        'config_cache_enabled'     => getenv('APPLICATION_ENV') != 'development',
+        'config_cache_key'         => 'litus',
+        'module_map_cache_enabled' => getenv('APPLICATION_ENV') != 'development',
+        'module_map_cache_key'     => 'litus',
+
+        'cache_dir' => 'data/cache/',
     ),
 );

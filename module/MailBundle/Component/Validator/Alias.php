@@ -43,7 +43,7 @@ class Alias extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -71,7 +71,7 @@ class Alias extends \CommonBundle\Component\Validator\AbstractValidator
             ->getRepository('MailBundle\Entity\Alias')
             ->findOneByName($value);
 
-        if (null === $alias || ($this->options['alias'] && $alias == $this->options['alias'])) {
+        if ($alias === null || ($this->options['alias'] && $alias == $this->options['alias'])) {
             return true;
         }
 

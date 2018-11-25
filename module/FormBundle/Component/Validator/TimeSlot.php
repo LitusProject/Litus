@@ -49,7 +49,7 @@ class TimeSlot extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -76,13 +76,13 @@ class TimeSlot extends \CommonBundle\Component\Validator\AbstractValidator
 
         $valid = true;
 
-        if (isset($value) && $value && null !== $this->options['person']) {
+        if (isset($value) && $value && $this->options['person'] !== null) {
             $occupation = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Field\TimeSlot')
                 ->findOneOccupationByPersonAndTime($this->options['person'], $this->options['timeslot']->getStartDate(), $this->options['timeslot']->getEndDate());
 
             // No overlap with selections of other people
-            if (null !== $occupation && $occupation->getFormEntry()->getCreationPerson()->getId() != $this->options['person']->getId()) {
+            if ($occupation !== null && $occupation->getFormEntry()->getCreationPerson()->getId() != $this->options['person']->getId()) {
                 $this->error(self::OCCUPIED);
                 $valid = false;
             }

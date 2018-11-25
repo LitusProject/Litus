@@ -20,17 +20,30 @@
 
 namespace CommonBundle\Component\Console;
 
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
-    Exception,
-    Raven_ErrorHandler,
-    Symfony\Component\Console\Input\InputInterface as Input,
-    Symfony\Component\Console\Output\OutputInterface as Output,
-    Zend\ServiceManager\ServiceLocatorAwareTrait as ZendServiceLocatorAwareTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\ConfigTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\MailTransportTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\SentryClientTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use CommonBundle\Component\Util\AcademicYear;
+use DateTime;
+use Ko\Mixin\ProcessTitle;
+use ReflectionClass;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
+use Symfony\Component\Console\Input\InputInterface as Input;
+use Symfony\Component\Console\Output\OutputInterface as Output;
 
-abstract class Command extends \Symfony\Component\Console\Command\Command implements \CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface
+abstract class Command extends \Symfony\Component\Console\Command\Command implements ServiceLocatorAwareInterface
 {
-    use ZendServiceLocatorAwareTrait;
     use ServiceLocatorAwareTrait;
+
+    use ConfigTrait;
+    use DoctrineTrait;
+    use MailTransportTrait;
+    use SentryClientTrait;
+
+    use ProcessTitle;
 
     /**
      * @var Input
@@ -43,76 +56,44 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     protected $output;
 
     /**
-     * @return int|void
+     * @return integer|void
      */
     protected function execute(Input $input, Output $output)
     {
         $this->input = $input;
         $this->output = $output;
 
-        if ('production' == getenv('APPLICATION_ENV')) {
-            $errorHandler = new Raven_ErrorHandler($this->getServiceLocator()->get('raven_client'));
-            $errorHandler->registerErrorHandler()
-                ->registerExceptionHandler()
-                ->registerShutdownFunction();
-        }
+        $formatter = $this->output->getFormatter();
+        $formatter->setStyle('error', new OutputFormatterStyle('red'));
+        $formatter->setStyle('info', new OutputFormatterStyle('blue'));
+        $formatter->setStyle('comment', new OutputFormatterStyle('yellow'));
+        $formatter->setStyle('question', new OutputFormatterStyle('white'));
 
-        try {
-            return $this->executeCommand();
-        } catch (Exception $e) {
-            $this->write($e, true);
-            return 1;
-        }
+        $this->setProcessTitle('litus: ' . $this->getName());
+
+        return $this->invoke();
     }
 
     /**
-     * @return int|void
+     * @return integer|void
      */
-    abstract protected function executeCommand();
+    abstract protected function invoke();
 
-    /**
-     * @return string
+        /**
+     * @param  string $name
+     * @return mixed
      */
-    abstract protected function getLogName();
-
-    /**
-     * @return string
-     */
-    protected function getLogNameTag()
+    protected function getArgument($name)
     {
-        return 'fg=green;options=bold';
+        return $this->input->getArgument($name);
     }
 
     /**
-     * @param  string  $string the string to write
-     * @param  boolean $raw    whether to output the string raw
-     * @return null
+     * @return boolean
      */
-    public function write($string, $raw = false)
+    protected function hasArgument($name)
     {
-        if ($raw) {
-            $this->output->write($string);
-        } else {
-            $this->output->write(
-                sprintf('[<%1$s>%2$20s</%1$s>] %3$s', $this->getLogNameTag(), $this->getLogName(), $string)
-            );
-        }
-    }
-
-    /**
-     * @param  string  $string the string to write
-     * @param  boolean $raw    whether to output the string raw
-     * @return null
-     */
-    public function writeln($string, $raw = false)
-    {
-        if ($raw || false === $this->getLogName()) {
-            $this->output->writeln($string);
-        } else {
-            $this->output->writeln(
-                sprintf('[<%1$s>%2$20s</%1$s>] %3$s', $this->getLogNameTag(), $this->getLogName(), $string)
-            );
-        }
+        return $this->input->hasArgument($name);
     }
 
     /**
@@ -133,35 +114,116 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     }
 
     /**
-     * @param  string $name
-     * @return mixed
+     * @return array
      */
-    protected function getArgument($name)
+    protected function getOptions()
     {
-        return $this->input->getArgument($name);
+        return $this->input->getOptions();
     }
 
     /**
-     * @return boolean
+     * @return string
      */
-    protected function hasArgument($name)
+    protected function getLogFormat()
     {
-        return $this->input->hasArgument($name);
+        $nameLength = $this->getLogNameLength();
+        if ($nameLength > 0) {
+            return '<%1$s>[%2$s]</%1$s> <%3$s>[%4$' . $nameLength . 's]</%3$s> %5$s';
+        }
+
+        return '<%1$s>[%2$s]</%1$s> <%3$s>[%4$s]</%3$s> %5$s';
     }
 
     /**
-     * @return \Zend\Console\Console
+     * @return string
      */
-    protected function getConsole()
+    protected function getLogDateTag()
     {
-        return $this->getServiceLocator()->get('Console');
+        return 'options=bold';
     }
 
     /**
-     * @return \Symfony\Component\Console\Helper\QuestionHelper
+     * @return string
      */
-    protected function getQuestion()
+    protected function getLogNameLength()
     {
-        return $this->getHelperSet()->get('question');
+        return 0;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getLogNameTag()
+    {
+        return 'fg=blue;options=bold';
+    }
+
+    /**
+     * @return string
+     */
+    protected function getLogName()
+    {
+        return (new ReflectionClass($this))->getShortName();
+    }
+
+    /**
+     * @param  string  $string The string to write
+     * @param  boolean $raw    Whether to output the string raw
+     * @return void
+     */
+    public function write($string, $raw = false)
+    {
+        if ($raw) {
+            $this->output->write($string);
+        } else {
+            $this->output->write(
+                sprintf(
+                    $this->getLogFormat(),
+                    $this->getLogDateTag(),
+                    (new DateTime())->format('d/m/Y H:i:s'),
+                    $this->getLogNameTag(),
+                    $this->getLogName(),
+                    $string
+                )
+            );
+        }
+    }
+
+    /**
+     * @param  string  $string The string to write
+     * @param  boolean $raw    Whether to output the string raw
+     * @return void
+     */
+    public function writeln($string, $raw = false)
+    {
+        if ($raw) {
+            $this->output->writeln($string);
+        } else {
+            $this->output->writeln(
+                sprintf(
+                    $this->getLogFormat(),
+                    $this->getLogDateTag(),
+                    (new DateTime())->format('d/m/Y H:i:s'),
+                    $this->getLogNameTag(),
+                    $this->getLogName(),
+                    $string
+                )
+            );
+        }
+    }
+
+    /**
+     * Get the current academic year
+     *
+     * @param  boolean $organization
+     * @return AcademicYear
+     */
+    protected function getCurrentAcademicYear($organization = false)
+    {
+        if ($organization) {
+            return AcademicYear::getOrganizationYear($this->getEntityManager());
+        }
+
+        return AcademicYear::getUniversityYear($this->getEntityManager());
     }
 }

@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Entity\Sale\SaleItem;
 
-use CudiBundle\Entity\Sale\Article,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+use CudiBundle\Entity\Sale\Article;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\SaleItem\External")

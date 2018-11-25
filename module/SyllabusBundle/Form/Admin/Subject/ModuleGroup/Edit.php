@@ -20,27 +20,21 @@
 
 namespace SyllabusBundle\Form\Admin\Subject\ModuleGroup;
 
-use LogicException;
-
 /**
  * Edit Subject
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends Add
+class Edit extends \SyllabusBundle\Form\Admin\Subject\ModuleGroup\Add
 {
     public function init()
     {
-        if (null === $this->mapping) {
-            throw new LogicException('Cannot edit null subject - module group map');
-        }
-
         parent::init();
 
-        $this->remove('module_group')
-            ->remove('submit');
+        $this->remove('module_group');
 
-        $this->addSubmit('Save', 'edit');
+        $this->remove('submit')
+            ->addSubmit('Save', 'edit');
 
         $this->bind($this->mapping);
     }

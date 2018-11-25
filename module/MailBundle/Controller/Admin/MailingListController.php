@@ -20,14 +20,14 @@
 
 namespace MailBundle\Controller\Admin;
 
-use CommonBundle\Entity\User\Person\Academic,
-    MailBundle\Entity\MailingList,
-    MailBundle\Entity\MailingList\AdminMap as ListAdmin,
-    MailBundle\Entity\MailingList\AdminRoleMap as ListAdminRole,
-    MailBundle\Entity\MailingList\Entry\MailingList as MailingListEntry,
-    MailBundle\Entity\MailingList\Entry\Person\Academic as AcademicEntry,
-    MailBundle\Entity\MailingList\Entry\Person\External as ExternalEntry,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Person\Academic;
+use MailBundle\Entity\MailingList;
+use MailBundle\Entity\MailingList\AdminMap as ListAdmin;
+use MailBundle\Entity\MailingList\AdminRoleMap as ListAdminRole;
+use MailBundle\Entity\MailingList\Entry\MailingList as MailingListEntry;
+use MailBundle\Entity\MailingList\Entry\Person\Academic as AcademicEntry;
+use MailBundle\Entity\MailingList\Entry\Person\External as ExternalEntry;
+use Zend\View\Model\ViewModel;
 
 /**
  * MailingListController
@@ -123,7 +123,8 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
     public function entriesAction()
     {
-        if (!($list = $this->getMailingListEntity())) {
+        $list = $this->getMailingListEntity();
+        if ($list === null) {
             return new ViewModel();
         }
 
@@ -156,7 +157,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
                 );
             }
 
-            if (null !== $entry) {
+            if ($entry !== null) {
                 $this->getEntityManager()->persist($entry);
                 $this->getEntityManager()->flush();
 
@@ -194,7 +195,8 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
     public function adminsAction()
     {
-        if (!($list = $this->getMailingListEntity())) {
+        $list = $this->getMailingListEntity();
+        if ($list === null) {
             return new ViewModel();
         }
 
@@ -282,7 +284,8 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     {
         $this->initAjax();
 
-        if (!($list = $this->getMailingListEntity())) {
+        $list = $this->getMailingListEntity();
+        if ($list === null) {
             return new ViewModel();
         }
 
@@ -304,7 +307,8 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     {
         $this->initAjax();
 
-        if (!($entry = $this->getMailingListEntryEntity())) {
+        $entry = $this->getMailingListEntryEntity();
+        if ($entry === null) {
             return new ViewModel();
         }
 
@@ -324,7 +328,8 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
     public function deleteAllEntriesAction()
     {
-        if (!($list = $this->getMailingListEntity())) {
+        $list = $this->getMailingListEntity();
+        if ($list === null) {
             return new ViewModel();
         }
 
@@ -358,7 +363,8 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     {
         $this->initAjax();
 
-        if (!($admin = $this->getAdminMapEntity())) {
+        $admin = $this->getAdminMapEntity();
+        if ($admin === null) {
             return new ViewModel();
         }
 
@@ -380,7 +386,8 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     {
         $this->initAjax();
 
-        if (!($adminRole = $this->getAdminRoleMapEntity())) {
+        $adminRole = $this->getAdminRoleMapEntity();
+        if ($adminRole === null) {
             return new ViewModel();
         }
 
@@ -465,7 +472,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     }
 
     /**
-     * @return null|ExternalEntry|AcademicEntry
+     * @return ExternalEntry|AcademicEntry|null
      */
     private function getMailingListEntryEntity()
     {

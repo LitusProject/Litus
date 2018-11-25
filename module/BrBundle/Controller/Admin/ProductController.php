@@ -20,11 +20,11 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Entity\Product,
-    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use BrBundle\Entity\Product;
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * ProductController
@@ -100,7 +100,8 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editAction()
     {
-        if (!($product = $this->getProductEntity())) {
+        $product = $this->getProductEntity();
+        if ($product === null) {
             return new ViewModel();
         }
 
@@ -140,7 +141,8 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($product = $this->getProductEntity())) {
+        $product = $this->getProductEntity();
+        if ($product === null) {
             return new ViewModel();
         }
 
@@ -156,7 +158,8 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
 
     public function companiesAction()
     {
-        if (!($product = $this->getProductEntity())) {
+        $product = $this->getProductEntity();
+        if ($product === null) {
             return new ViewModel();
         }
 
@@ -177,9 +180,10 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    public function companiescsvAction()
+    public function companiesCsvAction()
     {
-        if (!($product = $this->getProductEntity())) {
+        $product = $this->getProductEntity();
+        if ($product === null) {
             return new ViewModel();
         }
 
@@ -226,10 +230,12 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
         $document->generateDocument($file);
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="contracts_overview.csv"',
-            'Content-Type'        => 'text/csv',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="contracts_overview.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(

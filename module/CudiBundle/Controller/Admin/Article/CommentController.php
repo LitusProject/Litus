@@ -20,10 +20,10 @@
 
 namespace CudiBundle\Controller\Admin\Article;
 
-use CudiBundle\Entity\Article,
-    CudiBundle\Entity\Comment\Comment,
-    CudiBundle\Entity\Comment\Mapping,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Article;
+use CudiBundle\Entity\Comment\Comment;
+use CudiBundle\Entity\Comment\Mapping;
+use Zend\View\Model\ViewModel;
 
 /**
  * CommentController
@@ -34,7 +34,8 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($article = $this->getArticleEntity())) {
+        $article = $this->getArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -93,7 +94,8 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($mapping = $this->getCommentMappingEntity())) {
+        $mapping = $this->getCommentMappingEntity();
+        if ($mapping === null) {
             return new ViewModel();
         }
 

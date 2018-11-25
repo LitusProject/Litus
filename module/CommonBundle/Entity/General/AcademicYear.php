@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Entity\General;
 
-use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This class represents an academic year entry that is saved in the database
@@ -115,7 +115,7 @@ class AcademicYear
      */
     public function getCode($short = false)
     {
-        if (true === $short) {
+        if ($short === true) {
             return $this->universityStart->format('y') . $this->getUniversityEndDate()->format('y');
         }
 

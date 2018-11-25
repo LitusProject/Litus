@@ -34,7 +34,6 @@ return array(
     'View comments on this article and add one.' => 'View comments on this article and add one.',
     'Files'                                      => 'Files',
     'Manage the files of this article.'          => 'Manage the files of this article.',
-    'Articles'                                   => 'Articles',
     'Title'                                      => 'Title',
     'Authors'                                    => 'Authors',
     'Publisher'                                  => 'Publisher',
@@ -78,7 +77,6 @@ return array(
     'An error occurred while uploading the file.'       => 'An error occurred while uploading the file.',
     'The file was successfully removed.'                => 'The file was successfully removed.',
     'An error occurred while removing the file.'        => 'An error occurred while removing the file.',
-    'Name'                                              => 'Name',
     'Description'                                       => 'Description',
     'Download'                                          => 'Download',
     'Add File'                                          => 'Add File',
@@ -110,7 +108,6 @@ return array(
 
     'Your Subjects'                                                                                         => 'Your Subjects',
     'Students'                                                                                              => 'Students',
-    'View'                                                                                                  => 'View',
     'An error occurred while removing the mapping between this subject and the article.'                    => 'An error occurred while removing the mapping between this subject and the article.',
     'The mapping between this subject and the article was successfully removed.'                            => 'The mapping between this subject and the article was successfully removed.',
     'An error occurred while removing the mapping between this subject and the docent.'                     => 'An error occurred while removing the mapping between this subject and the docent.',
@@ -126,7 +123,6 @@ return array(
     'Are you sure you want to remove the following article'                                                 => 'Are you sure you want to remove the following article',
     'Are you sure you want to activate the following article'                                               => 'Are you sure you want to activate the following article',
     'Are you sure you want to remove the following docent'                                                  => 'Are you sure you want to remove the following docent',
-    'Are you sure you want to activate the following article'                                               => 'Are you sure you want to activate the following article',
     'Will the content of the article be the same af previous year?'                                         => 'Will the content of the article be the same af previous year?',
     'There aren\'t articles you can add. Please create them first by clicking <i>Articles</a> in the menu.' => 'There aren\'t articles you can add. Please create them first by clicking <i>Articles</a> in the menu.',
 
@@ -148,7 +144,6 @@ return array(
     'Mandatory'                => 'Mandatory',
     'Subject Mapping'          => 'Subject Mapping',
     'Add'                      => 'Add',
-    'Save'                     => 'Save',
     'File'                     => 'File',
     'Docent'                   => 'Docent',
     'Update'                   => 'Update',
@@ -163,7 +158,6 @@ return array(
     'None'      => 'None',
     'Glued'     => 'Glued',
 
-    'Error'                                            => 'Error',
     'SUCCESS'                                          => 'SUCCESS',
     'The article was successfully created!'            => 'The article was successfully created!',
     'The article was successfully updated!'            => 'The article was successfully updated!',
@@ -184,8 +178,6 @@ return array(
     'No ID was given to identify the file!'            => 'No ID was given to identify the file!',
     'No file with the given ID was found!'             => 'No file with the given ID was found!',
     'The docent was successfully added!'               => 'The docent was successfully added!',
-    'No ID was given to identify the mapping!'         => 'No ID was given to identify the mapping!',
-    'No mapping with the given ID was found!'          => 'No mapping with the given ID was found!',
     'The student enrollment was successfully updated!' => 'The student enrollment was successfully updated!',
 
     'How To Start'          => 'How To Start',

@@ -1,14 +1,18 @@
 {% macro renderForm(form) %}
+    {% import _self as self %}
+
     {% do form.prepare() %}
     {% autoescape false %}
         {% set buttons = [] %}
         {{ form().openTag(form) }}
-            {{ _self.renderFieldset(form) }}
+            {{ self.renderFieldset(form) }}
         {{ form().closeTag() }}
     {% endautoescape %}
 {% endmacro %}
 
 {% macro renderFieldset(fieldset) %}
+    {% import _self as self %}
+
     {% autoescape false %}
         {% set buttons = [] %}
         {% for element in fieldset %}
@@ -16,14 +20,14 @@
                 {% if element.showAs() == 'fieldset' and element.getLabel() %}
                     <fieldset name="{{ element.getName() }}" class="{{ element.getAttribute('class') }}" id="{{ element.getAttribute('id') }}">
                         <legend>{{ translate(element.getLabel()) }}</legend>
-                        {{ _self.renderFieldset(element) }}
+                        {{ self.renderFieldset(element) }}
                     </fieldset>
                     {% if element.shouldCreateTemplate() %}
-                        <span id="data-template-{{ element.getName() }}" data-template="{{ ("<fieldset name=\"" ~ element.getTemplateElement().getName() ~ "\" class=\"" ~ element.getAttribute('class') ~ "\" id=\"" ~ element.getAttribute('id') ~ "\"><legend>" ~ element.getTemplateElement().getLabel() ~ "</legend>" ~ _self.renderFieldset(element.getTemplateElement()) ~ "</fieldset>")|escape }}"></span>
+                        <span id="data-template-{{ element.getName() }}" data-template="{{ ("<fieldset name=\"" ~ element.getTemplateElement().getName() ~ "\" class=\"" ~ element.getAttribute('class') ~ "\" id=\"" ~ element.getAttribute('id') ~ "\"><legend>" ~ element.getTemplateElement().getLabel() ~ "</legend>" ~ self.renderFieldset(element.getTemplateElement()) ~ "</fieldset>")|escape }}"></span>
                     {% endif %}
                 {% else %}
                     <div name="{{ element.getName() }}" class="{{ element.getAttribute('class') }}" id="{{ element.getAttribute('id') }}">
-                        {{ _self.renderFieldset(element) }}
+                        {{ self.renderFieldset(element) }}
                     </div>
                 {% endif %}
             {% elseif element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset' or element.getAttribute('type') == 'button' %}
@@ -36,7 +40,7 @@
                 </ul>
             {% elseif element.getAttribute('type') == 'file' %}
                 {% if element.getAttribute('data-type') == 'image' %}
-                    <div class="form-group {% if element.getMessages()|length > 0 %}has-error{% endif %} {% if element.isRequired() %}required{% endif %}">
+                    <div class="form-group row {% if element.getMessages()|length > 0 %}has-error{% endif %} {% if element.isRequired() %}required{% endif %}">
                         {{ formLabel().openTag(element) }}
                             {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
                         {{ formLabel().closeTag() }}
@@ -60,7 +64,7 @@
                         </div>
                     </div>
                 {% elseif element.getAttribute('data-type') == 'small' %}
-                    <div class="form-group {% if element.getMessages()|length > 0 %}has-error{% endif %} {% if element.isRequired() %}required{% endif %}" style="width: 100%">
+                    <div class="form-group row {% if element.getMessages()|length > 0 %}has-error{% endif %} {% if element.isRequired() %}required{% endif %}" style="width: 100%">
                         {{ formLabel().openTag(element) }}
                             {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
                         {{ formLabel().closeTag() }}
@@ -80,7 +84,7 @@
                         </div>
                     </div>
                 {% else %}
-                    <div class="form-group {% if element.getMessages()|length > 0 %}has-error{% endif %} {% if element.isRequired() %}required{% endif %}">
+                    <div class="form-group row {% if element.getMessages()|length > 0 %}has-error{% endif %} {% if element.isRequired() %}required{% endif %}">
                         {{ formLabel().openTag(element) }}
                             {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
                         {{ formLabel().closeTag() }}
@@ -105,16 +109,16 @@
                     </div>
                 {% endif %}
             {% elseif element.getAttribute('type') == 'checkbox' %}
-                {{ _self.renderCheckbox(element) }}
+                {{ self.renderCheckbox(element) }}
             {% elseif element.getAttribute('type') == 'hidden' %}
                 {{ formElement(element) }}
             {% else %}
-                {{ _self.renderOther(element) }}
+                {{ self.renderOther(element) }}
             {% endif %}
         {% endfor %}
         {% if buttons|length > 0 %}
             {% if fieldset.getDisplayFormActions() %}
-                <div class="form-group">
+                <div class="form-group row">
                     <div class="col-sm-offset-2 col-sm-10">
             {% endif %}
                 {% for button in buttons %}
@@ -130,7 +134,7 @@
 
 {% macro renderCheckbox(element) %}
     {% autoescape false %}
-        <div class="form-group {% if element.getMessages()|length > 0 %}has-error{% endif %} {% if element.isRequired() %}required{% endif %}">
+        <div class="form-group row {% if element.getMessages()|length > 0 %}has-error{% endif %} {% if element.isRequired() %}required{% endif %}">
             <div class="col-sm-offset-2 col-sm-10">
                 <div class="checkbox">
                     {{ formLabel().openTag(element) }}
@@ -150,7 +154,7 @@
 
 {% macro renderOther(element) %}
     {% autoescape false %}
-        <div class="form-group {% if element.getMessages()|length > 0 %}has-error{% endif %} {% if element.isRequired() %}required{% endif %}">
+        <div class="form-group row {% if element.getMessages()|length > 0 %}has-error{% endif %} {% if element.isRequired() %}required{% endif %}">
             {{ formLabel().openTag(element) }}
                 {% if element.getLabel != '' %}{{ translate(element.getLabel()) }}{% endif %}
             {{ formLabel().closeTag() }}

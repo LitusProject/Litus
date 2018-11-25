@@ -21,7 +21,7 @@
 return array(
     'routes' => array(
         'calendar_admin_calendar' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/site/calendar[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -36,7 +36,7 @@ return array(
             ),
         ),
         'calendar_admin_calendar_registration' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/site/calendar/registration[/:action][/]',
                 'constraints' => array(
@@ -49,7 +49,7 @@ return array(
             ),
         ),
         'calendar' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/calendar[/:action[/:name]][/]',
                 'constraints' => array(
@@ -64,7 +64,7 @@ return array(
             ),
         ),
         'calendar_export' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/calendar/export/ical.ics',
                 'constraints' => array(

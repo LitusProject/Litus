@@ -20,11 +20,11 @@
 
 namespace FormBundle\Component\Document\Generator;
 
-use CommonBundle\Component\Util\File\TmpFile as TmpFile,
-    CommonBundle\Entity\General\Language,
-    DateTime,
-    Doctrine\ORM\EntityManager,
-    ZipArchive;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Entity\General\Language;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use ZipArchive;
 
 /**
  * Zip
@@ -44,7 +44,7 @@ class Zip
         $zip = new ZipArchive();
         $now = new DateTime();
 
-        $zip->open($tmpFile->getFileName(), ZIPARCHIVE::CREATE);
+        $zip->open($tmpFile->getFileName(), ZipArchive::CREATE);
         $zip->addFromString('GENERATED', $now->format('YmdHi') . PHP_EOL);
         $zip->close();
 
@@ -52,8 +52,8 @@ class Zip
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('form.file_upload_path') . '/';
 
-        $zip->open($tmpFile->getFileName(), ZIPARCHIVE::CREATE);
         foreach ($entries as $entry) {
+            $zip->open($tmpFile->getFileName(), ZipArchive::CREATE);
             $zip->addFile(
                 $filePath . $entry->getValue(),
                 $entry->getField()->getLabel($language) . '_' . $entry->getFormEntry()->getPersonInfo()->getFullName() . '_' . $entry->getFormEntry()->getId() . '_' . $entry->getReadableValue()

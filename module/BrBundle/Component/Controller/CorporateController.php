@@ -20,11 +20,10 @@
 
 namespace BrBundle\Component\Controller;
 
-use BrBundle\Entity\User\Person\Corporate,
-    CommonBundle\Component\Controller\Exception\HasNoAccessException,
-    CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Form\Auth\Login as LoginForm,
-    Zend\Mvc\MvcEvent;
+use BrBundle\Entity\User\Person\Corporate;
+use CommonBundle\Component\Controller\Exception\HasNoAccessException;
+use CommonBundle\Component\Util\AcademicYear;
+use Zend\Mvc\MvcEvent;
 
 /**
  * We extend the CommonBundle controller.
@@ -36,7 +35,7 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
     /**
      * Execute the request.
      *
-     * @param  \Zend\Mvc\MvcEvent                                                $e The MVC event
+     * @param  \Zend\Mvc\MvcEvent $e The MVC event
      * @return array
      * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
      */
@@ -52,13 +51,15 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
 
         $result->loginForm = $this->getForm('common_auth_login')
             ->setAttribute('class', '')
-            ->setAttribute('action', $this->url()->fromRoute(
-                'br_corporate_auth',
-                array(
-                    'action' => 'login',
+            ->setAttribute(
+                'action',
+                $this->url()->fromRoute(
+                    'br_corporate_auth',
+                    array(
+                        'action' => 'login',
+                    )
                 )
-            ));
-        ;
+            );
         $result->organizationUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('organization_url');
@@ -92,7 +93,7 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
     protected function getAcademicYear()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') !== null) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
         }
 

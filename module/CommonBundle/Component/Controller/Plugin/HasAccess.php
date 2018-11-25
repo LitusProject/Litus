@@ -49,11 +49,11 @@ class HasAccess extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
     /**
      * @param  string $resource The resource that should be verified
      * @param  string $action   The module that should be verified
-     * @return bool
+     * @return boolean
      */
     public function toResourceAction($resource, $action)
     {
-        if (null === $this->driver) {
+        if ($this->driver === null) {
             throw new Exception\RuntimeException('No driver object was provided');
         }
 

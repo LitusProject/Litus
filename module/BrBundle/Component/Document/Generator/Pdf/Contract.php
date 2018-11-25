@@ -20,14 +20,14 @@
 
 namespace BrBundle\Component\Document\Generator\Pdf;
 
-use BrBundle\Component\ContractParser\Parser as BulletParser,
-    BrBundle\Entity\Contract as ContractEntity,
-    CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\Xml\Generator as XmlGenerator,
-    CommonBundle\Component\Util\Xml\Node as XmlNode,
-    Doctrine\ORM\EntityManager,
-    IntlDateFormatter,
-    Zend\I18n\Translator\TranslatorInterface;
+use BrBundle\Component\ContractParser\Parser as BulletParser;
+use BrBundle\Entity\Contract as ContractEntity;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\Xml\Generator as XmlGenerator;
+use CommonBundle\Component\Util\Xml\Node as XmlNode;
+use Doctrine\ORM\EntityManager;
+use IntlDateFormatter;
+use Zend\I18n\Translator\TranslatorInterface;
 
 /**
  * Generate a PDF for a contract.
@@ -82,7 +82,8 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         $title = $this->contract->getTitle();
         $company = $this->contract->getOrder()->getCompany();
 
-        $locale = 'nl'; //TODO make this possible in both english and dutch
+        // TODO: Make this possible in both English and Dutch
+        $locale = 'nl';
         $this->translator->setLocale($locale);
 
         $formatter = new IntlDateFormatter($locale, IntlDateFormatter::FULL, IntlDateFormatter::NONE);
@@ -109,7 +110,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         foreach ($vatTypes as $type) {
             if ($this->contract->getOrder()->getCostVatTypeExclusive($type) > 0) {
                 $price = $this->contract->getOrder()->getCostVatTypeExclusive($type) / 100;
-                $vatTotals = $vatTotals . '<vat_total><vat>' . $type . '</vat><total>' . $price . '</total></vat_total>';
+                $vatTotals .= '<vat_total><vat>' . $type . '</vat><total>' . $price . '</total></vat_total>';
             }
         }
 
@@ -126,19 +127,24 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
             $paymentDetails[] = XmlNode::fromString($p->getXml());
         }
 
-        $sub_entries = unserialize($configs->getConfigValue('br.contract_below_entries'))['nl']; //TODO make this possible in both english and dutch.
-        $above_sign = unserialize($configs->getConfigValue('br.contract_above_signatures'))['nl']; //TODO make this possible in both english and dutch.
-        $above_sign_middle = unserialize($configs->getConfigValue('br.contract_above_signatures_middle'))['nl']; //TODO make this possible in both english and dutch.
+        // TODO: Make this possible in both English and Dutch
+        $sub_entries = unserialize($configs->getConfigValue('br.contract_below_entries'))['nl'];
+
+        // TODO: Make this possible in both English and Dutch
+        $above_sign = unserialize($configs->getConfigValue('br.contract_above_signatures'))['nl'];
+
+        // TODO: Make this possible in both English and Dutch
+        $above_sign_middle = unserialize($configs->getConfigValue('br.contract_above_signatures_middle'))['nl'];
 
         $contractText = '';
         foreach ($entries as $entry) {
-            $contractText = $contractText . "\n" . $entry->getContractText();
+            $contractText .= "\n" . $entry->getContractText();
         }
         if ($this->contract->getAutoDiscountText() != '') {
-            $contractText = $contractText . "\n" . $this->contract->getAutoDiscountText();
+            $contractText .= "\n" . $this->contract->getAutoDiscountText();
         }
         if ($this->contract->getDiscountText() != '') {
-            $contractText = $contractText . "\n" . $this->contract->getDiscountText();
+            $contractText .= "\n" . $this->contract->getDiscountText();
         }
 
         $entry_s = new XmlNode('entries', null, 'Empty Contract');
@@ -147,8 +153,6 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
             $p->parse($contractText);
             $entry_s = XmlNode::fromString($p->getXml());
         }
-
-        $contact_person_signature = new XmlNode('entries', null, 'Empty Contract');
 
         $xml->append(
             new XmlNode(
@@ -162,9 +166,9 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                     new XmlNode(
                         'our_union',
                         array(
-                             'short_name'     => $unionNameShort,
-                             'contact_person' => $ourContactPerson,
-                             'coordinator'    => $brgroco,
+                            'short_name'     => $unionNameShort,
+                            'contact_person' => $ourContactPerson,
+                            'coordinator'    => $brgroco,
                         ),
                         array(
                             new XmlNode('name', null, $brName),
@@ -274,7 +278,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                     new XmlNode('above_sign', array('middle' => $above_sign_middle, 'end' => '.'), $above_sign),
                     new XmlNode('footer'),
                     new XmlNode('sale_conditions_nl'),
-                    new XmlNode('for_contact_person', null, "test"),
+                    new XmlNode('for_contact_person', null, 'test'),
                 )
             )
         );

@@ -18,6 +18,12 @@
  * @license http://litus.cc/LICENSE
  */
 
+namespace LogisticsBundle;
+
+use CommonBundle\Component\Assetic\Filter\Css as CssFilter;
+use CommonBundle\Component\Assetic\Filter\Js as JsFilter;
+use CommonBundle\Component\Assetic\Filter\Less as LessFilter;
+
 return array(
     'controllers' => array(
         'logistics_admin_driver' => array(
@@ -106,7 +112,11 @@ return array(
             'assets' => array(
                 'logistics/less/base.less',
             ),
-            'filters' => array('less'),
+            'filters' => array(
+                '?LessFilter' => array(
+                    'name' => LessFilter::class,
+                ),
+            ),
             'options' => array(
                 'output' => 'logistics_css.css',
             ),
@@ -115,7 +125,11 @@ return array(
             'assets' => array(
                 'logistics/fullcalendar/fullcalendar.css',
             ),
-            'filters' => array('css'),
+            'filters' => array(
+                '?CssFilter' => array(
+                    'name' => CssFilter::class,
+                ),
+            ),
             'options' => array(
                 'output' => 'fullcalendar_css.css',
             ),
@@ -125,13 +139,21 @@ return array(
                 'logistics/js/logistics.js',
                 'logistics/fullcalendar/fullcalendar.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
         'minicolor_css' => array(
             'assets' => array(
                 'logistics/minicolor/jquery.miniColors.css',
             ),
-            'filters' => array('css'),
+            'filters' => array(
+                '?CssFilter' => array(
+                    'name' => CssFilter::class,
+                ),
+            ),
             'options' => array(
                 'output' => 'minicolor_css.css',
             ),
@@ -140,7 +162,11 @@ return array(
             'assets' => array(
                 'logistics/minicolor/jquery.miniColors.min.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
     ),
 );

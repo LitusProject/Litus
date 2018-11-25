@@ -20,8 +20,8 @@
 
 namespace SportBundle\Controller\Run;
 
-use SportBundle\Entity\Runner,
-    Zend\View\Model\ViewModel;
+use SportBundle\Entity\Runner;
+use Zend\View\Model\ViewModel;
 
 /**
  * TombolaController
@@ -87,9 +87,12 @@ class TombolaController extends \SportBundle\Component\Controller\RunController
     public function indexAction()
     {
         $happyHours = $this->generateHappyHours(20);
-        $form = $this->getForm('sport_tombola_add', array(
-            'happyHours' => $happyHours,
-        ));
+        $form = $this->getForm(
+            'sport_tombola_add',
+            array(
+                'happyHours' => $happyHours,
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -101,11 +104,11 @@ class TombolaController extends \SportBundle\Component\Controller\RunController
                 $runner->setHappyHour($formData['information']['happy_hour']);
                 $runner->setRunnerIdentification($formData['information']['university_identification']);
 
-                if (null !== $runner) {
+                if ($runner !== null) {
                     try {
                         $this->getEntityManager()->persist($runner);
                         $this->getEntityManager()->flush();
-                    } catch (\Exception $e) {
+                    } catch (\Throwable $e) {
                         $this->flashMessenger()->error(
                             'Error',
                             'This runner is already registered for the tombola.'
@@ -151,24 +154,24 @@ class TombolaController extends \SportBundle\Component\Controller\RunController
     {
         $this->initAjax();
 
-        if (8 == strlen($this->getParam('university_identification'))) {
+        if (strlen($this->getParam('university_identification')) == 8) {
             $runner = $this->getEntityManager()
-                    ->getRepository('SportBundle\Entity\Runner')
-                    ->findOneByRunnerIdentification($this->getParam('university_identification'));
+                ->getRepository('SportBundle\Entity\Runner')
+                ->findOneByRunnerIdentification($this->getParam('university_identification'));
 
-            if (null === $runner) {
+            if ($runner === null) {
                 $runner = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Academic')
                     ->findOneByUniversityIdentification($this->getParam('university_identification'));
                 $department = null;
             } else {
                 $department = $runner->getDepartment();
-                if (null !== $department) {
+                if ($department !== null) {
                     $department = $department->getId();
                 }
             }
 
-            if (null !== $runner) {
+            if ($runner !== null) {
                 return new ViewModel(
                     array(
                         'result' => (object) array(

@@ -20,14 +20,14 @@
 
 namespace CudiBundle\Controller\Admin\Article;
 
-use CommonBundle\Component\Util\File\TmpFile,
-    CudiBundle\Component\Document\Generator\Front as FrontGenerator,
-    CudiBundle\Entity\Article\Internal as InternalArticle,
-    CudiBundle\Entity\File\File,
-    CudiBundle\Entity\File\Mapping,
-    CudiBundle\Entity\Sale\Article as SaleArticle,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\File\TmpFile;
+use CudiBundle\Component\Document\Generator\Front as FrontGenerator;
+use CudiBundle\Entity\Article\Internal as InternalArticle;
+use CudiBundle\Entity\File\File;
+use CudiBundle\Entity\File\Mapping;
+use CudiBundle\Entity\Sale\Article as SaleArticle;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * FileController
@@ -38,7 +38,8 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($article = $this->getArticleEntity())) {
+        $article = $this->getArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -80,7 +81,8 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($article = $this->getArticleEntity())) {
+        $article = $this->getArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -148,7 +150,8 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($mapping = $this->getFileMappingEntity())) {
+        $mapping = $this->getFileMappingEntity();
+        if ($mapping === null) {
             return new ViewModel();
         }
 
@@ -190,7 +193,8 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->getFileMappingEntity())) {
+        $mapping = $this->getFileMappingEntity();
+        if ($mapping === null) {
             return new ViewModel();
         }
 
@@ -210,18 +214,21 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.file_path');
 
-        if (!($mapping = $this->getFileMappingEntity())) {
+        $mapping = $this->getFileMappingEntity();
+        if ($mapping === null) {
             return new ViewModel();
         }
 
         $file = $mapping->getFile();
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="' . $file->getName() . '"',
-            'Content-Type'        => 'application/octet-stream',
-            'Content-Length'      => filesize($filePath . $file->getPath()),
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="' . $file->getName() . '"',
+                'Content-Type'        => 'application/octet-stream',
+                'Content-Length'      => filesize($filePath . $file->getPath()),
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         $handle = fopen($filePath . $file->getPath(), 'r');
@@ -237,7 +244,8 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 
     public function frontAction()
     {
-        if (!($article = $this->getSaleArticleEntity())) {
+        $article = $this->getSaleArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -247,10 +255,12 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
         $lastBarcodeDigits = ($article->getBarcode()) % pow(10, 5);
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="front' . $lastBarcodeDigits . '.pdf"',
-            'Content-Type'        => 'application/pdf',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="front.pdf"',
+                'Content-Type'        => 'application/pdf',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(

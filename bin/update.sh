@@ -1,43 +1,60 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# A little script that makes it easier to update the application
-#
+header() {
+    COLUMNS=$(tty -s && tput cols || true)
+    COLUMNS=${COLUMNS:-80}
+    if [ $COLUMNS -gt 120 ]; then
+      COLUMNS=120
+    fi
 
-# don't continue if any subcommand fails
+    if $2; then
+      echo ""
+    fi
+
+    printf "=%.0s" $(eval echo "{1..$COLUMNS}")
+    printf "\n"
+
+    printf "%*s\n" $(((${#line} + $COLUMNS)/2)) "$1"
+
+    printf "=%.0s" $(eval echo "{1..$COLUMNS}")
+    printf "\n"
+
+    echo ""
+}
+
+# fail on subcommand
 set -e
 
 SCRIPT_DIRECTORY=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 cd "$SCRIPT_DIRECTORY/../"
 
-function checkAndMakeExecutable() {
-    if [ ! -x "$1" ]; then
-        chmod +x "$1"
-    fi
-}
-
-function run() {
-    php public/index.php "$@"
-}
-
-# Making sure our scripts are executable
-find bin/ -follow -name '*.sh' | while read file
+find bin/ -follow -name '*.sh' | while read f
 do
-  checkAndMakeExecutable "$file"
+  if [ ! -x "$f" ]; then
+      chmod +x "$f"
+  fi
 done
 
-# Upgrade script
+# cache
+rm -rf data/cache/*
+rm -rf public/_assetic/*
+
+# upgrade
+header "Upgrade" false
 ./bin/upgrade.sh
 
-# Updating the database
-run orm:schema-tool:update --force
-run orm:generate-proxies data/proxies/
+# doctrine
+header "Doctrine" true
 
-# Run installation
-run install:all
+php bin/doctrine.php orm:schema-tool:update --force
+php bin/doctrine.php orm:generate-proxies data/proxies/
 
-# Making sure our LESS stylesheets are recompiled
-touch module/*/Resources/assets/*/less/base.less
+# installation
+header "Installation" true
 
-run assetic:build
+php bin/console.php install:all
+php bin/assetic.php build
 
-./bin/litus.sh common:acl-cleanup --flush
+# cleanup
+header "Cleanup" true
+php bin/console.php common:cleanup-acl --flush

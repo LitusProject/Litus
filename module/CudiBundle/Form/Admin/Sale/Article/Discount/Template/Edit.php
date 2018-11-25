@@ -26,7 +26,7 @@ namespace CudiBundle\Form\Admin\Sale\Article\Discount\Template;
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Dario Incalza <dario.incalza@litus.cc>
  */
-class Edit extends Add
+class Edit extends \CudiBundle\Form\Admin\Sale\Article\Discount\Template\Add
 {
     public function init()
     {

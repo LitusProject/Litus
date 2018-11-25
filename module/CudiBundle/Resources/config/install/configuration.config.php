@@ -220,22 +220,22 @@ VTK Cudi
     array(
         'key'         => 'cudi.queue_socket_file',
         'value'       => 'tcp://127.0.0.1:8899',
-        'description' => 'The file used for the websocket of the queue',
+        'description' => 'The file used for the WebSocket of the queue',
     ),
     array(
         'key'         => 'cudi.queue_socket_public',
         'value'       => ':8899',
-        'description' => 'The public address for the websocket of the queue',
+        'description' => 'The public address for the WebSocket of the queue',
+    ),
+    array(
+        'key'         => 'cudi.queue_socket_key',
+        'value'       => md5(uniqid(rand(), true)),
+        'description' => 'The key used for the WebSocket of the queue',
     ),
     array(
         'key'         => 'cudi.queue_socket_enabled',
         'value'       => '1',
         'description' => 'Whether the cudi queue socket is enabled',
-    ),
-    array(
-        'key'         => 'cudi.queue_socket_key',
-        'value'       => md5(uniqid(rand(), true)),
-        'description' => 'The key used for the websocket of the queue',
     ),
     array(
         'key'   => 'cudi.purchase_prices',
@@ -578,9 +578,9 @@ This is a direct link to our online-privacy page: <a href="https://www.guido.be/
 Zo kan GUIDO je ook in de toekomst op de hoogte houden van onze tips, trucs, nieuwtjes, activiteiten, wedstrijden etc...<br>
 Wij verkopen je gegevens nooit aan derden.<br>
 Bij elke elektronische post die je van GUIDO zal ontvangen, krijg je trouwens de mogelijkheid om je uit te schrijven voor toekomstige elektronische communicatie en je kunt je gegevens steeds raadplegen en laten verbeteren. (cfr. De GDPR-wetgeving op de privacy)<br>
-Dit is de rechtstreekse link naar onze online-privacy pagina: <a href="https://www.guido.be/Specialepaginas/Privacy.aspx">https://www.guido.be/Specialepaginas/Privacy.aspx</a>.'
-                )
-            ),
+Dit is de rechtstreekse link naar onze online-privacy pagina: <a href="https://www.guido.be/Specialepaginas/Privacy.aspx">https://www.guido.be/Specialepaginas/Privacy.aspx</a>.',
+            )
+        ),
         'description' => 'The additional conditions to be displayed below the isic registration form.',
     ),
 );

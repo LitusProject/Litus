@@ -20,8 +20,9 @@
 
 namespace SecretaryBundle\Hydrator\Organization;
 
-use CommonBundle\Entity\User\Status\University as UniversityStatus,
-    SecretaryBundle\Entity\Organization\MetaData as MetaDataEntity;
+use CommonBundle\Entity\User\Status\University as UniversityStatus;
+use RuntimeException;
+use SecretaryBundle\Entity\Organization\MetaData as MetaDataEntity;
 
 class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
 {
@@ -31,11 +32,10 @@ class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
-        /** @var \CommonBundle\Hydrator\User\Person\Academic $hydrator */
         $hydrator = $this->getHydrator('CommonBundle\Hydrator\User\Person\Academic');
 
         $data = array(
@@ -47,7 +47,7 @@ class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
         $data['organization_info']['become_member'] = $object->becomeMember();
         $data['organization_info']['bakske_by_mail'] = $object->bakskeByMail();
 
-        // sure thing, if we're here, the user already checked the conditions
+        // Sure thing, if we're here, the user already checked the conditions
         $data['organization_info']['conditions'] = true;
 
         $organization = $object->getAcademic()
@@ -61,12 +61,11 @@ class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
     {
         $year = $this->getCurrentAcademicYear(false);
 
-        /** @var \CommonBundle\Hydrator\User\Person\Academic $hydrator */
         $hydrator = $this->getHydrator('CommonBundle\Hydrator\User\Person\Academic');
 
-        if (null === $object) {
+        if ($object === null) {
             if (!isset($data['academic'])) {
-                throw new LogicException('Cannot create a MetaData without Academic.');
+                throw new RuntimeException('Cannot create metadata without an academic');
             }
 
             $academic = $data['academic'];
@@ -88,7 +87,7 @@ class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $data['organization_info'];
 
-        if ($data['become_member'] == "") {
+        if ($data['become_member'] == '') {
             $data['become_member'] = false;
         }
 

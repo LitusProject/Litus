@@ -20,11 +20,11 @@
 
 namespace BrBundle\Entity\Cv;
 
-use BrBundle\Entity\Cv\Entry,
-    CommonBundle\Component\Util\Xml\Node,
-    CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityManager,
-    Zend\Mvc\I18n\Translator;
+use BrBundle\Entity\Cv\Entry;
+use CommonBundle\Component\Util\Xml\Node;
+use CommonBundle\Entity\General\AcademicYear;
+use Doctrine\ORM\EntityManager;
+use Zend\Mvc\I18n\Translator;
 
 /**
  * A Util class providing functions to retrieve the cv book data in a common way.
@@ -95,7 +95,7 @@ class Util
                 'lastname'  => $cv->getLastName(),
                 'birthday'  => $birthday,
                 'email'     => $cv->getEmail(),
-                'phone'     => substr($phoneNumber, 0,3) . " (0)" . substr($phoneNumber, 3,3) . " " . substr($phoneNumber, 6,2) . " " . substr($phoneNumber, 8,2) . " " . substr($phoneNumber, 10,2),
+                'phone'     => substr($phoneNumber, 0, 3) . ' (0)' . substr($phoneNumber, 3, 3) . ' ' . substr($phoneNumber, 6, 2) . ' ' . substr($phoneNumber, 8, 2) . ' ' . substr($phoneNumber, 10, 2),
                 'img'       => $picturePath . '/' . $cv->getAcademic()->getPhotoPath(),
             ),
             Util::getSections($cv, $translator)
@@ -127,11 +127,11 @@ class Util
         //Grades may be 0 in the database
         $masterGrade = (string) ($cv->getGrade() / 100);
         if ($cv->getGrade() == 0) {
-            $masterGrade = "-";
+            $masterGrade = '-';
         }
         $bachelorGrade = (string) ($cv->getPriorGrade() / 100);
         if ($cv->getPriorGrade() == 0) {
-            $bachelorGrade = "-";
+            $bachelorGrade = '-';
         }
 
         $result[] = new Node(
@@ -168,9 +168,8 @@ class Util
             )
         );
 
-        if (
-            (null !== $cv->getErasmusLocation() && '' !== $cv->getErasmusLocation())
-            || (null !== $cv->getErasmusPeriod() && '' !== $cv->getErasmusPeriod())
+        if (($cv->getErasmusLocation() !== null && $cv->getErasmusLocation() !== '')
+            || ($cv->getErasmusPeriod() !== null && $cv->getErasmusPeriod() !== '')
         ) {
             $result[] = new Node(
                 'section',
@@ -206,7 +205,7 @@ class Util
                 'oral' . $index    => $translator->translate($language->getOralSkill()),
                 'written' . $index => $translator->translate($language->getWrittenSkill()),
             );
-            $languages = array_merge($languages,$tmp);
+            $languages = array_merge($languages, $tmp);
             $index++;
         }
 
@@ -220,8 +219,8 @@ class Util
                     'sec-special-languages',
                     array_merge(
                         array(
-                        'oral'    => $translator->translate('Oral Skills'),
-                        'written' => $translator->translate('Written Skills'),
+                            'oral'    => $translator->translate('Oral Skills'),
+                            'written' => $translator->translate('Written Skills'),
                         ),
                         $languages
                     ),
@@ -284,7 +283,7 @@ class Util
                     'experience_start' . $index    => strval($experience->getStartYear()),
                     'experience_end' . $index      => strval($experience->getEndYear()),
                 );
-                $experiences = array_merge($experiences,$tmp);
+                $experiences = array_merge($experiences, $tmp);
                 $index++;
             }
 
@@ -349,9 +348,9 @@ class Util
                         'InterestContent' => $cv->getFutureInterest(),
                         'EuropeContent'   => $translator->translate($cv->getMobilityEurope()),
                         'WorldContent'    => $translator->translate($cv->getMobilityWorld()),
-                        ),
-                    null
                     ),
+                    null
+                ),
 
                 new Node(
                     'subsection',
@@ -391,7 +390,7 @@ class Util
             'city'    => $cv->getAddress()->getCity(),
             'country' => $cv->getAddress()->getCountry(),
         );
-        if (null !== $cv->getAddress()->getMailbox() && '' !== $cv->getAddress()->getMailbox()) {
+        if ($cv->getAddress()->getMailbox() !== null && $cv->getAddress()->getMailbox() !== '') {
             $result['bus'] = $cv->getAddress()->getMailbox();
         }
 

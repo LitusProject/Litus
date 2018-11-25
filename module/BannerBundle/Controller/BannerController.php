@@ -20,8 +20,8 @@
 
 namespace BannerBundle\Controller;
 
-use Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * BannerController
@@ -39,11 +39,13 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
             ->getConfigValue('banner.image_path') . '/' . $this->getParam('image');
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="' . $this->getParam('image') . '"',
-            'Content-Type'        => mime_content_type($imagePath),
-            'Content-Length'      => filesize($imagePath),
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'inline; filename="' . $this->getParam('image') . '"',
+                'Content-Type'        => mime_content_type($imagePath),
+                'Content-Length'      => filesize($imagePath),
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         $handle = fopen($imagePath, 'r');

@@ -20,11 +20,11 @@
 
 namespace PublicationBundle\Controller\Admin\Edition;
 
-use DateTime,
-    PublicationBundle\Entity\Edition\Pdf as PdfEdition,
-    PublicationBundle\Entity\Publication,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use DateTime;
+use PublicationBundle\Entity\Edition\Pdf as PdfEdition;
+use PublicationBundle\Entity\Publication;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * PdfController
@@ -35,7 +35,8 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
 {
     public function manageAction()
     {
-        if (!($publication = $this->getPublicationEntity())) {
+        $publication = $this->getPublicationEntity();
+        if ($publication === null) {
             return new ViewModel();
         }
 
@@ -57,7 +58,8 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
 
     public function addAction()
     {
-        if (!($publication = $this->getPublicationEntity())) {
+        $publication = $this->getPublicationEntity();
+        if ($publication === null) {
             return new ViewModel();
         }
 
@@ -83,17 +85,20 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
 
     public function uploadAction()
     {
-        if (!($publication = $this->getPublicationEntity())) {
+        $publication = $this->getPublicationEntity();
+        if ($publication === null) {
             return new ViewModel();
         }
 
         $form = $this->getForm('publication_edition_pdf_add', array('publication' => $publication));
         $formData = $this->getRequest()->getPost();
 
-        $form->setData(array_merge_recursive(
-            $formData->toArray(),
-            $this->getRequest()->getFiles()->toArray()
-        ));
+        $form->setData(
+            array_merge_recursive(
+                $formData->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            )
+        );
 
         $date = self::loadDate($formData['date']);
 
@@ -152,7 +157,8 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
     {
         $this->initAjax();
 
-        if (!($edition = $this->getPdfEditionEntity())) {
+        $edition = $this->getPdfEditionEntity();
+        if ($edition === null) {
             return new ViewModel();
         }
 
@@ -176,7 +182,8 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
 
     public function viewAction()
     {
-        if (!($edition = $this->getPdfEditionEntity())) {
+        $edition = $this->getPdfEditionEntity();
+        if ($edition === null) {
             return new ViewModel();
         }
 
@@ -185,11 +192,13 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
             ->getConfigValue('publication.public_pdf_directory');
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="' . $edition->getTitle() . '"',
-            'Content-Type'        => 'application/pdf',
-            'Content-Length'      => filesize($filePath . $edition->getFileName()),
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="' . $edition->getTitle() . '"',
+                'Content-Type'        => 'application/pdf',
+                'Content-Length'      => filesize($filePath . $edition->getFileName()),
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         $handle = fopen($filePath . $edition->getFileName(), 'r');
@@ -258,7 +267,7 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
     }
 
     /**
-     * @param  string        $date
+     * @param  string $date
      * @return DateTime|null
      */
     private static function loadDate($date)

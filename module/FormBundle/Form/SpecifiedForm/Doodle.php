@@ -20,13 +20,13 @@
 
 namespace FormBundle\Form\SpecifiedForm;
 
-use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
-    FormBundle\Component\Exception\UnsupportedTypeException,
-    FormBundle\Entity\Field\TimeSlot as TimeSlotFieldEntity,
-    FormBundle\Entity\Node\Entry as EntryEntity,
-    FormBundle\Entity\Node\Form\Doodle as DoodleEntity,
-    FormBundle\Entity\Node\GuestInfo as GuestInfoEntity;
+use CommonBundle\Entity\General\Language;
+use CommonBundle\Entity\User\Person;
+use FormBundle\Component\Exception\UnsupportedTypeException;
+use FormBundle\Entity\Field\TimeSlot as TimeSlotFieldEntity;
+use FormBundle\Entity\Node\Entry as EntryEntity;
+use FormBundle\Entity\Node\Form\Doodle as DoodleEntity;
+use FormBundle\Entity\Node\GuestInfo as GuestInfoEntity;
 
 /**
  * Specifield Form Doodle
@@ -78,56 +78,60 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $editable = $this->form->canBeSavedBy($this->person) || $this->forceEdit;
 
-        if (null === $this->person) {
-            $this->add(array(
-                'type'     => 'text',
-                'name'     => 'first_name',
-                'label'    => 'First Name',
-                'required' => true,
-                'value'    => $this->guestInfo ? $this->guestInfo->getFirstName() : '',
-                'options'  => array(
-                    'input' => array(
-                        'filter' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
-                ),
-            ));
-
-            $this->add(array(
-                'type'     => 'text',
-                'name'     => 'last_name',
-                'label'    => 'Last Name',
-                'required' => true,
-                'value'    => $this->guestInfo ? $this->guestInfo->getLastName() : '',
-                'options'  => array(
-                    'input' => array(
-                        'filter' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
-                ),
-            ));
-
-            $this->add(array(
-                'type'     => 'text',
-                'name'     => 'email',
-                'label'    => 'Email',
-                'required' => true,
-                'value'    => $this->guestInfo ? $this->guestInfo->getEmail() : '',
-                'options'  => array(
-                    'input' => array(
-                        'filter' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'EmailAddress',
+        if ($this->person === null) {
+            $this->add(
+                array(
+                    'type'     => 'text',
+                    'name'     => 'first_name',
+                    'label'    => 'First Name',
+                    'required' => true,
+                    'value'    => $this->guestInfo ? $this->guestInfo->getFirstName() : '',
+                    'options'  => array(
+                        'input' => array(
+                            'filter' => array(
+                                array('name' => 'StringTrim'),
                             ),
                         ),
                     ),
-                ),
-            ));
+                )
+            );
+
+            $this->add(
+                array(
+                    'type'     => 'text',
+                    'name'     => 'last_name',
+                    'label'    => 'Last Name',
+                    'required' => true,
+                    'value'    => $this->guestInfo ? $this->guestInfo->getLastName() : '',
+                    'options'  => array(
+                        'input' => array(
+                            'filter' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                )
+            );
+
+            $this->add(
+                array(
+                    'type'     => 'text',
+                    'name'     => 'email',
+                    'label'    => 'Email',
+                    'required' => true,
+                    'value'    => $this->guestInfo ? $this->guestInfo->getEmail() : '',
+                    'options'  => array(
+                        'input' => array(
+                            'filter' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array('name' => 'EmailAddress'),
+                            ),
+                        ),
+                    ),
+                )
+            );
         }
 
         $occupiedSlots = $this->getOccupiedSlots();
@@ -150,7 +154,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
                 } else {
                     $validators = array(
                         array(
-                            'name'    => 'form_timeslot',
+                            'name'    => 'TimeSlot',
                             'options' => array(
                                 'timeslot' => $fieldSpecification,
                                 'person'   => $this->person,
@@ -160,7 +164,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
                 }
 
                 $validators[] = array(
-                    'name'    => 'form_max_timeslots',
+                    'name'    => 'MaxTimeSlots',
                     'options' => array(
                         'form' => $this->form,
                     ),
@@ -194,7 +198,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
             $this->addSubmit($this->form->getSubmitText($this->language));
         }
 
-        if (null !== $this->entry) {
+        if ($this->entry !== null) {
             $this->bind($this->entry);
         }
     }
@@ -267,7 +271,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
 
     public function getOccupiedSlots()
     {
-        if (null !== $this->occupiedSlots) {
+        if ($this->occupiedSlots !== null) {
             return $this->occupiedSlots;
         }
 
@@ -277,8 +281,9 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->occupiedSlots = array();
         foreach ($formEntries as $formEntry) {
-            if ((null !== $this->person && $formEntry->getCreationPerson() == $this->person) ||
-                (null !== $this->guestInfo && $formEntry->getGuestInfo() == $this->guestInfo)) {
+            if (($this->person !== null && $formEntry->getCreationPerson() == $this->person) 
+                || ($this->guestInfo !== null && $formEntry->getGuestInfo() == $this->guestInfo)
+            ) {
                 continue;
             }
 

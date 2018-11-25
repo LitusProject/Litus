@@ -20,20 +20,14 @@
 
 namespace QuizBundle\Form\Admin\Round;
 
-use LogicException;
-
 /**
  * Edits a quiz round
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
-class Edit extends Add
+class Edit extends \QuizBundle\Form\Admin\Round\Add
 {
     public function init()
     {
-        if (null === $this->round) {
-            throw new LogicException('Cannot edit a null round');
-        }
-
         parent::init();
 
         $this->remove('submit')

@@ -20,11 +20,11 @@
 
 namespace SecretaryBundle\Component\Registration;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Organization,
-    CommonBundle\Entity\User\Person\Academic,
-    CudiBundle\Entity\Sale\Booking,
-    Doctrine\ORM\EntityManager;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\General\Organization;
+use CommonBundle\Entity\User\Person\Academic;
+use CudiBundle\Entity\Sale\Booking;
+use Doctrine\ORM\EntityManager;
 
 /**
  * @author Kristof Mariën <kristof.marien@litus.cc>
@@ -51,7 +51,7 @@ class Articles
                 ->getRepository('CudiBundle\Entity\Sale\Article')
                 ->findOneById($ids[$organization->getId()]);
 
-            if (null !== $membershipArticle) {
+            if ($membershipArticle !== null) {
                 $booking = $entityManager
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
                     ->findOneSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
@@ -60,7 +60,7 @@ class Articles
                         $academicYear
                     );
 
-                if (null === $booking) {
+                if ($booking === null) {
                     $booking = new Booking(
                         $entityManager,
                         $academic,
@@ -85,7 +85,7 @@ class Articles
                 ->getConfigValue('cudi.tshirt_article')
         );
 
-        $hasShirt = false;
+        $hasTshirt = false;
         foreach ($tshirts as $tshirt) {
             $booking = $entityManager
                 ->getRepository('CudiBundle\Entity\Sale\Booking')
@@ -97,8 +97,8 @@ class Articles
                     $academicYear
                 );
 
-            if (null !== $booking) {
-                $hasShirt = true;
+            if ($booking !== null) {
+                $hasTshirt = true;
                 break;
             }
         }
@@ -111,13 +111,15 @@ class Articles
             ->findOneActive();
         $currentPeriod->setEntityManager($entityManager);
 
-        if (!empty($tshirts) && !$hasShirt && isset($options['tshirtSize'])) {
+        if (count($tshirts) > 0 && !$hasTshirt && isset($options['tshirtSize'])) {
+            $tshirtArticle = $entityManager
+                ->getRepository('CudiBundle\Entity\Sale\Article')
+                ->findOneById($tshirts[$options['tshirtSize']]);
+
             $booking = new Booking(
                 $entityManager,
                 $academic,
-                $entityManager
-                    ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findOneById($tshirts[$options['tshirtSize']]),
+                $tshirtArticle,
                 'booked',
                 1,
                 true
@@ -136,8 +138,8 @@ class Articles
         }
 
         $dissableAssignment = $entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('cudi.dissable_registration_articles_2nd_stock_period');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.dissable_registration_articles_2nd_stock_period');
 
         if (!($dissableAssignment == '1' && ($currentPeriod->getStartDate()->format('n') < 4 || $currentPeriod->getStartDate()->format('n') > 11))) {
             $registrationArticles = unserialize(
@@ -157,7 +159,7 @@ class Articles
                         $academicYear
                     );
 
-                if (null !== $booking) {
+                if ($booking !== null) {
                     continue;
                 }
 
@@ -211,7 +213,7 @@ class Articles
                     $academicYear
                 );
 
-            if (null !== $booking) {
+            if ($booking !== null) {
                 $booking->setStatus('canceled', $entityManager);
             }
         }
@@ -255,7 +257,7 @@ class Articles
                     $academicYear
                 );
 
-            if (null !== $booking) {
+            if ($booking !== null) {
                 $booking->setStatus('canceled', $entityManager);
             }
         }

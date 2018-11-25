@@ -20,9 +20,8 @@
 
 namespace FormBundle\Component\Document\Generator;
 
-use CommonBundle\Entity\General\Language,
-    Doctrine\ORM\EntityManager,
-    FormBundle\Entity\ViewerMap;
+use Doctrine\ORM\EntityManager;
+use FormBundle\Entity\ViewerMap;
 
 /**
  * Doodle
@@ -54,18 +53,15 @@ class Doodle extends \CommonBundle\Component\Document\Generator\Csv
                 $result[] = $entry->getPersonInfo()->getEmail();
             }
 
-            $maxSlots = max(sizeof($entry->getFieldEntries()), $maxSlots);
+            $maxSlots = max(count($entry->getFieldEntries()), $maxSlots);
             foreach ($entry->getFieldEntries() as $fieldEntry) {
                 $result[] = $fieldEntry->getField()->getStartDate()->format('d/m/Y H:i');
                 $result[] = $fieldEntry->getField()->getEndDate()->format('d/m/Y H:i');
             }
             $results[] = $result;
         }
-<<<<<<< HEAD
-=======
 
->>>>>>> a507a280f9f3c25dee6a17cf254ca1a4d6f5cfe4
-        for ($i = 0 ; $i < $maxSlots ; $i++) {
+        for ($i = 0; $i < $maxSlots; $i++) {
             $headers[] = 'Slot ' . ($i + 1) . ' Start';
             $headers[] = 'Slot ' . ($i + 1) . ' End';
         }

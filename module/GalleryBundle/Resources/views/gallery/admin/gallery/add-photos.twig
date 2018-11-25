@@ -7,7 +7,9 @@
 
     <div id="controller_action">
         <h1>{{ album.getTitle(language) }}</h1>
-        <input type="file" id="uploader" class="uk-input" data-uploadUrl="{{ url("gallery_admin_gallery", {"action": "upload", "id": album.getId()}) }}" name="file" multiple>
+        <form action="#" method="POST">
+            <input type="file" id="uploader" class="uk-input" data-uploadUrl="{{ url("gallery_admin_gallery", {"action": "upload", "id": album.getId()}) }}" name="file" multiple>
+        </form>
     </div>
 
     {% if hasAccess('gallery_admin_gallery', 'photos') %}
@@ -33,19 +35,7 @@
             $('#uploader').uploadKit({
                 uploadUrl: '{{ url("gallery_admin_gallery", {"action": "upload", "id": album.getId()}) }}',
                 isMultiple: true,
-                swfUrl: '',
-                silverlightUrl: '',
-                errorFileSize: 'File size exceeds limit',
-                errorUnknown: 'Unknown error occurred',
-                infoMultiple: '<h1>No Files Selected</h1><h2>Browse for files to upload or drag and drop them here</h2>',
-                infoNotMultiple: '<h1>No File Selected</h1><h2>Browse for file to upload or drag and drop them here</h2>',
-                runtimes: 'html5,flash',
-                fileColumnTitle: 'File Name',
-                sizeColumnTitle: 'Size',
-                progressColumnTitle: 'Progress',
-                browseLabel: 'Browse...',
-                uploadLabel: 'Upload',
-                removeLabel: 'Remove',
+                runtimes: 'html5',
                 filters : [{title : "Image files", extensions : "jpeg,jpg"}],
                 maxFileSize: '15mb',
             });

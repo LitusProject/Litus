@@ -20,8 +20,8 @@
 
 namespace LogisticsBundle\Component\Controller;
 
-use CommonBundle\Component\Controller\Exception\HasNoAccessException,
-    Zend\Mvc\MvcEvent;
+use CommonBundle\Component\Controller\Exception\HasNoAccessException;
+use Zend\Mvc\MvcEvent;
 
 /**
  * We extend the CommonBundle controller.
@@ -33,7 +33,7 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
     /**
      * Execute the request.
      *
-     * @param  MvcEvent             $e The MVC event
+     * @param  MvcEvent $e The MVC event
      * @return array
      * @throws HasNoAccessException The user does not have permissions to access this resource
      */
@@ -43,12 +43,15 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
 
         $result->loginForm = $this->getForm('common_auth_login')
             ->setAttribute('class', '')
-            ->setAttribute('action', $this->url()->fromRoute(
-                'logistics_auth',
-                array(
-                    'action' => 'login',
+            ->setAttribute(
+                'action',
+                $this->url()->fromRoute(
+                    'logistics_auth',
+                    array(
+                        'action' => 'login',
+                    )
                 )
-            ));
+            );
         $result->organizationUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('organization_url');

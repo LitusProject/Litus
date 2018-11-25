@@ -28,7 +28,7 @@ use PromBundle\Entity\Bus\Passenger;
  * @author Mathijs Cuppens
  * @author Kristof Marien <kristof.marien@litus.cc>
  */
-class Edit extends Add
+class Edit extends \PromBundle\Form\Registration\Add
 {
     /**
      * @var Passenger
@@ -46,158 +46,134 @@ class Edit extends Add
         $firstBusEntity = null;
         $secondBusEntity = null;
 
-        if (null !== $this->passenger) {
+        if ($this->passenger !== null) {
             $firstName = $this->passenger->getFirstName();
             $lastName = $this->passenger->getLastName();
             $email = $this->passenger->getEmail();
 
             $codeEntity = $this->passenger->getCode();
-            if (null !== $codeEntity) {
+            if ($codeEntity !== null) {
                 $code = $codeEntity->getCode();
             }
 
             $firstBusEntity = $this->passenger->getFirstBus();
-            if (null !== $firstBusEntity) {
+            if ($firstBusEntity !== null) {
                 $firstBus = $firstBusEntity->getId();
             }
 
             $secondBusEntity = $this->passenger->getSecondBus();
-            if (null !== $secondBusEntity) {
+            if ($secondBusEntity !== null) {
                 $secondBus = $secondBusEntity->getId();
             }
         }
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'first_name',
-            'label'      => 'First Name',
-            'value'      => $firstName,
-            'attributes' => array(
-                'disabled' => true,
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'first_name',
+                'label'      => 'First Name',
+                'value'      => $firstName,
+                'attributes' => array(
+                    'disabled' => true,
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'last_name',
-            'label'      => 'Last Name',
-            'value'      => $lastName,
-            'attributes' => array(
-                'disabled' => true,
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'last_name',
+                'label'      => 'Last Name',
+                'value'      => $lastName,
+                'attributes' => array(
+                    'disabled' => true,
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'email',
-            'label'      => 'Email',
-            'value'      => $email,
-            'attributes' => array(
-                'disabled' => true,
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'email',
+                'label'      => 'Email',
+                'value'      => $email,
+                'attributes' => array(
+                    'disabled' => true,
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'ticket_code',
-            'label'      => 'Ticket Code',
-            'value'      => $code,
-            'attributes' => array(
-                'disabled' => true,
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'ticket_code',
+                'label'      => 'Ticket Code',
+                'value'      => $code,
+                'attributes' => array(
+                    'disabled' => true,
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'first_bus',
-            'label'      => 'Go Bus',
-            'required'   => true,
-            'value'      => $firstBus,
-            'attributes' => array(
-                'id'      => 'first_bus',
-                'options' => $this->getFirstBusses(),
-            ),
-            'options' => array(
-                'input' => array(
-                    'validators' => array(
-                        array(
-                            'name' => 'prom_bus_selected',
-                        ),
-                        array(
-                            'name'    => 'prom_bus_seats',
-                            'options' => array(
-                                'bus' => $firstBusEntity,
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'first_bus',
+                'label'      => 'Go Bus',
+                'required'   => true,
+                'value'      => $firstBus,
+                'attributes' => array(
+                    'id'      => 'first_bus',
+                    'options' => $this->getFirstBusses(),
+                ),
+                'options' => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name' => 'BusSelected',
+                            ),
+                            array(
+                                'name'    => 'BusSeats',
+                                'options' => array(
+                                    'bus' => $firstBusEntity,
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'second_bus',
-            'label'      => 'Return Bus',
-            'required'   => true,
-            'value'      => $secondBus,
-            'attributes' => array(
-                'id'      => 'second_bus',
-                'options' => $this->getSecondBusses(),
-            ),
-            'options' => array(
-                'input' => array(
-                    'validators' => array(
-                        array(
-                            'name' => 'prom_bus_selected',
-                        ),
-                        array(
-                            'name'    => 'prom_bus_seats',
-                            'options' => array(
-                                'bus' => $secondBusEntity,
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'second_bus',
+                'label'      => 'Return Bus',
+                'required'   => true,
+                'value'      => $secondBus,
+                'attributes' => array(
+                    'id'      => 'second_bus',
+                    'options' => $this->getSecondBusses(),
+                ),
+                'options' => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name' => 'BusSelected',
+                            ),
+                            array(
+                                'name'    => 'BusSeats',
+                                'options' => array(
+                                    'bus' => $secondBusEntity,
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Save Reservation', 'btn btn-default');
-    }
-
-    /**
-     * @return array
-     */
-    protected function getFirstBusses()
-    {
-        $busses = $this->getEntityManager()
-            ->getRepository('PromBundle\Entity\Bus')
-            ->getGoBusses($this->getCurrentAcademicYear());
-
-        $array = array('0' => 'None Selected');
-        foreach ($busses as $bus) {
-            $seatsLeft = $bus->getTotalSeats() - $bus->getReservedSeats();
-            $array[$bus->getId()] = $bus->getDepartureTime()->format('d/m/Y H:i') . ' | ' . $seatsLeft . ' seats left';
-        }
-
-        return $array;
-    }
-
-    /**
-     * @return array
-     */
-    protected function getSecondBusses()
-    {
-        $busses = $this->getEntityManager()
-            ->getRepository('PromBundle\Entity\Bus')
-            ->getReturnBusses($this->getCurrentAcademicYear());
-
-        $array = array('0' => 'None Selected');
-        foreach ($busses as $bus) {
-            $seatsLeft = $bus->getTotalSeats() - $bus->getReservedSeats();
-            $array[$bus->getId()] = $bus->getDepartureTime()->format('d/m/Y H:i') . ' | ' . $seatsLeft . ' seats left';
-        }
-
-        return $array;
     }
 
     /**

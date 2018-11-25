@@ -79,12 +79,12 @@
                 message: function (e, data) {
                     $('#syllabus_update_error, #syllabus_update_success').addClass('hide');
 
-                    if ('progress' !== data.status.type)
+                    if (data.status.type != 'progress')
                         $('#updateSyllabus .status').html(data.status ? translateStatus(data.status) : '');
                     else
                         $('#updateSyllabus .bar').width(data.status.extra + '%');
 
-                    if ('done' == data.status.type) {
+                    if (data.status.type == 'done') {
                         $('#syllabus_update_success').removeClass('hide');
                         $('#updateSyllabus').permanentModal('hide');
                     }
@@ -103,13 +103,11 @@
                     $('#updateSyllabus').permanentModal('open');
                     $.webSocket('send', {
                         'name': 'updateSyllabus',
-                        'text': JSON.stringify(
-                            {
-                                'command': 'update',
-                                'key': '{{ key }}',
-                                'authSession': '{{ authSession.getId() }}'
-                            }
-                        )
+                        'text': JSON.stringify({
+                            'command': 'update',
+                            'key': '{{ key }}',
+                            'authSession': '{{ authSession.getId() }}'
+                        })
                     });
                 }
             );

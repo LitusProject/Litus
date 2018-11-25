@@ -20,10 +20,7 @@
 
 namespace CommonBundle\Component\InputFilter;
 
-use Zend\InputFilter\Factory as ZendFactory,
-    Zend\InputFilter\InputFilter;
-
-class Factory extends ZendFactory
+class Factory extends \Zend\InputFilter\Factory
 {
     /**
      * {@inheritdoc}
@@ -31,8 +28,9 @@ class Factory extends ZendFactory
     public function createInput($inputSpecification)
     {
         if (is_array($inputSpecification)
-                && isset($inputSpecification['type'])
-                && is_array($inputSpecification['type'])) {
+            && isset($inputSpecification['type'])
+            && is_array($inputSpecification['type'])
+        ) {
             return $this->createInputFilter($inputSpecification);
         }
 
@@ -45,15 +43,15 @@ class Factory extends ZendFactory
     public function createInputFilter($inputFilterSpecification)
     {
         if (!is_array($inputFilterSpecification)
-                || !isset($inputFilterSpecification['type'])
-                || !is_array($inputFilterSpecification['type'])) {
+            || !isset($inputFilterSpecification['type'])
+            || !is_array($inputFilterSpecification['type'])
+        ) {
             return parent::createInputFilter($inputFilterSpecification);
         }
 
         $typeInput = $inputFilterSpecification['type'];
         $inputFilterSpecification['type'] = 'inputfilter';
 
-        /** @var \Zend\InputFilter\InputFilterInterface $inputFilter */
         $inputFilter = parent::createInputFilter($inputFilterSpecification);
 
         $inputFilter->add(

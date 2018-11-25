@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Controller\Admin\Stock;
 
-use CudiBundle\Entity\Stock\Retour,
-    CudiBundle\Entity\Supplier,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Stock\Retour;
+use CudiBundle\Entity\Supplier;
+use Zend\View\Model\ViewModel;
 
 /**
  * RetourController
@@ -55,11 +55,13 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 
     public function supplierAction()
     {
-        if (!($supplier = $this->getSupplierEntity())) {
+        $supplier = $this->getSupplierEntity();
+        if ($supplier === null) {
             return new ViewModel();
         }
 
-        if (!($period = $this->getActiveStockPeriodEntity())) {
+        $period = $this->getActiveStockPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 
@@ -86,7 +88,8 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        if (!($period = $this->getActiveStockPeriodEntity())) {
+        $period = $this->getActiveStockPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 
@@ -96,9 +99,12 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.article_barcode_prefix') . $this->getAcademicYearEntity()->getCode(true);
 
-        $form = $this->getForm('cudi_stock_delivery_retour', array(
-            'barcode_prefix' => $prefix,
-        ));
+        $form = $this->getForm(
+            'cudi_stock_delivery_retour',
+            array(
+                'barcode_prefix' => $prefix,
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -158,7 +164,8 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($retour = $this->getRetourEntity())) {
+        $retour = $this->getRetourEntity();
+        if ($retour === null) {
             return new ViewModel();
         }
 

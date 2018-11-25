@@ -20,8 +20,8 @@
 
 namespace BannerBundle\Controller\Admin;
 
-use BannerBundle\Entity\Node\Banner,
-    Zend\View\Model\ViewModel;
+use BannerBundle\Entity\Node\Banner;
+use Zend\View\Model\ViewModel;
 
 /**
  * BannerController
@@ -69,7 +69,8 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
 
     public function editAction()
     {
-        if (!($banner = $this->getBannerEntity())) {
+        $banner = $this->getBannerEntity();
+        if ($banner === null) {
             return new ViewModel();
         }
 
@@ -120,10 +121,12 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
         }
 
         if ($this->getRequest()->isPost()) {
-            $form->setData(array_merge_recursive(
-                $this->getRequest()->getPost()->toArray(),
-                $this->getRequest()->getFiles()->toArray()
-            ));
+            $form->setData(
+                array_merge_recursive(
+                    $this->getRequest()->getPost()->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
 
             if ($form->isValid()) {
                 $formData = $form->getData();
@@ -200,7 +203,8 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($banner = $this->getBannerEntity())) {
+        $banner = $this->getBannerEntity();
+        if ($banner === null) {
             return new ViewModel();
         }
 
@@ -217,7 +221,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
     }
 
     /**
-     * @param  boolean     $redirect
+     * @param  boolean $redirect
      * @return Banner|null
      */
     private function getBannerEntity($redirect = true)

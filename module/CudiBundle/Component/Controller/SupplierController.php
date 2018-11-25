@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Component\Controller;
 
-use CommonBundle\Component\Controller\Exception\HasNoAccessException,
-    CudiBundle\Entity\User\Person\Supplier,
-    Zend\Mvc\MvcEvent;
+use CommonBundle\Component\Controller\Exception\HasNoAccessException;
+use CudiBundle\Entity\User\Person\Supplier;
+use Zend\Mvc\MvcEvent;
 
 /**
  * We extend the CommonBundle controller to check a valid user is logged in.
@@ -34,7 +34,7 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
     /**
      * Execute the request.
      *
-     * @param  MvcEvent             $e The MVC event
+     * @param  MvcEvent $e The MVC event
      * @return array
      * @throws HasNoAccessException The user does not have permissions to access this resource
      */
@@ -45,12 +45,15 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
         $result->supplier = $this->getSupplierEntity();
         $result->loginForm = $this->getForm('common_auth_login')
             ->setAttribute('class', '')
-            ->setAttribute('action', $this->url()->fromRoute(
-                'cudi_supplier_auth',
-                array(
-                    'action' => 'login',
+            ->setAttribute(
+                'action',
+                $this->url()->fromRoute(
+                    'cudi_supplier_auth',
+                    array(
+                        'action' => 'login',
+                    )
                 )
-            ));
+            );
 
         $result->organizationUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')

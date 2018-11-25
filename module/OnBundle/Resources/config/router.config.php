@@ -21,7 +21,7 @@
 return array(
     'routes' => array(
         'on_admin_slug' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/on/slug[/:action[/:id][/:field/:string][/page/:page]][/]',
                 'constraints' => array(
@@ -38,7 +38,7 @@ return array(
             ),
         ),
         'on_redirect' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/on[/:name][/]',
                 'constraints' => array(

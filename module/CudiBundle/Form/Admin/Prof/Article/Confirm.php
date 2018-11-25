@@ -20,8 +20,6 @@
 
 namespace CudiBundle\Form\Admin\Prof\Article;
 
-use LogicException;
-
 /**
  * Confirm Article add action
  *
@@ -31,10 +29,6 @@ class Confirm extends \CudiBundle\Form\Admin\Article\Add
 {
     public function init()
     {
-        if (null === $this->article) {
-            throw new LogicException('Cannot confirm a null article');
-        }
-
         parent::init();
 
         $this->remove('subject_form');

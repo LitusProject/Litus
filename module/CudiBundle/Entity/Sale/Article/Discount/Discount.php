@@ -20,13 +20,13 @@
 
 namespace CudiBundle\Entity\Sale\Article\Discount;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Organization,
-    CommonBundle\Entity\User\Person,
-    CudiBundle\Entity\Sale\Article,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\General\Organization;
+use CommonBundle\Entity\User\Person;
+use CudiBundle\Entity\Sale\Article;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Article\Discount\Discount")
@@ -221,7 +221,7 @@ class Discount
     }
 
     /**
-     * @param  string  $type
+     * @param  string $type
      * @return boolean
      */
     public static function isValidDiscountType($type)
@@ -230,7 +230,7 @@ class Discount
     }
 
     /**
-     * @param  string  $method
+     * @param  string $method
      * @return boolean
      */
     public static function isValidDiscountMethod($method)
@@ -239,7 +239,7 @@ class Discount
     }
 
     /**
-     * @param  string  $rounding
+     * @param  string $rounding
      * @return boolean
      */
     public static function isValidRoundingType($rounding)
@@ -423,7 +423,7 @@ class Discount
             if ($this->getOrganization() !== null) {
                 $organization = $entityManager->getRepository('CommonBundle\Entity\User\Person\Organization\AcademicYearMap')
                     ->findOneByAcademicAndAcademicYear($person, $academicYear);
-                if (null == $organization) {
+                if ($organization == null) {
                     return false;
                 }
                 if ($organization != $this->getOrganization()) {

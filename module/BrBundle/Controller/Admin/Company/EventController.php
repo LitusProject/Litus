@@ -20,10 +20,10 @@
 
 namespace BrBundle\Controller\Admin\Company;
 
-use BrBundle\Entity\Company,
-    BrBundle\Entity\Company\Event,
-    Imagick,
-    Zend\View\Model\ViewModel;
+use BrBundle\Entity\Company;
+use BrBundle\Entity\Company\Event;
+use Imagick;
+use Zend\View\Model\ViewModel;
 
 /**
  * EventController
@@ -34,7 +34,8 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($company = $this->getCompanyEntity())) {
+        $company = $this->getCompanyEntity();
+        if ($company === null) {
             return new ViewModel();
         }
 
@@ -56,7 +57,8 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($company = $this->getCompanyEntity())) {
+        $company = $this->getCompanyEntity();
+        if ($company === null) {
             return new ViewModel();
         }
 
@@ -105,7 +107,8 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($event = $this->getEventEntity())) {
+        $event = $this->getEventEntity();
+        if ($event === null) {
             return new ViewModel();
         }
 
@@ -147,7 +150,8 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($event = $this->getEventEntity())) {
+        $event = $this->getEventEntity();
+        if ($event === null) {
             return new ViewModel();
         }
 
@@ -163,7 +167,8 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editPosterAction()
     {
-        if (!($event = $this->getEventEntity())) {
+        $event = $this->getEventEntity();
+        if ($event === null) {
             return new ViewModel();
         }
 
@@ -210,17 +215,20 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function uploadAction()
     {
-        if (!($event = $this->getEventEntity())) {
+        $event = $this->getEventEntity();
+        if ($event === null) {
             return new ViewModel();
         }
 
         $form = $this->getForm('calendar_event_poster');
 
         if ($this->getRequest()->isPost()) {
-            $form->setData(array_merge_recursive(
-                $this->getRequest()->getPost()->toArray(),
-                $this->getRequest()->getFiles()->toArray()
-            ));
+            $form->setData(
+                array_merge_recursive(
+                    $this->getRequest()->getPost()->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
 
             if ($form->isValid()) {
                 $formData = $form->getData();

@@ -20,13 +20,13 @@
 
 namespace CudiBundle\Controller\Prof;
 
-use CudiBundle\Entity\Article,
-    CudiBundle\Entity\Article\Internal,
-    CudiBundle\Entity\Article\SubjectMap,
-    CudiBundle\Entity\Prof\Action,
-    SyllabusBundle\Entity\Subject,
-    SyllabusBundle\Entity\Subject\ProfMap,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Article;
+use CudiBundle\Entity\Article\Internal;
+use CudiBundle\Entity\Article\SubjectMap;
+use CudiBundle\Entity\Prof\Action;
+use SyllabusBundle\Entity\Subject;
+use SyllabusBundle\Entity\Subject\ProfMap;
+use Zend\View\Model\ViewModel;
 
 /**
  * ArticleController
@@ -54,7 +54,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
     public function addAction()
     {
-        if (!($academicYear = $this->getCurrentAcademicYear())) {
+        $academicYear = $this->getCurrentAcademicYear();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -130,17 +131,22 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
     public function addFromSubjectAction()
     {
-        if (!($academicYear = $this->getCurrentAcademicYear())) {
+        $academicYear = $this->getCurrentAcademicYear();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
-        if (!($subject = $this->getSubjectEntity())) {
+        $subject = $this->getSubjectEntity();
+        if ($subject === null) {
             return new ViewModel();
         }
 
-        $form = $this->getForm('cudi_prof_article_add-with-subject', array(
-            'subject' => $subject,
-        ));
+        $form = $this->getForm(
+            'cudi_prof_article_add-with-subject',
+            array(
+                'subject' => $subject,
+            )
+        );
         $formData = null;
 
         if ($this->getRequest()->isPost()) {
@@ -172,7 +178,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                     $article,
                     $mappingProf->getSubject(),
                     $academicYear,
-                    isset($formData['subject']['mandatory']) ? $formData['subject']['mandatory'] : false
+                    $formData['subject']['mandatory'] ?? false
                 );
                 $mapping->setIsProf(true);
                 $this->getEntityManager()->persist($mapping);
@@ -212,13 +218,14 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
     public function editAction()
     {
-        if (!($article = $this->getArticleEntity())) {
+        $article = $this->getArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
         $history = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Article\History')
-                    ->findOneByPrecursor($article);
+            ->getRepository('CudiBundle\Entity\Article\History')
+            ->findOneByPrecursor($article);
 
         if (isset($history)) {
             $this->redirect()->toRoute(
@@ -316,7 +323,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
     public function deleteAction()
     {
-        if (!($article = $this->getArticleEntity())) {
+        $article = $this->getArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -355,12 +363,12 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
     }
 
     /**
-     * @param  int|null     $id
+     * @param  integer|null $id
      * @return Article|null
      */
     private function getArticleEntity($id = null)
     {
-        $id = $id === null ? $this->getParam('id', 0) : $id;
+        $id = $id ?? $this->getParam('id', 0);
 
         $article = null;
 
@@ -399,7 +407,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
      */
     private function getSubjectEntity()
     {
-        if (!($academicYear = $this->getCurrentAcademicYear())) {
+        $academicYear = $this->getCurrentAcademicYear();
+        if ($academicYear === null) {
             return;
         }
 

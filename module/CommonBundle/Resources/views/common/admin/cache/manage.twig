@@ -6,21 +6,29 @@
     {% include 'admin/partials/flashMessenger.twig' %}
 
     <div id="controller_action">
-        <table>
-            <tr>
-                <th>Name</th>
-            </tr>
-            {% for key in paginator %}
-                <tr>
-                    <td>{{ key }}</td>
-                </tr>
-            {% endfor %}
-        </table>
+        <h1>Info</h1>
+        {% for key, value in info %}
+            <p>{{ key }}: <b>{{ value }}</b></p>
+        {% endfor %}
 
-        {% include 'admin/partials/paginationControl.twig' %}
+        {% if paginator|length > 0 %}
+            <h1>Keys</h1>
+            <table>
+                <tr>
+                    <th>Name</th>
+                </tr>
+                {% for key in paginator %}
+                    <tr>
+                        <td>{{ key }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        {% endif %}
     </div>
 
-    {% if hasAccess('common_admin_cache', 'flush') %}
+    {% if hasAccess('common_admin_cache', 'flush') and flushable %}
         <aside>
             <div class="sidebox">
                 <div class="title">Clear Cache</div>

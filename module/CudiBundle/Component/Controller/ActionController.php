@@ -20,8 +20,8 @@
 
 namespace CudiBundle\Component\Controller;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CudiBundle\Entity\Stock\Period;
+use CommonBundle\Component\Util\AcademicYear;
+use CudiBundle\Entity\Stock\Period;
 
 /**
  * @author Kristof Mariën <kristof.marien@litus.cc>
@@ -36,7 +36,7 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
     protected function getAcademicYearEntity()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') !== null) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
         }
 

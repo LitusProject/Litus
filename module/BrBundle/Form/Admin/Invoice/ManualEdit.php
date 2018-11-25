@@ -27,7 +27,7 @@ use BrBundle\Entity\Invoice;
  *
  * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
  */
-class ManualEdit extends ManualAdd
+class ManualEdit extends \BrBundle\Form\Admin\Invoice\ManualAdd
 {
     /**
      * @var Invoice
@@ -40,40 +40,41 @@ class ManualEdit extends ManualAdd
 
         $this->remove('file');
 
-        $this->add(array(
-            'type'       => 'file',
-            'name'       => 'file',
-            'label'      => 'Change File',
-            'required'   => false,
-            'attributes' => array(
-                'data-help' => 'The file can be of any type and has a filesize limit of ' . self::FILESIZE . '.',
-                'size'      => 256,
-            ),
-            'options' => array(
-                'input' => array(
-                    'validators' => array(
-                        array(
-                            'name'    => 'filesize',
-                            'options' => array(
-                                'max' => self::FILESIZE,
+        $this->add(
+            array(
+                'type'       => 'file',
+                'name'       => 'file',
+                'label'      => 'Change File',
+                'required'   => false,
+                'attributes' => array(
+                    'data-help' => 'The file can be of any type and has a filesize limit of ' . self::FILE_SIZE . '.',
+                    'size'      => 256,
+                ),
+                'options' => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name'    => 'FileExtension',
+                                'options' => array(
+                                    'extension' => 'pdf',
+                                ),
                             ),
-                        ),
-                        array(
-                            'name'    => 'fileextension',
-                            'options' => array(
-                                'extension' => 'pdf',
+                            array(
+                                'name'    => 'FileSize',
+                                'options' => array(
+                                    'max' => self::FILE_SIZE,
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->remove('submit');
+        $this->remove('submit')
+            ->addSubmit('Save', 'invoice_edit');
 
-        $this->addSubmit('Save', 'invoice_edit');
-
-        if (null !== $this->invoice) {
+        if ($this->invoice !== null) {
             $this->bind($this->invoice);
         }
     }

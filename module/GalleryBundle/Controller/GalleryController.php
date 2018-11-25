@@ -20,11 +20,11 @@
 
 namespace GalleryBundle\Controller;
 
-use CommonBundle\Component\Util\AcademicYear,
-    DateInterval,
-    GalleryBundle\Entity\Album\Album,
-    GalleryBundle\Entity\Album\Photo,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear;
+use DateInterval;
+use GalleryBundle\Entity\Album\Album;
+use GalleryBundle\Entity\Album\Photo;
+use Zend\View\Model\ViewModel;
 
 /**
  * GalleryController
@@ -41,7 +41,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         $sorted = array();
         foreach ($albums as $album) {
-            if (sizeof($album->getPhotos()) == 0) {
+            if (count($album->getPhotos()) == 0) {
                 continue;
             }
 
@@ -90,7 +90,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         $albums = array();
         foreach ($albumsFound as $album) {
-            if (sizeof($album->getPhotos()) >= 0) {
+            if (count($album->getPhotos()) >= 0) {
                 $albums[] = $album;
             }
         }
@@ -110,7 +110,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function albumAction()
     {
-        if (!($album = $this->getAlbumEntity())) {
+        $album = $this->getAlbumEntity();
+        if ($album === null) {
             return $this->notFoundAction();
         }
 
@@ -121,7 +122,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         $allowCensor = false;
         if ($this->getAuthentication()->isAuthenticated()) {
             if ($this->getAuthentication()->getPersonObject()->isPraesidium($this->getCurrentAcademicYear())
-                && $this->hasAccess()->toResourceAction('gallery', 'censor') && $this->hasAccess()->toResourceAction('gallery', 'uncensor')) {
+                && $this->hasAccess()->toResourceAction('gallery', 'censor') && $this->hasAccess()->toResourceAction('gallery', 'uncensor')
+            ) {
                 $allowCensor = true;
             }
         }
@@ -141,7 +143,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             return $this->notFoundAction();
         }
 
-        if (!($photo = $this->getPhotoEntity())) {
+        $photo = $this->getPhotoEntity();
+        if ($photo === null) {
             return $this->notFoundAction();
         }
 
@@ -163,7 +166,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             return $this->notFoundAction();
         }
 
-        if (!($photo = $this->getPhotoEntity())) {
+        $photo = $this->getPhotoEntity();
+        if ($photo === null) {
             return $this->notFoundAction();
         }
 

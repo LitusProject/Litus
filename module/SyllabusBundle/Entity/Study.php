@@ -20,9 +20,9 @@
 
 namespace SyllabusBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\Mapping as ORM,
-    SyllabusBundle\Entity\Study\Combination;
+use CommonBundle\Entity\General\AcademicYear;
+use Doctrine\ORM\Mapping as ORM;
+use SyllabusBundle\Entity\Study\Combination;
 
 /**
  * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Study")
@@ -110,7 +110,7 @@ class Study
      */
     public function getTitle()
     {
-        if (null !== $this->combination) {
+        if ($this->combination !== null) {
             return $this->combination->getTitle();
         }
 
@@ -118,11 +118,11 @@ class Study
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getPhase()
     {
-        if (null !== $this->combination) {
+        if ($this->combination !== null) {
             return $this->combination->getPhase();
         }
 
@@ -134,7 +134,7 @@ class Study
      */
     public function getLanguage()
     {
-        if (null !== $this->combination) {
+        if ($this->combination !== null) {
             return $this->combination->getLanguage();
         }
 

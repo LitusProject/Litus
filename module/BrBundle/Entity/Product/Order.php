@@ -20,16 +20,14 @@
 
 namespace BrBundle\Entity\Product;
 
-use BrBundle\Entity\Collaborator,
-    BrBundle\Entity\Company,
-    BrBundle\Entity\Contract,
-    BrBundle\Entity\Invoice,
-    BrBundle\Entity\User\Person\Corporate as CorporatePerson,
-    CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+use BrBundle\Entity\Collaborator;
+use BrBundle\Entity\Contract;
+use BrBundle\Entity\User\Person\Corporate as CorporatePerson;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * An order of several products.
@@ -40,7 +38,7 @@ use BrBundle\Entity\Collaborator,
 class Order
 {
     /**
-     * @var int The ID of this node
+     * @var integer The ID of this node
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -69,7 +67,7 @@ class Order
     private $contract;
 
     /**
-     * @var ContractInvoice The invoice accompanying this order
+     * @var \BrBundle\Entity\Invoice\ContractInvoice The invoice accompanying this order
      *
      * @ORM\OneToOne(
      *      targetEntity="BrBundle\Entity\Invoice\ContractInvoice",
@@ -108,28 +106,28 @@ class Order
     private $creationPerson;
 
     /**
-     * @var bool True if this order is old or not.
+     * @var boolean True if this order is old or not.
      *
      * @ORM\Column(name="old", type="boolean")
      */
     private $old;
 
     /**
-     * @var bool True if this order gets an automatic discount when the total price is high enough.
+     * @var boolean True if this order gets an automatic discount when the total price is high enough.
      *
      * @ORM\Column(name="auto_discount", type="boolean")
      */
     private $autoDiscount;
 
     /**
-     * @var int The discount percentage the company has on this order.
+     * @var integer The discount percentage the company has on this order.
      *
      * @ORM\Column(name="auto_discount_percentage", type="integer", nullable = true)
      */
     private $autoDiscountPercentage;
 
     /**
-     * @var int The discount the company gets.
+     * @var integer The discount the company gets.
      *
      * @ORM\Column(type="integer", nullable=true)
      */
@@ -157,7 +155,7 @@ class Order
     }
 
     /**
-     * @param  int  $discount
+     * @param  integer $discount
      * @return self
      */
     public function setDiscount($discount)
@@ -172,7 +170,7 @@ class Order
     }
 
     /**
-     * @return int discount in cents
+     * @return integer discount in cents
      */
     public function getDiscount()
     {
@@ -197,7 +195,7 @@ class Order
         foreach ($this->orderEntries as $orderEntry) {
             if (!$orderEntry->getProduct()->isRefund()) {
                 $orderEntry->getProduct()->setEntityManager($this->entityManager);
-                $costNoRefund = $costNoRefund + ($orderEntry->getProduct()->getSignedPrice() * $orderEntry->getQuantity());
+                $costNoRefund += ($orderEntry->getProduct()->getSignedPrice() * $orderEntry->getQuantity());
             }
         }
 
@@ -215,7 +213,7 @@ class Order
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getAutoDiscountPercentage()
     {
@@ -223,7 +221,7 @@ class Order
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -304,7 +302,7 @@ class Order
      */
     public function hasContract()
     {
-        return (null !== $this->getContract() ? true : false);
+        return ($this->getContract() !== null ? true : false);
     }
 
     /**
@@ -333,8 +331,7 @@ class Order
     {
         $result = '';
         foreach ($this->getEntries() as $entry) {
-            $result = $result .
-                $entry->getProduct()->getName() . ': ' .
+            $result .= $entry->getProduct()->getName() . ': ' .
                 $entry->getQuantity() . ', ';
         }
 
@@ -378,8 +375,8 @@ class Order
     }
 
     /**
-     * @param  int    $vatType
-     * @return double combined cost of all entries with the given vat type, in cents
+     * @param  integer $vatType
+     * @return float combined cost of all entries with the given vat type, in cents
      */
     public function getCostVatTypeExclusive($vatType)
     {
@@ -389,17 +386,17 @@ class Order
             $orderEntry->getProduct()->setEntityManager($this->entityManager);
 
             if ($orderEntry->getProduct()->getVatPercentage() == $vatType) {
-                $cost = $cost + (double) ($orderEntry->getProduct()->getSignedPrice() * $orderEntry->getQuantity());
+                $cost += (float) ($orderEntry->getProduct()->getSignedPrice() * $orderEntry->getQuantity());
             }
         }
 
         $cost = ($cost - ($cost * $this->getAutoDiscountPercentage() / 100));
 
-        return (double) $cost;
+        return (float) $cost;
     }
 
     /**
-     * @return double combined cost of all entries without VAT, in cents
+     * @return float combined cost of all entries without VAT, in cents
      */
     public function getFullCostExclusive()
     {
@@ -407,24 +404,24 @@ class Order
 
         foreach ($this->orderEntries as $orderEntry) {
             $orderEntry->getProduct()->setEntityManager($this->entityManager);
-            $cost = $cost + ($orderEntry->getProduct()->getSignedPrice() * $orderEntry->getQuantity());
+            $cost += ($orderEntry->getProduct()->getSignedPrice() * $orderEntry->getQuantity());
         }
 
-        return (double) $cost;
+        return (float) $cost;
     }
 
     /**
-     * @return double cost of this order, with auto discount, in euro's
+     * @return float cost of this order, with auto discount, in euro's
      */
     public function getTotalCostExclusive()
     {
         $cost = $this->getFullCostExclusive();
 
-        $cost = $cost - ($this->getDiscount());
+        $cost -= $this->getDiscount();
 
         $cost = ($cost - ($cost * $this->getAutoDiscountPercentage() / 100));
 
-        return (double) $cost / 100;
+        return (float) $cost / 100;
     }
 
     /**

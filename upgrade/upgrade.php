@@ -33,15 +33,15 @@ $connection = pg_connect(
 );
 
 $result = pg_query($connection, 'SELECT value FROM general.config WHERE key = \'last_upgrade\'');
-
-if (0 == pg_num_rows($result)) {
-    echo 'Please run `php public/index.php install:all` before attempting to upgrade' . PHP_EOL;
+if (pg_num_rows($result) == 0) {
+    echo "\033[0;31mPlease run `php bin/console.php install:all` before attempting to upgrade\033[0;0m" . PHP_EOL;
     exit(1);
 }
 
 $result = pg_query($connection, 'SELECT value FROM general.config WHERE key = \'last_upgrade\'');
 $lastUpgrade = pg_fetch_row($result)[0];
 
+$files = array();
 foreach (new DirectoryIterator(__DIR__ . '/scripts') as $fileInfo) {
     if ($fileInfo->isDot() || $fileInfo->getFilename() === 'README.md') {
         continue;
@@ -57,13 +57,20 @@ $options = getopt('f:');
 // Run
 include 'util.php';
 
+$counter = 0;
 foreach ($files as $file) {
-    if ($file <= $lastUpgrade . '.php' && !(isset($options['f']) && $options['f'] . '.php' == $file)) {
+    if ($file <= $lastUpgrade . '.php' && !(isset($options['f']) && $file == $options['f'] . '.php')) {
         continue;
     }
 
-    echo 'Upgrade ' . substr($file, 0, strrpos($file, '.')) . PHP_EOL;
+    $counter++;
+
+    echo "Upgrade \033[0;33m" . substr($file, 0, strrpos($file, '.')) . "\033[0;0m" . PHP_EOL;
     include __DIR__ . '/scripts/' . $file;
+}
+
+if ($counter == 0) {
+    echo "\033[0;32mThere were no new upgrades available\033[0;0m" . PHP_EOL;
 }
 
 pg_query($connection, 'UPDATE general.config SET value = \'' . substr($file, 0, strrpos($file, '.')) . '\' WHERE key = \'last_upgrade\'');

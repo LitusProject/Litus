@@ -20,8 +20,8 @@
 
 namespace CudiBundle\Component\Controller;
 
-use Exception,
-    Zend\Mvc\MvcEvent;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\FormFactoryTrait;
+use Zend\Mvc\MvcEvent;
 
 /**
  * We extend the CommonBundle controller to check a sale session is selected.
@@ -30,10 +30,12 @@ use Exception,
  */
 class SaleController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
+    use FormFactoryTrait;
+
     /**
      * Execute the request.
      *
-     * @param  MvcEvent                                                          $e The MVC event
+     * @param  MvcEvent $e The MVC event
      * @return array
      * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
      */
@@ -43,11 +45,12 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOneById($this->getParam('session'));
 
-        if (null == $session || !$session->isOpen()) {
+        if ($session == null || !$session->isOpen()) {
             $sessions = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Session')
                 ->findOpen();
-            if (sizeof($sessions) == 1) {
+
+            if (count($sessions) == 1) {
                 $this->redirect()->toRoute(
                     $this->getParam('controller'),
                     array(
@@ -61,7 +64,7 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
 
         $result = parent::onDispatch($e);
 
-        if (null == $session || !$session->isOpen()) {
+        if ($session == null || !$session->isOpen()) {
             $result->invalidSession = true;
         }
 
@@ -113,13 +116,5 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
             'auth_route'     => 'cudi_sale_auth',
             'redirect_route' => 'cudi_sale_sale',
         );
-    }
-
-    /**
-     * @return \CommonBundle\Component\Form\Factory
-     */
-    protected function getFormFactory()
-    {
-        return $this->getServiceLocator()->get('formfactory.bootstrap');
     }
 }

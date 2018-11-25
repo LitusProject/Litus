@@ -20,13 +20,13 @@
 
 namespace FormBundle\Component\Form;
 
-use CommonBundle\Entity\General\Language,
-    FormBundle\Entity\Node\Entry as FormEntry,
-    FormBundle\Entity\Node\Form as FormEntity,
-    Zend\Http\PhpEnvironment\Request,
-    Zend\Mail\Message,
-    Zend\Mail\Transport\TransportInterface as MailTransport,
-    Zend\Mvc\Controller\Plugin\Url;
+use CommonBundle\Entity\General\Language;
+use FormBundle\Entity\Node\Entry as FormEntry;
+use FormBundle\Entity\Node\Form as FormEntity;
+use Zend\Http\PhpEnvironment\Request;
+use Zend\Mail\Message;
+use Zend\Mail\Transport\TransportInterface as MailTransport;
+use Zend\Mvc\Controller\Plugin\Url;
 
 /**
  * Send form mail
@@ -37,7 +37,7 @@ class Mail
 {
     public static function send(FormEntry $formEntry, FormEntity $formSpecification, Language $language, MailTransport $mailTransport, Url $url, Request $request)
     {
-        $urlString = (('on' === $request->getServer('HTTPS', 'off')) ? 'https://' : 'http://') . $request->getServer('HTTP_HOST') . $url->fromRoute(
+        $urlString = ($request->getServer('HTTPS', 'off') === 'on' ? 'https://' : 'http://') . $request->getServer('HTTP_HOST') . $url->fromRoute(
             'form_view',
             array(
                 'action' => 'login',
@@ -58,7 +58,7 @@ class Mail
             $mail->addBcc($mailAddress);
         }
 
-        if ('development' != getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') != 'development') {
             $mailTransport->send($mail);
         }
     }

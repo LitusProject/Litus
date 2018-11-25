@@ -20,8 +20,6 @@
 
 namespace BrBundle\Form\Admin\Event;
 
-use BrBundle\Entity\Event;
-
 /**
  * Add a corporate relations event.
  *
@@ -29,30 +27,33 @@ use BrBundle\Entity\Event;
  */
 class CompanyMap extends \CommonBundle\Component\Form\Admin\Form
 {
-
     public function init()
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'company',
-            'label'      => 'Company',
-            'required'   => true,
-            'attributes' => array(
-                'id'      => 'company',
-                'options' => $this->getCompanyArray(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'company',
+                'label'      => 'Company',
+                'required'   => true,
+                'attributes' => array(
+                    'id'      => 'company',
+                    'options' => $this->getCompanyArray(),
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'submit',
-            'name'       => 'event_companyMap',
-            'value'      => 'Add participant',
-            'attributes' => array(
-                'class' => 'mail_add',
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'submit',
+                'name'       => 'event_companyMap',
+                'value'      => 'Add participant',
+                'attributes' => array(
+                    'class' => 'mail_add',
+                ),
+            )
+        );
     }
 
     /**
@@ -72,16 +73,5 @@ class CompanyMap extends \CommonBundle\Component\Form\Admin\Form
         }
 
         return $companyArray;
-    }
-
-    /**
-     * @param  Event $company
-     * @return self
-     */
-    public function setCompany(Event $company)
-    {
-        $this->company = $company;
-
-        return $this;
     }
 }

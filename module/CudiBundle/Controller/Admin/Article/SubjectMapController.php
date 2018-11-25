@@ -20,12 +20,12 @@
 
 namespace CudiBundle\Controller\Admin\Article;
 
-use CudiBundle\Entity\Article,
-    CudiBundle\Entity\Article\Internal as InternalArticle,
-    CudiBundle\Entity\Article\SubjectMap,
-    CudiBundle\Entity\Log\Article\SubjectMap\Added as AddedLog,
-    CudiBundle\Entity\Log\Article\SubjectMap\Removed as RemovedLog,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Article;
+use CudiBundle\Entity\Article\Internal as InternalArticle;
+use CudiBundle\Entity\Article\SubjectMap;
+use CudiBundle\Entity\Log\Article\SubjectMap\Added as AddedLog;
+use CudiBundle\Entity\Log\Article\SubjectMap\Removed as RemovedLog;
+use Zend\View\Model\ViewModel;
 
 /**
  * SubjectMapController
@@ -36,11 +36,13 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
 {
     public function manageAction()
     {
-        if (!($article = $this->getArticleEntity())) {
+        $article = $this->getArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -60,7 +62,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
                     ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                     ->findOneByArticleAndSubjectAndAcademicYear($article, $subject, $academicYear);
 
-                if (null === $mapping) {
+                if ($mapping === null) {
                     $mapping = new SubjectMap($article, $subject, $academicYear, $formData['mandatory']);
                     $this->getEntityManager()->persist($mapping);
                     $this->getEntityManager()->persist(new AddedLog($this->getAuthentication()->getPersonObject(), $mapping));
@@ -69,7 +71,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
                         $cachePath = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Config')
                             ->getConfigValue('cudi.front_page_cache_dir');
-                        if (null !== $article->getFrontPage() && file_exists($cachePath . '/' . $article->getFrontPage())) {
+                        if ($article->getFrontPage() !== null && file_exists($cachePath . '/' . $article->getFrontPage())) {
                             unlink($cachePath . '/' . $article->getFrontPage());
                             $article->setFrontPage();
                         }
@@ -121,11 +123,12 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($mapping = $this->getSubjectMappingEntity())) {
+        $mapping = $this->getSubjectMappingEntity();
+        if ($mapping === null) {
             return new ViewModel();
         }
 
-        $mapping->setRemoved();
+        $mapping->remove();
         $this->getEntityManager()->persist(new RemovedLog($this->getAuthentication()->getPersonObject(), $mapping));
 
         $article = $mapping->getArticle();
@@ -135,7 +138,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.front_page_cache_dir');
 
-            if (null !== $article->getFrontPage() && file_exists($cachePath . '/' . $article->getFrontPage())) {
+            if ($article->getFrontPage() !== null && file_exists($cachePath . '/' . $article->getFrontPage())) {
                 unlink($cachePath . '/' . $article->getFrontPage());
             }
             $article->setFrontPage();

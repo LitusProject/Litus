@@ -18,31 +18,26 @@
  * @license http://litus.cc/LICENSE
  */
 
-if ('development' != getenv('APPLICATION_ENV')) {
+use CommonBundle\Component\Version\Version;
+
+if (getenv('APPLICATION_ENV') != 'development') {
     if (!file_exists(__DIR__ . '/../sentry.config.php')) {
         throw new RuntimeException(
             'The Sentry configuration file (' . (__DIR__ . '/../sentry.config.php') . ') was not found'
         );
     }
 
-    return array(
-        'service_manager' => array(
-            'factories' => array(
-                'sentry' => function($serviceManager) {
-                    return new \CommonBundle\Component\Sentry\Client(
-                        $serviceManager->get('raven_client'),
-                        $serviceManager->get('authentication'),
-                        $serviceManager->get('Request')
-                    );
-                },
-                'raven_client' => function ($serviceManager) {
-                    $sentryConfig = include __DIR__ . '/../sentry.config.php';
+    $sentryConfig = include __DIR__ . '/../sentry.config.php';
 
-                    return new \Raven_Client(
-                        $sentryConfig['dsn'],
-                        $sentryConfig['options']
-                    );
-                },
+    return array(
+        'sentry' => array(
+            'dsn'     => $sentryConfig['dsn'],
+            'options' => array_merge(
+                array(
+                    'name'    => gethostname(),
+                    'version' => Version::getCommitHash(),
+                ),
+                $sentryConfig['options']
             ),
         ),
     );

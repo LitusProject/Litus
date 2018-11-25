@@ -20,8 +20,8 @@
 
 namespace NewsBundle\Hydrator\Node;
 
-use NewsBundle\Entity\Node\News as NewsEntity,
-    NewsBundle\Entity\Node\Translation as TranslationEntity;
+use NewsBundle\Entity\Node\News as NewsEntity;
+use NewsBundle\Entity\Node\Translation as TranslationEntity;
 
 /**
  * This hydrator hydrates/extracts news data.
@@ -33,13 +33,13 @@ class News extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $object = new NewsEntity($this->getPersonEntity());
         }
 
         $endDate = self::loadDateTime($data['end_date']);
 
-        if (null !== $endDate) {
+        if ($endDate !== null) {
             $object->setEndDate($endDate);
         }
 
@@ -48,17 +48,17 @@ class News extends \CommonBundle\Component\Hydrator\Hydrator
 
             $translationData = $data['tab_content']['tab_' . $language->getAbbrev()];
 
-            if (null !== $translation) {
+            if ($translation !== null) {
                 $translation->setTitle($translationData['title'])
                     ->setContent($translationData['content']);
             } else {
-                if ('' != $translationData['title'] && '' != $translationData['content']) {
+                if ($translationData['title'] != '' && $translationData['content'] != '') {
                     $translation = new TranslationEntity(
-                            $object,
-                            $language,
-                            $translationData['title'],
-                            str_replace('#', '', $translationData['content'])
-                        );
+                        $object,
+                        $language,
+                        $translationData['title'],
+                        str_replace('#', '', $translationData['content'])
+                    );
                     $object->addTranslation($translation);
                 }
             }
@@ -71,13 +71,13 @@ class News extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
         $data = array();
 
-        if (null !== $object->getEndDate()) {
+        if ($object->getEndDate() !== null) {
             $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
         }
 

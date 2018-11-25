@@ -20,10 +20,10 @@
 
 namespace CommonBundle\Entity\User\Person\Organization\UnitMap;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Organization\Unit,
-    CommonBundle\Entity\User\Person\Academic as AcademicEntity,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\General\Organization\Unit;
+use CommonBundle\Entity\User\Person\Academic as AcademicEntity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Specifying the mapping between organization and academic.

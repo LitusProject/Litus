@@ -26,7 +26,7 @@ namespace BrBundle\Form\Admin\Collaborator;
  * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends Add
+class Edit extends \BrBundle\Form\Admin\Collaborator\Add
 {
     public function init()
     {
@@ -34,7 +34,7 @@ class Edit extends Add
 
         $this->remove('person');
 
-        $this->remove('submit');
-        $this->addSubmit('Save', 'collaborator_edit');
+        $this->remove('submit')
+            ->addSubmit('Save', 'collaborator_edit');
     }
 }

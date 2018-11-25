@@ -85,10 +85,26 @@ class Street
     }
 
     /**
+     * @return integer
+     */
+    public function getRegisterNumber()
+    {
+        return $this->registerNumber;
+    }
+
+    /**
      * @return string
      */
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return City
+     */
+    public function getCity()
+    {
+        return $this->city;
     }
 }

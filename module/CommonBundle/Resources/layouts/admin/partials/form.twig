@@ -1,39 +1,43 @@
 {% macro renderForm(form) %}
+    {% import _self as self %}
+
     {% do form.prepare() %}
     {% autoescape false %}
         {% set buttons = [] %}
         {{ form().openTag(form) }}
-            {{ _self.renderFieldset(form) }}
+            {{ self.renderFieldset(form) }}
         {{ form().closeTag() }}
     {% endautoescape %}
 {% endmacro %}
 
 {% macro renderFieldset(fieldset) %}
+    {% import _self as self %}
+
     {% autoescape false %}
         {% set buttons = [] %}
         {% for element in fieldset %}
             {% if element.add is defined %}
                 {% if element.showAs() == 'fieldset' and element.getLabel() %}
                     <fieldset name="{{ element.getName() }}" class="{{ element.getAttribute('class') }}" id="{{ element.getAttribute('id') }}">
-                        <legend>{{ translate(element.getLabel()) }}</legend>
-                        {{ _self.renderFieldset(element) }}
+                        <legend>{{ element.getLabel() }}</legend>
+                        {{ self.renderFieldset(element) }}
                     </fieldset>
                     {% if element.shouldCreateTemplate() %}
-                        <span id="data-template-{{ element.getName() }}" data-template="{{ ("<fieldset name=\"" ~ element.getTemplateElement().getName() ~ "\" class=\"" ~ element.getAttribute('class') ~ "\" id=\"" ~ element.getAttribute('id') ~ "\"><legend>" ~ element.getTemplateElement().getLabel() ~ "</legend>" ~ _self.renderFieldset(element.getTemplateElement()) ~ "</fieldset>")|escape }}"></span>
+                        <span id="data-template-{{ element.getName() }}" data-template="{{ ("<fieldset name=\"" ~ element.getTemplateElement().getName() ~ "\" class=\"" ~ element.getAttribute('class') ~ "\" id=\"" ~ element.getAttribute('id') ~ "\"><legend>" ~ element.getTemplateElement().getLabel() ~ "</legend>" ~ self.renderFieldset(element.getTemplateElement()) ~ "</fieldset>")|escape }}"></span>
                     {% endif %}
                 {% else %}
                     <div name="{{ element.getName() }}" class="{{ element.getAttribute('class') }}" id="{{ element.getAttribute('id') }}">
-                        {{ _self.renderFieldset(element) }}
+                        {{ self.renderFieldset(element) }}
                     </div>
                 {% endif %}
             {% elseif element.getAttribute('type') == 'submit'or element.getAttribute('type') == 'reset' or element.getAttribute('type') == 'button' %}
                 {% set buttons = buttons|merge([element]) %}
             {% elseif element.getAttribute('type') == 'tabs' %}
-            <ul class="tabs {{ element.getAttribute('class') }}" id="{{ element.getAttribute('id') }}">
-                {% for language,tab in element.getTabs() %}
-                    <li><a href="{{ tab }}" data-toggle="tab">{{ translate(language) }}</a></li>
-                {% endfor %}
-            </ul>
+                <ul class="tabs {{ element.getAttribute('class') }}" id="{{ element.getAttribute('id') }}">
+                    {% for language,tab in element.getTabs() %}
+                        <li><a href="{{ tab }}" data-toggle="tab">{{ language }}</a></li>
+                    {% endfor %}
+                </ul>
             {% elseif element.getAttribute('type') == 'hidden' %}
                 <div>
                     {{ formElement(element) }}
@@ -43,7 +47,7 @@
                     {{ formLabel().openTag(element) }}
                         <span class="label">
                             {% if element.isRequired() %}<b>{% endif %}
-                                {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
+                                {% if element.getLabel() != '' %}{{ element.getLabel() }}{% endif %}
                             {% if element.isRequired() %}</b>{% endif %}
                         </span>
                         <div class="field">
@@ -58,7 +62,7 @@
                 <div class="row">
                     <span class="label">
                         {{ formLabel().openTag(element) }}
-                            {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
+                            {% if element.getLabel() != '' %}{{ element.getLabel() }}{% endif %}
                         {{ formLabel().closeTag() }}
                     </span>
                     <span class="field">

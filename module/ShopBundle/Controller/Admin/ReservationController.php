@@ -20,10 +20,10 @@
 
 namespace ShopBundle\Controller\Admin;
 
-use ShopBundle\Entity\Reservation,
-    ShopBundle\Entity\ReservationPermission,
-    ShopBundle\Entity\SalesSession,
-    Zend\View\Model\ViewModel;
+use ShopBundle\Entity\Reservation;
+use ShopBundle\Entity\ReservationPermission;
+use ShopBundle\Entity\SalesSession;
+use Zend\View\Model\ViewModel;
 
 /**
  * ReservationController
@@ -34,25 +34,28 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
 {
     public function salessessionAction()
     {
-        if (!($salesSession = $this->getSalesSessionEntity())) {
+        $salesSession = $this->getSalesSessionEntity();
+        if ($salesSession === null) {
             return new ViewModel();
         }
+
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('ShopBundle\Entity\Reservation')
                 ->findBySalesSessionQuery($salesSession),
-            $this->getParam('page'));
+            $this->getParam('page')
+        );
 
         $result = $this->getEntityManager()
             ->getRepository('ShopBundle\Entity\Reservation')
             ->getTotalByProductBySalesQuery($salesSession);
-//        $paginator_total = $this->paginator()->createFromArray($result, $this->getParam('page_total'));
+        // $paginator_total = $this->paginator()->createFromArray($result, $this->getParam('page_total'));
 
         return new ViewModel(
             array(
                 'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'totals'   => $result,
+                'totals'            => $result,
                 'salesSession'      => $salesSession,
             )
         );
@@ -60,12 +63,12 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
 
     public function deleteAction()
     {
-        if (!($reseration = $this->getReservationEntity())) {
+        $reservation = $this->getReservationEntity();
+        if ($reservation === null) {
             return new ViewModel();
         }
 
-        $this->getEntityManager()->remove($reseration);
-
+        $this->getEntityManager()->remove($reservation);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -80,13 +83,15 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
     public function noshowAction()
     {
         $this->initAjax();
-        if (!($reservation = $this->getReservationEntity())) {
+
+        $reservation = $this->getReservationEntity();
+        if ($reservation === null) {
             return new ViewModel();
         }
 
         $reservation->setNoShow(!$reservation->getNoShow());
         $blacklisted = false;
-        $blacklistAvoided = false; // person should be blacklisted but has special reservation permission
+        $blacklistAvoided = false;
 
         $this->getEntityManager()->persist($reservation);
         $this->getEntityManager()->flush();
@@ -132,6 +137,7 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
     private function getReservationEntity()
     {
         $reservation = $this->getEntityById('ShopBundle\Entity\Reservation');
+
         if (!($reservation instanceof Reservation)) {
             $this->flashMessenger()->error(
                 'Error',
@@ -156,6 +162,7 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
     private function getSalesSessionEntity()
     {
         $salesSession = $this->getEntityById('ShopBundle\Entity\SalesSession');
+
         if (!($salesSession instanceof SalesSession)) {
             $this->flashMessenger()->error(
                 'Error',

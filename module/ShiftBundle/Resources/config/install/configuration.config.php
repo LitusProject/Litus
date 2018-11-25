@@ -164,9 +164,9 @@ U bent verwijderd van de volgende shift door een administrator:
     array(
         'key'   => 'shift.insurance_text',
         'value' => array(
-                'nl' => 'Vul deze config in!',
-                'en' => 'Fill this config in!',
-            ),
+            'nl' => 'Vul deze config in!',
+            'en' => 'Fill this config in!',
+        ),
         'description' => 'The insurance text to be read.',
     ),
 );

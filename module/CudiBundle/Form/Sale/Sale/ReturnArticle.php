@@ -31,50 +31,61 @@ class ReturnArticle extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'typeahead',
-            'name'       => 'person',
-            'label'      => 'Person',
-            'required'   => true,
-            'attributes' => array(
-                'placeholder' => 'Student',
-            ),
-            'options' => array(
-                'input' => array(
-                    'validators' => array(
-                        array('name' => 'typeahead_person'),
+        $this->add(
+            array(
+                'type'       => 'typeahead',
+                'name'       => 'person',
+                'label'      => 'Person',
+                'required'   => true,
+                'attributes' => array(
+                    'placeholder' => 'Student',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'validators' => array(
+                            array('name' => 'TypeaheadPerson'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'typeahead',
-            'name'       => 'article',
-            'label'      => 'Article',
-            'required'   => true,
-            'attributes' => array(
-                'placeholder' => 'Article',
-            ),
-            'options' => array(
-                'input' => array(
-                    'validators' => array(
-                        array('name' => 'typeahead_sale_article'),
-                        array('name' => 'sale_has_bought'),
+        $this->add(
+            array(
+                'type'       => 'typeahead',
+                'name'       => 'article',
+                'label'      => 'Article',
+                'required'   => true,
+                'attributes' => array(
+                    'placeholder' => 'Article',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'validators' => array(
+                            array('name' => 'TypeaheadSaleArticle'),
+                            array('name' => 'HasBought'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->addSubmit('Return', null, 'submit', array(
-            'autocomplete' => 'off',
-            'id'           => 'signin',
-        ));
+        $this->addSubmit(
+            'Return',
+            null,
+            'submit',
+            array(
+                'autocomplete' => 'off',
+                'id'           => 'signin',
+            )
+        );
 
-        $this->add(array(
-            'type'  => 'reset',
-            'name'  => 'cancel',
-            'value' => 'Cancel',
-        ));
+        $this->add(
+            array(
+                'type'  => 'reset',
+                'name'  => 'cancel',
+                'value' => 'Cancel',
+            )
+        );
     }
 }

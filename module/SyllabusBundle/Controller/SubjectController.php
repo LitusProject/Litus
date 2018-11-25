@@ -20,9 +20,8 @@
 
 namespace SyllabusBundle\Controller;
 
-use CommonBundle\Component\Util\AcademicYear,
-    Doctrine\ORM\Query,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear;
+use Zend\View\Model\ViewModel;
 
 /**
  * SubjectController
@@ -33,7 +32,8 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function typeaheadAction()
     {
-        if (!($academicYear = $this->getAcademicYear())) {
+        $academicYear = $this->getAcademicYear();
+        if ($academicYear === null) {
             return $this->notFoundAction();
         }
 
@@ -63,7 +63,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
      */
     private function getAcademicYear()
     {
-        if (null === $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') === null) {
             $start = AcademicYear::getStartOfAcademicYear();
         } else {
             $start = AcademicYear::getDateTime($this->getParam('academicyear'));
@@ -74,7 +74,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findOneByUniversityStart($start);
 
-        if (null === $academicYear) {
+        if ($academicYear === null) {
             return;
         }
 

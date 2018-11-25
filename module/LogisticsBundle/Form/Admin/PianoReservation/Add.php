@@ -20,9 +20,9 @@
 
 namespace LogisticsBundle\Form\Admin\PianoReservation;
 
-use DateInterval,
-    DateTime,
-    LogisticsBundle\Entity\Reservation\PianoReservation;
+use DateInterval;
+use DateTime;
+use LogisticsBundle\Entity\Reservation\PianoReservation;
 
 /**
  * The form used to add a new Reservation.
@@ -42,115 +42,125 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'typeahead',
-            'name'     => 'player',
-            'label'    => 'Player',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'validators' => array(
-                        array('name' => 'typeahead_person'),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'start_date',
-            'label'      => 'Start Date',
-            'required'   => true,
-            'attributes' => array(
-                'options' => $this->getTimeSlots(true),
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name'    => 'date',
-                            'options' => array(
-                                'format' => 'd/m/Y H:i',
-                            ),
+        $this->add(
+            array(
+                'type'     => 'typeahead',
+                'name'     => 'player',
+                'label'    => 'Player',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'validators' => array(
+                            array('name' => 'TypeaheadPerson'),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'end_date',
-            'label'      => 'End Date',
-            'required'   => true,
-            'attributes' => array(
-                'options' => $this->getTimeSlots(false),
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name'    => 'date',
-                            'options' => array(
-                                'format' => 'd/m/Y H:i',
-                            ),
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'start_date',
+                'label'      => 'Start Date',
+                'required'   => true,
+                'attributes' => array(
+                    'options' => $this->getTimeSlots(true),
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
                         ),
-                        array(
-                            'name'    => 'date_compare',
-                            'options' => array(
-                                'first_date' => 'start_date',
-                                'format'     => 'd/m/Y H:i',
-                            ),
-                        ),
-                        array(
-                            'name'    => 'logistics_piano_reservation_conflict',
-                            'options' => array(
-                                'start_date'     => 'start_date',
-                                'format'         => 'd/m/Y H:i',
-                                'resource'       => PianoReservation::PIANO_RESOURCE_NAME,
-                                'reservation_id' => null !== $this->reservation ? $this->reservation->getId() : null,
-                            ),
-                        ),
-                        array(
-                            'name'    => 'logistics_piano_duration',
-                            'options' => array(
-                                'start_date' => 'start_date',
-                                'format'     => 'd/m/Y H:i',
+                        'validators' => array(
+                            array(
+                                'name'    => 'Date',
+                                'options' => array(
+                                    'format' => 'd/m/Y H:i',
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'    => 'textarea',
-            'name'    => 'additional_info',
-            'label'   => 'Additional Info',
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'end_date',
+                'label'      => 'End Date',
+                'required'   => true,
+                'attributes' => array(
+                    'options' => $this->getTimeSlots(false),
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name'    => 'Date',
+                                'options' => array(
+                                    'format' => 'd/m/Y H:i',
+                                ),
+                            ),
+                            array(
+                                'name'    => 'DateCompare',
+                                'options' => array(
+                                    'first_date' => 'start_date',
+                                    'format'     => 'd/m/Y H:i',
+                                ),
+                            ),
+                            array(
+                                'name'    => 'PianoReservationConflict',
+                                'options' => array(
+                                    'start_date'     => 'start_date',
+                                    'format'         => 'd/m/Y H:i',
+                                    'resource'       => PianoReservation::PIANO_RESOURCE_NAME,
+                                    'reservation_id' => $this->reservation !== null ? $this->reservation->getId() : null,
+                                ),
+                            ),
+                            array(
+                                'name'    => 'PianoDuration',
+                                'options' => array(
+                                    'start_date' => 'start_date',
+                                    'format'     => 'd/m/Y H:i',
+                                ),
+                            ),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'confirmed',
-            'label' => 'Confirmed',
-        ));
+        $this->add(
+            array(
+                'type'    => 'textarea',
+                'name'    => 'additional_info',
+                'label'   => 'Additional Info',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'  => 'checkbox',
+                'name'  => 'confirmed',
+                'label' => 'Confirmed',
+            )
+        );
 
         $this->addSubmit('Add', 'reservation_add');
 
-        if (null !== $this->reservation) {
+        if ($this->reservation !== null) {
             $this->bind($this->reservation);
         }
     }
@@ -194,7 +204,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $list = array();
 
         while ($now < $maxDate) {
-            if (null !== $config[$now->format('N')]) {
+            if ($config[$now->format('N')] !== null) {
                 foreach ($config[$now->format('N')] as $slot) {
                     $startSlot = clone $now;
                     $startSlot->setTime(

@@ -46,7 +46,7 @@ class Unique extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -81,7 +81,7 @@ class Unique extends \CommonBundle\Component\Validator\AbstractValidator
             ->getRepository('CudiBundle\Entity\Sale\Article\Barcode')
             ->findOneByBarcode($value);
 
-        if (null === $barcode || $barcode->getArticle() == $this->options['sale_article']) {
+        if ($barcode === null || $barcode->getArticle() == $this->options['sale_article']) {
             return true;
         }
 

@@ -20,12 +20,12 @@
 
 namespace CudiBundle\Controller\Admin;
 
-use CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    Cudibundle\Entity\Article,
-    SyllabusBundle\Entity\Study,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use CommonBundle\Entity\General\AcademicYear;
+use SyllabusBundle\Entity\Study;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * ArticleController
@@ -36,11 +36,12 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $studies = $this->searchStudies($academicYear);
         }
 
@@ -68,11 +69,14 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
             )
         );
     }
+
     public function listAction()
     {
-        if (!($study = $this->getStudyEntity())) {
+        $study = $this->getStudyEntity();
+        if ($study === null) {
             return new ViewModel();
         }
+
         $subject_mappings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article\SubjectMap')
             ->findAllByStudyAndAcademicYearQuery($study);
@@ -99,7 +103,8 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
 
     public function articlescsvAction()
     {
-        if (!($study = $this->getStudyEntity())) {
+        $study = $this->getStudyEntity();
+        if ($study === null) {
             return new ViewModel();
         }
 
@@ -136,10 +141,12 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
         $document->generateDocument($file);
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="' . $study->getTitle() . '_books.csv"',
-            'Content-Type'        => 'text/csv',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="' . $study->getTitle() . '_books.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -149,8 +156,83 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
         );
     }
 
+    public function typeaheadAction()
+    {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
+            return;
+        }
+
+        $studies = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Study')
+            ->findAllByTitleAndAcademicYearQuery($this->getParam('string'), $academicYear)
+            ->setMaxResults(20)
+            ->getResult();
+
+        $result = array();
+        foreach ($studies as $study) {
+            $item = (object) array();
+            $item->id = $study->getId();
+            $item->value = 'Phase ' . $study->getPhase() . '&mdash;' . $study->getTitle();
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+    public function searchAction()
+    {
+        $this->initAjax();
+
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
+            return new ViewModel();
+        }
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        $studies = $this->search($academicYear)
+            ->setMaxResults($numResults)
+            ->getResult();
+
+        $result = array();
+        foreach ($studies as $study) {
+            $item = (object) array();
+            $item->id = $study->getId();
+            $item->title = $study->getTitle();
+            $item->phase = $study->getPhase();
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
     /**
-     * @param  AcademicYearEntity       $academicYear
+     * @param  AcademicYearEntity $academicYear
+     * @return \Doctrine\ORM\Query|null
+     */
+    private function search(AcademicYear $academicYear)
+    {
+        switch ($this->getParam('field')) {
+            case 'name':
+                return $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\Study')
+                    ->findAllByTitleAndAcademicYearQuery($this->getParam('string'), $academicYear);
+        }
+    }
+
+    /**
+     * @param  AcademicYearEntity $academicYear
      * @return \Doctrine\ORM\Query|null
      */
     private function searchStudies(AcademicYearEntity $academicYear)

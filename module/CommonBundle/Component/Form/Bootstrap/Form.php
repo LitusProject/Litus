@@ -36,9 +36,9 @@ abstract class Form extends \CommonBundle\Component\Form\Form
     private $displayFormActions;
 
     /**
-     * @param null|string|int $name               Optional name for the element
-     * @param boolean         $horizontal         Whether to display the form horizontically or vertically
-     * @param boolean         $displayFormActions Whether or not to show the form-actions div
+     * @param string|integer|null $name               Optional name for the element
+     * @param boolean             $horizontal         Whether to display the form horizontically or vertically
+     * @param boolean             $displayFormActions Whether or not to show the form-actions div
      */
     public function __construct($name = null, $horizontal = true, $displayFormActions = true)
     {

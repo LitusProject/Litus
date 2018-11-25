@@ -20,11 +20,10 @@
 
 namespace BrBundle\Controller\Corporate;
 
-use BrBundle\Entity\Cv\Util,
-    BrBundle\Entity\User\Person\Corporate,
-    CommonBundle\Entity\General\AcademicYear,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use BrBundle\Entity\Cv\Util;
+use CommonBundle\Entity\General\AcademicYear;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * CvController
@@ -35,7 +34,8 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 {
     public function groupedAction()
     {
-        if (!($person = $this->getCorporateEntity())) {
+        $person = $this->getCorporateEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
@@ -43,19 +43,21 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         $onlyArchive = false;
 
         if (!in_array($academicYear, $person->getCompany()->getCvBookYears())) {
-            if (null === $this->getParam('academicyear')
-                    && sizeof($person->getCompany()->getCvBookYears()) > 0) {
+            if ($this->getParam('academicyear') === null
+                && count($person->getCompany()->getCvBookYears()) > 0
+            ) {
                 $this->redirect()->toRoute(
                     'br_corporate_cv',
                     array(
                         'action'       => 'grouped',
-                        'academicyear' => $person->getCompany()->getCvBookYears()[sizeof($person->getCompany()->getCvBookYears()) - 1]->getCode(),
+                        'academicyear' => $person->getCompany()->getCvBookYears()[count($person->getCompany()->getCvBookYears()) - 1]->getCode(),
                     )
                 );
 
                 return new ViewModel();
-            } elseif (null === $this->getParam('academicyear')
-                    && sizeof($person->getCompany()->getCvBookArchiveYears()) > 0) {
+            } elseif ($this->getParam('academicyear') === null
+                && count($person->getCompany()->getCvBookArchiveYears()) > 0
+            ) {
                 $onlyArchive = true;
             } else {
                 $this->flashMessenger()->error(
@@ -90,7 +92,8 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
     public function listAction()
     {
-        if (!($person = $this->getCorporateEntity())) {
+        $person = $this->getCorporateEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
@@ -98,19 +101,21 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         $onlyArchive = false;
 
         if (!in_array($academicYear, $person->getCompany()->getCvBookYears())) {
-            if (null === $this->getParam('academicyear')
-                    && sizeof($person->getCompany()->getCvBookYears()) > 0) {
+            if ($this->getParam('academicyear') === null
+                && count($person->getCompany()->getCvBookYears()) > 0
+            ) {
                 $this->redirect()->toRoute(
                     'br_corporate_cv',
                     array(
                         'action'       => 'list',
-                        'academicyear' => $person->getCompany()->getCvBookYears()[sizeof($person->getCompany()->getCvBookYears()) - 1]->getCode(),
+                        'academicyear' => $person->getCompany()->getCvBookYears()[count($person->getCompany()->getCvBookYears()) - 1]->getCode(),
                     )
                 );
 
                 return new ViewModel();
-            } elseif (null === $this->getParam('academicyear')
-                    && sizeof($person->getCompany()->getCvBookArchiveYears()) > 0) {
+            } elseif ($this->getParam('academicyear') === null
+                && count($person->getCompany()->getCvBookArchiveYears()) > 0
+            ) {
                 $onlyArchive = true;
             } else {
                 $this->flashMessenger()->error(
@@ -147,7 +152,8 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
     {
         $this->initAjax();
 
-        if (!($person = $this->getCorporateEntity())) {
+        $person = $this->getCorporateEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
@@ -171,18 +177,18 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
         $filters = array();
 
-        if (null !== $this->getParam('string')) {
+        if ($this->getParam('string') !== null) {
             $filters['string'] = $this->getParam('string');
         }
 
-        if (null !== $this->getParam('min') || null !== $this->getParam('max')) {
+        if ($this->getParam('min') !== null || $this->getParam('max') !== null) {
             $filters['grade'] = array();
-            if (null !== $this->getParam('min')) {
+            if ($this->getParam('min') !== null) {
                 $filters['grade']['min'] = $this->getParam('min');
             } else {
                 $filters['grade']['min'] = 0;
             }
-            if (null !== $this->getParam('max')) {
+            if ($this->getParam('max') !== null) {
                 $filters['grade']['max'] = $this->getParam('max');
             } else {
                 $filters['grade']['max'] = 100;
@@ -204,7 +210,8 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
     public function downloadArchiveAction()
     {
-        if (!($person = $this->getCorporateEntity())) {
+        $person = $this->getCorporateEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
@@ -228,7 +235,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             }
         }
 
-        if (!in_array($archiveYearKey, $person->getCompany()->getCvBookArchiveYears()) || null === $archiveYear) {
+        if (!in_array($archiveYearKey, $person->getCompany()->getCvBookArchiveYears()) || $archiveYear === null) {
             $this->flashMessenger()->error(
                 'Error',
                 'You don\'t have access to the CVs of this year.'
@@ -245,11 +252,13 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         }
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="cv-' . $archiveYear['full_year'] . '.pdf"',
-            'Content-Type'        => 'application/octet-stream',
-            'Content-Length'      => filesize($filePath . $archiveYear['file']),
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'inline; filename="cv-' . $archiveYear['full_year'] . '.pdf"',
+                'Content-Type'        => 'application/octet-stream',
+                'Content-Length'      => filesize($filePath . $archiveYear['file']),
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         $handle = fopen($filePath . $archiveYear['file'], 'r');
@@ -318,8 +327,8 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
     }
 
     /**
-     * @param  array $entries
-     * @param  int   $grade
+     * @param  array   $entries
+     * @param  integer $grade
      * @return array
      */
     private function filterGrade($entries, $grade)

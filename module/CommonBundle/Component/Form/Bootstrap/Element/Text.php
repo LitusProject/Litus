@@ -23,7 +23,7 @@ namespace CommonBundle\Component\Form\Bootstrap\Element;
 use CommonBundle\Component\Form\ElementTrait;
 
 /**
- * Submit form element
+ * Text form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */

@@ -28,7 +28,7 @@ class Unit extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
@@ -36,7 +36,7 @@ class Unit extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data['organization'] = $object->getOrganization()->getId();
 
-        if (null !== $object->getParent()) {
+        if ($object->getParent() !== null) {
             $data['parent'] = $object->getParent()->getId();
         }
 
@@ -48,7 +48,7 @@ class Unit extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $object = new UnitEntity();
         }
 
@@ -63,7 +63,7 @@ class Unit extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $parent = null;
-        if (isset($data['parent']) && ('' != $data['parent'])) {
+        if (isset($data['parent']) && ($data['parent'] != '')) {
             $parent = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Organization\Unit')
                 ->findOneById($data['parent']);

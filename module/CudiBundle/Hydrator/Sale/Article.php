@@ -30,7 +30,7 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
             'bookable', 'unbookable', 'sellable',
         );
 
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
@@ -53,7 +53,7 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
             'sell_price', 'purchase_price', 'can_expire',
         );
 
-        if (null === $object) {
+        if ($object === null) {
             throw new InvalidObjectException('Cannot create a sale article');
         }
 
@@ -72,7 +72,7 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_sale_article_barcode_check');
 
-        if ('' == $data['barcode'] && !$barcodeCheck) {
+        if ($data['barcode'] == '' && !$barcodeCheck) {
             $object->clearBarcode();
         } else {
             $object->setBarcode($data['barcode']);

@@ -35,7 +35,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\A
     protected function getAcademicYear()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') !== null) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
         }
 

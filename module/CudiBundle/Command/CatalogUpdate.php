@@ -20,36 +20,31 @@
 
 namespace CudiBundle\Command;
 
-use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
-    CommonBundle\Entity\General\AcademicYear,
-    DateInterval,
-    DateTime,
-    Zend\Mail\Message as Mail;
+use CommonBundle\Entity\General\AcademicYear;
+use DateInterval;
+use DateTime;
+use Zend\Mail\Message as Mail;
 
 /**
- * Updates catalog
+ * CatalogUpdate
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class CatalogUpdate extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
-        $this
-            ->setName('cudi:catalog:update')
-            ->setAliases(array('cudi:update-catalog'))
-            ->setDescription('Update the catalog.')
-            ->addOption('mail', 'm', null, 'Send mails to users to notify them of the update.')
-            ->setHelp(<<<EOT
-The <info>%command.name%</info> command updates the catalog and notifies the users of the changes.
-EOT
-        );
+        $this->setName('cudi:update-catalog')
+            ->setDescription('Update the catalog')
+            ->addOption('mail', 'm', null, 'Send mails to users to notify them of the update');
     }
 
-    protected function executeCommand()
+    protected function invoke()
     {
         $date = new DateTime();
         $date->sub(new DateInterval('P1D'));
 
-        $academicYear = $this->getCurrentAcademicYear();
+        $academicYear = $this->getCurrentAcademicYear(true);
         $subjects = array();
 
         $this->findAllBookable($subjects, $date, $academicYear);
@@ -57,21 +52,18 @@ EOT
         $this->findAllAdded($subjects, $date);
         $this->findAllRemoved($subjects, $date);
 
-        $this->writeln('A total of <comment>' . count($subjects) . '</comment> subjects is affected.');
+        $this->writeln('A total of <comment>' . count($subjects) . '</comment> subjects is affected');
 
         $this->notifySubscribers($subjects, $academicYear);
     }
 
-    protected function getLogName()
-    {
-        return 'CatalogUpdate';
-    }
-
     private function findAllBookable(array &$subjects, DateTime $date, AcademicYear $academicYear)
     {
-        $logs = $this->getEntityManager()->getRepository('CudiBundle\Entity\Log\Article\Sale\Bookable')
+        $logs = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Log\Article\Sale\Bookable')
             ->findAllAfter($date);
-        $this->writeln('Found <comment>' . count($logs) . '</comment> log entries for Bookable.');
+
+        $this->writeln('Found <comment>' . count($logs) . '</comment> log entries for <info>Bookable</info>');
 
         foreach ($logs as $log) {
             $article = $log->getArticle($this->getEntityManager());
@@ -102,7 +94,7 @@ EOT
         $logs = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Log\Article\Sale\Unbookable')
             ->findAllAfter($date);
-        $this->writeln('Found <comment>' . count($logs) . '</comment> log entries for Unbookable.');
+        $this->writeln('Found <comment>' . count($logs) . '</comment> log entries for <info>Unbookable</info>');
 
         foreach ($logs as $log) {
             $article = $log->getArticle($this->getEntityManager());
@@ -133,7 +125,8 @@ EOT
         $logs = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Log\Article\SubjectMap\Added')
             ->findAllAfter($date);
-        $this->writeln('Found <comment>' . count($logs) . '</comment> log entries for Added articles.');
+
+        $this->writeln('Found <comment>' . count($logs) . '</comment> log entries for <info>Added</info>');
 
         foreach ($logs as $log) {
             $subjectMap = $log->getSubjectMap($this->getEntityManager());
@@ -159,7 +152,7 @@ EOT
         $logs = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Log\Article\SubjectMap\Removed')
             ->findAllAfter($date);
-        $this->writeln('Found <comment>' . count($logs) . '</comment> log entries for Removed articles.');
+        $this->writeln('Found <comment>' . count($logs) . '</comment> log entries for <info>Removed</info>');
 
         foreach ($logs as $log) {
             $subjectMap = $log->getSubjectMap($this->getEntityManager());
@@ -197,18 +190,18 @@ EOT
         $counter = 0;
 
         $sendMails = $this->getOption('mail');
-        $mailEnabled = '1' === $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('cudi.catalog_update_mail_enabled');
+        $mailEnabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.catalog_update_mail_enabled') === '1';
 
         if ($sendMails && !$mailEnabled) {
             $sendMails = false;
-            $this->writeln('<error>WARNING:</error> The mails will not be sent because they are disabled.');
+            $this->writeln('<error>The mails will not be sent because they are disabled!</error>');
         }
 
-        if ($sendMails && 'development' == getenv('APPLICATION_ENV')) {
+        if ($sendMails && getenv('APPLICATION_ENV') == 'development') {
             $sendMails = false;
-            $this->writeln('<error>WARNING:</error> The mails will not be sent because the application is running in development mode.');
+            $this->writeln('<error>The mails will not be sent because the application is running in development mode!</error>');
         }
 
         foreach ($subscribers as $subscription) {
@@ -216,7 +209,8 @@ EOT
                 ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
                 ->findAllByAcademicAndAcademicYear($subscription->getPerson(), $academicYear);
 
-            if (!($language = $subscription->getPerson()->getLanguage())) {
+            $language = $subscription->getPerson()->getLanguage();
+            if ($language === null) {
                 $language = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findOneByAbbrev('en');
@@ -292,20 +286,9 @@ EOT
         }
 
         if ($sendMails) {
-            $this->writeln('<comment>' . $counter . '</comment> mails have been sent.');
+            $this->writeln('<comment>' . $counter . '</comment> mails have been sent');
         } else {
-            $this->writeln('<comment>' . $counter . '</comment> mails would have been sent.');
+            $this->writeln('<comment>' . $counter . '</comment> mails would have been sent');
         }
-    }
-
-    /**
-     * Get the current academic year.
-     *
-     * @param  boolean|null $organization
-     * @return AcademicYear
-     */
-    public function getCurrentAcademicYear($organization = null)
-    {
-        return AcademicYearUtil::getOrganizationYear($this->getEntityManager());
     }
 }

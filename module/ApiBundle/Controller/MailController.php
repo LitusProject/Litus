@@ -20,12 +20,9 @@
 
 namespace ApiBundle\Controller;
 
-use CommonBundle\Component\Util\File\TmpFile,
-    MailBundle\Component\Archive\Generator\MailingList\Tar,
-    MailBundle\Component\Archive\Generator\MailingList\Zip,
-    RuntimeException,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use RuntimeException;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * MailController
@@ -41,9 +38,11 @@ class MailController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->findAll();
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Type' => 'text/plain',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Type' => 'text/plain',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -64,28 +63,33 @@ class MailController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->getRepository('MailBundle\Entity\MailingList')
             ->findAll();
 
-        $data = [];
+        $data = array();
 
         foreach ($lists as $list) {
             $entries = $this->getEntityManager()
                 ->getRepository('MailBundle\Entity\MailingList\Entry')
                 ->findByList($list);
 
-            $addresses = array_map(function ($entry) {
-                return $entry->getEmailAddress();
-            }, $entries);
+            $addresses = array_map(
+                function ($entry) {
+                    return $entry->getEmailAddress();
+                },
+                $entries
+            );
             $addressesString = implode(', ', $addresses);
 
-            if(!empty($addresses)){
+            if (count($addresses) > 0) {
                 $data[] = array('name' => $list->getName(), 'addresses' => $addressesString);
             }
 
         }
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Type' => 'text/plain',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Type' => 'text/plain',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -102,33 +106,7 @@ class MailController extends \ApiBundle\Component\Controller\ActionController\Ap
 
     public function listsArchiveAction()
     {
-        $lists = $this->getEntityManager()
-            ->getRepository('MailBundle\Entity\MailingList')
-            ->findAll();
-
-        if (0 == count($lists)) {
-            throw new RuntimeException('There needs to be at least one list before an archive can be created');
-        }
-
-        $archive = new TmpFile();
-        $generator = ('zip' != $this->getParam('type'))
-            ? new Tar($this->getEntityManager(), $lists)
-            : new Zip($this->getEntityManager(), $lists);
-        $generator->generateArchive($archive);
-
-        $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="lists.' . ('zip' != $this->getParam('type') ? 'tar.gz' : 'zip') . '"',
-            'Content-Type'        => mime_content_type($archive->getFileName()),
-            'Content-Length'      => filesize($archive->getFileName()),
-        ));
-        $this->getResponse()->setHeaders($headers);
-
-        return new ViewModel(
-            array(
-                'data' => $archive->getContent(),
-            )
-        );
+        throw new RuntimeException('The listsArchive endpoint has been deprecated');
     }
 
     public function getListsArchiveAction()

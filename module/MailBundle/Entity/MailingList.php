@@ -20,9 +20,9 @@
 
 namespace MailBundle\Entity;
 
-use CommonBundle\Entity\User\Person\Academic,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Person\Academic;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a list.
@@ -38,7 +38,7 @@ use CommonBundle\Entity\User\Person\Academic,
 abstract class MailingList
 {
     /**
-     * @var int The list's unique identifier
+     * @var integer The list's unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -75,11 +75,35 @@ abstract class MailingList
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getEntries()
+    {
+        return $this->entries;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getAdmins()
+    {
+        return $this->admins;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getAdminRoles()
+    {
+        return $this->adminRoles;
     }
 
     /**

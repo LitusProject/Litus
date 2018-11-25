@@ -20,10 +20,10 @@
 
 namespace CudiBundle\Component\Mail;
 
-use CommonBundle\Entity\User\Person,
-    Doctrine\ORM\EntityManager,
-    Zend\Mail\Message,
-    Zend\Mail\Transport\TransportInterface;
+use CommonBundle\Entity\User\Person;
+use Doctrine\ORM\EntityManager;
+use Zend\Mail\Message;
+use Zend\Mail\Transport\TransportInterface;
 
 /**
  * Booking
@@ -42,7 +42,8 @@ class Booking
      */
     public static function sendAssignMail(EntityManager $entityManager, TransportInterface $mailTransport, $bookings, Person $person)
     {
-        if (!($language = $person->getLanguage())) {
+        $language = $person->getLanguage();
+        if ($language === null) {
             $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev('en');
         }
@@ -113,7 +114,7 @@ class Booking
             $mail->addCc($mailAddress, $mailName);
         }
 
-        if ('development' != getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') != 'development') {
             $mailTransport->send($mail);
         }
     }
@@ -128,7 +129,8 @@ class Booking
      */
     public static function sendExpireWarningMail(EntityManager $entityManager, TransportInterface $mailTransport, $bookings, Person $person)
     {
-        if (!($language = $person->getLanguage())) {
+        $language = $person->getLanguage();
+        if ($language === null) {
             $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev('en');
         }
@@ -199,7 +201,7 @@ class Booking
             $mail->addCc($mailAddress, $mailName);
         }
 
-        if ('development' != getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') != 'development') {
             $mailTransport->send($mail);
         }
     }
@@ -214,7 +216,8 @@ class Booking
      */
     public static function sendExpireMail(EntityManager $entityManager, TransportInterface $mailTransport, $bookings, Person $person)
     {
-        if (!($language = $person->getLanguage())) {
+        $language = $person->getLanguage();
+        if ($language === null) {
             $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev('en');
         }
@@ -289,7 +292,7 @@ class Booking
             $mail->addCc($mailAddress, $mailName);
         }
 
-        if ('development' != getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') != 'development') {
             $mailTransport->send($mail);
         }
     }

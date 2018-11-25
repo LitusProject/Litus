@@ -20,10 +20,10 @@
 
 namespace CudiBundle\Entity\Stock\Order;
 
-use CommonBundle\Entity\User\Person,
-    CudiBundle\Entity\Supplier,
-    DateTime,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Person;
+use CudiBundle\Entity\Supplier;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Stock\Order\Order")
@@ -70,7 +70,7 @@ class Order
     private $dateDelivery;
 
     /**
-     * @var ArrayCollection The items ordered
+     * @var \Doctrine\Common\Collections\ArrayCollection The items ordered
      *
      * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Stock\Order\Item", mappedBy="order")
      */
@@ -166,7 +166,7 @@ class Order
     }
 
     /**
-     * @return ArrayCollection
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getItems()
     {
@@ -198,7 +198,7 @@ class Order
      */
     public function isOrdered()
     {
-        return null !== $this->dateOrdered;
+        return $this->dateOrdered !== null;
     }
 
     /**

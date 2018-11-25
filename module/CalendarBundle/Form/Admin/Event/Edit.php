@@ -23,13 +23,13 @@ namespace CalendarBundle\Form\Admin\Event;
 /**
  * Edit an event.
  */
-class Edit extends Add
+class Edit extends \CalendarBundle\Form\Admin\Event\Add
 {
     public function init()
     {
         parent::init();
 
-        $this->remove('submit');
-        $this->addSubmit('Save', 'calendar_edit');
+        $this->remove('submit')
+            ->addSubmit('Save', 'calendar_edit');
     }
 }

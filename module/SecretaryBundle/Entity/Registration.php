@@ -20,10 +20,10 @@
 
 namespace SecretaryBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person\Academic,
-    DateTime,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person\Academic;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores the node item.
@@ -34,7 +34,7 @@ use CommonBundle\Entity\General\AcademicYear,
 class Registration
 {
     /**
-     * @var int The ID of the registration
+     * @var integer The ID of the registration
      *
      * @ORM\Id
      * @ORM\GeneratedValue

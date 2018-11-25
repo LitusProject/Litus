@@ -20,15 +20,15 @@
 
 namespace MailBundle\Controller\Admin;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person,
-    DateTime,
-    Markdown_Parser,
-    Zend\Mail\Message,
-    Zend\Mime\Message as MimeMessage,
-    Zend\Mime\Mime,
-    Zend\Mime\Part,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Parsedown;
+use Zend\Mail\Message;
+use Zend\Mime\Message as MimeMessage;
+use Zend\Mime\Mime;
+use Zend\Mime\Part;
+use Zend\View\Model\ViewModel;
 
 /**
  * ProfController
@@ -74,18 +74,19 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                 $this->saveConfig($formData['subject'], $formData['message']);
 
                 foreach ($statuses as $status) {
-                    if ('' == $status->getPerson()->getEmail()) {
+                    if ($status->getPerson()->getEmail() == '') {
                         continue;
                     }
 
-                    if (!($subjects = $this->getSubjects($status->getPerson(), $academicYear, $semester))) {
+                    $subjects = $this->getSubjects($status->getPerson(), $academicYear, $semester);
+                    if ($subjects === null) {
                         continue;
                     }
 
                     $body = str_replace('{{ subjects }}', $subjects, $formData['message']);
 
-                    $parser = new Markdown_Parser();
-                    $body = nl2br($parser->transform($body));
+                    $parsedown = new Parsedown();
+                    $body = nl2br($parsedown->text($body));
                     $body = preg_replace('/<([a-z\/]+)><br \/>\n<br \/>\n<([a-z]+)>/is', '<$1><$2>', $body);
                     $body = preg_replace('/<([a-z\/]+)><br \/>\n<([a-z]+)>/is', '<$1><$2>', $body);
                     $part = new Part($body);
@@ -119,11 +120,12 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                         );
                     } else {
                         $mail->addTo(
-                            $status->getPerson()->getEmail(), $status->getPerson()->getFullName()
+                            $status->getPerson()->getEmail(),
+                            $status->getPerson()->getFullName()
                         );
                     }
 
-                    if ('development' != getenv('APPLICATION_ENV')) {
+                    if (getenv('APPLICATION_ENV') != 'development') {
                         $this->getMailTransport()->send($mail);
                     }
 
@@ -180,7 +182,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @param  Person       $person
      * @param  AcademicYear $academicYear
-     * @param  int          $semester
+     * @param  integer      $semester
      * @return string|null
      */
     private function getSubjects(Person $person, AcademicYear $academicYear, $semester)
@@ -200,7 +202,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
             }
         }
 
-        if (empty($subjects)) {
+        if (count($subjects) == 0) {
             return null;
         }
 

@@ -20,10 +20,10 @@
 
 namespace ApiBundle\Controller;
 
-use DateInterval,
-    DateTime,
-    Markdown_Parser,
-    Zend\View\Model\ViewModel;
+use DateInterval;
+use DateTime;
+use Parsedown;
+use Zend\View\Model\ViewModel;
 
 /**
  * NewsController
@@ -56,8 +56,8 @@ class NewsController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         $result = array();
         foreach ($items as $item) {
-            $parser = new Markdown_Parser();
-            $summary = preg_replace('/\s+/', ' ', strip_tags($parser->transform($item->getContent($this->getLanguage()))));
+            $parsedown = new Parsedown();
+            $summary = preg_replace('/\s+/', ' ', strip_tags($parsedown->text($item->getContent($this->getLanguage()))));
             $summary = substr($summary, 0, $summaryLength);
 
             $result[] = array(

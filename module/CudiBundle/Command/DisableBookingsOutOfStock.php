@@ -20,8 +20,6 @@
 
 namespace CudiBundle\Command;
 
-use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
-    CommonBundle\Entity\General\AcademicYear;
 /**
  * Disable bookings
  */
@@ -29,17 +27,12 @@ class DisableBookingsOutOfStock extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
-        $this
-            ->setName('cudi:disable-bookings-out-of-stock')
-            ->setDescription('Disable bookings for articles which aren\'t in stock.')
-            ->addOption('flush', 'f', null, 'Stores the result in the database.')
-            ->setHelp(<<<EOT
-The <info>%command.name%</info> command disables bookings for articles which has a stock value of 0.
-EOT
-        );
+        $this->setName('cudi:disable-bookings-out-of-stock')
+            ->setDescription('Disable bookings for articles which aren\'t in stock')
+            ->addOption('flush', 'f', null, 'Stores the result in the database');
     }
 
-    protected function executeCommand()
+    protected function invoke()
     {
         $articles = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Article')
@@ -48,6 +41,7 @@ EOT
         $period = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->findOneActive();
+
         $period->setEntityManager($this->getEntityManager());
 
         foreach ($articles as $article) {
@@ -60,30 +54,7 @@ EOT
         if ($this->getOption('flush')) {
             $this->write('Flushing entity manager...');
             $this->getEntityManager()->flush();
-            $this->writeln(' done.', true);
+            $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
         }
-    }
-
-    protected function getLogName()
-    {
-        return 'DisableBookingsOutOfStock';
-    }
-
-    /**
-     * Get the current academic year.
-     *
-     * @param  boolean|null $organization
-     * @return AcademicYear
-     */
-    public function getCurrentAcademicYear($organization = null)
-    {
-        $startAcademicYear = AcademicYearUtil::getStartOfAcademicYear();
-        $startAcademicYear->setTime(0, 0);
-
-        $academicYear = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($startAcademicYear);
-
-        return $academicYear;
     }
 }

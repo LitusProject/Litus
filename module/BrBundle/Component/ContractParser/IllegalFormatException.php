@@ -40,7 +40,7 @@ class IllegalFormatException extends \Exception
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getLineNumber()
     {

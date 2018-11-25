@@ -20,12 +20,12 @@
 
 namespace CudiBundle\Controller\Prof\Article;
 
-use CudiBundle\Entity\Article,
-    CudiBundle\Entity\Article\SubjectMap,
-    CudiBundle\Entity\Prof\Action,
-    SyllabusBundle\Entity\Subject,
-    SyllabusBundle\Entity\Subject\ProfMap,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Article;
+use CudiBundle\Entity\Article\SubjectMap;
+use CudiBundle\Entity\Prof\Action;
+use SyllabusBundle\Entity\Subject;
+use SyllabusBundle\Entity\Subject\ProfMap;
+use Zend\View\Model\ViewModel;
 
 /**
  * MappingController
@@ -36,11 +36,13 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
 {
     public function addAction()
     {
-        if (!($subject = $this->getSubjectEntity())) {
+        $subject = $this->getSubjectEntity();
+        if ($subject === null) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->getCurrentAcademicYear())) {
+        $academicYear = $this->getCurrentAcademicYear();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -52,7 +54,8 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             if ($form->isValid()) {
                 $formData = $form->getData();
 
-                if (!($article = $this->getArticleEntity($formData['article']['id']))) {
+                $article = $this->getArticleEntity($formData['article']['id']);
+                if ($article === null) {
                     return new ViewModel();
                 }
 
@@ -60,7 +63,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
                     ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                     ->findOneByArticleAndSubjectAndAcademicYear($article, $subject, $academicYear, true);
 
-                if (null === $mapping) {
+                if ($mapping === null) {
                     $mapping = new SubjectMap($article, $subject, $academicYear, $formData['mandatory']);
                     $mapping->setIsProf(true);
                     $this->getEntityManager()->persist($mapping);
@@ -113,7 +116,8 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->getSubjectMapEntity())) {
+        $mapping = $this->getSubjectMapEntity();
+        if ($mapping === null) {
             return new ViewModel();
         }
 
@@ -144,7 +148,8 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->getSubjectMapEntity())) {
+        $mapping = $this->getSubjectMapEntity();
+        if ($mapping === null) {
             return new ViewModel();
         }
 
@@ -176,7 +181,8 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
      */
     private function getSubjectMapEntity()
     {
-        if (!($academicYear = $this->getCurrentAcademicYear())) {
+        $academicYear = $this->getCurrentAcademicYear();
+        if ($academicYear === null) {
             return;
         }
 
@@ -184,13 +190,13 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
 
         $mappingProf = null;
 
-        if (null !== $mapping) {
+        if ($mapping !== null) {
             $mappingProf = $this->getEntityManager()
                 ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
                 ->findOneBySubjectAndProfAndAcademicYear($mapping->getSubject(), $this->getAuthentication()->getPersonObject(), $academicYear);
         }
 
-        if (!($mapping instanceof SubjectMap) || null === $mappingProf) {
+        if (!($mapping instanceof SubjectMap) || $mappingProf === null) {
             $this->flashMessenger()->error(
                 'Error',
                 'No subject map was found!'
@@ -215,7 +221,8 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
      */
     private function getSubjectEntity()
     {
-        if (!($academicYear = $this->getCurrentAcademicYear())) {
+        $academicYear = $this->getCurrentAcademicYear();
+        if ($academicYear === null) {
             return;
         }
 
@@ -248,12 +255,12 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
     }
 
     /**
-     * @param  int|null     $id
+     * @param  integer|null $id
      * @return Article|null
      */
     private function getArticleEntity($id = null)
     {
-        $id = $id === null ? $this->getParam('id', 0) : $id;
+        $id = $id ?? $this->getParam('id', 0);
 
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')

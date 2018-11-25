@@ -20,10 +20,10 @@
 
 namespace CalendarBundle\Controller\Admin;
 
-use CalendarBundle\Entity\Node\Event,
-    Imagick,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CalendarBundle\Entity\Node\Event;
+use Imagick;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * Handles system admin for calendar.
@@ -105,7 +105,8 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($event = $this->getEventEntity())) {
+        $event = $this->getEventEntity();
+        if ($event === null) {
             return new ViewModel();
         }
 
@@ -146,7 +147,8 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($event = $this->getEventEntity())) {
+        $event = $this->getEventEntity();
+        if ($event === null) {
             return new ViewModel();
         }
 
@@ -164,7 +166,8 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editPosterAction()
     {
-        if (!($event = $this->getEventEntity())) {
+        $event = $this->getEventEntity();
+        if ($event === null) {
             return new ViewModel();
         }
 
@@ -211,17 +214,20 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function uploadAction()
     {
-        if (!($event = $this->getEventEntity())) {
+        $event = $this->getEventEntity();
+        if ($event === null) {
             return new ViewModel();
         }
 
         $form = $this->getForm('calendar_event_poster');
 
         if ($this->getRequest()->isPost()) {
-            $form->setData(array_merge_recursive(
-                $this->getRequest()->getPost()->toArray(),
-                $this->getRequest()->getFiles()->toArray()
-            ));
+            $form->setData(
+                array_merge_recursive(
+                    $this->getRequest()->getPost()->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
 
             if ($form->isValid()) {
                 $formData = $form->getData();
@@ -266,7 +272,8 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function posterAction()
     {
-        if (!($event = $this->getEventEntityByPoster())) {
+        $event = $this->getEventEntityByPoster();
+        if ($event === null) {
             return new ViewModel();
         }
 
@@ -275,9 +282,11 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             ->getConfigValue('calendar.poster_path') . '/';
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Type' => mime_content_type($filePath . $event->getPoster()),
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Type' => mime_content_type($filePath . $event->getPoster()),
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         $handle = fopen($filePath . $event->getPoster(), 'r');

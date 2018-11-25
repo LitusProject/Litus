@@ -20,13 +20,13 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Session;
 
-use CommonBundle\Component\Controller\Exception\RuntimeException,
-    CudiBundle\Entity\Sale\Session,
-    CudiBundle\Entity\Sale\Session\Restriction,
-    CudiBundle\Entity\Sale\Session\Restriction\Name as NameRestriction,
-    CudiBundle\Entity\Sale\Session\Restriction\Study as StudyRestriction,
-    CudiBundle\Entity\Sale\Session\Restriction\Year as YearRestriction,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Controller\Exception\RuntimeException;
+use CudiBundle\Entity\Sale\Session;
+use CudiBundle\Entity\Sale\Session\Restriction;
+use CudiBundle\Entity\Sale\Session\Restriction\Name as NameRestriction;
+use CudiBundle\Entity\Sale\Session\Restriction\Study as StudyRestriction;
+use CudiBundle\Entity\Sale\Session\Restriction\Year as YearRestriction;
+use Zend\View\Model\ViewModel;
 
 /**
  * RestrictionController
@@ -37,7 +37,8 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
 {
     public function manageAction()
     {
-        if (!($session = $this->getSessionEntity())) {
+        $session = $this->getSessionEntity();
+        if ($session === null) {
             return new ViewModel();
         }
 
@@ -45,9 +46,12 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             ->getRepository('CudiBundle\Entity\Sale\Session\Restriction')
             ->findBySession($session);
 
-        $form = $this->getForm('cudi_sale_session_restriction_add', array(
-            'session' => $session,
-        ));
+        $form = $this->getForm(
+            'cudi_sale_session_restriction_add',
+            array(
+                'session' => $session,
+            )
+        );
 
         if ($this->getRequest()->isPost() && $session->isOpen()) {
             $form->setData($this->getRequest()->getPost());
@@ -55,11 +59,11 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             if ($form->isValid()) {
                 $formData = $form->getData();
 
-                if ('name' == $formData['type']) {
+                if ($formData['type'] == 'name') {
                     $restriction = new NameRestriction($session, $formData['start_value_name'], $formData['end_value_name']);
-                } elseif ('year' == $formData['type']) {
+                } elseif ($formData['type'] == 'year') {
                     $restriction = new YearRestriction($session, $formData['start_value_year'], $formData['end_value_year']);
-                } elseif ('study' == $formData['type']) {
+                } elseif ($formData['type'] == 'study') {
                     $restriction = new StudyRestriction($session);
 
                     foreach ($formData['value_study'] as $id) {
@@ -107,7 +111,8 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
     {
         $this->initAjax();
 
-        if (!($restriction = $this->getRestrictionEntity())) {
+        $restriction = $this->getRestrictionEntity();
+        if ($restriction === null) {
             return new ViewModel();
         }
 

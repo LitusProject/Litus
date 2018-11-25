@@ -17,18 +17,18 @@
  *
  * @license http://litus.cc/LICENSE
  */
+
 namespace LogisticsBundle\Controller\Admin;
 
-use CommonBundle\Component\Controller\ActionController\AdminController,
-    LogisticsBundle\Entity\Lease\Item,
-    Zend\View\Model\ViewModel;
+use LogisticsBundle\Entity\Lease\Item;
+use Zend\View\Model\ViewModel;
 
 /**
  * LeaseController
  *
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
-class LeaseController extends AdminController
+class LeaseController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
@@ -84,7 +84,8 @@ class LeaseController extends AdminController
 
     public function editAction()
     {
-        if (!($item = $this->getItemEntity())) {
+        $item = $this->getItemEntity();
+        if ($item === null) {
             return new ViewModel();
         }
 
@@ -121,7 +122,8 @@ class LeaseController extends AdminController
     {
         $this->initAjax();
 
-        if (!($item = $this->getItemEntity())) {
+        $item = $this->getItemEntity();
+        if ($item === null) {
             return new ViewModel();
         }
 

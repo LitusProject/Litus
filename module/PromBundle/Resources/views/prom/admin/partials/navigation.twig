@@ -3,14 +3,14 @@
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('prom_admin_bus', 'manage') %}
-                <li><a {% if 'manage' == getParam('action') and 'prom_admin_bus' == getParam('controller') %} class="active" {% endif %} href="{{ url("prom_admin_bus", {"action": "manage"}) }}">Buses</a></li>
-            {% endif %}
             {% if hasAccess('prom_admin_passenger', 'manage') %}
                 <li><a {% if 'manage' == getParam('action') and 'prom_admin_passenger' == getParam('controller') %} class="active" {% endif %} href="{{ url("prom_admin_passenger", {"action": "manage"}) }}">Passengers</a></li>
             {% endif %}
             {% if hasAccess('prom_admin_code', 'manage') %}
                 <li><a {% if 'manage' == getParam('action') and 'prom_admin_code' == getParam('controller') %} class="active" {% endif %} href="{{ url("prom_admin_code", {"action": "manage"}) }}">Codes</a></li>
+            {% endif %}
+            {% if hasAccess('prom_admin_bus', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') and 'prom_admin_bus' == getParam('controller') %} class="active" {% endif %} href="{{ url("prom_admin_bus", {"action": "manage"}) }}">Buses</a></li>
             {% endif %}
         </ul>
     </nav>

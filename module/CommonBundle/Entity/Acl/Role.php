@@ -20,10 +20,10 @@
 
 namespace CommonBundle\Entity\Acl;
 
-use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Entity\Acl\Action,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Component\Acl\Acl;
+use CommonBundle\Entity\Acl\Action;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Represents a group of users and is capable of determining which rights those users have.
@@ -174,14 +174,15 @@ class Role
      * @param  Acl    $acl      The ACL instance
      * @param  string $resource The resource the action belongs to
      * @param  string $action   The action that should be verified
-     * @return bool
+     * @return boolean
      */
     public function isAllowed(Acl $acl, $resource, $action)
     {
-        if (
-            $acl->isAllowed(
-                $this->getName(), $resource, $action
-            )
+        if ($acl->isAllowed(
+            $this->getName(),
+            $resource,
+            $action
+        )
         ) {
             return true;
         }

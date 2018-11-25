@@ -20,9 +20,9 @@
 
 namespace CommonBundle\Controller;
 
-use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
-    CommonBundle\Entity\General\AcademicYear,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil;
+use CommonBundle\Entity\General\AcademicYear;
+use Zend\View\Model\ViewModel;
 
 /**
  * PraesidiumController
@@ -46,8 +46,8 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
         $list = array();
         foreach ($units as $unit) {
             $members = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
-                    ->findAllByUnitAndAcademicYear($unit, $academicYear);
+                ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
+                ->findAllByUnitAndAcademicYear($unit, $academicYear);
             if (isset($members[0])) {
                 $list[] = array(
                     'unit'    => $unit,
@@ -95,7 +95,7 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
     private function getAcademicYear()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') !== null) {
             $date = AcademicYearUtil::getDateTime($this->getParam('academicyear'));
         }
 

@@ -20,17 +20,16 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Component\Document\Generator\Pdf\Contract as ContractGenerator,
-    BrBundle\Entity\Contract,
-    BrBundle\Entity\Contract\ContractHistory,
-    BrBundle\Entity\Invoice\ContractInvoice,
-    BrBundle\Entity\Invoice\InvoiceEntry,
-    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
-    CommonBundle\Component\Util\File as FileUtil,
-    CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use BrBundle\Component\Document\Generator\Pdf\Contract as ContractGenerator;
+use BrBundle\Entity\Contract;
+use BrBundle\Entity\Contract\ContractHistory;
+use BrBundle\Entity\Invoice\ContractInvoice;
+use BrBundle\Entity\Invoice\InvoiceEntry;
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File as FileUtil;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * ContractController
@@ -43,16 +42,16 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
     public function manageAction()
     {
         $contracts = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Contract')
-                ->findAllNewUnsignedQuery()
-                ->getResult();
+            ->getRepository('BrBundle\Entity\Contract')
+            ->findAllNewUnsignedQuery()
+            ->getResult();
 
         $contractData = array();
 
         foreach ($contracts as $contract) {
             $contract->getOrder()->setEntityManager($this->getEntityManager());
             $value = $contract->getOrder()->getTotalCostExclusive();
-            $contractData[] = array("contract" => $contract, "value" => $value);
+            $contractData[] = array('contract' => $contract, 'value' => $value);
         }
 
         $paginator = $this->paginator()->createFromArray(
@@ -72,16 +71,16 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
     public function signedListAction()
     {
         $contracts = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Contract')
-                ->findAllSignedQuery()
-                ->getResult();
+            ->getRepository('BrBundle\Entity\Contract')
+            ->findAllSignedQuery()
+            ->getResult();
 
         $contractData = array();
 
         foreach ($contracts as $contract) {
             $contract->getOrder()->setEntityManager($this->getEntityManager());
             $value = $contract->getOrder()->getTotalCostExclusive();
-            $contractData[] = array("contract" => $contract, "value" => $value);
+            $contractData[] = array('contract' => $contract, 'value' => $value);
         }
 
         $paginator = $this->paginator()->createFromArray(
@@ -100,7 +99,8 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
     public function viewAction()
     {
-        if (!($contract = $this->getContractEntity())) {
+        $contract = $this->getContractEntity();
+        if ($contract === null) {
             return new ViewModel();
         }
 
@@ -113,7 +113,8 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
     public function historyAction()
     {
-        if (!($contract = $this->getContractEntity())) {
+        $contract = $this->getContractEntity();
+        if ($contract === null) {
             return new ViewModel();
         }
 
@@ -161,10 +162,12 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         $document->generateDocument($file);
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="contracts.csv"',
-            'Content-Type'        => 'text/csv',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="contracts.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -176,7 +179,8 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($contract = $this->getContractEntity(false))) {
+        $contract = $this->getContractEntity(false);
+        if ($contract === null) {
             return new ViewModel();
         }
 
@@ -221,11 +225,12 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($contract = $this->getContractEntity())) {
+        $contract = $this->getContractEntity();
+        if ($contract === null) {
             return new ViewModel();
         }
 
-        if ('true' == $this->getParam('signed')) {
+        if ($this->getParam('signed') == 'true') {
             $invoice = new ContractInvoice($contract->getOrder(), $this->getEntityManager());
 
             foreach ($contract->getEntries() as $entry) {
@@ -241,8 +246,8 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('br.invoice_year_number');
 
-            $prefix = $yearNumber.$bookNumber;
-            
+            $prefix = $yearNumber . $bookNumber;
+
             $contract->setInvoiceNb(
                 $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Contract')
@@ -252,7 +257,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             $this->getEntityManager()->persist($invoice);
         }
 
-        $contract->setSigned('true' == $this->getParam('signed') ? true : false);
+        $contract->setSigned($this->getParam('signed') == 'true' ? true : false);
 
         $this->getEntityManager()->flush();
 
@@ -267,7 +272,8 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
     public function signAction()
     {
-        if (!($contract = $this->getContractEntity(false))) {
+        $contract = $this->getContractEntity(false);
+        if ($contract === null) {
             return new ViewModel();
         }
 
@@ -317,7 +323,8 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
     public function downloadAction()
     {
-        if (!($contract = $this->getContractEntity())) {
+        $contract = $this->getContractEntity();
+        if ($contract === null) {
             return new ViewModel();
         }
 
@@ -337,10 +344,12 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         $companyName = $contract->getCompany()->getName();
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="' . $contractNb . ' ' . $companyName . '.pdf"',
-            'Content-Type'        => 'application/pdf',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="' . $contractNb . ' ' . $companyName . '.pdf"',
+                'Content-Type'        => 'application/pdf',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -395,7 +404,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
     }
 
     /**
-     * @param  boolean       $allowSigned
+     * @param  boolean $allowSigned
      * @return Contract|null
      */
     private function getContractEntity($allowSigned = true)

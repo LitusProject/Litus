@@ -20,8 +20,8 @@
 
 namespace BrBundle\Entity;
 
-use CommonBundle\Entity\User\Person,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Person;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is a person that is a collaborator of corporate relations.
@@ -49,14 +49,14 @@ class Collaborator
     private $person;
 
     /**
-     * @var int Integer that resembles the personal number of the person.
+     * @var integer Integer that resembles the personal number of the person.
      *
      * @ORM\Column(type="integer")
      */
     private $number;
 
     /**
-     * @var bool True if the current person is an active member of corporate relations.
+     * @var boolean True if the current person is an active member of corporate relations.
      *
      * @ORM\Column(type="boolean")
      */
@@ -72,7 +72,7 @@ class Collaborator
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -88,7 +88,7 @@ class Collaborator
     }
 
     /**
-     * @param  int  $number
+     * @param  integer $number
      * @return self
      */
     public function setNumber($number)
@@ -99,7 +99,7 @@ class Collaborator
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getNumber()
     {
@@ -117,7 +117,7 @@ class Collaborator
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isActive()
     {

@@ -20,15 +20,15 @@
 
 namespace SecretaryBundle\Form\Admin\Registration;
 
-use SecretaryBundle\Entity\Organization\MetaData,
-    SecretaryBundle\Entity\Registration;
+use SecretaryBundle\Entity\Organization\MetaData;
+use SecretaryBundle\Entity\Registration;
 
 /**
  * Edit Registration Data form
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends Add
+class Edit extends \SecretaryBundle\Form\Admin\Registration\Add
 {
     /**
      * @var Registration
@@ -46,24 +46,23 @@ class Edit extends Add
 
         $this->remove('person');
 
-        $this->add(array(
-            'type'    => 'checkbox',
-            'name'    => 'cancel',
-            'label'   => 'Cancelled',
-            'value'   => $this->getRegistration()->isCancelled(),
-            'options' => array(
-                'input' => array(
-                    'validators' => array(
-                        array('name' => 'secretary_cancel_registration'),
+        $this->add(
+            array(
+                'type'    => 'checkbox',
+                'name'    => 'cancel',
+                'label'   => 'Cancelled',
+                'value'   => $this->getRegistration()->isCancelled(),
+                'options' => array(
+                    'input' => array(
+                        'validators' => array(
+                            array('name' => 'CancelRegistration'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->get('payed')
-            ->setValue($this->getRegistration()->hasPayed());
-
-        $metaData = $this->getMetaData();
+        $this->get('payed')->setValue($this->getRegistration()->hasPayed());
 
         if (null !== $metaData) {
             $this->get('irreeel')

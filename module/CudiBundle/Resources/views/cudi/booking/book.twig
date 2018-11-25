@@ -79,7 +79,9 @@
         <div id="viewArticlesPage">
             {% autoescape false %}
             {{ form().openTag(form) }}
-                {{ formElement(form.get('csrf')) }}
+                {% if form.get('csrf') %}
+                    {{ formElement(form.get('csrf')) }}
+                {% endif %}
 
                 <table class="table bookings">
                     <thead>
@@ -131,7 +133,7 @@
                                         <a rel="popover" data-original-title="{{ translate('Comments') }}" data-content="
 
                                         {% for comment in map['comments'] %}
-                                            <span class='badge badge-info'>{{ loop.index }}</span> {{ comment.getText()|replace('"', '\'') }}<br/>
+                                            <span class='badge badge-info'>{{ loop.index }}</span> {{ comment.getText()|escape }}<br/>
                                         {% endfor %}
 
                                         " data-placement="left" class="label label-warning">{{ map['comments']|length }} {{ map['comments']|length > 1 ? translate('Remarks') : translate('Remark') }}</a>
@@ -181,9 +183,7 @@
                         {{ formElement(form.get('submit')) }}
                     {% endif %}
                 </div>
-
             {{ form().closeTag() }}
-
             {% endautoescape %}
 
             <table class="table" style="width:16.6666%;margin: 0 auto;">

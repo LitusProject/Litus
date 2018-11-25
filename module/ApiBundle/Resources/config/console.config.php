@@ -19,5 +19,5 @@
  */
 
 return array(
-    'install.api' => 'ApiBundle\Command\Install',
+    'install_api' => 'ApiBundle\Command\Install',
 );

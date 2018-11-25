@@ -43,7 +43,7 @@ class BusSelected extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -75,7 +75,7 @@ class BusSelected extends \CommonBundle\Component\Validator\AbstractValidator
             ->getRepository('PromBundle\Entity\Bus')
             ->findOneById($context['second_bus']);
 
-        if (null !== $firstBus || null !== $secondBus) {
+        if ($firstBus !== null || $secondBus !== null) {
             return true;
         }
 

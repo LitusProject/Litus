@@ -30,36 +30,27 @@ namespace CommonBundle\Component\Console\Command;
 abstract class Install extends \CommonBundle\Component\Console\Command
 {
     /**
-     * @var string the module name
+     * @var string
      */
     private $module;
 
     protected function configure()
     {
-        $this->module = $this->getModule();
+        $module = $this->getModule();
+        $name = str_replace('bundle', '', strtolower($module));
 
-        $this
-            ->setName('install:' . str_replace(array('bundle', 'module'), '', strtolower($this->module)))
-            ->setDescription('Install the ' . $this->module . '.')
-            ->setHelp(<<<EOT
-The <info>%command.name%</info> command installs the $this->module module.
-EOT
-        );
+        $this->module = $module;
+
+        $this->setName('install:' . $name)
+            ->setDescription('Install ' . $this->module);
     }
 
-    /**
-     * Running all installation methods.
-     *
-     * @return void
-     */
-    protected function executeCommand()
+    protected function invoke()
     {
-        $installer = $this->getServiceLocator()
-            ->get('litus.install.' . $this->module);
-
-        $installer->setCommand($this);
-
-        $installer->install();
+        $this->getServiceLocator()
+            ->get($this->module . '\Component\Module\Installer')
+            ->setCommand($this)
+            ->install();
     }
 
     protected function getLogName()
@@ -74,8 +65,6 @@ EOT
 
     private function getModule()
     {
-        $calledClass = get_called_class();
-
-        return substr($calledClass, 0, strpos($calledClass, '\\', 1));
+        return substr(static::class, 0, strpos(static::class, '\\', 1));
     }
 }

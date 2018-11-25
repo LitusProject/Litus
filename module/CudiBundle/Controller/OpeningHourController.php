@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Controller;
 
-use DateInterval,
-    DateTime,
-    Zend\View\Model\ViewModel;
+use DateInterval;
+use DateTime;
+use Zend\View\Model\ViewModel;
 
 /**
  * OpeningHourController
@@ -42,16 +42,16 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
                 ->getRepository('PageBundle\Entity\Link')
                 ->findOneById($id);
 
-            if (null !== $link) {
+            if ($link !== null) {
                 $page = $link->getParent();
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             // No page info available
         }
 
         if (isset($page)) {
             $submenu = $this->buildSubmenu($page);
-            if (empty($submenu) && null !== $page->getParent()) {
+            if (count($submenu) == 0 && $page->getParent() !== null) {
                 $submenu = $this->buildSubmenu($page->getParent());
             }
         }
@@ -74,7 +74,7 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
         $week = array();
         $openingHoursArray = array();
         $start->sub(new DateInterval('P1D'));
-        for ($i = 0 ; $i < 5 ; $i ++) {
+        for ($i = 0; $i < 5; $i ++) {
             $start->add(new DateInterval('P1D'));
             $week[] = clone $start;
             $openingHoursArray[$i] = array();
@@ -99,8 +99,8 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
                 'week'                 => $week,
                 'startHour'            => $startHour,
                 'endHour'              => $endHour,
-                'submenu'              => isset($submenu) ? $submenu : null,
-                'page'                 => isset($link) ? $link : null,
+                'submenu'              => $submenu ?? null,
+                'page'                 => $link ?? null,
             )
         );
     }

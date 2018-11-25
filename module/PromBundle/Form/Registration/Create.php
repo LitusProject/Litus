@@ -31,34 +31,32 @@ class Create extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'fieldset',
-            'name'     => 'create',
-            'label'    => '',
-            'elements' => array(
-                array(
-                    'type'     => 'text',
-                    'name'     => 'ticket_code',
-                    'label'    => 'Ticket Code',
-                    'required' => true,
-                    'options'  => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name' => 'prom_code_exists',
+        $this->add(
+            array(
+                'type'     => 'fieldset',
+                'name'     => 'create',
+                'label'    => '',
+                'elements' => array(
+                    array(
+                        'type'     => 'text',
+                        'name'     => 'ticket_code',
+                        'label'    => 'Ticket Code',
+                        'required' => true,
+                        'options'  => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
                                 ),
-                                array(
-                                    'name' => 'prom_code_used',
+                                'validators' => array(
+                                    array('name' => 'CodeExists'),
+                                    array('name' => 'CodeUsed'),
                                 ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Proceed', 'btn btn-default');
     }

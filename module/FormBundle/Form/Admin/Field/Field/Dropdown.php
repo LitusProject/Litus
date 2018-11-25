@@ -20,8 +20,8 @@
 
 namespace FormBundle\Form\Admin\Field\Field;
 
-use CommonBundle\Component\Form\FieldsetInterface,
-    CommonBundle\Entity\General\Language;
+use CommonBundle\Component\Form\FieldsetInterface;
+use CommonBundle\Entity\General\Language;
 
 /**
  * Add Dropdown Field
@@ -32,22 +32,24 @@ class Dropdown extends \CommonBundle\Component\Form\Admin\Fieldset\Tabbable
 {
     protected function addTab(FieldsetInterface $container, Language $language, $isDefault)
     {
-        $container->add(array(
-            'type'       => 'text',
-            'name'       => 'options',
-            'label'      => 'Options',
-            'required'   => $isDefault,
-            'attributes' => array(
-                'data-help' => 'The options comma separated.',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $container->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'options',
+                'label'      => 'Options',
+                'required'   => $isDefault,
+                'attributes' => array(
+                    'data-help' => 'The options comma separated.',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
     }
 
     public function getInputFilterSpecification()

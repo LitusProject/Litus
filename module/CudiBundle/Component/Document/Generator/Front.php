@@ -20,13 +20,13 @@
 
 namespace CudiBundle\Component\Document\Generator;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\Xml\Generator,
-    CommonBundle\Component\Util\Xml\Node,
-    CudiBundle\Entity\Article\Internal as InternalArticle,
-    CudiBundle\Entity\Sale\Article,
-    Doctrine\ORM\EntityManager;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\Xml\Generator;
+use CommonBundle\Component\Util\Xml\Node;
+use CudiBundle\Entity\Article\Internal as InternalArticle;
+use CudiBundle\Entity\Sale\Article;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Front
@@ -79,7 +79,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
             mkdir($cachePath);
         }
 
-        if (null !== $mainArticle->getFrontPage() && file_exists($cachePath . '/' . $mainArticle->getFrontPage())) {
+        if ($mainArticle->getFrontPage() !== null && file_exists($cachePath . '/' . $mainArticle->getFrontPage())) {
             copy($cachePath . '/' . $mainArticle->getFrontPage(), $this->pdfPath);
             clearstatcache();
         } else {
@@ -125,7 +125,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
             ->getRepository('CommonBundle\Entity\General\Address')
             ->findOneById($configuration->getConfigValue('cudi.billing_address'));
 
-        $academicYear = $this->getCurrentAcademicYear();
+        $academicYear = $this->getCurrentAcademicYear(true);
 
         $subjects = array();
         $mappings = $this->getEntityManager()
@@ -150,7 +150,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
             );
         }
 
-        if (sizeof($subjects) == 0) {
+        if (count($subjects) == 0) {
             $subjects[] = new Node(
                 'subject',
                 null,
@@ -223,7 +223,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
                             new Node(
                                 'street',
                                 null,
-                                $address->getStreet() . ' ' . $address->getNumber() . (null === $address->getMailbox() ? '' : '/' . $address->getMailbox())
+                                $address->getStreet() . ' ' . $address->getNumber() . ($address->getMailbox() === null ? '' : '/' . $address->getMailbox())
                             ),
                             new Node(
                                 'city',
@@ -275,10 +275,15 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
     /**
      * Get the current academic year.
      *
-     * @return \CommonBundle\Entity\General\AcademicYear
+     * @param  boolean $organization
+     * @return AcademicYear
      */
-    private function getCurrentAcademicYear()
+    protected function getCurrentAcademicYear($organization = false)
     {
-        return AcademicYear::getOrganizationYear($this->getEntityManager());
+        if ($organization) {
+            return AcademicYear::getOrganizationYear($this->getEntityManager());
+        }
+
+        return AcademicYear::getUniversityYear($this->getEntityManager());
     }
 }

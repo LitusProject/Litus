@@ -20,11 +20,11 @@
 
 namespace CudiBundle\Entity\Sale;
 
-use CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\QueueItem")
@@ -108,14 +108,14 @@ class QueueItem
     private $payMethod;
 
     /**
-     * @var ArrayCollection The sold items
+     * @var \Doctrine\Common\Collections\ArrayCollection The sold items
      *
      * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sale\SaleItem", mappedBy="queueItem")
      */
     private $saleItems;
 
     /**
-     * @var ArrayCollection The return items
+     * @var \Doctrine\Common\Collections\ArrayCollection The return items
      *
      * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sale\ReturnItem", mappedBy="queueItem")
      */
@@ -166,7 +166,7 @@ class QueueItem
     }
 
     /**
-     * @param  string  $status
+     * @param  string $status
      * @return boolean
      */
     public static function isValidQueueStatus($status)
@@ -175,7 +175,7 @@ class QueueItem
     }
 
     /**
-     * @param  string  $payMethod
+     * @param  string $payMethod
      * @return boolean
      */
     public static function isValidPayMethod($payMethod)
@@ -252,7 +252,7 @@ class QueueItem
     }
 
     /**
-     * @param  string                   $status
+     * @param  string $status
      * @throws InvalidArgumentException
      * @return self
      */
@@ -317,7 +317,7 @@ class QueueItem
     }
 
     /**
-     * @param  string                   $payMethod
+     * @param  string $payMethod
      * @throws InvalidArgumentException
      * @return self
      */
@@ -345,7 +345,7 @@ class QueueItem
     }
 
     /**
-     * @return ArrayCollection
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getSaleItems()
     {
@@ -353,7 +353,7 @@ class QueueItem
     }
 
     /**
-     * @return ArrayCollection
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getReturnItems()
     {

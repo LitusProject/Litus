@@ -31,7 +31,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Item
 {
     /**
-     * @var int The item's ID
+     * @var integer The item's ID
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -54,7 +54,7 @@ class Item
     private $additionalInfo;
 
     /**
-     * @var int The barcode of the item
+     * @var integer The barcode of the item
      *
      * @ORM\Column(type="bigint", unique=true)
      */

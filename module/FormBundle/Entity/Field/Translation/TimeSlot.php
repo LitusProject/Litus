@@ -20,9 +20,9 @@
 
 namespace FormBundle\Entity\Field\Translation;
 
-use CommonBundle\Entity\General\Language,
-    Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Field\TimeSlot as TimeSlotField;
+use CommonBundle\Entity\General\Language;
+use Doctrine\ORM\Mapping as ORM;
+use FormBundle\Entity\Field\TimeSlot as TimeSlotField;
 
 /**
  * This entity stores the node item.
@@ -33,7 +33,7 @@ use CommonBundle\Entity\General\Language,
 class TimeSlot
 {
     /**
-     * @var int The ID of this tanslation
+     * @var integer The ID of this tanslation
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -73,9 +73,9 @@ class TimeSlot
 
     /**
      * @param TimeSlotField timeslot
-     * @param Language $language
-     * @param string   $location
-     * @param string   $extraInformation
+     * @param Language               $language
+     * @param string                 $location
+     * @param string                 $extraInformation
      */
     public function __construct(TimeSlotField $timeslot, Language $language, $location, $extraInformation)
     {

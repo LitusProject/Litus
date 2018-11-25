@@ -20,93 +20,21 @@
 
 namespace CudiBundle\Controller;
 
-use CommonBundle\Entity\User\Person\Academic,
-    CudiBundle\Entity\IsicCard,
-    CudiBundle\Entity\Sale\Booking,
-    SecretaryBundle\Component\Registration\Articles as RegistrationArticles,
-    Zend\Soap\Client as SoapClient,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Person\Academic;
+use CudiBundle\Entity\IsicCard;
+use CudiBundle\Entity\Sale\Booking;
+use SecretaryBundle\Component\Registration\Articles as RegistrationArticles;
+use Zend\Soap\Client as SoapClient;
+use Zend\View\Model\ViewModel;
 
 class IsicController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
-    private function isMember($academic)
-    {
-        $academicYear = $this->getCurrentAcademicYear();
-
-        return $academic->isMember($academicYear) || $academic->isPraesidium($academicYear);
-    }
-
-    private function isEnabled()
-    {
-        $bookingsEnabled = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('cudi.enable_bookings');
-
-        if ($bookingsEnabled == 0) {
-            return new ViewModel(
-                array(
-                    'status' => 'disabled',
-                )
-            );
-        }
-
-        $articleID = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('cudi.isic_sale_article');
-        if ($articleID === '0') {
-            return new ViewModel(
-                array(
-                    'status' => 'disabled',
-                )
-            );
-        }
-
-        return $articleID;
-    }
-
-    private function checkAccess()
-    {
-        if (!$this->getAuthentication()->isAuthenticated()) {
-            return new ViewModel(
-                array(
-                    'status' => 'noauth',
-                )
-            );
-        }
-
-        $academic = $this->getAuthentication()->getPersonObject();
-
-        if (!($academic instanceof Academic)) {
-            return new ViewModel(
-                array(
-                    'status' => 'noaccess',
-                )
-            );
-        }
-
-        return $academic;
-    }
-
-    private function hasPersonOrderedAlready($person)
-    {
-        if ($this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\IsicCard')
-                        ->findByPersonAndYearQuery($person, $this->getCurrentAcademicYear())
-                        ->getResult()) {
-            return new ViewModel(
-                array(
-                    'status' => 'doubleorder',
-                )
-            );
-        }
-    }
-
     public function formAction()
     {
-
         $serviceUrl = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('cudi.isic_service_url');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.isic_service_url');
+
         $client = new SoapClient($serviceUrl);
 
         $academic = $this->checkAccess();
@@ -168,10 +96,12 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
         $form = $this->getForm('cudi_isic_order', $academic);
 
         if ($this->getRequest()->isPost()) {
-            $form->setData(array_merge_recursive(
-                $this->getRequest()->getPost()->toArray(),
-                $this->getRequest()->getFiles()->toArray()
-            ));
+            $form->setData(
+                array_merge_recursive(
+                    $this->getRequest()->getPost()->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
 
             if ($form->isValid()) {
                 $arguments = $form->hydrateObject();
@@ -208,7 +138,7 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
 
                 $result = '';
                 $regex = '/^OK(S 032 (\d{3} ){3}[A-Za-z])$/i';
-                if ('development' == getenv('APPLICATION_ENV')) {
+                if (getenv('APPLICATION_ENV') == 'development') {
                     $result = 'OKS 032 123 456 789 A';
                 } else {
                     if ($delayOrder) {
@@ -222,8 +152,8 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
                 $capture = array();
                 if (preg_match($regex, $result, $capture)) {
                     $article = $this->getEntityManager()
-                            ->getRepository('CudiBundle\Entity\Sale\Article')
-                            ->findOneById($articleID);
+                        ->getRepository('CudiBundle\Entity\Sale\Article')
+                        ->findOneById($articleID);
 
                     $booking = new Booking(
                         $this->getEntityManager(),
@@ -292,22 +222,85 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $article = $this->getEntityManager()
-                            ->getRepository('CudiBundle\Entity\Sale\Article')
-                            ->findOneById($articleID);
+            ->getRepository('CudiBundle\Entity\Sale\Article')
+            ->findOneById($articleID);
 
         $additionalConditions = unserialize(
-                        $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('cudi.isic_Guido_conditions')
-                    );
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.isic_Guido_conditions')
+        );
 
         return new ViewModel(
             array(
-                'status' => 'form',
-                'form'   => $form,
-                'price'  => $article->getSellPrice() / 100,
+                'status'               => 'form',
+                'form'                 => $form,
+                'price'                => $article->getSellPrice() / 100,
                 'additionalConditions' => $additionalConditions[$this->getLanguage()->getAbbrev()],
             )
         );
+    }
+
+    private function checkAccess()
+    {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            return new ViewModel(
+                array(
+                    'status' => 'noauth',
+                )
+            );
+        }
+
+        $academic = $this->getAuthentication()->getPersonObject();
+
+        if (!($academic instanceof Academic)) {
+            return new ViewModel(
+                array(
+                    'status' => 'noaccess',
+                )
+            );
+        }
+
+        return $academic;
+    }
+
+    private function hasPersonOrderedAlready($person)
+    {
+        if ($this->getEntityManager()            ->getRepository('CudiBundle\Entity\IsicCard')            ->findByPersonAndYearQuery($person, $this->getCurrentAcademicYear())            ->getResult()
+        ) {
+            return new ViewModel(
+                array(
+                    'status' => 'doubleorder',
+                )
+            );
+        }
+    }
+
+    private function isEnabled()
+    {
+        $bookingsEnabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.enable_bookings');
+
+        if ($bookingsEnabled == 0) {
+            return new ViewModel(
+                array(
+                    'status' => 'disabled',
+                )
+            );
+        }
+
+        $articleID = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.isic_sale_article');
+        if ($articleID === '0') {
+            return new ViewModel(
+                array(
+                    'status' => 'disabled',
+                )
+            );
+        }
+
+        return $articleID;
     }
 }

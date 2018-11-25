@@ -20,9 +20,9 @@
 
 namespace SyllabusBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Subject")
@@ -182,8 +182,8 @@ class Subject
     }
 
     /**
-     * @param  AcademicYear           $academicYear
-     * @return StudentEnrollment|null
+     * @param  AcademicYear $academicYear
+     * @return \SyllabusBundle\Entity\Subject\StudentEnrollment|null
      */
     public function getEnrollment(AcademicYear $academicYear)
     {

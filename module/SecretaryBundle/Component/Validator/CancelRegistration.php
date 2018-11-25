@@ -21,7 +21,9 @@
 namespace SecretaryBundle\Component\Validator;
 
 /**
- * Can the registeration be cancelled
+ * Verifies whether the registration be cancelled
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class CancelRegistration extends \CommonBundle\Component\Validator\AbstractValidator
 {

@@ -20,14 +20,14 @@
 
 namespace TicketBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    DateTime,
-    TicketBundle\Component\Document\Generator\Event\Csv as CsvGenerator,
-    TicketBundle\Component\Document\Generator\Event\Pdf as PdfGenerator,
-    TicketBundle\Entity\Event,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use DateTime;
+use TicketBundle\Component\Document\Generator\Event\Csv as CsvGenerator;
+use TicketBundle\Component\Document\Generator\Event\Pdf as PdfGenerator;
+use TicketBundle\Entity\Event;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * TicketController
@@ -38,11 +38,12 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 {
     public function manageAction()
     {
-        if (!($event = $this->getEventEntity())) {
+        $event = $this->getEventEntity();
+        if ($event === null) {
             return new ViewModel();
         }
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $tickets = $this->search($event);
         }
 
@@ -68,7 +69,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
     public function exportAction()
     {
-        if (!($event = $this->getEventEntity())) {
+        $event = $this->getEventEntity();
+        if ($event === null) {
             return new ViewModel();
         }
 
@@ -80,10 +82,12 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $filename = 'tickets_' . $now->format('Y_m_d') . '.pdf';
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
-            'Content-Type'        => 'text/csv',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -95,7 +99,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
     public function printAction()
     {
-        if (!($event = $this->getEventEntity())) {
+        $event = $this->getEventEntity();
+        if ($event === null) {
             return new ViewModel();
         }
 
@@ -107,10 +112,12 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $filename = 'tickets_' . $now->format('Y_m_d') . '.pdf';
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
-            'Content-Type'        => 'application/pdf',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+                'Content-Type'        => 'application/pdf',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -124,7 +131,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($event = $this->getEventEntity())) {
+        $event = $this->getEventEntity();
+        if ($event === null) {
             return new ViewModel();
         }
 
@@ -158,7 +166,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
     }
 
     /**
-     * @param  Event      $event
+     * @param  Event $event
      * @return array|null
      */
     private function search(Event $event)

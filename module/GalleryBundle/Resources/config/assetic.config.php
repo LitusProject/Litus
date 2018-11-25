@@ -18,6 +18,12 @@
  * @license http://litus.cc/LICENSE
  */
 
+namespace GalleryBundle;
+
+use CommonBundle\Component\Assetic\Filter\Css as CssFilter;
+use CommonBundle\Component\Assetic\Filter\Js as JsFilter;
+use CommonBundle\Component\Assetic\Filter\Less as LessFilter;
+
 return array(
     'controllers' => array(
         'gallery_admin_gallery' => array(
@@ -56,7 +62,11 @@ return array(
                 'common/less/gallery.less',
                 'common/less/imageGallery.min.css',
             ),
-            'filters' => array('less'),
+            'filters' => array(
+                '?LessFilter' => array(
+                    'name' => LessFilter::class,
+                ),
+            ),
             'options' => array(
                 'output' => 'gallery_css.css',
             ),
@@ -65,20 +75,32 @@ return array(
             'assets' => array(
                 'common/js/imageGallery.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
         'plupload_js' => array(
             'assets' => array(
                 'plupload/js/plupload.full.js',
-                'plupload/js/bootstrap/uploadkit.js',
+                'plupload/js/uploadkit/uploadkit.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
         'plupload_css' => array(
             'assets' => array(
-                'plupload/js/bootstrap/uploadkit.css',
+                'plupload/js/uploadkit/uploadkit.css',
             ),
-            'filters' => array('css'),
+            'filters' => array(
+                '?CssFilter' => array(
+                    'name' => CssFilter::class,
+                ),
+            ),
             'options' => array(
                 'output' => 'plupload_css.css',
             ),

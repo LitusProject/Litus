@@ -40,24 +40,11 @@ class ContractEdit extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'    => 'text',
-            'name'    => 'company_reference',
-            'label'   => 'Company Reference',
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                ),
-            ),
-        ));
-
-        foreach ($this->invoice->getEntries() as $entry) {
-            $this->add(array(
-                'type'    => 'textarea',
-                'name'    => 'entry_' . $entry->getId(),
-                'label'   => $entry->getOrderEntry()->getProduct()->getName(),
+        $this->add(
+            array(
+                'type'    => 'text',
+                'name'    => 'company_reference',
+                'label'   => 'Company Reference',
                 'options' => array(
                     'input' => array(
                         'filters' => array(
@@ -65,25 +52,44 @@ class ContractEdit extends \CommonBundle\Component\Form\Admin\Form
                         ),
                     ),
                 ),
-            ));
+            )
+        );
+
+        foreach ($this->invoice->getEntries() as $entry) {
+            $this->add(
+                array(
+                    'type'    => 'textarea',
+                    'name'    => 'entry_' . $entry->getId(),
+                    'label'   => $entry->getOrderEntry()->getProduct()->getName(),
+                    'options' => array(
+                        'input' => array(
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                )
+            );
         }
 
-        $this->add(array(
-            'type'    => 'textarea',
-            'name'    => 'VATContext',
-            'label'   => 'VAT Context',
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'    => 'textarea',
+                'name'    => 'VATContext',
+                'label'   => 'VAT Context',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Save', 'invoice_edit');
 
-        if (null !== $this->invoice) {
+        if ($this->invoice !== null) {
             $this->bind($this->invoice);
         }
     }

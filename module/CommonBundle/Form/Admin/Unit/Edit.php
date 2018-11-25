@@ -20,21 +20,15 @@
 
 namespace CommonBundle\Form\Admin\Unit;
 
-use LogicException;
-
 /**
  * Edit Unit
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Edit extends Add
+class Edit extends \CommonBundle\Form\Admin\Unit\Add
 {
     public function init()
     {
-        if (null === $this->unit) {
-            throw new LogicException('Cannot edit a null unit');
-        }
-
         parent::init();
 
         $this->remove('submit')

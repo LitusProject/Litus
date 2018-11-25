@@ -21,11 +21,11 @@
 namespace CommonBundle\Component\Form\Admin\Element;
 
 /**
- * A date picker element
+ * Time form element
  *
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class Time extends Text
+class Time extends \CommonBundle\Component\Form\Admin\Element\Text
 {
     public function init()
     {

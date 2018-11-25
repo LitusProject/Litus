@@ -20,12 +20,12 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Component\Piwik\Analytics,
-    DateInterval,
-    DateTime,
-    Doctrine\Common\Version as DoctrineVersion,
-    Zend\Version\Version as ZendVersion,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Piwik\Analytics;
+use CommonBundle\Component\Version\Version;
+use DateInterval;
+use DateTime;
+use PackageVersions\Versions;
+use Zend\View\Model\ViewModel;
 
 /**
  * IndexController
@@ -41,7 +41,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->getConfigValue('common.enable_piwik');
 
         $piwik = null;
-        if ('development' != getenv('APPLICATION_ENV') && $enablePiwik) {
+        if (getenv('APPLICATION_ENV') != 'development' && $enablePiwik) {
             $analytics = new Analytics(
                 $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
@@ -91,6 +91,8 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
         $currentSession = $this->getAuthentication()->getSessionObject();
 
+        $versions = $this->getVersions();
+
         return new ViewModel(
             array(
                 'profActions'        => $profActions,
@@ -100,12 +102,23 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'currentSession'     => $currentSession,
                 'piwik'              => $piwik,
                 'registrationsGraph' => $registrationsGraph,
-                'versions'           => array(
-                    'php'      => phpversion(),
-                    'zf'       => ZendVersion::VERSION,
-                    'doctrine' => DoctrineVersion::VERSION,
-                ),
+                'versions'           => $versions,
             )
+        );
+    }
+
+    /**
+     * @return array
+     */
+    private function getVersions()
+    {
+        preg_match('/(\d.\d.\d)/', phpversion(), $phpVersion);
+        preg_match('/(\d.\d.\d)/', Versions::getVersion('zendframework/zend-mvc'), $zfVersion);
+
+        return array(
+            'php'   => $phpVersion[0],
+            'zf'    => $zfVersion[0],
+            'litus' => Version::getShortCommitHash(),
         );
     }
 
@@ -115,7 +128,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function getVisitsGraph(Analytics $analytics)
     {
-        if (null !== $this->getCache()) {
+        if ($this->getCache() !== null) {
             if ($this->getCache()->hasItem('CommonBundle_Controller_IndexController_VisitsGraph')) {
                 $now = new DateTime();
                 if ($this->getCache()->getItem('CommonBundle_Controller_IndexController_VisitsGraph')['expirationTime'] > $now) {
@@ -164,7 +177,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function getRegistrationsGraph()
     {
-        if (null !== $this->getCache()) {
+        if ($this->getCache() !== null) {
             if ($this->getCache()->hasItem('CommonBundle_Controller_IndexController_RegistrationsGraph')) {
                 $now = new DateTime();
                 if ($this->getCache()->getItem('CommonBundle_Controller_IndexController_RegistrationsGraph')['expirationTime'] > $now) {

@@ -20,14 +20,13 @@
 
 namespace BrBundle\Component\Document\Generator\Pdf;
 
-use BrBundle\Entity\Cv\Entry,
-    BrBundle\Entity\Cv\Util,
-    CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\Xml\Generator,
-    CommonBundle\Component\Util\Xml\Node,
-    CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityManager,
-    Zend\Mvc\I18n\Translator;
+use BrBundle\Entity\Cv\Entry;
+use BrBundle\Entity\Cv\Util;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\Xml\Generator;
+use CommonBundle\Component\Util\Xml\Node;
+use Doctrine\ORM\EntityManager;
+use Zend\Mvc\I18n\Translator;
 
 /**
  * Generates the CV Book for one academic year.
@@ -48,12 +47,11 @@ class Cv extends \CommonBundle\Component\Document\Generator\Pdf
 
     /**
      * @param EntityManager $entityManager The EntityManager instance
-     * @param AcademicYear  $year          The academic year for which to generate the book.
      * @param Academic      $academic      The academic for which to generate the book.
      * @param TmpFile       $file          The file to write to
      * @param Translator    $translator    The translator
      */
-    public function __construct(EntityManager $entityManager, AcademicYear $year, Entry $entry, TmpFile $file, Translator $translator)
+    public function __construct(EntityManager $entityManager, Entry $entry, TmpFile $file, Translator $translator)
     {
         $filePath = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')

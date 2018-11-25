@@ -20,9 +20,9 @@
 
 namespace NotificationBundle\Hydrator\Node;
 
-use CommonBundle\Component\Hydrator\Exception\InvalidDateException,
-    NotificationBundle\Entity\Node\Notification as NotificationEntity,
-    NotificationBundle\Entity\Node\Translation as TranslationEntity;
+use CommonBundle\Component\Hydrator\Exception\InvalidDateException;
+use NotificationBundle\Entity\Node\Notification as NotificationEntity;
+use NotificationBundle\Entity\Node\Translation as TranslationEntity;
 
 /**
  * This hydrator hydrates/extracts notification data.
@@ -39,14 +39,14 @@ class Notification extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $object = new NotificationEntity($this->getPersonEntity());
         }
 
         $startDate = self::loadDateTime($data['start_date']);
         $endDate = self::loadDateTime($data['end_date']);
 
-        if (null === $startDate || null === $endDate) {
+        if ($startDate === null || $endDate === null) {
             throw new InvalidDateException();
         }
 
@@ -59,15 +59,15 @@ class Notification extends \CommonBundle\Component\Hydrator\Hydrator
 
             $translationData = $data['tab_content']['tab_' . $language->getAbbrev()];
 
-            if (null !== $translation) {
+            if ($translation !== null) {
                 $translation->setContent($translationData['content']);
             } else {
-                if ('' != $translationData['content']) {
+                if ($translationData['content'] != '') {
                     $translation = new TranslationEntity(
-                            $object,
-                            $language,
-                            str_replace('#', '', $translationData['content'])
-                        );
+                        $object,
+                        $language,
+                        str_replace('#', '', $translationData['content'])
+                    );
                     $object->addTranslation($translation);
                 }
             }
@@ -78,14 +78,14 @@ class Notification extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
         $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
-        if (null !== $object->getEndDate()) {
+        if ($object->getEndDate() !== null) {
             $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
         }
 

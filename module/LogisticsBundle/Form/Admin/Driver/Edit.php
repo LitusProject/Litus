@@ -25,7 +25,7 @@ namespace LogisticsBundle\Form\Admin\Driver;
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Edit extends Add
+class Edit extends \LogisticsBundle\Form\Admin\Driver\Add
 {
     public function init()
     {

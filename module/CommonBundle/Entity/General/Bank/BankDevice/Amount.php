@@ -20,9 +20,9 @@
 
 namespace CommonBundle\Entity\General\Bank\BankDevice;
 
-use CommonBundle\Entity\General\Bank\BankDevice,
-    CommonBundle\Entity\General\Bank\CashRegister,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\Bank\BankDevice;
+use CommonBundle\Entity\General\Bank\CashRegister;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * For a given register, this class has the amount
@@ -58,7 +58,7 @@ class Amount
     private $device;
 
     /**
-     * @var int The amount payed, multiplied by a 100 before it is stored
+     * @var integer The amount payed, multiplied by a 100 before it is stored
      *
      * @ORM\Column(type="integer")
      */
@@ -67,7 +67,7 @@ class Amount
     /**
      * @param \CommonBundle\Entity\General\Bank\CashRegister The cash register this amount is assigned to
      * @param \CommonBundle\Entity\General\Bank\BankDevice The device that received the payments
-     * @param float $amount The amount payed
+     * @param float                                                                                       $amount The amount payed
      */
     public function __construct(CashRegister $cashRegister, BankDevice $bankDevice, $amount)
     {
@@ -82,6 +82,14 @@ class Amount
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\General\Bank\CashRegister
+     */
+    public function getCashRegister()
+    {
+        return $this->cashRegister;
     }
 
     /**
@@ -101,7 +109,7 @@ class Amount
     }
 
     /**
-     * @param  int    $amount The amount payed
+     * @param  integer $amount The amount payed
      * @return Amount
      */
     public function setAmount($amount)

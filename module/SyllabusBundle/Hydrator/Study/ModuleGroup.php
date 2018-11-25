@@ -28,7 +28,7 @@ class ModuleGroup extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $object = new ModuleGroupEntity();
         }
 
@@ -47,13 +47,14 @@ class ModuleGroup extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
         $data = $this->stdExtract($object, self::$stdKeys);
 
-        if ($parent = $object->getParent()) {
+        $parent = $object->getParent();
+        if ($parent !== null) {
             $data['parent'] = array(
                 'id'    => $parent->getId(),
                 'value' => 'Phase ' . $parent->getPhase() . ' - ' . $parent->getTitle(),

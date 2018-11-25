@@ -20,15 +20,15 @@
 
 namespace CudiBundle\Form\Admin\Stock\Order;
 
-use CudiBundle\Entity\Stock\Order\Item,
-    LogicException;
+use CudiBundle\Entity\Stock\Order\Item;
+use LogicException;
 
 /**
  * Edit Order
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends Add
+class Edit extends \CudiBundle\Form\Admin\Stock\Order\Add
 {
     /**
      * @var Item|null
@@ -37,7 +37,7 @@ class Edit extends Add
 
     public function init()
     {
-        if (null === $this->item) {
+        if ($this->item === null) {
             throw new LogicException('Cannot edit a null order item.');
         }
 

@@ -20,9 +20,8 @@
 
 namespace BrBundle\Controller\Career;
 
-use BrBundle\Entity\Company,
-    BrBundle\Entity\Company\Job,
-    Zend\View\Model\ViewModel;
+use BrBundle\Entity\Company\Job;
+use Zend\View\Model\ViewModel;
 
 /**
  * InternshipController
@@ -40,7 +39,6 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
             ->findAllActiveByTypeByDateQuery('internship');
 
         if ($this->getRequest()->isPost()) {
-
             $formData = $this->getRequest()->getPost();
             $internshipSearchForm->setData($formData);
 
@@ -54,11 +52,11 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
                 $location = $formData['location'] == 'all' ? null : $formData['location'];
                 $master = $formData['master'] == 'all' ? null : $formData['master'];
 
-                if ('company' == $formData['searchType']) {
+                if ($formData['searchType'] == 'company') {
                     $query = $repository->findAllActiveByTypeQuery('internship', $sector, $location, $master);
-                } elseif ('vacancy' == $formData['searchType']) {
+                } elseif ($formData['searchType'] == 'vacancy') {
                     $query = $repository->findAllActiveByTypeSortedByJobNameQuery('internship', $sector, $location, $master);
-                } elseif ('mostRecent' == $formData['searchType']) {
+                } elseif ($formData['searchType'] == 'mostRecent') {
                     $query = $repository->findAllActiveByTypeSortedByDateQuery('internship', $sector, $location, $master);
                 }
             }
@@ -85,7 +83,8 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
 
     public function viewAction()
     {
-        if (!($internship = $this->getInternshipEntity())) {
+        $internship = $this->getInternshipEntity();
+        if ($internship === null) {
             return new ViewModel();
         }
 

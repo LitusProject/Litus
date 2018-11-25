@@ -20,12 +20,12 @@
 
 namespace CalendarBundle\Component\Document\Generator;
 
-use CalendarBundle\Entity\Node\Event,
-    CommonBundle\Component\Controller\Plugin\Url,
-    CommonBundle\Component\Util\File\TmpFile as TmpFile,
-    CommonBundle\Entity\General\Language,
-    Doctrine\ORM\EntityManager,
-    Zend\Http\PhpEnvironment\Request;
+use CalendarBundle\Entity\Node\Event;
+use CommonBundle\Component\Controller\Plugin\Url;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Entity\General\Language;
+use Doctrine\ORM\EntityManager;
+use Zend\Http\PhpEnvironment\Request;
 
 /**
  * Ics
@@ -70,7 +70,7 @@ class Ics
     {
         $this->entityManager = $entityManager;
         $this->language = $language;
-        $this->serverName = (('on' === $request->getServer('HTTPS', 'off')) ? 'https://' : 'http://') . ((null !== $request->getServer('X-Forwarded-Host')) ? $request->getServer('X-Forwarded-Host') : $request->getServer('HTTP_HOST'));
+        $this->serverName = ($request->getServer('HTTPS', 'off') === 'on' ? 'https://' : 'http://') . ($request->getServer('X-Forwarded-Host') ?? $request->getServer('HTTP_HOST'));
         $this->url = $url;
 
         $this->suffix = $entityManager
@@ -134,7 +134,7 @@ class Ics
     }
 
     /**
-     * @param  Event  $event
+     * @param  Event $event
      * @return string
      */
     private function getEvent(Event $event)
@@ -142,18 +142,18 @@ class Ics
         $result = 'BEGIN:VEVENT' . PHP_EOL;
         $result .= 'SUMMARY:' . $event->getTitle($this->language) . PHP_EOL;
         $result .= 'DTSTART:' . $event->getStartDate()->format('Ymd\THis') . PHP_EOL;
-        if (null !== $event->getEndDate()) {
+        if ($event->getEndDate() !== null) {
             $result .= 'DTEND:' . $event->getEndDate()->format('Ymd\THis') . PHP_EOL;
         }
         $result .= 'TRANSP:OPAQUE' . PHP_EOL;
         $result .= 'LOCATION:' . $event->getLocation($this->language) . PHP_EOL;
         $result .= 'URL:' . $this->serverName . $this->url->fromRoute(
-                'calendar',
-                array(
-                    'action' => 'view',
-                    'name'   => $event->getName(),
-                )
-            ) . PHP_EOL;
+            'calendar',
+            array(
+                'action' => 'view',
+                'name'   => $event->getName(),
+            )
+        ) . PHP_EOL;
         $result .= 'CLASS:PUBLIC' . PHP_EOL;
         $result .= 'UID:' . $event->getId() . '@' . $this->suffix . PHP_EOL;
         $result .= 'END:VEVENT' . PHP_EOL;

@@ -20,21 +20,15 @@
 
 namespace CudiBundle\Form\Admin\Sale\Session;
 
-use LogicException;
-
 /**
  * Edit Sale Session content
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends Add
+class Edit extends \CudiBundle\Form\Admin\Sale\Session\Add
 {
     public function init()
     {
-        if (null === $this->cashRegister) {
-            throw new LogicException('Cannot edit a sale session with a null cash register');
-        }
-
         parent::init();
 
         $this->remove('submit')

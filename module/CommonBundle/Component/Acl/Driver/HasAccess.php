@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Component\Acl\Driver;
 
-use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Component\Acl\RoleAware;
+use CommonBundle\Component\Acl\Acl;
+use CommonBundle\Component\Acl\RoleAware;
 
 /**
  * A view helper that allows us to easily verify whether or not the authenticated user
@@ -59,22 +59,22 @@ class HasAccess
     }
 
     /**
-     * @param  string       $resource The resource that should be verified
-     * @param  string       $action   The module that should be verified
+     * @param  string $resource The resource that should be verified
+     * @param  string $action   The module that should be verified
      * @return boolean|null
      */
     public function __invoke($resource, $action)
     {
-        if (null === $this->acl) {
+        if ($this->acl === null) {
             throw new Exception\RuntimeException('No ACL object was provided');
         }
 
-        if ($this->authenticated && null === $this->entity) {
+        if ($this->authenticated && $this->entity === null) {
             throw new Exception\RuntimeException('No entity was provided');
         }
 
         // Making it easier to develop new actions and controllers, without all the ACL hassle
-        if ('development' == getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') == 'development') {
             return true;
         }
 
@@ -82,12 +82,13 @@ class HasAccess
             return false;
         }
 
-        if ($this->authenticated && null !== $this->entity) {
+        if ($this->authenticated && $this->entity !== null) {
             foreach ($this->entity->getRoles() as $role) {
-                if (
-                    $role->isAllowed(
-                        $this->acl, $resource, $action
-                    )
+                if ($role->isAllowed(
+                    $this->acl,
+                    $resource,
+                    $action
+                )
                 ) {
                     return true;
                 }
@@ -96,7 +97,9 @@ class HasAccess
             return false;
         } else {
             return $this->acl->isAllowed(
-                'guest', $resource, $action
+                'guest',
+                $resource,
+                $action
             );
         }
     }

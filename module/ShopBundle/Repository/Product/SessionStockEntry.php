@@ -20,16 +20,14 @@
 
 namespace ShopBundle\Repository\Product;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository;
-
 /**
  * Product
  * @author Floris Kint <floris.kint@litus.cc>
  */
-class SessionStockEntry extends EntityRepository
+class SessionStockEntry extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
     /**
-     * @param $product
+     * @param  \ShopBundle\Entity\Product $product
      * @return integer
      */
     public function getProductAvailability($product, $salesSession)
@@ -52,8 +50,8 @@ class SessionStockEntry extends EntityRepository
     }
 
     /**
-     * @param $product
-     * @param $salesSession
+     * @param  \ShopBundle\Entity\Product      $product
+     * @param  \ShopBundle\Entity\SalesSession $salesSession
      * @return integer
      */
     public function getProductReservationsAmount($product, $salesSession)
@@ -76,7 +74,7 @@ class SessionStockEntry extends EntityRepository
     }
 
     /**
-     * @param SalesSession $salesSession
+     * @param \ShopBundle\Entity\SalesSession $salesSession
      */
     public function deleteStockEntries($salesSession)
     {
@@ -89,9 +87,9 @@ class SessionStockEntry extends EntityRepository
     }
 
     /**
-     * @param  Product      $product
-     * @param  SalesSession $salesSession
-     * @return int
+     * @param  \ShopBundle\Entity\Product      $product
+     * @param  \ShopBundle\Entity\SalesSession $salesSession
+     * @return integer
      */
     public function getRealAvailability($product, $salesSession)
     {

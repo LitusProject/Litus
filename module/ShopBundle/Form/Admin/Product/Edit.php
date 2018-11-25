@@ -20,15 +20,14 @@
 
 namespace ShopBundle\Form\Admin\Product;
 
-use LogicException,
-    ShopBundle\Entity\Product;
+use ShopBundle\Entity\Product;
 
 /**
  * Edit Product
  *
  * @author Floris Kint <floris.kint@litus.cc>
  */
-class Edit extends Add
+class Edit extends \ShopBundle\Form\Admin\Product\Add
 {
     /**
      * @var Product The product to edit.
@@ -37,10 +36,6 @@ class Edit extends Add
 
     public function init()
     {
-        if (null === $this->product) {
-            throw new LogicException('Cannot edit a null shift');
-        }
-
         parent::init();
 
         $this->remove('submit')

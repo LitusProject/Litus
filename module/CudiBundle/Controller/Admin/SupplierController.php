@@ -20,8 +20,8 @@
 
 namespace CudiBundle\Controller\Admin;
 
-use CudiBundle\Entity\Supplier,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Supplier;
+use Zend\View\Model\ViewModel;
 
 /**
  * SupplierController
@@ -85,7 +85,8 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
 
     public function editAction()
     {
-        if (!($supplier = $this->getSupplierEntity())) {
+        $supplier = $this->getSupplierEntity();
+        if ($supplier === null) {
             return new ViewModel();
         }
 

@@ -20,10 +20,10 @@
 
 namespace CalendarBundle\Entity\Node;
 
-use CommonBundle\Component\Util\StringUtil,
-    CommonBundle\Entity\General\Language,
-    Doctrine\ORM\Mapping as ORM,
-    Markdown_Parser;
+use CommonBundle\Component\Util\StringUtil;
+use CommonBundle\Entity\General\Language;
+use Doctrine\ORM\Mapping as ORM;
+use Parsedown;
 
 /**
  * This entity stores the node item.
@@ -34,7 +34,7 @@ use CommonBundle\Component\Util\StringUtil,
 class Translation
 {
     /**
-     * @var int The ID of this tanslation
+     * @var integer The ID of this tanslation
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -96,7 +96,7 @@ class Translation
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -184,8 +184,8 @@ class Translation
      */
     public function getSummary($length = 100)
     {
-        $parser = new Markdown_Parser();
-        $summary = $parser->transform($this->content);
+        $parsedown = new Parsedown();
+        $summary = $parsedown->text($this->content);
 
         return StringUtil::truncateNoHtml($summary, $length, '...');
     }

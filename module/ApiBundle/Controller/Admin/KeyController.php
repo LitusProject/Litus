@@ -20,8 +20,8 @@
 
 namespace ApiBundle\Controller\Admin;
 
-use ApiBundle\Entity\Key,
-    Zend\View\Model\ViewModel;
+use ApiBundle\Entity\Key;
+use Zend\View\Model\ViewModel;
 
 /**
  * KeyController
@@ -86,7 +86,8 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
 
     public function editAction()
     {
-        if (!($key = $this->getKeyEntity())) {
+        $key = $this->getKeyEntity();
+        if ($key === null) {
             return new ViewModel();
         }
 
@@ -125,7 +126,8 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
     {
         $this->initAjax();
 
-        if (!($key = $this->getKeyEntity())) {
+        $key = $this->getKeyEntity();
+        if ($key === null) {
             return new ViewModel();
         }
 

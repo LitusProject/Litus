@@ -20,12 +20,11 @@
 
 namespace CudiBundle\Controller\Prof;
 
-use CudiBundle\Entity\Article,
-    DateInterval,
-    SyllabusBundle\Entity\Subject,
-    SyllabusBundle\Entity\Subject\ProfMap,
-    SyllabusBundle\Entity\Subject\StudentEnrollment,
-    Zend\View\Model\ViewModel;
+use DateInterval;
+use SyllabusBundle\Entity\Subject;
+use SyllabusBundle\Entity\Subject\ProfMap;
+use SyllabusBundle\Entity\Subject\StudentEnrollment;
+use Zend\View\Model\ViewModel;
 
 /**
  * SubjectController
@@ -36,7 +35,8 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->getCurrentAcademicYear())) {
+        $academicYear = $this->getCurrentAcademicYear();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -60,7 +60,8 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
 
     public function subjectAction()
     {
-        if (!($subject = $this->getSubjectEntity())) {
+        $subject = $this->getSubjectEntity();
+        if ($subject === null) {
             return new ViewModel();
         }
 
@@ -101,9 +102,12 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
             ->findAllBySubjectAndAcademicYear($subject, $academicYear);
 
         $enrollment = $subject->getEnrollment($academicYear);
-        $enrollmentForm = $this->getForm('cudi_prof_subject_enrollment', array(
-            'enrollment' => $enrollment,
-        ));
+        $enrollmentForm = $this->getForm(
+            'cudi_prof_subject_enrollment',
+            array(
+                'enrollment' => $enrollment,
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $enrollmentForm->setData($this->getRequest()->getPost());
@@ -152,13 +156,14 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
 
     public function typeaheadAction()
     {
-        if (!($academicYear = $this->getCurrentAcademicYear())) {
+        $academicYear = $this->getCurrentAcademicYear();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
         $subjects = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
-            ->findAllByNameAndProfAndAcademicYearTypeAhead($this->getParam('string'), $this->getAuthentication()->getPersonObject(), $academicYear);
+            ->findAllByNameAndProfAndAcademicYearTypeahead($this->getParam('string'), $this->getAuthentication()->getPersonObject(), $academicYear);
 
         $result = array();
         foreach ($subjects as $subject) {
@@ -191,7 +196,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
                 ->getRepository('CudiBundle\Entity\Prof\Action')
                 ->findAllByEntityAndEntityIdAndAction('article', $mapping->getArticle()->getId(), 'delete', false);
 
-            if ((!isset($actions[0]) || $actions[0]->isRefused()) && sizeof($removed) == 0) {
+            if ((!isset($actions[0]) || $actions[0]->isRefused()) && count($removed) == 0) {
                 if (isset($edited[0]) && !$edited[0]->isRefused()) {
                     $edited[0]->setEntityManager($this->getEntityManager());
                     $article = $edited[0]->getEntity();
@@ -215,7 +220,8 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
      */
     private function getSubjectEntity()
     {
-        if (!($academicYear = $this->getCurrentAcademicYear())) {
+        $academicYear = $this->getCurrentAcademicYear();
+        if ($academicYear === null) {
             return;
         }
 

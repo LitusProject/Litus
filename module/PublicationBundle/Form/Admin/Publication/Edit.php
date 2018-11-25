@@ -20,25 +20,19 @@
 
 namespace PublicationBundle\Form\Admin\Publication;
 
-use LogicException;
-
 /**
  * This form allows the user to edit the Publication.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Edit extends Add
+class Edit extends \PublicationBundle\Form\Admin\Publication\Add
 {
     public function init()
     {
-        if (null === $this->publication) {
-            throw new LogicException('Cannot edit a null publication.');
-        }
-
         parent::init();
 
-        $this->remove('submit');
-        $this->addSubmit('Save', 'publication_edit');
+        $this->remove('submit')
+            ->addSubmit('Save', 'publication_edit');
 
         $this->bind($this->publication);
     }

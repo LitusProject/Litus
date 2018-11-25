@@ -20,8 +20,8 @@
 
 namespace MailBundle\Form\Admin\MailingList;
 
-use MailBundle\Entity\MailingList,
-    RuntimeException;
+use MailBundle\Entity\MailingList;
+use RuntimeException;
 
 /**
  * Add Admin Role
@@ -42,40 +42,46 @@ class AdminRole extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'select',
-            'name'     => 'role',
-            'label'    => 'Role',
-            'required' => true,
-            'options'  => array(
-                'options' => $this->createRolesArray(),
-                'input'   => array(
-                    'validators' => array(
-                        array(
-                            'name'    => 'mail_admin_role',
-                            'options' => array(
-                                'list' => $this->getList(),
+        $this->add(
+            array(
+                'type'     => 'select',
+                'name'     => 'role',
+                'label'    => 'Role',
+                'required' => true,
+                'options'  => array(
+                    'options' => $this->createRolesArray(),
+                    'input'   => array(
+                        'validators' => array(
+                            array(
+                                'name'    => 'AdminRole',
+                                'options' => array(
+                                    'list' => $this->getList(),
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'edit_admin',
-            'label' => 'Can Edit Admins',
-        ));
+        $this->add(
+            array(
+                'type'  => 'checkbox',
+                'name'  => 'edit_admin',
+                'label' => 'Can Edit Admins',
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'submit',
-            'name'       => 'admin_role',
-            'value'      => 'Add',
-            'attributes' => array(
-                'class' => 'mail_add',
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'submit',
+                'name'       => 'admin_role',
+                'value'      => 'Add',
+                'attributes' => array(
+                    'class' => 'mail_add',
+                ),
+            )
+        );
     }
 
     private function createRolesArray()
@@ -91,7 +97,7 @@ class AdminRole extends \CommonBundle\Component\Form\Admin\Form
             }
         }
 
-        if (empty($rolesArray)) {
+        if (count($rolesArray) == 0) {
             throw new RuntimeException('There needs to be at least one role before you can map a role');
         }
 

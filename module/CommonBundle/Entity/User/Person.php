@@ -20,18 +20,18 @@
 
 namespace CommonBundle\Entity\User;
 
-use CommonBundle\Component\Acl\RoleAware,
-    CommonBundle\Entity\Acl\Role,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    CommonBundle\Entity\General\Address,
-    CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException,
-    Zend\Mail\Message,
-    Zend\Mail\Transport\TransportInterface;
+use CommonBundle\Component\Acl\RoleAware;
+use CommonBundle\Entity\Acl\Role;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+use CommonBundle\Entity\General\Address;
+use CommonBundle\Entity\General\Language;
+use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
+use Zend\Mail\Message;
+use Zend\Mail\Transport\TransportInterface;
 
 /**
  * This is the entity for a person.
@@ -189,7 +189,7 @@ abstract class Person implements RoleAware
     }
 
     /**
-     * @param  string                   $username
+     * @param  string $username
      * @return self
      * @throws InvalidArgumentException
      */
@@ -213,7 +213,7 @@ abstract class Person implements RoleAware
     }
 
     /**
-     * @param  Credential               $credential
+     * @param  Credential $credential
      * @return self
      * @throws InvalidArgumentException
      */
@@ -225,11 +225,11 @@ abstract class Person implements RoleAware
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function hasCredential()
     {
-        return null !== $this->credential;
+        return $this->credential !== null;
     }
 
     /**
@@ -244,11 +244,11 @@ abstract class Person implements RoleAware
      * Checks whether or not the given credential is valid.
      *
      * @param  string $credential The credential that should be checked
-     * @return bool
+     * @return boolean
      */
     public function validateCredential($credential)
     {
-        if (null == $this->credential) {
+        if ($this->credential == null) {
             return false;
         }
 
@@ -291,9 +291,12 @@ abstract class Person implements RoleAware
 
     public function getSystemRoles()
     {
-        return array_filter($this->getFlattenedRoles(), function (Role $role) {
-            return $role->getSystem();
-        });
+        return array_filter(
+            $this->getFlattenedRoles(),
+            function (Role $role) {
+                return $role->getSystem();
+            }
+        );
     }
 
     /**
@@ -310,7 +313,7 @@ abstract class Person implements RoleAware
     }
 
     /**
-     * @param  string                   $firstName
+     * @param  string $firstName
      * @return self
      * @throws InvalidArgumentException
      */
@@ -330,7 +333,7 @@ abstract class Person implements RoleAware
     }
 
     /**
-     * @param  string                   $lastName
+     * @param  string $lastName
      * @return self
      * @throws InvalidArgumentException
      */
@@ -396,7 +399,7 @@ abstract class Person implements RoleAware
     }
 
     /**
-     * @param  null|string              $phoneNumber
+     * @param  string|null $phoneNumber
      * @return self
      * @throws InvalidArgumentException
      */
@@ -417,7 +420,7 @@ abstract class Person implements RoleAware
     }
 
     /**
-     * @param  null|string              $sex The person's sex
+     * @param  string|null $sex The person's sex
      * @return self
      * @throws InvalidArgumentException
      */
@@ -441,7 +444,7 @@ abstract class Person implements RoleAware
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function canLogin()
     {
@@ -463,7 +466,7 @@ abstract class Person implements RoleAware
      */
     public function getBarcode()
     {
-        return isset($this->barcodes[0]) ? $this->barcodes[0] : null;
+        return $this->barcodes[0] ?? null;
     }
 
     /**
@@ -598,7 +601,8 @@ abstract class Person implements RoleAware
                         return true;
                     }
                 }
-            )) {
+            )
+            ) {
                 return false;
             }
         }
@@ -614,7 +618,7 @@ abstract class Person implements RoleAware
      */
     public function isMember(AcademicYearEntity $academicYear)
     {
-        if (null !== $this->getOrganizationStatus($academicYear)) {
+        if ($this->getOrganizationStatus($academicYear) !== null) {
             return !($this->getOrganizationStatus($academicYear)->getStatus() == 'non_member');
         }
 
@@ -629,7 +633,7 @@ abstract class Person implements RoleAware
      */
     public function isPraesidium(AcademicYearEntity $academicYear)
     {
-        if (null !== $this->getOrganizationStatus($academicYear)) {
+        if ($this->getOrganizationStatus($academicYear) !== null) {
             if ($this->getOrganizationStatus($academicYear)->getStatus() == 'praesidium') {
                 return true;
             }
@@ -663,7 +667,8 @@ abstract class Person implements RoleAware
             $entityManager->persist($code);
             $this->setCode($code);
 
-            if (!($language = $this->getLanguage())) {
+            $language = $this->getLanguage();
+            if ($language === null) {
                 $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
                     ->findOneByAbbrev('en');
             }
@@ -692,7 +697,7 @@ abstract class Person implements RoleAware
                 ->addTo($this->getEmail(), $this->getFullName())
                 ->setSubject($subject);
 
-            if ('development' != getenv('APPLICATION_ENV')) {
+            if (getenv('APPLICATION_ENV') != 'development') {
                 $mailTransport->send($mail);
             }
         }

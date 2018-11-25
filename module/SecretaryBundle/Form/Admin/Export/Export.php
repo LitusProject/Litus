@@ -31,25 +31,29 @@ class Export extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'select',
-            'name'     => 'organization',
-            'label'    => 'Organization',
-            'required' => true,
-            'options'  => array(
-                'options' => $this->getOrganizations(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'     => 'select',
+                'name'     => 'organization',
+                'label'    => 'Organization',
+                'required' => true,
+                'options'  => array(
+                    'options' => $this->getOrganizations(),
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'select',
-            'name'     => 'academic_year',
-            'label'    => 'Academic Year',
-            'required' => true,
-            'options'  => array(
-                'options' => $this->getAcademicYears(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'     => 'select',
+                'name'     => 'academic_year',
+                'label'    => 'Academic Year',
+                'required' => true,
+                'options'  => array(
+                    'options' => $this->getAcademicYears(),
+                ),
+            )
+        );
 
         $this->addSubmit('Download', 'download');
     }

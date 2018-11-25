@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Command;
 
-use CudiBundle\Component\Mail\Booking,
-    DateInterval,
-    DateTime;
+use CudiBundle\Component\Mail\Booking;
+use DateInterval;
+use DateTime;
 
 /**
  * Sends expiry warnings to users
@@ -31,18 +31,12 @@ class ExpireWarning extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
-        $this
-            ->setName('cudi:expire-warning')
-            ->setAliases(array('cudi:warn-expire'))
-            ->setDescription('Warn users when reservations are about to expire.')
-            ->addOption('mail', 'm', null, 'Send the users a warning e-mail.')
-            ->setHelp(<<<EOT
-The <info>%command.name%</info> command warns users when their reservations are about to expire.
-EOT
-        );
+        $this->setName('cudi:expire-warning')
+            ->setDescription('Warn users when reservations are about to expire')
+            ->addOption('mail', 'm', null, 'Send the users a warning mail');
     }
 
-    protected function executeCommand()
+    protected function invoke()
     {
         $interval = new DateInterval(
             $this->getEntityManager()
@@ -56,8 +50,7 @@ EOT
         $end = clone $start;
         $end->add(new DateInterval('P1D'));
 
-        $this->writeln('Looking for bookings expiring between <comment>'
-            . $start->format('d M Y') . '</comment> and <comment>' . $end->format('d M Y') . '</comment>...');
+        $this->writeln('Searching for bookings expiring between <comment>' . $start->format('d M Y') . '</comment> and <comment>' . $end->format('d M Y') . '</comment>...');
 
         $bookings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')
@@ -72,28 +65,29 @@ EOT
             $persons[$booking->getPerson()->getId()]['bookings'][] = $booking;
         }
 
-        $this->writeln('Found <comment>' . count($bookings) . '</comment> bookings belonging to <comment>'
-            . count($persons) . '</comment> people.');
+        $this->writeln('Found <comment>' . count($bookings) . '</comment> bookings belonging to <comment>' . count($persons) . '</comment> people.');
 
-        if ($this->getOption('mail')) {
-            $this->write('Sending mails...');
-            $count = 0;
-
-            foreach ($persons as $person) {
-                $count++;
-                if ($count % 3 === 0) {
-                    $this->write("\r" . 'Sending mail no. <comment>' . $count . '</comment>');
-                }
-
-                Booking::sendExpireWarningMail($this->getEntityManager(), $this->getMailTransport(), $person['bookings'], $person['person']);
-            }
-
-            $this->writeln("\r" . 'Done.                                        ');
+        $sendMails = $this->getOption('mail');
+        if ($sendMails && getenv('APPLICATION_ENV') == 'development') {
+            $sendMails = false;
+            $this->writeln('<error>The mails will not be sent because the application is running in development mode!</error>');
         }
-    }
 
-    protected function getLogName()
-    {
-        return 'ExpireWarning';
+        if ($sendMails) {
+            foreach ($persons as $person) {
+                Booking::sendExpireWarningMail(
+                    $this->getEntityManager(),
+                    $this->getMailTransport(),
+                    $person['bookings'],
+                    $person['person']
+                );
+            }
+        }
+
+        if ($sendMails) {
+            $this->writeln('<comment>' . count($persons) . '</comment> mails have been sent');
+        } else {
+            $this->writeln('<comment>' . count($persons) . '</comment> mails would have been sent');
+        }
     }
 }

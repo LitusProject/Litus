@@ -20,8 +20,8 @@
 
 namespace CudiBundle\Form\Admin\Sale\Session;
 
-use CudiBundle\Entity\Sale\Session,
-    LogicException;
+use CudiBundle\Entity\Sale\Session;
+use LogicException;
 
 /**
  * Add Sale Session Comment
@@ -37,25 +37,27 @@ class Comment extends \CommonBundle\Component\Form\Admin\Form
 
     public function init()
     {
-        if (null === $this->session) {
+        if ($this->session === null) {
             throw new LogicException('Cannot edit the comment of a null sale session');
         }
 
         parent::init();
 
-        $this->add(array(
-            'type'    => 'textarea',
-            'name'    => 'comment',
-            'label'   => 'Comment',
-            'value'   => $this->session->getComment(),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'    => 'textarea',
+                'name'    => 'comment',
+                'label'   => 'Comment',
+                'value'   => $this->session->getComment(),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Edit Comment', 'sale_edit');
     }

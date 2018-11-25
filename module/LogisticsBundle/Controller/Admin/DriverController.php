@@ -20,8 +20,8 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
-use LogisticsBundle\Entity\Driver,
-    Zend\View\Model\ViewModel;
+use LogisticsBundle\Entity\Driver;
+use Zend\View\Model\ViewModel;
 
 /**
  * DriverController
@@ -34,8 +34,8 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
     {
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Driver')
-            ->findAllQuery(),
+                ->getRepository('LogisticsBundle\Entity\Driver')
+                ->findAllQuery(),
             $this->getParam('page')
         );
 
@@ -85,7 +85,8 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
 
     public function editAction()
     {
-        if (!($driver = $this->getDriverEntity())) {
+        $driver = $this->getDriverEntity();
+        if ($driver === null) {
             return new ViewModel();
         }
 
@@ -125,11 +126,12 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($driver = $this->getDriverEntity())) {
+        $driver = $this->getDriverEntity();
+        if ($driver === null) {
             return new ViewModel();
         }
 
-        $driver->setRemoved(true);
+        $driver->remove();
         $this->getEntityManager()->flush();
 
         return new ViewModel(

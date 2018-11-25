@@ -20,8 +20,8 @@
 
 namespace CudiBundle\Component\Validator\Sale;
 
-use CommonBundle\Component\Form\Form,
-    CommonBundle\Component\Validator\FormAwareInterface;
+use CommonBundle\Component\Form\Form;
+use CommonBundle\Component\Validator\FormAwareInterface;
 
 /**
  * Check if user has bought an aritcle
@@ -58,9 +58,7 @@ class HasBought extends \CommonBundle\Component\Validator\AbstractValidator impl
     {
         $this->setValue($value);
 
-        /** @var \CommonBundle\Component\Form\Bootstrap\Element\TypeAhead $personField */
         $personField = $this->form->get('person');
-
         if ($personField->get('id')->getValue() == '' || $context['id'] == null) {
             $this->error(self::NOT_VALID);
 
@@ -79,7 +77,7 @@ class HasBought extends \CommonBundle\Component\Validator\AbstractValidator impl
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findOneSoldByArticleAndPerson($article, $person, false);
 
-        if (null !== $booking) {
+        if ($booking !== null) {
             return true;
         }
 

@@ -20,8 +20,8 @@
 
 namespace GalleryBundle\Hydrator\Album;
 
-use GalleryBundle\Entity\Album\Album as AlbumEntity,
-    GalleryBundle\Entity\Album\Translation;
+use GalleryBundle\Entity\Album\Album as AlbumEntity;
+use GalleryBundle\Entity\Album\Translation;
 
 class Album extends \CommonBundle\Component\Hydrator\Hydrator
 {
@@ -29,7 +29,7 @@ class Album extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
@@ -49,7 +49,7 @@ class Album extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $object = new AlbumEntity($this->getPersonEntity());
         }
 
@@ -67,13 +67,13 @@ class Album extends \CommonBundle\Component\Hydrator\Hydrator
             $existing = $object->getTranslation($language, false);
 
             $title = $data['tab_content']['tab_' . $abbrev]['title'];
-            if ('' != $title) {
-                if (null !== $existing) {
+            if ($title != '') {
+                if ($existing !== null) {
                     $existing->setTitle($title);
                 } else {
                     $object->addTranslation(new Translation($object, $language, $title));
                 }
-            } elseif (null !== $existing) {
+            } elseif ($existing !== null) {
                 $object->removeTranslation($existing);
             }
         }

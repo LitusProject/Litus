@@ -30,10 +30,16 @@ return Config::create(
     ),
     array(
         'validators' => array(
-            'invokables' => array(
-                'publication_title_edition_html' => 'PublicationBundle\Component\Validator\Title\Edition\Html',
-                'publication_title_edition_pdf'  => 'PublicationBundle\Component\Validator\Title\Edition\Pdf',
-                'publication_title'              => 'PublicationBundle\Component\Validator\Title\Publication',
+            'aliases' => array(
+                'titleeditionhtml' => Component\Validator\Title\Edition\Html::class,
+                'titleEditionHtml' => Component\Validator\Title\Edition\Html::class,
+                'TitleEditionHtml' => Component\Validator\Title\Edition\Html::class,
+                'titleeditionpdf'  => Component\Validator\Title\Edition\Pdf::class,
+                'titleEditionPdf'  => Component\Validator\Title\Edition\Pdf::class,
+                'TitleEditionPdf'  => Component\Validator\Title\Edition\Pdf::class,
+                'titlepublication' => Component\Validator\Title\Publication::class,
+                'titlePublication' => Component\Validator\Title\Publication::class,
+                'TitlePublication' => Component\Validator\Title\Publication::class,
             ),
         ),
     )

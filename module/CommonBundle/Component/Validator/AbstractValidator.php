@@ -20,20 +20,20 @@
 
 namespace CommonBundle\Component\Validator;
 
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
-    Zend\Form\ElementInterface,
-    Zend\ServiceManager\ServiceLocatorAwareTrait as ZendServiceLocatorAwareTrait,
-    Zend\Validator\ValidatorPluginManager;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use CommonBundle\Component\Util\AcademicYear;
+use Zend\Form\ElementInterface;
 
 /**
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
 abstract class AbstractValidator extends \Zend\Validator\AbstractValidator implements ServiceLocatorAwareInterface
 {
-    use ServiceLocatorAwareTrait, ZendServiceLocatorAwareTrait {
-        ZendServiceLocatorAwareTrait::getServiceLocator as traitGetServiceLocator;
-    }
+    use ServiceLocatorAwareTrait;
+
+    use DoctrineTrait;
 
     /**
      * @param  array|ElementInterface|null $context
@@ -42,14 +42,12 @@ abstract class AbstractValidator extends \Zend\Validator\AbstractValidator imple
      */
     protected static function getFormValue($context = null, $path = '')
     {
-        if (null === $context || !(is_array($context) || $context instanceof ElementInterface)) {
+        if ($context === null || !(is_array($context) || $context instanceof ElementInterface)) {
             return null;
         }
         if (is_array($path)) {
-            if (empty($path)) {
-                return $context instanceof ElementInterface
-                    ? $context->getValue()
-                    : $context;
+            if (count($path) == 0) {
+                return $context instanceof ElementInterface ? $context->getValue() : $context;
             }
 
             $step = array_shift($path);
@@ -58,9 +56,7 @@ abstract class AbstractValidator extends \Zend\Validator\AbstractValidator imple
         } else {
             $context = self::takeStep($context, $path);
 
-            return $context instanceof ElementInterface
-                ? $context->getValue()
-                : $context;
+            return $context instanceof ElementInterface ? $context->getValue() : $context;
         }
     }
 
@@ -87,16 +83,17 @@ abstract class AbstractValidator extends \Zend\Validator\AbstractValidator imple
     }
 
     /**
-     * Get service locator
+     * Get the current academic year.
      *
-     * @return \Zend\ServiceManager\ServiceLocatorInterface
+     * @param  boolean $organization
+     * @return \CommonBundle\Entity\General\AcademicYear
      */
-    public function getServiceLocator()
+    protected function getCurrentAcademicYear($organization = false)
     {
-        if ($this->serviceLocator instanceof ValidatorPluginManager) {
-            return $this->serviceLocator->getServiceLocator();
+        if ($organization) {
+            return AcademicYear::getOrganizationYear($this->getEntityManager());
         }
 
-        return $this->serviceLocator;
+        return AcademicYear::getUniversityYear($this->getEntityManager());
     }
 }

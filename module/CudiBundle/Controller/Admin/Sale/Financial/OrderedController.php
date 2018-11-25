@@ -20,10 +20,10 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Financial;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CudiBundle\Entity\Stock\Order\Order,
-    CudiBundle\Entity\Supplier,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\General\AcademicYear;
+use CudiBundle\Entity\Stock\Order\Order;
+use CudiBundle\Entity\Supplier;
+use Zend\View\Model\ViewModel;
 
 /**
  * OrderedController
@@ -36,7 +36,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $academicYear = $this->getAcademicYearEntity();
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $records = $this->individualSearch($academicYear);
         }
 
@@ -100,7 +100,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param  AcademicYear             $academicYear
+     * @param  AcademicYear $academicYear
      * @return \Doctrine\ORM\Query|null
      */
     private function individualSearch(AcademicYear $academicYear)
@@ -120,7 +120,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
     public function ordersAction()
     {
         $academicYear = $this->getAcademicYearEntity();
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $records = $this->ordersSearch($academicYear);
         }
 
@@ -183,7 +183,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param  AcademicYear             $academicYear
+     * @param  AcademicYear $academicYear
      * @return \Doctrine\ORM\Query|null
      */
     private function ordersSearch(AcademicYear $academicYear)
@@ -198,12 +198,13 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function orderAction()
     {
-        if (!($order = $this->getOrderEntity())) {
+        $order = $this->getOrderEntity();
+        if ($order === null) {
             return new ViewModel();
         }
 
         $academicYear = $this->getAcademicYearEntity();
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $records = $this->orderSearch($order, $academicYear);
         }
 
@@ -237,7 +238,8 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($order = $this->getOrderEntity())) {
+        $order = $this->getOrderEntity();
+        if ($order === null) {
             return new ViewModel();
         }
 
@@ -270,8 +272,8 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param  Order                    $order
-     * @param  AcademicYear             $academicYear
+     * @param  Order        $order
+     * @param  AcademicYear $academicYear
      * @return \Doctrine\ORM\Query|null
      */
     private function orderSearch(Order $order, AcademicYear $academicYear)
@@ -315,7 +317,8 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function supplierAction()
     {
-        if (!($supplier = $this->getSupplierEntity())) {
+        $supplier = $this->getSupplierEntity();
+        if ($supplier === null) {
             return new ViewModel();
         }
 
@@ -325,7 +328,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $records = $this->supplierSearch($supplier, $this->getAcademicYearEntity());
         }
 
@@ -355,7 +358,8 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($supplier = $this->getSupplierEntity())) {
+        $supplier = $this->getSupplierEntity();
+        if ($supplier === null) {
             return new ViewModel();
         }
 
@@ -389,8 +393,8 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param  Supplier                 $supplier
-     * @param  AcademicYear             $academicYear
+     * @param  Supplier     $supplier
+     * @param  AcademicYear $academicYear
      * @return \Doctrine\ORM\Query|null
      */
     private function supplierSearch(Supplier $supplier, AcademicYear $academicYear)

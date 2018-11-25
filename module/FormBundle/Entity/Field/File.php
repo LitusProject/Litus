@@ -20,9 +20,8 @@
 
 namespace FormBundle\Entity\Field;
 
-use CommonBundle\Entity\General\Language,
-    Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Field;
+use CommonBundle\Entity\General\Language;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores the node item.
@@ -30,10 +29,10 @@ use CommonBundle\Entity\General\Language,
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Field\File")
  * @ORM\Table(name="forms.fields_files")
  */
-class File extends Field
+class File extends \FormBundle\Entity\Field
 {
     /**
-     * @var int The maximum size of the file.
+     * @var integer The maximum size of the file.
      *
      * @ORM\Column(name="max_size", type="integer")
      */

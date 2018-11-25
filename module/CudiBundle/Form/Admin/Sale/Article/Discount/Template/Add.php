@@ -36,102 +36,116 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'name',
-            'label'      => 'Name',
-            'required'   => true,
-            'attributes' => array(
-                'id' => 'name',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'name',
+                'label'      => 'Name',
+                'required'   => true,
+                'attributes' => array(
+                    'id' => 'name',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'value',
-            'label'      => 'Value',
-            'required'   => true,
-            'attributes' => array(
-                'id' => 'value',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'price'),
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'value',
+                'label'      => 'Value',
+                'required'   => true,
+                'attributes' => array(
+                    'id' => 'value',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Price'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'method',
-            'label'      => 'Method',
-            'required'   => true,
-            'attributes' => array(
-                'data-help' => 'The method of this discount:
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'method',
+                'label'      => 'Method',
+                'required'   => true,
+                'attributes' => array(
+                    'data-help' => 'The method of this discount:
                     <ul>
                         <li><b>Percentage:</b> the value will used as the percentage to substract from the real price</li>
                         <li><b>Fixed:</b> the value will be subtracted from the real price</li>
                         <li><b>Override:</b> the value will be used as the new price</li>
                     </ul>',
-                'id'      => 'method',
-                'options' => Discount::$possibleMethods,
-            ),
-        ));
+                    'id'      => 'method',
+                    'options' => Discount::$possibleMethods,
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'type',
-            'label'      => 'Type',
-            'required'   => true,
-            'attributes' => array(
-                'id'      => 'type',
-                'options' => Discount::$possibleTypes,
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'type',
+                'label'      => 'Type',
+                'required'   => true,
+                'attributes' => array(
+                    'id'      => 'type',
+                    'options' => Discount::$possibleTypes,
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'organization',
-            'label'      => 'Organization',
-            'required'   => true,
-            'attributes' => array(
-                'id'      => 'organization',
-                'options' => $this->getOrganizations(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'organization',
+                'label'      => 'Organization',
+                'required'   => true,
+                'attributes' => array(
+                    'id'      => 'organization',
+                    'options' => $this->getOrganizations(),
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'rounding',
-            'label'      => 'Rounding',
-            'required'   => true,
-            'attributes' => array(
-                'id'      => 'rounding',
-                'options' => $this->getRoundings(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'rounding',
+                'label'      => 'Rounding',
+                'required'   => true,
+                'attributes' => array(
+                    'id'      => 'rounding',
+                    'options' => $this->getRoundings(),
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'apply_once',
-            'label'      => 'Apply Once',
-            'attributes' => array(
-                'data-help' => 'Enabling this option will allow apply this discount only once to every user.',
-                'id'        => 'apply_once',
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'checkbox',
+                'name'       => 'apply_once',
+                'label'      => 'Apply Once',
+                'attributes' => array(
+                    'data-help' => 'Enabling this option will allow apply this discount only once to every user.',
+                    'id'        => 'apply_once',
+                ),
+            )
+        );
 
         $this->addSubmit('Add', 'add');
     }

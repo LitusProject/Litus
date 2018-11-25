@@ -20,8 +20,8 @@
 
 namespace LogisticsBundle\Hydrator\Reservation;
 
-use CommonBundle\Entity\User\Person\Academic,
-    LogisticsBundle\Entity\Reservation\PianoReservation as PianoReservationEntity;
+use CommonBundle\Entity\User\Person\Academic;
+use LogisticsBundle\Entity\Reservation\PianoReservation as PianoReservationEntity;
 
 class PianoReservation extends \CommonBundle\Component\Hydrator\Hydrator
 {
@@ -29,7 +29,7 @@ class PianoReservation extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
@@ -47,7 +47,7 @@ class PianoReservation extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $resource = $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource')
                 ->findOneByName(PianoReservationEntity::PIANO_RESOURCE_NAME);

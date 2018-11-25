@@ -20,8 +20,8 @@
 
 namespace SyllabusBundle\Component\Validator\Subject;
 
-use CommonBundle\Component\Form\Form,
-    CommonBundle\Component\Validator\FormAwareInterface;
+use CommonBundle\Component\Form\Form;
+use CommonBundle\Component\Validator\FormAwareInterface;
 
 /**
  * Matches the given subject against the database to check duplicate mappings.
@@ -54,7 +54,7 @@ class ModuleGroup extends \CommonBundle\Component\Validator\AbstractValidator im
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -88,15 +88,15 @@ class ModuleGroup extends \CommonBundle\Component\Validator\AbstractValidator im
     {
         $this->setValue($value);
 
-        $study = $this->getEntityManager()
+        $moduleGroup = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study\ModuleGroup')
             ->findOneById(self::getFormValue($this->form, array('module_group', 'id')));
 
         $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
-            ->findOneByModuleGroupSubjectAndAcademicYear($study, $this->options['subject'], $this->options['academic_year']);
+            ->findOneByModuleGroupSubjectAndAcademicYear($moduleGroup, $this->options['subject'], $this->options['academic_year']);
 
-        if (null === $mapping) {
+        if ($mapping === null) {
             return true;
         }
 

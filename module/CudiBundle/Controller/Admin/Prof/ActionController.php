@@ -20,10 +20,10 @@
 
 namespace CudiBundle\Controller\Admin\Prof;
 
-use CudiBundle\Entity\Article\History,
-    CudiBundle\Entity\Log\Article\SubjectMap\Added as SubjectMapAddedLog,
-    CudiBundle\Entity\Prof\Action,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Article\History;
+use CudiBundle\Entity\Log\Article\SubjectMap\Added as SubjectMapAddedLog;
+use CudiBundle\Entity\Prof\Action;
+use Zend\View\Model\ViewModel;
 
 /**
  * ActionController
@@ -85,7 +85,8 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($action = $this->getActionEntity())) {
+        $action = $this->getActionEntity();
+        if ($action === null) {
             return new ViewModel();
         }
 
@@ -100,12 +101,12 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function refuseAction()
     {
-        if (!($action = $this->getActionEntity())) {
+        $action = $this->getActionEntity();
+        if ($action === null) {
             return new ViewModel();
         }
 
         $action->setRefused($this->getAuthentication()->getPersonObject());
-
         $this->getEntityManager()->flush();
 
         $this->flashMessenger()->success(
@@ -125,7 +126,8 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function confirmAction()
     {
-        if (!($action = $this->getActionEntity())) {
+        $action = $this->getActionEntity();
+        if ($action === null) {
             return new ViewModel();
         }
 
@@ -189,7 +191,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                 $action->getEntity()->setIsProf(false);
                 $this->getEntityManager()->persist(new SubjectMapAddedLog($this->getAuthentication()->getPersonObject(), $action->getEntity()));
             } else {
-                $action->getEntity()->setRemoved();
+                $action->getEntity()->remove();
             }
         } elseif ($action->getEntityName() == 'file') {
             if ($action->getAction() == 'add') {
@@ -203,12 +205,11 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
                 return new ViewModel();
             } else {
-                $action->getEntity()->setRemoved();
+                $action->getEntity()->remove();
             }
         }
 
         $action->setCompleted($this->getAuthentication()->getPersonObject());
-
         $this->getEntityManager()->flush();
 
         $this->flashMessenger()->success(
@@ -228,7 +229,8 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function confirmArticleAction()
     {
-        if (!($action = $this->getActionEntity())) {
+        $action = $this->getActionEntity();
+        if ($action === null) {
             return new ViewModel();
         }
 
@@ -266,7 +268,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                     $cachePath = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('cudi.front_page_cache_dir');
-                    if (null !== $article->getFrontPage() && file_exists($cachePath . '/' . $article->getFrontPage())) {
+                    if ($article->getFrontPage() !== null && file_exists($cachePath . '/' . $article->getFrontPage())) {
                         unlink($cachePath . '/' . $article->getFrontPage());
                         $article->setFrontPage();
                     }
@@ -294,7 +296,8 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function confirmFileAction()
     {
-        if (!($action = $this->getActionEntity())) {
+        $action = $this->getActionEntity();
+        if ($action === null) {
             return new ViewModel();
         }
 
@@ -315,14 +318,14 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                     ->getFile()->setDescription($formData['description']);
 
                 $action->setCompleted($this->getAuthentication()->getPersonObject());
-
                 $this->getEntityManager()->flush();
 
                 $this->redirect()->toRoute(
                     'cudi_admin_prof_action',
                     array(
                         'action' => 'manage',
-                    )                );
+                    )
+                );
 
                 return new ViewModel();
             }

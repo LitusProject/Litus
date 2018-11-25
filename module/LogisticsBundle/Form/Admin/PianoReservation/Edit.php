@@ -25,7 +25,7 @@ namespace LogisticsBundle\Form\Admin\PianoReservation;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends Add
+class Edit extends \LogisticsBundle\Form\Admin\PianoReservation\Add
 {
     public function init()
     {

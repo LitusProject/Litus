@@ -17,10 +17,11 @@
  *
  * @license http://litus.cc/LICENSE
  */
+
 namespace PromBundle\Entity\Bus;
 
-use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for reservationcodes.
@@ -31,7 +32,7 @@ use CommonBundle\Entity\General\AcademicYear,
 class ReservationCode
 {
     /**
-     * @var int The ID of this guest info
+     * @var integer The ID of this guest info
      *
      * @ORM\Id
      * @ORM\GeneratedValue

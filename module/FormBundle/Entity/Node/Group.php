@@ -20,12 +20,12 @@
 
 namespace FormBundle\Entity\Node;
 
-use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    Locale;
+use CommonBundle\Entity\General\Language;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+use Locale;
 
 /**
  * This entity stores the form group item
@@ -61,7 +61,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function setStartDate(DateTime $startDate)
     {
-        if (sizeof($this->forms) > 0) {
+        if (count($this->forms) > 0) {
             foreach ($this->forms as $form) {
                 $form->getForm()->setStartDate($startDate);
             }
@@ -75,7 +75,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function getStartDate()
     {
-        if (sizeof($this->forms) > 0) {
+        if (count($this->forms) > 0) {
             return $this->forms[0]->getForm()->getStartDate();
         }
     }
@@ -86,7 +86,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function setEndDate(DateTime $endDate)
     {
-        if (sizeof($this->forms) > 0) {
+        if (count($this->forms) > 0) {
             foreach ($this->forms as $form) {
                 $form->getForm()->setEndDate($endDate);
             }
@@ -100,7 +100,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function getEndDate()
     {
-        if (sizeof($this->forms) > 0) {
+        if (count($this->forms) > 0) {
             return $this->forms[0]->getForm()->getEndDate();
         }
     }
@@ -111,7 +111,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function setActive($active)
     {
-        if (sizeof($this->forms) > 0) {
+        if (count($this->forms) > 0) {
             foreach ($this->forms as $form) {
                 $form->getForm()->setActive($active);
             }
@@ -125,18 +125,18 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function isActive()
     {
-        if (sizeof($this->forms) > 0) {
+        if (count($this->forms) > 0) {
             return $this->forms[0]->getForm()->isActive();
         }
     }
 
     /**
-     * @param  int  $max
+     * @param  integer $max
      * @return self
      */
     public function setMax($max)
     {
-        if (sizeof($this->forms) > 0) {
+        if (count($this->forms) > 0) {
             foreach ($this->forms as $form) {
                 $form->getForm()->setMax($max);
             }
@@ -150,7 +150,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function getMax()
     {
-        if (sizeof($this->forms) > 0) {
+        if (count($this->forms) > 0) {
             return $this->forms[0]->getForm()->getMax();
         }
     }
@@ -161,7 +161,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function setEditableByUser($editableByUser)
     {
-        if (sizeof($this->forms) > 0) {
+        if (count($this->forms) > 0) {
             foreach ($this->forms as $form) {
                 $form->getForm()->setEditableByUser($editableByUser);
             }
@@ -175,7 +175,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function isEditableByUser()
     {
-        if (sizeof($this->forms) > 0) {
+        if (count($this->forms) > 0) {
             return $this->forms[0]->getForm()->isEditableByUser();
         }
     }
@@ -186,7 +186,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function setNonMember($nonMember)
     {
-        if (sizeof($this->forms) > 0) {
+        if (count($this->forms) > 0) {
             foreach ($this->forms as $form) {
                 $form->getForm()->setNonMember($nonMember);
             }
@@ -200,7 +200,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function isNonMember()
     {
-        if (sizeof($this->forms) > 0) {
+        if (count($this->forms) > 0) {
             return $this->forms[0]->getForm()->isNonMember();
         }
     }
@@ -214,7 +214,7 @@ class Group extends \CommonBundle\Entity\Node
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation) {
+        if ($translation !== null) {
             return $translation->getTitle();
         }
 
@@ -230,7 +230,7 @@ class Group extends \CommonBundle\Entity\Node
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation) {
+        if ($translation !== null) {
             return $translation->getIntroduction();
         }
 
@@ -238,14 +238,14 @@ class Group extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  Language|null                             $language
-     * @param  boolean                                   $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return \FormBundle\Entity\Node\Translation\Group
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
         foreach ($this->translations as $translation) {
-            if (null !== $language && $translation->getLanguage() == $language) {
+            if ($language !== null && $translation->getLanguage() == $language) {
                 return $translation;
             }
 
@@ -270,13 +270,13 @@ class Group extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  Form    $form
+     * @param  Form $form
      * @return integer
      */
     public function getFormNumber(Form $form)
     {
         $i = 1;
-        if (sizeof($this->forms) == 0) {
+        if (count($this->forms) == 0) {
             return 0;
         }
 
@@ -309,7 +309,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function canBeEditedBy(Person $person = null)
     {
-        if (null === $person) {
+        if ($person === null) {
             return false;
         }
 
@@ -334,7 +334,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function canBeViewedBy(Person $person = null)
     {
-        if (sizeof($this->forms) == 0) {
+        if (count($this->forms) == 0) {
             return false;
         }
 

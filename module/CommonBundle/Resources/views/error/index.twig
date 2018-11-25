@@ -21,7 +21,11 @@
         }
 
         #layout {
-            width: 500px;
+            {% if display_exceptions %}
+                width: 768px;
+            {% else %}
+                width: 500px;
+            {% endif %}
             margin: 130px auto;
         }
 
@@ -46,7 +50,7 @@
         }
 
         h3 {
-            margin-top: 10px;
+            margin: 10px 0 5px 0;
             font-size: 13px;
         }
 
@@ -65,7 +69,9 @@
         }
 
         th {
+            padding-right: 5px;
             text-align: left;
+            vertical-align: top;
         }
     </style>
 
@@ -79,20 +85,27 @@
     <section>
         <h2>{{ message }}</h2>
 
-        {% if display_exceptions is defined and display_exceptions %}
+        {% if display_exceptions %}
             {% if exception is defined %}
                 <h3>Exception Information</h3>
-                <p>
-                    {# Hack to get the exception class name
-                        exception.__toString() returns
-                        "exception '<class>' in <file>:<line> Stack Trace: <trace>"
-                        Split it on a single quote and take the second piece.
-                    #}
-                    <b>Type:</b> {{ exception.__toString()|split("'")[1] }}
-                </p>
-                <p>
-                    <b>Message:</b> {{ exception.getMessage() }}
-                </p>
+                <table>
+                    <tr>
+                        <th>Type</th>
+                        <td>{{ getClass(exception) }}</td>
+                    </tr>
+                    <tr>
+                        <th>Message</th>
+                        <td>{{ exception.getMessage() }}</td>
+                    </tr>
+                    <tr>
+                        <th>File</th>
+                        <td>{{ exception.getFile() }}</td>
+                    </tr>
+                    <tr>
+                        <th>Line</th>
+                        <td>{{ exception.getLine() }}</td>
+                    </tr>
+                </table>
 
                 <h3>Stack Trace</h3>
                 <table>

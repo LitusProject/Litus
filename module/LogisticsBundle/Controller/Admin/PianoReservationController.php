@@ -20,10 +20,10 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
-use IntlDateFormatter,
-    LogisticsBundle\Entity\Reservation\PianoReservation,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use IntlDateFormatter;
+use LogisticsBundle\Entity\Reservation\PianoReservation;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 class PianoReservationController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
@@ -78,7 +78,8 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
                             ->getConfigValue('logistics.piano_new_reservation_confirmed')
                     );
 
-                    if (!($language = $reservation->getPlayer()->getLanguage())) {
+                    $language = $reservation->getPlayer()->getLanguage();
+                    if ($language === null) {
                         $language = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Language')
                             ->findOneByAbbrev('en');
@@ -99,8 +100,12 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
                     $mail = new Message();
                     $mail->setEncoding('UTF-8')
                         ->setBody(
-                            str_replace('{{ name }}', $reservation->getPlayer()->getFullName(),
-                                str_replace('{{ start }}', $formatterDate->format($reservation->getStartDate()),
+                            str_replace(
+                                '{{ name }}',
+                                $reservation->getPlayer()->getFullName(),
+                                str_replace(
+                                    '{{ start }}',
+                                    $formatterDate->format($reservation->getStartDate()),
                                     str_replace('{{ end }}', $formatterDate->format($reservation->getEndDate()), $message)
                                 )
                             )
@@ -124,7 +129,7 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
                         )
                         ->setSubject($subject);
 
-                    if ('development' != getenv('APPLICATION_ENV')) {
+                    if (getenv('APPLICATION_ENV') != 'development') {
                         $this->getMailTransport()->send($mail);
                     }
                 }
@@ -157,7 +162,8 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
 
     public function editAction()
     {
-        if (!($reservation = $this->getPianoReservationEntity())) {
+        $reservation = $this->getPianoReservationEntity();
+        if ($reservation === null) {
             return new ViewModel();
         }
 
@@ -174,7 +180,8 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
                             ->getConfigValue('logistics.piano_new_reservation_confirmed')
                     );
 
-                    if (!($language = $reservation->getPlayer()->getLanguage())) {
+                    $language = $reservation->getPlayer()->getLanguage();
+                    if ($language === null) {
                         $language = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Language')
                             ->findOneByAbbrev('en');
@@ -186,8 +193,12 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
                     $mail = new Message();
                     $mail->setEncoding('UTF-8')
                         ->setBody(
-                            str_replace('{{ name }}', $reservation->getPlayer()->getFullName(),
-                                str_replace('{{ start }}', $reservation->getStartDate()->format('D d/m/Y H:i'),
+                            str_replace(
+                                '{{ name }}',
+                                $reservation->getPlayer()->getFullName(),
+                                str_replace(
+                                    '{{ start }}',
+                                    $reservation->getStartDate()->format('D d/m/Y H:i'),
                                     str_replace('{{ end }}', $reservation->getEndDate()->format('D d/m/Y H:i'), $message)
                                 )
                             )
@@ -211,7 +222,7 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
                         )
                         ->setSubject($subject);
 
-                    if ('development' != getenv('APPLICATION_ENV')) {
+                    if (getenv('APPLICATION_ENV') != 'development') {
                         $this->getMailTransport()->send($mail);
                     }
                 }
@@ -245,7 +256,8 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
     {
         $this->initAjax();
 
-        if (!($reservation = $this->getPianoReservationEntity())) {
+        $reservation = $this->getPianoReservationEntity();
+        if ($reservation === null) {
             return new ViewModel();
         }
 

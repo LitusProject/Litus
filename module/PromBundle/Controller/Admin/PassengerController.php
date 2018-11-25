@@ -20,9 +20,9 @@
 
 namespace PromBundle\Controller\Admin;
 
-use PromBundle\Entity\Bus\Passenger,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use PromBundle\Entity\Bus\Passenger;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * PassengerController
@@ -50,7 +50,8 @@ class PassengerController extends \CommonBundle\Component\Controller\ActionContr
 
     public function deleteAction()
     {
-        if (!($passenger = $this->getPassengerEntity())) {
+        $passenger = $this->getPassengerEntity();
+        if ($passenger === null) {
             return new ViewModel();
         }
 
@@ -69,7 +70,8 @@ class PassengerController extends \CommonBundle\Component\Controller\ActionContr
 
     public function removeBusAction()
     {
-        if (!($passenger = $this->getPassengerEntity())) {
+        $passenger = $this->getPassengerEntity();
+        if ($passenger === null) {
             return new ViewModel();
         }
 
@@ -91,7 +93,7 @@ class PassengerController extends \CommonBundle\Component\Controller\ActionContr
             ->addBcc($mailData['from'])
             ->setSubject($mailData['subject']);
 
-        if ('development' != getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);
         }
 

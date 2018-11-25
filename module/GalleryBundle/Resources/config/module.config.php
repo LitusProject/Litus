@@ -30,8 +30,10 @@ return Config::create(
     ),
     array(
         'validators' => array(
-            'invokables' => array(
-                'gallery_album_name' => 'GalleryBundle\Component\Validator\Name',
+            'aliases' => array(
+                'albumname' => Component\Validator\AlbumName::class,
+                'albumName' => Component\Validator\AlbumName::class,
+                'AlbumName' => Component\Validator\AlbumName::class,
             ),
         ),
     )

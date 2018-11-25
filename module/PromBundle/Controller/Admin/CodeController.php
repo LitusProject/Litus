@@ -20,11 +20,11 @@
 
 namespace PromBundle\Controller\Admin;
 
-use CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    PromBundle\Entity\Bus\ReservationCode,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use PromBundle\Entity\Bus\ReservationCode;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * CodeController
@@ -93,7 +93,8 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
 
     public function expireAction()
     {
-        if (!($code = $this->getReservationCodeEntity())) {
+        $code = $this->getReservationCodeEntity();
+        if ($code === null) {
             return new ViewModel();
         }
 
@@ -130,10 +131,12 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
         $document->generateDocument($file);
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="codes.csv"',
-            'Content-Type'        => 'text/csv',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="codes.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -145,7 +148,8 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($code = $this->getReservationCodeEntity())) {
+        $code = $this->getReservationCodeEntity();
+        if ($code === null) {
             return new ViewModel();
         }
 

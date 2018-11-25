@@ -20,10 +20,10 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Entity\User\Person\Academic,
-    Doctrine\ORM\Query,
-    Zend\View\Model\ViewModel,
-    CudiBundle\Component\WebSocket\Sale\Printer as Printer;
+use CommonBundle\Entity\User\Person\Academic;
+use CudiBundle\Component\WebSocket\Sale\Printer;
+use Doctrine\ORM\Query;
+use Zend\View\Model\ViewModel;
 
 /**
  * AcademicController
@@ -34,7 +34,12 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 {
     public function manageAction()
     {
-        if (null !== $this->getParam('field') && ($academics = $this->search())) {
+        if ($this->getParam('field') !== null) {
+            $academics = $this->search();
+            if ($academics === null) {
+                return new ViewModel();
+            }
+
             $paginator = $this->paginator()->createFromQuery(
                 $academics,
                 $this->getParam('page')
@@ -108,7 +113,8 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
@@ -146,7 +152,8 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function activateAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
@@ -178,7 +185,8 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
@@ -189,8 +197,8 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         foreach ($sessions as $session) {
             $session->deactivate();
         }
-        $academic->disableLogin();
 
+        $academic->disableLogin();
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -202,7 +210,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function typeaheadAction()
     {
-        //$this->initAjax();
+        $this->initAjax();
 
         $academics = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
@@ -275,9 +283,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 $item = (object) array();
                 $item->id = $academic->getId();
                 $item->username = $academic->getUsername();
-                $item->universityIdentification = (
-                    null !== $academic->getUniversityIdentification() ? $academic->getUniversityIdentification() : ''
-                );
+                $item->universityIdentification = ($academic->getUniversityIdentification() ?? '');
                 $item->fullName = $academic->getFullName();
                 $item->email = $academic->getEmail();
 
@@ -313,31 +319,27 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         }
     }
 
-
     public function printAction()
     {
         $this->initAjax();
 
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
-        /*if(!$person->isMember($this->getCurrentAcademicYear())){
-            return new ViewModel();
-        }*/
-
         Printer::membershipCard(
-            $this->getEntityManager(), 
+            $this->getEntityManager(),
             $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('cudi.card_printer'), 
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.card_printer'),
             $academic,
             $this->getCurrentAcademicYear()
         );
 
         return new ViewModel(
             array(
-                "result" => array("status" => "success"),
+                'result' => array('status' => 'success'),
             )
         );
     }

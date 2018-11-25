@@ -21,7 +21,7 @@
 return array(
     'routes' => array(
         'news_admin_news' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/site/news[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -36,7 +36,7 @@ return array(
             ),
         ),
         'news' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/news[/:action[/:name][/page/:page]][/]',
                 'constraints' => array(

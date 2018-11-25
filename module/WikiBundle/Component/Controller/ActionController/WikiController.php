@@ -58,10 +58,10 @@ class WikiController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_url');
 
-        if (false !== @unserialize($shibbolethUrl)) {
+        if (@unserialize($shibbolethUrl) !== false) {
             $shibbolethUrl = unserialize($shibbolethUrl);
 
-            if (false === getenv('SERVED_BY')) {
+            if (getenv('SERVED_BY') === false) {
                 throw new ShibbolethUrlException('The SERVED_BY environment variable does not exist');
             }
             if (!array_key_exists(getenv('SERVED_BY'), $shibbolethUrl)) {
@@ -73,7 +73,7 @@ class WikiController extends \CommonBundle\Component\Controller\ActionController
 
         $shibbolethUrl .= '?source=wiki';
 
-        if (null !== $this->getParam('redirect')) {
+        if ($this->getParam('redirect') !== null) {
             $shibbolethUrl .= '%26redirect=' . urlencode(urlencode($this->getParam('redirect')));
         }
 

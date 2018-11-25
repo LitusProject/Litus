@@ -20,8 +20,6 @@
 
 namespace SportBundle\Command;
 
-use DateTime;
-
 /**
  * Cache the JSON of the official result page.
  *
@@ -32,17 +30,11 @@ class CacheResult extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
-        $this
-            ->setName('sport:cache-result')
-            ->setDescription('fetch and store the results of the competition')
-            ->setHelp(<<<EOT
-The %command.name% command fetches the results of the competition and stores
-them in a cache.
-EOT
-            );
+        $this->setName('sport:cache-result')
+            ->setDescription('Fetch and store the competition results');
     }
 
-    protected function executeCommand()
+    protected function invoke()
     {
         while (true) {
             $resultPage = $this->getEntityManager()
@@ -58,44 +50,14 @@ EOT
             $fileContents = @file_get_contents($resultPage, false, stream_context_create($options));
             $resultPage = json_decode($fileContents);
 
-            if (false !== $fileContents && null !== $resultPage) {
+            $this->write('Caching the result page...');
+            if ($fileContents !== false && $resultPage !== null) {
                 file_put_contents('data/cache/run-' . md5('run_result_page'), $fileContents);
-                $this->writeln('Succesfully cached the result page');
-
-                $delay = (int) $resultPage->update;
-                sleep($delay ? $delay : 3);
+                $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
             } else {
-                $this->writeln('Failed to cache the result page');
+                $this->writeln(" <fg=red>\u{2717}</fg=red>", true);
                 sleep(3);
             }
         }
-    }
-
-    protected function getLogName()
-    {
-        return 'CacheSportResult';
-    }
-
-    public function write($str, $raw = false)
-    {
-        $now = new DateTime();
-
-        return parent::write(
-            sprintf('[<%1$s>%2$s</%1$s>] %3$s', $this->getLogNameTag(), $now->format('Ymd H:i:s'), $str),
-            $raw
-        );
-    }
-
-    /**
-     * @param string $str
-     */
-    public function writeln($str, $raw = false)
-    {
-        $now = new DateTime();
-
-        return parent::writeln(
-            sprintf('[<%1$s>%2$s</%1$s>] %3$s', $this->getLogNameTag(), $now->format('Ymd H:i:s'), $str),
-            $raw
-        );
     }
 }

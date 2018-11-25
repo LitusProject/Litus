@@ -51,7 +51,7 @@ pg_query($connection, 'DROP TABLE IF EXISTS users.people_organizations_unit_map'
 
 // Build the new units structure
 echo ' -> Build new units structure' . PHP_EOL;
-exec('./bin/litus.sh orm:schema-tool:update --force', $output, $returnValue);
+exec('php bin/doctrine.php orm:schema-tool:update --force', $output, $returnValue);
 if ($returnValue !== 0) {
     echo ' Failed to update database, please try it manualy. This script can be run again afterwards.' . PHP_EOL;
     exit(1);

@@ -20,13 +20,13 @@
 
 namespace CommonBundle\Component\Form;
 
-use Zend\InputFilter\InputFilterProviderInterface,
-    Zend\InputFilter\InputProviderInterface;
+use Zend\InputFilter\InputFilterProviderInterface;
+use Zend\InputFilter\InputProviderInterface;
 
 /**
- * @method self setElementRequired(boolean $required)
- * @property array elements
- * @property array fieldsets
+ * FieldsetTrait
+ *
+ * @author Bram Gotink <bram.gotink@litus.cc>
  */
 trait FieldsetTrait
 {

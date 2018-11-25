@@ -20,12 +20,12 @@
 
 namespace CommonBundle\Component\Form\Admin\Form;
 
-use CommonBundle\Component\Form\Admin\Fieldset\TabContent,
-    CommonBundle\Component\Form\Admin\Fieldset\TabPane,
-    CommonBundle\Component\Form\FieldsetInterface,
-    CommonBundle\Entity\General\Language,
-    Locale,
-    RuntimeException;
+use CommonBundle\Component\Form\Admin\Fieldset\TabContent;
+use CommonBundle\Component\Form\Admin\Fieldset\TabPane;
+use CommonBundle\Component\Form\FieldsetInterface;
+use CommonBundle\Entity\General\Language;
+use Locale;
+use RuntimeException;
 
 /**
  * Extending Zend's form component, so that our forms look the way we want
@@ -57,13 +57,15 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Admin\Form
         } else {
             $defaultLanguage = Locale::getDefault();
 
-            $this->add(array(
-                'type'       => 'tabs',
-                'name'       => $prefix . 'languages',
-                'attributes' => array(
-                    'id' => $prefix . 'languages',
-                ),
-            ));
+            $this->add(
+                array(
+                    'type'       => 'tabs',
+                    'name'       => $prefix . 'languages',
+                    'attributes' => array(
+                        'id' => $prefix . 'languages',
+                    ),
+                )
+            );
 
             $tabs = $this->get($prefix . 'languages');
             $tabContent = $this->createTabContent();
@@ -89,10 +91,12 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Admin\Form
      */
     private function createTabContent()
     {
-        $this->add(array(
-            'type' => 'tabcontent',
-            'name' => $this->getPrefix() . 'tab_content',
-        ));
+        $this->add(
+            array(
+                'type' => 'tabcontent',
+                'name' => $this->getPrefix() . 'tab_content',
+            )
+        );
 
         return $this->get($this->getPrefix() . 'tab_content');
     }
@@ -104,10 +108,12 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Admin\Form
      */
     private function createTabPane(TabContent $tabContent, $name)
     {
-        $tabContent->add(array(
-            'type' => 'tabpane',
-            'name' => $name,
-        ));
+        $tabContent->add(
+            array(
+                'type' => 'tabpane',
+                'name' => $name,
+            )
+        );
 
         return $tabContent->get($name);
     }
@@ -132,9 +138,12 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Admin\Form
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getPrefix()
     {
-        if (null === $this->prefix || '' == $this->prefix) {
+        if ($this->prefix === null || $this->prefix == '') {
             return '';
         }
 
@@ -166,7 +175,7 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Admin\Form
     abstract protected function addTab(FieldsetInterface $container, Language $language, $isDefault);
 
     /**
-     * @return Language[]
+     * @return array
      */
     protected function getLanguages()
     {

@@ -17,14 +17,15 @@
  *
  * @license http://litus.cc/LICENSE
  */
+
 namespace PromBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM,
-    Exception,
-    PromBundle\Entity\Bus\Passenger;
+use CommonBundle\Entity\General\AcademicYear;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Exception;
+use PromBundle\Entity\Bus\Passenger;
 
 /**
  * This is the entity for a bus
@@ -59,7 +60,7 @@ class Bus
     private $departureTime;
 
     /**
-     * @var int The amount seats in total.
+     * @var integer The amount seats in total.
      *
      * @ORM\Column(type="integer")
      */
@@ -87,7 +88,7 @@ class Bus
     private $direction;
 
     /**
-     * @var int The maximum amount of passengers available on buses
+     * @var integer The maximum amount of passengers available on buses
      */
     private $maxPassengerNb = 100;
 
@@ -100,7 +101,7 @@ class Bus
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -150,7 +151,7 @@ class Bus
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getTotalSeats()
     {
@@ -158,7 +159,7 @@ class Bus
     }
 
     /**
-     * @param int $totalSeats The total amount of seats
+     * @param integer $totalSeats The total amount of seats
      */
     public function setTotalSeats($totalSeats)
     {
@@ -200,7 +201,7 @@ class Bus
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getReservedSeats()
     {
@@ -216,7 +217,7 @@ class Bus
     }
 
     /**
-     * @param  int     $passengerAmount
+     * @param  integer $passengerAmount
      * @return boolean
      */
     private function isValidPassengerAmount($passengerAmount)

@@ -20,18 +20,17 @@
 
 namespace LogisticsBundle\Controller;
 
-use DateTime,
-    LogisticsBundle\Component\Controller\LogisticsController,
-    LogisticsBundle\Entity\Lease\Item,
-    LogisticsBundle\Entity\Lease\Lease,
-    Zend\View\Model\ViewModel;
+use DateTime;
+use LogisticsBundle\Entity\Lease\Item;
+use LogisticsBundle\Entity\Lease\Lease;
+use Zend\View\Model\ViewModel;
 
 /**
  * LeaseController
  *
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
-class LeaseController extends LogisticsController
+class LeaseController extends \LogisticsBundle\Component\Controller\LogisticsController
 {
     public function indexAction()
     {
@@ -57,7 +56,8 @@ class LeaseController extends LogisticsController
 
     public function showAction()
     {
-        if (!($lease = $this->getLeaseEntity())) {
+        $lease = $this->getLeaseEntity();
+        if ($lease === null) {
             return new ViewModel();
         }
 
@@ -70,7 +70,8 @@ class LeaseController extends LogisticsController
 
     public function historyAction()
     {
-        if (!($item = $this->getItemEntity($this->getRequest()->getQuery('searchItem')['id']))) {
+        $item = $this->getItemEntity($this->getRequest()->getQuery('searchItem')['id']);
+        if ($item === null) {
             return new ViewModel();
         }
 
@@ -129,11 +130,12 @@ class LeaseController extends LogisticsController
     }
 
     /**
-     * @return null|\CommonBundle\Component\Form\Form
+     * @return \CommonBundle\Component\Form\Form|null
      */
     private function handleLeaseForm()
     {
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return;
         }
 
@@ -183,11 +185,12 @@ class LeaseController extends LogisticsController
     }
 
     /**
-     * @return null|\CommonBundle\Component\Form\Form
+     * @return \CommonBundle\Component\Form\Form|null
      */
     private function handleReturnForm()
     {
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return;
         }
 
@@ -205,9 +208,11 @@ class LeaseController extends LogisticsController
                         ->getRepository('LogisticsBundle\Entity\Lease\Item')
                         ->findOneById($data['returnItem']['id']);
 
-                    $lease = current($this->getEntityManager()
-                        ->getRepository('LogisticsBundle\Entity\Lease\Lease')
-                        ->findUnreturnedByItem($item));
+                    $lease = current(
+                        $this->getEntityManager()
+                            ->getRepository('LogisticsBundle\Entity\Lease\Lease')
+                            ->findUnreturnedByItem($item)
+                    );
 
                     $lease->setReturned(true)
                         ->setReturnedAmount($data['returned_amount'])
@@ -239,7 +244,7 @@ class LeaseController extends LogisticsController
     }
 
     /**
-     * @return null|\CommonBundle\Entity\User\Person
+     * @return \CommonBundle\Entity\User\Person|null
      */
     private function getPersonEntity()
     {
@@ -279,12 +284,12 @@ class LeaseController extends LogisticsController
     }
 
     /**
-     * @param  int|null  $id
+     * @param  integer|null $id
      * @return Item|null
      */
     private function getItemEntity($id = null)
     {
-        $id = $id === null ? $this->getParam('id', 0) : $id;
+        $id = $id ?? $this->getParam('id', 0);
 
         $item = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Lease\Item')

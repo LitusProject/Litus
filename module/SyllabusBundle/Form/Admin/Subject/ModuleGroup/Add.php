@@ -20,9 +20,10 @@
 
 namespace SyllabusBundle\Form\Admin\Subject\ModuleGroup;
 
-use CommonBundle\Entity\General\AcademicYear,
-    SyllabusBundle\Entity\Study\SubjectMap,
-    SyllabusBundle\Entity\Subject;
+use CommonBundle\Entity\General\AcademicYear;
+use RuntimeException;
+use SyllabusBundle\Entity\Study\SubjectMap;
+use SyllabusBundle\Entity\Subject;
 
 /**
  * Add ModuleGroup to Subject
@@ -50,47 +51,52 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function init()
     {
-        if (null === $this->subject) {
-            throw new LogicException('No subject was given to add a module group to');
+        if ($this->subject === null) {
+            throw new RuntimeException('No subject was given to add a module group to');
         }
-        if (null === $this->academicYear) {
-            throw new LogicException('No academic year was given');
+
+        if ($this->academicYear === null) {
+            throw new RuntimeException('No academic year was given');
         }
 
         parent::init();
 
-        $this->add(array(
-            'type'       => 'typeahead',
-            'name'       => 'module_group',
-            'label'      => 'Module Group',
-            'required'   => true,
-            'attributes' => array(
-                'id'    => 'module_group',
-                'style' => 'width: 400px;',
-            ),
-            'options' => array(
-                'input' => array(
-                    'validators' => array(
-                        array(
-                            'name'    => 'syllabus_subject_module-group',
-                            'options' => array(
-                                'subject'       => $this->subject,
-                                'academic_year' => $this->academicYear,
+        $this->add(
+            array(
+                'type'       => 'typeahead',
+                'name'       => 'module_group',
+                'label'      => 'Module Group',
+                'required'   => true,
+                'attributes' => array(
+                    'id'    => 'module_group',
+                    'style' => 'width: 400px;',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name' => 'TypeaheadStudyModuleGroup',
                             ),
-                        ),
-                        array(
-                            'name' => 'syllabus_typeahead_study_module-group',
+                            array(
+                                'name'    => 'SubjectModuleGroup',
+                                'options' => array(
+                                    'subject'       => $this->subject,
+                                    'academic_year' => $this->academicYear,
+                                ),
+                            ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'mandatory',
-            'label' => 'Mandatory',
-        ));
+        $this->add(
+            array(
+                'type'  => 'checkbox',
+                'name'  => 'mandatory',
+                'label' => 'Mandatory',
+            )
+        );
 
         $this->addSubmit('Add', 'add');
     }

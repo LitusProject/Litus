@@ -20,8 +20,8 @@
 
 namespace ShopBundle\Hydrator;
 
-use DateTime,
-    ShopBundle\Entity\Reservation as ReservationEntity;
+use DateTime;
+use ShopBundle\Entity\Reservation as ReservationEntity;
 
 /**
  * Class Reservation
@@ -33,23 +33,20 @@ class Reservation extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$stdKeys);
-
-        return $data;
+        return $this->stdExtract($object, self::$stdKeys);
     }
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $object = new ReservationEntity();
         }
 
         $object->setTimestamp(new DateTime());
-
         $object->setNoShow(false);
 
         return $object;

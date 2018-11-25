@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Entity\Acl;
 
-use Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class that represents a resource that can get accessed and/or manipulated, for example, a forum post, or a contact
@@ -50,7 +50,7 @@ class Resource
 
     /**
      * @param string        $name   The name of the resource
-     * @param null|Resource $parent The parent of the resource, or null if there is no parent
+     * @param resource|null $parent The parent of the resource, or null if there is no parent
      */
     public function __construct($name, Resource $parent = null)
     {
@@ -83,8 +83,8 @@ class Resource
     public function getChildren(EntityManager $entityManager)
     {
         return $entityManager
-                ->getRepository('CommonBundle\Entity\Acl\Resource')
-                ->findByParent($this->getName());
+            ->getRepository('CommonBundle\Entity\Acl\Resource')
+            ->findByParent($this->getName());
     }
 
     /**
@@ -96,7 +96,7 @@ class Resource
     public function getActions(EntityManager $entityManager)
     {
         return $entityManager
-                ->getRepository('CommonBundle\Entity\Acl\Action')
-                ->findByResource($this->getName());
+            ->getRepository('CommonBundle\Entity\Acl\Action')
+            ->findByResource($this->getName());
     }
 }

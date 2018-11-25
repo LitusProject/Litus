@@ -31,9 +31,8 @@ use Zend\Form\FormInterface;
 interface ElementInterface extends \Zend\Form\ElementInterface, \Zend\InputFilter\InputProviderInterface, \Zend\Form\ElementPrepareAwareInterface
 {
     /**
-     * Specifies whether this element is a required field.
-     *
-     * Also sets the HTML5 'required' attribute.
+     * Specifies whether this element is a required field. Also sets the HTML5
+     * 'required' attribute.
      *
      * @param  boolean $flag
      * @return self

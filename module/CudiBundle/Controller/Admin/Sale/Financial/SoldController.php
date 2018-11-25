@@ -20,13 +20,13 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Financial;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CudiBundle\Entity\Sale\Article as SaleArticle,
-    CudiBundle\Entity\Sale\SaleItem\External as ExternalItem,
-    CudiBundle\Entity\Sale\SaleItem\Prof as ProfItem,
-    CudiBundle\Entity\Sale\Session,
-    CudiBundle\Entity\Supplier,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\General\AcademicYear;
+use CudiBundle\Entity\Sale\Article as SaleArticle;
+use CudiBundle\Entity\Sale\SaleItem\External as ExternalItem;
+use CudiBundle\Entity\Sale\SaleItem\Prof as ProfItem;
+use CudiBundle\Entity\Sale\Session;
+use CudiBundle\Entity\Supplier;
+use Zend\View\Model\ViewModel;
 
 /**
  * SoldController
@@ -38,7 +38,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
     public function individualAction()
     {
         $academicYear = $this->getAcademicYearEntity();
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $records = $this->individualSearch($academicYear);
         }
 
@@ -123,7 +123,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
     }
 
     /**
-     * @param  AcademicYear             $academicYear
+     * @param  AcademicYear $academicYear
      * @return \Doctrine\ORM\Query|null
      */
     private function individualSearch(AcademicYear $academicYear)
@@ -187,7 +187,8 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
     public function sessionAction()
     {
-        if (!($session = $this->getSessionEntity())) {
+        $session = $this->getSessionEntity();
+        if ($session === null) {
             return new ViewModel();
         }
 
@@ -201,7 +202,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $records = $this->sessionSearch($session);
         }
 
@@ -235,7 +236,8 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($session = $this->getSessionEntity())) {
+        $session = $this->getSessionEntity();
+        if ($session === null) {
             return new ViewModel();
         }
 
@@ -279,7 +281,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
     }
 
     /**
-     * @param  Session                  $session
+     * @param  Session $session
      * @return \Doctrine\ORM\Query|null
      */
     private function sessionSearch(Session $session)
@@ -311,7 +313,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
     public function articlesAction()
     {
         $academicYear = $this->getAcademicYearEntity();
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $records = $this->articlesSearch($academicYear);
         }
 
@@ -382,7 +384,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
     }
 
     /**
-     * @param  AcademicYear             $academicYear
+     * @param  AcademicYear $academicYear
      * @return \Doctrine\ORM\Query|null
      */
     private function articlesSearch(AcademicYear $academicYear)
@@ -409,7 +411,8 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
     public function articleAction()
     {
-        if (!($article = $this->getSaleArticleEntity())) {
+        $article = $this->getSaleArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -423,7 +426,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $records = $this->articleSearch($article, $this->getAcademicYearEntity());
         }
 
@@ -461,7 +464,8 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($article = $this->getSaleArticleEntity())) {
+        $article = $this->getSaleArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -507,8 +511,8 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
     }
 
     /**
-     * @param  SaleArticle              $article
-     * @param  AcademicYear             $academicYear
+     * @param  SaleArticle  $article
+     * @param  AcademicYear $academicYear
      * @return \Doctrine\ORM\Query|null
      */
     private function articleSearch(SaleArticle $article, AcademicYear $academicYear)
@@ -564,7 +568,8 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
     public function supplierAction()
     {
-        if (!($supplier = $this->getSupplierEntity())) {
+        $supplier = $this->getSupplierEntity();
+        if ($supplier === null) {
             return new ViewModel();
         }
 
@@ -578,7 +583,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $records = $this->supplierSearch($supplier, $this->getAcademicYearEntity());
         }
 
@@ -616,7 +621,8 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($supplier = $this->getSupplierEntity())) {
+        $supplier = $this->getSupplierEntity();
+        if ($supplier === null) {
             return new ViewModel();
         }
 
@@ -663,8 +669,8 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
     }
 
     /**
-     * @param  Supplier                 $supplier
-     * @param  AcademicYear             $academicYear
+     * @param  Supplier     $supplier
+     * @param  AcademicYear $academicYear
      * @return \Doctrine\ORM\Query|null
      */
     private function supplierSearch(Supplier $supplier, AcademicYear $academicYear)

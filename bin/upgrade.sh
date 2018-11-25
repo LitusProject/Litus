@@ -1,7 +1,4 @@
-#!/bin/bash
-
-# A very small wrapper around our upgrade script
-#
+#!/usr/bin/env bash
 
 SCRIPT_DIRECTORY=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 cd "$SCRIPT_DIRECTORY/../"

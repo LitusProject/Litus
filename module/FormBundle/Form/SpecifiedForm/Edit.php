@@ -27,14 +27,14 @@ use FormBundle\Entity\Field\File as FileFieldEntity;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends Add
+class Edit extends \FormBundle\Form\SpecifiedForm\Add
 {
     public function init()
     {
         parent::init();
 
-        $this->remove('submit');
-        $this->addSubmit($this->form->getUpdateText($this->language));
+        $this->remove('submit')
+            ->addSubmit($this->form->getUpdateText($this->language));
     }
 
     public function getInputFilterSpecification()

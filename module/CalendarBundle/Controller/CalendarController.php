@@ -20,14 +20,14 @@
 
 namespace CalendarBundle\Controller;
 
-use CalendarBundle\Component\Document\Generator\Ics as IcsGenerator,
-    CalendarBundle\Entity\Node\Event,
-    CommonBundle\Component\Util\File\TmpFile,
-    DateInterval,
-    DateTime,
-    IntlDateFormatter,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CalendarBundle\Component\Document\Generator\Ics as IcsGenerator;
+use CalendarBundle\Entity\Node\Event;
+use CommonBundle\Component\Util\File\TmpFile;
+use DateInterval;
+use DateTime;
+use IntlDateFormatter;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * CalendarController
@@ -47,13 +47,14 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function viewAction()
     {
-        if (!($event = $this->getEventEntity())) {
+        $event = $this->getEventEntity();
+        if ($event === null) {
             return $this->notFoundAction();
         }
 
-        $hasShifts = sizeof($this->getEntityManager()
+        $shifts = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
-            ->findAllActiveByEvent($event)) > 0;
+            ->findAllActiveByEvent($event);
 
         $ticketEvent = $this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Event')
@@ -62,7 +63,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         return new ViewModel(
             array(
                 'event'       => $event,
-                'hasShifts'   => $hasShifts,
+                'hasShifts'   => count($shifts) > 0,
                 'ticketEvent' => $ticketEvent,
             )
         );
@@ -70,7 +71,8 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function posterAction()
     {
-        if (!($event = $this->getEventEntityByPoster())) {
+        $event = $this->getEventEntityByPoster();
+        if ($event === null) {
             return $this->notFoundAction();
         }
 
@@ -79,9 +81,11 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             ->getConfigValue('calendar.poster_path') . '/';
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Type' => mime_content_type($filePath . $event->getPoster()),
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Type' => mime_content_type($filePath . $event->getPoster()),
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         $handle = fopen($filePath . $event->getPoster(), 'r');
@@ -151,7 +155,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 );
             }
 
-            if (null !== $event->getEndDate()) {
+            if ($event->getEndDate() !== null) {
                 if ($event->getEndDate()->format('d/M/Y') == $event->getStartDate()->format('d/M/Y')) {
                     $fullTime = $hourFormatter->format($event->getStartDate()) . ' - ' . $hourFormatter->format($event->getEndDate());
                 } else {
@@ -200,10 +204,12 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     public function exportAction()
     {
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="icalendar.ics"',
-            'Content-Type'        => 'text/calendar',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'inline; filename="icalendar.ics"',
+                'Content-Type'        => 'text/calendar',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         $icsFile = new TmpFile();

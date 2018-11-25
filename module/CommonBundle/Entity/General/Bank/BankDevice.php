@@ -31,7 +31,7 @@ use Doctrine\ORM\Mapping as ORM;
 class BankDevice
 {
     /**
-     * @var int The device's ID
+     * @var integer The device's ID
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -55,7 +55,7 @@ class BankDevice
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {

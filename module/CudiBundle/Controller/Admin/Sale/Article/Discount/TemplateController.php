@@ -20,8 +20,8 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Article\Discount;
 
-use CudiBundle\Entity\Sale\Article\Discount\Template,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Sale\Article\Discount\Template;
+use Zend\View\Model\ViewModel;
 
 /**
  * TemplateController
@@ -94,7 +94,8 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($template = $this->getTemplateEntity())) {
+        $template = $this->getTemplateEntity();
+        if ($template === null) {
             return new ViewModel();
         }
 
@@ -110,7 +111,8 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
 
     public function editAction()
     {
-        if (!($template = $this->getTemplateEntity())) {
+        $template = $this->getTemplateEntity();
+        if ($template === null) {
             return new ViewModel();
         }
 

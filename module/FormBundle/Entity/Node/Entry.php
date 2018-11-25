@@ -20,11 +20,11 @@
 
 namespace FormBundle\Entity\Node;
 
-use CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Entry as FieldEntry;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use FormBundle\Entity\Entry as FieldEntry;
 
 /**
  * This entity stores the node item.
@@ -35,7 +35,7 @@ use CommonBundle\Entity\User\Person,
 class Entry
 {
     /**
-     * @var int The ID of this node
+     * @var integer The ID of this node
      *
      * @ORM\Id
      * @ORM\GeneratedValue

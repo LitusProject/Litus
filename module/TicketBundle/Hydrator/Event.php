@@ -20,9 +20,9 @@
 
 namespace TicketBundle\Hydrator;
 
-use TicketBundle\Entity\Event as EventEntity,
-    TicketBundle\Entity\Option,
-    TicketBundle\Entity\Ticket as TicketEntity;
+use TicketBundle\Entity\Event as EventEntity;
+use TicketBundle\Entity\Option;
+use TicketBundle\Entity\Ticket as TicketEntity;
 
 class Event extends \CommonBundle\Component\Hydrator\Hydrator
 {
@@ -36,11 +36,11 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $object = new EventEntity();
         }
 
-        $enableOptions = (isset($data['enable_options']) && $data['enable_options']) || sizeof($object->getOptions()) > 0;
+        $enableOptions = (isset($data['enable_options']) && $data['enable_options']) || count($object->getOptions()) > 0;
 
         $calendarEvent = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
@@ -119,7 +119,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                 }
             } else {
                 // tickets weren't generated yet, but are now
-                for ($i = 0 ; $i < $data['number_of_tickets'] ; $i++) {
+                for ($i = 0; $i < $data['number_of_tickets']; $i++) {
                     $this->getEntityManager()->persist(
                         new TicketEntity(
                             $object,
@@ -154,7 +154,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
@@ -165,7 +165,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         $data['generate_tickets'] = $object->areTicketsGenerated();
         $data['allow_remove'] = $object->allowRemove();
 
-        if (sizeof($object->getOptions()) == 0) {
+        if (count($object->getOptions()) == 0) {
             $data['prices']['price_members'] = number_format($object->getPriceMembers() / 100, 2);
             $data['prices']['price_non_members'] = $object->isOnlyMembers() ? '' : number_format($object->getPriceNonMembers() / 100, 2);
         } else {

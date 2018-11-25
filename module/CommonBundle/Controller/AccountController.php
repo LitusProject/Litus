@@ -20,19 +20,16 @@
 
 namespace CommonBundle\Controller;
 
-use CommonBundle\Component\PassKit\Pass\Membership,
-    CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Entity\User\Credential,
-    CommonBundle\Entity\User\Person,
-    CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
-    CommonBundle\Form\Account\Profile as ProfileForm,
-    CudiBundle\Entity\Sale\Booking,
-    Imagick,
-    SecretaryBundle\Entity\Organization\MetaData,
-    SecretaryBundle\Entity\Registration,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\PassKit\Pass\Membership;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Entity\User\Credential;
+use CommonBundle\Entity\User\Person;
+use CommonBundle\Entity\User\Person\Academic;
+use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
+use Imagick;
+use SecretaryBundle\Entity\Registration;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * Handles account page.
@@ -43,7 +40,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 {
     public function indexAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
@@ -101,7 +99,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function editAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
@@ -123,14 +122,20 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
         $termsAndConditions = $this->getTermsAndConditions();
 
-        if (null !== $metaData) {
-            $form = $this->getForm('common_account_edit', array(
-                'meta_data' => $metaData,
-            ));
+        if ($metaData !== null) {
+            $form = $this->getForm(
+                'common_account_edit',
+                array(
+                    'meta_data' => $metaData,
+                )
+            );
         } else {
-            $form = $this->getForm('common_account_edit', array(
-                'academic' => $academic,
-            ));
+            $form = $this->getForm(
+                'common_account_edit',
+                array(
+                    'academic' => $academic,
+                )
+            );
         }
 
         $ids = unserialize(
@@ -143,9 +148,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->getConfigValue('secretary.isic_membership') == 1;
         $isicRedirect = false;
         $isicOrder = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\IsicCard')
-                        ->findByPersonAndYearQuery($academic, $this->getCurrentAcademicYear())
-                        ->getResult();
+            ->getRepository('CudiBundle\Entity\IsicCard')
+            ->findByPersonAndYearQuery($academic, $this->getCurrentAcademicYear())
+            ->getResult();
 
         $membershipArticles = array();
         foreach ($ids as $organization => $id) {
@@ -186,16 +191,14 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             if ($metaData && $metaData->becomeMember()) {
                 $formData['organization_info']['become_member'] = true;
             } else {
-                $formData['organization_info']['become_member'] = isset($formData['organization_info']['become_member'])
-                    ? $formData['organization_info']['become_member']
-                    : 0;
+                $formData['organization_info']['become_member'] = $formData['organization_info']['become_member'] ?? 0;
             }
             $formData['organization_info']['conditions'] = true;
 
             $organizationData = $formData['organization_info'];
 
             if (isset($organizationData['organization'])) {
-                if (0 == $organizationData['organization'] && $enableOtherOrganization) {
+                if ($organizationData['organization'] == 0 && $enableOtherOrganization) {
                     $selectedOrganization = null;
                 } else {
                     $selectedOrganization = $this->getEntityManager()
@@ -212,10 +215,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getData();
-                $organizationData = $formData['organization_info'];
-
-                if (null === $metaData) {
+                if ($metaData === null) {
                     $metaData = $form->hydrateObject();
 
                     $this->getEntityManager()->persist($metaData);
@@ -231,7 +231,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     );
                 }
 
-                if (null !== $selectedOrganization) {
+                if ($selectedOrganization !== null) {
                     $this->setOrganization(
                         $academic,
                         $this->getCurrentAcademicYear(),
@@ -257,7 +257,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                             ->findOneById($articleId);
                     }
 
-                    if ($metaData->becomeMember() && null !== $selectedOrganization) {
+                    if ($metaData->becomeMember() && $selectedOrganization !== null) {
                         if ($isicMembership && $isicOrder == null) {
                             $isicRedirect = true;
                         } else {
@@ -273,7 +273,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                                     $this->getCurrentAcademicYear()
                                 );
 
-                            if (null !== $booking && $isicOrder->getBooking() !== $booking) {
+                            if ($booking !== null && $isicOrder->getBooking() !== $booking) {
                                 $this->getEntityManager()->remove($booking);
                             }
                         }
@@ -289,7 +289,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     ->getRepository('SecretaryBundle\Entity\Registration')
                     ->findOneByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
-                if (null === $registration) {
+                if ($registration === null) {
                     $registration = new Registration(
                         $academic,
                         $this->getCurrentAcademicYear()
@@ -336,7 +336,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function studiesAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
@@ -348,7 +349,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function saveStudiesAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
@@ -363,11 +365,11 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function subjectsAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
-        /** @var \SecretaryBundle\Form\Registration\Subject\Add $form */
         $form = $this->getForm('secretary_registration_subject_add');
 
         return $this->doSubjectAction(
@@ -379,11 +381,12 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function saveSubjectsAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $this->initAjax();
+
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
-
-        $this->initAjax();
 
         return $this->doSaveSubjectAction(
             $academic,
@@ -394,7 +397,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function activateAction()
     {
-        if (!($user = $this->getPersonEntity())) {
+        $user = $this->getPersonEntity();
+        if ($user === null) {
             return new ViewModel();
         }
 
@@ -438,7 +442,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function passbookAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
@@ -453,11 +458,13 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         $membership->createPass();
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="membership.pkpass"',
-            'Content-Type'        => 'application/vnd.apple.pkpass',
-            'Content-Length'      => filesize($pass->getFileName()),
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'inline; filename="membership.pkpass"',
+                'Content-Type'        => 'application/vnd.apple.pkpass',
+                'Content-Length'      => filesize($pass->getFileName()),
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -469,17 +476,20 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function uploadProfileImageAction()
     {
-        if (!($academic = $this->getAcademicEntity())) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
         $form = $this->getForm('common_account_profile');
 
         if ($this->getRequest()->isPost()) {
-            $form->setData(array_merge_recursive(
-                $this->getRequest()->getPost()->toArray(),
-                $this->getRequest()->getFiles()->toArray()
-            ));
+            $form->setData(
+                array_merge_recursive(
+                    $this->getRequest()->getPost()->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
 
             $filePath = 'public' . $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
@@ -610,7 +620,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
      */
     private function doRedirect()
     {
-        if (null === $this->getParam('return')) {
+        if ($this->getParam('return') === null) {
             $this->redirect()->toRoute(
                 'common_account'
             );

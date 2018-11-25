@@ -20,17 +20,17 @@
 
 namespace CudiBundle\Controller\Admin\Sale;
 
-use CommonBundle\Entity\User\Person\Academic,
-    CudiBundle\Component\Mail\Booking as BookingMail,
-    CudiBundle\Entity\Log,
-    CudiBundle\Entity\Sale\Article as SaleArticle,
-    CudiBundle\Entity\Sale\Booking,
-    CudiBundle\Entity\Sale\QueueItem,
-    CudiBundle\Entity\Sale\ReturnItem,
-    CudiBundle\Entity\Stock\Period,
-    DateInterval,
-    DateTime,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Person\Academic;
+use CudiBundle\Component\Mail\Booking as BookingMail;
+use CudiBundle\Entity\Log;
+use CudiBundle\Entity\Sale\Article as SaleArticle;
+use CudiBundle\Entity\Sale\Booking;
+use CudiBundle\Entity\Sale\QueueItem;
+use CudiBundle\Entity\Sale\ReturnItem;
+use CudiBundle\Entity\Stock\Period;
+use DateInterval;
+use DateTime;
+use Zend\View\Model\ViewModel;
 
 /**
  * BookingController
@@ -41,15 +41,17 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($currentPeriod = $this->getActiveStockPeriodEntity())) {
+        $currentPeriod = $this->getActiveStockPeriodEntity();
+        if ($currentPeriod === null) {
             return new ViewModel();
         }
 
-        if (!($activePeriod = $this->getPeriodEntity())) {
+        $activePeriod = $this->getPeriodEntity();
+        if ($activePeriod === null) {
             return new ViewModel();
         }
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $bookings = $this->search($activePeriod, $this->getParam('type'));
         }
 
@@ -81,15 +83,17 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function inactiveAction()
     {
-        if (!($currentPeriod = $this->getActiveStockPeriodEntity())) {
+        $currentPeriod = $this->getActiveStockPeriodEntity();
+        if ($currentPeriod === null) {
             return new ViewModel();
         }
 
-        if (!($activePeriod = $this->getPeriodEntity())) {
+        $activePeriod = $this->getPeriodEntity();
+        if ($activePeriod === null) {
             return new ViewModel();
         }
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $bookings = $this->search($activePeriod, 'inactive');
         }
 
@@ -121,11 +125,13 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($currentPeriod = $this->getActiveStockPeriodEntity())) {
+        $currentPeriod = $this->getActiveStockPeriodEntity();
+        if ($currentPeriod === null) {
             return new ViewModel();
         }
 
-        if (!($activePeriod = $this->getPeriodEntity())) {
+        $activePeriod = $this->getPeriodEntity();
+        if ($activePeriod === null) {
             return new ViewModel();
         }
 
@@ -207,15 +213,18 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($booking = $this->getBookingEntity())) {
+        $booking = $this->getBookingEntity();
+        if ($booking === null) {
             return new ViewModel();
         }
 
-        if (!($currentPeriod = $this->getActiveStockPeriodEntity())) {
+        $currentPeriod = $this->getActiveStockPeriodEntity();
+        if ($currentPeriod === null) {
             return new ViewModel();
         }
 
-        if (!($activePeriod = $this->getPeriodEntity())) {
+        $activePeriod = $this->getPeriodEntity();
+        if ($activePeriod === null) {
             return new ViewModel();
         }
 
@@ -230,10 +239,13 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             $this->getParam('page')
         );
 
-        $mailForm = $this->getForm('cudi_mail_send', array(
-            'email' => $booking->getPerson()->getEmail(),
-            'name'  => $booking->getPerson()->getFullName(),
-        ));
+        $mailForm = $this->getForm(
+            'cudi_mail_send',
+            array(
+                'email' => $booking->getPerson()->getEmail(),
+                'name'  => $booking->getPerson()->getFullName(),
+            )
+        );
         $mailForm->setAttribute('action', $this->url()->fromRoute('cudi_admin_mail'));
 
         return new ViewModel(
@@ -251,7 +263,8 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function deleteAction()
     {
-        if (!($booking = $this->getBookingEntity())) {
+        $booking = $this->getBookingEntity();
+        if ($booking === null) {
             return new ViewModel();
         }
 
@@ -280,11 +293,13 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function assignAction()
     {
-        if (!($booking = $this->getBookingEntity())) {
+        $booking = $this->getBookingEntity();
+        if ($booking === null) {
             return new ViewModel();
         }
 
-        if (!($currentPeriod = $this->getActiveStockPeriodEntity())) {
+        $currentPeriod = $this->getActiveStockPeriodEntity();
+        if ($currentPeriod === null) {
             return new ViewModel();
         }
 
@@ -331,10 +346,9 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         }
 
         $booking->setStatus('assigned', $this->getEntityManager());
+        $this->getEntityManager()->flush();
 
         BookingMail::sendAssignMail($this->getEntityManager(), $this->getMailTransport(), array($booking), $booking->getPerson());
-
-        $this->getEntityManager()->flush();
 
         $this->flashMessenger()->success(
             'SUCCESS',
@@ -354,7 +368,8 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function unassignAction()
     {
-        if (!($booking = $this->getBookingEntity())) {
+        $booking = $this->getBookingEntity();
+        if ($booking === null) {
             return new ViewModel();
         }
 
@@ -392,7 +407,8 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function expireAction()
     {
-        if (!($booking = $this->getBookingEntity())) {
+        $booking = $this->getBookingEntity();
+        if ($booking === null) {
             return new ViewModel();
         }
 
@@ -417,7 +433,8 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function extendAction()
     {
-        if (!($booking = $this->getBookingEntity())) {
+        $booking = $this->getBookingEntity();
+        if ($booking === null) {
             return new ViewModel();
         }
 
@@ -449,7 +466,12 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function returnAction()
     {
-        if (!($booking = $this->getBookingEntity()) || $booking->getStatus() != 'sold') {
+        $booking = $this->getBookingEntity();
+        if ($booking === null) {
+            return new ViewModel();
+        }
+
+        if ($booking->getStatus() != 'sold') {
             return new ViewModel();
         }
 
@@ -493,7 +515,8 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         } else {
             $booking->setStatus('returned', $this->getEntityManager());
         }
-        for ($i = 0 ; $i < $number ; $i++) {
+
+        for ($i = 0; $i < $number; $i++) {
             $this->getEntityManager()->persist(new ReturnItem($booking->getArticle(), $price / 100, $queueItem));
         }
 
@@ -525,9 +548,9 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->cancelAll($this->getAuthentication()->getPersonObject(), $this->getParam('type') == 'remove_registration', $excluded);
 
-        if (0 == $number) {
+        if ($number == 0) {
             $message = 'No booking could be removed!';
-        } elseif (1 == $number) {
+        } elseif ($number == 1) {
             $message = 'There is <b>one</b> booking removed!';
         } else {
             $message = 'There are <b>' . $number . '</b> bookings removed!';
@@ -554,9 +577,9 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->assignAll($this->getAuthentication()->getPersonObject(), $this->getMailTransport());
 
-        if (0 == $number) {
+        if ($number == 0) {
             $message = 'No booking could be assigned!';
-        } elseif (1 == $number) {
+        } elseif ($number == 1) {
             $message = 'There is <b>one</b> booking assigned!';
         } else {
             $message = 'There are <b>' . $number . '</b> bookings assigned!';
@@ -585,9 +608,9 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
         $this->getEntityManager()->flush();
 
-        if (0 == $number) {
+        if ($number == 0) {
             $message = 'No booking could be expired!';
-        } elseif (1 == $number) {
+        } elseif ($number == 1) {
             $message = 'There is <b>one</b> booking expired!';
         } else {
             $message = 'There are <b>' . $number . '</b> bookings expired!';
@@ -621,9 +644,9 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             $this->getEntityManager()->flush();
         }
 
-        if (0 == $number) {
+        if ($number == 0) {
             $message = 'No booking could be extended!';
-        } elseif (1 == $number) {
+        } elseif ($number == 1) {
             $message = 'There is <b>one</b> booking extended!';
         } else {
             $message = 'There are <b>' . $number . '</b> bookings extended!';
@@ -648,7 +671,8 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($activePeriod = $this->getPeriodEntity())) {
+        $activePeriod = $this->getPeriodEntity();
+        if ($activePeriod === null) {
             return new ViewModel();
         }
 
@@ -683,7 +707,8 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $form = $this->getForm('cudi_sale_booking_person');
 
-        if ($person = $this->getAcademicEntity(true)) {
+        $person = $this->getAcademicEntity(true);
+        if ($person !== null) {
             $paginator = $this->paginator()->createFromQuery(
                 $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
@@ -710,13 +735,10 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function articleAction()
     {
-        if (!($activePeriod = $this->getPeriodEntity())) {
-            return new ViewModel();
-        }
-
         $form = $this->getForm('cudi_sale_booking_article');
 
-        if ($article = $this->getSaleArticleEntity(true)) {
+        $article = $this->getSaleArticleEntity(true);
+        if ($article !== null) {
             $paginator = $this->paginator()->createFromQuery(
                 $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
@@ -762,7 +784,8 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function undoAction()
     {
-        if (!($log = $this->getLogEntity())) {
+        $log = $this->getLogEntity();
+        if ($log === null) {
             return new ViewModel();
         }
 
@@ -795,8 +818,8 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param  Period                   $activePeriod
-     * @param  string                   $type
+     * @param  Period $activePeriod
+     * @param  string $type
      * @return \Doctrine\ORM\Query|null
      */
     private function search(Period $activePeriod, $type)
@@ -822,7 +845,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
      */
     private function getPeriodEntity()
     {
-        if (null === $this->getParam('period')) {
+        if ($this->getParam('period') === null) {
             return $this->getActiveStockPeriodEntity();
         }
 
@@ -874,7 +897,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param  bool          $nullable
+     * @param  boolean $nullable
      * @return Academic|null
      */
     private function getAcademicEntity($nullable = false)
@@ -905,7 +928,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param  bool             $nullable
+     * @param  boolean $nullable
      * @return SaleArticle|null
      */
     private function getSaleArticleEntity($nullable = false)

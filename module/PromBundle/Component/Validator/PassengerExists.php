@@ -44,7 +44,7 @@ class PassengerExists extends \CommonBundle\Component\Validator\AbstractValidato
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -71,7 +71,7 @@ class PassengerExists extends \CommonBundle\Component\Validator\AbstractValidato
         $passenger = $this->getEntityManager()
             ->getRepository('PromBundle\Entity\Bus\Passenger')
             ->findPassengerByEmail($value, $this->getCurrentAcademicYear());
-        if (null === $passenger) {
+        if ($passenger === null) {
             return true;
         }
 

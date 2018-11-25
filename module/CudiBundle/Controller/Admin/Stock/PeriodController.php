@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Controller\Admin\Stock;
 
-use CudiBundle\Entity\Stock\Period,
-    CudiBundle\Entity\Stock\Period\Value\Start as StartValue,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Stock\Period;
+use CudiBundle\Entity\Stock\Period\Value\Start as StartValue;
+use Zend\View\Model\ViewModel;
 
 /**
  * PeriodController
@@ -88,10 +88,8 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
                 ->findAllArticlesByPeriod($previous);
             foreach ($articles as $article) {
                 $value = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Stock\Period\Value\Start')
-                        ->findValueByArticleAndPeriod($article, $previous)
-                    + $previous->getNbDelivered($article)
-                    - $previous->getNbSold($article);
+                    ->getRepository('CudiBundle\Entity\Stock\Period\Value\Start')
+                    ->findValueByArticleAndPeriod($article, $previous) + $previous->getNbDelivered($article) - $previous->getNbSold($article);
 
                 $start = new StartValue($article, $new, ($value < 0 ? 0 : $value));
                 $this->getEntityManager()->persist($start);
@@ -117,7 +115,8 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($period = $this->getPeriodEntity())) {
+        $period = $this->getPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 
@@ -139,7 +138,8 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
 
     public function searchAction()
     {
-        if (!($period = $this->getPeriodEntity())) {
+        $period = $this->getPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 

@@ -20,10 +20,10 @@
 
 namespace CommonBundle\Command;
 
-use CommonBundle\Entity\User\Person\Academic,
-    DateTime,
-    Symfony\Component\Console\Input\InputArgument,
-    Symfony\Component\Console\Question\ConfirmationQuestion;
+use CommonBundle\Entity\User\Person\Academic;
+use DateTime;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 /**
  * Destroy the personal data of an account.
@@ -32,24 +32,14 @@ class DestroyAccount extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
-        $this
-            ->setName('common:destroy-account')
-            ->setDescription('Destroy the personal data of an account.')
-            ->addArgument('id', InputArgument::REQUIRED, 'The id of the account')
-            ->setHelp(<<<EOT
-The <info>%command.name%</info> command destroys the personal data (address, name, ...) from an account.
-EOT
-        );
+        $this->setName('common:destroy-account')
+            ->setDescription('Destroy the personal data of an account')
+            ->addArgument('id', InputArgument::REQUIRED, 'The ID of the account');
     }
 
-    protected function executeCommand()
+    protected function invoke()
     {
         $this->destroy($this->getArgument('id'));
-    }
-
-    protected function getLogName()
-    {
-        return 'DestroyAccount';
     }
 
     private function destroy($id)
@@ -66,8 +56,9 @@ EOT
 
         $fullName = $person->getFullName();
 
-        $question = new ConfirmationQuestion('Do you want to destroy the account of ' . $person->getFullName() . '? [y/n]: ', false);
-        $confirmed = $this->getQuestion()->ask($this->input, $this->output, $question);
+        $helper = $this->getHelper('question');
+        $question = new ConfirmationQuestion('Do you want to destroy the account of ' . $person->getFullName() . '?', false);
+        $confirmed = $helper->ask($this->input, $this->output, $question);
 
         if ($confirmed) {
             $person->setUsername(substr(md5(time()), 0, 50));
@@ -118,7 +109,7 @@ EOT
             }
 
             $this->getEntityManager()->flush();
-            $this->writeln('Account of <comment>' . $fullName . '</comment> was destroyed.');
+            $this->writeln('Account of <comment>' . $fullName . '</comment> was destroyed!');
         }
     }
 }

@@ -24,39 +24,23 @@ use Symfony\Component\Console\Input\InputArgument;
 
 class TestPrinter extends \CommonBundle\Component\Console\Command
 {
-    /**
-     * @return null
-     */
     protected function configure()
     {
-        $this
-            ->setName('cudi:test-printer')
-            ->setAliases(array('cudi:printer:test'))
-            ->setDescription('Tests the printers.')
-            ->addArgument('printer', InputArgument::REQUIRED, 'the printer name')
-            ->addArgument('ticket', InputArgument::REQUIRED, 'the ticket type')
-            ->setHelp(<<<EOT
-The <info>%command.name%</info> command sends a test ticket to a printer.
-
-The printer to test is set by the <comment>printer</comment> argument. Possible values
-are defined by the '<fg=blue>cudi.printers</fg=blue>' configuration entry.
-
-The type of the ticket to send is set by the <comment>ticket</comment> argument. Possible values
-are '<fg=blue>signin</fg=blue>', '<fg=blue>collect</fg=blue>' and '<fg=blue>sale</fg=blue>'.
-EOT
-        );
+        $this->setName('cudi:test-printer')
+            ->setDescription('Tests the printers')
+            ->addArgument('printer', InputArgument::REQUIRED, 'The printer name')
+            ->addArgument('ticket', InputArgument::REQUIRED, 'The ticket type');
     }
 
-    /**
-     * @return int|null
-     */
-    protected function executeCommand()
+    protected function invoke()
     {
-        if (!($printer = $this->getPrinter())) {
+        $printer = $this->getPrinter();
+        if ($printer === null) {
             return 1;
         }
 
-        if (!($ticket = $this->getTicket())) {
+        $ticket = $this->getTicket();
+        if ($ticket === null) {
             return 2;
         }
 
@@ -65,14 +49,6 @@ EOT
 
     /**
      * @return string
-     */
-    protected function getLogName()
-    {
-        return 'TestPrinter';
-    }
-
-    /**
-     * @return string|null
      */
     private function getPrinter()
     {
@@ -98,7 +74,7 @@ EOT
     }
 
     /**
-     * @return int|null
+     * @return integer
      */
     private function getTicket()
     {
@@ -123,7 +99,6 @@ EOT
     /**
      * @param  string  $printer
      * @param  integer $ticket
-     * @return null
      */
     private function send($printer, $ticket)
     {

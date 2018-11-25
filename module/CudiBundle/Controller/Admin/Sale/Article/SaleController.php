@@ -20,10 +20,10 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Article;
 
-use CudiBundle\Entity\Sale\Article as SaleArticle,
-    CudiBundle\Entity\Sale\SaleItem\External as ExternalItem,
-    CudiBundle\Entity\Sale\SaleItem\Prof as ProfItem,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Sale\Article as SaleArticle;
+use CudiBundle\Entity\Sale\SaleItem\External as ExternalItem;
+use CudiBundle\Entity\Sale\SaleItem\Prof as ProfItem;
+use Zend\View\Model\ViewModel;
 
 /**
  * SaleController
@@ -34,11 +34,13 @@ class SaleController extends \CudiBundle\Component\Controller\ActionController
 {
     public function saleAction()
     {
-        if (!($article = $this->getSaleArticleEntity())) {
+        $article = $this->getSaleArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
-        if (!($period = $this->getActiveStockPeriodEntity())) {
+        $period = $this->getActiveStockPeriodEntity();
+        if ($period === null) {
             return new ViewModel();
         }
 
@@ -50,7 +52,7 @@ class SaleController extends \CudiBundle\Component\Controller\ActionController
             if ($form->isValid()) {
                 $formData = $form->getData();
 
-                if ('prof' == $formData['sale_to']) {
+                if ($formData['sale_to'] == 'prof') {
                     $saleItem = new ProfItem(
                         $article,
                         $formData['number'],

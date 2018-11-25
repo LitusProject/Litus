@@ -20,13 +20,13 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Entity\Collaborator,
-    BrBundle\Entity\Contract,
-    BrBundle\Entity\Contract\ContractEntry,
-    BrBundle\Entity\Contract\ContractHistory,
-    BrBundle\Entity\Product\Order,
-    BrBundle\Entity\Product\OrderEntry,
-    Zend\View\Model\ViewModel;
+use BrBundle\Entity\Collaborator;
+use BrBundle\Entity\Contract;
+use BrBundle\Entity\Contract\ContractEntry;
+use BrBundle\Entity\Contract\ContractHistory;
+use BrBundle\Entity\Product\Order;
+use BrBundle\Entity\Product\OrderEntry;
+use Zend\View\Model\ViewModel;
 
 /**
  * OrderController
@@ -80,7 +80,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($collaborator = $this->getCollaboratorEntity())) {
+        $collaborator = $this->getCollaboratorEntity();
+        if ($collaborator === null) {
             return new ViewModel();
         }
 
@@ -119,7 +120,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function productAction()
     {
-        if (!($order = $this->getOrderEntity(false))) {
+        $order = $this->getOrderEntity(false);
+        if ($order === null) {
             return new ViewModel();
         }
 
@@ -127,7 +129,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        if (!($collaborator = $this->getCollaboratorEntity())) {
+        if ($this->getCollaboratorEntity() === null) {
             return new ViewModel();
         }
 
@@ -176,7 +178,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($order = $this->getOrderEntity(false))) {
+        $order = $this->getOrderEntity(false);
+        if ($order === null) {
             return new ViewModel();
         }
 
@@ -184,7 +187,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        if (!($collaborator = $this->getCollaboratorEntity())) {
+        if ($this->getCollaboratorEntity() === null) {
             return new ViewModel();
         }
 
@@ -222,7 +225,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editProductAction()
     {
-        if (!($order = $this->getOrderEntity(false))) {
+        $order = $this->getOrderEntity(false);
+        if ($order === null) {
             return new ViewModel();
         }
 
@@ -230,7 +234,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        if (!($collaborator = $this->getCollaboratorEntity())) {
+        if ($this->getCollaboratorEntity() === null) {
             return new ViewModel();
         }
 
@@ -279,7 +283,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($order = $this->getOrderEntity())) {
+        $order = $this->getOrderEntity();
+        if ($order === null) {
             return new ViewModel();
         }
 
@@ -298,7 +303,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($entry = $this->getEntryEntity(false))) {
+        $entry = $this->getEntryEntity(false);
+        if ($entry === null) {
             return new ViewModel();
         }
 
@@ -351,11 +357,12 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function generateAction()
     {
-        if (!($order = $this->getOrderEntity(false))) {
+        $order = $this->getOrderEntity(false);
+        if ($order === null) {
             return new ViewModel();
         }
 
-        $form = $this->getForm('br_order_generate-contract',array('order' => $order));
+        $form = $this->getForm('br_order_generate-contract', array('order' => $order));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -415,7 +422,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param  boolean    $allowSigned
+     * @param  boolean $allowSigned
      * @return Order|null
      */
     private function getOrderEntity($allowSigned = true)
@@ -458,7 +465,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param  boolean         $allowSigned
+     * @param  boolean $allowSigned
      * @return OrderEntry|null
      */
     private function getEntryEntity($allowSigned = true)
@@ -525,7 +532,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('BrBundle\Entity\Collaborator')
             ->findCollaboratorByPersonId($this->getAuthentication()->getPersonObject()->getId());
 
-        if (null === $collaborator) {
+        if ($collaborator === null) {
             $this->flashMessenger()->error(
                 'Error',
                 'You are not a collaborator, so you cannot add or edit orders.'

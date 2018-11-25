@@ -17,12 +17,13 @@
  *
  * @license http://litus.cc/LICENSE
  */
+
 namespace PublicationBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
-    DateTime,
-    Doctrine\ORM\Mapping as ORM,
-    PublicationBundle\Entity\Publication;
+use CommonBundle\Entity\General\AcademicYear;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
+use PublicationBundle\Entity\Publication;
 
 /**
  * This is the entity for a publication
@@ -105,7 +106,7 @@ abstract class Edition
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {

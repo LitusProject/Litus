@@ -19,5 +19,5 @@
  */
 
 return array(
-    'install.shift' => 'ShiftBundle\Command\Install',
+    'install_shift' => 'ShiftBundle\Command\Install',
 );

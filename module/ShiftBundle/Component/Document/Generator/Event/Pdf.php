@@ -20,11 +20,11 @@
 
 namespace ShiftBundle\Component\Document\Generator\Event;
 
-use CalendarBundle\Entity\Node\Event,
-    CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\Xml\Generator,
-    CommonBundle\Component\Util\Xml\Node,
-    Doctrine\ORM\EntityManager;
+use CalendarBundle\Entity\Node\Event;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\Xml\Generator;
+use CommonBundle\Component\Util\Xml\Node;
+use Doctrine\ORM\EntityManager;
 
 /**
  * EventPdf
@@ -112,26 +112,26 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                 $y = $shift->getNbResponsibles() - count($shift->getResponsibles());
                 for ($x = 0; $x < $y; $x++) {
                     $people[] = new Node(
-                    'person',
-                    array(),
-                    array(
-                        new Node(
-                            'name',
-                            array(),
-                            ''
-                        ),
-                        new Node(
-                            'phone_number',
-                            array(),
-                            ''
-                        ),
-                        new Node(
-                            'responsible',
-                            array(),
-                            '1'
-                        ),
-                    )
-                );
+                        'person',
+                        array(),
+                        array(
+                            new Node(
+                                'name',
+                                array(),
+                                ''
+                            ),
+                            new Node(
+                                'phone_number',
+                                array(),
+                                ''
+                            ),
+                            new Node(
+                                'responsible',
+                                array(),
+                                '1'
+                            ),
+                        )
+                    );
                 }
             }
 
@@ -162,26 +162,26 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                 $y = $shift->getNbVolunteers() - count($shift->getVolunteers());
                 for ($x = 0; $x < $y; $x++) {
                     $people[] = new Node(
-                    'person',
-                    array(),
-                    array(
-                        new Node(
-                            'name',
-                            array(),
-                            ''
-                        ),
-                        new Node(
-                            'phone_number',
-                            array(),
-                            ''
-                        ),
-                        new Node(
-                            'responsible',
-                            array(),
-                            '0'
-                        ),
-                    )
-                );
+                        'person',
+                        array(),
+                        array(
+                            new Node(
+                                'name',
+                                array(),
+                                ''
+                            ),
+                            new Node(
+                                'phone_number',
+                                array(),
+                                ''
+                            ),
+                            new Node(
+                                'responsible',
+                                array(),
+                                '0'
+                            ),
+                        )
+                    );
                 }
             }
             $shifts[] = new Node(

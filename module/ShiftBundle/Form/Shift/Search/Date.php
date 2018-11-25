@@ -40,30 +40,32 @@ class Date extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $now = new DateTime();
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'date',
-            'label'      => 'Date',
-            'value'      => $now->format('d/m/Y'),
-            'attributes' => array(
-                'placeholder' => 'dd/mm/yyyy',
-            ),
-            'options' => array(
-                'input' => array(
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name'    => 'date',
-                            'options' => array(
-                                'format' => 'd/m/Y',
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'date',
+                'label'      => 'Date',
+                'value'      => $now->format('d/m/Y'),
+                'attributes' => array(
+                    'placeholder' => 'dd/mm/yyyy',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name'    => 'Date',
+                                'options' => array(
+                                    'format' => 'd/m/Y',
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
     }
 }

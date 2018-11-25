@@ -20,26 +20,19 @@
 
 namespace SyllabusBundle\Form\Admin\Subject;
 
-use LogicException;
-
 /**
  * Edit Subject
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends Add
+class Edit extends \SyllabusBundle\Form\Admin\Subject\Add
 {
     public function init()
     {
-        if (null === $this->subject) {
-            throw new LogicException('Cannot edit a null subject');
-        }
-
         parent::init();
 
-        $this->remove('submit');
-
-        $this->addSubmit('Save', 'edit');
+        $this->remove('submit')
+            ->addSubmit('Save', 'edit');
 
         $this->bind($this->subject);
     }

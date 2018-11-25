@@ -11,7 +11,7 @@
                 Search:
                 <select id="searchField">
                     <option value="controller">Controller</option>
-                    <option value="url">Url</option>
+                    <option value="url">URL</option>
                     <option value="user">User</option>
                 </select>
                 is
@@ -22,7 +22,7 @@
                 <tr>
                     <th width="150px">Timestamp</th>
                     <th width="150px">User</th>
-                    <th>Url</th>
+                    <th>URL</th>
                     <th width="140px">Controller</th>
                     <th width="140px">Action</th>
                     <th width="80px">Method</th>
@@ -37,7 +37,7 @@
                     <tr>
                         <th width="150px">Timestamp</th>
                         <th width="150px">User</th>
-                        <th>Url</th>
+                        <th>URL</th>
                         <th width="140px">Controller</th>
                         <th width="140px">Action</th>
                         <th width="80px">Method</th>
@@ -49,20 +49,13 @@
                     {% for visit in paginator %}
                         <tr class="item">
                             <td>{{ visit.getTimestamp().format('d/m/Y H:i:s') }}</td>
-                            <td>{% if visit.getUser() %}{{ visit.getUser().getFullName() }}{% else %}guest{% endif %}</td>
+                            <td>{{ visit.getUser().getFullName() ?? 'Guest' }}</td>
                             <td>{{ visit.getUrl() }}</td>
                             <td>{{ visit.getController() }}</td>
                             <td>{{ visit.getAction() }}</td>
                             <td>{{ visit.getRequestMethod() }}</td>
                             <td class="actions">
-                                <a href="#" class="view" data-id="{{ visit.getId() }}"
-                                                         data-timestamp="{{ visit.getTimestamp().format('d/m/Y H:i:s') }}"
-                                                         data-user="{% if visit.getUser() %}{{ visit.getUser().getFullName() }}{% endif %}"
-                                                         data-url="{{ visit.getUrl() }}"
-                                                         data-controller="{{ visit.getController() }}"
-                                                         data-action="{{ visit.getAction() }}"
-                                                         data-requestMethod="{{ visit.getRequestMethod() }}"
-                                                         data-browser="{{ visit.getBrowser() }}">View</a>
+                                <a href="#" class="view" data-id="{{ visit.getId() }}" data-timestamp="{{ visit.getTimestamp().format('d/m/Y H:i:s') }}" data-user="{{ visit.getUser().getFullName() ?? 'Guest' }}" data-url="{{ visit.getUrl() }}" data-controller="{{ visit.getController() }}" data-action="{{ visit.getAction() }}" data-requestMethod="{{ visit.getRequestMethod() }}" data-browser="{{ visit.getBrowser() }}">View</a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -86,7 +79,7 @@
                         <dd class="timestamp"></dd>
                         <dt>User</dt>
                         <dd class="user"></dd>
-                        <dt>Url</dt>
+                        <dt>URL</dt>
                         <dd class="url"></dd>
                         <dt>Controller</dt>
                         <dd class="controller"></dd>

@@ -31,7 +31,9 @@ class MemberController extends \ApiBundle\Component\Controller\ActionController\
     public function allAction()
     {
         $this->initJson();
-        if (!($academicYear = $this->getCurrentAcademicYear())) {
+
+        $academicYear = $this->getCurrentAcademicYear();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 

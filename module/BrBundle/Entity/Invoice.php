@@ -20,13 +20,10 @@
 
 namespace BrBundle\Entity;
 
-use BrBundle\Entity\Product,
-    DateInterval,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * This is the entity for a invoice.
@@ -43,7 +40,7 @@ use BrBundle\Entity\Product,
 abstract class Invoice
 {
     /**
-     * @var int The invoice's ID
+     * @var integer The invoice's ID
      *
      * @ORM\Id
      * @ORM\Column(type="bigint")
@@ -52,7 +49,7 @@ abstract class Invoice
     private $id;
 
     /**
-     * @var bool True if this invoice is tax free.
+     * @var boolean True if this invoice is tax free.
      *
      * @ORM\Column(name="tax_free", type="boolean", options={"default" = false})
      */
@@ -73,7 +70,7 @@ abstract class Invoice
     private $paidTime;
 
     /**
-     * @var int The invoice number;
+     * @var integer The invoice number;
      *
      * @ORM\Column(name="invoice_nb", type="integer")
      */
@@ -87,7 +84,7 @@ abstract class Invoice
     private $invoiceNumberPrefix;
 
     /**
-     * @var int that resembles the version of this invoice.
+     * @var integer that resembles the version of this invoice.
      *
      * @ORM\Column(type="integer")
      */
@@ -137,7 +134,7 @@ abstract class Invoice
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getInvoiceNb()
     {
@@ -165,7 +162,7 @@ abstract class Invoice
 
     public function setInvoiceNb($invoiceNb)
     {
-        if (null === $invoiceNb || !is_numeric($invoiceNb)) {
+        if ($invoiceNb === null || !is_numeric($invoiceNb)) {
             throw new InvalidArgumentException('Invalid invoice number: ' . $invoiceNb);
         }
 
@@ -184,7 +181,7 @@ abstract class Invoice
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.invoice_year_number');
 
-        $prefix = $yearNumber.$bookNumber;
+        $prefix = $yearNumber . $bookNumber;
         $this->setInvoiceNumberPrefix($prefix);
 
         $iNb = $entityManager
@@ -276,7 +273,7 @@ abstract class Invoice
     }
 
     /**
-     * @param  int  $version
+     * @param  integer $version
      * @return self
      */
     public function setVersion($version)
@@ -287,14 +284,15 @@ abstract class Invoice
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getVersion()
     {
         return $this->version;
     }
+
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -306,7 +304,7 @@ abstract class Invoice
      */
     public function isPayed()
     {
-        return (null !== $this->paidTime);
+        return ($this->paidTime !== null);
     }
 
     /**
@@ -333,16 +331,6 @@ abstract class Invoice
     }
 
     /**
-     * @return bool
-     */
-    public function isExpired()
-    {
-        $now = new DateTime();
-
-        return !$this->isPaid() && $now > $this->getExpirationTime();
-    }
-
-    /**
      * @return DateTime
      */
     public function getPaidTime()
@@ -366,10 +354,10 @@ abstract class Invoice
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isPaid()
     {
-        return null !== $this->paidTime;
+        return $this->paidTime !== null;
     }
 }

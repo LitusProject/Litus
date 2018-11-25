@@ -20,8 +20,8 @@
 
 namespace PublicationBundle\Controller\Admin;
 
-use PublicationBundle\Entity\Publication,
-    Zend\View\Model\ViewModel;
+use PublicationBundle\Entity\Publication;
+use Zend\View\Model\ViewModel;
 
 /**
  * PublicationController
@@ -86,7 +86,8 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
 
     public function editAction()
     {
-        if (!($publication = $this->getPublicationEntity())) {
+        $publication = $this->getPublicationEntity();
+        if ($publication === null) {
             return new ViewModel();
         }
 
@@ -125,7 +126,8 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
     {
         $this->initAjax();
 
-        if (!($publication = $this->getPublicationEntity())) {
+        $publication = $this->getPublicationEntity();
+        if ($publication === null) {
             return new ViewModel();
         }
 

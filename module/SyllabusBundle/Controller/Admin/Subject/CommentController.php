@@ -20,12 +20,12 @@
 
 namespace SyllabusBundle\Controller\Admin\Subject;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    SyllabusBundle\Entity\Subject,
-    SyllabusBundle\Entity\Subject\Comment,
-    SyllabusBundle\Entity\Subject\Reply,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+use SyllabusBundle\Entity\Subject;
+use SyllabusBundle\Entity\Subject\Comment;
+use SyllabusBundle\Entity\Subject\Reply;
+use Zend\View\Model\ViewModel;
 
 /**
  * CommentController
@@ -36,7 +36,8 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -63,7 +64,8 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
 
     public function subjectAction()
     {
-        if (!($subject = $this->getSubjectEntity())) {
+        $subject = $this->getSubjectEntity();
+        if ($subject === null) {
             return new ViewModel();
         }
 
@@ -112,7 +114,8 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
 
     public function replyAction()
     {
-        if (!($comment = $this->getCommentEntity())) {
+        $comment = $this->getCommentEntity();
+        if ($comment === null) {
             return new ViewModel();
         }
 
@@ -197,7 +200,8 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($comment = $this->getCommentEntity())) {
+        $comment = $this->getCommentEntity();
+        if ($comment === null) {
             return new ViewModel();
         }
 
@@ -269,7 +273,7 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
     protected function getAcademicYearEntity()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') !== null) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
         }
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);

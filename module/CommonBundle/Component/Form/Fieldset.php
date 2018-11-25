@@ -20,27 +20,33 @@
 
 namespace CommonBundle\Component\Form;
 
-use Zend\Form\FormInterface,
-    Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\CacheTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use Zend\Form\FormInterface;
+use Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 /**
  * Extending Zend's fieldset component, so that our forms look the way we want
  * them to.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
- *
- * @method \CommonBundle\Component\Form\FieldsetTrait setRequired(boolean $flag = true)
- * @method \CommonBundle\Component\Form\ElementTrait setElementRequired(boolean $flag = true)
  */
-class Fieldset extends \Zend\Form\Fieldset implements FieldsetInterface, \CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface
+class Fieldset extends \Zend\Form\Fieldset implements FieldsetInterface, ServiceLocatorAwareInterface
 {
-    use ElementTrait, FieldsetTrait {
-        FieldsetTrait::setRequired insteadof ElementTrait;
+    use ElementTrait {
         ElementTrait::setRequired as setElementRequired;
     }
 
-    use \CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait;
+    use FieldsetTrait {
+        FieldsetTrait::setRequired insteadof ElementTrait;
+    }
+
+    use ServiceLocatorAwareTrait;
+
+    use CacheTrait;
+    use DoctrineTrait;
 
     /**
      * @param string|null $name
@@ -69,7 +75,7 @@ class Fieldset extends \Zend\Form\Fieldset implements FieldsetInterface, \Common
      */
     public function showAs()
     {
-        if (null !== $this->getOption('showAs')) {
+        if ($this->getOption('showAs') !== null) {
             return $this->getOption('showAs');
         }
 
@@ -77,8 +83,9 @@ class Fieldset extends \Zend\Form\Fieldset implements FieldsetInterface, \Common
     }
 
     /**
-     * Ensures state is ready for use. Here, we append the name of the fieldsets to every elements in order to avoid
-     * name clashes if the same fieldset is used multiple times
+     * Ensures state is ready for use. Here, we append the name of the fieldsets
+     * to every elements in order to avoid name clashes if the same fieldset is
+     * used multiple times
      *
      * @param  FormInterface $form
      * @return mixed|void

@@ -20,9 +20,9 @@
 
 namespace FormBundle\Entity\Node;
 
-use Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    Zend\Http\PhpEnvironment\Request;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+use Zend\Http\PhpEnvironment\Request;
 
 /**
  * This entity stores the node item.
@@ -33,7 +33,7 @@ use Doctrine\ORM\EntityManager,
 class GuestInfo
 {
     /**
-     * @var int The ID of this node
+     * @var integer The ID of this node
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -174,7 +174,7 @@ class GuestInfo
     }
 
     /**
-     * @param  Request                           $request
+     * @param  Request $request
      * @return \FormBundle\Entity\Node\GuestInfo
      */
     public function renew(Request $request)

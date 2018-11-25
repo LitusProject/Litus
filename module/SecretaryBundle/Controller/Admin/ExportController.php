@@ -20,9 +20,9 @@
 
 namespace SecretaryBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    SecretaryBundle\Component\Document\Generator\Registration as CsvGenerator,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use SecretaryBundle\Component\Document\Generator\Registration as CsvGenerator;
+use Zend\View\Model\ViewModel;
 
 /**
  * ExportController
@@ -35,11 +35,12 @@ class ExportController extends \CommonBundle\Component\Controller\ActionControll
     {
         $form = $this->getForm('secretary_export_export');
         $form->setAttribute(
-             'action',
-             $this->url()->fromRoute(
-                 'secretary_admin_export', array('action' => 'download')
-             )
-         );
+            'action',
+            $this->url()->fromRoute(
+                'secretary_admin_export',
+                array('action' => 'download')
+            )
+        );
 
         return new ViewModel(
             array(
@@ -71,11 +72,11 @@ class ExportController extends \CommonBundle\Component\Controller\ActionControll
 
                 $this->getResponse()->getHeaders()
                     ->addHeaders(
-                    array(
-                        'Content-Disposition' => 'attachment; filename="members_' . strtolower($organization->getName()) . '_' . $academicYear->getCode() . '.csv"',
-                        'Content-Type'        => 'text/csv',
-                    )
-                );
+                        array(
+                            'Content-Disposition' => 'attachment; filename="members_' . strtolower($organization->getName()) . '_' . $academicYear->getCode() . '.csv"',
+                            'Content-Type'        => 'text/csv',
+                        )
+                    );
 
                 return new ViewModel(
                     array(

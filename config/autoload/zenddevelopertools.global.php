@@ -32,10 +32,10 @@ return array(
             ),
         ),
         'toolbar' => array(
-            'enabled'       => ('development' == getenv('APPLICATION_ENV')),
+            'enabled'       => getenv('APPLICATION_ENV') == 'development',
             'auto_hide'     => true,
             'position'      => 'bottom',
-            'version_check' => false,
+            'version_check' => true,
             'entries'       => array(),
         ),
     ),

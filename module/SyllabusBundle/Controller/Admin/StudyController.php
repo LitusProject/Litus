@@ -20,10 +20,10 @@
 
 namespace SyllabusBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    SyllabusBundle\Entity\Study,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+use SyllabusBundle\Entity\Study;
+use Zend\View\Model\ViewModel;
 
 /**
  * StudyController
@@ -34,11 +34,12 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $studies = $this->search($academicYear);
         }
 
@@ -69,7 +70,8 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -118,11 +120,12 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function viewAction()
     {
-        if (!($study = $this->getStudyEntity())) {
+        $study = $this->getStudyEntity();
+        if ($study === null) {
             return new ViewModel();
         }
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $mappings = $this->searchSubject($study);
         }
 
@@ -148,11 +151,12 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($study = $this->getStudyEntity())) {
+        $study = $this->getStudyEntity();
+        if ($study === null) {
             return new ViewModel();
         }
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $mappings = $this->searchSubject($study);
         }
 
@@ -204,7 +208,8 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($study = $this->getStudyEntity())) {
+        $study = $this->getStudyEntity();
+        if ($study === null) {
             return new ViewModel();
         }
 
@@ -222,7 +227,8 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -254,7 +260,8 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($study = $this->getStudyEntity())) {
+        $study = $this->getStudyEntity();
+        if ($study === null) {
             return new ViewModel();
         }
 
@@ -288,7 +295,8 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function typeaheadAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return;
         }
 
@@ -314,7 +322,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param  AcademicYearEntity       $academicYear
+     * @param  AcademicYearEntity $academicYear
      * @return \Doctrine\ORM\Query|null
      */
     private function search(AcademicYearEntity $academicYear)
@@ -328,7 +336,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param  Study                    $study
+     * @param  Study $study
      * @return \Doctrine\ORM\Query|null
      */
     private function searchSubject(Study $study)
@@ -377,7 +385,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
     private function getAcademicYearEntity()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') !== null) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
         }
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);

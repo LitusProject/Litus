@@ -30,10 +30,9 @@ class Supplier extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        /** @var \CommonBundle\Hydrator\General\Address $hydratorAddress */
         $hydratorAddress = $this->getHydrator('CommonBundle\Hydrator\General\Address');
 
-        if (null === $object) {
+        if ($object === null) {
             return array(
                 'address' => $hydratorAddress->extract(null),
             );
@@ -47,11 +46,10 @@ class Supplier extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $object = new SupplierEntity();
         }
 
-        /** @var \CommonBundle\Hydrator\General\Address $hydratorAddress */
         $hydratorAddress = $this->getHydrator('CommonBundle\Hydrator\General\Address');
 
         $object->setAddress(

@@ -20,9 +20,9 @@
 
 namespace BrBundle\Entity\Company;
 
-use BrBundle\Entity\Company,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+use BrBundle\Entity\Company;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * This is the entity for an event.
@@ -101,7 +101,7 @@ class Logo
     }
 
     /**
-     * @param  string  $type
+     * @param  string $type
      * @return boolean
      */
     public static function isValidLogoType($type)
@@ -207,7 +207,7 @@ class Logo
     }
 
     /**
-     * @param  int  $width
+     * @param  integer $width
      * @return self
      */
     public function setWidth($width)
@@ -226,7 +226,7 @@ class Logo
     }
 
     /**
-     * @param  int  $height
+     * @param  integer $height
      * @return self
      */
     public function setHeight($height)

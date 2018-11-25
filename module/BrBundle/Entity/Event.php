@@ -20,9 +20,9 @@
 
 namespace BrBundle\Entity;
 
-use CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for an event, organised by VTK Corporate Relations
@@ -35,7 +35,7 @@ use CommonBundle\Entity\User\Person,
 class Event
 {
     /**
-     * @var int The event's unique identifier
+     * @var integer The event's unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -90,7 +90,7 @@ class Event
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {

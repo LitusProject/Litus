@@ -20,11 +20,16 @@
 
 namespace CommonBundle\Component\Form\Admin\Fieldset;
 
-use CommonBundle\Component\Form\FieldsetInterface,
-    CommonBundle\Entity\General\Language,
-    Locale,
-    RuntimeException,
-    Zend\Form\FormInterface;
+use CommonBundle\Component\Form\Admin\Fieldset\TabContent;
+use CommonBundle\Component\Form\Admin\Fieldset\TabPane;
+use CommonBundle\Component\Form\FieldsetInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use CommonBundle\Entity\General\Language;
+use Locale;
+use RuntimeException;
+use Zend\Form\FormInterface;
 
 /**
  * Extending Zend's fieldset component, so that our forms look the way we want
@@ -33,8 +38,12 @@ use CommonBundle\Component\Form\FieldsetInterface,
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-abstract class Tabbable extends \CommonBundle\Component\Form\Fieldset
+abstract class Tabbable extends \CommonBundle\Component\Form\Fieldset implements ServiceLocatorAwareInterface
 {
+    use ServiceLocatorAwareTrait;
+
+    use DoctrineTrait;
+
     public function init()
     {
         $languages = $this->getLanguages();
@@ -45,18 +54,19 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Fieldset
 
         if (count($languages) === 1) {
             $this->initBeforeTabs();
-
             $this->addTab($this, $languages[0], true);
         } else {
             $defaultLanguage = Locale::getDefault();
 
-            $this->add(array(
-                'type'       => 'tabs',
-                'name'       => 'languages',
-                'attributes' => array(
-                    'id' => 'languages',
-                ),
-            ));
+            $this->add(
+                array(
+                    'type'       => 'tabs',
+                    'name'       => 'languages',
+                    'attributes' => array(
+                        'id' => 'languages',
+                    ),
+                )
+            );
 
             $tabs = $this->get('languages');
             $tabContent = $this->createTabContent();
@@ -65,12 +75,15 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Fieldset
 
             foreach ($languages as $language) {
                 $abbrev = $language->getAbbrev();
-
                 $pane = $this->createTabPane($tabContent, 'tab_' . $abbrev);
 
                 $this->addTab($pane, $language, $abbrev == $defaultLanguage);
 
-                $tabs->addTab(array($language->getName() => '[' . $tabContent->getName() . '][' . 'tab_' . $abbrev . ']'));
+                $tabs->addTab(
+                    array(
+                        $language->getName() => '[' . $tabContent->getName() . '][' . 'tab_' . $abbrev . ']'
+                    )
+                );
             }
         }
 
@@ -78,14 +91,26 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Fieldset
     }
 
     /**
+     * @return array
+     */
+    protected function getLanguages()
+    {
+        return $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Language')
+            ->findAll();
+    }
+
+    /**
      * @return TabContent
      */
     private function createTabContent()
     {
-        $this->add(array(
-            'type' => 'tabcontent',
-            'name' => 'tab_content',
-        ));
+        $this->add(
+            array(
+                'type' => 'tabcontent',
+                'name' => 'tab_content',
+            )
+        );
 
         return $this->get('tab_content');
     }
@@ -97,12 +122,23 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Fieldset
      */
     private function createTabPane(TabContent $tabContent, $name)
     {
-        $tabContent->add(array(
-            'type' => 'tabpane',
-            'name' => $name,
-        ));
+        $tabContent->add(
+            array(
+                'type' => 'tabpane',
+                'name' => $name,
+            )
+        );
 
         return $tabContent->get($name);
+    }
+
+    /**
+     * @param  string $id The id of the tab content
+     * @return string
+     */
+    private function escapeTabContentId($id)
+    {
+        return str_replace(array('[', ']'), array('\\[', '\\]'), $id);
     }
 
     /**
@@ -122,15 +158,6 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Fieldset
         parent::prepareElement($form);
 
         $this->get('languages')->setAttribute('id', $this->get('languages')->getName());
-    }
-
-    /**
-     * @param  string $id The id of the tab content
-     * @return string
-     */
-    private function escapeTabContentId($id)
-    {
-        return str_replace(array('[', ']'), array('\\[', '\\]'), $id);
     }
 
     /**
@@ -156,14 +183,4 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Fieldset
      * @return null
      */
     abstract protected function addTab(FieldsetInterface $container, Language $language, $isDefault);
-
-    /**
-     * @return Language[]
-     */
-    protected function getLanguages()
-    {
-        return $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findAll();
-    }
 }

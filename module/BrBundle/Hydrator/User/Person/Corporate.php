@@ -28,7 +28,7 @@ class Corporate extends \CommonBundle\Hydrator\User\Person
     {
         $data['roles'] = array('corporate');
 
-        if (null === $object) {
+        if ($object === null) {
             $object = new CorporateEntity();
             $object->setUsername($data['username']);
         }

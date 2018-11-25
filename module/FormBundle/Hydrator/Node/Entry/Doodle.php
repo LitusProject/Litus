@@ -20,8 +20,8 @@
 
 namespace FormBundle\Hydrator\Node\Entry;
 
-use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
-    FormBundle\Entity\Entry as FieldEntryEntity;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+use FormBundle\Entity\Entry as FieldEntryEntity;
 
 class Doodle extends \FormBundle\Hydrator\Node\Entry
 {
@@ -29,7 +29,7 @@ class Doodle extends \FormBundle\Hydrator\Node\Entry
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             throw new InvalidObjectException('Cannot create a entry');
         }
 
@@ -46,7 +46,7 @@ class Doodle extends \FormBundle\Hydrator\Node\Entry
         }
 
         $guestInfo = $object->getGuestInfo();
-        if (null !== $guestInfo && isset($guestData['first_name'])) {
+        if ($guestInfo !== null && isset($guestData['first_name'])) {
             $guestInfo->setFirstName($guestData['first_name'])
                 ->setLastName($guestData['last_name'])
                 ->setEmail($guestData['email']);

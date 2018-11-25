@@ -25,7 +25,7 @@ namespace CommonBundle\Component\Validator;
  *
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
-class PositiveNumber extends AbstractValidator
+class PositiveNumber extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_POSITIVE = 'notPositive';
     const NOT_STRICT_POSITIVE = 'notStrictPositive';
@@ -45,7 +45,7 @@ class PositiveNumber extends AbstractValidator
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {

@@ -21,7 +21,7 @@
 return array(
     'routes' => array(
         'logistics_admin_driver' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/logistics/driver[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -36,7 +36,7 @@ return array(
             ),
         ),
         'logistics_admin_van_reservation' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/logistics/reservation/van[/:action[/:id][/page/:page][/return/:return]][/]',
                 'constraints' => array(
@@ -52,7 +52,7 @@ return array(
             ),
         ),
         'logistics_admin_piano_reservation' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/logistics/reservation/piano[/:action[/:id][/page/:page][/return/:return]][/]',
                 'constraints' => array(
@@ -68,7 +68,7 @@ return array(
             ),
         ),
         'logistics_admin_lease' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/logistics/leases[/:action[/:id]][/page/:page][/]',
                 'constraints' => array(
@@ -83,7 +83,7 @@ return array(
             ),
         ),
         'logistics_index' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/logistics[/:action][/date/:date][/:id][/]',
                 'constraints' => array(
@@ -99,7 +99,7 @@ return array(
             ),
         ),
         'logistics_auth' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/logistics/auth[/:action[/identification/:identification[/hash/:hash]]][/]',
                 'constraints' => array(
@@ -114,7 +114,7 @@ return array(
             ),
         ),
         'logistics_export' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/logistics/export[/:token]/ical.ics',
                 'constraints' => array(
@@ -128,7 +128,7 @@ return array(
             ),
         ),
         'logistics_reservation_fetch' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/logistics/fetch[/:start][/:end][/]',
                 'constraints' => array(
@@ -142,7 +142,7 @@ return array(
             ),
         ),
         'logistics_piano' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/reservations/piano[/:action][/date/:date][/:id][/]',
                 'constraints' => array(
@@ -158,7 +158,7 @@ return array(
             ),
         ),
         'logistics_lease' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/logistics/lease[/:action[/:id]][/page/:page][/]',
                 'constraints' => array(

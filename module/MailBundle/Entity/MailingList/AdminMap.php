@@ -20,9 +20,9 @@
 
 namespace MailBundle\Entity\MailingList;
 
-use CommonBundle\Entity\User\Person\Academic,
-    Doctrine\ORM\Mapping as ORM,
-    MailBundle\Entity\MailingList;
+use CommonBundle\Entity\User\Person\Academic;
+use Doctrine\ORM\Mapping as ORM;
+use MailBundle\Entity\MailingList;
 
 /**
  * This entity maps admins to mailing lists.
@@ -117,7 +117,7 @@ class AdminMap
     }
 
     /**
-     * @param  bool $editAdmin
+     * @param  boolean $editAdmin
      * @return self
      */
     public function setEditAdmin($editAdmin)

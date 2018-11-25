@@ -31,52 +31,48 @@ class Manage extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'fieldset',
-            'name'     => 'manage',
-            'label'    => '',
-            'elements' => array(
-                array(
-                    'type'     => 'text',
-                    'name'     => 'email',
-                    'label'    => 'Email',
-                    'required' => true,
-                    'options'  => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name' => 'EmailAddress',
+        $this->add(
+            array(
+                'type'     => 'fieldset',
+                'name'     => 'manage',
+                'label'    => '',
+                'elements' => array(
+                    array(
+                        'type'     => 'text',
+                        'name'     => 'email',
+                        'label'    => 'Email',
+                        'required' => true,
+                        'options'  => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
                                 ),
-                                array(
-                                    'name' => 'prom_code_email',
+                                'validators' => array(
+                                    array('name' => 'EmailAddress'),
+                                    array('name' => 'CodeEmail'),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'     => 'text',
+                        'name'     => 'ticket_code',
+                        'label'    => 'Ticket Code',
+                        'required' => true,
+                        'options'  => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array('name' => 'CodeExists'),
                                 ),
                             ),
                         ),
                     ),
                 ),
-                array(
-                    'type'     => 'text',
-                    'name'     => 'ticket_code',
-                    'label'    => 'Ticket Code',
-                    'required' => true,
-                    'options'  => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name' => 'prom_code_exists',
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Manage', 'btn btn-default');
     }

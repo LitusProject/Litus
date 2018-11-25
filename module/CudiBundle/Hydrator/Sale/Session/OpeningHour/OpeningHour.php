@@ -26,7 +26,7 @@ class OpeningHour extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
@@ -47,7 +47,7 @@ class OpeningHour extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $object = new OpeningHourEntity($this->getPersonEntity());
         }
 
@@ -58,8 +58,9 @@ class OpeningHour extends \CommonBundle\Component\Hydrator\Hydrator
             $abbrev = $language->getAbbrev();
 
             if (isset($data['tab_content'])
-                    && isset($data['tab_content']['tab_' . $abbrev])
-                    && isset($data['tab_content']['tab_' . $abbrev]['comment'])) {
+                && isset($data['tab_content']['tab_' . $abbrev])
+                && isset($data['tab_content']['tab_' . $abbrev]['comment'])
+            ) {
                 $object->setComment($language, $data['tab_content']['tab_' . $abbrev]['comment']);
             } else {
                 $object->setComment($language, null);

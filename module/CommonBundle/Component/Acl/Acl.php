@@ -20,10 +20,10 @@
 
 namespace CommonBundle\Component\Acl;
 
-use CommonBundle\Entity\Acl\Resource,
-    CommonBundle\Entity\Acl\Role,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\QueryBuilder;
+use CommonBundle\Entity\Acl\Resource;
+use CommonBundle\Entity\Acl\Role;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * Extending Zend's ACL implementation to support our own structure,
@@ -69,17 +69,19 @@ class Acl extends \Zend\Permissions\Acl\Acl
         }
     }
 
+    // phpcs:disable Squiz.Commenting.FunctionComment.IncorrectParamVarName
     /**
      * Adding a resource retrieved from the database as well as its children.
      *
      * @param  Resource $resource The resource that should be added
      * @return void
      */
+    // phpcs:enable
     private function addResourceEntity(Resource $resource)
     {
         $this->addResource(
             $resource->getName(),
-            (null === $resource->getParent()) ? null : $resource->getParent()->getName()
+            $resource->getParent() === null ? null : $resource->getParent()->getName()
         );
 
         foreach ($resource->getChildren($this->entityManager) as $childResource) {
@@ -121,7 +123,8 @@ class Acl extends \Zend\Permissions\Acl\Acl
         }
 
         $this->addRole(
-            $role->getName(), $parents
+            $role->getName(),
+            $parents
         );
 
         foreach ($role->getActions() as $action) {

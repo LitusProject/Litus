@@ -20,13 +20,13 @@
 
 namespace ApiBundle\Controller;
 
-use ApiBundle\Document\Code\Authorization as AuthorizationCode,
-    ApiBundle\Document\Token\Access as AccessToken,
-    ApiBundle\Document\Token\Refresh as RefreshToken,
-    CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
-    CommonBundle\Component\Authentication\Authentication,
-    CommonBundle\Entity\User\Person\Academic,
-    Zend\View\Model\ViewModel;
+use ApiBundle\Document\Code\Authorization as AuthorizationCode;
+use ApiBundle\Document\Token\Access as AccessToken;
+use ApiBundle\Document\Token\Refresh as RefreshToken;
+use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter;
+use CommonBundle\Component\Authentication\Authentication;
+use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException;
+use Zend\View\Model\ViewModel;
 
 /**
  * OAuthController
@@ -37,7 +37,7 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
 {
     public function authorizeAction()
     {
-        if ('code' != $this->getRequest()->getQuery('response_type')) {
+        if ($this->getRequest()->getQuery('response_type') != 'code') {
             return new ViewModel(
                 array(
                     'error' => 'The requested response type is not supported.',
@@ -45,7 +45,7 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
             );
         }
 
-        $this->getSessionStorage()->key = $this->getRequest()->getQuery('client_id');
+        $this->getSessionContainer()->key = $this->getRequest()->getQuery('client_id');
 
         $form = $this->getForm('common_auth_login');
 
@@ -59,7 +59,9 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                 $this->getAuthentication()->forget();
 
                 $this->getAuthentication()->authenticate(
-                    $formData['username'], $formData['password'], $formData['remember_me']
+                    $formData['username'],
+                    $formData['password'],
+                    $formData['remember_me']
                 );
 
                 if ($this->getAuthentication()->isAuthenticated()) {
@@ -105,7 +107,7 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
 
     public function shibbolethAction()
     {
-        if ((null !== $this->getParam('identification')) && (null !== $this->getParam('hash'))) {
+        if ($this->getParam('identification') !== null && $this->getParam('hash') !== null) {
             $authentication = new Authentication(
                 new ShibbolethAdapter(
                     $this->getEntityManager(),
@@ -119,7 +121,7 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                 ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
                 ->findLastByUniversityIdentification($this->getParam('identification'));
 
-            if (null !== $code) {
+            if ($code !== null) {
                 if ($code->validate($this->getParam('hash'))) {
                     $this->getEntityManager()->remove($code);
                     $this->getEntityManager()->flush();
@@ -127,13 +129,16 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                     $this->getAuthentication()->forget();
 
                     $authentication->authenticate(
-                        $this->getParam('identification'), '', true, true
+                        $this->getParam('identification'),
+                        '',
+                        true,
+                        true
                     );
 
                     if ($this->getAuthentication()->isAuthenticated()) {
                         $key = $this->getEntityManager()
                             ->getRepository('ApiBundle\Entity\Key')
-                            ->findOneActiveByCode($this->getSessionStorage()->key);
+                            ->findOneActiveByCode($this->getSessionContainer()->key);
 
                         $authorizationCode = new AuthorizationCode(
                             $this->getAuthentication()->getPersonObject(),
@@ -173,12 +178,12 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
-        if (null === $this->getRequest()->getPost('grant_type')) {
+        if ($this->getRequest()->getPost('grant_type') === null) {
             return $this->error(400, 'The grant type was not specified');
         }
 
-        if ('authorization_code' == $this->getRequest()->getPost('grant_type')) {
-            if (null === $this->getRequest()->getPost('code')) {
+        if ($this->getRequest()->getPost('grant_type') == 'authorization_code') {
+            if ($this->getRequest()->getPost('code') === null) {
                 return $this->error(400, 'No authorization code was provided');
             }
 
@@ -186,7 +191,7 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                 ->getRepository('ApiBundle\Document\Code\Authorization')
                 ->findOneByCode($this->getRequest()->getPost('code'));
 
-            if (null === $authorizationCode) {
+            if ($authorizationCode === null) {
                 return $this->error(404, 'This authorization code does not exist');
             }
 
@@ -249,8 +254,8 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
             );
         }
 
-        if ('refresh_token' == $this->getRequest()->getPost('grant_type')) {
-            if (null === $this->getRequest()->getPost('refresh_token')) {
+        if ($this->getRequest()->getPost('grant_type') == 'refresh_token') {
+            if ($this->getRequest()->getPost('refresh_token') === null) {
                 return $this->error(400, 'No refresh token was provided');
             }
 
@@ -258,7 +263,7 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                 ->getRepository('ApiBundle\Document\Token\Refresh')
                 ->findOneByCode($this->getRequest()->getPost('refresh_token'));
 
-            if (null === $refreshToken) {
+            if ($refreshToken === null) {
                 return $this->error(404, 'This refresh token does not exist');
             }
 
@@ -335,14 +340,14 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_url');
 
-        if (false !== @unserialize($shibbolethUrl)) {
+        if (@unserialize($shibbolethUrl) !== false) {
             $shibbolethUrl = unserialize($shibbolethUrl);
 
-            if (false === getenv('SERVED_BY')) {
-                throw new Exception\ShibbolethUrlException('The SERVED_BY environment variable does not exist');
+            if (getenv('SERVED_BY') === false) {
+                throw new ShibbolethUrlException('The SERVED_BY environment variable does not exist');
             }
             if (!isset($shibbolethUrl[getenv('SERVED_BY')])) {
-                throw new Exception\ShibbolethUrlException('Array key ' . getenv('SERVED_BY') . ' does not exist');
+                throw new ShibbolethUrlException('Array key ' . getenv('SERVED_BY') . ' does not exist');
             }
 
             $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
@@ -350,7 +355,7 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
 
         $shibbolethUrl .= '%3Fsource=api';
 
-        if ('' != $redirect) {
+        if ($redirect != '') {
             $shibbolethUrl .= '%26redirect=' . urlencode($redirect);
         }
 

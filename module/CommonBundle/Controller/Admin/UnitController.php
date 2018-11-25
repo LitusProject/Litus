@@ -20,14 +20,14 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\Acl\Role,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    CommonBundle\Entity\General\Organization\Unit,
-    CommonBundle\Entity\User\Person\Organization\UnitMap\Academic as UnitMapAcademic,
-    CommonBundle\Entity\User\Person\Organization\UnitMap\External as UnitMapExternal,
-    Imagick,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\Acl\Role;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+use CommonBundle\Entity\General\Organization\Unit;
+use CommonBundle\Entity\User\Person\Organization\UnitMap\Academic as UnitMapAcademic;
+use CommonBundle\Entity\User\Person\Organization\UnitMap\External as UnitMapExternal;
+use Imagick;
+use Zend\View\Model\ViewModel;
 
 /**
  * UnitController
@@ -38,7 +38,8 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -55,6 +56,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             $members = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
                 ->findBy(array('unit' => $unit, 'academicYear' => $academicYear));
+
             if (isset($members[0])) {
                 array_push($unitsWithMembers, $unit);
                 unset($units[$key]);
@@ -110,11 +112,13 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
     public function membersAction()
     {
-        if (!($unit = $this->getUnitEntity())) {
+        $unit = $this->getUnitEntity();
+        if ($unit === null) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -132,10 +136,12 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $academicForm->setData($formData);
-            $externalForm->setData(array_merge_recursive(
-                $formData->toArray(),
-                $this->getRequest()->getFiles()->toArray()
-            ));
+            $externalForm->setData(
+                array_merge_recursive(
+                    $formData->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
 
             if ($formData['mapType'] == 'academic' && $academicForm->isValid()) {
                 $academic = $this->getEntityManager()
@@ -152,7 +158,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                         )
                     );
 
-                if (null !== $repositoryCheck) {
+                if ($repositoryCheck !== null) {
                     $this->flashMessenger()->error(
                         'Error',
                         'This academic already is a member of this unit!'
@@ -232,7 +238,8 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($unit = $this->getUnitEntity())) {
+        $unit = $this->getUnitEntity();
+        if ($unit === null) {
             return new ViewModel();
         }
 
@@ -271,7 +278,8 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($unit = $this->getUnitEntity())) {
+        $unit = $this->getUnitEntity();
+        if ($unit === null) {
             return new ViewModel();
         }
 
@@ -292,7 +300,8 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($unitMap = $this->getUnitMapEntity())) {
+        $unitMap = $this->getUnitMapEntity();
+        if ($unitMap === null) {
             return new ViewModel();
         }
 
@@ -370,7 +379,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return UnitMap|null
+     * @return \CommonBundle\Entity\User\Person\Organization\UnitMap|null
      */
     private function getUnitMapEntity()
     {
@@ -402,7 +411,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
      */
     private function findRoleWithParent(Role $role, Unit $parent = null)
     {
-        if (null === $parent) {
+        if ($parent === null) {
             return false;
         }
 
@@ -420,7 +429,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
      */
     private function findCoordinatorRoleWithParent(Role $role, Unit $parent = null)
     {
-        if (null === $parent) {
+        if ($parent === null) {
             return false;
         }
 
@@ -436,7 +445,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
      */
     private function getAcademicYearEntity()
     {
-        if (null === $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') === null) {
             return $this->getCurrentAcademicYear();
         }
 

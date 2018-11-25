@@ -45,7 +45,7 @@ class Pdf extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -73,8 +73,8 @@ class Pdf extends \CommonBundle\Component\Validator\AbstractValidator
             ->getRepository('PublicationBundle\Entity\Edition\Pdf')
             ->findOneByPublicationTitleAndAcademicYear($this->options['publication'], $value, $this->options['academic_year']);
 
-        if (null !== $edition) {
-            if (null === $this->options['exclude'] || $edition->getId() !== $this->options['exclude']) {
+        if ($edition !== null) {
+            if ($this->options['exclude'] === null || $edition->getId() !== $this->options['exclude']) {
                 $this->error(self::TITLE_EXISTS);
 
                 return false;

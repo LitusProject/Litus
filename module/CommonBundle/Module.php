@@ -20,13 +20,10 @@
 
 namespace CommonBundle;
 
-use CommonBundle\Component\Mvc\View\Http\InjectTemplateListener,
-    Raven_ErrorHandler,
-    Symfony\Component\Console\Application as ConsoleApplication,
-    Zend\Console\Request as ConsoleRequest,
-    Zend\Mvc\MvcEvent,
-    Zend\ServiceManager\ServiceLocatorInterface,
-    Zend\ServiceManager\ServiceManager;
+use CommonBundle\Component\Mvc\View\Http\InjectTemplateListener;
+use Raven_ErrorHandler;
+use Zend\Mvc\MvcEvent;
+use Zend\Stdlib\DispatchableInterface;
 
 class Module
 {
@@ -37,9 +34,9 @@ class Module
         $events = $application->getEventManager();
         $sharedEvents = $events->getSharedManager();
 
-        if ('production' == getenv('APPLICATION_ENV')) {
-            $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($services->get('sentry'), 'logMvcEvent'));
-            $events->attach(MvcEvent::EVENT_RENDER_ERROR, array($services->get('sentry'), 'logMvcEvent'));
+        if (getenv('APPLICATION_ENV') == 'production') {
+            $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($services->get('sentry_client'), 'logMvcEvent'));
+            $events->attach(MvcEvent::EVENT_RENDER_ERROR, array($services->get('sentry_client'), 'logMvcEvent'));
 
             $errorHandler = new Raven_ErrorHandler($services->get('raven_client'));
             $errorHandler->registerErrorHandler()
@@ -48,12 +45,7 @@ class Module
         }
 
         $injectTemplateListener = new InjectTemplateListener();
-        $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($injectTemplateListener, 'injectTemplate'), 0);
-
-        if ($event->getRequest() instanceof ConsoleRequest) {
-            $event->setRouter($services->get('litus.console_router'));
-            $this->initializeConsole($services->get('litus.console_application'), $services);
-        }
+        $sharedEvents->attach(DispatchableInterface::class, MvcEvent::EVENT_DISPATCH, array($injectTemplateListener, 'injectTemplate'), 0);
     }
 
     /**
@@ -62,31 +54,5 @@ class Module
     public function getConfig()
     {
         return include __DIR__ . '/Resources/config/module.config.php';
-    }
-
-    /**
-     * Adds the console routes to the $application.
-     *
-     * @param  ConsoleApplication      $application    the console application
-     * @param  ServiceLocatorInterface $serviceLocator the ZF2 service locator
-     * @return void
-     */
-    public function initializeConsole(ConsoleApplication $application, ServiceLocatorInterface $serviceLocator)
-    {
-        $config = $serviceLocator->get('Config');
-        $config = $config['litus']['console'];
-
-        $commands = array();
-
-        // Use the $serviceLocator here because it injects dependencies of the instantiated classes.
-        // Added bonus: allows commands to be overriden!
-        if ($serviceLocator instanceof ServiceManager) {
-            foreach ($config as $name => $invokable) {
-                $serviceLocator->setInvokableClass('litus.console.' . $name, $invokable);
-                $commands[$name] = $serviceLocator->get('litus.console.' . $name);
-            }
-        }
-
-        $application->addCommands(array_values($commands));
     }
 }

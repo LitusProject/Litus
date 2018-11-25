@@ -20,14 +20,13 @@
 
 namespace SportBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Component\Util\WebSocket as WebSocketUtil,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    DateInterval,
-    DateTime,
-    SportBundle\Entity\Group,
-    SportBundle\Entity\Runner,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+use DateInterval;
+use DateTime;
+use SportBundle\Entity\Group;
+use SportBundle\Entity\Runner;
+use Zend\View\Model\ViewModel;
 
 /**
  * RunController
@@ -100,12 +99,14 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
     public function editSpeedyGroupAction()
     {
-        if (!($group = $this->getGroupEntity())) {
+        $group = $this->getGroupEntity();
+        if ($group === null) {
             return new ViewModel();
         }
 
         $form = $this->getForm('sport_group_editspeedygroup', array('group' => $group));
         $form->setGroup($group);
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
@@ -139,11 +140,13 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
     public function editGroupAction()
     {
-        if (!($group = $this->getGroupEntity())) {
+        $group = $this->getGroupEntity();
+        if ($group === null) {
             return new ViewModel();
         }
 
         $form = $this->getForm('sport_group_edit');
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
@@ -159,7 +162,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
                     ->getRepository('SportBundle\Entity\Runner')
                     ->findOneByUniversityIdentification($academic->getUniversityIdentification());
 
-                if (null === $repositoryCheck) {
+                if ($repositoryCheck === null) {
                     $department = $this->getEntityManager()
                         ->getRepository('SportBundle\Entity\Department')
                         ->findOneById($formData['department']);
@@ -235,15 +238,14 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             ->findByAcademicYear($this->getAcademicYearEntity());
 
         $rewardTimeLimit = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('sport.reward_time_limit');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('sport.reward_time_limit');
 
         $rewardRunners = array();
         foreach ($laps as $lap) {
-            if (
-                    null !== $lap->getEndTime()
-                    && $this->convertDateIntervalToSeconds($lap->getLapTime()) <= $rewardTimeLimit
-                ) {
+            if ($lap->getEndTime() !== null
+                && $this->convertDateIntervalToSeconds($lap->getLapTime()) <= $rewardTimeLimit
+            ) {
                 $runner = $lap->getRunner();
                 $runner->setEntityManager($this->getEntityManager());
                 if (isset($rewardRunners[$runner->getId()])) {
@@ -291,7 +293,8 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
     public function editAction()
     {
-        if (!($runner = $this->getRunnerEntity())) {
+        $runner = $this->getRunnerEntity();
+        if ($runner === null) {
             return new ViewModel();
         }
 
@@ -327,17 +330,6 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         );
     }
 
-    public function killSocketAction()
-    {
-        $this->initAjax();
-
-        return new ViewModel(
-            array(
-                'result' => WebSocketUtil::kill($this->getEntityManager(), 'sport:run-queue'),
-            )
-        );
-    }
-
     public function updateAction()
     {
         return new ViewModel(
@@ -355,8 +347,8 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
     public function runnersAction()
     {
         $runners = $this->getEntityManager()
-                ->getRepository('SportBundle\Entity\Lap')
-                ->getRunnersAndCount($this->getAcademicYearEntity());
+            ->getRepository('SportBundle\Entity\Lap')
+            ->getRunnersAndCount($this->getAcademicYearEntity());
 
         $runnersList = array();
         foreach ($runners as $runner) {
@@ -373,7 +365,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             $laps = $runnerEntity->getLaps($this->getAcademicYearEntity());
             foreach ($laps as $lap) {
                 $lapTime = $lap->getLapTime();
-                $totalTime = $totalTime + $lapTime->h * 3600 + $lapTime->i * 60 + $lapTime->s;
+                $totalTime += $lapTime->h * 3600 + $lapTime->i * 60 + $lapTime->s;
             }
 
             $d1 = new DateTime();
@@ -381,7 +373,8 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             $d2->add(new DateInterval('PT' . round($totalTime / count($laps)) . 'S'));
             $avarage = $d2->diff($d1);
 
-            array_push($runnersList,
+            array_push(
+                $runnersList,
                 array(
                     'name'    => $name,
                     'laps'    => count($laps),
@@ -436,7 +429,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
      */
     private function getAcademicYearEntity()
     {
-        if (null === $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') === null) {
             return $this->getCurrentAcademicYear();
         }
 
@@ -480,7 +473,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
     /**
      * @param  DateInterval $interval
-     * @return int
+     * @return integer
      */
     private function convertDateIntervalToSeconds(DateInterval $interval)
     {

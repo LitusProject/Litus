@@ -20,7 +20,7 @@
 
 namespace CommonBundle\Component\View\Helper;
 
-use Zend\Mvc\Router\RouteMatch;
+use Zend\Router\RouteMatch;
 
 /**
  * This view helper makes sure we can access the request paramaters in our view.
@@ -52,7 +52,7 @@ class GetParam extends \Zend\View\Helper\AbstractHelper
      */
     public function __invoke($key, $default = null)
     {
-        if (null === $this->routeMatch) {
+        if ($this->routeMatch === null) {
             throw new Exception\RuntimeException('No matched route was provided');
         }
 

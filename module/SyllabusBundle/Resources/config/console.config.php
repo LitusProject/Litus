@@ -19,7 +19,7 @@
  */
 
 return array(
-    'install.syllabus' => 'SyllabusBundle\Command\Install',
+    'install_syllabus' => 'SyllabusBundle\Command\Install',
 
-    'syllabus.socket.update' => 'SyllabusBundle\Command\Socket\Update',
+    'syllabus_socket_update' => 'SyllabusBundle\Command\Socket\Update',
 );

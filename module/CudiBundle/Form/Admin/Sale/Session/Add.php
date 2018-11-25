@@ -71,11 +71,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             );
         }
 
-        $this->add(array(
-            'type'     => 'fieldset',
-            'name'     => 'unit',
-            'elements' => $unitElements,
-        ));
+        $this->add(
+            array(
+                'type'     => 'fieldset',
+                'name'     => 'unit',
+                'elements' => $unitElements,
+            )
+        );
 
         $devices = $this->getDevices();
         $deviceElements = array();
@@ -98,18 +100,20 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
-                            array('name' => 'price'),
+                            array('name' => 'Price'),
                         ),
                     ),
                 ),
             );
         }
 
-        $this->add(array(
-            'type'     => 'fieldset',
-            'name'     => 'device',
-            'elements' => $deviceElements,
-        ));
+        $this->add(
+            array(
+                'type'     => 'fieldset',
+                'name'     => 'device',
+                'elements' => $deviceElements,
+            )
+        );
 
         $this->addSubmit('Add', 'sale_add');
     }

@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Article;
 
-use CudiBundle\Entity\Sale\Article as SaleArticle,
-    CudiBundle\Entity\Sale\Article\Discount\Discount,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Sale\Article as SaleArticle;
+use CudiBundle\Entity\Sale\Article\Discount\Discount;
+use Zend\View\Model\ViewModel;
 
 /**
  * DiscountController
@@ -33,7 +33,8 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
 {
     public function manageAction()
     {
-        if (!($article = $this->getSaleArticleEntity())) {
+        $article = $this->getSaleArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -119,7 +120,8 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($discount = $this->getDiscountEntity())) {
+        $discount = $this->getDiscountEntity();
+        if ($discount === null) {
             return new ViewModel();
         }
 

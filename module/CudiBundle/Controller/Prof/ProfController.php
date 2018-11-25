@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Controller\Prof;
 
-use SyllabusBundle\Entity\Subject,
-    SyllabusBundle\Entity\Subject\ProfMap,
-    Zend\View\Model\ViewModel;
+use SyllabusBundle\Entity\Subject;
+use SyllabusBundle\Entity\Subject\ProfMap;
+use Zend\View\Model\ViewModel;
 
 /**
  * ProfController
@@ -33,11 +33,13 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
 {
     public function addAction()
     {
-        if (!($subject = $this->getSubjectEntity())) {
+        $subject = $this->getSubjectEntity();
+        if ($subject === null) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->getCurrentAcademicYear())) {
+        $academicYear = $this->getCurrentAcademicYear();
+        if ($academicYear === null) {
             return new ViewModel();
         }
 
@@ -57,7 +59,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
                     ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
                     ->findOneBySubjectAndProfAndAcademicYear($subject, $docent, $academicYear);
 
-                if (null === $mapping) {
+                if ($mapping === null) {
                     $mapping = new ProfMap($subject, $docent, $academicYear);
                     $this->getEntityManager()->persist($mapping);
                     $this->getEntityManager()->flush();
@@ -93,7 +95,8 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->getProfMapEntity())) {
+        $mapping = $this->getProfMapEntity();
+        if ($mapping === null) {
             return new ViewModel();
         }
 
@@ -146,7 +149,8 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
      */
     private function getSubjectEntity()
     {
-        if (!($academicYear = $this->getCurrentAcademicYear())) {
+        $academicYear = $this->getCurrentAcademicYear();
+        if ($academicYear === null) {
             return;
         }
 
@@ -183,7 +187,8 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
      */
     private function getProfMapEntity()
     {
-        if (!($academicYear = $this->getCurrentAcademicYear())) {
+        $academicYear = $this->getCurrentAcademicYear();
+        if ($academicYear === null) {
             return;
         }
 

@@ -20,12 +20,11 @@
 
 namespace FormBundle\Entity\Field;
 
-use CommonBundle\Entity\General\Language,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Field,
-    FormBundle\Entity\Node\Form,
-    Locale;
+use CommonBundle\Entity\General\Language;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use FormBundle\Entity\Node\Form;
+use Locale;
 
 /**
  * An abstract class that stores a number of options.
@@ -33,7 +32,7 @@ use CommonBundle\Entity\General\Language,
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Field\OptionSelector")
  * @ORM\Table(name="forms.fields_options")
  */
-abstract class OptionSelector extends Field
+abstract class OptionSelector extends \FormBundle\Entity\Field
 {
     /**
      * @var ArrayCollection The translations of this field
@@ -61,7 +60,7 @@ abstract class OptionSelector extends Field
     {
         $translation = $this->getOptionTranslation($language, $allowFallback);
 
-        if (null !== $translation) {
+        if ($translation !== null) {
             return $translation->getOptions();
         }
 
@@ -77,7 +76,7 @@ abstract class OptionSelector extends Field
     {
         $translation = $this->getOptionTranslation($language, $allowFallback);
 
-        if (null !== $translation) {
+        if ($translation !== null) {
             return $translation->getOptionsArray();
         }
 
@@ -85,14 +84,14 @@ abstract class OptionSelector extends Field
     }
 
     /**
-     * @param  Language|null                               $language
-     * @param  boolean                                     $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return \FormBundle\Entity\Field\Translation\Option
      */
     public function getOptionTranslation(Language $language = null, $allowFallback = true)
     {
         foreach ($this->optionTranslations as $translation) {
-            if (null !== $language && $translation->getLanguage() == $language) {
+            if ($language !== null && $translation->getLanguage() == $language) {
                 return $translation;
             }
 

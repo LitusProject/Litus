@@ -31,13 +31,25 @@ return Config::create(
     ),
     array(
         'validators' => array(
-            'invokables' => array(
-                'prom_code_exists'      => 'PromBundle\Component\Validator\CodeExists',
-                'prom_code_used'        => 'PromBundle\Component\Validator\CodeUsed',
-                'prom_code_email'       => 'PromBundle\Component\Validator\CodeEmail',
-                'prom_passenger_exists' => 'PromBundle\Component\Validator\PassengerExists',
-                'prom_bus_selected'     => 'PromBundle\Component\Validator\BusSelected',
-                'prom_bus_seats'        => 'PromBundle\Component\Validator\BusSeats',
+            'aliases' => array(
+                'busselected'     => Component\Validator\BusSelected::class,
+                'busSelected'     => Component\Validator\BusSelected::class,
+                'BusSelected'     => Component\Validator\BusSelected::class,
+                'busseats'        => Component\Validator\BusSeats::class,
+                'busSeats'        => Component\Validator\BusSeats::class,
+                'BusSeats'        => Component\Validator\BusSeats::class,
+                'codeemail'       => Component\Validator\CodeEmail::class,
+                'codeEmail'       => Component\Validator\CodeEmail::class,
+                'CodeEmail'       => Component\Validator\CodeEmail::class,
+                'codeexists'      => Component\Validator\CodeExists::class,
+                'codeExists'      => Component\Validator\CodeExists::class,
+                'CodeExists'      => Component\Validator\CodeExists::class,
+                'codeused'        => Component\Validator\CodeUsed::class,
+                'codeUsed'        => Component\Validator\CodeUsed::class,
+                'CodeUsed'        => Component\Validator\CodeUsed::class,
+                'passengerexists' => Component\Validator\PassengerExists::class,
+                'passengerExists' => Component\Validator\PassengerExists::class,
+                'PassengerExists' => Component\Validator\PassengerExists::class,
             ),
         ),
     )

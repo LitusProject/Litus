@@ -20,12 +20,12 @@
 
 namespace CudiBundle\Entity\Comment;
 
-use CommonBundle\Entity\User\Person,
-    CudiBundle\Entity\Article,
-    DateTime,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+use CommonBundle\Entity\User\Person;
+use CudiBundle\Entity\Article;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Comment\Comment")
@@ -97,13 +97,13 @@ class Comment
         $entityManager->persist(new Mapping($article, $this));
 
         $this->setText($text);
-        if (null !== $type) {
+        if ($type !== null) {
             $this->setType($type);
         }
     }
 
     /**
-     * @param  string  $type
+     * @param  string $type
      * @return boolean
      */
     public static function isValidCommentType($type)

@@ -31,11 +31,19 @@ return Config::create(
     ),
     array(
         'validators' => array(
-            'invokables' => array(
-                'contract_bullet'   => 'BrBundle\Component\Validator\Contract\Bullet',
-                'company_logo_type' => 'BrBundle\Component\Validator\Logo\Type',
-                'company_name'      => 'BrBundle\Component\Validator\CompanyName',
-                'product_name'      => 'BrBundle\Component\Validator\ProductName',
+            'aliases' => array(
+                'contractbullet' => Component\Validator\ContractBullet::class,
+                'contractBullet' => Component\Validator\ContractBullet::class,
+                'ContractBullet' => Component\Validator\ContractBullet::class,
+                'logotype'       => Component\Validator\LogoType::class,
+                'logoType'       => Component\Validator\LogoType::class,
+                'LogoType'       => Component\Validator\LogoType::class,
+                'companyname'    => Component\Validator\CompanyName::class,
+                'companyName'    => Component\Validator\CompanyName::class,
+                'CompanyName'    => Component\Validator\CompanyName::class,
+                'productname'    => Component\Validator\ProductName::class,
+                'productName'    => Component\Validator\ProductName::class,
+                'ProductName'    => Component\Validator\ProductName::class,
             ),
         ),
     )

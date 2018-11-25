@@ -40,48 +40,54 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'name',
-            'label'    => 'Name',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'role'),
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'name',
+                'label'    => 'Name',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Role'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'parents',
-            'label'      => 'Parents',
-            'attributes' => array(
-                'multiple' => true,
-                'options'  => $this->createParentsArray(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'parents',
+                'label'      => 'Parents',
+                'attributes' => array(
+                    'multiple' => true,
+                    'options'  => $this->createParentsArray(),
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'actions',
-            'label'      => 'Allowed Actions',
-            'attributes' => array(
-                'id'       => 'actions',
-                'multiple' => true,
-                'options'  => $this->createActionsArray(),
-                'style'    => 'height: 300px;',
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'actions',
+                'label'      => 'Allowed Actions',
+                'attributes' => array(
+                    'id'       => 'actions',
+                    'multiple' => true,
+                    'options'  => $this->createActionsArray(),
+                    'style'    => 'height: 300px;',
+                ),
+            )
+        );
 
         $this->addSubmit('Add', 'role_add');
 
-        if (null !== $this->role) {
+        if ($this->role !== null) {
             $this->bind($this->role);
         }
     }
@@ -109,7 +115,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->getRepository('CommonBundle\Entity\Acl\Role')
             ->findBy(array(), array('name' => 'ASC'));
 
-        $exclude = null === $this->role ? '' : $this->role->getName();
+        $exclude = $this->role === null ? '' : $this->role->getName();
 
         $parents = array();
         foreach ($roles as $role) {

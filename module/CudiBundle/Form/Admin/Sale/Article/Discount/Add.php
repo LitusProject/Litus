@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Form\Admin\Sale\Article\Discount;
 
-use CudiBundle\Entity\Sale\Article,
-    CudiBundle\Entity\Sale\Article\Discount\Discount,
-    LogicException;
+use CudiBundle\Entity\Sale\Article;
+use CudiBundle\Entity\Sale\Article\Discount\Discount;
+use LogicException;
 
 /**
  * Add Discount
@@ -38,7 +38,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function init()
     {
-        if (null === $this->article) {
+        if ($this->article === null) {
             throw new LogicException('Cannot add a discount to a null article');
         }
 
@@ -46,108 +46,122 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->addClass('discount');
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'template',
-            'label'      => 'Template',
-            'required'   => true,
-            'attributes' => array(
-                'class'   => 'template',
-                'options' => $this->getTemplates(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'template',
+                'label'      => 'Template',
+                'required'   => true,
+                'attributes' => array(
+                    'class'   => 'template',
+                    'options' => $this->getTemplates(),
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'value',
-            'label'      => 'Value',
-            'required'   => true,
-            'attributes' => array(
-                'class' => 'element value',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'price'),
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'value',
+                'label'      => 'Value',
+                'required'   => true,
+                'attributes' => array(
+                    'class' => 'element value',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Price'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'method',
-            'label'      => 'Method',
-            'required'   => true,
-            'attributes' => array(
-                'class'     => 'element method',
-                'data-help' => 'The method of this discount:
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'method',
+                'label'      => 'Method',
+                'required'   => true,
+                'attributes' => array(
+                    'class'     => 'element method',
+                    'data-help' => 'The method of this discount:
                     <ul>
                         <li><b>Percentage:</b> the value will used as the percentage to substract from the real price</li>
                         <li><b>Fixed:</b> the value will be subtracted from the real price</li>
                         <li><b>Override:</b> the value will be used as the new price</li>
                     </ul>',
-                'options' => Discount::$possibleMethods,
-            ),
-        ));
+                    'options' => Discount::$possibleMethods,
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'type',
-            'label'      => 'Type',
-            'required'   => true,
-            'attributes' => array(
-                'class'   => 'element type',
-                'options' => Discount::$possibleTypes,
-            ),
-            'options' => array(
-                'input' => array(
-                    'validators' => array(
-                        array(
-                            'name'    => 'sale_article_discount_exits',
-                            'options' => array(
-                                'article' => $this->article,
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'type',
+                'label'      => 'Type',
+                'required'   => true,
+                'attributes' => array(
+                    'class'   => 'element type',
+                    'options' => Discount::$possibleTypes,
+                ),
+                'options' => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name'    => 'SaleArticleDiscountExits',
+                                'options' => array(
+                                    'article' => $this->article,
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'organization',
-            'label'      => 'Organization',
-            'required'   => true,
-            'attributes' => array(
-                'class'   => 'element organization',
-                'options' => $this->getOrganizations(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'organization',
+                'label'      => 'Organization',
+                'required'   => true,
+                'attributes' => array(
+                    'class'   => 'element organization',
+                    'options' => $this->getOrganizations(),
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'rounding',
-            'label'      => 'Rounding',
-            'required'   => true,
-            'attributes' => array(
-                'class'   => 'element rounding',
-                'options' => $this->getRoundings(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'rounding',
+                'label'      => 'Rounding',
+                'required'   => true,
+                'attributes' => array(
+                    'class'   => 'element rounding',
+                    'options' => $this->getRoundings(),
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'apply_once',
-            'label'      => 'Apply Once',
-            'attributes' => array(
-                'class'     => 'element apply-once',
-                'data-help' => 'Enabling this option will allow apply this discount only once to every user.',
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'checkbox',
+                'name'       => 'apply_once',
+                'label'      => 'Apply Once',
+                'attributes' => array(
+                    'class'     => 'element apply-once',
+                    'data-help' => 'Enabling this option will allow apply this discount only once to every user.',
+                ),
+            )
+        );
 
         $this->addSubmit('Add', 'discount_add');
     }
@@ -205,7 +219,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         $specs = parent::getInputFilterSpecification();
 
-        $required = isset($this->data['template']) && 0 == $this->data['template'];
+        $required = isset($this->data['template']) && $this->data['template'] == 0;
 
         $specs['value']['required'] = $required;
         $specs['method']['required'] = $required;

@@ -20,10 +20,10 @@
 
 namespace BrBundle\Entity\Company;
 
-use BrBundle\Entity\Company,
-    CommonBundle\Entity\General\AcademicYear,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use BrBundle\Entity\Company;
+use CommonBundle\Entity\General\AcademicYear;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a company's page.
@@ -100,7 +100,7 @@ class Page
     }
 
     /**
-     * @param  string                        $description
+     * @param  string $description
      * @return \BrBundle\Entity\Company\Page
      */
     public function setDescription($description)
@@ -134,7 +134,7 @@ class Page
     }
 
     /**
-     * @param  array                         $years Sets the years in which this page existed.
+     * @param  array $years Sets the years in which this page existed.
      * @return \BrBundle\Entity\Company\Page This
      */
     public function setYears(array $years)

@@ -20,8 +20,9 @@
 
 namespace TicketBundle\Component\Controller;
 
-use Exception,
-    Zend\Mvc\MvcEvent;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\FormFactoryTrait;
+use Exception;
+use Zend\Mvc\MvcEvent;
 
 /**
  * We extend the CommonBundle controller.
@@ -30,6 +31,8 @@ use Exception,
  */
 class SaleController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
+    use FormFactoryTrait;
+
     /**
      * Execute the request.
      *
@@ -42,7 +45,7 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('TicketBundle\Entity\Event')
             ->findOneById($this->getParam('id'));
 
-        if (null == $event) {
+        if ($event == null) {
             throw new Exception('No valid event is given');
         }
 
@@ -79,13 +82,5 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
             'auth_route'     => 'ticket_sale_index',
             'redirect_route' => 'ticket_sale_index',
         );
-    }
-
-    /**
-     * @return \CommonBundle\Component\Form\Factory
-     */
-    protected function getFormFactory()
-    {
-        return $this->getServiceLocator()->get('formfactory.bootstrap');
     }
 }

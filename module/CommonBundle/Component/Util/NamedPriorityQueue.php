@@ -21,9 +21,9 @@
 namespace CommonBundle\Component\Util;
 
 /**
- * A priority queue where elements with the same priority are compared alphabetically
+ * A priority queue where elements with the same priority are compared
+ * alphabetically.
  *
- * @see strcmp
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
 class NamedPriorityQueue extends \SplPriorityQueue
@@ -31,8 +31,8 @@ class NamedPriorityQueue extends \SplPriorityQueue
     /**
      * Compares two priorities.
      *
-     * @param  array   $a
-     * @param  array   $b
+     * @param  array $a
+     * @param  array $b
      * @return integer
      */
     public function compare($a, $b)

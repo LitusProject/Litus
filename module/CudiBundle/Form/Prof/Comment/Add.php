@@ -31,22 +31,24 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'textarea',
-            'name'       => 'text',
-            'label'      => 'Comment',
-            'required'   => true,
-            'attributes' => array(
-                'rows' => 5,
-                'id'   => 'text',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'       => 'textarea',
+                'name'       => 'text',
+                'label'      => 'Comment',
+                'required'   => true,
+                'attributes' => array(
+                    'rows' => 5,
+                    'id'   => 'text',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
     }
 }

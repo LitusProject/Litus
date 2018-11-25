@@ -31,7 +31,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Experience
 {
     /**
-     * @var int The language entry's ID
+     * @var integer The language entry's ID
      *
      * @ORM\Id
      * @ORM\Column(type="bigint")
@@ -82,7 +82,7 @@ class Experience
      * @param string $startYear
      * @param string $startYear
      */
-    public function __construct(Entry $entry, $function, $type = null,  $startYear = null, $endYear = null)
+    public function __construct(Entry $entry, $function, $type = null, $startYear = null, $endYear = null)
     {
         $this->entry = $entry;
         $this->type = $type;
@@ -92,7 +92,7 @@ class Experience
     }
 
     /**
-     * @return int id.
+     * @return integer id.
      */
     public function getId()
     {

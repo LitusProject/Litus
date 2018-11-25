@@ -19,13 +19,13 @@
  */
 
 return array(
-    'install.cudi' => 'CudiBundle\Command\Install',
+    'install_cudi' => 'CudiBundle\Command\Install',
 
-    'cudi.expire-warning'                => 'CudiBundle\Command\ExpireWarning',
-    'cudi.catalog-update'                => 'CudiBundle\Command\CatalogUpdate',
-    'cudi.test-printer'                  => 'CudiBundle\Command\TestPrinter',
-    'cudi.recalculate-stock'             => 'CudiBundle\Command\RecalculateStock',
-    'cudi.disable-bookings-out-of-stock' => 'CudiBundle\Command\DisableBookingsOutOfStock',
+    'cudi_expire_warning'                => 'CudiBundle\Command\ExpireWarning',
+    'cudi_catalog_update'                => 'CudiBundle\Command\CatalogUpdate',
+    'cudi_test_printer'                  => 'CudiBundle\Command\TestPrinter',
+    'cudi_recalculate_stock'             => 'CudiBundle\Command\RecalculateStock',
+    'cudi_disable_bookings_out_of_stock' => 'CudiBundle\Command\DisableBookingsOutOfStock',
 
-    'cudi.socket.sale' => 'CudiBundle\Command\Socket\SaleQueue',
+    'cudi_socket_sale' => 'CudiBundle\Command\Socket\Sale',
 );

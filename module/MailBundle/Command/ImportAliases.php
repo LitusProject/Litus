@@ -20,9 +20,9 @@
 
 namespace MailBundle\Command;
 
-use MailBundle\Entity\Alias\Academic as AcademicAlias,
-    MailBundle\Entity\Alias\External as ExternalAlias,
-    Symfony\Component\Console\Input\InputArgument;
+use MailBundle\Entity\Alias\Academic as AcademicAlias;
+use MailBundle\Entity\Alias\External as ExternalAlias;
+use Symfony\Component\Console\Input\InputArgument;
 
 /**
  * ImportAliases
@@ -34,30 +34,20 @@ class ImportAliases extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
-        $this
-            ->setName('mail:import-aliases')
-            ->setAliases(array('mail:aliases:import'))
-            ->setDescription('import alias files')
-            ->addOption('flush', 'f', null, 'flush the created aliases to the database')
-            ->addArgument('file', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'the files to import')
-            ->setHelp(<<<EOT
-The %command.name% command imports the given alias <fg=blue>files</fg=blue> and stores them
-if the <fg=blue>--flush</fg=blue> flag is given.
-EOT
-        );
+        $this->setName('mail:import-aliases')
+            ->setDescription('Import alias files')
+            ->addOption('flush', 'f', null, 'Flush the created aliases to the database')
+            ->addArgument('file', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'The files to import');
     }
 
-    protected function executeCommand()
+    protected function invoke()
     {
         $files = $this->getArgument('file');
         if (!is_array($files)) {
             $files = array($files);
         }
 
-        // get PWD of shell that called public/index.php
-        // the PWD of php itself is changed in said file
         $pwd = getenv('PWD');
-
         foreach ($files as $file) {
             $this->loadFile($pwd . '/' . $file);
         }
@@ -65,18 +55,10 @@ EOT
         if ($this->getOption('flush')) {
             $this->write('Flushing to database...');
             $this->getEntityManager()->flush();
-            $this->writeln(' done.', true);
+            $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
         }
     }
 
-    protected function getLogName()
-    {
-        return 'ImportAlias';
-    }
-
-    /**
-     * @param string $file
-     */
     private function loadFile($file)
     {
         foreach (file($file) as $line) {
@@ -89,13 +71,11 @@ EOT
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findOneByEmail($mail);
 
-            if (null !== $academic) {
+            if ($academic !== null) {
                 $this->writeln('Academic: ' . $academic->getFullName());
-
                 $newAlias = new AcademicAlias($alias, $academic);
             } else {
                 $this->writeln('External: ' . $mail);
-
                 $newAlias = new ExternalAlias($alias, $mail);
             }
 

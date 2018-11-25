@@ -31,22 +31,24 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'typeahead',
-            'name'       => 'subject',
-            'label'      => 'Subject',
-            'required'   => true,
-            'attributes' => array(
-                'style' => 'width: 500px',
-            ),
-            'options' => array(
-                'input' => array(
-                    'validators' => array(
-                        array('name' => 'syllabus_typeahead_subject'),
+        $this->add(
+            array(
+                'type'       => 'typeahead',
+                'name'       => 'subject',
+                'label'      => 'Subject',
+                'required'   => true,
+                'attributes' => array(
+                    'style' => 'width: 500px',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'validators' => array(
+                            array('name' => 'TypeaheadSubject'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Add', 'add');
     }

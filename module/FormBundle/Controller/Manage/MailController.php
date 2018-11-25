@@ -20,9 +20,9 @@
 
 namespace FormBundle\Controller\Manage;
 
-use FormBundle\Entity\Node\Form,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use FormBundle\Entity\Node\Form;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * MailController
@@ -35,7 +35,8 @@ class MailController extends \FormBundle\Component\Controller\FormController
     {
         $this->initAjax();
 
-        if (!($formSpecification = $this->getFormEntity())) {
+        $formSpecification = $this->getFormEntity();
+        if ($formSpecification === null) {
             return new ViewModel();
         }
 
@@ -59,9 +60,12 @@ class MailController extends \FormBundle\Component\Controller\FormController
             $defaultFromAddress = $formSpecification->getMail()->getFrom();
         }
 
-        $form = $this->getForm('form_manage_mail_send', array(
-            'defaultFromAddress' => $defaultFromAddress,
-        ));
+        $form = $this->getForm(
+            'form_manage_mail_send',
+            array(
+                'defaultFromAddress' => $defaultFromAddress,
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -84,7 +88,7 @@ class MailController extends \FormBundle\Component\Controller\FormController
                         ->addTo($entry->getPersonInfo()->getEmail(), $entry->getPersonInfo()->getFullName())
                         ->setSubject($formData['subject']);
 
-                    if ('development' != getenv('APPLICATION_ENV')) {
+                    if (getenv('APPLICATION_ENV') != 'development') {
                         $this->getMailTransport()->send($mail);
                     }
                 }

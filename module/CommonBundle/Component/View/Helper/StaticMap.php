@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Component\View\Helper;
 
-use CommonBundle\Entity\General\Location,
-    Doctrine\ORM\EntityManager;
+use CommonBundle\Entity\General\Location;
+use Doctrine\ORM\EntityManager;
 
 /**
  * This view helper can be used to create an URL of an image that displays
@@ -55,7 +55,7 @@ class StaticMap extends \Zend\View\Helper\AbstractHelper
      */
     public function __invoke(Location $location, $size, $color)
     {
-        if (null === $this->entityManager) {
+        if ($this->entityManager === null) {
             throw new Exception\RuntimeException('No EntityManager instance was provided');
         }
 

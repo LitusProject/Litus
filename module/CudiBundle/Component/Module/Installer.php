@@ -20,18 +20,17 @@
 
 namespace CudiBundle\Component\Module;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    CommonBundle\Entity\General\Address,
-    CommonBundle\Entity\General\Bank\BankDevice,
-    CommonBundle\Entity\General\Bank\MoneyUnit,
-    CommonBundle\Entity\General\Config,
-    CudiBundle\Entity\Article\Option\Binding,
-    CudiBundle\Entity\Article\Option\Color,
-    CudiBundle\Entity\Sale\PayDesk,
-    DateInterval,
-    DateTime,
-    Exception;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+use CommonBundle\Entity\General\Address;
+use CommonBundle\Entity\General\Bank\BankDevice;
+use CommonBundle\Entity\General\Bank\MoneyUnit;
+use CommonBundle\Entity\General\Config;
+use CudiBundle\Entity\Article\Option\Binding;
+use CudiBundle\Entity\Article\Option\Color;
+use CudiBundle\Entity\Sale\PayDesk;
+use DateInterval;
+use DateTime;
 
 /**
  * CudiBundle installer
@@ -43,33 +42,33 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
 {
     protected function postInstall()
     {
-        $this->write('Installing Addresses...');
+        $this->write('Installing addresses...');
         $this->installAddresses();
-        $this->writeln(' done.', true);
+        $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
 
-        $this->write('Installing Bindings...');
+        $this->write('Installing bindings...');
         $this->installBinding();
-        $this->writeln(' done.', true);
+        $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
 
-        $this->write('Installing Academic Years...');
+        $this->write('Installing academic year...');
         $this->installAcademicYear();
-        $this->writeln(' done.', true);
+        $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
 
         $this->write('Installing Colors...');
         $this->installColor();
-        $this->writeln(' done.', true);
+        $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
 
-        $this->write('Installing Money Units...');
+        $this->write('Installing money units...');
         $this->installMoneyUnit();
-        $this->writeln(' done.', true);
+        $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
 
-        $this->write('Installing Bank Devices...');
+        $this->write('Installing bank devices...');
         $this->installBankDevice();
-        $this->writeln(' done.', true);
+        $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
 
-        $this->write('Installing Pay Desks...');
+        $this->write('Installing pay desks...');
         $this->installPayDesks();
-        $this->writeln(' done.', true);
+        $this->writeln(" <fg=green>\u{2713}</fg=green>", true);
     }
 
     private function installBinding()
@@ -84,7 +83,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
             $binding = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Article\Option\Binding')
                 ->findOneByCode($code);
-            if (null == $binding) {
+            if ($binding == null) {
                 $binding = new Binding($code, $name);
                 $this->getEntityManager()->persist($binding);
             }
@@ -100,7 +99,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
             $color = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Article\Option\Color')
                 ->findOneByName($item);
-            if (null == $color) {
+            if ($color == null) {
                 $color = new Color($item);
                 $this->getEntityManager()->persist($color);
             }
@@ -128,7 +127,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
         );
         $organizationStart = new DateTime($organizationStart);
 
-        if (null === $academicYear) {
+        if ($academicYear === null) {
             $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
             $this->getEntityManager()->persist($academicYear);
             $this->getEntityManager()->flush();
@@ -142,7 +141,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
             $academicYear = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\AcademicYear')
                 ->findOneByStart($organizationStart);
-            if (null == $academicYear) {
+            if ($academicYear == null) {
                 $startAcademicYear = AcademicYear::getEndOfAcademicYear(
                     $organizationStart
                 );
@@ -159,7 +158,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.delivery_address');
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             $address = (new Address())
                 ->setStreet('Kasteelpark Arenberg')
                 ->setNumber(41)
@@ -177,7 +176,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.billing_address');
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             $address = (new Address())
                 ->setStreet('Studentenwijk Arenberg')
                 ->setNumber(6)
@@ -200,7 +199,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
             $unit = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Bank\MoneyUnit')
                 ->findOneByUnit($item);
-            if (null == $unit) {
+            if ($unit == null) {
                 $unit = new MoneyUnit($item);
                 $this->getEntityManager()->persist($unit);
             }
@@ -216,7 +215,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
             $bankdevice = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
                 ->findOneByName($item);
-            if (null == $bankdevice) {
+            if ($bankdevice == null) {
                 $bankdevice = new BankDevice($item);
                 $this->getEntityManager()->persist($bankdevice);
             }
@@ -236,7 +235,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
             $paydesk = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\PayDesk')
                 ->findOneByCode($code);
-            if (null == $paydesk) {
+            if ($paydesk == null) {
                 $paydesk = new PayDesk($code, $name);
                 $this->getEntityManager()->persist($paydesk);
             }

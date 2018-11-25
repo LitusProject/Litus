@@ -23,10 +23,9 @@ namespace CommonBundle\Component\Form;
 use Zend\Form\FormInterface;
 
 /**
+ * ElementTrait
+ *
  * @author Bram Gotink <bram.gotink@litus.cc>
- * @method string getName()
- * @method mixed getOption(string $option)
- * @property array options
  */
 trait ElementTrait
 {
@@ -36,36 +35,37 @@ trait ElementTrait
     private $required = false;
 
     /**
-     * Specifies whether this element is a required field.
-     *
-     * Also sets the HTML5 'required' attribute.
+     * @return boolean
+     */
+    public function isRequired()
+    {
+        return $this->required;
+    }
+
+    /**
+     * Specifies whether this element is a required field. Also sets the HTML5
+     * 'required' attribute.
      *
      * @param  boolean $flag
      * @return self
      */
     public function setRequired($flag = true)
     {
+        $this->required = $flag;
+
         $this->setAttribute('required', $flag);
 
         $labelAttributes = $this->getLabelAttributes() ?: array();
         if (isset($labelAttributes['class'])) {
-            $labelAttributes['class'] .= ' ' . ($flag ? 'required' : 'optional');
+            if (strpos($labelAttributes['class'], 'required') === false) {
+                $labelAttributes['class'] .= ' ' . ($flag ? 'required' : 'optional');
+            }
         } else {
             $labelAttributes['class'] = ($flag ? 'required' : 'optional');
         }
         $this->setLabelAttributes($labelAttributes);
 
-        $this->required = $flag;
-
         return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isRequired()
-    {
-        return $this->required;
     }
 
     /**
@@ -84,34 +84,11 @@ trait ElementTrait
     }
 
     /**
-     * @param array $attributes
-     */
-    public function setAttributes($attributes)
-    {
-        if (array_key_exists('class', $attributes)) {
-            $this->addClass($attributes['class']);
-            unset($attributes['class']);
-        }
-
-        parent::setAttributes($attributes);
-    }
-
-    /**
-     * @param  string $option
-     * @return bool
-     */
-    public function hasOption($option)
-    {
-        return array_key_exists($option, $this->options);
-    }
-
-    /**
      * @return array
      */
     public function getInputSpecification()
     {
         if (!$this->hasOption('input')) {
-            // create default
             return array(
                 'name'     => $this->getName(),
                 'required' => $this->isRequired(),
@@ -130,19 +107,45 @@ trait ElementTrait
     }
 
     /**
-     * Prepare the form element (mostly used for rendering purposes)
-     *
+     * @param  string $option
+     * @return boolean
+     */
+    public function hasOption($option)
+    {
+        return array_key_exists($option, $this->options);
+    }
+
+    /**
+     * @param array $attributes
+     */
+    public function setAttributes($attributes)
+    {
+        if (array_key_exists('class', $attributes)) {
+            $this->addClass($attributes['class']);
+            unset($attributes['class']);
+        }
+
+        parent::setAttributes($attributes);
+    }
+
+    /**
      * @param  FormInterface $form
      * @return mixed
      */
     public function prepareElement(FormInterface $form)
     {
         if (!$this->hasAttribute('id')) {
-            $this->setAttribute('id', md5($this->getName() . rand() . rand()));
+            $this->setAttribute('id', md5(uniqid(rand(), true)));
         }
     }
 
     // The following methods are required by the trait
+
+    /**
+     * @param  string $name
+     * @return mixed|null
+     */
+    abstract public function getAttribute($name);
 
     /**
      * @param  string     $name
@@ -152,13 +155,7 @@ trait ElementTrait
     abstract public function setAttribute($name, $value);
 
     /**
-     * @param  string     $name
-     * @return mixed|null
-     */
-    abstract public function getAttribute($name);
-
-    /**
-     * @param  string  $name
+     * @param  string $name
      * @return boolean
      */
     abstract public function hasAttribute($name);

@@ -27,7 +27,7 @@ chdir(dirname(__DIR__));
 
 include 'init_autoloader.php';
 
-if (false === getenv('ORGANIZATION')) {
+if (getenv('ORGANIZATION') === false) {
     putenv('ORGANIZATION=Litus');
 }
 
@@ -47,19 +47,19 @@ if (isset($_SERVER[$shibbolethPersonKey], $_SERVER[$shibbolethSessionKey])) {
     $shibbolethExtraInfoKeys = unserialize(
         $em->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_extra_info')
-        );
+    );
     $extraInfo = array();
     foreach ($shibbolethExtraInfoKeys as $key => $value) {
-        $extraInfo[$key] = isset($_SERVER[$value]) ? $_SERVER[$value] : '';
+        $extraInfo[$key] = $_SERVER[$value] ?? '';
     }
 
-    if (null === $code) {
+    if ($code === null) {
         $code = new CommonBundle\Entity\User\Shibboleth\Code(
             $_SERVER[$shibbolethPersonKey],
             substr($_SERVER[$shibbolethSessionKey], 1),
             serialize($extraInfo),
-            ($_GET['source'] == 'register') ? 1800 : 300,
-            isset($_GET['redirect']) ? $_GET['redirect'] : null
+            $_GET['source'] == 'register' ? 1800 : 300,
+            $_GET['redirect'] ?? null
         );
 
         $em->persist($code);
@@ -71,11 +71,11 @@ $shibbolethHandler = $em->getRepository('CommonBundle\Entity\General\Config')
     ->getConfigValue('shibboleth_code_handler_url');
 $shibbolethHandler = unserialize($shibbolethHandler)[$_GET['source']];
 
-if ('/' == substr($shibbolethHandler, -1)) {
+if (substr($shibbolethHandler, -1) == '/') {
     $shibbolethHandler = substr($shibbolethHandler, 0, -1);
 }
 
 http_response_code(307);
 header(
-    'Location: ' . $shibbolethHandler . (null !== $code ? '/identification/' . $code->getUniversityIdentification() . '/hash/' . $code->hash() : '')
+    'Location: ' . $shibbolethHandler . ($code !== null ? '/identification/' . $code->getUniversityIdentification() . '/hash/' . $code->hash() : '')
 );

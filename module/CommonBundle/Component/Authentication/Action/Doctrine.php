@@ -20,11 +20,11 @@
 
 namespace CommonBundle\Component\Authentication\Action;
 
-use CommonBundle\Component\Authentication\Result,
-    CommonBundle\Entity\User\Code,
-    Doctrine\ORM\EntityManager,
-    Zend\Mail\Message,
-    Zend\Mail\Transport\TransportInterface;
+use CommonBundle\Component\Authentication\Result;
+use CommonBundle\Entity\User\Code;
+use Doctrine\ORM\EntityManager;
+use Zend\Mail\Message;
+use Zend\Mail\Transport\TransportInterface;
 
 /**
  * The action that should be taken after authentication.
@@ -65,10 +65,11 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
             return;
         }
 
-        $result->getPersonObject()
-            ->setFailedLogins($result->getPersonObject()->getFailedLogins() + 1);
+        $result->getPersonObject()->setFailedLogins(
+            $result->getPersonObject()->getFailedLogins() + 1
+        );
 
-        if ($result->getPersonObject()->getFailedLogins() >= 5 && null === $result->getPersonObject()->getCode()) {
+        if ($result->getPersonObject()->getFailedLogins() >= 5 && $result->getPersonObject()->getCode() === null) {
             do {
                 $code = md5(uniqid(rand(), true));
                 $found = $this->entityManager
@@ -79,11 +80,12 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
             $code = new Code($code);
             $this->entityManager->persist($code);
 
-            $result->getPersonObject()
-                ->setCode($code);
+            $result->getPersonObject()->setCode($code);
 
-            if (!($language = $result->getPersonObject()->getLanguage())) {
-                $language = $this->entityManager->getRepository('CommonBundle\Entity\General\Language')
+            $language = $result->getPersonObject()->getLanguage();
+            if ($language === null) {
+                $language = $this->entityManager
+                    ->getRepository('CommonBundle\Entity\General\Language')
                     ->findOneByAbbrev('en');
             }
 
@@ -111,7 +113,7 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
                 ->addTo($result->getPersonObject()->getEmail(), $result->getPersonObject()->getFullName())
                 ->setSubject($subject);
 
-            if ('development' != getenv('APPLICATION_ENV')) {
+            if (getenv('APPLICATION_ENV') != 'development') {
                 $this->mailTransport->send($mail);
             }
         }
@@ -126,8 +128,7 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
      */
     public function succeededAction(Result $result)
     {
-        $result->getPersonObject()
-            ->setFailedLogins(0);
+        $result->getPersonObject()->setFailedLogins(0);
         $this->entityManager->flush();
     }
 }

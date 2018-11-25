@@ -20,15 +20,20 @@
 
 namespace CommonBundle\Component\Form;
 
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
-    CommonBundle\Component\Validator\FormAwareInterface,
-    RuntimeException,
-    Zend\Form\FieldsetInterface as ZendFieldsetInterface,
-    Zend\Form\FormInterface,
-    Zend\InputFilter\InputFilterAwareInterface,
-    Zend\InputFilter\InputFilterInterface,
-    Zend\InputFilter\InputInterface,
-    Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\HydratorPluginManagerTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\SessionContainerTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Component\Validator\FormAwareInterface;
+use RuntimeException;
+use Zend\Form\FieldsetInterface as ZendFieldsetInterface;
+use Zend\Form\FormInterface;
+use Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
+use Zend\InputFilter\InputFilterAwareInterface;
+use Zend\InputFilter\InputFilterInterface;
+use Zend\InputFilter\InputInterface;
 
 /**
  * Extending Zend's form component, so that our forms look the way we want
@@ -39,17 +44,23 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
  */
 abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface, ServiceLocatorAwareInterface, ZendFieldsetInterface
 {
-    use \CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait;
-
-    use ElementTrait, FieldsetTrait {
-        FieldsetTrait::setRequired insteadof ElementTrait;
+    use ElementTrait {
         ElementTrait::setRequired as setElementRequired;
     }
 
+    use FieldsetTrait {
+        FieldsetTrait::setRequired insteadof ElementTrait;
+    }
+
+    use ServiceLocatorAwareTrait;
+
+    use DoctrineTrait;
+    use HydratorPluginManagerTrait;
+    use SessionContainerTrait;
+
     /**
-     * @param null|string|int $name    Optional name for the element
-     * @param array           $options
+     * @param string|integer|null $name    Optional name for the element
+     * @param array               $options
      */
     public function __construct($name = null, $options = array())
     {
@@ -60,17 +71,15 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     }
 
     /**
-     * @return \Zend\Stdlib\Hydrator\HydratorInterface
+     * @return \Zend\Hydrator\HydratorInterface
      */
     public function getHydrator()
     {
-        if (null === $this->hydrator) {
+        if ($this->hydrator === null) {
             $this->setHydrator(new ClassMethodsHydrator());
         } elseif (is_string($this->hydrator)) {
             $this->setHydrator(
-                $this->getServiceLocator()
-                    ->get('litus.hydratormanager')
-                    ->get($this->hydrator)
+                $this->getHydratorPluginManager()->get($this->hydrator)
             );
         }
 
@@ -84,7 +93,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     {
         return $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
-            ->findOneByAbbrev($this->getSessionStorage()->language);
+            ->findOneByAbbrev($this->getSessionContainer()->language);
     }
 
     /**
@@ -112,7 +121,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
             'value' => $value,
         );
 
-        if (null !== $class) {
+        if ($class !== null) {
             $attributes['class'] = $class;
         }
 
@@ -126,17 +135,19 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     /**
      * Adds a fieldset to the form.
      *
-     * @param  string   $label
-     * @param  string   $name
+     * @param  string $label
+     * @param  string $name
      * @return Fieldset
      */
     public function addFieldset($label, $name)
     {
-        $this->add(array(
-            'type'  => 'fieldset',
-            'name'  => $name,
-            'label' => $label,
-        ));
+        $this->add(
+            array(
+                'type'  => 'fieldset',
+                'name'  => $name,
+                'label' => $label,
+            )
+        );
 
         return $this->get($name);
     }
@@ -163,7 +174,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
      *
      * This method does nothing if the form is invalid.
      *
-     * @param  object|null      $object The object to hydrate
+     * @param  object|null $object The object to hydrate
      * @return object           The hydrated object
      * @throws RuntimeException If $object is null and creating objects is not supported by the hydrator
      * @throws RuntimeException If this form hasn't been validated yet
@@ -183,7 +194,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
 
     private function injectSelfInValidators(InputFilterInterface $filter)
     {
-        foreach ($filter->getInputs() as $key => $input) {
+        foreach ($filter->getInputs() as $input) {
             if ($input instanceof InputInterface) {
                 foreach ($input->getValidatorChain()->getValidators() as $validator) {
                     if ($validator['instance'] instanceof FormAwareInterface) {
@@ -210,5 +221,20 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
         }
 
         return $this->filter;
+    }
+
+    /**
+     * Get the current academic year.
+     *
+     * @param  boolean $organization
+     * @return AcademicYear
+     */
+    protected function getCurrentAcademicYear($organization = false)
+    {
+        if ($organization) {
+            return AcademicYear::getOrganizationYear($this->getEntityManager());
+        }
+
+        return AcademicYear::getUniversityYear($this->getEntityManager());
     }
 }

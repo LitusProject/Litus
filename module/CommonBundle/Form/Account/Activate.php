@@ -31,41 +31,45 @@ class Activate extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'password',
-            'name'     => 'credential',
-            'label'    => 'Password',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'     => 'password',
+                'name'     => 'credential',
+                'label'    => 'Password',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'password',
-            'name'     => 'verify_credential',
-            'label'    => 'Verify Password',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name'    => 'identical',
-                            'options' => array(
-                                'token' => 'credential',
+        $this->add(
+            array(
+                'type'     => 'password',
+                'name'     => 'verify_credential',
+                'label'    => 'Verify Password',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name'    => 'Identical',
+                                'options' => array(
+                                    'token' => 'credential',
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Activate');
     }

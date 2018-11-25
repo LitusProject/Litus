@@ -38,7 +38,6 @@ return array(
     'Feb'       => 'Feb',
     'Mar'       => 'Mar',
     'Apr'       => 'Apr',
-    'May'       => 'May',
     'Jun'       => 'Jun',
     'Jul'       => 'Jul',
     'Aug'       => 'Aug',
@@ -89,8 +88,6 @@ return array(
     'Piano'                                    => 'Piano',
     'Reservations'                             => 'Reservations',
     'Confirmed'                                => 'Confirmed',
-    'Start Date'                               => 'Start Date',
-    'End Date'                                 => 'End Date',
     'The reservation was succesfully created!' => 'The reservation was succesfully created!',
     'Book'                                     => 'Book',
 

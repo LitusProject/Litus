@@ -20,8 +20,10 @@
 
 namespace CudiBundle\Controller\Admin;
 
-use Cudibundle\Entity\IsicCard,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\General\AcademicYear;
+use CudiBundle\Entity\IsicCard;
+use Zend\Soap\Client as SoapClient;
+use Zend\View\Model\ViewModel;
 
 /**
  * IsicController
@@ -30,6 +32,11 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
+            return new ViewModel();
+        }
+
         $cards = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\IsicCard')
             ->findAllQuery();
@@ -51,7 +58,8 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($isicCard = $this->getIsicCardEntity())) {
+        $isicCard = $this->getIsicCardEntity();
+        if ($isicCard === null) {
             return new ViewModel();
         }
 
@@ -74,7 +82,8 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($isicCard = $this->getIsicCardEntity())) {
+        $isicCard = $this->getIsicCardEntity();
+        if ($isicCard === null) {
             return new ViewModel();
         }
 
@@ -97,29 +106,30 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($isicCard = $this->getIsicCardEntity())) {
+        $isicCard = $this->getIsicCardEntity();
+        if ($isicCard === null) {
             return new ViewModel(
-            array(
-                'result' => (object) array('status' => 'error'),
-            )
-        );
+                array(
+                    'result' => (object) array('status' => 'error'),
+                )
+            );
         }
 
         if ($isicCard->getBooking()->getStatus() !== 'sold') {
             return new ViewModel(
-            array(
-                'result' => (object) array('status' => 'error'),
-            )
-        );
+                array(
+                    'result' => (object) array('status' => 'error'),
+                )
+            );
         }
 
         if (!$isicCard->hasPaid()) {
             $serviceUrl = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('cudi.isic_service_url');
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.isic_service_url');
             $client = new SoapClient($serviceUrl);
             $config = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config');
+                ->getRepository('CommonBundle\Entity\General\Config');
 
             $arguments = array();
             $arguments['username'] = $config->getConfigValue('cudi.isic_username');
@@ -149,7 +159,8 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($isicCard = $this->getIsicCardEntity())) {
+        $isicCard = $this->getIsicCardEntity();
+        if ($isicCard === null) {
             return new ViewModel();
         }
 
@@ -167,6 +178,57 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
                 'result' => (object) array('status' => 'success'),
             )
         );
+    }
+
+    public function searchAction()
+    {
+        $this->initAjax();
+
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
+            return new ViewModel();
+        }
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        $cards = $this->search($academicYear)
+            ->setMaxResults($numResults)
+            ->getResult();
+
+        $result = array();
+        foreach ($cards as $card) {
+            $item = (object) array();
+            $item->id = $card->getId();
+            $item->number = $card->getCardNumber();
+            $item->person = $card->getPerson()->getFullName();
+            $item->status = $card->getBooking()->getStatus();
+            $item->year = $card->getAcademicYear()->getStartDate()->format('Y') . ' - ' . $card->getAcademicYear()->getEndDate()->format('Y');
+            $item->isPaid = $card->hasPaid();
+            $item->booking = $card->getBooking()->getId();
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+    /**
+     * @param  AcademicYear $academicYear
+     * @return \Doctrine\ORM\Query|null
+     */
+    private function search(AcademicYear $academicYear)
+    {
+        switch ($this->getParam('field')) {
+            case 'owner':
+                return $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\IsicCard')
+                    ->findByPersonNameAndYearQuery($this->getParam('string'), $academicYear);
+        }
     }
 
     private function getIsicCardEntity()

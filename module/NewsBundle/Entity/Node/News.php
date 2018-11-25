@@ -20,13 +20,13 @@
 
 namespace NewsBundle\Entity\Node;
 
-use CommonBundle\Component\Util\Url,
-    CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM,
-    Locale;
+use CommonBundle\Component\Util\Url;
+use CommonBundle\Entity\General\Language;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Locale;
 
 /**
  * This entity stores the node item.
@@ -98,14 +98,14 @@ class News extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  Language|null    $language
-     * @param  boolean          $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return Translation|null
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
         foreach ($this->translations as $translation) {
-            if (null !== $language && $translation->getLanguage() == $language) {
+            if ($language !== null && $translation->getLanguage() == $language) {
                 return $translation;
             }
 
@@ -130,7 +130,7 @@ class News extends \CommonBundle\Entity\Node
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation) {
+        if ($translation !== null) {
             return $translation->getTitle();
         }
 
@@ -146,7 +146,7 @@ class News extends \CommonBundle\Entity\Node
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation) {
+        if ($translation !== null) {
             return $translation->getContent();
         }
 
@@ -162,7 +162,7 @@ class News extends \CommonBundle\Entity\Node
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation) {
+        if ($translation !== null) {
             return $translation->getSummary($length);
         }
 

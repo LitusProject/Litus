@@ -20,8 +20,9 @@
 
 namespace BrBundle\Entity\Product;
 
-use BrBundle\Entity\Product,
-    Doctrine\ORM\Mapping as ORM;
+use BrBundle\Entity\Product;
+use BrBundle\Entity\Product\Order;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * An order of several products.
@@ -32,7 +33,7 @@ use BrBundle\Entity\Product,
 class OrderEntry
 {
     /**
-     * @var int A generated ID
+     * @var integer A generated ID
      *
      * @ORM\Id
      * @ORM\Column(type="bigint")
@@ -57,7 +58,7 @@ class OrderEntry
     private $product;
 
     /**
-     * @var int The quantity of this item.
+     * @var integer The quantity of this item.
      *
      * @ORM\Column(name="quantity", type="integer")
      */
@@ -66,7 +67,7 @@ class OrderEntry
     /**
      * @param Order   $order    The order of which this entry is part.
      * @param Product $product  The product belonging to this entry.
-     * @param int     $quantity The quantity of this product that was ordered
+     * @param integer $quantity The quantity of this product that was ordered
      */
     public function __construct(Order $order, Product $product, $quantity)
     {
@@ -76,7 +77,7 @@ class OrderEntry
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -111,7 +112,7 @@ class OrderEntry
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getQuantity()
     {
@@ -119,7 +120,7 @@ class OrderEntry
     }
 
     /**
-     * @param  int  $quantity
+     * @param  integer $quantity
      * @return self
      */
     public function setQuantity($quantity)

@@ -20,11 +20,11 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Entity\Acl\Action,
-    CommonBundle\Entity\Acl\Role,
-    CommonBundle\Entity\User\Person,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Acl\Acl;
+use CommonBundle\Entity\Acl\Action;
+use CommonBundle\Entity\Acl\Role;
+use CommonBundle\Entity\User\Person;
+use Zend\View\Model\ViewModel;
 
 /**
  * RoleController
@@ -93,7 +93,8 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
     public function membersAction()
     {
-        if (!($role = $this->getRoleEntity())) {
+        $role = $this->getRoleEntity();
+        if ($role === null) {
             return new ViewModel();
         }
 
@@ -111,7 +112,8 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($role = $this->getRoleEntity())) {
+        $role = $this->getRoleEntity();
+        if ($role === null) {
             return new ViewModel();
         }
 
@@ -152,7 +154,8 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($role = $this->getRoleEntity())) {
+        $role = $this->getRoleEntity();
+        if ($role === null) {
             return new ViewModel();
         }
 
@@ -163,8 +166,8 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         foreach ($users as $user) {
             $user->removeRole($role);
         }
-        $this->getEntityManager()->remove($role);
 
+        $this->getEntityManager()->remove($role);
         $this->getEntityManager()->flush();
 
         $this->updateCache();
@@ -180,11 +183,13 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($role = $this->getRoleEntity())) {
+        $role = $this->getRoleEntity();
+        if ($role === null) {
             return new ViewModel();
         }
 
-        if (!($member = $this->getPersonEntity())) {
+        $member = $this->getPersonEntity();
+        if ($member === null) {
             return new ViewModel();
         }
 
@@ -288,7 +293,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
      */
     private function updateCache()
     {
-        if (null !== $this->getCache() && $this->getCache()->hasItem('CommonBundle_Component_Acl_Acl')) {
+        if ($this->getCache() !== null && $this->getCache()->hasItem('CommonBundle_Component_Acl_Acl')) {
             $this->getCache()->replaceItem(
                 'CommonBundle_Component_Acl_Acl',
                 new Acl(
@@ -299,8 +304,8 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @param  Action  $action
-     * @param  array   $parents
+     * @param  Action $action
+     * @param  array  $parents
      * @return boolean
      */
     private function findActionWithParents(Action $action, array $parents)

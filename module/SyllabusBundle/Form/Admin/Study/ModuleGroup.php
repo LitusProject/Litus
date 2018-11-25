@@ -20,14 +20,12 @@
 
 namespace SyllabusBundle\Form\Admin\Study;
 
-use CommonBundle\Component\Form\Fieldset;
-
 /**
  * Add Module Group
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class ModuleGroup extends Fieldset
+class ModuleGroup extends \CommonBundle\Component\Form\Fieldset
 {
     public function init()
     {
@@ -35,25 +33,25 @@ class ModuleGroup extends Fieldset
 
         $this->setLabel('Module Group');
 
-        $this->add(array(
-            'type'       => 'typeahead',
-            'name'       => 'module_group',
-            'required'   => false,
-            'attributes' => array(
-                'style' => 'width: 400px;',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'syllabus_typeahead_study_module-group',
+        $this->add(
+            array(
+                'type'       => 'typeahead',
+                'name'       => 'module_group',
+                'required'   => false,
+                'attributes' => array(
+                    'style' => 'width: 400px;',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'TypeaheadStudyModuleGroup'),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
     }
 }

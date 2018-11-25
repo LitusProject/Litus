@@ -35,8 +35,6 @@ return array(
     'Account'                       => 'Account',
     'KU Leuven&mdash;Central Login' => 'KU Leuven&mdash;Centrale Login',
     'Language'                      => 'Language',
-    'Dutch'                         => 'Nederlands',
-    'English'                       => 'English',
 
     'Links'    => 'Links',
     'Partners' => 'Partners',
@@ -51,7 +49,6 @@ return array(
     'Username'    => 'Gebruikersnaam',
     'Password'    => 'Wachtwoord',
     'Remember Me' => 'Onthoud Mij',
-    'Login'       => 'Aanmelden',
 
     'You have been successfully logged in!'                              => 'Je bent succesvol aangemeld!',
     'The given username and password did not match. Please try again.'   => 'De gebruikersnaam en het wachtwoord komen niet overeen. Probeer het nog een keer.',
@@ -59,7 +56,6 @@ return array(
     'Something went wrong while logging you in. Please try again later.' => 'Er liep iets mis tijdens het aanmelden. Probeer het later nog een keer.',
 
     'Activate'                                                                                                         => 'Activeren',
-    'Password'                                                                                                         => 'Wachtwoord',
     'Verify Password'                                                                                                  => 'Bevestig Wachtwoord',
     'Your account was succesfully activated!'                                                                          => 'Uw account was succesvol geactiveerd!',
     'Overview'                                                                                                         => 'Overzicht',

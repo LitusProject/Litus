@@ -19,5 +19,5 @@
  */
 
 return array(
-    'install.quiz' => 'QuizBundle\Command\Install',
+    'install_quiz' => 'QuizBundle\Command\Install',
 );

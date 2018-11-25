@@ -20,8 +20,8 @@
 
 namespace SecretaryBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a promotion year.
@@ -37,7 +37,7 @@ use CommonBundle\Entity\General\AcademicYear,
 abstract class Promotion
 {
     /**
-     * @var int The entry's unique identifier
+     * @var integer The entry's unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -64,7 +64,7 @@ abstract class Promotion
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {

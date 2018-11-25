@@ -160,7 +160,7 @@ var LanguageDefinition = {
                                                 $('<br />'),
                                                 $('<b>').html('Image'),
                                                 $('<br />'),
-                                                file = $('<input>', {'type': 'file', 'name': 'file', 'accept': 'image/jpeg,image/png,image/gif'}),
+                                                file = $('<input>', {'type': 'file', 'name': 'file', 'accept': 'image/gif,image/jpeg,image/png'}),
                                                 $('<br />'),
                                                 $('<br />')
                                             ),

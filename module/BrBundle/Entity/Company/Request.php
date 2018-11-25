@@ -20,9 +20,9 @@
 
 namespace BrBundle\Entity\Company;
 
-use BrBundle\Entity\User\Person\Corporate,
-    DateTime,
-    Doctrine\ORM\Mapping as ORM;
+use BrBundle\Entity\User\Person\Corporate;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores the node item.
@@ -80,11 +80,48 @@ abstract class Request
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @param  \BrBundle\Entity\User\Person\Corporate $contact
+     * @return \BrBundle\Entity\Company\Request
+     */
+    public function setContact($contact)
+    {
+        $this->contact = $contact;
+
+        return $this;
+    }
+
+    /**
+     * @return \BrBundle\Entity\User\Person\Corporate
+     */
+    public function getContact()
+    {
+        return $this->contact;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreationTime()
+    {
+        return $this->creationTime;
+    }
+
+    /**
+     * @return \BrBundle\Entity\User\Person\Corporate
+     */
+    public function handled()
+    {
+        $this->handled = true;
+
+        return true;
     }
 
     /**
@@ -106,22 +143,6 @@ abstract class Request
     }
 
     /**
-     * @return \DateTime
-     */
-    public function getCreationTime()
-    {
-        return $this->creationTime;
-    }
-
-    /**
-     * @return null
-     */
-    public function handled()
-    {
-        $this->handled = true;
-    }
-
-    /**
      * @return null
      */
     abstract public function approveRequest();
@@ -137,7 +158,7 @@ abstract class Request
     abstract public function getJob();
 
     /**
-     * @return String
+     * @return string
      */
     abstract public function getRejectMessage();
 }

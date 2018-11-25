@@ -20,14 +20,13 @@
 
 namespace ShopBundle\Repository;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    DateTime;
+use DateTime;
 
 /**
  * SalesSession
  * @author Floris Kint <floris.kint@litus.cc>
  */
-class SalesSession extends EntityRepository
+class SalesSession extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
     /**
      * @return \Doctrine\ORM\Query
@@ -35,7 +34,7 @@ class SalesSession extends EntityRepository
     public function findAllFutureQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('s')
+        return $query->select('s')
             ->from('ShopBundle\Entity\SalesSession', 's')
             ->where(
                 $query->expr()->gte('s.endDate', ':now')
@@ -43,8 +42,6 @@ class SalesSession extends EntityRepository
             ->orderBy('s.startDate', 'ASC')
             ->setParameter('now', new DateTime())
             ->getQuery();
-
-        return $resultSet;
     }
 
     /**
@@ -53,7 +50,7 @@ class SalesSession extends EntityRepository
     public function findAllOldQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('s')
+        return $query->select('s')
             ->from('ShopBundle\Entity\SalesSession', 's')
             ->where(
                 $query->expr()->lt('s.endDate', ':now')
@@ -61,18 +58,16 @@ class SalesSession extends EntityRepository
             ->orderBy('s.startDate', 'ASC')
             ->setParameter('now', new DateTime())
             ->getQuery();
-
-        return $resultSet;
     }
 
     /**
-     * @param  string              $remarks
+     * @param  string $remarks
      * @return \Doctrine\ORM\Query
      */
     public function findAllFutureByRemarksQuery($remarks)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('s')
+        return $query->select('s')
             ->from('ShopBundle\Entity\SalesSession', 's')
             ->where(
                 $query->expr()->andX(
@@ -84,18 +79,16 @@ class SalesSession extends EntityRepository
             ->setParameter('remarks', '%' . strtolower($remarks) . '%')
             ->setParameter('now', new DateTime())
             ->getQuery();
-
-        return $resultSet;
     }
 
     /**
-     * @param  string              $remarks
+     * @param  string $remarks
      * @return \Doctrine\ORM\Query
      */
     public function findAllOldByRemarksQuery($remarks)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('s')
+        return $query->select('s')
             ->from('ShopBundle\Entity\SalesSession', 's')
             ->where(
                 $query->expr()->andX(
@@ -107,14 +100,12 @@ class SalesSession extends EntityRepository
             ->setParameter('remarks', '%' . strtolower($remarks) . '%')
             ->setParameter('now', new DateTime())
             ->getQuery();
-
-        return $resultSet;
     }
 
     public function findAllReservationsPossibleInterval($startDate, $endDate)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('s')
+        return $query->select('s')
             ->from('ShopBundle\Entity\SalesSession', 's')
             ->where(
                 $query->expr()->andX(
@@ -129,7 +120,5 @@ class SalesSession extends EntityRepository
             ->setParameter('end_date', $endDate)
             ->getQuery()
             ->getResult();
-
-        return $resultSet;
     }
 }

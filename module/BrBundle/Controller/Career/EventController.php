@@ -20,9 +20,9 @@
 
 namespace BrBundle\Controller\Career;
 
-use BrBundle\Entity\Company\Event,
-    DateTime,
-    Zend\View\Model\ViewModel;
+use BrBundle\Entity\Company\Event;
+use DateTime;
+use Zend\View\Model\ViewModel;
 
 /**
  * EventController
@@ -46,7 +46,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
         $events = $this->getEvents();
 
-        if (null === $events) {
+        if ($events === null) {
             return $this->notFoundAction();
         }
 
@@ -72,7 +72,8 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
     public function viewAction()
     {
-        if (!($event = $this->getEventEntity())) {
+        $event = $this->getEventEntity();
+        if ($event === null) {
             return new ViewModel();
         }
 
@@ -103,7 +104,8 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             $item->poster = $event->getEvent()->getPoster();
             $item->title = $event->getEvent()->getTitle($this->getLanguage());
             $item->companyName = $event->getCompany()->getName();
-            $item->startDate = $event->getEvent()->getStartDate()->format('d/m/Y h:i'); // TODO localized
+            // TODO: Localization
+            $item->startDate = $event->getEvent()->getStartDate()->format('d/m/Y h:i');
             $item->summary = $event->getEvent()->getSummary(400, $this->getLanguage());
             $result[] = $item;
         }
@@ -120,7 +122,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
      */
     private function getEvents()
     {
-        if (null === $this->getParam('start') || null === $this->getParam('end')) {
+        if ($this->getParam('start') === null || $this->getParam('end') === null) {
             return;
         }
 
@@ -134,7 +136,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             ->getRepository('BrBundle\Entity\Event')
             ->findAllByDates($startTime, $endTime);
 
-        if (empty($events)) {
+        if (count($events) == 0) {
             $events = array();
         }
 

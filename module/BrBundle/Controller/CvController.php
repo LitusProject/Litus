@@ -20,13 +20,13 @@
 
 namespace BrBundle\Controller;
 
-use BrBundle\Component\Document\Generator\Pdf\Cv as CvGenerator,
-    BrBundle\Entity\Cv\Entry as CvEntry,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Entity\User\Person\Academic,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use BrBundle\Component\Document\Generator\Pdf\Cv as CvGenerator;
+use BrBundle\Entity\Cv\Entry as CvEntry;
+use CommonBundle\Component\FlashMessenger\FlashMessage;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Entity\User\Person\Academic;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * CvController
@@ -182,7 +182,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             ->getRepository('BrBundle\Entity\Cv\Entry')
             ->findOneByAcademicAndAcademicYear($this->getCurrentAcademicYear(), $person);
 
-        if (null === $entry) {
+        if ($entry === null) {
             $this->redirect()->toRoute(
                 'br_cv_index',
                 array(
@@ -268,7 +268,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             ->getRepository('BrBundle\Entity\Cv\Entry')
             ->findOneByAcademicAndAcademicYear($this->getCurrentAcademicYear(), $person);
 
-        if (null === $entry) {
+        if ($entry === null) {
             $this->redirect()->toRoute(
                 'br_cv_index',
                 array(
@@ -280,19 +280,19 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         }
 
         $file = new TmpFile();
-        $year = $this->getCurrentAcademicYear();
 
         $translator = $this->getTranslator();
-
-        $document = new CvGenerator($this->getEntityManager(), $year, $entry, $file, $translator);
+        $document = new CvGenerator($this->getEntityManager(), $entry, $file, $translator);
 
         $document->generate();
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="cv-' . $person->getFullName() . '.pdf"',
-            'Content-type'        => 'application/pdf',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="cv-' . $person->getFullName() . '.pdf"',
+                'Content-type'        => 'application/pdf',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -303,7 +303,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
     }
 
     /**
-     * @param  Academic          $person
+     * @param  Academic $person
      * @return FlashMessage|null
      */
     private function getBadAccountMessage(Academic $person)
@@ -314,33 +314,34 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
             ->findAllByAcademicAndAcademicYear($person, $this->getCurrentAcademicYear());
 
-        if (empty($studies)) {
+        if (count($studies) == 0) {
             $content .= '<li>' . $this->getTranslator()->translate('Your studies') . '</li>';
         }
 
         $address = $person->getSecondaryAddress();
-        if ($address === null || '' == $address->getStreet() || '' == $address->getNumber()
-                || '' == $address->getPostal() || '' == $address->getCity() || '' == $address->getCountryCode()) {
+        if ($address === null || $address->getStreet() == '' || $address->getNumber() == ''
+            || $address->getPostal() == '' || $address->getCity() == '' || $address->getCountryCode() == ''
+        ) {
             $content .= '<li>' . $this->getTranslator()->translate('Your address') . '</li>';
         }
 
-        if ('' == $person->getFirstName() || '' == $person->getLastName()) {
+        if ($person->getFirstName() == '' || $person->getLastName() == '') {
             $content .= '<li>' . $this->getTranslator()->translate('Your name') . '</li>';
         }
 
-        if ('' == $person->getPhoneNumber()) {
+        if ($person->getPhoneNumber() == '') {
             $content .= '<li>' . $this->getTranslator()->translate('Your phone number') . '</li>';
         }
 
-        if ('' == $person->getPersonalEmail()) {
+        if ($person->getPersonalEmail() == '') {
             $content .= '<li>' . $this->getTranslator()->translate('Your personal email address') . '</li>';
         }
 
-        if ('' == $person->getPhotoPath()) {
+        if ($person->getPhotoPath() == '') {
             $content .= '<li>' . $this->getTranslator()->translate('Your photo') . '</li>';
         }
 
-        if (null === $person->getBirthDay()) {
+        if ($person->getBirthDay() === null) {
             $content .= '<li>' . $this->getTranslator()->translate('Your birthday') . '</li>';
         }
 

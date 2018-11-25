@@ -20,15 +20,15 @@
 
 namespace ShiftBundle\Controller;
 
-use DateInterval,
-    DateTime,
-    ShiftBundle\Document\Token,
-    ShiftBundle\Entity\Shift\Responsible,
-    ShiftBundle\Entity\Shift\User\Person\Insurance,
-    ShiftBundle\Entity\Shift\Volunteer,
-    Zend\Http\Headers,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use DateInterval;
+use DateTime;
+use ShiftBundle\Document\Token;
+use ShiftBundle\Entity\Shift\Responsible;
+use ShiftBundle\Entity\Shift\Volunteer;
+use ShiftBundle\Entity\User\Person\Insurance;
+use Zend\Http\Headers;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * ShiftController
@@ -46,7 +46,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $unitSearchForm = $this->getForm('shift_shift_search_unit');
         $dateSearchForm = $this->getForm('shift_shift_search_date');
 
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return $this->notFoundAction();
         }
 
@@ -58,7 +59,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('ShiftBundle\Document\Token')
             ->findOneByPerson($person);
 
-        if (null === $token) {
+        if ($token === null) {
             $token = new Token(
                 $person
             );
@@ -70,18 +71,18 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('shift.insurance_enabled')
-            );
+        );
         $insuranceText = unserialize(
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('shift.insurance_text')
-            );
+        );
 
         $hasReadInsurance = true;
         if ($insuranceEnabled) {
             $insurance = $this->getEntityManager()
-            ->getRepository('ShiftBundle\Entity\User\Person\Insurance')
-            ->findOneByPersonAndAcademicYear($person, $this->getCurrentAcademicYear());
+                ->getRepository('ShiftBundle\Entity\User\Person\Insurance')
+                ->findOneByPersonAndAcademicYear($person, $this->getCurrentAcademicYear());
 
             if ($insurance === null || !$insurance->hasReadInsurance()) {
                 $hasReadInsurance = false;
@@ -95,7 +96,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             if (isset($formData['event'])) {
                 $eventSearchForm->setData($formData);
 
-                if ($eventSearchForm->isValid() && '' != $formData['event']) {
+                if ($eventSearchForm->isValid() && $formData['event'] != '') {
                     $formData = $eventSearchForm->getData();
 
                     $event = $this->getEntityManager()
@@ -117,7 +118,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             } elseif (isset($formData['unit'])) {
                 $unitSearchForm->setData($formData);
 
-                if ($unitSearchForm->isValid() && '' != $formData['unit']) {
+                if ($unitSearchForm->isValid() && $formData['unit'] != '') {
                     $formData = $unitSearchForm->getData();
 
                     $unit = $this->getEntityManager()
@@ -139,7 +140,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             } elseif (isset($formData['date'])) {
                 $dateSearchForm->setData($formData);
 
-                if ($dateSearchForm->isValid() && '' != $formData['date']) {
+                if ($dateSearchForm->isValid() && $formData['date'] != '') {
                     $formData = $dateSearchForm->getData();
 
                     $start_date = DateTime::createFromFormat('d/m/Y', $formData['date']);
@@ -187,7 +188,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $resultString = 'Results';
         }
 
-        if (null !== $searchResults) {
+        if ($searchResults !== null) {
             foreach ($myShifts as $shift) {
                 if (in_array($shift, $searchResults)) {
                     unset($searchResults[array_keys($searchResults, $shift)[0]]);
@@ -216,7 +217,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($shift = $this->getShiftEntity()) || !($person = $this->getPersonEntity())) {
+        $shift = $this->getShiftEntity();
+        if ($shift === null) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -224,7 +226,16 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             );
         }
 
-        if (!($shift->canHaveAsResponsible($this->getEntityManager(), $person))) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
+            return new ViewModel(
+                array(
+                    'result' => (object) array('status' => 'error'),
+                )
+            );
+        }
+
+        if (!$shift->canHaveAsResponsible($this->getEntityManager(), $person)) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -236,13 +247,12 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('shift.insurance_enabled')
-            );
+        );
 
-        $hasReadInsurance = true;
         if ($insuranceEnabled) {
             $insurance = $this->getEntityManager()
-            ->getRepository('ShiftBundle\Entity\User\Person\Insurance')
-            ->findOneByPersonAndAcademicYear($person, $this->getCurrentAcademicYear());
+                ->getRepository('ShiftBundle\Entity\User\Person\Insurance')
+                ->findOneByPersonAndAcademicYear($person, $this->getCurrentAcademicYear());
 
             if ($insurance === null) {
                 $insurance = new Insurance($person, true, $this->getCurrentAcademicYear());
@@ -277,7 +287,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($shift = $this->getShiftEntity()) || !($person = $this->getPersonEntity())) {
+        $shift = $this->getShiftEntity();
+        if ($shift === null) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -285,7 +296,16 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             );
         }
 
-        if (!($shift->canHaveAsVolunteer($this->getEntityManager(), $person))) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
+            return new ViewModel(
+                array(
+                    'result' => (object) array('status' => 'error'),
+                )
+            );
+        }
+
+        if (!$shift->canHaveAsVolunteer($this->getEntityManager(), $person)) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -306,7 +326,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('shift.mail_name');
 
-                    if (!($language = $volunteer->getPerson()->getLanguage())) {
+                    $language = $volunteer->getPerson()->getLanguage();
+                    if ($language === null) {
                         $language = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Language')
                             ->findOneByAbbrev('en');
@@ -330,7 +351,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                         ->addTo($volunteer->getPerson()->getEmail(), $volunteer->getPerson()->getFullName())
                         ->setSubject($subject);
 
-                    if ('development' != getenv('APPLICATION_ENV')) {
+                    if (getenv('APPLICATION_ENV') != 'development') {
                         $this->getMailTransport()->send($mail);
                     }
 
@@ -369,7 +390,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($shift = $this->getShiftEntity()) || !($person = $this->getPersonEntity())) {
+        $shift = $this->getShiftEntity();
+        if ($shift === null) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -377,7 +399,16 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             );
         }
 
-        if (!($shift->canSignOut($this->getEntityManager()))) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
+            return new ViewModel(
+                array(
+                    'result' => (object) array('status' => 'error'),
+                )
+            );
+        }
+
+        if (!$shift->canSignOut($this->getEntityManager())) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -386,13 +417,11 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $remove = $shift->removePerson($person);
-        if (null !== $remove) {
+        if ($remove !== null) {
             $this->getEntityManager()->remove($remove);
         }
 
-        /**
-         * @TODO If a responsible signs out, and there's another praesidium member signed up as a volunteer, promote him
-         */
+        // TODO: If a responsible signs out, and there's another praesidium member signed up as a volunteer, promote him
 
         $this->getEntityManager()->flush();
 
@@ -409,10 +438,12 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     public function exportAction()
     {
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="icalendar.ics"',
-            'Content-Type'        => 'text/calendar',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'inline; filename="icalendar.ics"',
+                'Content-Type'        => 'text/calendar',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         $suffix = $this->getEntityManager()
@@ -447,7 +478,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $result .= 'END:STANDARD' . PHP_EOL;
         $result .= 'END:VTIMEZONE' . PHP_EOL;
 
-        if (null !== $this->getParam('token')) {
+        if ($this->getParam('token') !== null) {
             $token = $this->getDocumentManager()
                 ->getRepository('ShiftBundle\Document\Token')
                 ->findOneByHash($this->getParam('token'));
@@ -480,7 +511,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function historyAction()
     {
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return $this->notFoundAction();
         }
 
@@ -488,7 +520,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('shift.insurance_enabled')
-            );
+        );
 
         $academicYear = $this->getCurrentAcademicYear(true);
 
@@ -527,7 +559,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
             $shiftsAsVolunteerCount++;
             foreach ($shift->getVolunteers() as $volunteer) {
-                if ($volunteer->getPerson() == $person && !($volunteer->isPayed())) {
+                if ($volunteer->getPerson() == $person && !$volunteer->isPayed()) {
                     $unPayedShifts++;
                     $unPayedCoins += $shift->getReward();
                 }
@@ -542,7 +574,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         $ranking = false;
         $shiftsToNextRanking = 0;
-        if (!empty($rankingCriteria)) {
+        if (count($rankingCriteria) > 0) {
             $ranking = false;
             $shiftsToNextRanking = $rankingCriteria[0]['limit'] - $shiftsAsVolunteerCount;
 
@@ -603,13 +635,13 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('shift.insurance_text')
-            );
+        );
 
         $insuranceEnabled = unserialize(
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('shift.insurance_enabled')
-            );
+        );
 
         return new ViewModel(
             array(
@@ -636,10 +668,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function getShiftEntity()
     {
-        $shift = $this->getEntityManager()
+        return $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findOneById($this->getRequest()->getPost('id', 0));
-
-        return $shift;
     }
 }

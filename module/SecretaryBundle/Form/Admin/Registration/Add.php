@@ -20,8 +20,6 @@
 
 namespace SecretaryBundle\Form\Admin\Registration;
 
-use SecretaryBundle\Entity\Organization\MetaData;
-
 /**
  * Add Registration
  *
@@ -33,26 +31,30 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'typeahead',
-            'name'     => 'person',
-            'label'    => 'Person',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'validators' => array(
-                        array('name' => 'typeahead_person'),
+        $this->add(
+            array(
+                'type'     => 'typeahead',
+                'name'     => 'person',
+                'label'    => 'Person',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'validators' => array(
+                            array('name' => 'TypeaheadPerson'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'checkbox',
-            'name'     => 'payed',
-            'label'    => 'Has Payed',
-            'required' => true,
-        ));
+        $this->add(
+            array(
+                'type'     => 'checkbox',
+                'name'     => 'payed',
+                'label'    => 'Has Payed',
+                'required' => true,
+            )
+        );
 
         $this->add(array(
             'type'     => 'checkbox',

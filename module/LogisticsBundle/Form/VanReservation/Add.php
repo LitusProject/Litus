@@ -40,61 +40,65 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'start_date',
-            'label'      => 'Start Date',
-            'required'   => true,
-            'attributes' => array(
-                'class'       => 'start',
-                'placeholder' => 'dd/mm/yyyy hh:mm',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name'    => 'date',
-                            'options' => array(
-                                'format' => 'd/m/Y H:i',
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'start_date',
+                'label'      => 'Start Date',
+                'required'   => true,
+                'attributes' => array(
+                    'class'       => 'start',
+                    'placeholder' => 'dd/mm/yyyy hh:mm',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name'    => 'Date',
+                                'options' => array(
+                                    'format' => 'd/m/Y H:i',
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'end_date',
-            'label'      => 'End Date',
-            'required'   => true,
-            'attributes' => array(
-                'class'       => 'end',
-                'placeholder' => 'dd/mm/yyyy hh:mm',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name'    => 'date',
-                            'options' => array(
-                                'format' => 'd/m/Y H:i',
-                            ),
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'end_date',
+                'label'      => 'End Date',
+                'required'   => true,
+                'attributes' => array(
+                    'class'       => 'end',
+                    'placeholder' => 'dd/mm/yyyy hh:mm',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
                         ),
-                        array(
-                            'name'    => 'date_compare',
-                            'options' => array(
-                                'first_date' => 'start_date',
-                                'format'     => 'd/m/Y H:i',
+                        'validators' => array(
+                            array(
+                                'name'    => 'Date',
+                                'options' => array(
+                                    'format' => 'd/m/Y H:i',
+                                ),
                             ),
-                        ),
+                            array(
+                                'name'    => 'DateCompare',
+                                'options' => array(
+                                    'first_date' => 'start_date',
+                                    'format'     => 'd/m/Y H:i',
+                                ),
+                            ),
 
+                        ),
                     ),
                 ),
             ),
@@ -126,88 +130,100 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         array('name' => 'StringTrim'),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'load',
-            'label'      => 'Load',
-            'attributes' => array(
-                'class' => 'load',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'load',
+                'label'      => 'Load',
+                'attributes' => array(
+                    'class' => 'load',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'textarea',
-            'name'       => 'additional_info',
-            'label'      => 'Additional Info',
-            'attributes' => array(
-                'class' => 'additional',
-                'style' => 'height: 80px; resize: none;',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'       => 'textarea',
+                'name'       => 'additional_info',
+                'label'      => 'Additional Info',
+                'attributes' => array(
+                    'class' => 'additional',
+                    'style' => 'height: 80px; resize: none;',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'driver',
-            'label'      => 'Driver',
-            'attributes' => array(
-                'class'   => 'driver',
-                'options' => $this->getDriversArray(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'driver',
+                'label'      => 'Driver',
+                'attributes' => array(
+                    'class'   => 'driver',
+                    'options' => $this->getDriversArray(),
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'typeahead',
-            'name'       => 'passenger',
-            'label'      => 'Passenger',
-            'attributes' => array(
-                'class' => 'passenger',
-            ),
-            'required' => false,
-            'options'  => array(
-                'input' => array(
-                    'validators' => array(
-                        array('name' => 'typeahead_person'),
+        $this->add(
+            array(
+                'type'       => 'typeahead',
+                'name'       => 'passenger',
+                'label'      => 'Passenger',
+                'attributes' => array(
+                    'class' => 'passenger',
+                ),
+                'required' => false,
+                'options'  => array(
+                    'input' => array(
+                        'validators' => array(
+                            array('name' => 'TypeaheadPerson'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'car',
-            'label'      => 'Car',
-            'attributes' => array(
-                'class'   => 'car',
-                'options' => $this->returnYesNoArray(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'car',
+                'label'      => 'Car',
+                'attributes' => array(
+                    'class'   => 'car',
+                    'options' => $this->returnYesNoArray(),
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'select',
-            'name'       => 'bike',
-            'label'      => 'Cargo bike',
-            'attributes' => array(
-                'class'   => 'bike',
-                'options' => $this->returnYesNoArray(),
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'bike',
+                'label'      => 'Cargo bike',
+                'attributes' => array(
+                    'class'   => 'bike',
+                    'options' => $this->returnYesNoArray(),
+                ),
+            )
+        );
 
         $this->addSubmit('Add', 'reservation_add btn btn-primary', 'add')
             ->addSubmit('Edit', 'reservation_edit btn btn-primary', 'edit');
@@ -223,9 +239,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         return $this;
     }
+
     private function returnYesNoArray()
     {
-        return array("N","Y");
+        return array('N','Y');
     }
 
     private function getDriversArray()

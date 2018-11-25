@@ -20,18 +20,18 @@
 
 namespace CudiBundle\Controller\Admin\Sale;
 
-use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    CommonBundle\Entity\General\AcademicYear,
-    CudiBundle\Component\Document\Generator\SaleArticles as SaleArticlesGenerator,
-    CudiBundle\Entity\Article,
-    CudiBundle\Entity\Article\Internal as InternalArticle,
-    CudiBundle\Entity\Log\Article\Sale\Bookable as BookableLog,
-    CudiBundle\Entity\Log\Article\Sale\Unbookable as UnbookableLog,
-    CudiBundle\Entity\Log\Sale\Cancellations as LogCancellations,
-    CudiBundle\Entity\Sale\Article as SaleArticle,
-    CudiBundle\Entity\Sale\Article\History,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use CommonBundle\Entity\General\AcademicYear;
+use CudiBundle\Component\Document\Generator\SaleArticles as SaleArticlesGenerator;
+use CudiBundle\Entity\Article;
+use CudiBundle\Entity\Article\Internal as InternalArticle;
+use CudiBundle\Entity\Log\Article\Sale\Bookable as BookableLog;
+use CudiBundle\Entity\Log\Article\Sale\Unbookable as UnbookableLog;
+use CudiBundle\Entity\Log\Sale\Cancellations as LogCancellations;
+use CudiBundle\Entity\Sale\Article as SaleArticle;
+use CudiBundle\Entity\Sale\Article\History;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * ArticleController
@@ -45,7 +45,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         $academicYear = $this->getAcademicYearEntity();
         $semester = $this->getSemester();
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $articles = $this->search($academicYear, $semester);
         }
 
@@ -82,7 +82,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         $form->setAttribute(
             'action',
             $this->url()->fromRoute(
-                'cudi_admin_sales_article', array('action' => 'download')
+                'cudi_admin_sales_article',
+                array('action' => 'download')
             )
         );
 
@@ -114,11 +115,11 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
                 $this->getResponse()->getHeaders()
                     ->addHeaders(
-                    array(
-                        'Content-Disposition' => 'attachment; filename="sale_articles_' . $semester . '_' . $academicYear->getCode() . '.csv"',
-                        'Content-Type'        => 'text/csv',
-                    )
-                );
+                        array(
+                            'Content-Disposition' => 'attachment; filename="sale_articles_' . $semester . '_' . $academicYear->getCode() . '.csv"',
+                            'Content-Type'        => 'text/csv',
+                        )
+                    );
 
                 return new ViewModel(
                     array(
@@ -133,7 +134,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($article = $this->getArticleEntity())) {
+        $article = $this->getArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -197,7 +199,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($saleArticle = $this->getSaleArticleEntity())) {
+        $saleArticle = $this->getSaleArticleEntity();
+        if ($saleArticle === null) {
             return new ViewModel();
         }
 
@@ -229,7 +232,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('cudi.front_page_cache_dir');
 
-                    if (null !== $mainArticle->getFrontPage() && file_exists($cachePath . '/' . $mainArticle->getFrontPage())) {
+                    if ($mainArticle->getFrontPage() !== null && file_exists($cachePath . '/' . $mainArticle->getFrontPage())) {
                         unlink($cachePath . '/' . $mainArticle->getFrontPage());
                     }
 
@@ -273,7 +276,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function viewAction()
     {
-        if (!($saleArticle = $this->getSaleArticleEntity())) {
+        $saleArticle = $this->getSaleArticleEntity();
+        if ($saleArticle === null) {
             return new ViewModel();
         }
 
@@ -291,7 +295,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($saleArticle = $this->getSaleArticleEntity())) {
+        $saleArticle = $this->getSaleArticleEntity();
+        if ($saleArticle === null) {
             return new ViewModel();
         }
 
@@ -307,7 +312,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function assignAllAction()
     {
-        if (!($saleArticle = $this->getSaleArticleEntity())) {
+        $saleArticle = $this->getSaleArticleEntity();
+        if ($saleArticle === null) {
             return new ViewModel();
         }
 
@@ -368,7 +374,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function historyAction()
     {
-        if (!($article = $this->getSaleArticleEntity())) {
+        $article = $this->getSaleArticleEntity();
+        if ($article === null) {
             return new ViewModel();
         }
 
@@ -422,7 +429,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function mailAction()
     {
-        if (!($saleArticle = $this->getSaleArticleEntity())) {
+        $saleArticle = $this->getSaleArticleEntity();
+        if ($saleArticle === null) {
             return new ViewModel();
         }
 
@@ -464,7 +472,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                             ->addTo($booking->getPerson()->getEmail(), $booking->getPerson()->getFullName())
                             ->setSubject($formData['subject']);
 
-                        if ('development' != getenv('APPLICATION_ENV')) {
+                        if (getenv('APPLICATION_ENV') != 'development') {
                             $this->getMailTransport()->send($mail);
                         }
                     }
@@ -472,7 +480,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
                 $this->flashMessenger()->success(
                     'SUCCESS',
-                    'The email was successfully send to ' . sizeof($persons) . ' academics!'
+                    'The email was successfully sent to ' . count($persons) . ' academics!'
                 );
 
                 $this->redirect()->toRoute(
@@ -495,7 +503,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function cancelBookingsAction()
     {
-        if (!($saleArticle = $this->getSaleArticleEntity())) {
+        $saleArticle = $this->getSaleArticleEntity();
+        if ($saleArticle === null) {
             return new ViewModel();
         }
 
@@ -530,8 +539,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param  AcademicYear             $academicYear
-     * @param  int                      $semester
+     * @param  AcademicYear $academicYear
+     * @param  integer      $semester
      * @return \Doctrine\ORM\Query|null
      */
     private function search(AcademicYear $academicYear, $semester)
@@ -609,7 +618,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return int
+     * @return integer
      */
     private function getSemester()
     {

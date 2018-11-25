@@ -20,17 +20,17 @@
 
 namespace FormBundle\Controller\Manage;
 
-use CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    FormBundle\Component\Document\Generator\Doodle as DoodleGenerator,
-    FormBundle\Component\Document\Generator\Form as FormGenerator,
-    FormBundle\Component\Document\Generator\Zip as ZipGenerator,
-    FormBundle\Entity\Field,
-    FormBundle\Entity\Node\Entry as FormEntry,
-    FormBundle\Entity\Node\Form,
-    FormBundle\Entity\Node\GuestInfo,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use FormBundle\Component\Document\Generator\Doodle as DoodleGenerator;
+use FormBundle\Component\Document\Generator\Form as FormGenerator;
+use FormBundle\Component\Document\Generator\Zip as ZipGenerator;
+use FormBundle\Entity\Field;
+use FormBundle\Entity\Node\Entry as FormEntry;
+use FormBundle\Entity\Node\Form;
+use FormBundle\Entity\Node\GuestInfo;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * FormController
@@ -41,7 +41,8 @@ class FormController extends \FormBundle\Component\Controller\FormController
 {
     public function indexAction()
     {
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
@@ -63,18 +64,19 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function viewAction()
     {
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
-        if (!($form = $this->getFormEntity())) {
+        $form = $this->getFormEntity();
+        if ($form === null) {
             return new ViewModel();
         }
 
         $viewerMap = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\ViewerMap')
             ->findOneByPersonAndForm($person, $form);
-
         if (!$viewerMap) {
             $this->flashMessenger()->error(
                 'Error',
@@ -91,7 +93,6 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
         }
 
-        // Refetch fields to make sure they are ordered
         $fields = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Field')
             ->findAllByForm($form);
@@ -125,11 +126,13 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function addAction()
     {
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
-        if (!($formSpecification = $this->getFormEntity())) {
+        $formSpecification = $this->getFormEntity();
+        if ($formSpecification === null) {
             return new ViewModel();
         }
 
@@ -175,10 +178,12 @@ class FormController extends \FormBundle\Component\Controller\FormController
         );
 
         if ($this->getRequest()->isPost()) {
-            $form->setData(array_merge_recursive(
-                $this->getRequest()->getPost()->toArray(),
-                $this->getRequest()->getFiles()->toArray()
-            ));
+            $form->setData(
+                array_merge_recursive(
+                    $this->getRequest()->getPost()->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
 
             if ($form->isValid()) {
                 $formData = $form->getData();
@@ -191,7 +196,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
                 }
 
                 $formEntry = new FormEntry($formSpecification, $person);
-                if (null === $person) {
+                if ($person === null) {
                     $formEntry->setGuestInfo(
                         new GuestInfo($this->getEntityManager(), $this->getRequest())
                     );
@@ -227,11 +232,13 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function editAction()
     {
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
-        if (!($formEntry = $this->getEntryEntity())) {
+        $formEntry = $this->getEntryEntity();
+        if ($formEntry === null) {
             return new ViewModel();
         }
 
@@ -283,10 +290,12 @@ class FormController extends \FormBundle\Component\Controller\FormController
         );
 
         if ($this->getRequest()->isPost()) {
-            $form->setData(array_merge_recursive(
-                $this->getRequest()->getPost()->toArray(),
-                $this->getRequest()->getFiles()->toArray()
-            ));
+            $form->setData(
+                array_merge_recursive(
+                    $this->getRequest()->getPost()->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
 
             if ($form->isValid()) {
                 $this->getEntityManager()->flush();
@@ -319,7 +328,8 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function doodleAddAction()
     {
-        if (!($formSpecification = $this->getFormEntity())) {
+        $formSpecification = $this->getFormEntity();
+        if ($formSpecification === null) {
             return new ViewModel();
         }
 
@@ -358,7 +368,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
                 }
 
                 $formEntry = new FormEntry($formSpecification, $person);
-                if (null === $person) {
+                if ($person === null) {
                     $formEntry->setGuestInfo(
                         new GuestInfo($this->getEntityManager(), $this->getRequest())
                     );
@@ -394,11 +404,13 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function doodleAction()
     {
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
-        if (!($formEntry = $this->getEntryEntity())) {
+        $formEntry = $this->getEntryEntity();
+        if ($formEntry === null) {
             return new ViewModel();
         }
 
@@ -490,11 +502,13 @@ class FormController extends \FormBundle\Component\Controller\FormController
     {
         $this->initAjax();
 
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
-        if (!($formEntry = $this->getEntryEntity())) {
+        $formEntry = $this->getEntryEntity();
+        if ($formEntry === null) {
             return new ViewModel();
         }
 
@@ -522,7 +536,6 @@ class FormController extends \FormBundle\Component\Controller\FormController
         }
 
         $this->getEntityManager()->remove($formEntry);
-
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -534,11 +547,13 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function downloadAction()
     {
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return new ViewModel();
         }
 
-        if (!($form = $this->getFormEntity())) {
+        $form = $this->getFormEntity();
+        if ($form === null) {
             return new ViewModel();
         }
 
@@ -578,10 +593,12 @@ class FormController extends \FormBundle\Component\Controller\FormController
         $document->generateDocument($file);
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="results.csv"',
-            'Content-Type'        => 'text/csv',
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="results.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -601,16 +618,18 @@ class FormController extends \FormBundle\Component\Controller\FormController
             ->getRepository('FormBundle\Entity\Entry')
             ->findOneByValue($this->getParam('id'));
 
-        if (null === $fieldEntry || !$this->getAuthentication()->isAuthenticated()) {
+        if ($fieldEntry === null || !$this->getAuthentication()->isAuthenticated()) {
             return $this->notFoundAction();
         }
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="' . $fieldEntry->getReadableValue() . '"',
-            'Content-Type'        => mime_content_type($filePath),
-            'Content-Length'      => filesize($filePath),
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="' . $fieldEntry->getReadableValue() . '"',
+                'Content-Type'        => mime_content_type($filePath),
+                'Content-Length'      => filesize($filePath),
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         $handle = fopen($filePath, 'r');
@@ -626,7 +645,12 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function downloadFilesAction()
     {
-        if (!($field = $this->getFieldEntity()) || $field->getType() != 'file') {
+        $field = $this->getFieldEntity();
+        if ($field === null) {
+            return new ViewModel();
+        }
+
+        if ($field->getType() != 'file') {
             return new ViewModel();
         }
 
@@ -638,11 +662,13 @@ class FormController extends \FormBundle\Component\Controller\FormController
         new ZipGenerator($tmpFile, $this->getEntityManager(), $this->getLanguage(), $entries);
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="files_' . $field->getId() . '.zip"',
-            'Content-Type'        => mime_content_type($tmpFile->getFileName()),
-            'Content-Length'      => filesize($tmpFile->getFileName()),
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'inline; filename="files_' . $field->getId() . '.zip"',
+                'Content-Type'        => mime_content_type($tmpFile->getFileName()),
+                'Content-Length'      => filesize($tmpFile->getFileName()),
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(

@@ -20,9 +20,8 @@
 
 namespace BrBundle\Controller\Career;
 
-use BrBundle\Entity\Company,
-    BrBundle\Entity\Company\Job,
-    Zend\View\Model\ViewModel;
+use BrBundle\Entity\Company\Job;
+use Zend\View\Model\ViewModel;
 
 /**
  * VacancyController
@@ -53,11 +52,11 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
                 $location = $formData['location'] == 'all' ? null : $formData['location'];
                 $master = $formData['master'] == 'all' ? null : $formData['master'];
 
-                if ('company' == $formData['searchType']) {
+                if ($formData['searchType'] == 'company') {
                     $query = $repository->findAllActiveByTypeQuery('vacancy', $sector, $location, $master);
-                } elseif ('vacancy' == $formData['searchType']) {
+                } elseif ($formData['searchType'] == 'vacancy') {
                     $query = $repository->findAllActiveByTypeSortedByJobNameQuery('vacancy', $sector, $location, $master);
-                } elseif ('mostRecent' == $formData['searchType']) {
+                } elseif ($formData['searchType'] == 'mostRecent') {
                     $query = $repository->findAllActiveByTypeSortedByDateQuery('vacancy', $sector, $location, $master);
                 }
             }
@@ -84,7 +83,8 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
 
     public function viewAction()
     {
-        if (!($vacancy = $this->getVacancyEntity())) {
+        $vacancy = $this->getVacancyEntity();
+        if ($vacancy === null) {
             return new ViewModel();
         }
 

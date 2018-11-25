@@ -18,8 +18,11 @@
  * @license http://litus.cc/LICENSE
  */
 
+use Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver as ODMAnnotationDriver;
+use Doctrine\ORM\Mapping\Driver\AnnotationDriver as ORMAnnotationDriver;
+
 if (!file_exists(__DIR__ . '/../database.config.php')) {
-    throw new RuntimeException(
+    throw new \RuntimeException(
         'The database configuration file (' . (__DIR__ . '/../database.config.php') . ') was not found'
     );
 }
@@ -27,54 +30,27 @@ if (!file_exists(__DIR__ . '/../database.config.php')) {
 $databaseConfig = include __DIR__ . '/../database.config.php';
 
 return array(
-    'service_manager' => array(
-        'factories' => array(
-            'doctrine.cache.orm_default' => function () {
-                if ('production' == getenv('APPLICATION_ENV')) {
-                    if (!extension_loaded('memcached')) {
-                        throw new \RuntimeException('Litus requires the memcached extension to be loaded');
-                    }
-
-                    $cache = new \Doctrine\Common\Cache\MemcachedCache();
-                    $cache->setNamespace(getenv('ORGANIZATION') . '_LITUS');
-                    $memcached = new \Memcached();
-
-                    if (!$memcached->addServer('localhost', 11211)) {
-                        throw now \RuntimeException('Failed to connect to the memcached server');
-                    }
-
-                    $cache->setMemcached($memcached);
-                } else {
-                    $cache = new \Doctrine\Common\Cache\ArrayCache();
-                }
-
-                return $cache;
-            },
-        ),
-    ),
     'doctrine' => array(
         'cache' => array(
-            'memcached' => array(
-                'namespace' => getenv('ORGANIZATION') . '_LITUS',
-            ),
-            'array' => array(
-                'namespace' => getenv('ORGANIZATION') . '_LITUS',
+            'redis' => array(
+                'namespace' => 'cache:doctrine',
             ),
         ),
         'configuration' => array(
             'odm_default' => array(
-                  'generate_proxies'   => true,
-                  'proxy_dir'          => 'data/proxies',
-                  'generate_hydrators' => true,
-                  'hydrator_dir'       => 'data/hydrators',
-                  'default_db'         => $databaseConfig['document']['dbname'],
+                'generate_proxies'   => true,
+                'proxy_dir'          => 'data/proxies',
+                'generate_hydrators' => true,
+                'hydrator_dir'       => 'data/hydrators',
+                'default_db'         => $databaseConfig['document']['dbname'],
             ),
             'orm_default' => array(
-                'generate_proxies' => ('development' == getenv('APPLICATION_ENV')),
-                'proxyDir'         => 'data/proxies/',
-                'metadataCache'    => 'orm_default',
-                'queryCache'       => 'orm_default',
-                'resultCache'      => 'orm_default',
+                'metadata_cache'   => getenv('APPLICATION_ENV') != 'development' ? 'redis' : 'array',
+                'query_cache'      => getenv('APPLICATION_ENV') != 'development' ? 'redis' : 'array',
+                'result_cache'     => getenv('APPLICATION_ENV') != 'development' ? 'redis' : 'array',
+                'hydration_cache'  => getenv('APPLICATION_ENV') != 'development' ? 'redis' : 'array',
+                'generate_proxies' => getenv('APPLICATION_ENV') == 'development',
+                'proxy_dir'        => 'data/proxies/',
             ),
         ),
         'connection' => array(
@@ -99,10 +75,10 @@ return array(
         ),
         'driver' => array(
             'odm_annotation_driver' => array(
-                'class' => 'Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver',
+                'class' => ODMAnnotationDriver::class,
             ),
             'orm_annotation_driver' => array(
-                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'class' => ORMAnnotationDriver::class,
             ),
         ),
     ),

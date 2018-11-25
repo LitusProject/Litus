@@ -20,10 +20,10 @@
 
 namespace LogisticsBundle\Form\PianoReservation;
 
-use DateInterval,
-    DateTime,
-    IntlDateFormatter,
-    LogisticsBundle\Entity\Reservation\PianoReservation;
+use DateInterval;
+use DateTime;
+use IntlDateFormatter;
+use LogisticsBundle\Entity\Reservation\PianoReservation;
 
 /**
  * The form used to add a new Reservation.
@@ -44,87 +44,89 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->weeks = $this->getTimeSlots();
 
         foreach ($this->weeks as $key => $week) {
-            $this->add(array(
-                'type'     => 'fieldset',
-                'name'     => 'week_' . $key,
-                'elements' => array(
-                    array(
-                        'type'       => 'select',
-                        'name'       => 'start_date',
-                        'label'      => 'Start Date',
-                        'attributes' => array(
-                            'options' => $week['slotsStart'],
-                        ),
-                        'options' => array(
-                            'input' => array(
-                                'required' => true,
-                                'filters'  => array(
-                                    array('name' => 'StringTrim'),
-                                ),
-                                'validators' => array(
-                                    array(
-                                        'name'    => 'date',
-                                        'options' => array(
-                                            'format' => 'd/m/Y H:i',
+            $this->add(
+                array(
+                    'type'     => 'fieldset',
+                    'name'     => 'week_' . $key,
+                    'elements' => array(
+                        array(
+                            'type'       => 'select',
+                            'name'       => 'start_date',
+                            'label'      => 'Start Date',
+                            'attributes' => array(
+                                'options' => $week['slotsStart'],
+                            ),
+                            'options' => array(
+                                'input' => array(
+                                    'required' => true,
+                                    'filters'  => array(
+                                        array('name' => 'StringTrim'),
+                                    ),
+                                    'validators' => array(
+                                        array(
+                                            'name'    => 'Date',
+                                            'options' => array(
+                                                'format' => 'd/m/Y H:i',
+                                            ),
                                         ),
                                     ),
                                 ),
                             ),
                         ),
-                    ),
-                    array(
-                        'type'       => 'select',
-                        'name'       => 'end_date',
-                        'label'      => 'End Date',
-                        'attributes' => array(
-                            'options' => $week['slotsEnd'],
-                        ),
-                        'options' => array(
-                            'input' => array(
-                                'required' => true,
-                                'filters'  => array(
-                                    array('name' => 'StringTrim'),
-                                ),
-                                'validators' => array(
-                                    array(
-                                        'name'    => 'date',
-                                        'options' => array(
-                                            'format' => 'd/m/Y H:i',
-                                        ),
+                        array(
+                            'type'       => 'select',
+                            'name'       => 'end_date',
+                            'label'      => 'End Date',
+                            'attributes' => array(
+                                'options' => $week['slotsEnd'],
+                            ),
+                            'options' => array(
+                                'input' => array(
+                                    'required' => true,
+                                    'filters'  => array(
+                                        array('name' => 'StringTrim'),
                                     ),
-                                    array(
-                                        'name'    => 'date_compare',
-                                        'options' => array(
-                                            'first_date' => 'start_date',
-                                            'format'     => 'd/m/Y H:i',
+                                    'validators' => array(
+                                        array(
+                                            'name'    => 'Date',
+                                            'options' => array(
+                                                'format' => 'd/m/Y H:i',
+                                            ),
                                         ),
-                                    ),
-                                    array(
-                                        'name'    => 'logistics_piano_reservation_conflict',
-                                        'options' => array(
-                                            'start_date' => 'start_date',
-                                            'format'     => 'd/m/Y H:i',
-                                            'resource'   => PianoReservation::PIANO_RESOURCE_NAME,
+                                        array(
+                                            'name'    => 'DateCompare',
+                                            'options' => array(
+                                                'first_date' => 'start_date',
+                                                'format'     => 'd/m/Y H:i',
+                                            ),
                                         ),
-                                    ),
-                                    array(
-                                        'name'    => 'logistics_piano_duration',
-                                        'options' => array(
-                                            'start_date' => 'start_date',
-                                            'format'     => 'd/m/Y H:i',
+                                        array(
+                                            'name'    => 'PianoReservationConflict',
+                                            'options' => array(
+                                                'start_date' => 'start_date',
+                                                'format'     => 'd/m/Y H:i',
+                                                'resource'   => PianoReservation::PIANO_RESOURCE_NAME,
+                                            ),
+                                        ),
+                                        array(
+                                            'name'    => 'PianoDuration',
+                                            'options' => array(
+                                                'start_date' => 'start_date',
+                                                'format'     => 'd/m/Y H:i',
+                                            ),
                                         ),
                                     ),
                                 ),
                             ),
                         ),
+                        array(
+                            'type'  => 'submit',
+                            'name'  => 'submit',
+                            'value' => 'Book',
+                        ),
                     ),
-                    array(
-                        'type'  => 'submit',
-                        'name'  => 'submit',
-                        'value' => 'Book',
-                    ),
-                ),
-            ));
+                )
+            );
         }
     }
 
@@ -163,7 +165,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         while ($now < $maxDate) {
             $listStart = array();
             $listEnd = array();
-            if (null !== $config[$now->format('N')]) {
+            if ($config[$now->format('N')] !== null) {
                 foreach ($config[$now->format('N')] as $slot) {
                     $startSlot = clone $now;
                     $startSlot->setTime(
@@ -212,7 +214,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 }
             }
 
-            if (sizeof($listStart) > 0 && sizeof($listEnd) > 0) {
+            if (count($listStart) > 0 && count($listEnd) > 0) {
                 if (!isset($weeks[$now->format('W')])) {
                     $end = (clone $now);
                     $end->add(new DateInterval('P6D'));

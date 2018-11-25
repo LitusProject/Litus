@@ -20,8 +20,8 @@
 
 namespace PageBundle\Controller\Admin;
 
-use PageBundle\Entity\Link,
-    Zend\View\Model\ViewModel;
+use PageBundle\Entity\Link;
+use Zend\View\Model\ViewModel;
 
 /**
  * LinkController
@@ -84,7 +84,8 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($link = $this->getLinkEntity())) {
+        $link = $this->getLinkEntity();
+        if ($link === null) {
             return new ViewModel();
         }
 
@@ -124,7 +125,8 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($link = $this->getLinkEntity())) {
+        $link = $this->getLinkEntity();
+        if ($link === null) {
             return new ViewModel();
         }
 

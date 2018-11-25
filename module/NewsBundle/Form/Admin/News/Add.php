@@ -20,8 +20,8 @@
 
 namespace NewsBundle\Form\Admin\News;
 
-use CommonBundle\Component\Form\FieldsetInterface,
-    CommonBundle\Entity\General\Language;
+use CommonBundle\Component\Form\FieldsetInterface;
+use CommonBundle\Entity\General\Language;
 
 /**
  * Add News
@@ -37,57 +37,63 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'datetime',
-            'name'       => 'end_date',
-            'label'      => 'End Date',
-            'required'   => false,
-            'attributes' => array(
-                'placeholder' => 'dd/mm/yyyy hh:mm',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'       => 'datetime',
+                'name'       => 'end_date',
+                'label'      => 'End Date',
+                'required'   => false,
+                'attributes' => array(
+                    'placeholder' => 'dd/mm/yyyy hh:mm',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Add', 'news_add');
     }
 
     protected function addTab(FieldsetInterface $container, Language $language, $isDefault)
     {
-        $container->add(array(
-            'type'       => 'text',
-            'name'       => 'title',
-            'label'      => 'Title',
-            'required'   => $isDefault,
-            'attributes' => array(
-                'width' => '400px',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $container->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'title',
+                'label'      => 'Title',
+                'required'   => $isDefault,
+                'attributes' => array(
+                    'width' => '400px',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $container->add(array(
-            'type'     => 'textarea',
-            'name'     => 'content',
-            'label'    => 'Content',
-            'required' => $isDefault,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $container->add(
+            array(
+                'type'     => 'textarea',
+                'name'     => 'content',
+                'label'    => 'Content',
+                'required' => $isDefault,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
     }
 }

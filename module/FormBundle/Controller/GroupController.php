@@ -20,10 +20,10 @@
 
 namespace FormBundle\Controller;
 
-use DateTime,
-    FormBundle\Entity\Node\Group,
-    FormBundle\Entity\Node\GuestInfo,
-    Zend\View\Model\ViewModel;
+use DateTime;
+use FormBundle\Entity\Node\Group;
+use FormBundle\Entity\Node\GuestInfo;
+use Zend\View\Model\ViewModel;
 
 /**
  * GroupController
@@ -34,12 +34,13 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function viewAction()
     {
-        if (!($group = $this->getGroupEntity())) {
+        $group = $this->getGroupEntity();
+        if ($group === null) {
             return $this->notFoundAction();
         }
 
         $now = new DateTime();
-        if ($now < $group->getStartDate() || $now > $group->getEndDate() || !$group->isActive() || sizeof($group->getForms()) == 0) {
+        if ($now < $group->getStartDate() || $now > $group->getEndDate() || !$group->isActive() || count($group->getForms()) == 0) {
             return new ViewModel(
                 array(
                     'message' => 'This form group is currently closed.',
@@ -131,7 +132,6 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function isCookieSet()
     {
-        /** @var \Zend\Http\Header\Cookie $cookies */
         $cookies = $this->getRequest()->getHeader('Cookie');
 
         return $cookies->offsetExists(GuestInfo::$cookieNamespace);
@@ -142,7 +142,6 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function getCookie()
     {
-        /** @var \Zend\Http\Header\Cookie $cookies */
         $cookies = $this->getRequest()->getHeader('Cookie');
 
         return $cookies[GuestInfo::$cookieNamespace];

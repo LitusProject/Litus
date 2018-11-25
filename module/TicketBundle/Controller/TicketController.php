@@ -20,10 +20,10 @@
 
 namespace TicketBundle\Controller;
 
-use TicketBundle\Component\Ticket\Ticket as TicketBook,
-    TicketBundle\Entity\Event,
-    TicketBundle\Entity\Ticket,
-    Zend\View\Model\ViewModel;
+use TicketBundle\Component\Ticket\Ticket as TicketBook;
+use TicketBundle\Entity\Event;
+use TicketBundle\Entity\Ticket;
+use Zend\View\Model\ViewModel;
 
 /**
  * TicketController
@@ -34,11 +34,13 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 {
     public function eventAction()
     {
-        if (!($event = $this->getEventEntity())) {
+        $event = $this->getEventEntity();
+        if ($event === null) {
             return $this->notFoundAction();
         }
 
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return $this->notFoundAction();
         }
 
@@ -55,8 +57,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 $formData = $form->getData();
 
                 $numbers = array(
-                    'member'     => isset($formData['number_member']) ? $formData['number_member'] : 0,
-                    'non_member' => isset($formData['number_non_member']) ? $formData['number_non_member'] : 0,
+                    'member'     => $formData['number_member'] ?? 0,
+                    'non_member' => $formData['number_non_member'] ?? 0,
                 );
 
                 foreach ($event->getOptions() as $option) {
@@ -107,7 +109,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($ticket = $this->getTicketEntity())) {
+        $ticket = $this->getTicketEntity();
+        if ($ticket === null) {
             return $this->notFoundAction();
         }
 
@@ -157,7 +160,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
      */
     private function getTicketEntity()
     {
-        if (!($person = $this->getPersonEntity())) {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
             return;
         }
 

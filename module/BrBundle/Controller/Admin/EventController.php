@@ -20,9 +20,9 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Entity\Event,
-    Zend\View\Model\ViewModel,
-    BrBundle\Entity\Event\CompanyMap;
+use BrBundle\Entity\Event;
+use BrBundle\Entity\Event\CompanyMap;
+use Zend\View\Model\ViewModel;
 
 /**
  * EventController
@@ -106,7 +106,8 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($event = $this->getEventEntity())) {
+        $event = $this->getEventEntity();
+        if ($event === null) {
             return new ViewModel();
         }
 
@@ -130,8 +131,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                         'action' => 'manage',
                     )
                 );
-
-            }elseif(isset($formData['event_companyMap']) && $companyMapForm->isValid()) {
+            } elseif (isset($formData['event_companyMap']) && $companyMapForm->isValid()) {
                 $company = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Company')
                     ->findOneById($formData['company']);
@@ -154,7 +154,6 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             }
 
             $this->getEntityManager()->flush();
-
         }
         $eventCompanyMaps = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Event\CompanyMap')
@@ -162,10 +161,10 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'propertiesForm'    => $propertiesForm,
-                'companyMapForm'    => $companyMapForm,
-                'eventCompanyMaps'  => $eventCompanyMaps,
-                'event'             => $event,
+                'propertiesForm'   => $propertiesForm,
+                'companyMapForm'   => $companyMapForm,
+                'eventCompanyMaps' => $eventCompanyMaps,
+                'event'            => $event,
             )
         );
     }
@@ -174,7 +173,8 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($reservation = $this->getVanReservationEntity())) {
+        $reservation = $this->getVanReservationEntity();
+        if ($reservation === null) {
             return new ViewModel();
         }
 

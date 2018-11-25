@@ -46,7 +46,7 @@ class Exists extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -83,7 +83,7 @@ class Exists extends \CommonBundle\Component\Validator\AbstractValidator
             ->getRepository('CudiBundle\Entity\Sale\Article\Discount\Discount')
             ->findOneByArticleAndTypeAndOrganization($this->options['article'], $value, $organization);
 
-        if (null === $discount) {
+        if ($discount === null) {
             return true;
         }
 

@@ -33,39 +33,45 @@ class Login extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->setAttribute('id', 'login');
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'username',
-            'label'    => 'Username',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'username',
+                'label'    => 'Username',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'     => 'password',
-            'name'     => 'password',
-            'label'    => 'Password',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'     => 'password',
+                'name'     => 'password',
+                'label'    => 'Password',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'remember_me',
-            'label' => 'Remember Me',
-        ));
+        $this->add(
+            array(
+                'type'  => 'checkbox',
+                'name'  => 'remember_me',
+                'label' => 'Remember Me',
+            )
+        );
 
         $this->addSubmit('Login', 'btn btn-default pull-right');
     }

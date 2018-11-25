@@ -20,8 +20,8 @@
 
 namespace QuizBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a quiz round.
@@ -32,7 +32,7 @@ use Doctrine\Common\Collections\ArrayCollection,
 class Round
 {
     /**
-     * @var int The entry's unique identifier
+     * @var integer The entry's unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -56,14 +56,14 @@ class Round
     private $quiz;
 
     /**
-     * @var int The order of the round
+     * @var integer The order of the round
      *
      * @ORM\Column(name="round_order", type="smallint")
      */
     private $order;
 
     /**
-     * @var int The max points of the round
+     * @var integer The max points of the round
      *
      * @ORM\Column(name="max_points", type="smallint")
      */
@@ -82,12 +82,11 @@ class Round
     public function __construct(Quiz $quiz)
     {
         $this->quiz = $quiz;
-
         $this->points = new ArrayCollection();
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -122,7 +121,7 @@ class Round
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getOrder()
     {
@@ -130,7 +129,7 @@ class Round
     }
 
     /**
-     * @param  int  $order
+     * @param  integer $order
      * @return self
      */
     public function setOrder($order)
@@ -141,7 +140,7 @@ class Round
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getMaxPoints()
     {
@@ -149,7 +148,7 @@ class Round
     }
 
     /**
-     * @param  int  $maxPoints
+     * @param  integer $maxPoints
      * @return self
      */
     public function setMaxPoints($maxPoints)
@@ -157,5 +156,13 @@ class Round
         $this->maxPoints = $maxPoints;
 
         return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getPoints()
+    {
+        return $this->points;
     }
 }

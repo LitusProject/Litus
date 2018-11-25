@@ -20,11 +20,10 @@
 
 namespace BrBundle\Component\Document\Generator\Company;
 
-use BrBundle\Entity\Company,
-    CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\Xml\Generator,
-    CommonBundle\Component\Util\Xml\Node,
-    Doctrine\ORM\EntityManager;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\Xml\Generator;
+use CommonBundle\Component\Util\Xml\Node;
+use Doctrine\ORM\EntityManager;
 
 /**
  * CompanyPdf
@@ -77,10 +76,12 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
             $all_users = array();
             $company_users = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\User\Person\Corporate')
-                ->findBy(array(
-                    'canLogin' => 'true',
-                    'company'  => $company->getId(),
-                ));
+                ->findBy(
+                    array(
+                        'canLogin' => 'true',
+                        'company'  => $company->getId(),
+                    )
+                );
 
             foreach ($company_users as $user) {
                 $all_users[] = new Node(

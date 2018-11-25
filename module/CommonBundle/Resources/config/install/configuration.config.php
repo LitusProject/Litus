@@ -78,7 +78,7 @@ VTK',
                     'subject' => 'VTK Account Geactiveerd',
                     'content' => 'Beste {{ name }},
 
-Een account werd voor u aangemaakt met gebruikersnaam{{ username }}.
+Een account werd voor u aangemaakt met gebruikersnaam {{ username }}.
 Klik hier om deze te activeren: http://litus/account/activate/code/{{ code }}
 
 Met vriendelijke groeten,
@@ -115,15 +115,18 @@ VTK',
         'description' => 'The path to the logo of the organization',
     ),
     array(
-            'key'   => 'organization_address_array',
-            'value' => serialize(array(
-                            'street'  => 'Studentenwijk Arenberg',
-                            'number'  => '6',
-                            'mailbox' => '1',
-                            'postal'  => '3001',
-                            'city'    => 'Heverlee',
-                            'country' => 'Belgium', )),
-            'description' => 'The address of the organization',
+        'key'   => 'organization_address_array',
+        'value' => serialize(
+            array(
+                'street'  => 'Studentenwijk Arenberg',
+                'number'  => '6',
+                'mailbox' => '1',
+                'postal'  => '3001',
+                'city'    => 'Heverlee',
+                'country' => 'Belgium',
+            )
+        ),
+        'description' => 'The address of the organization',
     ),
     array(
         'key'         => 'organization_url',
@@ -218,14 +221,14 @@ VTK',
         'description' => 'The abbreviation of the language that will be used of no other translation is present',
     ),
     array(
-        'key'         => 'socket_log',
-        'value'       => '/var/log/litus/sockets.log',
-        'description' => 'The absolute path of the socket logfile',
+        'key'         => 'common.cron_log',
+        'value'       => '/var/log/litus/cron.log',
+        'description' => 'The absolute path of the cron logfile',
     ),
     array(
-        'key'         => 'socket_path',
-        'value'       => '/var/run/litus',
-        'description' => 'The location of pid/socket files',
+        'key'         => 'common.sockets_log',
+        'value'       => '/var/log/litus/sockets.log',
+        'description' => 'The absolute path of the sockets logfile',
     ),
     array(
         'key'         => 'common.geocoding_api_url',
@@ -454,7 +457,7 @@ You can remove any installed cookies from your computer or mobile device at any 
     ),
     array(
         'key'         => 'last_upgrade',
-        'value'       => '2018100900',
+        'value'       => '2018110800',
         'description' => 'The last Litus schema update performed on this system',
     ),
     array(
@@ -465,9 +468,9 @@ You can remove any installed cookies from your computer or mobile device at any 
     array(
         'key'         => 'common.poc',
         'value'       => '0',
-        'description' => 'Boolean that displays the pocers screen on the homepage',
+        'description' => 'Boolean that displays the POC\'ers screen on the homepage',
     ),
-     array(
+    array(
         'key'         => 'common.pocUrl',
         'value'       => '#',
         'description' => 'The url to the poc info page',

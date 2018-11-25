@@ -19,16 +19,13 @@
  */
 
 return array(
-    'install.all'    => 'CommonBundle\Command\AllInstall',
-    'install.common' => 'CommonBundle\Command\Install',
+    'install_all'    => CommonBundle\Command\InstallAll::class,
+    'install_common' => CommonBundle\Command\Install::class,
 
-    'common.gc'              => 'CommonBundle\Command\GarbageCollect',
-    'common.config'          => 'CommonBundle\Command\Config',
-    'common.test-config'     => 'CommonBundle\Command\TestConfig',
-    'common.test-sentry'     => 'CommonBundle\Command\TestSentry',
-    'common.destroy-account' => 'CommonBundle\Command\DestroyAccount',
-    'common.acl-cleanup'     => 'CommonBundle\Command\AclCleanup',
-
-    'assetic.build' => 'CommonBundle\Command\Assetic\Build',
-    'assetic.setup' => 'CommonBundle\Command\Assetic\Setup',
+    'common_cleanup_acl'      => CommonBundle\Command\CleanupAcl::class,
+    'common_cleanup_sessions' => CommonBundle\Command\CleanupSessions::class,
+    'common_config'           => CommonBundle\Command\Config::class,
+    'common_cron'             => CommonBundle\Command\Cron::class,
+    'common_destroy_account'  => CommonBundle\Command\DestroyAccount::class,
+    'common_sockets'          => CommonBundle\Command\Sockets::class,
 );

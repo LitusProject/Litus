@@ -21,7 +21,7 @@
 return array(
     'document' => array(
         'server'   => 'localhost',
-        'port'     => '27017',
+        'port'     => 27017,
         'user'     => 'litus',
         'password' => 'huQeyU8te3aXusaz',
         'dbname'   => 'litus',
@@ -30,7 +30,7 @@ return array(
     'relational' => array(
         'driver'   => 'Doctrine\DBAL\Driver\PDOPgSql\Driver',
         'host'     => 'localhost',
-        'port'     => '5432',
+        'port'     => 5432,
         'user'     => 'litus',
         'password' => 'huQeyU8te3aXusaz',
         'dbname'   => 'litus',

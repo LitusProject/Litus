@@ -29,7 +29,7 @@
                 function () {
                     ws.close();
                 },
-                1000
+                5000
             );
 
             $(ws)
@@ -48,7 +48,7 @@
                 })
                 .bind('message', function (e) {
                     clearTimeout(socketConnectTimeout);
-                    if (e.type == 'message' && e.originalEvent.data)
+                    if (e.originalEvent.type == 'message' && e.originalEvent.data)
                         settings.message(e.originalEvent, $.parseJSON(e.originalEvent.data));
                 });
 

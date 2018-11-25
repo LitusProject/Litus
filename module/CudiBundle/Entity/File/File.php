@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Entity\File;
 
-use CudiBundle\Entity\Article\Internal as InternalArticle,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+use CudiBundle\Entity\Article\Internal as InternalArticle;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\File\File")

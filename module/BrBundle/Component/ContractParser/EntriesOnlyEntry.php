@@ -25,7 +25,7 @@ use Exception;
 /**
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
-class EntriesOnlyEntry extends Entry
+class EntriesOnlyEntry extends \BrBundle\Component\ContractParser\Entry
 {
     public function __construct()
     {

@@ -31,7 +31,12 @@ class VisitController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (null !== $this->getParam('field') && ($visits = $this->search())) {
+        if ($this->getParam('field') !== null) {
+            $visits = $this->search();
+            if ($visits === null) {
+                return new ViewModel();
+            }
+
             $paginator = $this->paginator()->createFromQuery(
                 $visits,
                 $this->getParam('page')
@@ -92,7 +97,7 @@ class VisitController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return Query|null
+     * @return \Doctrine\ORM\Query|null
      */
     private function search()
     {

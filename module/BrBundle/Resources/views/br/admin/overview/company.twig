@@ -33,7 +33,7 @@
                     <td>&euro; {{entry['paid']}}</td>
                     <td class="actions">
                         {% if hasAccess('br_admin_overview', 'view') %}
-                            <a href="{{ url('br_admin_overview', {"action": "companyview", "id": entry['company'].getId()}) }}" class="view">View</a>
+                            <a href="{{ url('br_admin_overview', {"action": "companyView", "id": entry['company'].getId()}) }}" class="view">View</a>
                         {% endif %}
                     </td>
                 </tr>

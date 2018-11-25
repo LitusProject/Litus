@@ -20,41 +20,40 @@
 
 namespace ShiftBundle\Form\Admin\Shift;
 
-use LogicException,
-    Shiftbundle\Entity\Shift;
+use ShiftBundle\Entity\Shift;
 
 /**
  * Edit Shift
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Edit extends Add
+class Edit extends \ShiftBundle\Form\Admin\Shift\Add
 {
     /**
-     * @var Shift|null The shift to edit.
+     * @var Shift|null The shift to edit
      */
     private $shift;
 
     public function init()
     {
-        if (null === $this->shift) {
-            throw new LogicException('Cannot edit a null shift');
-        }
-
         parent::init();
 
         if (!$this->shift->canEditDates()) {
             $this->remove('start_date')
-                ->add(array(
-                    'type' => 'hidden',
-                    'name' => 'start_date',
-                ));
+                ->add(
+                    array(
+                        'type' => 'hidden',
+                        'name' => 'start_date',
+                    )
+                );
 
             $this->remove('end_date')
-                ->add(array(
-                    'type' => 'hidden',
-                    'name' => 'end_date',
-                ));
+                ->add(
+                    array(
+                        'type' => 'hidden',
+                        'name' => 'end_date',
+                    )
+                );
         }
 
         $this->remove('submit')

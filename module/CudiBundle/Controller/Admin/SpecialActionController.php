@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Controller\Admin;
 
-use CudiBundle\Component\Mail\Booking as BookingMail,
-    CudiBundle\Entity\Sale\Booking,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Component\Mail\Booking as BookingMail;
+use CudiBundle\Entity\Sale\Booking;
+use Zend\View\Model\ViewModel;
 
 /**
  * SpecialActionController
@@ -67,7 +67,7 @@ class SpecialActionController extends \CudiBundle\Component\Controller\ActionCon
                     $registration = $this->getEntityManager()
                         ->getRepository('SecretaryBundle\Entity\Registration')
                         ->findOneByAcademic($person->getAcademic());
-                    if (null === $registration) {
+                    if ($registration === null) {
                         continue;
                     }
 
@@ -80,7 +80,7 @@ class SpecialActionController extends \CudiBundle\Component\Controller\ActionCon
                                 $academicYear
                             );
 
-                        if (null === $booking) {
+                        if ($booking === null) {
                             $number++;
                             $booking = new Booking($this->getEntityManager(), $person->getAcademic(), $article, 'assigned', 1, true);
                             $this->getEntityManager()->persist($booking);

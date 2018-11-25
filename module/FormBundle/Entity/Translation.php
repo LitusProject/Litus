@@ -20,8 +20,8 @@
 
 namespace FormBundle\Entity;
 
-use CommonBundle\Entity\General\Language,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\Language;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores the node item.
@@ -32,7 +32,7 @@ use CommonBundle\Entity\General\Language,
 class Translation
 {
     /**
-     * @var int The ID of this tanslation
+     * @var integer The ID of this tanslation
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -65,8 +65,8 @@ class Translation
 
     /**
      * @param Field field
-     * @param Language $language
-     * @param string   $label
+     * @param Language    $language
+     * @param string      $label
      */
     public function __construct(Field $field, Language $language, $label)
     {

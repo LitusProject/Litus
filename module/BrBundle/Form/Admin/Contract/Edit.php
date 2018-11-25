@@ -43,23 +43,25 @@ class Edit extends \BrBundle\Form\Admin\Order\GenerateContract
         parent::init();
 
         foreach ($this->contract->getEntries() as $entry) {
-            $this->add(array(
-                'type'    => 'textarea',
-                'name'    => 'entry_' . $entry->getId(),
-                'label'   => $entry->getOrderEntry()->getProduct()->getName(),
-                'options' => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
+            $this->add(
+                array(
+                    'type'    => 'textarea',
+                    'name'    => 'entry_' . $entry->getId(),
+                    'label'   => $entry->getOrderEntry()->getProduct()->getName(),
+                    'options' => array(
+                        'input' => array(
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
                         ),
                     ),
-                ),
-            ));
+                )
+            );
         }
 
         $this->addSubmit('Save', 'contract_edit');
 
-        if (null !== $this->contract) {
+        if ($this->contract !== null) {
             $this->bind($this->contract);
         }
     }

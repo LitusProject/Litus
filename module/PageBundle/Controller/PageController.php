@@ -20,9 +20,9 @@
 
 namespace PageBundle\Controller;
 
-use PageBundle\Entity\Node\Page,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use PageBundle\Entity\Node\Page;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * PageController
@@ -34,13 +34,14 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 {
     public function viewAction()
     {
-        if (!($page = $this->getPageEntity())) {
+        $page = $this->getPageEntity();
+        if ($page === null) {
             return $this->notFoundAction();
         }
 
         $submenu = $this->buildSubmenu($page);
         $parent = $page->getParent();
-        if (empty($submenu) && null !== $parent) {
+        if (count($submenu) == 0 && $parent !== null) {
             $submenu = $this->buildSubmenu($parent);
         }
 
@@ -63,11 +64,13 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="' . $this->getParam('name') . '"',
-            'Content-Type'        => mime_content_type($filePath),
-            'Content-Length'      => filesize($filePath),
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'inline; filename="' . $this->getParam('name') . '"',
+                'Content-Type'        => mime_content_type($filePath),
+                'Content-Length'      => filesize($filePath),
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         $handle = fopen($filePath, 'r');
@@ -89,7 +92,8 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         $page = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Node\Page')
             ->findOneByNameAndParent(
-                $this->getParam('name', ''), $this->getParam('parent')
+                $this->getParam('name', ''),
+                $this->getParam('parent')
             );
 
         if (!($page instanceof Page)) {

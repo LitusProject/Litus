@@ -20,11 +20,11 @@
 
 namespace CudiBundle\Entity;
 
-use CudiBundle\Entity\Sale\Article as SaleArticle,
-    DateTime,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+use CudiBundle\Entity\Sale\Article as SaleArticle;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Article")
@@ -172,7 +172,7 @@ abstract class Article
     }
 
     /**
-     * @param  string  $type
+     * @param  string $type
      * @return boolean
      */
     public static function isValidArticleType($type)
@@ -197,7 +197,7 @@ abstract class Article
     }
 
     /**
-     * @param  string                   $title
+     * @param  string $title
      * @throws InvalidArgumentException
      * @return self
      */
@@ -263,15 +263,16 @@ abstract class Article
     }
 
     /**
-     * @param int $yearPublished
+     * @param integer $yearPublished
      *
      * @return self
      */
     public function setYearPublished($yearPublished)
     {
-        if (empty($yearPublished)) {
+        if ((int) $yearPublished == 0) {
             $yearPublished = null;
         }
+
         $this->yearPublished = $yearPublished;
 
         return $this;
@@ -499,7 +500,7 @@ abstract class Article
      */
     public function getSaleArticle()
     {
-        if (null == $this->entityManager) {
+        if ($this->entityManager == null) {
             return null;
         }
 

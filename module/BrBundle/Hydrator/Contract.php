@@ -20,8 +20,8 @@
 
 namespace BrBundle\Hydrator;
 
-use BrBundle\Entity\Contract\ContractEntry as ContractEntryEntity,
-    CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+use BrBundle\Entity\Contract\ContractEntry as ContractEntryEntity;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 
 /**
  * This hydrator hydrates/extracts Contract data.
@@ -38,7 +38,7 @@ class Contract extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             throw new InvalidObjectException('Cannot create a contract');
         }
 
@@ -62,7 +62,7 @@ class Contract extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 

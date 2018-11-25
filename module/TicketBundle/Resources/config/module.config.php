@@ -31,10 +31,15 @@ return Config::create(
     ),
     array(
         'validators' => array(
-            'invokables' => array(
-                'ticket_activtiy'       => 'TicketBundle\Component\Validator\Activity',
-                'ticket_date'           => 'TicketBundle\Component\Validator\Date',
-                'ticket_number_tickets' => 'TicketBundle\Component\Validator\NumberTickets',
+            'aliases' => array(
+                'activtiy'          => Component\Validator\Activity::class,
+                'Activtiy'          => Component\Validator\Activity::class,
+                'bookingsclosedate' => Component\Validator\BookingsCloseDate::class,
+                'bookingsCloseDate' => Component\Validator\BookingsCloseDate::class,
+                'BookingsCloseDate' => Component\Validator\BookingsCloseDate::class,
+                'numbertickets'     => Component\Validator\NumberTickets::class,
+                'numberTickets'     => Component\Validator\NumberTickets::class,
+                'NumberTickets'     => Component\Validator\NumberTickets::class,
             ),
         ),
     )

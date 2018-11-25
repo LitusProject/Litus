@@ -39,11 +39,11 @@ class Slug extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $object = new SlugDocument($this->getPersonEntity());
         }
 
-        if ('' == $data['name']) {
+        if ($data['name'] == '') {
             do {
                 $name = $this->createRandomName();
                 $found = $this->getDocumentManager()
@@ -61,7 +61,7 @@ class Slug extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 

@@ -36,7 +36,7 @@ class Key extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             do {
                 $code = md5(uniqid(rand(), true));
                 $found = $this->getEntityManager()
@@ -54,7 +54,7 @@ class Key extends \CommonBundle\Component\Hydrator\Hydrator
 
         if (isset($data['roles'])) {
             foreach ($data['roles'] as $role) {
-                if ('student' == $role) {
+                if ($role == 'student') {
                     continue;
                 }
                 $roles[] = $this->getEntityManager()
@@ -70,7 +70,7 @@ class Key extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 

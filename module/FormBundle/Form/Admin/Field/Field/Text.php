@@ -31,61 +31,65 @@ class Text extends \CommonBundle\Component\Form\Fieldset
     {
         parent::init();
 
-        $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'multiline',
-            'label'      => 'Multiline',
-            'attributes' => array(
-                'data-help' => 'Allow multiple lines in the field (textarea).',
-            ),
-        ));
+        $this->add(
+            array(
+                'type'       => 'checkbox',
+                'name'       => 'multiline',
+                'label'      => 'Multiline',
+                'attributes' => array(
+                    'data-help' => 'Allow multiple lines in the field (textarea).',
+                ),
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'charsperline',
-            'label'      => 'Max. characters per line (or Infinite)',
-            'attributes' => array(
-                'data-help' => 'The maximum numbers of characters on one line. Zero is infinite.',
-            ),
-            'options' => array(
-                'input' => array(
-                    'allow_empty'       => false,
-                    'continue_if_empty' => true,
-                    'filters'           => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name'    => 'notempty',
-                            'options' => array(
-                                'null',
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'charsperline',
+                'label'      => 'Maximum Characters per Line (or Infinite)',
+                'attributes' => array(
+                    'data-help' => 'The maximum numbers of characters on one line. Zero is infinite.',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'allow_empty'       => false,
+                        'continue_if_empty' => true,
+                        'filters'           => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name'    => 'NotEmpty',
+                                'options' => array(
+                                    'null',
+                                ),
                             ),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'lines',
-            'label'      => 'Max. number of lines (Multiline fields only)',
-            'attributes' => array(
-                'data-help' => 'The maximum numbers of lines. Zero is infinite.',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'digits',
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'lines',
+                'label'      => 'Maximum Number of Lines (Multiline Fields Only)',
+                'attributes' => array(
+                    'data-help' => 'The maximum numbers of lines. Zero is infinite.',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
     }
 
     public function getInputFilterSpecification()
@@ -94,7 +98,7 @@ class Text extends \CommonBundle\Component\Form\Fieldset
 
         if ($this->get('charsperline')->getValue() != '') {
             $specs['charsperline']['validators'][] = array(
-                'name' => 'digits',
+                'name' => 'Int',
             );
         }
 
@@ -102,10 +106,10 @@ class Text extends \CommonBundle\Component\Form\Fieldset
         $lineValue = $this->get('lines')->getValue();
 
         $specs['charsperline']['validators'][] = array(
-            'name'    => 'form_text_field',
+            'name'    => 'TextField',
             'options' => array(
-                'multiline' => !empty($multilineValue) ? $this->get('multiline')->getValue() : false,
-                'lines'     => !empty($lineValue) ? $this->get('lines')->getValue() : null,
+                'multiline' => count($multilineValue) > 0 ? $this->get('multiline')->getValue() : false,
+                'lines'     => count($lineValue) > 0 ? $this->get('lines')->getValue() : null,
             ),
         );
 
