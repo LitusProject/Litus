@@ -367,6 +367,7 @@
 {% endblock %}
 
 {% macro displayShifts(entityManager, authenticatedPerson, shifts, accordionName) %}
+    {% import _self as self %}
     {% set previousShift = null %}
     <div class="panel-group" id="shifts-{{ accordionName }}">
         {% for shift in shifts %}
