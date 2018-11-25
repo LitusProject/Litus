@@ -18,36 +18,13 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SportBundle\Command\Socket;
+removeAclResource($connection, 'sport_run_queue');
+removeAclResource($connection, 'sport_run_screen');
+removeAclResource($connection, 'sport_run_screen_outside');
+removeAclResource($connection, 'sport_run_group');
+removeAclResource($connection, 'sport_run_index');
 
-use SportBundle\Component\WebSocket\Run\Queue as RunQueueSocket;
-
-/**
- * RunQueue socket
- *
- * @author Bram Gotink <bram.gotink@litus.cc>
- */
-class RunQueue extends \CommonBundle\Component\Console\Command\Socket
-{
-    protected function getSocket()
-    {
-        return new RunQueueSocket($this->getEntityManager());
-    }
-
-    protected function getSocketUri()
-    {
-        return '';
-    }
-
-    protected function getCommandName()
-    {
-        return 'run-queue';
-    }
-
-    protected function isSocketEnabled()
-    {
-        return $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('sport.queue_socket_enabled') === '1';
-    }
-}
+removeConfigKey($connection, 'sport.queue_socket_file');
+removeConfigKey($connection, 'sport.queue_socket_public');
+removeConfigKey($connection, 'sport.queue_socket_key');
+removeConfigKey($connection, 'sport.queue_socket_enabled');

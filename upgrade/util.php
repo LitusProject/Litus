@@ -23,7 +23,6 @@
  * @param  string   $name
  * @param  string   $value
  * @param  string   $description
- * @return null
  */
 function addConfigKey($connection, $name, $value, $description)
 {
@@ -48,7 +47,6 @@ function getConfigValue($connection, $name)
 /**
  * @param  resource $connection
  * @param  string   $name
- * @return null
  */
 function publishConfigValue($connection, $name)
 {
@@ -58,7 +56,6 @@ function publishConfigValue($connection, $name)
 /**
  * @param  resource $connection
  * @param  string   $name
- * @return null
  */
 function removeConfigKey($connection, $name)
 {
@@ -67,20 +64,18 @@ function removeConfigKey($connection, $name)
 
 /**
  * @param  resource $connection
- * @param  string   $oldName
+ * @param  string   $name
  * @param  string   $newName
- * @return null
  */
-function renameConfigKey($connection, $oldName, $newName)
+function renameConfigKey($connection, $name, $newName)
 {
-    pg_query($connection, 'UPDATE general.config SET key = \'' . $newName . '\' WHERE key = \'' . $oldName . '\'');
+    pg_query($connection, 'UPDATE general.config SET key = \'' . $newName . '\' WHERE key = \'' . $name . '\'');
 }
 
 /**
  * @param  resource $connection
  * @param  string   $name
  * @param  string   $description
- * @return null
  */
 function updateConfigDescription($connection, $name, $description)
 {
@@ -91,7 +86,6 @@ function updateConfigDescription($connection, $name, $description)
  * @param  resource $connection
  * @param  string   $name
  * @param  string   $value
- * @return null
  */
 function updateConfigKey($connection, $name, $value)
 {
@@ -102,7 +96,6 @@ function updateConfigKey($connection, $name, $value)
  * @param  resource $connection
  * @param  string   $name
  * @param  string   $newValue
- * @return null
  */
 function updateConfigValue($connection, $name, $newValue)
 {
@@ -113,13 +106,12 @@ function updateConfigValue($connection, $name, $newValue)
  * @param  resource $connection
  * @param  string   $resource
  * @param  string   $action
- * @return null
  */
 function removeAclAction($connection, $resource, $action)
 {
     $result = pg_query($connection, 'SELECT id FROM acl.actions WHERE resource = \'' . $resource . '\' AND name = \'' . $action . '\'');
     if (pg_num_rows($result) == 0) {
-        throw new \RuntimeException('The ACL action ' . $resource . '.' . $action . ' does not exist');
+        throw new RuntimeException('The ACL action ' . $resource . '.' . $action . ' does not exist');
     }
 
     $id = pg_fetch_row($result)[0];
@@ -133,16 +125,50 @@ function removeAclAction($connection, $resource, $action)
  * @param  string   $resource
  * @param  string   $action
  * @param  string   $newAction
- * @return null
  */
 function renameAclAction($connection, $resource, $action, $newAction)
 {
     $result = pg_query($connection, 'SELECT id FROM acl.actions WHERE resource = \'' . $resource . '\' AND name = \'' . $action . '\'');
     if (pg_num_rows($result) == 0) {
-        throw new \RuntimeException('The ACL action ' . $resource . '.' . $action . ' does not exist');
+        throw new RuntimeException('The ACL action ' . $resource . '.' . $action . ' does not exist');
     }
 
     $id = pg_fetch_row($result)[0];
 
     pg_query($connection, 'UPDATE acl.actions SET name = \'' . $newAction . '\' WHERE id = \'' . $id . '\'');
+}
+
+/**
+ * @param  resource $connection
+ * @param  string   $name
+ */
+function removeAclResource($connection, $name)
+{
+    $result = pg_query($connection, 'SELECT * FROM acl.resources WHERE name = \'' . $name . '\'');
+    if (pg_num_rows($result) == 0) {
+        throw new RuntimeException('The ACL resource ' . $name . ' does not exist');
+    }
+
+    $result = pg_query($connection, 'SELECT id FROM acl.actions WHERE resource = \'' . $name . '\'');
+    while ($row = pg_fetch_row($result)) {
+        pg_query($connection, 'DELETE FROM acl.roles_actions_map WHERE action = \'' . $row[0] . '\'');
+        pg_query($connection, 'DELETE FROM acl.actions WHERE id = \'' . $row[0] . '\'');
+    }
+
+    pg_query($connection, 'DELETE FROM acl.resources WHERE name = \'' . $name . '\'');
+}
+
+/**
+ * @param  resource $connection
+ * @param  string   $name
+ * @param  string   $newName
+ */
+function renameAclResource($connection, $name, $newName)
+{
+    $result = pg_query($connection, 'SELECT * FROM acl.resources WHERE name = \'' . $name . '\'');
+    if (pg_num_rows($result) == 0) {
+        throw new RuntimeException('The ACL resource ' . $name . ' does not exist');
+    }
+
+    pg_query($connection, 'UPDATE acl.resources SET name = \'' . $newName . '\' WHERE name = \'' . $name . '\'');
 }

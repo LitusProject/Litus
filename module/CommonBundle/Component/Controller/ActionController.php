@@ -51,6 +51,13 @@ use Zend\View\Model\ViewModel;
  * and some other common functionality.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
+ *
+ * @method \CommonBundle\Component\Controller\Plugin\FlashMessenger flashMessenger()
+ * @method \CommonBundle\Component\Controller\Plugin\HasAccess hasAccess()
+ * @method \CommonBundle\Component\Controller\Plugin\Paginator paginator()
+ * @method \CommonBundle\Component\Controller\Plugin\Url url()
+ * @method \Zend\Http\PhpEnvironment\Response getResponse()
+ * @method \Zend\Http\PhpEnvironment\Request getRequest()
  */
 class ActionController extends \Zend\Mvc\Controller\AbstractActionController implements ServiceLocatorAwareInterface
 {

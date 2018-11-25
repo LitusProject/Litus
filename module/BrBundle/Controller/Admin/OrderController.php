@@ -325,7 +325,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         $this->getEntityManager()->remove($entry);
         $this->getEntityManager()->flush();
 
-        if ($order) {
+        if (isset($order)) {
             $order->setEntityManager($this->getEntityManager())->setAutoDiscountPercentage();
         }
         $this->getEntityManager()->flush();

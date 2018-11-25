@@ -70,7 +70,7 @@
 
     <div id="calendar"></div>
 
-    {% if has_access('logistics_index', 'add') %}
+    {% if hasAccess('logistics_index', 'add') %}
         <div id="reservationForm" class="hide">
             {% import 'site/partials/form.twig' as forms %}
             {{ forms.renderForm(form) }}
@@ -92,8 +92,8 @@
                 editUrl: '{{ url('logistics_index', {'action': 'edit'}) }}',
                 deleteUrl: '{{ url('logistics_index', {'action': 'delete'}) }}',
                 passengerTypeaheadUrl: '{{ url("common_admin_academic_typeahead", {}) }}',
-                editable: {% if has_access('logistics_index', 'add') %}true{% else %}false {% endif %},
-                deletable: {% if has_access('logistics_index', 'delete') %}true{% else %}false {% endif %},
+                editable: {% if hasAccess('logistics_index', 'add') %}true{% else %}false {% endif %},
+                deletable: {% if hasAccess('logistics_index', 'delete') %}true{% else %}false {% endif %},
                 form: $('#reservationForm'),
                 monthNames: [
                     '{{ translate('January') }}',

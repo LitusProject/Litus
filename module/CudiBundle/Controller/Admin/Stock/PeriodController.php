@@ -143,6 +143,7 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
+        $articles = array();
         switch ($this->getParam('field')) {
             case 'title':
                 $articles = $this->getEntityManager()

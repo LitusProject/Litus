@@ -24,7 +24,7 @@ return array(
             'subtitle' => array('24h Run'),
             'items'    => array(
                 'sport_admin_run' => array(
-                    'action' => 'queue',
+                    'action' => 'laps',
                     'title'  => '24h Run',
                 ),
             ),

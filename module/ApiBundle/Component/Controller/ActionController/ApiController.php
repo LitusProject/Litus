@@ -47,6 +47,9 @@ use Zend\View\Model\ViewModel;
  * We extend the CommonBundle controller.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
+ *
+ * @method \CommonBundle\Component\Controller\Plugin\FlashMessenger flashMessenger()
+ * @method \CommonBundle\Component\Controller\Plugin\HasAccess hasAccess()
  */
 class ApiController extends \Zend\Mvc\Controller\AbstractActionController implements ServiceLocatorAwareInterface
 {

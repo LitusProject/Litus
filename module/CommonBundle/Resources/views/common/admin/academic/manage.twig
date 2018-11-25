@@ -74,11 +74,11 @@
                             <td>{{ academic.getFullName() }}</td>
                             <td>{{ academic.getEmail() }}</td>
                             <td class="actions">
-                                {% if hasAccess('common_admin_academic', 'edit') %}
-                                    <a href="{{ url('common_admin_academic', {"action": "edit", "id": academic.getId()}) }}" class="edit">Edit</a></li>
-                                {% endif %}
                                 {% if hasAccess('common_admin_academic', 'print') %}
                                     <a href="#" class="print" data-id="{{ academic.getId() }}" data-fullname="{{ academic.getFullName() }}">Print</a></li>
+                                {% endif %}
+                                {% if hasAccess('common_admin_academic', 'edit') %}
+                                    <a href="{{ url('common_admin_academic', {"action": "edit", "id": academic.getId()}) }}" class="edit">Edit</a></li>
                                 {% endif %}
                                 {% if hasAccess('common_admin_academic', 'delete') %}
                                     <a href="#" class="delete" data-id="{{ academic.getId() }}" data-fullname="{{ academic.getFullName() }}">Delete</a>

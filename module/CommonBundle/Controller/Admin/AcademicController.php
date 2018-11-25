@@ -21,7 +21,7 @@
 namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Entity\User\Person\Academic;
-use CudiBundle\Component\WebSocket\Sale\Printer;
+use CudiBundle\Component\Socket\Sale\Printer;
 use Doctrine\ORM\Query;
 use Zend\View\Model\ViewModel;
 

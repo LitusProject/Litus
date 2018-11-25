@@ -21,6 +21,5 @@
 return array(
     'install_sport' => 'SportBundle\Command\Install',
 
-    'sport_socket_run'   => 'SportBundle\Command\Socket\RunQueue',
     'sport_cache_result' => 'SportBundle\Command\CacheResult',
 );

@@ -957,9 +957,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
      */
     private function isCookieSet()
     {
-        $cookies = $this->getRequest()->getHeader('Cookie');
+        $cookie = $this->getRequest()->getCookie();
 
-        return isset($cookies) && is_object($cookies) && $cookies->offsetExists(GuestInfo::$cookieNamespace);
+        return $cookie !== false && $cookie->offsetExists(GuestInfo::$cookieNamespace);
     }
 
     /**
@@ -967,8 +967,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
      */
     private function getCookie()
     {
-        $cookies = $this->getRequest()->getHeader('Cookie');
+        $cookie = $this->getRequest()->getCookie();
 
-        return $cookies[GuestInfo::$cookieNamespace];
+        return $cookie !== false && $cookie->offsetExists(GuestInfo::$cookieNamespace);
     }
 }

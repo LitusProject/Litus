@@ -232,7 +232,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
     private function returnYesNoArray()
     {
-        return array('N','Y');
+        return array('Y', 'N');
     }
 
     private function getDriversArray()
