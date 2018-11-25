@@ -10,7 +10,7 @@ build:
     script:
         - composer install --no-dev
         - echo $CI_COMMIT_SHA > COMMIT
-        - tar czf litus.tar.gz bin/ config/ data/ module/ public/ shibboleth/ upgrade/ vendor/ COMMIT init_autoloader.php LICENSE.md NOTICE.md README.md
+        - tar czf litus.tar.gz bin/ config/ data/ module/ public/ shibboleth/ upgrade/ vendor/ COMMIT LICENSE.md NOTICE.md README.md
     only:
         - master
     cache:
