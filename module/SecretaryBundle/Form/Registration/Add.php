@@ -354,7 +354,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
             ),
-        ));
+        );
 
         $this->addSubmit('Register', 'btn btn-primary', 'register');
 
