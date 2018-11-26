@@ -350,6 +350,8 @@ return Config::create(
                         'Radio'     => Component\Form\Admin\Element\Radio::class,
                         'select'    => Component\Form\Admin\Element\Select::class,
                         'Select'    => Component\Form\Admin\Element\Select::class,
+                        'submit'    => Component\Form\Admin\Element\Submit::class,
+                        'Submit'    => Component\Form\Admin\Element\Submit::class,
                         'tabs'      => Component\Form\Admin\Element\Tabs::class,
                         'Tabs'      => Component\Form\Admin\Element\Tabs::class,
                         'text'      => Component\Form\Admin\Element\Text::class,
