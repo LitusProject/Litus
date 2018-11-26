@@ -246,33 +246,13 @@
                     .closest('.form-group')
                         .toggle($('#register_form').find('#organization').val() !== '0');
 
-                $form.find('#conditions')
+                $form.find('#conditions, #bakske')
                     .closest('.form-group')
                         .show();
                 $form.find('#organization')
                     .closest('.form-group')
                         .hide();
             }
-        }
-
-        function toggleMember() {
-            var $form = $('#register_form');
-
-            if ($form.find('#become_member').is(':checked'))
-                $form.find('#organization_info .form-group').show();
-            else
-                $form.find('#organization_info .form-group').hide();
-
-            $form.find('#become_member')
-                .closest('.form-group')
-                    .toggle($('#register_form').find('#organization').val() !== '0');
-
-            $form.find('#conditions, #bakske')
-                .closest('.form-group')
-                    .show();
-            $form.find('#organization')
-                .closest('.form-group')
-                    .hide();
-        }
-    </script>
+        </script>
+    {% endif %}
 {% endblock %}

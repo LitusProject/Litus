@@ -353,8 +353,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'options' => MetaData::$possibleSizes,
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->addSubmit('Register', 'btn btn-primary', 'register');
 
