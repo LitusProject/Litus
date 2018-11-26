@@ -136,16 +136,16 @@ class Sale extends \CommonBundle\Component\Socket\Server
             return;
         }
 
-        if (isset($command->session)) {
-            $user->session = $command->session;
+        if (isset($command->session) && is_numeric($command->session)) {
+            $user->setExtraData('session', $command->session);
         }
 
         if (isset($command->queueType)) {
-            $user->queueType = $command->queueType;
+            $user->setExtraData('queueType', $command->queueType);
         }
 
         if (isset($command->paydesk)) {
-            $user->paydesk = $command->paydesk;
+            $user->setExtraData('paydesk', $command->paydesk);
         }
 
         $this->sendQueue($user);
@@ -159,7 +159,7 @@ class Sale extends \CommonBundle\Component\Socket\Server
      */
     private function handleAction(User $user, $command)
     {
-        if (!isset($user->session)) {
+        if ($user->getExtraData('session') == null) {
             return;
         }
 
@@ -261,15 +261,15 @@ class Sale extends \CommonBundle\Component\Socket\Server
      */
     private function sendQueue(User $user)
     {
-        if (!isset($user->session)) {
+        if ($user->getExtraData('session') == null) {
             return;
         }
 
         $session = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Session')
-            ->findOneById($user->session);
+            ->findOneById($user->getExtraData('session'));
 
-        switch ($user->queueType) {
+        switch ($user->getExtraData('queueType')) {
             case 'queue':
                 $user->send(
                     $this->queue->getJsonQueue($session)
@@ -308,15 +308,15 @@ class Sale extends \CommonBundle\Component\Socket\Server
         }
 
         foreach ($this->getUsers() as $user) {
-            if (!isset($user->session)) {
+            if ($user->getExtraData('session') == null) {
                 continue;
             }
 
             $session = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Session')
-                ->findOneById($user->session);
+                ->findOneById($user->getExtraData('session'));
 
-            switch ($user->queueType) {
+            switch ($user->getExtraData('queueType')) {
                 case 'queue':
                     $user->send(
                         $this->queue->getJsonQueue($session)
@@ -341,13 +341,13 @@ class Sale extends \CommonBundle\Component\Socket\Server
      */
     private function signIn(User $user, $universityIdentification)
     {
-        if (!isset($user->session)) {
+        if ($user->getExtraData('session') == null) {
             return;
         }
 
         $session = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Session')
-            ->findOneById($user->session);
+            ->findOneById($user->getExtraData('session'));
 
         $item = $this->queue->addPerson($session, $universityIdentification);
         if (is_string($item)) {
@@ -383,13 +383,13 @@ class Sale extends \CommonBundle\Component\Socket\Server
      */
     private function addToQueue(User $user, $universityIdentification)
     {
-        if (!isset($user->session)) {
+        if ($user->getExtraData('session') == null) {
             return;
         }
 
         $session = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Session')
-            ->findOneById($user->session);
+            ->findOneById($user->getExtraData('session'));
 
         $item = $this->queue->addPerson($session, $universityIdentification, true);
         if (is_string($item)) {
