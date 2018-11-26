@@ -189,7 +189,11 @@ class User implements ConnectionInterface
      */
     public function __get($name)
     {
-        return $this->data[$name];
+        if(array_key_exists($name, $this->data)){
+            return $this->data[$name];
+        }
+
+        return null;
     }
 
     /**
