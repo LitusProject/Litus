@@ -23,7 +23,7 @@ namespace CommonBundle\Component\Form\Admin\Element;
 use CommonBundle\Component\Form\ElementTrait;
 
 /**
- * Text form element
+ * Submit form element
  *
  * @author Matthias Swiggers <matthias.swiggers@vtk.be>
  */
