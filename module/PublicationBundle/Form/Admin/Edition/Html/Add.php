@@ -55,7 +55,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         ),
                         'validators' => array(
                             array(
-                                'name'    => 'TitleEditionPdf',
+                                'name'    => 'TitleEditionHtml',
                                 'options' => array(
                                     'publication'   => $this->publication,
                                     'academic_year' => $this->getCurrentAcademicYear(true),
