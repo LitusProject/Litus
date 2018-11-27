@@ -130,7 +130,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $this->add(
             array(
-                'type'       => 'form_field_field_timeslot',
+                'type'       => 'form_field_field_timeSlot',
                 'name'       => 'timeslot_form',
                 'label'      => 'Time Slot Options',
                 'attributes' => array(
@@ -197,7 +197,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $this->add(
             array(
-                'type'       => 'form_field_field_timeslot',
+                'type'       => 'form_field_field_timeSlot',
                 'name'       => 'timeslot_form',
                 'label'      => 'Time Slot Options',
                 'attributes' => array(
