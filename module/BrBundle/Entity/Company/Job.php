@@ -504,7 +504,7 @@ class Job
      */
     public function getLocation()
     {
-        return Company::POSSIBLE_LOCATIONS[$this->location];
+        return $this->location == null ? null : Company::POSSIBLE_LOCATIONS[$this->location];
     }
 
     /**
