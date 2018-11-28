@@ -473,7 +473,7 @@ class Job
      */
     public function getMaster()
     {
-        return Company::POSSIBLE_MASTERS[$this->master];
+        return $this->master == null ? null : Company::POSSIBLE_MASTERS[$this->master];
     }
 
     /**
