@@ -93,7 +93,7 @@ return array(
             'add', 'delete', 'manage', 'supplier', 'typeahead',
         ),
         'cudi_admin_stock_order' => array(
-            'add', 'cancel', 'delete', 'edit', 'editItem', 'export', 'manage', 'overview', 'place', 'pdf', 'search', 'supplier',
+            'add', 'cancel', 'csv', 'delete', 'edit', 'editItem', 'export', 'manage', 'overview', 'place', 'pdf', 'search', 'supplier',
         ),
         'cudi_admin_stock_period' => array(
             'manage', 'new', 'search', 'view',
@@ -108,10 +108,10 @@ return array(
             'add', 'delete', 'edit', 'manage',
         ),
         'cudi_admin_syllabus' => array(
-            'manage', 'list', 'articlescsv', 'search',
+            'manage', 'list', 'articlescsv',
         ),
         'cudi_admin_isic' => array(
-            'manage','assign', 'unassign', 'delete', 'search', 'print',
+            'manage','assign', 'unassign', 'delete',
         ),
         'cudi_isic' => array(
             'form','order',
