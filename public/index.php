@@ -52,6 +52,11 @@ if (!class_exists(Application::class)) {
     );
 }
 
+// Our old HAProxy configuration added a prefix to the PHP_SESSID cookie
+if (preg_match('/^[a-zA-Z0-9-,]{1,128}$/', session_id()) === 0) {
+    session_regenerate_id();
+}
+
 // Retrieve configuration
 $appConfig = require __DIR__ . '/../config/application.config.php';
 if (file_exists(__DIR__ . '/../config/development.config.php')) {
