@@ -25,6 +25,7 @@ use CommonBundle\Component\Socket\User;
 use CudiBundle\Component\Socket\Sale\Printer;
 use CudiBundle\Component\Socket\Sale\Queue;
 use Ratchet\ConnectionInterface;
+use React\EventLoop\LoopInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
@@ -34,7 +35,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Sale extends \CommonBundle\Component\Socket\Server
+class Sale extends \CommonBundle\Component\Socket\Socket
 {
     /**
      * @var Queue
@@ -43,11 +44,12 @@ class Sale extends \CommonBundle\Component\Socket\Server
 
     /**
      * @param ServiceLocatorInterface $serviceLocator
+     * @param LoopInterface           $loop
      * @param Command                 $command
      */
-    public function __construct(ServiceLocatorInterface $serviceLocator, Command $command)
+    public function __construct(ServiceLocatorInterface $serviceLocator, LoopInterface $loop, Command $command)
     {
-        parent::__construct($serviceLocator, $command);
+        parent::__construct($serviceLocator, $loop, $command);
 
         $this->queue = new Queue($this->getEntityManager());
     }

@@ -24,13 +24,10 @@ use Clue\React\Redis\Client as RedisClient;
 use Clue\React\Redis\Factory as RedisFactory;
 use CommonBundle\Component\Console\Command;
 use CommonBundle\Component\Ratchet\Redis\MessageComponentInterface as RedisMessageComponentInterface;
-use CommonBundle\Component\React\EventLoop\LoopAwareInterface;
-use CommonBundle\Component\React\EventLoop\LoopAwareTrait;
 use CommonBundle\Component\Redis\Uri as RedisUri;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\RedisClientTrait;
 use Exception;
 use Ko\Process;
-use Ko\ProcessManager;
 use Ratchet\ConnectionInterface;
 use React\EventLoop\LoopInterface;
 use SyllabusBundle\Component\Parser\Study as StudyParser;
@@ -43,13 +40,9 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Update extends \CommonBundle\Component\Socket\Server implements LoopAwareInterface, RedisMessageComponentInterface
+class Update extends \CommonBundle\Component\Socket\Socket implements RedisMessageComponentInterface
 {
     use RedisClientTrait;
-
-    use LoopAwareTrait {
-        setLoop as traitSetLoop;
-    }
 
     /**
      * @var array
@@ -59,36 +52,20 @@ class Update extends \CommonBundle\Component\Socket\Server implements LoopAwareI
     );
 
     /**
-     * @var ProcessManager
-     */
-    private $processManager;
-
-    /**
      * @var RedisClient
      */
     private $redisClient;
 
     /**
      * @param ServiceLocatorInterface $serviceLocator
+     * @param LoopInterface           $loop
      * @param Command                 $command
      */
-    public function __construct(ServiceLocatorInterface $serviceLocator, Command $command)
+    public function __construct(ServiceLocatorInterface $serviceLocator, LoopInterface $loop, Command $command)
     {
-        parent::__construct($serviceLocator, $command);
+        parent::__construct($serviceLocator, $loop, $command);
 
-        $this->processManager = new ProcessManager();
-    }
-
-    /**
-     * @param  LoopInterface $loop
-     * @return self
-     */
-    public function setLoop(LoopInterface $loop)
-    {
-        $this->traitSetLoop($loop);
         $this->createRedisClient();
-
-        return $this;
     }
 
     private function createRedisClient()
@@ -175,7 +152,7 @@ class Update extends \CommonBundle\Component\Socket\Server implements LoopAwareI
 
         switch ($command->command) {
             case 'update':
-                if ($this->processManager->hasAlive()) {
+                if ($this->getProcessManager()->hasAlive()) {
                     return;
                 }
 
@@ -183,7 +160,7 @@ class Update extends \CommonBundle\Component\Socket\Server implements LoopAwareI
                     self::REDIS_CHANNELS[StudyParser::class]
                 );
 
-                $this->processManager->fork(
+                $this->getProcessManager()->fork(
                     function (Process $p) {
                         // Close parent connection to force reconnection in child process
                         $this->getEntityManager()->getConnection()->close();

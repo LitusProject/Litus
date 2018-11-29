@@ -20,6 +20,7 @@
 
 namespace SyllabusBundle\Command\Socket;
 
+use React\EventLoop\LoopInterface;
 use SyllabusBundle\Component\Socket\Update as UpdateSocket;
 
 /**
@@ -35,10 +36,11 @@ class Update extends \CommonBundle\Component\Console\Command\Socket
         return 'update';
     }
 
-    protected function getSocket()
+    protected function getSocket(LoopInterface $loop)
     {
         return new UpdateSocket(
             $this->getServiceLocator(),
+            $loop,
             $this
         );
     }
