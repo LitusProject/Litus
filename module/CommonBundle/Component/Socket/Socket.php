@@ -28,12 +28,19 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAware\SentryClientTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use Exception;
+use Ko\ProcessManager;
 use Ratchet\ConnectionInterface;
 use Ratchet\MessageComponentInterface;
+use React\EventLoop\LoopInterface;
 use SplObjectStorage;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-abstract class Server implements MessageComponentInterface, ServiceLocatorAwareInterface
+/**
+ * Socket
+ *
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ */
+abstract class Socket implements MessageComponentInterface, ServiceLocatorAwareInterface
 {
     use ServiceLocatorAwareTrait;
 
@@ -43,9 +50,19 @@ abstract class Server implements MessageComponentInterface, ServiceLocatorAwareI
     use SentryClientTrait;
 
     /**
+     * @var LoopInterface
+     */
+    private $loop;
+
+    /**
      * @var Command
      */
     private $command;
+
+    /**
+     * @var ProcessManager
+     */
+    private $processManager;
 
     /**
      * @var SplObjectStorage
@@ -54,14 +71,43 @@ abstract class Server implements MessageComponentInterface, ServiceLocatorAwareI
 
     /**
      * @param ServiceLocatorInterface $serviceLocator
+     * @param LoopInterface           $loop
      * @param Command                 $command
      */
-    public function __construct(ServiceLocatorInterface $serviceLocator, Command $command)
+    public function __construct(ServiceLocatorInterface $serviceLocator, LoopInterface $loop, Command $command)
     {
         $this->setServiceLocator($serviceLocator);
 
+        $this->loop = $loop;
         $this->command = $command;
+        $this->processManager = new ProcessManager();
         $this->users = new SplObjectStorage();
+
+        $this->loop->addSignal(
+            SIGTERM,
+            function ($signal) {
+                $this->onSignal($signal);
+            }
+        );
+    }
+
+    /**
+     * @param  LoopInterface $loop
+     * @return self
+     */
+    public function setLoop(LoopInterface $loop)
+    {
+        $this->loop = $loop;
+
+        return $this;
+    }
+
+    /**
+     * @return LoopInterface
+     */
+    public function getLoop()
+    {
+        return $this->loop;
     }
 
     /**
@@ -73,6 +119,14 @@ abstract class Server implements MessageComponentInterface, ServiceLocatorAwareI
         $this->command = $command;
 
         return $this;
+    }
+
+    /**
+     * @return Command
+     */
+    protected function getCommand()
+    {
+        return $this->command;
     }
 
     /**
@@ -100,9 +154,17 @@ abstract class Server implements MessageComponentInterface, ServiceLocatorAwareI
     }
 
     /**
+     * @return ProcessManager
+     */
+    protected function getProcessManager()
+    {
+        return $this->processManager;
+    }
+
+    /**
      * @return SplObjectStorage
      */
-    public function getUsers()
+    protected function getUsers()
     {
         return $this->users;
     }
@@ -137,6 +199,27 @@ abstract class Server implements MessageComponentInterface, ServiceLocatorAwareI
         }
 
         return null;
+    }
+
+    /**
+     * @param int $signal
+     */
+    protected function onSignal($signal)
+    {
+        switch ($signal) {
+            case SIGTERM:
+                foreach ($this->users as $user) {
+                    $user->close();
+                }
+
+                $this->processManager->handleSigTerm();
+                $this->loop->stop();
+
+                break;
+
+            default:
+                $this->writeln('Received invalid signal <info>' . $signal . '</info>');
+        }
     }
 
     /**

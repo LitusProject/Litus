@@ -20,12 +20,12 @@
 
 namespace CommonBundle\Component\Console\Command;
 
-use CommonBundle\Component\React\EventLoop\LoopAwareInterface;
 use CommonBundle\Component\React\Socket\Server;
 use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
 use Ratchet\WebSocket\WsServer;
 use React\EventLoop\Factory as EventLoopFactory;
+use React\EventLoop\LoopInterface;
 
 abstract class Socket extends \CommonBundle\Component\Console\Command
 {
@@ -41,23 +41,16 @@ abstract class Socket extends \CommonBundle\Component\Console\Command
     protected function invoke()
     {
         if (!$this->isSocketEnabled()) {
-            $this->writeln('<info>The ' . $this->getCommandName() . ' socket is not enabled</info>');
+            $this->writeln('<info>This socket is not enabled</info>');
             return;
         }
 
-        $this->writeln('Starting the <comment>' . $this->getCommandName() . '</comment> socket...');
-
         $loop = EventLoopFactory::create();
-
-        $socket = $this->getSocket();
-        if ($socket instanceof LoopAwareInterface) {
-            $socket->setLoop($loop);
-        }
 
         $server = new IoServer(
             new HttpServer(
                 new WsServer(
-                    $socket
+                    $this->getSocket($loop)
                 )
             ),
             Server::factory($this->getSocketUri(), $loop),
@@ -72,9 +65,10 @@ abstract class Socket extends \CommonBundle\Component\Console\Command
     abstract protected function getCommandName();
 
     /**
+     * @param  LoopInterface $loop The React loop to run the socket on
      * @return \Ratchet\MessageComponentInterface The application that I/O will call when events are received
      */
-    abstract protected function getSocket();
+    abstract protected function getSocket(LoopInterface $loop);
 
     /**
      * @return string

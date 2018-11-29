@@ -21,6 +21,7 @@
 namespace CudiBundle\Command\Socket;
 
 use CudiBundle\Component\Socket\Sale as SaleSocket;
+use React\EventLoop\LoopInterface;
 
 /**
  * Sale
@@ -35,10 +36,11 @@ class Sale extends \CommonBundle\Component\Console\Command\Socket
         return 'sale';
     }
 
-    protected function getSocket()
+    protected function getSocket(LoopInterface $loop)
     {
         return new SaleSocket(
             $this->getServiceLocator(),
+            $loop,
             $this
         );
     }
