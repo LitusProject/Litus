@@ -473,7 +473,11 @@ class Job
      */
     public function getMaster()
     {
-        return $this->master == null ? null : Company::POSSIBLE_MASTERS[$this->master];
+        if ($this->master === null) {
+            return null;
+        }
+
+        return Company::POSSIBLE_MASTERS[$this->master];
     }
 
     /**
@@ -504,7 +508,11 @@ class Job
      */
     public function getLocation()
     {
-        return $this->location == null ? null : Company::POSSIBLE_LOCATIONS[$this->location];
+        if ($this->location === null) {
+            return null;
+        }
+
+        return Company::POSSIBLE_LOCATIONS[$this->location];
     }
 
     /**
@@ -550,6 +558,10 @@ class Job
      */
     public function getSector()
     {
+        if ($this->sector === null) {
+            return null;
+        }
+
         return Company::POSSIBLE_SECTORS[$this->sector];
     }
 
