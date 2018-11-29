@@ -101,9 +101,7 @@
     <!-- The picture column -->
     <xsl:template name="picture">
         <fo:external-graphic content-width="{$picture-width}mm">
-            <xsl:attribute name="src">
-                <xsl:value-of select="@img"/>
-            </xsl:attribute>
+            <xsl:attribute name="src"><xsl:text>url('file:</xsl:text><xsl:value-of select="@img"/><xsl:text>')</xsl:text></xsl:attribute>
         </fo:external-graphic>
     </xsl:template>
 
