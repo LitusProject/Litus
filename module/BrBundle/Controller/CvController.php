@@ -27,6 +27,7 @@ use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Entity\User\Person\Academic;
 use Zend\Http\Headers;
 use Zend\View\Model\ViewModel;
+use CommonBundle\Controller\Imagick;
 
 /**
  * CvController
