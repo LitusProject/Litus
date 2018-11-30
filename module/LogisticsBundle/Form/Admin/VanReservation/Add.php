@@ -69,8 +69,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
         /**
          * Copy paste this code in the validators above to check for reservation conflicts
          * Was requested to remove by logistics in 2016-2017.
