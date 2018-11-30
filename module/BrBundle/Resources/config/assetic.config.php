@@ -313,6 +313,10 @@ return array(
 
             '@common_fieldcount',
             '@cv_css',
+
+            '@jcrop_css',
+            '@jcrop_js',
+            '@common_jquery_form',
         ),
     ),
 
