@@ -150,6 +150,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'name'       => 'car',
                 'label'      => 'Car',
                 'attributes' => array(
+                    'class'   => 'car',
+                    'options' => $this->returnYesNoArray(),
+                ),
+            )
+        );
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'bike',
+                'label'      => 'Cargo bike',
+                'attributes' => array(
+                    'class'   => 'bike',
                     'options' => $this->returnYesNoArray(),
                 ),
             )
