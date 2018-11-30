@@ -556,6 +556,150 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                         ),
                     ),
+                    array(
+                        'type'       => 'file',
+                        'name'       => 'picture',
+                        'label'      => 'Profile Picture',
+                        'required'   => false,
+                        'attributes' => array(
+                            'multiple'  => true,
+                            'data-type' => 'small',
+                            'data-help' => 'The maximum file size is 3 MB.',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'FileExtension',
+                                        'options' => array(
+                                            'extension' => 'jpg,png',
+                                        ),
+                                    ),
+                                    array(
+                                        'name'    => 'FileSize',
+                                        'options' => array(
+                                            'max' => '3MB',
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'       => 'hidden',
+                        'name'       => 'x',
+                        'required'   => false,
+                        'value'      => 0,
+                        'attributes' => array(
+                            'id' => 'x',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array('name' => 'Int'),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'       => 'hidden',
+                        'name'       => 'y',
+                        'required'   => false,
+                        'value'      => 0,
+                        'attributes' => array(
+                            'id' => 'y',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array('name' => 'Int'),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'       => 'hidden',
+                        'name'       => 'x2',
+                        'required'   => false,
+                        'value'      => 0,
+                        'attributes' => array(
+                            'id' => 'x2',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array('name' => 'Int'),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'       => 'hidden',
+                        'name'       => 'y2',
+                        'required'   => false,
+                        'value'      => 0,
+                        'attributes' => array(
+                            'id' => 'y2',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array('name' => 'Int'),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'       => 'hidden',
+                        'name'       => 'w',
+                        'required'   => false,
+                        'value'      => 0,
+                        'attributes' => array(
+                            'id' => 'w',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array('name' => 'Int'),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'       => 'hidden',
+                        'name'       => 'h',
+                        'required'   => false,
+                        'value'      => 0,
+                        'attributes' => array(
+                            'id' => 'h',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array('name' => 'Int'),
+                                ),
+                            ),
+                        ),
+                    ),
+
                 ),
             )
         );

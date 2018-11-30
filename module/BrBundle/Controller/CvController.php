@@ -107,6 +107,18 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             )
         );
 
+
+        $profileForm = $this->getForm('br_cv_profile');
+        $profileForm->setAttribute(
+            'action',
+            $this->url()->fromRoute(
+                'br_cv_index',
+                array(
+                    'action' => 'uploadProfileImage',
+                )
+            )
+        );
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
@@ -118,6 +130,35 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                         $this->getCurrentAcademicYear()
                     )
                 );
+
+                if ($formData['profile']['picture']) {
+                    $image = new Imagick($formData['profile']['picture']['tmp_name']);
+                } else {
+                    $image = new Imagick($filePath . '/' . $person->getPhotoPath());
+                }
+
+                if ($formData['x'] == 0 && $formData['y'] == 0 && $formData['x2'] == 0 && $formData['y2'] == 0 && $formData['w'] == 0 && $formData['h'] == 0) {
+                    $image->cropThumbnailImage(320, 240);
+                } else {
+                    $ratio = $image->getImageWidth() / 320;
+                    $x = $formData['x'] * $ratio;
+                    $y = $formData['y'] * $ratio;
+                    $w = $formData['w'] * $ratio;
+                    $h = $formData['h'] * $ratio;
+
+                    $image->cropImage($w, $h, $x, $y);
+                    $image->cropThumbnailImage(320, 240);
+                }
+
+                if ($person->getPhotoPath() != '' || $person->getPhotoPath() !== null) {
+                    $fileName = $person->getPhotoPath();
+                } else {
+                    do {
+                        $fileName = sha1(uniqid());
+                    } while (file_exists($filePath . '/' . $fileName));
+                }
+                $image->writeImage($filePath . '/' . $fileName);
+                $person->setPhotoPath($fileName);
 
                 $this->getEntityManager()->persist($entry);
                 $this->getEntityManager()->flush();
@@ -133,12 +174,14 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             }
         }
 
+
         return new ViewModel(
             array(
                 'form'        => $form,
                 'profilePath' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
+                'profileForm' => $profileForm,
             )
         );
     }
@@ -302,6 +345,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         );
     }
 
+
     /**
      * @param  Academic $person
      * @return FlashMessage|null
@@ -350,6 +394,86 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                 $this->getTranslator()->translate('To add your information to the CV Book, you must complete these. Please click <a href="{{editurl}}">here</a> to edit your account.');
 
             return new FlashMessage('danger', 'Error', $content);
+        }
+    }
+
+    public function uploadProfileImageAction()
+    {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
+            return new ViewModel();
+        }
+
+        $form = $this->getForm('br_cv_profile');
+
+        if ($this->getRequest()->isPost()) {
+            $form->setData(
+                array_merge_recursive(
+                    $this->getRequest()->getPost()->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
+
+            $filePath = 'public' . $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('common.profile_path');
+
+            if ($form->isValid()) {
+                $formData = $form->getData();
+
+                if ($formData['profile']) {
+                    $image = new Imagick($formData['profile']['tmp_name']);
+                } else {
+                    $image = new Imagick($filePath . '/' . $academic->getPhotoPath());
+                }
+
+                if ($formData['x'] == 0 && $formData['y'] == 0 && $formData['x2'] == 0 && $formData['y2'] == 0 && $formData['w'] == 0 && $formData['h'] == 0) {
+                    $image->cropThumbnailImage(320, 240);
+                } else {
+                    $ratio = $image->getImageWidth() / 320;
+                    $x = $formData['x'] * $ratio;
+                    $y = $formData['y'] * $ratio;
+                    $w = $formData['w'] * $ratio;
+                    $h = $formData['h'] * $ratio;
+
+                    $image->cropImage($w, $h, $x, $y);
+                    $image->cropThumbnailImage(320, 240);
+                }
+
+                if ($academic->getPhotoPath() != '' || $academic->getPhotoPath() !== null) {
+                    $fileName = $academic->getPhotoPath();
+                } else {
+                    do {
+                        $fileName = sha1(uniqid());
+                    } while (file_exists($filePath . '/' . $fileName));
+                }
+                $image->writeImage($filePath . '/' . $fileName);
+                $academic->setPhotoPath($fileName);
+
+                $this->getEntityManager()->flush();
+
+                return new ViewModel(
+                    array(
+                        'result' => array(
+                            'status'  => 'success',
+                            'profile' => $this->getEntityManager()
+                                ->getRepository('CommonBundle\Entity\General\Config')
+                                ->getConfigValue('common.profile_path') . '/' . $fileName,
+                        ),
+                    )
+                );
+            } else {
+                return new ViewModel(
+                    array(
+                        'result' => array(
+                            'status' => 'error',
+                            'form'   => array(
+                                'errors' => $form->getMessages(),
+                            ),
+                        ),
+                    )
+                );
+            }
         }
     }
 }
