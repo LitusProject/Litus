@@ -132,35 +132,6 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                     )
                 );
 
-                if ($formData['profile']['picture']) {
-                    $image = new Imagick($formData['profile']['picture']['tmp_name']);
-                } else {
-                    $image = new Imagick($filePath . '/' . $person->getPhotoPath());
-                }
-
-                if ($formData['x'] == 0 && $formData['y'] == 0 && $formData['x2'] == 0 && $formData['y2'] == 0 && $formData['w'] == 0 && $formData['h'] == 0) {
-                    $image->cropThumbnailImage(320, 240);
-                } else {
-                    $ratio = $image->getImageWidth() / 320;
-                    $x = $formData['x'] * $ratio;
-                    $y = $formData['y'] * $ratio;
-                    $w = $formData['w'] * $ratio;
-                    $h = $formData['h'] * $ratio;
-
-                    $image->cropImage($w, $h, $x, $y);
-                    $image->cropThumbnailImage(320, 240);
-                }
-
-                if ($person->getPhotoPath() != '' || $person->getPhotoPath() !== null) {
-                    $fileName = $person->getPhotoPath();
-                } else {
-                    do {
-                        $fileName = sha1(uniqid());
-                    } while (file_exists($filePath . '/' . $fileName));
-                }
-                $image->writeImage($filePath . '/' . $fileName);
-                $person->setPhotoPath($fileName);
-
                 $this->getEntityManager()->persist($entry);
                 $this->getEntityManager()->flush();
 
