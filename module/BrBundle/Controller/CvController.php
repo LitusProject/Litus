@@ -476,4 +476,40 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             }
         }
     }
+
+    /**
+     * @return Academic|null
+     */
+    private function getAcademicEntity()
+    {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            $this->flashMessenger()->error(
+                'Error',
+                'Please login first!'
+            );
+
+            $this->redirect()->toRoute(
+                'common_index'
+            );
+
+            return null;
+        }
+
+        $academic = $this->getAuthentication()->getPersonObject();
+
+        if (!($academic instanceof Academic)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'Please login first!'
+            );
+
+            $this->redirect()->toRoute(
+                'common_index'
+            );
+
+            return;
+        }
+
+        return $academic;
+    }
 }
