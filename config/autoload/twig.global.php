@@ -26,16 +26,16 @@ if (getenv('APPLICATION_ENV') != 'development') {
             ),
         ),
     );
-} else {
-    return array(
-        'zend_twig' => array(
-            'environment' => array(
-                'cache' => 'data/cache/twig',
-                'debug' => true,
-            ),
-            'extensions' => array(
-                Twig_Extension_Debug::class,
-            ),
-        ),
-    );
 }
+
+return array(
+    'zend_twig' => array(
+        'environment' => array(
+            'cache' => 'data/cache/twig',
+            'debug' => true,
+        ),
+        'extensions' => array(
+            Twig_Extension_Debug::class,
+        ),
+    ),
+);
