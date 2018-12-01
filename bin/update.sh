@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+if [ -z "$APPLICATION_ENV" ]; then
+    export APPLICATION_ENV=production
+fi
+
 header() {
     COLUMNS=$(tty -s && tput cols || true)
     COLUMNS=${COLUMNS:-80}
