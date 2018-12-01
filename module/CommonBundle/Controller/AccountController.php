@@ -487,15 +487,20 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     $image->cropThumbnailImage(320, 240);
                 }
 
+                do {
+                    $newFileName = sha1(uniqid());
+                } while (file_exists($filePath . '/' . $newFileName));
+
                 if ($academic->getPhotoPath() != '' || $academic->getPhotoPath() !== null) {
                     $fileName = $academic->getPhotoPath();
-                } else {
-                    do {
-                        $fileName = sha1(uniqid());
-                    } while (file_exists($filePath . '/' . $fileName));
+
+                    if(file_exists($filePath . '/' . $fileName)){
+                        unlink($filePath . '/' . $fileName);
+                    }
                 }
-                $image->writeImage($filePath . '/' . $fileName);
-                $academic->setPhotoPath($fileName);
+
+                $image->writeImage($filePath . '/' . $newFileName);
+                $academic->setPhotoPath($newFileName);
 
                 $this->getEntityManager()->flush();
 
