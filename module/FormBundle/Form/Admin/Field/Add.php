@@ -95,21 +95,23 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             )
         );
 
-        $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'required',
-            'label'      => 'Required',
-            'attributes' => array(
-                'id' => 'required',
-            ),
-            'options' => array(
-                'input' => array(
-                    'validators' => array(
-                        array('name' => 'FieldRequired'),
+        $this->add(
+            array(
+                'type'       => 'checkbox',
+                'name'       => 'required',
+                'label'      => 'Required',
+                'attributes' => array(
+                    'id' => 'required',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'validators' => array(
+                            array('name' => 'FieldRequired'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
 
         $this->add(
             array(
