@@ -435,7 +435,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                             'status'  => 'success',
                             'profile' => $this->getEntityManager()
                                 ->getRepository('CommonBundle\Entity\General\Config')
-                                ->getConfigValue('common.profile_path') . '/' . $fileName,
+                                ->getConfigValue('common.profile_path') . '/' . $newFileName,
                         ),
                     )
                 );
