@@ -20,29 +20,55 @@
 
 namespace CommonBundle\Component\Redis;
 
+use InvalidArgumentException;
+
 class Uri
 {
     /**
      * @param  array $components
      * @return string
      */
-    public static function build($components)
+    public static function build($components, $format = 'redis')
     {
-        $uri = 'redis://';
-        if (isset($components['password']) && $components['password'] != '') {
-            $uri .= ':' . $components['password'] . '@';
+        switch ($format) {
+            case 'redis':
+                $uri = 'redis://';
+                if (isset($components['password']) && $components['password'] != '') {
+                    $uri .= ':' . $components['password'] . '@';
+                }
+
+                $uri .= $components['host'];
+
+                if (isset($components['port'])) {
+                    $uri .= ':' . $components['port'];
+                }
+
+                if (isset($components['database'])) {
+                    $uri .= '/' . $components['database'];
+                }
+
+                return $uri;
+
+            case 'tcp':
+                $uri = 'tcp://' . $components['host'] . ':' . $components['port'];
+
+                $options = array();
+                if (isset($components['password']) && $components['password'] != '') {
+                    $options[] = 'auth=' . $components['password'];
+                }
+
+                if (isset($components['database']) && $components['password'] != 0) {
+                    $options[] = 'database=' . $components['database'];
+                }
+
+                if (isset($components['timeout']) && $components['timeout'] !== null) {
+                    $options[] = 'timeout=' . $components['timeout'];
+                }
+
+                return $uri . (count($options) > 0 ? '?' . implode('&', $options) : '');
+
+            default:
+                throw new InvalidArgumentException('Invalid format');
         }
-
-        $uri .= $components['host'];
-
-        if (isset($components['port'])) {
-            $uri .= ':' . $components['port'];
-        }
-
-        if (isset($components['database']) && $components['database'] != '') {
-            $uri .= '/' . $components['database'];
-        }
-
-        return $uri;
     }
 }

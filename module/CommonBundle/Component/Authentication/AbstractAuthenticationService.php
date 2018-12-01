@@ -75,12 +75,12 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
     private $response;
 
     /**
-     * @param StorageInterface $storage      The persistent storage handler
-     * @param string           $name         The name of the cookie
-     * @param integer          $duration     The duration for which the cookie is set
-     * @param string           $domain       The domain of the cookie
-     * @param boolean          $secure       Whether the cookie is secure or not
-     * @param Action           $action       The action that should be taken after authentication
+     * @param StorageInterface $storage  The persistent storage handler
+     * @param string           $name     The name of the cookie
+     * @param integer          $duration The duration for which the cookie is set
+     * @param string           $domain   The domain of the cookie
+     * @param boolean          $secure   Whether the cookie is secure or not
+     * @param Action           $action   The action that should be taken after authentication
      */
     public function __construct(StorageInterface $storage, $name, $duration, $domain, $secure, Action $action)
     {
