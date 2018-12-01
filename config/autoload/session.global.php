@@ -18,6 +18,7 @@
  * @license http://litus.cc/LICENSE
  */
 
+use CommonBundle\Component\Redis\Uri as RedisUri;
 use Zend\Session\Storage\SessionArrayStorage;
 use Zend\Session\Validator\HttpUserAgent;
 use Zend\Session\Validator\RemoteAddr;
@@ -44,11 +45,11 @@ if (getenv('APPLICATION_ENV') != 'development') {
     $redisConfig = include __DIR__ . '/../redis.config.php';
 
     return array(
-        'session_config' => array_merg(
+        'session_config' => array_merge(
             array(
                 'cookie_secure'    => true,
                 'php_save_handler' => 'redis',
-                'save_path'        => 'tcp://' . $redisConfig['host'] . ':' . $redisConfig['port'],
+                'save_path'        => RedisUri::build($redisConfig, 'tcp'),
             ),
             $sessionConfig
         ),
