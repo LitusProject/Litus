@@ -31,6 +31,8 @@ class ExpireWarning extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
+        parent::configure();
+
         $this->setName('cudi:expire-warning')
             ->setDescription('Warn users when reservations are about to expire')
             ->addOption('mail', 'm', null, 'Send the users a warning mail');

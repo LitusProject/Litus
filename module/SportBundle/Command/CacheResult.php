@@ -30,6 +30,8 @@ class CacheResult extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
+        parent::configure();
+
         $this->setName('sport:cache-result')
             ->setDescription('Fetch and store the competition results');
     }

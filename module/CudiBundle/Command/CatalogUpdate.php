@@ -34,6 +34,8 @@ class CatalogUpdate extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
+        parent::configure();
+
         $this->setName('cudi:update-catalog')
             ->setDescription('Update the catalog')
             ->addOption('mail', 'm', null, 'Send mails to users to notify them of the update');

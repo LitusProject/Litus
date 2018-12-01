@@ -25,19 +25,15 @@ namespace CommonBundle\Command;
  */
 class CleanupAcl extends \CommonBundle\Component\Console\Command
 {
-    /**
-     * @return null
-     */
     protected function configure()
     {
+        parent::configure();
+
         $this->setName('common:cleanup-acl')
             ->setDescription('Cleanup old ACL actions and resources')
             ->addOption('flush', 'f', null, 'Store the result in the database');
     }
 
-    /**
-     * @return null
-     */
     protected function invoke()
     {
         $allActions = $this->getAllActions();

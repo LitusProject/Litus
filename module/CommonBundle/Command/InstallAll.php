@@ -35,6 +35,8 @@ class InstallAll extends \CommonBundle\Component\Console\Command
 
     protected function configure()
     {
+        parent::configure();
+
         $this->setName('install:all')
             ->setDescription('Install all modules');
     }

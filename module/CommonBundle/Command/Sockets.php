@@ -34,6 +34,8 @@ class Sockets extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
+        parent::configure();
+
         $this->setName('common:sockets')
             ->setDescription('Start all WebSockets');
     }

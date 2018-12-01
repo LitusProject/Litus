@@ -36,6 +36,8 @@ class Reminders extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
+        parent::configure();
+
         $this->setName('form:reminders')
             ->setDescription('Send reminder mails for forms')
             ->addOption('mail', 'm', null, 'Send the users a reminder');

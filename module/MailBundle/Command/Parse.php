@@ -43,6 +43,8 @@ class Parse extends \CommonBundle\Component\Console\Command
 
     protected function configure()
     {
+        parent::configure();
+
         $this->setName('mail:parse')
             ->setDescription('Parse mail from input');
     }
