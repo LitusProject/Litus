@@ -53,9 +53,9 @@ if (!class_exists(Application::class)) {
 }
 
 // Our old HAProxy configuration added a prefix to the PHP_SESSID cookie
-if (isset($_COOKIE['PHPSESSID'])) {
-    if (preg_match('/^[a-zA-Z0-9-,]{1,128}$/', $_COOKIE['PHPSESSID']) === 0) {
-        setcookie('PHPSESSID', '', (time() - 3600));
+if (isset($_COOKIE[session_name()])) {
+    if (preg_match('/^[a-zA-Z0-9-,]{1,128}$/', $_COOKIE[session_name()]) === 0) {
+        setcookie(session_name(), '', (time() - 3600));
     }
 }
 
