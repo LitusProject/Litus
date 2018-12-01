@@ -494,7 +494,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 if ($academic->getPhotoPath() != '' || $academic->getPhotoPath() !== null) {
                     $fileName = $academic->getPhotoPath();
 
-                    if(file_exists($filePath . '/' . $fileName)){
+                    if (file_exists($filePath . '/' . $fileName)) {
                         unlink($filePath . '/' . $fileName);
                     }
                 }

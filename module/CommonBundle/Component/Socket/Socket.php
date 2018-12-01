@@ -202,7 +202,7 @@ abstract class Socket implements MessageComponentInterface, ServiceLocatorAwareI
     }
 
     /**
-     * @param int $signal
+     * @param integer $signal
      */
     protected function onSignal($signal)
     {
