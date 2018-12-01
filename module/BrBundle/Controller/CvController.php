@@ -231,6 +231,17 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             )
         );
 
+        $profileForm = $this->getForm('br_cv_profile');
+        $profileForm->setAttribute(
+            'action',
+            $this->url()->fromRoute(
+                'br_cv_index',
+                array(
+                    'action' => 'uploadProfileImage',
+                )
+            )
+        );
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
@@ -255,6 +266,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                 'profilePath' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
+                'profileForm' => $profileForm,
             )
         );
     }
