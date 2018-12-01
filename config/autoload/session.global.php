@@ -18,7 +18,6 @@
  * @license http://litus.cc/LICENSE
  */
 
-use CommonBundle\Component\Redis\Uri as RedisUri;
 use Zend\Session\Storage\SessionArrayStorage;
 use Zend\Session\Validator\HttpUserAgent;
 use Zend\Session\Validator\RemoteAddr;
@@ -31,7 +30,7 @@ if (!file_exists(__DIR__ . '/../session.config.php')) {
 
 $sessionConfig = include __DIR__ . '/../session.config.php';
 
-if (getenv('APPLICATION_ENV') != 'development') {
+//if (getenv('APPLICATION_ENV') != 'development') {
     if (!extension_loaded('redis')) {
         throw new RuntimeException('Litus requires the Redis extension to be loaded');
     }
@@ -49,7 +48,7 @@ if (getenv('APPLICATION_ENV') != 'development') {
             array(
                 'cookie_secure'    => true,
                 'php_save_handler' => 'redis',
-                'save_path'        => RedisUri::build($redisConfig, 'tcp'),
+                'save_path'        => 'tcp://' . $redisConfig['host'] . ':' . $redisConfig['port'],
             ),
             $sessionConfig
         ),
@@ -63,7 +62,7 @@ if (getenv('APPLICATION_ENV') != 'development') {
             'type' => SessionArrayStorage::class,
         ),
     );
-}
+//}
 
 return array(
     'session_config'  => $sessionConfig,
