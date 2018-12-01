@@ -19,5 +19,5 @@
  */
 
 return array(
-    'cookie_domain' => $_SERVER['SERVER_NAME'],
+    'cookie_domain' => isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '',
 );
