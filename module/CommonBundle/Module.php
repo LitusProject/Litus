@@ -23,6 +23,7 @@ namespace CommonBundle;
 use CommonBundle\Component\Mvc\View\Http\InjectTemplateListener;
 use Raven_ErrorHandler;
 use Zend\Mvc\MvcEvent;
+use Zend\Session\SessionManager;
 use Zend\Stdlib\DispatchableInterface;
 
 class Module
@@ -30,22 +31,48 @@ class Module
     public function onBootstrap(MvcEvent $event)
     {
         $application = $event->getApplication();
-        $services = $application->getServiceManager();
-        $events = $application->getEventManager();
-        $sharedEvents = $events->getSharedManager();
+        $serviceManager = $application->getServiceManager();
+        $eventManager = $application->getEventManager();
+        $sharedEventManager = $eventManager->getSharedManager();
+
+        // phpcs:disable SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable
+        $sessionManager = $serviceManager->get(SessionManager::class);
+        // phpcs:enable
 
         if (getenv('APPLICATION_ENV') == 'production') {
-            $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($services->get('sentry_client'), 'logMvcEvent'));
-            $events->attach(MvcEvent::EVENT_RENDER_ERROR, array($services->get('sentry_client'), 'logMvcEvent'));
+            $eventManager->attach(
+                MvcEvent::EVENT_DISPATCH_ERROR,
+                array(
+                    $serviceManager->get('sentry_client'),
+                    'logMvcEvent',
+                )
+            );
+            $eventManager->attach(
+                MvcEvent::EVENT_RENDER_ERROR,
+                array(
+                    $serviceManager->get('sentry_client'),
+                    'logMvcEvent'
+                )
+            );
 
-            $errorHandler = new Raven_ErrorHandler($services->get('raven_client'));
+            $errorHandler = new Raven_ErrorHandler(
+                $serviceManager->get('raven_client')
+            );
+
             $errorHandler->registerErrorHandler()
                 ->registerExceptionHandler()
                 ->registerShutdownFunction();
         }
 
-        $injectTemplateListener = new InjectTemplateListener();
-        $sharedEvents->attach(DispatchableInterface::class, MvcEvent::EVENT_DISPATCH, array($injectTemplateListener, 'injectTemplate'), 0);
+        $sharedEventManager->attach(
+            DispatchableInterface::class,
+            MvcEvent::EVENT_DISPATCH,
+            array(
+                new InjectTemplateListener(),
+                'injectTemplate'
+            ),
+            0
+        );
     }
 
     /**

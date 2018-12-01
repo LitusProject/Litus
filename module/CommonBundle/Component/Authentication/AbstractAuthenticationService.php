@@ -34,22 +34,25 @@ use Zend\Http\PhpEnvironment\Response;
  */
 abstract class AbstractAuthenticationService extends \Zend\Authentication\AuthenticationService
 {
-    // phpcs:disable SlevomatCodingStandard.Classes.UnusedPrivateElements.WriteOnlyProperty
-    /**
-     * @var string The namespace the storage handlers will use
-     */
-    private $namespace = '';
-    // phpcs:enable
-
     /**
      * @var string The name of the cookie
      */
-    private $cookie = '';
+    private $name = '';
 
     /**
-     * @var integer The duration of the authentication
+     * @var integer The duration for which the cookie is set
      */
     protected $duration = -1;
+
+    /**
+     * @var string The domain of the cookie
+     */
+    protected $domain = '';
+
+    /**
+     * @var boolean Whether the cookie is secure or not
+     */
+    protected $secure = false;
 
     /**
      * @var Action The action that should be taken after authentication
@@ -73,18 +76,20 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
 
     /**
      * @param StorageInterface $storage      The persistent storage handler
-     * @param string           $namespace    The namespace the storage handlers will use
-     * @param string           $cookieSuffix The cookie suffix that is used to store the session cookie
-     * @param integer          $duration     The expiration time for the cookie
+     * @param string           $name         The name of the cookie
+     * @param integer          $duration     The duration for which the cookie is set
+     * @param string           $domain       The domain of the cookie
+     * @param boolean          $secure       Whether the cookie is secure or not
      * @param Action           $action       The action that should be taken after authentication
      */
-    public function __construct(StorageInterface $storage, $namespace, $cookieSuffix, $duration, Action $action)
+    public function __construct(StorageInterface $storage, $name, $duration, $domain, $secure, Action $action)
     {
         parent::__construct($storage);
 
-        $this->namespace = $namespace;
         $this->duration = $duration;
-        $this->cookie = $namespace . '_' . $cookieSuffix;
+        $this->name = $name;
+        $this->domain = $domain;
+        $this->secure = $secure;
         $this->action = $action;
     }
 
@@ -140,7 +145,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
      */
     protected function getCookie()
     {
-        return $this->cookies[$this->cookie];
+        return $this->cookies[$this->name];
     }
 
     /**
@@ -150,7 +155,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
      */
     protected function hasCookie()
     {
-        return isset($this->cookies[$this->cookie]);
+        return isset($this->cookies[$this->name]);
     }
 
     /**
@@ -158,18 +163,19 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
      */
     protected function clearCookie()
     {
-        if (isset($this->cookies[$this->cookie])) {
-            unset($this->cookies[$this->cookie]);
+        if (isset($this->cookies[$this->name])) {
+            unset($this->cookies[$this->name]);
         }
 
         $this->response->getHeaders()->addHeader(
             (new SetCookie())
-                ->setName($this->cookie)
-                ->setValue('deleted')
+                ->setName($this->name)
+                ->setValue('')
                 ->setExpires(0)
                 ->setMaxAge(0)
                 ->setPath('/')
-                ->setDomain(str_replace(array('www.', ','), '', $this->request->getServer()->get('SERVER_NAME')))
+                ->setDomain($this->domain)
+                ->setSecure($this->secure)
         );
     }
 
@@ -182,20 +188,17 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
     {
         $this->clearCookie();
 
-        $this->cookies[$this->cookie] = $value;
-
-        $servername_parts = explode('.', $this->request->getServer()->get('SERVER_NAME'));
-        $domain_parts = array_slice($servername_parts, -2);
-        $domain = $domain_parts[0] . '.' . $domain_parts[1];
+        $this->cookies[$this->name] = $value;
 
         $this->response->getHeaders()->addHeader(
             (new SetCookie())
-                ->setName($this->cookie)
+                ->setName($this->name)
                 ->setValue($value)
                 ->setExpires(time() + $this->duration)
                 ->setMaxAge($this->duration)
                 ->setPath('/')
-                ->setDomain($domain)
+                ->setDomain($this->domain)
+                ->setSecure($this->secure)
         );
     }
 }
