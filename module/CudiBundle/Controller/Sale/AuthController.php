@@ -22,6 +22,7 @@ namespace CudiBundle\Controller\Sale;
 
 use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter;
 use CommonBundle\Component\Authentication\Authentication;
+use CommonBundle\Component\Controller\Exception\HasNoAccessException;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -153,13 +154,11 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                             $this->redirect()->toUrl(
                                 $code->getRedirect()
                             );
-
-                            return new ViewModel();
+                        } else {
+                            $this->redirect()->toRoute(
+                                'cudi_sale_sale'
+                            );
                         }
-                    } else {
-                        $this->redirect()->toRoute(
-                            'secretary_registration'
-                        );
 
                         return new ViewModel();
                     }
@@ -167,15 +166,8 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
             }
         }
 
-        $this->flashMessenger()->error(
-            'Error',
-            'Something went wrong while logging you in. Please try again later.'
+        throw new HasNoAccessException(
+            'Something went wrong while logging you in'
         );
-
-        $this->redirect()->toRoute(
-            'cudi_sale_sale'
-        );
-
-        return new ViewModel();
     }
 }
