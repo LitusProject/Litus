@@ -27,6 +27,8 @@ class DisableBookingsOutOfStock extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
+        parent::configure();
+
         $this->setName('cudi:disable-bookings-out-of-stock')
             ->setDescription('Disable bookings for articles which aren\'t in stock')
             ->addOption('flush', 'f', null, 'Stores the result in the database');

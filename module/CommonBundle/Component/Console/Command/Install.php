@@ -36,6 +36,8 @@ abstract class Install extends \CommonBundle\Component\Console\Command
 
     protected function configure()
     {
+        parent::configure();
+
         $module = $this->getModule();
         $name = str_replace('bundle', '', strtolower($module));
 

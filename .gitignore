@@ -1,7 +1,8 @@
-# These files contain sensitive data
+# These files should be explicitly created
 config/database.config.php
 config/redis.config.php
 config/sentry.config.php
+config/session.config.php
 
 # We don't want data in our repository
 data/banner/images

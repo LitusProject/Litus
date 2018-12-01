@@ -34,6 +34,8 @@ class ImportAliases extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
+        parent::configure();
+
         $this->setName('mail:import-aliases')
             ->setDescription('Import alias files')
             ->addOption('flush', 'f', null, 'Flush the created aliases to the database')

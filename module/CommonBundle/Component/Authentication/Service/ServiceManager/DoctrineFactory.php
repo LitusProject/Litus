@@ -43,10 +43,6 @@ class DoctrineFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $sessionStorage = new SessionStorage(
-            (getenv('ORGANIZATION') !== false ? getenv('ORGANIZATION') . '_' : '') . 'Litus_Auth'
-        );
-
         $doctrineAction = new DoctrineAction(
             $container->get('doctrine.entitymanager.orm_default'),
             $container->get('mail_transport')
@@ -55,10 +51,11 @@ class DoctrineFactory implements FactoryInterface
         return new DoctrineService(
             $container->get('doctrine.entitymanager.orm_default'),
             Session::class,
+            new SessionStorage('Litus_Auth'),
+            'Litus_Auth_Session',
             2678400,
-            $sessionStorage,
-            'Litus_Auth',
-            'Session',
+            $container->get('config')['session_config']['cookie_domain'],
+            $container->get('config')['session_config']['cookie_secure'],
             $doctrineAction
         );
     }

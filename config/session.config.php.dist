@@ -18,24 +18,6 @@
  * @license http://litus.cc/LICENSE
  */
 
-if (getenv('APPLICATION_ENV') != 'development') {
-    return array(
-        'zend_twig' => array(
-            'environment' => array(
-                'cache' => 'data/cache/twig',
-            ),
-        ),
-    );
-}
-
 return array(
-    'zend_twig' => array(
-        'environment' => array(
-            'cache' => 'data/cache/twig',
-            'debug' => true,
-        ),
-        'extensions' => array(
-            Twig_Extension_Debug::class,
-        ),
-    ),
+    'cookie_domain' => $_SERVER['SERVER_NAME'],
 );

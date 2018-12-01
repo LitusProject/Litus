@@ -22,6 +22,7 @@ namespace LogisticsBundle\Controller;
 
 use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter;
 use CommonBundle\Component\Authentication\Authentication;
+use CommonBundle\Component\Controller\Exception\HasNoAccessException;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -126,23 +127,20 @@ class AuthController extends \LogisticsBundle\Component\Controller\LogisticsCont
                             $this->redirect()->toUrl(
                                 $code->getRedirect()
                             );
-
-                            return new ViewModel();
+                        } else {
+                            $this->redirect()->toRoute(
+                                'logistics_index'
+                            );
                         }
+
+                        return new ViewModel();
                     }
                 }
             }
         }
 
-        $this->flashMessenger()->error(
-            'Error',
-            'Something went wrong while logging you in. Please try again later.'
+        throw new HasNoAccessException(
+            'Something went wrong while logging you in'
         );
-
-        $this->redirect()->toRoute(
-            'logistics_index'
-        );
-
-        return new ViewModel();
     }
 }

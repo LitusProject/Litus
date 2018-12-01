@@ -22,6 +22,7 @@ namespace FormBundle\Controller\Manage;
 
 use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter;
 use CommonBundle\Component\Authentication\Authentication;
+use CommonBundle\Component\Controller\Exception\HasNoAccessException;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -126,23 +127,20 @@ class AuthController extends \FormBundle\Component\Controller\FormController
                             $this->redirect()->toUrl(
                                 $code->getRedirect()
                             );
-
-                            return new ViewModel();
+                        } else {
+                            $this->redirect()->toRoute(
+                                'form_manage'
+                            );
                         }
+
+                        return new ViewModel();
                     }
                 }
             }
         }
 
-        $this->flashMessenger()->error(
-            'Error',
-            'Something went wrong while logging you in. Please try again later.'
+        throw new HasNoAccessException(
+            'Something went wrong while logging you in'
         );
-
-        $this->redirect()->toRoute(
-            'form_manage'
-        );
-
-        return new ViewModel();
     }
 }

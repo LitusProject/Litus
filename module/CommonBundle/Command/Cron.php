@@ -33,6 +33,8 @@ class Cron extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
+        parent::configure();
+
         $this->setName('common:cron')
             ->setDescription('Run configured cron jobs');
     }

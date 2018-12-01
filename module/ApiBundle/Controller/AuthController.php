@@ -81,6 +81,10 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
                 ->getRepository('CommonBundle\Entity\User\Session')
                 ->findOneById($this->getRequest()->getPost('session'));
 
+            if ($session === null) {
+                return null;
+            }
+
             return $session->getPerson();
         }
 

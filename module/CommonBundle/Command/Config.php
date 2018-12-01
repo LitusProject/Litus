@@ -30,6 +30,8 @@ class Config extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
+        parent::configure();
+
         $this->setName('common:config')
             ->setDescription('Configuration value utilities')
             ->addArgument('action', InputArgument::REQUIRED, 'The action to take')

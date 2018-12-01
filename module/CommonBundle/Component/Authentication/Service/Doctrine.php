@@ -48,23 +48,26 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
     /**
      * @param  EntityManager    $entityManager The EntityManager instance
      * @param  string           $entityName    The name of the entity that holds the sessions
-     * @param  integer          $expire        The expiration time for the persistent storage
      * @param  StorageInterface $storage       The persistent storage handler
-     * @param  string           $namespace     The namespace the storage handlers will use
+     * @param  string           $name          The name of the cookie
      * @param  string           $cookieSuffix  The cookie suffix that is used to store the session cookie
+     * @param  integer          $duration      The duration for which the cookie is set
+     * @param  string           $domain        The domain of the cookie
+     * @param  boolean          $secure        Whether the cookie is secure or not
      * @param  Action           $action        The action that should be taken after authentication
      * @throws Exception\InvalidArgumentException The entity name cannot have a leading backslash
      */
     public function __construct(
         EntityManager $entityManager,
         $entityName,
-        $expire,
         StorageInterface $storage,
-        $namespace,
-        $cookieSuffix,
+        $name,
+        $duration,
+        $domain,
+        $secure,
         Action $action
     ) {
-        parent::__construct($storage, $namespace, $cookieSuffix, $expire, $action);
+        parent::__construct($storage, $name, $duration, $domain, $secure, $action);
 
         $this->entityManager = $entityManager;
 

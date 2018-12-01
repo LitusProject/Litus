@@ -26,6 +26,7 @@ use ApiBundle\Document\Token\Refresh as RefreshToken;
 use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter;
 use CommonBundle\Component\Authentication\Authentication;
 use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException;
+use CommonBundle\Component\Controller\Exception\HasNoAccessException;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -158,16 +159,9 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
             }
         }
 
-        $this->flashMessenger()->error(
-            'Error',
-            'Something went wrong while logging you in. Please try again later.'
+        throw new HasNoAccessException(
+            'Something went wrong while logging you in'
         );
-
-        $this->redirect()->toRoute(
-            'api_oauth'
-        );
-
-        return new ViewModel();
     }
 
     public function tokenAction()

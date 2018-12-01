@@ -31,6 +31,8 @@ abstract class Socket extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
+        parent::configure();
+
         $module = $this->getModuleName();
         $name = strtolower($this->getCommandName());
 

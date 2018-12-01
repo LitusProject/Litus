@@ -27,6 +27,8 @@ class CleanupSessions extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
+        parent::configure();
+
         $this->setName('common:cleanup-sessions')
             ->setDescription('Cleanup expired sessions and Shibboleth codes');
     }

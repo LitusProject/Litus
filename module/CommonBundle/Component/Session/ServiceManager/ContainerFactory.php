@@ -40,9 +40,7 @@ class ContainerFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        return new Container(
-            (getenv('ORGANIZATION') !== false ? getenv('ORGANIZATION') . '_' : '') . 'Litus'
-        );
+        return new Container('Litus');
     }
 
     /**

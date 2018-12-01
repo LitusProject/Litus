@@ -29,6 +29,8 @@ class RecalculateStock extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
+        parent::configure();
+
         $this->setName('cudi:recalculate-stock')
             ->setDescription('Recalculate the stock')
             ->addOption('flush', 'f', null, 'Stores the result in the database');

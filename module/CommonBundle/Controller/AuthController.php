@@ -22,6 +22,7 @@ namespace CommonBundle\Controller;
 
 use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter;
 use CommonBundle\Component\Authentication\Authentication;
+use CommonBundle\Component\Controller\Exception\HasNoAccessException;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -162,9 +163,13 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                             $this->redirect()->toUrl(
                                 $code->getRedirect()
                             );
-
-                            return new ViewModel();
+                        } else {
+                            $this->redirect()->toRoute(
+                                'common_index'
+                            );
                         }
+
+                        return new ViewModel();
                     } else {
                         $this->redirect()->toRoute(
                             'secretary_registration'
@@ -172,23 +177,12 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
 
                         return new ViewModel();
                     }
-                } else {
-                    $this->logMessage('Code not valid (' . $this->getParam('identification') . ')');
                 }
-            } else {
-                $this->logMessage('No code specifier (' . $this->getParam('identification') . ')');
             }
         }
 
-        $this->flashMessenger()->error(
-            'Error',
-            'Something went wrong while logging you in. Please try again later.'
+        throw new HasNoAccessException(
+            'Something went wrong while logging you in'
         );
-
-        $this->redirect()->toRoute(
-            'common_index'
-        );
-
-        return new ViewModel();
     }
 }

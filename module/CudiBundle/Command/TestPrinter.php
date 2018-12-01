@@ -26,6 +26,8 @@ class TestPrinter extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
+        parent::configure();
+
         $this->setName('cudi:test-printer')
             ->setDescription('Tests the printers')
             ->addArgument('printer', InputArgument::REQUIRED, 'The printer name')
