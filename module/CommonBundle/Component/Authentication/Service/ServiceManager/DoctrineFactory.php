@@ -24,6 +24,7 @@ use CommonBundle\Component\Authentication\Action\Doctrine as DoctrineAction;
 use CommonBundle\Component\Authentication\Service\Doctrine as DoctrineService;
 use CommonBundle\Entity\User\Session;
 use Interop\Container\ContainerInterface;
+use RuntimeException;
 use Zend\Authentication\Storage\Session as SessionStorage;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -43,6 +44,11 @@ class DoctrineFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
+        $config = $container->get('config');
+        if (!isset($config['session_config'])) {
+            throw new RuntimeException('Could not find session configuration');
+        }
+
         $doctrineAction = new DoctrineAction(
             $container->get('doctrine.entitymanager.orm_default'),
             $container->get('mail_transport')
@@ -54,8 +60,8 @@ class DoctrineFactory implements FactoryInterface
             new SessionStorage('Litus_Auth'),
             'Litus_Auth_Session',
             2678400,
-            $container->get('config')['session_config']['cookie_domain'],
-            $container->get('config')['session_config']['cookie_secure'],
+            $config['session_config']['cookie_domain'],
+            $config['session_config']['cookie_secure'],
             $doctrineAction
         );
     }
