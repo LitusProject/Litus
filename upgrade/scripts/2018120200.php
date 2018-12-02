@@ -18,13 +18,8 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\PassKit\Exception;
+removeConfigKey($connection, 'common.passkit_certificates');
+removeConfigKey($connection, 'common.passkit_pass_type_identifiers');
+removeConfigKey($connection, 'common.passkit_team_identifier');
 
-/**
- * This exception is thrown when a certificate file could not be read.
- *
- * @author Pieter Maene <pieter.maene@litus.cc>
- */
-class CouldNotReadCertificateException extends \Exception
-{
-}
+removeAclAction($connection, 'common_account', 'passbook');

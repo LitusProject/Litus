@@ -283,32 +283,6 @@ Disallow: /admin/*
         'description' => 'The robots.txt content',
     ),
     array(
-        'key'   => 'common.passkit_certificates',
-        'value' => serialize(
-            array(
-                'membership' => array(
-                    'path'     => 'data/certificates/private/membership.p12',
-                    'password' => '3Vg2Z401YDh514Qw3t4m76SL',
-                ),
-            )
-        ),
-        'description' => 'The certificates that will be used to to create PassKit signatures',
-    ),
-    array(
-        'key'   => 'common.passkit_pass_type_identifiers',
-        'value' => serialize(
-            array(
-                'membership' => 'pass.be.vtk.membership',
-            )
-        ),
-        'description' => 'The PassKit pass type identifiers',
-    ),
-    array(
-        'key'         => 'common.passkit_team_identifier',
-        'value'       => '83GZ464K6U',
-        'description' => 'The team identifier of the Apple developer account that generated the certificates',
-    ),
-    array(
         'key'   => 'common.privacy_policy',
         'value' => serialize(
             array(
