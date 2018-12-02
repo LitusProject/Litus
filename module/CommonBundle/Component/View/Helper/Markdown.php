@@ -30,13 +30,15 @@ use Parsedown;
 class Markdown extends \Zend\View\Helper\AbstractHelper
 {
     /**
-     * @param  string
+     * @param  string|null
      * @return string
      */
-    public function __invoke(string $text)
+    public function __invoke($text)
     {
-        $parsedown = new Parsedown();
+        if ($text === null) {
+            return '';
+        }
 
-        return $parsedown->text($text);
+        return (new Parsedown())->text($text);
     }
 }
