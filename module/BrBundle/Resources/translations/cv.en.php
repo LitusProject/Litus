@@ -19,14 +19,14 @@
  */
 
 return array(
-    'CV Book'                                                                                                                                                                                               => 'CV Book',
-    'Edit CV Book'                                                                                                                                                                                          => 'Edit CV Book',
-    'Period'                                                                                                                                                                                                => 'Period',
-    'The following data from your account will be used in the CV Book:'                                                                                                                                     => 'The following data from your account will be used in the CV Book:',
-    'The following data from your account will be updated in the CV Book:'                                                                                                                                  => 'The following data from your account will be updated in the CV Book:',
-    'Email'                                                                                                                                                                                                 => 'Email',
-    'Profile Picture'                                                                                                                                                                                       => 'Profile Picture',
-    'Please update your account data if necessary. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected automatically.' => 'Please update your account data if necessary. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected automatically.',
+    'CV Book'                                                                                                                                                                                                                                                                      => 'CV Book',
+    'Edit CV Book'                                                                                                                                                                                                                                                                 => 'Edit CV Book',
+    'Period'                                                                                                                                                                                                                                                                       => 'Period',
+    'The following data from your account will be used in the CV Book:'                                                                                                                                                                                                            => 'The following data from your account will be used in the CV Book:',
+    'The following data from your account will be updated in the CV Book:'                                                                                                                                                                                                         => 'The following data from your account will be updated in the CV Book:',
+    'Email'                                                                                                                                                                                                                                                                        => 'Email',
+    'Profile Picture'                                                                                                                                                                                                                                                              => 'Profile Picture',
+    'Please update your account data and profile picture if necessary via vtk.be/en/account/edit/ and vtk.be/en/account/. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected automatically.' => 'Please update your account data and profile picture if necessary via <a href="https://vtk.be/en/account/edit/" target="_blank">vtk.be/en/account/edit</a> or <a href="https://vtk.be/nl/account/" target="_blank">vtk.be/en/account/</a>. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected automatically.',
 
     'Education'                                                                 => 'Education',
     'Primary Degree'                                                            => 'Specialization',
@@ -112,4 +112,7 @@ return array(
     'other'      => 'other',
     'internship' => 'internship',
     'jobstudent' => 'jobstudent',
+
+    'Delete CV' => 'Delete CV',
+    'Your curriculum vitae has been removed.' => 'Your curriculum vitae has been removed.',
 );
