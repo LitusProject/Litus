@@ -91,7 +91,7 @@ return array(
             'view', 'overview',
         ),
         'br_cv_index' => array(
-            'cv', 'edit', 'complete', 'download', 'uploadProfileImage',
+            'cv', 'edit', 'complete', 'delete', 'download', 'uploadProfileImage',
         ),
         'br_corporate_auth' => array(
             'login', 'logout',
