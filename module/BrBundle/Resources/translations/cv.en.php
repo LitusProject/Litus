@@ -112,4 +112,7 @@ return array(
     'other'      => 'other',
     'internship' => 'internship',
     'jobstudent' => 'jobstudent',
+
+    'Delete CV' => 'Delete CV',
+    'Your curriculum vitae has been removed.' => 'Your curriculum vitae has been removed.',
 );

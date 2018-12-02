@@ -500,4 +500,51 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
 
         return $academic;
     }
+
+    public function deleteAction()
+    {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            $this->redirect()->toRoute(
+                'br_cv_index',
+                array(
+                    'action' => 'cv',
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $person = $this->getAuthentication()->getPersonObject();
+
+        $entry = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Cv\Entry')
+            ->findOneByAcademicAndAcademicYear($this->getCurrentAcademicYear(), $person);
+
+        if ($entry === null) {
+            $this->redirect()->toRoute(
+                'br_cv_index',
+                array(
+                    'action' => 'cv',
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $this->getEntityManager()->remove($entry);
+        $this->getEntityManager()->flush();
+
+        $this->flashMessenger()->success(
+            'Your curriculum vitae has been removed.'
+        );
+
+        $this->redirect()->toRoute(
+            'br_cv_index',
+            array(
+                'action' => 'cv',
+            )
+        );
+
+        return new ViewModel();
+    }
 }
