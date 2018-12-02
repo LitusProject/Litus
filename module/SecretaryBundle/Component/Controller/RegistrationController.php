@@ -274,7 +274,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         $subjects = array();
 
-        if (count($data['subjects']) > 0) {
+        if (isset($data['subjects'])) {
             foreach ($data['subjects'] as $id) {
                 if (isset($subjects[$id])) {
                     continue;
@@ -288,6 +288,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 $this->getEntityManager()->persist(new SubjectEnrollment($academic, $academicYear, $subject));
             }
         }
+
         $this->getEntityManager()->flush();
 
         return new ViewModel(
