@@ -70,7 +70,7 @@
 
     <h3>{{ translate('Student Organization') }}</h3>
     <div class="row">
-        <div class="col-sm-9">
+        <div class="col-sm-6">
             <dl class="dl-horizontal wide">
                 <dt>{{ translate('Student Organization') }}</dt>
                 <dd>{{ authenticatedPerson.getOrganization(currentAcademicYear).getName() }}&nbsp;</dd>
@@ -87,11 +87,6 @@
                     <dd>{{ metaData.getTshirtSizeName() }}&nbsp;</dd>
                 {% endif %}
             </dl>
-        </div>
-        <div class="col-sm-3" style="text-align: left;">
-            {% if hasAccess('common_account', 'passbook') %}
-                <a href="{{ url('common_account', {"action": "passbook"}) }}"><img src="/_site/img/passbook.png" style="margin-top: 18px;"/></a>
-            {% endif %}
         </div>
     </div>
 

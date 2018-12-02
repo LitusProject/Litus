@@ -20,7 +20,6 @@
 
 namespace CommonBundle\Controller;
 
-use CommonBundle\Component\PassKit\Pass\Membership;
 use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Entity\User\Credential;
 use CommonBundle\Entity\User\Person;
@@ -436,40 +435,6 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         return new ViewModel(
             array(
                 'form' => $form,
-            )
-        );
-    }
-
-    public function passbookAction()
-    {
-        $academic = $this->getAcademicEntity();
-        if ($academic === null) {
-            return new ViewModel();
-        }
-
-        $pass = new TmpFile();
-        $membership = new Membership(
-            $this->getEntityManager(),
-            $academic,
-            $this->getCurrentAcademicYear(),
-            $pass,
-            'data/images/pass_kit'
-        );
-        $membership->createPass();
-
-        $headers = new Headers();
-        $headers->addHeaders(
-            array(
-                'Content-Disposition' => 'inline; filename="membership.pkpass"',
-                'Content-Type'        => 'application/vnd.apple.pkpass',
-                'Content-Length'      => filesize($pass->getFileName()),
-            )
-        );
-        $this->getResponse()->setHeaders($headers);
-
-        return new ViewModel(
-            array(
-                'data' => $pass->getContent(),
             )
         );
     }
