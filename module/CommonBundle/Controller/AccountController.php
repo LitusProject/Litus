@@ -20,14 +20,12 @@
 
 namespace CommonBundle\Controller;
 
-use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Entity\User\Credential;
 use CommonBundle\Entity\User\Person;
 use CommonBundle\Entity\User\Person\Academic;
 use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
 use Imagick;
 use SecretaryBundle\Entity\Registration;
-use Zend\Http\Headers;
 use Zend\View\Model\ViewModel;
 
 /**
