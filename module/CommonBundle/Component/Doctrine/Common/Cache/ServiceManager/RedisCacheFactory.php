@@ -67,6 +67,14 @@ class RedisCacheFactory implements FactoryInterface
             throw new RuntimeException('Failed to connect to Redis server');
         }
 
+        if (isset($config['redis']['database']) && $config['redis']['database'] != 0) {
+            $connect = $redis->select($config['redis']['database']);
+        }
+
+        if (!$connect) {
+            throw new RuntimeException('Failed to select Redis database');
+        }
+
         $redisCache = new RedisCache();
         $redisCache->setNamespace($config['doctrine']['cache']['redis']['namespace']);
         $redisCache->setRedis($redis);
