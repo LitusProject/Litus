@@ -36,7 +36,7 @@ if (getenv('APPLICATION_ENV') != 'development') {
             'options' => array_merge(
                 array(
                     'name'                => gethostname(),
-                    'version'             => Version::getCommitHash(),
+                    'release'             => Version::getCommitHash(),
                     'excluded_exceptions' => array(
                         HasNoAccessException::class,
                     ),
