@@ -25,9 +25,9 @@ use BrBundle\Entity\Cv\Entry as CvEntry;
 use CommonBundle\Component\FlashMessenger\FlashMessage;
 use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Entity\User\Person\Academic;
+use Imagick;
 use Zend\Http\Headers;
 use Zend\View\Model\ViewModel;
-use Imagick;
 
 /**
  * CvController
@@ -329,7 +329,6 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         );
     }
 
-
     /**
      * @param  Academic $person
      * @return FlashMessage|null
@@ -431,7 +430,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                 if ($academic->getPhotoPath() != '' || $academic->getPhotoPath() !== null) {
                     $fileName = $academic->getPhotoPath();
 
-                    if(file_exists($filePath . '/' . $fileName)){
+                    if (file_exists($filePath . '/' . $fileName)) {
                         unlink($filePath . '/' . $fileName);
                     }
                 }
