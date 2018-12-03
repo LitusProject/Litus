@@ -63,6 +63,10 @@
 
         {% import 'site/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
+
+        <strong>
+            <p>{{ translate('I grant permission to use my personal information in the CV book, which will be made available in an online and in a paperback version to the companies that ordered a CV book. These companies are only allowed to use this data for communication for the purpose of jobs or internships.') }}</p>
+        </strong>
     {% endif %}
     <div id="modalProfileImage" class="modal fade">
         <div class="modal-dialog">
