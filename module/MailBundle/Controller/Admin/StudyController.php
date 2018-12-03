@@ -246,7 +246,7 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
      */
     private function getStudyEnrollments($studyIds)
     {
-        if (count($studyIds) == 0) {
+        if ($studyIds === null) {
             return array();
         }
 
