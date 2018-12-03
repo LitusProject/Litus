@@ -18,6 +18,7 @@
  * @license http://litus.cc/LICENSE
  */
 
+use CommonBundle\Component\Controller\Exception\HasNoAccessException;
 use CommonBundle\Component\Version\Version;
 
 if (getenv('APPLICATION_ENV') != 'development') {
@@ -34,8 +35,11 @@ if (getenv('APPLICATION_ENV') != 'development') {
             'dsn'     => $sentryConfig['dsn'],
             'options' => array_merge(
                 array(
-                    'name'    => gethostname(),
-                    'version' => Version::getCommitHash(),
+                    'name'                => gethostname(),
+                    'version'             => Version::getCommitHash(),
+                    'excluded_exceptions' => array(
+                        HasNoAccessException::class,
+                    ),
                 ),
                 $sentryConfig['options']
             ),
