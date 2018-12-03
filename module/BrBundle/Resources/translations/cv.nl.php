@@ -112,6 +112,6 @@ return array(
     'internship' => 'stage',
     'jobstudent' => 'jobstudent',
 
-    'Delete CV' =>  'Verwijder mijn CV',
+    'Delete CV' => 'Verwijder mijn CV',
     'Your curriculum vitae has been removed.' => 'Uw curriculum vitae is verwijderd.',
 );
