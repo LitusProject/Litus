@@ -66,7 +66,12 @@ if (getenv('APPLICATION_ENV') != 'development') {
 }
 
 return array(
-    'session_config'  => $sessionConfig,
+    'session_config' => array_merge(
+        array(
+            'cookie_secure' => false,
+        ),
+        $sessionConfig
+    ),
     'session_manager' => array(
         'validators' => array(
             RemoteAddr::class,
