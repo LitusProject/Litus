@@ -19,7 +19,7 @@
 
             <!-- Set the id -->
             <xsl:attribute name="id">
-                <xsl:value-of select="@name"/>
+                <xsl:value-of select="@id"/>
             </xsl:attribute>
 
             <!-- Set a marker: change the footer text to the group's name -->
