@@ -100,7 +100,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        $this->addSubmit('Save Location','location_add','save');
+        $this->addSubmit('Add','location_add','add');
 
     }
 }
