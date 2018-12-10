@@ -31,7 +31,8 @@ class Edit extends \CommonBundle\Form\Admin\Location\Add
     {
         parent::init();
 
-        $this->remove('add')
-            ->addSubmit('Save', 'location_edit', 'edit');
+        $this->remove('save')
+            ->addSubmit('Save Changes', 'location_edit', 'edit')
+        ;
     }
 }

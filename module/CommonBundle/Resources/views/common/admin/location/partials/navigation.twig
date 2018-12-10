@@ -7,7 +7,10 @@
                 <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('common_admin_location', {"action": "add"}) }}">Add</a></li>
             {% endif %}
             {% if hasAccess('common_admin_location', 'manage') %}
-                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('common_admin_location', {"action": "manage"}) }}">Manage</a></li>
+                <li>
+                    <a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('common_admin_location', {"action": "manage"}) }}">Manage
+                    </a>
+                </li>
             {% endif %}
         </ul>
     </nav>

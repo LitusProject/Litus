@@ -57,6 +57,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
+
         $this->add(
             array(
                 'type'     => 'fieldset',
@@ -99,6 +100,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        $this->addSubmit('Add', 'location_add', 'add');
+        $this->addSubmit('Save Location','location_add','save');
+
     }
 }
