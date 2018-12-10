@@ -99,4 +99,5 @@ return array(
     'Add Other Subjects'                         => 'Andere Vakken Toevoegen',
     'Add Other Subject'                          => 'Ander Vak Toevoegen',
     'The subject was succesfully added!'         => 'Het vak is succesvol toegevoegd!',
+    'Reservation'                                => 'Reservatie',
 );

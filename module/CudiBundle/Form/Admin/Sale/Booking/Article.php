@@ -44,7 +44,7 @@ class Article extends \CommonBundle\Component\Form\Admin\Form
                 'options' => array(
                     'input' => array(
                         'validators' => array(
-                            array('name' => 'typeahead_sale_article'),
+                            array('name' => 'TypeaheadSaleArticle'),
                         ),
                     ),
                 ),
