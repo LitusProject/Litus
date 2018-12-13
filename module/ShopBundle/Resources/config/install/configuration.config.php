@@ -74,4 +74,14 @@ return array(
         'value'       => 2,
         'description' => 'The minimal amount of no-shows that revokes the permission to make reservations in the shop',
     ),
+    array(
+        'key'         => 'shop.enable_shop_button_homepage',
+        'value'       => 1,
+        'description' => 'Enable the shop/reservation button on the homepage',
+    ),
+    array(
+        'key'         => 'shop.url_reservations',
+        'value'       => 'https://www.vtk.be/shop',
+        'description' => 'The URL of the shop',
+    ),
 );
