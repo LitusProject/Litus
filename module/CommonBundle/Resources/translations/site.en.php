@@ -122,4 +122,5 @@ return array(
     'We could not find any POC\'ers for you, try again later!'   => 'We could not find any POC\'ers for you, try again later!',
     'Please login to see your POC\'ers!'                         => 'Please login to see your POC\'ers!',
     'Visit the poc page for more '                               => 'Visit the poc page for more ',
+    'Order sandwiches and snacks.'                               => 'Order sandwiches and snacks.',
 );
