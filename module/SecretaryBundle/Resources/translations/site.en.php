@@ -87,5 +87,7 @@ return array(
     'Add Other Subjects'                         => 'Add Other Subjects',
     'Add Other Subject'                          => 'Add Other Subject',
     'The subject was succesfully added!'         => 'The subject was succesfully added!',
+    
     'Reservation'                                => 'Reservation',
+    'Order sandwiches and snacks.'               => 'Order sandwiches and snacks.',
 );
