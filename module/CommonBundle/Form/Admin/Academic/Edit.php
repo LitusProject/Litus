@@ -49,6 +49,13 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
 
         $this->add(
             array(
+                'type'      => 'hidden',
+                'name'      => 'primary_email'
+            )
+        );
+
+        $this->add(
+            array(
                 'type'       => 'text',
                 'name'       => 'birthday',
                 'label'      => 'Birthday',
