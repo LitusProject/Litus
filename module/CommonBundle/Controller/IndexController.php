@@ -46,6 +46,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'calendarItems'  => $this->getCalendarItems(),
                 'wiki'           => $this->getWiki(),
                 'cudi'           => $this->getCudiInfo(),
+                'shop'           => $this->getShopInfo(),
                 'newsItems'      => $this->getNewsItems(),
                 'notifications'  => $notifications,
                 'piwik'          => $this->getPiwikInfo(),
@@ -273,6 +274,24 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         return $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findAllActiveByPerson($this->getAuthentication()->getPersonObject());
+    }
+
+    /**
+     * @return array
+     */
+    private function getShopInfo()
+    {
+        return array(
+            'enable' => $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shop.enable_shop_button_homepage'),
+            'name' => $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shop.name'),
+            'url' => $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shop.url_reservations'),
+        );
     }
 
     /**
