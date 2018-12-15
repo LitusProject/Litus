@@ -69,6 +69,8 @@ return array(
             '@bootstrap_js_popover',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
+            '@mapbox_css',
+            '@mapbox_js',
         ),
     ),
 );

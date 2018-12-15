@@ -471,7 +471,24 @@ return array(
                 'output' => 'jcrop_css.css',
             ),
         ),
-
+        'mapbox_css' => array(
+            'assets' => array(
+                'common/css/mapbox.css',
+            ),
+            'filters' => array(
+                '?CssFilter' => array(
+                    'name' => CssFilter::class,
+                ),
+            ),
+            'options' => array(
+                'output' => 'mapbox_css.css',
+            )
+        ),
+        'mapbox_js' => array(
+            'assets' => array(
+                'common/js/mapbox.min.js',
+            )
+        ),
         'resizableColumns_js' => array(
             'assets' => array(
                 'common/js/resizableColumns.js',

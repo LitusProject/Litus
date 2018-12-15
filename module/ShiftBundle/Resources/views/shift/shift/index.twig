@@ -186,8 +186,8 @@
 
 {% block content_script %}
     {% import _self as self %}
-
     <script type="text/javascript">
+        mapboxgl.accessToken = 'pk.eyJ1IjoidnRraXQiLCJhIjoiY2pwaWZhMHgwMDVlYTNwbzhvendscjZ0eCJ9.IexNlJc7DnQDqPHlCWncaQ';
         $(document).ready(function () {
             $('.responsible').click(function () {
                 var button = $(this);
@@ -227,6 +227,8 @@
                         $(this).removeClass('disabled');
                     });
                 });
+
+                $('')
             });
 
             $('.volunteer').click(function () {
@@ -302,6 +304,13 @@
                     },
                     'json'
                 ).error(errorSave);
+            });
+
+            $('.panel-collapse').on('show.bs.collapse', function(){
+                var map = new mapboxgl.Map({
+                    container: $(this).find('.map-preview').first().attr('id'),
+                    style: 'mapbox://styles/mapbox/streets-v9'
+                });
             });
         });
 
@@ -462,9 +471,8 @@
                             <dd>
                                 {{ shift.getLocation().getName() }}
                             </dd>
-                            <dd style="margin-top: 5px;">
-                                <img class="img-rounded" src="{{ staticMap(shift.getLocation(), '367x125', '7a43b6') }}" />
-                            </dd>
+                            <div style="margin-top: 5px; width: 376px; height: 125px;" class="map-preview" id="map-{{ shift.getId() }}">
+                            </div>
                         </dl>
                     </div>
                 </div>
