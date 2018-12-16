@@ -256,7 +256,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
         $headers = new Headers();
         $headers->addHeaders(
             array(
-                'Content-Disposition' => 'attachment; filename="front.pdf"',
+                'Content-Disposition' => 'attachment; filename="front_'.substr($article->getBarcode(), -5, 5).'.pdf"',
                 'Content-Type'        => 'application/pdf',
             )
         );
