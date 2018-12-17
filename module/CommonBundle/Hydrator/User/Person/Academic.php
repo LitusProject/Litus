@@ -130,7 +130,7 @@ class Academic extends \CommonBundle\Hydrator\User\Person
 
         $universityEmail = preg_replace('/[^a-z0-9\.@]/i', '', iconv('UTF-8', 'US-ASCII//TRANSLIT', $data['university']['email'])) . $studentDomain;
         if (isset($data['primary_email']) && $data['primary_email'] != '') {
-            $data['email'] = isset($data['personal_email']) ? $data['personal_email'] : $object->getPersonalEmail();
+            $data['email'] = $data['personal_email'] ?? $object->getPersonalEmail();
         } else {
             $data['email'] = $universityEmail;
         }
