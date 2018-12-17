@@ -39,14 +39,14 @@ def allowAccess(identification, academic):
     log('Opening door for ' + identification)
     openDoor()
 
-    data = {
+    params = {
         'key'     : API_KEY,
         'academic': academic
     }
 
     try:
         log('Logging access to the server')
-        result = requests.post(API_HOST + '/api/door/log', data = data).json()
+        result = requests.post(API_HOST + '/api/door/log', data = params).json()
 
         if 'success' == result['status']:
             log('Log entry was successfully created')
