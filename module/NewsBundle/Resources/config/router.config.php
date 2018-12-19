@@ -43,7 +43,7 @@ return array(
                     'action'   => '[a-zA-Z0-9_-]*',
                     'name'     => '[a-zA-Z0-9_-]*',
                     'page'     => '[0-9]*',
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                 ),
                 'defaults' => array(
                     'controller' => 'news',

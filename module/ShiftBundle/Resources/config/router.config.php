@@ -91,7 +91,7 @@ return array(
             'options' => array(
                 'route'       => '[/:language]/shift[/:action[/:id]][/]',
                 'constraints' => array(
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'       => '[0-9]*',
                 ),
@@ -106,7 +106,7 @@ return array(
             'options' => array(
                 'route'       => '[/:language]/shift/export/:token/ical.ics',
                 'constraints' => array(
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                     'token'    => '[a-zA-Z0-9_-]*',
                 ),
                 'defaults' => array(

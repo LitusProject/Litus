@@ -178,7 +178,7 @@ return array(
                     'payed'       => '(true|false)',
                     'date'        => '[0-9]{2}/[0-9]{2}/[0-9]{4}',
                     'page'        => '[0-9]*',
-                    'language'    => '[a-z]{2}',
+                    'language'    => '(en|nl)',
                     'invoiceyear' => '[0-9]{4}',
                 ),
                 'defaults' => array(
@@ -253,7 +253,7 @@ return array(
                 'route'       => '[/:language]/career[/:action][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                 ),
                 'defaults' => array(
                     'controller' => 'br_career_index',
@@ -268,7 +268,7 @@ return array(
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'company'  => '[a-zA-Z0-9_-]*',
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                     'id'       => '[a-zA-Z0-9_-]*',
                 ),
                 'defaults' => array(
@@ -283,7 +283,7 @@ return array(
                 'route'       => '[/:language]/career/company/search[/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                 ),
                 'defaults' => array(
                     'controller' => 'br_career_company',
@@ -298,7 +298,7 @@ return array(
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'       => '[0-9_-]*',
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                     'page'     => '[0-9]*',
                 ),
                 'defaults' => array(
@@ -314,7 +314,7 @@ return array(
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'       => '[0-9_-]*',
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                     'page'     => '[0-9]*',
                 ),
                 'defaults' => array(
@@ -330,7 +330,7 @@ return array(
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'       => '[0-9_-]*',
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                     'page'     => '[0-9]*',
                 ),
                 'defaults' => array(
@@ -359,7 +359,7 @@ return array(
                 'constraints' => array(
                     'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
-                    'language'     => '[a-z]{2}',
+                    'language'     => '(en|nl)',
                     'image'        => '[a-zA-Z0-9]*',
                 ),
                 'defaults' => array(
@@ -375,7 +375,7 @@ return array(
                 'constraints' => array(
                     'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
-                    'language'     => '[a-z]{2}',
+                    'language'     => '(en|nl)',
                     'image'        => '[a-zA-Z0-9]*',
                     'type'         => '[a-zA-Z]*',
                     'string'       => '[%a-zA-Z0-9:.,_-]*',
@@ -395,7 +395,7 @@ return array(
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'session'  => '[0-9]*',
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                 ),
                 'defaults' => array(
                     'controller' => 'br_corporate_auth',
@@ -410,7 +410,7 @@ return array(
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'       => '[0-9_-]*',
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                 ),
                 'defaults' => array(
                     'controller' => 'br_corporate_jobfair',
@@ -425,7 +425,7 @@ return array(
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'       => '[0-9_-]*',
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                     'page'     => '[0-9]*',
                 ),
                 'defaults' => array(
@@ -441,7 +441,7 @@ return array(
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'       => '[0-9_-]*',
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                     'page'     => '[0-9]*',
                 ),
                 'defaults' => array(
@@ -457,7 +457,7 @@ return array(
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'session'  => '[0-9]*',
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                 ),
                 'defaults' => array(
                     'controller' => 'br_corporate_company',
@@ -471,7 +471,7 @@ return array(
                 'route'       => '[/:language]/cv[/:action][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                 ),
                 'defaults' => array(
                     'controller' => 'br_cv_index',

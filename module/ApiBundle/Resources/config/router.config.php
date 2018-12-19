@@ -41,7 +41,7 @@ return array(
                 'route'       => '[/:language]/api/auth[/:action][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                 ),
                 'defaults' => array(
                     'controller' => 'api_auth',
@@ -54,7 +54,7 @@ return array(
                 'route'       => '[/:language]/api/calendar[/:action][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                 ),
                 'defaults' => array(
                     'controller' => 'api_calendar',
@@ -67,7 +67,7 @@ return array(
                 'route'       => '[/:language]/api/config[/:action][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                 ),
                 'defaults' => array(
                     'controller' => 'api_config',
@@ -80,7 +80,7 @@ return array(
                 'route'       => '[/:language]/api/cudi[/:action][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                 ),
                 'defaults' => array(
                     'controller' => 'api_cudi',
@@ -93,7 +93,7 @@ return array(
                 'route'       => '[/:language]/api/door[/:action][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                 ),
                 'defaults' => array(
                     'controller' => 'api_door',
@@ -106,7 +106,7 @@ return array(
                 'route'       => '[/:language]/api/mail[/:action[/type/:type]][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                     'type'     => '(tar|zip)',
                 ),
                 'defaults' => array(
@@ -119,7 +119,7 @@ return array(
             'options' => array(
                 'route'       => '[/:language]/api/members[/:action][/]',
                 'constraints' => array(
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                 ),
                 'defaults' => array(
@@ -134,7 +134,7 @@ return array(
                 'route'       => '[/:language]/api/news[/:action][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                 ),
                 'defaults' => array(
                     'controller' => 'api_news',
@@ -149,7 +149,7 @@ return array(
                     'action'         => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'identification' => '[mrsu][0-9]{7}',
                     'hash'           => '[a-zA-Z0-9_-]*',
-                    'language'       => '[a-z]{2}',
+                    'language'       => '(en|nl)',
                 ),
                 'defaults' => array(
                     'controller' => 'api_oauth',
@@ -163,7 +163,7 @@ return array(
                 'route'       => '[/:language]/api/shift[/:action][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                 ),
                 'defaults' => array(
                     'controller' => 'api_shift',

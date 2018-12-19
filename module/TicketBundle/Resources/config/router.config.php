@@ -102,7 +102,7 @@ return array(
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'       => '[0-9]*',
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                 ),
                 'defaults' => array(
                     'controller' => 'ticket',

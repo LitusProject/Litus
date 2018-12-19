@@ -199,7 +199,7 @@ return array(
             'options' => array(
                 'route'       => '[/:language][/]',
                 'constraints' => array(
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                 ),
                 'defaults' => array(
                     'controller' => 'common_index',
@@ -212,7 +212,7 @@ return array(
             'options' => array(
                 'route'       => '[/:language]/account[/:action[/code/:code][/image/:image][/return/:return]][/]',
                 'constraints' => array(
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'       => '[a-zA-Z0-9_-]*',
                     'code'     => '[a-zA-Z0-9_-]*',
@@ -230,7 +230,7 @@ return array(
             'options' => array(
                 'route'       => '[/:language]/session[/:action[/:id]][/]',
                 'constraints' => array(
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'       => '[a-zA-Z0-9_-]*',
                 ),
@@ -248,7 +248,7 @@ return array(
                     'action'         => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'identification' => '[mrsu][0-9]{7}',
                     'hash'           => '[a-zA-Z0-9_-]*',
-                    'language'       => '[a-z]{2}',
+                    'language'       => '(en|nl)',
                 ),
                 'defaults' => array(
                     'controller' => 'common_auth',
