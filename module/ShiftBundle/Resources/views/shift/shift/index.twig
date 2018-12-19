@@ -309,7 +309,9 @@
             $('.panel-collapse').on('show.bs.collapse', function(){
                 var map = new mapboxgl.Map({
                     container: $(this).find('.map-preview').first().attr('id'),
-                    style: 'mapbox://styles/mapbox/streets-v9'
+                    style: 'mapbox://styles/mapbox/streets-v9',
+                    center: [$(this).find('.map-preview').first().attr('data-longitude'), $(this).find('.map-preview').first().attr('data-latitude')],
+                    zoom: 12,
                 });
             });
         });
@@ -471,7 +473,7 @@
                             <dd>
                                 {{ shift.getLocation().getName() }}
                             </dd>
-                            <div style="margin-top: 5px; width: 376px; height: 125px;" class="map-preview" id="map-{{ shift.getId() }}">
+                            <div style="margin-top: 5px; width: 100%; height: 250px;" class="map-preview" id="map-{{ shift.getId() }}" data-latitude="{{ shift.getLocation().getLatitude() }}" data-longitude="{{ shift.getLocation().getLongitude() }}">
                             </div>
                         </dl>
                     </div>
