@@ -307,6 +307,20 @@ return array(
                 ),
             ),
         ),
+        'br_event_fetch' => array(
+            'type'    => 'Zend\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/career/event/fetch[/:start][/:end][/]',
+                'constraints' => array(
+                    'start' => '[0-9]*',
+                    'end'   => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_career_event',
+                    'action'     => 'fetch',
+                ),
+            ),
+        ),
         'br_career_vacancy' => array(
             'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
@@ -476,20 +490,6 @@ return array(
                 'defaults' => array(
                     'controller' => 'br_cv_index',
                     'action'     => 'cv',
-                ),
-            ),
-        ),
-        'br_event_fetch' => array(
-            'type'    => 'Zend\Router\Http\Segment',
-            'options' => array(
-                'route'       => '/career/event/fetch[/:start][/:end][/]',
-                'constraints' => array(
-                    'start' => '[0-9]*',
-                    'end'   => '[0-9]*',
-                ),
-                'defaults' => array(
-                    'controller' => 'br_career_event',
-                    'action'     => 'fetch',
                 ),
             ),
         ),
