@@ -33,6 +33,10 @@ phpstan() {
     vendor/bin/phpstan analyze --no-progress
 }
 
+twigcs() {
+    vendor/bin/twigcs module/ || true
+}
+
 install() {
     init_database
 
@@ -48,6 +52,8 @@ case $1 in
     analyze)
         phpcs
         phpstan
+
+        twigcs
         ;;
     install)
         install
