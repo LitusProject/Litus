@@ -66,9 +66,9 @@
                 window.location.href = '{{ url("cudi_admin_sales_booking", {'action': 'person'}) }}' + $('[name="person[id]"]').val();
             });
 
-            $('#person').typeaheadRemote(
+            $('#person_search').typeaheadRemote(
                 {
-                    source: '{{ url("common_admin_academic_typeahead") }}',
+                    source: '{{ url('common_admin_academic_typeahead', {}) }}',
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {

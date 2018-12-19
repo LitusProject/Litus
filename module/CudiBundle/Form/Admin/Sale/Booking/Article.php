@@ -38,7 +38,7 @@ class Article extends \CommonBundle\Component\Form\Admin\Form
                 'label'      => 'Article',
                 'required'   => true,
                 'attributes' => array(
-                    'id'    => 'article',
+                    'id'    => 'article_search',
                     'style' => 'width: 400px;',
                 ),
                 'options' => array(
