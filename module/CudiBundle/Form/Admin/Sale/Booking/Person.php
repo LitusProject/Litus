@@ -38,7 +38,7 @@ class Person extends \CommonBundle\Component\Form\Admin\Form
                 'label'      => 'Person',
                 'required'   => true,
                 'attributes' => array(
-                    'id'    => 'person',
+                    'id'    => 'person_search',
                     'style' => 'width: 400px;',
                 ),
                 'options' => array(

@@ -107,7 +107,7 @@ return array(
             'options' => array(
                 'route'       => '[/:language]/shop[/:action[/:id]][/]',
                 'constraints' => array(
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'       => '[0-9]*',
                 ),

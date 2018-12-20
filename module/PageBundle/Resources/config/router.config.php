@@ -74,7 +74,7 @@ return array(
                 'route'       => '[/:language]/link[/:id][/]',
                 'constraints' => array(
                     'id'       => '[0-9]*',
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                 ),
                 'defaults' => array(
                     'controller' => 'page_link',
@@ -89,7 +89,7 @@ return array(
                 'constraints' => array(
                     'parent'   => '[a-zA-Z0-9_-]*',
                     'name'     => '[a-zA-Z0-9_-]*',
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                 ),
                 'defaults' => array(
                     'controller' => 'page',

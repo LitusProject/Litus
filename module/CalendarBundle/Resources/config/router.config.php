@@ -53,7 +53,7 @@ return array(
             'options' => array(
                 'route'       => '[/:language]/calendar[/:action[/:name]][/]',
                 'constraints' => array(
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'name'     => '[a-zA-Z0-9\-_]*',
                 ),
@@ -68,7 +68,7 @@ return array(
             'options' => array(
                 'route'       => '[/:language]/calendar/export/ical.ics',
                 'constraints' => array(
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                 ),
                 'defaults' => array(
                     'controller' => 'calendar',

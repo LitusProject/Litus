@@ -88,7 +88,7 @@ return array(
                 'route'       => '[/:language]/logistics[/:action][/date/:date][/:id][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                     'date'     => '[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}',
                     'id'       => '[0-9]*',
                 ),
@@ -118,7 +118,7 @@ return array(
             'options' => array(
                 'route'       => '[/:language]/logistics/export[/:token]/ical.ics',
                 'constraints' => array(
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                     'token'    => '[a-zA-Z0-9_-]*',
                 ),
                 'defaults' => array(
@@ -147,7 +147,7 @@ return array(
                 'route'       => '[/:language]/reservations/piano[/:action][/date/:date][/:id][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'language' => '[a-z]{2}',
+                    'language' => '(en|nl)',
                     'date'     => '[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}',
                     'id'       => '[0-9]*',
                 ),

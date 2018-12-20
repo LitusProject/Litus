@@ -17,10 +17,10 @@ cache:
         - vendor/
 
 before_install:
-    - yes | pecl install igbinary
-    - yes | pecl install imagick
-    - yes | pecl install mailparse
-    - yes | pecl install redis
+    - yes | pecl install -f igbinary
+    - yes | pecl install -f imagick
+    - yes | pecl install -f mailparse
+    - yes | pecl install -f redis
     - phpenv config-add travis/config/php.ini
 install:
     - travis/bin/install.sh
