@@ -23,6 +23,7 @@ namespace MailBundle\Controller\Admin;
 use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person;
 use DateTime;
+use DateInterval;
 use Parsedown;
 use Zend\Mail\Message;
 use Zend\Mime\Message as MimeMessage;
@@ -71,14 +72,18 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                     ->getRepository('CommonBundle\Entity\User\Status\University')
                     ->findAllByStatus('professor', $academicYear);
 
+                $reduced = $formData['reduced_list'];
+
                 $this->saveConfig($formData['subject'], $formData['message']);
+
+                $counter = 0;
 
                 foreach ($statuses as $status) {
                     if ($status->getPerson()->getEmail() == '') {
                         continue;
                     }
 
-                    $subjects = $this->getSubjects($status->getPerson(), $academicYear, $semester);
+                    $subjects = $this->getSubjects($status->getPerson(), $academicYear, $semester, $reduced);
                     if ($subjects === null) {
                         continue;
                     }
@@ -126,6 +131,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                     }
 
                     if (getenv('APPLICATION_ENV') != 'development') {
+                        $counter++;
                         $this->getMailTransport()->send($mail);
                     }
 
@@ -136,7 +142,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
 
                 $this->flashMessenger()->success(
                     'Success',
-                    'The mail was successfully sent!'
+                    $counter.' mail(s) was(were) successfully sent!'
                 );
 
                 $this->redirect()->toRoute(
@@ -185,19 +191,36 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
      * @param  integer      $semester
      * @return string|null
      */
-    private function getSubjects(Person $person, AcademicYear $academicYear, $semester)
+    private function getSubjects(Person $person, AcademicYear $academicYear, $semester, $reduced)
     {
         $allSubjects = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
             ->findAllByProfAndAcademicYear($person, $academicYear);
+
+        $now = new DateTime();
+
+        $lastAcademicYear = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByDate($now->sub(new DateInterval('P1Y')));
 
         $subjects = array();
         $subjectIds = array();
         foreach ($allSubjects as $subject) {
             if (!in_array($subject->getSubject()->getId(), $subjectIds)) {
                 if ($subject->getSubject()->getSemester() == $semester || $subject->getSubject()->getSemester() == 3) {
-                    $subjects[] = $subject->getSubject();
-                    $subjectIds[] = $subject->getSubject()->getId();
+                    if ($reduced) {
+                        $articles = $this->getEntityManager()
+                            ->getRepository('CudiBundle\Entity\Article\SubjectMap')
+                            ->findAllBySubjectAndAcademicYear($subject->getSubject(), $lastAcademicYear);
+
+                        if (!empty($articles)){
+                            $subjects[] = $subject->getSubject();
+                            $subjectIds[] = $subject->getSubject()->getId();                       
+                        }
+                    } else {
+                        $subjects[] = $subject->getSubject();
+                        $subjectIds[] = $subject->getSubject()->getId();
+                    }
                 }
             }
         }

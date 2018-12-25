@@ -81,6 +81,14 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'  => 'checkbox',
+                'name'  => 'reduced_list',
+                'label' => 'Send only for subjects with<br>articles last accademic year',
+            )
+        );
+
+        $this->add(
+            array(
                 'type'     => 'textarea',
                 'name'     => 'message',
                 'label'    => 'Message',
