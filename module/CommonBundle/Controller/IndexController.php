@@ -221,7 +221,11 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOpen();
 
-        if (count($sessions) > 0) {
+        $saleLight = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.sale_light_version');
+
+        if (!$saleLight && count($sessions) > 0) {
             $cudi['currentSession'] = $sessions[0];
 
             $cudi['currentStudents'] = $this->getEntityManager()
