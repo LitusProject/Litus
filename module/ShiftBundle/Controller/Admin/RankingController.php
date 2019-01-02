@@ -47,27 +47,29 @@ class RankingController extends \CommonBundle\Component\Controller\ActionControl
 
         $ranking = array();
 
+        $hoursPerBlock = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shift.hours_per_shift');
+
+        $volunteers = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift\Volunteer')
+            ->findAllCountsByAcademicYear($academicYear, $hoursPerBlock);
+
         for ($i = 0; isset($rankingCriteria[$i]); $i++) {
-            if ($i != (count($rankingCriteria) - 1)) {
-                $volunteers = $this->getEntityManager()
-                    ->getRepository('ShiftBundle\Entity\Shift\Volunteer')
-                    ->findAllByCountLimits($academicYear, $rankingCriteria[$i]['limit'], $rankingCriteria[$i + 1]['limit']);
-            } else {
-                $volunteers = $this->getEntityManager()
-                    ->getRepository('ShiftBundle\Entity\Shift\Volunteer')
-                    ->findAllByCountMinimum($academicYear, $rankingCriteria[$i]['limit']);
-            }
 
             foreach ($volunteers as $volunteer) {
-                $person = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                    ->findOneById($volunteer['id']);
+                $isLast = (isset($rankingCriteria[$i + 1])) ? False : True;
+                if ($volunteer['shiftCount'] >= $rankingCriteria[$i]['limit'] && ($isLast || $volunteer['shiftCount'] < $rankingCriteria[$i + 1]['limit'])) {
+                    $person = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                        ->findOneById($volunteer['id']);
 
-                if (!$person->isPraesidium($academicYear)) {
-                    $ranking[$rankingCriteria[$i]['name']][] = array(
-                        'person'     => $person,
-                        'shiftCount' => $volunteer['shiftCount'],
-                    );
+                    if (!$person->isPraesidium($academicYear)) {
+                        $ranking[$rankingCriteria[$i]['name']][] = array(
+                            'person'     => $person,
+                            'shiftCount' => $volunteer['shiftCount'],
+                        );
+                    }
                 }
             }
         }

@@ -169,4 +169,9 @@ U bent verwijderd van de volgende shift door een administrator:
         ),
         'description' => 'The insurance text to be read.',
     ),
+    array(
+        'key'         => 'shift.hours_per_shift',
+        'value'       => '0',
+        'description' => 'Shift amount is counted in blocks of this amount of hours. If 0, then it counts the amount of shifts.',
+    ),
 );
