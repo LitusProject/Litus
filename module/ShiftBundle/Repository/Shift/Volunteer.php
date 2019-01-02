@@ -143,4 +143,44 @@ class Volunteer extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->setParameter('now', new DateTime())
             ->getQuery();
     }
+
+    /**
+     * @param  AcademicYear $academicYear
+     * @param  string $countInBlocksOfTwoHours | Either 'f' or not
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllCountsByAcademicYearQuery(AcademicYear $academicYear, $hoursPerBlock)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+
+        if ($hoursPerBlock > 0) {
+            $select = 'SUM(CASE WHEN s.endDate < DATE_ADD(s.startDate,'. strval($hoursPerBlock * 2) .',\'hour\') THEN 1 ';
+            $block = 2;
+            while ($block < 24 / $hoursPerBlock) {
+                $select .= 'WHEN (DATE_ADD(s.startDate,'. strval($hoursPerBlock * $block) .',\'hour\') <= s.endDate AND s.endDate < DATE_ADD(s.startDate,'. strval($hoursPerBlock * $block + $hoursPerBlock) .',\'hour\')) THEN '. strval($block) .' ';
+                $block += 1;
+            }
+            $select .= 'ELSE '. strval($block) .' END) shiftCount';
+        } else {
+            $select = 'count(p.id) shiftCount';
+        }
+
+        return $query->select('p.id', $select)
+            ->from('ShiftBundle\Entity\Shift', 's')
+            ->innerJoin('s.volunteers', 'v')
+            ->innerJoin('v.person', 'p')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gt('v.signupTime', ':startAcademicYear'),
+                    $query->expr()->lt('v.signupTime', ':endAcademicYear'),
+                    $query->expr()->lte('s.endDate', ':now')
+                )
+            )
+            ->groupBy('p.id')
+            ->orderBy('shiftCount')
+            ->setParameter('startAcademicYear', $academicYear->getStartDate())
+            ->setParameter('endAcademicYear', $academicYear->getEndDate())
+            ->setParameter('now', new DateTime())
+            ->getQuery();
+    }
 }
