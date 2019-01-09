@@ -533,8 +533,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             ->findAllByPersonAsReponsible($person, $academicYear);
 
         $hoursPerBlock = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('shift.hours_per_shift');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shift.hours_per_shift');
 
         $now = new DateTime();
 
@@ -564,7 +564,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $shiftsAsVolunteerCount++;
 
             if ($hoursPerBlock > 0) {
-                $hoursOverTime = ($shift->getEndDate()->format('d') - $shift->getStartDate()->format('d'))*24 + ($shift->getEndDate()->format('H') - $shift->getStartDate()->format('H')) - $hoursPerBlock;
+                $hoursOverTime = ($shift->getEndDate()->format('d') - $shift->getStartDate()->format('d')) * 24 + ($shift->getEndDate()->format('H') - $shift->getStartDate()->format('H')) - $hoursPerBlock;
                 if ($hoursOverTime > 0) {
                     $amoutOfBlocks = floor($hoursOverTime / $hoursPerBlock);
                     $shiftsAsVolunteer[$shift->getUnit()->getId()]['count'] += $amoutOfBlocks;
