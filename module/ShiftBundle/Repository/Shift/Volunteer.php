@@ -146,7 +146,7 @@ class Volunteer extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 
     /**
      * @param  AcademicYear $academicYear
-     * @param  string $countInBlocksOfTwoHours | Either 'f' or not
+     * @param  string       $countInBlocksOfTwoHours | Either 'f' or not
      * @return \Doctrine\ORM\Query
      */
     public function findAllCountsByAcademicYearQuery(AcademicYear $academicYear, $hoursPerBlock)

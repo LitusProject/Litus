@@ -22,8 +22,8 @@ namespace MailBundle\Controller\Admin;
 
 use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person;
-use DateTime;
 use DateInterval;
+use DateTime;
 use Parsedown;
 use Zend\Mail\Message;
 use Zend\Mime\Message as MimeMessage;
@@ -213,7 +213,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                             ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                             ->findAllBySubjectAndAcademicYear($subject->getSubject(), $lastAcademicYear);
 
-                        if (!empty($articles)){
+                        if (count($articles) > 0) {
                             $subjects[] = $subject->getSubject();
                             $subjectIds[] = $subject->getSubject()->getId();                       
                         }

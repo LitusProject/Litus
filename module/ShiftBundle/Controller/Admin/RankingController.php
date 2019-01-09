@@ -48,17 +48,16 @@ class RankingController extends \CommonBundle\Component\Controller\ActionControl
         $ranking = array();
 
         $hoursPerBlock = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('shift.hours_per_shift');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shift.hours_per_shift');
 
         $volunteers = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift\Volunteer')
             ->findAllCountsByAcademicYear($academicYear, $hoursPerBlock);
 
         for ($i = 0; isset($rankingCriteria[$i]); $i++) {
-
             foreach ($volunteers as $volunteer) {
-                $isLast = (isset($rankingCriteria[$i + 1])) ? False : True;
+                $isLast = isset($rankingCriteria[$i + 1]) ? false : true;
                 if ($volunteer['shiftCount'] >= $rankingCriteria[$i]['limit'] && ($isLast || $volunteer['shiftCount'] < $rankingCriteria[$i + 1]['limit'])) {
                     $person = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\User\Person\Academic')
