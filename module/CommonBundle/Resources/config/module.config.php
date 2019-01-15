@@ -43,6 +43,7 @@ use CommonBundle\Component\Sentry\Client as SentryClient;
 use CommonBundle\Component\Sentry\ServiceManager\ClientFactory as SentryClientFactory;
 use CommonBundle\Component\Sentry\ServiceManager\RavenClientFactory;
 use CommonBundle\Component\Session\ServiceManager\ContainerFactory as SessionContainerFactory;
+use CommonBundle\Component\Session\ServiceManager\SessionManagerFactory;
 use CommonBundle\Component\Validator\ServiceManager\AbstractValidatorFactory;
 use CommonBundle\Component\View\Helper\ServiceManager\AbstractHelperFactory;
 use Doctrine\Common\Cache\RedisCache as DoctrineRedisCache;
@@ -55,6 +56,7 @@ use Zend\Mail\Transport\Sendmail;
 use Zend\Mvc\I18n\Translator as MvcTranslator;
 use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\Session\Container as SessionContainer;
+use Zend\Session\ManagerInterface;
 
 return Config::create(
     array(
@@ -84,6 +86,7 @@ return Config::create(
                 Sendmail::class                  => InvokableFactory::class,
                 SentryClient::class              => SentryClientFactory::class,
                 SessionContainer::class          => SessionContainerFactory::class,
+                ManagerInterface::class          => SessionManagerFactory::class,
             ),
             'abstract_factories' => array(
                 AbstractInstallerFactory::class,
