@@ -19,5 +19,7 @@
  */
 
 return array(
-    'cookie_domain' => '',
+    'session_config' => array(
+        'cookie_domain' => '',
+    ),
 );
