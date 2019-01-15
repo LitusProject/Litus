@@ -45,9 +45,20 @@ class SessionManagerFactory extends \Zend\Session\Service\SessionManagerFactory
                 case RemoteAddr::class:
                     $remoteAddrConfig = $config['session_manager']['remote_addr'];
 
-                    RemoteAddr::setUseProxy($remoteAddrConfig['use_proxy']);
-                    RemoteAddr::setTrustedProxies($remoteAddrConfig['trusted_proxies'] ?? array());
-                    RemoteAddr::setProxyHeader($remoteAddrConfig['proxy_header']);
+                    if (isset($remoteAddrConfig['use_proxy']) && $remoteAddrConfig['use_proxy']) {
+                        if (!isset($remoteAddrConfig['trusted_proxies'])) {
+                            throw new RuntimeException(
+                                'The RemoteAddr configuration did not specify any trusted proxies'
+                            );
+                        }
+
+                        RemoteAddr::setUseProxy($remoteAddrConfig['use_proxy']);
+                        RemoteAddr::setTrustedProxies($remoteAddrConfig['trusted_proxies']);
+
+                        if (isset($remoteAddrConfig['proxy_header'])) {
+                            RemoteAddr::setProxyHeader($remoteAddrConfig['proxy_header']);
+                        }
+                    }
 
                     break;
             }
