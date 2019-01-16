@@ -51,16 +51,13 @@ if (getenv('APPLICATION_ENV') != 'development') {
                 'php_save_handler' => 'redis',
                 'save_path'        => RedisUri::build($redisConfig, 'tcp'),
             ),
-            $sessionConfig['session_config']
+            $sessionConfig
         ),
-        'session_manager' => array_merge(
-            array(
-                'validators' => array(
-                    HttpUserAgent::class,
-                    RemoteAddr::class,
-                ),
+        'session_manager' => array(
+            'validators' => array(
+                HttpUserAgent::class,
+                RemoteAddr::class,
             ),
-            $sessionConfig['session_manager']
         ),
         'session_storage' => array(
             'type' => SessionArrayStorage::class,
@@ -73,16 +70,13 @@ return array(
         array(
             'cookie_secure' => false,
         ),
-        $sessionConfig['session_config']
+        $sessionConfig
     ),
-    'session_manager' => array_merge(
-        array(
-            'validators' => array(
-                HttpUserAgent::class,
-                RemoteAddr::class,
-            ),
+    'session_manager' => array(
+        'validators' => array(
+            HttpUserAgent::class,
+            RemoteAddr::class,
         ),
-        $sessionConfig['session_manager']
     ),
     'session_storage' => array(
         'type' => SessionArrayStorage::class,

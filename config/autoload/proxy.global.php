@@ -18,6 +18,19 @@
  * @license http://litus.cc/LICENSE
  */
 
+if (!file_exists(__DIR__ . '/../redis.config.php')) {
+    throw new RuntimeException(
+        'The proxy configuration file (' . (__DIR__ . '/../proxy.config.php') . ') was not found'
+    );
+}
+
+$proxyConfig = include __DIR__ . '/../proxy.config.php';
+if ($proxyConfig['use_proxy'] && !isset($proxyConfig['trusted_proxies'])) {
+    throw new RuntimeException(
+        'The RemoteAddr configuration did not specify any trusted proxies'
+    );
+}
+
 return array(
-    'cookie_domain' => '',
+    'proxy' => $proxyConfig,
 );
