@@ -20,7 +20,6 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Component\Piwik\Analytics;
 use CommonBundle\Component\Version\Version;
 use DateInterval;
 use DateTime;
@@ -36,31 +35,6 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function indexAction()
     {
-        $enablePiwik = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.enable_piwik');
-
-        $piwik = null;
-        if (getenv('APPLICATION_ENV') != 'development' && $enablePiwik) {
-            $analytics = new Analytics(
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('common.piwik_api_url'),
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('common.piwik_token_auth'),
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('common.piwik_id_site')
-            );
-
-            $piwik = array(
-                'uniqueVisitors' => $analytics->getUniqueVisitors(),
-                'liveCounters'   => $analytics->getLiveCounters(),
-                'visitsGraph'    => $this->getVisitsGraph($analytics),
-            );
-        }
-
         $enableRegistration = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.enable_registration');
@@ -100,7 +74,6 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'subjectReplies'     => $subjectReplies,
                 'activeSessions'     => $activeSessions,
                 'currentSession'     => $currentSession,
-                'piwik'              => $piwik,
                 'registrationsGraph' => $registrationsGraph,
                 'versions'           => $versions,
             )
