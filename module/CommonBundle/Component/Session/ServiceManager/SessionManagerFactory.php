@@ -21,6 +21,7 @@
 namespace CommonBundle\Component\Session\ServiceManager;
 
 use Interop\Container\ContainerInterface;
+use Zend\Session\SessionManager;
 use Zend\Session\Validator\RemoteAddr;
 
 /**
@@ -34,7 +35,7 @@ class SessionManagerFactory extends \Zend\Session\Service\SessionManagerFactory
      * @param  ContainerInterface $container
      * @param  string             $requestedName
      * @param  array|null         $options
-     * @return Container
+     * @return SessionManager
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {

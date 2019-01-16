@@ -96,56 +96,6 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param  Analytics $analytics
-     * @return array
-     */
-    private function getVisitsGraph(Analytics $analytics)
-    {
-        if ($this->getCache() !== null) {
-            if ($this->getCache()->hasItem('CommonBundle_Controller_IndexController_VisitsGraph')) {
-                $now = new DateTime();
-                if ($this->getCache()->getItem('CommonBundle_Controller_IndexController_VisitsGraph')['expirationTime'] > $now) {
-                    return $this->getCache()->getItem('CommonBundle_Controller_IndexController_VisitsGraph');
-                }
-            }
-
-            $this->getCache()->setItem(
-                'CommonBundle_Controller_IndexController_VisitsGraph',
-                $this->getVisitsGraphData($analytics)
-            );
-
-            return $this->getCache()->getItem('CommonBundle_Controller_IndexController_VisitsGraph');
-        }
-
-        return $this->getVisitsGraphData($analytics);
-    }
-
-    /**
-     * @param  Analytics $analytics
-     * @return array
-     */
-    private function getVisitsGraphData(Analytics $analytics)
-    {
-        $now = new DateTime();
-
-        $visitsGraphData = array(
-            'expirationTime' => $now->add(new DateInterval('P1D')),
-
-            'labels'  => array(),
-            'dataset' => array(),
-        );
-
-        foreach ((array) $analytics->getUniqueVisitors('previous7') as $dateString => $count) {
-            $date = new DateTime($dateString);
-
-            $visitsGraphData['labels'][] = $date->format('d/m/Y');
-            $visitsGraphData['dataset'][] = $count;
-        }
-
-        return $visitsGraphData;
-    }
-
-    /**
      * @return array
      */
     private function getRegistrationsGraph()
