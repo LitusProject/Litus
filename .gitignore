@@ -1,5 +1,6 @@
 # These files should be explicitly created
 config/database.config.php
+config/proxy.config.php
 config/redis.config.php
 config/sentry.config.php
 config/session.config.php
