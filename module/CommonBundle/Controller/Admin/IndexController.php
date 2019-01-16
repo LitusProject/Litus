@@ -20,7 +20,6 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Component\Piwik\Analytics;
 use CommonBundle\Component\Version\Version;
 use DateInterval;
 use DateTime;
@@ -36,31 +35,6 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function indexAction()
     {
-        $enablePiwik = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.enable_piwik');
-
-        $piwik = null;
-        if (getenv('APPLICATION_ENV') != 'development' && $enablePiwik) {
-            $analytics = new Analytics(
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('common.piwik_api_url'),
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('common.piwik_token_auth'),
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('common.piwik_id_site')
-            );
-
-            $piwik = array(
-                'uniqueVisitors' => $analytics->getUniqueVisitors(),
-                'liveCounters'   => $analytics->getLiveCounters(),
-                'visitsGraph'    => $this->getVisitsGraph($analytics),
-            );
-        }
-
         $enableRegistration = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.enable_registration');
@@ -100,7 +74,6 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'subjectReplies'     => $subjectReplies,
                 'activeSessions'     => $activeSessions,
                 'currentSession'     => $currentSession,
-                'piwik'              => $piwik,
                 'registrationsGraph' => $registrationsGraph,
                 'versions'           => $versions,
             )
@@ -120,56 +93,6 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             'zf'    => $zfVersion[0],
             'litus' => Version::getShortCommitHash(),
         );
-    }
-
-    /**
-     * @param  Analytics $analytics
-     * @return array
-     */
-    private function getVisitsGraph(Analytics $analytics)
-    {
-        if ($this->getCache() !== null) {
-            if ($this->getCache()->hasItem('CommonBundle_Controller_IndexController_VisitsGraph')) {
-                $now = new DateTime();
-                if ($this->getCache()->getItem('CommonBundle_Controller_IndexController_VisitsGraph')['expirationTime'] > $now) {
-                    return $this->getCache()->getItem('CommonBundle_Controller_IndexController_VisitsGraph');
-                }
-            }
-
-            $this->getCache()->setItem(
-                'CommonBundle_Controller_IndexController_VisitsGraph',
-                $this->getVisitsGraphData($analytics)
-            );
-
-            return $this->getCache()->getItem('CommonBundle_Controller_IndexController_VisitsGraph');
-        }
-
-        return $this->getVisitsGraphData($analytics);
-    }
-
-    /**
-     * @param  Analytics $analytics
-     * @return array
-     */
-    private function getVisitsGraphData(Analytics $analytics)
-    {
-        $now = new DateTime();
-
-        $visitsGraphData = array(
-            'expirationTime' => $now->add(new DateInterval('P1D')),
-
-            'labels'  => array(),
-            'dataset' => array(),
-        );
-
-        foreach ((array) $analytics->getUniqueVisitors('previous7') as $dateString => $count) {
-            $date = new DateTime($dateString);
-
-            $visitsGraphData['labels'][] = $date->format('d/m/Y');
-            $visitsGraphData['dataset'][] = $count;
-        }
-
-        return $visitsGraphData;
     }
 
     /**

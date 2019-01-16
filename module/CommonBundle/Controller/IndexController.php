@@ -49,7 +49,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'shop'           => $this->getShopInfo(),
                 'newsItems'      => $this->getNewsItems(),
                 'notifications'  => $notifications,
-                'piwik'          => $this->getPiwikInfo(),
+                'fathom'         => $this->getFathomInfo(),
                 'sportInfo'      => $this->getSportResults(),
                 'myShifts'       => $this->getMyShifts(),
                 'myPocers'       => $this->getMyPocers(),
@@ -243,26 +243,23 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * @return array|null
      */
-    private function getPiwikInfo()
+    private function getFathomInfo()
     {
-        $enablePiwik = $this->getEntityManager()
+        $enableFathom = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.enable_piwik');
+            ->getConfigValue('common.enable_fathom');
 
-        if (getenv('APPLICATION_ENV') == 'development' || !$enablePiwik) {
+        if (getenv('APPLICATION_ENV') == 'development' || !$enableFathom) {
             return null;
         }
 
         return array(
-            'url' => parse_url(
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('common.piwik_api_url'),
-                PHP_URL_HOST
-            ),
+            'url' => $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('common.fathom_url'),
             'site_id' => $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('common.piwik_id_site'),
+                ->getConfigValue('common.fathom_site_id'),
         );
     }
 
