@@ -358,7 +358,10 @@ class Study
                     $prof = new Academic();
                     $this->getEntityManager()->persist($prof);
 
-                    $info = $this->getProfInfo(trim($data->attributes()->persno));
+                    $info = $this->getProfInfo($identification);
+                    if ($info === null) {
+                        continue;
+                    }
 
                     $prof->setUsername($identification)
                         ->setRoles(
@@ -373,19 +376,20 @@ class Study
                         ->setEmail($info['email'])
                         ->setPersonalEmail($info['email'])
                         ->setUniversityEmail($info['email'])
-                        ->setPhoneNumber($info['phone'])
                         ->setUniversityIdentification($identification)
                         ->activate($this->getEntityManager(), $this->mailTransport, true);
                 }
             } else {
-                $info = $this->getProfInfo(trim($data->attributes()->persno));
+                $info = $this->getProfInfo($identification);
+                if ($info === null) {
+                    continue;
+                }
 
                 $prof->setFirstName(trim($data->voornaam))
                     ->setLastName(trim($data->familienaam))
                     ->setEmail($info['email'])
                     ->setPersonalEmail($info['email'])
-                    ->setUniversityEmail($info['email'])
-                    ->setPhoneNumber($info['phone']);
+                    ->setUniversityEmail($info['email']);
             }
 
             $this->profCache[$identification] = $prof;
@@ -416,45 +420,40 @@ class Study
 
     /**
      * @param  string $identification
-     * @return array
+     * @return array|null
      */
     private function getProfInfo($identification)
     {
-        $info = array(
-            'email' => null,
-            'phone' => null,
-        );
-        $client = new HttpClient();
-        $client->setOptions(array('sslcapath' => '/etc/ssl/certs'));
-        $response = $client->setUri('http://www.kuleuven.be/wieiswie/nl/person/' . $identification)->send();
+        try {
+            $url = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('syllabus.persons_api_url');
 
-        preg_match('/String.fromCharCode\(([\(\d,+\)]+)\)/', $response->getBody(), $matches);
+            $client = new HttpClient(
+                $url,
+                array(
+                    'timeout' => 5,
+                )
+            );
+            $client->setParameterGet(
+                array(
+                    '$format' => 'json',
+                    '$filter' => 'userId eq \'' . $identification . '\'',
+                    '$select' => 'preferredMailAddress',
+                )
+            );
 
-        if (count($matches) > 1) {
-            $characters = explode(',', $matches[0]);
-
-            $string = '';
-            foreach ($characters as $character) {
-                if (preg_match('/(\d+)(?:\s*)([\+\-\*\/])(?:\s*)(\d+)/', $character, $matches)) {
-                    $string .= chr($matches[1] + $matches[3]);
-                }
+            $data = json_decode($client->send()->getBody(), true)['d'];
+            if (count($data['results']) == 1) {
+                return array(
+                    'email' => $data['results'][0]['preferredMailAddress']
+                );
             }
 
-            preg_match('/<a href="mailto:([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})">/', $string, $matches);
-            $info['email'] = $matches[1];
-        } else {
-            $info['email'] = null;
+            return null;
+        } catch (\Throwable $e) {
+            return null;
         }
-
-        preg_match('/<a class="phone" href="tel:([\d+ ]+)">/', $response->getBody(), $matches);
-
-        if (count($matches) > 1) {
-            $info['phone'] = trim(str_replace(' ', '', $matches[1]));
-        } else {
-            $info['phone'] = null;
-        }
-
-        return $info;
     }
 
     /**
@@ -617,10 +616,9 @@ class Study
 
         $this->callback('load_xml', substr($url, strrpos($url, '/') + 1));
 
-        $root = simplexml_load_file($url);
-
         $studies = array();
 
+        $root = simplexml_load_file($url);
         foreach ($root->data->children() as $organization) {
             foreach ($organization->children() as $department) {
                 if (in_array($department->attributes()->id, $departments)) {
@@ -638,18 +636,23 @@ class Study
             }
         }
 
-        $departmentUrl = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('syllabus.department_url');
-        $departmentUrl = str_replace('{{ year }}', $this->academicYear->getStartDate()->format('Y'), $departmentUrl);
+        $departmentUrl = str_replace(
+            '{{ year }}',
+            $this->academicYear->getStartDate()->format('Y'),
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('syllabus.department_url')
+        );
 
-        $studyUrl = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('syllabus.study_url');
-        $studyUrl = str_replace('{{ year }}', $this->academicYear->getStartDate()->format('Y'), $studyUrl);
+        $studyUrl = str_replace(
+            '{{ year }}',
+            $this->academicYear->getStartDate()->format('Y'),
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('syllabus.study_url')
+        );
 
         $urls = array();
-
         foreach ($studies as $study) {
             $url = str_replace(
                 array(
@@ -662,9 +665,10 @@ class Study
                 ),
                 $departmentUrl
             );
-            $this->callback('load_xml', substr($url, strrpos($url, '/') + 1));
-            $xml = simplexml_load_file($url);
 
+            $this->callback('load_xml', substr($url, strrpos($url, '/') + 1));
+
+            $xml = simplexml_load_file($url);
             foreach ($xml->data->opleiding->programmas->children() as $study) {
                 $urls[] = str_replace(
                     array(

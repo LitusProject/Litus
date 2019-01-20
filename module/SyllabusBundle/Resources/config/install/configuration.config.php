@@ -51,18 +51,23 @@ return array(
     ),
     array(
         'key'         => 'syllabus.root_xml',
-        'value'       => 'http://onderwijsaanbod.kuleuven.be/{{ year }}/opleidingen/n/xml/index.xml',
-        'description' => 'The root XML of KU Leuven',
+        'value'       => 'https://onderwijsaanbod.kuleuven.be/{{ year }}/opleidingen/n/xml/index.xml',
+        'description' => 'The KU Leuven education URL',
     ),
     array(
         'key'         => 'syllabus.department_url',
-        'value'       => 'http://onderwijsaanbod.kuleuven.be/{{ year }}/opleidingen/{{ language }}/xml/CQ_{{ id }}.xml',
-        'description' => 'The department url',
+        'value'       => 'https://onderwijsaanbod.kuleuven.be/{{ year }}/opleidingen/{{ language }}/xml/CQ_{{ id }}.xml',
+        'description' => 'The department URL',
     ),
     array(
         'key'         => 'syllabus.study_url',
-        'value'       => 'http://onderwijsaanbod.kuleuven.be/{{ year }}/opleidingen/{{ language }}/xml/SC_{{ id }}.xml',
-        'description' => 'The department url',
+        'value'       => 'https://onderwijsaanbod.kuleuven.be/{{ year }}/opleidingen/{{ language }}/xml/SC_{{ id }}.xml',
+        'description' => 'The study URL',
+    ),
+    array(
+        'key'         => 'syllabus.persons_api_url',
+        'value'       => 'https://webwsp.aps.kuleuven.be/esap/public/odata/sap/zh_person_srv/Persons',
+        'description' => 'The KU Leuven Persons API URL',
     ),
     array(
         'key'         => 'syllabus.enable_update',
