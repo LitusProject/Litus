@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    {% if authenticatedPerson == null %}
+    {% if authenticatedPerson is null %}
         {{ translate('Please login to view your bookings.') }}
     {% else %}
         <table class="table">

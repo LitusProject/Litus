@@ -112,7 +112,7 @@
                 display: function (data) {
                     $('#study_search table').find('tr.item').remove();
                     $(data).each(function () {
-                        $('#study_search table').append(row = $('<tr>', {class: 'item item-' + this.studyId}));
+                        $('#study_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
                         row.append('<td>' + this.title + '</td>')
                             .append('<td>' + this.phase + '</td>')
                             .append(
@@ -120,7 +120,7 @@
                             );
 
                             {% if hasAccess('syllabus_admin_study', 'delete') %}
-                                actions.append('<a href="#" data-title="' + this.title + '" data-id="' + this.studyId + '" data-url="{{ url('syllabus_admin_study', {'action': 'delete'}) }}' + this.studyId + '" class="delete">Delete</a>');
+                                actions.append('<a href="#" data-title="' + this.title + '" data-id="' + this.id + '" data-url="{{ url('syllabus_admin_study', {'action': 'delete'}) }}' + this.id + '" class="delete">Delete</a>');
                             {% endif %}
 
                             {% if hasAccess('syllabus_admin_study', 'view') %}

@@ -7,7 +7,7 @@
 
     {% include 'secretary/registration/partials/navigation.twig' %}
 
-    {% if registerShibbolethUrl is defined %}
+    {% if registerShibbolethUrl is not null %}
         <div style="text-align: center;">
             <p style="text-align: center;">
                 {% autoescape false %}
@@ -89,7 +89,7 @@
 {% endblock %}
 
 {% block content_script %}
-    {% if registerShibbolethUrl is not defined %}
+    {% if registerShibbolethUrl is null %}
         <script type="text/javascript">
             $(document).ready(function () {
                 var membershipArticles = {

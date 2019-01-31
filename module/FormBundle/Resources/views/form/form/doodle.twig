@@ -1,5 +1,7 @@
 {% extends 'site/base.twig' %}
 
+{% import 'site/partials/form.twig' as forms %}
+
 {% block content %}
     <div class="page-alert">
         <div class="flashmessage alert alert-success alert-fixed-top fade" id="entry_saved_success">
@@ -41,63 +43,69 @@
                 {{ translate('Your subscriptions couldn\'t be saved.') }}
             </div>
         {% endif %}
-        {% do form.prepare() %}
-        {{ form().openTag(form)|raw }}
-            {{ formElement(form.get('csrf')) }}
-            {% import 'site/partials/form.twig' as forms %}
-            {% if authenticatedPerson is null %}
-                {{ forms.renderOther(form.get('first_name')) }}
-                {{ forms.renderOther(form.get('last_name')) }}
-                {{ forms.renderOther(form.get('email')) }}
-            {% endif %}
-            <table class="table table-bordered table-striped" id="doodle">
-                <thead>
-                    <tr>
-                        <th>{{ translate('Date') }}</th>
-                        <th>{{ translate('Location') }}</th>
-                        <th width = 250px class="hidden-xs hidden-sm">{{ translate('Info') }}</th>
-                        <th>{{ translate('Subscribe') }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for field in specification.getFields() %}
-                        <tr {% if formElementErrors(form.get('field-' ~ field.getId())) %}class="error"{% endif %}>
-                            <td>
-                                {{ field.getLabel(language) }}
-                            </td>
-                            <td>
-                                {{ field.getLocation(language) }}
-                            </td>
-                            <td class="hidden-xs hidden-sm">
-                                {{ field.getExtraInformation(language)|slice(0, 30) }}
-                                {% if field.getExtraInformation(language) %}
-                                    <a href="#" class="extraInformation pull-right" data-content="{{ field.getExtraInformation(language) }}"><span class="glyphicon glyphicon-info-sign"></span></a>
-                                {% endif %}
-                            </td>
-                            <td class="actions">
-                                {% if occupiedSlots[field.getId()] %}
-                                    {% if specification.getNamesVisibleForOthers() %}
-                                        <i>{{ occupiedSlots[field.getId()] }}</i>
-                                    {% else %}
-                                        <i>{{ translate('Occupied') }}</i>
-                                    {% endif %}
-                                {% else %}
-                                    <label class="checkbox" style="margin: 2px 0">
-                                        {{ formElement(form.get('field-' ~ field.getId())) }}
-                                    </label>
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
 
-            {% if specification.canBeSavedBy(authenticatedPerson) %}
-                <div style="clear: both;text-align: center;">
-                    {{ formElement(form.get('submit')) }}
-                </div>
-            {% endif %}
-        {{ form().closeTag()|raw }}
+        {% if form is defined %}
+            {% do form.prepare() %}
+            {% autoescape false %}
+                {{ form().openTag(form) }}
+                {{ formElement(form.get('csrf')) }}
+
+                {% if authenticatedPerson is null %}
+                    {{ forms.renderOther(form.get('first_name')) }}
+                    {{ forms.renderOther(form.get('last_name')) }}
+                    {{ forms.renderOther(form.get('email')) }}
+                {% endif %}
+                <table class="table table-bordered table-striped" id="doodle">
+                    <thead>
+                        <tr>
+                            <th>{{ translate('Date') }}</th>
+                            <th>{{ translate('Location') }}</th>
+                            <th width = 250px class="hidden-xs hidden-sm">{{ translate('Info') }}</th>
+                            <th>{{ translate('Subscribe') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for field in specification.getFields() %}
+                            <tr {% if formElementErrors(form.get('field-' ~ field.getId())) %}class="error"{% endif %}>
+                                <td>
+                                    {{ field.getLabel(language) }}
+                                </td>
+                                <td>
+                                    {{ field.getLocation(language) }}
+                                </td>
+                                <td class="hidden-xs hidden-sm">
+                                    {{ field.getExtraInformation(language)|slice(0, 30) }}
+                                    {% if field.getExtraInformation(language) %}
+                                        <a href="#" class="extraInformation pull-right" data-content="{{ field.getExtraInformation(language) }}"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                    {% endif %}
+                                </td>
+                                <td class="actions">
+                                    {% if occupiedSlots[field.getId()] %}
+                                        {% if specification.getNamesVisibleForOthers() %}
+                                            <i>{{ occupiedSlots[field.getId()] }}</i>
+                                        {% else %}
+                                            <i>{{ translate('Occupied') }}</i>
+                                        {% endif %}
+                                    {% else %}
+                                        <label class="checkbox" style="margin: 2px 0">
+                                            {{ formElement(form.get('field-' ~ field.getId())) }}
+                                        </label>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                {% if specification.canBeSavedBy(authenticatedPerson) %}
+                    <div style="clear: both;text-align: center;">
+                        {{ formElement(form.get('submit')) }}
+                    </div>
+                {% endif %}
+
+                {{ form().closeTag() }}
+            {% endautoescape %}
+        {% endif %}
     {% endif %}
 {% endblock %}
 

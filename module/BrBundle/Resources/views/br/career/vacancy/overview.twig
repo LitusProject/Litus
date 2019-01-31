@@ -4,48 +4,54 @@
     <h1>{{ translate('Vacancies') }}</h1>
     <div class="row">
         <div class="col-md-4">
-            {% do vacancySearchForm.prepare() %}
-            {{ form().openTag(vacancySearchForm)|raw }}
-                {{ formElement(vacancySearchForm.get('csrf')) }}
-                <div class="well">
-                    <h4>{{ translate('Arrange By') }}</h4>
-                    <div class="form-group">
-                        <div class="input-group">
-                            {{ formElement(vacancySearchForm.get('searchType')) }}
-                        </div>
-                    </div>
-                </div>
+            {% if vacancySearchForm is defined %}
+                {% do vacancySearchForm.prepare() %}
+                {% autoescape false %}
+                    {{ form().openTag(vacancySearchForm) }}
+                    {{ formElement(vacancySearchForm.get('csrf')) }}
 
-                <div class="well">
-                    <h4>{{ translate('Sector') }}</h4>
-                    <div class="form-group">
-                        <div class="input-group">
-                            {{ formElement(vacancySearchForm.get('sector')) }}
+                    <div class="well">
+                        <h4>{{ translate('Arrange By') }}</h4>
+                        <div class="form-group">
+                            <div class="input-group">
+                                {{ formElement(vacancySearchForm.get('searchType')) }}
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="well">
-                    <h4>{{ translate('Location') }}</h4>
-                    <div class="form-group">
-                        <div class="input-group">
-                            {{ formElement(vacancySearchForm.get('location')) }}
+                    <div class="well">
+                        <h4>{{ translate('Sector') }}</h4>
+                        <div class="form-group">
+                            <div class="input-group">
+                                {{ formElement(vacancySearchForm.get('sector')) }}
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="well">
-                    <h4>{{ translate('Master') }}</h4>
-                    <div class="form-group">
-                        <div class="input-group">
-                            {{ formElement(vacancySearchForm.get('master')) }}
+                    <div class="well">
+                        <h4>{{ translate('Location') }}</h4>
+                        <div class="form-group">
+                            <div class="input-group">
+                                {{ formElement(vacancySearchForm.get('location')) }}
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="input-group-btn">
-                    {{ formElement(vacancySearchForm.get('submit')) }}
-                </div>
-            {{ form().closeTag()|raw }}
+
+                    <div class="well">
+                        <h4>{{ translate('Master') }}</h4>
+                        <div class="form-group">
+                            <div class="input-group">
+                                {{ formElement(vacancySearchForm.get('master')) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group-btn">
+                        {{ formElement(vacancySearchForm.get('submit')) }}
+                    </div>
+
+                    {{ form().closeTag() }}
+                {% endautoescape %}
+            {% endif %}
         </div>
         <div class="col-md-8">
             <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">

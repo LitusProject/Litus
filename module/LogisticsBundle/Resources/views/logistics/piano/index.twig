@@ -32,10 +32,12 @@
             </li>
         </ul>
 
-        {% do form.prepare() %}
-        {% autoescape false %}
-            {{ form().openTag(form) }}
-            {{ formElement(form.get('csrf')) }}
+        {% if form is defined %}
+            {% do form.prepare() %}
+            {% autoescape false %}
+                {{ form().openTag(form) }}
+                {{ formElement(form.get('csrf')) }}
+
                 <div class="tab-content">
                     {% for key, week in form.getWeeks() %}
                         <div class="tab-pane fade" id="week-{{ key }}">
@@ -69,8 +71,10 @@
                         </table>
                     </div>
                 </div>
-            {{ form().closeTag() }}
-        {% endautoescape %}
+
+                {{ form().closeTag() }}
+            {% endautoescape %}
+        {% endif %}
     {% else %}
         <div class="alert alert-warning">{{ translate('Please login to reserve a slot.') }}</div>
     {% endif %}

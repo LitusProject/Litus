@@ -10,30 +10,36 @@
             {% import 'admin/partials/form.twig' as forms %}
             {{ forms.renderForm(form) }}
         {% else %}
-            {% autoescape false %}
-            {{ form().openTag(form) }}
-                <table class="full_width manage">
-                    <tr>
-                        <th width="100px">Barcode</th>
-                        <th>Article</th>
-                        <th width="100px">Supplier</th>
-                        <th width="150px">Stock Value</th>
-                    </tr>
+            {% if form is defined %}
+                {% do form.prepare() %}
+                {% autoescape false %}
+                    {{ form().openTag(form) }}
+                    {{ formElement(form.get('csrf')) }}
 
-                    {% for article in articles %}
-                        <tr class="item" data-nbassigned="{{ period.getNbAssigned(article) }}">
-                            <td>{{ article.getBarcode() }}</td>
-                            <td>{{ article.getMainArticle().getTitle() }}</td>
-                            <td>{{ article.getSupplier().getName() }}</td>
-                            <td>{{ formElement(form.get('article_' ~ article.getId())) }}</td>
+                    <table class="full_width manage">
+                        <tr>
+                            <th width="100px">Barcode</th>
+                            <th>Article</th>
+                            <th width="100px">Supplier</th>
+                            <th width="150px">Stock Value</th>
                         </tr>
-                    {% endfor %}
-                </table>
-                <div style="float: right">
-                    {{ formElement(form.get('submit')) }}
-                </div>
-            {{ form().closeTag() }}
-            {% endautoescape %}
+
+                        {% for article in articles %}
+                            <tr class="item" data-nbassigned="{{ period.getNbAssigned(article) }}">
+                                <td>{{ article.getBarcode() }}</td>
+                                <td>{{ article.getMainArticle().getTitle() }}</td>
+                                <td>{{ article.getSupplier().getName() }}</td>
+                                <td>{{ formElement(form.get('article_' ~ article.getId())) }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    <div style="float: right">
+                        {{ formElement(form.get('submit')) }}
+                    </div>
+
+                    {{ form().closeTag() }}
+                {% endautoescape %}
+            {% endif %}
         {% endif %}
     </div>
 {% endblock %}

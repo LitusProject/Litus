@@ -4,52 +4,58 @@
     <h1>{{ translate('Internships') }}</h1>
     <div class="row">
         <div class="col-md-4">
-            {% do internshipSearchForm.prepare() %}
-            {{ form().openTag(internshipSearchForm)|raw }}
-                {{ formElement(internshipSearchForm.get('csrf')) }}
-                <div class="well">
-                    <h4>{{ translate('Arrange By') }}</h4>
-                    <div class="form-group">
-                        <div class="input-group">
-                            {{ formElement(internshipSearchForm.get('searchType')) }}
-                            <div class="input-group-btn">
-                                {{ formElement(internshipSearchForm.get('submit')) }}
+            {% if internshipSearchForm is defined %}
+                {% do internshipSearchForm.prepare() %}
+                {% autoescape false %}
+                    {{ form().openTag(internshipSearchForm) }}
+                    {{ formElement(internshipSearchForm.get('csrf')) }}
+
+                    <div class="well">
+                        <h4>{{ translate('Arrange By') }}</h4>
+                        <div class="form-group">
+                            <div class="input-group">
+                                {{ formElement(internshipSearchForm.get('searchType')) }}
+                                <div class="input-group-btn">
+                                    {{ formElement(internshipSearchForm.get('submit')) }}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="well">
-                    <h4>{{ translate('Sector') }}</h4>
-                    <div class="form-group">
-                        <div class="input-group">
-                            {{ formElement(internshipSearchForm.get('sector')) }}
+                    <div class="well">
+                        <h4>{{ translate('Sector') }}</h4>
+                        <div class="form-group">
+                            <div class="input-group">
+                                {{ formElement(internshipSearchForm.get('sector')) }}
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="well">
-                    <h4>{{ translate('Location') }}</h4>
-                    <div class="form-group">
-                        <div class="input-group">
-                            {{ formElement(internshipSearchForm.get('location')) }}
+                    <div class="well">
+                        <h4>{{ translate('Location') }}</h4>
+                        <div class="form-group">
+                            <div class="input-group">
+                                {{ formElement(internshipSearchForm.get('location')) }}
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="well">
-                    <h4>{{ translate('Master') }}</h4>
-                    <div class="form-group">
-                        <div class="input-group">
-                            {{ formElement(internshipSearchForm.get('master')) }}
+                    <div class="well">
+                        <h4>{{ translate('Master') }}</h4>
+                        <div class="form-group">
+                            <div class="input-group">
+                                {{ formElement(internshipSearchForm.get('master')) }}
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="input-group-btn">
-                    {{ formElement(internshipSearchForm.get('submit')) }}
-                </div>
-            {{ form().closeTag()|raw }}
+                    <div class="input-group-btn">
+                        {{ formElement(internshipSearchForm.get('submit')) }}
+                    </div>
+
+                    {{ form().closeTag() }}
+                {% endautoescape %}
+            {% endif %}
         </div>
         <div class="col-md-8">
             <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">

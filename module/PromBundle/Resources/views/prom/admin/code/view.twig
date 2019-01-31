@@ -6,7 +6,7 @@
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
-    {% if passenger == null %}
+    {% if passenger is null %}
         <h2>The following code has not been used by anyone.</h2>
         <div id="controller_action">
             <table class="manage">

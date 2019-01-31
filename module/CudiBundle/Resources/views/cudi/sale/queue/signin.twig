@@ -22,9 +22,10 @@
 
     <div class="row">
         <div class="col-xs-8">
-            {% do form.prepare() %}
-            {% autoescape false %}
-                {{ form().openTag(form) }}
+            {% if form is defined %}
+                {% do form.prepare() %}
+                {% autoescape false %}
+                    {{ form().openTag(form) }}
                     {{ formElement(form.get('csrf')) }}
 
                     <div class="form-group  required">
@@ -42,8 +43,10 @@
                             {{ formElement(form.get('cancel')) }}
                         </div>
                     </div>
-                {{ form().closeTag() }}
-            {% endautoescape %}
+
+                    {{ form().closeTag() }}
+                {% endautoescape %}
+            {% endif %}
         </div>
         <div class="col-xs-3">
             <h5 class="page-header" style="margin-top: 0">What if sign in doesn't work?</h5>

@@ -11,6 +11,7 @@ cd $(dirname "$0")/../..;
 composer install
 
 cp config/database.config.php.dist config/database.config.php
+cp config/proxy.config.php.dist config/proxy.config.php
 cp config/redis.config.php.dist config/redis.config.php
 cp config/sentry.config.php.dist config/sentry.config.php
 cp config/session.config.php.dist config/session.config.php

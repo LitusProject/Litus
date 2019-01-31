@@ -1,5 +1,7 @@
 {% extends 'form/base.twig' %}
 
+{% import 'site/partials/form.twig' as forms %}
+
 {% block content %}
 
     <div class="page-header">
@@ -23,67 +25,72 @@
                 {{ translate('Your subscriptions couldn\'t be saved.') }}
             </div>
         {% endif %}
-        {% do form.prepare() %}
-        {{ form().openTag(form)|raw }}
-            {% import 'site/partials/form.twig' as forms %}
-            {{ formElement(form.get('csrf')) }}
 
-            {{ forms.renderCheckbox(form.get('is_guest')) }}
-            <fieldset class="{{ form.get('person_form').getAttribute('class') }}" id="{{ form.get('person_form').getAttribute('id') }}">
-                <legend>{{ translate(form.get('person_form').getLabel()) }}</legend>
-                {{ forms.renderFieldset(form.get('person_form')) }}
-            </fieldset>
-            <fieldset class="{{ form.get('guest_form').getAttribute('class') }}" id="{{ form.get('guest_form').getAttribute('id') }}">
-                <legend>{{ translate(form.get('guest_form').getLabel()) }}</legend>
-                {{ forms.renderFieldset(form.get('guest_form')) }}
-            </fieldset>
+        {% if form is defined %}
+            {% do form.prepare() %}
+            {% autoescape false %}
+                {{ form().openTag(form) }}
+                {{ formElement(form.get('csrf')) }}
 
-            <table class="table table-bordered table-striped" id="doodle">
-                <thead>
-                    <tr>
-                        <th>{{ translate('Date') }}</th>
-                        <th width="240px" class="hidden-xs">{{ translate('Location') }}</th>
-                        <th width="250px" class="hidden-xs hidden-sm">{{ translate('Info') }}</th>
-                        <th width="130px">{{ translate('Subscribe') }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for field in formSpecification.getFields() %}
-                        <tr {% if formElementErrors(form.get('fields_form').get('field-' ~ field.getId())) %}class="error"{% endif %}>
-                            <td>
-                                {{ field.getLabel(language) }}
-                            </td>
-                            <td class="hidden-xs">
-                                {{ field.getLocation(language) }}
-                            </td>
-                            <td class="hidden-xs hidden-sm">
-                                {{ field.getExtraInformation(language)|slice(0, 30) }}
-                                {% if field.getExtraInformation(language) %}
-                                    <a href="#" class="extraInformation pull-right" data-content="{{ field.getExtraInformation(language) }}"><span class="glyphicon glyphicon-info-sign"></span></a>
-                                {% endif %}
-                            </td>
-                            <td class="actions">
-                                {% if occupiedSlots[field.getId()] %}
-                                    {% if specification.getNamesVisibleForOthers() %}
-                                        <i>{{ occupiedSlots[field.getId()] }}</i>
-                                    {% else %}
-                                        <i>{{ translate('Occupied') }}</i>
-                                    {% endif %}
-                                {% else %}
-                                    <label class="checkbox" style="margin: 2px 0">
-                                        {{ formElement(form.get('fields_form').get('field-' ~ field.getId())) }}
-                                    </label>
-                                {% endif %}
-                            </td>
+                {{ forms.renderCheckbox(form.get('is_guest')) }}
+                <fieldset class="{{ form.get('person_form').getAttribute('class') }}" id="{{ form.get('person_form').getAttribute('id') }}">
+                    <legend>{{ translate(form.get('person_form').getLabel()) }}</legend>
+                    {{ forms.renderFieldset(form.get('person_form')) }}
+                </fieldset>
+                <fieldset class="{{ form.get('guest_form').getAttribute('class') }}" id="{{ form.get('guest_form').getAttribute('id') }}">
+                    <legend>{{ translate(form.get('guest_form').getLabel()) }}</legend>
+                    {{ forms.renderFieldset(form.get('guest_form')) }}
+                </fieldset>
+
+                <table class="table table-bordered table-striped" id="doodle">
+                    <thead>
+                        <tr>
+                            <th>{{ translate('Date') }}</th>
+                            <th width="240px" class="hidden-xs">{{ translate('Location') }}</th>
+                            <th width="250px" class="hidden-xs hidden-sm">{{ translate('Info') }}</th>
+                            <th width="130px">{{ translate('Subscribe') }}</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {% for field in formSpecification.getFields() %}
+                            <tr {% if formElementErrors(form.get('fields_form').get('field-' ~ field.getId())) %}class="error"{% endif %}>
+                                <td>
+                                    {{ field.getLabel(language) }}
+                                </td>
+                                <td class="hidden-xs">
+                                    {{ field.getLocation(language) }}
+                                </td>
+                                <td class="hidden-xs hidden-sm">
+                                    {{ field.getExtraInformation(language)|slice(0, 30) }}
+                                    {% if field.getExtraInformation(language) %}
+                                        <a href="#" class="extraInformation pull-right" data-content="{{ field.getExtraInformation(language) }}"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                    {% endif %}
+                                </td>
+                                <td class="actions">
+                                    {% if occupiedSlots[field.getId()] %}
+                                        {% if specification.getNamesVisibleForOthers() %}
+                                            <i>{{ occupiedSlots[field.getId()] }}</i>
+                                        {% else %}
+                                            <i>{{ translate('Occupied') }}</i>
+                                        {% endif %}
+                                    {% else %}
+                                        <label class="checkbox" style="margin: 2px 0">
+                                            {{ formElement(form.get('fields_form').get('field-' ~ field.getId())) }}
+                                        </label>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
 
-            <div style="clear: both;text-align: center;">
-                {{ formElement(form.get('submit')) }}
-            </div>
-        {{ form().closeTag()|raw }}
+                <div style="clear: both;text-align: center;">
+                    {{ formElement(form.get('submit')) }}
+                </div>
+
+                {{ form().closeTag() }}
+            {% endautoescape %}
+        {% endif %}
     {% endif %}
 {% endblock %}
 
