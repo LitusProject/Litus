@@ -12,9 +12,12 @@
 
             <div class="well">
                 <div class="login-container">
-                    {% do form.prepare() %}
-                    {% autoescape false %}
-                        {{ form().openTag(form) }}
+                    {% if form is defined %}
+                        {% do form.prepare() %}
+                        {% autoescape false %}
+                            {{ form().openTag(form) }}
+                            {{ formElement(form.get('csrf')) }}
+
                             {% for element in form.getElements() %}
                                 {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset' %}
                                     {{ formElement(element) }}
@@ -39,8 +42,11 @@
                                     </div>
                                 {% endif %}
                             {% endfor %}
-                        {{ form().closeTag() }}
-                    {% endautoescape %}
+
+                            {{ form().closeTag() }}
+                        {% endautoescape %}
+                    {% endif %}
+
                     <br style="clear: both" />
                 </div>
             </div>

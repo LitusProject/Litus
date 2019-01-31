@@ -118,9 +118,12 @@
             <a class="shibboleth" href="{{ shibbolethUrl }}">&rarr; {% autoescape false %}{{ translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</a>
             <div id="login_form" style="display: none;">
                 <div class="divider"></div>
-                {% do form.prepare() %}
-                {% autoescape false %}
-                    {{ form().openTag(form) }}
+
+                {% if form is defined %}
+                    {% do form.prepare() %}
+                    {% autoescape false %}
+                        {{ form().openTag(form) }}
+
                         {% for element in form.getElements() %}
                             {% if element.getAttribute('type') == 'checkbox' %}
                                 {{ formlabel().openTag(element) }}{{ formElement(element) }} {{ translate(element.getLabel()) }}{{ formlabel().closeTag() }}
@@ -128,8 +131,11 @@
                                 {{ formElement(element) }}
                             {% endif %}
                         {% endfor %}
-                    {{ form().closeTag() }}
-                {% endautoescape %}
+
+                        {{ form().closeTag() }}
+                    {% endautoescape %}
+                {% endif %}
+
                 <span id="icon"></span>
             </div>
         </div>

@@ -81,10 +81,11 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-right">
                                     <li>
-                                        {% do loginForm.prepare() %}
-                                        {% autoescape false %}
-                                            {% set buttons = [] %}
-                                            {{ form().openTag(loginForm) }}
+                                        {% if loginForm is defined %}
+                                            {% do loginForm.prepare() %}
+                                            {% autoescape false %}
+                                                {{ form().openTag(loginForm) }}
+
                                                 {% for element in loginForm.getElements() %}
                                                     {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset'or element.getAttribute('type') == 'hidden' %}
                                                         {{ formElement(element) }}
@@ -107,8 +108,10 @@
                                                         </div>
                                                     {% endif %}
                                                 {% endfor %}
-                                            {{ form().closeTag() }}
-                                        {% endautoescape %}
+
+                                                {{ form().closeTag() }}
+                                            {% endautoescape %}
+                                        {% endif %}
                                     </li>
                                 </ul>
                             </li>

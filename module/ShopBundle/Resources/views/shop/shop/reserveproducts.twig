@@ -18,32 +18,34 @@
         {% if canReserve %}
             {{ translate("You can reserve some items from the shop. Be aware that you might lose the permission to reserve items if you don't come and buy your reserved items on the right date.") }}
             <div>
-                {% autoescape false %}
-                    {{ form().openTag(form) }}
-                    {{ formElement(form.get('csrf')) }}
-                    {% for stockEntry in stockEntries %}
-                        {% set name = 'product-' ~ stockEntry.product.getId() %}
-                        {% set element = form.get(name) %}
-                        <div class="form-group">
-                            <label for="{{ name }}" class="control-label col-sm-3">{{ element.label }}</label>
+                {% if form is defined %}
+                    {% do form.prepare() %}
+                    {% autoescape false %}
+                        {{ form().openTag(form) }}
+                        {{ formElement(form.get('csrf')) }}
 
-                            <div class="col-sm-1">
-                                {{ formElement(element) }}
+                        {% for stockEntry in stockEntries %}
+                            {% set name = 'product-' ~ stockEntry.product.getId() %}
+                            {% set element = form.get(name) %}
+                            <div class="form-group">
+                                <label for="{{ name }}" class="control-label col-sm-3">{{ element.label }}</label>
+
+                                <div class="col-sm-1">
+                                    {{ formElement(element) }}
+                                </div>
+
+                                <div class=" text-left col-sm-2">
+                                    <span class="control-label">{{ element.attributes.max }} {{ translate('available') }}</span>
+                                </div>
                             </div>
+                        {% endfor %}
+                        {% if form.get('submit') %}
+                            {{ formElement(form.get('submit')) }}
+                        {% endif %}
 
-                            <div class=" text-left col-sm-2">
-                                <span class="control-label">{{ element.attributes.max }} {{ translate('available') }}</span>
-                            </div>
-                        </div>
-                    {% endfor %}
-                    {% if form.get('submit') %}
-                        {{ formElement(form.get('submit')) }}
-                    {% endif %}
-
-
-                    {{ form().closeTag() }}
-
-                {% endautoescape %}
+                        {{ form().closeTag() }}
+                    {% endautoescape %}
+                {% endif %}
             </div>
         {% else %}
             {{ translate("You cannot reserve items from the shop. Make sure you're logged in. This privilege might require you to do some shifts in the shop as well.") }}

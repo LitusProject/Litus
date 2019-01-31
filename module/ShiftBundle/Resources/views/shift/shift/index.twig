@@ -101,61 +101,70 @@
             <div class="well">
                 <h4>{{ translate('By Date') }}</h4>
 
-                {% autoescape false %}
-                {{ form().openTag(dateSearchForm) }}
-                    {% if dateSearchForm.get('csrf') %}
+                {% if dateSearchForm is defined %}
+                    {% do dateSearchForm.prepare() %}
+                    {% autoescape false %}
+                        {{ form().openTag(dateSearchForm) }}
                         {{ formElement(dateSearchForm.get('csrf')) }}
-                    {% endif %}
-                    <div class="form-group">
-                        <div class="input-group">
-                            {{ formElement(dateSearchForm.get('date')) }}
-                            <div class="input-group-btn">
-                                <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                {{ formElement(dateSearchForm.get('date')) }}
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                {{ form().closeTag() }}
-                {% endautoescape %}
+
+                        {{ form().closeTag() }}
+                    {% endautoescape %}
+                {% endif %}
             </div>
 
             <div class="well">
                 <h4>{{ translate('By Event') }}</h4>
 
-                {% autoescape false %}
-                {{ form().openTag(eventSearchForm) }}
-                    {% if eventSearchForm.get('csrf') %}
+                {% if eventSearchForm is defined %}
+                    {% do eventSearchForm.prepare() %}
+                    {% autoescape false %}
+                        {{ form().openTag(eventSearchForm) }}
                         {{ formElement(eventSearchForm.get('csrf')) }}
-                    {% endif %}
-                    <div class="form-group">
-                        <div class="input-group">
-                            {{ formElement(eventSearchForm.get('event')) }}
-                            <div class="input-group-btn">
-                                <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                {{ formElement(eventSearchForm.get('event')) }}
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                {{ form().closeTag() }}
-                {% endautoescape %}
+
+                        {{ form().closeTag() }}
+                    {% endautoescape %}
+                {% endif %}
             </div>
 
             <div class="well">
                 <h4>{{ translate('By Unit') }}</h4>
 
-                {% autoescape false %}
-                {{ form().openTag(unitSearchForm) }}
-                    {% if unitSearchForm.get('csrf') %}
+                {% if unitSearchForm is defined %}
+                    {% do unitSearchForm.prepare() %}
+                    {% autoescape false %}
+                        {{ form().openTag(unitSearchForm) }}
                         {{ formElement(unitSearchForm.get('csrf')) }}
-                    {% endif %}
-                    <div class="form-group">
-                        <div class="input-group">
-                            {{ formElement(unitSearchForm.get('unit')) }}
-                            <div class="input-group-btn">
-                                <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                {{ formElement(unitSearchForm.get('unit')) }}
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                {{ form().closeTag() }}
-                {% endautoescape %}
+
+                        {{ form().closeTag() }}
+                    {% endautoescape %}
+                {% endif %}
             </div>
 
         </div>
