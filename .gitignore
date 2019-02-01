@@ -19,6 +19,8 @@ data/proxies
 data/form/files
 
 public/_assetic
+public/_encore
+
 public/_common/profile
 public/_gallery/albums
 public/_publications/pdf
@@ -26,6 +28,7 @@ public/_publications/html
 public/_br/img
 
 # Exclude dependencies
+node_modules/
 vendor/
 
 # Output from external tools

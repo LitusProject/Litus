@@ -282,7 +282,7 @@
                                     $(this).remove();
                                 });
                             }),
-                            $('<button>', {'class': 'btn btn-default'}).html(settings.tClose).click(function () {
+                            $('<button>', {'class': 'btn btn-dark'}).html(settings.tClose).click(function () {
                                 $(this).closest('.modal').modal('hide').on('hidden', function () {
                                     $(this).remove();
                                 });
@@ -531,7 +531,7 @@
                         ),
                         $('<div>', {'class': 'modal-footer'}).append(
                             addButton = $('<button>', {'class': 'btn btn-primary disabled', 'data-key': 13}).html(settings.tAdd),
-                            $('<button>', {'class': 'btn btn-default'}).html(settings.tClose).click(function () {
+                            $('<button>', {'class': 'btn btn-dark'}).html(settings.tClose).click(function () {
                                 $(this).closest('.modal').modal('hide').on('hidden', function () {
                                     $(this).remove();
                                 });

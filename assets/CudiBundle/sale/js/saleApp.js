@@ -250,7 +250,7 @@ var currentView = 'selectPaydesk';
                 $('<div>', {'class': 'col-md-4'}).append(
                     $('<h3>').html(this.name),
                     $('<br>'),
-                    $('<button>', {'class': 'btn btn-default'}).data('code', this.code).html(settings.tPaydeskChoose)
+                    $('<button>', {'class': 'btn btn-dark'}).data('code', this.code).html(settings.tPaydeskChoose)
                 ).css('text-align', 'center')
             );
         });

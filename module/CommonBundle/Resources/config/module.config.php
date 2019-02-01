@@ -243,7 +243,7 @@ return Config::create(
             'webPath'        => __DIR__ . '/../../../../public/_assetic',
             'cacheEnabled'   => getenv('APPLICATION_ENV') != 'development',
             'cachePath'      => __DIR__ . '/../../../../data/cache',
-            'basePath'       => '/_assetic/',
+            'basePath'       => '/_assetic',
         ),
         'doctrine_factories' => array(
             'migrations_configuration' => DoctrineMigrationsConfigurationFactory::class,

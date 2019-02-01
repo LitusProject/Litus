@@ -115,13 +115,13 @@
                                     $('<label>').html(settings.tPayMethod),
                                     $('<div>').append(
                                         method = $('<div>', {'class': 'btn-group', 'data-toggle': 'buttons'}).append(
-                                            $('<button>', {'class': 'btn btn-default active', 'data-key': '114', 'data-method': 'cash'}).append(
+                                            $('<button>', {'class': 'btn btn-dark active', 'data-key': '114', 'data-method': 'cash'}).append(
                                                 $('<input>', {'type': 'radio', 'value': 1}),
                                                 (settings.tCash + ' - F3')
                                             ).click(function () {
                                                 payed.focus();
                                             }),
-                                            $('<button>', {'class': 'btn btn-default', 'data-key': '115', 'data-method': 'bank'}).append(
+                                            $('<button>', {'class': 'btn btn-dark', 'data-key': '115', 'data-method': 'bank'}).append(
                                                 $('<input>', {'type': 'radio'}),
                                                 (settings.tBank + ' - F3')
                                             ).click(function () {

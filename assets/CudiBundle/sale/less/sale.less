@@ -1,0 +1,152 @@
+.navbar-fixed-top {
+    z-index: 2000;
+}
+
+.modal-dialog {
+    margin-top: 60px;
+}
+
+.queueModal {
+    .modal-dialog {
+        width: 800px;
+    }
+
+    .form-search {
+        .pull-right {
+            margin-right: 10px;
+        }
+    }
+
+    .table {
+        .number {
+            width: 50px;
+        }
+
+        .name {
+            width: 330px;
+        }
+
+        .status {
+            width: 120px;
+        }
+
+        .actions {
+            width: 230px;
+
+            button {
+                margin-right: 5px;
+            }
+
+            .hold {
+                float: right;
+                margin-right: 0;
+            }
+        }
+
+        thead {
+            display: block;
+        }
+
+        tbody {
+            max-height: 300px;
+            overflow: auto;
+            display: block;
+
+            .actions {
+                padding: 3px 8px;
+            }
+        }
+    }
+}
+
+
+.saleScreen {
+    .wrapper {
+        margin-bottom: 10px;
+    }
+
+    .display {
+        display: flex;
+
+        .customer {
+            .title {
+                margin-bottom: 10px;
+            }
+
+            .customerName {
+                margin-left: 30px;
+            }
+
+            .name {
+                font-size: 30px;
+                font-weight: bold;
+            }
+        }
+
+        .money {
+            margin: auto 0;
+            font-weight: bold;
+            text-align: right;
+
+            .total {
+                font-size: 55px;
+            }
+        }
+
+        .discounts {
+            .options {
+                padding-left: 35px;
+            }
+        }
+    }
+
+    .actions {
+        margin: 0;
+
+        button {
+            margin-right: 5px;
+        }
+    }
+
+    .table {
+        .barcode {
+            width: 110px;
+        }
+
+        .status {
+            width: 110px;
+        }
+
+        .number {
+            width: 50px;
+        }
+
+        .price {
+            width: 100px;
+        }
+
+        .actions {
+            width: 150px;
+        }
+
+        tbody {
+            .actions {
+                padding: 3px 8px;
+
+                .removeArticle {
+                    float: right;
+                }
+            }
+
+            tr.inactive {
+                color: @cGray;
+            }
+        }
+    }
+}
+
+button {
+    i {
+        margin-right: 3px;
+    }
+}

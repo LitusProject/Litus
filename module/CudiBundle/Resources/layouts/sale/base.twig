@@ -1,81 +1,85 @@
 {{ doctype() }}
 
-<html lang="en">
+<html lang="en" class="h-100">
     <head>
         {{ headMeta() }}
         {{ headTitle('Sale', 'PREPEND') }}
 
+        <link href="/_encore/cudi_sale.css" media="screen" rel="stylesheet" type="text/css"/>
+        <script src="/_encore/cudi_sale.js"></script>
+        <script src="/_encore/runtime.js"></script>
+
         {{ headLink() }}
     </head>
 
-    <body>
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a href="{{ organizationUrl }}" class="brand"><img src="/_cudi/img/logo.png" /></a>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
+    <body class="d-flex flex-column h-100">
+        <header>
+            <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
+                <span class="navbar-brand" href="#">Sale</span>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbar">
+                    <ul class="navbar-nav mr-auto">
                         {% if hasAccess('cudi_sale_sale', 'sale') %}
-                            <li {% if 'sale' == getParam('action') and 'cudi_sale_sale' == getParam('controller') %} class="active" {% endif %}>
-                                <a href="{{ url("cudi_sale_sale", {"action": "sale", "session": session.getId()}) }}">Sale</a>
+                            <li class="nav-item {% if 'sale' == getParam('action') and 'cudi_sale_sale' == getParam('controller') %}active{% endif %}">
+                                <a class="nav-link" href="{{ url("cudi_sale_sale", {"action": "sale", "session": session.getId()}) }}">Sale</a>
                             </li>
                         {% endif %}
                         {% if hasAccess('cudi_sale_sale', 'return') %}
-                            <li {% if 'return' == getParam('action') and 'cudi_sale_sale' == getParam('controller') %} class="active" {% endif %}>
-                                <a href="{{ url("cudi_sale_sale", {"action": "return", "session": session.getId()}) }}">Return</a>
+                            <li class="nav-item {% if 'return' == getParam('action') and 'cudi_sale_sale' == getParam('controller') %}active{% endif %}">
+                                <a class="nav-link" href="{{ url("cudi_sale_sale", {"action": "return", "session": session.getId()}) }}">Return</a>
                             </li>
                         {% endif %}
                         {% if not lightVersion %}
                             {% if hasAccess('cudi_sale_queue', 'overview') %}
-                                <li {% if 'overview' == getParam('action') and 'cudi_sale_queue' == getParam('controller') %} class="active" {% endif %}>
-                                    <a href="{{ url("cudi_sale_queue", {"action": "overview", "session": session.getId()}) }}">Queue</a>
+                                <li class="nav-item {% if 'overview' == getParam('action') and 'cudi_sale_queue' == getParam('controller') %}active{% endif %}">
+                                    <a class="nav-link" href="{{ url("cudi_sale_queue", {"action": "overview", "session": session.getId()}) }}">Queue</a>
                                 </li>
                             {% endif %}
                             {% if hasAccess('cudi_sale_queue', 'screen') %}
-                                <li {% if 'screen' == getParam('action') and 'cudi_sale_queue' == getParam('controller') %} class="active" {% endif %}>
-                                    <a href="{{ url("cudi_sale_queue", {"action": "screen", "session": session.getId()}) }}">Queue Screen</a>
+                                <li class="nav-item {% if 'screen' == getParam('action') and 'cudi_sale_queue' == getParam('controller') %}active{% endif %}">
+                                    <a class="nav-link" href="{{ url("cudi_sale_queue", {"action": "screen", "session": session.getId()}) }}">Queue Screen</a>
                                 </li>
                             {% endif %}
                             {% if hasAccess('cudi_sale_queue', 'signin') %}
-                                <li {% if 'signin' == getParam('action') and 'cudi_sale_queue' == getParam('controller') %} class="active" {% endif %}>
-                                    <a href="{{ url("cudi_sale_queue", {"action": "signin", "session": session.getId()}) }}">Queue Sign In</a>
+                                <li class="nav-item {% if 'signin' == getParam('action') and 'cudi_sale_queue' == getParam('controller') %}active{% endif %}">
+                                    <a class="nav-link" href="{{ url("cudi_sale_queue", {"action": "signin", "session": session.getId()}) }}">Queue Sign In</a>
                                 </li>
                             {% endif %}
                         {% endif %}
                     </ul>
                 </div>
-            </div>
-        </nav>
-
-        <header>
-            <div class="container">
-                <h1>Sale</h1>
-            </div>
+            </nav>
         </header>
 
-        <div class="container">
-            {% include 'sale/partials/flashMessenger.twig' %}
-
-            <div id="content_controller">
-                {% if invalidSession %}
-                    <div class="flashmessage alert alert-danger fade in">
-                        Invalid Sale Session
-                    </div>
-                {% else %}
-                    {% block content %} {% endblock %}
-                {% endif %}
+        <main class="flex-shrink-0">
+            <div class="container">
+                <h1 class="mt-5">Sale</h1>
             </div>
-        </div>
 
-        <footer>
-            Litus Cudi | Code by <a href="http://litus.cc">Litus</a>
+            <div class="container">
+                {% include 'sale/partials/flashMessenger.twig' %}
+
+                <div id="content_controller">
+                    {% if invalidSession %}
+                        <div class="flashmessage alert alert-danger fade">
+                            Invalid Sale Session
+                        </div>
+                    {% else %}
+                        {% block content %} {% endblock %}
+                    {% endif %}
+                </div>
+            </div>
+        </main>
+
+        <footer class="mt-auto mx-auto py-3">
+            <div class="container">
+                <span class="text-muted">
+                    Litus Cudi | Code by <a href="http://litus.cc">Litus</a>
+                </span>
+            </div>
         </footer>
 
         {{ inlineScript() }}

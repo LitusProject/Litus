@@ -21,7 +21,7 @@
 namespace CommonBundle\Component\Version;
 
 /**
- * Factory to instantiate a console application.
+ * Version
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
