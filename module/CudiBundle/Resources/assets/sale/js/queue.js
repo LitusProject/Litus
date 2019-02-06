@@ -175,7 +175,7 @@
             if (pattern.test(filter)) {
                 var found = false;
                 $this.find('tbody tr').each(function () {
-                    if ($(this).data('info') && $(this).data('info').universityIdentification.toLowerCase().indexOf(filter) == 0)
+                    if ($(this).data('info') && $(this).data('info').university_identification.toLowerCase().indexOf(filter) == 0)
                         found = true;
                 });
 
