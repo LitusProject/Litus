@@ -364,10 +364,6 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             $content .= '<li>' . $this->getTranslator()->translate('Your personal email address') . '</li>';
         }
 
-        if ($person->getPhotoPath() == '') {
-            $content .= '<li>' . $this->getTranslator()->translate('Your photo') . '</li>';
-        }
-
         if ($person->getBirthDay() === null) {
             $content .= '<li>' . $this->getTranslator()->translate('Your birthday') . '</li>';
         }
