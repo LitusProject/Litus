@@ -35,7 +35,7 @@ return array(
     'Will End Master In'                                                                                                                                                                                                                                                           => 'Zal Master Beëindigen In',
     'Additional Diplomas (e.g. driver\'s license)'                                                                                                                                                                                                                                 => 'Extra Diploma\'s (bv. Rijbewijs B)',
     'Erasmus (Optional)'                                                                                                                                                                                                                                                           => 'Erasmus (Optioneel)',
-    'Languages (max. 5)'                                                                                                                                                                                                                                                           => 'Talen (max. 5)',
+    'Languages (max. 4)'                                                                                                                                                                                                                                                           => 'Talen (max. 4)',
     'Language'                                                                                                                                                                                                                                                                     => 'Taal',
     'Oral Skills'                                                                                                                                                                                                                                                                  => 'Mondeling',
     'Written Skills'                                                                                                                                                                                                                                                               => 'Geschreven',
@@ -78,6 +78,7 @@ return array(
     'Grade for the Prior Degree (e.g. 65.48)'                                  => 'Percentage voor het Vorige Diploma (bv. 65.48)',
     '(Provisional) Grade for the Current Degree (e.g. 65.48)'                  => '(Voorlopig) Percentage voor het Huidige Diploma (bv. 65.48)',
     'Extra Information (Year Abroad, Born Outside Belgium, ...)'               => 'Extra Informatie (Jaar in het Buitenland, Geboren Buiten België, ...)',
+    'Please update your account data if necessary. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected automatically.' => 'Gelieve uw gegevens aan te passen indien nodig. Merk wel dat de gegevens hierboven onmiddellijk opgehaald worden bij het aanmaken van deze form, zodat toekomstige veranderingen aan uw profiel niet automatisch hier gereflecteerd worden.',
     'You are advised to use your mother tongue for your CV.'                   => 'We raden je aan om je moedertaal te gebruiken voor je CV. Je kunt de taal in het menu selecteren.',
 
     'Additional Diplomas'   => 'Extra Diploma\'s',
@@ -114,4 +115,5 @@ return array(
 
     'Delete CV' => 'Verwijder mijn CV',
     'Your curriculum vitae has been removed.' => 'Uw curriculum vitae is verwijderd.',
+    'I grant permission to use my personal information in the CV book, which will be made available in an online and in a paperback version to the companies that ordered a CV book. These companies are only allowed to use this data for communication for the purpose of jobs or internships.' => 'Ik geef hierbij toestemming dat mijn persoonlijke gegevens gebruikt worden in het CV boek, dat beschikbaar zal gesteld worden in een online en paperback versie aan bedrijven die het CV boek besteld hebben. Deze bedrijven zullen de data enkel mogen gebruiken voor communicatie in verband met jobs of stages.'
 );

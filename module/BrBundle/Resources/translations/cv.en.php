@@ -79,6 +79,7 @@ return array(
     'Grade for the Prior Degree (e.g. 65.48)'                                  => 'Grade for the Previous Degree (e.g. 65.48)',
     '(Provisional) Grade for the Current Degree (e.g. 65.48)'                  => '(Provisional) Grade for the Current Degree (e.g. 65.48)',
     'Extra Information (Year Abroad, Born Outside Belgium, ...)'               => 'Extra Information (Year Abroad, Born Outside Belgium, ...)',
+    'Please update your account data if necessary. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected automatically.' => 'Please update your account data if necessary. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected automatically.',
     'You are advised to use your mother tongue for your CV.'                   => 'You are advised to use your mother tongue for your CV. You can select your language from the menu.',
 
     'Additional Diplomas'   => 'Additional Diplomas',
@@ -86,6 +87,7 @@ return array(
     'Additional Info'       => 'Additional Info',
     'Career'                => 'Career',
     'Languages'             => 'Languages',
+    'Languages (max. 4)'    => 'Languages (max. 4)',
     'Future Interest'       => 'Future Interest',
     'Mobility in Europe'    => 'Mobility in Europe',
     'Mobility in the World' => 'Mobility in the World',
@@ -115,4 +117,6 @@ return array(
 
     'Delete CV' => 'Delete CV',
     'Your curriculum vitae has been removed.' => 'Your curriculum vitae has been removed.',
+
+    'I grant permission to use my personal information in the CV book, which will be made available in an online and in a paperback version to the companies that ordered a CV book. These companies are only allowed to use this data for communication for the purpose of jobs or internships.' => 'I grant permission to use my personal information in the CV book, which will be made available in an online and in a paperback version to the companies that ordered a CV book. These companies are only allowed to use this data for communication for the purpose of jobs or internships.',
 );
