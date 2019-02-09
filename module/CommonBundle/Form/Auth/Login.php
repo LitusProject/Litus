@@ -70,7 +70,6 @@ class Login extends \CommonBundle\Component\Form\Bootstrap\Form
                 'type'  => 'checkbox',
                 'name'  => 'remember_me',
                 'label' => 'Remember Me',
-                'value' =>  true,
             )
         );
 
