@@ -111,5 +111,8 @@ return array(
         'br_corporate_vacancy' => array(
             'overview', 'add', 'delete', 'edit',
         ),
+        'br_corporate_company' => array(
+            'edit',
+        )
     ),
 );
