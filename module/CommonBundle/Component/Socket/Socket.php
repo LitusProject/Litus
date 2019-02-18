@@ -45,9 +45,12 @@ abstract class Socket implements MessageComponentInterface, ServiceLocatorAwareI
     use ServiceLocatorAwareTrait;
 
     use ConfigTrait;
-    use DoctrineTrait;
     use MailTransportTrait;
     use SentryClientTrait;
+
+    use DoctrineTrait {
+        getEntityManager as traitGetEntityManager;
+    }
 
     /**
      * @var LoopInterface
@@ -199,6 +202,20 @@ abstract class Socket implements MessageComponentInterface, ServiceLocatorAwareI
         }
 
         return null;
+    }
+
+    /**
+     * @return \Doctrine\ORM\EntityManager
+     */
+    public function getEntityManager()
+    {
+        $entityManager = $this->traitGetEntityManager();
+        if (!$entityManager->getConnection()->ping()) {
+            $entityManager->getConnection()->close();
+            $entityManager->getConnection()->connect();
+        }
+
+        return $entityManager;
     }
 
     /**
