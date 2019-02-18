@@ -271,7 +271,7 @@ Student IT Cudi
     ),
     array(
         'key'         => 'cudi.front_address_name',
-        'value'       => 'CuDi Student IT vzw',
+        'value'       => 'Cudi Student IT vzw',
         'description' => 'The name of the address on the front of an article',
     ),
     array(
