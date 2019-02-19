@@ -20,7 +20,7 @@
 
 return array(
     'submenus' => array(
-        'CuDi' => array(
+        'Cudi' => array(
             'subtitle' => array('Articles', 'Financial', 'Stock'),
             'items'    => array(
                 'cudi_admin_article' => array(
