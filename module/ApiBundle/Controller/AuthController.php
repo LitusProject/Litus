@@ -96,4 +96,42 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         return null;
     }
+
+    public function corporateAction(){
+        $this->initJson();
+
+        $result = array();
+
+        $person = $this->getPersonEntity();
+        if ($person === null) {
+            return $this->error(404, 'The person was not found');
+        }
+
+        $corporate = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\User\Person\Corporate')
+            ->findOneById($person->getId());
+
+        if (null !== $corporate) {
+            if (null !== $corporate->getCompany()){
+                $result['corporate_id'] = $academic->getCompany()->getId();
+            }else{
+                $result['corporate_id'] = "-1";
+                $result['message'] = "The company ID could not be retrieved from the database.";
+            }
+        }else{
+            $result['corporate_id'] = "-1";
+            $result['message'] = "The person does not belong to a company.";
+        }
+
+        return new ViewModel(
+            array(
+                'result' => (object) $result,
+            )
+        );
+    }
+
+    public function getCorporateAction()
+    {
+        return $this->corporateAction();
+    }
 }

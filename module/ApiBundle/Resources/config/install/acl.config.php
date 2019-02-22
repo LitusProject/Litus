@@ -24,7 +24,7 @@ return array(
             'add', 'delete', 'edit', 'manage',
         ),
         'api_auth' => array(
-            'getPerson',
+            'getCorporate', 'getPerson',
         ),
         'api_calendar' => array(
             'activeEvents', 'poster',
