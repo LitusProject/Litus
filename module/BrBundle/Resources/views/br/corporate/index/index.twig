@@ -8,5 +8,34 @@
             <img src="/img/litus.png" alt="Litus" />
             <h3>{{ translate('Please login to get access to these pages.') }}</h3>
         </div>
+        {% if loginForm is defined %}
+            {% do loginForm.prepare() %}
+            {% autoescape false %}
+                {{ form().openTag(loginForm) }}
+                {% for element in loginForm.getElements() %}
+                    {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset'or element.getAttribute('type') == 'hidden' %}
+                        {{ formElement(element) }}
+                    {% elseif element.getAttribute('type') == 'checkbox' %}
+                        <div class="remember_me">
+                            <label>
+                                {{ formElement(element) }}
+                                {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
+                            </label>
+                        </div>
+                    {% else %}
+                        <div class="form-group {% if element.getMessages()|length > 0 %}has-error{% endif %}">
+                            <label class="control-label">{% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}</label>
+                            <div>{{ formElement(element) }}</div>
+                            {% if element.getMessages()|length > 0 %}
+                                <div class="help-block">
+                                    {{ formElementErrors(element) }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                {{ form().closeTag() }}
+            {% endautoescape %}
+        {% endif %}
     {% endif %}
 {% endblock %}
