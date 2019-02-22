@@ -108,7 +108,7 @@ class Queue
      */
     public function getJsonQueueItem($id)
     {
-        if ($id == null) {
+        if ($id === null) {
             return;
         }
 
@@ -185,7 +185,7 @@ class Queue
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
             ->findOneByUsername($universityIdentification);
 
-        if ($person == null) {
+        if ($person === null) {
             return json_encode(
                 (object) array(
                     'error' => 'person',
@@ -219,7 +219,7 @@ class Queue
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneByPersonNotSold($session, $person);
 
-        if ($queueItem == null) {
+        if ($queueItem === null) {
             $queueItem = new QueueItemEntity($this->entityManager, $person, $session);
 
             $this->entityManager->persist($queueItem);
@@ -233,11 +233,15 @@ class Queue
     }
 
     /**
-     * @param  User $user
+     * @param  User|null $user
      * @return null
      */
-    public function unlock(User $user)
+    public function unlock($user)
     {
+        if ($user === null) {
+            return;
+        }
+
         foreach ($this->queueItems as $item) {
             if ($item->getUser() === $user) {
                 $item = $this->entityManager
@@ -308,7 +312,7 @@ class Queue
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_collect_scanning');
 
-        if (!$enableCollectScanning || !isset($this->queueItems[$id]) || $articles == null) {
+        if (!$enableCollectScanning || !isset($this->queueItems[$id]) || $articles === null) {
             return;
         }
 
