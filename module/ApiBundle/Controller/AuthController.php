@@ -113,7 +113,7 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         if (null !== $corporate) {
             if (null !== $corporate->getCompany()){
-                $result['corporate_id'] = $academic->getCompany()->getId();
+                $result['corporate_id'] = $corporate->getCompany()->getId();
             }else{
                 $result['corporate_id'] = "-1";
                 $result['message'] = "The company ID could not be retrieved from the database.";
