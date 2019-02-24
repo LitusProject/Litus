@@ -352,6 +352,7 @@
 
         if ($this.data('currentPopover'))
             $this.data('currentPopover').popover('destroy');
+        
         $(jsEvent.target).popover({
             placement: _getPopoverPlacement(event.start, view),
             title: $('<div>').append(
@@ -359,8 +360,8 @@
                 $('<div>', {'class': 'pull-right'}).append(
                     $('<a>', {'class': 'close'}).html('&times;').click(function () {$(jsEvent.target).popover('destroy')})
                 )
-            ),
-            content: content.html(),
+            ).html(),
+            content: content,
             trigger: 'manual',
             html: true,
             container: 'body'
