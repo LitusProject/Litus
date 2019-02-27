@@ -179,7 +179,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     public function deleteReservationAction()
     {
         $reservation = $this->getReservationEntity();
-        if ($reservation === null) {
+        if ($reservation !== null) {
             $canBeDeleted = true;
             $canBeDeleted = $canBeDeleted && $reservation->getPerson()->getId() == $this->getPersonEntity()->getId();
             $canBeDeleted = $canBeDeleted && $reservation->getSalesSession()->getStartDate() > new DateTime();
