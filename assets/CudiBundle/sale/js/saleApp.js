@@ -16,7 +16,6 @@ var currentView = 'selectPaydesk';
         tPrintNext: 'Print Next',
         tPaydeskSelectTitle: 'Select Paydesk',
         tPaydeskChoose: 'Choose',
-        tErrorTitle: 'Error',
         tErrorSocket: 'An error occurred while loading the queue.',
 
         paydesks: [],
@@ -182,12 +181,13 @@ var currentView = 'selectPaydesk';
 
         $('body').barcodeControl({
             onBarcode: function (barcode) {
-                if (currentView == 'queue')
+                if (currentView == 'queue') {
                     queue.queue('gotBarcode', barcode);
-                else if (currentView == 'collect')
+                } else if (currentView == 'collect') {
                     collect.collect('gotBarcode', barcode);
-                else if (currentView == 'sale')
+                } else if (currentView == 'sale') {
                     sale.sale('gotBarcode', barcode);
+                }
             }
         });
 
@@ -195,7 +195,7 @@ var currentView = 'selectPaydesk';
             name: settings.socketName,
             url: settings.socketUrl,
             open: function (e) {
-                $('.flashmessage').remove();
+                $('.alert').alert('close');
                 _selectPaydesk($this);
 
                 firstAction = false;
@@ -212,17 +212,19 @@ var currentView = 'selectPaydesk';
                     queue.queue('hide');
                     sale.sale('show', data.sale);
                 } else if (data.addArticle) {
-                    if (currentView == 'collect')
+                    if (currentView == 'collect') {
                         collect.collect('addArticle', data.addArticle);
-                    if (currentView == 'sale')
+                    }
+
+                    if (currentView == 'sale') {
                         sale.sale('addArticle', data.addArticle);
+                    }
                 } else if (data.addPersonError) {
                     queue.queue('addPersonError', data.addPersonError.error);
                 }
             },
             error: function (e) {
                 firstAction = false;
-
                 _socketError($this);
             }
         });
@@ -231,16 +233,17 @@ var currentView = 'selectPaydesk';
     function _selectPaydesk($this) {
         var settings = $this.data('saleAppSettings');
 
-        var modal = $('<div>', {'class': 'modal ' + (firstAction ? '' : 'fade')}).append(
+        var modal = $('<div>', {'class': 'modal ' + (firstAction ? '' : 'fade'), 'id': 'paydeskSelectModal'}).append(
             $('<div>', {'class': 'modal-dialog'}).append(
                 $('<div>', {'class': 'modal-content'}).append(
                     $('<div>', {'class': 'modal-header'}).append(
-                        $('<h4>').html(settings.tPaydeskSelectTitle)
+                        $('<h5>', {'class': 'modal-title'}).html(settings.tPaydeskSelectTitle)
                     ),
                     $('<div>', {'class': 'modal-body'}).append(
-                        body = $('<div>', {'class': 'row'})
-                    ),
-                    $('<div>', {'class': 'modal-footer'})
+                        $('<div>', {'class': 'container'}).append(
+                            body = $('<div>', {'class': 'row'})
+                        )
+                    )
                 )
             )
         );
@@ -248,9 +251,8 @@ var currentView = 'selectPaydesk';
         $(settings.paydesks).each(function () {
             body.append(
                 $('<div>', {'class': 'col-md-4'}).append(
-                    $('<h3>').html(this.name),
-                    $('<br>'),
-                    $('<button>', {'class': 'btn btn-dark'}).data('code', this.code).html(settings.tPaydeskChoose)
+                    $('<h3>', {'class': 'mb-3'}).html(this.name),
+                    $('<button>', {'class': 'btn btn-primary'}).data('code', this.code).html(settings.tPaydeskChoose)
                 ).css('text-align', 'center')
             );
         });
@@ -273,21 +275,15 @@ var currentView = 'selectPaydesk';
 
         $('body').append(modal);
         modal.permanentModal();
-        $('.modal, .modal-backdrop').addClass('fade');
+        $('#paydeskSelectModal');
     }
 
     function _socketError($this) {
         var settings = $this.data('saleAppSettings');
-
-        $('.modal, .modal-backdrop').removeClass('fade');
         $('.modal').modal('hide');
-        $('.modal-backdrop').remove();
 
         $this.html('').append(
-            $('<div>', {'class': 'flashmessage alert alert-danger fade'}).append(
-                $('<div>', {'class': 'title'}).html(settings.tErrorTitle),
-                $('<div>', {'class': 'content'}).append('<p>').html(settings.tErrorSocket)
-            ).addClass('in')
+            $('<div>', {'class': 'alert alert-danger fade show'}).html(settings.tErrorSocket)
         );
     }
 })(jQuery);

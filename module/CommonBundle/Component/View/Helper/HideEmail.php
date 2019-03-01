@@ -21,7 +21,7 @@
 namespace CommonBundle\Component\View\Helper;
 
 /**
- * A view helper that replaces all email addresses.
+ * View helper that replaces all email addresses.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */

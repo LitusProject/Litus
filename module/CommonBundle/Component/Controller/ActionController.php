@@ -22,7 +22,6 @@ namespace CommonBundle\Component\Controller;
 
 use CommonBundle\Component\Acl\Acl;
 use CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver;
-use CommonBundle\Component\Controller\Exception\RuntimeException;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\AuthenticationTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\CacheTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\ConfigTrait;
@@ -41,6 +40,7 @@ use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Entity\General\Language;
 use CommonBundle\Entity\General\Visit;
 use Locale;
+use RuntimeException;
 use Zend\Http\Header\HeaderInterface;
 use Zend\Mvc\MvcEvent;
 use Zend\Validator\AbstractValidator;
@@ -399,7 +399,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      */
     public function getAuthenticationHandler()
     {
-        throw new \RuntimeException(
+        throw new RuntimeException(
             'Do not extend \CommonBundle\Component\Controller\ActionController directly'
         );
     }

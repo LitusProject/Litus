@@ -47,8 +47,9 @@
             return _isBarcode($(this));
         },
         option : function (options) {
-            if (! $(this).data('barcodeControlSettings'))
+            if (! $(this).data('barcodeControlSettings')) {
                 return false;
+            }
 
             $(this).data('barcodeControlSettings', $.extend($(this).data('barcodeControlSettings'), options));
             return true;
@@ -69,14 +70,16 @@
     };
 
     function _append ($this, value) {
-        if (undefined == $this.data('barcodeControl'))
+        if (undefined == $this.data('barcodeControl')) {
             return;
+        }
 
         value = $this.data('barcodeControl').buffer + value;
         $this.data('barcodeControl').buffer = value.substr(Math.max(0, value.length - $this.data('barcodeControlSettings').barcodeLength - 1));
 
-        if ($this.data('barcodeControl').timer)
+        if ($this.data('barcodeControl').timer) {
             clearTimeout($this.data('barcodeControl').timer);
+        }
 
         $this.data('barcodeControl').isBarcode = true;
 
@@ -86,8 +89,9 @@
     }
 
     function _clear ($this) {
-        if ($this.data('barcodeControl'))
+        if ($this.data('barcodeControl')) {
             clearTimeout($this.data('barcodeControl').timer);
+        }
 
         $this.data('barcodeControl', {
             timer: null,
@@ -114,18 +118,21 @@
     }
 
     function _getNumericValue(keyCode) {
-        if (! _isNumericKey(keyCode))
+        if (! _isNumericKey(keyCode)) {
             return;
+        }
 
-        if (keyCode <= 57)
+        if (keyCode <= 57) {
             return (keyCode - 48);
-        else
+        } else {
             return (keyCode - 96);
+        }
     }
 
     function _isBarcode($this) {
-        if (undefined == $this.data('barcodeControl'))
+        if (undefined == $this.data('barcodeControl')) {
             return false;
+        }
 
         return $this.data('barcodeControl').isBarcode;
     }
@@ -135,8 +142,9 @@
     }
 
     function _read ($this) {
-        if (undefined == $this.data('barcodeControl'))
+        if (undefined == $this.data('barcodeControl')) {
             return 0;
+        }
 
         return $this.data('barcodeControl').buffer;
     }

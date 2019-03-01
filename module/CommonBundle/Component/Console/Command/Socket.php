@@ -44,7 +44,7 @@ abstract class Socket extends \CommonBundle\Component\Console\Command
     {
         if (!$this->isSocketEnabled()) {
             $this->writeln('<info>This socket is not enabled</info>');
-            return;
+            return 1;
         }
 
         $loop = EventLoopFactory::create();

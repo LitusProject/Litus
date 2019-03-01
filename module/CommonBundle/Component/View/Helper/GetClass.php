@@ -21,7 +21,7 @@
 namespace CommonBundle\Component\View\Helper;
 
 /**
- * A view helper that calls PHP's get_class.
+ * View helper that calls PHP's get_class.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */

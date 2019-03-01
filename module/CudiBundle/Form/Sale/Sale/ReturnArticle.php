@@ -25,7 +25,7 @@ namespace CudiBundle\Form\Sale\Sale;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class ReturnArticle extends \CommonBundle\Component\Form\Bootstrap\Form
+class ReturnArticle extends \CommonBundle\Component\Form\Form
 {
     public function init()
     {
@@ -70,22 +70,6 @@ class ReturnArticle extends \CommonBundle\Component\Form\Bootstrap\Form
             )
         );
 
-        $this->addSubmit(
-            'Return',
-            null,
-            'submit',
-            array(
-                'autocomplete' => 'off',
-                'id'           => 'signin',
-            )
-        );
-
-        $this->add(
-            array(
-                'type'  => 'reset',
-                'name'  => 'cancel',
-                'value' => 'Cancel',
-            )
-        );
+        $this->addSubmit('Return');
     }
 }

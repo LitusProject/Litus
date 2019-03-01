@@ -1,42 +1,3 @@
-// Polyfill for ECMAScript 6 String.prototype.repeat function
-(function () {
-    if (!String.prototype.repeat) {
-        String.prototype.repeat = function (count) {
-            "use strict";
-            if (this == null)
-                throw new TypeError("can't convert " + this + " to object");
-
-            var str = "" + this;
-            count = +count;
-
-            if (count != count)
-                count = 0;
-            if (count < 0)
-                throw new RangeError("repeat count must be non-negative");
-            if (count == Infinity)
-                throw new RangeError("repeat count must be less than infinity");
-            count = Math.floor(count);
-            if (str.length == 0 || count == 0)
-                return "";
-            // Ensuring count is a 31-bit integer allows us to heavily optimize the
-            // main part. But anyway, most current (august 2014) browsers can't handle
-            // strings 1 << 28 chars or longer, so :
-            if (str.length * count >= 1 << 28)
-                throw new RangeError("repeat count must not overflow maximum string size");
-            var rpt = "";
-            for (;;) {
-                if ((count & 1) == 1)
-                    rpt += str;
-                count >>>= 1;
-                if (count == 0)
-                    break;
-                str += str;
-            }
-            return rpt;
-        }
-    }
-})();
-
 (function ($) {
     var defaults = {
         isSell: true,
@@ -47,6 +8,7 @@
         barcodeLength: 12,
 
         tCurrentCustomer: 'Current Customer',
+        tDiscounts: 'Discounts',
         tComments: 'Comments',
         tQueue: 'Queue',
         tConclude: 'Finish',
@@ -64,7 +26,6 @@
         tAddArticle: 'Add Article',
         tBarcode: 'Barcode',
         tPrintNext: 'Print Next',
-        tErrorTitle: 'Error',
         tErrorExtraArticle: 'An error occurred while adding the article.',
 
         saveComment: function (id, comment) {},
@@ -85,9 +46,10 @@
         },
         show : function (options, data) {
             $(this).data('saleInterfaceSettings', $.extend(defaults, options));
-
             $(this).data('data', data);
+
             _show($(this), data);
+
             return this;
         },
         hide : function () {
@@ -110,9 +72,11 @@
             var discounts = [];
             var $this = $(this);
             $($(this).data('saleInterfaceSettings').discounts).each(function () {
-                if ($this.find('.discounts input[value="' + this.type + '"]').is(':checked'))
+                if ($this.find('.discounts input[value="' + this.type + '"]').is(':checked')) {
                     discounts.push(this.type);
+                }
             });
+
             return discounts;
         }
     };
@@ -132,43 +96,46 @@
 
         $this.append(
             $('<div>', {'class': 'saleScreen'}).append(
-                $('<div>', {'class': 'row wrapper'}).append(
-                    $('<div>', {'class': 'display'}).append(
-                        customer = $('<div>', {'class': 'col-md-7 customer'}).append(
-                            $('<div>', {'class': 'row title'}).html(settings.tCurrentCustomer),
-                            $('<div>', {'class': 'row customerName'}).append(
-                                $('<span>', {'class': 'name'}).html(data.person.name),
-                                ' ',
-                                $('<span>', {'class': 'university_identification'}).html('(' + data.person.universityIdentification + ')')
+                $('<div>', {'class': 'row mb-4'}).append(
+                    customer = $('<div>', {'class': 'col-7'}).append(
+                        $('<div>', {'class': 'd-flex flex-column h-100'}).append(
+                            $('<div>').html(settings.tCurrentCustomer),
+                            $('<div>', {'class': 'ml-4 my-auto'}).append(
+                                $('<div>', {'class': 'd-flex'}).append(
+                                    $('<div>', {'class': 'align-self-end'}).append(
+                                        $('<h3>', {'class': 'mb-0'}).html(data.person.name)
+                                    ),
+                                    $('<div>', {'class': 'align-self-end ml-1'}).html('(' + data.person.universityIdentification + ')')
+                                )
                             )
                         )
                     )
                 ),
-                $('<div>', {'class': 'row wrapper'}).append(
-                    $('<div>', {'class': 'actions'}).append(
-                        editComment = $('<button>', {'class': 'btn btn-info'}).append(
-                            $('<i>', {'class': 'glyphicon glyphicon-comment'}),
-                            settings.tComments
-                        ),
-                        printNextInQueue = $('<button>', {'class': 'btn btn-primary', 'data-key': 118}).append(
-                            $('<i>', {'class': 'glyphicon glyphicon-print'}),
-                            settings.tPrintNext + ' - F7'
-                        ),
-                        showQueue = $('<button>', {'class': 'btn btn-primary', 'data-key': 119}).append(
-                            $('<i>', {'class': 'glyphicon glyphicon-eye-open'}),
+                $('<div>', {'class': 'row justify-content-center mb-4'}).append(
+                    $('<div>', {'class': 'col-10 text-center'}).append(
+                        showQueue = $('<button>', {'class': 'btn btn-primary mr-1', 'data-key': 119}).append(
+                            $('<i>', {'class': 'fas fa-list-ol mr-1'}),
                             settings.tQueue + ' - F8'
                         ),
-                        conclude = $('<button>', {'class': 'btn btn-success', 'data-key': 120}).append(
-                            $('<i>', {'class': 'glyphicon glyphicon-ok-circle'}),
-                            settings.tConclude + ' - F9'
+                        printNextInQueue = $('<button>', {'class': 'btn btn-primary mr-1', 'data-key': 118}).append(
+                            $('<i>', {'class': 'fas fa-print mr-1'}),
+                            settings.tPrintNext + ' - F7'
                         ),
-                        cancel = $('<button>', {'class': 'btn btn-danger', 'data-key': 121}).append(
-                            $('<i>', {'class': 'glyphicon glyphicon-remove'}),
+                        addArticle = $('<button>', {'class': 'btn btn-secondary pull-right mr-1', 'data-key': 116}).append(
+                            $('<i>', {'class': 'fas fa-plus-circle mr-1'}),
+                            settings.tAddArticle + ' - F5'
+                        ),
+                        editComments = $('<button>', {'class': 'btn btn-secondary mr-1'}).append(
+                            $('<i>', {'class': 'fas fa-comments mr-1'}),
+                            settings.tComments
+                        ),
+                        cancel = $('<button>', {'class': 'btn btn-danger mr-1', 'data-key': 121}).append(
+                            $('<i>', {'class': 'fas fa-minus-circle mr-1'}),
                             settings.tCancel + ' - F10'
                         ),
-                        addArticle = $('<button>', {'class': 'btn btn-info pull-right', 'data-key': 116}).append(
-                            $('<i>', {'class': 'glyphicon glyphicon-plus-sign'}),
-                            settings.tAddArticle + ' - F5'
+                        conclude = $('<button>', {'class': 'btn btn-success', 'data-key': 120}).append(
+                            $('<i>', {'class': 'fas fa-check-circle mr-1'}),
+                            settings.tConclude + ' - F9'
                         )
                     )
                 ),
@@ -196,28 +163,28 @@
 
         if (settings.isSell) {
             customer.after(
-                $('<div>', {'class': 'col-md-2 discounts'}).append(
-                    'Discounts',
-                    options = $('<div>', {'class': 'options'})
-                ),
-                $('<div>', {'class': 'col-md-3 money'}).append(
-                    $('<div>', {'class': 'total'}).append(
-                        '&euro; 0.00'
+                $('<div>', {'class': 'col-2 discounts'}).append(
+                    $('<div>', {'class': 'd-flex flex-column'}).append(
+                        $('<div>').html(settings.tDiscounts),
+                        options = $('<div>', {'class': 'ml-2 mt-1'})
                     )
+                ),
+                $('<div>', {'class': 'col-3 text-center my-auto'}).append(
+                    $('<h1>', {'class': 'display-4 mb-0 money'}).html('&euro; 0.00')
                 )
             );
 
             $(settings.discounts).each(function () {
-                var checked = ('member' == this.type && data.person.member) || ('acco' == this.type && data.person.acco);
+                var checked = (this.type == 'member' && data.person.member) || (this.type == 'acco' && data.person.acco);
 
                 options.append(
-                    $('<p>').append(
-                        $('<label>', {'class': 'checkbox'}).append(
-                            $('<input>', {'type': 'checkbox', 'name': 'discounts', 'value': this.type}).prop('checked', checked).change(function () {
+                    $('<div>', {'class': 'custom-control custom-checkbox mb-1'}).append(
+                        $('<input>', {'class': 'custom-control-input', 'type': 'checkbox', 'name': 'discounts', 'value': this.type, 'id': 'discount' + this.name})
+                            .prop('checked', checked)
+                            .change(function () {
                                 _updatePrice($this);
                             }),
-                            ' ' + this.name
-                        )
+                        $('<label>', {'class': 'custom-control-label', 'for': 'discount' + this.name}).html(this.name)
                     )
                 );
             });
@@ -227,8 +194,8 @@
             _addArticleModal($this);
         });
 
-        editComment.click(function () {
-            _editComment($this);
+        editComments.click(function () {
+            _editComments($this);
         });
 
         printNextInQueue.click(function () {
@@ -249,43 +216,38 @@
 
         _addArticles($this, data.articles);
 
-        $(document).bind('keydown.sale', function  (e) {
+        $(document).keydown(function (e) {
             _keyControls($this, e);
         });
 
         _updatePrice($this);
     }
 
-    function _editComment($this) {
+    function _editComments($this) {
         var settings = $this.data('saleInterfaceSettings');
 
         $('body').append(
             modal = $('<div>', {'class': 'modal fade'}).append(
-                $('<div>', {'class': 'modal-dialog'}).append(
+                $('<div>', {'class': 'modal-dialog modal-lg'}).append(
                     $('<div>', {'class': 'modal-content'}).append(
                         $('<div>', {'class': 'modal-header'}).append(
-                            $('<a>', {'class': 'close'}).html('&times;').click(function () {
-                                $(this).closest('.modal').modal('hide').closest('.modal').on('hidden', function () {
-                                    $(this).remove();
-                                });
-                            }),
-                            $('<h4>').html(settings.tComments)
+                            $('<h5>', {'class': 'modal-title'}).html(settings.tComments),
+                            $('<button>', {'type': 'button', 'class': 'close', 'data-dismiss': 'modal'}).append(
+                                $('<span>').html('&times;')
+                            )
                         ),
                         $('<div>', {'class': 'modal-body'}).append(
-                            $('<textarea>', {'style': 'width: 97%', 'rows': 10, 'class': 'form-control'}).val($this.data('data').comment)
+                            $('<div>', {'class': 'input-group'}).append(
+                                $('<textarea>', {'class': 'form-control', 'rows': 10}).val($this.data('data').comment)
+                            )
                         ),
                         $('<div>', {'class': 'modal-footer'}).append(
+                            $('<button>', {'class': 'btn btn-secondary', 'data-dismiss': 'modal'}).html(settings.tClose),
                             $('<button>', {'class': 'btn btn-primary'}).html(settings.tSave).click(function () {
                                 $this.data('data').comment = $(this).closest('.modal').find('textarea').val();
                                 settings.saveComment($this.data('data').id, $this.data('data').comment);
-                                $(this).closest('.modal').modal('hide').closest('.modal').on('hidden', function () {
-                                    $(this).remove();
-                                });
-                            }),
-                            $('<button>', {'class': 'btn btn-dark'}).html(settings.tClose).click(function () {
-                                $(this).closest('.modal').modal('hide').on('hidden', function () {
-                                    $(this).remove();
-                                });
+
+                                modal.modal('toggle');
                             })
                         )
                     )
@@ -310,8 +272,9 @@
 
         var bestPrice = data.price;
         $(data.discounts).each(function () {
-            if ($this.find('.discounts input[value="' + this.type + '"]').is(':checked'))
+            if ($this.find('.discounts input[value="' + this.type + '"]').is(':checked')) {
                 bestPrice = this.value < bestPrice ? this.value : bestPrice;
+            }
         });
 
         row = $('<tr>', {'class': 'article', 'id': 'article-' + data.articleId}).append(
@@ -326,17 +289,18 @@
             actions = $('<td>', {'class': 'actions'})
         ).data('info', data);
 
-        if ("booked" == data.status || data.sellable == false) {
+        if (data.status == 'booked' || data.sellable == false) {
             row.addClass('inactive');
         } else {
             actions.append(
-                $('<button>', {'class': 'btn btn-success addArticle'}).html(settings.tAdd).click(function () {
+                $('<button>', {'class': 'btn btn-success mr-1 addArticle'}).html(settings.tAdd).click(function () {
                     _addArticle($this, $(this).closest('tr').data('info').articleId);
                 }).hide(),
                 $('<button>', {'class': 'btn btn-danger removeArticle'}).html(settings.tRemove).click(function () {
                     _removeArticle($this, $(this).closest('tr').data('info').articleId);
                 }).hide()
             );
+
             _updateRow($this, row);
         }
 
@@ -344,33 +308,45 @@
     }
 
     function _keyControls($this, e) {
-        var activeRow = $this.find('tbody tr.article.info:first');
+        var activeRow = $this.find('tbody tr.article.activeRow:first');
 
         if (e.which == 40) { // arrow up
             e.preventDefault();
 
             if (activeRow.length == 0) {
-                $this.find('tr.article:not(.inactive):first').addClass('info');
+                $this.find('tr.article:not(.inactive):first').addClass('activeRow');
             } else {
-                activeRow.removeClass('info');
-                activeRow.next('.article:not(.inactive)').addClass('info');
+                activeRow.removeClass('activeRow');
+                _updateRow($this, activeRow);
+
+                activeRow.next('.article:not(.inactive)').addClass('activeRow');
+            }
+
+            activeRow = $this.find('tbody tr.article.activeRow:first');
+            if (activeRow.length > 0) {
+                _updateRow($this, activeRow);
             }
         } else if (e.which == 38) { // arrow down
             e.preventDefault();
 
             if (activeRow.length == 0) {
-                $this.find('tr.article:not(.inactive):last').addClass('info');
+                $this.find('tr.article:not(.inactive):last').addClass('activeRow');
             } else {
-                activeRow.removeClass('info');
-                activeRow.prev('.article:not(.inactive)').addClass('info');
+                activeRow.removeClass('activeRow');
+                _updateRow($this, activeRow);
+
+                activeRow.prev('.article:not(.inactive)').addClass('activeRow');
+            }
+
+            activeRow = $this.find('tbody tr.article.activeRow:first');
+            if (activeRow.length > 0) {
+                _updateRow($this, activeRow);
             }
         } else if (e.which == 187) { // plus
             e.preventDefault();
-
             activeRow.find('.addArticle').click();
         } else if (e.which == 189) { // minus
             e.preventDefault();
-
             activeRow.find('.removeArticle').click();
         }
     }
@@ -381,18 +357,17 @@
             if ($(this).data('info').currentNumber < $(this).data('info').number) {
                 $(this).data('info').currentNumber++;
                 _updateRow($this, $(this));
-                $(this).addClass('success').removeClass('danger');
                 return false;
-            } else {
-                $(this).addClass('danger').removeClass('success');
             }
         });
 
-        if (_isMemberShipArticleId(id, settings.membershipArticles))
+        if (_isMemberShipArticleId(id, settings.membershipArticles)) {
             $this.find('.discounts input[value="member"]').prop('checked', true);
+        }
 
-        if (settings.isSell)
+        if (settings.isSell) {
             _updatePrice($this);
+        }
     }
 
     function _removeArticle($this, id) {
@@ -401,17 +376,16 @@
             if ($(this).data('info').currentNumber > 0) {
                 $(this).data('info').currentNumber--;
                 _updateRow($this, $(this));
-                $(this).removeClass('danger success');
-            } else {
-                $(this).addClass('danger').removeClass('success');
             }
         });
 
-        if (_isMemberShipArticleId(id, settings.membershipArticles))
+        if (_isMemberShipArticleId(id, settings.membershipArticles)) {
             $this.find('.discounts input[value="member"]').prop('checked', false);
+        }
 
-        if (settings.isSell)
+        if (settings.isSell) {
             _updatePrice($this);
+        }
     }
 
     function _updateRow($this, row) {
@@ -420,6 +394,19 @@
 
         row.find('.removeArticle').toggle(data.currentNumber > 0);
         row.find('.addArticle').toggle(data.currentNumber < data.number);
+
+        row.removeClass('table-primary');
+        if (row.hasClass('activeRow')) {
+            row.addClass('table-primary');
+        }
+
+        if (data.currentNumber == data.number) {
+            row.addClass('text-success').removeClass('text-danger');
+        } else if (data.currentNumber > 0 ) {
+            row.addClass('text-danger').removeClass('text-success');
+        } else {
+            row.removeClass('text-danger text-success');
+        }
     }
 
     function _conclude($this) {
@@ -427,10 +414,13 @@
 
         var articles = {};
         $this.find('tbody tr:not(.inactive)').each(function () {
-            if (articles[$(this).data('info').articleId] == undefined)
+            if (articles[$(this).data('info').articleId] == undefined) {
                 articles[$(this).data('info').articleId] = 0;
+            }
+
             articles[$(this).data('info').articleId] += $(this).data('info').currentNumber;
         });
+
         settings.conclude($this.data('data').id, articles);
     }
 
@@ -478,25 +468,30 @@
                 }
             });
 
-            if (found)
+            if (found) {
                 return false;
+            }
         });
 
-        if (found)
+        if (found) {
             return;
+        }
 
         $(settings.membershipArticles).each(function () {
             if (this.barcode == barcode) {
-                $this.find('tbody').prepend(_addArticleRow($this, settings, {
-                    articleId: this.id,
-                    barcode: this.barcode,
-                    title: this.title,
-                    price: this.price,
-                    collected: 0,
-                    number: 1,
-                    status: 'assigned',
-                    sellable: true,
-                }));
+                $this.find('tbody').prepend(
+                    _addArticleRow($this, settings, {
+                        articleId: this.id,
+                        barcode: this.barcode,
+                        title: this.title,
+                        price: this.price,
+                        collected: 0,
+                        number: 1,
+                        status: 'assigned',
+                        sellable: true,
+                    })
+                );
+
                 _addArticle($this, this.id);
                 return false;
             }
@@ -508,53 +503,40 @@
 
         $('body').append(
             modal = $('<div>', {'class': 'modal fade'}).append(
-                $('<div>', {'class': 'modal-dialog'}).append(
+                $('<div>', {'class': 'modal-dialog modal-lg'}).append(
                     $('<div>', {'class': 'modal-content'}).append(
                         $('<div>', {'class': 'modal-header'}).append(
-                            $('<a>', {'class': 'close'}).html('&times;').click(function () {
-                                $(this).closest('.modal').modal('hide').closest('.modal').on('hidden', function () {
-                                    $(this).remove();
-                                });
-                            }),
-                            $('<h4>').html(settings.tAddArticle)
+                            $('<h5>', {'class': 'modal-title'}).html(settings.tAddArticle),
+                            $('<button>', {'type': 'button', 'class': 'close', 'data-dismiss': 'modal'}).append(
+                                $('<span>').html('&times;')
+                            )
                         ),
                         $('<div>', {'class': 'modal-body'}).append(
                             $('<div>').append(
-                                $('<div>', {'class': 'form-group'}).append(
-                                    $('<label>', {'for': 'article'}).html(settings.tArticle),
-                                    $('<div>').append(
-                                        articleId = $('<input>', {'type': 'hidden', 'id': 'articleAddTypeaheadId'}),
-                                        article = $('<input>', {'type': 'text', 'id': 'articleAddTypeahead', 'class': 'form-control', 'placeholder': settings.tArticle})
-                                    )
+                                articleId = $('<input>', {'type': 'hidden', 'id': 'articleAddTypeaheadId'}),
+                                $('<div>', {'class': 'input-group'}).append(
+                                    article = $('<input>', {'type': 'text', 'class': 'form-control', 'id': 'articleAddTypeahead', 'placeholder': settings.tArticle})
                                 )
                             )
                         ),
                         $('<div>', {'class': 'modal-footer'}).append(
-                            addButton = $('<button>', {'class': 'btn btn-primary disabled', 'data-key': 13}).html(settings.tAdd),
-                            $('<button>', {'class': 'btn btn-dark'}).html(settings.tClose).click(function () {
-                                $(this).closest('.modal').modal('hide').on('hidden', function () {
-                                    $(this).remove();
-                                });
-                            })
+                            $('<button>', {'class': 'btn btn-secondary', 'data-dismiss': 'modal'}).html(settings.tClose),
+                            addButton = $('<button>', {'class': 'btn btn-primary disabled', 'data-key': 13}).html(settings.tAdd)
                         )
                     )
                 )
             )
         );
 
-        article.typeaheadRemote(
-            {
-                source: settings.articleTypeahead,
-            }
-        ).change(function (e) {
+        article.typeaheadRemote({
+            source: settings.articleTypeahead,
+        }).change(function (e) {
             if ($(this).data('value')) {
                 articleId.val($(this).data('value').id);
 
                 addButton.removeClass('disabled').unbind().click(function () {
                     settings.addArticle($this.data('data').id, articleId.val());
-                    $(this).closest('.modal').modal('hide').closest('.modal').on('hidden', function () {
-                        $(this).remove();
-                    });
+                    modal.modal('toggle');
                 });
             }
         });
@@ -569,15 +551,13 @@
         var settings = $this.data('saleInterfaceSettings');
 
         if (data.error) {
-            $this.find('.saleScreen .flashmessage').remove();
+            $this.find('.saleScreen .alert').alert('close');
             $this.find('.saleScreen').prepend(
-                $('<div>', {'class': 'flashmessage alert alert-danger fade'}).append(
-                    $('<div>', {'class': 'title'}).html(settings.tErrorTitle),
-                    $('<div>', {'class': 'content'}).append('<p>').html(settings.tErrorExtraArticle)
-                ).addClass('in')
+                $('<div>', {'class': 'alert alert-danger fade show'}).html(settings.tErrorExtraArticle)
             );
         } else {
-            $this.find('.saleScreen .flashmessage').remove();
+            $this.find('.saleScreen .alert').alert('close');
+
             if ($this.find('#article-' + data.articleId).length > 0) {
                 row = $this.find('#article-' + data.articleId);
                 data = row.data('info');
@@ -621,9 +601,11 @@
             if (number == 0) {
                 bestPrice = parseInt($(this).data('info').price, 10);
                 $($(this).data('info').discounts).each(function () {
-                    if ($this.find('.discounts input[value="' + this.type + '"]').is(':checked'))
+                    if ($this.find('.discounts input[value="' + this.type + '"]').is(':checked')) {
                         bestPrice = this.value < bestPrice ? this.value : bestPrice;
+                    }
                 });
+
                 $(this).find('.price').append(
                     $('<div>').html('&euro; ' + (bestPrice / 100).toFixed(2))
                 );
@@ -658,7 +640,7 @@
             }
         });
 
-        $this.find('.money .total').html('&euro; ' + (total / 100).toFixed(2));
+        $this.find('.money').html('&euro; ' + (total / 100).toFixed(2));
 
         return total;
     }

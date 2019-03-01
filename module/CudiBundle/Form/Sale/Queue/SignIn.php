@@ -25,7 +25,7 @@ namespace CudiBundle\Form\Sale\Queue;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class SignIn extends \CommonBundle\Component\Form\Bootstrap\Form
+class SignIn extends \CommonBundle\Component\Form\Form
 {
     public function init()
     {
@@ -51,16 +51,8 @@ class SignIn extends \CommonBundle\Component\Form\Bootstrap\Form
                 'name'       => 'submit',
                 'label'      => 'Sign In',
                 'attributes' => array(
-                    'id' => 'signin',
+                    'id' => 'submit',
                 ),
-            )
-        );
-
-        $this->add(
-            array(
-                'type'  => 'reset',
-                'name'  => 'cancel',
-                'value' => 'Cancel',
             )
         );
     }

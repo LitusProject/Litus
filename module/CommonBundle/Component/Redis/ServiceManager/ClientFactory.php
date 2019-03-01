@@ -27,7 +27,7 @@ use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * Factory to create the Credis_Client instance.
+ * Factory to create the Redis client instance.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
@@ -41,12 +41,11 @@ class ClientFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $config = $container->get('config');
-        if (!isset($config['redis'])) {
-            throw new RuntimeException('Could not find Redis config');
+        if (!$container->has('redis_config')) {
+            throw new RuntimeException('Could not find Redis configuration');
         }
 
-        return new Client($config['redis']);
+        return new Client($container->get('redis_config'));
     }
 
     /**

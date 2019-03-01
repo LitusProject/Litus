@@ -23,6 +23,7 @@ namespace CommonBundle\Component\Authentication\Service;
 use CommonBundle\Component\Authentication\Action;
 use CommonBundle\Component\Authentication\Result\Doctrine as Result;
 use Doctrine\ORM\EntityManager;
+use InvalidArgumentException;
 use Zend\Authentication\Adapter\AdapterInterface;
 use Zend\Authentication\Storage\StorageInterface;
 
@@ -55,7 +56,7 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
      * @param  string           $domain        The domain of the cookie
      * @param  boolean          $secure        Whether the cookie is secure or not
      * @param  Action           $action        The action that should be taken after authentication
-     * @throws Exception\InvalidArgumentException The entity name cannot have a leading backslash
+     * @throws InvalidArgumentException The entity name cannot have a leading backslash
      */
     public function __construct(
         EntityManager $entityManager,
@@ -72,7 +73,7 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
         $this->entityManager = $entityManager;
 
         if (substr($entityName, 0, 1) == '\\') {
-            throw new Exception\InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'The entity name cannot have a leading backslash'
             );
         }

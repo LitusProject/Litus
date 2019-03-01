@@ -78,8 +78,13 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Admin\Form
                 $pane = $this->createTabPane($tabContent, $prefix . 'tab_' . $abbrev);
 
                 $this->addTab($pane, $language, $abbrev == $defaultLanguage);
-
-                $tabs->addTab(array($language->getName() => $this->escapeTabContentId('#' . $tabContent->getName() . '[' . $prefix . 'tab_' . $abbrev . ']')));
+                $tabs->addTab(
+                    array(
+                        $language->getName() => $this->escapeTabContentId(
+                            '#' . $tabContent->getName() . '[' . $prefix . 'tab_' . $abbrev . ']'
+                        )
+                    )
+                );
             }
         }
 

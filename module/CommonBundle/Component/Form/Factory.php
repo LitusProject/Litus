@@ -20,11 +20,11 @@
 
 namespace CommonBundle\Component\Form;
 
-use CommonBundle\Component\InputFilter\Factory as InputFilterFactory;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use Zend\Form\ElementInterface as ZendElementInterface;
 use Zend\Form\FieldsetInterface as ZendFieldsetInterface;
+use Zend\InputFilter\Factory as InputFilterFactory;
 
 /**
  * @author Bram Gotink <bram.gotink@litus.cc>
@@ -32,14 +32,6 @@ use Zend\Form\FieldsetInterface as ZendFieldsetInterface;
 class Factory extends \Zend\Form\Factory implements ServiceLocatorAwareInterface
 {
     use ServiceLocatorAwareTrait;
-
-    /**
-     * @param FormElementManager $elementManager
-     */
-    public function __construct(FormElementManager $elementManager)
-    {
-        parent::__construct($elementManager);
-    }
 
     /**
      * Creates a form and sets data.
@@ -60,7 +52,8 @@ class Factory extends \Zend\Form\Factory implements ServiceLocatorAwareInterface
             return $spec['instance'];
         }
 
-        if ($data === null && is_array($spec)
+        if ($data === null
+            && is_array($spec)
             && isset($spec['options']['data'])
         ) {
             $data = $spec['options']['data'];
@@ -78,40 +71,19 @@ class Factory extends \Zend\Form\Factory implements ServiceLocatorAwareInterface
         }
     }
 
-    public function configureElement(ZendElementInterface $element, $spec)
-    {
-        parent::configureElement($element, $spec);
-
-        if ($element instanceof ElementInterface) {
-            $element->setRequired(
-                isset($spec['required']) ? (bool) $spec['required'] : false
-            );
-        }
-
-        if (isset($spec['label'])) {
-            $element->setLabel($spec['label']);
-        }
-
-        if (isset($spec['value'])) {
-            $element->setValue($spec['value']);
-        }
-
-        return $element;
-    }
-
     protected function prepareAndInjectElements($elements, ZendFieldsetInterface $fieldset, $method)
     {
         if (is_array($elements)) {
-            foreach ($elements as $k => $v) {
-                if ($v instanceof ZendElementInterface) {
-                    $elements[$k] = array(
+            foreach ($elements as $key => $value) {
+                if ($value instanceof ZendElementInterface) {
+                    $elements[$key] = array(
                         'spec' => array(
-                            'instance' => $v,
+                            'instance' => $value,
                         ),
                     );
-                } elseif (is_array($v) && !isset($v['spec'])) {
-                    $elements[$k] = array(
-                        'spec' => $v,
+                } elseif (is_array($value) && !isset($value['spec'])) {
+                    $elements[$key] = array(
+                        'spec' => $value,
                     );
                 }
             }

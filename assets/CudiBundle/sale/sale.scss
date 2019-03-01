@@ -1,6 +1,22 @@
+// Sale
+//
+// Author: Kristof Mariën <kristof.marien@litus.cc>
+// Author: Pieter Maene <pieter.maene@litus.cc>
+
+// Bootstrap
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
-
-@import "scss/variables";
+@import "./scss/variables";
 
 @import "~bootstrap/scss/bootstrap";
+
+// FontAwesome
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+
+@import '~@fortawesome/fontawesome-free/scss/brands';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+
+// Custom
+@import "./scss/custom";
+

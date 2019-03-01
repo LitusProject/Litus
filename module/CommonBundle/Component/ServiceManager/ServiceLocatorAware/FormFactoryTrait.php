@@ -21,6 +21,7 @@
 namespace CommonBundle\Component\ServiceManager\ServiceLocatorAware;
 
 use CommonBundle\Component\Form\Factory;
+use CommonBundle\Component\Form\FormElementManager;
 
 /**
  * A trait to define some common methods for classes with a ServiceLocator.
@@ -35,11 +36,15 @@ trait FormFactoryTrait
      */
     protected function getFormFactory()
     {
-        return $this->getServiceLocator()->build(
-            Factory::class,
-            array(
-                'isAdmin' => false,
-            )
+        if ($this->getServiceLocator()->has('ViewHelperManager')) {
+            $config = $this->getServiceLocator()->get('config');
+
+            $viewHelperManager = $this->getServiceLocator()->get('ViewHelperManager');
+            $viewHelperManager->configure($config['form_view_helpers']['bootstrap'] ?? array());
+        }
+
+        return new Factory(
+            $this->getServiceLocator()->get(FormElementManager::class)
         );
     }
 

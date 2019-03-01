@@ -27,7 +27,7 @@ use DateTime;
 use IntlDateFormatter;
 
 /**
- * A view helper that allows us to easily translate the date.
+ * View helper that allows us to easily translate the date.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */

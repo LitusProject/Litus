@@ -22,6 +22,7 @@ namespace CommonBundle\Component\Acl\Driver;
 
 use CommonBundle\Component\Acl\Acl;
 use CommonBundle\Component\Acl\RoleAware;
+use RuntimeException;
 
 /**
  * A view helper that allows us to easily verify whether or not the authenticated user
@@ -66,11 +67,11 @@ class HasAccess
     public function __invoke($resource, $action)
     {
         if ($this->acl === null) {
-            throw new Exception\RuntimeException('No ACL object was provided');
+            throw new RuntimeException('No ACL object was provided');
         }
 
         if ($this->authenticated && $this->entity === null) {
-            throw new Exception\RuntimeException('No entity was provided');
+            throw new RuntimeException('No entity was provided');
         }
 
         // Making it easier to develop new actions and controllers, without all the ACL hassle

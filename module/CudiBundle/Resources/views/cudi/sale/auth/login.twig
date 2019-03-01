@@ -1,22 +1,24 @@
 {% extends 'sale/base.twig' %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-sm-4"></div>
+    <div class="row justify-content-center">
         <div class="col-sm-4">
-            <h1 class="page-header">{{ translate('Login') }}</h1>
-
-            <div class="well" style="text-align: center;">
-                <a class="btn btn-info" href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</a>
+            <div class="text-center">
+                <h3 class="mb-3">{{ translate('Login') }}</h1>
             </div>
 
-            <div class="well">
-                <div class="login-container">
+            <div class="card bg-light mb-3">
+                <div class="card-body text-center">
+                    <a class="btn btn-primary" href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</a>
+                </div>
+            </div>
+
+            <div class="card bg-light">
+                <div class="card-body">
                     {% if form is defined %}
                         {% do form.prepare() %}
                         {% autoescape false %}
                             {{ form().openTag(form) }}
-                            {{ formElement(form.get('csrf')) }}
 
                             {% for element in form.getElements() %}
                                 {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset' %}
@@ -24,18 +26,20 @@
                                 {% elseif element.getAttribute('type') == 'hidden' %}
                                     {{ formElement(element) }}
                                 {% elseif element.getAttribute('type') == 'checkbox' %}
-                                    <div class="remember_me">
-                                        <label>
+                                    <div class="form-group">
+                                        <div class="form-check">
                                             {{ formElement(element) }}
-                                            {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
-                                        </label>
+                                            {% if element.getLabel() != '' %}
+                                                <label class="form-check-label" for="{{ element.getAttribute('id') }}">{{ translate(element.getLabel()) }}</label>
+                                            {% endif %}
+                                        </div>
                                     </div>
                                 {% else %}
-                                    <div class="form-group {% if element.getMessages()|length > 0 %}error{% endif %}">
+                                    <div class="form-group {% if element.getMessages()|length > 0 %}has-error{% endif %}">
                                         <label>{% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}</label>
-                                        <div>{{ formElement(element) }}</div>
+                                        {{ formElement(element) }}
                                         {% if element.getMessages()|length > 0 %}
-                                            <div class="help-block">
+                                            <div class="invalid-feedback">
                                                 {{ formElementErrors(element) }}
                                             </div>
                                         {% endif %}
@@ -46,11 +50,8 @@
                             {{ form().closeTag() }}
                         {% endautoescape %}
                     {% endif %}
-
-                    <br style="clear: both" />
                 </div>
             </div>
         </div>
-        <div class="col-sm-4"></div>
     </div>
 {% endblock %}

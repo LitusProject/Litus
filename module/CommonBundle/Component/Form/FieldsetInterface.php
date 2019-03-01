@@ -20,15 +20,12 @@
 
 namespace CommonBundle\Component\Form;
 
-use Zend\InputFilter\InputFilterProviderInterface;
-
 /**
+ * Extending Zend's form fieldsets with some convenience methods.
+ *
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
-interface FieldsetInterface extends \Zend\Form\FieldsetInterface, ElementInterface, InputFilterProviderInterface
+interface FieldsetInterface extends \Zend\Form\FieldsetInterface, \Zend\InputFilter\InputFilterProviderInterface
 {
-    /**
-     * @return string Returns 'fieldset', 'div' or 'none'
-     */
-    public function showAs();
 }

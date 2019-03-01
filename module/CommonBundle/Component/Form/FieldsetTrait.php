@@ -20,6 +20,8 @@
 
 namespace CommonBundle\Component\Form;
 
+use Traversable;
+use Zend\Form\ElementInterface;
 use Zend\InputFilter\InputFilterProviderInterface;
 use Zend\InputFilter\InputProviderInterface;
 
@@ -27,43 +29,75 @@ use Zend\InputFilter\InputProviderInterface;
  * FieldsetTrait
  *
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
 trait FieldsetTrait
 {
-    /**
-     * @return array
-     */
-    public function getInputFilterSpecification()
+    public function add($elementOrFieldset, array $flags = array())
     {
-        $spec = array(
-            'type' => 'inputfilter',
-        );
-
-        $elements = array_merge($this->elements, $this->fieldsets);
-
-        foreach ($elements as $name => $elementOrFieldset) {
-            if ($elementOrFieldset instanceof InputFilterProviderInterface) {
-                $spec[$name] = $elementOrFieldset->getInputFilterSpecification();
-            } elseif ($elementOrFieldset instanceof InputProviderInterface) {
-                $spec[$name] = $elementOrFieldset->getInputSpecification();
+        if (is_array($elementOrFieldset)
+            || ($elementOrFieldset instanceof Traversable && !($elementOrFieldset instanceof ElementInterface))
+        ) {
+            $label = null;
+            if (array_key_exists('label', $elementOrFieldset)) {
+                $label = $elementOrFieldset['label'];
             }
+
+            $value = null;
+            if (array_key_exists('value', $elementOrFieldset)) {
+                $value = $elementOrFieldset['value'];
+            }
+
+            $required = null;
+            if (array_key_exists('required', $elementOrFieldset)) {
+                $required = $elementOrFieldset['required'];
+            }
+
+            $elementOrFieldset = array_merge_recursive(
+                array(
+                    'options' => array(
+                        'label' => $label,
+                    ),
+                    'attributes' => array(
+                        'value'    => $value,
+                        'required' => $required,
+                    ),
+                ),
+                $elementOrFieldset
+            );
         }
 
-        return $spec;
+        parent::add($elementOrFieldset, $flags);
     }
 
-    /**
-     * @param  boolean $required
-     * @return self
-     */
-    public function setRequired($required = true)
+    public function setAttribute($name, $value)
     {
-        foreach ($this->elements as $elementOrFieldset) {
-            if ($elementOrFieldset instanceof ElementInterface) {
-                $elementOrFieldset->setRequired($required);
+        if ($name == 'required') {
+            foreach ($this->elements as $elementOrFieldset) {
+                if ($elementOrFieldset instanceof ElementInterface) {
+                    if (!$elementOrFieldset->hasAttribute('required')) {
+                        $elementOrFieldset->setRequired($value);
+                    }
+                }
             }
         }
 
-        return $this->setElementRequired($required);
+        return parent::setAttribute($name, $value);
+    }
+
+    public function getInputFilterSpecification()
+    {
+        $inputFilterSpecification = array();
+
+        $elements = array_merge($this->elements, $this->fieldsets);
+        foreach ($elements as $name => $elementOrFieldset) {
+            if ($elementOrFieldset instanceof InputFilterProviderInterface) {
+                $inputFilterSpecification[$name] = $elementOrFieldset->getInputFilterSpecification();
+            } elseif ($elementOrFieldset instanceof InputProviderInterface) {
+                $inputFilterSpecification[$name] = $elementOrFieldset->getInputSpecification();
+            }
+        }
+
+        return $inputFilterSpecification;
     }
 }

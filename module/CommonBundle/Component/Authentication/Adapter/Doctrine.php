@@ -23,6 +23,7 @@ namespace CommonBundle\Component\Authentication\Adapter;
 use CommonBundle\Component\Authentication\Result\Doctrine as Result;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
+use InvalidArgumentException;
 
 /**
  * An authentication adapter using Doctrine.
@@ -77,7 +78,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
      * @param  string        $entityName     The name of the class in the model that has the authentication information
      * @param  string        $identityColumn The name of the column that holds the identity
      * @param  boolean       $caseSensitive  Whether or not the username check is case-sensitive
-     * @throws Exception\InvalidArgumentException The entity name cannot have a leading backslash
+     * @throws InvalidArgumentException The entity name cannot have a leading backslash
      */
     public function __construct(EntityManager $entityManager, $entityName, $identityColumn, $caseSensitive = false)
     {
@@ -87,7 +88,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
         $entityName = str_replace('"', '', $entityName);
 
         if (substr($entityName, 0, 1) == '\\') {
-            throw new Exception\InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'The entity name cannot have a leading backslash'
             );
         }

@@ -38,16 +38,18 @@
     };
 
     function _clear ($this) {
-        if ($this.data('calculateChange'))
+        if ($this.data('calculateChange')) {
             $this.data('calculateChange').value = 0;
+        }
 
         _clearBuffer($this);
         _update($this);
     }
 
     function _clearBuffer ($this) {
-        if (! $this.data('calculateChange'))
+        if (! $this.data('calculateChange')) {
             return;
+        }
 
         clearTimeout($this.data('calculateChange').timer);
         $this.data('calculateChange').timer = null;
@@ -55,13 +57,15 @@
     }
 
     function _getNumericValue(keyCode) {
-        if (! _isNumericKey(keyCode))
+        if (! _isNumericKey(keyCode)) {
             return;
+        }
 
-        if (keyCode <= 57)
+        if (keyCode <= 57) {
             return (keyCode - 48);
-        else
+        } else {
             return (keyCode - 96);
+        }
     }
 
     function _init ($this) {
@@ -75,14 +79,16 @@
                 return;
             }
 
-            if (!_isNumericKey(e.keyCode))
+            if (!_isNumericKey(e.keyCode)) {
                 return;
+            }
 
             $this.data('calculateChange').value = $this.data('calculateChange').value * 10 + _getNumericValue(e.keyCode);
             _update($this);
 
-            if ($this.data('calculateChange').timer)
+            if ($this.data('calculateChange').timer) {
                 clearTimeout($this.data('calculateChange').timer);
+            }
 
             $this.data('calculateChange').timer = setTimeout(function () {
                 _clearBuffer($this);

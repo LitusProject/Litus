@@ -32,14 +32,19 @@ use CommonBundle\Component\Controller\Plugin\ServiceManager\PaginatorFactory;
 use CommonBundle\Component\Controller\ServiceManager\AbstractActionControllerInitializer;
 use CommonBundle\Component\Doctrine\Common\Cache\ServiceManager\RedisCacheFactory as DoctrineRedisCacheFactory;
 use CommonBundle\Component\Doctrine\Migrations\Configuration\ServiceManager\ConfigurationFactory as DoctrineMigrationsConfigurationFactory;
-use CommonBundle\Component\Form\Factory as FormFactory;
-use CommonBundle\Component\Form\ServiceManager\FactoryFactory as FormFactoryFactory;
+use CommonBundle\Component\Encore\Encore;
+use CommonBundle\Component\Encore\ServiceManager\ConfigurationFactory as EncoreConfigurationFactory;
+use CommonBundle\Component\Encore\ServiceManager\EncoreFactory;
+use CommonBundle\Component\Form\FormElementManager;
+use CommonBundle\Component\Form\ServiceManager\FormElementManagerFactory;
 use CommonBundle\Component\Hydrator\HydratorPluginManager;
 use CommonBundle\Component\Hydrator\ServiceManager\HydratorPluginManagerFactory;
 use CommonBundle\Component\Module\Config;
 use CommonBundle\Component\Module\ServiceManager\AbstractInstallerFactory;
 use CommonBundle\Component\Redis\Client as RedisClient;
+use CommonBundle\Component\Redis\Configuration as RedisConfiguration;
 use CommonBundle\Component\Redis\ServiceManager\ClientFactory as RedisClientFactory;
+use CommonBundle\Component\Redis\ServiceManager\ConfigurationFactory as RedisConfigurationFactory;
 use CommonBundle\Component\Sentry\Client as SentryClient;
 use CommonBundle\Component\Sentry\ServiceManager\ClientFactory as SentryClientFactory;
 use CommonBundle\Component\Sentry\ServiceManager\RavenClientFactory;
@@ -57,7 +62,7 @@ use Zend\Mail\Transport\Sendmail;
 use Zend\Mvc\I18n\Translator as MvcTranslator;
 use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\Session\Container as SessionContainer;
-use Zend\Session\ManagerInterface;
+use Zend\Session\ManagerInterface as SessionManagerInterface;
 
 return Config::create(
     array(
@@ -67,11 +72,6 @@ return Config::create(
         'has_layouts'       => true,
     ),
     array(
-        'controllers' => array(
-            'initializers' => array(
-                AbstractActionControllerInitializer::class,
-            ),
-        ),
         'service_manager' => array(
             'factories' => array(
                 Authentication::class            => AuthenticationFactory::class,
@@ -80,14 +80,17 @@ return Config::create(
                 DoctrineCredentialAdapter::class => DoctrineCredentialAdapterFactory::class,
                 DoctrineRedisCache::class        => DoctrineRedisCacheFactory::class,
                 DoctrineService::class           => DoctrineServiceFactory::class,
-                FormFactory::class               => FormFactoryFactory::class,
+                Encore::class                    => EncoreFactory::class,
+                EncoreConfiguration::class       => EncoreConfigurationFactory::class,
+                FormElementManager::class        => FormElementManagerFactory::class,
                 HydratorPluginManager::class     => HydratorPluginManagerFactory::class,
                 Raven_Client::class              => RavenClientFactory::class,
                 RedisClient::class               => RedisClientFactory::class,
+                RedisConfiguration::class        => RedisConfigurationFactory::class,
                 Sendmail::class                  => InvokableFactory::class,
                 SentryClient::class              => SentryClientFactory::class,
                 SessionContainer::class          => SessionContainerFactory::class,
-                ManagerInterface::class          => SessionManagerFactory::class,
+                SessionManagerInterface::class   => SessionManagerFactory::class,
             ),
             'abstract_factories' => array(
                 AbstractInstallerFactory::class,
@@ -98,18 +101,27 @@ return Config::create(
                 'authentication_service'            => DoctrineService::class,
                 'cache'                             => CacheStorage::class,
                 'console'                           => ConsoleApplication::class,
-                'redis_client'                      => RedisClient::class,
+                'encore'                            => Encore::class,
+                'encore_config'                     => EncoreConfiguration::class,
                 'hydrator_plugin_manager'           => HydratorPluginManager::class,
                 'mail_transport'                    => Sendmail::class,
                 'raven_client'                      => Raven_Client::class,
+                'redis_client'                      => RedisClient::class,
+                'redis_config'                      => RedisConfiguration::class,
                 'sentry_client'                     => SentryClient::class,
                 'session_container'                 => SessionContainer::class,
                 'translator'                        => MvcTranslator::class,
 
                 'doctrine.cache.redis' => DoctrineRedisCache::class,
+                'FormElementManager'   => FormElementManager::class,
             ),
         ),
 
+        'controllers' => array(
+            'initializers' => array(
+                AbstractActionControllerInitializer::class,
+            ),
+        ),
         'controller_plugins' => array(
             'factories' => array(
                 Component\Controller\Plugin\HasAccess::class      => InvokableFactory::class,
@@ -138,6 +150,113 @@ return Config::create(
                 'stripcarriagereturn' => Component\Filter\StripCarriageReturn::class,
                 'stripCarriageReturn' => Component\Filter\StripCarriageReturn::class,
                 'StripCarriageReturn' => Component\Filter\StripCarriageReturn::class,
+            ),
+        ),
+        'form_elements' => array(
+            'factories' => array(
+                Component\Form\Fieldset::class => ElementFactory::class,
+
+                Component\Form\Element\Button::class     => ElementFactory::class,
+                Component\Form\Element\Collection::class => ElementFactory::class,
+                Component\Form\Element\Checkbox::class   => ElementFactory::class,
+                Component\Form\Element\Date::class       => ElementFactory::class,
+                Component\Form\Element\DateTime::class   => ElementFactory::class,
+                Component\Form\Element\File::class       => ElementFactory::class,
+                Component\Form\Element\Hidden::class     => ElementFactory::class,
+                Component\Form\Element\Password::class   => ElementFactory::class,
+                Component\Form\Element\Radio::class      => ElementFactory::class,
+                Component\Form\Element\Select::class     => ElementFactory::class,
+                Component\Form\Element\Submit::class     => ElementFactory::class,
+                Component\Form\Element\Text::class       => ElementFactory::class,
+                Component\Form\Element\Textarea::class   => ElementFactory::class,
+                Component\Form\Element\Typeahead::class  => ElementFactory::class,
+            ),
+            'aliases' => array(
+                'fieldset' => Component\Form\Fieldset::class,
+                'Fieldset' => Component\Form\Fieldset::class,
+
+                'button'     => Component\Form\Element\Button::class,
+                'Button'     => Component\Form\Element\Button::class,
+                'checkbox'   => Component\Form\Element\Checkbox::class,
+                'Checkbox'   => Component\Form\Element\Checkbox::class,
+                'collection' => Component\Form\Element\Collection::class,
+                'Collection' => Component\Form\Element\Collection::class,
+                'date'       => Component\Form\Element\Date::class,
+                'Date'       => Component\Form\Element\Date::class,
+                'datetime'   => Component\Form\Element\DateTime::class,
+                'dateTime'   => Component\Form\Element\DateTime::class,
+                'DateTime'   => Component\Form\Element\DateTime::class,
+                'file'       => Component\Form\Element\File::class,
+                'File'       => Component\Form\Element\File::class,
+                'hidden'     => Component\Form\Element\Hidden::class,
+                'Hidden'     => Component\Form\Element\Hidden::class,
+                'password'   => Component\Form\Element\Password::class,
+                'Password'   => Component\Form\Element\Password::class,
+                'radio'      => Component\Form\Element\Radio::class,
+                'Radio'      => Component\Form\Element\Radio::class,
+                'select'     => Component\Form\Element\Select::class,
+                'Select'     => Component\Form\Element\Select::class,
+                'submit'     => Component\Form\Element\Submit::class,
+                'Submit'     => Component\Form\Element\Submit::class,
+                'text'       => Component\Form\Element\Text::class,
+                'Text'       => Component\Form\Element\Text::class,
+                'textarea'   => Component\Form\Element\Textarea::class,
+                'Textarea'   => Component\Form\Element\Textarea::class,
+                'typeahead'  => Component\Form\Element\Typeahead::class,
+                'Typeahead'  => Component\Form\Element\Typeahead::class,
+            ),
+        ),
+        'form_view_helpers' => array(
+            'bootstrap' => array(
+                'factories' => array(
+                    Component\Form\View\Helper\Bootstrap\Form::class              => InvokableFactory::class,
+                    Component\Form\View\Helper\Bootstrap\FormButton::class        => InvokableFactory::class,
+                    Component\Form\View\Helper\Bootstrap\FormCheckbox::class      => InvokableFactory::class,
+                    Component\Form\View\Helper\Bootstrap\FormCollection::class    => InvokableFactory::class,
+                    Component\Form\View\Helper\Bootstrap\FormElement::class       => InvokableFactory::class,
+                    Component\Form\View\Helper\Bootstrap\FormElementErrors::class => InvokableFactory::class,
+                    Component\Form\View\Helper\Bootstrap\FormLabel::class         => InvokableFactory::class,
+                    Component\Form\View\Helper\Bootstrap\FormRow::class           => InvokableFactory::class,
+                    Component\Form\View\Helper\Bootstrap\FormSubmit::class        => InvokableFactory::class,
+                ),
+                'aliases' => array(
+                    'form'              => Component\Form\View\Helper\Bootstrap\Form::class,
+                    'Form'              => Component\Form\View\Helper\Bootstrap\Form::class,
+                    'formbutton'        => Component\Form\View\Helper\Bootstrap\FormButton::class,
+                    'formButton'        => Component\Form\View\Helper\Bootstrap\FormButton::class,
+                    'FormButton'        => Component\Form\View\Helper\Bootstrap\FormButton::class,
+                    'formcheckbox'      => Component\Form\View\Helper\Bootstrap\FormCheckbox::class,
+                    'formCheckbox'      => Component\Form\View\Helper\Bootstrap\FormCheckbox::class,
+                    'FormCheckbox'      => Component\Form\View\Helper\Bootstrap\FormCheckbox::class,
+                    'formcollection'    => Component\Form\View\Helper\Bootstrap\FormCollection::class,
+                    'formCollection'    => Component\Form\View\Helper\Bootstrap\FormCollection::class,
+                    'FormCollection'    => Component\Form\View\Helper\Bootstrap\FormCollection::class,
+                    'formelement'       => Component\Form\View\Helper\Bootstrap\FormElement::class,
+                    'formElement'       => Component\Form\View\Helper\Bootstrap\FormElement::class,
+                    'FormElement'       => Component\Form\View\Helper\Bootstrap\FormElement::class,
+                    'formelementerrors' => Component\Form\View\Helper\Bootstrap\FormElementErrors::class,
+                    'formElementErrors' => Component\Form\View\Helper\Bootstrap\FormElementErrors::class,
+                    'FormElementErrors' => Component\Form\View\Helper\Bootstrap\FormElementErrors::class,
+                    'formlabel'         => Component\Form\View\Helper\Bootstrap\FormLabel::class,
+                    'formLabel'         => Component\Form\View\Helper\Bootstrap\FormLabel::class,
+                    'FormLabel'         => Component\Form\View\Helper\Bootstrap\FormLabel::class,
+                    'formsubmit'        => Component\Form\View\Helper\Bootstrap\FormSubmit::class,
+                    'formSubmit'        => Component\Form\View\Helper\Bootstrap\FormSubmit::class,
+                    'FormSubmit'        => Component\Form\View\Helper\Bootstrap\FormSubmit::class,
+                    'formrow'           => Component\Form\View\Helper\Bootstrap\FormRow::class,
+                    'formRow'           => Component\Form\View\Helper\Bootstrap\FormRow::class,
+                    'FormRow'           => Component\Form\View\Helper\Bootstrap\FormRow::class,
+
+                    'form_button'         => Component\Form\View\Helper\Bootstrap\FormButton::class,
+                    'form_checkbox'       => Component\Form\View\Helper\Bootstrap\FormCheckbox::class,
+                    'form_collection'     => Component\Form\View\Helper\Bootstrap\FormCollection::class,
+                    'form_element'        => Component\Form\View\Helper\Bootstrap\FormElement::class,
+                    'form_element_errors' => Component\Form\View\Helper\Bootstrap\FormElementErrors::class,
+                    'form_label'          => Component\Form\View\Helper\Bootstrap\FormLabel::class,
+                    'form_reset'          => Component\Form\View\Helper\Bootstrap\FormReset::class,
+                    'form_submit'         => Component\Form\View\Helper\Bootstrap\FormSubmit::class,
+                    'form_row'            => Component\Form\View\Helper\Bootstrap\FormRow::class,
+                ),
             ),
         ),
         'translator' => array(
@@ -193,25 +312,13 @@ return Config::create(
                 'Year'            => Component\Validator\Year::class,
             ),
         ),
-        'view_manager' => array(
-            'template_map' => array(
-                'layout/layout' => __DIR__ . '/../layouts/layout.twig',
-                'error/404'     => __DIR__ . '/../views/error/404.twig',
-                'error/index'   => __DIR__ . '/../views/error/index.twig',
-            ),
-
-            'doctype' => 'HTML5',
-
-            'not_found_template' => 'error/404',
-            'exception_template' => 'error/index',
-
-            'display_exceptions' => in_array(getenv('APPLICATION_ENV'), array('development', 'staging')),
-        ),
         'view_helpers' => array(
             'abstract_factories' => array(
                 AbstractHelperFactory::class,
             ),
             'aliases' => array(
+                'assets'        => Component\View\Helper\Assets::class,
+                'Assets'        => Component\View\Helper\Assets::class,
                 'datelocalized' => Component\View\Helper\DateLocalized::class,
                 'dateLocalized' => Component\View\Helper\DateLocalized::class,
                 'DateLocalized' => Component\View\Helper\DateLocalized::class,
@@ -236,6 +343,27 @@ return Config::create(
                 'Url'           => Component\View\Helper\Url::class,
             ),
         ),
+        'view_manager' => array(
+            'template_map' => array(
+                'layout/layout' => __DIR__ . '/../layouts/layout.twig',
+                'error/404'     => __DIR__ . '/../views/error/404.twig',
+                'error/index'   => __DIR__ . '/../views/error/index.twig',
+            ),
+
+            'doctype' => 'HTML5',
+
+            'not_found_template' => 'error/404',
+            'exception_template' => 'error/index',
+
+            'display_exceptions' => in_array(getenv('APPLICATION_ENV'), array('development', 'staging')),
+        ),
+
+        'doctrine_factories' => array(
+            'migrations_configuration' => DoctrineMigrationsConfigurationFactory::class,
+        ),
+        'encore' => array(
+            'output_path' => __DIR__ . '/../../../../public/_encore',
+        ),
 
         'assetic_configuration' => array(
             'buildOnRequest' => getenv('APPLICATION_ENV') == 'development',
@@ -244,144 +372,6 @@ return Config::create(
             'cacheEnabled'   => getenv('APPLICATION_ENV') != 'development',
             'cachePath'      => __DIR__ . '/../../../../data/cache',
             'basePath'       => '/_assetic',
-        ),
-        'doctrine_factories' => array(
-            'migrations_configuration' => DoctrineMigrationsConfigurationFactory::class,
-        ),
-
-        'litus' => array(
-            'forms' => array(
-                'bootstrap' => array(
-                    'factories' => array(
-                        Component\Form\Collection::class => ElementFactory::class,
-                        Component\Form\Fieldset::class   => ElementFactory::class,
-
-                        Component\Form\Bootstrap\Element\Button::class    => ElementFactory::class,
-                        Component\Form\Bootstrap\Element\Checkbox::class  => ElementFactory::class,
-                        Component\Form\Bootstrap\Element\Date::class      => ElementFactory::class,
-                        Component\Form\Bootstrap\Element\DateTime::class  => ElementFactory::class,
-                        Component\Form\Bootstrap\Element\File::class      => ElementFactory::class,
-                        Component\Form\Bootstrap\Element\Hidden::class    => ElementFactory::class,
-                        Component\Form\Bootstrap\Element\Password::class  => ElementFactory::class,
-                        Component\Form\Bootstrap\Element\Radio::class     => ElementFactory::class,
-                        Component\Form\Bootstrap\Element\Reset::class     => ElementFactory::class,
-                        Component\Form\Bootstrap\Element\Select::class    => ElementFactory::class,
-                        Component\Form\Bootstrap\Element\Submit::class    => ElementFactory::class,
-                        Component\Form\Bootstrap\Element\Text::class      => ElementFactory::class,
-                        Component\Form\Bootstrap\Element\Textarea::class  => ElementFactory::class,
-                        Component\Form\Bootstrap\Element\Typeahead::class => ElementFactory::class,
-                    ),
-                    'aliases' => array(
-                        'collection' => Component\Form\Collection::class,
-                        'Collection' => Component\Form\Collection::class,
-                        'fieldset'   => Component\Form\Fieldset::class,
-                        'Fieldset'   => Component\Form\Fieldset::class,
-
-                        'button'    => Component\Form\Bootstrap\Element\Button::class,
-                        'Button'    => Component\Form\Bootstrap\Element\Button::class,
-                        'checkbox'  => Component\Form\Bootstrap\Element\Checkbox::class,
-                        'Checkbox'  => Component\Form\Bootstrap\Element\Checkbox::class,
-                        'date'      => Component\Form\Bootstrap\Element\Date::class,
-                        'Date'      => Component\Form\Bootstrap\Element\Date::class,
-                        'datetime'  => Component\Form\Bootstrap\Element\DateTime::class,
-                        'dateTime'  => Component\Form\Bootstrap\Element\DateTime::class,
-                        'DateTime'  => Component\Form\Bootstrap\Element\DateTime::class,
-                        'file'      => Component\Form\Bootstrap\Element\File::class,
-                        'File'      => Component\Form\Bootstrap\Element\File::class,
-                        'hidden'    => Component\Form\Bootstrap\Element\Hidden::class,
-                        'Hidden'    => Component\Form\Bootstrap\Element\Hidden::class,
-                        'password'  => Component\Form\Bootstrap\Element\Password::class,
-                        'Password'  => Component\Form\Bootstrap\Element\Password::class,
-                        'radio'     => Component\Form\Bootstrap\Element\Radio::class,
-                        'Radio'     => Component\Form\Bootstrap\Element\Radio::class,
-                        'reset'     => Component\Form\Bootstrap\Element\Reset::class,
-                        'Reset'     => Component\Form\Bootstrap\Element\Reset::class,
-                        'select'    => Component\Form\Bootstrap\Element\Select::class,
-                        'Select'    => Component\Form\Bootstrap\Element\Select::class,
-                        'submit'    => Component\Form\Bootstrap\Element\Submit::class,
-                        'Submit'    => Component\Form\Bootstrap\Element\Submit::class,
-                        'text'      => Component\Form\Bootstrap\Element\Text::class,
-                        'Text'      => Component\Form\Bootstrap\Element\Text::class,
-                        'textarea'  => Component\Form\Bootstrap\Element\Textarea::class,
-                        'Textarea'  => Component\Form\Bootstrap\Element\Textarea::class,
-                        'typeahead' => Component\Form\Bootstrap\Element\Typeahead::class,
-                        'Typeahead' => Component\Form\Bootstrap\Element\Typeahead::class,
-                    ),
-                ),
-                'admin' => array(
-                    'factories' => array(
-                        Component\Form\Collection::class => ElementFactory::class,
-                        Component\Form\Fieldset::class   => ElementFactory::class,
-
-                        Component\Form\Admin\Element\Checkbox::class  => ElementFactory::class,
-                        Component\Form\Admin\Element\Csrf::class      => ElementFactory::class,
-                        Component\Form\Admin\Element\Date::class      => ElementFactory::class,
-                        Component\Form\Admin\Element\DateTime::class  => ElementFactory::class,
-                        Component\Form\Admin\Element\File::class      => ElementFactory::class,
-                        Component\Form\Admin\Element\Hidden::class    => ElementFactory::class,
-                        Component\Form\Admin\Element\Password::class  => ElementFactory::class,
-                        Component\Form\Admin\Element\Radio::class     => ElementFactory::class,
-                        Component\Form\Admin\Element\Select::class    => ElementFactory::class,
-                        Component\Form\Admin\Element\Submit::class    => ElementFactory::class,
-                        Component\Form\Admin\Element\Tabs::class      => ElementFactory::class,
-                        Component\Form\Admin\Element\Text::class      => ElementFactory::class,
-                        Component\Form\Admin\Element\Textarea::class  => ElementFactory::class,
-                        Component\Form\Admin\Element\Time::class      => ElementFactory::class,
-                        Component\Form\Admin\Element\Typeahead::class => ElementFactory::class,
-
-                        Component\Form\Admin\Fieldset\Tabbable::class   => ElementFactory::class,
-                        Component\Form\Admin\Fieldset\TabContent::class => ElementFactory::class,
-                        Component\Form\Admin\Fieldset\TabPane::class    => ElementFactory::class,
-                    ),
-                    'aliases' => array(
-                        'collection' => Component\Form\Collection::class,
-                        'Collection' => Component\Form\Collection::class,
-                        'fieldset'   => Component\Form\Fieldset::class,
-                        'Fieldset'   => Component\Form\Fieldset::class,
-
-                        'checkbox'  => Component\Form\Admin\Element\Checkbox::class,
-                        'Checkbox'  => Component\Form\Admin\Element\Checkbox::class,
-                        'csrf'      => Component\Form\Admin\Element\Csrf::class,
-                        'Csrf'      => Component\Form\Admin\Element\Csrf::class,
-                        'date'      => Component\Form\Admin\Element\Date::class,
-                        'Date'      => Component\Form\Admin\Element\Date::class,
-                        'datetime'  => Component\Form\Admin\Element\DateTime::class,
-                        'dateTime'  => Component\Form\Admin\Element\DateTime::class,
-                        'DateTime'  => Component\Form\Admin\Element\DateTime::class,
-                        'file'      => Component\Form\Admin\Element\File::class,
-                        'File'      => Component\Form\Admin\Element\File::class,
-                        'hidden'    => Component\Form\Admin\Element\Hidden::class,
-                        'Hidden'    => Component\Form\Admin\Element\Hidden::class,
-                        'password'  => Component\Form\Admin\Element\Password::class,
-                        'Password'  => Component\Form\Admin\Element\Password::class,
-                        'radio'     => Component\Form\Admin\Element\Radio::class,
-                        'Radio'     => Component\Form\Admin\Element\Radio::class,
-                        'select'    => Component\Form\Admin\Element\Select::class,
-                        'Select'    => Component\Form\Admin\Element\Select::class,
-                        'submit'    => Component\Form\Admin\Element\Submit::class,
-                        'Submit'    => Component\Form\Admin\Element\Submit::class,
-                        'tabs'      => Component\Form\Admin\Element\Tabs::class,
-                        'Tabs'      => Component\Form\Admin\Element\Tabs::class,
-                        'text'      => Component\Form\Admin\Element\Text::class,
-                        'Text'      => Component\Form\Admin\Element\Text::class,
-                        'textarea'  => Component\Form\Admin\Element\Textarea::class,
-                        'Textarea'  => Component\Form\Admin\Element\Textarea::class,
-                        'time'      => Component\Form\Admin\Element\Time::class,
-                        'Time'      => Component\Form\Admin\Element\Time::class,
-                        'typeahead' => Component\Form\Admin\Element\Typeahead::class,
-                        'Typeahead' => Component\Form\Admin\Element\Typeahead::class,
-
-                        'tabbable'   => Component\Form\Admin\Fieldset\Tabbable::class,
-                        'Tabbable'   => Component\Form\Admin\Fieldset\Tabbable::class,
-                        'tabcontent' => Component\Form\Admin\Fieldset\TabContent::class,
-                        'tabContent' => Component\Form\Admin\Fieldset\TabContent::class,
-                        'TabContent' => Component\Form\Admin\Fieldset\TabContent::class,
-                        'tabpane'    => Component\Form\Admin\Fieldset\TabPane::class,
-                        'tabPane'    => Component\Form\Admin\Fieldset\TabPane::class,
-                        'TabPane'    => Component\Form\Admin\Fieldset\TabPane::class,
-                    ),
-                ),
-            ),
         ),
     )
 );

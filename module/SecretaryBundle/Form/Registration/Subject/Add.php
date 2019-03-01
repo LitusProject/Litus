@@ -25,7 +25,7 @@ namespace SecretaryBundle\Form\Registration\Subject;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Bootstrap\Form
+class Add extends \CommonBundle\Component\Form\Form
 {
     public function init()
     {

@@ -28,7 +28,7 @@ namespace CommonBundle\Component\Util;
 class StringUtil
 {
     /**
-     * Truncates a string preserving HTML tags
+     * Truncates a string preserving HTML tags.
      *
      * @static
      * @param  string  $string The string that will be truncated
@@ -61,7 +61,7 @@ class StringUtil
     }
 
     /**
-     * Truncates a string removing HTML tags
+     * Truncates a string removing HTML tags.
      *
      * @static
      * @param  string  $string The string that will be truncated
@@ -73,20 +73,5 @@ class StringUtil
         $string = strip_tags($string);
 
         return substr($string, 0, $length = min(strlen($string), $length)) . (strlen($string) > $length ? $suffix : '');
-    }
-
-    /**
-     * Changes an 'underscored' string to CamelCase.
-     *   e.g.: 'a_bcd-ef' becomes 'ABcdEf'
-     *
-     * @static
-     * @param  string $text
-     * @return string
-     */
-    public static function underscoredToCamelCase($text)
-    {
-        $text = str_replace(array('-', '_'), ' ', $text);
-
-        return str_replace(' ', '', ucwords($text));
     }
 }

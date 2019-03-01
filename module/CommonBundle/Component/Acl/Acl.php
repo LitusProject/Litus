@@ -64,7 +64,8 @@ class Acl extends \Zend\Permissions\Acl\Acl
             ->from('CommonBundle\Entity\Acl\Resource', 'r')
             ->where('r.parent IS NULL');
 
-        foreach ($query->getQuery()->getResult() as $resource) {
+        $resources = $query->getQuery()->getResult();
+        foreach ($resources as $resource) {
             $this->addResourceEntity($resource);
         }
     }
@@ -81,10 +82,11 @@ class Acl extends \Zend\Permissions\Acl\Acl
     {
         $this->addResource(
             $resource->getName(),
-            $resource->getParent() === null ? null : $resource->getParent()->getName()
+            $resource->getParent() !== null ? $resource->getParent()->getName() : null
         );
 
-        foreach ($resource->getChildren($this->entityManager) as $childResource) {
+        $childResources = $resource->getChildren($this->entityManager);
+        foreach ($childResources as $childResource) {
             $this->addResourceEntity($childResource);
         }
     }
@@ -96,7 +98,11 @@ class Acl extends \Zend\Permissions\Acl\Acl
      */
     protected function loadRoles()
     {
-        foreach ($this->entityManager->getRepository('CommonBundle\Entity\Acl\Role')->findAll() as $role) {
+        $roles = $this->entityManager
+            ->getRepository('CommonBundle\Entity\Acl\Role')
+            ->findAll();
+
+        foreach ($roles as $role) {
             $this->addRoleEntity($role);
         }
     }

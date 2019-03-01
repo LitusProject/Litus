@@ -10,8 +10,8 @@
             $(this).find('.modal-header .close').toggle(options.closable);
 
             if ($(this).data('bs.modal')) {
-                $(this).data('bs.modal').options.keyboard = options.closable;
-                $(this).data('bs.modal').options.backdrop = options.closable ? true : 'static';
+                $(this).data('bs.modal')._config.keyboard = options.closable;
+                $(this).data('bs.modal')._config.backdrop = options.closable ? true : 'static';
                 $(this).modal();
             } else {
                 $(this).modal({
@@ -24,7 +24,6 @@
         },
         hide: function () {
             $(this).modal('hide');
-
             return this;
         }
     };
@@ -38,4 +37,4 @@
             $.error('Method ' +  method + ' does not exist on $.permanentModal');
         }
     };
-}) (jQuery);
+})(jQuery);

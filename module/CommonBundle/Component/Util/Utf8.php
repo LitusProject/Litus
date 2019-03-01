@@ -20,6 +20,8 @@
 
 namespace CommonBundle\Component\Util;
 
+use InvalidArgumentException;
+
 /**
  * Provides a few utility methods to handle UTF-8.
  *
@@ -34,7 +36,7 @@ class Utf8
      * @param  string  $utf8       The string in UTF-8 charset
      * @param  boolean $encodeTags True will convert "<" to "&lt;", default value is false
      * @return string|null
-     * @throws Exception\InvalidArgumentException The given first parameter was not a string
+     * @throws InvalidArgumentException The given first parameter was not a string
      */
     public static function utf8ToHtml($utf8, $encodeTags = false)
     {
@@ -43,7 +45,7 @@ class Utf8
         }
 
         if (!is_string($utf8)) {
-            throw new Exception\InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Expected a string as first parameter, not ' . gettype($utf8)
             );
         }

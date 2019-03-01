@@ -40,7 +40,7 @@ class Node
      * @param  string     $tag     The node's tag
      * @param  array|null $params  The node's paramters
      * @param  mixed|null $content The node's content
-     * @throws \CommonBundle\Component\Util\Xml\Exception\InvalidArugmentException The given content was invalid
+     * @throws InvalidArugmentException The given content was invalid
      */
     public function __construct($tag, array $params = null, $content = null)
     {
@@ -80,11 +80,11 @@ class Node
                     } elseif ($part instanceof Node) {
                         $this->content .= $part->__toString();
                     } else {
-                        throw new Exception\InvalidArgumentException('The given content was invalid');
+                        throw new InvalidArgumentException('The given content was invalid');
                     }
                 }
             } else {
-                throw new Exception\InvalidArgumentException('The given content was invalid');
+                throw new InvalidArgumentException('The given content was invalid');
             }
 
             $this->content .= '</' . $tag . '>';

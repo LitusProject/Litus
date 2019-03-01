@@ -53,14 +53,14 @@ class User implements ConnectionInterface
 
     /**
      * @param EntityManager       $entityManager
-     * @param ConnectionInterface $conn
+     * @param ConnectionInterface $connection
      */
-    public function __construct(EntityManager $entityManager, ConnectionInterface $conn)
+    public function __construct(EntityManager $entityManager, ConnectionInterface $connection)
     {
         $this->entityManager = $entityManager;
 
         $this->id = uniqid();
-        $this->connection = $conn;
+        $this->connection = $connection;
         $this->authSession = null;
         $this->data = array();
     }
@@ -77,9 +77,9 @@ class User implements ConnectionInterface
      * @param  ConnectionInterface $connection
      * @return self
      */
-    public function setConnection(ConnectionInterface $conn)
+    public function setConnection(ConnectionInterface $connection)
     {
-        $this->connection = $conn;
+        $this->connection = $connection;
 
         return $this;
     }

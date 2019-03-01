@@ -1,0 +1,77 @@
+// Custom
+//
+// Author: Kristof Mariën <kristof.marien@litus.cc>
+// Author: Pieter Maene <pieter.maene@litus.cc>
+
+.hero {
+    margin-top: 56px;
+    @include gradient-y($sale-dark, $sale-light);
+
+    h1 {
+        color: $light;
+    }
+}
+
+.modal-dialog {
+    margin-top: 140px;
+}
+
+.queueModal {
+    .table {
+        .number {
+            width: 5%;
+        }
+
+        .status {
+            width: 15%;
+        }
+
+        .actions {
+            width: 33%;
+        }
+
+        tbody {
+            max-height: 400px;
+            overflow: auto;
+
+            .actions {
+                padding: 4px 0 4px 12px;
+            }
+        }
+    }
+}
+
+
+.saleScreen {
+    .table {
+        .barcode {
+            width: 15%;
+        }
+
+        .status {
+            width: 15%;
+        }
+
+        .amount {
+            width: 5%;
+        }
+
+        .price {
+            width: 10%;
+        }
+
+        .actions {
+            width: 20%;
+        }
+
+        tbody {
+            .actions {
+                padding: 4px 0 4px 12px;
+            }
+
+            tr.inactive {
+                color: $gray-500;
+            }
+        }
+    }
+}

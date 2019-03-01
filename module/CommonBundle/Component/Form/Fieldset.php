@@ -24,7 +24,6 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAware\CacheTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
-use Zend\Form\FormInterface;
 use Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 /**
@@ -35,13 +34,7 @@ use Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
  */
 class Fieldset extends \Zend\Form\Fieldset implements FieldsetInterface, ServiceLocatorAwareInterface
 {
-    use ElementTrait {
-        ElementTrait::setRequired as setElementRequired;
-    }
-
-    use FieldsetTrait {
-        FieldsetTrait::setRequired insteadof ElementTrait;
-    }
+    use FieldsetTrait;
 
     use ServiceLocatorAwareTrait;
 
@@ -68,30 +61,5 @@ class Fieldset extends \Zend\Form\Fieldset implements FieldsetInterface, Service
         $this->setAttribute('id', $name);
 
         return parent::setName($name);
-    }
-
-    /**
-     * @return string
-     */
-    public function showAs()
-    {
-        if ($this->getOption('showAs') !== null) {
-            return $this->getOption('showAs');
-        }
-
-        return 'fieldset';
-    }
-
-    /**
-     * Ensures state is ready for use. Here, we append the name of the fieldsets
-     * to every elements in order to avoid name clashes if the same fieldset is
-     * used multiple times
-     *
-     * @param  FormInterface $form
-     * @return mixed|void
-     */
-    public function prepareElement(FormInterface $form)
-    {
-        parent::prepareElement($form);
     }
 }

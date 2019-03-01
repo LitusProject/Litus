@@ -34,7 +34,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
 {
     public function loginAction()
     {
-        $form = $this->getForm('common_auth_login');
+        $form = $this->getForm('\CommonBundle\Form\Auth\Login');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();

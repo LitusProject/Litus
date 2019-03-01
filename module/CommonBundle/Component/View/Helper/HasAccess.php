@@ -21,9 +21,10 @@
 namespace CommonBundle\Component\View\Helper;
 
 use CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver;
+use RuntimeException;
 
 /**
- * A view helper that allows us to easily verify whether or not the authenticated user
+ * View helper that allows us to easily verify whether or not the authenticated user
  * has access to a resource. This is particularly useful for creating navigation items.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
@@ -54,7 +55,7 @@ class HasAccess extends \Zend\View\Helper\AbstractHelper
     public function __invoke($resource, $action)
     {
         if ($this->driver === null) {
-            throw new Exception\RuntimeException('No driver object was provided');
+            throw new RuntimeException('No driver object was provided');
         }
 
         $driver = $this->driver;

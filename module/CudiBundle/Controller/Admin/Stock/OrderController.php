@@ -20,7 +20,6 @@
 
 namespace CudiBundle\Controller\Admin\Stock;
 
-use CommonBundle\Component\Acl\Driver\Exception\RuntimeException;
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
@@ -31,6 +30,7 @@ use CudiBundle\Entity\Stock\Order\Item as OrderItem;
 use CudiBundle\Entity\Stock\Period;
 use CudiBundle\Entity\Supplier;
 use DateTime;
+use RuntimeException;
 use Zend\Http\Headers;
 use Zend\View\Model\ViewModel;
 

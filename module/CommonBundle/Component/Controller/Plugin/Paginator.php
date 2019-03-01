@@ -27,9 +27,9 @@ use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrinePaginatorAdapter;
+use InvalidArgumentException;
 use Zend\Http\Request as HttpRequest;
 use Zend\Mvc\Controller\AbstractController;
-use Zend\Mvc\Exception;
 use Zend\Paginator\Adapter\ArrayAdapter;
 use Zend\Paginator\Paginator as ZendPaginator;
 
@@ -63,7 +63,7 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin implements Se
     public function setItemsPerPage($itemsPerPage)
     {
         if (!is_int($itemsPerPage) || $itemsPerPage < 0) {
-            throw new Exception\InvalidArgumentException('The number of items per page has to be positive integer');
+            throw new InvalidArgumentException('The number of items per page has to be positive integer');
         }
 
         $this->itemsPerPage = $itemsPerPage;

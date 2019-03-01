@@ -1,59 +1,56 @@
 {% extends 'sale/base.twig' %}
 
 {% block content %}
-    <div class="flashmessage alert alert-danger fade" id="loading_queue_error">
-        <a class="close">&times;</a>
-        <div class="content">
-            <p>An error occurred while loading the queue.</p>
-        </div>
+    <div class="alert alert-danger fade show" id="loadingQueueError">
+        An error occurred while loading the queue.
     </div>
 
     <div class="row">
         <div class="col-md-3">
-            <table class="table table-bordered table-striped">
+            <table class="table table-striped">
                 <thead>
                     <tr>
                         <th></th>
                         <th>Selling</th>
                     </tr>
                 </thead>
-                <tbody class="queue_list" id="selling_list">
+                <tbody class="queueList" id="sellingList">
                 </tbody>
             </table>
         </div>
         <div class="col-md-3">
-            <table class="table table-bordered table-striped">
+            <table class="table table-striped">
                 <thead>
                     <tr>
                         <th></th>
                         <th>Collected</th>
                     </tr>
                 </thead>
-                <tbody class="queue_list" id="collected_list">
+                <tbody class="queueList" id="collectedList">
                 </tbody>
             </table>
         </div>
         <div class="col-md-3">
-            <table class="table table-bordered table-striped">
+            <table class="table table-striped">
                 <thead>
                     <tr>
                         <th></th>
                         <th>Collecting</th>
                     </tr>
                 </thead>
-                <tbody class="queue_list" id="collecting_list">
+                <tbody class="queueList" id="collectingList">
                 </tbody>
             </table>
         </div>
         <div class="col-md-3">
-            <table class="table table-bordered table-striped">
+            <table class="table table-striped">
                 <thead>
                     <tr>
                         <th></th>
                         <th>Signed In</th>
                     </tr>
                 </thead>
-                <tbody class="queue_list" id="signed_in_list">
+                <tbody class="queueList" id="signedInList">
                 </tbody>
             </table>
         </div>
@@ -63,16 +60,12 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.flashmessage .close').click(function () {
-                $(this).closest('.flashmessage').removeClass('in');
-            });
-
             $.webSocket(
                 {
                     name: 'overviewQueue',
                     url: '{{ socketUrl }}',
                     open: function (e) {
-                        $('#loading_queue_error').removeClass('in');
+                        $('#loadingQueueError').addClass('d-none').removeClass('fade show');
                         $.webSocket('send', {name: 'overviewQueue', text:
                             JSON.stringify({
                                 'command': 'initialize',
@@ -84,15 +77,16 @@
                         });
                     },
                     message: function (e, data) {
-                        $('#loading_queue_error').removeClass('in');
-                        displayItem($('#signed_in_list'), data.queue.signed_in);
-                        displayItem($('#collecting_list'), data.queue.collecting);
-                        displayItem($('#collected_list'), data.queue.collected);
-                        displayItem($('#selling_list'), data.queue.selling);
+                        $('#loadingQueueError').addClass('d-none').removeClass('fade show');
+
+                        displayItem($('#signedInList'), data.queue.signed_in);
+                        displayItem($('#collectingList'), data.queue.collecting);
+                        displayItem($('#collectedList'), data.queue.collected);
+                        displayItem($('#sellingList'), data.queue.selling);
                     },
                     error: function (e) {
-                        $('#loading_queue_error').addClass('in');
-                        $('.queue_list').html('');
+                        $('#loadingQueueError').addClass('fade show').removeClass('d-none');
+                        $('.queueList').html('');
                     }
                 }
             );
@@ -102,11 +96,11 @@
             container.html('');
             $(data).each(function () {
                 var item = $('<tr>').append(
-                        $('<td>').html(this.number),
+                        $('<th scope="col">').html(this.number),
                         $('<td>').append(
-                            (this.name ? this.name : 'guest ' + this.id),
+                            (this.name ? this.name : 'Guest ' + this.id),
                             ' ',
-                            (this.payDesk ? $('<span>', {class: 'label label-info'}).html(this.payDesk) : '')
+                            (this.payDesk ? $('<span>', {class: 'badge badge-primary'}).html(this.payDesk) : '')
                         )
                     );
                 container.append(item);

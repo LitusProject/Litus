@@ -1,8 +1,12 @@
 (function ($) {
     var defaults = {
         tQueueTitle: 'Queue',
-        tQueueTitleLightVersion: 'Enter Person',
+        tQueueTitleLightVersion: 'Add Person',
         tUniversityIdentification: 'University Identification',
+        tNumber: '#',
+        tName: 'Name',
+        tStatus: 'Status',
+        tActions: 'Actions',
         tPrint: 'Print',
         tDone: 'Done',
         tCancel: 'Cancel',
@@ -16,10 +20,13 @@
         tSellNext: 'Sell Next',
         tNotFoundInQueue: '<i><b>{{ name }}</b> was not found in the queue.</i>',
         tAddToQueue: 'Add to Queue',
-        tErrorAddPerson: 'The person could not be added to the queue',
-        tErrorAddPersonType: {'person': 'The person was not found', 'noBookings': 'There were no bookings for this person'},
-        tNoNextToPrint: 'There is no next item to print',
-        tNoNextToSell: 'There is no next item to sell',
+        tErrorAddPerson: 'The person could not be added to the queue.',
+        tErrorAddPersonType: {
+            'person': 'The person was not found.',
+            'noBookings': 'There were no bookings for this person.'
+        },
+        tNoNextToPrint: 'There is no next item to print.',
+        tNoNextToSell: 'There is no next item to sell.',
 
         translateStatus: function (status) {return status;},
         sendToSocket: function (text) {},
@@ -108,49 +115,64 @@
         var settings = $this.data('queueSettings');
 
         $this.addClass('modal fade queueModal').html('').append(
-            $('<div>', {'class': 'modal-dialog'}).append(
+            $('<div>', {'class': 'modal-dialog modal-lg'}).append(
                 $('<div>', {'class': 'modal-content'}).append(
                     $('<div>', {'class': 'modal-header'}).append(
-                        $('<a>', {'class': 'close'}).html('&times;').click(function () {$this.modal('hide');}),
-                        $('<div>', {'class': 'form-search'}).append(
-                            $('<div>', {'class': 'input-group pull-right col-md-6'}).append(
-                                filterText = $('<input>', {'type': 'text', 'class': 'form-control search-query filterText', 'placeholder': settings.tUniversityIdentification}),
-                                clearFilter = $('<span>', {'class': 'input-group-addon'}).css('cursor', 'pointer').append(
-                                    $('<span>', {'class': 'glyphicon glyphicon-remove'})
+                        $('<div>', {'class': 'container-fluid'}).append(
+                            $('<div>', {'class': 'row'}).append(
+                                $('<div>', {'class': 'col-8 my-auto'}).append(
+                                    $('<h5>', {'class': 'modal-title'}).html(settings.tQueueTitle)
+                                ),
+                                $('<div>', {'class': 'col-4 pr-0'}).append(
+                                    $('<div>', {'class': 'input-group'}).append(
+                                        filterText = $('<input>', {'type': 'text', 'class': 'form-control filterText', 'placeholder': settings.tUniversityIdentification}),
+                                        clearFilter = $('<div>', {'class': 'input-group-append'}).append(
+                                            $('<span>', {'class': 'input-group-text', 'style': 'cursor: pointer;'}).append(
+                                                $('<i>', {'class': 'fas fa-times'})
+                                            )
+                                        ),
+                                    )
                                 )
                             )
-                        ),
-                        $('<h4>').html(settings.tQueueTitle)
+                        )
                     ),
                     $('<div>', {'class': 'modal-body'}).append(
                         $('<table>', {'class': 'table table-striped'}).append(
                             $('<thead>').append(
                                 $('<tr>').append(
-                                    $('<th>', {'class': 'number'}).html('Num'),
-                                    $('<th>', {'class': 'name'}).html('Name'),
-                                    $('<th>', {'class': 'status'}).html('Status'),
-                                    $('<th>', {'class': 'actions'}).html('Action')
+                                    $('<th>', {'class': 'number'}).html(settings.tNumber),
+                                    $('<th>', {'class': 'name'}).html(settings.tName),
+                                    $('<th>', {'class': 'status'}).html(settings.tStatus),
+                                    $('<th>', {'class': 'actions'}).html(settings.tActions)
                                 )
                             ),
                             $('<tbody>')
                         )
                     ),
                     $('<div>', {'class': 'modal-footer'}).append(
-                        $('<label>', {'class': 'checkbox pull-left'}).append(
-                            hideHold = $('<input>', {'class': 'hideHold', 'type': 'checkbox', 'checked': 'checked'}),
-                            settings.tHideHold
-                        ).css('margin-left', '20px'),
-                        sellNext = $('<button>', {'class': 'btn btn-success', 'data-key': '116'}).append(
-                            $('<i>', {'class': 'glyphicon glyphicon-shopping-cart'}),
-                            settings.tSellNext + ' - F5'
-                        ),
-                        undoLastSale = $('<button>', {'class': 'btn btn-danger undoLastSale', 'data-key': '117'}).append(
-                            $('<i>', {'class': 'glyphicon glyphicon-arrow-left'}),
-                            settings.tUndoLastSale + ' - F6'
-                        ).hide(),
-                        printNext = $('<button>', {'class': 'btn btn-success', 'data-key': '118'}).append(
-                            $('<i>', {'class': 'glyphicon glyphicon-print'}),
-                            settings.tPrintNext + ' - F7'
+                        $('<div>', {'class': 'container-fluid'}).append(
+                            $('<div>', {'class': 'row'}).append(
+                                $('<div>', {'class': 'col-3 my-auto pl-0'}).append(
+                                    $('<div>', {'class': 'custom-control custom-checkbox'}).append(
+                                        hideHold = $('<input>', {'class': 'custom-control-input hideHold', 'type': 'checkbox', 'id': 'hideHold'}).prop('checked', true),
+                                        $('<label>', {'class': 'custom-control-label', 'for': 'hideHold'}).html(settings.tHideHold)
+                                    ),
+                                ),
+                                $('<div>', {'class': 'col-9 pr-0 text-right'}).append(
+                                    undoLastSale = $('<button>', {'class': 'btn btn-danger mr-1 undoLastSale', 'data-key': 117}).append(
+                                        $('<i>', {'class': 'fas fa-undo mr-1'}),
+                                        settings.tUndoLastSale + ' - F6'
+                                    ).hide(),
+                                    sellNext = $('<button>', {'class': 'btn btn-success mr-1', 'data-key': 116}).append(
+                                        $('<i>', {'class': 'fas fa-shopping-cart mr-1'}),
+                                        settings.tSellNext + ' - F5'
+                                    ),
+                                    printNext = $('<button>', {'class': 'btn btn-success', 'data-key': 118}).append(
+                                        $('<i>', {'class': 'fas fa-print mr-1'}),
+                                        settings.tPrintNext + ' - F7'
+                                    )
+                                )
+                            )
                         )
                     )
                 )
@@ -175,8 +197,9 @@
             if (pattern.test(filter)) {
                 var found = false;
                 $this.find('tbody tr').each(function () {
-                    if ($(this).data('info') && $(this).data('info').university_identification.toLowerCase().indexOf(filter) == 0)
+                    if ($(this).data('info') && $(this).data('info').university_identification.toLowerCase().indexOf(filter) == 0) {
                         found = true;
+                    }
                 });
 
                 if (!found) {
@@ -243,25 +266,24 @@
             $('<div>', {'class': 'modal-dialog modal-lg'}).append(
                 $('<div>', {'class': 'modal-content'}).append(
                     $('<div>', {'class': 'modal-header'}).append(
-                        $('<a>', {'class': 'close'}).html('&times;').click(function () {$this.modal('hide');}),
-                        $('<h4>').html(settings.tQueueTitleLightVersion)
+                        $('<h5>', {'class': 'modal-title'}).html(settings.tQueueTitleLightVersion)
                     ),
                     $('<div>', {'class': 'modal-body'}).append(
-                        $('<div>', {'class': 'form-search'}).append(
-                            $('<div>', {'class': 'input-group'}).append(
-                                filterText = $('<input>', {'type': 'text', 'class': 'form-control search-query filterText', 'placeholder': settings.tUniversityIdentification}),
-                                clearFilter = $('<span>', {'class': 'input-group-addon'}).css('cursor', 'pointer').append(
-                                    $('<span>', {'class': 'glyphicon glyphicon-remove'})
+                        $('<div>', {'class': 'input-group'}).append(
+                            filterText = $('<input>', {'type': 'text', 'class': 'form-control filterText', 'placeholder': settings.tUniversityIdentification}),
+                            clearFilter = $('<div>', {'class': 'input-group-append'}).append(
+                                $('<span>', {'class': 'input-group-text', 'style': 'cursor: pointer;'}).append(
+                                    $('<i>', {'class': 'fas fa-broom'})
                                 )
-                            )
+                            ),
                         )
                     ),
                     $('<div>', {'class': 'modal-footer'}).append(
-                        undoLastSale = $('<button>', {'class': 'btn btn-danger undoLastSale', 'data-key': '117'}).append(
+                        undoLastSale = $('<button>', {'class': 'btn btn-danger undoLastSale', 'data-key': 117}).append(
                             $('<i>', {'class': 'glyphicon glyphicon-arrow-left'}),
                             settings.tUndoLastSale + ' - F6'
                         ).hide(),
-                        startSale = $('<button>', {'class': 'btn btn-success disabled startSale', 'data-key': '118'}).append(
+                        startSale = $('<button>', {'class': 'btn btn-success disabled startSale', 'data-key': 118}).append(
                             $('<i>', {'class': 'glyphicon glyphicon-print'}),
                             settings.tSell + ' - F7'
                         )
@@ -285,8 +307,10 @@
                         })
                     );
                 });
-                if (e.keyCode == 13)
+
+                if (e.keyCode == 13) {
                     $this.find('.startSale').click();
+                }
             } else {
                 $this.find('.startSale').addClass('disabled').unbind('click');
             }
@@ -391,13 +415,14 @@
     function _showActions($this, row, data) {
         switch (data.status) {
             case 'signed_in':
-                if (currentView == 'sale' || currentView == 'collect') {
+                if (currentView == 'collect') {
                     row.find('.hold').show();
                     row.find('.startCollecting, .startScanning, .stopCollecting, .cancelCollecting, .startSale, .cancelSale, .unhold').hide();
                 } else {
                     row.find('.startCollecting, .hold').show();
                     row.find('.stopCollecting, .startScanning, .cancelCollecting, .startSale, .cancelSale, .unhold').hide();
                 }
+
                 break;
             case 'collecting':
                 if (data.displayScanButton) {
@@ -407,63 +432,70 @@
                     row.find('.stopCollecting, .cancelCollecting, .hold').show();
                     row.find('.startCollecting, .startScanning, .startSale, .cancelSale, .unhold').hide();
                 }
+
                 break;
             case 'collected':
-                if (currentView == 'sale' || currentView == 'collect') {
+                if (currentView == 'collect') {
                     row.find('.hold').show();
                     row.find('.startCollecting, .startScanning, .stopCollecting, .cancelCollecting, .startSale, .cancelSale, .unhold').hide();
                 } else {
                     row.find('.startSale, .hold').show();
                     row.find('.startCollecting, .startScanning, .stopCollecting, .cancelCollecting, .cancelSale, .unhold').hide();
                 }
+
                 break;
             case 'selling':
                 row.find('.cancelSale, .hold').show();
                 row.find('.startCollecting, .startScanning, .stopCollecting, .cancelCollecting, .startSale, .unhold').hide();
+
                 break;
             case 'hold':
                 row.find('.unhold').show();
                 row.find('.startCollecting, .startScanning, .stopCollecting, .cancelCollecting, .startSale, .cancelSale, .hold').hide();
+
                 break;
         }
 
-        if (data.locked)
-            row.find('button').addClass('disabled');
-        else
-            row.find('button').removeClass('disabled');
+        if (data.locked) {
+            row.find('button').prop('disabled', true);
+        } else {
+            row.find('button').prop('disabled', false);
+        }
     }
 
     function _updateItem($this, settings, row, data) {
         var previousStatus = '';
-        if (row.data('info'))
+        if (row.data('info')) {
             previousStatus = row.data('info').status;
+        }
 
         row.find('.number').html(data.number);
         row.find('.name').html('').append(
             data.name,
             ' ',
-            (data.payDesk ? $('<span>', {'class': 'label label-info'}).html(data.payDesk) : '')
+            (data.payDesk ? $('<span>', {'class': 'badge badge-primary'}).html(data.payDesk) : '')
         );
         row.find('.status').html(settings.translateStatus(data.status));
         row.data('info', data);
 
-        if (previousStatus != data.status)
+        if (previousStatus != data.status) {
             _showActions($this, row, data);
+        }
     }
 
     function _createItem($this, settings, data) {
         var row = $('<tr>', {'id': 'item-' + data.id}).append(
-            $('<td>', {'class': 'number'}),
+            $('<th>', {'class': 'number', 'scope': 'row'}),
             $('<td>', {'class': 'name'}),
             $('<td>', {'class': 'status'}),
             $('<td>', {'class': 'actions'}).append(
-                startCollecting = $('<button>', {'class': 'btn btn-success startCollecting'}).html(settings.tPrint).hide(),
-                stopCollecting = $('<button>', {'class': 'btn btn-success stopCollecting'}).html(settings.tDone).hide(),
-                startScanning = $('<button>', {'class': 'btn btn-success startScanning'}).html(settings.tScan).hide(),
-                cancelCollecting = $('<button>', {'class': 'btn btn-danger cancelCollecting'}).html(settings.tCancel).hide(),
-                startSale = $('<button>', {'class': 'btn btn-success startSale'}).html(settings.tSell).hide(),
-                cancelSale = $('<button>', {'class': 'btn btn-danger cancelSale'}).html(settings.tCancel).hide(),
-                hold = $('<button>', {'class': 'btn btn-warning hold'}).html(settings.tHold).hide(),
+                startCollecting = $('<button>', {'class': 'btn btn-success mr-1 startCollecting'}).html(settings.tPrint).hide(),
+                stopCollecting = $('<button>', {'class': 'btn btn-success mr-1 stopCollecting'}).html(settings.tDone).hide(),
+                startScanning = $('<button>', {'class': 'btn btn-success mr-1 startScanning'}).html(settings.tScan).hide(),
+                cancelCollecting = $('<button>', {'class': 'btn btn-danger mr-1 cancelCollecting'}).html(settings.tCancel).hide(),
+                startSale = $('<button>', {'class': 'btn btn-success mr-1 startSale'}).html(settings.tSell).hide(),
+                cancelSale = $('<button>', {'class': 'btn btn-danger mr-1 cancelSale'}).html(settings.tCancel).hide(),
+                hold = $('<button>', {'class': 'btn btn-warning float-right mr-1 hold'}).html(settings.tHold).hide(),
                 unhold = $('<button>', {'class': 'btn btn-warning unhold'}).html(settings.tUnhold).hide()
             )
         );
@@ -471,8 +503,10 @@
         _updateItem($this, settings, row, data);
 
         startCollecting.click(function () {
-            if ($(this).is('.disabled'))
+            if ($(this).is('.disabled')) {
                 return;
+            }
+
             settings.sendToSocket(
                 JSON.stringify({
                     'command': 'action',
@@ -483,8 +517,10 @@
         });
 
         startScanning.click(function () {
-            if ($(this).is('.disabled'))
+            if ($(this).is('.disabled')) {
                 return;
+            }
+
             settings.sendToSocket(
                 JSON.stringify({
                     'command': 'action',
@@ -495,8 +531,10 @@
         });
 
         stopCollecting.click(function () {
-            if ($(this).is('.disabled'))
+            if ($(this).is('.disabled')) {
                 return;
+            }
+
             settings.sendToSocket(
                 JSON.stringify({
                     'command': 'action',
@@ -507,8 +545,10 @@
         });
 
         cancelCollecting.click(function () {
-            if ($(this).is('.disabled'))
+            if ($(this).is('.disabled')) {
                 return;
+            }
+
             settings.sendToSocket(
                 JSON.stringify({
                     'command': 'action',
@@ -519,8 +559,10 @@
         });
 
         startSale.click(function () {
-            if ($(this).is('.disabled'))
+            if ($(this).is('.disabled')) {
                 return;
+            }
+
             settings.sendToSocket(
                 JSON.stringify({
                     'command': 'action',
@@ -531,8 +573,10 @@
         });
 
         cancelSale.click(function () {
-            if ($(this).is('.disabled'))
+            if ($(this).is('.disabled')) {
                 return;
+            }
+
             settings.sendToSocket(
                 JSON.stringify({
                     'command': 'action',
@@ -543,8 +587,10 @@
         });
 
         hold.click(function () {
-            if ($(this).is('.disabled'))
+            if ($(this).is('.disabled')) {
                 return;
+            }
+
             settings.sendToSocket(
                 JSON.stringify({
                     'command': 'action',
@@ -555,8 +601,10 @@
         });
 
         unhold.click(function () {
-            if ($(this).is('.disabled'))
+            if ($(this).is('.disabled')) {
                 return;
+            }
+
             settings.sendToSocket(
                 JSON.stringify({
                     'command': 'action',
@@ -576,19 +624,23 @@
         }
 
         var show = true;
-        if ($this.find('.hideHold').is(':checked') && data.status == 'hold')
+        if ($this.find('.hideHold').is(':checked') && data.status == 'hold') {
             show = false;
+        }
 
         var filter = $this.find('.filterText').val();
         if (filter.length > 0) {
             filter = filter.toLowerCase();
+
             show = false;
-            if (data.name.toLowerCase().indexOf(filter) >= 0 || data.university_identification.toLowerCase().indexOf(filter) >= 0)
+            if (data.name.toLowerCase().indexOf(filter) >= 0 || data.university_identification.toLowerCase().indexOf(filter) >= 0) {
                 show = true;
+            }
         }
 
-        if (show)
+        if (show) {
             $this.find('tbody #addToQueue').remove();
+        }
 
         row.toggle(show);
     }
@@ -600,10 +652,12 @@
             if ($(this).data('info').barcode == barcode) {
                 switch ($(this).data('info').status) {
                     case 'collecting':
-                        if ($(this).find('.startScanning').is(':visible'))
+                        if ($(this).find('.startScanning').is(':visible')) {
                             $(this).find('.startScanning').click();
-                        else
+                        } else {
                             $(this).find('.stopCollecting').click();
+                        }
+
                         break;
                     case 'collected':
                         $(this).find('.startSale').click();
@@ -617,15 +671,13 @@
         var settings = $this.data('queueSettings');
 
         $this.find('.modal-body').prepend(
-            $('<div>', {'class': 'flashmessage alert alert-danger fade in'}).append(
-                $('<div>', {'class': 'content'}).append('<p>').html(
-                    settings.tErrorAddPerson + (error === undefined ? '' : ': ' + settings.tErrorAddPersonType[error])
-                )
+            $('<div>', {'class': 'alert alert-danger fade show'}).html(
+                settings.tErrorAddPerson + (error === undefined ? '' : ': ' + settings.tErrorAddPersonType[error])
             )
         );
 
         setTimeout(function () {
-            $this.find('.modal-body .flashmessage').remove();
+            $this.find('.modal-body .alert').alert('close');
         }, 2000);
     }
 
@@ -649,15 +701,11 @@
 
         if (!nextPrinted) {
             $this.find('.modal-body').prepend(
-                $('<div>', {'class': 'flashmessage alert alert-danger fade in'}).append(
-                    $('<div>', {'class': 'content'}).append('<p>').html(
-                        settings.tNoNextToPrint
-                    )
-                )
+                $('<div>', {'class': 'alert alert-danger fade show'}).html(settings.tNoNextToPrint)
             );
 
             setTimeout(function () {
-                $this.find('.modal-body .flashmessage').remove();
+                $this.find('.modal-body .alert').alert('close');
             }, 2000);
         }
     }
@@ -676,15 +724,11 @@
 
         if (!nextSelling) {
             $this.find('.modal-body').prepend(
-                $('<div>', {'class': 'flashmessage alert alert-danger fade in'}).append(
-                    $('<div>', {'class': 'content'}).append('<p>').html(
-                        settings.tNoNextToSell
-                    )
-                )
+                $('<div>', {'class': 'alert alert-danger fade show'}).html(settings.tNoNextToSell)
             );
 
             setTimeout(function () {
-                $this.find('.modal-body .flashmessage').remove();
+                $this.find('.modal-body .alert').alert('close');
             }, 2000);
         }
     }

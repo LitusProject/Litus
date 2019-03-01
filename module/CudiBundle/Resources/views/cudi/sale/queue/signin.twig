@@ -1,54 +1,22 @@
-{% extends 'sale/base_no_nav.twig' %}
+{% extends 'sale/base.twig' %}
+{% set showNav = 0 %}
 
 {% block content %}
-    <div class="flashmessage alert alert-danger fade" id="add_queue_error">
-        <a class="close">&times;</a>
-        <div class="content">
-            There are no bookings for you.
-        </div>
+    <div class="alert alert-danger d-none" id="addQueueError">
+        There are no bookings for you.
     </div>
-
-    <div class="flashmessage alert alert-success fade" id="add_queue_success">
-        <a class="close">&times;</a>
+    <div class="alert alert-success d-none" id="addQueueSuccess">
         You have been succesfully added to the queue. Your queue number is: <strong class="queueNumber"></strong>.
     </div>
-
-    <div class="flashmessage alert alert-danger fade" id="socket_error">
-        <a class="close">&times;</a>
-        <div class="content">
-            <p>The connection with the server is down.</p>
-        </div>
+    <div class="alert alert-danger fade show" id="socketError">
+        An error occurred while connecting to the server.
     </div>
 
     <div class="row">
-        <div class="col-xs-8">
-            {% if form is defined %}
-                {% do form.prepare() %}
-                {% autoescape false %}
-                    {{ form().openTag(form) }}
-                    {{ formElement(form.get('csrf')) }}
-
-                    <div class="form-group  required">
-                        <label class="col-sm-4 control-label" for="username">
-                            {{ form.get('username').getLabel() }}
-                        </label>
-                        <div class="col-sm-8">
-                            {{ formElement(form.get('username')) }}
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-sm-offset-4 col-sm-8">
-                            {{ formElement(form.get('submit')) }}
-                            {{ formElement(form.get('cancel')) }}
-                        </div>
-                    </div>
-
-                    {{ form().closeTag() }}
-                {% endautoescape %}
-            {% endif %}
+        <div class="col-sm-8">
+            {{ form(form) }}
         </div>
-        <div class="col-xs-3">
+        <div class="col-sm-4">
             <h5 class="page-header" style="margin-top: 0">What if sign in doesn't work?</h5>
             <p>Make sure you are registered on our website and you have made some reservations.</p>
             <p>These reservations have to be assigned to you before you can buy them, the status of your reservations can be viewed on our website.</p>
@@ -59,19 +27,13 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.flashmessage .close').click(function () {
-                $(this).closest('.flashmessage').removeClass('in');
-            });
-
-            $('.flashmessage:not(#invalidSession)').autoHideFlashMessages({speed: 0, timeOut: 0});
-
             $('#username').keypress(function(e) {
                 if (e.keyCode == 13) {
                     e.preventDefault();
                     signIn();
                 }
             });
-            $('#signin').click(function() {
+            $('#submit').click(function() {
                 signIn();
             });
 
@@ -80,7 +42,7 @@
                     name: 'signInQueue',
                     url: '{{ socketUrl }}',
                     open: function (e) {
-                        $('#socket_error').removeClass('in');
+                        $('#socketError').addClass('d-none').removeClass('fade show');
                         $.webSocket('send', {name: 'signInQueue', text:
                             JSON.stringify({
                                 'command': 'initialize',
@@ -92,34 +54,47 @@
                     },
                     message: function (e, data) {
                         if (data.queueNumber) {
-                            $('#add_queue_error').removeClass('in');
-                            $('#add_queue_success').addClass('in')
-                                .find('.queueNumber').html(data.queueNumber);
+                            $('#addQueueError').addClass('d-none').removeClass('fade show');
+                            $('#addQueueSuccess').addClass('fade show').removeClass('d-none')
+                                .find('.queueNumber')
+                                .html(data.queueNumber);
+
                             $('#username').val('');
                         } else if (data.error) {
-                            if ('person' == data.error) {
-                                $('#add_queue_success').removeClass('in');
-                                $('#add_queue_error').addClass('in')
-                                    .find('.content').html('The person you entered does not exist.');
-                            } else if ('noBookings' == data.error) {
-                                $('#add_queue_success').removeClass('in');
-                                $('#add_queue_error').addClass('in')
-                                    .find('.content').html('There are no bookings for you.');
-                            } else if ('rejected' == data.error) {
-                                $('#add_queue_success').removeClass('in');
-                                $('#add_queue_error').addClass('in')
-                                    .find('.content').html('You cannot buy your articles during this sale session.');
+                            if (data.error == 'person') {
+                                $('#addQueueSuccess').addClass('d-none').removeClass('fade show');
+                                $('#addQueueError').addClass('fade show').removeClass('d-none')
+                                    .html('The person you entered does not exist.');
+                            } else if (data.error == 'noBookings') {
+                                $('#addQueueSuccess').addClass('d-none').removeClass('fade show');
+                                $('#addQueueError').addClass('fade show').removeClass('d-none')
+                                    .html('There are no bookings for you.');
+                            } else if (data.error == 'rejected') {
+                                $('#addQueueSuccess').addClass('d-none').removeClass('fade show');
+                                $('#addQueueError').addClass('fade show').removeClass('d-none')
+                                    .html('You cannot buy your articles during this sale session.');
                             } else {
-                                $('#add_queue_success').removeClass('in');
-                                $('#add_queue_error').addClass('in')
-                                    .find('.content').html('An unexpected error occured.')
+                                $('#addQueueSuccess').addClass('d-none').removeClass('fade show');
+                                $('#addQueueError').addClass('fade show').removeClass('d-none')
+                                    .html('An unexpected error occured.')
                             }
+
                             $('#username').val('');
                         }
-                        $('.flashmessage').autoHideFlashMessages();
+
+                        $('.alert').each(function () {
+                            var $this = $(this);
+                            clearTimeout($this.data('timer'));
+
+                            var timer = setTimeout(function () {
+                                $this.addClass('d-none').removeClass('fade show');
+                            }, 5000);
+
+                            $this.data('timer', timer);
+                        });
                     },
                     error: function (e) {
-                        $('#socket_error').addClass('in');
+                        $('#socketError').addClass('fade show').removeClass('d-none');
                     }
                 }
             );
@@ -133,6 +108,7 @@
                     'universityIdentification': $('#username').val(),
                 })
             });
+
             $('#username').select();
         }
     </script>

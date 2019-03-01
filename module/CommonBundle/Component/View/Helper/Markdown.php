@@ -23,7 +23,7 @@ namespace CommonBundle\Component\View\Helper;
 use Parsedown;
 
 /**
- * A view helper that parses Markdown.
+ * View helper that parses Markdown.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */

@@ -30,7 +30,7 @@ use Zend\Validator\Identical;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Bootstrap\Form
+class Add extends \CommonBundle\Component\Form\Form
 {
     use HydratorPluginManagerTrait;
 

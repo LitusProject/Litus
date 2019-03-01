@@ -84,7 +84,7 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
 
     public function signInAction()
     {
-        $form = $this->getForm('cudi_sale_queue_sign-in');
+        $form = $this->getForm('CudiBundle\Form\Sale\Queue\SignIn');
 
         return new ViewModel(
             array(

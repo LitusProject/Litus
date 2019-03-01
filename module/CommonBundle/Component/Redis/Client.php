@@ -24,10 +24,15 @@ use Credis_Client;
 use Redis;
 use RuntimeException;
 
+/**
+ * Redis Client
+ *
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ */
 class Client
 {
     /**
-     * @var array
+     * @var Configuration
      */
     private $config;
 
@@ -37,23 +42,23 @@ class Client
     private $credisClient;
 
     /**
-     * @param  array $config
+     * @param  Configuration $config
      * @return self
      */
-    public function __construct($config)
+    public function __construct(Configuration $config)
     {
         $this->config = $config;
 
         $this->credisClient = new Credis_Client(
-            $config['host'],
-            $config['port'],
-            $config['timeout'],
-            $config['persistent_id'],
-            $config['database'],
-            $config['password']
+            $config->getHost(),
+            $config->getPort(),
+            $config->getTimeout(),
+            $config->getPersistentId(),
+            $config->getDatabase(),
+            $config->getPassword()
         );
 
-        foreach ($config['lib_options'] as $key => $value) {
+        foreach ($config->getLibOptions() as $key => $value) {
             $this->credisClient->setOption($key, $value);
         }
     }
@@ -64,7 +69,7 @@ class Client
      */
     public function serialize($value)
     {
-        switch ($this->config['lib_options'][Redis::OPT_SERIALIZER]) {
+        switch ($this->config->getLibOptions()[Redis::OPT_SERIALIZER]) {
             case Redis::SERIALIZER_PHP:
                 return serialize($value);
 
@@ -82,7 +87,7 @@ class Client
      */
     public function unserialize($str)
     {
-        switch ($this->config['lib_options'][Redis::OPT_SERIALIZER]) {
+        switch ($this->config->getLibOptions()[Redis::OPT_SERIALIZER]) {
             case Redis::SERIALIZER_PHP:
                 return unserialize($str);
 

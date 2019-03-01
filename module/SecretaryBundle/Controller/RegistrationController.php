@@ -177,7 +177,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     ->findLastByUniversityIdentification($this->getParam('identification'));
 
                 $form = $this->getForm(
-                    'secretary_registration_add',
+                    'SecretaryBundle\Form\Registration\Add',
                     array(
                         'identification' => $this->getParam('identification'),
                         'extra_info'     => $code !== null ? unserialize($code->getInfo()) : array(),
@@ -324,7 +324,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     ->findLastByUniversityIdentification($this->getParam('identification'));
 
                 $form = $this->getForm(
-                    'secretary_registration_add',
+                    'SecretaryBundle\Form\Registration\Add',
                     array(
                         'identification' => $this->getParam('identification'),
                         'extra_info'     => $code !== null ? unserialize($code->getInfo()) : array(),

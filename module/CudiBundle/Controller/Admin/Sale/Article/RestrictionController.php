@@ -20,13 +20,13 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Article;
 
-use CommonBundle\Component\Controller\Exception\RuntimeException;
 use CudiBundle\Entity\Sale\Article as SaleArticle;
 use CudiBundle\Entity\Sale\Article\Restriction;
 use CudiBundle\Entity\Sale\Article\Restriction\Amount as AmountRestriction;
 use CudiBundle\Entity\Sale\Article\Restriction\Available as AvailableRestriction;
 use CudiBundle\Entity\Sale\Article\Restriction\Member as MemberRestriction;
 use CudiBundle\Entity\Sale\Article\Restriction\Study as StudyRestriction;
+use RuntimeException;
 use Zend\View\Model\ViewModel;
 
 /**

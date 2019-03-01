@@ -1,192 +1,144 @@
-{{ doctype() }}
+{% extends 'sale/base.twig' %}
+{% set showHeader = 0 %}
 
-<html lang="en">
-    <head>
+{% block content %}
+    <div class="alert alert-danger fade show" id="loadingQueueError">
+        An error occurred while loading the queue.
+    </div>
 
-        {{ headMeta() }}
-        {{ headTitle('Litus Sale', 'PREPEND') }}
-
-        {{ headLink() }}
-        <style type="text/css">
-            @media (min-width: 1310px) {
-                body {
-                    font-size: 25px;
-                }
-
-                .container {
-                    width: 1300px;
-                }
-            }
-
-            h2, h3 {
-                margin: 0;
-            }
-
-            .well {
-                padding: 5px 10px;
-            }
-
-            .page-header {
-                margin: 10px 0 20px 0;
-            }
-        </style>
-    </head>
-
-    <body>
-        <div class="container">
-            {% include 'sale/partials/flashMessenger.twig' %}
-
-            <div class="flashmessage alert alert-danger fade" id="loading_queue_error">
-                <a class="close">&times;</a>
-                <div class="content">
-                    <p>An error occurred while loading the queue.</p>
-                </div>
-            </div>
-
-            <table style="width: 100%">
+    <div class="row">
+        <div class="col-12">
+            <table class="w-100">
                 <tr>
                     {% for payDesk in payDesks %}
-                        <td style="padding: 5px">
-                            <div class="well">
-                                <h3>{{ payDesk.getName() }}</h3>
-                                <table class="table table-bordered table-striped paydesk" id="paydesk_{{ payDesk.getId() }}">
-                                    <tr>
-                                        <td></td>
-                                        <td><i>No Customer</i></td>
-                                    </tr>
-                                </table>
-                            </div>
+                        <td class="p-3">
+                            <h3>{{ payDesk.getName() }}</h3>
+                            <table class="table table-striped paydesk" id="paydesk{{ payDesk.getId() }}">
+                                <tr>
+                                    <td></td>
+                                    <td><i>No Customer</i></td>
+                                </tr>
+                            </table>
                         </td>
                     {% endfor %}
                 </tr>
             </table>
-
-            <div class="page-header">
-                <h2>Queue:</h2>
-            </div>
-
-            <div class="row">
-                <div class="{% if enableCollecting %}col-md-4{% else %}col-md-6{% endif %}">
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Collected</th>
-                            </tr>
-                        </thead>
-                        <tbody class="queue_list" id="collected_list">
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-md-4" {% if not enableCollecting %}style="display: none"{% endif %}>
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Collecting</th>
-                            </tr>
-                        </thead>
-                        <tbody class="queue_list" id="collecting_list">
-                        </tbody>
-                    </table>
-                </div>
-                <div class="{% if enableCollecting %}col-md-4{% else %}col-md-6{% endif %}">
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Signed In</th>
-                            </tr>
-                        </thead>
-                        <tbody class="queue_list" id="signed_in_list">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <footer>
-                <p class="companies">
-                    {% for logo in logos %}
-                        <a href="{{ logo.getUrl() }}" target="_blank" style="background-image: url('/{{ logoPath }}/{{ logo.getPath() }}');height: 30px;width: {{ (logo.getWidth()*30/logo.getHeight())|number_format(0) }}px;"></a>
-                    {% endfor %}
-                </p>
-            </footer>
         </div>
+    </div>
 
-        {{ inlineScript() }}
+    <div class="row mt-5">
+        <div class="col-12">
+            <h2>Queue</h2>
+        </div>
+    </div>
 
-        {% block content_script %}
-            <script type="text/javascript">
-                $(document).ready(function () {
-                    $('.flashmessage .close').click(function () {
-                        $(this).closest('.flashmessage').removeClass('in');
-                    });
+    <div class="row">
+        <div class="{% if enableCollecting %}col-4{% else %}col-6{% endif %}">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Collected</th>
+                    </tr>
+                </thead>
+                <tbody class="queueList" id="collectedList">
+                </tbody>
+            </table>
+        </div>
+        <div class="col-4 {% if not enableCollecting %}d-none{% endif %}">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Collecting</th>
+                    </tr>
+                </thead>
+                <tbody class="queueList" id="collectingList">
+                </tbody>
+            </table>
+        </div>
+        <div class="{% if enableCollecting %}col-4{% else %}col-6{% endif %}">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Signed In</th>
+                    </tr>
+                </thead>
+                <tbody class="queueList" id="signedInList">
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
 
-                    $.webSocket(
-                        {
-                            name: 'overviewQueue',
-                            url: '{{ socketUrl }}',
-                            open: function (e) {
-                                $('#loading_queue_error').removeClass('in');
-                                $.webSocket('send', {name: 'overviewQueue', text:
-                                    JSON.stringify({
-                                        'command': 'initialize',
-                                        'queueType': 'queue',
-                                        'session': '{{ session.getId() }}',
-                                        'key': '{{ key }}',
-                                        'authSession': '{{ authSession.getId() }}',
-                                    })
-                                });
-                            },
-                            message: function (e, data) {
-                                $('#loading_queue_error').removeClass('in');
-                                displayItem($('#signed_in_list'), data.queue.signed_in);
-                                displayItem($('#collecting_list'), data.queue.collecting);
-                                displayItem($('#collected_list'), data.queue.collected);
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.webSocket(
+                {
+                    name: 'overviewQueue',
+                    url: '{{ socketUrl }}',
+                    open: function (e) {
+                        $('#loadingQueueError').addClass('d-none').removeClass('fade show');
+                        $.webSocket('send', {name: 'overviewQueue', text:
+                            JSON.stringify({
+                                'command': 'initialize',
+                                'queueType': 'queue',
+                                'session': '{{ session.getId() }}',
+                                'key': '{{ key }}',
+                                'authSession': '{{ authSession.getId() }}',
+                            })
+                        });
+                    },
+                    message: function (e, data) {
+                        $('#loadingQueueError').addClass('d-none').removeClass('fade show');
 
-                                $('.paydesk').html(
-                                    $('<tr>').append(
-                                        $('<td>'),
-                                        $('<td>').append(
-                                            $('<i>').html('No Customer')
-                                        )
-                                    )
-                                );
+                        displayItem($('#signedInList'), data.queue.signed_in);
+                        displayItem($('#collectingList'), data.queue.collecting);
+                        displayItem($('#collectedList'), data.queue.collected);
 
-                                $(data.queue.selling).each(function () {
-                                    $('#paydesk_' + this.payDeskId).html(
-                                        $('<tr>').append(
-                                            $('<td>').html(this.number),
-                                            $('<td>').append(
-                                                (this.name ? this.name : 'guest ' + this.id)
-                                            )
-                                        )
-                                    );
-                                });
-                            },
-                            error: function (e) {
-                                $('#loading_queue_error').addClass('in');
-                                $('.queue_list').html('');
-                            }
-                        }
-                    );
-                });
-
-                function displayItem(container, data) {
-                    container.html('');
-                    $(data).each(function () {
-                        var item = $('<tr>').append(
-                                $('<td>').html(this.number),
+                        $('.paydesk').html(
+                            $('<tr>').append(
+                                $('<td>'),
                                 $('<td>').append(
-                                    (this.name ? this.name : 'guest ' + this.id),
-                                    ' ',
-                                    (this.payDesk ? $('<span>', {class: 'label label-info'}).html(this.payDesk) : '')
+                                    $('<i>').html('No Customer')
+                                )
+                            )
+                        );
+
+                        $(data.queue.selling).each(function () {
+                            $('#paydesk' + this.payDeskId).html(
+                                $('<tr>').append(
+                                    $('<td>').html(this.number),
+                                    $('<td>').append(
+                                        (this.name ? this.name : 'guest ' + this.id)
+                                    )
                                 )
                             );
-                        container.append(item);
-                    });
+                        });
+                    },
+                    error: function (e) {
+                        $('#loadingQueueError').addClass('fade show').removeClass('d-none');
+                        $('.queueList').html('');
+                    }
                 }
-            </script>
-        {% endblock %}
-    </body>
-</html>
+            );
+        });
+
+        function displayItem(container, data) {
+            container.html('');
+            $(data).each(function () {
+                var item = $('<tr>').append(
+                        $('<th scope="col">').html(this.number),
+                        $('<td>').append(
+                            (this.name ? this.name : 'Guest ' + this.id),
+                            ' ',
+                            (this.payDesk ? $('<span>', {class: 'badge badge-primary'}).html(this.payDesk) : '')
+                        )
+                    );
+                container.append(item);
+            });
+        }
+    </script>
+{% endblock %}

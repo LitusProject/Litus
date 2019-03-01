@@ -75,7 +75,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOneById($this->getParam('session'));
 
-        $form = $this->getForm('cudi_sale_sale_return-article');
+        $form = $this->getForm('CudiBundle\Form\Sale\Sale\ReturnArticle');
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -109,15 +109,17 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
                     ->findOneSoldByArticleAndPerson($article, $person, false);
 
+                var_dump($booking);
+
                 if ($booking->getNumber() > 1) {
-                    $remainder = new Booking(
+                    $returnedBooking = new Booking(
                         $this->getEntityManager(),
                         $booking->getPerson(),
                         $booking->getArticle(),
                         'returned',
                         1
                     );
-                    $this->getEntityManager()->persist($remainder);
+                    $this->getEntityManager()->persist($returnedBooking);
 
                     $booking->setNumber($booking->getNumber() - 1)
                         ->setStatus('sold', $this->getEntityManager());
@@ -125,7 +127,12 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                     $booking->setStatus('returned', $this->getEntityManager());
                 }
 
-                $this->getEntityManager()->persist(new ReturnItem($article, $price / 100, $queueItem));
+                $returnItem = new ReturnItem(
+                    $article,
+                    $price / 100,
+                    $queueItem
+                );
+                $this->getEntityManager()->persist($returnItem);
 
                 $article->setStockValue($article->getStockValue() + 1);
 
@@ -164,7 +171,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
     {
         $this->initAjax();
 
-        $form = $this->getForm('cudi_sale_sale_return-article');
+        $form = $this->getForm('CudiBundle\Form\Sale\Sale\ReturnArticle');
 
         if ($this->getRequest()->isPost()) {
             $data = $this->getRequest()->getPost();

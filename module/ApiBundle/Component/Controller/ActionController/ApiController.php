@@ -22,7 +22,6 @@ namespace ApiBundle\Component\Controller\ActionController;
 
 use CommonBundle\Component\Acl\Acl;
 use CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver;
-use CommonBundle\Component\Controller\Exception\RuntimeException;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\AuthenticationTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\CacheTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
@@ -37,6 +36,7 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Entity\General\Language;
 use CommonBundle\Entity\General\Visit;
+use RuntimeException;
 use Zend\Http\Header\HeaderInterface;
 use Zend\Mvc\MvcEvent;
 use Zend\Uri\UriFactory;

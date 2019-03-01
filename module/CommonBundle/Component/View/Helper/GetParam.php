@@ -20,6 +20,7 @@
 
 namespace CommonBundle\Component\View\Helper;
 
+use RuntimeException;
 use Zend\Router\RouteMatch;
 
 /**
@@ -53,7 +54,7 @@ class GetParam extends \Zend\View\Helper\AbstractHelper
     public function __invoke($key, $default = null)
     {
         if ($this->routeMatch === null) {
-            throw new Exception\RuntimeException('No matched route was provided');
+            throw new RuntimeException('No matched route was provided');
         }
 
         return $this->routeMatch->getParam($key, $default);

@@ -21,6 +21,7 @@
 namespace CommonBundle\Component\Controller\Plugin;
 
 use CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver;
+use RuntimeException;
 
 /**
  * A view helper that allows us to easily verify whether or not the authenticated user
@@ -54,7 +55,7 @@ class HasAccess extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
     public function toResourceAction($resource, $action)
     {
         if ($this->driver === null) {
-            throw new Exception\RuntimeException('No driver object was provided');
+            throw new RuntimeException('No driver object was provided');
         }
 
         $driver = $this->driver;

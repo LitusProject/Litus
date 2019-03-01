@@ -183,7 +183,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->getRepository('CudiBundle\Entity\Sale\Article\Discount\Template')
             ->findAll();
 
-        $templateOptions = array(0 => 'none');
+        $templateOptions = array(0 => 'None');
         foreach ($templates as $template) {
             $templateOptions[$template->getId()] = $template->getName();
         }

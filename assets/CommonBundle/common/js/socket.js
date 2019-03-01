@@ -61,15 +61,20 @@
         },
         send : function (data) {
             var socket = $(document).data(data.name);
-            if (socket != undefined)
+            if (socket != undefined) {
                 socket.send(data.text);
+            }
+
             return this;
         },
         close : function (data) {
             var socket = $(document).data(data.name);
-            if (socket != undefined)
+            if (socket != undefined) {
                 $(document).data(data.name).close();
+            }
+
             $(document).removeData(data.name);
+
             return this;
         }
     };
@@ -85,4 +90,4 @@
             }
         }
     });
-}) (jQuery);
+})(jQuery);

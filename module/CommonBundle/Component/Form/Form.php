@@ -29,7 +29,6 @@ use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Component\Validator\FormAwareInterface;
 use RuntimeException;
 use Zend\Form\FieldsetInterface as ZendFieldsetInterface;
-use Zend\Form\FormInterface;
 use Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
@@ -44,13 +43,7 @@ use Zend\InputFilter\InputInterface;
  */
 abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface, ServiceLocatorAwareInterface, ZendFieldsetInterface
 {
-    use ElementTrait {
-        ElementTrait::setRequired as setElementRequired;
-    }
-
-    use FieldsetTrait {
-        FieldsetTrait::setRequired insteadof ElementTrait;
-    }
+    use FieldsetTrait;
 
     use ServiceLocatorAwareTrait;
 
@@ -66,8 +59,13 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     {
         parent::__construct($name, $options);
 
-        $this->setUseInputFilterDefaults(true)
-            ->setAttribute('novalidate', true);
+        $this->setUseInputFilterDefaults(true);
+        $this->add(
+            array(
+                'type' => 'csrf',
+                'name' => 'csrf',
+            )
+        );
     }
 
     /**
@@ -87,21 +85,25 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Language
+     * Adds a fieldset to the form.
+     *
+     * @param  string $label
+     * @param  string $name
+     * @return Fieldset
      */
-    public function getLanguage()
+    public function addFieldset($label, $name)
     {
-        return $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findOneByAbbrev($this->getSessionContainer()->language);
-    }
+        $this->add(
+            array(
+                'type'  => 'fieldset',
+                'name'  => $name,
+                'options' => array(
+                    'label' => $label,
+                ),
+            )
+        );
 
-    /**
-     * @return string
-     */
-    public function showAs()
-    {
-        return 'div';
+        return $this->get($name);
     }
 
     /**
@@ -115,41 +117,37 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
      */
     public function addSubmit($value, $class = null, $name = 'submit', $attributes = array())
     {
-        $submit = array(
-            'type'  => 'submit',
-            'name'  => $name,
-            'value' => $value,
-        );
-
         if ($class !== null) {
             $attributes['class'] = $class;
         }
 
-        $submit['attributes'] = $attributes;
-
-        $this->add($submit);
+        $this->add(
+            array(
+                'type'       => 'submit',
+                'name'       => $name,
+                'label'      => $value,
+                'value'      => $value,
+                'attributes' => $attributes,
+            )
+        );
 
         return $this;
     }
 
-    /**
-     * Adds a fieldset to the form.
-     *
-     * @param  string $label
-     * @param  string $name
-     * @return Fieldset
-     */
-    public function addFieldset($label, $name)
+    public function getInputFilter()
     {
-        $this->add(
-            array(
-                'type'  => 'fieldset',
-                'name'  => $name,
-                'label' => $label,
-            )
-        );
+        if (!isset($this->filter)) {
+            $specification = $this->getInputFilterSpecification();
 
-        return $this->get($name);
+            $this->filter = $this->getInputFilterFactory()
+                ->createInputFilter($specification);
+
+            if ($this->filter instanceof InputFilterInterface) {
+                $this->injectSelfInValidators($this->filter);
+            }
+        }
+
+        return $this->filter;
     }
 
     /**
@@ -161,14 +159,6 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     }
 
     /**
-     * {@inheritdoc} Defaults to VALUES_AS_ARRAY.
-     */
-    public function getData($flags = FormInterface::VALUES_AS_ARRAY)
-    {
-        return parent::getData($flags);
-    }
-
-    /**
      * Hydrates the given object with the data from this form.
      * If the object is null, a new object will be created by the hydrator.
      *
@@ -176,7 +166,6 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
      *
      * @param  object|null $object The object to hydrate
      * @return object           The hydrated object
-     * @throws RuntimeException If $object is null and creating objects is not supported by the hydrator
      * @throws RuntimeException If this form hasn't been validated yet
      * @throws RuntimeException If this form is invalid
      */
@@ -185,6 +174,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
         if (!$this->hasValidated()) {
             throw new RuntimeException('Please validate the form before extracting its data');
         }
+
         if (!$this->isValid()) {
             throw new RuntimeException('Cannot hydrate object with data from an invalid form');
         }
@@ -207,22 +197,6 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
         }
     }
 
-    public function getInputFilter()
-    {
-        if (!isset($this->filter)) {
-            $specification = $this->getInputFilterSpecification();
-
-            $this->filter = $this->getInputFilterFactory()
-                ->createInputFilter($specification);
-
-            if ($this->filter instanceof InputFilterInterface) {
-                $this->injectSelfInValidators($this->filter);
-            }
-        }
-
-        return $this->filter;
-    }
-
     /**
      * Get the current academic year.
      *
@@ -236,5 +210,15 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
         }
 
         return AcademicYear::getUniversityYear($this->getEntityManager());
+    }
+
+    /**
+     * @return \CommonBundle\Entity\General\Language
+     */
+    public function getLanguage()
+    {
+        return $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Language')
+            ->findOneByAbbrev($this->getSessionContainer()->language);
     }
 }
