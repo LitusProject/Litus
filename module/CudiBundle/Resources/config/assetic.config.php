@@ -277,34 +277,6 @@ return array(
             '@common_jqueryui_css',
             '@common_jqueryui_datepicker_css',
         ),
-        // 'cudi_sale_sale' => array(
-        //     '@common_jquery',
-        //     '@bootstrap_css',
-        //     '@sale_js',
-        //     '@sale_css',
-        //     '@common_remote_typeahead',
-        //     '@bootstrap_js_transition',
-        //     '@bootstrap_js_modal',
-        //     '@bootstrap_js_button',
-        //     '@bootstrap_js_alert',
-        //     '@common_permanent_modal',
-        //     '@common_socket',
-        //     '@common_jquery_form',
-        // ),
-        // 'cudi_sale_queue' => array(
-        //     '@common_jquery',
-        //     '@bootstrap_css',
-        //     '@sale_css',
-        //     '@queue_js',
-        //     '@bootstrap_js_alert',
-        //     '@common_socket',
-        // ),
-        // 'cudi_sale_auth' => array(
-        //     '@common_jquery',
-        //     '@bootstrap_css',
-        //     '@sale_css',
-        //     '@queue_js',
-        // ),
         'cudi_supplier_index' => array(
             '@common_jquery',
             '@bootstrap_css',
@@ -434,19 +406,6 @@ return array(
     ),
 
     'collections' => array(
-        'sale_css' => array(
-            'assets' => array(
-                'sale/less/base.less',
-            ),
-            'filters' => array(
-                '?LessFilter' => array(
-                    'name' => LessFilter::class,
-                ),
-            ),
-            'options' => array(
-                'output' => 'sale_css.css',
-            ),
-        ),
         'supplier_css' => array(
             'assets' => array(
                 'supplier/less/base.less',
@@ -463,16 +422,6 @@ return array(
         'queue_js' => array(
             'assets' => array(
                 'queue/js/*.js',
-            ),
-            'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
-                ),
-            ),
-        ),
-        'sale_js' => array(
-            'assets' => array(
-                'sale/js/*.js',
             ),
             'filters' => array(
                 '?JsFilter' => array(
