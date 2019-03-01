@@ -28,6 +28,7 @@ use Zend\Form\FormInterface;
  * Text form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
 class Text extends \Zend\Form\Element\Text implements ElementInterface
 {

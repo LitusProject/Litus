@@ -20,7 +20,7 @@
 
 namespace CommonBundle\Component\Form\View\Helper\Bootstrap;
 
-use Zend\Form\ElementInterface;
+use CommonBundle\Component\Form\ElementInterface;
 
 /**
  * View helper to render a form reset.
@@ -32,11 +32,11 @@ class FormSubmit extends \Zend\Form\View\Helper\FormSubmit
     public function render(ElementInterface $element, $buttonContent = null)
     {
         if (!preg_match('/btn-[a-z]+/i', $element->getAttribute('class'))) {
-            $element->setAttribute('class', trim('btn-primary ' . $element->getAttribute('class')));
+            $elemtn->addClass('btn-primary');
         }
 
-        if (!preg_match('/btn(?!-)/i', $element->getAttribute('class'))) {
-            $element->setAttribute('class', trim('btn ' . $element->getAttribute('class')));
+        if (!$this->hasClass('btn')) {
+            $element->addClass('btn');
         }
 
         return parent::render($element, $buttonContent);

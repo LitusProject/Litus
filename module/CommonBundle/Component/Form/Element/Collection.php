@@ -27,6 +27,12 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use Traversable;
 use Zend\Stdlib\ArrayUtils;
 
+/**
+ * Collection form element
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ */
 class Collection extends \Zend\Form\Element\Collection implements FieldsetInterface, ServiceLocatorAwareInterface
 {
     use FieldsetTrait;

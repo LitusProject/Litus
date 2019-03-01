@@ -28,6 +28,7 @@ use Zend\Form\FormInterface;
  * Radio form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
 class Radio extends \Zend\Form\Element\Radio implements ElementInterface
 {

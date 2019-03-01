@@ -24,6 +24,7 @@ namespace CommonBundle\Component\Form\Element;
  * Typeahead form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
 class Typeahead extends \CommonBundle\Component\Form\Fieldset
 {

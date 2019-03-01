@@ -20,9 +20,9 @@
 
 namespace CommonBundle\Component\Form\View\Helper\Bootstrap;
 
-use Zend\Form\Element\Csrf;
-use Zend\Form\Element\Hidden;
-use Zend\Form\ElementInterface;
+use CommonBundle\Component\Form\Element\Csrf;
+use CommonBundle\Component\Form\Element\Hidden;
+use CommonBundle\Component\Form\ElementInterface;
 
 /**
  * View helper to render form element errors.

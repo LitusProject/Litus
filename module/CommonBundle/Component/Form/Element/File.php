@@ -28,6 +28,7 @@ use Zend\Form\FormInterface;
  * File form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
 class File extends \Zend\Form\Element\File implements ElementInterface
 {

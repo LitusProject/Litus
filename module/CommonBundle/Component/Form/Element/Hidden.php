@@ -28,6 +28,7 @@ use Zend\Form\FormInterface;
  * Hidden form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
 class Hidden extends \Zend\Form\Element\Hidden implements ElementInterface
 {

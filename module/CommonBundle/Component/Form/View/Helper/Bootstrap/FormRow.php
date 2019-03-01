@@ -20,11 +20,11 @@
 
 namespace CommonBundle\Component\Form\View\Helper\Bootstrap;
 
-use Zend\Form\Element\Button;
-use Zend\Form\Element\Checkbox;
-use Zend\Form\Element\Submit;
-use Zend\Form\ElementInterface;
-use Zend\Form\LabelAwareInterface;
+use CommonBundle\Component\Form\Element\Button;
+use CommonBundle\Component\Form\Element\Checkbox;
+use CommonBundle\Component\Form\Element\Submit;
+use CommonBundle\Component\Form\ElementInterface;
+use CommonBundle\Component\Form\LabelAwareInterface;
 use Zend\Form\View\Helper\FormRow as ZendFormRow;
 
 /**
@@ -67,10 +67,9 @@ class FormRow extends \Zend\Form\View\Helper\FormRow
         }
 
         if ($element->getMessages() && $inputErrorClass !== null) {
-            $class = $element->hasAttribute('class') ? $element->getAttribute('class') . ' ' : '';
-            $class .= $inputErrorClass;
-
-            $element->setAttribute('class', $class);
+            if (!$element->hasClass($inputErrorClass)) {
+                $element->addClass($inputErrorClass);
+            }
         }
 
         if ($this->partial) {

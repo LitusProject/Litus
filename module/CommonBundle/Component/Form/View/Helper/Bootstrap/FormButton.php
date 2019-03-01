@@ -20,7 +20,7 @@
 
 namespace CommonBundle\Component\Form\View\Helper\Bootstrap;
 
-use Zend\Form\ElementInterface;
+use CommonBundle\Component\Form\ElementInterface;
 
 /**
  * View helper to render a form button.
@@ -48,11 +48,11 @@ class FormButton extends \Zend\Form\View\Helper\FormButton
         }
 
         if (!preg_match('/btn-[a-z]+/i', $element->getAttribute('class'))) {
-            $element->setAttribute('class', trim('btn-primary ' . $element->getAttribute('class')));
+            $element->addClass('btn-primary');
         }
 
-        if (!preg_match('/btn(?!-)/i', $element->getAttribute('class'))) {
-            $element->setAttribute('class', trim('btn ' . $element->getAttribute('class')));
+        if (!$element->hasClass('btn')) {
+            $element->addClass('btn');
         }
 
         return parent::render($element, $buttonContent);

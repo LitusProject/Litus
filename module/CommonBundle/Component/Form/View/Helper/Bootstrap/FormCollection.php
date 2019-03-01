@@ -20,7 +20,7 @@
 
 namespace CommonBundle\Component\Form\View\Helper\Bootstrap;
 
-use Zend\Form\ElementInterface;
+use CommonBundle\Component\Form\ElementInterface;
 
 /**
  * View helper to render a form collection.

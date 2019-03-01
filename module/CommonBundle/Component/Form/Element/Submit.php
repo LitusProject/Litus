@@ -28,6 +28,7 @@ use Zend\Form\FormInterface;
  * Submit form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
 class Submit extends \Zend\Form\Element\Submit implements ElementInterface
 {

@@ -28,6 +28,7 @@ use Zend\Form\FormInterface;
  * Select form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
 class Select extends \Zend\Form\Element\Select implements ElementInterface
 {

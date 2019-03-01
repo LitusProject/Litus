@@ -28,6 +28,7 @@ use Zend\Form\FormInterface;
  * Textarea form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
 class Textarea extends \Zend\Form\Element\Textarea implements ElementInterface
 {

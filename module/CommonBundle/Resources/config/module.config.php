@@ -158,6 +158,7 @@ return Config::create(
 
                 Component\Form\Element\Button::class     => ElementFactory::class,
                 Component\Form\Element\Collection::class => ElementFactory::class,
+                Component\Form\Element\Csrf::class       => ElementFactory::class,
                 Component\Form\Element\Checkbox::class   => ElementFactory::class,
                 Component\Form\Element\Date::class       => ElementFactory::class,
                 Component\Form\Element\DateTime::class   => ElementFactory::class,
@@ -177,6 +178,8 @@ return Config::create(
 
                 'button'     => Component\Form\Element\Button::class,
                 'Button'     => Component\Form\Element\Button::class,
+                'csrf'       => Component\Form\Element\Csrf::class,
+                'Csrf'       => Component\Form\Element\Csrf::class,
                 'checkbox'   => Component\Form\Element\Checkbox::class,
                 'Checkbox'   => Component\Form\Element\Checkbox::class,
                 'collection' => Component\Form\Element\Collection::class,

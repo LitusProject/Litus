@@ -20,9 +20,9 @@
 
 namespace CommonBundle\Component\Form\View\Helper\Bootstrap;
 
-use Zend\Form\Element\Checkbox;
-use Zend\Form\Element\Radio;
-use Zend\Form\ElementInterface;
+use CommonBundle\Component\Form\Element\Checkbox;
+use CommonBundle\Component\Form\Element\Radio;
+use CommonBundle\Component\Form\ElementInterface;
 
 /**
  * View helper to render a form label.
@@ -34,12 +34,9 @@ class FormLabel extends \Zend\Form\View\Helper\FormLabel
     public function __invoke(ElementInterface $element = null, $labelContent = null, $position = null)
     {
         if ($element->getOption('formLayout') === Form::LAYOUT_HORIZONTAL) {
-            $labelAttributes = $element->getAttributes();
-
             if (!($element instanceof Checkbox) && !($element instanceof Radio)) {
-                if (!array_key_exists('class', $labelAttributes) || !preg_match('/col-form-label/', $labelAttributes['class'])) {
-                    $labelAttributes['class'] = trim(($labelAttributes['class'] ?? '') . ' col-form-label');
-                    $element->setLabelAttributes($labelAttributes);
+                if (!$element->hasLabelClass('col-form-label')) {
+                    $element->addLabelClass('col-form-label');
                 }
             }
         }

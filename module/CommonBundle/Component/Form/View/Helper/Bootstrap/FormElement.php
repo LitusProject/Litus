@@ -20,7 +20,7 @@
 
 namespace CommonBundle\Component\Form\View\Helper\Bootstrap;
 
-use Zend\Form\ElementInterface;
+use CommonBundle\Component\Form\ElementInterface;
 
 /**
  * View helper to render a form element.
@@ -42,13 +42,13 @@ class FormElement extends \Zend\Form\View\Helper\FormElement
     {
         $type = $element->getAttribute('type');
 
-        if (!in_array($type, $this->ignoredFormControls) && !preg_match('/form-control/i', $element->getAttribute('class'))) {
-            $element->setAttribute('class', trim($element->getAttribute('class') . ' form-control'));
+        if (!in_array($type, $this->ignoredFormControls) && !$element->hasClass('form-control')) {
+            $element->addClass('form-control');
         }
 
         if ($element->getMessages()) {
-            if (!preg_match('/is-invalid/', $element->getAttribute('class'))) {
-                $element->setAttribute('class', trim($element->getAttribute('class') . ' is-invalid'));
+            if (!$element->hasClass('is-invalid')) {
+                $element->addClass('is-invalid');
             }
         }
 

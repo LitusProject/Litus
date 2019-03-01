@@ -20,6 +20,7 @@
 
 namespace CommonBundle\Component\Form;
 
+use CommonBundle\Component\Form\Element\Csrf;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\HydratorPluginManagerTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\SessionContainerTrait;
@@ -61,10 +62,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
 
         $this->setUseInputFilterDefaults(true);
         $this->add(
-            array(
-                'type' => 'csrf',
-                'name' => 'csrf',
-            )
+            new Csrf('csrf')
         );
     }
 

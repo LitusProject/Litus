@@ -26,15 +26,58 @@ use Zend\Form\FormInterface;
  * ElementTrait
  *
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
 trait ElementTrait
 {
+    use LabelAwareTrait;
+
+    /**
+     * @param string $class
+     * @return self
+     */
+    public function addClass($class)
+    {
+        if ($this->hasClass($class)) {
+            return $this;
+        }
+
+        $classes = array();
+        if ($this->hasAttribute('class')) {
+            $classes = explode(' ', $this->getAttribute('class'));
+        }
+
+        $this->setAttribute(
+            'class',
+            implode(
+                ' ',
+                array_merge(
+                    $classes,
+                    array(
+                        $class
+                    )
+                )
+            )
+        );
+
+        return $this;
+    }
+
+    /**
+     * @param string $class
+     * @return boolean
+     */
+    public function hasClass($class)
+    {
+        return in_array($class, explode(' ', $this->getAttribute('class')));
+    }
+
     /**
      * @return array
      */
     public function getInputSpecification()
     {
-        if (!array_key_exists('input', $this->options)) {
+        if (!array_key_exists('input', $this->getOptions())) {
             return array(
                 'name'     => $this->getName(),
                 'required' => $this->getAttribute('required') ?? false,
@@ -62,12 +105,6 @@ trait ElementTrait
         }
     }
 
-     /**
-     * @param  string $name
-     * @return mixed|null
-     */
-    abstract public function getAttribute($name);
-
     /**
      * @param  string     $name
      * @param  mixed|null $value
@@ -77,7 +114,29 @@ trait ElementTrait
 
     /**
      * @param  string $name
+     * @return mixed|null
+     */
+    abstract public function getAttribute($name);
+
+    /**
+     * @param  string $name
      * @return boolean
      */
     abstract public function hasAttribute($name);
+
+    /**
+     * @param array $labelAttributes
+     * @return self
+     */
+    abstract public function setLabelAttributes(array $labelAttributes);
+
+    /**
+     * @return array
+     */
+    abstract public function getLabelAttributes();
+
+    /**
+     * @return array
+     */
+    abstract public function getOptions();
 }

@@ -20,9 +20,9 @@
 
 namespace CommonBundle\Component\Form\View\Helper\Bootstrap;
 
-use Zend\Form\ElementInterface;
-use Zend\Form\LabelAwareInterface;
-use Zend\Form\View\Helper\FormLabel;
+use CommonBundle\Component\Form\ElementInterface;
+use CommonBundle\Component\Form\View\Helper\FormLabel;
+use CommonBundle\Component\Form\LabelAwareInterface;
 
 /**
  * View helper to render a form checkbox.
@@ -35,21 +35,14 @@ class FormCheckbox extends \Zend\Form\View\Helper\FormCheckbox
 
     public function render(ElementInterface $element)
     {
-        if (!preg_match('/custom-control-input/i', $element->getAttribute('class'))) {
+        if (!$this->hasClass('custom-control-input')) {
             $element->addClass('custom-control-input');
         }
 
         if ($element instanceof LabelAwareInterface) {
-            $labelAttributes = $element->getLabelAttributes();
-            if (array_key_exists('class', $labelAttributes)) {
-                if (!preg_match('/custom-control-label/i', $labelAttributes['class'])) {
-                    $labelAttributes['class'] = trim($labelAttributes['class'] . ' custom-control-label');
-                }
-            } else {
-                $labelAttributes['class'] = 'custom-control-label';
+            if (!$this->hasLabelClass('custom-control-label')) {
+                $element->addLabelClass('custom-control-label');
             }
-
-            $element->setLabelAttributes($labelAttributes);
         }
 
         return sprintf(

@@ -28,6 +28,7 @@ use Zend\Form\FormInterface;
  * Button form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
 class Button extends \Zend\Form\Element\Button implements ElementInterface
 {
