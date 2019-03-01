@@ -21,37 +21,37 @@
 namespace CommonBundle;
 
 use CommonBundle\Component\Authentication\Adapter\Doctrine\Credential as DoctrineCredentialAdapter;
-use CommonBundle\Component\Authentication\Adapter\Doctrine\ServiceManager\CredentialFactory as DoctrineCredentialAdapterFactory;
+use CommonBundle\Component\Authentication\Adapter\Doctrine\Service\CredentialFactory as DoctrineCredentialAdapterFactory;
 use CommonBundle\Component\Authentication\Authentication;
-use CommonBundle\Component\Authentication\Service\Doctrine as DoctrineService;
-use CommonBundle\Component\Authentication\Service\ServiceManager\DoctrineFactory as DoctrineServiceFactory;
-use CommonBundle\Component\Authentication\ServiceManager\AuthenticationFactory;
-use CommonBundle\Component\Cache\ServiceManager\StorageFactory as CacheStorageFactory;
-use CommonBundle\Component\Console\ServiceManager\ApplicationFactory as ConsoleApplicationFactory;
-use CommonBundle\Component\Controller\Plugin\ServiceManager\PaginatorFactory;
-use CommonBundle\Component\Controller\ServiceManager\AbstractActionControllerInitializer;
-use CommonBundle\Component\Doctrine\Common\Cache\ServiceManager\RedisCacheFactory as DoctrineRedisCacheFactory;
+use CommonBundle\Component\Authentication\AuthenticationService\Doctrine as DoctrineAuthenticationService;
+use CommonBundle\Component\Authentication\AuthenticationService\Service\DoctrineFactory as DoctrineAuthenticationServiceFactory;
+use CommonBundle\Component\Authentication\Service\AuthenticationFactory;
+use CommonBundle\Component\Cache\Service\StorageFactory as CacheStorageFactory;
+use CommonBundle\Component\Console\Service\ApplicationFactory as ConsoleApplicationFactory;
+use CommonBundle\Component\Controller\Plugin\Service\PaginatorFactory;
+use CommonBundle\Component\Controller\Service\AbstractActionControllerInitializer;
+use CommonBundle\Component\Doctrine\Common\Cache\Service\RedisCacheFactory as DoctrineRedisCacheFactory;
 use CommonBundle\Component\Doctrine\Migrations\Configuration\ServiceManager\ConfigurationFactory as DoctrineMigrationsConfigurationFactory;
 use CommonBundle\Component\Encore\Encore;
-use CommonBundle\Component\Encore\ServiceManager\ConfigurationFactory as EncoreConfigurationFactory;
-use CommonBundle\Component\Encore\ServiceManager\EncoreFactory;
+use CommonBundle\Component\Encore\Service\ConfigurationFactory as EncoreConfigurationFactory;
+use CommonBundle\Component\Encore\Service\EncoreFactory;
 use CommonBundle\Component\Form\FormElementManager;
-use CommonBundle\Component\Form\ServiceManager\FormElementManagerFactory;
+use CommonBundle\Component\Form\Service\FormElementManagerFactory;
 use CommonBundle\Component\Hydrator\HydratorPluginManager;
-use CommonBundle\Component\Hydrator\ServiceManager\HydratorPluginManagerFactory;
+use CommonBundle\Component\Hydrator\Service\HydratorPluginManagerFactory;
 use CommonBundle\Component\Module\Config;
-use CommonBundle\Component\Module\ServiceManager\AbstractInstallerFactory;
+use CommonBundle\Component\Module\Service\AbstractInstallerFactory;
 use CommonBundle\Component\Redis\Client as RedisClient;
 use CommonBundle\Component\Redis\Configuration as RedisConfiguration;
-use CommonBundle\Component\Redis\ServiceManager\ClientFactory as RedisClientFactory;
-use CommonBundle\Component\Redis\ServiceManager\ConfigurationFactory as RedisConfigurationFactory;
+use CommonBundle\Component\Redis\Service\ClientFactory as RedisClientFactory;
+use CommonBundle\Component\Redis\Service\ConfigurationFactory as RedisConfigurationFactory;
 use CommonBundle\Component\Sentry\Client as SentryClient;
-use CommonBundle\Component\Sentry\ServiceManager\ClientFactory as SentryClientFactory;
-use CommonBundle\Component\Sentry\ServiceManager\RavenClientFactory;
-use CommonBundle\Component\Session\ServiceManager\ContainerFactory as SessionContainerFactory;
-use CommonBundle\Component\Session\ServiceManager\SessionManagerFactory;
-use CommonBundle\Component\Validator\ServiceManager\AbstractValidatorFactory;
-use CommonBundle\Component\View\Helper\ServiceManager\AbstractHelperFactory;
+use CommonBundle\Component\Sentry\Service\ClientFactory as SentryClientFactory;
+use CommonBundle\Component\Sentry\Service\RavenClientFactory;
+use CommonBundle\Component\Session\Service\ContainerFactory as SessionContainerFactory;
+use CommonBundle\Component\Session\Service\SessionManagerFactory;
+use CommonBundle\Component\Validator\Service\AbstractValidatorFactory;
+use CommonBundle\Component\View\Helper\Service\AbstractHelperFactory;
 use Doctrine\Common\Cache\RedisCache as DoctrineRedisCache;
 use Raven_Client;
 use Symfony\Component\Console\Application as ConsoleApplication;
@@ -74,23 +74,23 @@ return Config::create(
     array(
         'service_manager' => array(
             'factories' => array(
-                Authentication::class            => AuthenticationFactory::class,
-                CacheStorage::class              => CacheStorageFactory::class,
-                ConsoleApplication::class        => ConsoleApplicationFactory::class,
-                DoctrineCredentialAdapter::class => DoctrineCredentialAdapterFactory::class,
-                DoctrineRedisCache::class        => DoctrineRedisCacheFactory::class,
-                DoctrineService::class           => DoctrineServiceFactory::class,
-                Encore::class                    => EncoreFactory::class,
-                EncoreConfiguration::class       => EncoreConfigurationFactory::class,
-                FormElementManager::class        => FormElementManagerFactory::class,
-                HydratorPluginManager::class     => HydratorPluginManagerFactory::class,
-                Raven_Client::class              => RavenClientFactory::class,
-                RedisClient::class               => RedisClientFactory::class,
-                RedisConfiguration::class        => RedisConfigurationFactory::class,
-                Sendmail::class                  => InvokableFactory::class,
-                SentryClient::class              => SentryClientFactory::class,
-                SessionContainer::class          => SessionContainerFactory::class,
-                SessionManagerInterface::class   => SessionManagerFactory::class,
+                Authentication::class                => AuthenticationFactory::class,
+                CacheStorage::class                  => CacheStorageFactory::class,
+                ConsoleApplication::class            => ConsoleApplicationFactory::class,
+                DoctrineCredentialAdapter::class     => DoctrineCredentialAdapterFactory::class,
+                DoctrineRedisCache::class            => DoctrineRedisCacheFactory::class,
+                DoctrineAuthenticationService::class => DoctrineAuthenticationServiceFactory::class,
+                Encore::class                        => EncoreFactory::class,
+                EncoreConfiguration::class           => EncoreConfigurationFactory::class,
+                FormElementManager::class            => FormElementManagerFactory::class,
+                HydratorPluginManager::class         => HydratorPluginManagerFactory::class,
+                Raven_Client::class                  => RavenClientFactory::class,
+                RedisClient::class                   => RedisClientFactory::class,
+                RedisConfiguration::class            => RedisConfigurationFactory::class,
+                Sendmail::class                      => InvokableFactory::class,
+                SentryClient::class                  => SentryClientFactory::class,
+                SessionContainer::class              => SessionContainerFactory::class,
+                SessionManagerInterface::class       => SessionManagerFactory::class,
             ),
             'abstract_factories' => array(
                 AbstractInstallerFactory::class,
@@ -98,7 +98,7 @@ return Config::create(
             'aliases' => array(
                 'authentication'                    => Authentication::class,
                 'authentication_credential_adapter' => DoctrineCredentialAdapter::class,
-                'authentication_service'            => DoctrineService::class,
+                'authentication_service'            => DoctrineAuthenticationService::class,
                 'cache'                             => CacheStorage::class,
                 'console'                           => ConsoleApplication::class,
                 'encore'                            => Encore::class,
