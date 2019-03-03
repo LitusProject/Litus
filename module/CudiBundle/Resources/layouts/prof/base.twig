@@ -1,126 +1,109 @@
 {{ doctype() }}
 
-<html lang="en">
+<html lang="en" class="h-100">
     <head>
         {{ headMeta() }}
-        {{ headTitle(translate('Prof'), 'PREPEND') }}
+        {{ headTitle('Prof', 'PREPEND') }}
 
         {{ headLink() }}
-
-        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-        <!--[if lt IE 9]>
-          <script src="/js/html5shiv.js"></script>
-        <![endif]-->
+        {{ assets('cudi_prof') }}
     </head>
 
-    <body{% if 'cudi_prof_help' == getParam('controller') %} data-spy="scroll" data-target=".bs-docs-sidebar"{% endif %}>
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a href="{{ organizationUrl }}" class="brand"><img src="/_cudi/img/logo.png" /></a>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        {% if hasAccess('cudi_prof_index', 'index') %}
-                            <li {% if 'index' == getParam('action') and 'cudi_prof_index' == getParam('controller') %} class="active" {% endif %}>
-                                <a href="{{ url("cudi_prof_index", {"language": language.getAbbrev()}) }}">{{ translate('Home') }}</a>
-                            </li>
-                        {% endif %}
-                        {% if hasAccess('cudi_prof_subject', 'manage') %}
-                            <li {% if 'cudi_prof_subject' == getParam('controller') or 'cudi_prof_subject_comment' == getParam('controller') or 'cudi_prof_prof' == getParam('controller') %} class="active" {% endif %}>
-                                <a href="{{ url("cudi_prof_subject", {"language": language.getAbbrev()}) }}">{{ translate('Subjects') }}</a>
-                            </li>
-                        {% endif %}
-                        {% if hasAccess('cudi_prof_article', 'manage') %}
-                            <li {% if 'cudi_prof_article' == getParam('controller') or 'cudi_prof_article_comment' == getParam('controller') or 'cudi_prof_file' == getParam('controller') or 'cudi_prof_article_mapping' == getParam('controller') %} class="active" {% endif %}>
-                                <a href="{{ url("cudi_prof_article", {"language": language.getAbbrev()}) }}">{{ translate('Articles') }}</a>
-                            </li>
-                        {% endif %}
-                        {% if hasAccess('cudi_prof_help', 'index') %}
-                            <li {% if 'cudi_prof_help' == getParam('controller') %} class="active" {% endif %}>
-                                <a href="{{ url("cudi_prof_help", {"language": language.getAbbrev()}) }}">{{ translate('Help') }}</a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                    <ul class="nav navbar-nav pull-right lang-nav hidden-xs hidden-sm">
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                Language <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-right">
-                                {% for language in languages %}
-                                    <li>
-                                        <a href="{{ url("cudi_prof_index", {"language": language.getAbbrev()}) }}">{{ translate(language.getName()) }}</a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </li>
-                    </ul>
-                    <ul class="nav navbar-nav pull-right auth-nav">
-                        {% if authenticatedPerson is not null %}
-                            <li class="dropdown" id="accountDropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                    <span class="profile-wrapper">
-                                        <i class="profile"></i>
-                                    </span>
-                                    <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-right">
-                                    <li>
-                                        <a href="">
-                                            <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
-                                            <small class="metadata">{{ authenticatedPerson.getUniversityIdentification() }}</small>
-                                        </a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li>
-                                        <a href="{{ url("cudi_prof_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        {% else %}
-                            <li>
-                                <a href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('Login') }}{% endautoescape %}</a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
+    <body class="d-flex flex-column h-100">
         <header>
-            <div class="container">
-                <h1>{{ translate('Prof') }}</h1>
+            <nav class="navbar navbar-expand fixed-top navbar-dark bg-dark">
+                <div class="container">
+                    <span class="navbar-brand" href="#">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </span>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbar">
+                        <ul class="navbar-nav mr-auto">
+                            {% if hasAccess('cudi_prof_index', 'index') %}
+                                <li class="nav-item {% if 'index' == getParam('action') and 'cudi_prof_index' == getParam('controller') %}active{% endif %}">
+                                    <a class="nav-link" href="{{ url("cudi_prof_index", {"language": language.getAbbrev()}) }}">{{ translate('Home') }}</a>
+                                </li>
+                            {% endif %}
+                            {% if hasAccess('cudi_prof_subject', 'manage') %}
+                                <li class="nav-item {% if 'cudi_prof_subject' == getParam('controller') or 'cudi_prof_subject_comment' == getParam('controller') or 'cudi_prof_prof' == getParam('controller') %}active{% endif %}">
+                                    <a class="nav-link" href="{{ url("cudi_prof_subject", {"language": language.getAbbrev()}) }}">{{ translate('Subjects') }}</a>
+                                </li>
+                            {% endif %}
+                            {% if hasAccess('cudi_prof_article', 'manage') %}
+                                <li class="nav-item {% if 'cudi_prof_article' == getParam('controller') or 'cudi_prof_article_comment' == getParam('controller') or 'cudi_prof_file' == getParam('controller') or 'cudi_prof_article_mapping' == getParam('controller') %}active{% endif %}">
+                                    <a class="nav-link" href="{{ url("cudi_prof_article", {"language": language.getAbbrev()}) }}">{{ translate('Articles') }}</a>
+                                </li>
+                            {% endif %}
+                            {% if hasAccess('cudi_prof_help', 'index') %}
+                                <li class="nav-item {% if 'cudi_prof_help' == getParam('controller') %}active{% endif %}">
+                                    <a class="nav-link" href="{{ url("cudi_prof_help", {"language": language.getAbbrev()}) }}">{{ translate('Help') }}</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+
+                        <ul class="navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Language</a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    {% for language in languages %}
+                                        <a class="dropdown-item" href="{{ url("cudi_prof_index", {"language": language.getAbbrev()}) }}">{{ translate(language.getName()) }}</a>
+                                    {% endfor %}
+                                </div>
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                {% if authenticatedPerson is not null %}
+                                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+                                        <i class="fas fa-user"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="#">
+                                            <b>{{ authenticatedPerson.getFullName() }}</b>
+                                            <small>{{ authenticatedPerson.getUniversityIdentification() }}</small>
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="{{ url("cudi_prof_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
+                                    </ul>
+                                </li>
+                                {% else %}
+                                    <a class="nav-link" href="{{ shibbolethUrl }}">{{ translate('Login') }}</a>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="hero mb-5">
+                <div class="container">
+                    <h1 class="text-light py-5">Prof</h1>
+                </div>
             </div>
         </header>
 
-        <div class="container">
-            {% include 'prof/partials/flashMessenger.twig' %}
+        <main class="flex-shrink-0 {% if showHeader|default(1) == 0 %}mt-5{% endif %}">
+            <div class="container">
+                {% include 'prof/partials/flashMessenger.twig' %}
 
-            <div id="content_controller">
-                {% block content %} {% endblock %}
+                <div id="content_controller">
+                    {% block content %} {% endblock %}
+                </div>
             </div>
-        </div>
+        </main>
 
-        <footer>
-            Litus Prof | Code by <a href="http://litus.cc">Litus</a>
+        <footer class="mx-auto mt-auto py-3">
+            <div class="container">
+                <span class="text-muted">
+                    Litus Prof | Code by <a href="http://litus.cc">Litus</a>
+                </span>
+            </div>
         </footer>
 
         {{ inlineScript() }}
 
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $('.dropdown form').on('click', function (e) {
-                    e.stopPropagation()
-                });
-            });
-        </script>
         {% block content_script %}{% endblock %}
     </body>
 </html>

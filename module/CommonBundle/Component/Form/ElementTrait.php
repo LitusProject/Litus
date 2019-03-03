@@ -42,22 +42,15 @@ trait ElementTrait
             return $this;
         }
 
-        $classes = array();
+        $classes = array($class);
         if ($this->hasAttribute('class')) {
             $classes = explode(' ', $this->getAttribute('class'));
+            $classes[] = $class;
         }
 
         $this->setAttribute(
             'class',
-            implode(
-                ' ',
-                array_merge(
-                    $classes,
-                    array(
-                        $class
-                    )
-                )
-            )
+            implode(' ', $classes)
         );
 
         return $this;

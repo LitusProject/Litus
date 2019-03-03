@@ -34,8 +34,16 @@ use Zend\Form\View\Helper\FormRow as ZendFormRow;
  */
 class FormRow extends \Zend\Form\View\Helper\FormRow
 {
+    /**
+     * @var string
+     */
     protected $inputErrorClass = 'is-invalid';
 
+        /**
+     * @param  ElementInterface $element
+     * @param  string           $labelPosition
+     * @return string
+     */
     public function render(ElementInterface $element, $labelPosition = null)
     {
         if ($element instanceof Checkbox) {
@@ -91,9 +99,9 @@ class FormRow extends \Zend\Form\View\Helper\FormRow
 
         $elementString = $elementHelper->render($element);
 
-        $wrapper = '<div class="form-group">%s</div>';
+        $wrapperClasses = array('form-group');
         if ($formLayout == Form::LAYOUT_HORIZONTAL) {
-            $wrapper = '<div class="form-group row">%s</div>';
+            $wrapperClasses[] = 'form-row';
         }
 
         $type = $element->getAttribute('type');
@@ -117,13 +125,6 @@ class FormRow extends \Zend\Form\View\Helper\FormRow
 
             if ($type == 'reset' || $type == 'submit') {
                 return $elementString;
-            } elseif ($type === 'multi_checkbox' || $type === 'radio') {
-                $elementString = sprintf($wrapper, $elementString);
-                return sprintf(
-                    '<fieldset><legend>%s</legend>%s</fieldset>',
-                    $label,
-                    $elementString
-                );
             } else {
                 $labelOpen = $labelHelper->openTag($labelAttributes);
                 $labelClose = $labelHelper->closeTag();
@@ -169,6 +170,10 @@ class FormRow extends \Zend\Form\View\Helper\FormRow
             return $markup;
         }
 
-        return sprintf($wrapper, $markup);
+        return sprintf(
+            '<div class="%s">%s</div>',
+            implode(' ', $wrapperClasses),
+            $markup
+        );
     }
 }

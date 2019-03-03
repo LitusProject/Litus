@@ -29,13 +29,18 @@ use CommonBundle\Component\Form\ElementInterface;
  */
 class FormSubmit extends \Zend\Form\View\Helper\FormSubmit
 {
+    /**
+     * @param  ElementInterface $element
+     * @param  string           $buttonContent
+     * @return string
+     */
     public function render(ElementInterface $element, $buttonContent = null)
     {
         if (!preg_match('/btn-[a-z]+/i', $element->getAttribute('class'))) {
-            $elemtn->addClass('btn-primary');
+            $element->addClass('btn-primary');
         }
 
-        if (!$this->hasClass('btn')) {
+        if (!$element->hasClass('btn')) {
             $element->addClass('btn');
         }
 

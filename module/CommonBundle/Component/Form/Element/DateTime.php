@@ -34,8 +34,14 @@ class DateTime extends \Zend\Form\Element\DateTime implements ElementInterface
 {
     use ElementTrait;
 
+    /**
+     * @var string
+     */
     protected $format = 'd/m/Y H:i';
 
+    /**
+     * @return void
+     */
     public function init()
     {
         parent::init();

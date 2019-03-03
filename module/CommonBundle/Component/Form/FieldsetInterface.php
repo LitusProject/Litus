@@ -26,6 +26,6 @@ namespace CommonBundle\Component\Form;
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-interface FieldsetInterface extends \Zend\Form\FieldsetInterface, \Zend\InputFilter\InputFilterProviderInterface
+interface FieldsetInterface extends ElementInterface, \Zend\Form\FieldsetInterface, \Zend\InputFilter\InputFilterProviderInterface
 {
 }

@@ -32,13 +32,25 @@ class Form extends \Zend\Form\View\Helper\Form
     const LAYOUT_HORIZONTAL = 'horizontal';
     const LAYOUT_VERTICAL = 'vertical';
 
+    /**
+     * @var array
+     */
     protected $layouts = array(
         self::LAYOUT_HORIZONTAL,
         self::LAYOUT_VERTICAL,
     );
 
+    /**
+     * @param  FormInterface $form
+     * @param  string        $layout
+     * @return string
+     */
     public function __invoke(FormInterface $form = null, $layout = null)
     {
+        if ($form === null) {
+            return '';
+        }
+
         if (in_array($layout, $this->layouts)) {
             foreach ($form->getElements() as $element) {
                 $element->setOption('formLayout', $layout);

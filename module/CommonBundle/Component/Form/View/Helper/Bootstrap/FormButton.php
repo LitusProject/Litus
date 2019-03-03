@@ -29,6 +29,11 @@ use CommonBundle\Component\Form\ElementInterface;
  */
 class FormButton extends \Zend\Form\View\Helper\FormButton
 {
+    /**
+     * @param  ElementInterface $element
+     * @param  string           $buttonContent
+     * @return string
+     */
     public function render(ElementInterface $element, $buttonContent = null)
     {
         if ($buttonContent === null) {

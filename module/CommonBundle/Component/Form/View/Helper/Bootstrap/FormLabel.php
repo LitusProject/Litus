@@ -31,6 +31,12 @@ use CommonBundle\Component\Form\ElementInterface;
  */
 class FormLabel extends \Zend\Form\View\Helper\FormLabel
 {
+    /**
+     * @param  ElementInterface $element
+     * @param  string           $labelContent
+     * @param  string           $position
+     * @return string
+     */
     public function __invoke(ElementInterface $element = null, $labelContent = null, $position = null)
     {
         if ($element->getOption('formLayout') === Form::LAYOUT_HORIZONTAL) {

@@ -28,6 +28,9 @@ namespace CommonBundle\Component\Form\Element;
  */
 class Typeahead extends \CommonBundle\Component\Form\Fieldset
 {
+    /**
+     * @return void
+     */
     public function init()
     {
         $this->add(

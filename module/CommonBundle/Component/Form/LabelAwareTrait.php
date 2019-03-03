@@ -38,20 +38,20 @@ trait LabelAwareTrait
             return $this;
         }
 
-        $labelClasses = array();
+        $labelClasses = array($class);
         if (array_key_exists('class', $this->getLabelAttributes())) {
             $labelClasses = explode(' ', $this->getLabelAttributes()['class']);
+            $labelClasses[] = $class;
         }
 
         $this->setLabelAttributes(
             array_merge(
                 $this->getLabelAttributes(),
                 array(
-                    'class' => implode(' ', array_push($labelClasses, $class))
+                    'class' => implode(' ', $labelClasses)
                 )
             )
         );
-
 
         return $this;
     }

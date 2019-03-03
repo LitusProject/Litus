@@ -37,6 +37,9 @@ class File extends \Zend\Form\Element\File implements ElementInterface
         ElementTrait::prepareElement as traitPrepareElement;
     }
 
+    /**
+     * @return array
+     */
     public function getInputSpecification()
     {
         $inputSpecification = $this->traitGetInputSpecification();
@@ -45,6 +48,10 @@ class File extends \Zend\Form\Element\File implements ElementInterface
         return $inputSpecification;
     }
 
+    /**
+     * @param  FormInterface $form
+     * @return mixed
+     */
     public function prepareElement(FormInterface $form)
     {
         parent::prepareElement($form);

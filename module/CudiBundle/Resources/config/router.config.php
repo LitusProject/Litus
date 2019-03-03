@@ -542,7 +542,6 @@ return array(
                     'action'         => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'identification' => '[mrsu][0-9]{7}',
                     'hash'           => '[a-zA-Z0-9_-]*',
-                    'language'       => '(en|nl)',
                 ),
                 'defaults' => array(
                     'controller' => 'cudi_sale_auth',

@@ -34,8 +34,14 @@ class Date extends \Zend\Form\Element\Date implements ElementInterface
 {
     use ElementTrait;
 
+    /**
+     * @var string
+     */
     protected $format = 'd/m/Y';
 
+    /**
+     * @return void
+     */
     public function init()
     {
         parent::init();

@@ -36,6 +36,10 @@ class Csrf extends \Zend\Form\Element\Csrf implements ElementInterface
         ElementTrait::prepareElement as traitPrepareElement;
     }
 
+    /**
+     * @param  FormInterface $form
+     * @return mixed
+     */
     public function prepareElement(FormInterface $form)
     {
         parent::prepareElement($form);

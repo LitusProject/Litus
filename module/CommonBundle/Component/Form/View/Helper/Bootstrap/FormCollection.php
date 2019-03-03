@@ -29,8 +29,16 @@ use CommonBundle\Component\Form\ElementInterface;
  */
 class FormCollection extends \Zend\Form\View\Helper\FormCollection
 {
+    /**
+     * @var string
+     */
     protected $wrapper = '<fieldset%4$s>%2$s%1$s%3$s</fieldset></div>';
 
+    /**
+     * @param  ElementInterface $element
+     * @param  boolean          $wrap
+     * @return string
+     */
     public function __invoke(ElementInterface $element = null, $wrap = true)
     {
         $formLayout = $element->getOption('formLayout');

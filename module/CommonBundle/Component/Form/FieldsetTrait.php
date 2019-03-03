@@ -33,6 +33,8 @@ use Zend\InputFilter\InputProviderInterface;
  */
 trait FieldsetTrait
 {
+    use ElementTrait;
+
     public function add($elementOrFieldset, array $flags = array())
     {
         if (is_array($elementOrFieldset)

@@ -5,11 +5,15 @@
 
 .hero {
     margin-top: 56px;
-    @include gradient-y($sale-dark, $sale-light);
+    @include gradient-y(darken($hero-bg, 25%), $hero-bg);
 
     h1 {
         color: $light;
     }
+}
+
+.hero-text {
+    color: $hero-bg;
 }
 
 .modal-dialog {

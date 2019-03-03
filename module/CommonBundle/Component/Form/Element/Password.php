@@ -36,6 +36,10 @@ class Password extends \Zend\Form\Element\Password implements ElementInterface
         ElementTrait::prepareElement as traitPrepareElement;
     }
 
+    /**
+     * @param  FormInterface $form
+     * @return mixed
+     */
     public function prepareElement(FormInterface $form)
     {
         parent::prepareElement($form);

@@ -33,4 +33,9 @@ use Zend\Form\FormInterface;
 class Checkbox extends \Zend\Form\Element\Checkbox implements ElementInterface
 {
     use ElementTrait;
+
+    /**
+     * @var boolean
+     */
+    protected $useHiddenElement = false;
 }

@@ -31,14 +31,26 @@ use CommonBundle\Component\Form\ElementInterface;
  */
 class FormElementErrors extends \Zend\Form\View\Helper\FormElementErrors
 {
+    /**@+
+     * @var string
+     */
     protected $messageOpenFormat = '<div%s>';
     protected $messageSeparatorString = '.<br />';
     protected $messageCloseString = '</div>';
+    /**@-*/
 
+    /**
+     * @var array
+     */
     protected $attributes = array(
         'class' => 'invalid-feedback'
     );
 
+    /**
+     * @param  ElementInterface $element
+     * @param  array            $attributes
+     * @return string
+     */
     public function render(ElementInterface $element, array $attributes = array())
     {
         if ($element instanceof Hidden || $element instanceof Csrf) {

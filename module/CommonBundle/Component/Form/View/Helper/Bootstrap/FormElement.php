@@ -29,6 +29,9 @@ use CommonBundle\Component\Form\ElementInterface;
  */
 class FormElement extends \Zend\Form\View\Helper\FormElement
 {
+    /**
+     * @var array
+     */
     protected $ignoredFormControls = array(
         'radio',
         'checkbox',
@@ -38,6 +41,10 @@ class FormElement extends \Zend\Form\View\Helper\FormElement
         'reset',
     );
 
+    /**
+     * @param  ElementInterface $element
+     * @return string
+     */
     public function render(ElementInterface $element)
     {
         $type = $element->getAttribute('type');

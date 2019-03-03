@@ -34,6 +34,9 @@ class Textarea extends \Zend\Form\Element\Textarea implements ElementInterface
 {
     use ElementTrait;
 
+    /**
+     * @return void
+     */
     public function init()
     {
         parent::init();

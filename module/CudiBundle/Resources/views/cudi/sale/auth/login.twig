@@ -1,57 +1,47 @@
-{% extends 'sale/base.twig' %}
+{{ doctype() }}
 
-{% block content %}
-    <div class="row justify-content-center">
-        <div class="col-sm-4">
-            <div class="text-center">
-                <h3 class="mb-3">{{ translate('Login') }}</h1>
-            </div>
+<html lang="en" class="h-100">
+    <head>
+        {{ headMeta() }}
+        {{ headTitle('Sale', 'PREPEND') }}
 
-            <div class="card bg-light mb-3">
-                <div class="card-body text-center">
-                    <a class="btn btn-primary" href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</a>
+        {{ headLink() }}
+        {{ assets('cudi_sale') }}
+    </head>
+
+    <body class="bg-light d-flex flex-column h-100">
+        <main class="flex-shrink-0 my-auto">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="text-center">
+                            <h1 class="display-3 hero-text">
+                                <i class="fas fa-store-alt"></i>
+                            </h1>
+                            <h3 class="mb-4">{{ translate('Login') }}</h3>
+                        </div>
+
+                        <div class="card bg-transparent border-secondary">
+                            <div class="card-header text-center bg-transparent border-secondary">
+                                <a class="btn btn-primary" href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</a>
+                            </div>
+                            <div class="card-body">
+                                {{ form(form) }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </main>
 
-            <div class="card bg-light">
-                <div class="card-body">
-                    {% if form is defined %}
-                        {% do form.prepare() %}
-                        {% autoescape false %}
-                            {{ form().openTag(form) }}
-
-                            {% for element in form.getElements() %}
-                                {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset' %}
-                                    {{ formElement(element) }}
-                                {% elseif element.getAttribute('type') == 'hidden' %}
-                                    {{ formElement(element) }}
-                                {% elseif element.getAttribute('type') == 'checkbox' %}
-                                    <div class="form-group">
-                                        <div class="form-check">
-                                            {{ formElement(element) }}
-                                            {% if element.getLabel() != '' %}
-                                                <label class="form-check-label" for="{{ element.getAttribute('id') }}">{{ translate(element.getLabel()) }}</label>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                {% else %}
-                                    <div class="form-group {% if element.getMessages()|length > 0 %}has-error{% endif %}">
-                                        <label>{% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}</label>
-                                        {{ formElement(element) }}
-                                        {% if element.getMessages()|length > 0 %}
-                                            <div class="invalid-feedback">
-                                                {{ formElementErrors(element) }}
-                                            </div>
-                                        {% endif %}
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
-
-                            {{ form().closeTag() }}
-                        {% endautoescape %}
-                    {% endif %}
-                </div>
+        <footer class="mx-auto py-3">
+            <div class="container">
+                <span class="text-muted">
+                    Litus Cudi | Code by <a href="http://litus.cc">Litus</a>
+                </span>
             </div>
-        </div>
-    </div>
-{% endblock %}
+        </footer>
+
+        {{ inlineScript() }}
+    </body>
+</html>

@@ -25,7 +25,7 @@ namespace CommonBundle\Form\Auth;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Login extends \CommonBundle\Component\Form\Bootstrap\Form
+class Login extends \CommonBundle\Component\Form\Form
 {
     public function init()
     {
@@ -73,6 +73,6 @@ class Login extends \CommonBundle\Component\Form\Bootstrap\Form
             )
         );
 
-        $this->addSubmit('Login', 'btn btn-default pull-right');
+        $this->addSubmit('Login', 'btn-primary btn-block');
     }
 }
