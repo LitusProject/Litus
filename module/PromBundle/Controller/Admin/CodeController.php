@@ -61,6 +61,7 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid()) {
                 $formData = $form->getData();
 
+
                 for ($i = 0; $i < $formData['nb_codes']; $i++) {
                     $newCode = new ReservationCode($this->getCurrentAcademicYear());
                     $this->getEntityManager()->persist($newCode);

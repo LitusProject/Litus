@@ -21,6 +21,7 @@
 namespace PromBundle\Entity\Bus;
 
 use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -62,6 +63,28 @@ class ReservationCode
      */
     private $used;
 
+    /**
+     * @var boolean If the code is already assigned to someone
+     *
+     * @ORM\Column(name="used", type="boolean")
+     */
+    private $used;
+
+    /**
+     * @var Person|null The person this code is assigned to.
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
+     * @ORM\JoinColumn(name="person", referencedColumnName="id", nullable=true)
+     */
+    private $person;
+
+    /**
+     * @var string|null The email adress this code is assigned to.
+     *
+     * @ORM\Column(type="string", nullable=true, length=100)
+     */
+    private $email;
+
     public function __construct(AcademicYear $academicYear)
     {
         $this->code = $this->generateCode();
@@ -83,6 +106,42 @@ class ReservationCode
     public function getAcademicYear()
     {
         return $this->academicYear;
+    }
+
+    /**
+     * @return Person
+     */
+    public function getPerson()
+    {
+        return $this->person;
+    }
+
+    /**
+     * @param  Person|null $person
+     * @return self
+     */
+    public function setPerson(Person $person = null)
+    {
+        $this->person = $person;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param  string|null $email
+     * @return self
+     */
+    public function setEmail($email = null)
+    {
+        $this->email = $email;
+        return $this;
     }
 
     /**
