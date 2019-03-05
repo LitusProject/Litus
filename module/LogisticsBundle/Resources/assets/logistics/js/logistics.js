@@ -184,21 +184,30 @@
 
     function _addEvent($this, startDate, endDate, allDay, jsEvent, view) {
         var settings = $this.data('logisticsCalendar');
+        var content = $(settings.form.html());
+
+            // .click(function () {
+            //     $(jsEvent.target).popover('destroy');
+            //     $this.fullCalendar('unselect');
+            // })
+
+        var title = $('<div>').append(
+            $('<b>', {'class': 'reason'}).html(settings.tNewReservation),
+            $('<div>', {'class': 'pull-right'}).append(
+                $('<a>', {'class': 'close'}).html('&times;')
+            )
+        );
+        $(document).on('click', 'a.close', function() {
+            $(jsEvent.target).popover('destroy');
+            $this.fullCalendar('unselect');
+        });
 
         if ($this.data('currentPopover'))
             $this.data('currentPopover').popover('destroy');
         $(jsEvent.target).popover({
             placement: _getPopoverPlacement(startDate, view),
-            title: $('<div>').append(
-                $('<b>', {'class': 'reason'}).html(settings.tNewReservation),
-                $('<div>', {'class': 'pull-right'}).append(
-                    $('<a>', {'class': 'close'}).html('&times;').click(function () {
-                        $(jsEvent.target).popover('destroy');
-                        $this.fullCalendar('unselect');
-                    })
-                )
-            ),
-            content: settings.form.html(),
+            title: title.html(),
+            content: content,
             trigger: 'manual',
             html: true,
             container: 'body'
@@ -255,7 +264,7 @@
                     $('.popover form').displayFormErrors(data.errors);
                 }
             },
-            error: function(a, b, c) {
+            error: function(error) {
                 settings.addError();
             },
             dataType: 'json'
@@ -386,6 +395,10 @@
             html: true,
             container: 'body'
         });
+        $(document).on('click', 'a.close', function() {
+            $(jsEvent.target).popover('destroy');
+            $this.fullCalendar('unselect');
+        });
         $(jsEvent.target).popover('show');
         $this.data('currentPopover', $(jsEvent.target));
         $('.popover .delete').click(function () {
@@ -426,8 +439,8 @@
                 $('<div>', {'class': 'pull-right'}).append(
                     $('<a>', {'class': 'close'}).html('&times;').click(function () {$(jsEvent.target).popover('destroy')})
                 )
-            ),
-            content: settings.form.html(),
+            ).html(),
+            content: $(settings.form.html()),
             trigger: 'manual',
             html: true,
             container: 'body'
