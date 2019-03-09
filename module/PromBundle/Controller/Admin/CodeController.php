@@ -189,7 +189,7 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
 
     public function mailAction()
     {
-        //$this->initAjax();
+        $this->initAjax();
 
         $code = $this->getReservationCodeEntity();
         $this->sendReservationCodeMail($code);
