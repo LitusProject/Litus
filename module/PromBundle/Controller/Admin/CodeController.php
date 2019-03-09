@@ -279,9 +279,9 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
         $mail = new Message();
         $mail->addTo($code->getEmail())
             ->setEncoding('UTF-8')
-            ->setBody(str_replace('{{ firstName }}', $code->getFirstName()))
-            ->setBody(str_replace('{{ lastName }}', $code->getLastName()))
-            ->setBody(str_replace('{{ reservationCode }}', $code->getCode()))
+            ->setBody(str_replace('{{ firstName }}', $code->getFirstName(), $mailData['body']))
+            ->setBody(str_replace('{{ lastName }}', $code->getLastName(), $mailData['body']))
+            ->setBody(str_replace('{{ reservationCode }}', $code->getCode(), $mailData['body']))
             ->setFrom($mailData['from'])
             ->addBcc($mailData['from'])
             ->setSubject($mailData['subject']);
