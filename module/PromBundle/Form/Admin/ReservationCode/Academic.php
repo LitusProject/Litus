@@ -20,36 +20,54 @@
 
 namespace PromBundle\Form\Admin\ReservationCode;
 
+use PromBundle\Entity\Bus\ReservationCode;
+
 /**
- * Add new codes
+ * Add Academic
  *
- * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Matthias Swiggers <matthias.swiggers@studentit.be>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Academic extends \CommonBundle\Component\Form\Admin\Form
 {
+    protected $hydrator = 'PromBundle\Hydrator\Bus\ReservationCode\Academic';
+
+    /**
+     * @var ReservationCode
+     */
+    private $code;
+
     public function init()
     {
         parent::init();
 
         $this->add(
             array(
-                'type'     => 'text',
-                'name'     => 'nb_codes',
-                'label'    => 'Number of new codes',
+                'type'     => 'typeahead',
+                'name'     => 'person',
+                'label'    => 'Name',
                 'required' => true,
                 'options'  => array(
                     'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
                         'validators' => array(
-                            array('name' => 'Int'),
+                            array(
+                                'name'    => 'EntryAcademic'
+                            ),
+                            array('name' => 'TypeaheadPerson'),
                         ),
                     ),
                 ),
             )
         );
 
-        $this->addSubmit('Add', 'code_add');
+        $this->add(
+            array(
+                'type'       => 'submit',
+                'name'       => 'academic_add',
+                'value'      => 'Add',
+                'attributes' => array(
+                    'class' => 'code_add',
+                ),
+            )
+        );
     }
 }

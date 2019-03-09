@@ -18,19 +18,31 @@
  * @license http://litus.cc/LICENSE
  */
 
-return array(
-    'prombundle' => array(
-        'prom_admin_bus' => array(
-            'add','manage','view','delete', 'export',
-        ),
-        'prom_admin_code' => array(
-            'add','expire','export','mail', 'manage','search', 'view',
-        ),
-        'prom_admin_passenger' => array(
-            'delete','manage','removeBus','view',
-        ),
-        'prom_registration_index' => array(
-            'registration','create','manage',
-        ),
-    ),
-);
+namespace PromBundle\Hydrator\Bus\ReservationCode;
+
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+
+/**
+ * @author Matthias Swiggers <matthias.swiggers@studentit.be>
+ */
+class External extends \CommonBundle\Component\Hydrator\Hydrator
+{
+    /**
+     * @static @var string[] Key attributes to hydrate using the standard method.
+     */
+    private static $stdKeys = array('email', 'first_name', 'last_name');
+
+    protected function doHydrate(array $data, $object = null)
+    {
+        if ($object === null) {
+            throw new InvalidObjectException();
+        }
+
+        return $this->stdHydrate($data, $object, self::$stdKeys);
+    }
+
+    protected function doExtract($object = null)
+    {
+        return array();
+    }
+}

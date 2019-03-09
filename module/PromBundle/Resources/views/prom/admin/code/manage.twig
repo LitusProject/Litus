@@ -6,41 +6,142 @@
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
+
+    <div class="flashmessage success_message full_width code_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The bus reservation code was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width code_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the bus reservation code.</p>
+        </div>
+    </div>
+    <div class="flashmessage success_message full_width code_mailed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The bus reservation code was successfully sent!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width code_mailed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to send the bus reservation code.</p>
+        </div>
+    </div>
+
     <div id="controller_action">
-        <h1>Currently Available Codes</h1>
+        <div id="code_search" style="display: none;">
+            <div style="padding: 4px; text-align: right">
+                Search:
+                <select id="searchField">
+                    <option value="code">Reservation code</option>
+                    <option value="username">Username</option>
+                </select>
+                is
+                <input type="text" id="searchString" size="30" />
+            </div>
 
-        <table class="manage">
-            <tr>
-                <th>Code</th>
-                <th width="40px">Used</th>
-                <th width="70px">Action</th>
-            </tr>
-
-            {% for code in paginator %}
+            <table class="manage">
                 <tr>
-                    <td>{{ code.getCode() }}</td>
-                    {% if code.isUsed() %}
-                            <td style="text-align: center;">
-                                <input type="checkbox" disabled id="{{ code.getId() }}" checked="checked"/>
-                            </td>
-                    {% else %}
-                            <td style="text-align: center;">
-                                <input type="checkbox" disabled id="{{ code.getId() }}"/>
-                            </td>
-                    {% endif %}
-                    <td class="actions">
-                        {% if hasAccess('prom_admin_code', 'view') %}
-                            <a href="{{ url('prom_admin_code', {"action": "view", "id": code.getId()}) }}" class="view">View</a>
-                        {% endif %}
-                        {% if hasAccess('prom_admin_code', 'expire') %}
-                            <a href="{{ url('prom_admin_code', {"action": "expire", "id": code.getId()}) }}" class="delete">Expire</a>
-                        {% endif %}
-                    </td>
+                    <th>Code</th>
+                    <th width="150px">First Name</th>
+                    <th width="150px">Last Name</th>
+                    <th width="40px">Used</th>
+                    <th width="70px">Action</th>
                 </tr>
-            {% endfor %}
-        </table>
+            </table>
+        </div>
+        <div id="normal_page">
+            <table class="manage">
+                <tr>
+                    <th>Code</th>
+                    <th width="150px">First Name</th>
+                    <th width="150px">Last Name</th>
+                    <th width="40px">Used</th>
+                    <th width="70px">Action</th>
+                </tr>
 
+                {% for code in paginator %}
+                    <tr class="item item-{{ code.getId() }}">
+                        <td>{{ code.getCode() }}</td>
+                        <td>{{ code.getFirstName() }}</td>
+                        <td>{{ code.getLastName() }}</td>
+                        {% if code.isUsed() %}
+                                <td style="text-align: center;">
+                                    <input type="checkbox" disabled id="{{ code.getId() }}" checked="checked"/>
+                                </td>
+                        {% else %}
+                                <td style="text-align: center;">
+                                    <input type="checkbox" disabled id="{{ code.getId() }}"/>
+                                </td>
+                        {% endif %}
+                        <td class="actions">
+                            {% if hasAccess('prom_admin_code', 'view') %}
+                                <a href="{{ url('prom_admin_code', {"action": "view", "id": code.getId()}) }}" class="view">View</a>
+                            {% endif %}
+                            {% if hasAccess('prom_admin_code', 'mail') %}
+                                <a href="{{ url('prom_admin_code', {"action": "mail", "id": code.getId()}) }}" data-id="{{ code.getId() }}" data-firstName="{{ code.getFirstName() }}" data-lastName="{{ code.getLastName }}" class="mail_send">Mail reservation code</a>
+                            {% endif %}
+                            {% if hasAccess('prom_admin_code', 'expire') %}
+                                <a href="{{ url('prom_admin_code', {"action": "expire", "id": code.getId()}) }}" data-id="{{ code.getId() }}" data-code="{{ code.getCode() }}" class="delete">Expire</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
         {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+    <div class="modal fade" id="removeCode" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Reservation code
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following reservation code: <b class="reservationCode"></b>!
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="mailCode" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Confirm Reservation Code
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to send a mail to <b class="modalFirstName"></b> <b class="modalLastName"></b> with his/her reservation code.
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="mail">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <aside>
@@ -72,4 +173,120 @@
             </div>
         {% endif %}
     </aside>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function (){
+            {% if hasAccess('prom_admin_code', 'mail') %}
+
+            {% endif %}
+            {% if hasAccess('prom_admin_code', 'search') %}
+            $.searchDatabase({
+                defaultPage: $('#normal_page'),
+                searchDiv: $('#code_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                searchPage: '{{ url('prom_admin_code', {'action': 'manage'}) }}manage/',
+                url: '{{ url('prom_admin_code', {'action': 'search'}) }}',
+                display: function (data) {
+                    $('#code_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#code_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
+                        row.append('<td>' + this.code + '</td>')
+                            .append('<td>' + this.firstName + '</td>')
+                            .append('<td>' + this.lastName + '</td>')
+                            .append(usedCheckbox = $('<td style="text-align: center;"><input type="checkbox" disabled id="' + this.id + '"/></td>'))
+                            .append(
+                                $('<td>', {'class': 'actions'})
+                                    .append('<a href="{{ url('prom_admin_code', {"action": "view"}) }}' + this.id + '" class="view">View</a>')
+                                    {% if hasAccess('prom_admin_code', 'mail') %}
+                                    .append(mailButton = $('<a href="{{ url('prom_admin_code', {"action": "mail"}) }}' + this.id + '" class="mail_send">Mail reservation code</a>'))
+                                    {% endif %}
+                                    .append(deleteButton = $('<a href="{{ url('prom_admin_code', {"action": "expire"}) }}' + this.id + '" class="delete">Expire</a>'))
+                                );
+                            if(this.used){
+                                usedCheckbox.prop('checked', true);
+                            }
+                            mailButton.data({
+                                id: this.id,
+                                code: this.code,
+                                firstName: this.firstName,
+                                lastName: this.lastName
+                            })
+                            deleteButton.data({
+                                id: this.id,
+                                code: this.code
+                            });
+                    });
+                    $('#code_search .delete').click(openDeleteModal);
+                    $('#code_search .mail_send').click(openMailModal);
+                    $('#code_search table').change();
+                },
+                clear: function () {
+                    $('#code_search table').find('tr.item').remove();
+                }
+            });
+            {% endif %}
+
+            $('.item .delete').click(openDeleteModal);
+            $('.item .mail_send').click(openMailModal);
+        });
+
+        function openDeleteModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeCode = $('#removeCode');
+            removeCode.find('.reservationCode').html($(this).data('code'));
+            var id = $this.data('id');
+            removeCode.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('prom_admin_code', {"action": "expire"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.code_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeCode.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeCode.modal();
+        }
+
+        function openMailModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var mailCode = $('#mailCode');
+            mailCode.find('.modalFirstName').html($(this).data('firstName'));
+            mailCode.find('.modalLastName').html($(this).data('lastName'));
+            var id = $this.data('id');
+            mailCode.find('.mail').unbind('click').click(function () {
+                $.post('{{ url('prom_admin_code', {"action": "mail"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.code_mailed_success').removeClass('hide');
+                        mailCode.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorMail);
+            });
+            mailCode.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.code_removed_error').removeClass('hide');
+            $('#removeCode').modal('hide');
+        }
+
+        function errorMail(){
+          $('.flashmessage').addClass('hide');
+          $('.code_mailed_error').removeClass('hide');
+          $('#mailCode').modal('hide');
+        }
+    </script>
 {% endblock %}

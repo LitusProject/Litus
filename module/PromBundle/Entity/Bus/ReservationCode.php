@@ -28,8 +28,14 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity(repositoryClass="PromBundle\Repository\Bus\ReservationCode")
  * @ORM\Table(name="prom.bus_code")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
+ * @ORM\DiscriminatorMap({
+ *      "academic"="PromBundle\Entity\Bus\ReservationCode\Academic",
+ *      "external"="PromBundle\Entity\Bus\ReservationCode\External"
+ * })
  */
-class ReservationCode
+abstract class ReservationCode
 {
     /**
      * @var integer The ID of this guest info
@@ -132,4 +138,19 @@ class ReservationCode
 
         return $randomString;
     }
+
+    /**
+     * @return string
+     */
+    abstract public function getEmail();
+
+    /**
+     * @return string
+     */
+    abstract public function getFirstName();
+
+    /**
+     * @return string
+     */
+    abstract public function getLastName();
 }
