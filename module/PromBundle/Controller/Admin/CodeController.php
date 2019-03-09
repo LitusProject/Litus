@@ -189,7 +189,7 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
 
     public function mailAction()
     {
-        $this->initAjax();
+        //$this->initAjax();
 
         $code = $this->getReservationCodeEntity();
         $this->sendReservationCodeMail($code);
@@ -272,7 +272,7 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
         $mailData = unserialize(
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('prom.confirmation_mail')
+                ->getConfigValue('prom.reservation_mail')
             );
         $mail = new Message();
         $mail->addTo($code->getEmail())
