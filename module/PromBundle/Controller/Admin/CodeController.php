@@ -79,6 +79,8 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
                 $this->getEntityManager()->persist($code);
                 $this->getEntityManager()->flush();
 
+                $this->sendReservationCodeMail($code);
+
                 $this->flashMessenger()->success(
                     'Success',
                     'The bus code was successfully created!'
@@ -189,7 +191,7 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
 
     public function mailAction()
     {
-        //$this->initAjax();
+        $this->initAjax();
 
         $code = $this->getReservationCodeEntity();
         $this->sendReservationCodeMail($code);
