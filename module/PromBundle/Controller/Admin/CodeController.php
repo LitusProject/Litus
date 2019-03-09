@@ -25,6 +25,8 @@ use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use PromBundle\Entity\Bus\ReservationCode;
 use Zend\Http\Headers;
 use Zend\View\Model\ViewModel;
+use PromBundle\Entity\Bus\ReservationCode\Academic as AcademicCode;
+use PromBundle\Entity\Bus\ReservationCode\External as ExternalCode;
 
 /**
  * CodeController
@@ -52,32 +54,39 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        $form = $this->getForm('prom_reservationCode_add');
+        $academicForm = $this->getForm('prom_reservationCode_academic');
+        $externalForm = $this->getForm('prom_reservationCode_external');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $academicForm->setData($formData);
+            $externalForm->setData($formData);
 
-            if ($form->isValid()) {
-                $formData = $form->getData();
+            $code = null;
 
+            if (isset($formData['academic_add']) && $academicForm->isValid()) {
+                $code = $academicForm->hydrateObject(
+                    new AcademicCode($this->getCurrentAcademicYear())
+                );
+            } elseif (isset($formData['external_add']) && $externalForm->isValid()) {
+                $code = $externalForm->hydrateObject(
+                    new ExternalCode($this->getCurrentAcademicYear())
+                );
+            }
 
-                for ($i = 0; $i < $formData['nb_codes']; $i++) {
-                    $newCode = new ReservationCode($this->getCurrentAcademicYear());
-                    $this->getEntityManager()->persist($newCode);
-                }
-
+            if($code !== null){
+                $this->getEntityManager()->persist($code);
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
-                    'Succes',
-                    'The codes were successfully generated!'
+                    'Success',
+                    'The bus code was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
                     'prom_admin_code',
                     array(
-                        'action' => 'manage',
+                        'action' => 'add'
                     )
                 );
 
@@ -87,13 +96,16 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'academicForm' => $academicForm,
+                'externalForm' => $externalForm
             )
         );
     }
 
     public function expireAction()
     {
+        $this->initAjax();
+
         $code = $this->getReservationCodeEntity();
         if ($code === null) {
             return new ViewModel();
@@ -102,14 +114,11 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
         $this->getEntityManager()->remove($code);
         $this->getEntityManager()->flush();
 
-        $this->redirect()->toRoute(
-            'prom_admin_code',
+        return new ViewModel(
             array(
-                'action' => 'manage',
+                'result' => (object) array('status' => 'success'),
             )
         );
-
-        return new ViewModel();
     }
 
     public function exportAction()
@@ -145,6 +154,53 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
                 'data' => $file->getContent(),
             )
         );
+    }
+
+    public function searchAction()
+    {
+        //$this->initAjax();
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        $codes = $this->search()
+            ->setMaxResults($numResults)
+            ->getResult();
+
+        $result = array();
+        foreach ($codes as $code) {
+            $item = (object) array();
+            $item->id = $code->getId();
+            $item->code = $code->getCode();
+            $item->firstName = $code->getFirstName();
+            $item->lastName = $code->getLastName();
+            $item->used = $code->isUsed();
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+    /**
+     * @return \Doctrine\ORM\Query|null
+     */
+    private function search()
+    {
+        switch ($this->getParam('field')) {
+            case 'code':
+                return $this->getEntityManager()
+                    ->getRepository('PromBundle\Entity\Bus\ReservationCode')
+                    ->findAllByCodeQuery($this->getParam('string'));
+            case 'username':
+                return $this->getEntityManager()
+                    ->getRepository('PromBundle\Entity\Bus\ReservationCode')
+                    ->findAllByUniversityIdentificationQuery($this->getParam('string'));
+        }
     }
 
     public function viewAction()

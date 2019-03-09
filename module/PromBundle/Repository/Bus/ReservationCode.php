@@ -84,4 +84,37 @@ class ReservationCode extends \CommonBundle\Component\Doctrine\ORM\EntityReposit
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @param  string $code
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllByCodeQuery($code)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('c')
+            ->from('PromBundle\Entity\Bus\ReservationCode', 'c')
+            ->where(
+                $query->expr()->like('c.code', ':code')
+            )
+            ->setParameter('code', $code.'%')
+            ->getQuery();
+    }
+
+    /**
+     * @param  string $universityIdentification
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllByUniversityIdentificationQuery($universityIdentification)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('c')
+            ->from('PromBundle\Entity\Bus\ReservationCode\Academic', 'c')
+            ->innerJoin('c.academic', 'p')
+            ->where(
+                $query->expr()->like($query->expr()->lower('p.universityIdentification'), ':universityIdentification')
+            )
+            ->setParameter('universityIdentification', '%' . strtolower($universityIdentification) . '%')
+            ->getQuery();
+    }
 }

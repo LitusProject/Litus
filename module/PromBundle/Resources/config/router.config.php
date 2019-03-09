@@ -38,10 +38,11 @@ return array(
         'prom_admin_code' => array(
             'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/prom/code[/:action[/:id][/page/:page]][/]',
+                'route'       => '/admin/prom/code[/:action[/:id][/:field/:string][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
+                    'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'page'   => '[0-9]*',
                 ),
                 'defaults' => array(
