@@ -22,11 +22,12 @@ namespace PromBundle\Controller\Admin;
 
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use PromBundle\Entity\Bus\ReservationCode\Academic as AcademicCode;
+use PromBundle\Entity\Bus\ReservationCode\External as ExternalCode;
 use PromBundle\Entity\Bus\ReservationCode;
 use Zend\Http\Headers;
 use Zend\View\Model\ViewModel;
-use PromBundle\Entity\Bus\ReservationCode\Academic as AcademicCode;
-use PromBundle\Entity\Bus\ReservationCode\External as ExternalCode;
+use Zend\Mail\Message;
 
 /**
  * CodeController
@@ -158,7 +159,7 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
 
     public function searchAction()
     {
-        //$this->initAjax();
+        $this->initAjax();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -182,6 +183,20 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'result' => $result,
+            )
+        );
+    }
+
+    public function mailAction()
+    {
+        $this->initAjax();
+
+        $code = $this->getReservationCodeEntity();
+        $this->sendReservationCodeMail($code);
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
             )
         );
     }
@@ -250,5 +265,26 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
         }
 
         return $code;
+    }
+
+    private function sendReservationCodeMail($code)
+    {
+        $mailData = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('prom.confirmation_mail')
+            );
+        $mail = new Message();
+        $mail->addTo($code->getEmail())
+            ->setEncoding('UTF-8')
+            ->setBody(str_replace('{{ firstName }}', $code->getFirstName()))
+            ->setBody(str_replace('{{ lastName }}', $code->getLastName()))
+            ->setBody(str_replace('{{ reservationCode }}', $code->getCode()))
+            ->setFrom($mailData['from'])
+            ->addBcc($mailData['from'])
+            ->setSubject($mailData['subject']);
+        if (getenv('APPLICATION_ENV') != 'development') {
+            $this->getMailTransport()->send($mail);
+        }
     }
 }

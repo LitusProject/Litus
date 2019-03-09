@@ -24,7 +24,7 @@ return array(
             'add','manage','view','delete', 'export',
         ),
         'prom_admin_code' => array(
-            'add','expire','export','manage','search', 'view',
+            'add','expire','export','mail', 'manage','search', 'view',
         ),
         'prom_admin_passenger' => array(
             'delete','manage','removeBus','view',

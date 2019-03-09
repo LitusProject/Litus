@@ -83,6 +83,39 @@ See you then!
         'description' => 'The prom bus confirmation mail ',
     ),
     array(
+        'key'   => 'prom.reservation_mail',
+        'value' => serialize(
+            array(
+                'from'    => 'buscodes@vtk.be',
+                'subject' => 'Student IT Galabal Unieke code Busreservatie - Student IT Prom Unique Bus Reservation Code',
+                'body'    => 'Beste,
+    [English below]
+
+    Bedankt voor uw inschrijving voor het Student IT Galabal.
+    Gelieve uw onderstaande unieke code goed bij te houden, u zal ze nodig hebben om een plaats op de bussen te reserveren via vtk.be/prom/registration.
+    De opening van de registraties zal bekend gemaakt worden op de Facebook-pagina van Student IT.
+
+    {{ reservationCode }} .
+
+    Alvast tot dan!
+
+    - - - - - - - - - - - -
+
+    Thank you for signing up for the Student IT prom.
+    Please do not lose your unique code below, as you will need it to book a spot on the buses through www.vtk.be/prom/registration.
+    The exact date and time for this will be announced later on the Student IT Facebook page.
+
+    {{ reservationCode }}
+
+    See you then!
+
+    -- Dit is een automatisch gegenereerde email, gelieve hier niet op te antwoorden --
+    -- This is an automatically generated email, please do not reply --',
+            )
+        ),
+        'description' => 'The prom reservation code mail.',
+    ),
+    array(
         'key'         => 'prom.enable_reservations',
         'value'       => 0,
         'description' => 'Enable busreservations',

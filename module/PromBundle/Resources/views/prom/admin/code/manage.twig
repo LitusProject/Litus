@@ -19,6 +19,18 @@
             <p>An error occurred while trying to delete the bus reservation code.</p>
         </div>
     </div>
+    <div class="flashmessage success_message full_width code_mailed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The bus reservation code was successfully sent!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width code_mailed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to send the bus reservation code.</p>
+        </div>
+    </div>
 
     <div id="controller_action">
         <div id="code_search" style="display: none;">
@@ -70,6 +82,9 @@
                             {% if hasAccess('prom_admin_code', 'view') %}
                                 <a href="{{ url('prom_admin_code', {"action": "view", "id": code.getId()}) }}" class="view">View</a>
                             {% endif %}
+                            {% if hasAccess('prom_admin_code', 'mail') %}
+                                <a href="{{ url('prom_admin_code', {"action": "mail", "id": code.getId()}) }}" data-id="{{ code.getId() }}" data-firstName="{{ code.getFirstName() }}" data-lastName="{{ code.getLastName }}" class="mail_send">Mail reservation code</a>
+                            {% endif %}
                             {% if hasAccess('prom_admin_code', 'expire') %}
                                 <a href="{{ url('prom_admin_code', {"action": "expire", "id": code.getId()}) }}" data-id="{{ code.getId() }}" data-code="{{ code.getCode() }}" class="delete">Expire</a>
                             {% endif %}
@@ -98,6 +113,30 @@
                     </p>
                     <div class="footer">
                         <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="mailCode" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Confirm Reservation Code
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to send a mail to <b class="modalFirstName"></b> <b class="modalLastName"></b> with his/her reservation code.
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="mail">Yes</button>
                         <button class="cancel" data-dismiss="modal">No</button>
                     </div>
                 </div>
@@ -138,7 +177,10 @@
 
 {% block content_script %}
     <script type="text/javascript">
-        $(document).ready(function () {
+        $(document).ready(function (){
+            {% if hasAccess('prom_admin_code', 'mail') %}
+
+            {% endif %}
             {% if hasAccess('prom_admin_code', 'search') %}
             $.searchDatabase({
                 defaultPage: $('#normal_page'),
@@ -158,17 +200,27 @@
                             .append(
                                 $('<td>', {'class': 'actions'})
                                     .append('<a href="{{ url('prom_admin_code', {"action": "view"}) }}' + this.id + '" class="view">View</a>')
+                                    {% if hasAccess('prom_admin_code', 'mail') %}
+                                    .append(mailButton = $('<a href="{{ url('prom_admin_code', {"action": "mail"}) }}' + this.id + '" class="mail_send">Mail reservation code</a>'))
+                                    {% endif %}
                                     .append(deleteButton = $('<a href="{{ url('prom_admin_code', {"action": "expire"}) }}' + this.id + '" class="delete">Expire</a>'))
                                 );
                             if(this.used){
                                 usedCheckbox.prop('checked', true);
                             }
+                            mailButton.data({
+                                id: this.id,
+                                code: this.code,
+                                firstName: this.firstName,
+                                lastName: this.lastName
+                            })
                             deleteButton.data({
                                 id: this.id,
                                 code: this.code
                             });
                     });
-                    $('#code_search .delete').click(openModal);
+                    $('#code_search .delete').click(openDeleteModal);
+                    $('#code_search .mail_send').click(openMailModal);
                     $('#code_search table').change();
                 },
                 clear: function () {
@@ -177,10 +229,11 @@
             });
             {% endif %}
 
-            $('.item .delete').click(openModal);
+            $('.item .delete').click(openDeleteModal);
+            $('.item .mail_send').click(openMailModal);
         });
 
-        function openModal(e) {
+        function openDeleteModal(e) {
             var $this = $(this);
 
             e.preventDefault();
@@ -202,10 +255,38 @@
             removeCode.modal();
         }
 
+        function openMailModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var mailCode = $('#mailCode');
+            mailCode.find('.modalFirstName').html($(this).data('firstName'));
+            mailCode.find('.modalLastName').html($(this).data('lastName'));
+            var id = $this.data('id');
+            mailCode.find('.mail').unbind('click').click(function () {
+                $.post('{{ url('prom_admin_code', {"action": "mail"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.code_mailed_success').removeClass('hide');
+                        mailCode.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorMail);
+            });
+            mailCode.modal();
+        }
+
         function errorRemove() {
             $('.flashmessage').addClass('hide');
             $('.code_removed_error').removeClass('hide');
             $('#removeCode').modal('hide');
+        }
+
+        function errorMail(){
+          $('.flashmessage').addClass('hide');
+          $('.code_mailed_error').removeClass('hide');
+          $('#mailCode').modal('hide');
         }
     </script>
 {% endblock %}
