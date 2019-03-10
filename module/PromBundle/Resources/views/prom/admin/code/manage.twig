@@ -31,6 +31,18 @@
             <p>An error occurred while trying to send the bus reservation code.</p>
         </div>
     </div>
+    <div class="flashmessage success_message full_width general_warning_mailed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The warning mail was successfully sent!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width general_warning_mailed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to send the general warning mail.</p>
+        </div>
+    </div>
 
     <div id="controller_action">
         <div id="code_search" style="display: none;">
@@ -70,13 +82,13 @@
                         <td>{{ code.getFirstName() }}</td>
                         <td>{{ code.getLastName() }}</td>
                         {% if code.isUsed() %}
-                                <td style="text-align: center;">
-                                    <input type="checkbox" disabled id="{{ code.getId() }}" checked="checked"/>
-                                </td>
+                            <td style="text-align: center;">
+                                <input type="checkbox" disabled id="{{ code.getId() }}" checked="checked"/>
+                            </td>
                         {% else %}
-                                <td style="text-align: center;">
-                                    <input type="checkbox" disabled id="{{ code.getId() }}"/>
-                                </td>
+                            <td style="text-align: center;">
+                                <input type="checkbox" disabled id="{{ code.getId() }}"/>
+                            </td>
                         {% endif %}
                         <td class="actions">
                             {% if hasAccess('prom_admin_code', 'view') %}
@@ -125,12 +137,36 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <span>Litus Admin</span>
-                    /Confirm Reservation Code
+                    /Mail Reservation Code
                 </div>
                 <div class="modal-body">
                     <p>
                         You are about to send a mail to <b class="modalFirstName"></b> <b class="modalLastName"></b> with his/her reservation code.
                         Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="mail">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="mailWarning" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Send general warning mail
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to mail every single person with a bus reservation code to warn them that bus reservations are open.
+                        Please note that this operation cannot be undone. Make sure that you have actually enabled the bus reservations!
                     </p>
                     <p>
                         Are you sure you want to continue?
@@ -172,15 +208,26 @@
                 </div>
             </div>
         {% endif %}
+
+        {% if hasAccess('prom_admin_code', 'warningMail') %}
+            <div class="sidebox">
+                <div class="title">Send reservation warning</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to send every owner of a bus code a warning.</i>
+                    </p>
+                    <p>
+                        <a id="generalWarningMail" href="{{ url('prom_admin_code', {'action': 'warningMail'}) }}">&rarr; Send warning mail</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
     </aside>
 {% endblock %}
 
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function (){
-            {% if hasAccess('prom_admin_code', 'mail') %}
-
-            {% endif %}
             {% if hasAccess('prom_admin_code', 'search') %}
             $.searchDatabase({
                 defaultPage: $('#normal_page'),
@@ -228,7 +275,7 @@
                 }
             });
             {% endif %}
-
+            $('#generalWarningMail').click(openWarningMailModal);
             $('.item .delete').click(openDeleteModal);
             $('.item .mail_send').click(openMailModal);
         });
@@ -270,11 +317,30 @@
                         $('.code_mailed_success').removeClass('hide');
                         mailCode.modal('hide');
                     } else {
-                        errorRemove();
+                        errorMail();
                     }
                 }, 'json').error(errorMail);
             });
             mailCode.modal();
+        }
+
+        function openWarningMailModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var mailWarning = $('#mailWarning');
+            mailWarning.find('.mail').unbind('click').click(function () {
+                $.post('{{ url('prom_admin_code', {"action": "mailWarning"})}}', function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.general_warning_mailed_success').removeClass('hide');
+                        mailWarning.modal('hide');
+                    } else {
+                        errorWarningMail();
+                    }
+                }, 'json').error(errorWarningMail);
+            });
+            mailWarning.modal();
         }
 
         function errorRemove() {
@@ -284,9 +350,15 @@
         }
 
         function errorMail(){
-          $('.flashmessage').addClass('hide');
-          $('.code_mailed_error').removeClass('hide');
-          $('#mailCode').modal('hide');
+            $('.flashmessage').addClass('hide');
+            $('.code_mailed_error').removeClass('hide');
+            $('#mailCode').modal('hide');
+        }
+
+        function errorWarningMail(){
+            $('.flashmessage').addClass('hide');
+            $('.general_warning_mailed_error').removeClass('hide');
+            $('#mailWarning').modal('hide');
         }
     </script>
 {% endblock %}

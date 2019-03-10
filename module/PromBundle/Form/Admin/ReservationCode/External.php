@@ -98,6 +98,25 @@ class External extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'     => 'select',
+                'name'     => 'number_tickets',
+                'label'    => 'Number of tickets',
+                'required' => true,
+                'attributes' => array(
+                    'options' => $this->getNumberOptions(),
+                ),
+                'options'  => array(
+                    'input' => array(
+                        'validators' => array(
+                            array('name' => 'Int')
+                        )
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
                 'type'       => 'submit',
                 'name'       => 'external_add',
                 'value'      => 'Add',
@@ -106,5 +125,16 @@ class External extends \CommonBundle\Component\Form\Admin\Form
                 ),
             )
         );
+    }
+
+    private function getNumberOptions()
+    {
+        $nb = 10;
+        $options = [];
+        for($i = 0; $i <= $nb; $i++){
+            $options[$i] = $i;
+        }
+
+        return $options;
     }
 }

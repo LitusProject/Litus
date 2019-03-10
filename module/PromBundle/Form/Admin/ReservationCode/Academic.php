@@ -46,6 +46,9 @@ class Academic extends \CommonBundle\Component\Form\Admin\Form
                 'name'     => 'person',
                 'label'    => 'Name',
                 'required' => true,
+                'attributes' => array(
+                    'autofocus' => 'true',
+                ),
                 'options'  => array(
                     'input' => array(
                         'validators' => array(
@@ -61,6 +64,25 @@ class Academic extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'     => 'select',
+                'name'     => 'number_tickets',
+                'label'    => 'Number of tickets',
+                'required' => true,
+                'attributes' => array(
+                    'options' => $this->getNumberOptions(),
+                ),
+                'options'  => array(
+                    'input' => array(
+                        'validators' => array(
+                            array('name' => 'Int')
+                        )
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
                 'type'       => 'submit',
                 'name'       => 'academic_add',
                 'value'      => 'Add',
@@ -69,5 +91,16 @@ class Academic extends \CommonBundle\Component\Form\Admin\Form
                 ),
             )
         );
+    }
+
+    private function getNumberOptions()
+    {
+        $nb = 10;
+        $options = [];
+        for($i = 0; $i <= $nb; $i++){
+            $options[$i] = $i;
+        }
+
+        return $options;
     }
 }
