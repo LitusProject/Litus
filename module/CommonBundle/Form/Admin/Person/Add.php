@@ -25,7 +25,7 @@ namespace CommonBundle\Form\Admin\Person;
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-abstract class Add extends \CommonBundle\Component\Form\Admin\Form
+abstract class Add extends \CommonBundle\Component\Form\Form
 {
     public function init()
     {

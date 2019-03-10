@@ -29,7 +29,7 @@ use LogicException;
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Edit extends \CommonBundle\Component\Form\Admin\Form
+class Edit extends \CommonBundle\Component\Form\Form
 {
     protected $hydrator = 'CommonBundle\Hydrator\General\Config';
 
@@ -77,7 +77,7 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        $this->addSubmit('Save', 'config_edit');
+        $this->addSubmit('Save', 'save');
 
         $this->bind($this->config);
     }

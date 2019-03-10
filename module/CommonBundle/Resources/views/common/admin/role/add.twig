@@ -6,8 +6,7 @@
     {% include 'admin/partials/flashMessenger.twig' %}
 
     <div id="controller_action">
-        {% import 'admin/partials/form.twig' as forms %}
-        {{ forms.renderForm(form) }}
+        {{ form(form) }}
     </div>
 {% endblock %}
 
@@ -16,15 +15,14 @@
         (function($) {
             var methods = {
                 init: function() {
-                    var div = $('<div>').insertAfter(this).css({
-                        'max-height': '300px',
-                        'width': $(this).width(),
-                        'overflow': 'scroll',
-                        'border': '1px solid #ccc',
-                        'padding': '5px',
-                    }).append(
-                        ul = $('<ul/>')
-                    );
+                    var div = $('<div>', {'class': 'multi_select_checkboxes'})
+                        .insertAfter(this)
+                        .css({
+                            'max-height': '300px',
+                            'width': $(this).width()
+                        }).append(
+                            ul = $('<ul/>')
+                        );
 
                     $(this).children('optgroup').each(function () {
                         var li = $('<li>', {'class': 'parent'}).append(

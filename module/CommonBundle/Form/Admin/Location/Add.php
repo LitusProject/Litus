@@ -25,7 +25,7 @@ namespace CommonBundle\Form\Admin\Location;
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\Form\Form
 {
     protected $hydrator = 'CommonBundle\Hydrator\General\Location';
 
@@ -51,12 +51,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'  => 'common_address_add',
+                'type'  => '\CommonBundle\Form\Admin\Address\Add',
                 'name'  => 'address',
                 'label' => 'Address',
             )
         );
-
 
         $this->add(
             array(
@@ -100,6 +99,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        $this->addSubmit('Add', 'location_add', 'add');
+        $this->addSubmit('Add', 'plus', 'add');
     }
 }

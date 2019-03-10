@@ -54,7 +54,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        $form = $this->getForm('common_role_add');
+        $form = $this->getForm('CommonBundle\Form\Admin\Role\Add');
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -117,7 +117,12 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $form = $this->getForm('common_role_edit', array('role' => $role));
+        $form = $this->getForm(
+            'CommonBundle\Form\Admin\Role\Edit',
+            array(
+                'role' => $role
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());

@@ -35,50 +35,27 @@ trait FieldsetTrait
 {
     use ElementTrait;
 
-    public function add($elementOrFieldset, array $flags = array())
-    {
-        if (is_array($elementOrFieldset)
-            || ($elementOrFieldset instanceof Traversable && !($elementOrFieldset instanceof ElementInterface))
-        ) {
-            $label = null;
-            if (array_key_exists('label', $elementOrFieldset)) {
-                $label = $elementOrFieldset['label'];
-            }
-
-            $value = null;
-            if (array_key_exists('value', $elementOrFieldset)) {
-                $value = $elementOrFieldset['value'];
-            }
-
-            $required = null;
-            if (array_key_exists('required', $elementOrFieldset)) {
-                $required = $elementOrFieldset['required'];
-            }
-
-            $elementOrFieldset = array_merge_recursive(
-                array(
-                    'options' => array(
-                        'label' => $label,
-                    ),
-                    'attributes' => array(
-                        'value'    => $value,
-                        'required' => $required,
-                    ),
-                ),
-                $elementOrFieldset
-            );
-        }
-
-        parent::add($elementOrFieldset, $flags);
-    }
-
+    /**
+     * Set a single element attribute.
+     *
+     * @param  string $key
+     * @param  mixed  $value
+     * @return Element|ElementInterface
+     */
     public function setAttribute($name, $value)
     {
         if ($name == 'required') {
-            foreach ($this->elements as $elementOrFieldset) {
+            foreach ($this->getElements() as $elementOrFieldset) {
                 if ($elementOrFieldset instanceof ElementInterface) {
                     if (!$elementOrFieldset->hasAttribute('required')) {
-                        $elementOrFieldset->setRequired($value);
+                        $elementOrFieldset->setAttributes(
+                            array_merge(
+                                $elementOrFieldset->getAttributes(),
+                                array(
+                                    'required' => $value,
+                                )
+                            )
+                        );
                     }
                 }
             }
@@ -87,6 +64,9 @@ trait FieldsetTrait
         return parent::setAttribute($name, $value);
     }
 
+    /**
+     * @return Input
+     */
     public function getInputFilterSpecification()
     {
         $inputFilterSpecification = array();

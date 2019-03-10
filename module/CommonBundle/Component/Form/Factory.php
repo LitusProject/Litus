@@ -20,8 +20,10 @@
 
 namespace CommonBundle\Component\Form;
 
+use ArrayAccess;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use Traversable;
 use Zend\Form\ElementInterface as ZendElementInterface;
 use Zend\Form\FieldsetInterface as ZendFieldsetInterface;
 use Zend\InputFilter\Factory as InputFilterFactory;
@@ -71,6 +73,66 @@ class Factory extends \Zend\Form\Factory implements ServiceLocatorAwareInterface
         }
     }
 
+    /**
+     * @return InputFilterFactory
+     */
+    public function getInputFilterFactory()
+    {
+        if ($this->inputFilterFactory === null) {
+            $this->setInputFilterFactory(new InputFilterFactory());
+        }
+
+        return $this->inputFilterFactory;
+    }
+
+    /**
+     * Configure an element based on the provided specification.
+     *
+     * @param  ZendElementInterface          $element
+     * @param  array|Traversable|ArrayAccess $spec
+     * @return ZendElementInterface
+     */
+    public function configureElement(ZendElementInterface $element, $spec)
+    {
+        $label = null;
+        if (array_key_exists('label', $spec)) {
+            $label = $spec['label'];
+        }
+
+        $value = null;
+        if (array_key_exists('value', $spec)) {
+            $value = $spec['value'];
+        }
+
+        $required = null;
+        if (array_key_exists('required', $spec)) {
+            $required = $spec['required'];
+        }
+
+        $spec = array_merge_recursive(
+            array(
+                'options' => array(
+                    'label' => $label,
+                ),
+                'attributes' => array(
+                    'value'    => $value,
+                    'required' => $required,
+                ),
+            ),
+            $spec
+        );
+
+        return parent::configureElement($element, $spec);
+    }
+
+    /**
+     * Takes a list of element specifications, creates the elements, and injects them into the provided fieldset
+     *
+     * @param  array|Traversable|ArrayAccess $elements
+     * @param  FieldsetInterface             $fieldset
+     * @param  string                        $method Method invoking this one (for exception messages)
+     * @return void
+     */
     protected function prepareAndInjectElements($elements, ZendFieldsetInterface $fieldset, $method)
     {
         if (is_array($elements)) {
@@ -90,14 +152,5 @@ class Factory extends \Zend\Form\Factory implements ServiceLocatorAwareInterface
         }
 
         parent::prepareAndInjectElements($elements, $fieldset, $method);
-    }
-
-    public function getInputFilterFactory()
-    {
-        if ($this->inputFilterFactory === null) {
-            $this->setInputFilterFactory(new InputFilterFactory());
-        }
-
-        return $this->inputFilterFactory;
     }
 }

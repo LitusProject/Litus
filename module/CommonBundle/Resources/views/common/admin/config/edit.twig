@@ -7,14 +7,12 @@
 
     <div id="controller_action">
         <h1>Description</h1>
-        <p>
-            {{ entry.getDescription() }}
-        </p>
+        <p>{{ entry.getDescription() }}</p>
 
         <br />
 
-        {% import 'admin/partials/form.twig' as forms %}
-        {{ forms.renderForm(form) }}
+        {{ form(form) }}
+    </div>
 {% endblock %}
 
 {% block content_script %}

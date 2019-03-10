@@ -7,6 +7,7 @@ Encore
     .cleanupOutputBeforeBuild()
     .enableSingleRuntimeChunk()
 
+    .addEntry('common_admin', './assets/CommonBundle/admin/admin.js')
     .addEntry('cudi_prof', './assets/CudiBundle/prof/prof.js')
     .addEntry('cudi_sale', './assets/CudiBundle/sale/sale.js')
 

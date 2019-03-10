@@ -83,7 +83,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
 
         $this->add(
             array(
-                'type'  => 'common_address_add-primary',
+                'type'  => '\CommonBundle\Form\Admin\Address\AddPrimary',
                 'name'  => 'primary_address',
                 'label' => 'Primary Address&mdash;Student Room or Home',
             )
@@ -91,7 +91,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
 
         $this->add(
             array(
-                'type'  => 'common_address_add',
+                'type'  => '\CommonBundle\Form\Admin\Address\Add',
                 'name'  => 'secondary_address',
                 'label' => 'Secondary Address&mdash;Home',
             )
@@ -230,7 +230,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
             )
         );
 
-        $this->addSubmit('Save', 'academic_edit');
+        $this->addSubmit('Save', 'save');
 
         $this->bind($this->person);
     }

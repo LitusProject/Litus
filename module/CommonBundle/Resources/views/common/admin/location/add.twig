@@ -6,15 +6,14 @@
     {% include 'admin/partials/flashMessenger.twig' %}
 
     <div id="controller_action">
-        {% import 'admin/partials/form.twig' as forms %}
-        {{ forms.renderForm(form) }}
+        {{ form(form) }}
     </div>
 {% endblock %}
 
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            //$('#greographical').hide();
+            $('#geographical').hide();
 
             var search = $('<button>', {'class': 'location_add'}).html('Search');
             $('#controller_action .form-actions input[name=add]')

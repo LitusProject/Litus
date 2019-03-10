@@ -2,7 +2,9 @@
 
 {% block content %}
     <header id="controller_header">
-        <div class="title"><span class="dashboard">Dashboard</span></div>
+        <div class="title">
+            <i class="fas fa-desktop"></i> Dashboard
+        </div>
     </header>
 
     {% include 'admin/partials/flashMessenger.twig' %}
@@ -32,7 +34,9 @@
                         <td>{{ action.getTimestamp().format('d/m/Y H:i') }}</td>
                         <td>
                             {% if hasAccess('cudi_admin_prof_action', 'view') %}
-                                <a href="{{ url('cudi_admin_prof_action', {"action": "view", "id": action.getId()}) }}" class="view">View</a>
+                                <a href="{{ url('cudi_admin_prof_action', {"action": "view", "id": action.getId()}) }}">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
                             {% endif %}
                         </td>
                     </tr>
@@ -57,10 +61,14 @@
                         <td>{{ comment.getText() }}</td>
                         <td class="actions">
                             {% if hasAccess('syllabus_admin_subject', 'edit') %}
-                                <a href="{{ url('syllabus_admin_subject', {'action': 'edit', 'id': comment.getSubject().getId()}) }}" class="view">View Subject</a>
+                                <a href="{{ url('syllabus_admin_subject', {'action': 'edit', 'id': comment.getSubject().getId()}) }}">
+                                    <i class="fas fa-eye"></i> View Subject
+                                </a>
                             {% endif %}
                             {% if hasAccess('syllabus_admin_subject_comment', 'subject') %}
-                                <a href="{{ url('syllabus_admin_subject_comment', {'action': 'subject', 'id': comment.getSubject().getId()}) }}" class="view">View All</a>
+                                <a href="{{ url('syllabus_admin_subject_comment', {'action': 'subject', 'id': comment.getSubject().getId()}) }}">
+                                    <i class="fas fa-eye"></i> View All
+                                </a>
                             {% endif %}
                         </td>
                     </tr>
@@ -83,10 +91,14 @@
                         <td>{{ reply.getText() }}</td>
                         <td class="actions">
                             {% if hasAccess('syllabus_admin_subject', 'edit') %}
-                                <a href="{{ url('syllabus_admin_subject', {'action': 'edit', 'id': reply.getSubject().getId()}) }}" class="view">View Subject</a>
+                                <a href="{{ url('syllabus_admin_subject', {'action': 'edit', 'id': reply.getSubject().getId()}) }}">
+                                    <i class="fas fa-eye"></i> View Subject
+                                </a>
                             {% endif %}
                             {% if hasAccess('syllabus_admin_subject_comment', 'subject') %}
-                                <a href="{{ url('syllabus_admin_subject_comment', {'action': 'subject', 'id': reply.getSubject().getId()}) }}" class="view">View All</a>
+                                <a href="{{ url('syllabus_admin_subject_comment', {'action': 'subject', 'id': reply.getSubject().getId()}) }}">
+                                    <i class="fas fa-eye"></i> View All
+                                </a>
                             {% endif %}
                         </td>
                     </tr>
@@ -126,7 +138,9 @@
                     <td>{% if session.isShibboleth() %}&times;{% endif %}</td>
                     <td class="actions">
                         {% if hasAccess('common_admin_session', 'expire') and session.getId() != currentSession.getId() %}
-                            <a href="#" class="delete" data-id="{{ session.getId() }}">Expire</a></li>
+                            <a href="#" class="delete" data-id="{{ session.getId() }}">
+                                <i class="fas fa-trash-alt"></i> Expire
+                            </a>
                         {% endif %}
                     </td>
                 </tr>
@@ -180,7 +194,18 @@
             };
 
             $('#registrationsGraph').attr('width', $('#registrationsGraph').parent().width());
-            new Chart($('#registrationsGraph').get(0).getContext('2d')).Line(data);
+            new Chart($('#registrationsGraph')[0].getContext('2d'), {
+                type: 'line',
+                data: data,
+                options: {
+                    legend: {
+                        display: false
+                    },
+                    tooltips: {
+                        enabled: false
+                    }
+                }
+            });
         }
 
         function expireSession(e) {

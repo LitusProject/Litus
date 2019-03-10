@@ -37,6 +37,8 @@ use CommonBundle\Component\Encore\Service\ConfigurationFactory as EncoreConfigur
 use CommonBundle\Component\Encore\Service\EncoreFactory;
 use CommonBundle\Component\Form\FormElementManager;
 use CommonBundle\Component\Form\Service\FormElementManagerFactory;
+use CommonBundle\Component\Form\Factory as FormFactory;
+use CommonBundle\Component\Form\Service\FactoryFactory as FormFactoryFactory;
 use CommonBundle\Component\Hydrator\HydratorPluginManager;
 use CommonBundle\Component\Hydrator\Service\HydratorPluginManagerFactory;
 use CommonBundle\Component\Module\Config;
@@ -83,6 +85,7 @@ return Config::create(
                 Encore::class                        => EncoreFactory::class,
                 EncoreConfiguration::class           => EncoreConfigurationFactory::class,
                 FormElementManager::class            => FormElementManagerFactory::class,
+                FormFactory::class                   => FormFactoryFactory::class,
                 HydratorPluginManager::class         => HydratorPluginManagerFactory::class,
                 Raven_Client::class                  => RavenClientFactory::class,
                 RedisClient::class                   => RedisClientFactory::class,
@@ -113,7 +116,9 @@ return Config::create(
                 'translator'                        => MvcTranslator::class,
 
                 'doctrine.cache.redis' => DoctrineRedisCache::class,
-                'FormElementManager'   => FormElementManager::class,
+
+                'FormElementManager' => FormElementManager::class,
+                'FormFactory'        => FormFactory::class,
             ),
         ),
 
@@ -201,6 +206,14 @@ return Config::create(
                 'Select'     => Component\Form\Element\Select::class,
                 'submit'     => Component\Form\Element\Submit::class,
                 'Submit'     => Component\Form\Element\Submit::class,
+                'tabbable'   => Component\Form\Element\Tabbable::class,
+                'Tabbable'   => Component\Form\Element\Tabbable::class,
+                'tabcontent' => Component\Form\Element\TabContent::class,
+                'tabContent' => Component\Form\Element\TabContent::class,
+                'TabContent' => Component\Form\Element\TabContent::class,
+                'tabpane'    => Component\Form\Element\TabPane::class,
+                'tabPane'    => Component\Form\Element\TabPane::class,
+                'TabPane'    => Component\Form\Element\TabPane::class,
                 'text'       => Component\Form\Element\Text::class,
                 'Text'       => Component\Form\Element\Text::class,
                 'textarea'   => Component\Form\Element\Textarea::class,
@@ -210,6 +223,41 @@ return Config::create(
             ),
         ),
         'form_view_helpers' => array(
+            'admin' => array(
+                'factories' => array(
+                    Component\Form\View\Helper\Admin\Form::class              => InvokableFactory::class,
+                    Component\Form\View\Helper\Admin\FormButton::class        => InvokableFactory::class,
+                    Component\Form\View\Helper\Admin\FormCollection::class    => InvokableFactory::class,
+                    Component\Form\View\Helper\Admin\FormElementErrors::class => InvokableFactory::class,
+                    Component\Form\View\Helper\Admin\FormRow::class           => InvokableFactory::class,
+                    Component\Form\View\Helper\Admin\FormSubmit::class        => InvokableFactory::class,
+                ),
+                'aliases' => array(
+                    'form'              => Component\Form\View\Helper\Admin\Form::class,
+                    'Form'              => Component\Form\View\Helper\Admin\Form::class,
+                    'formbutton'        => Component\Form\View\Helper\Admin\FormButton::class,
+                    'formButton'        => Component\Form\View\Helper\Admin\FormButton::class,
+                    'FormButton'        => Component\Form\View\Helper\Admin\FormButton::class,
+                    'formcollection'    => Component\Form\View\Helper\Admin\FormCollection::class,
+                    'formCollection'    => Component\Form\View\Helper\Admin\FormCollection::class,
+                    'FormCollection'    => Component\Form\View\Helper\Admin\FormCollection::class,
+                    'formelementerrors' => Component\Form\View\Helper\Admin\FormElementErrors::class,
+                    'formElementErrors' => Component\Form\View\Helper\Admin\FormElementErrors::class,
+                    'FormElementErrors' => Component\Form\View\Helper\Admin\FormElementErrors::class,
+                    'formrow'           => Component\Form\View\Helper\Admin\FormRow::class,
+                    'formRow'           => Component\Form\View\Helper\Admin\FormRow::class,
+                    'FormRow'           => Component\Form\View\Helper\Admin\FormRow::class,
+                    'formsubmit'        => Component\Form\View\Helper\Admin\FormSubmit::class,
+                    'formSubmit'        => Component\Form\View\Helper\Admin\FormSubmit::class,
+                    'FormSubmit'        => Component\Form\View\Helper\Admin\FormSubmit::class,
+
+                    'form_button'         => Component\Form\View\Helper\Admin\FormButton::class,
+                    'form_collection'     => Component\Form\View\Helper\Admin\FormCollection::class,
+                    'form_element_errors' => Component\Form\View\Helper\Admin\FormElementErrors::class,
+                    'form_row'            => Component\Form\View\Helper\Admin\FormRow::class,
+                    'form_submit'         => Component\Form\View\Helper\Admin\FormSubmit::class,
+                ),
+            ),
             'bootstrap' => array(
                 'factories' => array(
                     Component\Form\View\Helper\Bootstrap\Form::class              => InvokableFactory::class,
@@ -218,7 +266,6 @@ return Config::create(
                     Component\Form\View\Helper\Bootstrap\FormCollection::class    => InvokableFactory::class,
                     Component\Form\View\Helper\Bootstrap\FormElement::class       => InvokableFactory::class,
                     Component\Form\View\Helper\Bootstrap\FormElementErrors::class => InvokableFactory::class,
-                    Component\Form\View\Helper\Bootstrap\FormLabel::class         => InvokableFactory::class,
                     Component\Form\View\Helper\Bootstrap\FormRow::class           => InvokableFactory::class,
                     Component\Form\View\Helper\Bootstrap\FormSubmit::class        => InvokableFactory::class,
                 ),
@@ -240,25 +287,20 @@ return Config::create(
                     'formelementerrors' => Component\Form\View\Helper\Bootstrap\FormElementErrors::class,
                     'formElementErrors' => Component\Form\View\Helper\Bootstrap\FormElementErrors::class,
                     'FormElementErrors' => Component\Form\View\Helper\Bootstrap\FormElementErrors::class,
-                    'formlabel'         => Component\Form\View\Helper\Bootstrap\FormLabel::class,
-                    'formLabel'         => Component\Form\View\Helper\Bootstrap\FormLabel::class,
-                    'FormLabel'         => Component\Form\View\Helper\Bootstrap\FormLabel::class,
-                    'formsubmit'        => Component\Form\View\Helper\Bootstrap\FormSubmit::class,
-                    'formSubmit'        => Component\Form\View\Helper\Bootstrap\FormSubmit::class,
-                    'FormSubmit'        => Component\Form\View\Helper\Bootstrap\FormSubmit::class,
                     'formrow'           => Component\Form\View\Helper\Bootstrap\FormRow::class,
                     'formRow'           => Component\Form\View\Helper\Bootstrap\FormRow::class,
                     'FormRow'           => Component\Form\View\Helper\Bootstrap\FormRow::class,
+                    'formsubmit'        => Component\Form\View\Helper\Bootstrap\FormSubmit::class,
+                    'formSubmit'        => Component\Form\View\Helper\Bootstrap\FormSubmit::class,
+                    'FormSubmit'        => Component\Form\View\Helper\Bootstrap\FormSubmit::class,
 
                     'form_button'         => Component\Form\View\Helper\Bootstrap\FormButton::class,
                     'form_checkbox'       => Component\Form\View\Helper\Bootstrap\FormCheckbox::class,
                     'form_collection'     => Component\Form\View\Helper\Bootstrap\FormCollection::class,
                     'form_element'        => Component\Form\View\Helper\Bootstrap\FormElement::class,
                     'form_element_errors' => Component\Form\View\Helper\Bootstrap\FormElementErrors::class,
-                    'form_label'          => Component\Form\View\Helper\Bootstrap\FormLabel::class,
-                    'form_reset'          => Component\Form\View\Helper\Bootstrap\FormReset::class,
-                    'form_submit'         => Component\Form\View\Helper\Bootstrap\FormSubmit::class,
                     'form_row'            => Component\Form\View\Helper\Bootstrap\FormRow::class,
+                    'form_submit'         => Component\Form\View\Helper\Bootstrap\FormSubmit::class,
                 ),
             ),
         ),

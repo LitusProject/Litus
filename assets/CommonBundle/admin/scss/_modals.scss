@@ -1,0 +1,150 @@
+/**
+ * Modals
+ */
+
+.modal-open {
+    .dropdown-menu {
+        z-index: $zindexDropdown + $zindexModal;
+    }
+
+    .dropdown.open {
+        *z-index: $zindexDropdown + $zindexModal;
+    }
+
+    .popover {
+        z-index: $zindexPopover  + $zindexModal;
+    }
+
+    .tooltip {
+        z-index: $zindexTooltip  + $zindexModal;
+    }
+}
+
+.modal {
+    display: none;
+    overflow: auto;
+    overflow-y: scroll;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: $zindexModal;
+
+    &.fade .modal-dialog {
+        transform: translate(0, -25%);
+        transition: transform 0.3s ease-out;
+    }
+
+    &.show .modal-dialog {
+        transform: translate(0, 0);
+    }
+
+    .form {
+        .row {
+            clear: both;
+            padding-top: 2*$defaultSpacing;
+            width: 560px;
+
+            .label {
+                float: left;
+                width: $formLabelWidth;
+                margin-top: $formSpacing;
+                height: 0px;
+                text-align: right;
+            }
+
+            .field {
+                float: right;
+                width: 560px - ($formLabelWidth + 2*$defaultSpacing);
+                text-align: left;
+            }
+        }
+
+        .errors {
+            clear: both;
+            margin-left: $formLabelWidth + 4*$defaultSpacing;
+            padding-top: $formSpacing;
+
+            li {
+                color: $cError;
+            }
+        }
+
+        .required {
+            font-weight: bold;
+        }
+
+        .required:after {
+            content: $formRequired;
+        }
+    }
+}
+
+.modal-dialog {
+    position: relative;
+    max-height: 500px;
+    overflow: auto;
+    width: 560px;
+    z-index: 1050;
+    margin: 30px auto;
+}
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: $zindexModalBackdrop;
+    background-color: $cBlack;
+
+    &.fade {
+        opacity: 0;
+    }
+
+    &.show {
+        opacity: .5;
+    }
+}
+
+.modal-header {
+    margin: 0 6px 5px 0;
+    font-weight: bold;
+    color: $cWhite;
+    text-align: right;
+
+    span {
+        color: $cAccent;
+    }
+}
+
+.modal-body {
+    padding: 12px;
+    background: #eee;
+    border: 5px solid $cBorder;
+
+    p {
+        margin-bottom: 10px;
+    }
+
+    table.full-width {
+        width: 526px;
+    }
+
+    .footer {
+        input[type=button], button {
+            cursor: pointer;
+            margin: 0 5px;
+            padding: 2px 10px;
+            background: $cWhite;
+        }
+    }
+
+    input[type=button], button {
+        text-indent: 0;
+        border: 1px solid $cBorder;
+        font-weight: normal;
+        height: $inputHeight;
+    }
+}

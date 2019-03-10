@@ -1,0 +1,17 @@
+/**
+ * Gradients Mixin
+ */
+
+@mixin gradient-none {
+    background-image: none;
+    background-repeat: repeat;
+}
+
+@mixin gradient-striped($color: rgba($cWhite, .15), $angle: 45deg) {
+    background-image: linear-gradient($angle, $color 25%, transparent 25%, transparent 50%, $color 50%, $color 75%, transparent 75%, transparent);
+}
+
+@mixin gradient-y($startColor, $endColor, $startPercent: 0%, $endPercent: 100%) {
+    background-image: linear-gradient(to bottom, $startColor $startPercent, $endColor $endPercent);
+    background-repeat: repeat-x;
+}

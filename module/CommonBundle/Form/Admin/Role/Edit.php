@@ -32,8 +32,8 @@ class Edit extends \CommonBundle\Form\Admin\Role\Add
         parent::init();
 
         $this->remove('name');
+        $this->remove('submit');
 
-        $this->remove('submit')
-            ->addSubmit('Save', 'role_edit');
+        $this->addSubmit('Save', 'save');
     }
 }

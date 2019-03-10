@@ -6,6 +6,7 @@
     {{ headTitle('Litus Admin', 'PREPEND') }}
 
     {{ headLink() }}
+    {{ assets('common_admin') }}
 </head>
 
 <body>
@@ -44,8 +45,10 @@
                         {% for submenu_name, submenu in menu.submenus %}
                             <li>
                                 <div class="subtitle">
-                                    <b>{{ submenu_name }}</b><br />
-                                    {{ submenu.subtitle }}
+                                    <div class="content">
+                                        <b>{{ submenu_name }}</b><br />
+                                        {{ submenu.subtitle }}
+                                    </div>
                                 </div>
                                 <ul{% if submenu.active %} style="display: block;"{% endif %}>
                                     {% for settings in submenu.items %}

@@ -108,15 +108,18 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
      * Adds a submit button to the form.
      *
      * @param  string      $value
-     * @param  string|null $class
+     * @param  string|null $icon
      * @param  string      $name
      * @param  array       $attributes
      * @return self
      */
-    public function addSubmit($value, $class = null, $name = 'submit', $attributes = array())
+    public function addSubmit($value, $icon = null, $name = 'submit', $attributes = array())
     {
-        if ($class !== null) {
-            $attributes['class'] = $class;
+        $options = array();
+        if ($icon !== null) {
+            $options = array(
+                'font_awesome' => 'fa-' . $icon,
+            );
         }
 
         $this->add(
@@ -126,6 +129,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
                 'label'      => $value,
                 'value'      => $value,
                 'attributes' => $attributes,
+                'options'    => $options,
             )
         );
 

@@ -39,10 +39,14 @@
                         </td>
                         <td class="actions">
                             {% if hasAccess('common_admin_location', 'edit') %}
-                                <a href="{{ url('common_admin_location', {"action": "edit", "id": location.getId()}) }}" class="edit">Edit</a>
+                                <a class="edit" href="{{ url('common_admin_location', {"action": "edit", "id": location.getId()}) }}">
+                                    <i class="fas fa-pen"></i> Edit
+                                </a>
                             {% endif %}
                             {% if hasAccess('common_admin_location', 'delete') %}
-                                <a href="#" data-id="{{ location.getId() }}" data-name="{{ location.getName() }}" class="delete">Delete</a>
+                                <a class="delete" href="#" data-id="{{ location.getId() }}" data-name="{{ location.getName() }}">
+                                    <i class="fas fa-trash-alt"></i> Delete
+                                </a>
                             {% endif %}
                         </td>
                     </tr>

@@ -22,7 +22,6 @@ namespace CommonBundle\Component\Sentry\Service;
 
 use CommonBundle\Component\Sentry\Client;
 use Interop\Container\ContainerInterface;
-use Raven_Client;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -37,7 +36,7 @@ class ClientFactory implements FactoryInterface
      * @param  ContainerInterface $container
      * @param  string             $requestedName
      * @param  array|null         $options
-     * @return Raven_Client
+     * @return Client
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
@@ -49,7 +48,7 @@ class ClientFactory implements FactoryInterface
 
     /**
      * @param  ServiceLocatorInterface $locator
-     * @return Raven_Client
+     * @return Client
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {

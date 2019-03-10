@@ -53,11 +53,11 @@ class Form extends \Zend\Form\View\Helper\Form
 
         if (in_array($layout, $this->layouts)) {
             foreach ($form->getElements() as $element) {
-                $element->setOption('formLayout', $layout);
+                $element->setOption('form_layout', $layout);
             }
 
             foreach ($form->getFieldsets() as $fieldset) {
-                $fieldset->setOption('formLayout', $layout);
+                $fieldset->setOption('form_layout', $layout);
             }
         }
 

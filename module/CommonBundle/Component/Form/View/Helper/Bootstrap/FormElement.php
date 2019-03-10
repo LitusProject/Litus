@@ -21,6 +21,8 @@
 namespace CommonBundle\Component\Form\View\Helper\Bootstrap;
 
 use CommonBundle\Component\Form\ElementInterface;
+use InvalidArgumentException;
+use Zend\Form\ElementInterface as ZendElementInterface;
 
 /**
  * View helper to render a form element.
@@ -42,26 +44,23 @@ class FormElement extends \Zend\Form\View\Helper\FormElement
     );
 
     /**
-     * @param  ElementInterface $element
+     * @param  ZendElementInterface $element
      * @return string
      */
-    public function render(ElementInterface $element)
+    public function render(ZendElementInterface $element)
     {
-        $type = $element->getAttribute('type');
+        if (!($element instanceof ElementInterface)) {
+            throw new InvalidArgumentException(
+                'Element does not implement ' . ElementerInterface::class
+            );
+        }
 
-        if (!in_array($type, $this->ignoredFormControls) && !$element->hasClass('form-control')) {
+        if (!in_array($element->getAttribute('type'), $this->ignoredFormControls)) {
             $element->addClass('form-control');
         }
 
         if ($element->getMessages()) {
-            if (!$element->hasClass('is-invalid')) {
-                $element->addClass('is-invalid');
-            }
-        }
-
-        $markup = parent::render($element);
-        if ($element->getOption('help-block')) {
-            $markup .= sprintf('<small class="form-text text-muted">%s</small>', $element->getOption('help-block'));
+            $element->addClass('is-invalid');
         }
 
         return $markup;

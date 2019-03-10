@@ -89,6 +89,15 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
+     * @return array
+     */
+    protected function getFormViewHelpersConfig()
+    {
+        $config = $this->getServiceLocator()->get('config');
+        return $config['form_view_helpers']['admin'];
+    }
+
+    /**
      * Returns the language that is currently requested.
      *
      * @return \CommonBundle\Entity\General\Language
@@ -254,19 +263,6 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         return array(
             'general'  => $general,
             'submenus' => $submenus,
-        );
-    }
-
-    /**
-     * @return \CommonBundle\Component\Form\Factory
-     */
-    protected function getFormFactory()
-    {
-        return $this->getServiceLocator()->build(
-            Factory::class,
-            array(
-                'isAdmin' => true,
-            )
         );
     }
 }

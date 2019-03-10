@@ -1,0 +1,58 @@
+/**
+ * Tabs
+ *
+ * Author: Robin De Bruin <info@serayo.com>
+ * Author: Pieter Maene <pieter.maene@litus.cc>
+ *
+ * License: https://litus.cc/LICENSE
+ */
+
+.tabs {
+    border-bottom: 1px solid $cBorder;
+
+    margin: 0 $defaultSpacing 2*$defaultSpacing $fieldsetLegendPosition;
+    padding: 0 $defaultSpacing 0 0;
+
+    width: $layoutWidth - ($leftSidebarWidth + $sideboxWidth + 4*$defaultSpacing) - $fieldsetLegendPosition;
+    height: $tabsHeight;
+    line-height: $tabsHeight;
+
+    font-weight: bold;
+
+    li {
+        display: inline;
+
+        a {
+            display: block;
+            float: left;
+            color: $cText;
+            padding: 0 2*$defaultSpacing !important;
+
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: $cTabsAccent;
+        }
+    }
+
+    .active {
+        a {
+            background: $cTabsAccent;
+            border-bottom: 1px solid $cSideboxBackground;
+            color: $cWhite !important;
+
+            &:hover {
+                color: $cWhite;
+            }
+        }
+    }
+}
+
+.tab_pane {
+    display: none;
+
+    &.active {
+        display: block;
+    }
+}

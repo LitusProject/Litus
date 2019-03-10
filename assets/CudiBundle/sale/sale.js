@@ -12,7 +12,5 @@ import 'script-loader!./js/saleApp.js';
 import 'script-loader!./js/saleInterface.js';
 import 'script-loader!./js/shortKey.js';
 
-global.$ = global.jQuery = $;
-
 // SCSS
 import './sale.scss'

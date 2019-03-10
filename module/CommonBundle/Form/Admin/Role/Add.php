@@ -27,7 +27,7 @@ use CommonBundle\Entity\Acl\Role;
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\Form\Form
 {
     protected $hydrator = 'CommonBundle\Hydrator\Acl\Role';
 
@@ -85,7 +85,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        $this->addSubmit('Add', 'role_add');
+        $this->addSubmit('Add', 'plus');
 
         if ($this->role !== null) {
             $this->bind($this->role);

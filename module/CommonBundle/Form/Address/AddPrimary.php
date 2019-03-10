@@ -31,7 +31,8 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
     {
         parent::init();
 
-        $this->addClass('primary-address');
+        $this->addClass('primary_address');
+        $this->setLabelOption('disable_html_escape', true);
 
         list($cities, $streets) = $this->getCities();
 
@@ -125,7 +126,6 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
         );
 
         $streetSelects = array();
-
         foreach ($streets as $id => $collection) {
             $streetSelects[] = array(
                 'type'       => 'select',
@@ -207,26 +207,17 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
         );
     }
 
-    public function setRequired($required = true)
+    public function setAttribute($name, $value)
     {
-        parent::setRequired($required);
+        if ($name == 'required') {
+            $this->get('street')->setAttribute('required', $value);
+            $this->get('number')->setAttribute('required', $value);
+            $this->get('mailbox')->setAttribute('required', $value);
+            $this->get('city')->setAttribute('required', $value);
+            $this->get('other')->setAttribute('required', $value);
+        }
 
-        $street = $this->get('street');
-        $street->setRequired($required);
-
-        $number = $this->get('number');
-        $number->setRequired($required);
-
-        $mailbox = $this->get('mailbox');
-        $mailbox->setRequired(false);
-
-        $city = $this->get('city');
-        $city->setRequired($required);
-
-        $other = $this->get('other');
-        $other->setRequired($required);
-
-        return $this;
+        return parent::setAttribute($name, $value);
     }
 
     private function getCities()
@@ -272,12 +263,16 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
     {
         $specs = parent::getInputFilterSpecification();
 
-        if ($this->get('city')->getValue() === '' && !$this->isRequired()) {
-            // empty form
+        $required = false;
+        if ($this->hasAttribute('required')) {
+            $required = $this->getAttribute('required');
+        }
+
+        if ($this->get('city')->getValue() == '' && !$required) {
             return array();
         }
 
-        if ($this->get('city')->getValue() !== 'other') {
+        if ($this->get('city')->getValue() != 'other') {
             unset($specs['other']);
 
             if (is_array($specs['street'])) {
@@ -286,7 +281,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
                         continue;
                     }
 
-                    $specs['street'][$city]['required'] = $this->isRequired() && ($city == 'street_' . $this->get('city')->getValue());
+                    $specs['street'][$city]['required'] = $required && ($city == 'street_' . $this->get('city')->getValue());
                 }
             }
         } else {

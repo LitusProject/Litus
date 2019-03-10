@@ -54,7 +54,7 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
 
     public function addAction()
     {
-        $form = $this->getForm('common_location_add');
+        $form = $this->getForm('\CommonBundle\Form\Admin\Location\Add');
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -99,7 +99,10 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
             return new ViewModel();
         }
 
-        $form = $this->getForm('common_location_edit', $location);
+        $form = $this->getForm(
+            '\CommonBundle\Form\Admin\Location\Edit',
+            $location
+        );
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());

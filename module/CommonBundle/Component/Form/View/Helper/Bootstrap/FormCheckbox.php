@@ -22,6 +22,8 @@ namespace CommonBundle\Component\Form\View\Helper\Bootstrap;
 
 use CommonBundle\Component\Form\ElementInterface;
 use CommonBundle\Component\Form\LabelAwareInterface;
+use InvalidArgumentException;
+use Zend\Form\ElementInterface as ZendElementInterface;
 
 /**
  * View helper to render a form checkbox.
@@ -33,19 +35,21 @@ class FormCheckbox extends \Zend\Form\View\Helper\FormCheckbox
     protected $labelHelper;
 
     /**
-     * @param  ElementInterface $element
+     * @param  ZendElementInterface $element
      * @return string
      */
-    public function render(ElementInterface $element)
+    public function render(ZendElementInterface $element)
     {
-        if (!$element->hasClass('custom-control-input')) {
-            $element->addClass('custom-control-input');
+        if (!($element instanceof ElementInterface)) {
+            throw new InvalidArgumentException(
+                'Element does not implement ' . ElementerInterface::class
+            );
         }
 
+        $element->addClass('custom-control-input');
+
         if ($element instanceof LabelAwareInterface) {
-            if (!$element->hasLabelClass('custom-control-label')) {
-                $element->addLabelClass('custom-control-label');
-            }
+            $element->addLabelClass('custom-control-label');
         }
 
         return sprintf(

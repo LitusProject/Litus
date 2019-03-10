@@ -68,7 +68,12 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
             return new ViewModel();
         }
 
-        $form = $this->getForm('common_config_edit', array('config' => $entry));
+        $form = $this->getForm(
+            'CommonBundle\Form\Admin\Config\Edit',
+            array(
+                'config' => $entry
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());

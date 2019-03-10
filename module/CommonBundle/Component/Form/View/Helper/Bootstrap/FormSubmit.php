@@ -21,6 +21,8 @@
 namespace CommonBundle\Component\Form\View\Helper\Bootstrap;
 
 use CommonBundle\Component\Form\ElementInterface;
+use InvalidArgumentException;
+use Zend\Form\ElementInterface as ZendElementInterface;
 
 /**
  * View helper to render a form reset.
@@ -30,18 +32,22 @@ use CommonBundle\Component\Form\ElementInterface;
 class FormSubmit extends \Zend\Form\View\Helper\FormSubmit
 {
     /**
-     * @param  ElementInterface $element
-     * @param  string           $buttonContent
+     * @param  ZendElementInterface $element
+     * @param  string               $buttonContent
      * @return string
      */
-    public function render(ElementInterface $element, $buttonContent = null)
+    public function render(ZendElementInterface $element, $buttonContent = null)
     {
-        if (!preg_match('/btn-[a-z]+/i', $element->getAttribute('class'))) {
-            $element->addClass('btn-primary');
+        if (!($element instanceof ElementInterface)) {
+            throw new InvalidArgumentException(
+                'Element does not implement ' . ElementerInterface::class
+            );
         }
 
-        if (!$element->hasClass('btn')) {
-            $element->addClass('btn');
+        $element->addClass('btn');
+
+        if (!preg_match('/btn-[a-z]+/i', $element->getAttribute('class'))) {
+            $element->addClass('btn-primary');
         }
 
         return parent::render($element, $buttonContent);

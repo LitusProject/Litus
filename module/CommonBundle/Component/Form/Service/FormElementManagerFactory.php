@@ -30,7 +30,13 @@ use Interop\Container\ContainerInterface;
  */
 class FormElementManagerFactory extends \Zend\Form\FormElementManagerFactory
 {
-    public function __invoke(ContainerInterface $container, $name, array $options = null)
+    /**
+     * @param  ContainerInterface $container
+     * @param  string             $requestedName
+     * @param  array|null         $options
+     * @return FormElementManager
+     */
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         return new FormElementManager($container, $options ?? array());
     }

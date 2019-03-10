@@ -1,0 +1,105 @@
+/**
+ * Forms
+ *
+ * Author: Robin De Bruin <info@serayo.com>
+ * Author: Pieter Maene <pieter.maene@litus.cc>
+ *
+ * License: https://litus.cc/LICENSE
+ */
+
+fieldset {
+    width: $layoutWidth - ($leftSidebarWidth + $sideboxWidth + 4*$defaultSpacing);
+    margin-top: 2*$defaultSpacing;
+    border-top: $fieldsetBorderWidth solid $cBorder;
+
+    &.no_legend {
+        margin-top: 0;
+        border-top: none;
+    }
+
+    legend {
+        padding: 0 $defaultSpacing 0 $fieldsetLegendPosition;
+        font-weight: bold;
+    }
+}
+
+input, select, button {
+    height: $inputHeight;
+    @include gradient-y($cFormsGradientStart, $cWhite, 0%, 50%);
+    border: $inputBorderWidth solid $cBorder;
+    color: $cText;
+}
+
+input[type=radio] {
+    height: auto;
+    margin-right: $defaultSpacing;
+}
+
+input {
+    padding-left: $inputIndent;
+}
+
+input[type=text], input[type=password] {
+    width: $inputWidth;
+}
+
+input[type=submit], input[type=button], button {
+    margin: $defaultSpacing 0;
+    background: none;
+    @include gradient-none;
+    border: none;
+    font-weight: bold;
+}
+
+input[type=checkbox] {
+    height: $checkboxHeight;
+    margin-top: ($inputHeight - $checkboxHeight)/2;
+}
+
+input[type=file] {
+    border: none;
+    background: none;
+}
+
+select[multiple=multiple] {
+    min-width: $multipleSelectWidth;
+    height: $multipleSelectHeight;
+}
+
+textarea {
+    width: $textareaWidth;
+    height: $textareaHeight;
+    padding: $inputIndent;
+    @include gradient-y($cFormsGradientStart, $cWhite, 0%, 50%);
+    border: $inputBorderWidth solid $cBorder;
+    color: $cText;
+}
+
+label {
+    &.radio {
+        display: block;
+        margin-bottom: 4px;
+    }
+}
+
+.multi_select_checkboxes {
+    padding: $defaultSpacing;
+    overflow: scroll;
+    border: $inputBorderWidth solid $cBorder;
+    @include gradient-y($cFormsGradientStart, $cWhite, 0%, 50%);
+}
+
+// TODO: Refactor
+.gollum-editor {
+    border-radius: 0;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    background: transparent;
+    padding: 5px;
+    margin: 0;
+}
+
+// TODO: Refactor
+a.miniColors-trigger {
+    margin: -6px 0 0 0;
+}

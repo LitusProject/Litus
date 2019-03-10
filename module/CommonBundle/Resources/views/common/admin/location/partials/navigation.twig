@@ -1,15 +1,18 @@
 <header id="controller_header">
-    <div class="title"><span class="location">Locations</span></div>
+    <div class="title">
+        <i class="fas fa-globe-europe"></i> Locations
+    </div>
 
     <nav id="controller_nav">
         <ul>
             {% if hasAccess('common_admin_location', 'add') %}
-                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('common_admin_location', {"action": "add"}) }}">Add</a></li>
+                <li>
+                    <a {% if 'add' == getParam('action') %}class="active"{% endif %} href="{{ url('common_admin_location', {"action": "add"}) }}">Add</a>
+                </li>
             {% endif %}
             {% if hasAccess('common_admin_location', 'manage') %}
                 <li>
-                    <a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('common_admin_location', {"action": "manage"}) }}">Manage
-                    </a>
+                    <a {% if 'manage' == getParam('action') %}class="active"{% endif %} href="{{ url('common_admin_location', {"action": "manage"}) }}">Manage</a>
                 </li>
             {% endif %}
         </ul>

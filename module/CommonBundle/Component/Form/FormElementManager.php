@@ -22,6 +22,7 @@ namespace CommonBundle\Component\Form;
 
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use Interop\Container\ContainerInterface;
+use Zend\Form\FormFactoryAwareInterface;
 use Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 /**
@@ -67,23 +68,6 @@ class FormElementManager extends \Zend\Form\FormElementManager
     }
 
     /**
-     * Inject the service locator into any element implementing
-     * ServiceLocatorAwareInterface.
-     *
-     * @param  ContainerInterface $container
-     * @param  mixed              $instance
-     * @return void
-     */
-    public function injectServiceLocator(ContainerInterface $container, $instance)
-    {
-        if (!$instance instanceof ServiceLocatorAwareInterface) {
-            return;
-        }
-
-        $instance->setServiceLocator($container);
-    }
-
-    /**
      * Hydrate the element with the given data, if any.
      *
      * @param  ContainerInterface $container
@@ -97,5 +81,44 @@ class FormElementManager extends \Zend\Form\FormElementManager
         }
 
         $this->data = null;
+    }
+
+    /**
+     * Inject the factory into any element implementing
+     * FormFactoryAwareInterface.
+     *
+     * @param  ContainerInterface $container
+     * @param  mixed              $instance
+     * @return void
+     */
+    public function injectFactory(ContainerInterface $container, $instance)
+    {
+        if (!($instance instanceof FormFactoryAwareInterface)) {
+            return;
+        }
+
+        if ($container->has('FormFactory')) {
+            $formFactory = $container->get('FormFactory');
+            $instance->setFormFactory($formFactory);
+        }
+
+        parent::injectFactory($container, $instance);
+    }
+
+    /**
+     * Inject the service locator into any element implementing
+     * ServiceLocatorAwareInterface.
+     *
+     * @param  ContainerInterface $container
+     * @param  mixed              $instance
+     * @return void
+     */
+    public function injectServiceLocator(ContainerInterface $container, $instance)
+    {
+        if (!($instance instanceof ServiceLocatorAwareInterface)) {
+            return;
+        }
+
+        $instance->setServiceLocator($container);
     }
 }

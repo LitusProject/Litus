@@ -33,13 +33,19 @@
                         <td>{{ role.getName() }}</td>
                         <td class="actions">
                             {% if hasAccess('common_admin_role', 'members') %}
-                                <a href="{{ url('common_admin_role', {"action": "members", "name": role.getName()}) }}" class="role_edit">Members</a>
+                                <a href="{{ url('common_admin_role', {"action": "members", "name": role.getName()}) }}">
+                                    <i class="fas fa-user-edit"></i> Members
+                                </a>
                             {% endif %}
                             {% if hasAccess('common_admin_role', 'edit') %}
-                                <a href="{{ url('common_admin_role', {"action": "edit", "name": role.getName()}) }}" class="edit">Edit</a>
+                                <a class="edit" href="{{ url('common_admin_role', {"action": "edit", "name": role.getName()}) }}">
+                                    <i class="fas fa-pen"></i> Edit
+                                </a>
                             {% endif %}
                             {% if not role.getSystem() and hasAccess('common_admin_role', 'delete') %}
-                                <a href="#" data-name="{{ role.getName() }}" class="delete">Delete</a>
+                                <a class="delete" href="#" data-name="{{ role.getName() }}">
+                                    <i class="fas fa-trash-alt"></i> Delete
+                                </a>
                             {% endif %}
                         </td>
                     </tr>

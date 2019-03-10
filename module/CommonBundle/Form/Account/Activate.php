@@ -25,7 +25,7 @@ namespace CommonBundle\Form\Account;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Activate extends \CommonBundle\Component\Form\Bootstrap\Form
+class Activate extends \CommonBundle\Component\Form\Form
 {
     public function init()
     {

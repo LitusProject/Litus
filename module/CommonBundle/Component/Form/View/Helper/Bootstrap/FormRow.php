@@ -23,8 +23,9 @@ namespace CommonBundle\Component\Form\View\Helper\Bootstrap;
 use CommonBundle\Component\Form\Element\Button;
 use CommonBundle\Component\Form\Element\Checkbox;
 use CommonBundle\Component\Form\Element\Submit;
-use CommonBundle\Component\Form\ElementInterface;
 use CommonBundle\Component\Form\LabelAwareInterface;
+use InvalidArgumentException;
+use Zend\Form\ElementInterface;
 use Zend\Form\View\Helper\FormRow as ZendFormRow;
 
 /**
@@ -39,22 +40,13 @@ class FormRow extends \Zend\Form\View\Helper\FormRow
      */
     protected $inputErrorClass = 'is-invalid';
 
-        /**
+    /**
      * @param  ElementInterface $element
      * @param  string           $labelPosition
      * @return string
      */
     public function render(ElementInterface $element, $labelPosition = null)
     {
-        if ($element instanceof Checkbox) {
-            $element->setLabelOption(
-                'label_position',
-                $element->getLabelOption('label_position') ?? ZendFormRow::LABEL_APPEND
-            );
-        }
-
-        $formLayout = $element->getOption('formLayout');
-
         $escapeHtmlHelper = $this->getEscapeHtmlHelper();
         $labelHelper = $this->getLabelHelper();
         $elementHelper = $this->getElementHelper();
@@ -75,8 +67,17 @@ class FormRow extends \Zend\Form\View\Helper\FormRow
         }
 
         if ($element->getMessages() && $inputErrorClass !== null) {
-            if (!$element->hasClass($inputErrorClass)) {
-                $element->addClass($inputErrorClass);
+            if (!in_array($inputErrorClass, explode(' ', $element->getAttribute('class')))) {
+                $classes = array($class);
+                if ($element->hasAttribute('class')) {
+                    $classes = explode(' ', $element->getAttribute('class'));
+                    $classes[] = $class;
+                }
+
+                $element->setAttribute(
+                    'class',
+                    implode(' ', $classes)
+                );
             }
         }
 
@@ -100,47 +101,45 @@ class FormRow extends \Zend\Form\View\Helper\FormRow
         $elementString = $elementHelper->render($element);
 
         $wrapperClasses = array('form-group');
-        if ($formLayout == Form::LAYOUT_HORIZONTAL) {
+        if ($element->getOption('form_layout') == Form::LAYOUT_HORIZONTAL) {
             $wrapperClasses[] = 'form-row';
         }
 
-        $type = $element->getAttribute('type');
-        if (isset($label) && $label != '' && $type != 'hidden') {
+        if ($element->getAttribute('type') != 'hidden') {
             $labelAttributes = array();
             if ($element instanceof LabelAwareInterface) {
-                $labelAttributes = $element->getLabelAttributes();
-            }
+                if ($element->getOption('form_layout') === Form::LAYOUT_HORIZONTAL) {
+                    if (!($element instanceof Checkbox) && !($element instanceof Radio)) {
+                        $element->addLabelClass('col-form-label');
+                    }
+                }
 
-            if (!($element instanceof LabelAwareInterface) || !$element->getLabelOption('disable_html_escape')) {
-                $label = $escapeHtmlHelper($label);
+                if ($element->hasAttribute('required') && $element->getAttribute('required') === true) {
+                    $element->addLabelClass('font-weight-bold');
+                }
+
+                $labelAttributes = $element->getLabelAttributes();
             }
 
             if (count($labelAttributes) == 0) {
                 $labelAttributes = $this->labelAttributes;
             }
 
+            if (!($element instanceof LabelAwareInterface) || !$element->getLabelOption('disable_html_escape')) {
+                $label = $escapeHtmlHelper($label);
+            }
+
             if ($this->renderErrors && isset($elementErrors) && !empty($elementErrors)) {
                 $elementString .= $elementErrors;
             }
 
-            if ($type == 'reset' || $type == 'submit') {
+            if ($element instanceof Button || $element instanceof Submit) {
                 return $elementString;
             } else {
                 $labelOpen = $labelHelper->openTag($labelAttributes);
                 $labelClose = $labelHelper->closeTag();
 
-                if ($element->hasAttribute('id') && $element instanceof LabelAwareInterface && !$element->getLabelOption('always_wrap')) {
-                    $labelOpen = '';
-                    $labelClose = '';
-
-                    $label = $labelHelper->openTag($element) . $label . $labelHelper->closeTag();
-                }
-
-                if ($label !== '' && !$element->hasAttribute('id') || ($element instanceof LabelAwareInterface && $element->getLabelOption('always_wrap'))) {
-                    $label = '<span>' . $label . '</span>';
-                }
-
-                if ($element instanceof Button || $element instanceof Submit || $element instanceof Checkbox) {
+                if ($element instanceof Checkbox) {
                     $labelOpen = '';
                     $labelClose = '';
 
@@ -151,14 +150,14 @@ class FormRow extends \Zend\Form\View\Helper\FormRow
                     $labelPosition = $element->getLabelOption('label_position');
                 }
 
-                if ($formLayout === Form::LAYOUT_HORIZONTAL) {
+                if ($element->getOption('form_layout') == Form::LAYOUT_HORIZONTAL) {
                     $columnSize = $element->getOption('column-size') ?? 'sm-10';
                     $elementString = sprintf('<div class="col-%s">%s</div>', $columnSize, $elementString);
                 }
 
-                $markup = $labelOpen . $label . $elementString . $labelClose;
+                $markup = $labelOpen . $label . $labelClose . $elementString;
                 if ($labelPosition == self::LABEL_APPEND) {
-                    $markup = $labelOpen . $elementString . $label . $labelClose;
+                    $markup = $elementString . $labelOpen . $label . $labelClose;
                 }
             }
         } else {

@@ -6,8 +6,7 @@
     {% include 'admin/partials/flashMessenger.twig' %}
 
     <div id="controller_action">
-        {% import 'admin/partials/form.twig' as forms %}
-        {{ forms.renderForm(form) }}
+        {{ form(form) }}
     </div>
 
     {% if hasAccess('common_admin_academic', 'activate') %}
@@ -35,7 +34,7 @@
         });
 
         function cityChange() {
-            var $primaryAddress = $('.primary-address');
+            var $primaryAddress = $('.primary_address');
 
             var city = $primaryAddress
                 .find('.city option:selected')

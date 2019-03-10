@@ -1,0 +1,123 @@
+/**
+ * Variables
+ *
+ * Author: Robin De Bruin <info@serayo.com>
+ * Author: Pieter Maene <pieter.maene@litus.cc>
+ *
+ * License: https://litus.cc/LICENSE
+ */
+
+// Colors
+$cBlack:                        #000;
+$cDarkGrey:                     #7f7c7c;
+$cLightGrey:                    #e7e7e7;
+$cWhite:                        #fff;
+$cOrange:                       #f89406;
+
+$cAccent:                       #ffae00;
+$cBase:                         #efefef;
+$cBorder:                       #d7d4d4;
+$cError:                        #ff6633;
+$cErrorTitleBackground:         #ff0000;
+$cErrorBackground:              #df0000;
+$cFooterLink:                   $cDarkGrey;
+$cFormsGradientStart:           #eaeaea;
+$cNoticeTitleBackground:        #94defc;
+$cNoticeBackground:             #62cffc;
+$cPaginationBackground:         $cLightGrey;
+$cSideboxTitleBackground:       #ffa800;
+$cSideboxBackground:            $cOrange;
+$cSubmenuTitleBackground:       #0f0f0f;
+$cSubmenuGradientStart:         #cdcdcd;
+$cSubmenuGradientStop:          #dcdcdc;
+$cSuccessTitleBackground:       #218621;
+$cSuccessBackground:            #007400;
+$cTableHeader:                  $cLightGrey;
+$cTableBackground:              #dcdcdc;
+$cTableBorderShadow:            #bbb;
+$cTableHover:                   $cLightGrey;
+$cText:                         $cDarkGrey;
+$cTopmenuTitle:                 #161616;
+$cWarningTitleBackground:       $cAccent;
+$cWarningBackground:            $cOrange;
+$cDropdownBackground:           $cWhite;
+$cDropdownLinkColor:            #333;
+$cDropdownLinkColorHover:       $cWhite;
+$cDropdownLinkBackgroundHover:  #aaa;
+
+$cTabsGradientStart:            #5a5a5a;
+$cTabsGradientStop:             #0f0f0f;
+$cTabsAccent:                   $cAccent;
+
+$cHelpQuestionMark:             #cb2c2c;
+
+// Images
+$iBaseBackground:               "/_admin/img/bg.png";
+$iHeaderLogo:                   "/_admin/img/litus.png";
+
+// Text
+$tIndent:                       9px;
+$tSize:                         11px;
+$tSizeSmall:                    10px;
+$tSizeHeadingOne:               14px;
+$tSizeHeadingTwo:               12px;
+
+// Dimensions
+$contentHeight:                 300px;
+$contentHeaderHeight:           27px;
+
+$defaultSpacing:                5px;
+
+$footerHeight:                  40px;
+
+$formLabelWidth:                150px;
+$formSpacing:                   2px;
+
+$fieldsetBorderWidth:           1px;
+$fieldsetLegendPosition:        20px;
+$inputWidth:                    175px;
+$inputHeight:                   20px;
+$inputBorderWidth:              1px;
+$inputIndent:                   4px;
+$checkboxHeight:                14px;
+$multipleSelectWidth:           125px;
+$multipleSelectHeight:          125px;
+$textareaWidth:                 300px;
+$textareaHeight:                125px;
+
+$layoutWidth:                   1000px;
+$leftSidebarWidth:              191px;
+$sideboxWidth:                  191px;
+
+$menuItemHeight:                19px;
+$menuSubtitleHeight:            37px;
+$menuTitleHeight:               27px;
+
+$paginationHeight:              20px;
+$paginationSideWidth:           100px;
+
+$sideboxTitleHeight:            20px;
+
+$tableHeaderHeight:             20px;
+$tableRowHeight:                20px;
+
+$baseLineHeight:                18px;
+
+$tabsHeight:                    20px;
+
+$helpQuestionMarkSize:          16px;
+
+$spinnerWidth:                  16px;
+$spinnerHeight:                 $spinnerWidth;
+
+// Content
+$contentHeaderMenuItem:         "|";
+$formRequired:                  "";
+$topMenuItem:                   "- ";
+
+// Depth
+$zindexTooltip:                 900;
+$zindexDropdown:                1000;
+$zindexPopover:                 1010;
+$zindexModalBackdrop:           1040;
+$zindexModal:                   1050;

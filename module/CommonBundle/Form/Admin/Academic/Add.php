@@ -184,6 +184,6 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
             )
         );
 
-        $this->addSubmit('Add', 'academic_add');
+        $this->addSubmit('Add', 'plus');
     }
 }

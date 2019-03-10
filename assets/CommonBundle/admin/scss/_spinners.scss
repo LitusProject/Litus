@@ -1,0 +1,23 @@
+/**
+ * Spinners
+ */
+
+@keyframes spinner-grow {
+    0% {
+        transform: scale(0);
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+.spinner-grow {
+    display: inline-block;
+    width: $spinnerWidth;
+    height: $spinnerHeight;
+    vertical-align: text-bottom;
+    background-color: $cAccent;
+    border-radius: 50%;
+    opacity: 0;
+    animation: spinner-grow .75s linear infinite;
+}

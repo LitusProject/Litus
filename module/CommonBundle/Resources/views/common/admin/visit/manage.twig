@@ -7,18 +7,24 @@
 
     <div id="controller_action">
         <div id="visit_search" style="display: none;">
-            <div style="padding: 4px; text-align: right">
+            <div class="search">
                 Search:
-                <select id="searchField">
+                <select id="search_field">
                     <option value="controller">Controller</option>
                     <option value="url">URL</option>
                     <option value="user">User</option>
                 </select>
                 is
-                <input type="text" id="searchString" size="30" />
+                <span class="string">
+                    <input type="text" id="search_string" size="30" />
+                    <span id="search_indicator">
+                        <div class="spinner-grow loading"></div>
+                        <i class="fas fa-exclamation error"></i>
+                    </span>
+                </span>
             </div>
 
-            <table class="full_width manage">
+            <table class="full_width manage results">
                 <tr>
                     <th width="150px">Timestamp</th>
                     <th width="150px">User</th>
@@ -28,6 +34,17 @@
                     <th width="80px">Method</th>
                     <th width="80px">Actions</th>
                 </tr>
+            </table>
+            <table class="full_width pagination">
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <a id="search_all" href="#">&rarr; All Results</a>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
         </div>
 
@@ -104,16 +121,18 @@
         $(document).ready(function () {
             {% if hasAccess('common_admin_visit', 'search') %}
             $.searchDatabase({
+                allResults: $('#search_all'),
                 defaultPage: $('#default_page'),
                 searchDiv: $('#visit_search'),
-                searchString: $('#searchString'),
-                searchField: $('#searchField'),
+                searchField: $('#search_field'),
+                searchIndicator: $('#search_indicator'),
                 searchPage: '{{ url('common_admin_visit', {'action': 'manage'}) }}manage/',
+                searchString: $('#search_string'),
                 url: '{{ url('common_admin_visit', {'action': 'search'}) }}',
                 display: function (data) {
-                    $('#visit_search table').find('tr.item').remove();
+                    $('#visit_search table.results').find('tr.item').remove();
                     $(data).each(function () {
-                        $('#visit_search table').append(row = $('<tr>', {class: 'item'}));
+                        $('#visit_search table.results').append(row = $('<tr>', {class: 'item'}));
                         row.append('<td>' + this.timestamp + '</td>')
                             .append('<td>' + (this.user == '' ? 'guest' : this.user) + '</td>')
                             .append('<td>' + this.url + '</td>')
@@ -129,10 +148,10 @@
                     });
 
                     $('#visit_search .view').click(openModal);
-                    $('#visit_search table').change();
+                    $('#visit_search table.results').change();
                 },
                 clear: function () {
-                    $('#visit_search table').find('tr.item').remove();
+                    $('#visit_search table.results').find('tr.item').remove();
                 }
             });
             {% endif %}

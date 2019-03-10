@@ -1,0 +1,180 @@
+/**
+ * Tables
+ *
+ * Author: Robin De Bruin <info@serayo.com>
+ * Author: Pieter Maene <pieter.maene@litus.cc>
+ *
+ * License: https://litus.cc/LICENSE
+ */
+
+table {
+    width: $layoutWidth - ($leftSidebarWidth + $sideboxWidth + 4*$defaultSpacing);
+    padding: 0;
+    border-collapse: separate;
+    font-size: $tSize;
+    table-layout: fixed;
+
+    th {
+        padding-right: 2*$defaultSpacing;
+        height: $tableHeaderHeight;
+        line-height: $tableHeaderHeight;
+        text-indent: $tIndent;
+        text-transform: uppercase;
+        font-size: $tSizeSmall;
+        font-weight: bold;
+        text-align: left;
+        vertical-align: middle;
+        background: $cTableHeader;
+        box-shadow: inset -15px 0 10px -15px $cTableBorderShadow;
+    }
+
+    tr {
+        height: $tableRowHeight;
+        line-height: $tableRowHeight;
+
+        td {
+            height: $tableRowHeight;
+            overflow: hidden;
+            white-space: nowrap;
+            padding-right: 2*$defaultSpacing;
+            text-indent: $tIndent;
+            text-align: left;
+            vertical-align: middle;
+            background: $cTableBackground;
+            box-shadow: inset -15px 0 10px -15px $cTableBorderShadow;
+
+            a {
+                margin-top: $defaultSpacing/2;
+                padding-right: $defaultSpacing;
+                text-decoration: none;
+                text-indent: 0;
+                color: $cText;
+            }
+
+            a:hover {
+                color: $cBlack;
+            }
+        }
+    }
+
+    th:last-child, td:last-child {
+        box-shadow: none;
+    }
+
+    &.manage {
+        td {
+            &.actions {
+                a {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    &.pagination {
+        th {
+            box-shadow: none;
+        }
+
+        tr {
+            td {
+                box-shadow: none;
+            }
+        }
+    }
+}
+
+table:not(.pagination):not(.no-hover) {
+    tr {
+        &:hover {
+            td {
+                background: $cTableHover;
+            }
+        }
+    }
+}
+
+.tooltip {
+    position: absolute;
+    z-index: $zindexTooltip;
+    display: block;
+    visibility: visible;
+    padding: 5px;
+    font-size: 11px;
+    opacity: 0;
+
+    &.in {
+        opacity: 80;
+    }
+
+    &.top {
+        margin-top: -2px;
+
+        .tooltip-arrow {
+            @include popover-arrow-top(5px, $cTabsGradientStop);
+        }
+    }
+
+    &.right {
+        margin-left: 2px;
+
+        .tooltip-arrow {
+            @include popover-arrow-right(5px, $cTabsGradientStop);
+        }
+    }
+
+    &.bottom {
+        margin-top: 2px;
+
+        .tooltip-arrow {
+            @include popover-arrow-bottom(5px, $cTabsGradientStop);
+        }
+    }
+
+    &.left {
+        margin-left: -2px;
+
+        .tooltip-arrow {
+            @include popover-arrow-left(5px, $cTabsGradientStop);
+        }
+    }
+}
+
+.tooltip-inner {
+    max-width: 300px;
+    padding: 3px 8px;
+    color: $cWhite;
+    text-align: center;
+    text-decoration: none;
+    @include gradient-y($cTabsGradientStart, $cTabsGradientStop);
+    border-radius: 4px;
+
+    a {
+        font-weight: bold;
+        margin: $defaultSpacing/2 0;
+        padding-right: 2*$defaultSpacing;
+        text-decoration: none;
+        color: $cWhite;
+        display: inline-block;
+        float: none;
+        text-indent: 0;
+
+        i.fas {
+            color: inherit;
+        }
+
+        &:last-child {
+            padding-right: 0;
+        }
+    }
+
+    a:hover{
+        color: $cAccent;
+    }
+}
+
+.tooltip-arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+}

@@ -70,7 +70,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function addAction()
     {
-        $form = $this->getForm('common_academic_add');
+        $form = $this->getForm('\CommonBundle\Form\Admin\Academic\Add');
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -119,7 +119,12 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             return new ViewModel();
         }
 
-        $form = $this->getForm('common_academic_edit', array('academic' => $academic));
+        $form = $this->getForm(
+            '\CommonBundle\Form\Admin\Academic\Edit',
+            array(
+                'academic' => $academic
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());

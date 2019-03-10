@@ -35,6 +35,7 @@ class Add extends \CommonBundle\Component\Form\Fieldset
         parent::init();
 
         $this->addClass('address');
+        $this->setLabelOption('disable_html_escape', true);
 
         $this->add(
             array(

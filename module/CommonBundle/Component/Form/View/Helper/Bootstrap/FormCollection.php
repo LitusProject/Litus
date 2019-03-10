@@ -20,7 +20,8 @@
 
 namespace CommonBundle\Component\Form\View\Helper\Bootstrap;
 
-use CommonBundle\Component\Form\ElementInterface;
+use InvalidArgumentException;
+use Zend\Form\ElementInterface;
 
 /**
  * View helper to render a form collection.
@@ -41,14 +42,14 @@ class FormCollection extends \Zend\Form\View\Helper\FormCollection
      */
     public function __invoke(ElementInterface $element = null, $wrap = true)
     {
-        $formLayout = $element->getOption('formLayout');
+        $formLayout = $element->getOption('form_layout');
         if ($formLayout !== null) {
             foreach ($element->getElements() as $fieldsetElement) {
-                $fieldsetElement->setOption('formLayout', $formLayout);
+                $fieldsetElement->setOption('form_layout', $formLayout);
             }
 
             foreach ($element->getFieldsets() as $fieldsetFieldset) {
-                $fieldsetFieldset->setOption('formLayout', $formLayout);
+                $fieldsetFieldset->setOption('form_layout', $formLayout);
             }
         }
 

@@ -21,6 +21,8 @@
 namespace CommonBundle\Component\Form\View\Helper\Bootstrap;
 
 use CommonBundle\Component\Form\ElementInterface;
+use InvalidArgumentException;
+use Zend\Form\ElementInterface as ZendElementInterface;
 
 /**
  * View helper to render a form button.
@@ -30,12 +32,18 @@ use CommonBundle\Component\Form\ElementInterface;
 class FormButton extends \Zend\Form\View\Helper\FormButton
 {
     /**
-     * @param  ElementInterface $element
-     * @param  string           $buttonContent
+     * @param  ZendElementInterface $element
+     * @param  string               $buttonContent
      * @return string
      */
-    public function render(ElementInterface $element, $buttonContent = null)
+    public function render(ZendElementInterface $element, $buttonContent = null)
     {
+        if (!($element instanceof ElementInterface)) {
+            throw new InvalidArgumentException(
+                'Element does not implement ' . ElementerInterface::class
+            );
+        }
+
         if ($buttonContent === null) {
             $buttonContent = $element->getLabel();
 
@@ -52,12 +60,10 @@ class FormButton extends \Zend\Form\View\Helper\FormButton
             }
         }
 
+        $element->addClass('btn');
+
         if (!preg_match('/btn-[a-z]+/i', $element->getAttribute('class'))) {
             $element->addClass('btn-primary');
-        }
-
-        if (!$element->hasClass('btn')) {
-            $element->addClass('btn');
         }
 
         return parent::render($element, $buttonContent);
