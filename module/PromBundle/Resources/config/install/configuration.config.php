@@ -48,7 +48,11 @@ See you then!
         ),
         'description' => 'The prom bus confirmation mail ',
     ),
-
+    array(
+        'key'         => 'prom.enable_reservations',
+        'value'       => 0,
+        'description' => 'Enable busreservations',
+    ),
     array(
         'key'   => 'prom.remove_mail',
         'value' => serialize(
@@ -116,8 +120,28 @@ See you then!
         'description' => 'The prom reservation code mail.',
     ),
     array(
-        'key'         => 'prom.enable_reservations',
-        'value'       => 0,
-        'description' => 'Enable busreservations',
+        'key'   => 'prom.reservation_opening_warning',
+        'value' => serialize(
+            array(
+                'from'    => 'buscodes@vtk.be',
+                'subject' => 'Busreservaties VTK Galabal geopend - VTK Prom Bus reservations have opened!',
+                'body'    => 'Beste,
+    [English below]
+
+    Busreservaties zijn vanaf nu mogelijk via vtk.be/prom/registration.
+    U zal uw unique buscode nodig hebben die eerder is doorgestuurd per mail. Gelieve ook zeker uw spam na te kijken indien u denkt dat u deze niet ontvangen hebt.
+
+    - - - - - - - - - - - -
+
+    The registrations for the bus have opened. You can now book a spot on the buses through vtk.be/prom/registration.
+    You will need your unique bus code which has been sent to you earlier by mail. Be sure to check your spam if you think you have not received your unique code(s).
+
+    See you then!
+
+    -- Dit is een automatisch gegenereerde email, gelieve hier niet op te antwoorden --
+    -- This is an automatically generated email, please do not reply --',
+            )
+        ),
+        'description' => 'Warning mail for the opening of the bus registrations.',
     ),
 );

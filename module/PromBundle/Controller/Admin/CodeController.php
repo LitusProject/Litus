@@ -63,23 +63,29 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
             $academicForm->setData($formData);
             $externalForm->setData($formData);
 
-            $code = null;
+            $codes = [];
 
             if (isset($formData['academic_add']) && $academicForm->isValid()) {
-                $code = $academicForm->hydrateObject(
-                    new AcademicCode($this->getCurrentAcademicYear())
-                );
+                for($i = 0; $i < $formData['number_tickets']; $i++){
+                    $codes[] =  $academicForm->hydrateObject(
+                        new AcademicCode($this->getCurrentAcademicYear())
+                    );
+                }
             } elseif (isset($formData['external_add']) && $externalForm->isValid()) {
-                $code = $externalForm->hydrateObject(
-                    new ExternalCode($this->getCurrentAcademicYear())
-                );
+                for($i = 0; $i < $formData['number_tickets']; $i++){
+                    $codes[] = $externalForm->hydrateObject(
+                        new ExternalCode($this->getCurrentAcademicYear())
+                    );
+                }
             }
 
-            if($code !== null){
-                $this->getEntityManager()->persist($code);
+            if($codes !== []){
+                foreach($codes as $code){
+                    $this->getEntityManager()->persist($code);
+                }
                 $this->getEntityManager()->flush();
 
-                $this->sendReservationCodeMail($code);
+                $this->sendReservationCodeMail($codes);
 
                 $this->flashMessenger()->success(
                     'Success',
@@ -203,6 +209,19 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    public function warningMailAction()
+    {
+        $this->initAjax();
+
+        $this->sendWarningMail();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
     /**
      * @return \Doctrine\ORM\Query|null
      */
@@ -269,22 +288,73 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
         return $code;
     }
 
-    private function sendReservationCodeMail($code)
+    private function sendReservationCodeMail($codes)
     {
+        if(!is_array($codes)){
+            $codes = [$codes];
+        }
+
+        if(count($codes) == 0){
+            return;
+        }
+
         $mailData = unserialize(
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('prom.reservation_mail')
-            );
+        );
+
+        $body = $mailData['body'];
+        $body = str_replace('{{ firstName }}', $codes[0]->getFirstName(), $body);
+        $body = str_replace('{{ lastName }}', $codes[0]->getLastName(), $body);
+
+        $codesString = "";
+        foreach($codes as $code){
+            $codesString .= $code->getCode()."\r\n";
+        }
+        $body = str_replace('{{ reservationCode }}', $codesString, $body);
+
         $mail = new Message();
-        $mail->addTo($code->getEmail())
+        $mail->addTo($codes[0]->getEmail())
             ->setEncoding('UTF-8')
-            ->setBody(str_replace('{{ firstName }}', $code->getFirstName(), $mailData['body']))
-            ->setBody(str_replace('{{ lastName }}', $code->getLastName(), $mailData['body']))
-            ->setBody(str_replace('{{ reservationCode }}', $code->getCode(), $mailData['body']))
+            ->setBody($body)
             ->setFrom($mailData['from'])
             ->addBcc($mailData['from'])
             ->setSubject($mailData['subject']);
+        if (getenv('APPLICATION_ENV') != 'development') {
+            $this->getMailTransport()->send($mail);
+        }
+    }
+
+    private function sendWarningMail()
+    {
+        $mailData = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('prom.reservation_opening_warning')
+        );
+
+        $mail = new Message();
+        $mail->addTo($codes[0]->getEmail())
+            ->setEncoding('UTF-8')
+            ->setBody($mailData['body'])
+            ->addBcc($mailData['from'])
+            ->setSubject($mailData['subject']);
+
+        $codes = $this->getEntityManager()
+            ->getRepository('PromBundle\Entity\Bus\ReservationCode')
+            ->findAll();
+
+        $addresses = [];
+        foreach($codes as $code){
+            $addresses[] = $code->getEmail();
+        }
+        $unique_addresses = array_unique($addresses);
+
+        foreach($addresses as $address){
+            $mail->addBcc($address);
+        }
+
         if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);
         }
