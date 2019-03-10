@@ -337,6 +337,7 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
         $mail = new Message();
         $mail->addTo($mailData['from'])
             ->setEncoding('UTF-8')
+            ->setFrom($mailData['from'])
             ->setBody($mailData['body'])
             ->setSubject($mailData['subject']);
 
