@@ -330,7 +330,7 @@
             e.preventDefault();
             var mailWarning = $('#mailWarning');
             mailWarning.find('.mail').unbind('click').click(function () {
-                $.post('{{ url('prom_admin_code', {"action": "mailWarning"})}}', function (data) {
+                $.post('{{ url('prom_admin_code', {"action": "warningMail"})}}', function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.general_warning_mailed_success').removeClass('hide');

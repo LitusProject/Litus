@@ -335,10 +335,9 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
         );
 
         $mail = new Message();
-        $mail->addTo($codes[0]->getEmail())
+        $mail->addTo($mailData['from'])
             ->setEncoding('UTF-8')
             ->setBody($mailData['body'])
-            ->addBcc($mailData['from'])
             ->setSubject($mailData['subject']);
 
         $codes = $this->getEntityManager()
