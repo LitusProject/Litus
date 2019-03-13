@@ -13,7 +13,7 @@ html, body {
 }
 
 body {
-    background: $cWhite url($iBaseBackground) 50% 0 repeat-x;
+    background: $cWhite url($iHeaderBackground) 50% 0 repeat-x;
     font-family: Tahoma, Verdana, Segoe, sans-serif;
     font-size: $tSize;
     color: $cText;
@@ -35,13 +35,29 @@ h2 {
     font-size: $tSizeHeadingTwo;
 }
 
+dl {
+    dt {
+        font-weight: bold;
+    }
+
+    dd {
+        margin-left: 20px;
+    }
+}
+
+pre {
+    white-space: pre-wrap;
+    word-break: break-all;
+    word-wrap: break-word;
+}
+
+// Layout
 #layout {
     display: block;
     position: relative;
     width: $layoutWidth;
     min-height: 100%;
     height: auto !important;
-    height: 100%;
     margin: 0 auto (-$footerHeight) auto;
     background: $cBase;
 }
@@ -64,7 +80,7 @@ h2 {
 #content_header {
     height: 106px;
     margin-bottom: $defaultSpacing;
-    background: url($iBaseBackground) 50% 0 repeat-x;
+    background: url($iHeaderBackground) 50% 0 repeat-x;
 
     a {
         position: absolute;
@@ -311,6 +327,27 @@ h2 {
 
     .controller_sub_header {
         overflow: hidden;
+
+        .sub_nav_dropdown {
+            position: absolute;
+            background: #ccc;
+            padding: 10px 20px;
+
+            a {
+                display: block;
+                padding: 3px 0;
+                color: $cText;
+                text-decoration: none;
+
+                &:hover {
+                    color: $cBlack;
+                }
+
+                &.active {
+                    font-weight: bold;
+                }
+            }
+        }
     }
 
     #controller_action {
@@ -347,13 +384,15 @@ h2 {
                 .field {
                     display: table-cell;
                     text-align: left;
+
+                    &:first-child {
+                        padding-left: $formLabelWidth + 2*$defaultSpacing;
+                    }
                 }
             }
 
             .errors {
-                clear: both;
-                margin-left: 4*$defaultSpacing;
-                padding-top: 2*$formSpacing;
+                padding: 2*$formSpacing 0 0 4*$formSpacing;
 
                 li {
                     color: $cError;
@@ -577,27 +616,6 @@ h2 {
     }
 }
 
-.sub_nav_dropdown {
-    position: absolute;
-    background: #ccc;
-    padding: 10px 20px;
-
-    a {
-        display: block;
-        padding: 3px 0;
-        color: $cText;
-        text-decoration: none;
-
-        &:hover {
-            color: $cBlack;
-        }
-
-        &.active {
-            font-weight: bold;
-        }
-    }
-}
-
 ul.errors {
     li {
         color: $cError;
@@ -640,27 +658,12 @@ footer {
     }
 }
 
+// Utilities
 .hide {
     display: none;
 }
 .show {
     display: block;
-}
-
-pre {
-    white-space: pre-wrap;
-    word-break: break-all;
-    word-wrap: break-word;
-}
-
-dl {
-    dt {
-        font-weight: bold;
-    }
-
-    dd {
-        margin-left: 20px;
-    }
 }
 
 // Help

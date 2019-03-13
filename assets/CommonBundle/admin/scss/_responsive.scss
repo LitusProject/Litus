@@ -53,10 +53,12 @@
                     .label {
                         width: $formLabelWidth + 100;
                     }
-                }
 
-                .errors {
-                    margin-left: $formLabelWidth  + 4*$defaultSpacing + 100;
+                    .field {
+                        &:first-child {
+                            padding-left: $formLabelWidth + 2*$defaultSpacing + 200;
+                        }
+                    }
                 }
             }
 
@@ -152,10 +154,10 @@
                     .label {
                         width: $formLabelWidth + 200;
                     }
-                }
 
-                .errors {
-                    margin-left: $formLabelWidth  + 4*$defaultSpacing + 200;
+                    &:first-child {
+                        padding-left: $formLabelWidth + 2*$defaultSpacing + 200;
+                    }
                 }
             }
 

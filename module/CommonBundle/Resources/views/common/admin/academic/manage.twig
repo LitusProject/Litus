@@ -92,13 +92,19 @@
                             <td>{{ academic.getEmail() }}</td>
                             <td class="actions">
                                 {% if hasAccess('common_admin_academic', 'print') %}
-                                    <a href="#" class="print" data-id="{{ academic.getId() }}" data-fullname="{{ academic.getFullName() }}">Print</a></li>
+                                    <a href="#" class="print" data-id="{{ academic.getId() }}" data-fullname="{{ academic.getFullName() }}">
+                                        <i class="fas fa-print"></i> Print
+                                    </a>
                                 {% endif %}
                                 {% if hasAccess('common_admin_academic', 'edit') %}
-                                    <a href="{{ url('common_admin_academic', {"action": "edit", "id": academic.getId()}) }}" class="edit">Edit</a></li>
+                                    <a class="edit" href="{{ url('common_admin_academic', {"action": "edit", "id": academic.getId()}) }}">
+                                        <i class="fas fa-pen"></i> Edit
+                                    </a>
                                 {% endif %}
                                 {% if hasAccess('common_admin_academic', 'delete') %}
-                                    <a href="#" class="delete" data-id="{{ academic.getId() }}" data-fullname="{{ academic.getFullName() }}">Delete</a>
+                                    <a class="delete" href="#" data-id="{{ academic.getId() }}" data-fullname="{{ academic.getFullName() }}">
+                                        <i class="fas fa-trash-alt"></i> Delete
+                                    </a>
                                 {% endif %}
                             </td>
                         </tr>

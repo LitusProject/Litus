@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Component\Form\Form;
 
-use CommonBundle\Component\Form\Admin\Fieldset\TabContent;
-use CommonBundle\Component\Form\Admin\Fieldset\TabPane;
+use CommonBundle\Component\Form\Element\TabContent;
+use CommonBundle\Component\Form\Element\TabPane;
 use CommonBundle\Component\Form\FieldsetInterface;
 use CommonBundle\Entity\General\Language;
 use Locale;
@@ -35,7 +35,7 @@ use RuntimeException;
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-abstract class Tabbable extends \CommonBundle\Component\Form\Admin\Form
+abstract class Tabbable extends \CommonBundle\Component\Form\Form
 {
     /**
      * @var string The prefix of the tab elements

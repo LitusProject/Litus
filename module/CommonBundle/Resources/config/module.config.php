@@ -32,13 +32,14 @@ use CommonBundle\Component\Controller\Plugin\Service\PaginatorFactory;
 use CommonBundle\Component\Controller\Service\AbstractActionControllerInitializer;
 use CommonBundle\Component\Doctrine\Common\Cache\Service\RedisCacheFactory as DoctrineRedisCacheFactory;
 use CommonBundle\Component\Doctrine\Migrations\Configuration\ServiceManager\ConfigurationFactory as DoctrineMigrationsConfigurationFactory;
+use CommonBundle\Component\Encore\Configuration as EncoreConfiguration;
 use CommonBundle\Component\Encore\Encore;
 use CommonBundle\Component\Encore\Service\ConfigurationFactory as EncoreConfigurationFactory;
 use CommonBundle\Component\Encore\Service\EncoreFactory;
-use CommonBundle\Component\Form\FormElementManager;
-use CommonBundle\Component\Form\Service\FormElementManagerFactory;
 use CommonBundle\Component\Form\Factory as FormFactory;
+use CommonBundle\Component\Form\FormElementManager;
 use CommonBundle\Component\Form\Service\FactoryFactory as FormFactoryFactory;
+use CommonBundle\Component\Form\Service\FormElementManagerFactory;
 use CommonBundle\Component\Hydrator\HydratorPluginManager;
 use CommonBundle\Component\Hydrator\Service\HydratorPluginManagerFactory;
 use CommonBundle\Component\Module\Config;
@@ -228,6 +229,7 @@ return Config::create(
                     Component\Form\View\Helper\Admin\Form::class              => InvokableFactory::class,
                     Component\Form\View\Helper\Admin\FormButton::class        => InvokableFactory::class,
                     Component\Form\View\Helper\Admin\FormCollection::class    => InvokableFactory::class,
+                    Component\Form\View\Helper\Admin\FormElement::class       => InvokableFactory::class,
                     Component\Form\View\Helper\Admin\FormElementErrors::class => InvokableFactory::class,
                     Component\Form\View\Helper\Admin\FormRow::class           => InvokableFactory::class,
                     Component\Form\View\Helper\Admin\FormSubmit::class        => InvokableFactory::class,
@@ -241,6 +243,9 @@ return Config::create(
                     'formcollection'    => Component\Form\View\Helper\Admin\FormCollection::class,
                     'formCollection'    => Component\Form\View\Helper\Admin\FormCollection::class,
                     'FormCollection'    => Component\Form\View\Helper\Admin\FormCollection::class,
+                    'formelement'       => Component\Form\View\Helper\Admin\FormElement::class,
+                    'formElement'       => Component\Form\View\Helper\Admin\FormElement::class,
+                    'FormElement'       => Component\Form\View\Helper\Admin\FormElement::class,
                     'formelementerrors' => Component\Form\View\Helper\Admin\FormElementErrors::class,
                     'formElementErrors' => Component\Form\View\Helper\Admin\FormElementErrors::class,
                     'FormElementErrors' => Component\Form\View\Helper\Admin\FormElementErrors::class,
@@ -253,6 +258,7 @@ return Config::create(
 
                     'form_button'         => Component\Form\View\Helper\Admin\FormButton::class,
                     'form_collection'     => Component\Form\View\Helper\Admin\FormCollection::class,
+                    'form_element'        => Component\Form\View\Helper\Admin\FormElement::class,
                     'form_element_errors' => Component\Form\View\Helper\Admin\FormElementErrors::class,
                     'form_row'            => Component\Form\View\Helper\Admin\FormRow::class,
                     'form_submit'         => Component\Form\View\Helper\Admin\FormSubmit::class,

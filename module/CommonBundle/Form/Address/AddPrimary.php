@@ -32,7 +32,6 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
         parent::init();
 
         $this->addClass('primary_address');
-        $this->setLabelOption('disable_html_escape', true);
 
         list($cities, $streets) = $this->getCities();
 

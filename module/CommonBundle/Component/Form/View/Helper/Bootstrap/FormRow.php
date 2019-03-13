@@ -22,11 +22,10 @@ namespace CommonBundle\Component\Form\View\Helper\Bootstrap;
 
 use CommonBundle\Component\Form\Element\Button;
 use CommonBundle\Component\Form\Element\Checkbox;
+use CommonBundle\Component\Form\Element\Radio;
 use CommonBundle\Component\Form\Element\Submit;
 use CommonBundle\Component\Form\LabelAwareInterface;
-use InvalidArgumentException;
 use Zend\Form\ElementInterface;
-use Zend\Form\View\Helper\FormRow as ZendFormRow;
 
 /**
  * View helper to render a form row.
@@ -59,19 +58,19 @@ class FormRow extends \Zend\Form\View\Helper\FormRow
             $labelPosition = $this->labelPosition;
         }
 
-        if (isset($label) && $label != '') {
+        if ($label != '') {
             $translator = $this->getTranslator();
             if ($translator !== null) {
                 $label = $translator->translate($label, $this->getTranslatorTextDomain());
             }
         }
 
-        if ($element->getMessages() && $inputErrorClass !== null) {
+        if ($inputErrorClass !== null && count($element->getMessages()) > 0) {
             if (!in_array($inputErrorClass, explode(' ', $element->getAttribute('class')))) {
-                $classes = array($class);
+                $classes = array($inputErrorClass);
                 if ($element->hasAttribute('class')) {
                     $classes = explode(' ', $element->getAttribute('class'));
-                    $classes[] = $class;
+                    $classes[] = $inputErrorClass;
                 }
 
                 $element->setAttribute(
@@ -94,6 +93,7 @@ class FormRow extends \Zend\Form\View\Helper\FormRow
             );
         }
 
+        $elementErrors = array();
         if ($this->renderErrors) {
             $elementErrors = $elementErrorsHelper->render($element);
         }
@@ -125,11 +125,11 @@ class FormRow extends \Zend\Form\View\Helper\FormRow
                 $labelAttributes = $this->labelAttributes;
             }
 
-            if (!($element instanceof LabelAwareInterface) || !$element->getLabelOption('disable_html_escape')) {
+            if (!($element instanceof LabelAwareInterface) || $element->getLabelOption('disable_html_escape') !== null) {
                 $label = $escapeHtmlHelper($label);
             }
 
-            if ($this->renderErrors && isset($elementErrors) && !empty($elementErrors)) {
+            if ($this->renderErrors && count($elementErrors) > 0) {
                 $elementString .= $elementErrors;
             }
 
@@ -162,7 +162,7 @@ class FormRow extends \Zend\Form\View\Helper\FormRow
             }
         } else {
             $markup = $elementString;
-            if ($this->renderErrors && isset($elementErrors) && !empty($elementErrors)) {
+            if ($this->renderErrors && count($elementErrors) > 0) {
                 $markup = $elementString . $elementErrors;
             }
 

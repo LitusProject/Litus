@@ -33,21 +33,7 @@ trait FormFactoryTrait
      */
     protected function getFormFactory()
     {
-        return $this->getServiceLocator()->build(
-            'FormFactory',
-            array(
-                'form_view_helpers' => $this->getFormViewHelpersConfig(),
-            )
-        );
-    }
-
-    /**
-     * @return array
-     */
-    protected function getFormViewHelpersConfig()
-    {
-        $config = $this->getServiceLocator()->get('config');
-        return $config['form_view_helpers']['bootstrap'];
+        return $this->getServiceLocator()->get('FormFactory');
     }
 
     /**

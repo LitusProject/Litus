@@ -1,0 +1,146 @@
+/**
+ * Login
+ *
+ * Author: Robin De Bruin <info@serayo.com>
+ * Author: Pieter Maene <pieter.maene@litus.cc>
+ *
+ * License: https://litus.cc/LICENSE
+ */
+
+body.login {
+    height: 0;
+    background: url($iBackground);
+
+    header {
+        margin: 0 $defaultSpacing $defaultSpacing 0;
+        text-align: right;
+        font-weight: bold;
+        color: $cWhite;
+
+        span {
+            color: $cAccent;
+        }
+    }
+
+    a {
+        color: $cText;
+        text-decoration: none;
+
+        &:hover {
+            font-weight: bold;
+        }
+    }
+
+    form {
+        .row {
+            display: table;
+            margin: 2*$formSpacing 0;
+
+            &:first-child {
+                margin-top: 0;
+            }
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            .label {
+                display: table-cell;
+                padding: 0 2*$formSpacing;
+                vertical-align: middle;
+
+                &:first-child {
+                    padding-left: 0;
+                }
+
+                &:last-child {
+                    padding-right: 0;
+                }
+            }
+
+            .field {
+                display: table-cell;
+                padding: 0 2*$formSpacing;
+                vertical-align: middle;
+
+                &:first-child {
+                    padding-left: 0;
+                }
+
+                &:last-child {
+                    padding-right: 0;
+                }
+            }
+        }
+    }
+
+    input[type=text], input[type=password] {
+        width: 168px;
+    }
+
+    #layout {
+        display: block;
+        position: static;
+        width: 275px !important;
+        min-height: 0;
+        height: auto;
+        margin: 130px auto;
+        background: none;
+    }
+
+    #content {
+        padding: 2*$defaultSpacing;
+        height: auto;
+        background: $cLighterGrey;
+        border: 5px solid $cBorder;
+
+        .container {
+            padding: 2*$defaultSpacing 0;
+            border-bottom: 1px solid $cBorder;
+
+            &:first-child {
+                padding-top: 0;
+            }
+
+            &:last-child {
+                padding-bottom: 0;
+                border-bottom: none;
+            }
+
+            a.shibboleth {
+                display: block;
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        #form_container {
+            display: flex;
+            align-items: center;
+            width: 100%;
+
+            #login_form {
+                flex-grow: 0;
+            }
+
+            #login_button {
+                flex-grow: 1;
+                vertical-align: middle;
+                color: $cAccent;
+                font-size: 32px;
+                text-align: center;
+                cursor: pointer;
+            }
+        }
+
+        #error_container {
+            display: none;
+            width: 100%;
+
+            #error_message {
+                color: $cError;
+                font-weight: bold;
+            }
+        }
+    }
+}

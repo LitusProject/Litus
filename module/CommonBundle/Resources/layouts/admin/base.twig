@@ -10,93 +10,91 @@
 </head>
 
 <body>
+    <div id="layout">
+        <div id="content">
+            <header id="content_header">
+                <a href="{{ url('common_admin_index') }}"></a>
 
-<div id="layout">
-    <div id="content">
-        <header id="content_header">
-            <a href="{{ url('common_admin_index') }}"></a>
+                <p><time datetime="{{ now.iso8601 }}">{{ now.display }}</time></p>
+                <p id="tag">
+                    Welcome, {{ authenticatedPerson.getFirstName() ?? 'Guest' }} | <a href="{{ url('common_admin_auth', {"action": "logout"}) }}">Logout</a>
+                </p>
+            </header>
 
-            <p><time datetime="{{ now.iso8601 }}">{{ now.display }}</time></p>
-            <p id="tag">
-                Welcome, {{ authenticatedPerson.getFirstName() ?? 'Guest' }} | <a href="{{ url('common_admin_auth', {"action": "logout"}) }}">Logout</a>
-            </p>
-        </header>
+            <nav id="content_nav">
+                <ul class="topmenu">
+                    <li>
+                        <div class="title">General</div>
 
-        <nav id="content_nav">
-            <ul class="topmenu">
-                <li>
-                    <div class="title">General</div>
+                        {% for submenu in menu.general %}
+                            <ul>
+                                {% for settings in submenu %}
+                                    <li{% if settings.help %} data-help="{{ settings.help }}"{% endif %}><a href="{{ url(settings.controller) }}">{{ settings.title }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        {% endfor %}
+                    </li>
+                </ul>
 
-                    {% for submenu in menu.general %}
-                        <ul>
-                            {% for settings in submenu %}
-                                <li{% if settings.help %} data-help="{{ settings.help }}"{% endif %}><a href="{{ url(settings.controller) }}">{{ settings.title }}</a></li>
+                <ul class="submenu">
+                    <li>
+                        <div class="title">Divisions</div>
+
+                        <ul class="subsubmenu">
+                            {% for submenu_name, submenu in menu.submenus %}
+                                <li>
+                                    <div class="subtitle">
+                                        <div class="content">
+                                            <b>{{ submenu_name }}</b><br />
+                                            {{ submenu.subtitle }}
+                                        </div>
+                                    </div>
+                                    <ul{% if submenu.active %} style="display: block;"{% endif %}>
+                                        {% for settings in submenu.items %}
+                                            <li{% if settings.help %} data-help="{{ settings.help }}"{% endif %}><a href="{{ url(settings.controller) }}">{{ settings.title }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
                             {% endfor %}
                         </ul>
-                    {% endfor %}
-                </li>
-            </ul>
+                    </li>
+                </ul>
+            </nav>
 
-            <ul class="submenu">
-                <li>
-                    <div class="title">Divisions</div>
-
-                    <ul class="subsubmenu">
-                        {% for submenu_name, submenu in menu.submenus %}
-                            <li>
-                                <div class="subtitle">
-                                    <div class="content">
-                                        <b>{{ submenu_name }}</b><br />
-                                        {{ submenu.subtitle }}
-                                    </div>
-                                </div>
-                                <ul{% if submenu.active %} style="display: block;"{% endif %}>
-                                    {% for settings in submenu.items %}
-                                        <li{% if settings.help %} data-help="{{ settings.help }}"{% endif %}><a href="{{ url(settings.controller) }}">{{ settings.title }}</a></li>
-                                    {% endfor %}
-                                </ul>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-
-        <div id="content_controller">
-            {% if createNewStockPeriod %}
-                <div class="flashmessage warning_message full_width">
-                    <div class="title">Warning</div>
-                    <div class="content">
-                        <p>A new stock period should be created for each semester! For the upcomming semester you did not yet create one! This will close the current stock period, making it impossible to change the stock article values. Make sure you <b>enter your last stock changes from last semester before creating a new one</b>! Next, a new stock period will be created with the same start stock article values as the end values of the previous stock period. Finally, all open bookings will be re-booked and re-assigned in the new stock period.</p>
-                        <p>If you do not know what to do, please contact your site administrator.</p>
-                        <p>To create a new stock period, please click <a href="{{ url('cudi_admin_stock_period', {'action': 'new'}) }}">here</a>.</p>
+            <div id="content_controller">
+                {% if createNewStockPeriod %}
+                    <div class="flashmessage warning_message full_width">
+                        <div class="title">Warning</div>
+                        <div class="content">
+                            <p>A new stock period should be created for each semester! For the upcomming semester you did not yet create one! This will close the current stock period, making it impossible to change the stock article values. Make sure you <b>enter your last stock changes from last semester before creating a new one</b>! Next, a new stock period will be created with the same start stock article values as the end values of the previous stock period. Finally, all open bookings will be re-booked and re-assigned in the new stock period.</p>
+                            <p>If you do not know what to do, please contact your site administrator.</p>
+                            <p>To create a new stock period, please click <a href="{{ url('cudi_admin_stock_period', {'action': 'new'}) }}">here</a>.</p>
+                        </div>
                     </div>
-                </div>
-            {% endif %}
-            {% block content %}{% endblock %}
+                {% endif %}
+                {% block content %}{% endblock %}
+            </div>
         </div>
+
+        <div id="footer_push"></div>
     </div>
 
-    <div id="footer_push"></div>
-</div>
+    <footer>
+        Litus Admin | Code by <a href="http://litus.cc">Litus</a> | Design by <a href="http://www.serayo.com">Robin de Bruin</a>
 
-<footer>
-    Litus Admin | Code by <a href="http://litus.cc">Litus</a> | Design by <a href="http://www.serayo.com">Robin de Bruin</a>
+        {% if servedBy is not null %}
+            <span class="right">Served by {{ servedBy }}</span>
+        {% endif %}
+    </footer>
 
-    {% if servedBy is not null %}
-        <span class="right">Served by {{ servedBy }}</span>
-    {% endif %}
-</footer>
+    {{ inlineScript() }}
 
-{{ inlineScript() }}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.submenu').sidebarNavigation();
+        });
+    </script>
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('.submenu').sidebarNavigation();
-    });
-</script>
-
-{% block content_script %} {% endblock %}
-
+    {% block content_script %} {% endblock %}
 </body>
 </html>

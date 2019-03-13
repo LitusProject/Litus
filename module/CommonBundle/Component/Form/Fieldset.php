@@ -24,6 +24,7 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAware\CacheTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use Zend\Form\FormInterface;
 use Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 /**
@@ -34,7 +35,9 @@ use Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
  */
 class Fieldset extends \Zend\Form\Fieldset implements FieldsetInterface, ServiceLocatorAwareInterface
 {
-    use FieldsetTrait;
+    use FieldsetTrait {
+        FieldsetTrait::prepareElement as traitPrepareElement;
+    }
 
     use ServiceLocatorAwareTrait;
 
@@ -53,13 +56,12 @@ class Fieldset extends \Zend\Form\Fieldset implements FieldsetInterface, Service
     }
 
     /**
-     * @param  string $name
-     * @return self
+     * @param  FormInterface $form
+     * @return mixed
      */
-    public function setName($name)
+    public function prepareElement(FormInterface $form)
     {
-        $this->setAttribute('id', $name);
-
-        return parent::setName($name);
+        parent::prepareElement($form);
+        $this->traitPrepareElement($form);
     }
 }

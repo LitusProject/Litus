@@ -130,7 +130,7 @@ class Factory extends \Zend\Form\Factory implements ServiceLocatorAwareInterface
      *
      * @param  array|Traversable|ArrayAccess $elements
      * @param  FieldsetInterface             $fieldset
-     * @param  string                        $method Method invoking this one (for exception messages)
+     * @param  string                        $method   Method invoking this one (for exception messages)
      * @return void
      */
     protected function prepareAndInjectElements($elements, ZendFieldsetInterface $fieldset, $method)

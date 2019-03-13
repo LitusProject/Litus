@@ -24,6 +24,7 @@ use CommonBundle\Component\Form\ElementInterface;
 use CommonBundle\Component\Form\LabelAwareInterface;
 use InvalidArgumentException;
 use Zend\Form\ElementInterface as ZendElementInterface;
+use Zend\Form\View\Helper\FormLabel;
 
 /**
  * View helper to render a form checkbox.
@@ -42,7 +43,7 @@ class FormCheckbox extends \Zend\Form\View\Helper\FormCheckbox
     {
         if (!($element instanceof ElementInterface)) {
             throw new InvalidArgumentException(
-                'Element does not implement ' . ElementerInterface::class
+                'Element does not implement ' . ElementInterface::class
             );
         }
 

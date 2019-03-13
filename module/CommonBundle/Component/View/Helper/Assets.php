@@ -45,7 +45,7 @@ class Assets extends \Zend\View\Helper\AbstractHelper implements ServiceLocatorA
 
         $renderedAssets = array();
         foreach ($assets as $type => $files) {
-            foreach($files as $file) {
+            foreach ($files as $file) {
                 $renderedAssets[] = $this->renderAsset($type, $file);
             }
         }

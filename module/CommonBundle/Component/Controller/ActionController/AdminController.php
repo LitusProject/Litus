@@ -20,7 +20,6 @@
 
 namespace CommonBundle\Component\Controller\ActionController;
 
-use CommonBundle\Component\Form\Factory;
 use CommonBundle\Component\Util\NamedPriorityQueue;
 use CommonBundle\Entity\General\Language;
 use Zend\Mvc\MvcEvent;
@@ -93,8 +92,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
      */
     protected function getFormViewHelpersConfig()
     {
-        $config = $this->getServiceLocator()->get('config');
-        return $config['form_view_helpers']['admin'];
+        return $this->getConfig()['form_view_helpers']['admin'];
     }
 
     /**

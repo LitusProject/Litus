@@ -29,7 +29,7 @@ use Zend\Form\ElementInterface as ZendElementInterface;
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class FormSubmit extends FormButton
+class FormSubmit extends \CommonBundle\Component\Form\View\Helper\Admin\FormButton
 {
     /**
      * @param  ZendElementInterface $element

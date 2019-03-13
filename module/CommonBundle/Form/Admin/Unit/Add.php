@@ -28,7 +28,7 @@ use RuntimeException;
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\Form\Form
 {
     protected $hydrator = 'CommonBundle\Hydrator\General\Organization\Unit';
 
@@ -139,7 +139,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        $this->addSubmit('Add', 'unit_add');
+        $this->addSubmit('Add', 'plus');
 
         if ($this->unit !== null) {
             $this->bind($this->unit);

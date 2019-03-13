@@ -75,7 +75,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        $form = $this->getForm('common_unit_add');
+        $form = $this->getForm('CommonBundle\Form\Admin\Unit\Add');
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -126,8 +126,8 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        $academicForm = $this->getForm('common_unit_academic');
-        $externalForm = $this->getForm('common_unit_external');
+        $academicForm = $this->getForm('CommonBundle\Form\Admin\Unit\Academic');
+        $externalForm = $this->getForm('CommonBundle\Form\Admin\Unit\External');
 
         $filePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -243,7 +243,12 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $form = $this->getForm('common_unit_edit', array('unit' => $unit));
+        $form = $this->getForm(
+            'CommonBundle\Form\Admin\Unit\Edit',
+            array(
+                'unit' => $unit,
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());

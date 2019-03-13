@@ -41,7 +41,7 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
                 'type'       => 'checkbox',
                 'name'       => 'activation_code',
                 'label'      => 'Activation Code',
-                'required'   => true,
+                'required'   => false,
                 'attributes' => array(
                     'data-help' => 'When checked, an activiation code will be generated and mailed to the user. This code can be used to choose a password, so that it is possible to login without Shibboleth.',
                 ),

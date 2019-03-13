@@ -40,7 +40,7 @@ trait FieldsetTrait
      *
      * @param  string $key
      * @param  mixed  $value
-     * @return Element|ElementInterface
+     * @return Fieldset|FieldsetInterface
      */
     public function setAttribute($name, $value)
     {
@@ -65,7 +65,7 @@ trait FieldsetTrait
     }
 
     /**
-     * @return Input
+     * @return array|Traversable
      */
     public function getInputFilterSpecification()
     {

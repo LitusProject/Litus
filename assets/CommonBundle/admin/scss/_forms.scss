@@ -28,6 +28,10 @@ input, select, button {
     @include gradient-y($cFormsGradientStart, $cWhite, 0%, 50%);
     border: $inputBorderWidth solid $cBorder;
     color: $cText;
+
+    &.is_invalid {
+        border-color: $cError;
+    }
 }
 
 input[type=radio] {
@@ -73,6 +77,10 @@ textarea {
     @include gradient-y($cFormsGradientStart, $cWhite, 0%, 50%);
     border: $inputBorderWidth solid $cBorder;
     color: $cText;
+
+    &.is_invalid {
+        border-color: $cError;
+    }
 }
 
 label {

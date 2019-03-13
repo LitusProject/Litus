@@ -20,7 +20,6 @@
 
 namespace CommonBundle\Component\Form\View\Helper\Bootstrap;
 
-use InvalidArgumentException;
 use Zend\Form\ElementInterface;
 
 /**

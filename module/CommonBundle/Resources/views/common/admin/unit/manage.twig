@@ -68,13 +68,19 @@
                         <td>{% if unit.isActive() %}&times;{% endif %}</td>
                         <td class="actions">
                             {% if hasAccess('common_admin_unit', 'members') %}
-                                <a href="{{ url('common_admin_unit', {"action": "members", "id": unit.getId(), "academicyear": activeAcademicYear.getCode()}) }}" class="unit_member_edit">Members</a>
+                                <a href="{{ url('common_admin_unit', {"action": "members", "id": unit.getId(), "academicyear": activeAcademicYear.getCode()}) }}" class="unit_member_edit">
+                                    <i class="fas fa-users"></i> Members
+                                </a>
                             {% endif %}
                             {% if hasAccess('common_admin_unit', 'edit') %}
-                                <a href="{{ url('common_admin_unit', {"action": "edit", "id": unit.getId()}) }}" class="edit">Edit</a>
+                                <a class="edit" href="{{ url('common_admin_unit', {"action": "edit", "id": unit.getId()}) }}">
+                                    <i class="fas fa-pen"></i> Edit
+                                </a>
                             {% endif %}
                             {% if hasAccess('common_admin_unit', 'delete') %}
-                                <a href="#" data-id="{{ unit.getId() }}" data-name="{{ unit.getName() }}" class="delete">Delete</a>
+                                <a class="delete" href="#" data-id="{{ unit.getId() }}" data-name="{{ unit.getName() }}">
+                                    <i class="fas fa-trash-alt"></i> Delete
+                                </a>
                             {% endif %}
                         </td>
                     </tr>

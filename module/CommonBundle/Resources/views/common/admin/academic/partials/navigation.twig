@@ -7,7 +7,7 @@
         <ul>
             {% if hasAccess('common_admin_academic', 'add') %}
                 <li>
-                    <a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('common_admin_academic', {"action": "add"}) }}">Add</a>
+                    <a {% if 'add' == getParam('action') %}class="active"{% endif %} href="{{ url('common_admin_academic', {"action": "add"}) }}">Add</a>
                 </li>
             {% endif %}
             {% if hasAccess('common_admin_academic', 'manage') %}

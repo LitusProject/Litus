@@ -40,7 +40,7 @@ class FormButton extends \Zend\Form\View\Helper\FormButton
     {
         if (!($element instanceof ElementInterface)) {
             throw new InvalidArgumentException(
-                'Element does not implement ' . ElementerInterface::class
+                'Element does not implement ' . ElementInterface::class
             );
         }
 

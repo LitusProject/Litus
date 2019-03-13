@@ -33,14 +33,13 @@ class FormSubmit extends \Zend\Form\View\Helper\FormSubmit
 {
     /**
      * @param  ZendElementInterface $element
-     * @param  string               $buttonContent
      * @return string
      */
-    public function render(ZendElementInterface $element, $buttonContent = null)
+    public function render(ZendElementInterface $element)
     {
         if (!($element instanceof ElementInterface)) {
             throw new InvalidArgumentException(
-                'Element does not implement ' . ElementerInterface::class
+                'Element does not implement ' . ElementInterface::class
             );
         }
 
@@ -50,6 +49,6 @@ class FormSubmit extends \Zend\Form\View\Helper\FormSubmit
             $element->addClass('btn-primary');
         }
 
-        return parent::render($element, $buttonContent);
+        return parent::render($element);
     }
 }

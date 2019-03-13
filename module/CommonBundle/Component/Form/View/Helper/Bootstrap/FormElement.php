@@ -51,7 +51,7 @@ class FormElement extends \Zend\Form\View\Helper\FormElement
     {
         if (!($element instanceof ElementInterface)) {
             throw new InvalidArgumentException(
-                'Element does not implement ' . ElementerInterface::class
+                'Element does not implement ' . ElementInterface::class
             );
         }
 
@@ -59,10 +59,10 @@ class FormElement extends \Zend\Form\View\Helper\FormElement
             $element->addClass('form-control');
         }
 
-        if ($element->getMessages()) {
+        if (count($element->getMessages()) > 0) {
             $element->addClass('is-invalid');
         }
 
-        return $markup;
+        return parent::render($element);
     }
 }

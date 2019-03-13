@@ -26,7 +26,7 @@ namespace CommonBundle\Component\Form;
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-interface ElementInterface extends LabelAwareInterface, \Zend\Form\ElementInterface, \Zend\Form\ElementPrepareAwareInterface, \Zend\InputFilter\InputProviderInterface
+interface ElementInterface extends \CommonBundle\Component\Form\LabelAwareInterface, \Zend\Form\ElementInterface, \Zend\Form\ElementPrepareAwareInterface, \Zend\InputFilter\InputProviderInterface
 {
     /**
      * @param string $class

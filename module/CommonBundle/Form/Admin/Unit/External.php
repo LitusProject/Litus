@@ -24,7 +24,7 @@ namespace CommonBundle\Form\Admin\Unit;
  * The form used to add an external member to a unit.
  *
  */
-class External extends \CommonBundle\Component\Form\Admin\Form
+class External extends \CommonBundle\Component\Form\Form
 {
     const FILE_SIZE = '10MB';
 
@@ -115,6 +115,6 @@ class External extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        $this->addSubmit('Add', 'unit_add');
+        $this->addSubmit('Add', 'plus');
     }
 }

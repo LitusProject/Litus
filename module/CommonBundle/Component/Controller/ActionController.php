@@ -94,6 +94,8 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             ->plugin('headMeta')
             ->setCharset('utf-8');
 
+        $this->configureViewHelpers();
+
         $this->initAuthenticationService();
         $this->initControllerPlugins();
         $this->initFallbackLanguage();
@@ -235,6 +237,30 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         } catch (\Throwable $e) {
             throw new RuntimeException('Unable to initialize fallback language.');
         }
+    }
+
+    /**
+     * Configure our custom view helpers.
+     *
+     * @return void
+     */
+    protected function configureViewHelpers()
+    {
+        if (!$this->getServiceLocator()->has('ViewHelperManager')) {
+            return;
+        }
+
+        $this->getServiceLocator()->get('ViewHelperManager')->configure(
+            $this->getFormViewHelpersConfig()
+        );
+    }
+
+    /**
+     * @return array
+     */
+    protected function getFormViewHelpersConfig()
+    {
+        return $this->getConfig()['form_view_helpers']['bootstrap'];
     }
 
     /**

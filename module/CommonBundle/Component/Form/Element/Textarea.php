@@ -22,7 +22,6 @@ namespace CommonBundle\Component\Form\Element;
 
 use CommonBundle\Component\Form\ElementInterface;
 use CommonBundle\Component\Form\ElementTrait;
-use Zend\Form\FormInterface;
 
 /**
  * Textarea form element

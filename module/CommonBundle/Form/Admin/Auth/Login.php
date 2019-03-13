@@ -20,12 +20,14 @@
 
 namespace CommonBundle\Form\Admin\Auth;
 
+use CommonBundle\Component\Form\View\Helper\Admin\FormRow;
+
 /**
  * Login
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Login extends \CommonBundle\Component\Form\Admin\Form
+class Login extends \CommonBundle\Component\Form\Form
 {
     public function init()
     {
@@ -58,9 +60,14 @@ class Login extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'       => 'checkbox',
-                'name'       => 'remember_me',
-                'label'      => 'Remember Me',
+                'type'    => 'checkbox',
+                'name'    => 'remember_me',
+                'label'   => 'Remember Me',
+                'options' => array(
+                    'label_options' => array(
+                        'label_position' => FormRow::LABEL_APPEND,
+                    ),
+                ),
                 'attributes' => array(
                     'id' => 'remember_me',
                 ),

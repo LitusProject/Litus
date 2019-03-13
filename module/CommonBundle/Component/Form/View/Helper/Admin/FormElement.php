@@ -18,18 +18,35 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Form\Element;
+namespace CommonBundle\Component\Form\View\Helper\Admin;
 
 use CommonBundle\Component\Form\ElementInterface;
-use CommonBundle\Component\Form\ElementTrait;
+use InvalidArgumentException;
+use Zend\Form\ElementInterface as ZendElementInterface;
 
 /**
- * Hidden form element
+ * View helper to render a form element.
  *
- * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Hidden extends \Zend\Form\Element\Hidden implements ElementInterface
+class FormElement extends \Zend\Form\View\Helper\FormElement
 {
-    use ElementTrait;
+    /**
+     * @param  ZendElementInterface $element
+     * @return string
+     */
+    public function render(ZendElementInterface $element)
+    {
+        if (!($element instanceof ElementInterface)) {
+            throw new InvalidArgumentException(
+                'Element does not implement ' . ElementInterface::class
+            );
+        }
+
+        if (count($element->getMessages()) > 0) {
+            $element->addClass('is_invalid');
+        }
+
+        return parent::render($element);
+    }
 }

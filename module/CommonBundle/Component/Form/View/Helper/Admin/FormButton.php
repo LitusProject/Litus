@@ -20,7 +20,6 @@
 
 namespace CommonBundle\Component\Form\View\Helper\Admin;
 
-use InvalidArgumentException;
 use Zend\Form\ElementInterface;
 
 /**

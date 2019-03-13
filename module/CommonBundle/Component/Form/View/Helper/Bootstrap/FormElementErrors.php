@@ -22,7 +22,6 @@ namespace CommonBundle\Component\Form\View\Helper\Bootstrap;
 
 use CommonBundle\Component\Form\Element\Csrf;
 use CommonBundle\Component\Form\Element\Hidden;
-use InvalidArgumentException;
 use Zend\Form\ElementInterface;
 
 /**
@@ -35,7 +34,7 @@ class FormElementErrors extends \Zend\Form\View\Helper\FormElementErrors
     /**@+
      * @var string
      */
-    protected $messageCloseString = '</div>';
+    protected $messageCloseString = '.</div>';
     protected $messageOpenFormat = '<div%s>';
     protected $messageSeparatorString = '.<br />';
     /**@-*/

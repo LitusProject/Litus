@@ -39,21 +39,10 @@ class Collection extends \Zend\Form\Element\Collection implements FieldsetInterf
     use ServiceLocatorAwareTrait;
 
     /**
-    * @param  string $name
-    * @return self
-    */
-    public function setName($name)
-    {
-        $this->setAttribute('id', $name);
-
-        return parent::setName($name);
-    }
-
-    /**
      * Set a hash of element names/messages to use when validation fails
      *
      * @param  array|\Traversable $messages
-     * @return self
+     * @return Collection
      */
     public function setMessages($messages)
     {

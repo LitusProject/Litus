@@ -26,7 +26,7 @@ namespace CommonBundle\Form\Admin\Unit;
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Academic extends \CommonBundle\Component\Form\Admin\Form
+class Academic extends \CommonBundle\Component\Form\Form
 {
     public function init()
     {
@@ -72,6 +72,6 @@ class Academic extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        $this->addSubmit('Add', 'unit_add');
+        $this->addSubmit('Add', 'plus');
     }
 }

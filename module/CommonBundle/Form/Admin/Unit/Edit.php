@@ -32,6 +32,6 @@ class Edit extends \CommonBundle\Form\Admin\Unit\Add
         parent::init();
 
         $this->remove('submit')
-            ->addSubmit('Save', 'unit_edit');
+            ->addSubmit('Save', 'save');
     }
 }

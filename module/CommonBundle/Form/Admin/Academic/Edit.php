@@ -85,7 +85,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
             array(
                 'type'  => '\CommonBundle\Form\Admin\Address\AddPrimary',
                 'name'  => 'primary_address',
-                'label' => 'Primary Address&mdash;Student Room or Home',
+                'label' => 'Primary Address (Student Room or Home)',
             )
         );
 
@@ -93,7 +93,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
             array(
                 'type'  => '\CommonBundle\Form\Admin\Address\Add',
                 'name'  => 'secondary_address',
-                'label' => 'Secondary Address&mdash;Home',
+                'label' => 'Secondary Address (Home)',
             )
         );
 

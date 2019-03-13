@@ -40,13 +40,6 @@ class FactoryFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        if ($options !== null
-            && isset($options['form_view_helpers'])
-            && $container->has('ViewHelperManager')
-        ) {
-            $container->get('ViewHelperManager')->configure($options['form_view_helpers']);
-        }
-
         $formFactory = new Factory(
             $container->get('FormElementManager')
         );

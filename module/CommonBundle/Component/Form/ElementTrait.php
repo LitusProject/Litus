@@ -34,7 +34,7 @@ trait ElementTrait
 
     /**
      * @param string $class
-     * @return self
+     * @return Element|ElementInterface
      */
     public function addClass($class)
     {
@@ -101,7 +101,7 @@ trait ElementTrait
     /**
      * @param  string     $name
      * @param  mixed|null $value
-     * @return self
+     * @return Element|ElementInterface
      */
     abstract public function setAttribute($name, $value);
 
@@ -119,7 +119,7 @@ trait ElementTrait
 
     /**
      * @param array $labelAttributes
-     * @return self
+     * @return Element|ElementInterface
      */
     abstract public function setLabelAttributes(array $labelAttributes);
 

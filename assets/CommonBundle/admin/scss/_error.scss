@@ -1,0 +1,86 @@
+/**
+ * Error
+ *
+ * Author: Robin De Bruin <info@serayo.com>
+ * Author: Pieter Maene <pieter.maene@litus.cc>
+ *
+ * License: https://litus.cc/LICENSE
+ */
+
+body.error {
+    height: 0;
+    background: url($iBackground);
+
+    header {
+        margin: 0 $defaultSpacing $defaultSpacing 0;
+        text-align: right;
+        font-weight: bold;
+        color: $cWhite;
+
+        span {
+            color: $cAccent;
+        }
+    }
+
+    h1 {
+        margin-bottom: 0;
+        color: $cError;
+        font-size: $tSizeHeadingOne;
+    }
+
+    h2 {
+        margin: 2*$defaultSpacing 0 $defaultSpacing 0;
+        color: $cError;
+        font-size: $tSizeHeadingTwo;
+    }
+
+    table {
+        width: 100%;
+        table-layout: auto;
+
+        th {
+            text-indent: 0;
+            background: none;
+            box-shadow: none;
+        }
+
+        tr {
+            td {
+                text-indent: 0;
+                background: none;
+                box-shadow: none;
+            }
+
+            &:hover {
+                td {
+                    background: none !important;
+                }
+            }
+        }
+    }
+
+    #layout {
+        display: block;
+        position: static;
+        width: 275px !important;
+        min-height: 0;
+        height: auto;
+        margin: 130px auto;
+        background: none;
+
+        &.wider {
+            width: 550px !important;
+        }
+
+        &.widest {
+            width: 825px !important;
+        }
+    }
+
+    #content {
+        padding: 2*$defaultSpacing;
+        height: auto;
+        background: $cLighterGrey;
+        border: 5px solid $cBorder;
+    }
+}

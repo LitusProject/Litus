@@ -20,9 +20,6 @@
 
 namespace CommonBundle\Component\Form\View\Helper\Admin;
 
-use CommonBundle\Component\Form\Element\Csrf;
-use CommonBundle\Component\Form\Element\Hidden;
-
 /**
  * View helper to render form element errors.
  *
@@ -33,7 +30,7 @@ class FormElementErrors extends \Zend\Form\View\Helper\FormElementErrors
     /**@+
      * @var string
      */
-    protected $messageCloseString = '</li></ul></div>';
+    protected $messageCloseString = '.</li></ul></div>';
     protected $messageOpenFormat = '<div%s><ul><li>';
     protected $messageSeparatorString = '.</li><li>';
     /**@-*/
