@@ -102,6 +102,69 @@ class ReservationCode extends \CommonBundle\Component\Doctrine\ORM\EntityReposit
     }
 
     /**
+     * @param  string $name
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllAcademicByNameQuery($name)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('c')
+            ->from('PromBundle\Entity\Bus\ReservationCode\Academic', 'c')
+            ->innerJoin('c.academic', 'p')
+            ->where(
+                $query->expr()->orX(
+                    $query->expr()->like(
+                        $query->expr()->concat(
+                            $query->expr()->lower($query->expr()->concat('p.firstName', "' '")),
+                            $query->expr()->lower('p.lastName')
+                        ),
+                        ':name'
+                    ),
+                    $query->expr()->like(
+                        $query->expr()->concat(
+                            $query->expr()->lower($query->expr()->concat('p.lastName', "' '")),
+                            $query->expr()->lower('p.firstName')
+                        ),
+                        ':name'
+                    )
+                )
+            )
+            ->setParameter('name', '%' . strtolower($name) . '%')
+            ->getQuery();
+    }
+
+    /**
+     * @param  string $name
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllExternalByNameQuery($name)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('c')
+            ->from('PromBundle\Entity\Bus\ReservationCode\External', 'c')
+            ->where(
+                $query->expr()->orX(
+                    $query->expr()->like(
+                        $query->expr()->concat(
+                            $query->expr()->lower($query->expr()->concat('c.firstName', "' '")),
+                            $query->expr()->lower('c.lastName')
+                        ),
+                        ':name'
+                    ),
+                    $query->expr()->like(
+                        $query->expr()->concat(
+                            $query->expr()->lower($query->expr()->concat('c.lastName', "' '")),
+                            $query->expr()->lower('c.firstName')
+                        ),
+                        ':name'
+                    )
+                )
+            )
+            ->setParameter('name', '%' . strtolower($name) . '%')
+            ->getQuery();
+    }
+
+    /**
      * @param  string $universityIdentification
      * @return \Doctrine\ORM\Query
      */

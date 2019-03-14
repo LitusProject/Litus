@@ -173,9 +173,7 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $codes = $this->search()
-            ->setMaxResults($numResults)
-            ->getResult();
+        $codes = $this->search($numResults);
 
         $result = array();
         foreach ($codes as $code) {
@@ -225,17 +223,36 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @return \Doctrine\ORM\Query|null
      */
-    private function search()
+    private function search($numResults)
     {
         switch ($this->getParam('field')) {
             case 'code':
                 return $this->getEntityManager()
                     ->getRepository('PromBundle\Entity\Bus\ReservationCode')
-                    ->findAllByCodeQuery($this->getParam('string'));
+                    ->findAllByCodeQuery($this->getParam('string'))
+                    ->setMaxResults($numResults)
+                    ->getResult();
             case 'username':
                 return $this->getEntityManager()
                     ->getRepository('PromBundle\Entity\Bus\ReservationCode')
-                    ->findAllByUniversityIdentificationQuery($this->getParam('string'));
+                    ->findAllByUniversityIdentificationQuery($this->getParam('string'))
+                    ->setMaxResults($numResults)
+                    ->getResult();
+            case 'name':
+                $academics = $this->getEntityManager()
+                    ->getRepository('PromBundle\Entity\Bus\ReservationCode')
+                    ->findAllAcademicByNameQuery($this->getParam('string'))
+                    ->setMaxResults($numResults)
+                    ->getResult();
+                $externals = $this->getEntityManager()
+                    ->getRepository('PromBundle\Entity\Bus\ReservationCode')
+                    ->findAllExternalByNameQuery($this->getParam('string'))
+                    ->setMaxResults($numResults)
+                    ->getResult();
+
+                $result = array_merge($academics, $externals);
+
+                return array_slice($result, 0, $numResults);
         }
     }
 
@@ -358,5 +375,11 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
         if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);
         }
+    }
+
+    private function compareNames($a, $b){
+        $nameFirst = $a->getFirstName().' '.$a->getLastName();
+        $nameLast = $b->getFirstName().' '.$b->getLastName();
+        return $nameFirst < $nameLast;
     }
 }
