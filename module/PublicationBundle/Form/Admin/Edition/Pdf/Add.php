@@ -83,7 +83,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'label'      => 'File',
                 'required'   => true,
                 'attributes' => array(
-                    'multiple'  => true,
                     'data-help' => 'The maximum file size is ' . self::FILE_SIZE . '.',
                 ),
                 'options' => array(
