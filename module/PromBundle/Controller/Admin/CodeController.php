@@ -325,11 +325,13 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
         $body = str_replace('{{ firstName }}', $codes[0]->getFirstName(), $body);
         $body = str_replace('{{ lastName }}', $codes[0]->getLastName(), $body);
 
+        preg_match('/.*{{ reservationCode }}.*\n/', $body, $matches);
+
         $codesString = "";
         foreach($codes as $code){
-            $codesString .= $code->getCode()."\r\n";
+            $codesString .= str_replace('{{ reservationCode }}', $code->getCode(), $matches[0]);
         }
-        $body = str_replace('{{ reservationCode }}', $codesString, $body);
+        $body = preg_replace('/( )*{{ reservationCode }}.*\n/', $codesString, $body);
 
         $mail = new Message();
         $mail->addTo($codes[0]->getEmail())
