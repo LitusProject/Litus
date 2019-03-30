@@ -11,6 +11,7 @@
 
         <table class="manage">
             <tr>
+                <th>Bus name</th>
                 <th>Departure Time</th>
                 <th width="100px">Go or Return</th>
                 <th width="100px">Total Seats</th>
@@ -20,6 +21,7 @@
 
             {% for bus in paginator %}
                 <tr class="item item-{{ bus.getId() }}">
+                    <td>{{ bus.getName() }}</td>
                     <td>{{ bus.getDepartureTime().format('d/m/Y H:i') }}</td>
                     <td>{{ bus.getDirection() }}</td>
                     <td>{{ bus.getTotalSeats() }}</td>

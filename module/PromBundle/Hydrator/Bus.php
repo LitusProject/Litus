@@ -25,6 +25,7 @@ use PromBundle\Entity\Bus as BusEntity;
 class Bus extends \CommonBundle\Component\Hydrator\Hydrator
 {
     private static $stdKeys = array(
+        'name',
         'total_seats',
         'direction',
     );

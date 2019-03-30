@@ -35,11 +35,12 @@ class Csv extends \CommonBundle\Component\Document\Generator\Csv
      */
     public function __construct(EntityManager $entityManager, $buses)
     {
-        $headers = array('First Name', 'Last Name', 'Code', 'Return Bus', 'Return Bus ID');
+        $headers = array('First Name', 'Last Name', 'Code', 'Emailadres', 'Return Bus', 'Return Bus ID');
 
         $result = array();
         foreach ($buses as $bus) {
             $result[] = array(
+                $bus->getName(),
                 $bus->getDepartureTime()->format('d/m/Y H:i'),
             );
 
@@ -55,6 +56,7 @@ class Csv extends \CommonBundle\Component\Document\Generator\Csv
                     $passenger->getFirstName(),
                     $passenger->getLastName(),
                     $passenger->getCode()->getCode(),
+                    $passenger->getEmail(),
                     $returnBus,
                     $returnBusId,
                 );

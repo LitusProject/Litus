@@ -35,6 +35,22 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'     => 'text',
+                'name'     => 'name',
+                'label'    => 'Bus Name',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
                 'type'     => 'datetime',
                 'name'     => 'departure_time',
                 'label'    => 'Departure Time',

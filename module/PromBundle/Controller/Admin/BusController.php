@@ -99,7 +99,7 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
         $mail = new Message();
 
         foreach ($bus->getReservedSeatsArray() as $passenger) {
-            $passenger->setBus(null);
+            $passenger->removeBus($bus);
             $mail->addBcc($passenger->getEmail());
         }
 
