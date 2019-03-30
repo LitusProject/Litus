@@ -183,4 +183,14 @@ class Passenger
     {
         return $this->code;
     }
+
+    public function removeBus($bus){
+        if ($this->firstBus === $bus) {
+            $this->firstBus = null;
+        }
+
+        if ($this->secondBus === $bus) {
+            $this->secondBus = null;
+        }
+    }
 }
