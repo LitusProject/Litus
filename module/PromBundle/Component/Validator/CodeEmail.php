@@ -85,7 +85,7 @@ class CodeEmail extends \CommonBundle\Component\Validator\AbstractValidator
             $passenger = $passengers[0];
         }
 
-        if ($passenger !== null && $value == $passenger->getEmail()) {
+        if ($passenger !== null && strtolower($value) == strtolower($passenger->getEmail())) {
             return true;
         }
 
