@@ -35,7 +35,7 @@ class Csv extends \CommonBundle\Component\Document\Generator\Csv
      */
     public function __construct(EntityManager $entityManager, $buses)
     {
-        $headers = array('First Name', 'Last Name', 'Code', 'Emailadres', 'Return Bus', 'Return Bus ID');
+        $headers = array('First Name', 'Last Name', 'Code', 'Emailadres');
 
         $result = array();
         foreach ($buses as $bus) {
@@ -49,16 +49,11 @@ class Csv extends \CommonBundle\Component\Document\Generator\Csv
                 ->findAllPassengersByBus($bus);
 
             foreach ($sortedPassengers as $passenger) {
-                $returnBus = $passenger->getSecondBus() == null ? '' : $passenger->getSecondBus()->getDepartureTime()->format('d/m/Y H:i');
-                $returnBusId = $returnBus == '' ? '' : $passenger->getSecondBus()->getId();
-
                 $result[] = array(
                     $passenger->getFirstName(),
                     $passenger->getLastName(),
                     $passenger->getCode()->getCode(),
                     $passenger->getEmail(),
-                    $returnBus,
-                    $returnBusId,
                 );
             }
 

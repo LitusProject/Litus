@@ -136,7 +136,7 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
     {
         $buses = $this->getEntityManager()
             ->getRepository('PromBundle\Entity\Bus')
-            ->getGoBusses($this->getCurrentAcademicYear());
+            ->findAllBusesByAcademicYear($this->getCurrentAcademicYear());
 
         $file = new CsvFile();
         $document = new CsvGenerator($this->getEntityManager(), $buses);
