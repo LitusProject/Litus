@@ -83,7 +83,10 @@ class Passenger extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         return $query->select('p')
             ->from('PromBundle\Entity\Bus\Passenger', 'p')
             ->where(
-                $query->expr()->eq('p.firstBus', ':bus')
+                $query->expr()->orX(
+                    $query->expr()->eq('p.firstBus', ':bus'),
+                    $query->expr()->eq('p.secondBus', ':bus')
+                )
             )
             ->setParameter('bus', $bus)
             ->orderBy('p.firstName', 'ASC')
