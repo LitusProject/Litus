@@ -60,12 +60,15 @@ class Passenger extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->join('p.code', 'c')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->eq('p.email', ':email'),
+                    $query->expr()->eq(
+                        $query->expr()->lower('p.email'),
+                        ':email'
+                    ),
                     $query->expr()->eq('c.academicYear', ':year')
                 )
             )
             ->setParameter('year', $academicYear)
-            ->setParameter('email', $email)
+            ->setParameter('email', strtolower($email))
             ->getQuery()
             ->getOneOrNullResult();
     }

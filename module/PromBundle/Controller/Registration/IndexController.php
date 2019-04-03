@@ -263,7 +263,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
             $passenger = $passengers[0];
         }
 
-        if ($passenger !== null && $manageFormData['manage']['email'] == $passenger->getEmail()) {
+        if ($passenger !== null && strtolower($manageFormData['manage']['email']) == strtolower($passenger->getEmail())) {
             setcookie(
                 self::$cookieNamespace,
                 $code->getCode(),
