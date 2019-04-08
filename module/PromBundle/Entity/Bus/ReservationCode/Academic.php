@@ -69,14 +69,16 @@ class Academic extends \PromBundle\Entity\Bus\ReservationCode
     /**
      * @return string
      */
-    public function getFirstName(){
+    public function getFirstName()
+    {
         return $this->academic->getFirstName();
     }
 
     /**
      * @return string
      */
-    public function getLastName(){
+    public function getLastName()
+    {
         return $this->academic->getLastName();
     }
 }

@@ -97,7 +97,8 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
         return null;
     }
 
-    public function corporateAction(){
+    public function corporateAction()
+    {
         $this->initJson();
 
         $result = array();
@@ -111,16 +112,16 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->getRepository('BrBundle\Entity\User\Person\Corporate')
             ->findOneById($person->getId());
 
-        if (null !== $corporate) {
-            if (null !== $corporate->getCompany()){
+        if ($corporate !== null) {
+            if ($corporate->getCompany() !== null) {
                 $result['corporate_id'] = $corporate->getCompany()->getId();
-            }else{
-                $result['corporate_id'] = "-1";
-                $result['message'] = "The company ID could not be retrieved from the database.";
+            } else {
+                $result['corporate_id'] = '-1';
+                $result['message'] = 'The company ID could not be retrieved from the database.';
             }
-        }else{
-            $result['corporate_id'] = "-1";
-            $result['message'] = "The person does not belong to a company.";
+        } else {
+            $result['corporate_id'] = '-1';
+            $result['message'] = 'The person does not belong to a company.';
         }
 
         return new ViewModel(

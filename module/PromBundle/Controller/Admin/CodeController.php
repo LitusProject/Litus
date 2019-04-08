@@ -22,12 +22,12 @@ namespace PromBundle\Controller\Admin;
 
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use PromBundle\Entity\Bus\ReservationCode;
 use PromBundle\Entity\Bus\ReservationCode\Academic as AcademicCode;
 use PromBundle\Entity\Bus\ReservationCode\External as ExternalCode;
-use PromBundle\Entity\Bus\ReservationCode;
 use Zend\Http\Headers;
-use Zend\View\Model\ViewModel;
 use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * CodeController
@@ -63,24 +63,24 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
             $academicForm->setData($formData);
             $externalForm->setData($formData);
 
-            $codes = [];
+            $codes = array();
 
             if (isset($formData['academic_add']) && $academicForm->isValid()) {
-                for($i = 0; $i < $formData['number_tickets']; $i++){
-                    $codes[] =  $academicForm->hydrateObject(
+                for ($i = 0; $i < $formData['number_tickets']; $i++) {
+                    $codes[] = $academicForm->hydrateObject(
                         new AcademicCode($this->getCurrentAcademicYear())
                     );
                 }
             } elseif (isset($formData['external_add']) && $externalForm->isValid()) {
-                for($i = 0; $i < $formData['number_tickets']; $i++){
+                for ($i = 0; $i < $formData['number_tickets']; $i++) {
                     $codes[] = $externalForm->hydrateObject(
                         new ExternalCode($this->getCurrentAcademicYear())
                     );
                 }
             }
 
-            if($codes !== []){
-                foreach($codes as $code){
+            if ($codes !== array()) {
+                foreach ($codes as $code) {
                     $this->getEntityManager()->persist($code);
                 }
                 $this->getEntityManager()->flush();
@@ -307,11 +307,11 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
 
     private function sendReservationCodeMail($codes)
     {
-        if(!is_array($codes)){
-            $codes = [$codes];
+        if (!is_array($codes)) {
+            $codes = array($codes);
         }
 
-        if(count($codes) == 0){
+        if (count($codes) == 0) {
             return;
         }
 
@@ -327,8 +327,8 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
 
         preg_match('/.*{{ reservationCode }}.*\n/', $body, $matches);
 
-        $codesString = "";
-        foreach($codes as $code){
+        $codesString = '';
+        foreach ($codes as $code) {
             $codesString .= str_replace('{{ reservationCode }}', $code->getCode(), $matches[0]);
         }
         $body = preg_replace('/( )*{{ reservationCode }}.*\n/', $codesString, $body);
@@ -364,24 +364,17 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('PromBundle\Entity\Bus\ReservationCode')
             ->findAll();
 
-        $addresses = [];
-        foreach($codes as $code){
+        $addresses = array();
+        foreach ($codes as $code) {
             $addresses[] = $code->getEmail();
         }
-        $unique_addresses = array_unique($addresses);
 
-        foreach($addresses as $address){
+        foreach ($addresses as $address) {
             $mail->addBcc($address);
         }
 
         if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);
         }
-    }
-
-    private function compareNames($a, $b){
-        $nameFirst = $a->getFirstName().' '.$a->getLastName();
-        $nameLast = $b->getFirstName().' '.$b->getLastName();
-        return $nameFirst < $nameLast;
     }
 }

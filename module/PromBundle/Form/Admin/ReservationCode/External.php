@@ -20,8 +20,6 @@
 
 namespace PromBundle\Form\Admin\ReservationCode;
 
-use PromBundle\Entity\Bus\ReservationCode;
-
 /**
  * Add External
  *
@@ -30,11 +28,6 @@ use PromBundle\Entity\Bus\ReservationCode;
 class External extends \CommonBundle\Component\Form\Admin\Form
 {
     protected $hydrator = 'PromBundle\Hydrator\Bus\ReservationCode\External';
-
-    /**
-     * @var MailingList
-     */
-    private $list;
 
     public function init()
     {
@@ -130,8 +123,8 @@ class External extends \CommonBundle\Component\Form\Admin\Form
     private function getNumberOptions()
     {
         $nb = 10;
-        $options = [];
-        for($i = 0; $i <= $nb; $i++){
+        $options = array();
+        for ($i = 0; $i <= $nb; $i++) {
             $options[$i] = $i;
         }
 

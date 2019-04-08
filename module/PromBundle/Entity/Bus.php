@@ -93,11 +93,10 @@ class Bus
     private $maxPassengerNb = 100;
 
     /**
-     * @var String name of the bus
+     * @var string name of the bus
      @ORM\Column(type="string", length=20, nullable=true)
      */
     private $name;
-
 
     /**
      * Creates a new Bus with the given attributes
@@ -131,7 +130,6 @@ class Bus
         return $this->direction;
     }
 
-
     /**
      * @param string $direction The direction in which the bus is going
      */
@@ -151,7 +149,7 @@ class Bus
      /**
      * Set the bus name
      *
-     * @param String $name of the bus
+     * @param string $name of the bus
      */
     public function setName($name)
     {

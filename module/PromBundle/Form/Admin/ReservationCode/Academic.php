@@ -20,8 +20,6 @@
 
 namespace PromBundle\Form\Admin\ReservationCode;
 
-use PromBundle\Entity\Bus\ReservationCode;
-
 /**
  * Add Academic
  *
@@ -30,11 +28,6 @@ use PromBundle\Entity\Bus\ReservationCode;
 class Academic extends \CommonBundle\Component\Form\Admin\Form
 {
     protected $hydrator = 'PromBundle\Hydrator\Bus\ReservationCode\Academic';
-
-    /**
-     * @var ReservationCode
-     */
-    private $code;
 
     public function init()
     {
@@ -95,9 +88,8 @@ class Academic extends \CommonBundle\Component\Form\Admin\Form
 
     private function getNumberOptions()
     {
-        $nb = 10;
-        $options = [];
-        for($i = 0; $i <= $nb; $i++){
+        $options = array();
+        for ($i = 0; $i <= 10; $i++) {
             $options[$i] = $i;
         }
 

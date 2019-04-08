@@ -187,7 +187,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         foreach ($busses as $bus) {
             $seatsLeft = $bus->getTotalSeats() - $bus->getReservedSeats();
             if ($seatsLeft > 0) {
-                $array[$bus->getId()] =  $bus->getName() . ' - ' . $bus->getDepartureTime()->format('H:i') . ' (' . $seatsLeft . ' seats left)';
+                $array[$bus->getId()] = $bus->getName() . ' - ' . $bus->getDepartureTime()->format('H:i') . ' (' . $seatsLeft . ' seats left)';
             }
         }
 
