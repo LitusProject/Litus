@@ -199,17 +199,17 @@ class Edit extends \PromBundle\Form\Registration\Add
      */
     protected function getSecondBusses()
     {
-      $array = parent::getSecondBusses();
+        $array = parent::getSecondBusses();
 
-      $bus = $this->passenger->getSecondBus();
+        $bus = $this->passenger->getSecondBus();
 
-      if ($bus !== null) {
-          // Add one, because you don't want to count in the person himself
-          $seatsLeft = $bus->getTotalSeats() - $bus->getReservedSeats() + 1;
-          $array[$bus->getId()] = $bus->getName() . ' - ' . $bus->getDepartureTime()->format('H:i') . ' (' . $seatsLeft . ' seats left)';
-      }
+        if ($bus !== null) {
+            // Add one, because you don't want to count in the person himself
+            $seatsLeft = $bus->getTotalSeats() - $bus->getReservedSeats() + 1;
+            $array[$bus->getId()] = $bus->getName() . ' - ' . $bus->getDepartureTime()->format('H:i') . ' (' . $seatsLeft . ' seats left)';
+        }
 
-      return $array;
+        return $array;
     }
 
     /**
