@@ -18,7 +18,31 @@
  * @license http://litus.cc/LICENSE
  */
 
-removeConfigKey($connection, 'common.enable_piwik');
-removeConfigKey($connection, 'common.piwik_api_url');
-removeConfigKey($connection, 'common.piwik_token_auth');
-removeConfigKey($connection, 'common.piwik_id_site');
+namespace <namespace>;
+
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
+
+/**
+ * Version <version>
+ */
+class Version<version> extends AbstractMigration
+{
+    /**
+     * @param  \Doctrine\DBAL\Schema\Schema $schema
+     * @return void
+     */
+    public function up(Schema $schema)
+    {
+<up>
+    }
+
+    /**
+     * @param  \Doctrine\DBAL\Schema\Schema $schema
+     * @return void
+     */
+    public function down(Schema $schema)
+    {
+<down>
+    }
+}
