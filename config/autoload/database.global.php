@@ -81,5 +81,13 @@ return array(
                 'class' => ORMAnnotationDriver::class,
             ),
         ),
+
+        'migrations_configuration' => array(
+            'orm_default' => array(
+                'directory'       => __DIR__ . '/../../migrations',
+                'namespace'       => 'Migrations',
+                'custom_template' => __DIR__ . '/../../migrations/migration.tpl'
+            ),
+        ),
     ),
 );

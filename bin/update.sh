@@ -43,14 +43,10 @@ done
 rm -rf data/cache/*
 rm -rf public/_assetic/*
 
-# upgrade
-header "Upgrade" false
-./bin/upgrade.sh
-
 # doctrine
 header "Doctrine" true
 
-php bin/doctrine.php orm:schema-tool:update --force
+php bin/doctrine.php migrations:execute
 php bin/doctrine.php orm:generate-proxies data/proxies/
 
 # installation
