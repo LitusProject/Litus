@@ -29,7 +29,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity stores a unit of the organization.
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\Organization\Unit")
- * @ORM\Table(name="general.organizations_units")
+ * @ORM\Table(name="general_organizations_units")
  */
 class Unit
 {
@@ -77,7 +77,7 @@ class Unit
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @ORM\JoinTable(
-     *      name="general.organizations_units_roles_map",
+     *      name="general_organizations_units_roles_map",
      *      joinColumns={@ORM\JoinColumn(name="unit", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="role", referencedColumnName="name")}
      * )
@@ -89,7 +89,7 @@ class Unit
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @ORM\JoinTable(
-     *      name="general.organizations_units_coordinator_roles_map",
+     *      name="general_organizations_units_coordinator_roles_map",
      *      joinColumns={@ORM\JoinColumn(name="unit", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="role", referencedColumnName="name")}
      * )

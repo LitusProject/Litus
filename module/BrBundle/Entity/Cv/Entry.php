@@ -31,7 +31,7 @@ use SyllabusBundle\Entity\Study;
  * This is the entity for a cv entry.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Cv\Entry")
- * @ORM\Table(name="br.cv_entries", uniqueConstraints={@ORM\UniqueConstraint(name="year_academic_unique", columns={"year", "academic"})})
+ * @ORM\Table(name="br_cv_entries", uniqueConstraints={@ORM\UniqueConstraint(name="year_academic_unique", columns={"year", "academic"})})
  */
 class Entry
 {

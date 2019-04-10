@@ -24,7 +24,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Article\External")
- * @ORM\Table(name="cudi.articles_external")
+ * @ORM\Table(name="cudi_articles_external")
  */
 class External extends \CudiBundle\Entity\Article
 {

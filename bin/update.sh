@@ -46,7 +46,7 @@ rm -rf public/_assetic/*
 # doctrine
 header "Doctrine" true
 
-php bin/doctrine.php migrations:execute
+php bin/doctrine.php migrations:migration --no-interaction
 php bin/doctrine.php orm:generate-proxies data/proxies/
 
 # installation

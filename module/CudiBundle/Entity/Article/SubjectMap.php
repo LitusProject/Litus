@@ -27,7 +27,7 @@ use SyllabusBundle\Entity\Subject;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Article\SubjectMap")
- * @ORM\Table(name="cudi.articles_subjects_map")
+ * @ORM\Table(name="cudi_articles_subjects_map")
  */
 class SubjectMap
 {

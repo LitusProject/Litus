@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Session\Restriction")
- * @ORM\Table(name="cudi.sales_session_restriction")
+ * @ORM\Table(name="cudi_sales_session_restriction")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({

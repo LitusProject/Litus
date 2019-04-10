@@ -26,7 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
  * An abstract class that stores a number of options.
  *
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Field\Dropdown")
- * @ORM\Table(name="forms.fields_dropdowns")
+ * @ORM\Table(name="forms_fields_dropdowns")
  */
 class Dropdown extends \FormBundle\Entity\Field\OptionSelector
 {

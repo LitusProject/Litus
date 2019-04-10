@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Log\Article\Sale\Unbookable")
- * @ORM\Table(name="cudi.log_articles_sales_unbookable")
+ * @ORM\Table(name="cudi_log_articles_sales_unbookable")
  */
 class Unbookable extends \CudiBundle\Entity\Log
 {

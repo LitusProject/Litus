@@ -31,7 +31,7 @@ use SportBundle\Entity\Department;
  * This entity represents a lap.
  *
  * @ORM\Entity(repositoryClass="SportBundle\Repository\Lap")
- * @ORM\Table(name="sport.laps")
+ * @ORM\Table(name="sport_laps")
  */
 class Lap
 {

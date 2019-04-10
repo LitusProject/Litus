@@ -28,7 +28,7 @@ use PageBundle\Entity\Link;
  * This entity represents a translation of a link.
  *
  * @ORM\Entity(repositoryClass="PageBundle\Repository\Link\Translation")
- * @ORM\Table(name="nodes.pages_links_translations")
+ * @ORM\Table(name="nodes_pages_links_translations")
  */
 class Translation
 {

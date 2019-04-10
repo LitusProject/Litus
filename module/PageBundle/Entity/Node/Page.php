@@ -33,7 +33,7 @@ use PageBundle\Entity\Category;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="PageBundle\Repository\Node\Page")
- * @ORM\Table(name="nodes.pages")
+ * @ORM\Table(name="nodes_pages")
  */
 class Page extends \CommonBundle\Entity\Node
 {
@@ -64,7 +64,7 @@ class Page extends \CommonBundle\Entity\Node
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @ORM\JoinTable(
-     *      name="nodes.pages_roles_map",
+     *      name="nodes_pages_roles_map",
      *      joinColumns={@ORM\JoinColumn(name="page", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="role", referencedColumnName="name")}
      * )

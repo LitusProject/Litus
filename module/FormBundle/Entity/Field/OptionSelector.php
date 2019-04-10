@@ -30,7 +30,7 @@ use Locale;
  * An abstract class that stores a number of options.
  *
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Field\OptionSelector")
- * @ORM\Table(name="forms.fields_options")
+ * @ORM\Table(name="forms_fields_options")
  */
 abstract class OptionSelector extends \FormBundle\Entity\Field
 {

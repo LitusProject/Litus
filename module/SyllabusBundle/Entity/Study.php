@@ -26,7 +26,7 @@ use SyllabusBundle\Entity\Study\Combination;
 
 /**
  * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Study")
- * @ORM\Table(name="syllabus.studies")
+ * @ORM\Table(name="syllabus_studies")
  */
 class Study
 {

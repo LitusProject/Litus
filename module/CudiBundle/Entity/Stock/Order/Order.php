@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Stock\Order\Order")
- * @ORM\Table(name="cudi.stock_orders", indexes={@ORM\Index(name="stock_orders_time", columns={"date_created"})})
+ * @ORM\Table(name="cudi_stock_orders", indexes={@ORM\Index(name="stock_orders_time", columns={"date_created"})})
  */
 class Order
 {

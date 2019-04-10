@@ -26,7 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This is the entity for the list entry of an external person.
  *
  * @ORM\Entity(repositoryClass="MailBundle\Repository\MailingList\Entry\Person\External")
- * @ORM\Table(name="mail.lists_entries_people_external")
+ * @ORM\Table(name="mail_lists_entries_people_external")
  */
 class External extends \MailBundle\Entity\MailingList\Entry\Person
 {

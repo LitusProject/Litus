@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This class represents a visit, every page view is a visit
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\Visit")
- * @ORM\Table(name="general.visits")
+ * @ORM\Table(name="general_visits")
  */
 class Visit
 {

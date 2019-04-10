@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity stores a QR code.
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Barcode\Qr")
- * @ORM\Table(name="users.barcodes_qr")
+ * @ORM\Table(name="users_barcodes_qr")
  */
 class Qr extends \CommonBundle\Entity\User\Barcode
 {

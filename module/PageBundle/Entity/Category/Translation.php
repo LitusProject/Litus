@@ -28,7 +28,7 @@ use PageBundle\Entity\Category;
  * This entity represents a translation of a category.
  *
  * @ORM\Entity(repositoryClass="PageBundle\Repository\Category\Translation")
- * @ORM\Table(name="nodes.pages_categories_translations")
+ * @ORM\Table(name="nodes_pages_categories_translations")
  */
 class Translation
 {

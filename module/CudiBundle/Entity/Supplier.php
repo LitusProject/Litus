@@ -29,7 +29,7 @@ use InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Supplier")
- * @ORM\Table(name="cudi.suppliers")
+ * @ORM\Table(name="cudi_suppliers")
  */
 class Supplier
 {

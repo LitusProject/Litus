@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Article\Internal")
- * @ORM\Table(name="cudi.articles_internal")
+ * @ORM\Table(name="cudi_articles_internal")
  */
 class Internal extends \CudiBundle\Entity\Article
 {

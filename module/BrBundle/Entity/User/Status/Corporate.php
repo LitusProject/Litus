@@ -29,7 +29,7 @@ use InvalidArgumentException;
  * A classification of a user based on his status at our Alma Mater.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\User\Status\Corporate")
- * @ORM\Table(name="users.corporate_statuses")
+ * @ORM\Table(name="users_corporate_statuses")
  */
 class Corporate
 {
@@ -38,7 +38,8 @@ class Corporate
      * @var array All the possible status values allowed
      */
     private static $possibleStatuses = array(
-        'correspondence', 'signatory',
+        'correspondence',
+        'signatory',
     );
 
     /**

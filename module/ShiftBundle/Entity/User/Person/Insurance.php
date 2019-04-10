@@ -29,7 +29,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity(repositoryClass="ShiftBundle\Repository\User\Person\Insurance")
  * @ORM\Table(
- *      name="users.people_shift_insurance",
+ *      name="users_people_shift_insurance",
  *      uniqueConstraints={@ORM\UniqueConstraint(name="insurance_unique", columns={"person", "academic_year"})})
  */
 class Insurance

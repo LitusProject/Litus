@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="NotificationBundle\Repository\Node\Translation")
- * @ORM\Table(name="nodes.notification_translations")
+ * @ORM\Table(name="nodes_notification_translations")
  */
 class Translation
 {

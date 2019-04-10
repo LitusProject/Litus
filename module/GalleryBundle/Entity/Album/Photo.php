@@ -26,7 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="GalleryBundle\Repository\Album\Photo")
- * @ORM\Table(name="gallery.photos")
+ * @ORM\Table(name="gallery_photos")
  */
 class Photo
 {

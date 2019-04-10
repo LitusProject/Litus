@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Article\Restriction\Available")
- * @ORM\Table(name="cudi.sales_articles_restrictions_available")
+ * @ORM\Table(name="cudi_sales_articles_restrictions_available")
  */
 class Available extends \CudiBundle\Entity\Sale\Article\Restriction
 {

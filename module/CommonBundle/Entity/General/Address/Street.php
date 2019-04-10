@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\Address\Street")
  * @ORM\Table(
- *     name="general.address_streets",
+ *     name="general_address_streets",
  *    indexes={@ORM\Index(name="street_name", columns={"name"})}
  * )
  */

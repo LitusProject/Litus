@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="GalleryBundle\Repository\Album\Translation")
- * @ORM\Table(name="gallery.translations")
+ * @ORM\Table(name="gallery_translations")
  */
 class Translation
 {

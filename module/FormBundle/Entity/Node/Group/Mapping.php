@@ -28,7 +28,7 @@ use FormBundle\Entity\Node\Group;
  * This entity stores mapping of forms and groups
  *
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Node\Group\Mapping")
- * @ORM\Table(name="nodes.form_groups_mapping")
+ * @ORM\Table(name="nodes_form_groups_mapping")
  */
 class Mapping
 {

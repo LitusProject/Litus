@@ -26,7 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This class represnts a money unit, e.g. a €1 coin.
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\Bank\MoneyUnit")
- * @ORM\Table(name="general.bank_money_units")
+ * @ORM\Table(name="general_bank_money_units")
  */
 class MoneyUnit
 {

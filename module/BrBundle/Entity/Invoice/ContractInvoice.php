@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Invoice\ContractInvoice")
- * @ORM\Table(name="br.invoices_contract")
+ * @ORM\Table(name="br_invoices_contract")
  */
 class ContractInvoice extends \BrBundle\Entity\Invoice
 {

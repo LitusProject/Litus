@@ -28,7 +28,7 @@ use InvalidArgumentException;
 /**
  * @ORM\Entity(repositoryClass="TicketBundle\Repository\Ticket")
  * @ORM\Table(
- *     name="tickets.tickets",
+ *     name="tickets_tickets",
  *     uniqueConstraints={
  *          @ORM\UniqueConstraint(name="ticket_number_unique", columns={"event", "number"})
  *      }

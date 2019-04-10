@@ -29,7 +29,7 @@ use InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Invoice\ManualInvoice")
- * @ORM\Table(name="br.invoices_manual")
+ * @ORM\Table(name="br_invoices_manual")
  */
 class ManualInvoice extends \BrBundle\Entity\Invoice
 {

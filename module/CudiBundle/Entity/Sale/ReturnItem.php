@@ -27,7 +27,7 @@ use InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\ReturnItem")
- * @ORM\Table(name="cudi.sales_return_items", indexes={@ORM\Index(name="sales_return_item_time", columns={"timestamp"})})
+ * @ORM\Table(name="cudi_sales_return_items", indexes={@ORM\Index(name="sales_return_item_time", columns={"timestamp"})})
  */
 class ReturnItem
 {

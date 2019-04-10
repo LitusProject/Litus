@@ -25,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Article\Notification\Subscription")
- * @ORM\Table(name="cudi.articles_notifications_subscriptions")
+ * @ORM\Table(name="cudi_articles_notifications_subscriptions")
  */
 class Subscription
 {

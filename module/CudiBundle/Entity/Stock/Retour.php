@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Stock\Retour")
  * @ORM\Table(
- *    name="cudi.stock_retours",
+ *    name="cudi_stock_retours",
  *    indexes={@ORM\Index(name="stock_retours_time", columns={"timestamp"})}
  * )
  */

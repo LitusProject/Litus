@@ -29,7 +29,7 @@ use Parsedown;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="NewsBundle\Repository\Node\Translation")
- * @ORM\Table(name="nodes.news_translations")
+ * @ORM\Table(name="nodes_news_translations")
  */
 class Translation
 {

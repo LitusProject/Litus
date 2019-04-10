@@ -27,7 +27,7 @@ use SyllabusBundle\Entity\Subject;
 
 /**
  * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Subject\ProfMap")
- * @ORM\Table(name="syllabus.subjects_profs_map")
+ * @ORM\Table(name="syllabus_subjects_profs_map")
  */
 class ProfMap
 {

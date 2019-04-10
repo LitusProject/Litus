@@ -38,7 +38,7 @@ use Zend\Mail\Transport\TransportInterface;
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Person")
  * @ORM\Table(
- *      name="users.people",
+ *      name="users_people",
  *      uniqueConstraints={@ORM\UniqueConstraint(name="username_unique", columns={"username"})}
  * )
  * @ORM\InheritanceType("JOINED")
@@ -80,7 +80,7 @@ abstract class Person implements RoleAware
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @ORM\JoinTable(
-     *      name="users.people_roles_map",
+     *      name="users_people_roles_map",
      *      joinColumns={@ORM\JoinColumn(name="person", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="role", referencedColumnName="name")}
      * )

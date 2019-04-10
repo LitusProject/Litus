@@ -27,7 +27,7 @@ use MailBundle\Entity\MailingList;
  * This is the entity for a list entry.
  *
  * @ORM\Entity(repositoryClass="MailBundle\Repository\MailingList\Entry")
- * @ORM\Table(name="mail.lists_entries")
+ * @ORM\Table(name="mail_lists_entries")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({

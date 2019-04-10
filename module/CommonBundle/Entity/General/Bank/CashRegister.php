@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
  * A class that is used to store the contents of a counted register
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\Bank\CashRegister")
- * @ORM\Table(name="general.bank_cash_registers")
+ * @ORM\Table(name="general_bank_cash_registers")
  */
 class CashRegister
 {

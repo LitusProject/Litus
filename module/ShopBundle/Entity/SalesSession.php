@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @author Floris Kint <floris.kint@litus.cc>
  * @ORM\Entity(repositoryClass="ShopBundle\Repository\SalesSession")
- * @ORM\Table(name="shop.sessions")
+ * @ORM\Table(name="shop_sessions")
  */
 class SalesSession
 {

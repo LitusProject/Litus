@@ -29,7 +29,7 @@ use Parsedown;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="CalendarBundle\Repository\Node\Translation")
- * @ORM\Table(name="nodes.events_translations")
+ * @ORM\Table(name="nodes_events_translations")
  */
 class Translation
 {

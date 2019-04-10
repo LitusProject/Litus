@@ -25,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Comment\Mapping")
- * @ORM\Table(name="cudi.comments_articles_map")
+ * @ORM\Table(name="cudi_comments_articles_map")
  */
 class Mapping
 {

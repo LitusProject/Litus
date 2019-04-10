@@ -86,6 +86,7 @@ return array(
             'orm_default' => array(
                 'directory'       => __DIR__ . '/../../migrations',
                 'namespace'       => 'Migrations',
+                'table'           => 'general_migrations',
                 'custom_template' => __DIR__ . '/../../migrations/migration.tpl'
             ),
         ),

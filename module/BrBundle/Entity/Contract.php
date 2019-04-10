@@ -35,7 +35,7 @@ use InvalidArgumentException;
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Contract")
  * @ORM\Table(
- *       name="br.contracts",
+ *       name="br_contracts",
  *       uniqueConstraints={@ORM\UniqueConstraint(name="contract_unique", columns={"author", "contract_nb"})}
  *      )
  */

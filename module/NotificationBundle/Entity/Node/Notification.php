@@ -31,7 +31,7 @@ use Locale;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="NotificationBundle\Repository\Node\Notification")
- * @ORM\Table(name="nodes.notifications")
+ * @ORM\Table(name="nodes_notifications")
  */
 class Notification extends \CommonBundle\Entity\Node
 {

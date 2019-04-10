@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This is the entity for reservationcodes.
  *
  * @ORM\Entity(repositoryClass="PromBundle\Repository\Bus\ReservationCode")
- * @ORM\Table(name="prom.bus_code")
+ * @ORM\Table(name="prom_bus_code")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({

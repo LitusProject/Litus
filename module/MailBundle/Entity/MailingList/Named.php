@@ -26,7 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This is the entity for a named list.
  *
  * @ORM\Entity(repositoryClass="MailBundle\Repository\MailingList\Named")
- * @ORM\Table(name="mail.lists_named")
+ * @ORM\Table(name="mail_lists_named")
  */
 class Named extends \MailBundle\Entity\MailingList
 {

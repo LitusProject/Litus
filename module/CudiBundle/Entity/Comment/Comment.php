@@ -29,7 +29,7 @@ use InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Comment\Comment")
- * @ORM\Table(name="cudi.comments_comments")
+ * @ORM\Table(name="cudi_comments_comments")
  */
 class Comment
 {

@@ -25,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Article\History")
- * @ORM\Table(name="cudi.sales_history")
+ * @ORM\Table(name="cudi_sales_history")
  */
 class History
 {

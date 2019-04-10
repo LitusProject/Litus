@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This is the entity for a list.
  *
  * @ORM\Entity(repositoryClass="MailBundle\Repository\MailingList")
- * @ORM\Table(name="mail.lists")
+ * @ORM\Table(name="mail_lists")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({

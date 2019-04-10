@@ -31,7 +31,7 @@ use Parsedown;
  * This is the entity for an job.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Company\Job")
- * @ORM\Table(name="br.companies_jobs")
+ * @ORM\Table(name="br_companies_jobs")
  */
 class Job
 {

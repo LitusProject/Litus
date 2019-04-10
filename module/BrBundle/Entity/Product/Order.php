@@ -33,7 +33,7 @@ use InvalidArgumentException;
  * An order of several products.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Product\Order")
- * @ORM\Table(name="br.orders")
+ * @ORM\Table(name="br_orders")
  */
 class Order
 {

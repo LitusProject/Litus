@@ -29,7 +29,7 @@ use ShopBundle\Entity\SalesSession;
  *
  * @author Floris Kint <floris.kint@litus.cc>
  * @ORM\Entity(repositoryClass="ShopBundle\Repository\Product\SessionStockEntry")
- * @ORM\Table(name="shop.session_stock_entries")
+ * @ORM\Table(name="shop_session_stock_entries")
  */
 class SessionStockEntry
 {

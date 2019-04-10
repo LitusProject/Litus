@@ -32,7 +32,7 @@ use LogisticsBundle\Entity\Driver;
  * TOOD: Refactor to subclasses for van, car, and bike.
  *
  * @ORM\Entity(repositoryClass="LogisticsBundle\Repository\Reservation\VanReservation")
- * @ORM\Table(name="logistics.reservations_van")
+ * @ORM\Table(name="logistics_reservations_van")
  */
 class VanReservation extends \LogisticsBundle\Entity\Reservation\Reservation
 {

@@ -32,7 +32,7 @@ use Locale;
  * This entity stores the album item.
  *
  * @ORM\Entity(repositoryClass="GalleryBundle\Repository\Album\Album")
- * @ORM\Table(name="gallery.albums")
+ * @ORM\Table(name="gallery_albums")
  */
 class Album
 {
