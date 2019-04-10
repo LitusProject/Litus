@@ -31,7 +31,7 @@ use Locale;
  * This entity stores the form group item
  *
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Node\Group")
- * @ORM\Table(name="nodes.form_groups")
+ * @ORM\Table(name="nodes_form_groups")
  */
 class Group extends \CommonBundle\Entity\Node
 {

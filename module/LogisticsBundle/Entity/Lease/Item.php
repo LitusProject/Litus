@@ -26,7 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
  * The entity for a leaseable item
  *
  * @ORM\Entity(repositoryClass="LogisticsBundle\Repository\Lease\Item")
- * @ORM\Table(name="logistics.lease_items")
+ * @ORM\Table(name="logistics_lease_items")
  */
 class Item
 {

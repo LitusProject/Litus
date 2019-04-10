@@ -26,7 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This class represents a language entry that is saved in the database
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\Language")
- * @ORM\Table(name="general.languages")
+ * @ORM\Table(name="general_languages")
  */
 class Language
 {

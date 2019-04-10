@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This is the entity for the list entry of an academic.
  *
  * @ORM\Entity(repositoryClass="MailBundle\Repository\MailingList\Entry\Person\Academic")
- * @ORM\Table(name="mail.lists_entries_people_academic")
+ * @ORM\Table(name="mail_lists_entries_people_academic")
  */
 class Academic extends \MailBundle\Entity\MailingList\Entry\Person
 {

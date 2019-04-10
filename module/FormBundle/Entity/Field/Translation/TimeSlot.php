@@ -28,7 +28,7 @@ use FormBundle\Entity\Field\TimeSlot as TimeSlotField;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Field\Translation\TimeSlot")
- * @ORM\Table(name="forms.fields_timeslots_translations")
+ * @ORM\Table(name="forms_fields_timeslots_translations")
  */
 class TimeSlot
 {

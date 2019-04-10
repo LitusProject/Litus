@@ -26,7 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Stock\Period\Value\Start")
- * @ORM\Table(name="cudi.stock_periods_values_starts")
+ * @ORM\Table(name="cudi_stock_periods_values_starts")
  */
 class Start
 {

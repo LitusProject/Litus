@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
  * An order of several products.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Product\OrderEntry")
- * @ORM\Table(name="br.orders_entries")
+ * @ORM\Table(name="br_orders_entries")
  */
 class OrderEntry
 {

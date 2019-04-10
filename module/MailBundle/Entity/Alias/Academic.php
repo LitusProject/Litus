@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This is the entity for an academic alias.
  *
  * @ORM\Entity(repositoryClass="MailBundle\Repository\Alias\Academic")
- * @ORM\Table(name="mail.aliases_academic")
+ * @ORM\Table(name="mail_aliases_academic")
  */
 class Academic extends \MailBundle\Entity\Alias
 {

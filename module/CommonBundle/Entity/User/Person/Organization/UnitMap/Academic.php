@@ -29,7 +29,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Specifying the mapping between organization and academic.
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Person\Organization\UnitMap\Academic")
- * @ORM\Table(name="users.people_organizations_unit_map_academic")
+ * @ORM\Table(name="users_people_organizations_unit_map_academic")
  */
 class Academic extends \CommonBundle\Entity\User\Person\Organization\UnitMap
 {

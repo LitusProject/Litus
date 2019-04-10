@@ -29,7 +29,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This is the entity for a quiz.
  *
  * @ORM\Entity(repositoryClass="QuizBundle\Repository\Quiz")
- * @ORM\Table(name="quiz.quizes")
+ * @ORM\Table(name="quiz_quizes")
  */
 class Quiz
 {
@@ -83,7 +83,7 @@ class Quiz
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @ORM\JoinTable(
-     *      name="quiz.quizes_roles_map",
+     *      name="quiz_quizes_roles_map",
      *      joinColumns={@ORM\JoinColumn(name="quiz", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="role", referencedColumnName="name")}
      * )

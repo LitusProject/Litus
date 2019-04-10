@@ -28,7 +28,7 @@ use Zend\Http\PhpEnvironment\Request;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Node\GuestInfo")
- * @ORM\Table(name="forms.guests_info")
+ * @ORM\Table(name="forms_guests_info")
  */
 class GuestInfo
 {

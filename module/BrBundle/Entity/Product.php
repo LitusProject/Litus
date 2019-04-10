@@ -32,7 +32,7 @@ use InvalidArgumentException;
  * A product is something that can be sold to companies.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Product")
- * @ORM\Table(name="br.products")
+ * @ORM\Table(name="br_products")
  */
 class Product
 {

@@ -29,7 +29,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @author Floris Kint <floris.kint@litus.cc>
  * @ORM\Entity(repositoryClass="ShopBundle\Repository\Reservation")
- * @ORM\Table(name="shop.reservations")
+ * @ORM\Table(name="shop_reservations")
  */
 class Reservation
 {

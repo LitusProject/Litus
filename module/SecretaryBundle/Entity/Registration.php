@@ -29,7 +29,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="SecretaryBundle\Repository\Registration")
- * @ORM\Table(name="users.registrations")
+ * @ORM\Table(name="users_registrations")
  */
 class Registration
 {

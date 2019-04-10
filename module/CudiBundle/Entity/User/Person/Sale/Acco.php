@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity stores Acco information for a person.
  *
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\User\Person\Sale\Acco")
- * @ORM\Table(name="users.people_sale_acco")
+ * @ORM\Table(name="users_people_sale_acco")
  */
 class Acco
 {

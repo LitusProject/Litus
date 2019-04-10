@@ -29,7 +29,7 @@ use InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Booking")
- * @ORM\Table(name="cudi.sales_bookings", indexes={@ORM\Index(name="sales_booking_time", columns={"bookDate"})})
+ * @ORM\Table(name="cudi_sales_bookings", indexes={@ORM\Index(name="sales_booking_time", columns={"bookDate"})})
  */
 class Booking
 {

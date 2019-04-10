@@ -27,7 +27,7 @@ use InvalidArgumentException;
  * This is the entity for a point.
  *
  * @ORM\Entity(repositoryClass="QuizBundle\Repository\Point")
- * @ORM\Table(name="quiz.points")
+ * @ORM\Table(name="quiz_points")
  */
 class Point
 {

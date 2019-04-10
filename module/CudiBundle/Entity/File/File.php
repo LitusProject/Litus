@@ -26,7 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\File\File")
- * @ORM\Table(name="cudi.files_files")
+ * @ORM\Table(name="cudi_files_files")
  */
 class File
 {

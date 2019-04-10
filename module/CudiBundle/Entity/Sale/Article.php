@@ -34,7 +34,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Article")
- * @ORM\Table(name="cudi.sales_articles")
+ * @ORM\Table(name="cudi_sales_articles")
  */
 class Article
 {

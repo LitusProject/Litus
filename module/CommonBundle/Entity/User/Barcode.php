@@ -30,7 +30,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity stores a user's barcode.
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Barcode")
- * @ORM\Table(name="users.barcodes")
+ * @ORM\Table(name="users_barcodes")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({

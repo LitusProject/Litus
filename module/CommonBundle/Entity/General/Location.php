@@ -29,7 +29,7 @@ use Doctrine\ORM\Mapping as ORM;
  * here: https://developers.google.com/maps/documentation/geocoding/.
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\Location")
- * @ORM\Table(name="general.locations")
+ * @ORM\Table(name="general_locations")
  */
 class Location
 {

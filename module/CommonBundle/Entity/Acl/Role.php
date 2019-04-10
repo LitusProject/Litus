@@ -29,7 +29,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Represents a group of users and is capable of determining which rights those users have.
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\Acl\Role")
- * @ORM\Table(name="acl.roles")
+ * @ORM\Table(name="acl_roles")
  */
 class Role
 {
@@ -53,7 +53,7 @@ class Role
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @ORM\JoinTable(
-     *      name="acl.roles_inheritance_map",
+     *      name="acl_roles_inheritance_map",
      *      joinColumns={@ORM\JoinColumn(name="child", referencedColumnName="name")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="parent", referencedColumnName="name")}
      * )
@@ -65,7 +65,7 @@ class Role
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Action")
      * @ORM\JoinTable(
-     *      name="acl.roles_actions_map",
+     *      name="acl_roles_actions_map",
      *      joinColumns={@ORM\JoinColumn(name="role", referencedColumnName="name")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="action", referencedColumnName="id")}
      * )

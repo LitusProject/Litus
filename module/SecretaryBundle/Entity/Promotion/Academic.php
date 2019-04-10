@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This is the entity for a promotion.
  *
  * @ORM\Entity(repositoryClass="SecretaryBundle\Repository\Promotion\Academic")
- * @ORM\Table(name="general.promotions_academic")
+ * @ORM\Table(name="general_promotions_academic")
  */
 class Academic extends \SecretaryBundle\Entity\Promotion
 {

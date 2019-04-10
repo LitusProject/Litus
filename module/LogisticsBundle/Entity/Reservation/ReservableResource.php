@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This is the entity for a driver.
  *
  * @ORM\Entity(repositoryClass="LogisticsBundle\Repository\Reservation\ReservableResource")
- * @ORM\Table(name="logistics.resources")
+ * @ORM\Table(name="logistics_resources")
  */
 class ReservableResource
 {

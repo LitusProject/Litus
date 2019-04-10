@@ -32,7 +32,7 @@ use Locale;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="NewsBundle\Repository\Node\News")
- * @ORM\Table(name="nodes.news")
+ * @ORM\Table(name="nodes_news")
  */
 class News extends \CommonBundle\Entity\Node
 {

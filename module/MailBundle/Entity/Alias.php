@@ -26,7 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This is the entity for an alias.
  *
  * @ORM\Entity(repositoryClass="MailBundle\Repository\Alias")
- * @ORM\Table(name="mail.aliases")
+ * @ORM\Table(name="mail_aliases")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({

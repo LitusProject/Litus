@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Poc")
- * @ORM\Table(name="syllabus.pocs")
+ * @ORM\Table(name="syllabus_pocs")
  */
 class Poc
 {

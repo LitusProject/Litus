@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This is the entity for a driver.
  *
  * @ORM\Entity(repositoryClass="LogisticsBundle\Repository\Driver")
- * @ORM\Table(name="logistics.drivers")
+ * @ORM\Table(name="logistics_drivers")
  */
 class Driver
 {
@@ -45,7 +45,7 @@ class Driver
      * @var ArrayCollection The years during which the person was a driver
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\General\AcademicYear", cascade={"persist"})
-     * @ORM\JoinTable(name="logistics.drivers_years",
+     * @ORM\JoinTable(name="logistics_drivers_years",
      *      joinColumns={@ORM\JoinColumn(name="person_id", referencedColumnName="person")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="year_id", referencedColumnName="id")}
      * )

@@ -29,7 +29,7 @@ use InvalidArgumentException;
  * An entry of a contract.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Contract\ContractEntry")
- * @ORM\Table(name="br.contracts_entries")
+ * @ORM\Table(name="br_contracts_entries")
  */
 class ContractEntry
 {

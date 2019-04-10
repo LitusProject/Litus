@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This is the entity for an event.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Company\Event")
- * @ORM\Table(name="br.companies_events")
+ * @ORM\Table(name="br_companies_events")
  */
 class Event
 {

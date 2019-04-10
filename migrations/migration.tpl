@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
@@ -21,18 +23,18 @@
 namespace <namespace>;
 
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\Migrations\AbstractMigration;
+use RuntimeException;
 
 /**
  * Version <version>
  */
-class Version<version> extends AbstractMigration
+class Version<version> extends \Doctrine\Migrations\AbstractMigration
 {
     /**
      * @param  \Doctrine\DBAL\Schema\Schema $schema
      * @return void
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
 <up>
     }
@@ -41,7 +43,7 @@ class Version<version> extends AbstractMigration
      * @param  \Doctrine\DBAL\Schema\Schema $schema
      * @return void
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
 <down>
     }

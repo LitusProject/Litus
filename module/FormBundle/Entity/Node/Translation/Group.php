@@ -28,7 +28,7 @@ use FormBundle\Entity\Node\Group as GroupEntity;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Node\Translation\Group")
- * @ORM\Table(name="nodes.form_groups_translations")
+ * @ORM\Table(name="nodes_form_groups_translations")
  */
 class Group
 {

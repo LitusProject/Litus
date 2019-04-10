@@ -27,7 +27,7 @@ use InvalidArgumentException;
  * This entity stores a user's credentials.
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Credential")
- * @ORM\Table(name="users.credentials")
+ * @ORM\Table(name="users_credentials")
  */
 class Credential
 {

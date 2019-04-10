@@ -28,7 +28,7 @@ use InvalidArgumentException;
  * This is the entity for an event.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Company\Logo")
- * @ORM\Table(name="br.companies_logos")
+ * @ORM\Table(name="br_companies_logos")
  */
 class Logo
 {

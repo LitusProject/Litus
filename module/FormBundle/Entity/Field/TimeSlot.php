@@ -32,7 +32,7 @@ use Locale;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Field\TimeSlot")
- * @ORM\Table(name="forms.fields_timeslot")
+ * @ORM\Table(name="forms_fields_timeslot")
  */
 class TimeSlot extends \FormBundle\Entity\Field
 {

@@ -25,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Stock\Order\Item")
- * @ORM\Table(name="cudi.stock_orders_items")
+ * @ORM\Table(name="cudi_stock_orders_items")
  */
 class Item
 {

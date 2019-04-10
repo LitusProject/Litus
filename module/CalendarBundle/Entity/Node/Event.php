@@ -32,7 +32,7 @@ use Locale;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="CalendarBundle\Repository\Node\Event")
- * @ORM\Table(name="nodes.events")
+ * @ORM\Table(name="nodes_events")
  */
 class Event extends \CommonBundle\Entity\Node
 {

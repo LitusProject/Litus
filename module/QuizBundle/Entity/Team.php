@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This is the entity for a team.
  *
  * @ORM\Entity(repositoryClass="QuizBundle\Repository\Team")
- * @ORM\Table(name="quiz.teams")
+ * @ORM\Table(name="quiz_teams")
  */
 class Team
 {

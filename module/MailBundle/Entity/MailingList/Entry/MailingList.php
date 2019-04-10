@@ -27,7 +27,7 @@ use MailBundle\Entity\MailingList as MailingListEntity;
  * This is the entity for the list entry of a list.
  *
  * @ORM\Entity(repositoryClass="MailBundle\Repository\MailingList\Entry\MailingList")
- * @ORM\Table(name="mail.lists_entries_lists")
+ * @ORM\Table(name="mail_lists_entries_lists")
  */
 class MailingList extends \MailBundle\Entity\MailingList\Entry
 {

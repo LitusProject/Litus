@@ -34,7 +34,7 @@ use CommonBundle\Entity\General\Language,
  * This entity stores the form
  *
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Node\Form")
- * @ORM\Table(name="nodes.forms")
+ * @ORM\Table(name="nodes_forms")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({

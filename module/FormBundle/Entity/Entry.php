@@ -28,7 +28,7 @@ use FormBundle\Entity\Node\Entry as NodeEntry;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Entry")
- * @ORM\Table(name="forms.entries")
+ * @ORM\Table(name="forms_entries")
  */
 class Entry
 {

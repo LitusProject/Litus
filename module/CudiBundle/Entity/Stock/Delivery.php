@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Stock\Delivery")
- * @ORM\Table(name="cudi.stock_deliveries", indexes={@ORM\Index(name="stock_deliveries_time", columns={"timestamp"})})
+ * @ORM\Table(name="cudi_stock_deliveries", indexes={@ORM\Index(name="stock_deliveries_time", columns={"timestamp"})})
  */
 class Delivery
 {

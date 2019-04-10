@@ -26,7 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This is the entity for a publication
  *
  * @ORM\Entity(repositoryClass="PublicationBundle\Repository\Publication")
- * @ORM\Table(name="publications.publications")
+ * @ORM\Table(name="publications_publications")
  */
 class Publication
 {

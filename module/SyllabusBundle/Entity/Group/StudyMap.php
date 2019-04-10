@@ -26,7 +26,7 @@ use SyllabusBundle\Entity\Study;
 
 /**
  * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Group\StudyMap")
- * @ORM\Table(name="syllabus.studies_group_map")
+ * @ORM\Table(name="syllabus_studies_group_map")
  */
 class StudyMap
 {

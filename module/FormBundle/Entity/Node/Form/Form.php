@@ -29,7 +29,7 @@ use FormBundle\Entity\Node\Entry;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Node\Form\Form")
- * @ORM\Table(name="nodes.forms_forms")
+ * @ORM\Table(name="nodes_forms_forms")
  */
 class Form extends \FormBundle\Entity\Node\Form
 {

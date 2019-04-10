@@ -29,7 +29,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This is the entity for a company's page.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Company\Page")
- * @ORM\Table(name="br.companies_pages")
+ * @ORM\Table(name="br_companies_pages")
  */
 class Page
 {
@@ -59,7 +59,8 @@ class Page
 
     /**
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\General\AcademicYear", cascade={"persist", "remove"})
-     * @ORM\JoinTable(name="br.page_years",
+     * @ORM\JoinTable(
+     *      name="br_page_years",
      *      joinColumns={@ORM\JoinColumn(name="page_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="year_id", referencedColumnName="id")}
      * )

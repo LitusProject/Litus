@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Article\Restriction\Amount")
- * @ORM\Table(name="cudi.sales_articles_restrictions_amount")
+ * @ORM\Table(name="cudi_sales_articles_restrictions_amount")
  */
 class Amount extends \CudiBundle\Entity\Sale\Article\Restriction
 {

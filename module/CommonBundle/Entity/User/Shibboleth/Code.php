@@ -29,7 +29,7 @@ use Doctrine\ORM\Mapping as ORM;
  * result to Litus.
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Shibboleth\Code")
- * @ORM\Table(name="users.shibboleth_codes")
+ * @ORM\Table(name="users_shibboleth_codes")
  */
 class Code
 {

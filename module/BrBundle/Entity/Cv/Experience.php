@@ -26,7 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This is the entity for an experience specification on a cv.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Cv\Experience")
- * @ORM\Table(name="br.cv_experiences")
+ * @ORM\Table(name="br_cv_experiences")
  */
 class Experience
 {
