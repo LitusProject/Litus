@@ -34,7 +34,7 @@ class Version20190410211726 extends \Doctrine\Migrations\AbstractMigration
      * @param  \Doctrine\DBAL\Schema\Schema $schema
      * @return void
      */
-    public function up(Schema $schema): void
+    public function up(Schema $schema) : void
     {
         $this->abortIf(
             $this->connection->getDatabasePlatform()->getName() !== 'postgresql',
@@ -366,8 +366,8 @@ class Version20190410211726 extends \Doctrine\Migrations\AbstractMigration
      * @param  \Doctrine\DBAL\Schema\Schema $schema
      * @return void
      */
-    public function down(Schema $schema): void
+    public function down(Schema $schema) : void
     {
-        $this->abortIf(true, 'Migration cannot be executed down.');
+        $this->throwIrreversibleMigrationException();
     }
 }
