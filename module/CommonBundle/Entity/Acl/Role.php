@@ -53,7 +53,7 @@ class Role
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @ORM\JoinTable(
-     *      name="acl_roles_inheritance_map",
+     *      name="acl_roles_parents_map",
      *      joinColumns={@ORM\JoinColumn(name="child", referencedColumnName="name")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="parent", referencedColumnName="name")}
      * )

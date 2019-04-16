@@ -135,7 +135,7 @@ class Company
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\General\AcademicYear", cascade={"persist"})
      * @ORM\JoinTable(
-     *      name="br_companies_cvbooks",
+     *      name="br_companies_cv_book_years_map",
      *      joinColumns={@ORM\JoinColumn(name="company", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="year", referencedColumnName="id")}
      * )

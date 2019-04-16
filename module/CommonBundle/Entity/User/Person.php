@@ -39,7 +39,7 @@ use Zend\Mail\Transport\TransportInterface;
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Person")
  * @ORM\Table(
  *      name="users_people",
- *      uniqueConstraints={@ORM\UniqueConstraint(name="username_unique", columns={"username"})}
+ *      uniqueConstraints={@ORM\UniqueConstraint(name="users_people_username", columns={"username"})}
  * )
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")

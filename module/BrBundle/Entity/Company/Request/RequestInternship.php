@@ -29,7 +29,7 @@ use RuntimeException;
  * This is the entity for an event.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Company\Request\RequestInternship")
- * @ORM\Table(name="br_companies_request_internship")
+ * @ORM\Table(name="br_companies_requests_internship")
  */
 class RequestInternship extends \BrBundle\Entity\Company\Request
 {

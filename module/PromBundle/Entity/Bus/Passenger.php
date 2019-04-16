@@ -28,7 +28,7 @@ use PromBundle\Entity\Bus\ReservationCode;
  * This is the entity for a passenger for the bus
  *
  * @ORM\Entity(repositoryClass="PromBundle\Repository\Bus\Passenger")
- * @ORM\Table(name="prom_bus_passenger")
+ * @ORM\Table(name="prom_buses_passengers")
  */
 class Passenger
 {

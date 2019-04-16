@@ -27,13 +27,14 @@ use Doctrine\ORM\Mapping as ORM;
  * This is the entity for a promotion year.
  *
  * @ORM\Entity(repositoryClass="SecretaryBundle\Repository\Promotion")
- * @ORM\Table(name="general_promotions")
+ * @ORM\Table(name="secretary_promotions")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
  *      "academic"="SecretaryBundle\Entity\Promotion\Academic",
  *      "external"="SecretaryBundle\Entity\Promotion\External"
- * }) */
+ * })
+ */
 abstract class Promotion
 {
     /**

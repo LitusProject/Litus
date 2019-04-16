@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Specifying the mapping between organization and external person.
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Person\Organization\UnitMap\External")
- * @ORM\Table(name="users_people_organizations_unit_map_external")}
+ * @ORM\Table(name="users_people_organizations_units_map_external")}
  * )
  */
 class External extends \CommonBundle\Entity\User\Person\Organization\UnitMap

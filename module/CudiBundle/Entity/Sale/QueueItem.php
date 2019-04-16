@@ -28,7 +28,7 @@ use InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\QueueItem")
- * @ORM\Table(name="cudi_sales_queue_items")
+ * @ORM\Table(name="cudi_sale_queue_items")
  */
 class QueueItem
 {

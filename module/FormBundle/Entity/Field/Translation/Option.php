@@ -28,7 +28,7 @@ use FormBundle\Entity\Field\OptionSelector;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Field\Translation\Option")
- * @ORM\Table(name="forms_fields_options_translations")
+ * @ORM\Table(name="form_fields_translations_options")
  */
 class Option
 {

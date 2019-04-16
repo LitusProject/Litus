@@ -29,7 +29,7 @@ use InvalidArgumentException;
  * A classification of a user based on his status at our Alma Mater.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\User\Status\Corporate")
- * @ORM\Table(name="users_corporate_statuses")
+ * @ORM\Table(name="users_statuses_corporate")
  */
 class Corporate
 {
@@ -54,9 +54,7 @@ class Corporate
     /**
      * @var CorporatePerson The person this company status belongs to
      *
-     * @ORM\ManyToOne(
-     *      targetEntity="BrBundle\Entity\User\Person\Corporate", inversedBy="corporateStatuses"
-     * )
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\User\Person\Corporate", inversedBy="corporateStatuses")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;

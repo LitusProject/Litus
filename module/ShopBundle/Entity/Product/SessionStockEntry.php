@@ -27,9 +27,8 @@ use ShopBundle\Entity\SalesSession;
 /**
  * This entity stores how many products of a certain type will be available for sale during a certain sales session.
  *
- * @author Floris Kint <floris.kint@litus.cc>
  * @ORM\Entity(repositoryClass="ShopBundle\Repository\Product\SessionStockEntry")
- * @ORM\Table(name="shop_session_stock_entries")
+ * @ORM\Table(name="shop_sessions_stock")
  */
 class SessionStockEntry
 {

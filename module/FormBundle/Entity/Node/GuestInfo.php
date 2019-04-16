@@ -25,10 +25,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Zend\Http\PhpEnvironment\Request;
 
 /**
- * This entity stores the node item.
+ * This entity stores info about a guest.
  *
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Node\GuestInfo")
- * @ORM\Table(name="forms_guests_info")
+ * @ORM\Table(name="nodes_forms_guests_info")
  */
 class GuestInfo
 {

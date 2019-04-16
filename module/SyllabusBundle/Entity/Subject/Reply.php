@@ -26,7 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Subject\Reply")
- * @ORM\Table(name="syllabus_subjects_reply")
+ * @ORM\Table(name="syllabus_subjects_replies")
  */
 class Reply
 {

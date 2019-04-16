@@ -28,7 +28,7 @@ use FormBundle\Entity\Node\Form;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="FormBundle\Repository\ViewerMap")
- * @ORM\Table(name="forms_viewers")
+ * @ORM\Table(name="form_viewers_map")
  */
 class ViewerMap
 {

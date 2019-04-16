@@ -29,7 +29,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="TicketBundle\Repository\Event")
- * @ORM\Table(name="tickets_events")
+ * @ORM\Table(name="ticket_events")
  */
 class Event
 {

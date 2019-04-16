@@ -29,7 +29,7 @@ use SyllabusBundle\Entity\Subject;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="SecretaryBundle\Repository\Syllabus\SubjectEnrollment")
- * @ORM\Table(name="users_subject_enrollment")
+ * @ORM\Table(name="secretary_syllabus_enrollments_subject")
  */
 class SubjectEnrollment
 {

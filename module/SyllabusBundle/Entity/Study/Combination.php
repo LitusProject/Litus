@@ -25,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
 
  /**
   * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Study\Combination")
-  * @ORM\Table(name="syllabus_study_combinations")
+  * @ORM\Table(name="syllabus_studies_combinations")
   */
 class Combination
 {
@@ -64,7 +64,7 @@ class Combination
      *
      * @ORM\ManyToMany(targetEntity="SyllabusBundle\Entity\Study\ModuleGroup")
      * @ORM\JoinTable(
-     *     name="syllabus_combination_module_group_map",
+     *     name="syllabus_combinations_module_groups_map",
      *     joinColumns={@ORM\JoinColumn(name="combination", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="module_group", referencedColumnName="id")}
      * )

@@ -30,7 +30,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Session")
- * @ORM\Table(name="cudi_sales_sessions")
+ * @ORM\Table(name="cudi_sale_sessions")
  */
 class Session
 {

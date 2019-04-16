@@ -32,8 +32,8 @@ use InvalidArgumentException;
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
- *      "external"="CudiBundle\Entity\Article\External",
- *      "internal"="CudiBundle\Entity\Article\Internal"
+ *     "external"="CudiBundle\Entity\Article\External",
+ *     "internal"="CudiBundle\Entity\Article\Internal"
  * })
  */
 abstract class Article

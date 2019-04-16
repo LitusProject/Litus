@@ -25,7 +25,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * This entity stores a sales session.
  *
- * @author Floris Kint <floris.kint@litus.cc>
  * @ORM\Entity(repositoryClass="ShopBundle\Repository\SalesSession")
  * @ORM\Table(name="shop_sessions")
  */

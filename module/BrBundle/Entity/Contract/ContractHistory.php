@@ -26,7 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Contract\ContractHistory")
- * @ORM\Table(name="br_contract_history")
+ * @ORM\Table(name="br_contracts_history")
  */
 class ContractHistory
 {

@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Log\Article\SubjectMap\Added")
- * @ORM\Table(name="cudi_log_articles_subject_map_add")
+ * @ORM\Table(name="cudi_log_articles_subjects_map_added")
  */
 class Added extends \CudiBundle\Entity\Log
 {

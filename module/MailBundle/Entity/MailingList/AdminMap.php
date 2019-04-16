@@ -28,7 +28,7 @@ use MailBundle\Entity\MailingList;
  * This entity maps admins to mailing lists.
  *
  * @ORM\Entity(repositoryClass="MailBundle\Repository\MailingList\AdminMap")
- * @ORM\Table(name="mail_lists_admins")
+ * @ORM\Table(name="mail_lists_admins_map")
  */
 class AdminMap
 {

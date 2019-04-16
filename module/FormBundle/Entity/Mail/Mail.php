@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Mail\Mail")
- * @ORM\Table(name="forms_mails")
+ * @ORM\Table(name="form_mails")
  */
 class Mail
 {

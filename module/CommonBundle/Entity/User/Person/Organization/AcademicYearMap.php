@@ -30,8 +30,8 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Person\Organization\AcademicYearMap")
  * @ORM\Table(
- *     name="users_people_organizations_academic_year_map",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="academics_organizations_map_unique", columns={"academic", "academic_year"})}
+ *     name="users_people_organizations_academic_years_map",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="users_people_academic_years_map_academic_academic_year", columns={"academic", "academic_year"})}
  * )
  */
 class AcademicYearMap
