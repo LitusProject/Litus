@@ -33,7 +33,7 @@ use InvalidArgumentException;
  * An order of several products.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Product\Order")
- * @ORM\Table(name="br_orders")
+ * @ORM\Table(name="br_products_orders")
  */
 class Order
 {
@@ -57,36 +57,21 @@ class Order
     /**
      * @var Contract The contract accompanying this order
      *
-     * @ORM\OneToOne(
-     *      targetEntity="BrBundle\Entity\Contract",
-     *      mappedBy="order",
-     *      cascade={"all"},
-     *      orphanRemoval=true
-     * )
+     * @ORM\OneToOne(targetEntity="BrBundle\Entity\Contract", mappedBy="order", cascade={"all"}, orphanRemoval=true)
      */
     private $contract;
 
     /**
      * @var \BrBundle\Entity\Invoice\ContractInvoice The invoice accompanying this order
      *
-     * @ORM\OneToOne(
-     *      targetEntity="BrBundle\Entity\Invoice\ContractInvoice",
-     *      mappedBy="order",
-     *      cascade={"all"},
-     *      orphanRemoval=true
-     * )
+     * @ORM\OneToOne(targetEntity="BrBundle\Entity\Invoice\ContractInvoice", mappedBy="order", cascade={"all"}, orphanRemoval=true)
      */
     private $invoice;
 
     /**
      * @var ArrayCollection The entries in this order
      *
-     * @ORM\OneToMany(
-     *      targetEntity="BrBundle\Entity\Product\OrderEntry",
-     *      mappedBy="order",
-     *      cascade={"all"},
-     *      orphanRemoval=true
-     * )
+     * @ORM\OneToMany(targetEntity="BrBundle\Entity\Product\OrderEntry", mappedBy="order", cascade={"all"}, orphanRemoval=true)
      */
     private $orderEntries;
 

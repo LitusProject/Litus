@@ -29,7 +29,7 @@ use InvalidArgumentException;
  * Specifying the different types of memberships the organization has.
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Status\Organization")
- * @ORM\Table(name="users_organization_statuses")
+ * @ORM\Table(name="users_statuses_organization")
  */
 class Organization
 {

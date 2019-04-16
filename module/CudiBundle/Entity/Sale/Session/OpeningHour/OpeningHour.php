@@ -29,7 +29,7 @@ use Locale;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Session\OpeningHour\OpeningHour")
- * @ORM\Table(name="cudi_sales_session_openinghours")
+ * @ORM\Table(name="cudi_sale_sessions_opening_hours")
  */
 class OpeningHour
 {

@@ -31,7 +31,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\Acl\Action")
  * @ORM\Table(
  *      name="acl_actions"),
- *      uniqueConstraints={@ORM\UniqueConstraint(name="action_unique", columns={"name", "resource"})}
+ *      uniqueConstraints={@ORM\UniqueConstraint(name="acl_actions_name_resource", columns={"name", "resource"})}
  * )
  */
 class Action

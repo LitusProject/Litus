@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Subject")
  * @ORM\Table(
  *    name="syllabus_subjects",
- *    indexes={@ORM\Index(name="subjects_name", columns={"name", "code"})}
+ *    indexes={@ORM\Index(name="syllabus_subjects_name_code", columns={"name", "code"})}
  * )
  */
 class Subject

@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Invoice\ContractInvoice")
- * @ORM\Table(name="br_invoices_contract")
+ * @ORM\Table(name="br_invoices_contracts")
  */
 class ContractInvoice extends \BrBundle\Entity\Invoice
 {
@@ -43,12 +43,7 @@ class ContractInvoice extends \BrBundle\Entity\Invoice
     /**
      * @var ArrayCollection The entries in this invoice
      *
-     * @ORM\OneToMany(
-     *      targetEntity="BrBundle\Entity\Invoice\InvoiceEntry",
-     *      mappedBy="invoice",
-     *      cascade={"all"},
-     *      orphanRemoval=true
-     * )
+     * @ORM\OneToMany(targetEntity="BrBundle\Entity\Invoice\InvoiceEntry", mappedBy="invoice", cascade={"all"}, orphanRemoval=true)
      * @ORM\OrderBy({"position" = "ASC"})
      */
     private $invoiceEntries;

@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Session\OpeningHour\Translation")
- * @ORM\Table(name="cudi_sales_session_openinghours_translations")
+ * @ORM\Table(name="cudi_sale_sessions_opening_hours_translations")
  */
 class Translation
 {

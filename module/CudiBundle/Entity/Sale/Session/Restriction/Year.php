@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Session\Restriction\Year")
- * @ORM\Table(name="cudi_sales_session_restriction_year")
+ * @ORM\Table(name="cudi_sale_sessions_restrictions_year")
  */
 class Year extends \CudiBundle\Entity\Sale\Session\Restriction
 {

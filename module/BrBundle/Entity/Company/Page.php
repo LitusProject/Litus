@@ -60,7 +60,7 @@ class Page
     /**
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\General\AcademicYear", cascade={"persist", "remove"})
      * @ORM\JoinTable(
-     *      name="br_page_years",
+     *      name="br_companies_pages_years_map",
      *      joinColumns={@ORM\JoinColumn(name="page_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="year_id", referencedColumnName="id")}
      * )

@@ -26,9 +26,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * This entity stores a reservation permission entry.
  *
- * @author Floris Kint <floris.kint@litus.cc>
  * @ORM\Entity(repositoryClass="ShopBundle\Repository\ReservationPermission")
- * @ORM\Table(name="shop_reservation_permissions")
+ * @ORM\Table(name="shop_reservations_permissions")
  */
 class ReservationPermission
 {

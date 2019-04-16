@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Log\Article\SubjectMap\Removed")
- * @ORM\Table(name="cudi_log_articles_subject_map_remove")
+ * @ORM\Table(name="cudi_log_articles_subjects_map_removed")
  */
 class Removed extends \CudiBundle\Entity\Log
 {

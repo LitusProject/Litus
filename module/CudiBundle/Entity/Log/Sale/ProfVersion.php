@@ -26,7 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Log\Sale\ProfVersion")
- * @ORM\Table(name="cudi_log_sales_prof_version")
+ * @ORM\Table(name="cudi_log_sales_prof_versions")
  */
 class ProfVersion extends \CudiBundle\Entity\Log
 {

@@ -28,7 +28,7 @@ use FormBundle\Entity\Node\Form as FormEntity;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Node\Translation\Form")
- * @ORM\Table(name="nodes_forms_translations")
+ * @ORM\Table(name="nodes_forms_forms_translations")
  */
 class Form
 {

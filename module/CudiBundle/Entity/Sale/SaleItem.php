@@ -28,13 +28,16 @@ use InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\SaleItem")
- * @ORM\Table(name="cudi_sales_sale_items", indexes={@ORM\Index(name="sales_sale_item_time", columns={"timestamp"})})
+ * @ORM\Table(
+ *     name="cudi_sale_sale_items",
+ *     indexes={@ORM\Index(name="cudi_sale_sale_items_timestamp", columns={"timestamp"})}
+ * )
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
- *     "regular" = "CudiBundle\Entity\Sale\SaleItem",
- *     "prof" = "CudiBundle\Entity\Sale\SaleItem\Prof",
- *     "external" = "CudiBundle\Entity\Sale\SaleItem\External"
+ *     "regular"="CudiBundle\Entity\Sale\SaleItem",
+ *     "prof"="CudiBundle\Entity\Sale\SaleItem\Prof",
+ *     "external"="CudiBundle\Entity\Sale\SaleItem\External"
  * })
  */
 class SaleItem

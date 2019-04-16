@@ -45,7 +45,7 @@ class Driver
      * @var ArrayCollection The years during which the person was a driver
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\General\AcademicYear", cascade={"persist"})
-     * @ORM\JoinTable(name="logistics_drivers_years",
+     * @ORM\JoinTable(name="logistics_drivers_years_map",
      *      joinColumns={@ORM\JoinColumn(name="person_id", referencedColumnName="person")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="year_id", referencedColumnName="id")}
      * )

@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Translation")
- * @ORM\Table(name="forms_fields_translations")
+ * @ORM\Table(name="form_fields_translations")
  */
 class Translation
 {

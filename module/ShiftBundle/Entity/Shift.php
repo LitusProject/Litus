@@ -41,7 +41,7 @@ use ShiftBundle\Entity\Shift\Volunteer;
  * This file was edited by Pieter Maene while in flight from Vienna to Brussels
  *
  * @ORM\Entity(repositoryClass="ShiftBundle\Repository\Shift")
- * @ORM\Table(name="shifts_shifts")
+ * @ORM\Table(name="shift_shifts")
  */
 class Shift
 {
@@ -104,7 +104,7 @@ class Shift
      *
      * @ORM\ManyToMany(targetEntity="ShiftBundle\Entity\Shift\Responsible", cascade={"persist", "remove"})
      * @ORM\JoinTable(
-     *      name="shifts_shifts_responsibles_map",
+     *      name="shift_shifts_responsibles_map",
      *      joinColumns={@ORM\JoinColumn(name="shift", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="responsible", referencedColumnName="id")}
      * )
@@ -124,7 +124,7 @@ class Shift
      *
      * @ORM\ManyToMany(targetEntity="ShiftBundle\Entity\Shift\Volunteer", cascade={"persist", "remove"})
      * @ORM\JoinTable(
-     *      name="shifts_shifts_volunteers_map",
+     *      name="shift_shifts_volunteers_map",
      *      joinColumns={@ORM\JoinColumn(name="shift", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="volunteer", referencedColumnName="id")}
      * )
@@ -175,7 +175,7 @@ class Shift
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @ORM\JoinTable(
-     *      name="shifts_shifts_roles_map",
+     *      name="shift_shifts_roles_map",
      *      joinColumns={@ORM\JoinColumn(name="shift", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="role", referencedColumnName="name")}
      * )

@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Field\File")
- * @ORM\Table(name="forms_fields_files")
+ * @ORM\Table(name="form_fields_files")
  */
 class File extends \FormBundle\Entity\Field
 {
