@@ -52,13 +52,6 @@ class Insurance
     private $person;
 
     /**
-     * @var boolean Flag whether this person has read the insurance
-     *
-     * @ORM\Column(name="has_read_insurance", type="boolean")
-     */
-    private $hasReadInsurance;
-
-    /**
      * @var AcademicYear The academic year
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
@@ -67,15 +60,22 @@ class Insurance
     private $academicYear;
 
     /**
-     * @param Person       $person           The person associated with this entity
-     * @param boolean      $hasReadInsurance Flag whether this person read the insurance info
-     * @param AcademicYear $academicYear     The acadmic year when this is read.
+     * @var boolean Flag whether this person has read the insurance
+     *
+     * @ORM\Column(name="has_read_insurance", type="boolean")
      */
-    public function __construct(Person $person, $hasReadInsurance, AcademicYear $academicYear)
+    private $hasReadInsurance;
+
+    /**
+     * @param Person       $person           The person associated with this entity
+     * @param AcademicYear $academicYear     The acadmic year when this was read
+     * @param boolean      $hasReadInsurance Flag whether this person read the insurance info
+     */
+    public function __construct(Person $person, AcademicYear $academicYear, $hasReadInsurance)
     {
         $this->person = $person;
-        $this->hasReadInsurance = $hasReadInsurance;
         $this->academicYear = $academicYear;
+        $this->hasReadInsurance = $hasReadInsurance;
     }
 
     /**
@@ -92,6 +92,14 @@ class Insurance
     public function getPerson()
     {
         return $this->person;
+    }
+
+    /**
+     * @return AcademicYear
+     */
+    public function getAcademicYear()
+    {
+        return $this->academicYear;
     }
 
     /**
@@ -112,13 +120,5 @@ class Insurance
         $this->hasReadInsurance = $hasReadInsurance;
 
         return $this;
-    }
-
-    /**
-     * @return AcademicYear
-     */
-    public function getAcademicYear()
-    {
-        return $this->academicYear;
     }
 }

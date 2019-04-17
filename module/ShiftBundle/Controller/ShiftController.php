@@ -255,7 +255,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 ->findOneByPersonAndAcademicYear($person, $this->getCurrentAcademicYear());
 
             if ($insurance === null) {
-                $insurance = new Insurance($person, true, $this->getCurrentAcademicYear());
+                $insurance = new Insurance($person, $this->getCurrentAcademicYear(), true);
             } elseif (!$insurance->hasReadInsurance()) {
                 $insurance->setHasReadInsurance(true);
             }
