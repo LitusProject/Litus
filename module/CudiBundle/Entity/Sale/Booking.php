@@ -121,7 +121,12 @@ class Booking
      * @var string[] The possible states of a booking
      */
     private static $possibleStatuses = array(
-        'booked', 'assigned', 'sold', 'expired', 'canceled', 'returned',
+        'booked',
+        'assigned',
+        'sold',
+        'expired',
+        'canceled',
+        'returned',
     );
 
     /**
