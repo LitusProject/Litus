@@ -22,7 +22,7 @@ namespace BrBundle\Entity;
 
 use BrBundle\Entity\Collaborator;
 use BrBundle\Entity\Company;
-use BrBundle\Entity\Contract\ContractEntry;
+use BrBundle\Entity\Contract\Entry;
 use BrBundle\Entity\Product\Order;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -84,10 +84,10 @@ class Contract
     /**
      * @var ArrayCollection The sections this contract contains
      *
-     * @ORM\OneToMany(targetEntity="BrBundle\Entity\Contract\ContractEntry", mappedBy="contract", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="BrBundle\Entity\Contract\Entry", mappedBy="contract", cascade={"all"})
      * @ORM\OrderBy({"position" = "ASC"})
      */
-    private $contractEntries;
+    private $entries;
 
     /**
      * @var string The title of the contract
@@ -169,7 +169,7 @@ class Contract
 
         $this->setDirty();
 
-        $this->contractEntries = new ArrayCollection();
+        $this->entries = new ArrayCollection();
         $this->signed = false;
     }
 
@@ -473,7 +473,7 @@ class Contract
      */
     public function getAllEntries()
     {
-        return $this->contractEntries->toArray();
+        return $this->entries->toArray();
     }
 
     /**
@@ -485,7 +485,6 @@ class Contract
         $array = array();
 
         $entries = $this->getAllEntries();
-
         foreach ($entries as $entry) {
             if ($entry->getVersion() == $this->version) {
                 array_push($array, $entry);
@@ -496,12 +495,12 @@ class Contract
     }
 
     /**
-     * @param  ContractEntry $entry
+     * @param  Entry $entry
      * @return self
      */
-    public function setEntry(ContractEntry $entry)
+    public function setEntry(Entry $entry)
     {
-        $this->contractEntries->add($entry);
+        $this->entries->add($entry);
 
         return $this;
     }

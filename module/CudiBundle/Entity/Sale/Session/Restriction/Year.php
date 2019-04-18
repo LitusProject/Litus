@@ -110,7 +110,7 @@ class Year extends \CudiBundle\Entity\Sale\Session\Restriction
     {
         $academicYear = AcademicYearUtil::getUniversityYear($entityManager);
 
-        $studies = $entityManager->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+        $studies = $entityManager->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
             ->findAllByAcademicAndAcademicYear($person, $academicYear);
 
         foreach ($studies as $studyMap) {

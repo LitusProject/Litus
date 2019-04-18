@@ -28,8 +28,8 @@ use CommonBundle\Entity\User\Status\University as UniversityStatus;
 use DateInterval;
 use DateTime;
 use SecretaryBundle\Component\Registration\Articles as RegistrationArticles;
-use SecretaryBundle\Entity\Syllabus\StudyEnrollment;
-use SecretaryBundle\Entity\Syllabus\SubjectEnrollment;
+use SecretaryBundle\Entity\Syllabus\Enrollment\Study as StudyEnrollment;
+use SecretaryBundle\Entity\Syllabus\Enrollment\Subject as SubjectEnrollment;
 use SecretaryBundle\Form\Registration\Subject\Add as AddSubjectForm;
 use Zend\View\Model\ViewModel;
 
@@ -49,7 +49,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->findAllByAcademicYear($academicYear);
 
         $enrollments = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+            ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
             ->findAllByAcademicAndAcademicYear($academic, $academicYear);
 
         $studyIds = array();
@@ -96,7 +96,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
     protected function doSaveStudiesAction(Academic $academic, AcademicYear $academicYear, $data)
     {
         $enrollments = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+            ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
             ->findAllByAcademicAndAcademicYear($academic, $academicYear);
 
         foreach ($enrollments as $enrollment) {
@@ -104,7 +104,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         }
 
         $enrollments = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
+            ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Subject')
             ->findAllByAcademicAndAcademicYear($academic, $academicYear);
 
         foreach ($enrollments as $enrollment) {
@@ -214,7 +214,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         }
 
         $enrollments = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+            ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
             ->findAllByAcademicAndAcademicYear($academic, $academicYear);
 
         $mappings = array();
@@ -233,7 +233,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         }
 
         $enrollments = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
+            ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Subject')
             ->findAllByAcademicAndAcademicYear($academic, $academicYear);
 
         $subjectIds = array();
@@ -265,7 +265,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
     protected function doSaveSubjectAction(Academic $academic, AcademicYear $academicYear, $data)
     {
         $enrollments = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
+            ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Subject')
             ->findAllByAcademicAndAcademicYear($academic, $academicYear);
 
         foreach ($enrollments as $enrollment) {

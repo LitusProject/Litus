@@ -27,7 +27,7 @@ namespace ShopBundle\Form\Admin\ReservationPermission;
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    protected $hydrator = 'ShopBundle\Hydrator\ReservationPermission';
+    protected $hydrator = 'ShopBundle\Hydrator\Reservation\Permission';
 
     public function init()
     {
@@ -55,7 +55,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(
             array(
                 'type'       => 'checkbox',
-                'name'       => 'reservationsAllowed',
+                'name'       => 'reservations_allowed',
                 'label'      => 'Reservations allowed',
                 'attributes' => array(
                     'data-help' => 'Enabling this option will allow this client to reserve articles.',

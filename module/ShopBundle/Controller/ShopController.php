@@ -23,7 +23,7 @@ namespace ShopBundle\Controller;
 use DateInterval;
 use DateTime;
 use ShopBundle\Entity\Reservation;
-use ShopBundle\Entity\SalesSession;
+use ShopBundle\Entity\Session as SalesSession;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -215,7 +215,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $reservationPermission = $this->getEntityManager()
-            ->getRepository('ShopBundle\Entity\ReservationPermission')
+            ->getRepository('ShopBundle\Entity\Reservation\Permission')
             ->find($this->getPersonEntity());
 
         if ($reservationPermission) {
@@ -334,7 +334,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
      */
     private function getSalesSessionEntity()
     {
-        $salesSession = $this->getEntityById('ShopBundle\Entity\SalesSession');
+        $salesSession = $this->getEntityById('ShopBundle\Entity\Session');
 
         if (!($salesSession instanceof SalesSession)) {
             $this->flashMessenger()->error(
@@ -365,7 +365,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         $endDate->add($interval);
 
         return $this->getEntityManager()
-            ->getRepository('ShopBundle\Entity\SalesSession')
+            ->getRepository('ShopBundle\Entity\Session')
             ->findAllReservationsPossibleInterval($startDate, $endDate);
     }
 
@@ -386,7 +386,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     private function getStockEntries($salesSession)
     {
         return $this->getEntityManager()
-            ->getRepository('ShopBundle\Entity\Product\SessionStockEntry')
+            ->getRepository('ShopBundle\Entity\Session\Stock')
             ->findBy(
                 array(
                     'salesSession' => $salesSession,

@@ -77,7 +77,7 @@ class Lease extends \CommonBundle\Component\Validator\Typeahead
         }
 
         $unreturned = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Lease\Lease')
+            ->getRepository('LogisticsBundle\Entity\Lease')
             ->findUnreturnedByItem($this->entityObject);
 
         switch (count($unreturned)) {

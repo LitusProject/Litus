@@ -20,7 +20,7 @@
 
 namespace CudiBundle\Form\Admin\Prof\File;
 
-use CudiBundle\Entity\File\Mapping as FileMapping;
+use CudiBundle\Entity\File\ArticleMap;
 use LogicException;
 
 /**
@@ -31,7 +31,7 @@ use LogicException;
 class Confirm extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @var FileMapping|null
+     * @var ArticleMap|null
      */
     private $mapping;
 
@@ -80,10 +80,10 @@ class Confirm extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-     * @param  FileMapping $mapping
+     * @param  ArticleMap $mapping
      * @return self
      */
-    public function setMapping(FileMapping $mapping)
+    public function setMapping(ArticleMap $mapping)
     {
         $this->mapping = $mapping;
 

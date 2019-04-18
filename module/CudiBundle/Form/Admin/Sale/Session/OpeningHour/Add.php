@@ -30,7 +30,7 @@ use CommonBundle\Entity\General\Language;
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 {
-    protected $hydrator = 'CudiBundle\Hydrator\Sale\Session\OpeningHour\OpeningHour';
+    protected $hydrator = 'CudiBundle\Hydrator\Sale\Session\OpeningHour';
 
     protected function initBeforeTabs()
     {

@@ -22,7 +22,7 @@ namespace FormBundle\Entity\Field\Translation;
 
 use CommonBundle\Entity\General\Language;
 use Doctrine\ORM\Mapping as ORM;
-use FormBundle\Entity\Field\OptionSelector;
+use FormBundle\Entity\Field\Dropdown;
 
 /**
  * This entity stores the node item.
@@ -42,9 +42,9 @@ class Option
     private $id;
 
     /**
-     * @var OptionSelector The field of this translation
+     * @var Dropdown The field of this translation
      *
-     * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Field\OptionSelector", inversedBy="optionTranslations")
+     * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Field\Dropdown", inversedBy="optionTranslations")
      * @ORM\JoinColumn(name="field", referencedColumnName="id")
      */
     private $field;
@@ -65,11 +65,11 @@ class Option
     private $options;
 
     /**
-     * @param OptionSelector field
-     * @param Language             $language
-     * @param string               $options
+     * @param Dropdown $field
+     * @param Language $language
+     * @param string   $options
      */
-    public function __construct(OptionSelector $field, Language $language, $options)
+    public function __construct(Dropdown $field, Language $language, $options)
     {
         $this->field = $field;
         $this->language = $language;
@@ -85,7 +85,7 @@ class Option
     }
 
     /**
-     * @return OptionSelector
+     * @return Dropdown
      */
     public function getField()
     {

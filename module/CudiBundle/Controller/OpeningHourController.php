@@ -57,7 +57,7 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
         }
 
         $openingHours = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
+            ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour')
             ->findCurrentWeek();
 
         $start = new DateTime();

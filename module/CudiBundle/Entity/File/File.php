@@ -74,7 +74,7 @@ class File
             ->setName($name)
             ->setDescription($description);
 
-        $entityManager->persist(new Mapping($article, $this, $printable));
+        $entityManager->persist(new ArticleMap($article, $this, $printable));
     }
 
     /**

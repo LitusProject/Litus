@@ -66,7 +66,7 @@ class Booking
             ->getConfigValue('cudi.mail_name');
 
         $openingHours = $entityManager
-            ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
+            ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour')
             ->findPeriodFromNow('P7D');
 
         $openingHourText = '';
@@ -153,7 +153,7 @@ class Booking
             ->getConfigValue('cudi.mail_name');
 
         $openingHours = $entityManager
-            ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
+            ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour')
             ->findPeriodFromNow('P7D');
 
         $openingHourText = '';
@@ -240,7 +240,7 @@ class Booking
             ->getConfigValue('cudi.mail_name');
 
         $openingHours = $entityManager
-            ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
+            ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour')
             ->findPeriodFromNow('P7D');
 
         $language = $entityManager

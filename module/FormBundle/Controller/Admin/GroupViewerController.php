@@ -177,7 +177,7 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
         }
 
         $group = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Group\Mapping')
+            ->getRepository('FormBundle\Entity\Node\Form\GroupMap')
             ->findOneByForm($viewer->getForm());
 
         if ($group == null) {

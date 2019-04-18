@@ -21,7 +21,7 @@
 namespace FormBundle\Controller\Admin;
 
 use FormBundle\Entity\Node\Group;
-use FormBundle\Entity\Node\Group\Mapping;
+use FormBundle\Entity\Node\Form\GroupMap;
 use FormBundle\Entity\ViewerMap;
 use Zend\View\Model\ViewModel;
 
@@ -218,7 +218,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form = $this->getForm('form_group_mapping');
+        $form = $this->getForm('form_form_group-map');
 
         if ($this->getRequest()->isPost()) {
             if (!$group->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
@@ -285,7 +285,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 }
 
                 $this->getEntityManager()->persist(
-                    new Mapping($form, $group, $order)
+                    new GroupMap($form, $group, $order)
                 );
                 $this->getEntityManager()->flush();
 
@@ -351,7 +351,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
         foreach ($data['items'] as $order => $id) {
             $mapping = $this->getEntityManager()
-                ->getRepository('FormBundle\Entity\Node\Group\Mapping')
+                ->getRepository('FormBundle\Entity\Node\Form\GroupMap')
                 ->findOneById($id);
             $mapping->setOrder($order + 1);
         }
@@ -371,7 +371,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        $mapping = $this->getMappingEntity();
+        $mapping = $this->getFormGroupMapEntity();
         if ($mapping === null) {
             return new ViewModel();
         }
@@ -432,13 +432,13 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return Mapping|null
+     * @return GroupMap|null
      */
-    private function getMappingEntity()
+    private function getFormGroupMapEntity()
     {
-        $mapping = $this->getEntityById('FormBundle\Entity\Node\Group\Mapping');
+        $groupMap = $this->getEntityById('FormBundle\Entity\Node\Form\GroupMap');
 
-        if (!($mapping instanceof Mapping)) {
+        if (!($groupMap instanceof GroupMap)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No mapping was found!'
@@ -454,6 +454,6 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             return;
         }
 
-        return $mapping;
+        return $groupMap;
     }
 }

@@ -27,6 +27,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Locale;
+use NewsBundle\Entity\Node\News\Translation;
 
 /**
  * This entity stores the node item.
@@ -39,7 +40,7 @@ class News extends \CommonBundle\Entity\Node
     /**
      * @var ArrayCollection The translations of this news item
      *
-     * @ORM\OneToMany(targetEntity="NewsBundle\Entity\Node\Translation", mappedBy="news", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="NewsBundle\Entity\Node\News\Translation", mappedBy="news", cascade={"persist", "remove"})
      */
     private $translations;
 

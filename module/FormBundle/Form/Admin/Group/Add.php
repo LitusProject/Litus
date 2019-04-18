@@ -103,7 +103,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $options = array();
         foreach ($forms as $form) {
             $group = $this->getEntityManager()
-                ->getRepository('FormBundle\Entity\Node\Group\Mapping')
+                ->getRepository('FormBundle\Entity\Node\Form\GroupMap')
                 ->findOneByForm($form);
 
             if ($group == null) {

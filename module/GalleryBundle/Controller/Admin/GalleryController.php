@@ -20,7 +20,7 @@
 
 namespace GalleryBundle\Controller\Admin;
 
-use GalleryBundle\Entity\Album\Album;
+use GalleryBundle\Entity\Album;
 use GalleryBundle\Entity\Album\Photo;
 use Imagick;
 use ImagickPixel;
@@ -40,7 +40,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
     public function manageAction()
     {
         $paginator = $this->paginator()->createFromEntity(
-            'GalleryBundle\Entity\Album\Album',
+            'GalleryBundle\Entity\Album',
             $this->getParam('page'),
             array(),
             array(
@@ -384,7 +384,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
      */
     private function getAlbumEntity()
     {
-        $album = $this->getEntityById('GalleryBundle\Entity\Album\Album');
+        $album = $this->getEntityById('GalleryBundle\Entity\Album');
 
         if (!($album instanceof Album)) {
             $this->flashMessenger()->error(

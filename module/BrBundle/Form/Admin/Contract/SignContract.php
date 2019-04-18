@@ -28,7 +28,7 @@ namespace BrBundle\Form\Admin\Contract;
  */
 class SignContract extends \CommonBundle\Component\Form\Admin\Form
 {
-    protected $hydrator = 'BrBundle\Hydrator\Invoice\ContractInvoice';
+    protected $hydrator = 'BrBundle\Hydrator\Invoice\Contract';
 
     public function init()
     {

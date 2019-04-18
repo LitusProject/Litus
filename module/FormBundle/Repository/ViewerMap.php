@@ -118,7 +118,7 @@ class ViewerMap extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $mappings = $query->select('m')
-            ->from('FormBundle\Entity\Node\Group\Mapping', 'm')
+            ->from('FormBundle\Entity\Node\Form\GroupMap', 'm')
             ->innerJoin('m.form', 'f')
             ->where(
                 $query->expr()->in('f.id', $ids)

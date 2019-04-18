@@ -20,8 +20,8 @@
 
 namespace BrBundle\Component\Document\Generator\Pdf;
 
+use BrBundle\Component\Util\Cv as CvUtil;
 use BrBundle\Entity\Cv\Entry;
-use BrBundle\Entity\Cv\Util;
 use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Component\Util\Xml\Generator;
 use CommonBundle\Component\Util\Xml\Node;
@@ -76,7 +76,7 @@ class Cv extends \CommonBundle\Component\Document\Generator\Pdf
             new Node(
                 'singlecv',
                 null,
-                Util::getCvXML($this->getEntityManager(), $this->entry, $this->translator)
+                CvUtil::getCvXML($this->getEntityManager(), $this->entry, $this->translator)
             )
         );
     }

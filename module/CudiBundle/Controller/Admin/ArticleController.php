@@ -25,7 +25,7 @@ use CudiBundle\Entity\Article\External;
 use CudiBundle\Entity\Article\History;
 use CudiBundle\Entity\Article\Internal;
 use CudiBundle\Entity\Article\SubjectMap;
-use CudiBundle\Entity\Comment\Mapping as CommentMapping;
+use CudiBundle\Entity\Comment\ArticleMap as CommentArticleMap;
 use CudiBundle\Entity\Log\Article\SubjectMap\Added as SubjectMapAddedLog;
 use Zend\View\Model\ViewModel;
 
@@ -171,7 +171,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             ->findOneByArticle($article);
 
         $comments = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Comment\Mapping')
+            ->getRepository('CudiBundle\Entity\Comment\ArticleMap')
             ->findByArticle($article);
 
         return new ViewModel(
@@ -368,7 +368,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             ->findAllByArticle($previous);
 
         foreach ($comments as $comment) {
-            $this->getEntityManager()->persist(new CommentMapping($article, $comment));
+            $this->getEntityManager()->persist(new CommentArticleMap($article, $comment));
         }
 
         $mappings = $this->getEntityManager()
@@ -469,7 +469,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             ->findAllByArticle($previous);
 
         foreach ($comments as $comment) {
-            $this->getEntityManager()->persist(new CommentMapping($article, $comment));
+            $this->getEntityManager()->persist(new CommentArticleMap($article, $comment));
         }
 
         $mappings = $this->getEntityManager()

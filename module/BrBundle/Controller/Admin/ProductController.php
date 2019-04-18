@@ -165,7 +165,7 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
 
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Product\OrderEntry')
+                ->getRepository('BrBundle\Entity\Product\Order\Entry')
                 ->findAllByProductIdQuery($product->getId()),
             $this->getParam('page')
         );
@@ -191,7 +191,7 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
         $heading = array('Contract', 'Invoice', 'Quantity', 'Company Name', 'Author', 'Contact Person', 'Contact Phone', 'Contact Email', 'Remarks');
 
         $orderEntries = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Product\OrderEntry')
+            ->getRepository('BrBundle\Entity\Product\Order\Entry')
             ->findAllByProductId($product->getId());
 
         $results = array();

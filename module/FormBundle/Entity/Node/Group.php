@@ -38,14 +38,14 @@ class Group extends \CommonBundle\Entity\Node
     /**
      * @var array The translations of this form
      *
-     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Node\Translation\Group", mappedBy="group", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Node\Group\Translation", mappedBy="group", cascade={"remove"})
      */
     private $translations;
 
     /**
      * @var array The translations of this form
      *
-     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Node\Group\Mapping", mappedBy="group", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Node\Form\GroupMap", mappedBy="group", cascade={"remove"})
      * @ORM\OrderBy({"order" = "ASC"})
      */
     private $forms;
@@ -240,7 +240,7 @@ class Group extends \CommonBundle\Entity\Node
     /**
      * @param  Language|null $language
      * @param  boolean       $allowFallback
-     * @return \FormBundle\Entity\Node\Translation\Group
+     * @return \FormBundle\Entity\Node\Group\Translation
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {

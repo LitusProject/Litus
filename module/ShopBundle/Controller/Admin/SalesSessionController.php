@@ -20,8 +20,8 @@
 
 namespace ShopBundle\Controller\Admin;
 
-use ShopBundle\Entity\Product\SessionStockEntry;
-use ShopBundle\Entity\SalesSession;
+use ShopBundle\Entity\Session\Stock;
+use ShopBundle\Entity\Session as SalesSession;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -35,7 +35,7 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
     {
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
-                ->getRepository('ShopBundle\Entity\SalesSession')
+                ->getRepository('ShopBundle\Entity\Session')
                 ->findAllFutureQuery(),
             $this->getParam('page')
         );
@@ -52,7 +52,7 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
     {
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
-                ->getRepository('ShopBundle\Entity\SalesSession')
+                ->getRepository('ShopBundle\Entity\Session')
                 ->findAllOldQuery(),
             $this->getParam('page')
         );
@@ -89,11 +89,11 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
                     if ($amount == 0) {
                         continue;
                     }
-                    $entry = new SessionStockEntry();
-                    $entry->setSalesSession($salesSession);
-                    $entry->setProduct($product);
-                    $entry->setAmount($amount);
-                    $this->getEntityManager()->persist($entry);
+                    $stock = new Stock();
+                    $stock->setSalesSession($salesSession);
+                    $stock->setProduct($product);
+                    $stock->setAmount($amount);
+                    $this->getEntityManager()->persist($stock);
                 }
                 $this->getEntityManager()->flush();
 
@@ -142,18 +142,18 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
 
             if ($form->isValid()) {
                 $repository = $this->getEntityManager()
-                    ->getRepository('ShopBundle\Entity\Product\SessionStockEntry');
+                    ->getRepository('ShopBundle\Entity\Session\Stock');
                 $repository->deleteStockEntries($salesSession);
                 foreach ($products as $product) {
                     $amount = $formData[$product->getId() . '-quantity'];
                     if ($amount == 0) {
                         continue;
                     }
-                    $entry = new SessionStockEntry();
-                    $entry->setSalesSession($salesSession);
-                    $entry->setProduct($product);
-                    $entry->setAmount($amount);
-                    $this->getEntityManager()->persist($entry);
+                    $stock = new Stock();
+                    $stock->setSalesSession($salesSession);
+                    $stock->setProduct($product);
+                    $stock->setAmount($amount);
+                    $this->getEntityManager()->persist($stock);
                 }
 
                 $reservations = $this->getEntityManager()
@@ -286,7 +286,7 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
         switch ($this->getParam('field')) {
             case 'remarks':
                 return $this->getEntityManager()
-                    ->getRepository('ShopBundle\Entity\SalesSession')
+                    ->getRepository('ShopBundle\Entity\Session')
                     ->findAllFutureByRemarksQuery($this->getParam('string'));
         }
     }
@@ -299,7 +299,7 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
         switch ($this->getParam('field')) {
             case 'remarks':
                 return $this->getEntityManager()
-                    ->getRepository('ShopBundle\Entity\SalesSession')
+                    ->getRepository('ShopBundle\Entity\Session')
                     ->findAllOldByRemarksQuery($this->getParam('string'));
         }
     }
@@ -329,7 +329,7 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
      */
     private function getSalesSessionEntity()
     {
-        $salesSession = $this->getEntityById('ShopBundle\Entity\SalesSession');
+        $salesSession = $this->getEntityById('ShopBundle\Entity\Session');
 
         if (!($salesSession instanceof SalesSession)) {
             $this->flashMessenger()->error(

@@ -76,7 +76,7 @@ class AlbumName extends \CommonBundle\Component\Validator\AbstractValidator impl
             $title = $date->format('Ymd') . '_' . Url::createSlug($value);
 
             $album = $this->getEntityManager()
-                ->getRepository('GalleryBundle\Entity\Album\Album')
+                ->getRepository('GalleryBundle\Entity\Album')
                 ->findOneByName($title);
 
             if ($album === null || ($this->options['album'] && $album == $this->options['album'])) {

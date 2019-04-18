@@ -20,15 +20,16 @@
 
 namespace FormBundle\Entity\Node;
 
-use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Field,
-    FormBundle\Entity\Mail\Mail,
-    Locale;
+use CommonBundle\Entity\General\Language;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+use FormBundle\Entity\Field;
+use FormBundle\Entity\Mail;
+use FormBundle\Entity\Node\Entry;
+use Locale;
 
 /**
  * This entity stores the form
@@ -111,7 +112,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * @var Mail|null The mail sent upon completion.
      *
-     * @ORM\OneToOne(targetEntity="FormBundle\Entity\Mail\Mail")
+     * @ORM\OneToOne(targetEntity="FormBundle\Entity\Mail")
      * @ORM\JoinColumn(name="mail", referencedColumnName="id")
      */
     private $mail;
@@ -119,7 +120,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * @var ArrayCollection The translations of this form
      *
-     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Node\Translation\Form", mappedBy="form", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Node\Form\Translation", mappedBy="form", cascade={"remove"})
      */
     private $translations;
 
@@ -407,7 +408,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * @param  Language|null $language
      * @param  boolean       $allowFallback
-     * @return \FormBundle\Entity\Node\Translation\Form
+     * @return \FormBundle\Entity\Node\Form\Translation
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {

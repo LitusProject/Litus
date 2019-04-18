@@ -24,7 +24,7 @@ use CommonBundle\Component\Util\File\TmpFile;
 use CudiBundle\Component\Document\Generator\Front as FrontGenerator;
 use CudiBundle\Entity\Article\Internal as InternalArticle;
 use CudiBundle\Entity\File\File;
-use CudiBundle\Entity\File\Mapping;
+use CudiBundle\Entity\File\ArticleMap;
 use CudiBundle\Entity\Sale\Article as SaleArticle;
 use Zend\Http\Headers;
 use Zend\View\Model\ViewModel;
@@ -49,7 +49,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\File\Mapping')
+                ->getRepository('CudiBundle\Entity\File\ArticleMap')
                 ->findAllByArticleQuery($article),
             $this->getParam('page')
         );
@@ -119,7 +119,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             $this->getEntityManager()->flush();
 
             $mapping = $this->getEntityManager()
-                ->getRepository('Cudibundle\Entity\File\Mapping')
+                ->getRepository('CudiBundle\Entity\File\ArticleMap')
                 ->findOneByArticleAndFile($article, $file);
 
             return new ViewModel(
@@ -150,7 +150,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        $mapping = $this->getFileMappingEntity();
+        $mapping = $this->getFileArticleMapEntity();
         if ($mapping === null) {
             return new ViewModel();
         }
@@ -193,7 +193,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        $mapping = $this->getFileMappingEntity();
+        $mapping = $this->getFileArticleMapEntity();
         if ($mapping === null) {
             return new ViewModel();
         }
@@ -214,7 +214,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.file_path');
 
-        $mapping = $this->getFileMappingEntity();
+        $mapping = $this->getFileArticleMapEntity();
         if ($mapping === null) {
             return new ViewModel();
         }
@@ -323,13 +323,13 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return Mapping|null
+     * @return ArticleMap|null
      */
-    private function getFileMappingEntity()
+    private function getFileArticleMapEntity()
     {
-        $mapping = $this->getEntityById('CudiBundle\Entity\File\Mapping');
+        $articleMap = $this->getEntityById('CudiBundle\Entity\File\ArticleMap');
 
-        if (!($mapping instanceof Mapping)) {
+        if (!($articleMap instanceof ArticleMap)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No mapping was found!'
@@ -345,6 +345,6 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             return;
         }
 
-        return $mapping;
+        return $articleMap;
     }
 }

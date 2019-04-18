@@ -20,6 +20,7 @@
 
 namespace CalendarBundle\Entity\Node;
 
+use CalendarBundle\Entity\Node\Event\Translation;
 use CommonBundle\Component\Util\Url as UrlUtil;
 use CommonBundle\Entity\General\Language;
 use CommonBundle\Entity\User\Person;
@@ -39,7 +40,7 @@ class Event extends \CommonBundle\Entity\Node
     /**
      * @var ArrayCollection The translations of this event
      *
-     * @ORM\OneToMany(targetEntity="CalendarBundle\Entity\Node\Translation", mappedBy="event", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="CalendarBundle\Entity\Node\Event\Translation", mappedBy="event", cascade={"persist", "remove"})
      */
     private $translations;
 

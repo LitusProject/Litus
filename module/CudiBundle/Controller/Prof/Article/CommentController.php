@@ -22,7 +22,7 @@ namespace CudiBundle\Controller\Prof\Article;
 
 use CudiBundle\Entity\Article;
 use CudiBundle\Entity\Comment\Comment;
-use CudiBundle\Entity\Comment\Mapping;
+use CudiBundle\Entity\Comment\ArticleMap;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -40,7 +40,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
         }
 
         $mappings = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Comment\Mapping')
+            ->getRepository('CudiBundle\Entity\Comment\ArticleMap')
             ->findByArticle($article);
 
         $form = $this->getForm('cudi_prof_comment_add');
@@ -93,7 +93,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        $mapping = $this->getCommentMappingEntity();
+        $mapping = $this->getCommentArticleMapEntity();
         if ($mapping === null) {
             return new ViewModel();
         }
@@ -147,13 +147,13 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     }
 
     /**
-     * @return Mapping|null
+     * @return ArticleMap|null
      */
-    private function getCommentMappingEntity()
+    private function getCommentArticleMapEntity()
     {
-        $mapping = $this->getEntityById('CudiBundle\Entity\Comment\Mapping');
+        $articleMap = $this->getEntityById('CudiBundle\Entity\Comment\ArticleMap');
 
-        if (!($mapping instanceof Mapping) || $this->getArticleEntity($mapping->getArticle()->getId()) === null) {
+        if (!($articleMap instanceof ArticleMap) || $this->getArticleEntity($articleMap->getArticle()->getId()) === null) {
             $this->flashMessenger()->error(
                 'Error',
                 'No mapping was found!'
@@ -170,6 +170,6 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
             return;
         }
 
-        return $mapping;
+        return $articleMap;
     }
 }

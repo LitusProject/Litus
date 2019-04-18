@@ -288,7 +288,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                     $formData = $orderForm->getData();
 
                     $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Stock\Order\Order')
+                        ->getRepository('CudiBundle\Entity\Stock\Order')
                         ->addNumberByArticle($article, $formData['number'], $this->getAuthentication()->getPersonObject());
 
                     $this->getEntityManager()->flush();

@@ -43,7 +43,7 @@ class Edit extends \FormBundle\Form\Admin\Form\Add
         $this->setAttribute('class', $this->getAttribute('class') . ' half_width');
 
         $group = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Group\Mapping')
+            ->getRepository('FormBundle\Entity\Node\Form\GroupMap')
             ->findOneByForm($this->form);
 
         if ($group !== null) {

@@ -21,7 +21,7 @@
 namespace BrBundle\Controller\Corporate;
 
 use BrBundle\Entity\Company\Job;
-use BrBundle\Entity\Company\Request\RequestVacancy;
+use BrBundle\Entity\Company\Request\Vacancy;
 use Zend\Mail\Message;
 use Zend\View\Model\ViewModel;
 
@@ -95,7 +95,7 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 
                 $this->getEntityManager()->persist($job);
 
-                $request = new RequestVacancy($job, 'add', $person);
+                $request = new Vacancy($job, 'add', $person);
 
                 $this->getEntityManager()->persist($request);
                 $this->getEntityManager()->flush();
@@ -191,22 +191,22 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
                     $job->pending();
                     $this->getEntityManager()->persist($job);
 
-                    $request = new RequestVacancy($job, 'edit', $person, $oldJob);
+                    $request = new Vacancy($job, 'edit', $person, $oldJob);
                     $this->getEntityManager()->persist($request);
                 } else {
                     $job = $form->hydrateObject($oldJob);
                     $this->getEntityManager()->persist($job);
 
                     $unhandledRequest = $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Company\Request\RequestVacancy')
+                        ->getRepository('BrBundle\Entity\Company\Request\Vacancy')
                         ->findUnhandledRequestsByJob($oldJob);
 
                     if (count($unhandledRequest) == 0) {
                         $oldRequest = $this->getEntityManager()
-                            ->getRepository('BrBundle\Entity\Company\Request\RequestVacancy')
+                            ->getRepository('BrBundle\Entity\Company\Request\Vacancy')
                             ->findOneByJob($oldJob->getId());
 
-                        $request = new RequestVacancy($job, 'edit reject', $person, $oldRequest->getEditJob());
+                        $request = new Vacancy($job, 'edit reject', $person, $oldRequest->getEditJob());
                         $this->getEntityManager()->persist($request);
 
                         if (isset($oldRequest)) {
@@ -272,7 +272,7 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
             );
         }
 
-        $request = new RequestVacancy($vacancy, 'delete', $person);
+        $request = new Vacancy($vacancy, 'delete', $person);
 
         $this->getEntityManager()->persist($request);
         $this->getEntityManager()->flush();
@@ -297,7 +297,7 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
         }
 
         $request = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Request\RequestVacancy')
+            ->getRepository('BrBundle\Entity\Company\Request\Vacancy')
             ->findOneById($request->getId());
 
         $this->getEntityManager()->remove($request);
@@ -339,15 +339,15 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
     }
 
     /**
-     * @return RequestVacancy|null
+     * @return Vacancy|null
      */
     private function getRequestEntity()
     {
         $request = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Request\RequestVacancy')
+            ->getRepository('BrBundle\Entity\Company\Request\Vacancy')
             ->findOneById($this->getParam('id', 0));
 
-        if (!($request instanceof RequestVacancy)) {
+        if (!($request instanceof Vacancy)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No request was found!'
@@ -372,11 +372,11 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
     private function getOpenRequests($company)
     {
         $unhandledRequests = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Request\RequestVacancy')
+            ->getRepository('BrBundle\Entity\Company\Request\Vacancy')
             ->findAllUnhandledByCompany($company);
 
         $handledRejects = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Request\RequestVacancy')
+            ->getRepository('BrBundle\Entity\Company\Request\Vacancy')
             ->findRejectsByCompany($company);
 
         return array_merge($handledRejects, $unhandledRequests);

@@ -74,7 +74,7 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                                     $enrollments = array_merge(
                                         $enrollments,
                                         $this->getEntityManager()
-                                            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+                                            ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
                                             ->findAllByStudy($study->getStudy())
                                     );
                                 }

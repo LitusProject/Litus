@@ -106,7 +106,7 @@ class Study extends \CudiBundle\Entity\Sale\Session\Restriction
         $academicYear = AcademicYear::getUniversityYear($entityManager);
 
         $studies = $entityManager
-            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+            ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
             ->findAllByAcademicAndAcademicYear($person, $academicYear);
 
         $allowedStudies = $this->studies->toArray();

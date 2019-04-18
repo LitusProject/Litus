@@ -33,11 +33,11 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
     public function manageAction()
     {
         $vacancyRequests = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Request\RequestVacancy')
+            ->getRepository('BrBundle\Entity\Company\Request\Vacancy')
             ->findNewRequests();
 
         $internshipRequests = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Request\RequestInternship')
+            ->getRepository('BrBundle\Entity\Company\Request\Internship')
             ->findNewRequests();
 
         return new ViewModel(

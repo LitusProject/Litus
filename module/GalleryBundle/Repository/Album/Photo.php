@@ -20,7 +20,7 @@
 
 namespace GalleryBundle\Repository\Album;
 
-use GalleryBundle\Entity\Album\Album as AlbumEntity;
+use GalleryBundle\Entity\Album as AlbumEntity;
 
 /**
  * Photo

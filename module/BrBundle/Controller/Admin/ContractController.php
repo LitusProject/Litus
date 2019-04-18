@@ -22,9 +22,9 @@ namespace BrBundle\Controller\Admin;
 
 use BrBundle\Component\Document\Generator\Pdf\Contract as ContractGenerator;
 use BrBundle\Entity\Contract;
-use BrBundle\Entity\Contract\ContractHistory;
-use BrBundle\Entity\Invoice\ContractInvoice;
-use BrBundle\Entity\Invoice\InvoiceEntry;
+use BrBundle\Entity\Contract\History;
+use BrBundle\Entity\Invoice\Contract as ContractInvoice;
+use BrBundle\Entity\Invoice\Entry as InvoiceEntry;
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File as FileUtil;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
@@ -120,7 +120,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Contract\ContractHistory')
+                ->getRepository('BrBundle\Entity\Contract\History')
                 ->findAllContractVersions($contract),
             $this->getParam('page')
         );
@@ -191,7 +191,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $history = new ContractHistory($contract);
+                $history = new History($contract);
                 $this->getEntityManager()->persist($history);
 
                 $this->getEntityManager()->flush();
@@ -376,11 +376,11 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             }
 
             foreach ($sections['contractComposition'] as $position => $id) {
-                $contractEntry = $this->getEntityManager()
-                    ->getRepository('BrBundle\Entity\Contract\ContractEntry')
+                $entry = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Contract\Entry')
                     ->findOneById($id);
 
-                $contractEntry->setPosition($position);
+                $entry->setPosition($position);
             }
 
             $this->getEntityManager()->flush();

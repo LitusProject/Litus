@@ -20,7 +20,7 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Session;
 
-use CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour;
+use CudiBundle\Entity\Sale\Session\OpeningHour;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -34,7 +34,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
     {
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
+                ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour')
                 ->findAllActiveQuery(),
             $this->getParam('page')
         );
@@ -51,7 +51,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
     {
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
+                ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour')
                 ->findAllOldQuery(),
             $this->getParam('page')
         );
@@ -163,7 +163,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
      */
     private function getOpeningHourEntity()
     {
-        $openingHour = $this->getEntityById('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour');
+        $openingHour = $this->getEntityById('CudiBundle\Entity\Sale\Session\OpeningHour');
 
         if (!($openingHour instanceof OpeningHour)) {
             $this->flashMessenger()->error(

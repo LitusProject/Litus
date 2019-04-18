@@ -38,7 +38,7 @@ class Comment extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('c')
-            ->from('CudiBundle\Entity\Comment\Mapping', 'm')
+            ->from('CudiBundle\Entity\Comment\ArticleMap', 'm')
             ->from('CudiBundle\Entity\Comment\Comment', 'c')
             ->where(
                 $query->expr()->andX(
@@ -58,7 +58,7 @@ class Comment extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('c')
-            ->from('CudiBundle\Entity\Comment\Mapping', 'm')
+            ->from('CudiBundle\Entity\Comment\ArticleMap', 'm')
             ->from('CudiBundle\Entity\Comment\Comment', 'c')
             ->where(
                 $query->expr()->andx(
@@ -79,7 +79,7 @@ class Comment extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('c')
-            ->from('CudiBundle\Entity\Comment\Mapping', 'm')
+            ->from('CudiBundle\Entity\Comment\ArticleMap', 'm')
             ->from('CudiBundle\Entity\Comment\Comment', 'c')
             ->where(
                 $query->expr()->andx(

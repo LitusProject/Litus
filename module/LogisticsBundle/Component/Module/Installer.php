@@ -20,9 +20,9 @@
 
 namespace LogisticsBundle\Component\Module;
 
-use LogisticsBundle\Entity\Reservation\PianoReservation;
-use LogisticsBundle\Entity\Reservation\ReservableResource;
-use LogisticsBundle\Entity\Reservation\VanReservation;
+use LogisticsBundle\Entity\Reservation\Piano as PianoReservation;
+use LogisticsBundle\Entity\Reservation\Resource;
+use LogisticsBundle\Entity\Reservation\Van as VanReservation;
 
 /**
  * LogisticsBundle installer
@@ -42,17 +42,17 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
     private function installResources()
     {
         $resources = array(
-            VanReservation::VAN_RESOURCE_NAME,
-            PianoReservation::PIANO_RESOURCE_NAME
+            VanReservation::RESOURCE_NAME,
+            PianoReservation::RESOURCE_NAME
         );
 
         foreach ($resources as $name) {
             $resource = $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource')
+                ->getRepository('LogisticsBundle\Entity\Reservation\Resource')
                 ->findOneByName($name);
 
             if ($resource == null) {
-                $this->getEntityManager()->persist(new ReservableResource($name));
+                $this->getEntityManager()->persist(new Resource($name));
             }
         }
     }
