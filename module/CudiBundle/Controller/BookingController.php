@@ -115,7 +115,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         $currentYear = $this->getCurrentAcademicYear();
 
         $enrollments = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
+            ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Subject')
             ->findAllByAcademicAndAcademicYear($academic, $currentYear);
 
         $bookingsOpen = $this->getEntityManager()

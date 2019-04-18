@@ -22,6 +22,7 @@ namespace FormBundle\Entity\Mail;
 
 use CommonBundle\Entity\General\Language;
 use Doctrine\ORM\Mapping as ORM;
+use FormBundle\Entity\Mail;
 
 /**
  * This entity stores the node item.
@@ -43,7 +44,7 @@ class Translation
     /**
      * @var Mail The mail of this translation
      *
-     * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Mail\Mail", inversedBy="translations")
+     * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Mail", inversedBy="translations")
      * @ORM\JoinColumn(name="mail", referencedColumnName="id")
      */
     private $mail;

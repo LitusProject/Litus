@@ -24,6 +24,7 @@ use CommonBundle\Entity\User\Person;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
+use TicketBundle\Entity\Event\Option;
 
 /**
  * @ORM\Entity(repositoryClass="TicketBundle\Repository\Ticket")
@@ -107,7 +108,7 @@ class Ticket
     /**
      * @var Option|null The option of the ticket
      *
-     * @ORM\ManyToOne(targetEntity="TicketBundle\Entity\Option")
+     * @ORM\ManyToOne(targetEntity="TicketBundle\Entity\Event\Option")
      * @ORM\JoinColumn(name="option", referencedColumnName="id")
      */
     private $option;

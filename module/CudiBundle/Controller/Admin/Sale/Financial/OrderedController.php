@@ -21,7 +21,7 @@
 namespace CudiBundle\Controller\Admin\Sale\Financial;
 
 use CommonBundle\Entity\General\AcademicYear;
-use CudiBundle\Entity\Stock\Order\Order;
+use CudiBundle\Entity\Stock\Order;
 use CudiBundle\Entity\Supplier;
 use Zend\View\Model\ViewModel;
 
@@ -126,7 +126,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
 
         if (!isset($records)) {
             $records = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Stock\Order\Order')
+                ->getRepository('CudiBundle\Entity\Stock\Order')
                 ->findAllByAcademicYearQuery($academicYear);
         }
 
@@ -191,7 +191,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
         switch ($this->getParam('field')) {
             case 'supplier':
                 return $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Stock\Order\Order')
+                    ->getRepository('CudiBundle\Entity\Stock\Order')
                     ->findAllBySupplierAndAcademicYearQuery($this->getParam('string'), $academicYear);
         }
     }
@@ -412,7 +412,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
      */
     private function getOrderEntity()
     {
-        $order = $this->getEntityById('CudiBundle\Entity\Stock\Order\Order');
+        $order = $this->getEntityById('CudiBundle\Entity\Stock\Order');
 
         if (!($order instanceof Order)) {
             $this->flashMessenger()->error(

@@ -23,6 +23,7 @@ namespace FormBundle\Entity;
 use CommonBundle\Entity\General\Language;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use FormBundle\Entity\Field\Translation;
 use FormBundle\Entity\Node\Form;
 use Locale;
 
@@ -34,12 +35,12 @@ use Locale;
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
- *      "text"="FormBundle\Entity\Field\Text",
- *      "options"="FormBundle\Entity\Field\OptionSelector",
- *      "dropdown"="FormBundle\Entity\Field\Dropdown",
- *      "checkbox"="FormBundle\Entity\Field\Checkbox",
- *      "file"="FormBundle\Entity\Field\File",
- *      "timeslot"="FormBundle\Entity\Field\TimeSlot"
+ *     "checkbox"="FormBundle\Entity\Field\Checkbox",
+ *     "dropdown"="FormBundle\Entity\Field\Dropdown",
+ *     "file"="FormBundle\Entity\Field\File",
+ *     "options"="FormBundle\Entity\Field\OptionSelector",
+ *     "text"="FormBundle\Entity\Field\Text",
+ *     "timeslot"="FormBundle\Entity\Field\TimeSlot"
  * })
  */
 abstract class Field
@@ -93,7 +94,7 @@ abstract class Field
     /**
      * @var ArrayCollection The translations of this field
      *
-     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Translation", mappedBy="field", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Field\Translation", mappedBy="field", cascade={"remove"})
      */
     private $translations;
 

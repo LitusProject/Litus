@@ -21,7 +21,7 @@
 namespace TicketBundle\Hydrator;
 
 use TicketBundle\Entity\Event as EventEntity;
-use TicketBundle\Entity\Option;
+use TicketBundle\Entity\Event\Option as OptionEntity;
 use TicketBundle\Entity\Ticket as TicketEntity;
 
 class Event extends \CommonBundle\Component\Hydrator\Hydrator
@@ -59,14 +59,14 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
 
                 if (isset($optionData['option_id']) && is_numeric($optionData['option_id'])) {
                     $option = $this->getEntityManager()
-                        ->getRepository('TicketBundle\Entity\Option')
+                        ->getRepository('TicketBundle\Entity\Event\Option')
                         ->findOneById($optionData['option_id']);
 
                     $option->setName($optionData['option'])
                         ->setPriceMembers($optionData['price_members'])
                         ->setPriceNonMembers($optionData['price_non_members']);
                 } else {
-                    $option = new Option(
+                    $option = new OptionEntity(
                         $object,
                         $optionData['option'],
                         $optionData['price_members'],

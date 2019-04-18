@@ -804,7 +804,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     private function getGroupEntity(Form $form)
     {
         $mapping = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Group\Mapping')
+            ->getRepository('FormBundle\Entity\Node\Form\GroupMap')
             ->findOneByForm($form);
 
         if ($mapping !== null) {

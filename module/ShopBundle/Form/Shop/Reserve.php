@@ -43,7 +43,7 @@ class Reserve extends \CommonBundle\Component\Form\Admin\Form
             $availability = max(
                 0,
                 $this->getEntityManager()
-                    ->getRepository('ShopBundle\Entity\Product\SessionStockEntry')
+                    ->getRepository('ShopBundle\Entity\Session\Stock')
                     ->getRealAvailability($product, $this->salesSession)
             );
 
@@ -74,7 +74,7 @@ class Reserve extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-     * @param \ShopBundle\Entity\SalesSession $salesSession
+     * @param \ShopBundle\Entity\Session $salesSession
      */
     public function setSalesSession($salesSession)
     {

@@ -21,6 +21,7 @@
 namespace CudiBundle\Entity\Sale\Session\OpeningHour;
 
 use CommonBundle\Entity\General\Language;
+use CudiBundle\Entity\Sale\Session\OpeningHour;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -43,7 +44,7 @@ class Translation
     /**
      * @var OpeningHour The opening hour of this translation
      *
-     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour", inversedBy="translations")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sale\Session\OpeningHour", inversedBy="translations")
      * @ORM\JoinColumn(name="opening_hour", referencedColumnName="id")
      */
     private $openingHour;

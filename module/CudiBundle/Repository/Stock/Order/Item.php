@@ -22,7 +22,7 @@ namespace CudiBundle\Repository\Stock\Order;
 
 use CommonBundle\Entity\General\AcademicYear;
 use CudiBundle\Entity\Sale\Article;
-use CudiBundle\Entity\Stock\Order\Order as OrderEntity;
+use CudiBundle\Entity\Stock\Order as OrderEntity;
 use CudiBundle\Entity\Stock\Period;
 use CudiBundle\Entity\Supplier;
 use DateTime;

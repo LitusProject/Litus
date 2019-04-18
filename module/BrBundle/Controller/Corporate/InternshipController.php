@@ -21,7 +21,7 @@
 namespace BrBundle\Controller\Corporate;
 
 use BrBundle\Entity\Company\Job;
-use BrBundle\Entity\Company\Request\RequestInternship;
+use BrBundle\Entity\Company\Request\Internship;
 use Zend\Mail\Message;
 use Zend\View\Model\ViewModel;
 
@@ -94,7 +94,7 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 
                 $this->getEntityManager()->persist($job);
 
-                $request = new RequestInternship($job, 'add', $person);
+                $request = new Internship($job, 'add', $person);
 
                 $this->getEntityManager()->persist($request);
                 $this->getEntityManager()->flush();
@@ -190,22 +190,22 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
                     $job->pending();
                     $this->getEntityManager()->persist($job);
 
-                    $request = new RequestInternship($job, 'edit', $person, $oldJob);
+                    $request = new Internship($job, 'edit', $person, $oldJob);
                     $this->getEntityManager()->persist($request);
                 } else {
                     $job = $form->hydrateObject($oldJob);
                     $this->getEntityManager()->persist($job);
 
                     $unhandledRequest = $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Company\Request\RequestInternship')
+                        ->getRepository('BrBundle\Entity\Company\Request\Internship')
                         ->findUnhandledRequestsByJob($oldJob);
 
                     if (count($unhandledRequest) == 0) {
                         $oldRequest = $this->getEntityManager()
-                            ->getRepository('BrBundle\Entity\Company\Request\RequestInternship')
+                            ->getRepository('BrBundle\Entity\Company\Request\Internship')
                             ->findOneByJob($oldJob->getId());
 
-                        $request = new RequestInternship($job, 'edit reject', $person, $oldRequest->getEditJob());
+                        $request = new Internship($job, 'edit reject', $person, $oldRequest->getEditJob());
                         $this->getEntityManager()->persist($request);
 
                         if (isset($oldRequest)) {
@@ -271,7 +271,7 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
             );
         }
 
-        $request = new RequestInternship($internship, 'delete', $person);
+        $request = new Internship($internship, 'delete', $person);
 
         $this->getEntityManager()->persist($request);
         $this->getEntityManager()->flush();
@@ -296,7 +296,7 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
         }
 
         $request = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Request\RequestInternship')
+            ->getRepository('BrBundle\Entity\Company\Request\Internship')
             ->findOneById($request->getId());
 
         $this->getEntityManager()->remove($request);
@@ -338,15 +338,15 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
     }
 
     /**
-     * @return \BrBundle\Entity\Company\Request\RequestInternship|null
+     * @return \BrBundle\Entity\Company\Request\Internship|null
      */
     private function getRequestEntity()
     {
         $request = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Request\RequestInternship')
+            ->getRepository('BrBundle\Entity\Company\Request\Internship')
             ->findOneById($this->getParam('id', 0));
 
-        if (!($request instanceof RequestInternship)) {
+        if (!($request instanceof Internship)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No request was found!'
@@ -371,11 +371,11 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
     private function getOpenRequests($company)
     {
         $unhandledRequests = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Request\RequestInternship')
+            ->getRepository('BrBundle\Entity\Company\Request\Internship')
             ->findAllUnhandledByCompany($company);
 
         $handledRejects = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Request\RequestInternship')
+            ->getRepository('BrBundle\Entity\Company\Request\Internship')
             ->findRejectsByCompany($company);
 
         return array_merge($handledRejects, $unhandledRequests);

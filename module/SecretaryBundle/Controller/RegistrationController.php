@@ -685,7 +685,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->findOneByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
         $studies = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+            ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
             ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
         $mappings = array();
@@ -699,7 +699,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         }
 
         $subjects = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
+            ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Subject')
             ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
         $subjectIds = array();

@@ -20,11 +20,11 @@
 
 namespace BrBundle\Form\Admin\Order;
 
-use BrBundle\Entity\Product\OrderEntry;
+use BrBundle\Entity\Product\Order\Entry as OrderEntry;
 use LogicException;
 
 /**
- * Add a product.
+ * Edit a product.
  *
  * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>

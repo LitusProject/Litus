@@ -27,7 +27,7 @@ use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use CudiBundle\Component\Document\Generator\Order\Pdf as OrderPdfGenerator;
 use CudiBundle\Component\Document\Generator\Order\Xml as OrderXmlGenerator;
 use CudiBundle\Entity\Stock\Order\Item as OrderItem;
-use CudiBundle\Entity\Stock\Order\Order;
+use CudiBundle\Entity\Stock\Order;
 use CudiBundle\Entity\Stock\Period;
 use CudiBundle\Entity\Supplier;
 use DateTime;
@@ -154,7 +154,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Stock\Order\Order')
+                ->getRepository('CudiBundle\Entity\Stock\Order')
                 ->findAllBySupplierAndPeriodQuery($supplier, $period),
             $this->getParam('page')
         );
@@ -252,7 +252,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                     ->findOneById($formData['article']['id']);
 
                 $item = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Stock\Order\Order')
+                    ->getRepository('CudiBundle\Entity\Stock\Order')
                     ->addNumberByArticle($article, $formData['number'], $this->getAuthentication()->getPersonObject());
 
                 $this->getEntityManager()->flush();
@@ -627,7 +627,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
      */
     private function getOrderEntity()
     {
-        $order = $this->getEntityById('CudiBundle\Entity\Stock\Order\Order');
+        $order = $this->getEntityById('CudiBundle\Entity\Stock\Order');
 
         if (!($order instanceof Order)) {
             $this->flashMessenger()->error(

@@ -28,6 +28,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Locale;
 use PageBundle\Entity\Category;
+use PageBundle\Entity\Node\Page\Translation;
 
 /**
  * This entity stores the node item.
@@ -89,7 +90,7 @@ class Page extends \CommonBundle\Entity\Node
     /**
      * @var ArrayCollection The translations of this page
      *
-     * @ORM\OneToMany(targetEntity="PageBundle\Entity\Node\Translation", mappedBy="page", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="PageBundle\Entity\Node\Page\Translation", mappedBy="page", cascade={"remove"})
      */
     private $translations;
 

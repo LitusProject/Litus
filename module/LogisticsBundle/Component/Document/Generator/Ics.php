@@ -23,7 +23,7 @@ namespace LogisticsBundle\Component\Document\Generator;
 use CommonBundle\Component\Util\File\TmpFile;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
-use LogisticsBundle\Entity\Reservation\VanReservation;
+use LogisticsBundle\Entity\Reservation\Van as VanReservation;
 
 /**
  * Ics
@@ -114,7 +114,7 @@ class Ics
     {
         $result = '';
         $reservations = $this->entityManager
-            ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
+            ->getRepository('LogisticsBundle\Entity\Reservation\Van')
             ->findAllActive();
 
         $person = null;

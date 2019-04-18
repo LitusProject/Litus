@@ -22,7 +22,7 @@ namespace LogisticsBundle\Controller;
 
 use DateTime;
 use LogisticsBundle\Entity\Lease\Item;
-use LogisticsBundle\Entity\Lease\Lease;
+use LogisticsBundle\Entity\Lease;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -36,7 +36,7 @@ class LeaseController extends \LogisticsBundle\Component\Controller\LogisticsCon
     {
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Lease\Lease')
+                ->getRepository('LogisticsBundle\Entity\Lease')
                 ->findAllUnreturnedQuery(),
             $this->getParam('page')
         );
@@ -77,7 +77,7 @@ class LeaseController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Lease\Lease')
+                ->getRepository('LogisticsBundle\Entity\Lease')
                 ->findByItemQuery($item),
             $this->getParam('page')
         );
@@ -104,7 +104,7 @@ class LeaseController extends \LogisticsBundle\Component\Controller\LogisticsCon
                 ->getRepository('LogisticsBundle\Entity\Lease\Item')
                 ->findAllByNameOrBarcode($query);
             $leaseRepo = $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Lease\Lease');
+                ->getRepository('LogisticsBundle\Entity\Lease');
 
             foreach ($items as $item) {
                 if ($purpose === 'lease' && count($leaseRepo->findUnreturnedByItem($item)) > 0) {
@@ -210,7 +210,7 @@ class LeaseController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
                     $lease = current(
                         $this->getEntityManager()
-                            ->getRepository('LogisticsBundle\Entity\Lease\Lease')
+                            ->getRepository('LogisticsBundle\Entity\Lease')
                             ->findUnreturnedByItem($item)
                     );
 
@@ -267,7 +267,7 @@ class LeaseController extends \LogisticsBundle\Component\Controller\LogisticsCon
      */
     private function getLeaseEntity()
     {
-        $lease = $this->getEntityById('LogisticsBundle\Entity\Lease\Lease');
+        $lease = $this->getEntityById('LogisticsBundle\Entity\Lease');
 
         if (!($lease instanceof Lease)) {
             $this->flashMessenger()->error(

@@ -41,7 +41,7 @@ class Contract extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('MAX(e.version)')
             ->from('BrBundle\Entity\Contract', 'c')
-            ->innerjoin('c.contractEntries', 'e')
+            ->innerjoin('c.entries', 'e')
             ->where(
                 $query->expr()->eq('c.id', ':id')
             )

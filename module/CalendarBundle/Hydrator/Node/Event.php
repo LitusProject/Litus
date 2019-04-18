@@ -21,7 +21,7 @@
 namespace CalendarBundle\Hydrator\Node;
 
 use CalendarBundle\Entity\Node\Event as EventEntity;
-use CalendarBundle\Entity\Node\Translation as TranslationEntity;
+use CalendarBundle\Entity\Node\Event\Translation as TranslationEntity;
 use CommonBundle\Component\Hydrator\Exception\InvalidDateException;
 
 /**

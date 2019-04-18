@@ -1,0 +1,157 @@
+<?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+
+namespace TicketBundle\Entity\Event;
+
+use Doctrine\ORM\Mapping as ORM;
+use TicketBundle\Entity\Event;
+
+/**
+ * @ORM\Entity(repositoryClass="TicketBundle\Repository\Option")
+ * @ORM\Table(name="ticket_events_options")
+ */
+class Option
+{
+    /**
+     * @var integer The ID of the ticket
+     *
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
+     */
+    private $id;
+
+    /**
+     * @var Event The event of the ticket
+     *
+     * @ORM\ManyToOne(targetEntity="TicketBundle\Entity\Event", inversedBy="tickets")
+     * @ORM\JoinColumn(name="event", referencedColumnName="id")
+     */
+    private $event;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     */
+    private $name;
+
+    /**
+     * @var integer The price for members
+     *
+     * @ORM\Column(name="price_members", type="smallint")
+     */
+    private $priceMembers;
+
+    /**
+     * @var integer The price for non members
+     *
+     * @ORM\Column(name="price_non_members", type="smallint")
+     */
+    private $priceNonMembers;
+
+    /**
+     * @param Event   $event
+     * @param string  $name
+     * @param integer $priceMembers
+     * @param integer $priceNonMembers
+     */
+    public function __construct(Event $event, $name, $priceMembers, $priceNonMembers)
+    {
+        $this->event = $event;
+        $this->name = $name;
+
+        $this->setPriceMembers($priceMembers)
+            ->setPriceNonMembers($priceNonMembers);
+    }
+
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return Event
+     */
+    public function getEvent()
+    {
+        return $this->event;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param  string $name
+     * @return Option
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getPriceMembers()
+    {
+        return $this->priceMembers;
+    }
+
+    /**
+     * @param  integer $priceMembers
+     * @return self
+     */
+    public function setPriceMembers($priceMembers)
+    {
+        $this->priceMembers = $priceMembers * 100;
+
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getPriceNonMembers()
+    {
+        return $this->priceNonMembers;
+    }
+
+    /**
+     * @param  integer $priceNonMembers
+     * @return self
+     */
+    public function setPriceNonMembers($priceNonMembers)
+    {
+        $this->priceNonMembers = $priceNonMembers * 100;
+
+        return $this;
+    }
+}

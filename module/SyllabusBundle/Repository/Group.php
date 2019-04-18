@@ -63,7 +63,7 @@ class Group extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select($query->expr()->count('e'))
-            ->from('SecretaryBundle\Entity\Syllabus\StudyEnrollment', 'e')
+            ->from('SecretaryBundle\Entity\Syllabus\Enrollment\Study', 'e')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->in('e.study', $ids),

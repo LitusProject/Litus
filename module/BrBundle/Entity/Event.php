@@ -81,8 +81,7 @@ class Event
     private $endDate;
 
     /**
-     * @param ReservableResource $resource
-     * @param Person             $creator
+     * @param Person $creator
      */
     public function __construct(Person $creator)
     {

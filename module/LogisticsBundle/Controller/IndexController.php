@@ -24,7 +24,7 @@ use CommonBundle\Component\Util\File\TmpFile;
 use DateTime;
 use LogisticsBundle\Component\Document\Generator\Ics as IcsGenerator;
 use LogisticsBundle\Document\Token;
-use LogisticsBundle\Entity\Reservation\VanReservation;
+use LogisticsBundle\Entity\Reservation\Van as VanReservation;
 use Zend\Http\Headers;
 use Zend\View\Model\ViewModel;
 
@@ -355,7 +355,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
         $endTime->setTimeStamp($this->getParam('end'));
 
         $reservations = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
+            ->getRepository('LogisticsBundle\Entity\Reservation\Van')
             ->findAllByDates($startTime, $endTime);
 
         if (count($reservations) == 0) {
@@ -370,7 +370,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
      */
     private function getVanReservationEntity()
     {
-        $reservation = $this->getEntityById('LogisticsBundle\Entity\Reservation\VanReservation');
+        $reservation = $this->getEntityById('LogisticsBundle\Entity\Reservation\Van');
 
         if (!($reservation instanceof VanReservation)) {
             return;

@@ -21,6 +21,7 @@
 namespace CudiBundle\Entity\Stock\Order;
 
 use CudiBundle\Entity\Sale\Article;
+use CudiBundle\Entity\Stock\Order;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -49,7 +50,7 @@ class Item
     /**
      * @var Order The order of the item
      *
-     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Stock\Order\Order", inversedBy="items")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Stock\Order", inversedBy="items")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
      */
     private $order;

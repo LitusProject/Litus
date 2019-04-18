@@ -25,7 +25,7 @@ use DateTime;
 use ShiftBundle\Document\Token;
 use ShiftBundle\Entity\Shift\Responsible;
 use ShiftBundle\Entity\Shift\Volunteer;
-use ShiftBundle\Entity\User\Person\Insurance;
+use ShiftBundle\Entity\User\Person\AcademicYearMap;
 use Zend\Http\Headers;
 use Zend\Mail\Message;
 use Zend\View\Model\ViewModel;
@@ -80,11 +80,11 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         $hasReadInsurance = true;
         if ($insuranceEnabled) {
-            $insurance = $this->getEntityManager()
-                ->getRepository('ShiftBundle\Entity\User\Person\Insurance')
+            $mapping = $this->getEntityManager()
+                ->getRepository('ShiftBundle\Entity\User\Person\AcademicYearMap')
                 ->findOneByPersonAndAcademicYear($person, $this->getCurrentAcademicYear());
 
-            if ($insurance === null || !$insurance->hasReadInsurance()) {
+            if ($mapping === null || !$mapping->hasReadInsurance()) {
                 $hasReadInsurance = false;
             }
         }
@@ -250,17 +250,17 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         );
 
         if ($insuranceEnabled) {
-            $insurance = $this->getEntityManager()
-                ->getRepository('ShiftBundle\Entity\User\Person\Insurance')
+            $mapping = $this->getEntityManager()
+                ->getRepository('ShiftBundle\Entity\User\Person\AcademicYearMap')
                 ->findOneByPersonAndAcademicYear($person, $this->getCurrentAcademicYear());
 
-            if ($insurance === null) {
-                $insurance = new Insurance($person, $this->getCurrentAcademicYear(), true);
-            } elseif (!$insurance->hasReadInsurance()) {
-                $insurance->setHasReadInsurance(true);
+            if ($mapping === null) {
+                $mapping = new AcademicYearMap($person, $this->getCurrentAcademicYear(), true);
+            } elseif (!$mapping->hasReadInsurance()) {
+                $mapping->setHasReadInsurance(true);
             }
 
-            $this->getEntityManager()->persist($insurance);
+            $this->getEntityManager()->persist($mapping);
         }
 
         $shift->addResponsible(

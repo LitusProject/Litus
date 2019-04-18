@@ -28,7 +28,7 @@ use FormBundle\Entity\Field\Text as StringFieldEntity;
 use FormBundle\Entity\Field\TimeSlot as TimeSlotFieldEntity;
 use FormBundle\Entity\Field\Translation\Option as OptionTranslationFieldEntity;
 use FormBundle\Entity\Field\Translation\TimeSlot as TimeSlotTranslationFieldEntity;
-use FormBundle\Entity\Translation as TranslationEntity;
+use FormBundle\Entity\Field\Translation as TranslationEntity;
 
 class Field extends \CommonBundle\Component\Hydrator\Hydrator
 {

@@ -23,6 +23,7 @@ namespace ShopBundle\Entity;
 use CommonBundle\Entity\User\Person;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use ShopBundle\Entity\Session as SalesSession;
 
 /**
  * This entity stores a reservation.
@@ -59,7 +60,7 @@ class Reservation
     /**
      * @var SalesSession The id of the sales session for which this reservation was made
      *
-     * @ORM\ManyToOne(targetEntity="ShopBundle\Entity\SalesSession")
+     * @ORM\ManyToOne(targetEntity="ShopBundle\Entity\Session")
      * @ORM\JoinColumn(name="session", referencedColumnName="id")
      */
     private $salesSession;

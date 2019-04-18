@@ -22,17 +22,9 @@ namespace ShopBundle\Hydrator;
 
 use ShopBundle\Entity\Product as ProductEntity;
 
-/**
- * Class Product
- *
- * @author Floris Kint <floris.kint@litus.cc>
- */
 class Product extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $stdKeys = array(
-        'name',
-        'available',
-    );
+    private static $stdKeys = array('name', 'available');
 
     /**
      * @param  Product|null $object

@@ -20,7 +20,7 @@
 
 namespace ShopBundle\Controller\Admin;
 
-use ShopBundle\Entity\ReservationPermission;
+use ShopBundle\Entity\Reservation\Permission as ReservationPermission;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -34,7 +34,7 @@ class ReservationPermissionController extends \CommonBundle\Component\Controller
     {
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
-                ->getRepository('ShopBundle\Entity\ReservationPermission')
+                ->getRepository('ShopBundle\Entity\Reservation\Permission')
                 ->findAllQuery(),
             $this->getParam('page')
         );
@@ -133,7 +133,7 @@ class ReservationPermissionController extends \CommonBundle\Component\Controller
         $person = $this->getEntityById('CommonBundle\Entity\User\Person');
 
         $reservationPermission = $this->getEntityManager()
-            ->getRepository('ShopBundle\Entity\ReservationPermission')
+            ->getRepository('ShopBundle\Entity\Reservation\Permission')
             ->findOneByPerson($person);
 
         if (!($reservationPermission instanceof ReservationPermission)) {
@@ -184,7 +184,7 @@ class ReservationPermissionController extends \CommonBundle\Component\Controller
         switch ($this->getParam('field')) {
             case 'name':
                 return $this->getEntityManager()
-                    ->getRepository('ShopBundle\Entity\ReservationPermission')
+                    ->getRepository('ShopBundle\Entity\Reservation\Permission')
                     ->findByNameQuery($this->getParam('string'));
         }
     }

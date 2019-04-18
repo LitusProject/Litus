@@ -23,8 +23,8 @@ namespace SyllabusBundle\Controller\Admin;
 use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
 use CommonBundle\Entity\User\Person\Academic;
-use SecretaryBundle\Entity\Syllabus\StudyEnrollment;
-use SecretaryBundle\Entity\Syllabus\SubjectEnrollment;
+use SecretaryBundle\Entity\Syllabus\Enrollment\Study as StudyEnrollment;
+use SecretaryBundle\Entity\Syllabus\Enrollment\Subject as SubjectEnrollment;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -83,11 +83,11 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             ->findAll();
 
         $studies = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+            ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
             ->findAllByAcademicAndAcademicYear($academic, $academicYear);
 
         $subjects = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
+            ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Subject')
             ->findAllByAcademicAndAcademicYear($academic, $academicYear);
 
         return new ViewModel(
@@ -168,7 +168,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     ->findOneById($formData['study']['id']);
 
                 $enrollment = $this->getEntityManager()
-                    ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+                    ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
                     ->findOneByAcademicAndStudy($academic, $study);
 
                 if ($enrollment === null) {
@@ -182,7 +182,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 foreach ($mappings as $mapping) {
                     if ($mapping->isMandatory()) {
                         $enrollment = $this->getEntityManager()
-                            ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
+                            ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Subject')
                             ->findOneByAcademicAndAcademicYearAndSubject($academic, $academicYear, $mapping->getSubject());
 
                         if ($enrollment === null) {
@@ -250,7 +250,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     ->findOneById($formData['subject']['id']);
 
                 $enrollment = $this->getEntityManager()
-                    ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
+                    ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Subject')
                     ->findOneByAcademicAndAcademicYearAndSubject($academic, $academicYear, $subject);
 
                 if ($enrollment === null) {
@@ -370,7 +370,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
      */
     private function getStudyEnrollmentEntity()
     {
-        $enrollment = $this->getEntityById('SecretaryBundle\Entity\Syllabus\StudyEnrollment');
+        $enrollment = $this->getEntityById('SecretaryBundle\Entity\Syllabus\Enrollment\Study');
 
         if (!($enrollment instanceof StudyEnrollment)) {
             $this->flashMessenger()->error(
@@ -396,7 +396,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
      */
     private function getSubjectEnrollmentEntity()
     {
-        $enrollment = $this->getEntityById('SecretaryBundle\Entity\Syllabus\SubjectEnrollment');
+        $enrollment = $this->getEntityById('SecretaryBundle\Entity\Syllabus\Enrollment\Subject');
 
         if (!($enrollment instanceof SubjectEnrollment)) {
             $this->flashMessenger()->error(

@@ -23,7 +23,7 @@ namespace FormBundle\Entity\Node\Form;
 use CommonBundle\Entity\General\Language;
 use CommonBundle\Entity\User\Person;
 use Doctrine\ORM\Mapping as ORM;
-use FormBundle\Entity\Mail\Mail;
+use FormBundle\Entity\Mail;
 use FormBundle\Entity\Node\Entry;
 
 /**
@@ -44,7 +44,7 @@ class Doodle extends \FormBundle\Entity\Node\Form
     /**
      * @var Mail|null The mail sent for reminding.
      *
-     * @ORM\OneToOne(targetEntity="FormBundle\Entity\Mail\Mail", cascade={"all"})
+     * @ORM\OneToOne(targetEntity="FormBundle\Entity\Mail", cascade={"all"})
      * @ORM\JoinColumn(name="reminder_mail", referencedColumnName="id")
      */
     private $reminderMail;

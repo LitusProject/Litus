@@ -33,8 +33,8 @@ use InvalidArgumentException;
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
- *      "manual"="BrBundle\Entity\Invoice\ManualInvoice",
- *      "contract"="BrBundle\Entity\Invoice\ContractInvoice"
+ *     "contract"="BrBundle\Entity\Invoice\Contract",
+ *     "manual"="BrBundle\Entity\Invoice\Manual"
  * })
  */
 abstract class Invoice

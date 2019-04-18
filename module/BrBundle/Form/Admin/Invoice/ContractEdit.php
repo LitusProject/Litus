@@ -29,7 +29,7 @@ use BrBundle\Entity\Invoice;
  */
 class ContractEdit extends \CommonBundle\Component\Form\Admin\Form
 {
-    protected $hydrator = 'BrBundle\Hydrator\Invoice\ContractInvoice';
+    protected $hydrator = 'BrBundle\Hydrator\Invoice\Contract';
 
     /**
      * @var Invoice
@@ -75,7 +75,7 @@ class ContractEdit extends \CommonBundle\Component\Form\Admin\Form
         $this->add(
             array(
                 'type'    => 'textarea',
-                'name'    => 'VATContext',
+                'name'    => 'vat_context',
                 'label'   => 'VAT Context',
                 'options' => array(
                     'input' => array(

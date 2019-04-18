@@ -23,7 +23,7 @@ namespace CudiBundle\Component\Document\Generator\Order;
 use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Component\Util\Xml\Generator;
 use CommonBundle\Component\Util\Xml\Node;
-use CudiBundle\Entity\Stock\Order\Order;
+use CudiBundle\Entity\Stock\Order;
 use Doctrine\ORM\EntityManager;
 
 /**

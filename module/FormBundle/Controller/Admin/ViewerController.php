@@ -59,7 +59,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             ->findByForm($formSpecification);
 
         $group = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Group\Mapping')
+            ->getRepository('FormBundle\Entity\Node\Form\GroupMap')
             ->findOneByForm($formSpecification);
 
         return new ViewModel(
@@ -95,7 +95,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
         }
 
         $group = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Group\Mapping')
+            ->getRepository('FormBundle\Entity\Node\Form\GroupMap')
             ->findOneByForm($formSpecification);
 
         if ($group !== null) {
@@ -201,7 +201,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
         }
 
         $group = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Group\Mapping')
+            ->getRepository('FormBundle\Entity\Node\Form\GroupMap')
             ->findOneByForm($viewer->getForm());
 
         if ($group !== null) {

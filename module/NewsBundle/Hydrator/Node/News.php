@@ -21,7 +21,7 @@
 namespace NewsBundle\Hydrator\Node;
 
 use NewsBundle\Entity\Node\News as NewsEntity;
-use NewsBundle\Entity\Node\Translation as TranslationEntity;
+use NewsBundle\Entity\Node\News\Translation as TranslationEntity;
 
 /**
  * This hydrator hydrates/extracts news data.

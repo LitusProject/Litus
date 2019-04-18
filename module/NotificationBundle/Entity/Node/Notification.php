@@ -26,6 +26,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Locale;
+use NotificationBundle\Entity\Node\Notification\Translation;
 
 /**
  * This entity stores the node item.
@@ -38,7 +39,7 @@ class Notification extends \CommonBundle\Entity\Node
     /**
      * @var ArrayCollection The translations of this notification item
      *
-     * @ORM\OneToMany(targetEntity="NotificationBundle\Entity\Node\Translation", mappedBy="notification", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="NotificationBundle\Entity\Node\Notification\Translation", mappedBy="notification", cascade={"persist", "remove"})
      */
     private $translations;
 

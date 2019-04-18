@@ -21,7 +21,7 @@
 namespace LogisticsBundle\Controller\Admin;
 
 use IntlDateFormatter;
-use LogisticsBundle\Entity\Reservation\PianoReservation;
+use LogisticsBundle\Entity\Reservation\Piano as PianoReservation;
 use Zend\Mail\Message;
 use Zend\View\Model\ViewModel;
 
@@ -31,7 +31,7 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
     {
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
+                ->getRepository('LogisticsBundle\Entity\Reservation\Piano')
                 ->findAllActiveQuery(),
             $this->getParam('page')
         );
@@ -48,7 +48,7 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
     {
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
+                ->getRepository('LogisticsBundle\Entity\Reservation\Piano')
                 ->findAllOldQuery(),
             $this->getParam('page')
         );
@@ -276,7 +276,7 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
      */
     private function getPianoReservationEntity()
     {
-        $reservation = $this->getEntityById('LogisticsBundle\Entity\Reservation\PianoReservation');
+        $reservation = $this->getEntityById('LogisticsBundle\Entity\Reservation\Piano');
 
         if (!($reservation instanceof PianoReservation)) {
             $this->flashMessenger()->error(

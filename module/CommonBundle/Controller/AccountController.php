@@ -47,7 +47,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->findOneByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
         $studies = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+            ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
             ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
         $mappings = array();
@@ -61,7 +61,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         }
 
         $subjects = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
+            ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Subject')
             ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
         $subjectIds = array();

@@ -22,7 +22,7 @@ namespace PageBundle\Hydrator\Node;
 
 use Locale;
 use PageBundle\Entity\Node\Page as PageEntity;
-use PageBundle\Entity\Node\Translation as TranslationEntity;
+use PageBundle\Entity\Node\Page\Translation as TranslationEntity;
 
 /**
  * This hydrator hydrates/extracts page data.

@@ -22,7 +22,7 @@ namespace CudiBundle\Controller\Prof\Article;
 
 use CudiBundle\Entity\Article\Internal as InternalArticle;
 use CudiBundle\Entity\File\File;
-use CudiBundle\Entity\File\Mapping;
+use CudiBundle\Entity\File\ArticleMap;
 use CudiBundle\Entity\Prof\Action;
 use Zend\Http\Headers;
 use Zend\View\Model\ViewModel;
@@ -41,18 +41,18 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             return new ViewModel();
         }
 
-        $mappings = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\File\Mapping')
+        $articleMappings = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\File\ArticleMap')
             ->findAllByArticle($article, true);
 
-        $fileMappings = array();
-        foreach ($mappings as $mapping) {
+        $mappings = array();
+        foreach ($articleMappings as $articleMapping) {
             $actions = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Prof\Action')
-                ->findAllByEntityAndEntityIdAndAction('file', $mapping->getId(), 'remove');
+                ->findAllByEntityAndEntityIdAndAction('file', $articleMapping->getId(), 'remove');
 
             if (!isset($actions[0])) {
-                $fileMappings[] = $mapping;
+                $mappings[] = $articleMapping;
             }
         }
 
@@ -73,14 +73,14 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             array(
                 'form'     => $form,
                 'article'  => $article,
-                'mappings' => $fileMappings,
+                'mappings' => $mappings,
             )
         );
     }
 
     public function downloadAction()
     {
-        $mapping = $this->getFileMappingEntity();
+        $mapping = $this->getFileArticleMapEntity();
         if ($mapping === null) {
             return new ViewModel();
         }
@@ -155,11 +155,16 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             $this->getEntityManager()->flush();
 
             $mapping = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\File\Mapping')
+                ->getRepository('CudiBundle\Entity\File\ArticleMap')
                 ->findOneByFile($file);
             $mapping->setIsProf(true);
 
-            $action = new Action($this->getAuthentication()->getPersonObject(), 'file', $mapping->getId(), 'add');
+            $action = new Action(
+                $this->getAuthentication()->getPersonObject(),
+                'file',
+                $mapping->getId(),
+                'add'
+            );
             $this->getEntityManager()->persist($action);
 
             $this->getEntityManager()->flush();
@@ -193,7 +198,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        $mapping = $this->getFileMappingEntity();
+        $mapping = $this->getFileArticleMapEntity();
         if ($mapping === null) {
             return new ViewModel();
         }
@@ -251,13 +256,13 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
     }
 
     /**
-     * @return Mapping|null
+     * @return ArticleMap|null
      */
-    private function getFileMappingEntity()
+    private function getFileArticleMapEntity()
     {
-        $mapping = $this->getEntityById('CudiBundle\Entity\File\Mapping');
+        $articleMap = $this->getEntityById('CudiBundle\Entity\File\ArticleMap');
 
-        if (!($mapping instanceof Mapping)) {
+        if (!($articleMap instanceof ArticleMap)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No mapping was found!'
@@ -274,6 +279,6 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             return;
         }
 
-        return $mapping;
+        return $articleMap;
     }
 }

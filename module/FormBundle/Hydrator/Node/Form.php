@@ -22,7 +22,7 @@ namespace FormBundle\Hydrator\Node;
 
 use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 use FormBundle\Entity\Node\Form\Doodle as DoodleEntity;
-use FormBundle\Entity\Node\Translation\Form as TranslationEntity;
+use FormBundle\Entity\Node\Form\Translation as TranslationEntity;
 
 class Form extends \CommonBundle\Component\Hydrator\Hydrator
 {
@@ -37,7 +37,7 @@ class Form extends \CommonBundle\Component\Hydrator\Hydrator
         if ($object->getId() !== null) {
             // Check if this is a new form
             $group = $this->getEntityManager()
-                ->getRepository('FormBundle\Entity\Node\Group\Mapping')
+                ->getRepository('FormBundle\Entity\Node\Form\GroupMap')
                 ->findOneByForm($object);
         } else {
             $group = null;
@@ -60,7 +60,7 @@ class Form extends \CommonBundle\Component\Hydrator\Hydrator
 
         $object->setMultiple($data['multiple']);
 
-        $hydrator = $this->getHydrator('FormBundle\Hydrator\Mail\Mail');
+        $hydrator = $this->getHydrator('FormBundle\Hydrator\Mail');
 
         if ($object instanceof DoodleEntity) {
             $object->setNamesVisibleForOthers($data['names_visible_for_others']);
@@ -161,7 +161,7 @@ class Form extends \CommonBundle\Component\Hydrator\Hydrator
         $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
         $data['mail'] = $object->hasMail();
 
-        $hydrator = $this->getHydrator('FormBundle\Hydrator\Mail\Mail');
+        $hydrator = $this->getHydrator('FormBundle\Hydrator\Mail');
 
         if ($object->hasMail()) {
             $data['mail_form'] = $hydrator->extract($object->getMail());

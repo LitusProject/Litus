@@ -20,7 +20,7 @@
 
 namespace BrBundle\Component\Document\Generator\Pdf;
 
-use BrBundle\Entity\Cv\Util;
+use BrBundle\Component\Util\Cv;
 use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Component\Util\Xml\Generator;
 use CommonBundle\Component\Util\Xml\Node;
@@ -71,7 +71,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
     {
         $xml = new Generator($tmpFile);
 
-        $data = Util::getGrouped($this->getEntityManager(), $this->year);
+        $data = Cv::getGrouped($this->getEntityManager(), $this->year);
 
         $groups = array();
 
@@ -117,7 +117,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
     {
         $cvs = array();
         foreach ($entries as $entry) {
-            $cvs[] = Util::getCvXML($this->getEntityManager(), $entry, $this->translator);
+            $cvs[] = Cv::getCvXML($this->getEntityManager(), $entry, $this->translator);
         }
 
         return new Node(
