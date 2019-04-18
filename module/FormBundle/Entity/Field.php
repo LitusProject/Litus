@@ -38,7 +38,6 @@ use Locale;
  *     "checkbox"="FormBundle\Entity\Field\Checkbox",
  *     "dropdown"="FormBundle\Entity\Field\Dropdown",
  *     "file"="FormBundle\Entity\Field\File",
- *     "options"="FormBundle\Entity\Field\OptionSelector",
  *     "text"="FormBundle\Entity\Field\Text",
  *     "timeslot"="FormBundle\Entity\Field\TimeSlot"
  * })
