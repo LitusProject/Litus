@@ -73,7 +73,7 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
     private function getPersonEntity()
     {
         if ($this->getAccessToken() !== null) {
-            return $this->getAccessToken()->getPerson($this->getEntityManager());
+            return $this->getAccessToken()->getPerson();
         }
 
         if ($this->getRequest()->getPost('session') !== null) {

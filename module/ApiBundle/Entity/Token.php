@@ -18,19 +18,24 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace ApiBundle\Document;
+namespace ApiBundle\Entity;
 
-use ApiBundle\Document\Code\Authorization as AuthorizationCode;
+use ApiBundle\Entity\Code\Authorization as AuthorizationCode;
 use CommonBundle\Entity\User\Person;
 use DateTime;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity represents an access token used in OAuth 2.0.
  *
- * @ODM\MappedSuperclass
- * @ODM\InheritanceType("COLLECTION_PER_CLASS")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Person")
+ * @ORM\Table(name="api_tokens")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
+ * @ORM\DiscriminatorMap({
+ *      "access"="ApiBundle\Entity\Token\Access",
+ *      "refresh"="ApiBundle\Entity\Token\Refresh"
+ * })
  */
 abstract class Token
 {
@@ -39,53 +44,52 @@ abstract class Token
     /**
      * @var string The ID of this authorization code
      *
-     * @ODM\Id
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var string The token's code
      *
-     * @ODM\Field(type="string")
+     * @ORM\Column(type="string")
      */
     private $code;
 
     /**
-     * @var integer The person that authorized the code
+     * @var \CommonBundle\Entity\User\Person The person that authorized the code
      *
-     * @ODM\Field(type="int")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
+     * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 
     /**
-     * @var \ApiBundle\Document\Code\Authorization The authorization code that was used to request the token
+     * @var \ApiBundle\Entity\Code\Authorization The authorization code that was used to request the token
      *
-     * @ODM\ReferenceOne(
-     *     name="authorization_code",
-     *     targetDocument="ApiBundle\Document\Code\Authorization",
-     *     simple=true,
-     *     cascade="persist"
-     * )
+     * @ORM\ManyToOne(targetEntity="ApiBundle\Entity\Code\Authorization")
+     * @ORM\JoinColumn(name="authorization_code", referencedColumnName="id")
      */
     private $authorizationCode;
 
     /**
      * @var \DateTime The expiration time of the code
      *
-     * @ODM\Field(name="expiration_time", type="date")
+     * @ORM\Column(name="expiration_time", type="datetime")
      */
     private $expirationTime;
 
     /**
-     * @param \CommonBundle\Entity\User\Person       $person
-     * @param \ApiBundle\Document\Code\Authorization $authorizationCode
-     * @param integer                                $expirationTime
+     * @param \CommonBundle\Entity\User\Person     $person
+     * @param \ApiBundle\Entity\Code\Authorization $authorizationCode
+     * @param integer                              $expirationTime
      */
     public function __construct(Person $person, AuthorizationCode $authorizationCode, $expirationTime = self::DEFAULT_EXPIRATION_TIME)
     {
         $this->code = bin2hex(openssl_random_pseudo_bytes(16));
 
-        $this->person = $person->getId();
+        $this->person = $person;
         $this->authorizationCode = $authorizationCode;
         $this->expirationTime = new DateTime(
             'now ' . ($expirationTime < 0 ? '-' : '+') . abs($expirationTime) . ' seconds'
@@ -109,17 +113,15 @@ abstract class Token
     }
 
     /**
-     * @param  \Doctrine\ORM\EntityManager $entityManager
      * @return \CommonBundle\Entity\User\Person
      */
-    public function getPerson(EntityManager $entityManager)
+    public function getPerson()
     {
-        return $entityManager->getRepository('CommonBundle\Entity\User\Person')
-            ->findOneById($this->person);
+        return $this->person;
     }
 
     /**
-     * @return \ApiBundle\Document\Code\Authorization
+     * @return \ApiBundle\Entity\Code\Authorization
      */
     public function getAuthorizationCode()
     {

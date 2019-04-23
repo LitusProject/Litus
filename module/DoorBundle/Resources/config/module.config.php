@@ -26,7 +26,7 @@ return Config::create(
     array(
         'namespace'     => __NAMESPACE__,
         'directory'     => __DIR__,
-        'has_entities'  => false,
-        'has_documents' => true,
+        'has_entities'  => true,
+        'has_documents' => false,
     )
 );

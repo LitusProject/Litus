@@ -18,19 +18,19 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace LogisticsBundle\Document;
+namespace ShiftBundle\Entity;
 
 use CommonBundle\Entity\User\Person;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores a token used to generate a vCalendar so that we can create
  * an iCal file even when nobody is logged in.
  *
- * @ODM\Document(
- *     collection="logisticsbundle_tokens",
- *     repositoryClass="LogisticsBundle\Repository\Token"
+ * @ORM\Entity(repositoryClass="LogisticsBundle\Repository\Token")
+ * @ORM\Table(
+ *     name="shift_tokens",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="shift_tokens_hash", columns={"hash"})}
  * )
  */
 class Token
@@ -38,32 +38,34 @@ class Token
     /**
      * @var integer The ID of this token
      *
-     * @ODM\Id
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
-     * @var string The token's hash
-     *
-     * @ODM\Field(type="string")
-     * @ODM\UniqueIndex
-     */
-    private $hash;
-
-    /**
      * @var integer The person associated with this token
      *
-     * @ODM\Field(type="int")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
+     * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
+
+    /**
+     * @var string The token's hash
+     *
+     * @ORM\Column(type="string")
+     */
+    private $hash;
 
     /**
      * @param Person $person
      */
     public function __construct(Person $person)
     {
+        $this->person = $person;
         $this->hash = md5(uniqid(rand(), true));
-        $this->person = $person->getId();
     }
 
     /**
@@ -75,6 +77,14 @@ class Token
     }
 
     /**
+     * @return Person
+     */
+    public function getPerson()
+    {
+        return $this->person;
+    }
+
+    /**
      * @return string
      */
     public function getHash()
@@ -83,12 +93,13 @@ class Token
     }
 
     /**
-     * @param  EntityManager $entityManager
-     * @return Person
+     * @param  string $hash
+     * @return self
      */
-    public function getPerson(EntityManager $entityManager)
+    public function setHash($hash)
     {
-        return $entityManager->getRepository('CommonBundle\Entity\User\Person')
-            ->findOneById($this->person);
+        $this->hash = $hash;
+
+        return $this;
     }
 }

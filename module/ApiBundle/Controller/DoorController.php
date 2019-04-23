@@ -21,7 +21,7 @@
 namespace ApiBundle\Controller;
 
 use CommonBundle\Entity\User\Person\Academic;
-use DoorBundle\Document\Log;
+use DoorBundle\Entity\Log;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -62,8 +62,8 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
             );
         }
 
-        $rules = $this->getDocumentManager()
-            ->getRepository('DoorBundle\Document\Rule')
+        $rules = $this->getEntityManager()
+            ->getRepository('DoorBundle\Entity\Rule')
             ->findAll();
 
         foreach ($rules as $rule) {
@@ -104,8 +104,8 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         $log = new Log($academic);
 
-        $this->getDocumentManager()->persist($log);
-        $this->getDocumentManager()->flush();
+        $this->getEntityManager()->persist($log);
+        $this->getEntityManager()->flush();
 
         return new ViewModel(
             array(

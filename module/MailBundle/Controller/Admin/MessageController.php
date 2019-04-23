@@ -20,7 +20,7 @@
 
 namespace MailBundle\Controller\Admin;
 
-use MailBundle\Document\Message;
+use MailBundle\Entity\Message;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -32,8 +32,8 @@ class MessageController extends \MailBundle\Component\Controller\AdminController
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromDocument(
-            'MailBundle\Document\Message',
+        $paginator = $this->paginator()->createFromEntity(
+            'MailBundle\Entity\Message',
             $this->getParam('page'),
             array(),
             array(
@@ -63,7 +63,7 @@ class MessageController extends \MailBundle\Component\Controller\AdminController
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $this->getDocumentManager()->flush();
+                $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
                     'Succes',
@@ -97,9 +97,9 @@ class MessageController extends \MailBundle\Component\Controller\AdminController
             return new ViewModel();
         }
 
-        $this->getDocumentManager()->remove($message);
+        $this->getEntityManager()->remove($message);
 
-        $this->getDocumentManager()->flush();
+        $this->getEntityManager()->flush();
 
         return new ViewModel(
             array(
@@ -113,8 +113,8 @@ class MessageController extends \MailBundle\Component\Controller\AdminController
      */
     private function getMessageEntity()
     {
-        $message = $this->getDocumentManager()
-            ->getRepository('MailBundle\Document\Message')
+        $message = $this->getEntityManager()
+            ->getRepository('MailBundle\Entity\Message')
             ->findOneById($this->getParam('id', 0));
 
         if (!($message instanceof Message)) {

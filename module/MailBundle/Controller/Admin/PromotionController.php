@@ -148,8 +148,8 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                         ->addTo($from, $mailName)
                         ->setSubject($formData['compose_message']['subject']);
                 } else {
-                    $storedMessage = $this->getDocumentManager()
-                        ->getRepository('MailBundle\Document\Message')
+                    $storedMessage = $this->getEntityManager()
+                        ->getRepository('MailBundle\Entity\Message')
                         ->findOneById($formData['selected_message']['stored_message']);
 
                     $body = $storedMessage->getBody();

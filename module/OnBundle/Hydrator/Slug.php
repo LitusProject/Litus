@@ -20,7 +20,7 @@
 
 namespace OnBundle\Hydrator;
 
-use OnBundle\Document\Slug as SlugDocument;
+use OnBundle\Entity\Slug as SlugEntity;
 
 /**
  * This hydrator hydrates/extracts slug data.
@@ -30,7 +30,7 @@ use OnBundle\Document\Slug as SlugDocument;
  */
 class Slug extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    protected $entity = 'OnBundle\Document\Slug';
+    protected $entity = 'OnBundle\Entity\Slug';
 
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
@@ -40,14 +40,14 @@ class Slug extends \CommonBundle\Component\Hydrator\Hydrator
     protected function doHydrate(array $data, $object = null)
     {
         if ($object === null) {
-            $object = new SlugDocument($this->getPersonEntity());
+            $object = new SlugEntity($this->getPersonEntity());
         }
 
         if ($data['name'] == '') {
             do {
                 $name = $this->createRandomName();
-                $found = $this->getDocumentManager()
-                    ->getRepository('OnBundle\Document\Slug')
+                $found = $this->getEntityManager()
+                    ->getRepository('OnBundle\Entity\Slug')
                     ->findOneByName($name);
             } while (isset($found));
 

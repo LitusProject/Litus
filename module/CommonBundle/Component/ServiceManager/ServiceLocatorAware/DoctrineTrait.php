@@ -29,14 +29,6 @@ namespace CommonBundle\Component\ServiceManager\ServiceLocatorAware;
 trait DoctrineTrait
 {
     /**
-     * @return \Doctrine\ODM\MongoDB\DocumentManager
-     */
-    public function getDocumentManager()
-    {
-        return $this->getServiceLocator()->get('doctrine.documentmanager.odm_default');
-    }
-
-    /**
      * @return \Doctrine\ORM\EntityManager
      */
     public function getEntityManager()

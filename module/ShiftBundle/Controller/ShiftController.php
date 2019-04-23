@@ -22,9 +22,9 @@ namespace ShiftBundle\Controller;
 
 use DateInterval;
 use DateTime;
-use ShiftBundle\Document\Token;
 use ShiftBundle\Entity\Shift\Responsible;
 use ShiftBundle\Entity\Shift\Volunteer;
+use ShiftBundle\Entity\Token;
 use ShiftBundle\Entity\User\Person\AcademicYearMap;
 use Zend\Http\Headers;
 use Zend\Mail\Message;
@@ -55,16 +55,15 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findAllActiveByPerson($person);
 
-        $token = $this->getDocumentManager()
-            ->getRepository('ShiftBundle\Document\Token')
+        $token = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Token')
             ->findOneByPerson($person);
 
         if ($token === null) {
-            $token = new Token(
-                $person
-            );
-            $this->getDocumentManager()->persist($token);
-            $this->getDocumentManager()->flush();
+            $token = new Token($person);
+
+            $this->getEntityManager()->persist($token);
+            $this->getEntityManager()->flush();
         }
 
         $insuranceEnabled = unserialize(
@@ -479,13 +478,13 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $result .= 'END:VTIMEZONE' . PHP_EOL;
 
         if ($this->getParam('token') !== null) {
-            $token = $this->getDocumentManager()
-                ->getRepository('ShiftBundle\Document\Token')
+            $token = $this->getEntityManager()
+                ->getRepository('ShiftBundle\Entity\Token')
                 ->findOneByHash($this->getParam('token'));
 
             $shifts = $this->getEntityManager()
                 ->getRepository('ShiftBundle\Entity\Shift')
-                ->findAllActiveByPerson($token->getPerson($this->getEntityManager()));
+                ->findAllActiveByPerson($token->getPerson());
 
             foreach ($shifts as $shift) {
                 $result .= 'BEGIN:VEVENT' . PHP_EOL;

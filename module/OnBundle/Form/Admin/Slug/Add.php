@@ -20,7 +20,7 @@
 
 namespace OnBundle\Form\Admin\Slug;
 
-use OnBundle\Document\Slug as SlugDocument;
+use OnBundle\Entity\Slug as SlugEntity;
 
 /**
  * Add Slug
@@ -32,7 +32,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     protected $hydrator = 'OnBundle\Hydrator\Slug';
 
     /**
-     * @var SlugDocument|null
+     * @var SlugEntity|null
      */
     private $slug;
 
@@ -91,10 +91,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-     * @param  SlugDocument $slug
+     * @param  SlugEntity $slug
      * @return self
      */
-    public function setSlug(SlugDocument $slug)
+    public function setSlug(SlugEntity $slug)
     {
         $this->slug = $slug;
 

@@ -107,8 +107,8 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
 
                     $mail->addTo($formData['from']);
                 } else {
-                    $storedMessage = $this->getDocumentManager()
-                        ->getRepository('MailBundle\Document\Message')
+                    $storedMessage = $this->getEntityManager()
+                        ->getRepository('MailBundle\Entity\Message')
                         ->findOneById($formData['selected_message']['stored_message']);
 
                     $body = $storedMessage->getBody();

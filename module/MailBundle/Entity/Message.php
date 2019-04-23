@@ -18,62 +18,61 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace MailBundle\Document;
+namespace MailBundle\Entity;
 
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
- * This entity stores an e-mail message, received through our own
- * mail parser.
+ * This entity stores an e-mail message, received through our own mail parser.
  *
- * @ODM\Document(
- *     collection="mailbundle_messages",
- *     repositoryClass="MailBundle\Repository\Message"
- * )
+ * @ORM\Entity(repositoryClass="ApiBundle\Entity\Message")
+ * @ORM\Table(name="mail_messages")
  */
 class Message
 {
     /**
      * @var integer The ID of this message
      *
-     * @ODM\Id
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
      * @var DateTime The time of creation of this message
      *
-     * @ODM\Field(name="creation_time", type="date")
+     * @ORM\Column(name="creation_time", type="datetime")
      */
     private $creationTime;
 
     /**
      * @var string The type of this message
      *
-     * @ODM\Field(type="string")
+     * @ORM\Column(type="string")
      */
     private $type;
 
     /**
      * @var string The subject of this message
      *
-     * @ODM\Field(type="string")
+     * @ORM\Column(type="string")
      */
     private $subject;
 
     /**
      * @var string The body string
      *
-     * @ODM\Field(type="string")
+     * @ORM\Column(type="text")
      */
     private $body;
 
     /**
      * @var ArrayCollection The attachemnts for this message
      *
-     * @ODM\ReferenceMany(targetDocument="MailBundle\Document\Message\Attachment", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="MailBundle\Entity\Message\Attachment", mappedBy="message", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $attachments;
 
@@ -81,14 +80,13 @@ class Message
      * @param string $type
      * @param string $subject
      * @param string $body
-     * @param array  $attachments
      */
-    public function __construct($type, $subject, $body, array $attachments = array())
+    public function __construct($type, $subject, $body)
     {
         $this->creationTime = new DateTime();
 
         $this->type = $type;
-        $this->attachments = new ArrayCollection($attachments);
+        $this->attachments = new ArrayCollection();
 
         $this->setSubject($subject);
         $this->setBody($body);
@@ -108,6 +106,17 @@ class Message
     public function getCreationTime()
     {
         return $this->creationTime;
+    }
+
+    /**
+     * @param  DateTime $creationTime
+     * @return self
+     */
+    public function setCreationTime(DateTime $creationTime)
+    {
+        $this->creationTime = $creationTime;
+
+        return $this;
     }
 
     /**

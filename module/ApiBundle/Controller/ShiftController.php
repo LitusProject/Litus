@@ -267,7 +267,7 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
             return null;
         }
 
-        return $this->getAccessToken()->getPerson($this->getEntityManager());
+        return $this->getAccessToken()->getPerson();
     }
 
     /**

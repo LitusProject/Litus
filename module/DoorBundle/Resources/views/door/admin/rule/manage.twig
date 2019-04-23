@@ -40,7 +40,7 @@
             <tbody>
                 {% for rule in paginator %}
                     <tr class="item item-{{ rule.getId() }}">
-                        <td>{{ rule.getAcademic(entityManager).getFullName() }}</td>
+                        <td>{{ rule.getAcademic().getFullName() }}</td>
                         <td>{{ rule.getStartDate().format('d/m/Y') }}</td>
                         <td>{{ rule.getEndDate().format('d/m/Y') }}</td>
                         <td>{{ rule.getStartTimeReadable() }}</td>
@@ -50,7 +50,7 @@
                                 <a href="{{ url('door_admin_rule', {"action": "edit", "id": rule.getId()}) }}" class="edit">Edit</a>
                             {% endif %}
                             {% if hasAccess('door_admin_rule', 'delete') %}
-                                <a href="#" data-id="{{ rule.getId() }}" data-name="{{ rule.getAcademic(entityManager).getFullName() }}" class="delete">Delete</a>
+                                <a href="#" data-id="{{ rule.getId() }}" data-name="{{ rule.getAcademic().getFullName() }}" class="delete">Delete</a>
                             {% endif %}
                         </td>
                     </tr>

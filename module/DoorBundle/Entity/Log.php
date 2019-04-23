@@ -18,51 +18,51 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace DoorBundle\Document;
+namespace DoorBundle\Entity;
 
 use CommonBundle\Entity\User\Person\Academic;
 use DateTime;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
- * This document represents an access rule for our door.
+ * This entity represents an access rule for our door.
  *
- * @ODM\Document(
- *     collection="doorbundle_log",
- *     repositoryClass="DoorBundle\Repository\Log"
- * )
+ * @ORM\Entity(repositoryClass="DoorBundle\Repository\Log")
+ * @ORM\Table(name="door_log")
  */
 class Log
 {
     /**
      * @var integer The ID of this log entry
      *
-     * @ODM\Id
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
-     * @var DateTime The timestamp of entry
-     *
-     * @ODM\Field(type="date")
-     */
-    private $timestamp;
-
-    /**
      * @var integer The ID of the academic
      *
-     * @ODM\Field(type="int")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
+     * @ORM\JoinColumn(name="academic", referencedColumnName="id")
      */
     private $academic;
+
+    /**
+     * @var DateTime The timestamp of entry
+     *
+     * @ORM\Column(type="datetime")
+     */
+    private $timestamp;
 
     /**
      * @param Academic $academic
      */
     public function __construct(Academic $academic)
     {
-        $this->timestamp = new DateTime();
         $this->academic = $academic->getId();
+        $this->timestamp = new DateTime();
     }
 
     /**
@@ -74,6 +74,14 @@ class Log
     }
 
     /**
+     * @return Academic
+     */
+    public function getAcademic()
+    {
+        return $this->academic;
+    }
+
+    /**
      * @return DateTime
      */
     public function getTimestamp()
@@ -82,12 +90,13 @@ class Log
     }
 
     /**
-     * @param  EntityManager $entityManager
-     * @return Academic
+     * @param  DateTime $timestamp
+     * @return self
      */
-    public function getAcademic(EntityManager $entityManager)
+    public function setTimestamp(DateTime $timestamp)
     {
-        return $entityManager->getRepository('CommonBundle\Entity\User\Person\Academic')
-            ->findOneById($this->academic);
+        $this->timestamp = $timestamp;
+
+        return $this;
     }
 }

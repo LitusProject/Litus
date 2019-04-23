@@ -37,7 +37,7 @@ class RedirectController extends \CommonBundle\Component\Controller\ActionContro
         }
 
         $slug->incrementHits();
-        $this->getDocumentManager()->flush();
+        $this->getEntityManager()->flush();
 
         $this->redirect()->toUrl(
             $slug->getUrl()
@@ -47,12 +47,12 @@ class RedirectController extends \CommonBundle\Component\Controller\ActionContro
     }
 
     /**
-     * @return \OnBundle\Document\Slug|null
+     * @return \OnBundle\Entity\Slug|null
      */
     private function getSlug()
     {
-        return $this->getDocumentManager()
-            ->getRepository('OnBundle\Document\Slug')
+        return $this->getEntityManager()
+            ->getRepository('OnBundle\Entity\Slug')
             ->findOneByName(strtolower($this->getParam('name', '')));
     }
 }
