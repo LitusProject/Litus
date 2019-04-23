@@ -4,10 +4,10 @@
 
     <file>bin/</file>
     <file>config/</file>
+    <file>migrations/</file>
     <file>module/</file>
     <file>public/</file>
     <file>shibboleth/</file>
-    <file>upgrade/</file>
 
     <arg name="colors"/>
     <arg name="extensions" value="php"/>
