@@ -439,6 +439,9 @@ class Version20190410211245 extends \Doctrine\Migrations\AbstractMigration
         $this->addSql('ALTER TABLE users.users_subject_enrollment SET SCHEMA public');
         $this->addSql('ALTER TABLE users.users_university_statuses SET SCHEMA public');
 
+        $this->addSql('DROP SEQUENCE IF EXISTS br.contracts_sections_id_seq');
+        $this->addSql('DROP SEQUENCE IF EXISTS syllabus.studies_academic_years_map_id_seq');
+
         $this->addSql('DROP SCHEMA acl');
         $this->addSql('DROP SCHEMA api');
         $this->addSql('DROP SCHEMA br');

@@ -50,7 +50,6 @@ class Version20190410211726 extends \Doctrine\Migrations\AbstractMigration
         $this->addSql('ALTER INDEX idx_172f9fa257698a6a RENAME TO idx_f43d9a9257698a6a');
         $this->addSql('ALTER INDEX idx_17c6034d275ae721 RENAME TO idx_8ae87a7d275ae721');
         $this->addSql('ALTER INDEX idx_18c71a90275ae721 RENAME TO idx_14cf436275ae721');
-        $this->addSql('ALTER INDEX idx_18c71a9034dcd176 RENAME TO idx_14cf43634dcd176');
         $this->addSql('ALTER INDEX idx_1989916964cc34ab RENAME TO idx_5c17e7d464cc34ab');
         $this->addSql('ALTER INDEX idx_19899169de091aaf RENAME TO idx_5c17e7d4de091aaf');
         $this->addSql('ALTER INDEX idx_1b151a68275ae721 RENAME TO idx_dfa7d317275ae721');
@@ -156,7 +155,6 @@ class Version20190410211726 extends \Doctrine\Migrations\AbstractMigration
         $this->addSql('ALTER INDEX idx_6db906535e9e89cb RENAME TO idx_27a6ddcc5e9e89cb');
         $this->addSql('ALTER INDEX idx_6db90653dcbb0c53 RENAME TO idx_27a6ddccdcbb0c53');
         $this->addSql('ALTER INDEX idx_6db90653fa2425b9 RENAME TO idx_27a6ddccfa2425b9');
-        $this->addSql('ALTER INDEX idx_6dee3f29d4db71b5 RENAME TO idx_27f1e4b6d4db71b5');
         $this->addSql('ALTER INDEX idx_6f9615f34dcd176 RENAME TO idx_e121b6c934dcd176');
         $this->addSql('ALTER INDEX idx_719ee2343d8e604f RENAME TO idx_db3b824a3d8e604f');
         $this->addSql('ALTER INDEX idx_719ee234c1ee637c RENAME TO idx_db3b824ac1ee637c');
@@ -326,6 +324,9 @@ class Version20190410211726 extends \Doctrine\Migrations\AbstractMigration
         $this->addSql('ALTER INDEX idx_fad966e836ac99f1 RENAME TO idx_c4604ad36ac99f1');
         $this->addSql('ALTER INDEX idx_fad966e8d4db71b5 RENAME TO idx_c4604add4db71b5');
         $this->addSql('ALTER INDEX idx_fc69f822ee87e006 RENAME TO idx_56cc985cee87e006');
+
+        $this->addSql('ALTER INDEX IF EXISTS idx_18c71a9034dcd176 RENAME TO idx_14cf43634dcd176');
+        $this->addSql('ALTER INDEX IF EXISTS idx_6dee3f29d4db71b5 RENAME TO idx_27f1e4b6d4db71b5');
 
         $this->addSql('ALTER INDEX uniq_161f168a4fbf094f RENAME TO uniq_671134024fbf094f');
         $this->addSql('ALTER INDEX uniq_169424d9d7df1668 RENAME TO uniq_f14cf34fd7df1668');

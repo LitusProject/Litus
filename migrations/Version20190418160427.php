@@ -40,7 +40,8 @@ class Version20190418160427 extends \Doctrine\Migrations\AbstractMigration
             'Migration can only be executed safely on PostgreSQL.'
         );
 
-        $this->addSql('ALTER TABLE form_fields_translations_options DROP CONSTRAINT fk_862f14455bf54558');
+        $this->addSql('ALTER TABLE form_fields_translations_options DROP CONSTRAINT IF EXISTS fk_862f14455bf54558');
+        $this->addSql('ALTER TABLE form_fields_translations_options DROP CONSTRAINT IF EXISTS fk_938323c65bf54558');
         $this->addSql('ALTER TABLE form_fields_translations_options ADD CONSTRAINT fk_2b86707c5bf54558 FOREIGN KEY (field) REFERENCES form_fields_dropdowns (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('DROP TABLE form_fields_options');
     }
