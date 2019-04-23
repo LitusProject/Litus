@@ -18,38 +18,36 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace ApiBundle\Document\Token;
+namespace ApiBundle\Entity\Token;
 
-use ApiBundle\Document\Code\Authorization as AuthorizationCode;
+use ApiBundle\Entity\Code\Authorization as AuthorizationCode;
 use ApiBundle\Entity\Key;
 use CommonBundle\Entity\User\Person;
 use DateTime;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity represents an authorization code used in OAuth 2.0.
  *
- * @ODM\Document(
- *     collection="apibundle_token_refresh",
- *     repositoryClass="ApiBundle\Repository\Token\Refresh"
- * )
+ * @ORM\Entity(repositoryClass="ApiBundle\Repository\Token\Refresh")
+ * @ORM\Table(name="api_tokens_refresh")
  */
-class Refresh extends \ApiBundle\Document\Token
+class Refresh extends \ApiBundle\Entity\Token
 {
     const DEFAULT_EXPIRATION_TIME = 1209600;
 
     /**
-     * @var integer The API key that can refresh the access token
+     * @var Key The API key that can refresh the access token
      *
-     * @ODM\Field(type="int")
+     * @ORM\ManyToOne(targetEntity="ApiBundle\Entity\Key")
+     * @ORM\JoinColumn(name="key", referencedColumnName="id")
      */
     private $key;
 
     /**
      * @var DateTime The exchange time of the code
      *
-     * @ODM\Field(name="exchange_time", type="date")
+     * @ORM\Column(name="exchange_time", type="datetime", nullable=true)
      */
     private $exchangeTime;
 
@@ -63,17 +61,15 @@ class Refresh extends \ApiBundle\Document\Token
     {
         parent::__construct($person, $authorizationCode, $expirationTime);
 
-        $this->key = $key->getId();
+        $this->key = $key;
     }
 
     /**
-     * @param  EntityManager $entityManager
      * @return Key
      */
-    public function getKey(EntityManager $entityManager)
+    public function getKey()
     {
-        return $entityManager->getRepository('ApiBundle\Entity\Key')
-            ->findOneById($this->key);
+        return $this->key;
     }
 
     /**

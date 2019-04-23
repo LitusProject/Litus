@@ -20,11 +20,11 @@
 
 namespace DoorBundle\Hydrator;
 
-use DoorBundle\Document\Rule as RuleDocument;
+use DoorBundle\Entity\Rule as RuleEntity;
 
 class Rule extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    protected $entity = 'DoorBundle\Document\Rule';
+    protected $entity = 'DoorBundle\Entity\Rule';
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -34,9 +34,7 @@ class Rule extends \CommonBundle\Component\Hydrator\Hydrator
 
             $academic = $data['academic']['id'] == '' ? $repository->findOneByUsername($data['academic']) : $repository->findOneById($data['academic']['id']);
 
-            $object = new RuleDocument(
-                $academic
-            );
+            $object = new RuleEntity($academic);
         }
 
         if (isset($data['start_time']) && $data['start_time'] !== null) {

@@ -30,7 +30,7 @@ use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
  */
 class Message extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    protected $entity = 'MailBundle\Document\Message';
+    protected $entity = 'MailBundle\Entity\Message';
 
     private static $stdKeys = array('subject', 'body');
 

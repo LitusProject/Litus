@@ -22,7 +22,7 @@ namespace DoorBundle\Controller\Admin;
 
 use DateInterval;
 use DateTime;
-use DoorBundle\Document\Rule;
+use DoorBundle\Entity\Rule;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -35,10 +35,9 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
     public function manageAction()
     {
         $paginator = $this->paginator()->createFromArray(
-            $this->getDocumentManager()
-                ->getRepository('DoorBundle\Document\Rule')
-                ->findAll()
-                ->toArray(),
+            $this->getEntityManager()
+                ->getRepository('DoorBundle\Entity\Rule')
+                ->findAll(),
             $this->getParam('page')
         );
 
@@ -62,8 +61,8 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid()) {
                 $rule = $form->hydrateObject();
 
-                $this->getDocumentManager()->persist($rule);
-                $this->getDocumentManager()->flush();
+                $this->getEntityManager()->persist($rule);
+                $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
                     'Succes',
@@ -101,7 +100,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $this->getDocumentManager()->flush();
+                $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
                     'Succes',
@@ -121,7 +120,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'academic' => $rule->getAcademic($this->getEntityManager()),
+                'academic' => $rule->getAcademic(),
                 'form'     => $form,
             )
         );
@@ -130,8 +129,8 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
     public function oldAction()
     {
         $paginator = $this->paginator()->createFromArray(
-            $this->getDocumentManager()
-                ->getRepository('DoorBundle\Document\Rule')
+            $this->getEntityManager()
+                ->getRepository('DoorBundle\Entity\Rule')
                 ->findOld(),
             $this->getParam('page')
         );
@@ -153,9 +152,9 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $this->getDocumentManager()->remove($rule);
+        $this->getEntityManager()->remove($rule);
 
-        $this->getDocumentManager()->flush();
+        $this->getEntityManager()->flush();
 
         return new ViewModel(
             array(
@@ -169,8 +168,8 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
      */
     private function getRuleEntity()
     {
-        $rule = $this->getDocumentManager()
-            ->getRepository('DoorBundle\Document\Rule')
+        $rule = $this->getEntityManager()
+            ->getRepository('DoorBundle\Entity\Rule')
             ->findOneBy(
                 array(
                     'id' => $this->getParam('id'),
@@ -242,8 +241,8 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $today = new DateTime('midnight');
-        $entries = $this->getDocumentManager()
-            ->getRepository('DoorBundle\Document\Log')
+        $entries = $this->getEntityManager()
+            ->getRepository('DoorBundle\Entity\Log')
             ->findAllSince($today->sub(new DateInterval('P6D')));
 
         foreach ($entries as $entry) {

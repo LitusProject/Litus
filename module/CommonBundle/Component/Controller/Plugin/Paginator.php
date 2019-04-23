@@ -101,23 +101,6 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin implements Se
     }
 
     /**
-     * Create a paginator for a given document.
-     *
-     * @param  string     $document    The name of the document that should be paginated
-     * @param  integer    $currentPage The page we now are on
-     * @param  array      $conditions  These conditions will be passed to the Repository call
-     * @param  array|null $orderBy     An array containing constraints on how to order the results
-     * @return ZendPaginator
-     */
-    public function createFromDocument($document, $currentPage, array $conditions = array(), array $orderBy = null)
-    {
-        return $this->createFromArray(
-            count($conditions) == 0 ? $this->getDocumentManager()->getRepository($document)->findBy(array(), $orderBy) : $this->getDocumentManager()->getRepository($document)->findBy($conditions, $orderBy),
-            $currentPage
-        );
-    }
-
-    /**
      * Create a paginator for a given entity.
      *
      * @param  string  $entity      The name of the entity that should be paginated

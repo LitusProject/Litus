@@ -18,71 +18,71 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace DoorBundle\Document;
+namespace DoorBundle\Entity;
 
 use CommonBundle\Entity\User\Person\Academic;
 use DateTime;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
- * This document represents an access rule for our door.
+ * This entity represents an access rule for our door.
  *
- * @ODM\Document(
- *     collection="doorbundle_rules",
- *     repositoryClass="DoorBundle\Repository\Rule"
- * )
+ * @ORM\Entity(repositoryClass="DoorBundle\Repository\Rule")
+ * @ORM\Table(name="door_rules")
  */
 class Rule
 {
     /**
      * @var integer The ID of this rule
      *
-     * @ODM\Id
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
+     * @var integer The ID of the academic
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
+     * @ORM\JoinColumn(name="academic", referencedColumnName="id")
+     */
+    private $academic;
+
+    /**
      * @var DateTime The start date of the rule
      *
-     * @ODM\Field(type="date")
+     * @ORM\Column(name="start_date", type="datetime")
      */
     private $startDate;
 
     /**
      * @var DateTime The end date of the rule
      *
-     * @ODM\Field(type="date")
+     * @ORM\Column(name="end_date", type="datetime")
      */
     private $endDate;
 
     /**
      * @var integer The time from when access is allowed
      *
-     * @ODM\Field(type="int")
+     * @ORM\Column(name="start_time", type="integer")
      */
     private $startTime;
 
     /**
      * @var integer The time until when access is allowed
      *
-     * @ODM\Field(type="int")
+     * @ORM\Column(name="end_time", type="integer")
      */
     private $endTime;
-
-    /**
-     * @var integer The ID of the academic
-     *
-     * @ODM\Field(type="int")
-     */
-    private $academic;
 
     /**
      * @param Academic $academic
      */
     public function __construct(Academic $academic)
     {
-        $this->academic = $academic->getId();
+        $this->academic = $academic;
     }
 
     /**
@@ -91,6 +91,14 @@ class Rule
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return Academic
+     */
+    public function getAcademic()
+    {
+        return $this->academic;
     }
 
     /**
@@ -183,27 +191,6 @@ class Rule
         $this->endTime = $endTime;
 
         return $this;
-    }
-
-    /**
-     * @param  Academic $academic
-     * @return self
-     */
-    public function setAcademic(Academic $academic)
-    {
-        $this->academic = $academic->getId();
-
-        return $this;
-    }
-
-    /**
-     * @param  EntityManager $entityManager
-     * @return Academic
-     */
-    public function getAcademic(EntityManager $entityManager)
-    {
-        return $entityManager->getRepository('CommonBundle\Entity\User\Person\Academic')
-            ->findOneById($this->academic);
     }
 
     /**

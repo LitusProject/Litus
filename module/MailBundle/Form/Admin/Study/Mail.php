@@ -267,8 +267,8 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
 
     private function getStoredMessages()
     {
-        $storedMessages = $this->getDocumentManager()
-            ->getRepository('MailBundle\Document\Message')
+        $storedMessages = $this->getEntityManager()
+            ->getRepository('MailBundle\Entity\Message')
             ->findAll();
 
         $storedMessagesTitles = array(

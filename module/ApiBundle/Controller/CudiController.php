@@ -559,7 +559,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             return null;
         }
 
-        $person = $this->getAccessToken()->getPerson($this->getEntityManager());
+        $person = $this->getAccessToken()->getPerson();
         if ($person === null) {
             return null;
         }

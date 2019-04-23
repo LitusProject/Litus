@@ -18,18 +18,18 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace OnBundle\Document;
+namespace OnBundle\Entity;
 
 use CommonBundle\Entity\User\Person;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores a slug, and the URL it should redirect to.
  *
- * @ODM\Document(
- *     collection="onbundle_slugs",
- *     repositoryClass="OnBundle\Repository\Slug"
+ * @ORM\Entity(repositoryClass="OnBundle\Repository\Slug")
+ * @ORM\Table(
+ *     name="on_slugs",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="on_slugs_name", columns={"name"})}
  * )
  */
 class Slug
@@ -37,46 +37,47 @@ class Slug
     /**
      * @var integer The ID of this slug
      *
-     * @ODM\Id
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
-     * @var integer The ID of the person that created this slug
+     * @var Person The ID of the person that created this slug
      *
-     * @ODM\Field(type="int")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
+     * @ORM\JoinColumn(name="creation_person", referencedColumnName="id")
      */
     private $creationPerson;
 
     /**
      * @var string The name of the slug
      *
-     * @ODM\Field(type="string")
-     * @ODM\UniqueIndex
+     * @ORM\Column(type="string")
      */
     private $name;
 
     /**
      * @var string The URL this logs redirects to
      *
-     * @ODM\Field(type="string")
+     * @ORM\Column(type="string")
      */
     private $url;
 
     /**
      * @var integer How many times this slug was hit
      *
-     * @ODM\Field(type="increment")
+     * @ORM\Column(type="bigint")
      */
     private $hits;
 
     /**
-     * @param Person $person
+     * @param Person $creationPerson
      */
-    public function __construct(Person $person)
+    public function __construct(Person $creationPerson)
     {
-        $this->creationPerson = $person->getId();
-
+        $this->creationPerson = $creationPerson;
         $this->hits = 0;
     }
 
@@ -89,13 +90,11 @@ class Slug
     }
 
     /**
-     * @param  EntityManager $entityManager
      * @return Person
      */
-    public function getCreationPerson(EntityManager $entityManager)
+    public function getCreationPerson()
     {
-        return $entityManager->getRepository('CommonBundle\Entity\User\Person')
-            ->findOneById($this->creationPerson);
+        return $this->creationPerson;
     }
 
     /**
@@ -142,6 +141,17 @@ class Slug
     public function getHits()
     {
         return $this->hits;
+    }
+
+    /**
+     * @param  integer $hits
+     * @return self
+     */
+    public function setHits($hits)
+    {
+        $this->hits = $hits;
+
+        return $this;
     }
 
     /**

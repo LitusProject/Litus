@@ -19,7 +19,7 @@
             <tbody>
                 {% for rule in paginator %}
                     <tr class="item item-{{ rule.getId() }}">
-                        <td>{{ rule.getAcademic(entityManager).getFullName() }}</td>
+                        <td>{{ rule.getAcademic().getFullName() }}</td>
                         <td>{{ rule.getStartDate().format('d/m/Y H:i') }}</td>
                         <td>{{ rule.getEndDate().format('d/m/Y H:i') }}</td>
                     </tr>

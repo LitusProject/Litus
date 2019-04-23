@@ -18,21 +18,18 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace ApiBundle\Document\Code;
+namespace ApiBundle\Entity\Code;
 
 use ApiBundle\Entity\Key;
 use CommonBundle\Entity\User\Person;
 use DateTime;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity represents an authorization code used in OAuth 2.0.
  *
- * @ODM\Document(
- *     collection="apibundle_code_authorization",
- *     repositoryClass="ApiBundle\Repository\Code\Authorization"
- * )
+ * @ORM\Entity(repositoryClass="ApiBundle\Repository\Code\Authorization")
+ * @ORM\Table(name="api_codes_authorization")
  */
 class Authorization
 {
@@ -41,42 +38,46 @@ class Authorization
     /**
      * @var string The ID of this authorization code
      *
-     * @ODM\Id
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
     /**
-     * @var string The timestamp of entry
+     * @var string The authorization code
      *
-     * @ODM\Field(type="string")
+     * @ORM\Column(type="string")
      */
     private $code;
 
     /**
-     * @var integer The person that authorized the code
+     * @var Person The person that authorized the code
      *
-     * @ODM\Field(type="int")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
+     * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 
     /**
-     * @var integer The API key that was used to request the code
+     * @var Key The API key that was used to request the code
      *
-     * @ODM\Field(type="int")
+     * @ORM\ManyToOne(targetEntity="ApiBundle\Entity\Key")
+     * @ORM\JoinColumn(name="key", referencedColumnName="id")
      */
     private $key;
 
     /**
      * @var DateTime The expiration time of the code
      *
-     * @ODM\Field(name="expiration_time", type="date")
+     * @ORM\Column(name="expiration_time", type="datetime")
      */
     private $expirationTime;
 
     /**
      * @var DateTime The exchange time of the code
      *
-     * @ODM\Field(name="exchange_time", type="date")
+     * @ORM\Column(name="exchange_time", type="datetime", nullable=true)
      */
     private $exchangeTime;
 
@@ -89,8 +90,8 @@ class Authorization
     {
         $this->code = bin2hex(openssl_random_pseudo_bytes(16));
 
-        $this->person = $person->getId();
-        $this->key = $key->getId();
+        $this->person = $person;
+        $this->key = $key;
         $this->expirationTime = new DateTime(
             'now ' . ($expirationTime < 0 ? '-' : '+') . abs($expirationTime) . ' seconds'
         );
@@ -113,23 +114,19 @@ class Authorization
     }
 
     /**
-     * @param  EntityManager $entityManager
      * @return Person
      */
-    public function getPerson(EntityManager $entityManager)
+    public function getPerson()
     {
-        return $entityManager->getRepository('CommonBundle\Entity\User\Person')
-            ->findOneById($this->person);
+        return $this->person;
     }
 
     /**
-     * @param  EntityManager $entityManager
      * @return Key
      */
-    public function getKey(EntityManager $entityManager)
+    public function getKey()
     {
-        return $entityManager->getRepository('ApiBundle\Entity\Key')
-            ->findOneById($this->key);
+        return $this->key;
     }
 
     /**
@@ -153,7 +150,7 @@ class Authorization
      */
     public function exchange()
     {
-        $this->exchangeTime = new \DateTime();
+        $this->exchangeTime = new DateTime();
 
         return $this;
     }

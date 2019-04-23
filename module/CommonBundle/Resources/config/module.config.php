@@ -31,6 +31,7 @@ use CommonBundle\Component\Console\ServiceManager\ApplicationFactory as ConsoleA
 use CommonBundle\Component\Controller\Plugin\ServiceManager\PaginatorFactory;
 use CommonBundle\Component\Controller\ServiceManager\AbstractActionControllerInitializer;
 use CommonBundle\Component\Doctrine\Common\Cache\ServiceManager\RedisCacheFactory as DoctrineRedisCacheFactory;
+use CommonBundle\Component\Doctrine\Migrations\Configuration\ServiceManager\ConfigurationFactory as DoctrineMigrationsConfigurationFactory;
 use CommonBundle\Component\Form\Factory as FormFactory;
 use CommonBundle\Component\Form\ServiceManager\FactoryFactory as FormFactoryFactory;
 use CommonBundle\Component\Hydrator\HydratorPluginManager;
@@ -243,6 +244,9 @@ return Config::create(
             'cacheEnabled'   => getenv('APPLICATION_ENV') != 'development',
             'cachePath'      => __DIR__ . '/../../../../data/cache',
             'basePath'       => '/_assetic/',
+        ),
+        'doctrine_factories' => array(
+            'migrations_configuration' => DoctrineMigrationsConfigurationFactory::class,
         ),
 
         'litus' => array(

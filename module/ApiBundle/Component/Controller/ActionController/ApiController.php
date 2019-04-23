@@ -420,7 +420,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      * Helper method that retrieves the OAuth 2 access token.
      *
      * @param  string $field The name of the field that contains the access token
-     * @return \ApiBundle\Document\Token\Access
+     * @return \ApiBundle\Entity\Token\Access
      */
     protected function getAccessToken($field = 'access_token')
     {
@@ -429,8 +429,8 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
             $code = $this->getRequest()->getPost($field);
         }
 
-        return $this->getDocumentManager()
-            ->getRepository('ApiBundle\Document\Token\Access')
+        return $this->getEntityManager()
+            ->getRepository('ApiBundle\Entity\Token\Access')
             ->findOneActiveByCode($code);
     }
 
@@ -572,7 +572,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         $this->hasAccessDriver = new HasAccessDriver(
             $this->getAcl(),
             true,
-            $accessToken->getPerson($this->getEntityManager())
+            $accessToken->getPerson()
         );
 
         return true;
