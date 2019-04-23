@@ -65,6 +65,8 @@
     },
     "autoload": {
         "psr-4": {
+            "Migrations\\": "migrations",
+
             "ApiBundle\\": "module/ApiBundle",
             "BannerBundle\\": "module/BannerBundle",
             "BootstrapBundle\\": "module/BootstrapBundle",
