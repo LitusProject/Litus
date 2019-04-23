@@ -89,7 +89,7 @@ class Stock extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     }
 
     /**
-     * @param  \ShopBundle\Entity\Product      $product
+     * @param  \ShopBundle\Entity\Product $product
      * @param  \ShopBundle\Entity\Session $salesSession
      * @return integer
      */

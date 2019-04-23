@@ -47,9 +47,9 @@ class Ics
     private $suffix;
 
     /**
-     * @param TmpFile         $file
-     * @param EntityManager   $entityManager
-     * @param string|null     $token
+     * @param TmpFile       $file
+     * @param EntityManager $entityManager
+     * @param string|null   $token
      */
     public function __construct(TmpFile $file, EntityManager $entityManager, $token = null)
     {

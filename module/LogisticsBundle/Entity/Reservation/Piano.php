@@ -51,7 +51,7 @@ class Piano extends \LogisticsBundle\Entity\Reservation
     private $confirmed;
 
     /**
-     * @param Resource $resource
+     * @param resource $resource
      * @param Person   $creator
      */
     public function __construct(Resource $resource, Person $creator)

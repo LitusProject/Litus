@@ -21,8 +21,8 @@
 namespace CudiBundle\Controller\Prof\Article;
 
 use CudiBundle\Entity\Article\Internal as InternalArticle;
-use CudiBundle\Entity\File\File;
 use CudiBundle\Entity\File\ArticleMap;
+use CudiBundle\Entity\File\File;
 use CudiBundle\Entity\Prof\Action;
 use Zend\Http\Headers;
 use Zend\View\Model\ViewModel;

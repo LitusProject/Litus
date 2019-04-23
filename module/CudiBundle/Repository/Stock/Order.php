@@ -23,8 +23,8 @@ namespace CudiBundle\Repository\Stock;
 use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person;
 use CudiBundle\Entity\Sale\Article;
-use CudiBundle\Entity\Stock\Order\Item as ItemEntity;
 use CudiBundle\Entity\Stock\Order as OrderEntity;
+use CudiBundle\Entity\Stock\Order\Item as ItemEntity;
 use CudiBundle\Entity\Stock\Period;
 use CudiBundle\Entity\Supplier;
 
