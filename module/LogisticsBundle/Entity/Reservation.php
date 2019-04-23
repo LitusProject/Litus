@@ -58,12 +58,14 @@ abstract class Reservation
      */
     private $creator;
 
+    // phpcs:disable Squiz.Commenting.FunctionComment.IncorrectParamVarName
     /**
      * @var Resource The resource associated with this reservation.
      *
      * @ORM\ManyToOne(targetEntity="LogisticsBundle\Entity\Reservation\Resource", inversedBy="reservations")
      * @ORM\JoinColumn(name="resource_name", referencedColumnName="name")
      */
+    // phpcs:enable
     private $resource;
 
     /**
@@ -94,10 +96,12 @@ abstract class Reservation
      */
     private $endDate;
 
+    // phpcs:disable Squiz.Commenting.FunctionComment.IncorrectParamVarName
     /**
      * @param Resource $resource
      * @param Person   $creator
      */
+    // phpcs:enable
     public function __construct(Resource $resource, Person $creator)
     {
         $this->creator = $creator;
@@ -113,9 +117,11 @@ abstract class Reservation
         return $this->id;
     }
 
+    // phpcs:disable Squiz.Commenting.FunctionComment.IncorrectParamVarName
     /**
      * @return Resource
      */
+    // phpcs:enable
     public function getResource()
     {
         return $this->resource;
