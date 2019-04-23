@@ -42,7 +42,6 @@ class Version20190416202349 extends \Doctrine\Migrations\AbstractMigration
 
         $this->addSql('ALTER INDEX idx_10cf6d26c1ee637c RENAME TO idx_e05e63dc1ee637c');
         $this->addSql('ALTER INDEX idx_14cf436275ae721 RENAME TO idx_d4b51666275ae721');
-        $this->addSql('ALTER INDEX idx_14cf43634dcd176 RENAME TO idx_d4b5166634dcd176');
         $this->addSql('ALTER INDEX idx_1751b863d8e604f RENAME TO idx_66b973a53d8e604f');
         $this->addSql('ALTER INDEX idx_1863132913b7300a RENAME TO idx_7c0b372613b7300a');
         $this->addSql('ALTER INDEX idx_186313295ff69b7d RENAME TO idx_7c0b37265ff69b7d');
@@ -186,6 +185,8 @@ class Version20190416202349 extends \Doctrine\Migrations\AbstractMigration
         $this->addSql('ALTER INDEX idx_fb99ee724c62e638 RENAME TO idx_c7f0e8574c62e638');
         $this->addSql('ALTER INDEX idx_fb99ee725a8b0903 RENAME TO idx_c7f0e8575a8b0903');
         $this->addSql('ALTER INDEX idx_ffa2759940549b08 RENAME TO idx_e418722c40549b08');
+
+        $this->addSql('ALTER INDEX IF EXISTS idx_14cf43634dcd176 RENAME TO idx_d4b5166634dcd176');
 
         $this->addSql('ALTER INDEX uniq_14cf436e00cedde RENAME TO uniq_d4b51666e00cedde');
         $this->addSql('ALTER INDEX uniq_328ec2a34dcd176 RENAME TO uniq_c0b62e3134dcd176');
