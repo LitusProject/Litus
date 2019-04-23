@@ -23,7 +23,6 @@ declare(strict_types=1);
 namespace Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
-use RuntimeException;
 
 /**
  * Version 20190418160427
