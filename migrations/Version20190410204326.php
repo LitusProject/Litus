@@ -24,7 +24,6 @@ namespace Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
-use RuntimeException;
 
 /**
  * Version 20190410204326

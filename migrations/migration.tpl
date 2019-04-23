@@ -23,7 +23,6 @@ declare(strict_types=1);
 namespace <namespace>;
 
 use Doctrine\DBAL\Schema\Schema;
-use RuntimeException;
 
 /**
  * Version <version>
