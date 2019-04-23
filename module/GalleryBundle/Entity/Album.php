@@ -26,8 +26,8 @@ use CommonBundle\Entity\User\Person;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use GalleryBundle\Entity\Album\Translation;
 use GalleryBundle\Entity\Album\Photo;
+use GalleryBundle\Entity\Album\Translation;
 use Locale;
 
 /**
