@@ -86,7 +86,12 @@ class Version20190418203017 extends \Doctrine\Migrations\AbstractMigration imple
      */
     public function postUp(Schema $schema) : void
     {
+        $names = array();
         foreach ($this->documents as $document) {
+            if (in_array($document['name'], $names)) {
+                continue;
+            }
+
             $creationPerson = null;
             if (isset($document['creationPerson'])) {
                 $creationPerson = $this->getServiceLocator()
@@ -103,6 +108,8 @@ class Version20190418203017 extends \Doctrine\Migrations\AbstractMigration imple
             $this->getServiceLocator()
                 ->get('doctrine.entitymanager.orm_default')
                 ->persist($slug);
+
+            $names[] = $document['name'];
         }
 
         $this->getServiceLocator()
