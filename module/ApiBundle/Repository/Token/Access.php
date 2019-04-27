@@ -32,10 +32,10 @@ use DateTime;
 class Access extends \ApiBundle\Repository\Token
 {
     /**
-     * @param  AuthorizationCode $authorizationCode
+     * @param  AuthorizationCode|null $authorizationCode
      * @return \ApiBundle\Entity\Token\Access|null
      */
-    public function findOneActiveByCode(AuthorizationCode $code)
+    public function findOneActiveByCode($code)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('t')
