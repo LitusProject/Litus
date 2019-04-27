@@ -65,7 +65,7 @@ class Version20190418203017 extends \Doctrine\Migrations\AbstractMigration imple
         );
 
         $this->addSql('CREATE SEQUENCE on_slugs_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE TABLE on_slugs (id BIGINT NOT NULL, creation_person BIGINT DEFAULT NULL, name VARCHAR(255) NOT NULL, url VARCHAR(255) NOT NULL, hits BIGINT NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE on_slugs (id BIGINT NOT NULL, creation_person BIGINT DEFAULT NULL, name VARCHAR(255) NOT NULL, url TEXT NOT NULL, hits BIGINT NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX idx_34b0451d5a8b0903 ON on_slugs (creation_person)');
         $this->addSql('CREATE UNIQUE INDEX on_slugs_name ON on_slugs (name)');
         $this->addSql('ALTER TABLE on_slugs ADD CONSTRAINT fk_34b0451d5a8b0903 FOREIGN KEY (creation_person) REFERENCES users_people (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
