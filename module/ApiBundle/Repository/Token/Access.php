@@ -41,7 +41,7 @@ class Access extends \ApiBundle\Repository\Token
         return $query->select('t')
             ->from('ApiBundle\Entity\Token\Access', 'a')
             ->where(
-                $query->expr()->and(
+                $query->expr()->andX(
                     $query->expr()->gt('a.expirationTime', ':now'),
                     $query->expr()->gt('a.code', ':code')
                 )

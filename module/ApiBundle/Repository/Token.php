@@ -41,7 +41,7 @@ class Token extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         return $query->select('t')
             ->from('ApiBundle\Entity\Token', 't')
             ->where(
-                $query->expr()->and(
+                $query->expr()->andX(
                     $query->expr()->gt('t.expirationTime', ':now'),
                     $query->expr()->gt('t.code', ':code')
                 )
