@@ -38,7 +38,7 @@ class Access extends \ApiBundle\Repository\Token
     public function findOneActiveByCode($code)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        return $query->select('t')
+        return $query->select('a')
             ->from('ApiBundle\Entity\Token\Access', 'a')
             ->where(
                 $query->expr()->andX(
