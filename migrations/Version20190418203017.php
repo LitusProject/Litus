@@ -87,10 +87,13 @@ class Version20190418203017 extends \Doctrine\Migrations\AbstractMigration imple
     public function postUp(Schema $schema) : void
     {
         foreach ($this->documents as $document) {
-            $creationPerson = $this->getServiceLocator()
-                ->get('doctrine.entitymanager.orm_default')
-                ->getRepository('CommonBundle\Entity\User\Person')
-                ->findOneById($document['creationPerson']);
+            $creationPerson = null;
+            if (isset($document['creationPerson'])) {
+                $creationPerson = $this->getServiceLocator()
+                    ->get('doctrine.entitymanager.orm_default')
+                    ->getRepository('CommonBundle\Entity\User\Person')
+                    ->findOneById($document['creationPerson']);
+            }
 
             $slug = new Slug($creationPerson);
             $slug->setName($document['name']);

@@ -73,9 +73,9 @@ class Slug
     private $hits;
 
     /**
-     * @param Person $creationPerson
+     * @param Person|null $creationPerson
      */
-    public function __construct(Person $creationPerson)
+    public function __construct($creationPerson)
     {
         $this->creationPerson = $creationPerson;
         $this->hits = 0;
