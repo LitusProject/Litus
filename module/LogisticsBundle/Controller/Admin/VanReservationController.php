@@ -20,7 +20,7 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
-use LogisticsBundle\Entity\Reservation\VanReservation;
+use LogisticsBundle\Entity\Reservation\Van as VanReservation;
 use Zend\View\Model\ViewModel;
 
 class VanReservationController extends \CommonBundle\Component\Controller\ActionController\AdminController
@@ -29,7 +29,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
     {
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
+                ->getRepository('LogisticsBundle\Entity\Reservation\Van')
                 ->findAllActiveQuery(),
             $this->getParam('page')
         );
@@ -56,7 +56,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
     {
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
+                ->getRepository('LogisticsBundle\Entity\Reservation\Van')
                 ->findAllOldQuery(),
             $this->getParam('page')
         );
@@ -226,7 +226,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
      */
     private function getVanReservationEntity()
     {
-        $reservation = $this->getEntityById('LogisticsBundle\Entity\Reservation\VanReservation');
+        $reservation = $this->getEntityById('LogisticsBundle\Entity\Reservation\Van');
 
         if (!($reservation instanceof VanReservation)) {
             $this->flashMessenger()->error(

@@ -20,7 +20,7 @@
 
 namespace LogisticsBundle\Form\Admin\VanReservation;
 
-use LogisticsBundle\Entity\Reservation\VanReservation;
+use LogisticsBundle\Entity\Reservation\Van as VanReservation;
 
 /**
  * The form used to add a new Reservation.
@@ -29,7 +29,7 @@ use LogisticsBundle\Entity\Reservation\VanReservation;
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    protected $hydrator = 'LogisticsBundle\Hydrator\Reservation\VanReservation';
+    protected $hydrator = 'LogisticsBundle\Hydrator\Reservation\Van';
 
     /**
      * @var VanReservation|null

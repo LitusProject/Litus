@@ -20,9 +20,9 @@
 
 namespace ApiBundle\Controller;
 
-use ApiBundle\Document\Code\Authorization as AuthorizationCode;
-use ApiBundle\Document\Token\Access as AccessToken;
-use ApiBundle\Document\Token\Refresh as RefreshToken;
+use ApiBundle\Entity\Code\Authorization as AuthorizationCode;
+use ApiBundle\Entity\Token\Access as AccessToken;
+use ApiBundle\Entity\Token\Refresh as RefreshToken;
 use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter;
 use CommonBundle\Component\Authentication\Authentication;
 use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException;
@@ -76,8 +76,8 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                         $key
                     );
 
-                    $this->getDocumentManager()->persist($authorizationCode);
-                    $this->getDocumentManager()->flush();
+                    $this->getEntityManager()->persist($authorizationCode);
+                    $this->getEntityManager()->flush();
 
                     $this->redirect()->toUrl(
                         $this->getRequest()->getQuery('redirect_uri') . '?code=' . $authorizationCode->getCode()
@@ -146,8 +146,8 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                             $key
                         );
 
-                        $this->getDocumentManager()->persist($authorizationCode);
-                        $this->getDocumentManager()->flush();
+                        $this->getEntityManager()->persist($authorizationCode);
+                        $this->getEntityManager()->flush();
 
                         $this->redirect()->toUrl(
                             $code->getRedirect() . '?code=' . $authorizationCode->getCode()
@@ -181,8 +181,8 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                 return $this->error(400, 'No authorization code was provided');
             }
 
-            $authorizationCode = $this->getDocumentManager()
-                ->getRepository('ApiBundle\Document\Code\Authorization')
+            $authorizationCode = $this->getEntityManager()
+                ->getRepository('ApiBundle\Entity\Code\Authorization')
                 ->findOneByCode($this->getRequest()->getPost('code'));
 
             if ($authorizationCode === null) {
@@ -195,19 +195,19 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
 
             if ($authorizationCode->hasBeenExchanged()) {
                 $tokens = array_merge(
-                    $this->getDocumentManager()
-                        ->getRepository('ApiBundle\Document\Token\Access')
+                    $this->getEntityManager()
+                        ->getRepository('ApiBundle\Entity\Token\Access')
                         ->findAllActiveByAuthorizationCode($authorizationCode),
-                    $this->getDocumentManager()
-                        ->getRepository('ApiBundle\Document\Token\Refresh')
+                    $this->getEntityManager()
+                        ->getRepository('ApiBundle\Entity\Token\Refresh')
                         ->findAllActiveByAuthorizationCode($authorizationCode)
                 );
 
                 foreach ($tokens as $token) {
-                    $this->getDocumentManager()->remove($token);
+                    $this->getEntityManager()->remove($token);
                 }
 
-                $this->getDocumentManager()->flush();
+                $this->getEntityManager()->flush();
 
                 return $this->error(401, 'This authorization code has already been exchanged');
             }
@@ -218,21 +218,21 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
             }
 
             $accessToken = new AccessToken(
-                $authorizationCode->getPerson($this->getEntityManager()),
+                $authorizationCode->getPerson(),
                 $authorizationCode
             );
-            $this->getDocumentManager()->persist($accessToken);
+            $this->getEntityManager()->persist($accessToken);
 
             $refreshToken = new RefreshToken(
-                $authorizationCode->getPerson($this->getEntityManager()),
+                $authorizationCode->getPerson(),
                 $authorizationCode,
                 $key
             );
-            $this->getDocumentManager()->persist($refreshToken);
+            $this->getEntityManager()->persist($refreshToken);
 
             $authorizationCode->exchange();
 
-            $this->getDocumentManager()->flush();
+            $this->getEntityManager()->flush();
 
             $result = array(
                 'access_token'  => $accessToken->getCode(),
@@ -253,8 +253,8 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                 return $this->error(400, 'No refresh token was provided');
             }
 
-            $refreshToken = $this->getDocumentManager()
-                ->getRepository('ApiBundle\Document\Token\Refresh')
+            $refreshToken = $this->getEntityManager()
+                ->getRepository('ApiBundle\Entity\Token\Refresh')
                 ->findOneByCode($this->getRequest()->getPost('refresh_token'));
 
             if ($refreshToken === null) {
@@ -267,19 +267,19 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
 
             if ($refreshToken->hasBeenExchanged()) {
                 $tokens = array_merge(
-                    $this->getDocumentManager()
-                        ->getRepository('ApiBundle\Document\Token\Access')
+                    $this->getEntityManager()
+                        ->getRepository('ApiBundle\Entity\Token\Access')
                         ->findAllActiveByAuthorizationCode($refreshToken->getAuthorizationCode()),
-                    $this->getDocumentManager()
-                        ->getRepository('ApiBundle\Document\Token\Refresh')
+                    $this->getEntityManager()
+                        ->getRepository('ApiBundle\Entity\Token\Refresh')
                         ->findAllActiveByAuthorizationCode($refreshToken->getAuthorizationCode())
                 );
 
                 foreach ($tokens as $token) {
-                    $this->getDocumentManager()->remove($token);
+                    $this->getEntityManager()->remove($token);
                 }
 
-                $this->getDocumentManager()->flush();
+                $this->getEntityManager()->flush();
 
                 return $this->error(401, 'This refresh token has already been exchanged');
             }
@@ -290,21 +290,21 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
             }
 
             $accessToken = new AccessToken(
-                $refreshToken->getPerson($this->getEntityManager()),
+                $refreshToken->getPerson(),
                 $refreshToken->getAuthorizationCode()
             );
-            $this->getDocumentManager()->persist($accessToken);
+            $this->getEntityManager()->persist($accessToken);
 
             $refreshToken = new RefreshToken(
-                $refreshToken->getPerson($this->getEntityManager()),
+                $refreshToken->getPerson(),
                 $refreshToken->getAuthorizationCode(),
                 $key
             );
-            $this->getDocumentManager()->persist($refreshToken);
+            $this->getEntityManager()->persist($refreshToken);
 
             $refreshToken->exchange();
 
-            $this->getDocumentManager()->flush();
+            $this->getEntityManager()->flush();
 
             $result = array(
                 'access_token'  => $accessToken->getCode(),

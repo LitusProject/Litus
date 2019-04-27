@@ -26,7 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Group")
- * @ORM\Table(name="syllabus.groups")
+ * @ORM\Table(name="syllabus_groups")
  */
 class Group
 {

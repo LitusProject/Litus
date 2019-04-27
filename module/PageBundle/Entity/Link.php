@@ -31,7 +31,7 @@ use PageBundle\Entity\Node\Page;
  * This entity represents a link in the menu structure.
  *
  * @ORM\Entity(repositoryClass="PageBundle\Repository\Link")
- * @ORM\Table(name="nodes.pages_links")
+ * @ORM\Table(name="nodes_pages_links")
  */
 class Link
 {

@@ -21,8 +21,8 @@
 namespace CudiBundle\Controller\Admin\Article;
 
 use CudiBundle\Entity\Article;
+use CudiBundle\Entity\Comment\ArticleMap;
 use CudiBundle\Entity\Comment\Comment;
-use CudiBundle\Entity\Comment\Mapping;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -41,7 +41,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
 
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Comment\Mapping')
+                ->getRepository('CudiBundle\Entity\Comment\ArticleMap')
                 ->findAllByArticleQuery($article),
             $this->getParam('page')
         );
@@ -94,7 +94,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        $mapping = $this->getCommentMappingEntity();
+        $mapping = $this->getCommentArticleMapEntity();
         if ($mapping === null) {
             return new ViewModel();
         }
@@ -136,13 +136,13 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return Mapping|null
+     * @return ArticleMap|null
      */
-    private function getCommentMappingEntity()
+    private function getCommentArticleMapEntity()
     {
-        $mapping = $this->getEntityById('CudiBundle\Entity\Comment\Mapping');
+        $articleMap = $this->getEntityById('CudiBundle\Entity\Comment\ArticleMap');
 
-        if (!($mapping instanceof Mapping)) {
+        if (!($articleMap instanceof ArticleMap)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No mapping was found!'
@@ -158,6 +158,6 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             return;
         }
 
-        return $mapping;
+        return $articleMap;
     }
 }

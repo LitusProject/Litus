@@ -25,9 +25,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * This entity stores a product.
  *
- * @author Floris Kint <floris.kint@litus.cc>
  * @ORM\Entity(repositoryClass="ShopBundle\Repository\Product")
- * @ORM\Table(name="shop.products")
+ * @ORM\Table(name="shop_products")
  */
 class Product
 {

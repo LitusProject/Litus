@@ -29,12 +29,12 @@ use InvalidArgumentException;
  * This is the entity for a invoice.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Invoice")
- * @ORM\Table(name="br.invoices")
+ * @ORM\Table(name="br_invoices")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
- *      "manual"="BrBundle\Entity\Invoice\ManualInvoice",
- *      "contract"="BrBundle\Entity\Invoice\ContractInvoice"
+ *     "contract"="BrBundle\Entity\Invoice\Contract",
+ *     "manual"="BrBundle\Entity\Invoice\Manual"
  * })
  */
 abstract class Invoice

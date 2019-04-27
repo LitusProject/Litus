@@ -20,7 +20,7 @@
 
 namespace ShopBundle\Form\Admin\SalesSession;
 
-use ShopBundle\Entity\SalesSession;
+use ShopBundle\Entity\Session as SalesSession;
 
 /**
  * Edit SalesSession
@@ -42,7 +42,7 @@ class Edit extends \ShopBundle\Form\Admin\SalesSession\Add
             $this->remove($product->getId() . '-quantity');
 
             $currentAvailability = $this->getEntityManager()
-                ->getRepository('ShopBundle\Entity\Product\SessionStockEntry')
+                ->getRepository('ShopBundle\Entity\Session\Stock')
                 ->getProductAvailability($product, $this->salesSession);
 
             $this->add(

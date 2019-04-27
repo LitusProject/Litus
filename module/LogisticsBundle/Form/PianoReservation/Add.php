@@ -23,7 +23,7 @@ namespace LogisticsBundle\Form\PianoReservation;
 use DateInterval;
 use DateTime;
 use IntlDateFormatter;
-use LogisticsBundle\Entity\Reservation\PianoReservation;
+use LogisticsBundle\Entity\Reservation\Piano as PianoReservation;
 
 /**
  * The form used to add a new Reservation.
@@ -105,7 +105,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                             'options' => array(
                                                 'start_date' => 'start_date',
                                                 'format'     => 'd/m/Y H:i',
-                                                'resource'   => PianoReservation::PIANO_RESOURCE_NAME,
+                                                'resource'   => PianoReservation::RESOURCE_NAME,
                                             ),
                                         ),
                                         array(
@@ -183,7 +183,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     while ($startSlot <= $lastSlot) {
                         if ($startSlot != $lastSlot) {
                             $occupied = $this->getEntityManager()
-                                ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
+                                ->getRepository('LogisticsBundle\Entity\Reservation\Piano')
                                 ->isTimeInExistingReservation($startSlot, true);
 
                             $listStart[] = array(
@@ -197,7 +197,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
                         if ($startSlot != $firstSlot) {
                             $occupied = $this->getEntityManager()
-                                ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
+                                ->getRepository('LogisticsBundle\Entity\Reservation\Piano')
                                 ->isTimeInExistingReservation($startSlot, false);
 
                             $listEnd[] = array(

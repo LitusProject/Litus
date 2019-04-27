@@ -22,14 +22,14 @@ namespace GalleryBundle\Form\Admin\Album;
 
 use CommonBundle\Component\Form\FieldsetInterface;
 use CommonBundle\Entity\General\Language;
-use GalleryBundle\Entity\Album\Album;
+use GalleryBundle\Entity\Album;
 
 /**
  * Add an album.
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 {
-    protected $hydrator = 'GalleryBundle\Hydrator\Album\Album';
+    protected $hydrator = 'GalleryBundle\Hydrator\Album';
 
     /**
      * @var Album|null

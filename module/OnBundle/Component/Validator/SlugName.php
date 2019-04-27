@@ -65,8 +65,8 @@ class SlugName extends \CommonBundle\Component\Validator\AbstractValidator
      */
     public function isValid($value, $context = null)
     {
-        $slug = $this->getDocumentManager()
-            ->getRepository('OnBundle\Document\Slug')
+        $slug = $this->getEntityManager()
+            ->getRepository('OnBundle\Entity\Slug')
             ->findOneByName($value);
 
         if ($slug === null || ($this->options['slug'] && $slug == $this->options['slug'])) {

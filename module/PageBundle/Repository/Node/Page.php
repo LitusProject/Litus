@@ -106,7 +106,7 @@ class Page extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $translations = $query->select('p.id')
-            ->from('PageBundle\Entity\Node\Translation', 't')
+            ->from('PageBundle\Entity\Node\Page\Translation', 't')
             ->innerJoin('t.page', 'p')
             ->where(
                 $query->expr()->like($query->expr()->lower('t.title'), ':title')

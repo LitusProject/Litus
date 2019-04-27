@@ -26,7 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\File\File")
- * @ORM\Table(name="cudi.files_files")
+ * @ORM\Table(name="cudi_files_files")
  */
 class File
 {
@@ -74,7 +74,7 @@ class File
             ->setName($name)
             ->setDescription($description);
 
-        $entityManager->persist(new Mapping($article, $this, $printable));
+        $entityManager->persist(new ArticleMap($article, $this, $printable));
     }
 
     /**

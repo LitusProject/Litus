@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This is a person that is a collaborator of corporate relations.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Collaborator")
- * @ORM\Table(name="br.collaborator")
+ * @ORM\Table(name="br_collaborators")
  */
 class Collaborator
 {

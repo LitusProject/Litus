@@ -99,7 +99,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             ->findContractCompany();
 
         $ids2 = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Invoice\ManualInvoice')
+            ->getRepository('BrBundle\Entity\Invoice\Manual')
             ->findInvoiceCompanies();
 
         $ids = array_unique(array_merge($ids1, $ids2), SORT_REGULAR);
@@ -121,7 +121,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                 $orderEntries = $contract->getOrder()->getEntries();
 
                 $invoice = $this->getEntityManager()
-                    ->getRepository('BrBundle\entity\Invoice\ContractInvoice')
+                    ->getRepository('BrBundle\entity\Invoice\Contract')
                     ->findAllByOrder($contract->getOrder());
 
                 foreach ($orderEntries as $entry) {
@@ -139,7 +139,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             }
 
             $invoices = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Invoice\ManualInvoice')
+                ->getRepository('BrBundle\Entity\Invoice\Manual')
                 ->findAllByCompany($company);
 
             foreach ($invoices as $invoice) {
@@ -235,7 +235,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             ->findContractCompany();
 
         $ids2 = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Invoice\ManualInvoice')
+            ->getRepository('BrBundle\Entity\Invoice\Manual')
             ->findInvoiceCompanies();
 
         $ids = array_unique(array_merge($ids1, $ids2), SORT_REGULAR);
@@ -275,7 +275,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             }
 
             $invoices = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Invoice\ManualInvoice')
+                ->getRepository('BrBundle\Entity\Invoice\Manual')
                 ->findAllByCompany($company);
 
             foreach ($invoices as $invoice) {
@@ -375,7 +375,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         }
 
         $ids = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Invoice\ManualInvoice')
+            ->getRepository('BrBundle\Entity\Invoice\Manual')
             ->findInvoiceAuthors();
 
         $mcollection = array();
@@ -386,7 +386,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                 ->findOneById($id);
 
             $invoices = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Invoice\ManualInvoice')
+                ->getRepository('BrBundle\Entity\Invoice\Manual')
                 ->findAllByAuthor($person);
 
             $invoiceN = 0;

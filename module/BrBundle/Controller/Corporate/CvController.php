@@ -20,7 +20,7 @@
 
 namespace BrBundle\Controller\Corporate;
 
-use BrBundle\Entity\Cv\Util;
+use BrBundle\Component\Util\Cv;
 use CommonBundle\Entity\General\AcademicYear;
 use Zend\Http\Headers;
 use Zend\View\Model\ViewModel;
@@ -76,7 +76,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             }
         }
 
-        $result = Util::getGrouped($this->getEntityManager(), $academicYear);
+        $result = Cv::getGrouped($this->getEntityManager(), $academicYear);
 
         return new ViewModel(
             array(

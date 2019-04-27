@@ -27,7 +27,7 @@ namespace BrBundle\Form\Admin\Invoice;
  */
 class ManualAdd extends \CommonBundle\Component\Form\Admin\Form
 {
-    protected $hydrator = 'BrBundle\Hydrator\Invoice\ManualInvoice';
+    protected $hydrator = 'BrBundle\Hydrator\Invoice\Manual';
 
     const FILE_SIZE = '256MB';
 

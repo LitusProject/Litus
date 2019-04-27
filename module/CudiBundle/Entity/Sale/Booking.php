@@ -29,7 +29,10 @@ use InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Booking")
- * @ORM\Table(name="cudi.sales_bookings", indexes={@ORM\Index(name="sales_booking_time", columns={"bookDate"})})
+ * @ORM\Table(
+ *     name="cudi_sale_bookings",
+ *     indexes={@ORM\Index(name="cudi_sale_bookings_book_date", columns={"book_date"})}
+ * )
  */
 class Booking
 {
@@ -75,42 +78,42 @@ class Booking
     /**
      * @var DateTime|null The time the booking will expire
      *
-     * @ORM\Column(name="expirationdate", type="datetime", nullable=true)
+     * @ORM\Column(name="expiration_date", type="datetime", nullable=true)
      */
     private $expirationDate;
 
     /**
      * @var DateTime|null The time the booking was assigned
      *
-     * @ORM\Column(name="assignmentdate", type="datetime", nullable=true)
+     * @ORM\Column(name="assignment_date", type="datetime", nullable=true)
      */
     private $assignmentDate;
 
     /**
      * @var DateTime The time the booking was made
      *
-     * @ORM\Column(name="bookdate", type="datetime")
+     * @ORM\Column(name="book_date", type="datetime")
      */
     private $bookDate;
 
     /**
      * @var DateTime|null The time the booking was sold
      *
-     * @ORM\Column(name="saledate", type="datetime", nullable=true)
+     * @ORM\Column(name="sale_date", type="datetime", nullable=true)
      */
     private $saleDate;
 
     /**
      * @var DateTime|null The time the booking was canceled
      *
-     * @ORM\Column(name="cancelationdate", type="datetime", nullable=true)
+     * @ORM\Column(name="cancelation_date", type="datetime", nullable=true)
      */
     private $cancelationDate;
 
     /**
      * @var DateTime|null The time the booking was returned
      *
-     * @ORM\Column(name="returndate", type="datetime", nullable=true)
+     * @ORM\Column(name="return_date", type="datetime", nullable=true)
      */
     private $returnDate;
 
@@ -118,7 +121,12 @@ class Booking
      * @var string[] The possible states of a booking
      */
     private static $possibleStatuses = array(
-        'booked', 'assigned', 'sold', 'expired', 'canceled', 'returned',
+        'booked',
+        'assigned',
+        'sold',
+        'expired',
+        'canceled',
+        'returned',
     );
 
     /**

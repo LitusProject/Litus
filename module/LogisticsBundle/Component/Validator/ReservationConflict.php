@@ -90,7 +90,7 @@ class ReservationConflict extends \CommonBundle\Component\Validator\AbstractVali
         }
 
         $repository = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource');
+            ->getRepository('LogisticsBundle\Entity\Reservation\Resource');
         $resource = $repository->findOneByName($this->options['resource']);
 
         $startDate = DateTime::createFromFormat($this->options['format'], $startDate);
@@ -103,7 +103,7 @@ class ReservationConflict extends \CommonBundle\Component\Validator\AbstractVali
         }
 
         $repository = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Reservation\Reservation');
+            ->getRepository('LogisticsBundle\Entity\Reservation');
 
         $conflicting = $repository->findAllConflictingIgnoringId($startDate, $endDate, $resource, $this->options['reservation_id']);
 

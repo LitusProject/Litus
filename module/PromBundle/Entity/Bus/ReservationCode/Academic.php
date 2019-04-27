@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This is the entity for prom bus reservation codes for academics.
  *
  * @ORM\Entity(repositoryClass="PromBundle\Repository\Bus\ReservationCode\Academic")
- * @ORM\Table(name="prom.bus_code_academic")
+ * @ORM\Table(name="prom_buses_reservation_codes_academic")
  */
 class Academic extends \PromBundle\Entity\Bus\ReservationCode
 {

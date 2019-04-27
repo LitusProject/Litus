@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Specifying the mapping between organization and academic.
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Person\Organization\UnitMap")
- * @ORM\Table(name="users.people_organizations_unit_map")
+ * @ORM\Table(name="users_people_organizations_units_map")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({

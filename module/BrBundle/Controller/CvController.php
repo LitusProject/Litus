@@ -338,7 +338,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         $content = '';
 
         $studies = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+            ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
             ->findAllByAcademicAndAcademicYear($person, $this->getCurrentAcademicYear());
 
         if (count($studies) == 0) {

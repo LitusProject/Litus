@@ -28,12 +28,12 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Company\Request")
- * @ORM\Table(name="br.companies_request")
+ * @ORM\Table(name="br_companies_requests")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
- *      "vacanyRequest"="BrBundle\Entity\Company\Request\RequestVacancy",
- *      "internshipRequest"="BrBundle\Entity\Company\Request\RequestInternship"
+ *     "internship"="BrBundle\Entity\Company\Request\Internship",
+ *     "vacancy"="BrBundle\Entity\Company\Request\Vacancy"
  * })
  */
 abstract class Request

@@ -65,7 +65,7 @@ class Group extends \CommonBundle\Component\Document\Generator\Csv
         foreach ($mappings as $mapping) {
             $study = $mapping->getStudy();
             $enrollments = $entityManager
-                ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+                ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
                 ->findAllByStudy($study);
 
             foreach ($enrollments as $enrollment) {

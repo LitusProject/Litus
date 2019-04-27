@@ -30,7 +30,7 @@ use SportBundle\Entity\Department;
  * This entity represents a runner.
  *
  * @ORM\Entity(repositoryClass="SportBundle\Repository\Runner")
- * @ORM\Table(name="sport.runners")
+ * @ORM\Table(name="sport_runners")
  */
 class Runner
 {

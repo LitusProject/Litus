@@ -26,7 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity represents an appliance thtat is when someone pays by card.
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\Bank\BankDevice")
- * @ORM\Table(name="general.bank_bank_devices")
+ * @ORM\Table(name="general_bank_bank_devices")
  */
 class BankDevice
 {

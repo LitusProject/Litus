@@ -22,10 +22,10 @@ namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Collaborator;
 use BrBundle\Entity\Contract;
-use BrBundle\Entity\Contract\ContractEntry;
-use BrBundle\Entity\Contract\ContractHistory;
+use BrBundle\Entity\Contract\Entry as ContractEntry;
+use BrBundle\Entity\Contract\History;
 use BrBundle\Entity\Product\Order;
-use BrBundle\Entity\Product\OrderEntry;
+use BrBundle\Entity\Product\Order\Entry as OrderEntry;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -238,7 +238,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $entry = $this->getEntityById('BrBundle\Entity\Product\OrderEntry', 'entry');
+        $entry = $this->getEntityById('BrBundle\Entity\Product\Order\Entry', 'entry');
 
         $currentProducts = array();
 
@@ -310,7 +310,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         if ($entry->getOrder()->hasContract()) {
             $contract_entries = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Contract\ContractEntry')
+                ->getRepository('BrBundle\Entity\Contract\Entry')
                 ->findAllContractEntriesByOrderEntry($entry);
 
             foreach ($contract_entries as $c_entry) {
@@ -390,13 +390,20 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $counter = 0;
                 foreach ($entries as $entry) {
-                    $contractEntry = new ContractEntry($contract, $entry, $counter, 0);
+                    $contract->setEntry(
+                        new ContractEntry(
+                            $contract,
+                            $entry,
+                            $counter,
+                            0
+                        )
+                    );
+
                     $counter++;
-                    $contract->setEntry($contractEntry);
                 }
 
                 $this->getEntityManager()->persist($contract);
-                $this->getEntityManager()->persist(new ContractHistory($contract));
+                $this->getEntityManager()->persist(new History($contract));
 
                 $this->getEntityManager()->flush();
 
@@ -470,7 +477,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function getEntryEntity($allowSigned = true)
     {
-        $entry = $this->getEntityById('BrBundle\Entity\Product\OrderEntry');
+        $entry = $this->getEntityById('BrBundle\Entity\Product\Order\Entry');
 
         if (!($entry instanceof OrderEntry)) {
             $this->flashMessenger()->error(

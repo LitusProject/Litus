@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="BannerBundle\Repository\Node\Banner")
- * @ORM\Table(name="nodes.banners")
+ * @ORM\Table(name="nodes_banners")
  */
 class Banner extends \CommonBundle\Entity\Node
 {

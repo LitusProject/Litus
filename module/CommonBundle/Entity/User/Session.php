@@ -29,7 +29,7 @@ use Doctrine\ORM\Mapping as ORM;
  * the authentication process can be made slightly more secure.
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Session")
- * @ORM\Table(name="users.sessions")
+ * @ORM\Table(name="users_sessions")
  */
 class Session
 {

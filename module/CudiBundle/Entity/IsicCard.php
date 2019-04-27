@@ -27,7 +27,10 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\IsicCard")
- * @ORM\Table(name="cudi.isic_card", uniqueConstraints={@ORM\UniqueConstraint(name="year_person_unique", columns={"person", "academic_year"})})
+ * @ORM\Table(
+ *     name="cudi_isic_cards",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="cudi_isic_cards_person_academic_year", columns={"person", "academic_year"})}
+ * )
  */
 class IsicCard
 {

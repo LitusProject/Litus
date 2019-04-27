@@ -29,7 +29,7 @@ use Zend\Validator\Barcode as BarcodeValidator;
  * This entity stores an EAN12 barcode.
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Barcode\Ean12")
- * @ORM\Table(name="users.barcodes_ean12")
+ * @ORM\Table(name="users_barcodes_ean12")
  */
 class Ean12 extends \CommonBundle\Entity\User\Barcode
 {

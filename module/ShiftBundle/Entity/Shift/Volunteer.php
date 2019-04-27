@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity stores a volunteer for a shift.
  *
  * @ORM\Entity(repositoryClass="ShiftBundle\Repository\Shift\Volunteer")
- * @ORM\Table(name="shifts.volunteers")
+ * @ORM\Table(name="shift_shifts_volunteers")
  */
 class Volunteer
 {

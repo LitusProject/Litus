@@ -20,7 +20,7 @@
 
 namespace BrBundle\Hydrator;
 
-use BrBundle\Entity\Contract\ContractEntry as ContractEntryEntity;
+use BrBundle\Entity\Contract\Entry as EntryEntity;
 use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 
 /**
@@ -47,11 +47,16 @@ class Contract extends \CommonBundle\Component\Hydrator\Hydrator
         foreach ($object->getEntries() as $entry) {
             if ($entry->getVersion() == $object->getVersion()) {
                 $newVersionNb = $entry->getVersion() + 1;
-                $newContractEntry = new ContractEntryEntity($object, $entry->getOrderEntry(), $entry->getPosition(), $newVersionNb);
+                $newEntry = new EntryEntity(
+                    $object,
+                    $entry->getOrderEntry(),
+                    $entry->getPosition(),
+                    $newVersionNb
+                );
 
-                $this->getEntityManager()->persist($newContractEntry);
+                $newEntry->setContractText($data['entry_' . $entry->getId()]);
 
-                $newContractEntry->setContractText($data['entry_' . $entry->getId()]);
+                $this->getEntityManager()->persist($newEntry);
             }
         }
 

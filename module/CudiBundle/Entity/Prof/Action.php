@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Prof\Action")
- * @ORM\Table(name="cudi.prof_actions")
+ * @ORM\Table(name="cudi_prof_actions")
  */
 class Action
 {

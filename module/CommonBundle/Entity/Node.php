@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\Node")
- * @ORM\Table(name="nodes.nodes")
+ * @ORM\Table(name="nodes_nodes")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({

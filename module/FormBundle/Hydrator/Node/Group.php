@@ -21,8 +21,8 @@
 namespace FormBundle\Hydrator\Node;
 
 use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
-use FormBundle\Entity\Node\Group\Mapping as MappingEntity;
-use FormBundle\Entity\Node\Translation\Group as GroupTranslationEntity;
+use FormBundle\Entity\Node\Form\GroupMap as GroupMapEntity;
+use FormBundle\Entity\Node\Group\Translation as TranslationEntity;
 
 class Group extends \CommonBundle\Component\Hydrator\Hydrator
 {
@@ -40,7 +40,7 @@ class Group extends \CommonBundle\Component\Hydrator\Hydrator
 
             if ($languageData['title'] != '' && $languageData['introduction'] != '') {
                 if ($translation === null) {
-                    $translation = new GroupTranslationEntity(
+                    $translation = new TranslationEntity(
                         $object,
                         $language,
                         $languageData['title'],
@@ -64,7 +64,7 @@ class Group extends \CommonBundle\Component\Hydrator\Hydrator
                 ->getRepository('FormBundle\Entity\Node\Form')
                 ->findOneById($data['start_form']);
 
-            $this->getEntityManager()->persist(new MappingEntity($startForm, $object, 1));
+            $this->getEntityManager()->persist(new GroupMapEntity($startForm, $object, 1));
         } else {
             $object->setStartDate(self::loadDateTime($data['start_date']))
                 ->setEndDate(self::loadDateTime($data['end_date']))

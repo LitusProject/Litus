@@ -29,7 +29,7 @@ use PublicationBundle\Entity\Publication;
  * This is the entity for a publication
  *
  * @ORM\Entity(repositoryClass="PublicationBundle\Repository\Edition")
- * @ORM\Table(name="publications.editions")
+ * @ORM\Table(name="publications_editions")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({

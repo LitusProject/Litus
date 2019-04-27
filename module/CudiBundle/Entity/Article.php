@@ -28,12 +28,12 @@ use InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Article")
- * @ORM\Table(name="cudi.articles")
+ * @ORM\Table(name="cudi_articles")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
- *      "external"="CudiBundle\Entity\Article\External",
- *      "internal"="CudiBundle\Entity\Article\Internal"
+ *     "external"="CudiBundle\Entity\Article\External",
+ *     "internal"="CudiBundle\Entity\Article\Internal"
  * })
  */
 abstract class Article

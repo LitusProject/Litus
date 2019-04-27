@@ -31,7 +31,7 @@ use InvalidArgumentException;
  * This is the entity for a company.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Company")
- * @ORM\Table(name="br.companies")
+ * @ORM\Table(name="br_companies")
  */
 class Company
 {
@@ -134,7 +134,8 @@ class Company
      * @var ArrayCollection The years of which this company has access to the CV Book.
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\General\AcademicYear", cascade={"persist"})
-     * @ORM\JoinTable(name="br.companies_cvbooks",
+     * @ORM\JoinTable(
+     *      name="br_companies_cv_book_years_map",
      *      joinColumns={@ORM\JoinColumn(name="company", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="year", referencedColumnName="id")}
      * )

@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
  * form.
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\Acl\Resource")
- * @ORM\Table(name="acl.resources")
+ * @ORM\Table(name="acl_resources")
  */
 class Resource
 {

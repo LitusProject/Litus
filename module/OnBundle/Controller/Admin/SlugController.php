@@ -20,7 +20,7 @@
 
 namespace OnBundle\Controller\Admin;
 
-use OnBundle\Document\Slug;
+use OnBundle\Entity\Slug;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -32,8 +32,8 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromDocument(
-            'OnBundle\Document\Slug',
+        $paginator = $this->paginator()->createFromEntity(
+            'OnBundle\Entity\Slug',
             $this->getParam('page'),
             array(),
             array(
@@ -60,8 +60,8 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid()) {
                 $slug = $form->hydrateObject();
 
-                $this->getDocumentManager()->persist($slug);
-                $this->getDocumentManager()->flush();
+                $this->getEntityManager()->persist($slug);
+                $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
                     'Succes',
@@ -100,7 +100,7 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $this->getDocumentManager()->flush();
+                $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
                     'Succes',
@@ -134,9 +134,9 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $this->getDocumentManager()->remove($slug);
+        $this->getEntityManager()->remove($slug);
 
-        $this->getDocumentManager()->flush();
+        $this->getEntityManager()->flush();
 
         return new ViewModel(
             array(
@@ -181,8 +181,8 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
     {
         switch ($this->getParam('field')) {
             case 'name':
-                return $this->getDocumentManager()
-                    ->getRepository('OnBundle\Document\Slug')
+                return $this->getEntityManager()
+                    ->getRepository('OnBundle\Entity\Slug')
                     ->findAllByNameQuery($this->getParam('string'));
         }
     }
@@ -192,8 +192,8 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
      */
     private function getSlugEntity()
     {
-        $slug = $this->getDocumentManager()
-            ->getRepository('OnBundle\Document\Slug')
+        $slug = $this->getEntityManager()
+            ->getRepository('OnBundle\Entity\Slug')
             ->findOneById($this->getParam('id', 0));
 
         if (!($slug instanceof Slug)) {

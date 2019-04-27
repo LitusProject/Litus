@@ -90,7 +90,7 @@ class PianoReservationConflict extends \CommonBundle\Component\Validator\Abstrac
         }
 
         $resource = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource')
+            ->getRepository('LogisticsBundle\Entity\Reservation\Resource')
             ->findOneByName($this->options['resource']);
 
         $startDate = DateTime::createFromFormat($this->options['format'], $startDate);
@@ -103,7 +103,7 @@ class PianoReservationConflict extends \CommonBundle\Component\Validator\Abstrac
         }
 
         $conflicting = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
+            ->getRepository('LogisticsBundle\Entity\Reservation\Piano')
             ->findAllConflictingIgnoringId($startDate, $endDate, $resource, $this->options['reservation_id']);
 
         if (isset($conflicting[0])) {

@@ -27,7 +27,7 @@ use InvalidArgumentException;
  * This class represents a configuration entry that is saved in the database
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\Config")
- * @ORM\Table(name="general.config")
+ * @ORM\Table(name="general_config")
  */
 class Config
 {

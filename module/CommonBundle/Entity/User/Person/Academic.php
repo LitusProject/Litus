@@ -31,7 +31,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This is the entity for an academic person, e.g. a student or professor.
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Person\Academic")
- * @ORM\Table(name="users.people_academic")
+ * @ORM\Table(name="users_people_academic")
  */
 class Academic extends \CommonBundle\Entity\User\Person
 {

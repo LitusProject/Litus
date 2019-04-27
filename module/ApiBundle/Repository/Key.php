@@ -46,7 +46,7 @@ class Key extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     }
 
     /**
-     * @return \Doctrine\ORM\Query
+     * @return \ApiBundle\Entity\Key|null
      */
     public function findOneActiveByCode($code)
     {

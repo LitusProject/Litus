@@ -22,6 +22,7 @@ namespace BrBundle\Entity\Product;
 
 use BrBundle\Entity\Collaborator;
 use BrBundle\Entity\Contract;
+use BrBundle\Entity\Product\Order\Entry;
 use BrBundle\Entity\User\Person\Corporate as CorporatePerson;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -33,7 +34,7 @@ use InvalidArgumentException;
  * An order of several products.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Product\Order")
- * @ORM\Table(name="br.orders")
+ * @ORM\Table(name="br_products_orders")
  */
 class Order
 {
@@ -57,38 +58,23 @@ class Order
     /**
      * @var Contract The contract accompanying this order
      *
-     * @ORM\OneToOne(
-     *      targetEntity="BrBundle\Entity\Contract",
-     *      mappedBy="order",
-     *      cascade={"all"},
-     *      orphanRemoval=true
-     * )
+     * @ORM\OneToOne(targetEntity="BrBundle\Entity\Contract", mappedBy="order", cascade={"all"}, orphanRemoval=true)
      */
     private $contract;
 
     /**
-     * @var \BrBundle\Entity\Invoice\ContractInvoice The invoice accompanying this order
+     * @var \BrBundle\Entity\Invoice\Contract The invoice accompanying this order
      *
-     * @ORM\OneToOne(
-     *      targetEntity="BrBundle\Entity\Invoice\ContractInvoice",
-     *      mappedBy="order",
-     *      cascade={"all"},
-     *      orphanRemoval=true
-     * )
+     * @ORM\OneToOne(targetEntity="BrBundle\Entity\Invoice\Contract", mappedBy="order", cascade={"all"}, orphanRemoval=true)
      */
     private $invoice;
 
     /**
      * @var ArrayCollection The entries in this order
      *
-     * @ORM\OneToMany(
-     *      targetEntity="BrBundle\Entity\Product\OrderEntry",
-     *      mappedBy="order",
-     *      cascade={"all"},
-     *      orphanRemoval=true
-     * )
+     * @ORM\OneToMany(targetEntity="BrBundle\Entity\Product\Order\Entry", mappedBy="order", cascade={"all"}, orphanRemoval=true)
      */
-    private $orderEntries;
+    private $entries;
 
     /**
      * @var DateTime The time of creation of this node
@@ -145,7 +131,7 @@ class Order
     {
         $this->creationTime = new DateTime();
         $this->creationPerson = $creationPerson;
-        $this->orderEntries = new ArrayCollection();
+        $this->entries = new ArrayCollection();
         $this->old = false;
     }
 
@@ -192,10 +178,10 @@ class Order
 
         $costNoRefund = 0;
 
-        foreach ($this->orderEntries as $orderEntry) {
-            if (!$orderEntry->getProduct()->isRefund()) {
-                $orderEntry->getProduct()->setEntityManager($this->entityManager);
-                $costNoRefund += ($orderEntry->getProduct()->getSignedPrice() * $orderEntry->getQuantity());
+        foreach ($this->entries as $entry) {
+            if (!$entry->getProduct()->isRefund()) {
+                $entry->getProduct()->setEntityManager($this->entityManager);
+                $costNoRefund += ($entry->getProduct()->getSignedPrice() * $entry->getQuantity());
             }
         }
 
@@ -275,16 +261,16 @@ class Order
      */
     public function getEntries()
     {
-        return $this->orderEntries->toArray();
+        return $this->entries->toArray();
     }
 
     /**
-     * @param  OrderEntry $entry
+     * @param  Entry $entry
      * @return self
      */
-    public function setEntry(OrderEntry $entry)
+    public function setEntry(Entry $entry)
     {
-        $this->orderEntries->add($entry);
+        $this->entries->add($entry);
 
         return $this;
     }
@@ -317,7 +303,7 @@ class Order
     }
 
     /**
-     * @return \BrBundle\Entity\Invoice\ContractInvoice
+     * @return \BrBundle\Entity\Invoice\Contract
      */
     public function getInvoice()
     {
@@ -382,11 +368,11 @@ class Order
     {
         $cost = 0;
 
-        foreach ($this->orderEntries as $orderEntry) {
-            $orderEntry->getProduct()->setEntityManager($this->entityManager);
+        foreach ($this->entries as $entry) {
+            $entry->getProduct()->setEntityManager($this->entityManager);
 
-            if ($orderEntry->getProduct()->getVatPercentage() == $vatType) {
-                $cost += (float) ($orderEntry->getProduct()->getSignedPrice() * $orderEntry->getQuantity());
+            if ($entry->getProduct()->getVatPercentage() == $vatType) {
+                $cost += (float) ($entry->getProduct()->getSignedPrice() * $entry->getQuantity());
             }
         }
 
@@ -402,9 +388,9 @@ class Order
     {
         $cost = 0;
 
-        foreach ($this->orderEntries as $orderEntry) {
-            $orderEntry->getProduct()->setEntityManager($this->entityManager);
-            $cost += ($orderEntry->getProduct()->getSignedPrice() * $orderEntry->getQuantity());
+        foreach ($this->entries as $entry) {
+            $entry->getProduct()->setEntityManager($this->entityManager);
+            $cost += ($entry->getProduct()->getSignedPrice() * $entry->getQuantity());
         }
 
         return (float) $cost;

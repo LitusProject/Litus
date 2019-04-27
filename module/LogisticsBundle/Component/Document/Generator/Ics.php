@@ -21,9 +21,8 @@
 namespace LogisticsBundle\Component\Document\Generator;
 
 use CommonBundle\Component\Util\File\TmpFile;
-use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
-use LogisticsBundle\Entity\Reservation\VanReservation;
+use LogisticsBundle\Entity\Reservation\Van as VanReservation;
 
 /**
  * Ics
@@ -38,11 +37,6 @@ class Ics
     private $entityManager;
 
     /**
-     * @var DocumentManager The DocumentManager
-     */
-    private $documentManager;
-
-    /**
      * @var string
      */
     private $token;
@@ -53,15 +47,13 @@ class Ics
     private $suffix;
 
     /**
-     * @param TmpFile         $file
-     * @param EntityManager   $entityManager
-     * @param DocumentManager $documentManager
-     * @param string|null     $token
+     * @param TmpFile       $file
+     * @param EntityManager $entityManager
+     * @param string|null   $token
      */
-    public function __construct(TmpFile $file, EntityManager $entityManager, DocumentManager $documentManager, $token = null)
+    public function __construct(TmpFile $file, EntityManager $entityManager, $token = null)
     {
         $this->entityManager = $entityManager;
-        $this->documentManager = $documentManager;
         $this->token = $token;
 
         $this->suffix = $entityManager
@@ -114,17 +106,17 @@ class Ics
     {
         $result = '';
         $reservations = $this->entityManager
-            ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
+            ->getRepository('LogisticsBundle\Entity\Reservation\Van')
             ->findAllActive();
 
         $person = null;
         if ($this->token !== null) {
-            $token = $this->documentManager
-                ->getRepository('LogisticsBundle\Document\Token')
+            $token = $this->entityManager
+                ->getRepository('LogisticsBundle\Entity\Token')
                 ->findOneByHash($this->token);
 
             if ($token !== null) {
-                $person = $token->getPerson($this->entityManager);
+                $person = $token->getPerson();
             }
         }
 

@@ -43,7 +43,7 @@ class Group extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('g')
-            ->from('FormBundle\Entity\Node\Group\Mapping', 'm')
+            ->from('FormBundle\Entity\Node\Form\GroupMap', 'm')
             ->from('FormBundle\Entity\Node\Group', 'g')
             ->innerJoin('m.form', 'f')
             ->where(
@@ -61,7 +61,7 @@ class Group extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('g')
-            ->from('FormBundle\Entity\Node\Group\Mapping', 'm')
+            ->from('FormBundle\Entity\Node\Form\GroupMap', 'm')
             ->from('FormBundle\Entity\Node\Group', 'g')
             ->innerJoin('m.form', 'f')
             ->where(

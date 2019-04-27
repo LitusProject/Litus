@@ -22,7 +22,7 @@ namespace GalleryBundle\Controller;
 
 use CommonBundle\Component\Util\AcademicYear;
 use DateInterval;
-use GalleryBundle\Entity\Album\Album;
+use GalleryBundle\Entity\Album;
 use GalleryBundle\Entity\Album\Photo;
 use Zend\View\Model\ViewModel;
 
@@ -36,7 +36,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
     public function overviewAction()
     {
         $albums = $this->getEntityManager()
-            ->getRepository('GalleryBundle\Entity\Album\Album')
+            ->getRepository('GalleryBundle\Entity\Album')
             ->findAll();
 
         $sorted = array();
@@ -85,7 +85,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         $end->sub(new DateInterval('P1W'));
 
         $albumsFound = $this->getEntityManager()
-            ->getRepository('GalleryBundle\Entity\Album\Album')
+            ->getRepository('GalleryBundle\Entity\Album')
             ->findAllFromTo($start, $end);
 
         $albums = array();
@@ -188,7 +188,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
      */
     private function getAlbumEntity()
     {
-        $album = $this->getEntityById('GalleryBundle\Entity\Album\Album', 'name', 'name');
+        $album = $this->getEntityById('GalleryBundle\Entity\Album', 'name', 'name');
 
         if (!($album instanceof Album)) {
             return;

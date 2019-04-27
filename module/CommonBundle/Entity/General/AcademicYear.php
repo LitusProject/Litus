@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This class represents an academic year entry that is saved in the database
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\AcademicYear")
- * @ORM\Table(name="general.academic_years")
+ * @ORM\Table(name="general_academic_years")
  */
 class AcademicYear
 {

@@ -30,7 +30,7 @@ use FormBundle\Entity\Entry as FieldEntry;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Node\Entry")
- * @ORM\Table(name="nodes.forms_entries")
+ * @ORM\Table(name="nodes_forms_entries")
  */
 class Entry
 {

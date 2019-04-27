@@ -21,8 +21,8 @@
 namespace MailBundle\Command;
 
 use MailBundle\Component\Parser\Message as MessageParser;
-use MailBundle\Document\Message;
-use MailBundle\Document\Message\Attachment;
+use MailBundle\Entity\Message;
+use MailBundle\Entity\Message\Attachment;
 
 /**
  * Parse mail from input.
@@ -129,15 +129,6 @@ class Parse extends \CommonBundle\Component\Console\Command
      */
     private function storeMessage(MessageParser $parser)
     {
-        $attachments = array();
-        foreach ($parser->getAttachments() as $attachment) {
-            $attachments[] = new Attachment(
-                $attachment->getFilename(),
-                $attachment->getContentType(),
-                $attachment->getData()
-            );
-        }
-
         $body = null;
         if (count($parser->getBody()) > 1) {
             foreach ($parser->getBody() as $itBody) {
@@ -154,12 +145,23 @@ class Parse extends \CommonBundle\Component\Console\Command
             $newMessage = new Message(
                 $body['type'],
                 substr($parser->getSubject(), 7),
-                $body['content'],
-                $attachments
+                $body['content']
             );
 
-            $this->getDocumentManager()->persist($newMessage);
-            $this->getDocumentManager()->flush();
+            $this->getEntityManager()->persist($newMessage);
+
+            foreach ($parser->getAttachments() as $attachment) {
+                $newAttachment = new Attachment(
+                    $newMessage,
+                    $attachment->getFilename(),
+                    $attachment->getContentType(),
+                    $attachment->getData()
+                );
+
+                $this->getEntityManager()->persist($newAttachment);
+            }
+
+            $this->getEntityManager()->flush();
 
             $this->writeln('Storing incoming message with subject "' . substr($parser->getSubject(), 7) . '"');
         }

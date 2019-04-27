@@ -126,7 +126,7 @@ class Poc extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     public function findPocersByAcademicAndAcademicYearQuery(Academic $academic, AcademicYear $academicYear)
     {
         $studyEnrollments = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+            ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
             ->findAllByAcademicAndAcademicYear($academic, $academicYear);
         $idsOfStudiesOfEnrollment = array(0);
 

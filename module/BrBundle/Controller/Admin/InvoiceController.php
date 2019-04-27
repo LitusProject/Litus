@@ -22,8 +22,8 @@ namespace BrBundle\Controller\Admin;
 
 use BrBundle\Component\Document\Generator\Pdf\Invoice as InvoiceGenerator;
 use BrBundle\Entity\Invoice;
-use BrBundle\Entity\Invoice\InvoiceHistory;
-use BrBundle\Entity\Invoice\ManualInvoice;
+use BrBundle\Entity\Invoice\History;
+use BrBundle\Entity\Invoice\Manual as ManualInvoice;
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File as FileUtil;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
@@ -200,7 +200,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Invoice\InvoiceHistory')
+                ->getRepository('BrBundle\Entity\Invoice\History')
                 ->findAllInvoiceVersions($invoice),
             $this->getParam('page')
         );
@@ -241,8 +241,9 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
                 $filePath = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('br.file_path') . '/invoices/'
-                    . $invoice->getInvoiceNumberPrefix();
+                    ->getConfigValue('br.file_path')
+                        . '/invoices/'
+                        . $invoice->getInvoiceNumberPrefix();
 
                 if (!file_exists($filePath)) {
                     if (!mkdir($filePath, 0770, true)) {
@@ -317,7 +318,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
                     rename($formData['file']['tmp_name'], $filePath . $fileName);
                 }
 
-                $history = new InvoiceHistory($invoice);
+                $history = new History($invoice);
                 $this->getEntityManager()->persist($history);
 
                 $this->getEntityManager()->flush();

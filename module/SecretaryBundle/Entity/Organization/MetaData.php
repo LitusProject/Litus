@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="SecretaryBundle\Repository\Organization\MetaData")
- * @ORM\Table(name="users.organization_metadata")
+ * @ORM\Table(name="users_organizations_metadata")
  */
 class MetaData
 {

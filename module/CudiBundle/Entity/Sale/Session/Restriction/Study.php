@@ -30,7 +30,7 @@ use SyllabusBundle\Entity\Study as StudyEntity;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Session\Restriction\Study")
- * @ORM\Table(name="cudi.sales_session_restriction_study")
+ * @ORM\Table(name="cudi_sale_sessions_restrictions_study")
  */
 class Study extends \CudiBundle\Entity\Sale\Session\Restriction
 {
@@ -38,7 +38,7 @@ class Study extends \CudiBundle\Entity\Sale\Session\Restriction
      * @var ArrayCollection The value of the restriction
      *
      * @ORM\ManyToMany(targetEntity="SyllabusBundle\Entity\Study")
-     * @ORM\JoinTable(name="cudi.sales_session_restrictions_study_map",
+     * @ORM\JoinTable(name="cudi_sale_sessions_restrictions_studies_map",
      *      joinColumns={@ORM\JoinColumn(name="restriction", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="study", referencedColumnName="id", onDelete="CASCADE")}
      * )
@@ -106,7 +106,7 @@ class Study extends \CudiBundle\Entity\Sale\Session\Restriction
         $academicYear = AcademicYear::getUniversityYear($entityManager);
 
         $studies = $entityManager
-            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+            ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
             ->findAllByAcademicAndAcademicYear($person, $academicYear);
 
         $allowedStudies = $this->studies->toArray();

@@ -31,7 +31,7 @@ use PromBundle\Entity\Bus\Passenger;
  * This is the entity for a bus
  *
  * @ORM\Entity(repositoryClass="PromBundle\Repository\Bus")
- * @ORM\Table(name="prom.bus")
+ * @ORM\Table(name="prom_buses")
  */
 class Bus
 {

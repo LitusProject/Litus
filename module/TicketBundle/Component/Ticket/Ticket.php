@@ -23,8 +23,8 @@ namespace TicketBundle\Component\Ticket;
 use CommonBundle\Entity\User\Person;
 use Doctrine\ORM\EntityManager;
 use TicketBundle\Entity\Event;
+use TicketBundle\Entity\Event\Option;
 use TicketBundle\Entity\GuestInfo;
-use TicketBundle\Entity\Option;
 use TicketBundle\Entity\Ticket as TicketEntity;
 
 /**

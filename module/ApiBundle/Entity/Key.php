@@ -30,7 +30,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity stores an API key.
  *
  * @ORM\Entity(repositoryClass="ApiBundle\Repository\Key")
- * @ORM\Table(name="api.keys")
+ * @ORM\Table(name="api_keys")
  */
 class Key implements RoleAware
 {
@@ -76,7 +76,7 @@ class Key implements RoleAware
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @ORM\JoinTable(
-     *      name="api.keys_roles_map",
+     *      name="api_keys_roles_map",
      *      joinColumns={@ORM\JoinColumn(name="key", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="role", referencedColumnName="name")}
      * )

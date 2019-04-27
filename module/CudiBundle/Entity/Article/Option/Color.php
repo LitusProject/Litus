@@ -24,7 +24,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Article\Option\Color")
- * @ORM\Table(name="cudi.articles_options_colors")
+ * @ORM\Table(name="cudi_articles_options_colors")
  */
 class Color
 {

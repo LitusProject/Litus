@@ -128,7 +128,7 @@ class LeaseController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $leaseRepo = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Lease\Lease');
+            ->getRepository('LogisticsBundle\Entity\Lease');
 
         if (count($leaseRepo->findUnreturnedByItem($item)) > 0) {
             return new ViewModel(

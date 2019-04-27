@@ -569,7 +569,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         $studyMap = array();
         $studies = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+            ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
             ->findAllByAcademicAndAcademicYear($this->academic, $this->academicYear);
 
         foreach ($studies as $study) {

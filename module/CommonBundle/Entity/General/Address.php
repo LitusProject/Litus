@@ -26,7 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This class represents a address entry that is saved in the database
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\Address")
- * @ORM\Table(name="general.addresses")
+ * @ORM\Table(name="general_addresses")
  */
 class Address
 {

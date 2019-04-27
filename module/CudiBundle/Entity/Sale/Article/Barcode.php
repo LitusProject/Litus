@@ -25,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Article\Barcode")
- * @ORM\Table(name="cudi.sales_articles_barcodes")
+ * @ORM\Table(name="cudi_sale_articles_barcodes")
  */
 class Barcode
 {

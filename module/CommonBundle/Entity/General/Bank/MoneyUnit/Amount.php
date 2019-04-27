@@ -26,7 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\Bank\MoneyUnit\Amount")
- * @ORM\Table(name="general.bank_money_units_amounts")
+ * @ORM\Table(name="general_bank_money_units_amounts")
  */
 class Amount
 {

@@ -26,7 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity stores the guest info item.
  *
  * @ORM\Entity(repositoryClass="TicketBundle\Repository\GuestInfo")
- * @ORM\Table(name="tickets.guests_info")
+ * @ORM\Table(name="ticket_guests_info")
  */
 class GuestInfo
 {

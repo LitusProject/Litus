@@ -21,13 +21,14 @@
 namespace CudiBundle\Entity\Sale\Session\OpeningHour;
 
 use CommonBundle\Entity\General\Language;
+use CudiBundle\Entity\Sale\Session\OpeningHour;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Session\OpeningHour\Translation")
- * @ORM\Table(name="cudi.sales_session_openinghours_translations")
+ * @ORM\Table(name="cudi_sale_sessions_opening_hours_translations")
  */
 class Translation
 {
@@ -43,7 +44,7 @@ class Translation
     /**
      * @var OpeningHour The opening hour of this translation
      *
-     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour", inversedBy="translations")
+     * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sale\Session\OpeningHour", inversedBy="translations")
      * @ORM\JoinColumn(name="opening_hour", referencedColumnName="id")
      */
     private $openingHour;

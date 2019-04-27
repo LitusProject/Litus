@@ -21,12 +21,13 @@
 namespace GalleryBundle\Entity\Album;
 
 use Doctrine\ORM\Mapping as ORM;
+use GalleryBundle\Entity\Album;
 
 /**
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="GalleryBundle\Repository\Album\Photo")
- * @ORM\Table(name="gallery.photos")
+ * @ORM\Table(name="gallery_albums_photos")
  */
 class Photo
 {
@@ -42,7 +43,7 @@ class Photo
     /**
      * @var Album The album of this translation
      *
-     * @ORM\ManyToOne(targetEntity="GalleryBundle\Entity\Album\Album", inversedBy="photos")
+     * @ORM\ManyToOne(targetEntity="GalleryBundle\Entity\Album", inversedBy="photos")
      * @ORM\JoinColumn(name="album", referencedColumnName="id")
      */
     private $album;

@@ -24,14 +24,13 @@ use CommonBundle\Entity\User\Person;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
+use TicketBundle\Entity\Event\Option;
 
 /**
  * @ORM\Entity(repositoryClass="TicketBundle\Repository\Ticket")
  * @ORM\Table(
- *     name="tickets.tickets",
- *     uniqueConstraints={
- *          @ORM\UniqueConstraint(name="ticket_number_unique", columns={"event", "number"})
- *      }
+ *     name="ticket_tickets",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="ticket_tickets_event_number", columns={"event", "number"})}
  * )
  */
 class Ticket
@@ -109,7 +108,7 @@ class Ticket
     /**
      * @var Option|null The option of the ticket
      *
-     * @ORM\ManyToOne(targetEntity="TicketBundle\Entity\Option")
+     * @ORM\ManyToOne(targetEntity="TicketBundle\Entity\Event\Option")
      * @ORM\JoinColumn(name="option", referencedColumnName="id")
      */
     private $option;

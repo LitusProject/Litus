@@ -30,7 +30,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @author Matthias Swiggers <matthias.swiggers@vtk.be>
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Event")
- * @ORM\Table(name="br.events")
+ * @ORM\Table(name="br_events")
  */
 class Event
 {
@@ -81,8 +81,7 @@ class Event
     private $endDate;
 
     /**
-     * @param ReservableResource $resource
-     * @param Person             $creator
+     * @param Person $creator
      */
     public function __construct(Person $creator)
     {

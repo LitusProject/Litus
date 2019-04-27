@@ -22,7 +22,7 @@ namespace LogisticsBundle\Form\Admin\PianoReservation;
 
 use DateInterval;
 use DateTime;
-use LogisticsBundle\Entity\Reservation\PianoReservation;
+use LogisticsBundle\Entity\Reservation\Piano as PianoReservation;
 
 /**
  * The form used to add a new Reservation.
@@ -31,7 +31,7 @@ use LogisticsBundle\Entity\Reservation\PianoReservation;
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    protected $hydrator = 'LogisticsBundle\Hydrator\Reservation\PianoReservation';
+    protected $hydrator = 'LogisticsBundle\Hydrator\Reservation\Piano';
 
     /**
      * @var PianoReservation|null
@@ -118,7 +118,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                 'options' => array(
                                     'start_date'     => 'start_date',
                                     'format'         => 'd/m/Y H:i',
-                                    'resource'       => PianoReservation::PIANO_RESOURCE_NAME,
+                                    'resource'       => PianoReservation::RESOURCE_NAME,
                                     'reservation_id' => $this->reservation !== null ? $this->reservation->getId() : null,
                                 ),
                             ),
@@ -226,7 +226,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         }
 
                         $occupied = $this->getEntityManager()
-                            ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
+                            ->getRepository('LogisticsBundle\Entity\Reservation\Piano')
                             ->isTimeInExistingReservation($startSlot, $isStart);
 
                         if (!$occupied) {

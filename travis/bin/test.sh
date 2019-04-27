@@ -37,6 +37,8 @@ install() {
     init_database
 
     php bin/doctrine.php orm:schema-tool:create
+    php bin/doctrine.php migrations:version --add --all --no-interaction
+
     php bin/console.php install:all
 }
 

@@ -24,7 +24,7 @@ use CommonBundle\Entity\User\Person;
 use DateInterval;
 use DateTime;
 use IntlDateFormatter;
-use LogisticsBundle\Entity\Reservation\PianoReservation;
+use LogisticsBundle\Entity\Reservation\Piano as PianoReservation;
 use Zend\Mail\Message;
 use Zend\View\Model\ViewModel;
 
@@ -60,8 +60,8 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
 
             if ($form->isValid() && isset($weekIndex) && $startDate && $endDate) {
                 $piano = $this->getEntityManager()
-                    ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource')
-                    ->findOneByName(PianoReservation::PIANO_RESOURCE_NAME);
+                    ->getRepository('LogisticsBundle\Entity\Reservation\Resource')
+                    ->findOneByName(PianoReservation::RESOURCE_NAME);
 
                 $reservation = new PianoReservation(
                     $piano,
@@ -79,7 +79,7 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
                 $endWeek->add(new DateInterval('P7D'));
 
                 $otherReservations = $this->getEntityManager()
-                    ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
+                    ->getRepository('LogisticsBundle\Entity\Reservation\Piano')
                     ->findAllConfirmedByDatesAndPerson($startWeek, $endWeek, $person);
 
                 $deadline = new DateTime();
@@ -148,7 +148,7 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
         $person = $this->getPersonEntity();
         if ($person !== null) {
             return $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
+                ->getRepository('LogisticsBundle\Entity\Reservation\Piano')
                 ->findAllByDatesAndPerson(
                     $this->getCurrentAcademicYear()->getUniversityStartDate(),
                     $this->getCurrentAcademicYear()->getUniversityEndDate(),

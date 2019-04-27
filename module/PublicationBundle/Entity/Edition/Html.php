@@ -28,8 +28,8 @@ use PublicationBundle\Entity\Publication;
 /**
  * This is the entity for a publication
  *
- * @ORM\Entity(repositoryClass="PublicationBundle\Repository\Edition\HtmlEdition")
- * @ORM\Table(name="publications.editions_html")
+ * @ORM\Entity(repositoryClass="PublicationBundle\Repository\Edition\Html")
+ * @ORM\Table(name="publications_editions_html")
  */
 class Html extends \PublicationBundle\Entity\Edition
 {

@@ -264,7 +264,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
             }
 
             $enrollments = $this->getEntityManager()
-                ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+                ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
                 ->findAllByStudy($study);
 
             foreach ($enrollments as $enrollment) {

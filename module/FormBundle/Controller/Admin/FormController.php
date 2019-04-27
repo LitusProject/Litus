@@ -138,7 +138,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         $formSpecification->setEntityManager($this->getEntityManager());
 
         $group = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Group\Mapping')
+            ->getRepository('FormBundle\Entity\Node\Form\GroupMap')
             ->findOneByForm($formSpecification);
 
         if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {

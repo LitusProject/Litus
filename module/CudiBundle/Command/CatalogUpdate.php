@@ -208,7 +208,7 @@ class CatalogUpdate extends \CommonBundle\Component\Console\Command
 
         foreach ($subscribers as $subscription) {
             $academicSubjects = $this->getEntityManager()
-                ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
+                ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Subject')
                 ->findAllByAcademicAndAcademicYear($subscription->getPerson(), $academicYear);
 
             $language = $subscription->getPerson()->getLanguage();

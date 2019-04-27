@@ -291,7 +291,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
         );
 
         $openingHours = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
+            ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour')
             ->findCommingInterval($interval);
 
         $result = array();
@@ -428,7 +428,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
         $currentYear = $this->getCurrentAcademicYear();
 
         $enrollments = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
+            ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Subject')
             ->findAllByAcademicAndAcademicYear($person, $currentYear);
 
         $bookingsSold = $this->getEntityManager()
@@ -559,7 +559,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             return null;
         }
 
-        $person = $this->getAccessToken()->getPerson($this->getEntityManager());
+        $person = $this->getAccessToken()->getPerson();
         if ($person === null) {
             return null;
         }

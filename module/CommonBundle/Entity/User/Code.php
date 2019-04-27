@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity stores a user's codes.
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Code")
- * @ORM\Table(name="users.codes")
+ * @ORM\Table(name="users_codes")
  */
 class Code
 {

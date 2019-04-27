@@ -22,10 +22,10 @@ namespace ShiftBundle\Controller;
 
 use DateInterval;
 use DateTime;
-use ShiftBundle\Document\Token;
 use ShiftBundle\Entity\Shift\Responsible;
 use ShiftBundle\Entity\Shift\Volunteer;
-use ShiftBundle\Entity\User\Person\Insurance;
+use ShiftBundle\Entity\Token;
+use ShiftBundle\Entity\User\Person\AcademicYearMap;
 use Zend\Http\Headers;
 use Zend\Mail\Message;
 use Zend\View\Model\ViewModel;
@@ -55,16 +55,15 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findAllActiveByPerson($person);
 
-        $token = $this->getDocumentManager()
-            ->getRepository('ShiftBundle\Document\Token')
+        $token = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Token')
             ->findOneByPerson($person);
 
         if ($token === null) {
-            $token = new Token(
-                $person
-            );
-            $this->getDocumentManager()->persist($token);
-            $this->getDocumentManager()->flush();
+            $token = new Token($person);
+
+            $this->getEntityManager()->persist($token);
+            $this->getEntityManager()->flush();
         }
 
         $insuranceEnabled = unserialize(
@@ -80,11 +79,11 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         $hasReadInsurance = true;
         if ($insuranceEnabled) {
-            $insurance = $this->getEntityManager()
-                ->getRepository('ShiftBundle\Entity\User\Person\Insurance')
+            $mapping = $this->getEntityManager()
+                ->getRepository('ShiftBundle\Entity\User\Person\AcademicYearMap')
                 ->findOneByPersonAndAcademicYear($person, $this->getCurrentAcademicYear());
 
-            if ($insurance === null || !$insurance->hasReadInsurance()) {
+            if ($mapping === null || !$mapping->hasReadInsurance()) {
                 $hasReadInsurance = false;
             }
         }
@@ -250,17 +249,17 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         );
 
         if ($insuranceEnabled) {
-            $insurance = $this->getEntityManager()
-                ->getRepository('ShiftBundle\Entity\User\Person\Insurance')
+            $mapping = $this->getEntityManager()
+                ->getRepository('ShiftBundle\Entity\User\Person\AcademicYearMap')
                 ->findOneByPersonAndAcademicYear($person, $this->getCurrentAcademicYear());
 
-            if ($insurance === null) {
-                $insurance = new Insurance($person, true, $this->getCurrentAcademicYear());
-            } elseif (!$insurance->hasReadInsurance()) {
-                $insurance->setHasReadInsurance(true);
+            if ($mapping === null) {
+                $mapping = new AcademicYearMap($person, $this->getCurrentAcademicYear(), true);
+            } elseif (!$mapping->hasReadInsurance()) {
+                $mapping->setHasReadInsurance(true);
             }
 
-            $this->getEntityManager()->persist($insurance);
+            $this->getEntityManager()->persist($mapping);
         }
 
         $shift->addResponsible(
@@ -479,13 +478,13 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $result .= 'END:VTIMEZONE' . PHP_EOL;
 
         if ($this->getParam('token') !== null) {
-            $token = $this->getDocumentManager()
-                ->getRepository('ShiftBundle\Document\Token')
+            $token = $this->getEntityManager()
+                ->getRepository('ShiftBundle\Entity\Token')
                 ->findOneByHash($this->getParam('token'));
 
             $shifts = $this->getEntityManager()
                 ->getRepository('ShiftBundle\Entity\Shift')
-                ->findAllActiveByPerson($token->getPerson($this->getEntityManager()));
+                ->findAllActiveByPerson($token->getPerson());
 
             foreach ($shifts as $shift) {
                 $result .= 'BEGIN:VEVENT' . PHP_EOL;

@@ -21,8 +21,8 @@
 namespace ShopBundle\Controller\Admin;
 
 use ShopBundle\Entity\Reservation;
-use ShopBundle\Entity\ReservationPermission;
-use ShopBundle\Entity\SalesSession;
+use ShopBundle\Entity\Reservation\Permission as ReservationPermission;
+use ShopBundle\Entity\Session as SalesSession;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -105,7 +105,7 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
                 ->getNoShowSessionCount($reservation->getPerson());
             if ($currentNoShows >= $maxNoShows) {
                 $reservationPermission = $this->getEntityManager()
-                    ->getRepository('ShopBundle\Entity\ReservationPermission')
+                    ->getRepository('ShopBundle\Entity\Reservation\Permission')
                     ->find($reservation->getPerson());
                 if ($reservationPermission) {
                     $blacklistAvoided = $reservationPermission->getReservationsAllowed();
@@ -161,7 +161,7 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
      */
     private function getSalesSessionEntity()
     {
-        $salesSession = $this->getEntityById('ShopBundle\Entity\SalesSession');
+        $salesSession = $this->getEntityById('ShopBundle\Entity\Session');
 
         if (!($salesSession instanceof SalesSession)) {
             $this->flashMessenger()->error(

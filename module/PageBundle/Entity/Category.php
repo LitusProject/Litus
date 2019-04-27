@@ -30,7 +30,7 @@ use PageBundle\Entity\Node\Page;
  * This entity stores a category.
  *
  * @ORM\Entity(repositoryClass="PageBundle\Repository\Category")
- * @ORM\Table(name="nodes.pages_categories")
+ * @ORM\Table(name="nodes_pages_categories")
  */
 class Category
 {

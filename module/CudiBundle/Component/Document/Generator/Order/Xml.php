@@ -25,8 +25,8 @@ use CommonBundle\Component\Util\Xml\Generator;
 use CommonBundle\Component\Util\Xml\Node;
 use CudiBundle\Component\Document\Generator\Front as FrontGenerator;
 use CudiBundle\Entity\Article\Internal as InternalArticle;
+use CudiBundle\Entity\Stock\Order;
 use CudiBundle\Entity\Stock\Order\Item;
-use CudiBundle\Entity\Stock\Order\Order;
 use Doctrine\ORM\EntityManager;
 use UnexpectedValueException;
 use ZipArchive;
@@ -100,7 +100,7 @@ class Xml
             }
 
             $mappings = $this->entityManager
-                ->getRepository('CudiBundle\Entity\File\Mapping')
+                ->getRepository('CudiBundle\Entity\File\ArticleMap')
                 ->findAllPrintableByArticle($item->getArticle()->getMainArticle());
 
             foreach ($mappings as $mapping) {
@@ -134,7 +134,7 @@ class Xml
         $number++;
 
         $mappings = $this->entityManager
-            ->getRepository('CudiBundle\Entity\File\Mapping')
+            ->getRepository('CudiBundle\Entity\File\ArticleMap')
             ->findAllByArticle($mainArticle);
         foreach ($mappings as $mapping) {
             $attachments[] = new Node(

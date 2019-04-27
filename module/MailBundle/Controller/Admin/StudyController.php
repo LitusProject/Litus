@@ -107,8 +107,8 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
 
                     $mail->addTo($formData['from']);
                 } else {
-                    $storedMessage = $this->getDocumentManager()
-                        ->getRepository('MailBundle\Document\Message')
+                    $storedMessage = $this->getEntityManager()
+                        ->getRepository('MailBundle\Entity\Message')
                         ->findOneById($formData['selected_message']['stored_message']);
 
                     $body = $storedMessage->getBody();
@@ -260,7 +260,7 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
             $enrollments = array_merge(
                 $enrollments,
                 $this->getEntityManager()
-                    ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+                    ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
                     ->findAllByStudy($study)
             );
         }
@@ -305,7 +305,7 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                 $enrollments = array_merge(
                     $enrollments,
                     $this->getEntityManager()
-                        ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+                        ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
                         ->findAllByStudy($study->getStudy())
                 );
             }

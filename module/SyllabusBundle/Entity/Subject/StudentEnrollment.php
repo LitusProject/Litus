@@ -26,7 +26,7 @@ use SyllabusBundle\Entity\Subject;
 
 /**
  * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Subject\StudentEnrollment")
- * @ORM\Table(name="syllabus.student_enrollment")
+ * @ORM\Table(name="syllabus_subjects_student_enrollments")
  */
 class StudentEnrollment
 {

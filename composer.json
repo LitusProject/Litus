@@ -32,6 +32,7 @@
 
         "doctrine/doctrine-orm-module": "@stable",
         "doctrine/doctrine-mongo-odm-module": "@stable",
+        "doctrine/migrations": "^2.0",
 
         "alcaeus/mongo-php-adapter": "^1.1",
         "cboden/ratchet": "^0.4.1",
@@ -64,6 +65,8 @@
     },
     "autoload": {
         "psr-4": {
+            "Migrations\\": "migrations",
+
             "ApiBundle\\": "module/ApiBundle",
             "BannerBundle\\": "module/BannerBundle",
             "BootstrapBundle\\": "module/BootstrapBundle",

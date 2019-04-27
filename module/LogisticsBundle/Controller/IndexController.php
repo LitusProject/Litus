@@ -23,8 +23,8 @@ namespace LogisticsBundle\Controller;
 use CommonBundle\Component\Util\File\TmpFile;
 use DateTime;
 use LogisticsBundle\Component\Document\Generator\Ics as IcsGenerator;
-use LogisticsBundle\Document\Token;
-use LogisticsBundle\Entity\Reservation\VanReservation;
+use LogisticsBundle\Entity\Reservation\Van as VanReservation;
+use LogisticsBundle\Entity\Token;
 use Zend\Http\Headers;
 use Zend\View\Model\ViewModel;
 
@@ -39,8 +39,8 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
         $token = null;
         if ($this->getAuthentication()->isAuthenticated()) {
-            $token = $this->getDocumentManager()
-                ->getRepository('LogisticsBundle\Document\Token')
+            $token = $this->getEntityManager()
+                ->getRepository('LogisticsBundle\Entity\Token')
                 ->findOneByPerson($this->getAuthentication()->getPersonObject());
         }
 
@@ -48,8 +48,9 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
             $token = new Token(
                 $this->getAuthentication()->getPersonObject()
             );
-            $this->getDocumentManager()->persist($token);
-            $this->getDocumentManager()->flush();
+
+            $this->getEntityManager()->persist($token);
+            $this->getEntityManager()->flush();
         }
 
         return new ViewModel(
@@ -330,7 +331,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
         $this->getResponse()->setHeaders($headers);
 
         $icsFile = new TmpFile();
-        new IcsGenerator($icsFile, $this->getEntityManager(), $this->getDocumentManager(), $this->getParam('token'));
+        new IcsGenerator($icsFile, $this->getEntityManager(), $this->getParam('token'));
 
         return new ViewModel(
             array(
@@ -355,7 +356,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
         $endTime->setTimeStamp($this->getParam('end'));
 
         $reservations = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
+            ->getRepository('LogisticsBundle\Entity\Reservation\Van')
             ->findAllByDates($startTime, $endTime);
 
         if (count($reservations) == 0) {
@@ -370,7 +371,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
      */
     private function getVanReservationEntity()
     {
-        $reservation = $this->getEntityById('LogisticsBundle\Entity\Reservation\VanReservation');
+        $reservation = $this->getEntityById('LogisticsBundle\Entity\Reservation\Van');
 
         if (!($reservation instanceof VanReservation)) {
             return;

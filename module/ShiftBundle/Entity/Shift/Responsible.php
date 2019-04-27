@@ -30,7 +30,7 @@ use InvalidArgumentException;
  * This entity stores a responsible for a shift.
  *
  * @ORM\Entity(repositoryClass="ShiftBundle\Repository\Shift\Responsible")
- * @ORM\Table(name="shifts.responsibles")
+ * @ORM\Table(name="shift_shifts_responsibles")
  */
 class Responsible
 {

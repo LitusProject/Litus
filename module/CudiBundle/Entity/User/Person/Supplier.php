@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This is the entity for an supplier person.
  *
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\User\Person\Supplier")
- * @ORM\Table(name="users.people_suppliers")
+ * @ORM\Table(name="users_people_suppliers")
  */
 class Supplier extends \CommonBundle\Entity\User\Person
 {

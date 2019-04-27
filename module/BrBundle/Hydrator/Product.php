@@ -44,7 +44,7 @@ class Product extends \CommonBundle\Component\Hydrator\Hydrator
 
         if ($object->getName() != null) {
             $orderEntry = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Product\OrderEntry')
+                ->getRepository('BrBundle\Entity\Product\Order\Entry')
                 ->findOneByProduct($object->getId());
 
             if ($orderEntry !== null) {

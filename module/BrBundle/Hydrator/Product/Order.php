@@ -21,7 +21,7 @@
 namespace BrBundle\Hydrator\Product;
 
 use BrBundle\Entity\Product\Order as OrderEntity;
-use BrBundle\Entity\Product\OrderEntry as OrderEntryEntity;
+use BrBundle\Entity\Product\Order\Entry as OrderEntryEntity;
 use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 
 /**
@@ -97,7 +97,7 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
                 ->getResult()[0];
 
             $entry = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Product\OrderEntry')
+                ->getRepository('BrBundle\Entity\Product\Order\Entry')
                 ->findOneByOrderAndProduct($object, $product);
 
             $entry->setQuantity($data['edit_product_amount']);

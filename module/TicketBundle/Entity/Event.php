@@ -26,10 +26,11 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
+use TicketBundle\Entity\Event\Option;
 
 /**
  * @ORM\Entity(repositoryClass="TicketBundle\Repository\Event")
- * @ORM\Table(name="tickets.events")
+ * @ORM\Table(name="ticket_events")
  */
 class Event
 {
@@ -130,7 +131,7 @@ class Event
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="TicketBundle\Entity\Option", mappedBy="event")
+     * @ORM\OneToMany(targetEntity="TicketBundle\Entity\Event\Option", mappedBy="event")
      */
     private $options;
 

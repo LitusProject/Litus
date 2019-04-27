@@ -29,7 +29,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity represents a group of friends.
  *
  * @ORM\Entity(repositoryClass="SportBundle\Repository\Group")
- * @ORM\Table(name="sport.groups")
+ * @ORM\Table(name="sport_groups")
  */
 class Group
 {

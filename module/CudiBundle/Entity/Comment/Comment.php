@@ -29,7 +29,7 @@ use InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Comment\Comment")
- * @ORM\Table(name="cudi.comments_comments")
+ * @ORM\Table(name="cudi_comments_comments")
  */
 class Comment
 {
@@ -94,7 +94,7 @@ class Comment
         $this->person = $person;
         $this->date = new DateTime();
 
-        $entityManager->persist(new Mapping($article, $this));
+        $entityManager->persist(new ArticleMap($article, $this));
 
         $this->setText($text);
         if ($type !== null) {

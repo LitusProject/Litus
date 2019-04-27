@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
  * For a given register, this class has the amount
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\Bank\BankDevice\Amount")
- * @ORM\Table(name="general.bank_bank_devices_amounts")
+ * @ORM\Table(name="general_bank_bank_devices_amounts")
  */
 class Amount
 {

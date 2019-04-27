@@ -26,7 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Event\CompanyMap")
- * @ORM\Table(name="br.event_company_map")
+ * @ORM\Table(name="br_events_companies_map")
  */
 class CompanyMap
 {

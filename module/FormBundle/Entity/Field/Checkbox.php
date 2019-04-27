@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Field\Checkbox")
- * @ORM\Table(name="forms.fields_checkboxes")
+ * @ORM\Table(name="form_fields_checkboxes")
  */
 class Checkbox extends \FormBundle\Entity\Field
 {

@@ -28,12 +28,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Locale;
 use PageBundle\Entity\Category;
+use PageBundle\Entity\Node\Page\Translation;
 
 /**
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="PageBundle\Repository\Node\Page")
- * @ORM\Table(name="nodes.pages")
+ * @ORM\Table(name="nodes_pages")
  */
 class Page extends \CommonBundle\Entity\Node
 {
@@ -64,7 +65,7 @@ class Page extends \CommonBundle\Entity\Node
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @ORM\JoinTable(
-     *      name="nodes.pages_roles_map",
+     *      name="nodes_pages_roles_map",
      *      joinColumns={@ORM\JoinColumn(name="page", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="role", referencedColumnName="name")}
      * )
@@ -89,7 +90,7 @@ class Page extends \CommonBundle\Entity\Node
     /**
      * @var ArrayCollection The translations of this page
      *
-     * @ORM\OneToMany(targetEntity="PageBundle\Entity\Node\Translation", mappedBy="page", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="PageBundle\Entity\Node\Page\Translation", mappedBy="page", cascade={"remove"})
      */
     private $translations;
 
