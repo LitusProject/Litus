@@ -61,7 +61,7 @@ class Log
      */
     public function __construct(Academic $academic)
     {
-        $this->academic = $academic->getId();
+        $this->academic = $academic;
         $this->timestamp = new DateTime();
     }
 
