@@ -31,6 +31,7 @@ class VisitController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
+        $paginator = null;
         if ($this->getParam('field') !== null) {
             $visits = $this->search();
             if ($visits === null) {
@@ -43,7 +44,7 @@ class VisitController extends \CommonBundle\Component\Controller\ActionControlle
             );
         }
 
-        if (!isset($paginator)) {
+        if ($paginator === null) {
             $paginator = $this->paginator()->createFromEntity(
                 'CommonBundle\Entity\General\Visit',
                 $this->getParam('page'),
