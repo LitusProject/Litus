@@ -78,7 +78,7 @@ class Reservation extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
      */
     public function getTotalByProductBySalesQuery($salesSession)
     {
-        $q = 'SELECT p.id, p.name, SUM(r.amount) FROM shop.reservations as r INNER JOIN shop.products as p ON r.product=p.id WHERE r.session=:sessId GROUP BY p.id';
+        $q = 'SELECT p.id, p.name, SUM(r.amount) FROM shop_reservations as r INNER JOIN shop_products as p ON r.product=p.id WHERE r.session=:sessId GROUP BY p.id';
         $em = $this->getEntityManager();
         $stmt = $em->getConnection()->prepare($q);
         $stmt->bindValue('sessId', $salesSession->getId());
