@@ -43,6 +43,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function manageAction()
     {
+        $paginator = null;
         if ($this->getParam('field') !== null) {
             $companies = $this->search();
             if ($companies === null) {
@@ -55,7 +56,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             );
         }
 
-        if (!isset($paginator)) {
+        if ($paginator === null) {
             $paginator = $this->paginator()->createFromEntity(
                 'BrBundle\Entity\Company',
                 $this->getParam('page'),

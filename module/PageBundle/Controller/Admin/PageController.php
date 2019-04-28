@@ -37,11 +37,12 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
+        $pages = array();
         if ($this->getParam('field') !== null) {
             $pages = $this->search();
         }
 
-        if (!isset($pages)) {
+        if (count($pages) == 0) {
             $pages = $this->getEntityManager()
                 ->getRepository('PageBundle\Entity\Node\Page')
                 ->findBy(

@@ -45,6 +45,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
             return new ViewModel();
         }
 
+        $paginator = null;
         if ($this->getParam('field') !== null) {
             $paginator = $this->paginator()->createFromArray(
                 $this->search($academicYear),
@@ -52,7 +53,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
             );
         }
 
-        if (!isset($paginator)) {
+        if ($paginator === null) {
             $paginator = $this->paginator()->createFromEntity(
                 'SecretaryBundle\Entity\Promotion',
                 $this->getParam('page'),

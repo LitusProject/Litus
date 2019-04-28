@@ -36,6 +36,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 {
     public function manageAction()
     {
+        $paginator = null;
         if ($this->getParam('field') !== null) {
             $academics = $this->search();
 
@@ -45,7 +46,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             );
         }
 
-        if (!isset($paginator)) {
+        if ($paginator === null) {
             $paginator = $this->paginator()->createFromEntity(
                 'CommonBundle\Entity\User\Person\Academic',
                 $this->getParam('page'),
