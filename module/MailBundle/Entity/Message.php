@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * This entity stores an e-mail message, received through our own mail parser.
  *
- * @ORM\Entity(repositoryClass="ApiBundle\Entity\Message")
+ * @ORM\Entity(repositoryClass="MailBundle\Repository\Message")
  * @ORM\Table(name="mail_messages")
  */
 class Message

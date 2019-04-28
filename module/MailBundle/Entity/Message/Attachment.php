@@ -26,7 +26,7 @@ use MailBundle\Entity\Message;
 /**
  * This entity stores an attachment from an e-mail message.
  *
- * @ORM\Entity(repositoryClass="ApiBundle\Entity\Message\Attachment")
+ * @ORM\Entity(repositoryClass="MailBundle\Repository\Message\Attachment")
  * @ORM\Table(name="mail_messages_attachments")
  */
 class Attachment
