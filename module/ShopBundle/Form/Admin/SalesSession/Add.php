@@ -27,7 +27,7 @@ namespace ShopBundle\Form\Admin\SalesSession;
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    protected $hydrator = 'ShopBundle\Hydrator\SalesSession';
+    protected $hydrator = 'ShopBundle\Hydrator\Session';
 
     /**
      * @var array
