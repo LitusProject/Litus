@@ -80,7 +80,7 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                     $this->getEntityManager()->flush();
 
                     $this->redirect()->toUrl(
-                        $this->getRequest()->getQuery('redirect_uri') . '?code=' . $authorizationCode->getCode()
+                        $this->getRequest()->getQuery('redirect_uri') . '?code=' . $authorizationCode->getCode() . '&state=' . $this->getRequest()->getQuery('state')
                     );
 
                     return new ViewModel();
