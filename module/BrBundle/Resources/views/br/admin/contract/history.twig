@@ -29,7 +29,8 @@
                             <a href="{{ url('br_admin_contract', {"action": "view", "id": contractHistory.getContract().getId()}) }}" class="view">View</a>
                         {% endif %}
                         {% if hasAccess('br_admin_contract', 'download') %}
-                            <a href="{{ url('br_admin_contract', {"action": "download", "id": contractHistory.getContract().getId()}) }}" class="contract" value="Download">Download</a>
+                            <a href="{{ url('br_admin_contract', {"action": "download", "id": contractHistory.getContract().getId(), "language":"en"}) }}" class="contract" value="Download">Download EN</a>
+                            <a href="{{ url('br_admin_contract', {"action": "download", "id": contractHistory.getContract().getId(), "language":"nl"}) }}" class="contract" value="Download">Download NL</a>
                         {% endif %}
                     </td>
                 </tr>

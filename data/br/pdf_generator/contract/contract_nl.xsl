@@ -16,7 +16,7 @@
     <xsl:import href="../../../pdf_generator/our_union/essentials.xsl"/>
     <xsl:import href="../../../pdf_generator/our_union/simple_with_logo.xsl"/>
 
-    <xsl:import href="i18n/default.xsl"/>
+    <xsl:import href="i18n/nl.xsl"/>
 
     <xsl:output method="xml" indent="yes"/>
 
@@ -299,7 +299,7 @@
                     <fo:table-cell><fo:block text-align="right">http://www.vtk.be <xsl:apply-templates select="right"/></fo:block></fo:table-cell>
                 </fo:table-row>
                 <fo:table-row>
-                    <fo:table-cell><fo:block text-align="left">BIC: KREDBEBB <xsl:apply-templates select="left"/></fo:block></fo:table-cell>
+                    <fo:table-cell><fo:block text-align="left">BIC: KREDBAB <xsl:apply-templates select="left"/></fo:block></fo:table-cell>
                     <fo:table-cell><fo:block><xsl:apply-templates select="center"/></fo:block></fo:table-cell>
                     <fo:table-cell><fo:block text-align="right">bedrijvenrelaties@vtk.be <xsl:apply-templates select="right"/></fo:block></fo:table-cell>
                 </fo:table-row>

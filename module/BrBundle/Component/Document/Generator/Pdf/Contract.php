@@ -22,6 +22,7 @@ namespace BrBundle\Component\Document\Generator\Pdf;
 
 use BrBundle\Component\ContractParser\Parser as BulletParser;
 use BrBundle\Entity\Contract as ContractEntity;
+use CommonBundle\Component\Document\Generator\Pdf as PdfGenerator;
 use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Component\Util\Xml\Generator as XmlGenerator;
 use CommonBundle\Component\Util\Xml\Node as XmlNode;
@@ -50,17 +51,31 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
     private $translator;
 
     /**
+     * @var string The language used for the invoice
+     */
+    private $lang = 'nl';
+
+    /**
+     * @var String The xsl file path, relative to the br generator path, to use for each language
+     */
+    const CONTRACT_XSL_PATHS = array(
+        null                  => '/contract/contract.xsl',
+        PdfGenerator::ENGLISH => '/contract/contract_en.xsl',
+        PdfGenerator::DUTCH   => '/contract/contract_nl.xsl',
+    );
+
+    /**
      * @param EntityManager       $entityManager The EntityManager instance
      * @param ContractEntity      $contract      The contract for which we want to generate a PDF
      * @param TranslatorInterface $translator
      */
-    public function __construct(EntityManager $entityManager, ContractEntity $contract, TranslatorInterface $translator)
+    public function __construct(EntityManager $entityManager, ContractEntity $contract, TranslatorInterface $translator, String $language = null)
     {
         parent::__construct(
             $entityManager,
             $entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('br.pdf_generator_path') . '/contract/contract.xsl',
+                ->getConfigValue('br.pdf_generator_path') . Contract::CONTRACT_XSL_PATHS[$language],
             $entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('br.file_path') . '/contracts/'
@@ -68,6 +83,10 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         );
         $this->translator = $translator;
         $this->contract = $contract;
+
+        if ($language !== null) {
+            $this->lang = $language;
+        }
     }
 
     /**
@@ -83,10 +102,12 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         $company = $this->contract->getOrder()->getCompany();
 
         // TODO: Make this possible in both English and Dutch
-        $locale = 'nl';
-        $this->translator->setLocale($locale);
+        // $locale = 'nl';
+        // $this->translator->setLocale($locale);
+        $this->translator->setLocale($this->lang);
 
-        $formatter = new IntlDateFormatter($locale, IntlDateFormatter::FULL, IntlDateFormatter::NONE);
+
+        $formatter = new IntlDateFormatter($this->lang, IntlDateFormatter::FULL, IntlDateFormatter::NONE);
         $date = $formatter->format($this->contract->getOrder()->getCreationTime());
 
         $brgroco = $configs->getConfigValue('br.br_group_coordinator');
@@ -128,13 +149,17 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         }
 
         // TODO: Make this possible in both English and Dutch
-        $sub_entries = unserialize($configs->getConfigValue('br.contract_below_entries'))['nl'];
+        // $sub_entries = unserialize($configs->getConfigValue('br.contract_below_entries'))['nl'];
+        $sub_entries = unserialize($configs->getConfigValue('br.contract_below_entries'))[$this->lang];
 
         // TODO: Make this possible in both English and Dutch
-        $above_sign = unserialize($configs->getConfigValue('br.contract_above_signatures'))['nl'];
+        // $above_sign = unserialize($configs->getConfigValue('br.contract_above_signatures'))['nl'];
+        $above_sign = unserialize($configs->getConfigValue('br.contract_above_signatures'))[$this->lang];
+
 
         // TODO: Make this possible in both English and Dutch
-        $above_sign_middle = unserialize($configs->getConfigValue('br.contract_above_signatures_middle'))['nl'];
+        // $above_sign_middle = unserialize($configs->getConfigValue('br.contract_above_signatures_middle'))['nl'];
+        $above_sign_middle = unserialize($configs->getConfigValue('br.contract_above_signatures_middle'))[$this->lang];
 
         $contractText = '';
         foreach ($entries as $entry) {

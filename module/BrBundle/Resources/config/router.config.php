@@ -140,7 +140,7 @@ return array(
         'br_admin_contract' => array(
             'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/br/contract[/:action[/:id[/:signed]][/page/:page]][/]',
+                'route'       => '/admin/br/contract[/:action[/:id[/:signed]][/page/:page][/:language]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
