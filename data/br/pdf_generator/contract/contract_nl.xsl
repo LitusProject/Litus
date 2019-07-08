@@ -16,7 +16,7 @@
     <xsl:import href="../../../pdf_generator/our_union/essentials.xsl"/>
     <xsl:import href="../../../pdf_generator/our_union/simple_with_logo.xsl"/>
 
-    <xsl:import href="i18n/default.xsl"/>
+    <xsl:import href="i18n/nl.xsl"/>
 
     <xsl:output method="xml" indent="yes"/>
 

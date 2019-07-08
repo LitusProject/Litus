@@ -79,7 +79,8 @@
                             <a href="{{ url('br_admin_invoice', {"action": "view", "id": row['contract'].getOrder().getInvoice().getId()}) }}" class="invoice">Invoice</a>
                         {% endif %}
                         {% if hasAccess('br_admin_contract', 'download') %}
-                            <a href="{{ url('br_admin_contract', {"action": "download", "id": row['contract'].getId()}) }}" class="download" value="Download">Download</a>
+                            <a href="{{ url('br_admin_contract', {"action": "download", "id": row['contract'].getId(), "language":"en"}) }}" class="download" value="Download">Download EN</a>
+                            <a href="{{ url('br_admin_contract', {"action": "download", "id": row['contract'].getId(), "language":"nl"}) }}" class="download" value="Download">Download NL</a>
                         {% endif %}
                     </td>
                 </tr>

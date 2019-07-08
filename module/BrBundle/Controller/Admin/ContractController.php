@@ -327,8 +327,9 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         if ($contract === null) {
             return new ViewModel();
         }
+        $language = $this->getParam('language');
 
-        $generator = new ContractGenerator($this->getEntityManager(), $contract, $this->getTranslator()->getTranslator());
+        $generator = new ContractGenerator($this->getEntityManager(), $contract, $this->getTranslator()->getTranslator(), $language);
         $generator->generate();
 
         $file = FileUtil::getRealFilename(

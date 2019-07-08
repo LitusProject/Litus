@@ -1,6 +1,6 @@
 <xsl:stylesheet
     version="1.0"
-    xmlns:xls="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 >
 
     <xsl:template name="between_u">
