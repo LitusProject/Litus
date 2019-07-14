@@ -526,4 +526,28 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
 
         return $entity;
     }
+
+    /**
+     * @param  string            $directory
+     * @param  string|array|null $resource
+     * @return string|null
+     */
+    protected function getStoragePath($directory, $resource = null)
+    {
+        $config = $this->getConfig();
+        if (!isset($config['litus']['storage']['directories'][$directory])) {
+            return null;
+        }
+
+        $path = $config['litus']['storage']['directories'][$directory];
+        if ($resource !== null) {
+            if (is_array($resource)) {
+                $resource = implode('/', $resource);
+            }
+
+            $path .= '/' . $resource;
+        }
+
+        return $path;
+    }
 }

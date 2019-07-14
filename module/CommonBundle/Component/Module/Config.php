@@ -95,11 +95,11 @@ namespace CommonBundle\Component\Module;
  *       $settings = array(
  *           'namespace'         =>         , // required, the namespace of the bundle to configure
  *           'directory'         =>         , // required, the directory of the module.config.php file
- *           'has_entities'      => true    , // optional, whether or not the bundle has entities
- *           'has_documents'     => false   , // optional, whether or not the bundle has documents
  *           'translation_files' => array() , // optional, files in ../translations for i18n
- *           'has_views'         => true    , // optional, whether the bundle has Twig views
+ *
+ *           'has_entities'      => true    , // optional, whether or not the bundle has entities
  *           'has_layouts'       => false   , // optional, whether the bundle has Twig layouts
+ *           'has_views'         => true    , // optional, whether the bundle has Twig views
  *       );
  *       $override = array(
  *           // elements in this array are merged into the result of the method before it is returned
@@ -113,104 +113,39 @@ namespace CommonBundle\Component\Module;
 class Config
 {
     /**
-     * Loads the file in the directory if it exists, returns empty array otherwise.
-     *
-     * @param  string $directory the directory containing the file
-     * @param  string $file      the file to load
-     * @return mixed
+     * @return array
      */
-    private static function load($directory, $file)
+    public static function create(array $settings, array $override = array())
     {
-        $file = $directory . '/' . $file;
-        if (file_exists($file)) {
-            return include $file;
-        } else {
-            return array();
-        }
-    }
-
-    private static function createTranslationConfig(array $settings)
-    {
-        if (!array_key_exists('translation_files', $settings)) {
-            return array();
-        }
-
-        $translationFiles = array();
         $directory = $settings['directory'];
-        foreach ($settings['translation_files'] as $translationFile) {
-            $translationFiles[] = array(
-                'type'     => 'phparray',
-                'base_dir' => $directory . '/../translations',
-                'pattern'  => $translationFile . '.%s.php',
-            );
-        }
+        $routerConfig = self::load($directory, 'router.config.php');
 
-        return $translationFiles;
-    }
-
-    private static function createDoctrineConfig(array $settings)
-    {
-        $doctrine = array();
-        $directory = $settings['directory'];
-        $namespace = $settings['namespace'];
-
-        // include entities by default
-        if (!array_key_exists('has_entities', $settings) || $settings['has_entities']) {
-            $doctrine['orm_default'] = array(
-                'drivers' => array(
-                    $namespace . '\Entity' => 'orm_annotation_driver',
+        return array_merge_recursive(
+            array(
+                'router' => array(
+                    'routes' => array_key_exists('routes', $routerConfig) ? $routerConfig['routes'] : array(),
                 ),
-            );
-            $doctrine['orm_annotation_driver'] = array(
-                'paths' => array(
-                    $namespace => $directory . '/../../Entity',
+                'controllers' => array(
+                    'invokables' => array_key_exists('controllers', $routerConfig) ? $routerConfig['controllers'] : array(),
                 ),
-            );
-        }
-
-        // don't include documents by default
-        if (array_key_exists('has_documents', $settings) && $settings['has_documents']) {
-            $doctrine['odm_default'] = array(
-                'drivers' => array(
-                    $namespace . '\Document' => 'odm_annotation_driver',
+                'translator' => array(
+                    'translation_file_patterns' => self::createTranslationConfig($settings),
                 ),
-            );
-            $doctrine['odm_annotation_driver'] = array(
-                'paths' => array(
-                    $namespace => $directory . '/../../Document',
+                'view_manager' => self::createViewManagerConfig($settings),
+
+                'assetic_configuration' => self::createAsseticConfig($settings),
+                'doctrine' => array(
+                    'driver' => self::createDoctrineConfig($settings),
                 ),
-            );
-        }
 
-        return $doctrine;
-    }
-
-    private static function createViewManagerConfig(array $settings)
-    {
-        // include view by default
-        $hasView = !array_key_exists('has_views', $settings) || $settings['has_views'];
-
-        // don't include layout by default
-        $hasLayout = array_key_exists('has_layouts', $settings) && $settings['has_layouts'];
-
-        if (!$hasView && !$hasLayout) {
-            return array();
-        }
-
-        $directory = $settings['directory'];
-        $namespace = $settings['namespace'];
-        $bundleName = str_replace('bundle', '', strtolower($namespace));
-
-        $templatePathStack = array();
-        if ($hasLayout) {
-            $templatePathStack[$bundleName . '_layout'] = $directory . '/../layouts';
-        }
-        if ($hasView) {
-            $templatePathStack[$bundleName . '_view'] = $directory . '/../views';
-        }
-
-        return array(
-            'template_path_stack' => $templatePathStack,
+                'litus' => array(
+                    'admin'   => self::load($directory, 'admin.config.php'),
+                    'console' => self::load($directory, 'console.config.php'),
+                    'install' => self::createInstallConfig($settings),
+                    'storage' => self::load($directory, 'storage.config.php'),
+                ),
+            ),
+            $override
         );
     }
 
@@ -266,43 +201,91 @@ class Config
         );
     }
 
-    /**
-     *
-     * @return array
-     */
-    public static function create(array $settings, array $override = array())
+    private static function createDoctrineConfig(array $settings)
     {
+        $doctrine = array();
         $directory = $settings['directory'];
-        $routerConfig = self::load($directory, 'router.config.php');
+        $namespace = $settings['namespace'];
 
-        return array_merge_recursive(
-            array(
-                'router' => array(
-                    'routes' => array_key_exists('routes', $routerConfig) ? $routerConfig['routes'] : array(),
+        // include entities by default
+        if (!array_key_exists('has_entities', $settings) || $settings['has_entities']) {
+            $doctrine['orm_default'] = array(
+                'drivers' => array(
+                    $namespace . '\Entity' => 'orm_annotation_driver',
                 ),
-                'controllers' => array(
-                    'invokables' => array_key_exists('controllers', $routerConfig) ? $routerConfig['controllers'] : array(),
+            );
+            $doctrine['orm_annotation_driver'] = array(
+                'paths' => array(
+                    $namespace => $directory . '/../../Entity',
                 ),
+            );
+        }
 
-                'translator' => array(
-                    'translation_file_patterns' => self::createTranslationConfig($settings),
-                ),
+        return $doctrine;
+    }
 
-                'doctrine' => array(
-                    'driver' => self::createDoctrineConfig($settings),
-                ),
+    private static function createTranslationConfig(array $settings)
+    {
+        if (!array_key_exists('translation_files', $settings)) {
+            return array();
+        }
 
-                'assetic_configuration' => self::createAsseticConfig($settings),
+        $translationFiles = array();
+        $directory = $settings['directory'];
+        foreach ($settings['translation_files'] as $translationFile) {
+            $translationFiles[] = array(
+                'type'     => 'phparray',
+                'base_dir' => $directory . '/../translations',
+                'pattern'  => $translationFile . '.%s.php',
+            );
+        }
 
-                'view_manager' => self::createViewManagerConfig($settings),
+        return $translationFiles;
+    }
 
-                'litus' => array(
-                    'admin'   => self::load($directory, 'admin.config.php'),
-                    'install' => self::createInstallConfig($settings),
-                    'console' => self::load($directory, 'console.config.php'),
-                ),
-            ),
-            $override
+    private static function createViewManagerConfig(array $settings)
+    {
+        // include view by default
+        $hasView = !array_key_exists('has_views', $settings) || $settings['has_views'];
+
+        // don't include layout by default
+        $hasLayout = array_key_exists('has_layouts', $settings) && $settings['has_layouts'];
+
+        if (!$hasView && !$hasLayout) {
+            return array();
+        }
+
+        $directory = $settings['directory'];
+        $namespace = $settings['namespace'];
+        $bundleName = str_replace('bundle', '', strtolower($namespace));
+
+        $templatePathStack = array();
+        if ($hasLayout) {
+            $templatePathStack[$bundleName . '_layout'] = $directory . '/../layouts';
+        }
+        if ($hasView) {
+            $templatePathStack[$bundleName . '_view'] = $directory . '/../views';
+        }
+
+        return array(
+            'template_path_stack' => $templatePathStack,
         );
+    }
+
+    /**
+     * Loads the file in the directory if it exists, returns empty array otherwise.
+     *
+     * @param  string $directory the directory containing the file
+     * @param  string $file      the file to load
+     * @return mixed
+     */
+    private static function load($directory, $file)
+    {
+        $file = $directory . '/' . $file;
+        if (file_exists($file)) {
+            return include $file;
+        } else {
+            return array();
+        }
     }
 }
