@@ -64,7 +64,7 @@
                         <td width="120">
                             <a href="{{ url('br_career_internship', {'action': 'view', 'id': internship.getId() }) }}">
                                 {% if internship.getCompany().getLogo() is not empty %}
-                                    <img width="120" src="/{{ logoPath }}/{{ internship.getCompany().getLogo() }}" alt="{{ internship.getCompany().getName() }}">
+                                    <img src="{{ url('br_company', {'action': 'logo', 'image': internship.getCompany().getLogo()}) }}" alt="{{ internship.getCompany().getName() }}" style="width: 100%; max-width: 120px;">
                                 {% else %}
                                     <center class="company-name">{{ internship.getCompany().getName() }}</center>
                                 {% endif %}

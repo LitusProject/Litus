@@ -215,22 +215,19 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             return new ViewModel();
         }
 
-        $archive = unserialize(
+        $archiveYears = unserialize(
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('br.cv_archive_years')
         );
 
-        $filePath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.file_path') . '/cv/';
-
         $archiveYearKey = '';
         $archiveYear = null;
-        foreach ($archive as $key => $year) {
-            if ($year['full_year'] == $this->getParam('academicyear')) {
-                $archiveYear = $year;
+        foreach ($archiveYears as $key => $value) {
+            if ($value['full_year'] == $this->getParam('academicyear')) {
                 $archiveYearKey = $key;
+                $archiveYear = $year;
+
                 break;
             }
         }
@@ -251,23 +248,28 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             return new ViewModel();
         }
 
+        $path = $this->getStoragePath(
+            'br_cv_books',
+            $archiveYear['file']
+        );
+
+        if (!$this->getFilesystem()->has($path)) {
+            return $this->notFoundAction();
+        }
+
         $headers = new Headers();
         $headers->addHeaders(
             array(
-                'Content-Disposition' => 'inline; filename="cv-' . $archiveYear['full_year'] . '.pdf"',
-                'Content-Type'        => 'application/octet-stream',
-                'Content-Length'      => filesize($filePath . $archiveYear['file']),
+                'Content-Disposition' => 'inline; filename="cv_book_' . $this->getParam('academicyear') . '.pdf"',
+                'Content-Type'        => $this->getFilesystem()->getMimetype($path),
+                'Content-Length'      => $this->getFilesystem()->getSize($path),
             )
         );
         $this->getResponse()->setHeaders($headers);
 
-        $handle = fopen($filePath . $archiveYear['file'], 'r');
-        $data = fread($handle, filesize($filePath . $archiveYear['file']));
-        fclose($handle);
-
         return new ViewModel(
             array(
-                'data' => $data,
+                'data' => $this->getFilesystem()->read($path),
             )
         );
     }

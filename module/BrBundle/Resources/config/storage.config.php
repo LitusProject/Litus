@@ -19,18 +19,9 @@
  */
 
 return array(
-    'corporate' => array(
-        'system'  => true,
-        'parents' => array(
-            'guest',
-        ),
-        'actions' => array(
-            'br_company' => array(
-                'logo',
-            ),
-            'br_company_logo' => array(
-                'view',
-            ),
-        ),
+    'directories' => array(
+        'br_companies_logos' => 'br/companies_logos',
+        'br_cv_books'        => 'br/cv_books',
+        'br_invoices_manual' => 'br/invoices_manual',
     ),
 );

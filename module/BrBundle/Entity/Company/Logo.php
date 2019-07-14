@@ -56,11 +56,11 @@ class Logo
     private $url;
 
     /**
-     * @var string The path to the logo
+     * @var string The name of the image
      *
      * @ORM\Column(type="string")
      */
-    private $path;
+    private $image;
 
     /**
      * @var Company The company of the logo
@@ -174,18 +174,18 @@ class Logo
     /**
      * @return string
      */
-    public function getPath()
+    public function getImage()
     {
-        return $this->path;
+        return $this->image;
     }
 
     /**
-     * @param  string $path
+     * @param  string $image
      * @return self
      */
-    public function setPath($path)
+    public function setImage($image)
     {
-        $this->path = $path;
+        $this->image = $image;
 
         return $this;
     }

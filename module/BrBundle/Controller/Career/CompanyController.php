@@ -35,13 +35,8 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
 {
     public function overviewAction()
     {
-        $logoPath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.public_logo_path');
-
         return new ViewModel(
             array(
-                'logoPath'         => $logoPath,
                 'possible_sectors' => array('all' => 'All') + Company::POSSIBLE_SECTORS,
             )
         );
@@ -53,10 +48,6 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
         if ($page === null) {
             return new ViewModel();
         }
-
-        $logoPath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.public_logo_path');
 
         $events = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Event')
@@ -72,42 +63,10 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
 
         return new ViewModel(
             array(
-                'logoPath'    => $logoPath,
                 'page'        => $page,
                 'events'      => $events,
                 'internships' => $internships,
                 'vacancies'   => $vacancies,
-            )
-        );
-    }
-
-    public function fileAction()
-    {
-        $filePath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.file_path') . '/' . $this->getParam('name');
-
-        if ($this->getParam('name') == '' || !file_exists($filePath)) {
-            return $this->notFoundAction();
-        }
-
-        $headers = new Headers();
-        $headers->addHeaders(
-            array(
-                'Content-Disposition' => 'inline; filename="' . $this->getParam('name') . '"',
-                'Content-Type'        => mime_content_type($filePath),
-                'Content-Length'      => filesize($filePath),
-            )
-        );
-        $this->getResponse()->setHeaders($headers);
-
-        $handle = fopen($filePath, 'r');
-        $data = fread($handle, filesize($filePath));
-        fclose($handle);
-
-        return new ViewModel(
-            array(
-                'data' => $data,
             )
         );
     }

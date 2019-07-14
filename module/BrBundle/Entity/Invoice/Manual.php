@@ -77,6 +77,13 @@ class Manual extends \BrBundle\Entity\Invoice
      */
     private $refund;
 
+    /**
+     * @var string The name of the file
+     *
+     * @ORM\Column(type="string", options={"default" = ""})
+     */
+    private $file;
+
     public function __construct(EntityManager $entityManager, Collaborator $person)
     {
         parent::__construct($entityManager);
@@ -231,9 +238,9 @@ class Manual extends \BrBundle\Entity\Invoice
     }
 
     /**
-     * @throws InvalidArgumentException
      * @param  string $title The title of the contract
      * @return self
+     * @throws InvalidArgumentException
      */
     public function setTitle($title)
     {
@@ -242,6 +249,25 @@ class Manual extends \BrBundle\Entity\Invoice
         }
 
         $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param  string $file
+     * @return self
+     */
+    public function setFile($file)
+    {
+        $this->file = $file;
 
         return $this;
     }

@@ -5,7 +5,7 @@
         <div class="col-sm-2">
             <div style="text-align: center">
                 {% if page.getCompany().getLogo() %}
-                    <img src="/{{ logoPath }}/{{ page.getCompany().getLogo() }}" alt="{{ page.getCompany().getName() }}" style="width: 100%; max-width: 120px">
+                    <img src="{{ url('br_companys', {'action': 'logo', 'image': page.getCompany().getLogo()}) }}" alt="{{ page.getCompany().getName() }}" style="width: 100%; max-width: 120px;">
                     <hr/>
                 {% else %}
                     <div style="height: 60px">
@@ -35,7 +35,7 @@
             <h1>{{ page.getCompany().getName() }}</h1>
             <div class="container">
                 <div class="page-header">
-                    <h2>{{translate('About')}}</h2>      
+                    <h2>{{translate('About')}}</h2>
                 </div>
                 <p>
                     {% autoescape false %}

@@ -19,7 +19,7 @@
 
             <div style="text-align: center">
                 {% if vacancy.getCompany().getLogo() %}
-                    <img src="/{{ logoPath }}/{{ vacancy.getCompany().getLogo() }}" alt="{{ vacancy.getCompany().getName() }}" style="width: 100%; max-width: 120px">
+                    <img src="{{ url('br_company', {'action': 'logo', 'image': vacancy.getCompany().getLogo()}) }}" alt="{{ vacancy.getCompany().getName() }}" style="width: 100%; max-width: 120px;">
                 {% else %}
                     <h2><center class="company-name">{{ vacancy.getCompany().getName() }}</center></h2>
                 {% endif %}

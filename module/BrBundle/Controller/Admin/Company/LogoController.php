@@ -22,6 +22,7 @@ namespace BrBundle\Controller\Admin\Company;
 
 use BrBundle\Entity\Company;
 use BrBundle\Entity\Company\Logo;
+use CommonBundle\Component\Util\File\TmpFile;
 use Imagick;
 use Zend\View\Model\ViewModel;
 
@@ -63,10 +64,6 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
 
     private function receive($file, Logo $logo)
     {
-        $filePath = 'public/' . $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.public_logo_path') . '/';
-
         $image = new Imagick($file['tmp_name']);
         $image->setImageFormat('png');
         $image->scaleImage(1000, 100, true);
@@ -97,15 +94,24 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
         $all->addImage($original);
         $all->addImage($image);
         $all->resetIterator();
+
+        $tmpFile = new TmpFile();
         $combined = $all->appendImages(true);
         $combined->setImageFormat('png');
+        $combined->writeImage($tmpFile->getFilename());
 
         do {
-            $fileName = sha1(uniqid());
-        } while (file_exists($filePath . $fileName));
-        $combined->writeImage($filePath . $fileName);
+            $image = sha1(uniqid());
+            $path = $this->getStoragePath('br_companies_logos', $image);
+        } while ($this->getFilesystem()->has($path));
 
-        $logo->setPath($fileName)
+        $stream = fopen($tmpFile->getFilename(), 'r+');
+        $this->getFilesystem()->writeStream($path, $stream);
+        if (is_resource($stream)) {
+            fclose($stream);
+        }
+
+        $logo->setImage($image)
             ->setWidth($image->getImageWidth())
             ->setHeight($image->getImageHeight());
     }
@@ -136,7 +142,6 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
                 $this->receive($formData['logo'], $logo);
 
                 $this->getEntityManager()->persist($logo);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -173,12 +178,13 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $filePath = 'public/' . $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.public_logo_path') . '/';
+        $path = $this->getPath(
+            'br_companies_logos',
+            $logo->getImage()
+        );
 
-        if (file_exists($filePath . $logo->getPath())) {
-            unlink($filePath . $logo->getPath());
+        if ($this->getFilesystem()->has($path)) {
+            $this->getFilesystem()->delete($path);
         }
 
         $this->getEntityManager()->remove($logo);

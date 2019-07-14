@@ -46,10 +46,6 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
             $this->getParam('page')
         );
 
-        $logoPath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.public_logo_path');
-
         $requests = $this->getOpenRequests($person->getCompany());
 
         $unfinishedRequestsJobs = array();
@@ -65,7 +61,6 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
             array(
                 'paginator'          => $paginator,
                 'paginationControl'  => $this->paginator()->createControl(true),
-                'logoPath'           => $logoPath,
                 'requests'           => $requests,
                 'unfinishedRequests' => $unfinishedRequestsJobs,
             )

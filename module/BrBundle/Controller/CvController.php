@@ -20,7 +20,7 @@
 
 namespace BrBundle\Controller;
 
-use BrBundle\Component\Document\Generator\Pdf\Cv as CvGenerator;
+use BrBundle\Component\Document\Generator\Pdf\Cv\Single as SingleCvGenerator;
 use BrBundle\Entity\Cv\Entry as CvEntry;
 use CommonBundle\Component\FlashMessenger\FlashMessage;
 use CommonBundle\Component\Util\File\TmpFile;
@@ -309,7 +309,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         $file = new TmpFile();
 
         $translator = $this->getTranslator();
-        $document = new CvGenerator($this->getEntityManager(), $entry, $file, $translator);
+        $document = new SingleCvGenerator($this->getEntityManager(), $entry, $file, $translator);
 
         $document->generate();
 

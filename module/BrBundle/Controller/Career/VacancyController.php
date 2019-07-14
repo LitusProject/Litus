@@ -67,15 +67,10 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
             $this->getParam('page')
         );
 
-        $logoPath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.public_logo_path');
-
         return new ViewModel(
             array(
                 'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'logoPath'          => $logoPath,
                 'vacancySearchForm' => $vacancySearchForm,
             )
         );
@@ -88,14 +83,9 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
             return new ViewModel();
         }
 
-        $logoPath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.public_logo_path');
-
         return new ViewModel(
             array(
                 'vacancy'  => $vacancy,
-                'logoPath' => $logoPath,
             )
         );
     }

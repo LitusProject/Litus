@@ -20,7 +20,7 @@
 
 namespace BrBundle\Component\Document\Generator\Pdf;
 
-use BrBundle\Entity\Invoice\Contract as ContractInvoice;
+use BrBundle\Entity\Invoice as InvoiceEntity;
 use CommonBundle\Component\Document\Generator\Pdf as PdfGenerator;
 use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Component\Util\Xml\Generator as XmlGenerator;
@@ -44,7 +44,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
     /**
      * @var string The language used for the invoice
      */
-    private $lang = 'nl';
+    private $language = 'nl';
 
     /**
      * @var String The xsl file path, relative to the br generator path, to use for each language
@@ -56,26 +56,26 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
     );
 
     /**
-     * @param \Doctrine\ORM\EntityManager       $entityManager The EntityManager instance
-     * @param \BrBundle\Entity\Invoice\Contract $invoice       The invoice for which we want to generate a PDF
-     * @param string                            $language      The language we want to generate the PDF in
+     * @param \Doctrine\ORM\EntityManager               $entityManager The EntityManager instance
+     * @param \BrBundle\Entity\Invoice                  $invoice       The invoice for which we want to generate a PDF
+     * @param \CommonBundle\Component\Util\File\TmpFile $file          The file to write to
+     * @param string                                    $language      The language we want to generate the PDF in
      */
-    public function __construct(EntityManager $entityManager, ContractInvoice $invoice, String $language = null)
+    public function __construct(EntityManager $entityManager, InvoiceEntity $invoice, TmpFile $file, $language = null)
     {
+        $filePath = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.pdf_generator_path');
+
         parent::__construct(
             $entityManager,
-            $entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('br.pdf_generator_path') . Invoice::INVOICE_XSL_PATHS[$language],
-            $entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('br.file_path') . '/invoices/'
-                . $invoice->getInvoiceNumberPrefix() . '/'
-                . $invoice->getInvoiceNumber() . '.pdf'
+            $filePath . Invoice::INVOICE_XSL_PATHS[$language],
+            $file->getFilename()
         );
+
         $this->invoice = $invoice;
         if ($language !== null) {
-            $this->lang = $language;
+            $this->language = $language;
         }
     }
 
@@ -107,7 +107,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
             $vatTypeExplanation = $configs->getConfigValue('br.invoice_vat_explanation') . ' ' . $this->invoice->getVatContext();
         }
 
-        $subEntries = unserialize($configs->getConfigValue('br.invoice_below_entries'))[$this->lang];
+        $subEntries = unserialize($configs->getConfigValue('br.invoice_below_entries'))[$this->language];
 
         $vatTypes = unserialize($configs->getConfigValue('br.vat_types'));
 

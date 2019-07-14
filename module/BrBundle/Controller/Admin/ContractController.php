@@ -27,6 +27,7 @@ use BrBundle\Entity\Invoice\Contract as ContractInvoice;
 use BrBundle\Entity\Invoice\Entry as InvoiceEntry;
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File as FileUtil;
+use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use Zend\Http\Headers;
 use Zend\View\Model\ViewModel;
@@ -328,17 +329,9 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             return new ViewModel();
         }
 
-        $generator = new ContractGenerator($this->getEntityManager(), $contract, $this->getTranslator()->getTranslator());
+        $file = new TmpFile();
+        $generator = new ContractGenerator($this->getEntityManager(), $contract, $file, $this->getTranslator()->getTranslator());
         $generator->generate();
-
-        $file = FileUtil::getRealFilename(
-            $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('br.file_path') . '/contracts/'
-                . $this->getParam('id') . '/contract.pdf'
-        );
-        $fileHandler = fopen($file, 'r');
-        $content = fread($fileHandler, filesize($file));
 
         $contractNb = $contract->getFullContractNumber($this->getEntityManager());
         $companyName = $contract->getCompany()->getName();
@@ -354,7 +347,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
         return new ViewModel(
             array(
-                'data' => $content,
+                'data' => $file->getContent(),
             )
         );
     }

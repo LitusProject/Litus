@@ -47,10 +47,6 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
             $this->getParam('page')
         );
 
-        $logoPath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.public_logo_path');
-
         $requests = $this->getOpenRequests($person->getCompany());
 
         $unfinishedRequestsJobs = array();
@@ -66,7 +62,6 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
             array(
                 'paginator'          => $paginator,
                 'paginationControl'  => $this->paginator()->createControl(true),
-                'logoPath'           => $logoPath,
                 'requests'           => $requests,
                 'unfinishedRequests' => $unfinishedRequestsJobs,
             )

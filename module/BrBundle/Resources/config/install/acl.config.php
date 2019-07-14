@@ -90,6 +90,12 @@ return array(
         'br_career_internship' => array(
             'view', 'overview',
         ),
+        'br_company' => array(
+            'logo'
+        ),
+        'br_company_logo' => array(
+            'view'
+        ),
         'br_cv_index' => array(
             'cv', 'edit', 'complete', 'delete', 'download', 'uploadProfileImage',
         ),

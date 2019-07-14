@@ -18,7 +18,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Component\Document\Generator\Pdf;
+namespace BrBundle\Component\Document\Generator\Pdf\Cv;
 
 use BrBundle\Component\Util\Cv;
 use CommonBundle\Component\Util\File\TmpFile;
@@ -29,11 +29,11 @@ use Doctrine\ORM\EntityManager;
 use Zend\Mvc\I18n\Translator;
 
 /**
- * Generates the CV Book for one academic year.
+ * Generate the CV Book for one academic year.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
+class Book extends \CommonBundle\Component\Document\Generator\Pdf
 {
     /**
      * @var AcademicYear

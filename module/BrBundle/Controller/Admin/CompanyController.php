@@ -173,55 +173,6 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    public function uploadAction()
-    {
-        if ($this->getRequest()->isPost()) {
-            $form = $this->getRequest()->getPost();
-
-            $validatorChain = new ValidatorChain();
-            $validatorChain->attach(new UploadFileValidator());
-            if ($form['type'] == 'image') {
-                $validatorChain->attach(
-                    new IsImageValidator(
-                        array('image/gif', 'image/jpeg', 'image/png')
-                    )
-                );
-            }
-
-            $file = $this->getRequest()->getFiles()['file'];
-            if ($validatorChain->isValid($file)) {
-                $filePath = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('br.file_path') . '/';
-
-                do {
-                    $fileName = sha1(uniqid());
-                } while (file_exists($filePath . $fileName));
-
-                $renameUploadFilter = new RenameUploadFilter();
-                $renameUploadFilter->setTarget($filePath . $fileName)
-                    ->filter($file);
-
-                $url = $this->url()->fromRoute(
-                    'br_career_file',
-                    array(
-                        'name' => $fileName,
-                    )
-                );
-
-                return new ViewModel(
-                    array(
-                        'result' => array(
-                            'name' => $url,
-                        ),
-                    )
-                );
-            }
-        }
-
-        return new ViewModel();
-    }
-
     public function editLogoAction()
     {
         $company = $this->getCompanyEntity();
@@ -230,10 +181,6 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         $form = $this->getForm('br_company_logo');
-
-        $filePath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.public_logo_path');
 
         if ($this->getRequest()->isPost()) {
             $form->setData(
@@ -245,18 +192,35 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
             if ($form->isValid()) {
                 $formData = $form->getData();
+
+                $tmpFile = new TmpFile();
                 $image = new Imagick($formData['logo']['tmp_name']);
                 $image->thumbnailImage(320, 320, true);
+                $image->writeImage($tmpFile->getFilename());
 
-                if ($company->getLogo() != '' || $company->getLogo() !== null) {
-                    $fileName = '/' . $company->getLogo();
-                } else {
-                    do {
-                        $fileName = '/' . sha1(uniqid());
-                    } while (file_exists($filePath . $fileName));
+                if ($company->getLogo() !== null) {
+                    $path = $this->getPath(
+                        'br_companies_logos',
+                        $company->getLogo()
+                    );
+
+                    if ($this->getFilesystem()->has($path)) {
+                        $this->getFilesystem()->delete($path);
+                    }
                 }
-                $image->writeImage('public/' . $filePath . $fileName);
-                $company->setLogo($fileName);
+
+                do {
+                    $logo = sha1(uniqid());
+                    $path = $this->getStoragePath('br_companies_logos', $logo);
+                } while ($this->getFilesystem()->has($path));
+
+                $stream = fopen($tmpFile->getFilename(), 'r+');
+                $this->getFilesystem()->writeStream($path, $stream);
+                if (is_resource($stream)) {
+                    fclose($stream);
+                }
+
+                $company->setLogo($logo);
 
                 $this->getEntityManager()->flush();
 
@@ -279,9 +243,8 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'company'  => $company,
-                'form'     => $form,
-                'logoPath' => $filePath,
+                'company' => $company,
+                'form'    => $form,
             )
         );
     }

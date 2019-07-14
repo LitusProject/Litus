@@ -48,6 +48,13 @@ class History
     private $invoice;
 
     /**
+     * @var integer The version of the invoice this entry belongs to
+     *
+     * @ORM\Column(type="integer")
+     */
+    private $version;
+
+    /**
      * @var ArrayCollection The oldest version of the two
      *
      * @ORM\OneToMany(targetEntity="BrBundle\Entity\Invoice\Entry", mappedBy="invoice", cascade={"persist"})
@@ -56,11 +63,11 @@ class History
     private $entries;
 
     /**
-     * @var integer The version of the invoice this entry belongs too.
+     * @var string The name of the file
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", nullable=true)
      */
-    private $version;
+    private $file;
 
     /**
      * @param Invoice $invoice
@@ -68,14 +75,18 @@ class History
     public function __construct(Invoice $invoice)
     {
         $this->invoice = $invoice;
+        $this->version = $invoice->getVersion();
 
+        $entries = array();
         if ($invoice->hasContract()) {
-            $this->entries = new ArrayCollection($invoice->getEntries());
-        } else {
-            $this->entries = new ArrayCollection();
+            $entries = $invoice->getEntries();
         }
 
-        $this->version = $invoice->getVersion();
+        $this->entries = new ArrayCollection($entries);
+
+        if ($invoice instanceof Manual) {
+            $this->file = $invoice->getFile();
+        }
     }
 
     /**
@@ -95,6 +106,14 @@ class History
     }
 
     /**
+     * @return integer
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
+    /**
      * @return ArrayCollection
      */
     public function getEntries()
@@ -103,10 +122,10 @@ class History
     }
 
     /**
-     * @return integer
+     * @return string
      */
-    public function getVersion()
+    public function getFile()
     {
-        return $this->version;
+        return $this->file;
     }
 }

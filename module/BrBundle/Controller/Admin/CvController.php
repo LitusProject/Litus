@@ -20,11 +20,11 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Component\Document\Generator\Pdf\CvBook as CvBookGenerator;
+use BrBundle\Component\Document\Generator\Pdf\Cv\Book as CvBookGenerator;
 use BrBundle\Entity\Cv\Entry;
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File\TmpFile;
-use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use CommonBundle\Component\Util\File\TmpFile\Csv as TmpCsvFile;
 use Zend\Http\Headers;
 use Zend\View\Model\ViewModel;
 
@@ -97,7 +97,7 @@ class CvController extends \BrBundle\Component\Controller\CvController
             ->getRepository('BrBundle\Entity\Cv\Entry')
             ->findAllByAcademicYear($this->getAcademicYear());
 
-        $file = new CsvFile();
+        $file = new TmpCsvFile();
         $heading = array('First Name', 'Last Name', 'Email', 'Address', 'Phone', 'Study');
 
         $results = array();

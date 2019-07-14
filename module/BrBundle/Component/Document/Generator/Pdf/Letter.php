@@ -33,15 +33,21 @@ class Letter extends \CommonBundle\Component\Document\Generator\Pdf
      */
     private $contract;
 
-    public function __construct(EntityManager $entityManager, ContractEntity $contract)
+    /**
+     * @param EntityManager  $entityManager The EntityManager instance
+     * @param ContractEntity $contract      The contract for which we want to generate a PDF
+     * @param TmpFile        $file          The file to write to
+     */
+    public function __construct(EntityManager $entityManager, ContractEntity $contract, TmpFile $file)
     {
+        $filePath = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.pdf_generator_path');
+
         parent::__construct(
             $entityManager,
-            $entityManager->getRepository('CommonBUndle\Entity\General\Config')
-                ->getConfigValue('br.pdf_generator_path') . '/contract/letter.xsl',
-            $entityManager->getRepository('CommonBUndle\Entity\General\Config')
-                ->getConfigValue('br.file_path') . '/contracts/'
-                . $contract->getId() . '/letter.pdf'
+            $filePath . '/contract/letter.xsl',
+            $file->getFilename()
         );
 
         $this->contract = $contract;

@@ -20,17 +20,6 @@
 
 return array(
     'routes' => array(
-        'br_install' => array(
-            'type'    => 'Zend\Router\Http\Segment',
-            'options' => array(
-                'route'    => '/admin/br/install/br[/]',
-                'defaults' => array(
-                    'controller' => 'br_install',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
-
         'br_admin_collaborator' => array(
             'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
@@ -46,7 +35,6 @@ return array(
                 ),
             ),
         ),
-
         'br_admin_company' => array(
             'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
@@ -353,19 +341,36 @@ return array(
                 ),
             ),
         ),
-        'br_career_file' => array(
+
+        'br_company' => array(
             'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
-                'route'       => '/career/company/file/:name[/]',
+                'route'       => '/br/company[/:action[/image/:image]][/]',
                 'constraints' => array(
-                    'name' => '[a-zA-Z0-9_-]*',
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'image'  => '[a-zA-Z0-9]*',
                 ),
                 'defaults' => array(
-                    'controller' => 'br_career_company',
-                    'action'     => 'file',
+                    'controller' => 'br_company',
+                    'action'     => 'view',
                 ),
             ),
         ),
+        'br_company_logo' => array(
+            'type'    => 'Zend\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/br/company/logo[/:action[/image/:image]][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'image'  => '[a-zA-Z0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_company_logo',
+                    'action'     => 'view',
+                ),
+            ),
+        ),
+
         'br_corporate_index' => array(
             'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
@@ -510,6 +515,9 @@ return array(
         'br_admin_invoice'      => 'BrBundle\Controller\Admin\InvoiceController',
         'br_admin_overview'     => 'BrBundle\Controller\Admin\OverviewController',
         'br_admin_request'      => 'BrBundle\Controller\Admin\RequestController',
+
+        'br_company'      => 'BrBundle\Controller\CompanyController',
+        'br_company_logo' => 'BrBundle\Controller\Company\LogoController',
 
         'br_corporate_index'      => 'BrBundle\Controller\Corporate\IndexController',
         'br_corporate_cv'         => 'BrBundle\Controller\Corporate\CvController',

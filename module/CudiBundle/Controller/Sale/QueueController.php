@@ -49,10 +49,6 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
             ->getRepository('BrBundle\Entity\Company\Logo')
             ->findAllByType('cudi');
 
-        $logoPath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.public_logo_path');
-
         $payDesks = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\PayDesk')
             ->findBy(array(), array('name' => 'ASC'));
@@ -76,8 +72,7 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
                 'enableCollecting' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.enable_collect_scanning'),
-                'logos'    => $logos,
-                'logoPath' => $logoPath,
+                'logos' => $logos,
             )
         );
     }

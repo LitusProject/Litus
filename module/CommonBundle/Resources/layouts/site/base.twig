@@ -98,7 +98,7 @@
                                 {% endif %}
 
                                 <li>
-                                    <a href="{{ url("common_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
+                                    <a href="{{ url('common_auth', {'action': 'logout', 'language': language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -176,7 +176,7 @@
                                     <li class="divider"></li>
                                 {% endif %}
                                 <li>
-                                    <a href="{{ url("common_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
+                                    <a href="{{ url('common_auth', {'action': 'logout', 'language': language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
                                 </li>
                             </ul>
                         </li>
@@ -204,7 +204,7 @@
                                 {% if banner.getUrl() != '' %}
                                     <a href="{{ banner.getUrl() }}">
                                         {% endif %}
-                                            <img src="/banner/view/image{{ banner.getImage() }}" alt="">
+                                            <img src="{{ url('banner', {'action': 'view', 'image': banner.getImage()}) }}" alt="{{ banner.getName() }}">
                                         {% if banner.getUrl() != '' %}
                                     </a>
                                 {% endif %}

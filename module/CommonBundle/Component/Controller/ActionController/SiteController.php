@@ -70,10 +70,6 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('BrBundle\Entity\Company\Logo')
             ->findAllByType('homepage');
 
-        $result->logoPath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.public_logo_path');
-
         if ($this->getRequest() instanceof HttpRequest) {
             $result->showCookieBanner = !isset($this->getRequest()->getCookie()->cookie_permission);
         } else {

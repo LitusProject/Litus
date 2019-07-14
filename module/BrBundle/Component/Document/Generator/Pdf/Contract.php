@@ -27,7 +27,7 @@ use CommonBundle\Component\Util\Xml\Generator as XmlGenerator;
 use CommonBundle\Component\Util\Xml\Node as XmlNode;
 use Doctrine\ORM\EntityManager;
 use IntlDateFormatter;
-use Zend\I18n\Translator\TranslatorInterface;
+use Zend\Mvc\I18n\Translator;
 
 /**
  * Generate a PDF for a contract.
@@ -45,29 +45,30 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
     private $contract;
 
     /**
-     * @var TranslatorInterface
+     * @var Translator
      */
     private $translator;
 
     /**
-     * @param EntityManager       $entityManager The EntityManager instance
-     * @param ContractEntity      $contract      The contract for which we want to generate a PDF
-     * @param TranslatorInterface $translator
+     * @param EntityManager  $entityManager The EntityManager instance
+     * @param ContractEntity $contract      The contract for which we want to generate a PDF
+     * @param TmpFile        $file          The file to write to
+     * @param Translator     $translator    The translator
      */
-    public function __construct(EntityManager $entityManager, ContractEntity $contract, TranslatorInterface $translator)
+    public function __construct(EntityManager $entityManager, ContractEntity $contract, TmpFile $file, Translator $translator)
     {
+        $filePath = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.pdf_generator_path');
+
         parent::__construct(
             $entityManager,
-            $entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('br.pdf_generator_path') . '/contract/contract.xsl',
-            $entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('br.file_path') . '/contracts/'
-                . $contract->getId() . '/contract.pdf'
+            $filePath . '/contract/contract.xsl',
+            $file->getFilename()
         );
-        $this->translator = $translator;
+
         $this->contract = $contract;
+        $this->translator = $translator;
     }
 
     /**
