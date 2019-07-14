@@ -27,6 +27,7 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAware\AuthenticationTrai
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\CacheTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\ConfigTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\FlySystemTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\FormFactoryTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\MailTransportTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\RedisClientTrait;
@@ -67,6 +68,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     use CacheTrait;
     use ConfigTrait;
     use DoctrineTrait;
+    use FlySystemTrait;
     use FormFactoryTrait;
     use MailTransportTrait;
     use RedisClientTrait;

@@ -18,19 +18,26 @@
  * @license http://litus.cc/LICENSE
  */
 
-if (!file_exists(__DIR__ . '/../redis.config.php')) {
-    throw new RuntimeException(
-        'The proxy configuration file (' . (__DIR__ . '/../proxy.config.php') . ') was not found'
-    );
-}
+namespace CommonBundle\Component\ServiceManager\ServiceLocatorAware;
 
-$proxyConfig = include __DIR__ . '/../proxy.config.php';
-if ($proxyConfig['use_proxy'] && !isset($proxyConfig['trusted_proxies'])) {
-    throw new RuntimeException(
-        'The proxy configuration did not specify any trusted proxies'
-    );
-}
+/**
+ * A trait to define some common methods for classes with a ServiceLocator.
+ *
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ */
 
-return array(
-    'proxy' => $proxyConfig,
-);
+trait FlySystemTrait
+{
+    /**
+     * @return \League\Flysystem\Filesystem
+     */
+    public function getFilesystem()
+    {
+        return $this->getServiceLocator()->get('filesystem');
+    }
+
+    /**
+     * @return \Zend\ServiceManager\ServiceLocatorInterface
+     */
+    abstract public function getServiceLocator();
+}

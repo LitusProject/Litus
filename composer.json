@@ -39,6 +39,7 @@
         "clue/redis-react": "^2.2",
         "colinmollenhour/credis": "^1.10",
         "erusev/parsedown": "^1.7",
+        "league/flysystem-aws-s3-v3": "^1.0",
         "league/uri-parser": "^1.4",
         "misterion/ko-process": "^0.5",
         "mtdowling/cron-expression": "^1.2",
@@ -49,6 +50,7 @@
         "symfony/console": "^3.4",
         "symfony/event-dispatcher": "^3.4",
         "widmogrod/zf2-assetic-module": "^2.4",
+        "wshafer/psr11-flysystem": "^2.1",
 
         "twitter/bootstrap": "^3.3"
     },

@@ -18,19 +18,21 @@
  * @license http://litus.cc/LICENSE
  */
 
-if (!file_exists(__DIR__ . '/../redis.config.php')) {
+if (!file_exists(__DIR__ . '/../flysystem.config.php')) {
     throw new RuntimeException(
-        'The proxy configuration file (' . (__DIR__ . '/../proxy.config.php') . ') was not found'
+        'The FlySystem configuration file (' . (__DIR__ . '/../flysystem.config.php') . ') was not found'
     );
 }
 
-$proxyConfig = include __DIR__ . '/../proxy.config.php';
-if ($proxyConfig['use_proxy'] && !isset($proxyConfig['trusted_proxies'])) {
-    throw new RuntimeException(
-        'The proxy configuration did not specify any trusted proxies'
-    );
-}
+$flysystemConfig = include __DIR__ . '/../flysystem.config.php';
 
 return array(
-    'proxy' => $proxyConfig,
+    'flysystem' => array(
+        'adaptors' => array(
+            'default' => array(
+                'type'    => $flysystemConfig['type'],
+                'options' => $flysystemConfig['options'],
+            ),
+        ),
+    ),
 );

@@ -35,6 +35,7 @@ $modules = array(
     'DoctrineModule',
     'DoctrineORMModule',
     'DoctrineMongoODMModule',
+    'WShafer\PSR11FlySystem',
     'ZendTwig',
 
     'ApiBundle',

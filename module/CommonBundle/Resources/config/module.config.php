@@ -48,8 +48,10 @@ use CommonBundle\Component\Session\ServiceManager\SessionManagerFactory;
 use CommonBundle\Component\Validator\ServiceManager\AbstractValidatorFactory;
 use CommonBundle\Component\View\Helper\ServiceManager\AbstractHelperFactory;
 use Doctrine\Common\Cache\RedisCache as DoctrineRedisCache;
+use League\Flysystem\Filesystem;
 use Raven_Client;
 use Symfony\Component\Console\Application as ConsoleApplication;
+use WShafer\PSR11FlySystem\FlySystemFactory;
 use Zend\Cache\Storage\StorageInterface as CacheStorage;
 use Zend\Form\ElementFactory;
 use Zend\I18n\Translator\Resources as TranslatorResources;
@@ -80,33 +82,34 @@ return Config::create(
                 DoctrineCredentialAdapter::class => DoctrineCredentialAdapterFactory::class,
                 DoctrineRedisCache::class        => DoctrineRedisCacheFactory::class,
                 DoctrineService::class           => DoctrineServiceFactory::class,
+                Filesystem::class                => FlySystemFactory::class,
                 FormFactory::class               => FormFactoryFactory::class,
                 HydratorPluginManager::class     => HydratorPluginManagerFactory::class,
+                ManagerInterface::class          => SessionManagerFactory::class,
                 Raven_Client::class              => RavenClientFactory::class,
                 RedisClient::class               => RedisClientFactory::class,
                 Sendmail::class                  => InvokableFactory::class,
                 SentryClient::class              => SentryClientFactory::class,
                 SessionContainer::class          => SessionContainerFactory::class,
-                ManagerInterface::class          => SessionManagerFactory::class,
             ),
             'abstract_factories' => array(
                 AbstractInstallerFactory::class,
             ),
             'aliases' => array(
-                'authentication'                    => Authentication::class,
                 'authentication_credential_adapter' => DoctrineCredentialAdapter::class,
                 'authentication_service'            => DoctrineService::class,
+                'authentication'                    => Authentication::class,
                 'cache'                             => CacheStorage::class,
                 'console'                           => ConsoleApplication::class,
-                'redis_client'                      => RedisClient::class,
+                'doctrine.cache.redis'              => DoctrineRedisCache::class,
+                'filesystem'                        => Filesystem::class,
                 'hydrator_plugin_manager'           => HydratorPluginManager::class,
                 'mail_transport'                    => Sendmail::class,
                 'raven_client'                      => Raven_Client::class,
+                'redis_client'                      => RedisClient::class,
                 'sentry_client'                     => SentryClient::class,
                 'session_container'                 => SessionContainer::class,
                 'translator'                        => MvcTranslator::class,
-
-                'doctrine.cache.redis' => DoctrineRedisCache::class,
             ),
         ),
 
@@ -118,12 +121,12 @@ return Config::create(
                 Component\Controller\Plugin\Url::class            => InvokableFactory::class,
             ),
             'aliases' => array(
-                'hasaccess'      => Component\Controller\Plugin\HasAccess::class,
-                'hasAccess'      => Component\Controller\Plugin\HasAccess::class,
-                'HasAccess'      => Component\Controller\Plugin\HasAccess::class,
                 'flashmessenger' => Component\Controller\Plugin\FlashMessenger::class,
                 'flashMessenger' => Component\Controller\Plugin\FlashMessenger::class,
                 'FlashMessenger' => Component\Controller\Plugin\FlashMessenger::class,
+                'hasaccess'      => Component\Controller\Plugin\HasAccess::class,
+                'hasAccess'      => Component\Controller\Plugin\HasAccess::class,
+                'HasAccess'      => Component\Controller\Plugin\HasAccess::class,
                 'paginator'      => Component\Controller\Plugin\Paginator::class,
                 'Paginator'      => Component\Controller\Plugin\Paginator::class,
                 'url'            => Component\Controller\Plugin\Url::class,
