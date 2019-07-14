@@ -34,27 +34,28 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
 {
     public function viewAction()
     {
-        $imagePath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('banner.image_path') . '/' . $this->getParam('image');
+        $path = $this->getStoragePath(
+            'banner_banners_images',
+            $this->getParam('image')
+        );
+
+        if (!$this->getFilesystem()->has($path)) {
+            return $this->notFoundAction();
+        }
 
         $headers = new Headers();
         $headers->addHeaders(
             array(
                 'Content-Disposition' => 'inline; filename="' . $this->getParam('image') . '"',
-                'Content-Type'        => mime_content_type($imagePath),
-                'Content-Length'      => filesize($imagePath),
+                'Content-Type'        => $this->getFilesystem()->getMimetype($path),
+                'Content-Length'      => $this->getFilesystem()->getSize($path),
             )
         );
         $this->getResponse()->setHeaders($headers);
 
-        $handle = fopen($imagePath, 'r');
-        $data = fread($handle, filesize($imagePath));
-        fclose($handle);
-
         return new ViewModel(
             array(
-                'data' => $data,
+                'data' => $this->getFilesystem()->read($path),
             )
         );
     }

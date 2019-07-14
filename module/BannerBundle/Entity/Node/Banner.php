@@ -53,9 +53,9 @@ class Banner extends \CommonBundle\Entity\Node
     private $endDate;
 
     /**
-     * @var string The location of the image
+     * @var string The name of the image
      *
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string")
      */
     private $image;
 

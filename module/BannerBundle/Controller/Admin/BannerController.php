@@ -95,28 +95,28 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
 
     private function receive($file, Banner $banner)
     {
-        $filePath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('banner.image_path');
-
         do {
-            $fileName = '/' . sha1(uniqid());
-        } while (file_exists($filePath . $fileName));
+            $image = sha1(uniqid());
+            $path = $this->getStoragePath('banner_banners_images', $image);
+        } while ($this->getFilesystem()->has($path));
 
-        rename($file['tmp_name'], $filePath . $fileName);
+        $stream = fopen($file['tmp_name'], 'r+');
+        $this->getFilesystem()->writeStream($path, $stream);
+        if (is_resource($stream)) {
+            fclose($stream);
+        }
 
-        $banner->setImage($fileName);
+        $banner->setImage($image);
     }
 
     public function uploadAction()
     {
         $this->initAjax();
 
-        $isNew = !($banner = $this->getBannerEntity(false));
+        $form = $this->getForm('banner_banner_add');
 
-        if ($isNew) {
-            $form = $this->getForm('banner_banner_add');
-        } else {
+        $banner = $this->getEntityById('BannerBundle\Entity\Node\Banner');
+        if ($banner !== null) {
             $form = $this->getForm('banner_banner_edit', $banner);
         }
 
@@ -131,7 +131,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
             if ($form->isValid()) {
                 $formData = $form->getData();
 
-                if ($isNew) {
+                if ($banner === null) {
                     $banner = $form->hydrateObject();
 
                     $this->receive($formData['file'], $banner);
@@ -154,8 +154,17 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                             ),
                         )
                     );
-                } elseif (!$isNew) {
+                } else {
                     if (isset($formData['file'])) {
+                        $path = $this->getStoragePath(
+                            'banner_banners_images',
+                            $banner->getImage()
+                        );
+
+                        if ($this->getFilesystem()->has($path)) {
+                            $this->getFilesystem()->delete($path);
+                        }
+
                         $this->receive($formData['file'], $banner);
                     }
 
@@ -208,6 +217,10 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
             return new ViewModel();
         }
 
+        $this->getFilesystem()->delete(
+            Banner::getImagePath($banner->getImage())
+        );
+
         $this->getEntityManager()->remove($banner);
         $this->getEntityManager()->flush();
 
@@ -221,27 +234,24 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
     }
 
     /**
-     * @param  boolean $redirect
      * @return Banner|null
      */
-    private function getBannerEntity($redirect = true)
+    private function getBannerEntity()
     {
         $banner = $this->getEntityById('BannerBundle\Entity\Node\Banner');
 
         if (!($banner instanceof Banner)) {
-            if ($redirect) {
-                $this->flashMessenger()->error(
-                    'Error',
-                    'No baner was found!'
-                );
+            $this->flashMessenger()->error(
+                'Error',
+                'No banner was found!'
+            );
 
-                $this->redirect()->toRoute(
-                    'banner_admin_banner',
-                    array(
-                        'action' => 'manage',
-                    )
-                );
-            }
+            $this->redirect()->toRoute(
+                'banner_admin_banner',
+                array(
+                    'action' => 'manage',
+                )
+            );
 
             return;
         }
