@@ -193,23 +193,29 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     private function receive($file, Event $event)
     {
-        $filePath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('calendar.poster_path');
+        if ($event->getPoster() !== null) {
+            $path = $this->getPath(
+                'calendar_events_posters',
+                $event->getPoster()
+            );
 
-        $image = new Imagick($file['tmp_name']);
-
-        if ($event->getPoster() != '' || $event->getPoster() !== null) {
-            $fileName = '/' . $event->getPoster();
-        } else {
-            do {
-                $fileName = '/' . sha1(uniqid());
-            } while (file_exists($filePath . $fileName));
+            if ($this->getFilesystem()->has($path)) {
+                $this->getFilesystem()->delete($path);
+            }
         }
 
-        $image->writeImage($filePath . $fileName);
+        do {
+            $poster = sha1(uniqid());
+            $path = $this->getStoragePath('calendar_events_posters', $poster);
+        } while ($this->getFilesystem()->has($path));
 
-        $event->setPoster($fileName);
+        $stream = fopen($file['tmp_name'], 'r+');
+        $this->getFilesystem()->writeStream($path, $stream);
+        if (is_resource($stream)) {
+            fclose($stream);
+        }
+
+        $event->setPoster($poster);
     }
 
     public function uploadAction()
@@ -277,25 +283,28 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             return new ViewModel();
         }
 
-        $filePath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('calendar.poster_path') . '/';
+        $path = $this->getStoragePath(
+            'calendar_events_posters',
+            $event->getPoster()
+        );
+
+        if (!$this->getFilesystem()->has($path)) {
+            return $this->notFoundAction();
+        }
 
         $headers = new Headers();
         $headers->addHeaders(
             array(
-                'Content-Type' => mime_content_type($filePath . $event->getPoster()),
+                'Content-Disposition' => 'inline; filename="' . $event->getPoster() . '"',
+                'Content-Type'        => $this->getFilesystem()->getMimetype($path),
+                'Content-Length'      => $this->getFilesystem()->getSize($path),
             )
         );
         $this->getResponse()->setHeaders($headers);
 
-        $handle = fopen($filePath . $event->getPoster(), 'r');
-        $data = fread($handle, filesize($filePath . $event->getPoster()));
-        fclose($handle);
-
         return new ViewModel(
             array(
-                'data' => $data,
+                'data' => $this->getFilesystem()->read($path),
             )
         );
     }

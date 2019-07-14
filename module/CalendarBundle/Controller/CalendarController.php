@@ -73,28 +73,31 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     {
         $event = $this->getEventEntityByPoster();
         if ($event === null) {
-            return $this->notFoundAction();
+            return new ViewModel();
         }
 
-        $filePath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('calendar.poster_path') . '/';
+        $path = $this->getStoragePath(
+            'calendar_events_posters',
+            $event->getPoster()
+        );
+
+        if (!$this->getFilesystem()->has($path)) {
+            return $this->notFoundAction();
+        }
 
         $headers = new Headers();
         $headers->addHeaders(
             array(
-                'Content-Type' => mime_content_type($filePath . $event->getPoster()),
+                'Content-Disposition' => 'inline; filename="' . $event->getPoster() . '"',
+                'Content-Type'        => $this->getFilesystem()->getMimetype($path),
+                'Content-Length'      => $this->getFilesystem()->getSize($path),
             )
         );
         $this->getResponse()->setHeaders($headers);
 
-        $handle = fopen($filePath . $event->getPoster(), 'r');
-        $data = fread($handle, filesize($filePath . $event->getPoster()));
-        fclose($handle);
-
         return new ViewModel(
             array(
-                'data' => $data,
+                'data' => $this->getFilesystem()->read($path),
             )
         );
     }

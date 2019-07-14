@@ -194,23 +194,29 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
     private function receive($file, Event $event)
     {
-        $filePath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('calendar.poster_path');
+        if ($event->getPoster() !== null) {
+            $path = $this->getPath(
+                'calendar_events_posters',
+                $event->getPoster()
+            );
 
-        $image = new Imagick($file['tmp_name']);
-
-        if ($event->getEvent()->getPoster() != '' || $event->getEvent()->getPoster() !== null) {
-            $fileName = '/' . $event->getEvent()->getPoster();
-        } else {
-            do {
-                $fileName = '/' . sha1(uniqid());
-            } while (file_exists($filePath . $fileName));
+            if ($this->getFilesystem()->has($path)) {
+                $this->getFilesystem()->delete($path);
+            }
         }
 
-        $image->writeImage($filePath . $fileName);
+        do {
+            $poster = sha1(uniqid());
+            $path = $this->getStoragePath('calendar_events_posters', $poster);
+        } while ($this->getFilesystem()->has($path));
 
-        $event->getEvent()->setPoster($fileName);
+        $stream = fopen($file['tmp_name'], 'r+');
+        $this->getFilesystem()->writeStream($path, $stream);
+        if (is_resource($stream)) {
+            fclose($stream);
+        }
+
+        $event->setPoster($poster);
     }
 
     public function uploadAction()

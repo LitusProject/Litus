@@ -20,6 +20,7 @@
 
 namespace ApiBundle\Controller;
 
+use CommonBundle\Component\Util\File\TmpFile;
 use Imagick;
 use Zend\View\Model\ViewModel;
 
@@ -68,27 +69,18 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
             return $this->error(404, 'No poster key was provided with the request');
         }
 
-        $filePath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('calendar.poster_path') . '/';
+        $path = $this->getStoragePath(
+            'calendar_events_posters',
+            $poster
+        );
 
-        if (!file_exists($filePath . $poster)) {
-            return $this->error(404, 'The poster file does not exist');
+        if (!$this->getFilesystem()->has($path)) {
+            return $this->error(404, 'The requested poster does not exist');
         }
-
-        if (!file_exists($filePath . $poster . '_thumb')) {
-            $image = new Imagick($filePath . $poster);
-            $image->scaleImage(1136, 1136, true);
-            $image->writeImage($filePath . $poster . '_thumb');
-        }
-
-        $handle = fopen($filePath . $poster . '_thumb', 'r');
-        $data = base64_encode(fread($handle, filesize($filePath . $poster . '_thumb')));
-        fclose($handle);
 
         $result = array(
-            'mime_type' => mime_content_type($filePath . $poster),
-            'data'      => $data,
+            'mime_type' => $this->getFilesystem()->getMimetype($path),
+            'data'      => base64_encode($this->getFilesystem()->read($path)),
         );
 
         return new ViewModel(
@@ -103,11 +95,6 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
      */
     private function getPoster()
     {
-        $poster = $this->getRequest()->getQuery('poster');
-        if (is_string($poster)) {
-            return $poster;
-        }
-
-        return null;
+        return $this->getRequest()->getQuery('poster');
     }
 }
