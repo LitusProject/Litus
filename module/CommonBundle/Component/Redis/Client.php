@@ -59,6 +59,31 @@ class Client
     }
 
     /**
+     * @param  string $name
+     * @return string
+     */
+    public function getChannelName($name)
+    {
+        if ($this->config['channel_prefix'] === null) {
+            return $name;
+        }
+
+        return $this->config['channel_prefix'] . '_' . $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getChannelPrefix()
+    {
+        if ($this->config['channel_prefix'] === null) {
+            return null;
+        }
+
+        return $this->config['channel_prefix'] . '_';
+    }
+
+    /**
      * @param  mixed $value
      * @return string
      */
