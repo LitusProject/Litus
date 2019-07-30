@@ -362,13 +362,13 @@ class Study
                 if (isset($this->profCache[$identification])) {
                     $prof = $this->profCache[$identification];
                 } else {
-                    $prof = new Academic();
-                    $this->getEntityManager()->persist($prof);
-
                     $info = $this->getProfInfo($identification);
                     if ($info === null) {
                         continue;
                     }
+
+                    $prof = new Academic();
+                    $this->getEntityManager()->persist($prof);
 
                     $prof->setUsername($identification)
                         ->setRoles(
