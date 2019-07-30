@@ -78,6 +78,8 @@
                 },
                 message: function (e, data) {
                     $('#syllabus_update_error, #syllabus_update_success').addClass('hide');
+                    if (!$('#updateSyllabus').is(':visible'))
+                        $('#updateSyllabus').permanentModal('open');
 
                     if (data.status.type != 'progress')
                         $('#updateSyllabus .status').html(data.status ? translateStatus(data.status) : '');
