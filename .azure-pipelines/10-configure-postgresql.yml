@@ -1,0 +1,10 @@
+parameters:
+  user: 'litus'
+  password: 'huQeyU8te3aXusaz'
+  database: 'litus'
+
+steps:
+  - script: |
+      sudo -u postgres psql -c "CREATE USER ${{ parameters.user }} WITH LOGIN SUPERUSER PASSWORD '${{ parameters.password }}';"
+      sudo -u postgres psql -c 'CREATE DATABASE ${{ parameters.database }} WITH OWNER ${{ parameters.user }};'
+    displayName: 'Configure PostgreSQL'

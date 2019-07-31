@@ -7,7 +7,3 @@ parameters:
         - module/
         - public/
         - shibboleth/
-
-    includes:
-        - vendor/phpstan/phpstan-doctrine/extension.neon
-

@@ -1,0 +1,14 @@
+steps:
+  - task: CacheBeta@0
+    inputs:
+      key: composer | $(Agent.OS) | $(Build.SourcesDirectory)/composer.lock
+      path: $(Build.SourcesDirectory)/vendor
+      cacheHitVar: CACHE_RESTORED
+    displayName: 'Cache Composer Packages'
+
+  - script: rm -rf vendor/bin
+    condition: eq(variables.CACHE_RESTORED, 'true')
+    displayName: 'Remove Composer Binaries'
+
+  - script: composer install --no-interaction --no-progress --prefer-dist
+    displayName: 'Run Composer'

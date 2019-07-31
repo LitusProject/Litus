@@ -1,0 +1,22 @@
+parameters:
+  reportFile: $(Pipeline.Workspace)/phpstan.xml
+
+steps:
+  - task: CacheBeta@0
+    inputs:
+      key: phpstan | $(Agent.OS) | $(Build.SourceVersion)
+      path: $(Build.SourcesDirectory)/phpstan
+      restoreKeys: |
+        phpstan | $(Agent.OS)
+        phpstan
+    displayName: 'Cache PHPStan State'
+
+  - script: vendor/bin/phpstan analyze --error-format=junit --no-interaction --no-progress > ${{ parameters.reportFile }}
+    displayName: 'Run PHPStan'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: JUnit
+      testResultsFiles: ${{ parameters.reportFile }}
+      failTaskOnFailedTests: true
+      testRunTitle: PHPStan
