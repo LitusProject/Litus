@@ -1,4 +1,4 @@
-Litus [![Build Status](https://travis-ci.org/LitusProject/Litus.svg?branch=master)](https://travis-ci.org/LitusProject/Litus)
+Litus [![Build Status](https://dev.azure.com/LitusProject/Litus/_apis/build/status/LitusProject.Litus?branchName=master)](https://dev.azure.com/LitusProject/Litus/_build/latest?definitionId=4&branchName=master)
 =====
 
 <p align="center">
