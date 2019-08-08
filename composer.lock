@@ -1,23 +1,23 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
     "content-hash": "e48835d0971547f4778cb01a849e7108",
     "packages": [
         {
             "name": "alcaeus/mongo-php-adapter",
-            "version": "1.1.8",
+            "version": "1.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alcaeus/mongo-php-adapter.git",
-                "reference": "b230e1fabd7e4c5e284619029c667fdfb53b3e3d"
+                "reference": "93b81ebef1b3a4d3ceb72f13a35057fe08a5048f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alcaeus/mongo-php-adapter/zipball/b230e1fabd7e4c5e284619029c667fdfb53b3e3d",
-                "reference": "b230e1fabd7e4c5e284619029c667fdfb53b3e3d",
+                "url": "https://api.github.com/repos/alcaeus/mongo-php-adapter/zipball/93b81ebef1b3a4d3ceb72f13a35057fe08a5048f",
+                "reference": "93b81ebef1b3a4d3ceb72f13a35057fe08a5048f",
                 "shasum": ""
             },
             "require": {
@@ -70,7 +70,7 @@
                 "database",
                 "mongodb"
             ],
-            "time": "2019-07-14T21:02:07+00:00"
+            "time": "2019-08-07T05:52:28+00:00"
         },
         {
             "name": "cboden/ratchet",
@@ -2376,8 +2376,8 @@
                 },
                 {
                     "name": "Krusty Kode",
-                    "email": "kaiwa@20minutemail.com",
-                    "role": "maintainer"
+                    "role": "maintainer",
+                    "email": "kaiwa@20minutemail.com"
                 }
             ],
             "description": "YUI Compressor packaged for composer. JavaScript and CSS minification.",
@@ -3497,7 +3497,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "backendtea@gmail.com"
+                    "email": "BackEndTea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
@@ -4010,19 +4010,19 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
+                    "role": "Lead Developer",
                     "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
+                    "homepage": "http://fabien.potencier.org"
                 },
                 {
                     "name": "Armin Ronacher",
-                    "email": "armin.ronacher@active-4.com",
-                    "role": "Project Founder"
+                    "role": "Project Founder",
+                    "email": "armin.ronacher@active-4.com"
                 },
                 {
                     "name": "Twig Team",
-                    "homepage": "https://twig.symfony.com/contributors",
-                    "role": "Contributors"
+                    "role": "Contributors",
+                    "homepage": "https://twig.symfony.com/contributors"
                 }
             ],
             "description": "Twig, the flexible, fast, and secure template language for PHP",
@@ -4215,9 +4215,9 @@
             "authors": [
                 {
                     "name": "Gabriel Habryn",
+                    "role": "Developer",
                     "email": "widmogrod@gmail.com",
-                    "homepage": "https://github.com/widmogrod/zf2-assetic-module",
-                    "role": "Developer"
+                    "homepage": "https://github.com/widmogrod/zf2-assetic-module"
                 }
             ],
             "description": "Zend Framework 2 module that provides complete integration of Assetic library",
@@ -6652,7 +6652,7 @@
                     "homepage": "https://nette.org/contributors"
                 }
             ],
-            "description": "🔍 Nette Finder: find files and directories with an intuitive API.",
+            "description": "? Nette Finder: find files and directories with an intuitive API.",
             "homepage": "https://nette.org",
             "keywords": [
                 "filesystem",
@@ -6712,7 +6712,7 @@
                     "homepage": "https://nette.org/contributors"
                 }
             ],
-            "description": "🍸 Nette NEON: encodes and decodes NEON file format.",
+            "description": "? Nette NEON: encodes and decodes NEON file format.",
             "homepage": "http://ne-on.org",
             "keywords": [
                 "export",
