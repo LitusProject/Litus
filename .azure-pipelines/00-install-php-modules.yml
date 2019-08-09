@@ -2,5 +2,7 @@ parameters:
   phpVersion: ''
 
 steps:
-  - script: sudo apt install php-imagick php-mailparse php-mongodb php-redis php${{ parameters.phpVersion }}-intl php${{ parameters.phpVersion }}-curl php${{ parameters.phpVersion }}-pgsql php${{ parameters.phpVersion }}-soap php${{ parameters.phpVersion }}-xml php${{ parameters.phpVersion }}-zip
+  - script: |
+      sudo apt update
+      sudo apt install php-imagick php-mailparse php-mongodb php-redis php${{ parameters.phpVersion }}-intl php${{ parameters.phpVersion }}-curl php${{ parameters.phpVersion }}-pgsql php${{ parameters.phpVersion }}-soap php${{ parameters.phpVersion }}-xml php${{ parameters.phpVersion }}-zip
     displayName: 'Install PHP Modules'
