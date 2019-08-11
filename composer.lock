@@ -2752,8 +2752,8 @@
             "authors": [
                 {
                     "name": "Chris Boden",
-                    "email": "cboden@gmail.com",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "cboden@gmail.com"
                 }
             ],
             "description": "RFC6455 WebSocket protocol handler",
@@ -6473,16 +6473,16 @@
         },
         {
             "name": "mavimo/phpstan-junit",
-            "version": "0.2.1",
+            "version": "0.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mavimo/phpstan-junit.git",
-                "reference": "3110a468b344d2080c81508dba122be26b6e76ee"
+                "reference": "185f8ad4400ad70e5c51ebc626a5de224cbf0a9d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mavimo/phpstan-junit/zipball/3110a468b344d2080c81508dba122be26b6e76ee",
-                "reference": "3110a468b344d2080c81508dba122be26b6e76ee",
+                "url": "https://api.github.com/repos/mavimo/phpstan-junit/zipball/185f8ad4400ad70e5c51ebc626a5de224cbf0a9d",
+                "reference": "185f8ad4400ad70e5c51ebc626a5de224cbf0a9d",
                 "shasum": ""
             },
             "require": {
@@ -6517,7 +6517,7 @@
                 }
             ],
             "description": "PHPStan JUnit error reporter",
-            "time": "2019-07-06T11:34:39+00:00"
+            "time": "2019-08-11T18:16:29+00:00"
         },
         {
             "name": "nette/bootstrap",
