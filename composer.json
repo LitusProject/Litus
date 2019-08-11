@@ -60,7 +60,7 @@
         "phpstan/extension-installer": "^1.0",
         "mavimo/phpstan-junit": "^0.2",
         "squizlabs/php_codesniffer": "^3.3",
-        "slevomat/coding-standard": "^4.8"
+        "slevomat/coding-standard": "^5.0"
     },
     "provide": {
         "ext-mongo": "^1.5"
