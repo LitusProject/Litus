@@ -288,7 +288,7 @@ class Order
      */
     public function hasContract()
     {
-        return ($this->getContract() !== null ? true : false);
+        return ($this->getContract() !== null);
     }
 
     /**

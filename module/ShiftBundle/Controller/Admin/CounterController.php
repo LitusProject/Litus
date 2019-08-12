@@ -174,7 +174,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         foreach ($shift->getVolunteers() as $volunteer) {
             if ($volunteer->getPerson() == $person) {
                 $volunteer->setPayed(
-                    $this->getParam('payed') == 'true' ? true : false
+                    $this->getParam('payed') == 'true'
                 );
             }
         }

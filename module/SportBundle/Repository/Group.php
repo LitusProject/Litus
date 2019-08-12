@@ -44,7 +44,7 @@ class Group extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        $count = ($count % 6);
+        $count %= 6;
 
         // avoid second query if not needed
         if ($count === 0) {

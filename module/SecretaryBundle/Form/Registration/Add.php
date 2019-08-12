@@ -296,7 +296,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'type'       => count($memberShipArticles) == 0 && $isicMembership == '0' ? 'hidden' : 'checkbox',
                         'name'       => 'become_member',
                         'label'      => 'I want to become a member of the student association in academic year { year } (&euro; { price })',
-                        'value'      => count($memberShipArticles) == 0 && $isicMembership == '0' ? false : true,
+                        'value'      => count($memberShipArticles) != 0 || $isicMembership != '0',
                         'attributes' => array(
                             'id'       => 'become_member',
                             'disabled' => $registrationEnabled != 1,

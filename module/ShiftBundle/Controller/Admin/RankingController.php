@@ -57,7 +57,7 @@ class RankingController extends \CommonBundle\Component\Controller\ActionControl
 
         for ($i = 0; isset($rankingCriteria[$i]); $i++) {
             foreach ($volunteers as $volunteer) {
-                $isLast = isset($rankingCriteria[$i + 1]) ? false : true;
+                $isLast = !isset($rankingCriteria[$i + 1]);
                 if ($volunteer['shiftCount'] >= $rankingCriteria[$i]['limit'] && ($isLast || $volunteer['shiftCount'] < $rankingCriteria[$i + 1]['limit'])) {
                     $person = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\User\Person\Academic')

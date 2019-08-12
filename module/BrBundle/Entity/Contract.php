@@ -396,7 +396,7 @@ class Contract
      */
     public function setDirty($dirty = true)
     {
-        $this->dirty = ($dirty ? true : false);
+        $this->dirty = $dirty;
 
         return $this;
     }
