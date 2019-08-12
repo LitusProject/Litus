@@ -15,7 +15,7 @@ steps:
   - script: mkdir -p ${{ parameters.cacheDirectory }}
     displayName: 'Create Cache Directory'
 
-  - script: vendor/bin/phpcs -n -q --cache=${{ parameters.cacheDirectory }}/cache.json --report=junit --report-file=${{ parameters.reportFile }} --runtime-set ignore_warnings_on_exit true
+  - script: vendor/bin/phpcs -n -q --cache=${{ parameters.cacheDirectory }}/cache.json --report=junit --report-file=${{ parameters.reportFile }} --runtime-set ignore_errors_on_exit true --runtime-set ignore_warnings_on_exit true
     displayName: 'Run PHP_CodeSniffer'
 
   - task: PublishTestResults@2
