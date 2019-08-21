@@ -257,7 +257,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             $this->getEntityManager()->persist($invoice);
         }
 
-        $contract->setSigned($this->getParam('signed') == 'true' ? true : false);
+        $contract->setSigned($this->getParam('signed') == 'true');
 
         $this->getEntityManager()->flush();
 

@@ -59,6 +59,11 @@ class Study
     private $redisClient;
 
     /**
+     * @var string
+     */
+    private $redisChannel;
+
+    /**
      * @var \CommonBundle\Entity\General\AcademicYear
      */
     private $academicYear;
@@ -82,12 +87,14 @@ class Study
      * @param EntityManager      $entityManager
      * @param TransportInterface $mailTransport
      * @param RedisClient        $redisClient
+     * @param string             $redisChannel
      */
-    public function __construct(EntityManager $entityManager, TransportInterface $mailTransport, RedisClient $redisClient)
+    public function __construct(EntityManager $entityManager, TransportInterface $mailTransport, RedisClient $redisClient, $redisChannel)
     {
         $this->entityManager = $entityManager;
         $this->mailTransport = $mailTransport;
         $this->redisClient = $redisClient;
+        $this->redisChannel = $redisChannel;
 
         $this->academicYear = $this->getAcademicYear();
         $this->activeCombinations = array();
@@ -355,13 +362,13 @@ class Study
                 if (isset($this->profCache[$identification])) {
                     $prof = $this->profCache[$identification];
                 } else {
-                    $prof = new Academic();
-                    $this->getEntityManager()->persist($prof);
-
                     $info = $this->getProfInfo($identification);
                     if ($info === null) {
                         continue;
                     }
+
+                    $prof = new Academic();
+                    $this->getEntityManager()->persist($prof);
 
                     $prof->setUsername($identification)
                         ->setRoles(
@@ -585,7 +592,7 @@ class Study
     private function callback($type, $extra = null)
     {
         $this->redisClient->publish(
-            'syllabus_parser_study',
+            $this->redisClient->getChannelName($this->redisChannel),
             $this->redisClient->serialize(
                 array(
                     'type'  => $type,

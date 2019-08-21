@@ -1,0 +1,8 @@
+parameters:
+  lessVersion: ''
+
+steps:
+  - script: |
+      sudo npm install -g less@${{ parameters.lessVersion }}
+      lessc --version
+    displayName: 'Install Less ${{ parameters.lessVersion }}'

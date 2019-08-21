@@ -1,0 +1,69 @@
+variables:
+  lessVersion: 1.7.5
+  pgsqlVersion: 11
+  phpVersion: 7.3
+
+jobs:
+  - job: phpcs
+    displayName: 'PHP_CodeSniffer'
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+      - template: .azure-pipelines/00-install-php-modules.yml
+        parameters:
+          phpVersion: $(phpVersion)
+
+      - template: .azure-pipelines/10-configure-php.yml
+        parameters:
+          phpVersion: $(phpVersion)
+
+      - template: .azure-pipelines/20-configure-litus.yml
+      - template: .azure-pipelines/30-run-composer.yml
+      - template: .azure-pipelines/40-run-phpcs.yml
+
+  - job: phpstan
+    displayName: 'PHPStan'
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+      - template: .azure-pipelines/00-install-php-modules.yml
+        parameters:
+          phpVersion: $(phpVersion)
+
+      - template: .azure-pipelines/10-configure-php.yml
+        parameters:
+          phpVersion: $(phpVersion)
+
+      - template: .azure-pipelines/20-configure-litus.yml
+      - template: .azure-pipelines/30-run-composer.yml
+      - template: .azure-pipelines/40-run-phpstan.yml
+
+  - job: litus
+    displayName: 'Litus'
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+      - template: .azure-pipelines/00-install-less.yml
+        parameters:
+          lessVersion: $(lessVersion)
+
+      - template: .azure-pipelines/00-install-php-modules.yml
+        parameters:
+          phpVersion: $(phpVersion)
+
+      - template: .azure-pipelines/00-install-postgresql.yml
+        parameters:
+          pgsqlVersion: $(pgsqlVersion)
+
+      - template: .azure-pipelines/00-install-redis.yml
+
+      - template: .azure-pipelines/10-configure-php.yml
+        parameters:
+          phpVersion: $(phpVersion)
+
+      - template: .azure-pipelines/10-configure-postgresql.yml
+      - template: .azure-pipelines/20-configure-litus.yml
+      - template: .azure-pipelines/30-run-composer.yml
+      - template: .azure-pipelines/50-run-doctrine.yml
+      - template: .azure-pipelines/50-run-install-all.yml
+      - template: .azure-pipelines/50-run-update.yml

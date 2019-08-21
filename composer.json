@@ -47,7 +47,7 @@
         "packagelist/yuicompressor-bin": "^2.4",
         "sentry/sentry": "^1.9",
         "symfony/console": "^3.4",
-        "symfony/event-dispatcher": "^3.4",
+        "symfony/event-dispatcher": "^4.3",
         "widmogrod/zf2-assetic-module": "^2.4",
 
         "twitter/bootstrap": "^3.3"
@@ -57,8 +57,10 @@
 
         "phpstan/phpstan": "^0.11",
         "phpstan/phpstan-doctrine": "^0.11",
+        "phpstan/extension-installer": "^1.0",
+        "mavimo/phpstan-junit": "^0.2",
         "squizlabs/php_codesniffer": "^3.3",
-        "slevomat/coding-standard": "^4.8"
+        "slevomat/coding-standard": "^5.0"
     },
     "provide": {
         "ext-mongo": "^1.5"

@@ -1,0 +1,8 @@
+steps:
+  - script: |
+      sudo add-apt-repository -y ppa:chris-lea/redis-server
+      sudo apt update
+      sudo apt install redis-server
+      sudo service redis-server start
+      redis-server --version
+    displayName: 'Install Redis'

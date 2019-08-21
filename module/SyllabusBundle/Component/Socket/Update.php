@@ -157,7 +157,9 @@ class Update extends \CommonBundle\Component\Socket\Socket implements RedisMessa
                 }
 
                 $this->redisClient->subscribe(
-                    self::REDIS_CHANNELS[StudyParser::class]
+                    $this->getRedisClient()->getChannelName(
+                        self::REDIS_CHANNELS[StudyParser::class]
+                    )
                 );
 
                 $this->getProcessManager()->fork(
@@ -168,7 +170,8 @@ class Update extends \CommonBundle\Component\Socket\Socket implements RedisMessa
                         $studyParser = new StudyParser(
                             $this->getEntityManager(),
                             $this->getMailTransport(),
-                            $this->getRedisClient()
+                            $this->getRedisClient(),
+                            self::REDIS_CHANNELS[StudyParser::class]
                         );
                         $studyParser->update();
                     }
@@ -204,6 +207,13 @@ class Update extends \CommonBundle\Component\Socket\Socket implements RedisMessa
      */
     public function onRedisMessage($channel, $payload)
     {
+        if ($this->getRedisClient()->getChannelPrefix() !== null) {
+            $channel = substr(
+                $channel,
+                strlen($this->getRedisClient()->getChannelPrefix())
+            );
+        }
+
         switch ($channel) {
             case self::REDIS_CHANNELS[StudyParser::class]:
                 $payload = $this->getRedisClient()->unserialize($payload);

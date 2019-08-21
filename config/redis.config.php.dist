@@ -31,11 +31,12 @@ if (extension_loaded('redis')) {
 }
 
 return array(
-    'host'          => '127.0.0.1',
-    'port'          => 6379,
-    'timeout'       => null,
-    'persistent_id' => '',
-    'password'      => '',
-    'database'      => 0,
-    'lib_options'   => $libOptions,
+    'host'           => '127.0.0.1',
+    'port'           => 6379,
+    'timeout'        => null,
+    'persistent_id'  => '',
+    'password'       => '',
+    'database'       => 0,
+    'channel_prefix' => null,
+    'lib_options'    => $libOptions,
 );

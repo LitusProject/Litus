@@ -117,7 +117,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
         if ($this->getRequest()->isPost()) {
             $isPost = true;
-            $isInternalPost = isset($form->getData()['internal']) && $form->getData()['internal'] ? true : false;
+            $isInternalPost = isset($form->getData()['internal']) && $form->getData()['internal'];
         }
 
         return new ViewModel(
@@ -211,7 +211,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 'form'           => $form,
                 'subject'        => $subject,
                 'isPost'         => $this->getRequest()->isPost(),
-                'isInternalPost' => isset($formData) && $formData['internal'] ? true : false,
+                'isInternalPost' => isset($formData) && $formData['internal'],
             )
         );
     }
@@ -281,7 +281,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         }
                     }
 
-                    $duplicate->setIsDraft($formData['draft'] ? true : false);
+                    $duplicate->setIsDraft($formData['draft']);
 
                     if ($edited) {
                         $this->getEntityManager()->persist($duplicate);
@@ -291,7 +291,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 } else {
                     $form->hydrateObject($article);
 
-                    $article->setIsDraft($formData['draft'] ? true : false);
+                    $article->setIsDraft($formData['draft']);
                 }
 
                 $this->getEntityManager()->flush();
