@@ -212,7 +212,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
             $totalVat += -$discount * $discountTax / 100;
         }
 
-        $totalExclusive -= $discount + $autoDiscount;
+        $totalExclusive += -$discount + $autoDiscount;
 
         $total = $totalExclusive + $totalVat;
 
