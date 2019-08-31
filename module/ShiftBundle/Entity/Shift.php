@@ -183,11 +183,18 @@ class Shift
     private $editRoles;
 
     /**
-     * @var integer The amount of coins this shift is worth
+     * @var integer The amount of coins this shift is worth. These coins can be payed out to volunteers.
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"default" : 0})
      */
     private $reward;
+
+    /**
+     * @var integer The amount of points linked to this shift. Points are non-payable fictive rewards used in the ranking.
+     *
+     * @ORM\Column(type="integer", options={"default" : 0})
+     */
+    private $points;
 
     /**
      * @var boolean Wheter or not the reward is payed at the event itself
@@ -734,6 +741,25 @@ class Shift
     public function getReward()
     {
         return $this->reward;
+    }
+
+    /**
+     * @param  integer $points
+     * @return self
+     */
+    public function setPoints($points)
+    {
+        $this->points = $points;
+
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getPoints()
+    {
+        return $this->points;
     }
 
     /**

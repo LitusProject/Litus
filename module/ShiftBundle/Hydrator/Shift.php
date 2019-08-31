@@ -31,6 +31,7 @@ class Shift extends \CommonBundle\Component\Hydrator\Hydrator
         'name',
         'description',
         'reward',
+        'points', 
         'handled_on_event',
         'ticket_needed',
     );

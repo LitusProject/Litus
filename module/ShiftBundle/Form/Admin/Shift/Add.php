@@ -204,25 +204,80 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        $this->add(
-            array(
-                'type'       => 'select',
-                'name'       => 'reward',
-                'label'      => 'Reward coins',
-                'required'   => true,
-                'attributes' => array(
-                    'options' => $this->createRewardArray(),
-                ),
-            )
-        );
+        $rewards_enabled = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shift.rewards_enabled');
 
-        $this->add(
-            array(
-                'type'  => 'checkbox',
-                'name'  => 'handled_on_event',
-                'label' => 'Payed at event',
-            )
-        );
+        if ($rewards_enabled) {
+            $this->add(
+                array(
+                    'type'       => 'select',
+                    'name'       => 'reward',
+                    'label'      => 'Reward coins',
+                    'required'   => true,
+                    'attributes' => array(
+                        'options' => $this->createRewardArray(),
+                    ),
+                )
+            );
+
+            $this->add(
+                array(
+                    'type'  => 'checkbox',
+                    'name'  => 'handled_on_event',
+                    'label' => 'Payed at event',
+                )
+            );
+        } else {
+            $this->add(
+                array(
+                    'type'       => 'hidden',
+                    'name'       => 'reward',
+                    'attributes' => array(
+                        'value' => 0,
+                    ),
+                )
+            );
+
+            $this->add(
+                array(
+                    'type'       => 'hidden',
+                    'name'       => 'handled_on_event',
+                    'attributes' => array(
+                        'value' => '0',
+                    ),
+                )
+            );
+        }
+
+        $points_enabled = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shift.points_enabled');
+
+        if ($points_enabled) {
+            $this->add(
+                array(
+                    'type'       => 'select',
+                    'name'       => 'points',
+                    'label'      => 'Points',
+                    'required'   => true,
+                    'attributes' => array(
+                        'options' => $this->createRewardArray(),
+                    ),
+                )
+            );
+
+        } else {
+            $this->add(
+                array(
+                    'type'       => 'hidden',
+                    'name'       => 'points',
+                    'attributes' => array(
+                        'value' => 0,
+                    ),
+                )
+            );
+        }
 
         $this->add(
             array(

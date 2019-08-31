@@ -12,16 +12,20 @@
     </div>
     <br>
 
-    {% if unPayedShifts and not praesidium %}
+    {% if unPayedShifts and not praesidium and not points_enabled %}
         {{ translate('You have currently <span class="label label-info">%unPayedShifts%</span> unpayed shift(s). You can get your reward from the vice-preases at \'blok 6\'. This reward will expire at the end of this academic year.')|replace({'%unPayedShifts%': unPayedShifts})|raw }}
         <br>
     {% endif %}
-    {% if not praesidium and ranking %}
+    {% if ranking %}
         {{ translate('Your current shiftranking is <span class="label label-success">%ranking%</span>.')|replace({'%ranking%': ranking|capitalize})|raw }}
         <br>
     {% endif %}
-    {% if not praesidium and shiftsToNextRanking%}
-        {{ translate('You need to do <span class="label label-success">%shiftsToNextRanking%</span> more shift(s) to get the next ranking.')|replace({'%shiftsToNextRanking%': shiftsToNextRanking})|raw }}
+    {% if stepsToNextRanking %}
+        {% if points_enabled %}
+            {{ translate('You need to collect <span class="label label-success">%pointsToNextRanking%</span> more point(s) to get the next ranking.')|replace({'%pointsToNextRanking%': stepsToNextRanking})|raw }}
+        {% else %}
+            {{ translate('You need to do <span class="label label-success">%shiftsToNextRanking%</span> more shift(s) to get the next ranking.')|replace({'%shiftsToNextRanking%': stepsToNextRanking})|raw }}
+        {% endif %}
         <br>
     {% endif %}
 
@@ -43,7 +47,7 @@
         <h2>{{ translate('Shifts')}}:</h2>
     {% endif %}
 
-    {% if shiftsAsVolunteer%}
+    {% if shiftsAsVolunteer %}
         <div style="text-align: justify;">
             {{ translate('You have done your last shift on %lastShift%.')|replace({'%lastShift%': lastShift}) }}
         </div>

@@ -149,20 +149,24 @@ class Volunteer extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
      * @param  string       $countInBlocksOfTwoHours | Either 'f' or not
      * @return \Doctrine\ORM\Query
      */
-    public function findAllCountsByAcademicYearQuery(AcademicYear $academicYear, $hoursPerBlock)
+    public function findAllCountsByAcademicYearQuery(AcademicYear $academicYear, $hoursPerBlock, $points)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
 
-        if ($hoursPerBlock > 0) {
-            $select = 'SUM(CASE WHEN s.endDate < DATE_ADD(s.startDate,'. strval($hoursPerBlock * 2) .',\'hour\') THEN 1 ';
-            $block = 2;
-            while ($block < 24 / $hoursPerBlock) {
-                $select .= 'WHEN (DATE_ADD(s.startDate,'. strval($hoursPerBlock * $block) .',\'hour\') <= s.endDate AND s.endDate < DATE_ADD(s.startDate,'. strval($hoursPerBlock * $block + $hoursPerBlock) .',\'hour\')) THEN '. strval($block) .' ';
-                $block += 1;
-            }
-            $select .= 'ELSE '. strval($block) .' END) shiftCount';
+        if ($points) {
+            $select = 'SUM(s.points) resultCount';
         } else {
-            $select = 'count(p.id) shiftCount';
+            if ($hoursPerBlock > 0) {
+                $select = 'SUM(CASE WHEN s.endDate < DATE_ADD(s.startDate,'. strval($hoursPerBlock * 2) .',\'hour\') THEN 1 ';
+                $block = 2;
+                while ($block < 24 / $hoursPerBlock) {
+                    $select .= 'WHEN (DATE_ADD(s.startDate,'. strval($hoursPerBlock * $block) .',\'hour\') <= s.endDate AND s.endDate < DATE_ADD(s.startDate,'. strval($hoursPerBlock * $block + $hoursPerBlock) .',\'hour\')) THEN '. strval($block) .' ';
+                    $block += 1;
+                }
+                $select .= 'ELSE '. strval($block) .' END) resultCount';
+            } else {
+                $select = 'count(p.id) resultCount';
+            }
         }
 
         return $query->select('p.id', $select)
@@ -177,7 +181,7 @@ class Volunteer extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 )
             )
             ->groupBy('p.id')
-            ->orderBy('shiftCount')
+            ->orderBy('resultCount')
             ->setParameter('startAcademicYear', $academicYear->getStartDate())
             ->setParameter('endAcademicYear', $academicYear->getEndDate())
             ->setParameter('now', new DateTime())

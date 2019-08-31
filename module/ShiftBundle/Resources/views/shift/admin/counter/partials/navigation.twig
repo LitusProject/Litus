@@ -1,6 +1,5 @@
 <header id="controller_header">
-    <div class="title"><span class="counter">Counter</span></div>
-
+    <div class="title"><span class="counter">Counter - incl. volunteer and responsible shifts</span></div>
     <nav id="controller_nav">
         {% if hasAccess('shift_admin_shift_counter', 'export') %}
             <li><a {% if 'export' == getParam('action') %} class="active" {% endif %} href="{{ url('shift_admin_shift_counter', {"action": "export"}) }}">Export</a></li>

@@ -81,4 +81,7 @@ return array(
     'I have read this'                                                                                                                                                                                                  => 'I have read this',
     'I do not agree'                                                                                                                                                                                                    => 'I do not agree',
     'I did not read this'                                                                                                                                                                                               => 'I did not read this',
+    'You need to collect <span class="label label-success">%pointsToNextRanking%</span> more point(s) to get the next ranking.' => 'You need to collect <span class="label label-success">%pointsToNextRanking%</span> more point(s) to get the next ranking.',
+    'Points' => 'Points',
+    'Point' => 'Point',
 );

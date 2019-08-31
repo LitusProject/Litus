@@ -44,10 +44,19 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
+        $rewards_enabled = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('shift.rewards_enabled');
+        $points_enabled = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('shift.points_enabled');
+
         return new ViewModel(
             array(
                 'activeAcademicYear' => $academicYear,
                 'academicYears'      => $academicYears,
+                'rewards_enabled'   => $rewards_enabled,
+                'points_enabled'   => $points_enabled,
             )
         );
     }
@@ -132,6 +141,13 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findAllByPersonAsVolunteer($person, $this->getAcademicYear());
 
+        $rewards_enabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shift.rewards_enabled');
+        $points_enabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shift.points_enabled');
+
         $payed = array();
         foreach ($asVolunteer as $shift) {
             foreach ($shift->getVolunteers() as $volunteer) {
@@ -143,10 +159,12 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'person'        => $person->getId(),
-                'asResponsible' => $asResponsible,
-                'asVolunteer'   => $asVolunteer,
-                'payed'         => $payed,
+                'person'            => $person->getId(),
+                'asResponsible'     => $asResponsible,
+                'asVolunteer'       => $asVolunteer,
+                'payed'             => $payed,
+                'rewards_enabled'   => $rewards_enabled,
+                'points_enabled'    => $points_enabled,
             )
         );
     }
@@ -262,10 +280,12 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
                 ->getRepository('ShiftBundle\Entity\Shift')
                 ->countAllByPerson($person, $academicYear);
 
+
             $asVolunteer = $this->getEntityManager()
                 ->getRepository('ShiftBundle\Entity\Shift')
                 ->findAllByPersonAsVolunteer($person, $academicYear);
             $unpayed = 0;
+            $pointsCount = 0;
             foreach ($asVolunteer as $shift) {
                 foreach ($shift->getVolunteers() as $volunteer) {
                     if ($volunteer->getPerson() == $person) {
@@ -274,6 +294,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
                         }
                     }
                 }
+                $pointsCount = $pointsCount + $shift->getPoints();
             }
 
             $item = (object) array();
@@ -281,6 +302,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             $item->universityIdentification = $person->getUniversityIdentification();
             $item->name = $person->getFullName();
             $item->unpayed = $unpayed;
+            $item->points = $pointsCount;
             $item->count = $shiftCount;
             $result[] = $item;
         }
