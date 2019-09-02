@@ -105,7 +105,6 @@
                     {% do dateSearchForm.prepare() %}
                     {% autoescape false %}
                         {{ form().openTag(dateSearchForm) }}
-                        {{ formElement(dateSearchForm.get('csrf')) }}
 
                         <div class="form-group">
                             <div class="input-group">
@@ -128,7 +127,6 @@
                     {% do eventSearchForm.prepare() %}
                     {% autoescape false %}
                         {{ form().openTag(eventSearchForm) }}
-                        {{ formElement(eventSearchForm.get('csrf')) }}
 
                         <div class="form-group">
                             <div class="input-group">
@@ -151,7 +149,6 @@
                     {% do unitSearchForm.prepare() %}
                     {% autoescape false %}
                         {{ form().openTag(unitSearchForm) }}
-                        {{ formElement(unitSearchForm.get('csrf')) }}
 
                         <div class="form-group">
                             <div class="input-group">
@@ -415,12 +412,18 @@
                                 <dl>
                                     <dt>{{ translate('Name') }}</dt>
                                     <dd>{{ shift.getName() }}</dd>
-                                    <dt>{{ translate('Reward') }}</dt>
-                                    <dd>{{ shift.getReward() }} {{ translate('Coins') }}
-                                        {% if shift.getHandledOnEvent() %}
-                                            {{ translate('on the event')}}
-                                        {% endif %}
-                                    </dd>
+                                    {% if shift.getReward() > 0 %}
+                                        <dt>{{ translate('Reward') }}</dt>
+                                        <dd>{{ shift.getReward() }} {{ translate('Coins') }}
+                                            {% if shift.getHandledOnEvent() %}
+                                                {{ translate('on the event')}}
+                                            {% endif %}
+                                        </dd>
+                                    {% endif %}
+                                    {% if shift.getPoints() > 0 %}
+                                        <dt>{{ translate('Points') }}</dt>
+                                        <dd>{{ shift.getPoints() }} {{ translate('Points') }}</dd>
+                                    {% endif %}
                                     <dt>{{ translate('Start') }}</dt>
                                     <dd>{{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }}</dd>
                                     <dt>{{ translate('End') }}</dt>

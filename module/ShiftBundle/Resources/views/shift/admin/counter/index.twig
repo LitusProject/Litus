@@ -43,8 +43,13 @@
                 <tr>
                     <th width="200px">University Identification</th>
                     <th>Name</th>
-                    <th width="120px">Payout</th>
-                    <th width="120px">Count</th>
+                    {% if rewards_enabled %}
+                        <th width="60px">Payout</th>
+                    {% endif %}
+                    {% if points_enabled %}
+                        <th width="60px">Points</th>
+                    {% endif %}
+                    <th width="120px"># Shifts</th>
                     <th width="70px">Actions</th>
                 </tr>
             </table>
@@ -67,11 +72,16 @@
                         $('#shift_counter_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
                         row.append('<td>' + this.universityIdentification + '</td>')
                             .append('<td>' + this.name + '</td>')
-                            .append('<td>' + this.unpayed + '</td>')
+                            {% if rewards_enabled %}
+                                .append('<td>' + this.unpayed + '</td>')
+                            {% endif %}
+                            {% if points_enabled %}
+                                .append('<td>' + this.points + '</td>')
+                            {% endif %}
                             .append('<td>' + this.count + '</td>')
                             .append(actions = $('<td>', {'class': 'actions'}));
 
-                        {% if hasAccess('shift_admin_shift_counter', 'payout') %}
+                        {% if hasAccess('shift_admin_shift_counter', 'payout') and rewards_enabled  %}
                             actions.append('<a href="#" data-person="' + this.id + '" class="edit payout">Payout</a>');
                         {% endif %}
 

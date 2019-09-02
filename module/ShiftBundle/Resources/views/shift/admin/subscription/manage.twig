@@ -21,6 +21,8 @@
         <h1>Shift</h1>
 
         <p>Title: <b>{{ shift.getName() }}</b></p>
+        <p>Start: <b>{{ shift.getStartDate().format('d/m/Y H:i') }}</b></p>
+        <p>End: <b>{{ shift.getEndDate().format('d/m/Y H:i') }}</b></p>
 
         {% if shift.canBeEditedBy(authenticatedPerson) or hasAccess('shift_admin_shift_subscription', 'superadd') %}
         {% import 'admin/partials/form.twig' as forms %}

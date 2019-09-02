@@ -68,8 +68,13 @@
                     <th>Event</th>
                     <th>Start</th>
                     <th>End</th>
-                    <th width="60px">Reward</th>
-                    <th width="45px">Payed</th>
+                    {% if rewards_enabled %}
+                        <th width="60px">Reward</th>
+                        <th width="45px">Payed</th>
+                    {% endif %}
+                    {% if points_enabled %}
+                        <th width="60px">Points</th>
+                    {% endif %}
                     <th width="70px">Actions</th>
                 </tr>
             </thead>
@@ -81,10 +86,15 @@
                         <td>{{ shift.getEvent().getTitle(language) }}</td>
                         <td>{{ shift.getStartDate().format('d/m/Y H:i') }}</td>
                         <td>{{ shift.getEndDate().format('d/m/Y H:i') }}</td>
-                        <td>{{ shift.getReward() }}</td>
-                        <td style="text-align: center;">
-                            {% if shift.getHandledOnEvent() == false %}<input type="checkbox" id="{{ shift.getId() }}" {% if payed[shift.getId()] %}checked="checked"{% endif %} />{% else %}event{% endif %}
-                        </td>
+                        {% if rewards_enabled %}
+                            <td>{{ shift.getReward() }}</td>
+                            <td style="text-align: center;">
+                                {% if shift.getHandledOnEvent() == false %}<input type="checkbox" id="{{ shift.getId() }}" {% if payed[shift.getId()] %}checked="checked"{% endif %} />{% else %}event{% endif %}
+                            </td>
+                        {% endif %}
+                        {% if points_enabled %}
+                            <td>{{ shift.getPoints() }}</td>
+                        {% endif %}
                         <td>
                             {% if hasAccess('shift_admin_shift', 'delete') %}
                                 <a href="#" data-id="{{ shift.getId() }}" data-name="{{ shift.getName() }}" class="delete">Delete</a>

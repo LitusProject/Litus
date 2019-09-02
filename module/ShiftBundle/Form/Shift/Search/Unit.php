@@ -50,6 +50,8 @@ class Unit extends \CommonBundle\Component\Form\Bootstrap\Form
                 ),
             )
         );
+
+        $this->remove('csrf');
     }
 
     private function createUnitsArray()

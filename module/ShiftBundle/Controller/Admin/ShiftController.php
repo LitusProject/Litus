@@ -141,6 +141,11 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $formData = $this->getRequest()->getPost();
             $volunteersBefore = $shift->getVolunteers();
             $responsiblesBefore = $shift->getResponsibles();
+
+            if ($formData['handled_on_event'] == '') {
+                $formData['handled_on_event'] = 0;
+            }
+
             $form->setData($formData);
 
             if ($form->isValid()) {

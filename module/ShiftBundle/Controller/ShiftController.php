@@ -521,7 +521,10 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 ->getConfigValue('shift.insurance_enabled')
         );
 
-        $academicYear = $this->getCurrentAcademicYear(true);
+        //$academicYear = $this->getCurrentAcademicYear(true);
+        $academicYear = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneById(16);
 
         $asVolunteer = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
@@ -535,10 +538,15 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shift.hours_per_shift');
 
+        $points_enabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shift.points_enabled');
+
         $now = new DateTime();
 
         $shiftsAsVolunteer = array();
         $shiftsAsVolunteerCount = 0;
+        $pointsAsVolunteerCount = 0;
         $unPayedShifts = 0;
         $unPayedCoins = 0;
         $lastShift = new DateTime('2000-01-01');
@@ -561,6 +569,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             }
 
             $shiftsAsVolunteerCount++;
+            $pointsAsVolunteerCount = $pointsAsVolunteerCount + $shift->getPoints();
 
             if ($hoursPerBlock > 0) {
                 $hoursOverTime = ($shift->getEndDate()->format('d') - $shift->getStartDate()->format('d')) * 24 + ($shift->getEndDate()->format('H') - $shift->getStartDate()->format('H')) - $hoursPerBlock;
@@ -586,19 +595,26 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         );
 
         $ranking = false;
-        $shiftsToNextRanking = 0;
+        $stepsToNextRanking = 0;
+        $stepsAsVolunteerCount = 0;
+
+        if ($points_enabled) {
+            $stepsAsVolunteerCount = $pointsAsVolunteerCount;
+        } else {
+            $stepsAsVolunteerCount = $shiftsAsVolunteerCount;
+        }
+
         if (count($rankingCriteria) > 0) {
-            $ranking = false;
-            $shiftsToNextRanking = $rankingCriteria[0]['limit'] - $shiftsAsVolunteerCount;
+            $stepsToNextRanking = $rankingCriteria[0]['limit'] - $stepsAsVolunteerCount;
 
             for ($i = 0; isset($rankingCriteria[$i]); $i++) {
-                if ($rankingCriteria[$i]['limit'] <= $shiftsAsVolunteerCount) {
+                if ($rankingCriteria[$i]['limit'] <= $stepsAsVolunteerCount) {
                     $ranking = $rankingCriteria[$i]['name'];
 
                     if (isset($rankingCriteria[$i + 1])) {
-                        $shiftsToNextRanking = $rankingCriteria[$i + 1]['limit'] - $shiftsAsVolunteerCount;
+                        $stepsToNextRanking = $rankingCriteria[$i + 1]['limit'] - $stepsAsVolunteerCount;
                     } else {
-                        $shiftsToNextRanking = 0;
+                        $stepsToNextRanking = 0;
                     }
                 }
             }
@@ -636,8 +652,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 'lastShift'           => $lastShift->format('d/m/Y'),
                 'praesidium'          => $praesidium,
                 'ranking'             => $ranking,
-                'shiftsToNextRanking' => $shiftsToNextRanking,
+                'stepsToNextRanking'  => $stepsToNextRanking,
                 'insuranceEnabled'    => $insuranceEnabled,
+                'points_enabled'      => $points_enabled,
             )
         );
     }

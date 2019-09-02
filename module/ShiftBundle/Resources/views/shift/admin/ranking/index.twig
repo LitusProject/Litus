@@ -14,7 +14,15 @@
                         <th>Name</th>
                         <th>E-mail</th>
                         <th>Address</th>
-                        <th width="120px">Count</th>
+                        {% if points_enabled %}
+                            <th width="120px"># Points</th>
+                        {% else %}
+                            {% if hoursPerBlock > 0 %}
+                                <th width="120px"># Shifts of {{ hoursPerBlock }}h</th>
+                            {% else %}
+                                <th width="120px"># Shifts</th>
+                            {% endif %}
+                        {% endif %}
                     </tr>
                 </thead>
 
@@ -30,7 +38,7 @@
                                     {{ volunteer['person'].getPrimaryAddress().getStreet() }} {{ volunteer['person'].getPrimaryAddress().getNumber() }}{% if '' != volunteer['person'].getPrimaryAddress().getMailbox() %}/{{ volunteer['person'].getPrimaryAddress().getMailbox() }}{% endif %}, {{ volunteer['person'].getPrimaryAddress().getPostal() }} {{ volunteer['person'].getPrimaryAddress().getCity() }}, {{ volunteer['person'].getPrimaryAddress().getCountry() }}
                                 {% endif %}
                             </td>
-                            <td>{{ volunteer['shiftCount'] }}</td>
+                            <td>{{ volunteer['resultCount'] }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>

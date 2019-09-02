@@ -174,4 +174,14 @@ U bent verwijderd van de volgende shift door een administrator:
         'value'       => '0',
         'description' => 'Shift amount is counted in blocks of this amount of hours. If 0, then it counts the amount of shifts.',
     ),
+    array(
+        'key'         => 'shift.rewards_enabled',
+        'value'       => '1',
+        'description' => 'Enables the shifts reward system. Rewards are payable coins counted by the system per shift.',
+    ),
+    array(
+        'key'         => 'shift.points_enabled',
+        'value'       => '0',
+        'description' => 'Enables the shifts points systems. Points are a non-payable fictive measurement to build the shift ranking. When enabling the ranking will no longer be based on the amount of shifts, but on the points per shift.',
+    ),
 );

@@ -81,4 +81,7 @@ return array(
     'Insurance'                                                                                                                                                                                                         => 'Verzekering',
     'I have read this'                                                                                                                                                                                                  => 'Ik heb dit gelezen',
     'I did not read this'                                                                                                                                                                                               => 'Ik heb dit niet gelezen',
+    'You need to collect <span class="label label-success">%pointsToNextRanking%</span> more point(s) to get the next ranking.' => 'Je moet nog <span class="label label-success">%pointsToNextRanking%</span> punt(en) verzamelen om de volgende ranking te bereiken.',
+    'Points' => 'Punten',
+    'Point' => 'Punt',
 );
