@@ -485,13 +485,10 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         if ($academicYear === null) {
             return new ViewModel();
         }
-
+        
+        
+        $registrations = array();     
         $organization = $this->getOrganizationEntity();
-        if ($organization === null) {
-            return new ViewModel();
-        }
-
-        $registrations = array();
         switch ($this->getParam('field')) {
             case 'university_identification':
                 $registrations = $this->getEntityManager()

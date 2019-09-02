@@ -73,6 +73,21 @@ class Registration extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             foreach ($resultSet as $result) {
                 $ids[] = $result['id'];
             }
+        }else{
+            $query = $this->getEntityManager()->createQueryBuilder();
+            $resultSet = $query->select('a.id')
+                ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
+                ->innerJoin('m.academic', 'a')
+                ->where(
+                    $query->expr()->eq('m.academicYear', ':academicYear')
+                )
+                ->setParameter('academicYear', $academicYear)
+                ->getQuery()
+                ->getResult();
+
+            foreach ($resultSet as $result) {
+                $ids[] = $result['id'];
+            }
         }
 
         $query = $this->getEntityManager()->createQueryBuilder();
