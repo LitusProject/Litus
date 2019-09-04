@@ -5536,16 +5536,16 @@
         },
         {
             "name": "zendframework/zend-mvc-i18n",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-mvc-i18n.git",
-                "reference": "90e64d1304385cfcf19447b6449514e8a720adfc"
+                "reference": "7a1b3aca3a8874adb32390d34794cdc525c1c909"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-mvc-i18n/zipball/90e64d1304385cfcf19447b6449514e8a720adfc",
-                "reference": "90e64d1304385cfcf19447b6449514e8a720adfc",
+                "url": "https://api.github.com/repos/zendframework/zend-mvc-i18n/zipball/7a1b3aca3a8874adb32390d34794cdc525c1c909",
+                "reference": "7a1b3aca3a8874adb32390d34794cdc525c1c909",
                 "shasum": ""
             },
             "require": {
@@ -5558,6 +5558,7 @@
                 "zendframework/zend-validator": "^2.6"
             },
             "conflict": {
+                "phpspec/prophecy": "<1.8.0",
                 "zendframework/zend-mvc": "<3.0.0"
             },
             "require-dev": {
@@ -5595,7 +5596,7 @@
                 "mvc",
                 "zf"
             ],
-            "time": "2018-05-01T15:48:40+00:00"
+            "time": "2019-09-03T20:50:53+00:00"
         },
         {
             "name": "zendframework/zend-mvc-plugin-flashmessenger",
