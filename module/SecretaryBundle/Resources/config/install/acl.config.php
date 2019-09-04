@@ -24,7 +24,7 @@ return array(
             'add', 'complete', 'edit', 'saveStudies', 'saveSubjects', 'studies', 'subjects',
         ),
         'secretary_admin_registration' => array(
-            'add', 'barcode', 'cancel', 'edit', 'manage', 'search',
+            'add', 'barcode', 'cancel', 'edit', 'manage', 'reprint', 'search',
         ),
         'secretary_admin_export' => array(
             'download', 'export',

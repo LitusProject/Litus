@@ -15,6 +15,18 @@
             <p>An error occurred while trying to cancel a registration. Is the person a member of praesidium ?</p>
         </div>
     </div>
+    <div class="flashmessage success_message full_width academic_reprinted_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The membership card was successfully reprinted!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width academic_reprinted_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to reprint the membership card.</p>
+        </div>
+    </div>
 
     {% include 'secretary/admin/registration/partials/navigation.twig' %}
 
@@ -71,6 +83,29 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="reprintAcademic" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Reprint Academic
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to reprint a membership card for the following student: <b class="fullname"></b>?
+                        If you do so, please take back the old membership card and throw it in the trash!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="reprint">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
@@ -94,7 +129,13 @@
                             .append('<td>' + this.barcode + '</td>')
                             .append('<td>' + this.organization + '</td>')
                             .append(actions = $('<td>', {'class': 'actions'}));
-
+                        {% if hasAccess('secretary_admin_registration', 'reprint') %}
+                            actions.append(reprintButton = $('<a href="#" class="reprint">Reprint card</a></li>'));
+                            reprintButton.data({
+                                id: this.id,
+                                name: this.name
+                            })
+                        {% endif %}
                         {% if hasAccess('secretary_admin_registration', 'barcode') %}
                             actions.append('<a href="{{ url('secretary_admin_registration', {"action": "barcode"}) }}' + this.id +'/organization/{{ currentOrganization.getId() }}" class="edit">Barcode</a>');
                         {% endif %}
@@ -102,7 +143,7 @@
                             actions.append('<a href="{{ url('secretary_admin_registration', {"action": "edit"}) }}' + this.id +'/organization/{{ currentOrganization.getId() }}" class="edit">Edit</a>');
                         {% endif %}
                         {% if hasAccess('secretary_admin_registration', 'cancel') %}
-                            actions.append(deleteButton = $('<a href="#" class="delete">Cancel</a>'))
+                            actions.append(deleteButton = $('<a href="#" class="delete">Cancel</a>'));
                             deleteButton.data({
                                 id: this.id,
                                 name: this.name,
@@ -110,6 +151,7 @@
                         {% endif %}
                     });
                     $('#registration_search table .delete').click(openCancelModal);
+                    $('#registration_search table .reprint').click(openReprintModal);
                     $('#registration_search table').change();
                 },
                 clear: function () {
@@ -118,6 +160,7 @@
             });
             {% endif %}
             $('.delete').click(openCancelModal);
+            $('.reprint').click(openReprintModal);
         });
 
         function openCancelModal(e) {
@@ -141,11 +184,41 @@
             cancelRegistration.modal();
         }
 
+        function openReprintModal(e) {
+            var $this = $(this);
+            e.preventDefault();
+            var reprintAcademic = $('#reprintAcademic');
+            reprintAcademic.find('.fullname').html($(this).data('name'));
+            reprintAcademic.find('.cancel').one('click', function () {
+                reprintAcademic.modal('hide');
+            });
+            var id = $this.data('id');
+            reprintAcademic.find('.reprint').unbind('click').click(function () {
+                $.post('{{ url('secretary_admin_registration', {"action": "reprint"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.academic_reprinted_success').removeClass('hide');
+                        reprintAcademic.modal('hide');
+                    } else {
+                        console.log(data);
+                        errorReprint();
+                    }
+                }, 'json').error(errorReprint);
+            });
+            reprintAcademic.modal();
+        }
+
         function errorCancel() {
             $('.flashmessage').addClass('hide');
             $('.registration_cancelled_error').removeClass('hide');
             $('#cancelRegistration').modal('hide');
         }
 
+
+        function errorReprint() {
+            $('.flashmessage').addClass('hide');
+            $('.academic_reprinted_error').removeClass('hide');
+            $('#printAcademic').modal('hide');
+        }
     </script>
 {% endblock %}
