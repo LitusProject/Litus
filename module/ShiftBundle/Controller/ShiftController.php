@@ -569,7 +569,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             }
 
             $shiftsAsVolunteerCount++;
-            $pointsAsVolunteerCount = $pointsAsVolunteerCount + $shift->getPoints();
+            $pointsAsVolunteerCount += $shift->getPoints();
 
             if ($hoursPerBlock > 0) {
                 $hoursOverTime = ($shift->getEndDate()->format('d') - $shift->getStartDate()->format('d')) * 24 + ($shift->getEndDate()->format('H') - $shift->getStartDate()->format('H')) - $hoursPerBlock;

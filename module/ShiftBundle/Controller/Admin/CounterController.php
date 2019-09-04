@@ -45,11 +45,11 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->findAll();
 
         $rewards_enabled = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('shift.rewards_enabled');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shift.rewards_enabled');
         $points_enabled = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('shift.points_enabled');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shift.points_enabled');
 
         return new ViewModel(
             array(
@@ -294,7 +294,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
                         }
                     }
                 }
-                $pointsCount = $pointsCount + $shift->getPoints();
+                $pointsCount += $shift->getPoints();
             }
 
             $item = (object) array();

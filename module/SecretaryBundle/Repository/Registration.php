@@ -73,7 +73,7 @@ class Registration extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             foreach ($resultSet as $result) {
                 $ids[] = $result['id'];
             }
-        }else{
+        } else {
             $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('a.id')
                 ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
