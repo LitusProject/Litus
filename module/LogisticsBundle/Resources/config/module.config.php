@@ -28,7 +28,6 @@ return Config::create(
         'directory'         => __DIR__,
         'translation_files' => array('logistics', 'validator'),
         'has_layouts'       => true,
-        'has_documents'     => true,
     ),
     array(
         'validators' => array(

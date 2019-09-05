@@ -18,7 +18,6 @@
  * @license http://litus.cc/LICENSE
  */
 
-use Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver as ODMAnnotationDriver;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver as ORMAnnotationDriver;
 
 if (!file_exists(__DIR__ . '/../database.config.php')) {
@@ -37,13 +36,6 @@ return array(
             ),
         ),
         'configuration' => array(
-            'odm_default' => array(
-                'generate_proxies'   => true,
-                'proxy_dir'          => 'data/proxies',
-                'generate_hydrators' => true,
-                'hydrator_dir'       => 'data/hydrators',
-                'default_db'         => $databaseConfig['document']['dbname'],
-            ),
             'orm_default' => array(
                 'metadata_cache'   => getenv('APPLICATION_ENV') != 'development' ? 'redis' : 'array',
                 'query_cache'      => getenv('APPLICATION_ENV') != 'development' ? 'redis' : 'array',
@@ -54,14 +46,6 @@ return array(
             ),
         ),
         'connection' => array(
-            'odm_default' => array(
-                'server'   => $databaseConfig['document']['server'],
-                'port'     => $databaseConfig['document']['port'],
-                'user'     => $databaseConfig['document']['user'],
-                'password' => $databaseConfig['document']['password'],
-                'dbname'   => $databaseConfig['document']['dbname'],
-                'options'  => $databaseConfig['document']['options'],
-            ),
             'orm_default' => array(
                 'driverClass' => $databaseConfig['relational']['driver'],
                 'params'      => array(
@@ -74,9 +58,6 @@ return array(
             ),
         ),
         'driver' => array(
-            'odm_annotation_driver' => array(
-                'class' => ODMAnnotationDriver::class,
-            ),
             'orm_annotation_driver' => array(
                 'class' => ORMAnnotationDriver::class,
             ),

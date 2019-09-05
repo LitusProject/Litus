@@ -31,10 +31,8 @@
         "zendframework/zend-view": "^2.10",
 
         "doctrine/doctrine-orm-module": "@stable",
-        "doctrine/doctrine-mongo-odm-module": "@stable",
         "doctrine/migrations": "^2.0",
 
-        "alcaeus/mongo-php-adapter": "^1.1",
         "cboden/ratchet": "^0.4",
         "clue/redis-react": "^2.2",
         "colinmollenhour/credis": "^1.10",
@@ -61,9 +59,6 @@
         "mavimo/phpstan-junit": "^0.2",
         "squizlabs/php_codesniffer": "^3.3",
         "slevomat/coding-standard": "^5.0"
-    },
-    "provide": {
-        "ext-mongo": "^1.5"
     },
     "autoload": {
         "psr-4": {

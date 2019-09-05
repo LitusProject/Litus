@@ -28,6 +28,5 @@ return Config::create(
         'directory'         => __DIR__,
         'translation_files' => array('site'),
         'has_layouts'       => true,
-        'has_documents'     => true,
     )
 );

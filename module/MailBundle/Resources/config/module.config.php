@@ -27,7 +27,6 @@ return Config::create(
         'namespace'         => __NAMESPACE__,
         'directory'         => __DIR__,
         'translation_files' => array('validator'),
-        'has_documents'     => true,
     ),
     array(
         'validators' => array(

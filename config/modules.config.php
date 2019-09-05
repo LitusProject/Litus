@@ -34,7 +34,6 @@ $modules = array(
     'AsseticBundle',
     'DoctrineModule',
     'DoctrineORMModule',
-    'DoctrineMongoODMModule',
     'ZendTwig',
 
     'ApiBundle',

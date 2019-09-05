@@ -43,6 +43,11 @@ class Version20190422081015 extends \Doctrine\Migrations\AbstractMigration imple
      */
     public function preUp(Schema $schema) : void
     {
+        $this->abortIf(
+            !$this->getServiceLocator()->has('doctrine.configuration.odm_default'),
+            'Migration can only be executed when Doctrine supports document mapping.'
+        );
+
         $database = $this->getServiceLocator()
             ->get('doctrine.configuration.odm_default')
             ->getDefaultDB();
@@ -88,6 +93,11 @@ class Version20190422081015 extends \Doctrine\Migrations\AbstractMigration imple
      */
     public function postUp(Schema $schema) : void
     {
+        $this->abortIf(
+            !$this->getServiceLocator()->has('doctrine.configuration.odm_default'),
+            'Migration can only be executed when Doctrine supports document mapping.'
+        );
+
         foreach ($this->documents as $document) {
             $message = new Message(
                 $document['type'],

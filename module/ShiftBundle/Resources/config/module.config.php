@@ -27,6 +27,5 @@ return Config::create(
         'namespace'         => __NAMESPACE__,
         'directory'         => __DIR__,
         'translation_files' => array('shift'),
-        'has_documents'     => true,
     )
 );
