@@ -26,13 +26,13 @@ use CommonBundle\Entity\User\Barcode\Qr;
 use CommonBundle\Entity\User\Person;
 use CommonBundle\Entity\User\Person\Organization\AcademicYearMap;
 use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
+use CudiBundle\Component\Socket\Sale\Printer;
 use InvalidArgumentException;
 use SecretaryBundle\Component\Registration\Articles as RegistrationArticles;
 use SecretaryBundle\Entity\Organization\MetaData;
 use SecretaryBundle\Entity\Registration;
 use Zend\Validator\Barcode\Ean12 as Ean12Validator;
 use Zend\View\Model\ViewModel;
-use CudiBundle\Component\Socket\Sale\Printer;
 
 /**
  * RegistrationController
@@ -636,12 +636,12 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             );
         } else {
             Printer::membershipCard(
-              $this->getEntityManager(),
-              $this->getEntityManager()
-                  ->getRepository('CommonBundle\Entity\General\Config')
-                  ->getConfigValue('cudi.card_printer'),
-              $academic,
-              $this->getCurrentAcademicYear()
+                $this->getEntityManager(),
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.card_printer'),
+                $academic,
+                $this->getCurrentAcademicYear()
             );
 
             return new ViewModel(
