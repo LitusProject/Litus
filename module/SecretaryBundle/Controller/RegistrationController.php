@@ -404,7 +404,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.isic_membership') == 1;
         $isicRedirect = false;
-        $isicOrder = $this->getEntityManager()
+        $isicOrders = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\IsicCard')
             ->findByPersonAndYearQuery($academic, $this->getCurrentAcademicYear())
             ->getResult();
@@ -487,7 +487,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     }
 
                     if ($metaData->becomeMember() && $selectedOrganization !== null) {
-                        if ($isicMembership && $isicOrder == null) {
+                        if ($isicMembership && count($isicOrders) > 0) {
                             $isicRedirect = true;
                         } else {
                             $this->bookRegistrationArticles($academic, $selectedOrganization, $this->getCurrentAcademicYear());
@@ -502,8 +502,17 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                                     $this->getCurrentAcademicYear()
                                 );
 
-                            if ($booking !== null && $isicOrder->getBooking() !== $booking) {
-                                $this->getEntityManager()->remove($booking);
+                            if ($booking !== null) {
+                                $removeBooking = true;
+                                foreach ($isicOrders as $isicOrder) {
+                                    if ($isicOrder->getBooking() == $booking) {
+                                        $removeBooking = false;
+                                    }
+                                }
+
+                                if ($removeBooking) {
+                                    $this->getEntityManager()->remove($booking);
+                                }
                             }
                         }
                     }
