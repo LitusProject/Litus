@@ -521,10 +521,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 ->getConfigValue('shift.insurance_enabled')
         );
 
-        //$academicYear = $this->getCurrentAcademicYear(true);
-        $academicYear = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneById(16);
+        $academicYear = $this->getCurrentAcademicYear(true);
 
         $asVolunteer = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
