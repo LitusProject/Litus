@@ -106,6 +106,10 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_bookings');
 
+        $showMandatory = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.show_mandatory_column');
+
         $bookingsClosedExceptions = unserialize(
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
@@ -351,6 +355,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 'searchForm'        => $searchForm,
                 'isSubscribed'      => $isSubscribed,
                 'isic'              => $this->getIsic(),
+                'showMandatory'    => $showMandatory,
             )
         );
     }

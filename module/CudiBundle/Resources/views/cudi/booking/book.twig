@@ -54,7 +54,9 @@
                                 <th>{{ translate('Title') }}</th>
                                 <th class="hidden-xs">{{ translate('Authors') }}</th>
                                 <th style="min-width: 100px">{{ translate('Price / Piece') }}</th>
+                                {% if showMandatory %}
                                 <th class="hidden-xs" style="min-width: 60px">{{ translate('Mandatory') }}</th>
+                                {% endif %}
                                 <th class="hidden-xs" style="min-width: 70px">{{ translate('Remarks') }}</th>
                                 <th style="min-width: 100px"></th>
                             </tr>
@@ -88,7 +90,9 @@
                                 <th>{{ translate('Title') }}</th>
                                 <th class="hidden-xs">{{ translate('Authors') }}</th>
                                 <th style="min-width: 100px">{{ translate('Price / Piece') }}</th>
+                                {% if showMandatory %}
                                 <th class="hidden-xs" style="min-width: 60px">{{ translate('Mandatory') }}</th>
+                                {% endif %}
                                 <th class="hidden-xs" style="min-width: 70px">{{ translate('Remarks') }}</th>
                                 <th style="min-width: 100px"></th>
                             </tr>
@@ -125,7 +129,9 @@
                                                 <span>&euro; {{ (map['article'].getSellPrice()/100)|number_format(2) }}</span>
                                             {% endif %}
                                         </td>
+                                        {% if showMandatory %}
                                         <td class="hidden-xs">{{ map['mandatory'] ? '&times;' : '' }}</td>
+                                        {% endif %}
                                         <td class="hidden-xs">
                                             {% if map['comments']|length > 0 %}
                                                 <a rel="popover" data-original-title="{{ translate('Comments') }}" data-content="
@@ -346,7 +352,9 @@
                                             $('<td>').html(this.title),
                                             $('<td>', {'class': 'hidden-xs'}).html(this.authors),
                                             price = $('<td>'),
-                                            comments = $('<td>', {'class': 'hidden-xs'}),
+                                            {% if showMandatory %}
+                                            mandatory = $('<td>', {'class': 'hidden-xs'}),
+                                            {% endif %}
                                             comments = $('<td>', {'class': 'hidden-xs'}),
                                             book = $('<td>', {'style': 'text-align: center;'})
                                         )

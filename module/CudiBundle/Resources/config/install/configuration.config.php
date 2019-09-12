@@ -588,4 +588,9 @@ Dit is de rechtstreekse link naar onze online-privacy pagina: <a href="https://w
         ),
         'description' => 'The additional conditions to be displayed below the isic registration form.',
     ),
+    array(
+        'key'         => 'cudi.show_mandatory_column',
+        'value'       => '1',
+        'description' => 'Whether or not to show the column obligatory.',
+    ),
 );
