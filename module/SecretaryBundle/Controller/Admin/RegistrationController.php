@@ -26,6 +26,7 @@ use CommonBundle\Entity\User\Barcode\Qr;
 use CommonBundle\Entity\User\Person;
 use CommonBundle\Entity\User\Person\Organization\AcademicYearMap;
 use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
+use CudiBundle\Component\Socket\Sale\Printer;
 use InvalidArgumentException;
 use SecretaryBundle\Component\Registration\Articles as RegistrationArticles;
 use SecretaryBundle\Entity\Organization\MetaData;
@@ -619,6 +620,48 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         }
 
         return $registration;
+    }
+
+    public function reprintAction()
+    {
+        $this->initAjax();
+
+        $registration = $this->getRegistrationEntity();
+        if ($registration === null) {
+            return new ViewModel();
+        }
+
+        $academic = $registration->getAcademic();
+        $organizationStatus = $academic->getOrganizationStatus($registration->getAcademicYear());
+
+        if ($organizationStatus !== null && $organizationStatus->getStatus() == 'praesidium') {
+            return new ViewModel(
+                array(
+                    'result' => (object) array('status' => 'error'),
+                )
+            );
+        } elseif ($registration->isCancelled()) {
+            return new ViewModel(
+                array(
+                    'result' => (object) array('status' => 'error'),
+                )
+            );
+        } else {
+            Printer::membershipCard(
+                $this->getEntityManager(),
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.card_printer'),
+                $academic,
+                $this->getCurrentAcademicYear()
+            );
+
+            return new ViewModel(
+                array(
+                    'result' => array('status' => 'success'),
+                )
+            );
+        }
     }
 
     /**

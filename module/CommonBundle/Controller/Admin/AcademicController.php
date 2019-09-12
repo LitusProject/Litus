@@ -21,7 +21,6 @@
 namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Entity\User\Person\Academic;
-use CudiBundle\Component\Socket\Sale\Printer;
 use Doctrine\ORM\Query;
 use Zend\View\Model\ViewModel;
 
@@ -318,31 +317,6 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     ->getRepository('CommonBundle\Entity\User\Person\Academic')
                     ->findAllByUniversityIdentificationQuery($this->getParam('string'));
         }
-    }
-
-    public function printAction()
-    {
-        $this->initAjax();
-
-        $academic = $this->getAcademicEntity();
-        if ($academic === null) {
-            return new ViewModel();
-        }
-
-        Printer::membershipCard(
-            $this->getEntityManager(),
-            $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('cudi.card_printer'),
-            $academic,
-            $this->getCurrentAcademicYear()
-        );
-
-        return new ViewModel(
-            array(
-                'result' => array('status' => 'success'),
-            )
-        );
     }
 
     /**

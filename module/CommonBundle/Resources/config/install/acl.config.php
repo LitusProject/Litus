@@ -21,7 +21,7 @@
 return array(
     'commonbundle' => array(
         'common_admin_academic' => array(
-            'activate', 'add', 'delete', 'edit', 'manage', 'print', 'search', 'typeahead',
+            'activate', 'add', 'delete', 'edit', 'manage', 'search', 'typeahead',
         ),
         'common_admin_auth' => array(
             'authenticate', 'login', 'logout', 'shibboleth',

@@ -96,7 +96,6 @@ namespace CommonBundle\Component\Module;
  *           'namespace'         =>         , // required, the namespace of the bundle to configure
  *           'directory'         =>         , // required, the directory of the module.config.php file
  *           'has_entities'      => true    , // optional, whether or not the bundle has entities
- *           'has_documents'     => false   , // optional, whether or not the bundle has documents
  *           'translation_files' => array() , // optional, files in ../translations for i18n
  *           'has_views'         => true    , // optional, whether the bundle has Twig views
  *           'has_layouts'       => false   , // optional, whether the bundle has Twig layouts
@@ -164,20 +163,6 @@ class Config
             $doctrine['orm_annotation_driver'] = array(
                 'paths' => array(
                     $namespace => $directory . '/../../Entity',
-                ),
-            );
-        }
-
-        // don't include documents by default
-        if (array_key_exists('has_documents', $settings) && $settings['has_documents']) {
-            $doctrine['odm_default'] = array(
-                'drivers' => array(
-                    $namespace . '\Document' => 'odm_annotation_driver',
-                ),
-            );
-            $doctrine['odm_annotation_driver'] = array(
-                'paths' => array(
-                    $namespace => $directory . '/../../Document',
                 ),
             );
         }

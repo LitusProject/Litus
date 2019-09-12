@@ -52,8 +52,8 @@ class RankingController extends \CommonBundle\Component\Controller\ActionControl
             ->getConfigValue('shift.hours_per_shift');
 
         $points_enabled = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('shift.points_enabled');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shift.points_enabled');
 
         $volunteers = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift\Volunteer')

@@ -205,8 +205,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         );
 
         $rewards_enabled = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('shift.rewards_enabled');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shift.rewards_enabled');
 
         if ($rewards_enabled) {
             $this->add(
@@ -251,8 +251,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         }
 
         $points_enabled = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('shift.points_enabled');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shift.points_enabled');
 
         if ($points_enabled) {
             $this->add(
@@ -266,7 +266,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                 )
             );
-
         } else {
             $this->add(
                 array(
