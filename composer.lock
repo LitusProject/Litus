@@ -4397,16 +4397,16 @@
         },
         {
             "name": "zendframework/zend-form",
-            "version": "2.14.1",
+            "version": "2.14.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-form.git",
-                "reference": "ff9385b7d0d93d9bdbc2aa4af82ab616dbc7d4be"
+                "reference": "284f51cf26af2d3d88936fd8b74d46853550b718"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-form/zipball/ff9385b7d0d93d9bdbc2aa4af82ab616dbc7d4be",
-                "reference": "ff9385b7d0d93d9bdbc2aa4af82ab616dbc7d4be",
+                "url": "https://api.github.com/repos/zendframework/zend-form/zipball/284f51cf26af2d3d88936fd8b74d46853550b718",
+                "reference": "284f51cf26af2d3d88936fd8b74d46853550b718",
                 "shasum": ""
             },
             "require": {
@@ -4471,7 +4471,7 @@
                 "form",
                 "zf"
             ],
-            "time": "2019-02-26T18:13:31+00:00"
+            "time": "2019-10-03T19:16:39+00:00"
         },
         {
             "name": "zendframework/zend-http",
