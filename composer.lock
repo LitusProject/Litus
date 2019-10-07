@@ -5786,16 +5786,16 @@
         },
         {
             "name": "zendframework/zend-uri",
-            "version": "2.7.0",
+            "version": "2.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-uri.git",
-                "reference": "b2785cd38fe379a784645449db86f21b7739b1ee"
+                "reference": "bfc4a5b9a309711e968d7c72afae4ac50c650083"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-uri/zipball/b2785cd38fe379a784645449db86f21b7739b1ee",
-                "reference": "b2785cd38fe379a784645449db86f21b7739b1ee",
+                "url": "https://api.github.com/repos/zendframework/zend-uri/zipball/bfc4a5b9a309711e968d7c72afae4ac50c650083",
+                "reference": "bfc4a5b9a309711e968d7c72afae4ac50c650083",
                 "shasum": ""
             },
             "require": {
@@ -5829,7 +5829,7 @@
                 "uri",
                 "zf"
             ],
-            "time": "2019-02-27T21:39:04+00:00"
+            "time": "2019-10-07T13:35:33+00:00"
         },
         {
             "name": "zendframework/zend-validator",
