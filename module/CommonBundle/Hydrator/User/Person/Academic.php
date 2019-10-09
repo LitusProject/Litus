@@ -129,7 +129,7 @@ class Academic extends \CommonBundle\Hydrator\User\Person
             ->getConfigValue('student_email_domain');
 
         $universityEmail = preg_replace('/[^a-z0-9\.@]/i', '', iconv('UTF-8', 'US-ASCII//TRANSLIT', $data['university']['email'])) . $studentDomain;
-        if (isset($data['primary_email']) && $data['primary_email'] != '') {
+        if (isset($data['primary_email']) && $data['primary_email']) {
             $data['email'] = $data['personal_email'] ?? $object->getPersonalEmail();
         } else {
             $data['email'] = $universityEmail;
@@ -161,7 +161,7 @@ class Academic extends \CommonBundle\Hydrator\User\Person
         }
 
         parent::doHydrate($data, $object);
-        
+
         return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 }
