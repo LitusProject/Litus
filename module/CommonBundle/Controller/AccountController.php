@@ -148,6 +148,11 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->getRepository('CudiBundle\Entity\IsicCard')
             ->findByPersonAndYearQuery($academic, $this->getCurrentAcademicYear())
             ->getResult();
+        if (count($isicOrder) == 0) {
+            $isicOrder = null;
+        } else {
+            $isicOrder = $isicOrder[0];
+        }
 
         $membershipArticles = array();
         foreach ($ids as $organization => $id) {
@@ -240,8 +245,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                                     $academic,
                                     $this->getCurrentAcademicYear()
                                 );
-
-                            if ($booking !== null && $isicOrder->getBooking() !== $booking) {
+                            if ($booking !== null && $isicOrder !== null && $isicOrder->getBooking() !== $booking) {
                                 $this->getEntityManager()->remove($booking);
                             }
                         }
