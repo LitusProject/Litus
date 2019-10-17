@@ -22,6 +22,7 @@
                 {% for round in rounds %}
                     <th class="round">{{ round.getName() }}</th>
                 {% endfor %}
+                <th class="total">Total</th>
             </tr>
         </thead>
         <tbody>
@@ -34,6 +35,7 @@
                             {{ points[teamId][round.getId()] ?? 0 }}
                         </td>
                     {% endfor %}
+                    <td class="team">{{ total_points[teamId] }}</td>
                 </tr>
             {% endfor %}
         </tbody>
