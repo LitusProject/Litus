@@ -3,7 +3,10 @@
 
     <nav id="controller_nav">
         <ul>
-
+          {% if hasAccess('shop_admin_shop_reservation', 'csv') %}
+              <li><a {% if 'csv' == getParam('action') %} class="active" {% endif %}
+                          href="{{ url("shop_admin_shop_reservation", {"action": "csv", "id": salesSession.getId()}) }}">Download CSV</a></li>
+          {% endif %}
         </ul>
     </nav>
 </header>

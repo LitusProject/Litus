@@ -58,6 +58,8 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
             '@common_jquery_form',
+            '@common_jqueryui',
+            '@common_jqueryui_css',
             '@common_remote_typeahead',
         ),
         'shop_admin_shop_reservationpermission' => array(
