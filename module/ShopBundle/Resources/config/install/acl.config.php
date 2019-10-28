@@ -30,7 +30,7 @@ return array(
             'manage', 'add', 'edit', 'delete', 'old', 'search', 'oldsearch',
         ),
         'shop_admin_shop_reservation' => array(
-            'delete', 'noshow', 'salessession',
+             'salessession', 'csv', 'delete', 'noshow','search',
         ),
         'shop_admin_shop_reservationpermission' => array(
             'manage', 'delete', 'add', 'togglepermission', 'search',

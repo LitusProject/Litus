@@ -55,6 +55,43 @@ class Reservation extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     }
 
     /**
+     * @param $person
+     * @return \Doctrine\ORM\Query
+     */
+    public function getAllReservationsByPersonAndSalesSessionQuery($name, $salesSession)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+
+        return $query->select('r')
+            ->from('ShopBundle\Entity\Reservation', 'r')
+            ->innerJoin('r.person', 'p')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('r.salesSession', ':salesSession'),
+                    $query->expr()->orX(
+                        $query->expr()->like(
+                            $query->expr()->concat(
+                                $query->expr()->lower($query->expr()->concat('p.firstName', "' '")),
+                                $query->expr()->lower('p.lastName')
+                            ),
+                            ':name'
+                        ),
+                        $query->expr()->like(
+                            $query->expr()->concat(
+                                $query->expr()->lower($query->expr()->concat('p.lastName', "' '")),
+                                $query->expr()->lower('p.firstName')
+                            ),
+                            ':name'
+                        )
+                    )
+                )
+            )
+            ->setParameter('salesSession', $salesSession)
+            ->setParameter('name', '%' . strtolower($name) . '%')
+            ->getQuery();
+    }
+
+    /**
      * @param  \ShopBundle\Entity\Session $salesSession
      * @return \Doctrine\ORM\Query
      */
@@ -78,12 +115,18 @@ class Reservation extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
      */
     public function getTotalByProductBySalesQuery($salesSession)
     {
-        $q = 'SELECT p.id, p.name, SUM(r.amount) FROM shop_reservations as r INNER JOIN shop_products as p ON r.product=p.id WHERE r.session=:sessId GROUP BY p.id';
-        $em = $this->getEntityManager();
-        $stmt = $em->getConnection()->prepare($q);
-        $stmt->bindValue('sessId', $salesSession->getId());
-        $stmt->execute();
-        return $stmt->fetchAll();
+        $query = $this->getEntityManager()->createQueryBuilder();
+
+        return $query->select('p')
+            ->addSelect('SUM(r.amount)')
+            ->from('ShopBundle\Entity\Product', 'p')
+            ->join('ShopBundle\Entity\Reservation', 'r', 'WITH', 'r.product=p.id')
+            ->where(
+                $query->expr()->eq('r.salesSession', ':salesSession')
+            )
+            ->groupBy('p.id')
+            ->setParameter('salesSession', $salesSession)
+            ->getQuery();
     }
 
     /**

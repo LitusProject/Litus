@@ -47,7 +47,7 @@
             if (e.keyCode == 37 || e.keyCode == 38) {
                 $('#results tr:not(.head):visible:first').hide();
                 e.preventDefault();
-            } else if (e.keyCode == 39 || e.keyCode == 40) {
+            } else if (e.keyCode == 39 || e.keyCode == 40 || e.keyCode == 13) {
                 $('#results tr:not(.head):visible:first').removeClass('warning');
                 $('#results tr:hidden:last').addClass('warning').show();
                 e.preventDefault();

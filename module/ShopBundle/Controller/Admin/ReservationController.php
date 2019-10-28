@@ -24,6 +24,9 @@ use ShopBundle\Entity\Reservation;
 use ShopBundle\Entity\Reservation\Permission as ReservationPermission;
 use ShopBundle\Entity\Session as SalesSession;
 use Zend\View\Model\ViewModel;
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use Zend\Http\Headers;
 
 /**
  * ReservationController
@@ -48,8 +51,8 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
 
         $result = $this->getEntityManager()
             ->getRepository('ShopBundle\Entity\Reservation')
-            ->getTotalByProductBySalesQuery($salesSession);
-        // $paginator_total = $this->paginator()->createFromArray($result, $this->getParam('page_total'));
+            ->getTotalByProductBySalesQuery($salesSession)
+            ->getResult();
 
         return new ViewModel(
             array(
@@ -131,6 +134,83 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
         );
     }
 
+    public function csvAction()
+    {
+        $salesSession = $this->getSalesSessionEntity();
+        if ($salesSession === null) {
+            return new ViewModel();
+        }
+        $items = $this->getEntityManager()
+                    ->getRepository('ShopBundle\Entity\Reservation')
+                    ->findBySalesSessionQuery($salesSession)
+                    ->getResult();
+        $file = new CsvFile();
+
+        $heading = array('Person', 'Product', 'Amount','Total Price', 'Picked Up');
+        $results = array();
+        foreach ($items as $item) {
+            $results[] = array(
+                $item->getPerson()->getFullName(),
+                $item->getProduct()->getName(),
+                (string) $item->getAmount(),
+                (string) $item->getAmount() * $item->getProduct()->getSellPrice(),
+                ' ',
+          );
+        }
+
+        $document = new CsvGenerator($heading, $results);
+        $document->generateDocument($file);
+
+        $filename = 'salesession ' . $salesSession->getStartDate()->format('Ymd') . '.csv';
+
+        $headers = new Headers();
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename=' . $filename,
+                'Content-Type'        => 'text/csv',
+            )
+        );
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
+    }
+
+    public function searchAction()
+    {
+        $this->initAjax();
+
+        // $numResults = $this->getEntityManager()
+        //     ->getRepository('CommonBundle\Entity\General\Config')
+        //     ->getConfigValue('search_max_results');
+        $reservations = $this->search()
+            ->getResult();
+
+
+        $result = array();
+        foreach ($reservations as $reservation) {
+            $item = (object) array();
+            $item->id = $reservation->getId();
+            $item->person = $reservation->getPerson()->getFullName();
+            $item->product = $reservation->getProduct()->getName();
+            $item->amount = $reservation->getAmount();
+            $item->total = $reservation->getAmount() * $reservation->getProduct()->getSellPrice();
+            $item->noShow = $reservation->getNoShow();
+
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+
     /**
      * @return Reservation|null
      */
@@ -179,5 +259,18 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
         }
 
         return $salesSession;
+    }
+
+    /**
+     * @return \Doctrine\ORM\Query|null
+     */
+    private function search()
+    {
+        switch ($this->getParam('field')) {
+            case 'name':
+                return $this->getEntityManager()
+                    ->getRepository('ShopBundle\Entity\Reservation')
+                    ->getAllReservationsByPersonAndSalesSessionQuery($this->getParam('string'), $this->getSalesSessionEntity());
+        }
     }
 }

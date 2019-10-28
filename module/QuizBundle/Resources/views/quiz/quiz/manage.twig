@@ -51,7 +51,7 @@
                     return;
                 }
                 ajax_requests_pending++;
-                var url = '{{ url('quiz_quiz', {'action': 'update', 'quizid': quiz.getId()})}}'+$(this).data('round') + '/' + $(this).data('team')
+                var url = '{{ url('quiz_quiz', {'action': 'update', 'quizid': quiz.getId()})}}'+$(this).data('round') + '/' + $(this).data('team');
                 $.ajax({
                     url: url,
                     type: 'post',

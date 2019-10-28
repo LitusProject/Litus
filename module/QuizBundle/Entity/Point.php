@@ -21,13 +21,18 @@
 namespace QuizBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 use InvalidArgumentException;
 
 /**
  * This is the entity for a point.
  *
  * @ORM\Entity(repositoryClass="QuizBundle\Repository\Point")
- * @ORM\Table(name="quiz_points")
+ * @ORM\Table(name="quiz_points",
+ *        uniqueConstraints={
+ *            @UniqueConstraint(name="point_unique",
+ *                  columns={"round", "team"})
+ *    })
  */
 class Point
 {

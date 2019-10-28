@@ -71,16 +71,18 @@ return array(
         'shop_admin_shop_reservation' => array(
             'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/shop/reservation[/:action[/:id][/type/:type][/page/:page]][/]',
+                'route'       => '/admin/shop/reservation[/:action[/:id]][/:field/:string][/type/:type][/page/:page][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
                     'type'   => '[a-zA-Z]*',
                     'page'   => '[0-9]*',
+                    'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'string' => '[%a-zA-Z0-9:.,_-]*',
                 ),
                 'defaults' => array(
                     'controller' => 'shop_admin_shop_reservation',
-                    'action'     => 'manage',
+                    'action'     => 'salessession',
                 ),
             ),
         ),
