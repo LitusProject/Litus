@@ -154,7 +154,7 @@ class Action
                 ->findOneById($this->entityId);
         } elseif ($this->entity == 'file') {
             return $this->entityManager
-                ->getRepository('CudiBundle\Entity\File\Mapping')
+                ->getRepository('CudiBundle\Entity\File\ArticleMap')
                 ->findOneById($this->entityId);
         } elseif ($this->entity == 'mapping') {
             return $this->entityManager
@@ -194,7 +194,7 @@ class Action
                 ->findOneById($this->previousId);
         } elseif ($this->entity == 'file') {
             return $this->entityManager
-                ->getRepository('CudiBundle\Entity\File\Mapping')
+                ->getRepository('CudiBundle\Entity\File\ArticleMap')
                 ->findOneById($this->previousId);
         } elseif ($this->entity == 'mapping') {
             return $this->entityManager
