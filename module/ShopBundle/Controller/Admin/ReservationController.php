@@ -20,13 +20,13 @@
 
 namespace ShopBundle\Controller\Admin;
 
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use ShopBundle\Entity\Reservation;
 use ShopBundle\Entity\Reservation\Permission as ReservationPermission;
 use ShopBundle\Entity\Session as SalesSession;
-use Zend\View\Model\ViewModel;
-use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
-use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * ReservationController
@@ -141,9 +141,9 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             return new ViewModel();
         }
         $items = $this->getEntityManager()
-                    ->getRepository('ShopBundle\Entity\Reservation')
-                    ->findBySalesSessionQuery($salesSession)
-                    ->getResult();
+            ->getRepository('ShopBundle\Entity\Reservation')
+            ->findBySalesSessionQuery($salesSession)
+            ->getResult();
         $file = new CsvFile();
 
         $heading = array('Person', 'Product', 'Amount','Total Price', 'Picked Up');
@@ -155,7 +155,7 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
                 (string) $item->getAmount(),
                 (string) $item->getAmount() * $item->getProduct()->getSellPrice(),
                 ' ',
-          );
+            );
         }
 
         $document = new CsvGenerator($heading, $results);
@@ -209,7 +209,6 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             )
         );
     }
-
 
     /**
      * @return Reservation|null
