@@ -81,6 +81,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'  => 'checkbox',
+                'name'  => 'poc_group',
+                'label' => 'Is POC group'
+                'value' => $this->isPocGroup,
+                'attributes' => array(
+                    'disabled' => $this->isPocGroup,
+                ),
+            )
+        );
+
+        $this->add(
+            array(
                 'type'    => 'textarea',
                 'name'    => 'extra_members',
                 'label'   => 'Extra Members',
