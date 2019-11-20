@@ -83,7 +83,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             array(
                 'type'  => 'checkbox',
                 'name'  => 'poc_group',
-                'label' => 'Is POC group'
+                'label' => 'Is POC Group',
                 'value' => $this->isPocGroup,
                 'attributes' => array(
                     'disabled' => $this->isPocGroup,
