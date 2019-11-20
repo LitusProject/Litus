@@ -2789,16 +2789,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v3.4.32",
+            "version": "v3.4.35",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "4727d7f3c99b9dea0ae70ed4f34645728aa90453"
+                "reference": "17b154f932c5874cdbda6d05796b6490eec9f9f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/4727d7f3c99b9dea0ae70ed4f34645728aa90453",
-                "reference": "4727d7f3c99b9dea0ae70ed4f34645728aa90453",
+                "url": "https://api.github.com/repos/symfony/console/zipball/17b154f932c5874cdbda6d05796b6490eec9f9f7",
+                "reference": "17b154f932c5874cdbda6d05796b6490eec9f9f7",
                 "shasum": ""
             },
             "require": {
@@ -2857,20 +2857,20 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2019-10-06T19:52:09+00:00"
+            "time": "2019-11-13T07:12:39+00:00"
         },
         {
             "name": "symfony/debug",
-            "version": "v4.3.5",
+            "version": "v4.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
-                "reference": "cc5c1efd0edfcfd10b354750594a46b3dd2afbbe"
+                "reference": "5ea9c3e01989a86ceaa0283f21234b12deadf5e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug/zipball/cc5c1efd0edfcfd10b354750594a46b3dd2afbbe",
-                "reference": "cc5c1efd0edfcfd10b354750594a46b3dd2afbbe",
+                "url": "https://api.github.com/repos/symfony/debug/zipball/5ea9c3e01989a86ceaa0283f21234b12deadf5e2",
+                "reference": "5ea9c3e01989a86ceaa0283f21234b12deadf5e2",
                 "shasum": ""
             },
             "require": {
@@ -2913,7 +2913,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2019-09-19T15:51:53+00:00"
+            "time": "2019-10-28T17:07:32+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
