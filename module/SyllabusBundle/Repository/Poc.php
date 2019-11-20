@@ -40,9 +40,6 @@ class Poc extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('p', 'g')
             ->from('SyllabusBundle\Entity\Poc', 'p')
-            ->where(
-
-            )
             ->innerJoin('p.groupId', 'g')
             ->orderBy('g.name', 'ASC')
             ->getQuery();
