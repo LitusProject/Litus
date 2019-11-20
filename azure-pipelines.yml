@@ -1,5 +1,6 @@
 variables:
   lessVersion: 1.7.5
+  nodeVersion: 10
   pgsqlVersion: 11
   phpVersion: 7.3
 
@@ -43,6 +44,16 @@ jobs:
     pool:
       vmImage: ubuntu-latest
     steps:
+      - template: .azure-pipelines/00-install-node.yml
+        parameters:
+          nodeVersion: $(nodeVersion)
+
+      - template: .azure-pipelines/00-install-postgresql.yml
+        parameters:
+          pgsqlVersion: $(pgsqlVersion)
+
+      - template: .azure-pipelines/00-install-redis.yml
+
       - template: .azure-pipelines/00-install-less.yml
         parameters:
           lessVersion: $(lessVersion)
@@ -50,12 +61,6 @@ jobs:
       - template: .azure-pipelines/00-install-php-modules.yml
         parameters:
           phpVersion: $(phpVersion)
-
-      - template: .azure-pipelines/00-install-postgresql.yml
-        parameters:
-          pgsqlVersion: $(pgsqlVersion)
-
-      - template: .azure-pipelines/00-install-redis.yml
 
       - template: .azure-pipelines/10-configure-php.yml
         parameters:
