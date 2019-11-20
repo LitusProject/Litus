@@ -1,7 +1,7 @@
 variables:
   lessVersion: 1.7.5
   nodeVersion: 10
-  pgsqlVersion: 11
+  pgsqlVersion: 12
   phpVersion: 7.3
 
 jobs:
