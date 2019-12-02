@@ -4499,16 +4499,16 @@
         },
         {
             "name": "zendframework/zend-http",
-            "version": "2.10.0",
+            "version": "2.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-http.git",
-                "reference": "4b4983178693a8fdda53b0bbee58552e2d2b1ac0"
+                "reference": "d1906132bb0ba48124088721c4a5187af101037b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-http/zipball/4b4983178693a8fdda53b0bbee58552e2d2b1ac0",
-                "reference": "4b4983178693a8fdda53b0bbee58552e2d2b1ac0",
+                "url": "https://api.github.com/repos/zendframework/zend-http/zipball/d1906132bb0ba48124088721c4a5187af101037b",
+                "reference": "d1906132bb0ba48124088721c4a5187af101037b",
                 "shasum": ""
             },
             "require": {
@@ -4550,7 +4550,7 @@
                 "zend",
                 "zf"
             ],
-            "time": "2019-02-19T18:58:14+00:00"
+            "time": "2019-12-02T16:17:25+00:00"
         },
         {
             "name": "zendframework/zend-hydrator",
@@ -7237,7 +7237,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "doctrine/doctrine-orm-module": 0
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
