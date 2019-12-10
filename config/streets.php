@@ -1410,6 +1410,10 @@ return array(
                 'name'     => 'Meesbergpad',
             ),
             array(
+                'register' => 218,
+                'name'     => 'Meikeverstraat',
+            ),
+            array(
                 'register' => 2077,
                 'name'     => 'Meugenslaan Meugenslaan',
             ),
@@ -2762,6 +2766,10 @@ return array(
             array(
                 'register' => 6180,
                 'name'     => 'Ridderstraat',
+            ),
+            array(
+                'register' => 219,
+                'name'     => 'Riddersstraat',
             ),
             array(
                 'register' => 1182,
