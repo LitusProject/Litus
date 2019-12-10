@@ -3620,6 +3620,10 @@ return array(
                 'name'     => 'Leibeekstraat',
             ),
             array(
+                'register' => 220,
+                'name'     => 'Leopold Decouxlaan',
+            ),
+            array(
                 'register' => 142,
                 'name'     => 'Lijnloperspad',
             ),
