@@ -41,7 +41,7 @@
         "misterion/ko-process": "^0.5",
         "mtdowling/cron-expression": "^1.2",
         "ocramius/package-versions": "^1.3",
-        "oxcom/zend-twig": "^0.2",
+        "oxcom/zend-twig": "^0.3",
         "packagelist/yuicompressor-bin": "^2.4",
         "sentry/sentry": "^1.9",
         "symfony/console": "^3.4",
