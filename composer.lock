@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6408e7df193cc5bdafdcfed0136a9619",
+    "content-hash": "aede8f2c06ad90f93dde7e2cf93d093b",
     "packages": [
         {
             "name": "cboden/ratchet",
@@ -6972,30 +6972,31 @@
         },
         {
             "name": "slevomat/coding-standard",
-            "version": "5.0.4",
+            "version": "6.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slevomat/coding-standard.git",
-                "reference": "287ac3347c47918c0bf5e10335e36197ea10894c"
+                "reference": "beea16e33a97884ddfcc5d310b78e0a394538505"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/287ac3347c47918c0bf5e10335e36197ea10894c",
-                "reference": "287ac3347c47918c0bf5e10335e36197ea10894c",
+                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/beea16e33a97884ddfcc5d310b78e0a394538505",
+                "reference": "beea16e33a97884ddfcc5d310b78e0a394538505",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.1",
-                "phpstan/phpdoc-parser": "^0.3.1",
-                "squizlabs/php_codesniffer": "^3.4.1"
+                "phpstan/phpdoc-parser": "0.3.5 - 0.4.1",
+                "squizlabs/php_codesniffer": "^3.5.3"
             },
             "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "0.5.0",
                 "jakub-onderka/php-parallel-lint": "1.0.0",
                 "phing/phing": "2.16.1",
-                "phpstan/phpstan": "0.11.4",
-                "phpstan/phpstan-phpunit": "0.11",
-                "phpstan/phpstan-strict-rules": "0.11",
-                "phpunit/phpunit": "8.0.5"
+                "phpstan/phpstan": "0.11.19|0.12",
+                "phpstan/phpstan-phpunit": "0.11.2|0.12",
+                "phpstan/phpstan-strict-rules": "0.11.1|0.12",
+                "phpunit/phpunit": "7.5.18|8.5.0"
             },
             "type": "phpcodesniffer-standard",
             "autoload": {
@@ -7008,7 +7009,7 @@
                 "MIT"
             ],
             "description": "Slevomat Coding Standard for PHP_CodeSniffer complements Consistence Coding Standard by providing sniffs with additional checks.",
-            "time": "2019-03-22T19:10:53+00:00"
+            "time": "2019-12-09T17:24:48+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
