@@ -159,16 +159,16 @@
         },
         {
             "name": "colinmollenhour/credis",
-            "version": "1.11.0",
+            "version": "1.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/colinmollenhour/credis.git",
-                "reference": "ee56982176ebcb8ad6acd51b7cddbc6b0a9de1dd"
+                "reference": "bd1da4698ab1918477f9e71e5ff0062b9a345008"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/colinmollenhour/credis/zipball/ee56982176ebcb8ad6acd51b7cddbc6b0a9de1dd",
-                "reference": "ee56982176ebcb8ad6acd51b7cddbc6b0a9de1dd",
+                "url": "https://api.github.com/repos/colinmollenhour/credis/zipball/bd1da4698ab1918477f9e71e5ff0062b9a345008",
+                "reference": "bd1da4698ab1918477f9e71e5ff0062b9a345008",
                 "shasum": ""
             },
             "require": {
@@ -195,7 +195,7 @@
             ],
             "description": "Credis is a lightweight interface to the Redis key-value store which wraps the phpredis library when available for better performance.",
             "homepage": "https://github.com/colinmollenhour/credis",
-            "time": "2019-10-25T19:28:45+00:00"
+            "time": "2019-11-26T18:09:45+00:00"
         },
         {
             "name": "container-interop/container-interop",
