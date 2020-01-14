@@ -142,6 +142,21 @@ Het Student IT Bedrijvenrelaties Team',
         'description' => 'Extra line contract second part',
     ),
     array(
+        'key'   => 'br.corporate_jobfair_info',
+        'value' => 'Dear participant of the Student IT Jobfair,
+
+To complete your participation at our Jobfair, we kindly request to fill out the forms below so that we can provide you with optimal service. Not all forms have to be filled out at once as you can can continue your process where you left off. Every form has its own deadline though:<br><br>
+
+
+
+If you have any more requests, questions or encounter issues filling out this form, please contact us at corporaterelations@vtk.be .<br><br>
+
+Student IT Corporate Relations wishes you a successful recruiting event!<br><br>
+
+Student IT Corporate Relations',
+        'description' => 'Information on corporate jobfair overview',
+    ),
+    array(
         'key'   => 'br.cv_book_foreword',
         'value' => '<section title="Example section">
 <content>
