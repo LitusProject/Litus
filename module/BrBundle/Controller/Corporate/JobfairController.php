@@ -31,6 +31,12 @@ class JobfairController extends \BrBundle\Component\Controller\CorporateControll
 {
     public function overviewAction()
     {
-        return new ViewModel();
+        return new ViewModel(
+          array(
+            'jobfairInfo' => $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.corporate_jobfair_info'),
+              )
+        );
     }
 }
