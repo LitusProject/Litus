@@ -51,7 +51,7 @@
         "twitter/bootstrap": "^3.3"
     },
     "require-dev": {
-        "zendframework/zend-developer-tools": "^1.2",
+        "zendframework/zend-developer-tools": "^2.0",
 
         "phpstan/phpstan": "^0.11",
         "phpstan/phpstan-doctrine": "^0.11",
