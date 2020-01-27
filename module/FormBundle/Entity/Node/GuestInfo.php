@@ -23,6 +23,8 @@ namespace FormBundle\Entity\Node;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 use Zend\Http\PhpEnvironment\Request;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+
 
 /**
  * This entity stores info about a guest.
@@ -171,6 +173,22 @@ class GuestInfo
     public function getSessionId()
     {
         return $this->sessionId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUsername()
+    {
+        return '';
+    }
+
+    /**
+     * @return string
+     */
+     public function getOrganizationStatus(AcademicYearEntity $academicYear)
+    {
+        return '';
     }
 
     /**
