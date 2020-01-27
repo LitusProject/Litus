@@ -51,14 +51,14 @@
         "twitter/bootstrap": "^3.3"
     },
     "require-dev": {
-        "zendframework/zend-developer-tools": "^1.2",
+        "zendframework/zend-developer-tools": "^2.0",
 
         "phpstan/phpstan": "^0.11",
         "phpstan/phpstan-doctrine": "^0.11",
         "phpstan/extension-installer": "^1.0",
         "mavimo/phpstan-junit": "^0.2",
         "squizlabs/php_codesniffer": "^3.3",
-        "slevomat/coding-standard": "^5.0"
+        "slevomat/coding-standard": "^6.1"
     },
     "autoload": {
         "psr-4": {

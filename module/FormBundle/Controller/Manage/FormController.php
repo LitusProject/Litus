@@ -579,10 +579,10 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
         $file = new CsvFile();
 
-        $heading = array('ID', 'Submitter', 'Submitted');
-        if ($viewerMap->isMail()) {
-            $heading[] = 'Email';
-        }
+        // $heading = array('ID', 'Submitter', 'Submitted');
+        // if ($viewerMap->isMail()) {
+        //     $heading[] = 'Email';
+        // }
 
         if ($form->getType() == 'doodle') {
             $document = new DoodleGenerator($this->getEntityManager(), $viewerMap);

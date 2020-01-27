@@ -38,7 +38,7 @@ class Checkbox extends \FormBundle\Entity\Field
      */
     public function getValueString(Language $language, $value)
     {
-        return $value ? 'X' : '';
+        return $value ? 'TRUE' : 'FALSE';
     }
 
     /**
