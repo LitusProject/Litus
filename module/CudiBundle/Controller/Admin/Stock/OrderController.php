@@ -262,7 +262,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                     'The order item was successfully added!'
                 );
 
-                $this->redirect()->toRoute(
+                return $this->redirect()->toRoute(
                     'cudi_admin_stock_order',
                     array(
                         'action' => 'edit',
@@ -270,7 +270,11 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                     )
                 );
 
-                return new ViewModel();
+//                return new ViewModel(
+//                    array(
+//                        'currentAcademicYear' => $academicYear,
+//                    )
+//                );
             }
         }
 
