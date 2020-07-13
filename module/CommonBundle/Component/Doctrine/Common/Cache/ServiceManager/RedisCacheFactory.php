@@ -23,6 +23,7 @@ namespace CommonBundle\Component\Doctrine\Common\Cache\ServiceManager;
 use Doctrine\Common\Cache\RedisCache;
 use Interop\Container\ContainerInterface;
 use Redis;
+use RedisException;
 use RuntimeException;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -48,31 +49,36 @@ class RedisCacheFactory implements FactoryInterface
         }
 
         $redis = new Redis();
-        if (isset($config['redis']['persistent_id'])) {
-            $connect = $redis->pconnect(
-                $config['redis']['host'],
-                $config['redis']['port'],
-                $config['redis']['timeout'],
-                $config['redis']['persistent_id']
-            );
-        } else {
-            $connect = $redis->connect(
-                $config['redis']['host'],
-                $config['redis']['port'],
-                $config['redis']['timeout']
-            );
-        }
 
-        if (!$connect) {
-            throw new RuntimeException('Failed to connect to Redis server');
+        try {
+            if (isset($config['redis']['persistent_id'])) {
+                $connect = $redis->pconnect(
+                    $config['redis']['host'],
+                    $config['redis']['port'],
+                    $config['redis']['timeout'],
+                    $config['redis']['persistent_id']
+                );
+            } else {
+                $connect = $redis->connect(
+                    $config['redis']['host'],
+                    $config['redis']['port'],
+                    $config['redis']['timeout']
+                );
+            }
+
+            if (!$connect) {
+                throw new RuntimeException('Failed to connect to Redis server');
+            }
+        } catch (RedisException $e) {
+            return null;
         }
 
         if (isset($config['redis']['database']) && $config['redis']['database'] != 0) {
-            $connect = $redis->select($config['redis']['database']);
-        }
+            $select = $redis->select($config['redis']['database']);
 
-        if (!$connect) {
-            throw new RuntimeException('Failed to select Redis database');
+            if (!$select) {
+                throw new RuntimeException('Failed to select Redis database');
+            }
         }
 
         $redisCache = new RedisCache();

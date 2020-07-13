@@ -18,20 +18,17 @@
  * @license http://litus.cc/LICENSE
  */
 
-$libOptions = array();
-if (extension_loaded('redis')) {
-    $serializer = Redis::SERIALIZER_PHP;
-    if (extension_loaded('igbinary')) {
-        $serializer = Redis::SERIALIZER_IGBINARY;
-    }
-
-    $libOptions = array(
-        Redis::OPT_SERIALIZER => $serializer,
-    );
+$serializer = Redis::SERIALIZER_PHP;
+if (extension_loaded('igbinary')) {
+    $serializer = Redis::SERIALIZER_IGBINARY;
 }
 
+$libOptions = array(
+    Redis::OPT_SERIALIZER => $serializer,
+);
+
 return array(
-    'host'           => '127.0.0.1',
+    'host'           => '',
     'port'           => 6379,
     'timeout'        => null,
     'persistent_id'  => '',
