@@ -164,13 +164,8 @@ Student IT',
         'description' => 'The date interval the academic year will start before the official start',
     ),
     array(
-        'key'   => 'shibboleth_url',
-        'value' => serialize(
-            array(
-                'faye' => 'https://faye.vtk.be:8443/Shibboleth.sso/Login?target=https%3A%2F%2Ffaye.vtk.be%3A8443%2Fshibboleth%2F',
-                'liv'  => 'https://liv.vtk.be:8443/Shibboleth.sso/Login?target=https%3A%2F%2Fliv.vtk.be%3A8443%2Fshibboleth%2F',
-            )
-        ),
+        'key'         => 'shibboleth_url',
+        'value'       => 'https://faye.vtk.be:8443/Shibboleth.sso/Login?target=https%3A%2F%2Ffaye.vtk.be%3A8443%2Fshibboleth%2F',
         'description' => 'The Shibboleth authentication URL, wherein the target parameter specifies the redirect',
     ),
     array(

@@ -33,19 +33,16 @@ class Version
      */
     public static function getCommitHash($length = null)
     {
-        if (file_exists(__DIR__ . '/../../../../COMMIT')) {
+        $commitHash = "(devel)";
+        if (isset($_ENV['COMMIT'])) {
+            $commitHash = $_ENV['COMMIT'];
+            if ($length !== null) {
+                $commitHash = substr($commitHash, 0, $length);
+            }
+        } elseif (file_exists(__DIR__ . '/../../../../COMMIT')) {
             $commitHash = trim(file_get_contents(__DIR__ . '/../../../../COMMIT'));
             if ($length !== null) {
                 $commitHash = substr($commitHash, 0, $length);
-            }
-        } else {
-            $commitHash = trim(exec('git rev-parse HEAD'));
-            if ($length !== null) {
-                $commitHash = substr($commitHash, 0, $length);
-            }
-
-            if (exec('git status --short') != '') {
-                $commitHash .= '-dirty';
             }
         }
 

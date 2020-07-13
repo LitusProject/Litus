@@ -23,52 +23,25 @@ use Zend\Session\Storage\SessionArrayStorage;
 use Zend\Session\Validator\HttpUserAgent;
 use Zend\Session\Validator\RemoteAddr;
 
-if (!file_exists(__DIR__ . '/../session.config.php')) {
-    throw new RuntimeException(
-        'The session configuration file (' . (__DIR__ . '/../session.config.php') . ') was not found'
+if (file_exists(__DIR__ . '/../session.config.php')) {
+    // TODO: Remove this branch once all deployments have been containerized
+    $sessionConfig = include __DIR__ . '/../session.config.php';
+} else {
+    $sessionConfig = array(
+        'cookie_domain' => $_ENV['LITUS_SESSION_COOKIE_DOMAIN'] ?? '',
+        'cookie_secure' => $_ENV['LITUS_SESSION_COOKIE_SECURE'] ?? true,
     );
 }
 
-$sessionConfig = include __DIR__ . '/../session.config.php';
-
-if (getenv('APPLICATION_ENV') != 'development') {
-    if (!extension_loaded('redis')) {
-        throw new RuntimeException('Litus requires the Redis extension to be loaded');
-    }
-
-    if (!file_exists(__DIR__ . '/../redis.config.php')) {
-        throw new RuntimeException(
-            'The Redis configuration file (' . (__DIR__ . '/../redis.config.php') . ') was not found'
-        );
-    }
-
-    $redisConfig = include __DIR__ . '/../redis.config.php';
-
-    return array(
-        'session_config' => array_merge(
-            array(
-                'cookie_secure'    => true,
-                'php_save_handler' => 'redis',
-                'save_path'        => RedisUri::build($redisConfig, 'tcp'),
-            ),
-            $sessionConfig
-        ),
-        'session_manager' => array(
-            'validators' => array(
-                HttpUserAgent::class,
-                RemoteAddr::class,
-            ),
-        ),
-        'session_storage' => array(
-            'type' => SessionArrayStorage::class,
-        ),
-    );
-}
+$redisConfig = include __DIR__ . '/redis.global.php';
+$redisConfig = $redisConfig['redis'];
 
 return array(
     'session_config' => array_merge(
         array(
-            'cookie_secure' => false,
+            'cookie_secure'    => true,
+            'php_save_handler' => 'redis',
+            'save_path'        => RedisUri::build($redisConfig, 'tcp'),
         ),
         $sessionConfig
     ),

@@ -1,11 +1,11 @@
-# These files should be created explicitlys
+# These files should be created explicitly
 config/database.config.php
 config/proxy.config.php
 config/redis.config.php
 config/sentry.config.php
 config/session.config.php
 
-# We don't want data in our repository
+# We don't want data in our Docker images
 data/banner/images/
 data/br/companies/
 data/br/files/
@@ -25,9 +25,14 @@ public/_publications/pdf/
 public/_publications/html/
 public/_br/img/
 
-# Exclude dependencies
-vendor/
+# Configuration files for tooling
+.azure-pipelines/
+.license_header
+.mergify.yml
+azure-pipelines.yml
+phpcs.xml
+phpstan.neon
 
-# Output from external tools
-phpcs/
-phpstan/
+# Exclude the Git repsitory
+.git/
+.gitignore

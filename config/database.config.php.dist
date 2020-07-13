@@ -20,11 +20,10 @@
 
 return array(
     'relational' => array(
-        'driver'   => 'Doctrine\DBAL\Driver\PDOPgSql\Driver',
         'host'     => 'localhost',
         'port'     => 5432,
         'user'     => 'litus',
-        'password' => 'huQeyU8te3aXusaz',
+        'password' => '',
         'dbname'   => 'litus',
     ),
 );
