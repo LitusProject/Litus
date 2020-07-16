@@ -347,6 +347,36 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         );
     }
 
+    public function deleteAllAction()
+    {
+        $order = $this->getOrderEntity();
+        if ($order === null) {
+            return new ViewModel();
+        }
+
+        $items = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Stock\Order\Item')
+            ->findAllByOrderOnAlpha($order);
+        
+        foreach ($items as $item) {
+            $this->getEntityManager()->remove($item);
+        }
+        $this->getEntityManager()->flush();
+
+        $this->flashMessenger()->success(
+            'SUCCESS',
+            'All the order items were successfully removed!'
+        );
+
+        $this->redirect()->toRoute(
+            'cudi_admin_stock_order',
+            array(
+                'action' => 'edit',
+                'id'     => $order->getId(),
+            )
+        );
+    }
+
     public function deleteAction()
     {
         $this->initAjax();

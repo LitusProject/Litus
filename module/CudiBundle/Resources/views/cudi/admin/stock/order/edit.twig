@@ -84,6 +84,20 @@
                     </div>
                 </div>
             {% endif %}
+            {% if hasAccess('cudi_admin_stock_order', 'deleteAll') %}
+                <div class="sidebox">
+                    <div class="title">Remove All Order Items</div>
+                    <div class="content">
+                        <p>
+                            <i>Please hit the link below to remove all items in the order!</i>
+                        </p>
+                        <p>
+                            <a href="#" id="deleteAll">&rarr; Remove All</a>
+                            {# <a href="{{ url('cudi_admin_stock_order', {"action": "deleteAll", "id": order.getId()}) }}">&rarr; Delete All</a> #}
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
         {% else %}
             {% if hasAccess('cudi_admin_stock_order', 'cancel') %}
                 <div class="sidebox">
@@ -159,6 +173,30 @@
                     </p>
                     <div class="footer">
                         <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="removeAllOrder" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete All Items
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete all order items!
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="deleteAll">Yes</button>
                         <button class="cancel" data-dismiss="modal">No</button>
                     </div>
                 </div>
@@ -257,6 +295,8 @@
             });
 
             $('.item .delete').click(openModalRemove);
+            $('#deleteAll').click(openModalRemoveAll);
+
             $('#cancelOrder').click(openModalCancel);
         });
 
@@ -299,5 +339,17 @@
             $('.order_removed_error').removeClass('hide');
             $('#removeOrder').modal('hide');
         }
+
+        function openModalRemoveAll(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeAllOrder = $('#removeAllOrder');
+            removeAllOrder.find('.deleteAll').unbind('click').click(function () {
+                window.location.href = '{{ url('cudi_admin_stock_order', {'action': 'deleteAll', 'id': order.getId()}) }}';
+            });
+            removeAllOrder.modal();
+        }
+        
     </script>
 {% endblock %}

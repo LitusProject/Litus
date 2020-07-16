@@ -209,7 +209,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
 
     private function installBankDevice()
     {
-        $bankdevices = array('Device 1', 'Device 2');
+        $bankdevices = array('Device 1', 'Device 2', 'CashFree');
 
         foreach ($bankdevices as $item) {
             $bankdevice = $this->getEntityManager()
