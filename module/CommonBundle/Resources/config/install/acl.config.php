@@ -48,7 +48,7 @@ return array(
             'expire',
         ),
         'common_admin_unit' => array(
-            'add', 'delete', 'deleteMember', 'edit', 'manage', 'members', 'prune',
+            'add', 'delete', 'deleteMember', 'edit', 'manage', 'members', 'prune', 'csv'
         ),
         'common_admin_visit' => array(
             'manage', 'search',
