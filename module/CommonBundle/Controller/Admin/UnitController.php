@@ -26,6 +26,9 @@ use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
 use CommonBundle\Entity\General\Organization\Unit;
 use CommonBundle\Entity\User\Person\Organization\UnitMap\Academic as UnitMapAcademic;
 use CommonBundle\Entity\User\Person\Organization\UnitMap\External as UnitMapExternal;
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use Zend\Http\Headers;
 use Imagick;
 use Zend\View\Model\ViewModel;
 
@@ -106,6 +109,74 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'form' => $form,
+            )
+        );
+    }
+
+    // Generate CSV from units for use in email lists
+    public function csvAction()
+    {
+        $file = new CsvFile();
+        $heading = array('domain','mailacceptinggeneralid','maildrop');
+
+        $domain = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.mail_domain');
+
+        $academicYear = $this->getAcademicYearEntity();
+
+        $units = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+            ->findAll();
+
+        $unitsWithMembers = array();
+        foreach ($units as $key => $unit) {
+            $members = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
+                ->findBy(array('unit' => $unit, 'academicYear' => $academicYear));
+
+            if (isset($members[0])) {
+                array_push($unitsWithMembers, $unit);
+                unset($units[$key]);
+            }
+        }
+
+        $results = array();
+        foreach ($unitsWithMembers as $unit) {
+            $unitFormat = strtolower(str_replace(' ','',$unit->getName()));
+            $unitYearFormat = $unitFormat . '_' . $academicYear->getCode(true);
+
+            $members = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
+                ->findBy(array('unit' => $unit, 'academicYear' => $academicYear));
+
+            foreach ($members as $member) {
+                $lastNameFormat = str_replace(' ', '', $member->getLastName());
+                $nameFormatWithAccents = strtolower($member->getFirstName() . '.' . $lastNameFormat);
+                // Remove accents by transliterating one character set onto another
+                // setlocale is necessary, otherwise accents become question marks
+                setlocale(LC_ALL, 'en_US.utf8');
+                $nameFormat = iconv("UTF-8",'ASCII//TRANSLIT',$nameFormatWithAccents);
+
+                $results[] = array($domain, $unitYearFormat, $nameFormat);
+            }
+        }
+
+        $document = new CsvGenerator($heading, $results);
+        $document->generateDocument($file);
+
+        $headers = new Headers();
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="mailinglistdata.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
             )
         );
     }
