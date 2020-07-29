@@ -22,6 +22,7 @@ namespace BrBundle\Entity\Event;
 
 use BrBundle\Entity\Company;
 use BrBundle\Entity\Event;
+use BrBundle\Entity\Event\CompanyMetadata;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -56,6 +57,14 @@ class CompanyMap
     private $event;
 
     /**
+     *@var CompanyMetadata The metadata of the company for this event
+     *
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Event\CompanyMetadata")
+     * @ORM\JoinColumn(referencedColumnName="id", nullable=true)
+     */
+    private $metadata;
+
+    /**
      * @param Company $company
      * @param Event   $event
      */
@@ -88,4 +97,25 @@ class CompanyMap
     {
         return $this->event;
     }
+
+    /**
+     * @param  CompanyMetadata $metadata
+     *
+     * @return self
+     */
+    public function setCompanyMetadata(CompanyMetadata $metadata)
+    {
+        $this->metadata = $metadata;
+
+        return $this;
+    }
+
+    /**
+     * @return CompanyMetadata
+     */
+    public function getCompanyMetadata()
+    {
+        return $this->metadata;
+    }
+
 }

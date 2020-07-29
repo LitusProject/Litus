@@ -70,6 +70,11 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
+        $person = $this->getAuthentication()->getPersonObject();
+        if ($person == null){
+            return new ViewModel();
+        }
+
         $form = $this->getForm('br_event_add');
 
         if ($this->getRequest()->isPost()) {

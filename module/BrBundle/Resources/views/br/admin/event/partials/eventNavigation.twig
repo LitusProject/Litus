@@ -1,0 +1,15 @@
+<header class="controller_sub_header">
+    <nav class="controller_sub_nav">
+        <ul>
+            {% if hasAccess('br_admin_event', 'edit') %}
+                <li><a {% if 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_event', {"action": "edit", "id": event.getId()}) }}">Edit Event</a></li>
+            {% endif %}
+            {% if hasAccess('br_admin_event_company', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_event_company', {"action": "manage", "event": event.getId()}) }}">Companies</a></li>
+            {% endif %}
+            {% if hasAccess('br_admin_event_location', 'view') %}
+                <li><a {% if 'view' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_event_location', {"action": "view", "event": event.getId()}) }}">Location</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

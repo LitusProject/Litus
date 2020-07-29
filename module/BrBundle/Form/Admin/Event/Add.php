@@ -117,6 +117,48 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
+        $this->add(
+            array(
+                'type'     => 'datetime',
+                'name'     => 'subscription_date',
+                'label'    => 'Subscription opening date',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name'    => 'Date',
+                                'options' => array(
+                                    'format' => 'd/m/Y H:i',
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'datetime',
+                'name'     => 'mapview_date',
+                'label'    => 'Map viewing date',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name'    => 'Date',
+                                'options' => array(
+                                    'format' => 'd/m/Y H:i',
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            )
+        );
+
         $this->addSubmit('Add', 'mail_add');
 
         if ($this->event !== null) {

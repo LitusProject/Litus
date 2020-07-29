@@ -67,18 +67,32 @@ class Event
     private $description;
 
     /**
-     * @var DateTime The start date and time of this reservation.
+     * @var DateTime The start date and time of this event.
      *
      * @ORM\Column(name="start_date", type="datetime")
      */
     private $startDate;
 
     /**
-     * @var DateTime The end date and time of this reservation.
+     * @var DateTime The end date and time of this event.
      *
      * @ORM\Column(name="end_date", type="datetime")
      */
     private $endDate;
+
+    /**
+     * @var DateTime The start date and time of the subscriptions.
+     *
+     * @ORM\Column(name="subscription_date", type="datetime", nullable=true)
+     */
+    private $subscriptionDate;
+
+    /**
+     * @var DateTime The start date and time of the map view. After this time the map is displayed
+     *
+     * @ORM\Column(name="mapview_date", type="datetime", nullable=true)
+     */
+    private $mapviewDate;
 
     /**
      * @param Person $creator
@@ -156,6 +170,44 @@ class Event
     /**
      * @return DateTime
      */
+    public function getSubscriptionDate()
+    {
+        return $this->subscriptionDate;
+    }
+
+    /**
+     * @param  DateTime $endDate
+     * @return self
+     */
+    public function setSubscriptionDate(DateTime $subscriptionDate)
+    {
+        $this->subscriptionDate = $subscriptionDate;
+
+        return $this;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getMapviewDate()
+    {
+        return $this->mapviewDate;
+    }
+
+    /**
+     * @param  DateTime $mapviewDate
+     * @return self
+     */
+    public function setMapviewDate(DateTime $mapviewDate)
+    {
+        $this->mapviewDate = $mapviewDate;
+
+        return $this;
+    }
+
+    /**
+     * @return DateTime
+     */
     public function getEndDate()
     {
         return $this->endDate;
@@ -178,5 +230,14 @@ class Event
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * @return string
+     */
+    public function setCompanies($companies)
+    {
+
+        return $this;
     }
 }

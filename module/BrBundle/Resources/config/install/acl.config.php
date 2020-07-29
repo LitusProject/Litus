@@ -60,6 +60,15 @@ return array(
         'br_admin_cv_entry' => array(
             'manage', 'delete', 'export', 'exportAcademics',
         ),
+        'br_admin_event' => array(
+            'manage', 'delete', 'add', 'edit', 'old',
+        ),
+        'br_admin_event_company' => array(
+            'manage',
+        ),
+        'br_admin_event_location' => array(
+            'manage',
+        ),
         'br_admin_invoice' => array(
             'history', 'view', 'edit', 'manage', 'download', 'payed', 'pay', 'manualAdd', 'csv', 'payedList',
         ),

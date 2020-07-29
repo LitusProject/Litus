@@ -38,7 +38,14 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         $data = $this->stdExtract($object, self::$stdKeys);
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
         $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
-
+        $date = $object->getSubscriptionDate();
+        if ($date != null){
+            $data['subscription_date'] = $date->format('d/m/Y H:i');
+        }
+        $date = $object->getMapviewDate();
+        if ($date != null){
+            $data['mapview_date'] = $object->getMapviewDate()->format('d/m/Y H:i');
+        }
         return $data;
     }
 
@@ -56,6 +63,14 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
 
         if (isset($data['end_date'])) {
             $object->setEndDate(self::loadDateTime($data['end_date']));
+        }
+
+        if (isset($data['subscription_date'])) {
+            $object->setSubscriptionDate(self::loadDateTime($data['subscription_date']));
+        }
+
+        if (isset($data['mapview_date'])) {
+            $object->setMapviewDate(self::loadDateTime($data['mapview_date']));
         }
 
         return $object;
