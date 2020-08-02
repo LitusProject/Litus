@@ -139,6 +139,11 @@ Student IT',
         'description' => 'The URL of the organization',
     ),
     array(
+        'key'         => 'enable_organization_signature',
+        'value'       => '0',
+        'description' => 'The signature of the organization',
+    ),
+    array(
         'key'         => 'university',
         'value'       => 'KU Leuven',
         'description' => 'The name of the university',

@@ -38,6 +38,7 @@ return array(
     'Links'    => 'Links',
     'Partners' => 'Partners',
 
+
     'Calendar'                            => 'Kalender',
     'Twitter'                             => 'Twitter',
     'News'                                => 'Nieuws',
@@ -123,4 +124,18 @@ return array(
     'Please login to see your POC\'ers!'                         => 'Login om jouw POC\'ers te bekijken',
     'Visit the poc page for more '                               => 'Bezoek de poc pagina voor meer ',
     'Order sandwiches and snacks.'                               => 'Bestel broodjes en tussendoortjes.',
+
+    'Signature' => 'Handtekening',
+    'Generate your signature' => 'Genereer jouw handtekening',
+    'Generate' => 'Genereer',
+    'Academic year' => 'Academiejaar',
+    'Telephone number' => 'GSM-nummer',
+    'Post' => 'Post',
+    'Adress'=>'Adres',
+    'I want a button that links to the VTK-Facebookpage on my signature'=>'Ik wil een knop naar de VTK-Facebookpagina op mijn handtekening',
+    'I want a button that links to the VTK-Instagrampage on my signature'=>'Ik wil een knop naar de VTK-Instagrampagina op mijn handtekening',
+    'Link to your LinkedIn (optional)'=>'Link naar jouw LinkedIn (optioneel)',
+    'Link to your Twitter (optional)'=>'Link naar jouw Twitter (optioneel)',
+    'Your function within VTK'=>'Jouw functie binnen VTK'
+
 );
