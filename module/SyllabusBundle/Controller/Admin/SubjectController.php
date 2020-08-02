@@ -240,7 +240,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     {
         $subjects = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Subject')
-            ->findAllByNameQuery($this->getParam('string'))
+            ->findAllByNameOrCodeQuery($this->getParam('string'))
             ->setMaxResults(20)
             ->getResult();
 
