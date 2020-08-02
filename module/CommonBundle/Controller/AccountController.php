@@ -54,7 +54,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         foreach ($studies as $enrollment) {
             $mappings[] = array(
                 'enrollment' => $enrollment,
-                'subjects'   => $this->getEntityManager()
+                'subjects' => $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
                     ->findAllByStudy($enrollment->getStudy()),
             );
@@ -80,19 +80,27 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             )
         );
 
+        $signatureEnabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('enable_organization_signature');
+
+
         return new ViewModel(
             array(
                 'academicYear' => $this->getCurrentAcademicYear(),
-                'metaData'     => $metaData,
-                'studies'      => $mappings,
-                'subjects'     => $subjectIds,
-                'profilePath'  => $this->getEntityManager()
+                'organizationYear' => $this->getCurrentAcademicYear(true),
+                'signatureEnabled' => $signatureEnabled,
+                'metaData' => $metaData,
+                'studies' => $mappings,
+                'subjects' => $subjectIds,
+                'profilePath' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
                 'profileForm' => $profileForm,
             )
         );
     }
+
 
     public function editAction()
     {
@@ -141,8 +149,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 ->getConfigValue('secretary.membership_article')
         );
         $isicMembership = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.isic_membership') == 1;
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.isic_membership') == 1;
         $isicRedirect = false;
         $isicOrder = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\IsicCard')
@@ -304,8 +312,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     $this->redirect()->toRoute(
                         'cudi_isic',
                         array(
-                            'action'       => 'form',
-                            'redirect'     => $this->getParam('return') ? $this->getParam('return') : 'common_account',
+                            'action' => 'form',
+                            'redirect' => $this->getParam('return') ? $this->getParam('return') : 'common_account',
                             'organization' => $selectedOrganization->getId(),
                             'size'         => $organizationData['tshirt_size'],
                         )
@@ -325,12 +333,12 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
         return new ViewModel(
             array(
-                'form'               => $form,
-                'metaData'           => $metaData,
+                'form' => $form,
+                'metaData' => $metaData,
                 'membershipArticles' => $membershipArticles,
                 'termsAndConditions' => $termsAndConditions,
-                'studentDomain'      => $studentDomain,
-                'academicYear'       => $this->getCurrentAcademicYear(),
+                'studentDomain' => $studentDomain,
+                'academicYear' => $this->getCurrentAcademicYear(),
             )
         );
     }
@@ -459,8 +467,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             );
 
             $filePath = 'public' . $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('common.profile_path');
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.profile_path');
 
             if ($form->isValid()) {
                 $formData = $form->getData();
@@ -504,10 +512,10 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 return new ViewModel(
                     array(
                         'result' => array(
-                            'status'  => 'success',
+                            'status' => 'success',
                             'profile' => $this->getEntityManager()
-                                ->getRepository('CommonBundle\Entity\General\Config')
-                                ->getConfigValue('common.profile_path') . '/' . $newFileName,
+                                    ->getRepository('CommonBundle\Entity\General\Config')
+                                    ->getConfigValue('common.profile_path') . '/' . $newFileName,
                         ),
                     )
                 );
@@ -516,7 +524,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     array(
                         'result' => array(
                             'status' => 'error',
-                            'form'   => array(
+                            'form' => array(
                                 'errors' => $form->getMessages(),
                             ),
                         ),
