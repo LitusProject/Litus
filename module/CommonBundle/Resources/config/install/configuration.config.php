@@ -100,6 +100,11 @@ Student IT',
         'description' => 'The system mail name',
     ),
     array(
+        'key'         => 'common.mail_domain',
+        'value'       => 'vtk.be',
+        'description' => 'mail domain used by unit csv generator',
+    ),
+    array(
         'key'         => 'organization_short_name',
         'value'       => 'Student IT',
         'description' => 'The short name of this organization',
@@ -132,6 +137,11 @@ Student IT',
         'key'         => 'organization_url',
         'value'       => 'http://vtk.be',
         'description' => 'The URL of the organization',
+    ),
+    array(
+        'key'         => 'enable_organization_signature',
+        'value'       => '0',
+        'description' => 'The signature of the organization',
     ),
     array(
         'key'         => 'university',
