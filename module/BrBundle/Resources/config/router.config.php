@@ -81,10 +81,11 @@ return array(
         'br_admin_company_job' => array(
             'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/br/company/job[/:action[/:id]][/]',
+                'route'       => '/admin/br/company/job[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[a-zA-Z0-9_-]*',
+                    'page'   => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'br_admin_company_job',
