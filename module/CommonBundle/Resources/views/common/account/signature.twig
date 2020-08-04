@@ -20,7 +20,7 @@
                 </tr> <!--### FUNCTIE ### -->
                 <tr>
                     <td colspan="2" style="color:#333333 ; font-size: 11px; font-family: Verdana, Arial, sans-serif;">
-                        {{ authenticatedPerson.getUnit(currentAcademicYear).getName() }}
+                        {{ authenticatedPerson.getUnit(organizationYear).getName() }}
                         VTK {{ organizationYear.getCode() }}
                     </td>
                 </tr> <!-- ### VTK ### -->
@@ -62,7 +62,7 @@
                         <a href="http://www.vtk.be"
                            style=" color: #00008F; text-decoration: none; font-weight: normal; font-size: 11px;">www.vtk.be</a>&nbsp;&nbsp;<span
                                 style="color: #FFD400;">e:&nbsp;</span>
-                        <a  id="emailVTK" href="mailto:{{ authenticatedPerson.getFirstName() }}.{{ authenticatedPerson.getLastName() }})@vtk.be"
+                        <a  id="emailVTK" href="mailto:{{ authenticatedPerson.getFirstName() }}.{{ authenticatedPerson.getLastName() }}@vtk.be"
                             style="color: #00008F; text-decoration: none; font-weight: normal; font-size: 11px; text-transform: lowercase;">
                             {{ authenticatedPerson.getFirstName() }}.{{ authenticatedPerson.getLastName() }}@vtk.be
                         </a>
