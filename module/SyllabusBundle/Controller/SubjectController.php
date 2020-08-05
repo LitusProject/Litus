@@ -39,7 +39,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
         $subjects = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
-            ->findAllSubjectsByNameOrCodeQuery($this->getParam('string'), $academicYear)
+            ->findAllSubjectsByNameQuery($this->getParam('string'), $academicYear)
             ->setMaxResults(20)
             ->getResult();
         $result = array();
