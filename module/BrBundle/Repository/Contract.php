@@ -372,6 +372,25 @@ class Contract extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     /**
      * @return \Doctrine\ORM\Query
      */
+    public function findAllOldUnsignedQuery()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('c')
+            ->from('BrBundle\Entity\Contract', 'c')
+            ->innerJoin('c.order', 'o')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('o.old', 'true'),
+                    $query->expr()->eq('c.signed', 'false')
+                )
+            )
+            ->orderBy('c.date', 'DESC')
+            ->getQuery();
+    }
+
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllSignedQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
