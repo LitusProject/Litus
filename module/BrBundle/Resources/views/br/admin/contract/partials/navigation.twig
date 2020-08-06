@@ -4,14 +4,18 @@
     <nav id="controller_nav">
         <ul>
             {% if hasAccess('br_admin_contract', 'manage') %}
-                <li><a {% if 'signedList' == getParam('action') %} class="active" {% endif %}
-                        href="{{ url('br_admin_contract', {"action": "csv"}) }}">CSV</a>
+                <li><a href="{{ url('br_admin_contract', {"action": "csv"}) }}">CSV</a>
+                </li>
+                <li><a href="{{ url('br_admin_contract', {'action': 'archiveUnsigned'}) }}">Archive unsigned</a>
                 </li>
                 <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') or 'delete' == getParam('action') %} class="active" {% endif %}
                         href="{{ url('br_admin_contract', {"action": "manage"}) }}">Manage</a>
                 </li>
                 <li><a {% if 'signedList' == getParam('action') %} class="active" {% endif %}
                         href="{{ url('br_admin_contract', {"action": "signedList"}) }}">Signed</a>
+                </li>
+                <li><a {% if 'unfinishedList' == getParam('action') %} class="active" {% endif %}
+                            href="{{ url('br_admin_contract', {"action": "unfinishedList"}) }}">Old unsigned</a>
                 </li>
             {% endif %}
         </ul>

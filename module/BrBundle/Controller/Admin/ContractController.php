@@ -68,6 +68,58 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
+    public function unfinishedListAction()
+    {
+        $contracts = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Contract')
+            ->findAllOldUnsignedQuery()
+            ->getResult();
+
+        $contractData = array();
+
+        foreach ($contracts as $contract) {
+            $contract->getOrder()->setEntityManager($this->getEntityManager());
+            $value = $contract->getOrder()->getTotalCostExclusive();
+            $contractData[] = array('contract' => $contract, 'value' => $value);
+        }
+
+        $paginator = $this->paginator()->createFromArray(
+            $contractData,
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator'         => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+                'em'                => $this->getEntityManager(),
+            )
+        );
+    }
+
+    public function archiveUnsignedAction()
+    {
+        $contracts = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Contract')
+            ->findAllNewUnsignedQuery()
+            ->getResult();
+
+        foreach ($contracts as $contract) {
+            if ($this->getCurrentAcademicYear(true)->getStartDate()>$contract->getDate()){
+                $contract->getOrder()->setOld();
+            }
+        }
+        $this->getEntityManager()->flush();
+
+        $this->redirect()->toRoute(
+            'br_admin_contract',
+            array(
+                'action' => 'manage',
+            )
+        );
+
+    }
+
     public function signedListAction()
     {
         $contracts = $this->getEntityManager()

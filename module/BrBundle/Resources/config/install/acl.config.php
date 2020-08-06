@@ -55,7 +55,7 @@ return array(
             'manage', 'add', 'delete',
         ),
         'br_admin_contract' => array(
-            'manage', 'edit', 'view', 'history', 'sign', 'signedList', 'download', 'delete', 'csv',
+            'manage', 'edit', 'view', 'history', 'sign', 'signedList', 'download', 'delete', 'csv', 'unfinishedList', 'archiveUnsigned'
         ),
         'br_admin_cv_entry' => array(
             'manage', 'delete', 'export', 'exportAcademics',
