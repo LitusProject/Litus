@@ -70,7 +70,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             return new ViewModel();
         }
 
-        $currentYear = $this->getCurrentAcademicYear();
+        $currentYear = $this->getCurrentAcademicYear(true);
 
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
@@ -317,7 +317,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         $totalMInvoiced = 0;
         $totalPaid = 0;
 
-        $currentYear = $this->getCurrentAcademicYear();
+        $currentYear = $this->getCurrentAcademicYear(true);
 
         $ids = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Contract')
