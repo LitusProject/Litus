@@ -28,4 +28,20 @@ namespace OnBundle\Repository;
  */
 class Slug extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
+    /**
+     * @param  string $name
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllByNameQuery($name)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('s')
+            ->from('OnBundle\Entity\Slug', 's')
+            ->where(
+                $query->expr()->like($query->expr()->lower('s.name'), ':name')
+            )
+            ->setParameter('name', '%' . strtolower($name) . '%')
+            ->orderBy('s.name')
+            ->getQuery()->getResult();
+    }
 }
