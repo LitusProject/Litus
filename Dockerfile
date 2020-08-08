@@ -109,14 +109,17 @@ RUN apk add --no-cache \
     imagemagick \
     libpq \
     libxml2 \
-    libzip
+    libzip \
+    openjdk11-jre
 
-RUN apk add --no-cache \
-    openjdk11-jre && \
-  apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.10/main --update-cache \
+RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.10/main --update-cache \
     nodejs==10.19.0-r0 \
     npm==10.19.0-r0 && \
   npm install -g less
+
+RUN curl -fsSL -o /tmp/fop-2.5-bin.tar.gz https://downloads.apache.org/xmlgraphics/fop/binaries/fop-2.5-bin.tar.gz && \
+  tar --strip-components=1 -C /opt -xzf /tmp/fop-2.5-bin.tar.gz fop-2.5/fop && \
+  rm /tmp/fop-2.5-bin.tar.gz
 
 RUN mv "${PHP_INI_DIR}/php.ini-production" "${PHP_INI_DIR}/php.ini"
 
