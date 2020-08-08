@@ -113,6 +113,7 @@
                         $('#slug_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
                         row.append('<td>' + this.name + '</td>')
                             .append('<td>' + this.url + '</td>')
+                            .append('<td>' + this.hits + '</td>')
                             .append(
                                 $('<td>', {'class': 'actions'})
                                     .append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
