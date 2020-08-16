@@ -36,7 +36,7 @@ return array(
     ),
     array(
         'key'         => 'fop_command',
-        'value'       => '/usr/local/bin/fop',
+        'value'       => '/opt/fop/fop',
         'description' => 'The command to call Apache FOP',
     ),
     array(

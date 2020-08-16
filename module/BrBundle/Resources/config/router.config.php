@@ -147,6 +147,7 @@ return array(
                     'id'     => '[0-9]*',
                     'signed' => '(true|false)',
                     'page'   => '[0-9]*',
+//                    'language'    => '(en|nl)',
                 ),
                 'defaults' => array(
                     'controller' => 'br_admin_contract',

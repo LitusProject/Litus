@@ -104,18 +104,35 @@ class Contract
     private $discountText;
 
     /**
-     * @var string The text for the automatic discount of the contract
+     * @var string The text for the automatic discount of the contract nl
      *
-     * @ORM\Column(name="auto_discount_text", type="text", nullable=true)
+     * @ORM\Column(name="auto_discount_text_nl", type="text", nullable=true)
      */
-    private $autoDiscountText;
+    private $autoDiscountTextNL;
 
     /**
-     * @var string The paymentdetails of the contract
+     * @var string The text for the automatic discount of the contract en
      *
-     * @ORM\Column(name="payment_details", type="text", nullable=true)
+     * @ORM\Column(name="auto_discount_text_en", type="text", nullable=true)
      */
+    private $autoDiscountTextEN;
+
+    /**
+     * @var string The paymentdetails of the contract nl
+     *
+     * @ORM\Column(name="payment_details_nl", type="text", nullable=true)
+     */
+    private $paymentDetailsNL;
+
+    /**
+     * @var string The paymentdetails of the contract en
+     *
+     * @ORM\Column(name="payment_details_en", type="text", nullable=true)
+     */
+    private $paymentDetailsEN;
+
     private $paymentDetails;
+    private $autoDiscountText;
 
     /**
      * @var integer The paymentdays of the contract
@@ -209,20 +226,35 @@ class Contract
     }
 
     /**
+     * @param $language
      * @return string
      */
-    public function getPaymentDetails()
+    public function getPaymentDetails($language = 'nl')
     {
-        return $this->paymentDetails;
+        if ($language == 'nl')
+            return $this->paymentDetailsNL;
+        if ($language == 'en')
+            return $this->paymentDetailsEN;
     }
 
     /**
      * @param  string $paymentDetails
      * @return self
      */
-    public function setPaymentDetails($paymentDetails)
+    public function setPaymentDetailsNL($paymentDetails)
     {
-        $this->paymentDetails = $paymentDetails;
+        $this->paymentDetailsNL = $paymentDetails;
+
+        return $this;
+    }
+
+    /**
+     * @param  string $paymentDetails
+     * @return self
+     */
+    public function setPaymentDetailsEN($paymentDetails)
+    {
+        $this->paymentDetailsEN = $paymentDetails;
 
         return $this;
     }
@@ -246,21 +278,39 @@ class Contract
         return $this;
     }
 
+
     /**
+     * @param $language
      * @return string
      */
-    public function getAutoDiscountText()
+    public function getAutoDiscountText($language = 'nl')
     {
-        return $this->autoDiscountText;
+        if ($language == 'nl')
+            return $this->autoDiscountTextNL;
+        if ($language == 'en')
+            return $this->autoDiscountTextEN;
+    }
+
+
+
+    /**
+     * @param  string $autoDiscountText
+     * @return self
+     */
+    public function setAutoDiscountTextEN($autoDiscountText)
+    {
+        $this->autoDiscountTextEN = $autoDiscountText;
+
+        return $this;
     }
 
     /**
-     * @param  string $discountText
+     * @param  string $autoDiscountText
      * @return self
      */
-    public function setAutoDiscountText($autoDiscountText)
+    public function setAutoDiscountTextNL($autoDiscountText)
     {
-        $this->autoDiscountText = $autoDiscountText;
+        $this->autoDiscountTextNL = $autoDiscountText;
 
         return $this;
     }
