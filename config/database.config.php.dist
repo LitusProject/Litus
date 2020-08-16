@@ -23,7 +23,7 @@ return array(
         'host'     => 'localhost',
         'port'     => 5432,
         'user'     => 'litus',
-        'password' => '',
+        'password' => 'huQeyU8te3aXusaz',
         'dbname'   => 'litus',
     ),
 );
