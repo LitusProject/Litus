@@ -83,11 +83,27 @@ class GenerateContract extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
+//        $this->add(
+//            array(
+//                'type'    => 'textarea',
+//                'name'    => 'payment_details_nl',
+//                'label'   => 'Payment Details NL',
+//                'value'   => $this->getPaymentDetailsText('nl'),
+//                'options' => array(
+//                    'input' => array(
+//                        'filters' => array(
+//                            array('name' => 'StringTrim'),
+//                        ),
+//                    ),
+//                ),
+//            )
+//        );
+
         $this->add(
             array(
                 'type'    => 'textarea',
-                'name'    => 'payment_details_nl',
-                'label'   => 'Payment Details NL',
+                'name'    => 'payment_details',
+                'label'   => 'Payment Details',
                 'value'   => $this->getPaymentDetailsText('nl'),
                 'options' => array(
                     'input' => array(
@@ -99,44 +115,60 @@ class GenerateContract extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        $this->add(
-            array(
-                'type'    => 'textarea',
-                'name'    => 'payment_details_en',
-                'label'   => 'Payment Details EN',
-                'value'   => $this->getPaymentDetailsText('en'),
-                'options' => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
-                ),
-            )
-        );
+//        $this->add(
+//            array(
+//                'type'    => 'textarea',
+//                'name'    => 'payment_details_en',
+//                'label'   => 'Payment Details EN',
+//                'value'   => $this->getPaymentDetailsText('en'),
+//                'options' => array(
+//                    'input' => array(
+//                        'filters' => array(
+//                            array('name' => 'StringTrim'),
+//                        ),
+//                    ),
+//                ),
+//            )
+//        );
+
+//        $this->add(
+//            array(
+//                'type'    => 'textarea',
+//                'name'    => 'auto_discount_text_nl',
+//                'label'   => 'Auto Discount Text NL',
+//                'value'   => $this->getAutoDiscountText('nl'),
+//                'options' => array(
+//                    'input' => array(
+//                        'filters' => array(
+//                            array('name' => 'StringTrim'),
+//                        ),
+//                    ),
+//                ),
+//            )
+//        );
+//
+//        $this->add(
+//            array(
+//                'type'    => 'textarea',
+//                'name'    => 'auto_discount_text_en',
+//                'label'   => 'Auto Discount Text EN',
+//                'value'   => $this->getAutoDiscountText('en'),
+//                'options' => array(
+//                    'input' => array(
+//                        'filters' => array(
+//                            array('name' => 'StringTrim'),
+//                        ),
+//                    ),
+//                ),
+//            )
+//        );
 
         $this->add(
             array(
                 'type'    => 'textarea',
-                'name'    => 'auto_discount_text_nl',
-                'label'   => 'Auto Discount Text NL',
+                'name'    => 'auto_discount_text',
+                'label'   => 'Auto Discount Text',
                 'value'   => $this->getAutoDiscountText('nl'),
-                'options' => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
-                ),
-            )
-        );
-
-        $this->add(
-            array(
-                'type'    => 'textarea',
-                'name'    => 'auto_discount_text_en',
-                'label'   => 'Auto Discount Text EN',
-                'value'   => $this->getAutoDiscountText('en'),
                 'options' => array(
                     'input' => array(
                         'filters' => array(

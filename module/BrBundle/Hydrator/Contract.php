@@ -34,7 +34,7 @@ class Contract extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $stdKeys = array('title', 'payment_details_nl', 'payment_details_en', 'payment_days', 'discount_text', 'auto_discount_text_nl', 'auto_discount_text_en');
+    private static $stdKeys = array('title', 'payment_details', 'payment_days', 'discount_text', 'auto_discount_text');
 
     protected function doHydrate(array $data, $object = null)
     {
