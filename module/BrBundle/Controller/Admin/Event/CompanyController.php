@@ -109,6 +109,25 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function editAction()
+    {
+        $companyMap = $this->getCompanyMapEntity();
+        if ($companyMap === null) {
+            return new ViewModel();
+        }
+
+        $form = $this->getForm('br_admin_event_company_edit');
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+
+            }
+        }
+    }
+
 
     /**
      * @return Event|null
