@@ -138,7 +138,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         $paymentDetailsText = str_replace(
             '<total_price/>',
             '<total_price>' . $vatTotals . '</total_price>',
-            $this->contract->getPaymentDetails($this->lang)
+            $this->contract->getPaymentDetails()
         );
 
         $paymentDetails = array();
@@ -165,8 +165,8 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         foreach ($entries as $entry) {
             $contractText .= "\n" . $entry->getContractText();
         }
-        if ($this->contract->getAutoDiscountText($this->lang) != '') {
-            $contractText .= "\n" . $this->contract->getAutoDiscountText($this->lang);
+        if ($this->contract->getAutoDiscountText() != '') {
+            $contractText .= "\n" . $this->contract->getAutoDiscountText();
         }
         if ($this->contract->getDiscountText() != '') {
             $contractText .= "\n" . $this->contract->getDiscountText();
