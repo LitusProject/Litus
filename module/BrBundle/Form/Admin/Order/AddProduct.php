@@ -117,7 +117,7 @@ class AddProduct extends \BrBundle\Form\Admin\Order\Add
     {
         $products = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Product')
-            ->findByOld(false);
+            ->findAllNotOld(false);
 
         $productArray = array(
             '' => '',
