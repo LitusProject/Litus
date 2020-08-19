@@ -81,6 +81,7 @@ class Product extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                     $query->expr()->eq('p.old', 'FALSE')
             )
             ->orderBy('p.name', 'ASC')
-            ->getQuery();
+            ->getQuery()
+            ->getResult();
     }
 }
