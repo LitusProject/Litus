@@ -44,6 +44,7 @@ class Product extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 )
             )
             ->setParameter('id', $id)
+//            ->orderBy('p.name', 'ASC')
             ->getQuery();
     }
 
@@ -64,6 +65,22 @@ class Product extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             )
             ->setParameter('name', $name)
             ->getQuery()
+//            ->orderBy('p.name', 'ASC')
             ->getOneOrNullResult();
+    }
+
+    /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllNotOld()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('p')
+            ->from('BrBundle\Entity\Product', 'p')
+            ->where(
+                    $query->expr()->eq('p.old', 'FALSE')
+            )
+            ->getQuery()
+            ->orderBy('p.name', 'ASC');
     }
 }
