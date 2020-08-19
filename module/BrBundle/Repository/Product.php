@@ -43,8 +43,8 @@ class Product extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                     $query->expr()->eq('p.old', 'FALSE')
                 )
             )
-            ->setParameter('id', $id)
 //            ->orderBy('p.name', 'ASC')
+            ->setParameter('id', $id)
             ->getQuery();
     }
 
@@ -64,8 +64,8 @@ class Product extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 )
             )
             ->setParameter('name', $name)
-            ->getQuery()
 //            ->orderBy('p.name', 'ASC')
+            ->getQuery()
             ->getOneOrNullResult();
     }
 
@@ -80,7 +80,8 @@ class Product extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->where(
                     $query->expr()->eq('p.old', 'FALSE')
             )
+            ->orderBy('p.name', 'ASC')
             ->getQuery()
-            ->orderBy('p.name', 'ASC');
+            ->getResult();
     }
 }
