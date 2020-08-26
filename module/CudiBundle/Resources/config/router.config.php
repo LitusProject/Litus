@@ -237,10 +237,11 @@ return array(
         'cudi_admin_sales_session_openinghour' => array(
             'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/cudi/sales/session/openinghours[/:action[/:id]][/]',
+                'route'       => '/admin/cudi/sales/session/openinghours[/:action[/page/:page][/:id]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'cudi_admin_sales_session_openinghour',
