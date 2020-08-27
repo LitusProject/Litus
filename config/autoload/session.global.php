@@ -39,7 +39,7 @@ $redisConfig = $redisConfig['redis'];
 return array(
     'session_config' => array_merge(
         array(
-            'cookie_secure'    => true,
+            'cookie_secure'    => false,
             'php_save_handler' => 'redis',
             'save_path'        => RedisUri::build($redisConfig, 'tcp'),
         ),
