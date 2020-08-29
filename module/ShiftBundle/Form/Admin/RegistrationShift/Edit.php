@@ -38,8 +38,6 @@ class Edit extends \ShiftBundle\Form\Admin\RegistrationShift\Add
     {
         parent::init();
 
-        print($this->registrationShift?$this->registrationShift:"null");
-
         if (!$this->registrationShift->canEditDates()) {
             $this->remove('start_date')
                 ->add(

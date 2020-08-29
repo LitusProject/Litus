@@ -138,7 +138,7 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
             return new ViewModel();
         }
 
-        $form = $this->getForm('shift_registration-shift_edit', array('shift' => $shift));
+        $form = $this->getForm('shift_registration-shift_edit', array('registrationShift' => $shift));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
