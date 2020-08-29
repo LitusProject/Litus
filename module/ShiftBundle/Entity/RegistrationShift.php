@@ -30,8 +30,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
-use ShiftBundle\Entity\Shift\Responsible;
-use ShiftBundle\Entity\Shift\Volunteer;
+use ShiftBundle\Entity\Shift\Registered;
 
 /**
  * This entity stores a shift.

@@ -23,6 +23,9 @@ return array(
         'shift_admin_shift' => array(
             'add', 'delete', 'edit', 'export', 'manage', 'old', 'pdf', 'search',
         ),
+        'shift_admin_registration-shift' => array(
+            'add', 'delete', 'edit', 'manage', 'old', 'search',
+        ),
         'shift_admin_shift_counter' => array(
             'delete', 'export', 'index', 'payed', 'payout', 'search', 'units', 'view',
         ),

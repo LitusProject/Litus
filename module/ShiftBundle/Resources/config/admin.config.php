@@ -21,7 +21,7 @@
 return array(
     'submenus' => array(
         'Shifts' => array(
-            'subtitle' => array('Counter', 'Rankings', 'Shifts'),
+            'subtitle' => array('Counter', 'Rankings', 'Shifts', 'Registration Shifts'),
             'items'    => array(
                 'shift_admin_shift_counter' => array(
                     'action' => 'index',
@@ -34,6 +34,10 @@ return array(
                 'shift_admin_shift' => array(
                     'action' => 'manage',
                     'title'  => 'Shifts',
+                ),
+                'shift_admin_registration-shift' => array(
+                    'action' => 'manage',
+                    'title'  => 'Registration Shifts',
                 ),
             ),
             'controllers' => array('shift_admin_unit'),
