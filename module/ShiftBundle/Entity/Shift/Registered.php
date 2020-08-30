@@ -91,6 +91,13 @@ class Registered
      */
     private $member;
 
+    /**
+     * @var Person The person that volunteered
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
+     * @ORM\JoinColumn(name="person", referencedColumnName="id", nullable=true)
+     */
+    private $person;
 
     public function __construct(Person $person = null)
     {
@@ -101,6 +108,7 @@ class Registered
             $this->lastName = $person->getLastName();
             $this->username = $person->getUsername();
             $this->email = $person->getEmail();
+            $this->person = $person;
         }
     }
 

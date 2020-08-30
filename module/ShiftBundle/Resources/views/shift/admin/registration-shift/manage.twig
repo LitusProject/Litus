@@ -57,10 +57,10 @@
                         <td>{{ shift.getEndDate().format('d/m/Y H:i') }}</td>
                         <td class="actions">
                             {% if shift.canBeEditedBy(authenticatedPerson) %}
-                                {% if hasAccess('shift_admin_registration-shift', 'edit') %}
-                                    <a href="{{ url('shift_admin_registration-shift', {"action": "edit", "id": shift.getId()}) }}" class="edit">Edit</a>
+                                {% if hasAccess('shift_admin_registration_shift', 'edit') %}
+                                    <a href="{{ url('shift_admin_registration_shift', {"action": "edit", "id": shift.getId()}) }}" class="edit">Edit</a>
                                 {% endif %}
-                                {% if hasAccess('shift_admin_registration-shift', 'delete') %}
+                                {% if hasAccess('shift_admin_registration_shift', 'delete') %}
                                     <a href="#" data-id="{{ shift.getId() }}" data-name="{{ shift.getName() }}" class="delete">Delete</a>
                                 {% endif %}
                             {% endif %}
@@ -102,14 +102,14 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            {% if hasAccess('shift_admin_registration-shift', 'search') %}
+            {% if hasAccess('shift_admin_registration_shift', 'search') %}
             $.searchDatabase({
                 defaultPage: $('#default_page'),
                 searchDiv: $('#shift_search'),
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                searchPage: '{{ url('shift_admin_registration-shift', {'action': 'manage'}) }}manage/',
-                url: '{{ url('shift_admin_registration-shift', {'action': 'search'}) }}',
+                searchPage: '{{ url('shift_admin_registration_shift', {'action': 'manage'}) }}manage/',
+                url: '{{ url('shift_admin_registration_shift', {'action': 'search'}) }}',
                 display: function (data) {
                     $('#shift_search table').find('tr.item').remove();
                     $(data).each(function () {
@@ -120,7 +120,7 @@
                             .append('<td>' + this.endDate + '</td>')
                             .append(
                                 $('<td>', {'class': 'actions'})
-                                    .append('<a href="{{ url('shift_admin_registration-shift', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
+                                    .append('<a href="{{ url('shift_admin_registration_shift', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
                                     .append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
                                 );
                             deleteButton.data({
@@ -150,7 +150,7 @@
             });
             var id = $this.data('id');
             removeShift.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('shift_admin_registration-shift', {"action": "delete"})}}' + id, function (data) {
+                $.post('{{ url('shift_admin_registration_shift', {"action": "delete"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.shift_removed_success').removeClass('hide');

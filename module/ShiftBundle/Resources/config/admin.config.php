@@ -35,7 +35,7 @@ return array(
                     'action' => 'manage',
                     'title'  => 'Shifts',
                 ),
-                'shift_admin_registration-shift' => array(
+                'shift_admin_registration_shift' => array(
                     'action' => 'manage',
                     'title'  => 'Registration Shifts',
                 ),

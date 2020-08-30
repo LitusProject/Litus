@@ -74,7 +74,7 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
 
     public function addAction()
     {
-        $form = $this->getForm('shift_registration-shift_add');
+        $form = $this->getForm('shift_registrationShift_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -114,7 +114,7 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
                 );
 
                 $this->redirect()->toRoute(
-                    'shift_admin_registration-shift',
+                    'shift_admin_registration_shift',
                     array(
                         'action' => 'add',
                     )
@@ -138,7 +138,7 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
             return new ViewModel();
         }
 
-        $form = $this->getForm('shift_registration-shift_edit', array('registrationShift' => $shift));
+        $form = $this->getForm('shift_registrationShift_edit', array('registrationShift' => $shift));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -151,7 +151,7 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $registeredAfter = $shift->getVolunteers();
+                $registeredAfter = $shift->getRegistered();
 
                 $registeredDiff = array_diff_key($registeredBefore, $registeredAfter);
 
@@ -201,7 +201,7 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
                 );
 
                 $this->redirect()->toRoute(
-                    'shift_admin_registration-shift',
+                    'shift_admin_registration_shift',
                     array(
                         'action' => 'manage',
                     )
@@ -352,7 +352,7 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
             );
 
             $this->redirect()->toRoute(
-                'shift_admin_registration-shift',
+                'shift_admin_registration_shift',
                 array(
                     'action' => 'manage',
                 )
@@ -378,7 +378,7 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
             );
 
             $this->redirect()->toRoute(
-                'shift_admin_registration-shift',
+                'shift_admin_registration_shift',
                 array(
                     'action' => 'manage',
                 )

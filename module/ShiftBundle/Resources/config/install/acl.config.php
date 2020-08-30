@@ -23,7 +23,7 @@ return array(
         'shift_admin_shift' => array(
             'add', 'delete', 'edit', 'export', 'manage', 'old', 'pdf', 'search',
         ),
-        'shift_admin_registration-shift' => array(
+        'shift_admin_registration_shift' => array(
             'add', 'delete', 'edit', 'manage', 'old', 'search',
         ),
         'shift_admin_shift_counter' => array(
@@ -37,6 +37,9 @@ return array(
         ),
         'shift' => array(
             'export', 'history', 'index', 'responsible', 'signOut', 'volunteer',
+        ),
+        'registration_shift' => array(
+            'history', 'index', 'registered', 'signOut',
         ),
     ),
 );

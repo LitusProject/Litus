@@ -37,7 +37,7 @@ return array(
                 ),
             ),
         ),
-        'shift_admin_registration-shift' => array(
+        'shift_admin_registration_shift' => array(
             'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/shift/registration-shift[/:action[/:id][/:field/:string][/page/:page]][/]',
@@ -49,7 +49,7 @@ return array(
                     'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                 ),
                 'defaults' => array(
-                    'controller' => 'shift_admin_registration-shift',
+                    'controller' => 'shift_admin_registration_shift',
                     'action'     => 'manage',
                 ),
             ),
@@ -118,6 +118,21 @@ return array(
                 ),
             ),
         ),
+        'registration_shift' => array(
+            'type'    => 'Zend\Router\Http\Segment',
+            'options' => array(
+                'route'       => '[/:language]/registration-shift[/:action[/:id]][/]',
+                'constraints' => array(
+                    'language' => '(en|nl)',
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'       => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'registration_shift',
+                    'action'     => 'index',
+                ),
+            ),
+        ),
         'shift_export' => array(
             'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
@@ -136,11 +151,12 @@ return array(
 
     'controllers' => array(
         'shift_admin_shift'              => 'ShiftBundle\Controller\Admin\ShiftController',
-        'shift_admin_registration-shift' => 'ShiftBundle\Controller\Admin\RegistrationShiftController',
+        'shift_admin_registration_shift' => 'ShiftBundle\Controller\Admin\RegistrationShiftController',
         'shift_admin_shift_counter'      => 'ShiftBundle\Controller\Admin\CounterController',
         'shift_admin_shift_ranking'      => 'ShiftBundle\Controller\Admin\RankingController',
         'shift_admin_shift_subscription' => 'ShiftBundle\Controller\Admin\SubscriptionController',
 
         'shift' => 'ShiftBundle\Controller\ShiftController',
+        'registration_shift' => 'ShiftBundle\Controller\RegistrationShiftController',
     ),
 );

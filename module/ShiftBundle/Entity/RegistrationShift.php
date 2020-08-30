@@ -345,7 +345,7 @@ class RegistrationShift
      * @param  Registered $registered
      * @return self
      */
-    public function removeResponsible(Registered $registered)
+    public function removeRegistered(Registered $registered)
     {
         $this->registered->removeElement($registered);
 
@@ -361,17 +361,17 @@ class RegistrationShift
     }
 
     /**
-     * Checks whether or not the given person qualifies as a responsible for this
+     * Checks whether or not the given person qualifies as a registered for this
      * shift.
      *
      * @param  EntityManager $entityManager The EntityManager instance
      * @param  Registered    $registered        The person that should be checked
      * @return boolean
      */
-    public function canHaveAsRegistered(EntityManager $entityManager, Registered $registered)
+    public function canHaveAsRegistered(EntityManager $entityManager, Person $registered)
     {
         $shifts = $entityManager->getRepository('ShiftBundle\Entity\RegistrationShift')
-            ->findAllActiveByRegistered($registered);//TODO: Create function
+            ->findAllActiveByPerson($registered);//TODO: Create
 
         foreach ($shifts as $shift) {
             if ($shift === $this) {
