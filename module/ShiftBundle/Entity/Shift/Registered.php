@@ -20,12 +20,13 @@
 
 namespace ShiftBundle\Entity\Shift;
 
+use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * This entity stores a volunteer for a shift.
+ * This entity stores a registered person for a registration shift.
  *
  * @ORM\Entity(repositoryClass="ShiftBundle\Repository\Shift\Registered")
  * @ORM\Table(name="shift_registration_shifts_registered")
@@ -72,14 +73,14 @@ class Registered
     /**
      * @var String The email address of the registered
      *
-     * @ORM\Column(type="string",nullable=true, length=100)
+     * @ORM\Column(type="string", length=100)
      */
     private $email;
 
     /**
-     * @var String The email address of the registered
+     * @var String The ticket code of the registered
      *
-     * @ORM\Column(name="ticket_code",type="string", length=100)
+     * @ORM\Column(name="ticket_code",type="string", length=100, nullable=true)
      */
     private $ticketCode;
 
@@ -87,7 +88,7 @@ class Registered
     /**
      * @var boolean If this registered person is a member
      *
-     * @ORM\Column(name="member",type="boolean",options={"default" = false})
+     * @ORM\Column(name="member",type="boolean",options={"default" = false}, nullable=true)
      */
     private $member;
 
@@ -99,7 +100,7 @@ class Registered
      */
     private $person;
 
-    public function __construct(Person $person = null)
+    public function __construct(Person $person = null, AcademicYear $academicYear)
     {
         $this->signupTime = new DateTime();
 
@@ -109,7 +110,27 @@ class Registered
             $this->username = $person->getUsername();
             $this->email = $person->getEmail();
             $this->person = $person;
+            $this->member = $this->person->isMember($academicYear);
         }
+    }
+
+    /**
+     * @return Person
+     */
+    public function getPerson()
+    {
+        return $this->person;
+    }
+
+    /**
+     * @param  Person $person
+     * @return self
+     */
+    public function setPerson($person)
+    {
+        $this->person = $person;
+
+        return $this;
     }
 
     /**

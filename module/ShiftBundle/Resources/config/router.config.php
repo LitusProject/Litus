@@ -103,6 +103,21 @@ return array(
                 ),
             ),
         ),
+        'shift_admin_registration_shift_subscription' => array(
+            'type'    => 'Zend\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/shift/registration-subscription[/:action[/:id][/page/:page]][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'shift_admin_registration_shift_subscription',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
         'shift' => array(
             'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
@@ -155,6 +170,7 @@ return array(
         'shift_admin_shift_counter'      => 'ShiftBundle\Controller\Admin\CounterController',
         'shift_admin_shift_ranking'      => 'ShiftBundle\Controller\Admin\RankingController',
         'shift_admin_shift_subscription' => 'ShiftBundle\Controller\Admin\SubscriptionController',
+        'shift_admin_registration_shift_subscription' => 'ShiftBundle\Controller\Admin\RegistrationSubscriptionController',
 
         'shift' => 'ShiftBundle\Controller\ShiftController',
         'registration_shift' => 'ShiftBundle\Controller\RegistrationShiftController',

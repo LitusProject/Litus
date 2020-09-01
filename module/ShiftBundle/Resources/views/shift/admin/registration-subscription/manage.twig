@@ -1,0 +1,142 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'shift/admin/registration-shift/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+    <div class="flashmessage success_message full_width viewer_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The subscription was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width viewer_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete a subscription.</p>
+        </div>
+    </div>
+
+    <div id="controller_action">
+        <h1>Shift</h1>
+
+        <p>Title: <b>{{ shift.getName() }}</b></p>
+        <p>Start: <b>{{ shift.getStartDate().format('d/m/Y H:i') }}</b></p>
+        <p>End: <b>{{ shift.getEndDate().format('d/m/Y H:i') }}</b></p>
+        <p>Opens: <b>{{ shift.getVisibleDate().format('d/m/Y H:i') }}</b></p>
+        <p>Closes: <b>{{ shift.getSignoutDate().format('d/m/Y H:i') }}</b></p>
+
+        {% if shift.canBeEditedBy(authenticatedPerson) or hasAccess('shift_admin_registration_shift_subscription', 'superadd') %}
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+        {% endif %}
+
+        <br style="clear:both">
+
+        <table class="manage full_width">
+            <tr>
+                <th>Name</th>
+                {% if shift.canBeEditedBy(authenticatedPerson) %}
+                <th>Email</th>
+                <th>Sign-up Date</th>
+                {% endif %}
+                <th width="70px">Actions</th>
+            </tr>
+
+            {% for register in registered %}
+                <tr class="item item-{{ register.getId() }}">
+                    <td>{{ register.getPerson().getFullName() }}</td>
+                    {% if shift.canBeEditedBy(authenticatedPerson) %}
+                    <td>{{ register.getPerson().getEmail() }}</td>
+                    <td>{{ register.getPerson().getSignupTime().format('d/m/Y H:i') }}</td>
+                    {% endif %}
+                    <td></td>
+                    <td class="actions">
+                        {% if shift.canBeEditedBy(authenticatedPerson) or hasAccess('shift_admin_registration_shift_subscription', 'superdelete') %}
+                            {% if hasAccess('shift_admin_registration_shift_subscription', 'delete') %}
+                                <a href="#" class="delete" data-id="{{ register.getId() }}" data-type="register" data-name="{{ register.getPerson().getFullName() }}">Delete</a>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+    <div class="modal fade" id="removeSubscription" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Viewer
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following subscription: <b class="fullName"></b>!
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#person').typeaheadRemote(
+                {
+                    source: '{{ url("common_admin_academic_typeahead", {}) }}',
+                }
+            ).change(function(e) {
+                if ($(this).data('value')) {
+                    $('[name="person[id]"]').val($(this).data('value').id);
+                } else {
+                    $('[name="person[id]"]').val('');
+                }
+            });
+
+            $('.item .delete').click(openModal);
+        });
+
+        function openModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeSubscription = $('#removeSubscription');
+            removeSubscription.find('.fullName').html($(this).data('name'));
+            var id = $this.data('id');
+            removeSubscription.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('shift_admin_registration_shift_subscription', {"action": "delete"})}}' + id, function (data) {
+                    console.log("id:"+id);
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').hide();
+                        $('.viewer_removed_success').show();
+                        $('.item-' + id).remove();
+                        removeSubscription.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeSubscription.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').hide();
+            $('.viewer_removed_error').show();
+            $('#removeSubscription').modal('hide');
+        }
+    </script>
+{% endblock %}

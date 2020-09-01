@@ -263,7 +263,8 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
         $shift->addRegistered(
             $this->getEntityManager(),
             new Registered(
-                $person
+                $person,
+                $this->getCurrentAcademicYear(true),
             )
         );
 

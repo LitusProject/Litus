@@ -35,6 +35,9 @@ return array(
         'shift_admin_shift_subscription' => array(
             'manage', 'delete', 'superdelete', 'superadd',
         ),
+        'shift_admin_registration_shift_subscription' => array(
+            'manage', 'delete', 'superdelete', 'superadd',
+        ),
         'shift' => array(
             'export', 'history', 'index', 'responsible', 'signOut', 'volunteer',
         ),

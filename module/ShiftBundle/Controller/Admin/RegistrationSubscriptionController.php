@@ -20,28 +20,28 @@
 
 namespace ShiftBundle\Controller\Admin;
 
-use ShiftBundle\Entity\Shift;
+use ShiftBundle\Entity\RegistrationShift;
+use ShiftBundle\Entity\Shift\Registered;
 use Zend\Mail\Message;
 use Zend\View\Model\ViewModel;
 
 /**
- * ShiftController
+ * RegistrationSubscriptionController
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class SubscriptionController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class RegistrationSubscriptionController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
-        $shift = $this->getShiftEntity();
+        $shift = $this->getRegistrationShiftEntity();
         if ($shift === null) {
             return new ViewModel();
         }
 
-        $responsibles = $shift->getResponsibles();
-        $volunteers = $shift->getVolunteers();
+        $registered = $shift->getRegistered();
 
-        $form = $this->getForm('shift_subscription_add');
+        $form = $this->getForm('shift_registrationSubscription_add');
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -52,11 +52,11 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                 if ($subscriber === null) {
                     $this->flashMessenger()->error(
                         'Error',
-                        'Unable to add the given person to the shift!'
+                        'Unable to add the given person to the registration shift!'
                     );
 
                     $this->redirect()->toRoute(
-                        'shift_admin_shift_subscription',
+                        'shift_admin_registration_shift_subscription',
                         array(
                             'action' => 'manage',
                             'id'     => $shift->getId(),
@@ -70,7 +70,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                 $this->getEntityManager()->flush();
 
                 $this->redirect()->toRoute(
-                    'shift_admin_shift_subscription',
+                    'shift_admin_registration_shift_subscription',
                     array(
                         'action' => 'manage',
                         'id'     => $shift->getId(),
@@ -85,8 +85,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             array(
                 'form'         => $form,
                 'shift'        => $shift,
-                'volunteers'   => $volunteers,
-                'responsibles' => $responsibles,
+                'registered'   => $registered,
             )
         );
     }
@@ -101,19 +100,10 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         }
 
         $repository = $this->getEntityManager()
-            ->getRepository('ShiftBundle\Entity\Shift');
-        switch ($this->getParam('type')) {
-            case 'volunteer':
-                $shift = $repository->findOneByVolunteer($subscription->getId());
-                $shift->removeVolunteer($subscription);
-                break;
-            case 'responsible':
-                $shift = $repository->findOneByResponsible($subscription->getId());
-                $shift->removeResponsible($subscription);
-                break;
-            default:
-                return new ViewModel();
-        }
+            ->getRepository('ShiftBundle\Entity\RegistrationShift');
+        $shift = $repository->findOneByRegistered($subscription->getId());
+        $shift->removeRegistered($subscription);
+
 
         $mailAddress = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -165,36 +155,12 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
     }
 
     /**
-     * @return mixed
+     * @return Registered|null
      */
     private function getSubscriptionEntity()
     {
-        $type = $this->getParam('type');
-
-        switch ($type) {
-            case 'volunteer':
-                $repository = $this->getEntityManager()
-                    ->getRepository('ShiftBundle\Entity\Shift\Volunteer');
-                break;
-            case 'responsible':
-                $repository = $this->getEntityManager()
-                    ->getRepository('ShiftBundle\Entity\Shift\Responsible');
-                break;
-            default:
-                $this->flashMessenger()->error(
-                    'Error',
-                    'The given type is not valid!'
-                );
-
-                $this->redirect()->toRoute(
-                    'shift_admin_shift',
-                    array(
-                        'action' => 'manage',
-                    )
-                );
-
-                return;
-        }
+        $repository = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift\Registered');
 
         $subscription = $repository->findOneById($this->getParam('id', 0));
 
@@ -205,7 +171,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             );
 
             $this->redirect()->toRoute(
-                'shift_admin_shift',
+                'shift_admin_registration_shift',
                 array(
                     'action' => 'manage',
                 )
@@ -218,20 +184,20 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
     }
 
     /**
-     * @return Shift|null
+     * @return RegistrationShift|null
      */
-    private function getShiftEntity()
+    private function getRegistrationShiftEntity()
     {
-        $shift = $this->getEntityById('ShiftBundle\Entity\Shift');
+        $shift = $this->getEntityById('ShiftBundle\Entity\RegistrationShift');
 
-        if (!($shift instanceof Shift)) {
+        if (!($shift instanceof RegistrationShift)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No shift was found!'
+                'No registration shift was found!'
             );
 
             $this->redirect()->toRoute(
-                'shift_admin_shift',
+                'shift_admin_registration_shift',
                 array(
                     'action' => 'manage',
                 )
