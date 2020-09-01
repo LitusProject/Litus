@@ -285,26 +285,6 @@ class RegistrationShift extends \CommonBundle\Component\Doctrine\ORM\EntityRepos
             $shifts[$result->getStartDate()->format('YmdHi') . $result->getId()] = $result;
         }
 
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $volunteerResultSet = $query->select('s')
-            ->from('ShiftBundle\Entity\Shift', 's')
-            ->innerJoin('s.volunteers', 'v')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->gt('s.endDate', ':now'),
-                    $query->expr()->eq('v.person', ':person')
-                )
-            )
-            ->orderBy('s.startDate', 'ASC')
-            ->setParameter('now', new DateTime())
-            ->setParameter('person', $person)
-            ->getQuery()
-            ->getResult();
-
-        foreach ($volunteerResultSet as $result) {
-            $shifts[$result->getStartDate()->format('YmdHi') . $result->getId()] = $result;
-        }
-
         ksort($shifts);
 
         return array_values($shifts);

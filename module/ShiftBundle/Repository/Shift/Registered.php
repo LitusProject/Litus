@@ -18,7 +18,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace ShiftBundle\Repository\RegistrationShift;
+namespace ShiftBundle\Repository\Shift;
 
 use CommonBundle\Entity\General\AcademicYear;
 use DateTime;

@@ -106,9 +106,10 @@ return array(
         'shift_admin_registration_shift_subscription' => array(
             'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/shift/registration-subscription[/:action[/:id][/page/:page]][/]',
+                'route'       => '/admin/shift/registration-subscription[/:action[/:shift][/:id][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'shift'  => '[0-9]*',
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),

@@ -24,6 +24,7 @@ use ShiftBundle\Entity\RegistrationShift;
 use ShiftBundle\Entity\Shift\Registered;
 use Zend\Mail\Message;
 use Zend\View\Model\ViewModel;
+use function GuzzleHttp\Psr7\str;
 
 /**
  * RegistrationSubscriptionController
@@ -93,7 +94,6 @@ class RegistrationSubscriptionController extends \CommonBundle\Component\Control
     public function deleteAction()
     {
         $this->initAjax();
-
         $subscription = $this->getSubscriptionEntity();
         if ($subscription === null) {
             return new ViewModel();
@@ -159,10 +159,9 @@ class RegistrationSubscriptionController extends \CommonBundle\Component\Control
      */
     private function getSubscriptionEntity()
     {
-        $repository = $this->getEntityManager()
-            ->getRepository('ShiftBundle\Entity\Shift\Registered');
-
-        $subscription = $repository->findOneById($this->getParam('id', 0));
+        $subscription = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift\Registered')
+            ->findOneById($this->getParam('id', 0));
 
         if ($subscription === null) {
             $this->flashMessenger()->error(
@@ -174,6 +173,7 @@ class RegistrationSubscriptionController extends \CommonBundle\Component\Control
                 'shift_admin_registration_shift',
                 array(
                     'action' => 'manage',
+                    'shift' => $this->getEntityById('ShiftBundle\Entity\RegistrationShift', 'shift'),
                 )
             );
 
@@ -188,7 +188,7 @@ class RegistrationSubscriptionController extends \CommonBundle\Component\Control
      */
     private function getRegistrationShiftEntity()
     {
-        $shift = $this->getEntityById('ShiftBundle\Entity\RegistrationShift');
+        $shift = $this->getEntityById('ShiftBundle\Entity\RegistrationShift', 'shift');
 
         if (!($shift instanceof RegistrationShift)) {
             $this->flashMessenger()->error(
