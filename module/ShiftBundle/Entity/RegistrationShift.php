@@ -345,11 +345,17 @@ class RegistrationShift
      * @param  Registered $registered
      * @return self
      */
-    public function removeRegistered(Registered $registered)
+    public function removeRegistered(Person $person)
     {
-        $this->registered->removeElement($registered);
+        foreach ($this->registered as $registered) {
+            if ($registered->getPerson() === $person) {
+                $this->registered->removeElement($registered);
 
-        return $this;
+                return $registered;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -382,6 +388,7 @@ class RegistrationShift
                 return false;
             }
         }
+        error_log(boolval(!($this->countRegistered() >= $this->getNbRegistered())));
 
         return !($this->countRegistered() >= $this->getNbRegistered());
     }

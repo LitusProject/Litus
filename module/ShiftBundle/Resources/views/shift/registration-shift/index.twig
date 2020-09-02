@@ -43,7 +43,6 @@
         <h1>{{ translate('Registration Shifts') }}</h1>
     </div>
 
-    {% include 'shift/registration-shift/partials/navigation.twig' %}
 
 
     <div class="row">
@@ -142,6 +141,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('.registered').click(function () {
+                console.log('Clicked');
                 var button = $(this);
                 var count = parseInt($(this).data('count'));
 
@@ -150,7 +150,7 @@
                     $(id).modal();
                     $(id +' .confirm').one('click', function (){
                         $(id).modal('hide');
-                        volunteerSignIn(button, count);
+                        registeredSignIn(button, count);
                     });
                 }
 
@@ -256,6 +256,9 @@
 
             <div class="panel panel-default" id="group_{{ accordionName }}_shift-{{ shift.getId() }}">
                 <div class="panel-heading">
+                    <span class="buttons pull-right hidden-xs hidden-sm">
+                        {{ self.buttons(entityManager, authenticatedPerson, shift, accordionName) }}
+                    </span>
                     <a class="panel-toggle" data-toggle="collapse" data-parent="#shifts-{{ accordionName }}" href="#collapse_{{ accordionName }}_shift-{{ shift.getId() }}" style="overflow: hidden;">
                         {{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }}-{{ dateLocalized(shift.getEndDate(), 'HH:mm') }}&mdash;{{ shift.getName() }}
                     </a>
@@ -288,6 +291,7 @@
 
                                     <dt>{{ translate('Unit') }}</dt>
                                     <dd>{{ shift.getUnit().getName() }}</dd>
+                                    <dd>{{ shift.getNbRegistered() }}</dd>
                                 </dl>
                             </div>
                             <div class="col-sm-4">
@@ -347,7 +351,7 @@
 
     {% if 'search' == accordionName %}
         {% if shift.canHaveAsRegistered(entityManager, authenticatedPerson) and 0 != shift.getNbRegistered() %}
-            <button class="btn btn-default btn-xs {{ self.buttonStyle(shift, 'registered') }} volunteer" data-id="{{ shift.getId() }}" data-count="{{ shift.countRegistered() }}" data-max="{{ shift.getNbRegistered() }}" data-panel="#group_{{ accordionName }}_shift-{{ shift.getId() }}" type="button">
+            <button class="btn btn-default btn-xs {{ self.buttonStyle(shift, 'registered') }} registered" data-id="{{ shift.getId() }}" data-count="{{ shift.countRegistered() }}" data-max="{{ shift.getNbRegistered() }}" data-panel="#group_{{ accordionName }}_shift-{{ shift.getId() }}" type="button">
                 {{ translate('Registered') }} (<span class="count">{{ shift.countRegistered() }}</span>/{{ shift.getNbRegistered() }})
             </button>
         {% endif %}

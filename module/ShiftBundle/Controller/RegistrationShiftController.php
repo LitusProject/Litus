@@ -152,7 +152,7 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
                 ->getRepository('ShiftBundle\Entity\RegistrationShift')
                 ->findAllActiveBetweenDates($start_date, $end_date);
 
-            $resultString = $this->getTranslator()->translate('Registration shifts from %start% to %end%');
+            $resultString = $this->getTranslator()->translate('Registration shifts from %start% to %end%');//TODO: Dit vertaalt nog niet
             $resultString = str_replace('%start%', $start_date->format('d/m/Y'), $resultString);
             $resultString = str_replace('%end%', $end_date->format('d/m/Y'), $resultString);
         }
@@ -263,8 +263,8 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
         $shift->addRegistered(
             $this->getEntityManager(),
             new Registered(
-                $person,
                 $this->getCurrentAcademicYear(true),
+                $person
             )
         );
 
@@ -283,7 +283,6 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
     public function signOutAction()
     {
         $this->initAjax();
-
         $shift = $this->getRegistrationShiftEntity();
         if ($shift === null) {
             return new ViewModel(
@@ -302,7 +301,7 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
             );
         }
 
-        if (!$shift->canSignOut($this->getEntityManager())) {
+        if (!$shift->canSignOut()) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -324,70 +323,6 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
                     'status' => 'success',
                     'ratio'  => $shift->getNbRegistered() == 0 ? 0 : $shift->countRegistered() / $shift->getNbRegistered(),
                 ),
-            )
-        );
-    }
-
-    public function historyAction()
-    {
-        $person = $this->getPersonEntity();
-        if ($person === null) {
-            return $this->notFoundAction();
-        }
-
-        $academicYear = $this->getCurrentAcademicYear(true);
-
-        $asRegistered = $this->getEntityManager()
-            ->getRepository('ShiftBundle\Entity\RegistrationShift')
-            ->findAllByPersonAsRegistered($person, $academicYear);
-
-        $hoursPerBlock = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('shift.hours_per_shift');
-
-        $now = new DateTime();
-
-        $shiftsAsRegistered = array();
-        $shiftsAsRegisteredCount = 0;
-        $lastShift = new DateTime('2000-01-01');
-        foreach ($asRegistered as $shift) {
-            if ($shift->getStartDate() > $now) {
-                continue;
-            }
-
-            if ($shift->getEndDate() > $lastShift) {
-                $lastShift = $shift->getEndDate();
-            }
-
-            if (!isset($shiftsAsRegistered[$shift->getUnit()->getId()])) {
-                $shiftsAsRegistered[$shift->getUnit()->getId()] = array(
-                    'count'    => 1,
-                    'unitName' => $shift->getUnit()->getName(),
-                );
-            } else {
-                $shiftsAsRegistered[$shift->getUnit()->getId()]['count']++;
-            }
-
-            $shiftsAsRegisteredCount++;
-
-            if ($hoursPerBlock > 0) {
-                $hoursOverTime = date_diff($shift->getStartDate(), $shift->getEndDate())->format('%h') - $hoursPerBlock;
-                if ($hoursOverTime > 0) {
-                    $amoutOfBlocks = floor($hoursOverTime / $hoursPerBlock);
-                    $shiftsAsRegistered[$shift->getUnit()->getId()]['count'] += $amoutOfBlocks;
-                    $shiftsAsRegisteredCount += $amoutOfBlocks;
-                }
-            }
-        }
-
-        $praesidium = $person->isPraesidium($academicYear);
-
-        return new ViewModel(
-            array(
-                'shiftsAsRegistered'   => $shiftsAsRegistered,
-                'totalAsRegistered'    => $shiftsAsRegisteredCount,
-                'lastShift'           => $lastShift->format('d/m/Y'),
-                'praesidium'          => $praesidium,
             )
         );
     }

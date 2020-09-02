@@ -88,19 +88,21 @@ class Registered
     /**
      * @var boolean If this registered person is a member
      *
-     * @ORM\Column(name="member",type="boolean",options={"default" = false}, nullable=true)
+     * @ORM\Column(name="member",type="boolean",options={"default" = false})
      */
     private $member;
 
+
     /**
-     * @var Person The person that volunteered
+     * @var Person The person that registered
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
-     * @ORM\JoinColumn(name="person", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="person",referencedColumnName="id", nullable=true)
      */
     private $person;
 
-    public function __construct(Person $person = null, AcademicYear $academicYear)
+
+    public function __construct(AcademicYear $academicYear, Person $person = null)
     {
         $this->signupTime = new DateTime();
 

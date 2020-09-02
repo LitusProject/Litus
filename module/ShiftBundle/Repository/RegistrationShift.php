@@ -276,7 +276,7 @@ class RegistrationShift extends \CommonBundle\Component\Doctrine\ORM\EntityRepos
             )
             ->orderBy('s.startDate', 'ASC')
             ->setParameter('now', new DateTime())
-            ->setParameter('person', $person)
+            ->setParameter('person', $person->getId())
             ->getQuery()
             ->getResult();
 
