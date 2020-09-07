@@ -60,9 +60,9 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
     public function manageAction()
     {
-        $invoiceYear = $this->getParam('invoiceyear');
+        $invoiceYear = $this->getParam('id');
 
-        if ($invoiceYear == null) {
+        if ($invoiceYear === null || strlen($invoiceYear) !== 4) {
             $invoiceYear = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('br.invoice_year_number');
