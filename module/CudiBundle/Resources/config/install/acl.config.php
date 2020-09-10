@@ -96,7 +96,7 @@ return array(
             'add', 'cancel', 'csv', 'delete', 'deleteAll','edit', 'editItem', 'export', 'manage', 'overview', 'place', 'pdf', 'search', 'supplier',
         ),
         'cudi_admin_stock_period' => array(
-            'manage', 'new', 'search', 'view',
+            'manage', 'new', 'search', 'view', 'revertNew'
         ),
         'cudi_admin_stock_retour' => array(
             'add', 'delete', 'manage', 'supplier',
