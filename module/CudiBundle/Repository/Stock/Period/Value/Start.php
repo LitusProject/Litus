@@ -69,4 +69,16 @@ class Start extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 
         return $value->getValue();
     }
+
+    public function findAllByPeriod(Period $period) {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('v')
+            ->from('CudiBundle\Entity\Stock\Period\Value\Start', 'v')
+            ->where(
+                $query->expr()->eq('v.period', ':period')
+            )
+            ->setParameter('period', $period->getId())
+            ->getQuery()
+            ->getResult();
+    }
 }

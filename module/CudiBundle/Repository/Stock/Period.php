@@ -59,6 +59,19 @@ class Period extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getOneOrNullResult();
     }
 
+    public function findLastInactive() {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('p')
+            ->from('CudiBundle\Entity\Stock\Period', 'p')
+            ->where(
+                $query->expr()->isNotNull('p.endDate')
+            )
+            ->orderBy('p.endDate', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     /**
      * @param  PeriodEntity $period
      * @return array

@@ -67,7 +67,30 @@
                     <div class="content">
                         <p>A new stock period should be created for each semester! For the upcomming semester you did not yet create one! This will close the current stock period, making it impossible to change the stock article values. Make sure you <b>enter your last stock changes from last semester before creating a new one</b>! Next, a new stock period will be created with the same start stock article values as the end values of the previous stock period. Finally, all open bookings will be re-booked and re-assigned in the new stock period.</p>
                         <p>If you do not know what to do, please contact your site administrator.</p>
-                        <p>To create a new stock period, please click <a href="{{ url('cudi_admin_stock_period', {'action': 'new'}) }}">here</a>.</p>
+                        <p>To create a new stock period, please click <a href="#newPeriod" data-toggle="modal">here</a>.</p>
+                    </div>
+                </div>
+                <div class="modal fade" id="newPeriod" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <span>Litus Admin</span>
+                                /New Stock Period
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                    You are about to close the previous period and create a new one!
+                                    Please note that this operation cannot be undone!
+                                </p>
+                                <p>
+                                    Are you sure you want to continue?
+                                </p>
+                                <div class="footer">
+                                    <button class="new">Yes</button>
+                                    <button class="cancel" data-dismiss="modal">No</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             {% endif %}
@@ -91,6 +114,9 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('.submenu').sidebarNavigation();
+        $('#newPeriod .new').click(function () {
+            window.location = "{{ url("cudi_admin_stock_period", {"action": "new"}) }}";
+        });
     });
 </script>
 
