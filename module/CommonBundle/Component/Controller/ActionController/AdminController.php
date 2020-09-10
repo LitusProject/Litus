@@ -57,7 +57,9 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
 
             $result->createNewStockPeriod = ($period === null
                 || ($period->getStartDate()->format('Y') < date('Y') && (($period->getStartDate()->format('n') < 12) || ($period->getStartDate()->format('j') <= 15)))
-                || $period->getStartDate() < $this->getCurrentAcademicYear()->getStartDate());
+                || $period->getStartDate() < $this->getCurrentAcademicYear()->getStartDate())
+                && $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.show_new_stock_period_warning');
         }
 
         $result->servedBy = null;
