@@ -2596,6 +2596,10 @@ return array(
                 'name'     => 'Onze-Lieve-Vrouwstraat',
             ),
             array(
+                'register' => 7264,
+                'name'     => 'Ooiendonk',
+            ),
+            array(
                 'register' => 2129,
                 'name'     => 'Oostertunnel',
             ),
