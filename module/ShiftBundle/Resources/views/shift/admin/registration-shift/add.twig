@@ -1,0 +1,16 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'shift/admin/registration-shift/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+{% endblock %}
+
+{% block content_script %}
+
+{% endblock %}

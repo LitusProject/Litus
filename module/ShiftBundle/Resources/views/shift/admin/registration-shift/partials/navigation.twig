@@ -1,0 +1,17 @@
+<header id="controller_header">
+    <div class="title"><span class="shift">Registration Shifts</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('shift_admin_registration_shift', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url("shift_admin_registration_shift", {"action": "add"}) }}">Add</a></li>
+            {% endif %}
+            {% if hasAccess('shift_admin_registration_shift', 'old') %}
+                <li><a {% if 'old' == getParam('action') %} class="active" {% endif %} href="{{ url("shift_admin_registration_shift", {"action": "old"}) }}">Old</a></li>
+            {% endif %}
+            {% if hasAccess('shift_admin_registration_shift', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url("shift_admin_registration_shift", {"action": "manage"}) }}">Manage</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
