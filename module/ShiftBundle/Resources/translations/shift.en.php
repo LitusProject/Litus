@@ -84,4 +84,5 @@ return array(
     'You need to collect <span class="label label-success">%pointsToNextRanking%</span> more point(s) to get the next ranking.' => 'You need to collect <span class="label label-success">%pointsToNextRanking%</span> more point(s) to get the next ranking.',
     'Points' => 'Points',
     'Point' => 'Point',
+    'My Reservations' => 'My Reservations',
 );
