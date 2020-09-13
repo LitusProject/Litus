@@ -281,8 +281,6 @@
                             </div>
                             <div class="col-sm-4">
                                 <dl>
-                                    <dt>{{ translate('Manager') }}</dt>
-                                    <dd>{{ shift.getManager().getFullName() }}</dd>
 
                                     {% if shift.getEvent() is not null %}
                                         <dt>{{ translate('Event') }}</dt>
@@ -291,19 +289,7 @@
 
                                     <dt>{{ translate('Unit') }}</dt>
                                     <dd>{{ shift.getUnit().getName() }}</dd>
-                                    <dd>{{ shift.getNbRegistered() }}</dd>
                                 </dl>
-                            </div>
-                            <div class="col-sm-4">
-                                {% if 0 != shift.getNbRegistered() %}
-                                    <dl>
-                                        <dt>{{ translate('Registered') }}</dt>
-
-                                        {% for registered in shift.getRegistered() %}
-                                            <dd>{{ registered.getPerson().getFullName() }}</dd>
-                                        {% endfor %}
-                                    </dl>
-                                {% endif %}
                             </div>
                         </div>
                         <dl>
