@@ -80,7 +80,7 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
                         ->getRepository('ShiftBundle\Entity\RegistrationShift')
                         ->findAllActiveByEvent($event);
 
-                    $resultString = $this->getTranslator()->translate('Registration shifts for %event%');
+                    $resultString = $this->getTranslator()->translate('Timeslots for %event%');
                     $resultString = str_replace('%event%', $event->getTitle(), $resultString);
                 } else {
                     $this->flashMessenger()->error(
@@ -102,7 +102,7 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
                         ->getRepository('ShiftBundle\Entity\RegistrationShift')
                         ->findAllActiveByUnit($unit);
 
-                    $resultString = $this->getTranslator()->translate('Registration shifts for %unit%');
+                    $resultString = $this->getTranslator()->translate('Timeslots for %unit%');
                     $resultString = str_replace('%unit%', $unit->getName(), $resultString);
                 } else {
                     $this->flashMessenger()->error(
@@ -131,7 +131,7 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
                             ->getRepository('ShiftBundle\Entity\RegistrationShift')
                             ->findAllActiveBetweenDates($start_date, $end_date);
 
-                        $resultString = $this->getTranslator()->translate('Registration shifts from %start% to %end%');
+                        $resultString = $this->getTranslator()->translate('Timeslots from %start% to %end%');
                         $resultString = str_replace('%start%', $start_date->format('d/m/Y'), $resultString);
                         $resultString = str_replace('%end%', $end_date->format('d/m/Y'), $resultString);
                     }
@@ -152,7 +152,7 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
                 ->getRepository('ShiftBundle\Entity\RegistrationShift')
                 ->findAllActiveBetweenDates($start_date, $end_date);
 
-            $resultString = $this->getTranslator()->translate('Registration shifts from %start% to %end%');//TODO: Dit vertaalt nog niet
+            $resultString = $this->getTranslator()->translate('Timeslots from %start% to %end%');//TODO: Dit vertaalt nog niet
             $resultString = str_replace('%start%', $start_date->format('d/m/Y'), $resultString);
             $resultString = str_replace('%end%', $end_date->format('d/m/Y'), $resultString);
         }
