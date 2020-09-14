@@ -5,12 +5,12 @@
 
     <div class="flashmessage alert alert-success fade" id="registered_success">
         <div class="content">
-            {{ translate('You were signed in for the selected registration shift!') }}
+            {{ translate('You were signed in for the selected timeslot!') }}
         </div>
     </div>
     <div class="flashmessage alert alert-success fade" id="sign_out">
         <div class="content">
-            {{ translate('You were signed out from the selected registration shift!') }}
+            {{ translate('You were signed out from the selected timeslot!') }}
         </div>
     </div>
     <div class="flashmessage alert alert-danger fade" id="error">
@@ -28,7 +28,7 @@
                 </div>
                 <div class="modal-body">
                     <p>
-                        {{ translate('You are about to sign yourself in for a registration shift. Do you want to continue?') }}
+                        {{ translate('You are about to sign yourself in for a timeslot. Do you want to continue?') }}
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -40,7 +40,7 @@
     </div>
 
     <div class="page-header">
-        <h1>{{ translate('Registration Shifts') }}</h1>
+        <h1>{{ translate('Timeslots') }}</h1>
     </div>
 
 
@@ -118,17 +118,17 @@
         </div>
         <div class="col-md-8">
             <h2>
-                {{ translate('My Shifts') }}
+                {{ translate('My Timeslots') }}
             </h2>
 
-            {{ self.displayShifts(entityManager, authenticatedPerson, myShifts, 'myShifts') }}
+            {{ self.displayShifts(entityManager, authenticatedPerson, myShifts, 'myTimeslots') }}
 
             <h2>{{ resultString }}</h2>
             {% if searchResults is not null %}
                 {{ self.displayShifts(entityManager, authenticatedPerson, searchResults, 'search') }}
             {% else %}
                 <div class="alert alert-warning">
-                    {{ translate('There are no registration shifts to be shown yet; please use the search functions on the left.') }}
+                    {{ translate('There are no timeslots to be shown yet; please use the search functions on the left.') }}
                 </div>
             {% endif %}
         </div>
@@ -249,7 +249,7 @@
     <div class="panel-group" id="shifts-{{ accordionName }}">
         {% for shift in shifts %}
             {% if previousShift.getStartDate().format('Ymd') < shift.getStartDate().format('Ymd') %}
-                <h3>{{translate('Shifts on')}} {{ translate(shift.getStartDate().format('l')) }}  {{ dateLocalized(shift.getStartDate(), 'd/M/y') }}</h3>
+                <h3>{{translate('Timeslots on')}} {{ translate(shift.getStartDate().format('l')) }}  {{ dateLocalized(shift.getStartDate(), 'd/M/y') }}</h3>
             {% endif %}
 
             {% set previousShift = shift %}
@@ -307,9 +307,9 @@
         {% else %}
             <div class="alert alert-warning">
                 {% if 'search' == accordionName %}
-                    {{ translate('No registration shifts were found that match the given query.') }}
+                    {{ translate('No timeslots were found that match the given query.') }}
                 {% else %}
-                    {{ translate('You have not yet signed up for any registration shifts. You can use the search functions on the left to look for some!') }}
+                    {{ translate('You have not yet signed up for any timeslots. You can use the search functions on the left to look for some!') }}
                 {% endif %}
             </div>
         {% endfor %}
