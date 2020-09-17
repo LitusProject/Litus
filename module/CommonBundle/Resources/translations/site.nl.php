@@ -136,6 +136,8 @@ return array(
     'I want a button that links to the VTK-Instagrampage on my signature'=>'Ik wil een knop naar de VTK-Instagrampagina op mijn handtekening',
     'Link to your LinkedIn (optional)'=>'Link naar jouw LinkedIn (optioneel)',
     'Link to your Twitter (optional)'=>'Link naar jouw Twitter (optioneel)',
-    'Your function within VTK'=>'Jouw functie binnen VTK'
-
+    'Your function within VTK'=>'Jouw functie binnen VTK',
+    'Register for a timeslot in the current Corona situation.' => 'Registreer voor een tijdsslot in de huidige Corona situatie.',
+    'Timeslots' => 'Tijdssloten',
+    'Timeslot registration' => 'Tijdsslot registratie'
 );

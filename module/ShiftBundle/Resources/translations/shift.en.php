@@ -85,4 +85,5 @@ return array(
     'Points' => 'Points',
     'Point' => 'Point',
     'My Reservations' => 'My Reservations',
+    'Timeslot registration' => 'Timeslot registration',
 );
