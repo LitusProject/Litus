@@ -124,4 +124,7 @@ return array(
     'Please login to see your POC\'ers!'                         => 'Please login to see your POC\'ers!',
     'Visit the poc page for more '                               => 'Visit the poc page for more ',
     'Order sandwiches and snacks.'                               => 'Order sandwiches and snacks.',
+    'Register for a timeslot in the current Corona situation.' => 'Register for a timeslot in the current Corona situation.',
+    'Timeslots' => 'Timeslots',
+    'Timeslot registration'=>'Timeslot registration',
 );

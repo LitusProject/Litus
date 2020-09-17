@@ -85,4 +85,5 @@ return array(
     'Points' => 'Punten',
     'Point' => 'Punt',
     'My Reservations' => 'Mijn Reservaties',
+    'Timeslot registration' => 'Tijdsslot registratie',
 );
