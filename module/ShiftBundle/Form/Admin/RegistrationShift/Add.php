@@ -174,6 +174,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type'       => 'select',
                 'name'       => 'edit_roles',
                 'label'      => 'Edit Roles',
+                'required' => true,
                 'attributes' => array(
                     'multiple' => true,
                     'options'  => $this->createEditRolesArray(),
