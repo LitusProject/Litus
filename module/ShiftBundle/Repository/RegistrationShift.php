@@ -43,7 +43,10 @@ class RegistrationShift extends \CommonBundle\Component\Doctrine\ORM\EntityRepos
         return $query->select('s')
             ->from('ShiftBundle\Entity\RegistrationShift', 's')
             ->where(
-                $query->expr()->gt('s.endDate', ':now')
+                $query->expr()->andX(
+                    $query->expr()->lt('s.visibleDate', ':now'),
+                    $query->expr()->gt('s.endDate', ':now')
+                )
             )
             ->orderBy('s.startDate', 'ASC')
             ->setParameter('now', new DateTime())
@@ -61,7 +64,10 @@ class RegistrationShift extends \CommonBundle\Component\Doctrine\ORM\EntityRepos
             ->from('ShiftBundle\Entity\RegistrationShift', 's')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->gt('s.endDate', ':now'),
+                    $query->expr()->andX(
+                        $query->expr()->lt('s.visibleDate', ':now'),
+                        $query->expr()->gt('s.endDate', ':now')
+                    ),
                     $query->expr()->like($query->expr()->lower('s.name'), ':name')
                 )
             )
@@ -98,7 +104,10 @@ class RegistrationShift extends \CommonBundle\Component\Doctrine\ORM\EntityRepos
             ->from('ShiftBundle\Entity\RegistrationShift', 's')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->gt('s.endDate', ':now'),
+                    $query->expr()->andX(
+                        $query->expr()->lt('s.visibleDate', ':now'),
+                        $query->expr()->gt('s.endDate', ':now')
+                    ),
                     $query->expr()->eq('s.event', ':event')
                 )
             )
@@ -119,7 +128,10 @@ class RegistrationShift extends \CommonBundle\Component\Doctrine\ORM\EntityRepos
             ->from('ShiftBundle\Entity\RegistrationShift', 's')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->gt('s.endDate', ':now'),
+                    $query->expr()->andX(
+                        $query->expr()->lt('s.visibleDate', ':now'),
+                        $query->expr()->gt('s.endDate', ':now')
+                    ),
                     $query->expr()->eq('s.unit', ':unit')
                 )
             )
@@ -141,7 +153,10 @@ class RegistrationShift extends \CommonBundle\Component\Doctrine\ORM\EntityRepos
             ->from('ShiftBundle\Entity\RegistrationShift', 's')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->gt('s.endDate', ':now'),
+                    $query->expr()->andX(
+                        $query->expr()->lt('s.visibleDate', ':now'),
+                        $query->expr()->gt('s.endDate', ':now')
+                    ),
                     $query->expr()->lt('s.startDate', ':end_date'),
                     $query->expr()->gt('s.endDate', ':start_date')
                 )
@@ -161,8 +176,7 @@ class RegistrationShift extends \CommonBundle\Component\Doctrine\ORM\EntityRepos
     public function findAllByPerson(Person $person, AcademicYear $academicYear = null)
     {
         return array_merge(
-            $this->findAllByPersonAsReponsibleQuery($person, $academicYear)->getResult(),
-            $this->findAllByPersonAsVolunteerQuery($person, $academicYear)->getResult()
+            $this->findAllByPersonAsRegisteredQuery($person, $academicYear)->getResult()
         );
     }
 
@@ -247,7 +261,10 @@ class RegistrationShift extends \CommonBundle\Component\Doctrine\ORM\EntityRepos
             ->innerJoin('s.registered', 'r')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->gt('s.endDate', ':now'),
+                    $query->expr()->andX(
+                        $query->expr()->lt('s.visibleDate', ':now'),
+                        $query->expr()->gt('s.endDate', ':now')
+                    ),
                     $query->expr()->eq('r.id', ':id')
                 )
             )
@@ -270,7 +287,10 @@ class RegistrationShift extends \CommonBundle\Component\Doctrine\ORM\EntityRepos
             ->innerJoin('s.registered', 'r')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->gt('s.endDate', ':now'),
+                    $query->expr()->andX(
+                        $query->expr()->lt('s.visibleDate', ':now'),
+                        $query->expr()->gt('s.endDate', ':now')
+                    ),
                     $query->expr()->eq('r.person', ':person')
                 )
             )
