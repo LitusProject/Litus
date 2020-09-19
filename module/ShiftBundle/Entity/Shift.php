@@ -716,7 +716,7 @@ class Shift
         }
 
         foreach ($person->getFlattenedRoles() as $role) {
-            if ($this->editRoles->contains($role) || $role->getName() == 'editor') {
+            if ($this->editRoles->contains($role) || $role->getName() == 'editor' || $role->getName() == 'vice-praeses' ) {
                 return true;
             }
         }
