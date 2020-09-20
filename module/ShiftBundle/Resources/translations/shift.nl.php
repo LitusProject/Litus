@@ -87,5 +87,5 @@ return array(
     'My Reservations' => 'Mijn Reservaties',
     'My Timeslots' => 'Mijn Tijdssloten',
     'Timeslot registration' => 'Tijdsslot registratie',
-    'By signing up for a timeslot, you give consent to your information being used for contact tracing' => 'Door je in te schrijven voor een tijdsslot, stem je in dat jouw gegevens gebruikt mogen worden in het kader van contact tracing',
+    'By signing up for a timeslot, you give consent to your information being used for contact tracing.' => 'Door je in te schrijven voor een tijdsslot, stem je in dat jouw gegevens gebruikt mogen worden in het kader van contact tracing.',
 );
