@@ -138,9 +138,9 @@ class Job
     private $endDate;
 
     /**
-     * @var string The sector of the company
+     * @var string The sectors of the company
      *
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $sector;
 
@@ -548,16 +548,29 @@ class Job
     }
 
     /**
-     * @param  string $sector
+     * @return string
+     */
+    public function getSector()
+    {
+        $sectorsArray = array();
+        $sectors = unserialize($this->sector);
+        foreach ($sectors as $sector) {
+            array_push($sectorsArray, Company::POSSIBLE_SECTORS[$sector]);
+        }
+        return implode(", ", $sectorsArray);;
+    }
+
+    /**
+     * @param  array $sectors
      * @return Job
      */
-    public function setSector($sector)
+    public function setSector($sectors)
     {
-        if (!Company::isValidSector($sector)) {
-            throw new InvalidArgumentException('The sector is not valid.');
+        if (!is_string($sectors)) {
+            $sectors = serialize($sectors);
         }
 
-        $this->sector = $sector;
+        $this->sector = $sectors;
 
         return $this;
     }
@@ -565,20 +578,15 @@ class Job
     /**
      * @return string
      */
-    public function getSector()
-    {
-        if ($this->sector === null) {
-            return null;
-        }
-
-        return Company::POSSIBLE_SECTORS[$this->sector];
-    }
-
-    /**
-     * @return string
-     */
     public function getSectorCode()
     {
-        return $this->sector;
+        $unserializedSectors = unserialize($this->sector);
+
+        foreach($unserializedSectors as $sector) {
+            if (!Company::isValidsector($sector)) {
+                throw new InvalidArgumentException('The sector is not valid.');
+            }
+        }
+        return $unserializedSectors;
     }
 }
