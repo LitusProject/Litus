@@ -26,6 +26,7 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use Parsedown;
+use function Functional\push;
 
 /**
  * This is the entity for an job.
@@ -94,7 +95,7 @@ class Job
     private $location;
 
     /**
-     * @var string The master for which this job is meant
+     * @var string The masters for which this job is meant
      *
      * @ORM\Column(type="text", nullable=true)
      */
@@ -473,24 +474,25 @@ class Job
      */
     public function getMaster()
     {
-        if ($this->master === null) {
-            return null;
+        $mastersArray = array();
+        $masters = unserialize($this->master);
+        foreach ($masters as $master) {
+            array_push($mastersArray, Company::POSSIBLE_MASTERS[$master]);
         }
-
-        return Company::POSSIBLE_MASTERS[$this->master];
+        return implode(", ", $mastersArray);;
     }
 
     /**
-     * @param  string $master
+     * @param  array $masters
      * @return Job
      */
-    public function setMaster($master)
+    public function setMaster($masters)
     {
-        if (!Company::isValidMaster($master)) {
-            throw new InvalidArgumentException('The master is not valid.');
+        if (!is_string($masters)) {
+            $masters = serialize($masters);
         }
 
-        $this->master = $master;
+        $this->master = $masters;
 
         return $this;
     }
@@ -500,7 +502,14 @@ class Job
      */
     public function getMasterCode()
     {
-        return $this->master;
+        $unserializedMasters = unserialize($this->master);
+
+        foreach($unserializedMasters as $master) {
+            if (!Company::isValidMaster($master)) {
+                throw new InvalidArgumentException('The master is not valid.');
+            }
+        }
+        return $unserializedMasters;
     }
 
     /**
