@@ -97,8 +97,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type'       => 'select',
                 'name'       => 'sector',
                 'label'      => 'Sector',
+                'required'   => true,
                 'attributes' => array(
                     'options' => Company::POSSIBLE_SECTORS,
+                    'multiple' => true,
                 ),
             )
         );
