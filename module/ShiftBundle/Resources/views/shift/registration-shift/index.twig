@@ -44,7 +44,7 @@
     </div>
 
     <div style="text-align: justify;">
-        {{ translate('By signing up for a timeslot, you give consent to your information being used for contact tracing') }}
+        {{ translate('By signing up for a timeslot, you give consent to your information being used for contact tracing.') }}
     </div>
 
     <div class="row">
@@ -244,7 +244,6 @@
     </script>
 {% endblock %}
 
-{#TODO: IDK what this is#}
 {% macro displayShifts(entityManager, authenticatedPerson, shifts, accordionName) %}
     {% import _self as self %}
     {% set previousShift = null %}
