@@ -83,9 +83,9 @@ return array(
     'You need to collect <span class="label label-success">%pointsToNextRanking%</span> more point(s) to get the next ranking.' => 'Je moet nog <span class="label label-success">%pointsToNextRanking%</span> punt(en) verzamelen om de volgende ranking te bereiken.',
     'Points' => 'Punten',
     'Point' => 'Punt',
-    'Timeslots on' => 'Tijdssloten op',
+    'Timeslots on' => 'Tijdsloten op',
     'My Reservations' => 'Mijn Reservaties',
-    'My Timeslots' => 'Mijn Tijdssloten',
-    'Timeslot registration' => 'Tijdsslot registratie',
-    'By signing up for a timeslot, you give consent to your information being used for contact tracing.' => 'Door je in te schrijven voor een tijdsslot, stem je in dat jouw gegevens gebruikt mogen worden in het kader van contact tracing.',
+    'My Timeslots' => 'Mijn Tijdsloten',
+    'Timeslot registration' => 'Tijdslot registratie',
+    'By signing up for a timeslot, you give consent to your information being used for contact tracing.' => 'Door je in te schrijven voor een tijdslot, stem je in dat jouw gegevens gebruikt mogen worden in het kader van contact tracing.',
 );
