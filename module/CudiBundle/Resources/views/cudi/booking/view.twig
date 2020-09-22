@@ -15,6 +15,10 @@
     {% if authenticatedPerson is null %}
         {{ translate('Please login to view your bookings.') }}
     {% else %}
+
+        {% if enableExtraText %}
+        <p>{{ reservationText }}</p>
+        {% endif %}
         <table class="table">
             <tr>
                 <th>{{ translate('Article') }}</th>
