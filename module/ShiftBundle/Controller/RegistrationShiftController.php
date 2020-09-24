@@ -44,7 +44,7 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
 
         $person = $this->getPersonEntity();
         if ($person === null) {
-            return $this->notFoundAction();
+            $this->redirect()->toRoute('common_auth');
         }
 
         $myShifts = $this->getEntityManager()
