@@ -46,7 +46,7 @@ class RegistrationSubscriber extends \CommonBundle\Component\Hydrator\Hydrator
             return;
         }
 
-        $subscriber = new RegistrationEntity($person, $this->getCurrentAcademicYear(true));
+        $subscriber = new RegistrationEntity($this->getCurrentAcademicYear(true), $person);
         $object->addRegistered($this->getEntityManager(), $subscriber);
 
         return $subscriber;

@@ -30,6 +30,8 @@ use ShiftBundle\Entity\Shift;
 use Zend\Http\Headers;
 use Zend\Mail\Message;
 use Zend\View\Model\ViewModel;
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 
 /**
  * ShiftController
@@ -214,6 +216,51 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
         return new ViewModel(
             array(
                 'form' => $form,
+            )
+        );
+    }
+
+    public function csvAction()
+    {
+        $file = new CsvFile();
+        $heading = array('Timeslot Title', 'Author', 'Start Date', 'End Date', 'Registered Name');
+
+        $timeslots = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\RegistrationShift')
+            ->findAll();
+
+        $results = array();
+
+        foreach ($timeslots as $timeslot) {
+//            $timeslot->getDate()->setEntityManager($this->getEntityManager());
+//            $value = $timeslot->getOrder()->getTotalCostExclusive();
+            $registered = $timeslot->getRegistered();
+
+            foreach ($registered as $register) {
+                $results[] = array($timeslot->getName(),
+                    $timeslot->getCreationPerson()->getFullName(),
+                    $timeslot->getStartDate()->format('j/m/Y'),
+                    $timeslot->getEndDate()->format('j/m/Y'),
+                    $register->getPerson()->getFullName(),
+                );
+            }
+        }
+
+        $document = new CsvGenerator($heading, $results);
+        $document->generateDocument($file);
+
+        $headers = new Headers();
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="contracts.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
             )
         );
     }

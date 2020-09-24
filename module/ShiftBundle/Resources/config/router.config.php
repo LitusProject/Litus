@@ -149,6 +149,22 @@ return array(
                 ),
             ),
         ),
+        'registration_shift_auth' => array(
+            'type'    => 'Zend\Router\Http\Segment',
+            'options' => array(
+                'route'       => '[/:language]/registration-shift/auth[/:action[/identification/:identification[/hash/:hash]]][/]',
+                'constraints' => array(
+                    'action'         => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'identification' => '[mrsu][0-9]{7}',
+                    'hash'           => '[a-zA-Z0-9_-]*',
+                    'language'       => '(en|nl)',
+                ),
+                'defaults' => array(
+                    'controller' => 'registration_s_sale_auth',
+                    'action'     => 'login',
+                ),
+            ),
+        ),
         'shift_export' => array(
             'type'    => 'Zend\Router\Http\Segment',
             'options' => array(

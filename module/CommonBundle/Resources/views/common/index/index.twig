@@ -86,7 +86,6 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    {% if hasAccess('registration_shift', 'index') %}
                         <div class="page-header" style="margin-top: 20px;">
                             <a class="heading" href="{{ url('registration_shift') }}">
                                 <h3>{{ translate('Timeslot registration')}}</h3>
@@ -103,8 +102,7 @@
                             <a href="{{ url('registration_shift') }}" class="btn btn-sm btn-primary">{{ translate('Timeslots') }}
                             </a>
                         </p>
-                    {% endif %}
-                    {% if shop.enable %}                       
+                    {% if shop.enable %}
                          <div class="page-header" style="margin-top: 20px;">
                             <a class="heading" href="{{ url('shop') }}">
                                 <h3>{{ shop.name }}</h3>
