@@ -1,17 +1,17 @@
-{% extends 'corporate/partials/vacancy.twig' %}
+{% extends 'corporate/partials/studentjob.twig' %}
 
 {% block content %}
 
-    <div class="flashmessage alert alert-danger fade" id="vacancy_removed_error">
+    <div class="flashmessage alert alert-danger fade" id="student_job_removed_error">
         <a class="close">&times;</a>
         <div class="content">
-            {{ translate('An error occurred while removing vacancy.') }}
+            {{ translate('An error occurred while removing student job.') }}
         </div>
     </div>
-    <div class="flashmessage alert alert-success fade" id="vacancy_removed_success">
+    <div class="flashmessage alert alert-success fade" id="student_job_removed_success">
         <a class="close">&times;</a>
         <div class="content">
-            {{ translate('The removal of the vacancy was succesfully registered. This will be reviewed by our corporate relations team.') }}
+            {{ translate('The removal of the student job was succesfully registered. This will be reviewed by our corporate relations team.') }}
         </div>
     </div>
     <div class="flashmessage alert alert-danger fade" id="request_removed_error">
@@ -29,42 +29,42 @@
 
     <div class="row">
         <div class="col-md-6">
-            <h1 style="float:left;">{{ translate('Vacancies') }}</h1>
+            <h1 style="float:left;">{{ translate('Student Jobs') }}</h1>
             <div style="margin-top: 37px;"><strong>&nbsp;&nbsp;{{ translate('currently listed on our website') }}</div></strong>
         </div>
         <div class="col-md-6">
-            <a class="btn btn-success pull-right" href="{{ url('br_corporate_vacancy', {'action': 'add'}) }}" style="margin-bottom: 5px; margin-top: 20px;">{{ translate('Add Vacancy') }}</a>
+            <a class="btn btn-success pull-right" href="{{ url('br_corporate_student_job', {'action': 'add'}) }}" style="margin-bottom: 5px; margin-top: 20px;">{{ translate('Add Student Job') }}</a>
         </div>
     </div>
     <div class="row">
         {% set onceDisabled = false %}
         <div class="col-md-12">
             <table class="table table-hover full-width">
-                {% for vacancy in paginator %}
-                    {% if not vacancy.isApproved() == false %}
+                {% for studentJob in paginator %}
+                    {% if not studentJob.isApproved() == false %}
                         <tr>
                             <td width="120">
-                                <a href="{{ url('br_career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">
-                                    {% if vacancy.getCompany().getLogo() is not empty %}
-                                        <img width="120" src="/{{ logoPath }}/{{ vacancy.getCompany().getLogo() }}" alt="{{ vacancy.getCompany().getName() }}">
+                                <a href="{{ url('br_career_student_job', {'action': 'view', 'id': studentJob.getId() }) }}">
+                                    {% if studentJob.getCompany().getLogo() is not empty %}
+                                        <img width="120" src="/{{ logoPath }}/{{ studentJob.getCompany().getLogo() }}" alt="{{ studentJob.getCompany().getName() }}">
                                     {% else %}
-                                        <center class="company-name">{{ vacancy.getCompany().getName() }}</center>
+                                        <center class="company-name">{{ studentJob.getCompany().getName() }}</center>
                                     {% endif %}
                                 </a>
                             </td>
 
                             <td>
-                                <strong>{{ vacancy.getCompany().getName() }} - {{ vacancy.getName() }}</strong>
+                                <strong>{{ studentJob.getCompany().getName() }} - {{ studentJob.getName() }}</strong>
                                 <br/>
-                                <div class="pull-right hidden-xs">{{ translate('Last Updated') }}: <strong>{{ dateLocalized(vacancy.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
+                                <div class="pull-right hidden-xs">{{ translate('Last Updated') }}: <strong>{{ dateLocalized(studentJob.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
                                 <br/>
-                                {{ vacancy.getSummary(200)|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
+                                {{ studentJob.getSummary(200)|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
                             </td>
                             <td width="230" style="vertical-align: middle;">
-                                <a class="btn btn-sm btn-info" href="{{ url('br_career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">{{ translate('View') }}</a>
-                                {% set disabled =  ((unfinishedRequests[vacancy.getId()] == 'delete' or unfinishedRequests[vacancy.getId()] == 'edit') or unfinishedRequests[vacancy.getId()] == 'edit reject') %}
-                                <a class="btn btn-sm btn-primary {% if disabled == true %}disabled{% endif %}" href="{{ url('br_corporate_vacancy', {'action': 'edit', 'id': vacancy.getId()}) }}">{{ translate('Edit') }}</a>
-                                <a class="btn btn-sm btn-danger deleteVacancy {% if disabled == true %}disabled{% endif %}" data-id="{{ vacancy.getId() }}" href="#">{{ translate('Delete') }}</a>
+                                <a class="btn btn-sm btn-info" href="{{ url('br_career_student_job', {'action': 'view', 'id': studentJob.getId() }) }}">{{ translate('View') }}</a>
+                                {% set disabled =  ((unfinishedRequests[studentJob.getId()] == 'delete' or unfinishedRequests[studentJob.getId()] == 'edit') or unfinishedRequests[studentJob.getId()] == 'edit reject') %}
+                                <a class="btn btn-sm btn-primary {% if disabled == true %}disabled{% endif %}" href="{{ url('br_corporate_student_job', {'action': 'edit', 'id': studentJob.getId()}) }}">{{ translate('Edit') }}</a>
+                                <a class="btn btn-sm btn-danger deleteStudentJob {% if disabled == true %}disabled{% endif %}" data-id="{{ studentJob.getId() }}" href="#">{{ translate('Delete') }}</a>
                                 {% if disabled == true %} {% set onceDisabled = true %}{% endif %}
                             </td>
 
@@ -120,9 +120,9 @@
                                 {% endif %}
                             </td>
                             <td width="230" style="vertical-align: middle;">
-                                <a class="btn btn-sm btn-info" href="{{ url('br_career_vacancy', {'action': 'view', 'id': request.getJob().getId() }) }}">{{ translate('View') }}</a>
+                                <a class="btn btn-sm btn-info" href="{{ url('br_career_student_job', {'action': 'view', 'id': request.getJob().getId() }) }}">{{ translate('View') }}</a>
                                 {% if not (request.getRequestType() == 'delete') %}
-                                    <a class="btn btn-sm btn-primary" href="{{ url('br_corporate_vacancy', {'action': 'edit', 'id': request.getJob().getId()}) }}">{{ translate('Edit') }}</a>
+                                    <a class="btn btn-sm btn-primary" href="{{ url('br_corporate_student_job', {'action': 'edit', 'id': request.getJob().getId()}) }}">{{ translate('Edit') }}</a>
                                 {% endif %}
                                 <a class="btn btn-sm btn-danger deleteRequest" data-id="{{ request.getId() }}" href="#">{{ translate('Delete') }}</a>
                             </td>
@@ -145,15 +145,15 @@
         </div>
     {% endif %}
 
-    <div id="modalDeleteVacancy" class="modal fade">
+    <div id="modalDeleteStudentJob" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <a class="close" data-dismiss="modal">&times;</a>
-                    <h4>{{ translate('Remove vacancy') }}</h4>
+                    <h4>{{ translate('Remove student job') }}</h4>
                 </div>
                 <div class="modal-body">
-                    {{ translate('Are you sure that you want to remove this vacancy') }}?
+                    {{ translate('Are you sure that you want to remove this student job') }}?
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
@@ -189,28 +189,28 @@
                 $(this).closest('.flashmessage').removeClass('in');
             });
 
-            $('.deleteVacancy').click(openRemoveVacancy);
+            $('.deleteStudentJob').click(openRemoveStudentJob);
             $('.deleteRequest').click(openRemoveRequest);
         });
 
-        function openRemoveVacancy(e) {
+        function openRemoveStudentJob(e) {
             var $this = $(this);
 
             e.preventDefault();
-            var deleteVacancy = $('#modalDeleteVacancy');
-            deleteVacancy.find('.confirm').unbind('click').click(function () {
-                $.post('{{ url('br_corporate_vacancy', {"action": "delete"})}}' + $this.data('id'), function (data) {
+            var deleteStudentJob = $('#modalDeleteStudentJob');
+            deleteStudentJob.find('.confirm').unbind('click').click(function () {
+                $.post('{{ url('br_corporate_student_job', {"action": "delete"})}}' + $this.data('id'), function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').removeClass('in');
-                        $('#vacancy_removed_success').addClass('in');
-                        deleteVacancy.modal('hide');
+                        $('#student_job_removed_success').addClass('in');
+                        deleteStudentJob.modal('hide');
                         location.reload();
                     } else {
-                        errorDeleteVacancy();
+                        errorDeleteStudentJob();
                     }
-                }, 'json').error(errorDeleteVacancy);
+                }, 'json').error(errorDeleteStudentJob);
             });
-            deleteVacancy.modal();
+            deleteStudentJob.modal();
         }
 
         function openRemoveRequest(e) {
@@ -219,7 +219,7 @@
             e.preventDefault();
             var deleteRequest = $('#modalDeleteRequest');
             deleteRequest.find('.confirm').unbind('click').click(function () {
-                $.post('{{ url('br_corporate_vacancy', {"action": "deleteRequest"})}}' + $this.data('id'), function (data) {
+                $.post('{{ url('br_corporate_student_job', {"action": "deleteRequest"})}}' + $this.data('id'), function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').removeClass('in');
                         $('#request_removed_success').addClass('in');
@@ -233,10 +233,10 @@
             deleteRequest.modal();
         }
 
-        function errorDeleteVacancy() {
+        function errorDeleteStudentJob() {
             $('.flashmessage').removeClass('in');
-            $('#vacancy_removed_error').addClass('in');
-            $('#modalDeleteVacancy').modal('hide');
+            $('#student_job_removed_error').addClass('in');
+            $('#modalDeleteStudentJob').modal('hide');
         }
 
         function errorDeleteRequest() {
@@ -246,4 +246,3 @@
         }
     </script>
 {% endblock %}
-

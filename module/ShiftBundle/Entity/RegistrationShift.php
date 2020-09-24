@@ -342,7 +342,7 @@ class RegistrationShift
     }
 
     /**
-     * @param  Registered $registered
+     * @param  Person $person
      * @return self
      */
     public function removeRegistered(Person $person)

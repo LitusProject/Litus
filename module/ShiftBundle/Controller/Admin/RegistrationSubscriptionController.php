@@ -98,11 +98,10 @@ class RegistrationSubscriptionController extends \CommonBundle\Component\Control
         if ($subscription === null) {
             return new ViewModel();
         }
-
         $repository = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\RegistrationShift');
         $shift = $repository->findOneByRegistered($subscription->getId());
-        $shift->removeRegistered($subscription);
+        $shift->removeRegistered($subscription->getPerson());
 
 
         $mailAddress = $this->getEntityManager()

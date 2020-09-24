@@ -24,26 +24,26 @@ use BrBundle\Entity\Company\Job;
 use Zend\View\Model\ViewModel;
 
 /**
- * InternshipController
+ * Student Job Controller
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class InternshipController extends \BrBundle\Component\Controller\CareerController
+class StudentJobController extends \BrBundle\Component\Controller\CareerController
 {
     public function overviewAction()
     {
-        $internshipSearchForm = $this->getForm('br_career_search_internship');
+        $studentJobSearchForm = $this->getForm('br_career_search_studentJob');
 
         $query = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
-            ->findAllActiveByTypeByDateQuery('internship');
+            ->findAllActiveByTypeByDateQuery('student job');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
-            $internshipSearchForm->setData($formData);
+            $studentJobSearchForm->setData($formData);
 
-            if ($internshipSearchForm->isValid()) {
-                $formData = $internshipSearchForm->getData();
+            if ($studentJobSearchForm->isValid()) {
+                $formData = $studentJobSearchForm->getData();
 
                 $repository = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Company\Job');
@@ -53,11 +53,11 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
                 $master = $formData['master'] == 'all' ? null : $formData['master'];
 
                 if ($formData['searchType'] == 'company') {
-                    $query = $repository->findAllActiveByTypeQuery('internship', $sector, $location, $master);
-                } elseif ($formData['searchType'] == 'internship') {
-                    $query = $repository->findAllActiveByTypeSortedByJobNameQuery('internship', $sector, $location, $master);
+                    $query = $repository->findAllActiveByTypeQuery('student job', $sector, $location, $master);
+                } elseif ($formData['searchType'] == 'student_job') {
+                    $query = $repository->findAllActiveByTypeSortedByJobNameQuery('student job', $sector, $location, $master);
                 } elseif ($formData['searchType'] == 'mostRecent') {
-                    $query = $repository->findAllActiveByTypeSortedByDateQuery('internship', $sector, $location, $master);
+                    $query = $repository->findAllActiveByTypeSortedByDateQuery('student job', $sector, $location, $master);
                 }
             }
         }
@@ -73,18 +73,18 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
 
         return new ViewModel(
             array(
-                'paginator'            => $paginator,
-                'paginationControl'    => $this->paginator()->createControl(true),
-                'logoPath'             => $logoPath,
-                'internshipSearchForm' => $internshipSearchForm,
+                'paginator'         => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+                'logoPath'          => $logoPath,
+                'studentJobSearchForm' => $studentJobSearchForm,
             )
         );
     }
 
     public function viewAction()
     {
-        $internship = $this->getInternshipEntity();
-        if ($internship === null) {
+        $studentJob = $this->getStudentJobEntity();
+        if ($studentJob === null) {
             return new ViewModel();
         }
 
@@ -94,8 +94,8 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
 
         return new ViewModel(
             array(
-                'internship' => $internship,
-                'logoPath'   => $logoPath,
+                'studentJob'  => $studentJob,
+                'logoPath' => $logoPath,
             )
         );
     }
@@ -103,11 +103,11 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
     /**
      * @return Job|null
      */
-    private function getInternshipEntity()
+    private function getstudentJobEntity()
     {
         $job = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
-            ->findOneActiveByTypeAndId('internship', $this->getParam('id', 0));
+            ->findOneActiveByTypeAndId('student job', $this->getParam('id', 0));
 
         if (!($job instanceof Job)) {
             $this->flashMessenger()->error(
@@ -116,7 +116,7 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
             );
 
             $this->redirect()->toRoute(
-                'br_career_internship',
+                'br_career_student_job',
                 array(
                     'action' => 'overview',
                 )

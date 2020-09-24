@@ -165,6 +165,7 @@ class Job
     public static $possibleTypes = array(
         'internship' => 'Internship',
         'vacancy'    => 'Vacancy',
+        'student job' => 'Student Job',
     );
 
     /**
@@ -475,11 +476,16 @@ class Job
     public function getMaster()
     {
         $mastersArray = array();
-        $masters = unserialize($this->master);
-        foreach ($masters as $master) {
-            array_push($mastersArray, Company::POSSIBLE_MASTERS[$master]);
+        if (substr($this->master, 0,2) == "a:") {
+            $masters = unserialize($this->master);
+            if ($masters !== false)
+                foreach ($masters as $master) {
+                    array_push($mastersArray, Company::POSSIBLE_MASTERS[$master]);
+                }
+            return implode(", ", $mastersArray);;
         }
-        return implode(", ", $mastersArray);;
+        else
+            return $this->master;
     }
 
     /**
@@ -553,11 +559,17 @@ class Job
     public function getSector()
     {
         $sectorsArray = array();
-        $sectors = unserialize($this->sector);
-        foreach ($sectors as $sector) {
-            array_push($sectorsArray, Company::POSSIBLE_SECTORS[$sector]);
+        if (substr($this->sector, 0,2) === "a:") {
+            $sectors = unserialize($this->sector);
+            if ($sectors !== false)
+                foreach ($sectors as $sector) {
+                    array_push($sectorsArray, Company::POSSIBLE_SECTORS[$sector]);
+                }
+            return implode(", ", $sectorsArray);;
         }
-        return implode(", ", $sectorsArray);;
+        else
+            return $this->sector;
+
     }
 
     /**
@@ -581,12 +593,12 @@ class Job
     public function getSectorCode()
     {
         $unserializedSectors = unserialize($this->sector);
-
-        foreach($unserializedSectors as $sector) {
-            if (!Company::isValidsector($sector)) {
-                throw new InvalidArgumentException('The sector is not valid.');
+        if ($unserializedSectors !== false)
+            foreach($unserializedSectors as $sector) {
+                if (!Company::isValidsector($sector)) {
+                    throw new InvalidArgumentException('The sector is not valid.');
+                }
             }
-        }
         return $unserializedSectors;
     }
 }

@@ -275,4 +275,19 @@ Example content of this section.
         'value'       => 'https://vtk.be/admin/br/request/',
         'description' => '',
     ),
+    array(
+        'key'         => 'br.student_job_mail',
+        'value'       => 'bedrijvenrelaties@vtk.be',
+        'description' => 'The mail address to which notifications should be send when a company makes a new vacancy/StudentJob request.',
+    ),
+    array(
+        'key'         => 'br.student_job_mail_name',
+        'value'       => 'VTK Bedrijvenrelaties',
+        'description' => '',
+    ),
+    array(
+        'key'         => 'br.student_job_link',
+        'value'       => 'https://vtk.be/admin/br/request/',
+        'description' => '',
+    ),
 );

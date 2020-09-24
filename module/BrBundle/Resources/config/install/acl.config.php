@@ -90,6 +90,9 @@ return array(
         'br_career_internship' => array(
             'view', 'overview',
         ),
+        'br_career_student_job' => array(
+            'view', 'overview',
+        ),
         'br_cv_index' => array(
             'cv', 'edit', 'complete', 'delete', 'download', 'uploadProfileImage',
         ),
@@ -109,6 +112,9 @@ return array(
             'overview', 'add', 'delete', 'edit',
         ),
         'br_corporate_vacancy' => array(
+            'overview', 'add', 'delete', 'edit',
+        ),
+        'br_corporate_student_job' => array(
             'overview', 'add', 'delete', 'edit',
         ),
         'br_corporate_company' => array(
