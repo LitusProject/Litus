@@ -117,15 +117,19 @@
             var removeSubscription = $('#removeSubscription');
             removeSubscription.find('.fullName').html($(this).data('name'));
             var id = $this.data('id');
+
             removeSubscription.find('.delete').unbind('click').click(function () {
+
                 $.post('{{ url('shift_admin_registration_shift_subscription', {"action": "delete", "shift":shift.getId()})}}' + id, function (data) {
-                    console.log("id:"+id);
+                    {#$.post('{{ url('shift_admin_registration_shift_subscription', {"action": "delete"})}} + id + "/" + shift.getId(), function (data) {#}
                     if (data && 'success' == data.status) {
                         $('.flashmessage').hide();
                         $('.viewer_removed_success').show();
                         $('.item-' + id).remove();
                         removeSubscription.modal('hide');
                     } else {
+                        console.log("id:"+id, {{ shift.getId() }}, "post:", '{{ url('shift_admin_registration_shift_subscription', {"action": "delete", "shift":shift.getId()})}}' + id);
+
                         errorRemove();
                     }
                 }, 'json').error(errorRemove);

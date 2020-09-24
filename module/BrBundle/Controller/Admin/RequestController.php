@@ -40,10 +40,15 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('BrBundle\Entity\Company\Request\Internship')
             ->findNewRequests();
 
+        $studentJobRequests = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Request\StudentJob')
+            ->findNewRequests();
+
         return new ViewModel(
             array(
                 'vacancyRequests'    => $vacancyRequests,
                 'internshipRequests' => $internshipRequests,
+                'studentJobRequests' => $studentJobRequests,
             )
         );
     }

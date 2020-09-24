@@ -223,7 +223,7 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
     public function csvAction()
     {
         $file = new CsvFile();
-        $heading = array('Timeslot Title', 'Author', 'Start Date', 'End Date', 'Registered Name');
+        $heading = array('Timeslot Title', 'Author', 'Start Date', 'End Date', 'Registered Name', 'Phone Number', 'Email Address',);
 
         $timeslots = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\RegistrationShift')
@@ -242,6 +242,8 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
                     $timeslot->getStartDate()->format('j/m/Y'),
                     $timeslot->getEndDate()->format('j/m/Y'),
                     $register->getPerson()->getFullName(),
+                    $register->getPerson()->getPhoneNumber(),
+                    $register->getPerson()->getPersonalEmail(),
                 );
             }
         }
