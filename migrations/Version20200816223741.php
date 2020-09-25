@@ -37,10 +37,6 @@ class Version20200816223741 extends \Doctrine\Migrations\AbstractMigration
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('ALTER TABLE cudi_isic_cards ALTER haspaid SET DEFAULT \'true\'');
-        $this->addSql('ALTER TABLE users_organizations_metadata DROP irreeel_at_cudi');
-        $this->addSql('ALTER TABLE users_organizations_metadata DROP bakske_by_mail');
-        $this->addSql('ALTER TABLE users_organizations_metadata DROP tshirt_size');
     }
 
     /**
