@@ -145,12 +145,12 @@ class Internship extends \BrBundle\Entity\Company\Request
 
             case 'edit':
                 $this->getJob()->approve();
-                $this->getEditJob()->remove();
+                $this->getJob()->remove();
                 break;
 
             case 'edit reject':
                 $this->getJob()->approve();
-                $this->getEditJob()->remove();
+                $this->getJob()->remove();
                 break;
 
             case 'delete':
