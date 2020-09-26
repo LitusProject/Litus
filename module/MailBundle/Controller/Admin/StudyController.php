@@ -73,10 +73,7 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
 
                     if ($formData['test']) {
                         $body = '<br/>This email would have been sent to:<br/>';
-                        foreach ($addresses as $address) {
-                            $body .= $address . '<br/>';
-                        }
-
+                        $body .= count($addresses). '<br/>';
                         $part = new Part($body);
                         $part->type = Mime::TYPE_HTML;
                         $message->addPart($part);
@@ -125,11 +122,9 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                     $message->addPart($part);
 
                     if ($formData['test']) {
-                        $body = '<br/>This email would have been sent to:<br/>';
-                        foreach ($addresses as $address) {
-                            $body .= $address . '<br/>';
-                        }
-
+                        $body = '<br/>This email would have been sent to';
+                        $body .= count($addresses);
+                        $body .= ' addresses.<br/>';
                         $part = new Part($body);
                         $part->type = Mime::TYPE_HTML;
                         $message->addPart($part);
