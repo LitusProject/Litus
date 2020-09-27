@@ -43,10 +43,7 @@ class RegistrationShift extends \CommonBundle\Component\Doctrine\ORM\EntityRepos
         return $query->select('s')
             ->from('ShiftBundle\Entity\RegistrationShift', 's')
             ->where(
-                $query->expr()->andX(
-                    $query->expr()->lt('s.visibleDate', ':now'),
                     $query->expr()->gt('s.endDate', ':now')
-                )
             )
             ->orderBy('s.startDate', 'ASC')
             ->setParameter('now', new DateTime())
