@@ -20,6 +20,7 @@
 
 namespace LogisticsBundle\Entity;
 
+use CommonBundle\Entity\General\Location;
 use CommonBundle\Entity\User\Person\Academic;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -88,7 +89,7 @@ class Article
      * @static
      * @var array All the possible visibilities allowed
      */
-    public static $possibleVisibilities = array(
+    public static $POSSIBLE_VISIBILITIES = array(
         'internal' => 'Internal',
         'external' => 'External',
         'private' => 'Private',
@@ -105,16 +106,23 @@ class Article
      * @static
      * @var array All the possible statuses allowed
      */
-    public static $possibleStatuses = array(
+    public static $POSSIBLE_STATUSES = array(
 //        TODO: vragen aan Sietze
     );
 
     /**
-     * @var string The location of storage of this article
+     * @var Location The location of storage of this article
      *
-     * @ORM\Column(name="location", type="text")
+     * @ORM\Column(name="location", type="location")
      */
     private $location;
+
+    /**
+     * @var string The spot in the location of storage of this article
+     *
+     * @ORM\Column(name="spot", type="text")
+     */
+    private $spot;
 
     /**
      * @var int The warranty of this article
@@ -141,7 +149,7 @@ class Article
      * @static
      * @var array All the possible categories allowed
      */
-    public static $possibleCategories = array(
+    public static $POSSIBLE_CATEGORIES = array(
 //        TODO: vragen aan Sietze
         'varia' => 'Varia',
         'sound' => 'Sound',
@@ -155,15 +163,11 @@ class Article
     private $dateUpdated;
 
     /**
-     * @param string  $name     The article's name
-     * @param string  $location The article's location
      */
-    public function __construct($name, $location)
+    public function __construct()
     {
-        $this->name = $name;
-        $this->location = $location;
         $this->dateUpdated = new DateTime();
-        $this->orders = new ArrayCollection();
+//        $this->orders = new ArrayCollection();
     }
 
     /**
@@ -172,6 +176,22 @@ class Article
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return text
+     */
+    public function getSpot()
+    {
+        return $this->spot;
+    }
+
+    /**
+     * @param text $spot
+     */
+    public function setSpot($spot)
+    {
+        $this->spot = $spot;
     }
 
     /**
