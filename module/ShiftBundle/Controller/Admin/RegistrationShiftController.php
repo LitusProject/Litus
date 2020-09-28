@@ -222,31 +222,30 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
 
     public function csvAction()
     {
-        $file = new CsvFile();
-        $heading = array('Timeslot Title', 'Author', 'Start Date', 'End Date', 'Registered Name', 'Phone Number', 'Email Address',);
+        $timeslot = $this->getRegistrationShiftEntity();
+        if ($timeslot === null) {
+            return new ViewModel();
+        }
 
-        $timeslots = $this->getEntityManager()
-            ->getRepository('ShiftBundle\Entity\RegistrationShift')
-            ->findAll();
+        $file = new CsvFile();
+        $heading = array('Timeslot Title', 'Author', 'Start Date', 'End Date', 'Registered Name', 'r-number', 'Phone Number', 'Email Address',);
 
         $results = array();
 
-        foreach ($timeslots as $timeslot) {
-//            $timeslot->getDate()->setEntityManager($this->getEntityManager());
-//            $value = $timeslot->getOrder()->getTotalCostExclusive();
-            $registered = $timeslot->getRegistered();
+        $registered = $timeslot->getRegistered();
 
-            foreach ($registered as $register) {
-                $results[] = array($timeslot->getName(),
-                    $timeslot->getCreationPerson()->getFullName(),
-                    $timeslot->getStartDate()->format('j/m/Y'),
-                    $timeslot->getEndDate()->format('j/m/Y'),
-                    $register->getPerson()->getFullName(),
-                    $register->getPerson()->getPhoneNumber(),
-                    $register->getPerson()->getPersonalEmail(),
-                );
-            }
+        foreach ($registered as $register) {
+            $results[] = array($timeslot->getName(),
+                $timeslot->getCreationPerson()->getFullName(),
+                $timeslot->getStartDate()->format('j/m/Y'),
+                $timeslot->getEndDate()->format('j/m/Y'),
+                $register->getPerson()->getFullName(),
+                $register->getPerson()->getUniversityIdentification(),
+                $register->getPerson()->getPhoneNumber(),
+                $register->getPerson()->getPersonalEmail(),
+            );
         }
+
 
         $document = new CsvGenerator($heading, $results);
         $document->generateDocument($file);

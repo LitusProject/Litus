@@ -46,6 +46,7 @@
                     <th>Event</th>
                     <th>Start</th>
                     <th>End</th>
+                    <th>Capacity / Max</th>
                     <th width="70px">Actions</th>
                  </tr>
 
@@ -55,6 +56,7 @@
                         <td>{{ shift.getEvent().getTitle(language) }}</td>
                         <td>{{ shift.getStartDate().format('d/m/Y H:i') }}</td>
                         <td>{{ shift.getEndDate().format('d/m/Y H:i') }}</td>
+                        <td>{{ shift.getRegistered()|length }} / {{ shift.getNbRegistered() }}</td>
                         <td class="actions">
                             {% if shift.canBeEditedBy(authenticatedPerson) %}
                                 {% if hasAccess('shift_admin_registration_shift', 'edit') %}
