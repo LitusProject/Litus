@@ -17,14 +17,31 @@
         </div>
     </div>
 
+    {% if hasAccess('shift_admin_registration_shift', 'csv') %}
+        <aside>
+            <div class="sidebox">
+                <div class="title">Export CSV</div>
+                <div class="content">
+                    <p>
+                        <i>Klik hier om CSV te downloaden</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('shift_admin_registration_shift', {'action': 'csv', 'id': shift.getid()}) }}">&rarr; Export CSV</a>
+                    </p>
+                </div>
+            </div>
+        </aside>
+    {% endif %}
+
     <div id="controller_action">
-        <h1>Shift</h1>
+        <h1>Timeslot</h1>
 
         <p>Title: <b>{{ shift.getName() }}</b></p>
         <p>Start: <b>{{ shift.getStartDate().format('d/m/Y H:i') }}</b></p>
         <p>End: <b>{{ shift.getEndDate().format('d/m/Y H:i') }}</b></p>
         <p>Opens: <b>{{ shift.getVisibleDate().format('d/m/Y H:i') }}</b></p>
         <p>Closes: <b>{{ shift.getSignoutDate().format('d/m/Y H:i') }}</b></p>
+        <p>Amount/Max: <b>{{ shift.getRegistered()|length }} / {{ shift.getNbRegistered() }}</b></p>
 
         {% if shift.canBeEditedBy(authenticatedPerson) or hasAccess('shift_admin_registration_shift_subscription', 'superadd') %}
         {% import 'admin/partials/form.twig' as forms %}
@@ -65,6 +82,7 @@
 
         {% include 'admin/partials/paginationControl.twig' %}
     </div>
+
 
     <div class="modal fade" id="removeSubscription" tabindex="-1">
         <div class="modal-dialog">
