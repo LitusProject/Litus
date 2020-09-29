@@ -25,8 +25,10 @@ use CommonBundle\Entity\General\Location;
 use CommonBundle\Entity\General\Organization\Unit;
 use CommonBundle\Entity\User\Person;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
+use LogisticsBundle\Entity\Order\OrderArticleMap;
 use Parsedown;
 use function Functional\push;
 
@@ -34,12 +36,12 @@ use function Functional\push;
  * This is the entity for an order.
  *
  * @ORM\Entity(repositoryClass="LogisticsBundle\Entity\Order")
- * @ORM\Table(name="br_companies_jobs")
+ * @ORM\Table(name="logistics_order")
  */
 class Order
 {
     /**
-     * @var string The order's ID
+     * @var integer The order's ID
      *
      * @ORM\Id
      * @ORM\Column(type="bigint")
@@ -76,9 +78,10 @@ class Order
     private $location;
 
     /**
-     * @var Person The contact for whom this order is meant
+     * @var Academic The contact used in this order
      *
-     * @ORM\Column(type="Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
+     * @ORM\JoinColumn(name="contact", referencedColumnName="id")
      */
     private $contact;
 
@@ -126,12 +129,11 @@ class Order
     private $removed;
 
     /**
-     * @var array an array containing the article bookings of the order
+     * @var ArrayCollection An array of \LogisticsBundle\Entity\Order\OrderArticleMap indicating which articles (and how many) are ordered (reserved).
      *
-     * @ORM\OneToMany(targetEntity="\LogisticsBundle\Entity\Booking")
-     * @ORM\JoinColumn(name="booking", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="LogisticsBundle\Entity\Order\OrderArticleMap", mappedBy="order_id")
      */
-    private $bookings;
+    private $articles;
 
     /**
      * @param Person $contact The order's contact
@@ -146,20 +148,17 @@ class Order
     /**
      * @return array
      */
-    public function getBookings()
+    public function getArticles()
     {
-        return $this->bookings;
+        return $this->Articles;
     }
 
     /**
-     * @param array $booking
-     * @return self
+     * @param orderArticleMap $article
      */
-    public function addBooking($booking)
+    public function addArticles($article)
     {
-        array_push($this->bookings, $booking);
-        return $this;
-
+        array_push($this->Articles, $article);
     }
 
     /**
@@ -213,7 +212,7 @@ class Order
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getId()
     {

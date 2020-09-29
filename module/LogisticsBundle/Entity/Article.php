@@ -50,12 +50,12 @@ class Article
      */
     private $name;
 
-//    /**
-//     * @var ArrayCollection An array of \LogisticsBundle\Entity\Order indicating when this article is ordered (reserved).
-//     *
-//     * @ORM\OneToMany(targetEntity="LogisticsBundle\Entity\Order", mappedBy="article_id")
-//     */
-//    private $orders;
+    /**
+     * @var ArrayCollection An array of \LogisticsBundle\Entity\Order\OrderArticleMap indicating when this article is ordered (reserved).
+     *
+     * @ORM\OneToMany(targetEntity="LogisticsBundle\Entity\Order\OrderArticleMap", mappedBy="article_id")
+     */
+    private $orders;
 
     /**
      * @var string Additional information about the article

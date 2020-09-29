@@ -31,12 +31,12 @@ use RuntimeException;
  * This entity stores a request for an order.
  *
  * @ORM\Entity(repositoryClass="LogisticsBundle\Entity\Request")
- * @ORM\Table(name="logistics_requests")
+ * @ORM\Table(name="logistics_request")
  */
 class Request
 {
     /**
-     * @var request's ID
+     * @var integer request's ID
      *
      * @ORM\Id
      * @ORM\Column(type="bigint")
@@ -74,12 +74,12 @@ class Request
     private $requestType;
 
     /**
-     * @var Job
+     * @var Order
      *
      * @ORM\ManyToOne(targetEntity="LogisticsBundle\Entity\Order")
-     * @ORM\JoinColumn(name="job", referencedColumnName="id")
+     * @ORM\JoinColumn(name="order", referencedColumnName="id")
      */
-    private $job;
+    private $order;
 
     /**
      * @var Order
@@ -109,12 +109,11 @@ class Request
 
     /**
      * @param Academic $contact
-     * @param Order       $order
-     * @param string    $requestType
-     * @param Academic $contact
-     * @param Order|null  $editOrder
+     * @param Order $order
+     * @param string $requestType
+     * @param Order|null $editOrder
      */
-    public function __construct(Academic $contact, Order $order, $requestType, Academic $contact, Order $editOrder = null)
+    public function __construct(Academic $contact, Order $order, $requestType, Order $editOrder = null)
     {
         $this->creationTime = new DateTime();
         $this->contact = $contact;
@@ -133,8 +132,8 @@ class Request
     }
 
     /**
-     * @param  \CommonBundle\Entity\User\Person\Academic $contact
-     * @return \LogisticsBundle\Entity\Request
+     * @param  Academic $contact
+     * @return Request
      */
     public function setContact($contact)
     {
@@ -144,7 +143,7 @@ class Request
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person\Academic
+     * @return Academic
      */
     public function getContact()
     {
@@ -152,7 +151,7 @@ class Request
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getCreationTime()
     {
@@ -218,7 +217,7 @@ class Request
     /**
      * @return Order
      */
-    public function getEditJob()
+    public function getEditOrder()
     {
         return $this->editOrder;
     }
@@ -232,7 +231,7 @@ class Request
     }
 
     /**
-     * @return null
+     * @return $this
      */
     public function approveRequest()
     {
@@ -259,13 +258,15 @@ class Request
             default:
                 break;
         }
+        return $this;
     }
 
     /**
-     * @return null
+     * @return $this
      */
     public function rejectRequest($message)
     {
         $this->rejectMessage = $message;
+        return $this;
     }
 }
