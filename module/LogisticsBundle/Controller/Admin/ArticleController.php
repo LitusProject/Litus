@@ -20,6 +20,7 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
+use LogisticsBundle\Entity\Article;
 use LogisticsBundle\Entity\Lease\Item;
 use Zend\View\Model\ViewModel;
 
@@ -65,7 +66,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                 );
 
                 $this->redirect()->toRoute(
-                    'logistics_admin_article',
+                    'logistics_admin_inventory',
                     array(
                         'action' => 'manage',
                     )
@@ -103,7 +104,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                 );
 
                 $this->redirect()->toRoute(
-                    'logistics_admin_article',
+                    'logistics_admin_inventory',
                     array(
                         'action' => 'manage',
                     )
@@ -127,23 +128,23 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel();
         }
 
-        $orderRepo = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Article');
-
-        if (count($orderRepo->findUnreturnedByArticle($article)) > 0) {
-            return new ViewModel(
-                array(
-                    'result' => array(
-                        'status' => 'unreturned_orders',
-                    ),
-                )
-            );
-        }
-
-        $orders = $orderRepo->findByArticle($article);
-        foreach ($orders as $order) {
-            $this->getEntityManager()->remove($order);
-        }
+//        $orderRepo = $this->getEntityManager()
+//            ->getRepository('LogisticsBundle\Entity\Order');
+//
+//        if (count($orderRepo->findUnreturnedByArticle($article)) > 0) {
+//            return new ViewModel(
+//                array(
+//                    'result' => array(
+//                        'status' => 'unreturned_orders',
+//                    ),
+//                )
+//            );
+//        }
+//
+//        $orders = $orderRepo->findByArticle($article);
+//        foreach ($orders as $order) {
+//            $this->getEntityManager()->remove($order);
+//        }
 
         $this->getEntityManager()->remove($article);
 
@@ -172,7 +173,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'logistics_admin_article',
+                'logistics_admin_inventory',
                 array(
                     'action' => 'manage',
                 )

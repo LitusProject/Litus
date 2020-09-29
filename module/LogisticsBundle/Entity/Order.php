@@ -24,6 +24,7 @@ use CommonBundle\Component\Util\StringUtil;
 use CommonBundle\Entity\General\Location;
 use CommonBundle\Entity\General\Organization\Unit;
 use CommonBundle\Entity\User\Person;
+use CommonBundle\Entity\User\Person\Academic;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -71,9 +72,10 @@ class Order
     private $email;
 
     /**
-     * @var Location The location (eg. province) where the order is located
+     * @var Location the location of the order
      *
-     * @ORM\Column(type="text")
+     * @ORM\ManytoOne(targetEntity="\CommonBundle\Entity\General\Location")
+     * @ORM\JoinColumn(name="location", referencedColumnName="id")
      */
     private $location;
 

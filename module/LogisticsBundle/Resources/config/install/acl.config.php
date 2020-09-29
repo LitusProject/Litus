@@ -26,6 +26,9 @@ return array(
         'logistics_admin_piano_reservation' => array(
             'add', 'delete', 'edit', 'manage', 'old',
         ),
+        'logistics_admin_inventory' => array(
+            'add', 'delete', 'edit', 'manage',
+        ),
         'logistics_admin_van_reservation' => array(
             'add', 'delete', 'edit', 'manage', 'old',
         ),

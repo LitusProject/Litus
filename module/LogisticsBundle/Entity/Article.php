@@ -67,14 +67,14 @@ class Article
     /**
      * @var int The amount of owned articles
      *
-     * @ORM\Column(name="amount_owned", type="int")
+     * @ORM\Column(name="amount_owned", type="integer")
      */
     private $amountOwned;
 
     /**
-     * @var int The amount of available articles
+     * @var integer The amount of available articles
      *
-     * @ORM\Column(name="amount_available", type="int")
+     * @ORM\Column(name="amount_available", type="integer")
      */
     private $amountAvailable;
 
@@ -111,9 +111,10 @@ class Article
     );
 
     /**
-     * @var Location The location of storage of this article
+     * @var Location the location of the article
      *
-     * @ORM\Column(name="location", type="location")
+     * @ORM\ManytoOne(targetEntity="\CommonBundle\Entity\General\Location")
+     * @ORM\JoinColumn(name="location", referencedColumnName="id")
      */
     private $location;
 
@@ -125,16 +126,16 @@ class Article
     private $spot;
 
     /**
-     * @var int The warranty of this article
+     * @var integer The warranty of this article
      *
-     * @ORM\Column(name="warranty", type="int")
+     * @ORM\Column(name="warranty", type="integer")
      */
     private $warranty;
 
     /**
-     * @var int The rent of this article
+     * @var integer The rent of this article
      *
-     * @ORM\Column(name="rent", type="int")
+     * @ORM\Column(name="rent", type="integer")
      */
     private $rent;
 
@@ -167,7 +168,7 @@ class Article
     public function __construct()
     {
         $this->dateUpdated = new DateTime();
-//        $this->orders = new ArrayCollection();
+        $this->orders = new ArrayCollection();
     }
 
     /**
@@ -249,7 +250,7 @@ class Article
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getAmountOwned()
     {
@@ -257,7 +258,7 @@ class Article
     }
 
     /**
-     * @param int $amountOwned
+     * @param integer $amountOwned
      */
     public function setAmountOwned($amountOwned)
     {
@@ -265,7 +266,7 @@ class Article
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getAmountAvailable()
     {
@@ -273,7 +274,7 @@ class Article
     }
 
     /**
-     * @param int $amountAvailable
+     * @param integer $amountAvailable
      */
     public function setAmountAvailable($amountAvailable)
     {
@@ -329,7 +330,7 @@ class Article
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getWarranty()
     {
@@ -337,7 +338,7 @@ class Article
     }
 
     /**
-     * @param int $warranty
+     * @param integer $warranty
      */
     public function setWarranty($warranty)
     {
@@ -345,7 +346,7 @@ class Article
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getRent()
     {
@@ -353,7 +354,7 @@ class Article
     }
 
     /**
-     * @param int $rent
+     * @param integer $rent
      */
     public function setRent($rent)
     {
