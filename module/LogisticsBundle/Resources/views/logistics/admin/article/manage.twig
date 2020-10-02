@@ -20,23 +20,52 @@
 
     <div id="controller_action">
 
+        <div id="article_search" style="display:none;">
+            <div style="padding:4px;text-align:right">
+                Search:
+                <select id="searchField">
+                    <option value="name">Name</option>
+                    <option value="location">Location</option>
+                    <option value="status">Status</option>
+                    <option value="visibility">Visibility</option>
+                </select>
+                is
+                <input type="text" id="searchString" size="30" />
+            </div>
+
+            <table class="full_width manage">
+                <tr>
+                    <th>Name</th>
+                    <th width="170px">Available/Owned</th>
+                    <th width="150px">Category</th>
+                    <th width="120px">Location</th>
+                    <th width="70px">Spot</th>
+                    <th width="80px">Status</th>
+                    <th width="80px">Visibility</th>
+                    <th width="70px">Actions</th>
+                </tr>
+            </table>
+        </div>
+
         <div id="normal_page">
 
             <table class="full_width manage">
                 <tr>
                     <th>Name</th>
-                    <th width="70px">Amount</th>
+                    <th width="170px">Available/Owned</th>
                     <th width="150px">Category</th>
-                    <th width="200px">Location</th>
+                    <th width="120px">Location</th>
                     <th width="70px">Spot</th>
-                    <th width="100px">Status</th>
-                    <th width="100px">Visibility</th>
+                    <th width="80px">Status</th>
+                    <th width="80px">Visibility</th>
+                    <th width="70px">Actions</th>
                 </tr>
 
                 {% for article in paginator %}
 
                     <tr class="item item-{{ article.getId() }}">
                         <td>{{ article.getName() }}</td>
+                        <td>{{ article.getAmountAvailable() }}/{{ article.getAmountOwned() }}</td>
                         <td>{{ article.getCategory() }}</td>
                         <td>{{ article.getLocation().getName() }}</td>
                         <td>{{ article.getSpot() }}</td>
@@ -89,6 +118,47 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            {% if hasAccess('logistics_admin_article', 'search') %}
+            $.searchDatabase({
+                defaultPage: $('#normal_page'),
+                searchDiv: $('#article_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                searchPage: '{{ url('logistics_admin_article', {'action': 'manage'}) }}manage/',
+                url: '{{ url('logistics_admin_article', {'action': 'search'}) }}',
+                display: function (data) {
+                    $('#article_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#article_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
+                        row.append('<td>' + this.name + '</td>')
+                            .append('<td>' + this.amountAvailable + "/" + this.amountOwned + '</td>')
+                            .append('<td>' + this.location + '</td>')
+                            .append('<td>' + this.spot + '</td>')
+                            .append('<td>' + this.status + '</td>')
+                            .append('<td>' + this.visibility + '</td>')
+                            .append(
+                                actions = $('<td>', {'class': 'actions'})
+                            );
+
+                        {% if hasAccess('logistics_admin_article', 'edit') %}
+                        actions.append('<a href="{{ url('logistics_admin_article', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
+                        {% endif %}
+
+                        {% if hasAccess('logistics_admin_article', 'delete') %}
+                        actions.append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
+                        deleteButton.data({
+                            id: this.id,
+                        });
+                        {% endif %}
+                    });
+                    $('#article_search .delete').click(openModal);
+                    $('#article_search table').change();
+                },
+                clear: function () {
+                    $('#article_search table').find('tr.item').remove();
+                }
+            });
+            {% endif %}
             $('.item .delete').click(openModal);
         });
 

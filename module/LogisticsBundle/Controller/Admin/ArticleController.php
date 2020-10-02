@@ -33,15 +33,25 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
-            'LogisticsBundle\Entity\Article',
+        if ($this->getParam('field') !== null) {
+            $articles = $this->search();
+        }
+
+        if (!isset($articles)) {
+            $articles = $this->getEntityManager()
+                ->getRepository('LogisticsBundle\Entity\Article')
+                ->findAllQuery();
+        }
+
+        $paginator = $this->paginator()->createFromQuery(
+            $articles,
             $this->getParam('page')
         );
 
         return new ViewModel(
             array(
-                'paginator'         => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'paginator'           => $paginator,
+                'paginationControl'   => $this->paginator()->createControl(true),
             )
         );
     }
@@ -159,6 +169,41 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function searchAction()
+    {
+        $this->initAjax();
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        $articles = $this->search()
+            ->setMaxResults($numResults)
+            ->getResult();
+
+        $result = array();
+        foreach ($articles as $article) {
+
+            $item = (object) array();
+            $item->id = $article->getId();
+            $item->name = $article->getName();
+            $item->amountOwned = $article->getAmountOwned();
+            $item->amountAvailable = $article->getAmountAvailable();
+            $item->category = $article->getCategory();
+            $item->location = $article->getLocation();
+            $item->spot = $article->getSpot();
+            $item->status = $article->getStatus();
+            $item->visibility = $article->getVisibility();
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
     /**
      * @return Article|null
      */
@@ -183,5 +228,31 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         return $article;
+    }
+
+    /**
+     * @return \Doctrine\ORM\Query|null
+     */
+    private function search()
+    {
+        switch ($this->getParam('field')) {
+            case 'name':
+                return $this->getEntityManager()
+                    ->getRepository('LogisticsBundle\Entity\Article')
+                    ->findAllByNameQuery($this->getParam('string'));
+            case 'location':
+                return $this->getEntityManager()
+                    ->getRepository('LogisticsBundle\Entity\Article')
+                    ->findAllByLocationQuery($this->getParam('string'));
+            case 'status':
+                return $this->getEntityManager()
+                    ->getRepository('LogisticsBundle\Entity\Article')
+                    ->findAllByStatusQuery($this->getParam('string'));
+            case 'visibility':
+                return $this->getEntityManager()
+                    ->getRepository('LogisticsBundle\Entity\Article')
+                    ->findAllByVisibilityQuery($this->getParam('string'));
+        }
+        return;
     }
 }

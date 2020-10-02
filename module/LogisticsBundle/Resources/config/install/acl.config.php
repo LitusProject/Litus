@@ -27,7 +27,7 @@ return array(
             'add', 'delete', 'edit', 'manage', 'old',
         ),
         'logistics_admin_article' => array(
-            'add', 'delete', 'edit', 'manage',
+            'add', 'delete', 'edit', 'manage', 'search',
         ),
         'logistics_admin_van_reservation' => array(
             'add', 'delete', 'edit', 'manage', 'old',

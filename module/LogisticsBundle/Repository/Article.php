@@ -20,6 +20,7 @@
 
 namespace LogisticsBundle\Repository;
 
+use Doctrine\ORM\Query;
 use LogisticsBundle\Entity\Article as ArticleEntity;
 
 /**
@@ -30,6 +31,22 @@ use LogisticsBundle\Entity\Article as ArticleEntity;
  */
 class Article extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllQuery()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('a')
+            ->from('LogisticsBundle\Entity\Article', 'a')
+            ->orderBy('a.name', 'ASC')
+            ->getQuery();
+    }
+
+    /**
+     * @param  string $name
+     * @return Query
+     */
     public function findAllByNameQuery($name)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -43,6 +60,10 @@ class Article extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery();
     }
 
+    /**
+     * @param  string $visibility
+     * @return Query
+     */
     public function findAllByVisibilityQuery($visibility)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -56,6 +77,10 @@ class Article extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery();
     }
 
+    /**
+     * @param  string $status
+     * @return Query
+     */
     public function findAllByStatusQuery($status)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -65,6 +90,23 @@ class Article extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 $query->expr()->like($query->expr()->lower('a.status'), ':status')
             )
             ->setParameter('status', '%' . strtolower($status) . '%')
+            ->setMaxResults(20)
+            ->getQuery();
+    }
+
+    /**
+     * @param  string $location
+     * @return Query
+     */
+    public function findAllByLocationQuery($location)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('a')
+            ->from('LogisticsBundle\Entity\Article', 'a')
+            ->where(
+                $query->expr()->like($query->expr()->lower('a.location'), ':location')
+            )
+            ->setParameter('location', '%' . strtolower($location) . '%')
             ->setMaxResults(20)
             ->getQuery();
     }
