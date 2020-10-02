@@ -35,17 +35,17 @@ return array(
                 ),
             ),
         ),
-        'logistics_admin_inventory' => array(
+        'logistics_admin_article' => array(
             'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/logistics/inventory[/:action[/:id][/page/:page]][/]',
+                'route'       => '/admin/logistics/article[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
                 'defaults' => array(
-                    'controller' => 'logistics_admin_inventory',
+                    'controller' => 'logistics_admin_article',
                     'action'     => 'manage',
                 ),
             ),
@@ -191,7 +191,7 @@ return array(
 
     'controllers' => array(
         'logistics_admin_driver'            => 'LogisticsBundle\Controller\Admin\DriverController',
-        'logistics_admin_inventory'         => 'LogisticsBundle\Controller\Admin\ArticleController',
+        'logistics_admin_article'         => 'LogisticsBundle\Controller\Admin\ArticleController',
         'logistics_admin_van_reservation'   => 'LogisticsBundle\Controller\Admin\VanReservationController',
         'logistics_admin_piano_reservation' => 'LogisticsBundle\Controller\Admin\PianoReservationController',
         'logistics_admin_lease'             => 'LogisticsBundle\Controller\Admin\LeaseController',

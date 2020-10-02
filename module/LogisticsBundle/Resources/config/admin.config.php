@@ -27,7 +27,7 @@ return array(
                 'logistics_admin_lease'             => array('title' => 'Lease'),
                 'logistics_admin_piano_reservation' => array('title' => 'Piano Reservations'),
                 'logistics_admin_van_reservation'   => array('title' => 'Van Reservations'),
-                'logistics_admin_inventory'   => array('title' => 'Inventory'),
+                'logistics_admin_article'   => array('title' => 'Inventory'),
             ),
         ),
     ),

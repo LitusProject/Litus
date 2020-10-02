@@ -20,6 +20,7 @@
 
 namespace LogisticsBundle\Form\Admin\Article;
 
+use http\Exception\RuntimeException;
 use LogisticsBundle\Entity\Article;
 
 /**
@@ -66,10 +67,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-
         $this->add(
             array(
-                'type'       => 'integer',
+                'type'       => 'text',
                 'name'       => 'amount_owned',
                 'label'      => 'Amount Owned',
                 'options'  => array(
@@ -78,7 +78,25 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
-                            array('name' => 'Amount'),
+                            array('name' => 'Int'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'amount_available',
+                'label'      => 'Amount Available',
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
                         ),
                     ),
                 ),
@@ -123,19 +141,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'select',
-                'name'     => 'location',
-                'label'    => 'Location',
-                'required' => true,
+                'type'       => 'select',
+                'name'       => 'location',
+                'label'      => 'Location',
+                'required'   => true,
                 'attributes' => array(
-                    'options' => $this->getLocations(),
-                ),
-                'options' => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
+                    'options' => $this->createLocationsArray(),
                 ),
             )
         );
@@ -197,10 +208,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @return array
      */
-    private function getLocations()
+    private function createLocationsArray()
     {
-        $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\GeneralLocation')
-            ->findAll();
+        $locations = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Location')
+            ->findAllActive();
+
+        $locationsArray = array();
+        foreach ($locations as $location) {
+            $locationsArray[$location->getId()] = $location->getName();
+        }
+
+        return $locationsArray;
     }
 }

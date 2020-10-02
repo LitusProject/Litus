@@ -24,8 +24,7 @@ use LogisticsBundle\Entity\Article as ArticleEntity;
 
 class Article extends \CommonBundle\Component\Hydrator\Hydrator
 {
-//    TODO: fix dit want dit ken ik nog niet
-    private static $stdKeys = array('name', 'additional_info', 'spot', 'warranty', 'rent', 'amount_owned', 'visibility', 'status', 'category', 'location', );
+    private static $stdKeys = array('name', 'additional_info', 'spot', 'warranty', 'rent', 'amount_owned', 'amount_available', );
 
     protected function doExtract($object = null)
     {
@@ -33,7 +32,17 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        return $this->stdExtract($object, self::$stdKeys);
+        $data = $this->stdExtract($object, self::$stdKeys);
+        $data['location'] = $object->getLocation()->getId();
+        $data['warranty'] = number_format($object->getWarranty() / 100, 2);
+        $data['rent'] = number_format($object->getRent() / 100, 2);
+        $data['visibility'] = $object->getVisibilityCode();
+        $data['status'] = $object->getStatusCode();
+        $data['category'] = $object->getCategoryCode();
+
+        return $data;
+
+
     }
 
     protected function doHydrate(array $data, $object = null)
@@ -41,6 +50,15 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
         if ($object === null) {
             $object = new ArticleEntity();
         }
+
+        $object->setVisibility($data['visibility']);
+        $object->setStatus($data['status']);
+        $object->setCategory($data['category']);
+        $object->setLocation(
+            $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Location')
+            ->findOneById($data['location'])
+        );
 
         return $this->stdHydrate($data, $object, self::$stdKeys);
     }

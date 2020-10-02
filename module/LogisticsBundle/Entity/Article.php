@@ -107,6 +107,10 @@ class Article
      * @var array All the possible statuses allowed
      */
     public static $POSSIBLE_STATUSES = array(
+        'okay' => 'Okay',
+        'lost' => 'Lost',
+        'broken' => 'Broken',
+        'dirty' => 'Dirty',
 //        TODO: vragen aan Sietze
     );
 
@@ -180,7 +184,7 @@ class Article
     }
 
     /**
-     * @return text
+     * @return string
      */
     public function getSpot()
     {
@@ -188,7 +192,7 @@ class Article
     }
 
     /**
-     * @param text $spot
+     * @param string $spot
      */
     public function setSpot($spot)
     {
@@ -286,6 +290,14 @@ class Article
      */
     public function getVisibility()
     {
+        return Article::$POSSIBLE_VISIBILITIES[$this->visibility];
+    }
+
+    /**
+     * @return string
+     */
+    public function getVisibilityCode()
+    {
         return $this->visibility;
     }
 
@@ -301,6 +313,14 @@ class Article
      * @return string
      */
     public function getStatus()
+    {
+        return Article::$POSSIBLE_STATUSES[$this->status];
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatusCode()
     {
         return $this->status;
     }
@@ -320,6 +340,7 @@ class Article
     {
         return $this->location;
     }
+
 
     /**
      * @param string $location
@@ -365,6 +386,14 @@ class Article
      * @return string
      */
     public function getCategory()
+    {
+        return Article::$POSSIBLE_CATEGORIES[$this->category];
+    }
+
+    /**
+     * @return string
+     */
+    public function getCategoryCode()
     {
         return $this->category;
     }

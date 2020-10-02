@@ -48,7 +48,7 @@ return array(
             '@common_jqueryui_css',
             '@common_jqueryui_datepicker_css',
         ),
-        'logistics_admin_inventory' => array(
+        'logistics_admin_article' => array(
             '@common_jquery',
             '@common_remote_typeahead',
             '@admin_css',

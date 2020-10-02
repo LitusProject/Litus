@@ -66,7 +66,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                 );
 
                 $this->redirect()->toRoute(
-                    'logistics_admin_inventory',
+                    'logistics_admin_article',
                     array(
                         'action' => 'manage',
                     )
@@ -104,7 +104,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                 );
 
                 $this->redirect()->toRoute(
-                    'logistics_admin_inventory',
+                    'logistics_admin_article',
                     array(
                         'action' => 'manage',
                     )
@@ -173,7 +173,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $this->redirect()->toRoute(
-                'logistics_admin_inventory',
+                'logistics_admin_article',
                 array(
                     'action' => 'manage',
                 )
