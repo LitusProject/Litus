@@ -146,11 +146,12 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             ->getResult();
         $file = new CsvFile();
 
-        $heading = array('Person', 'Product', 'Amount','Total Price', 'Picked Up');
+        $heading = array('Person', 'r-Number', 'Product', 'Amount','Total Price', 'Picked Up');
         $results = array();
         foreach ($items as $item) {
             $results[] = array(
                 $item->getPerson()->getFullName(),
+                $item->getPerson()->getCredential(),
                 $item->getProduct()->getName(),
                 (string) $item->getAmount(),
                 (string) $item->getAmount() * $item->getProduct()->getSellPrice(),
