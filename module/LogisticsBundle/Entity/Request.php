@@ -30,7 +30,7 @@ use RuntimeException;
 /**
  * This entity stores a request for an order.
  *
- * @ORM\Entity(repositoryClass="LogisticsBundle\Entity\Request")
+ * @ORM\Entity(repositoryClass="LogisticsBundle\Repository\Request")
  * @ORM\Table(name="logistics_request")
  */
 class Request

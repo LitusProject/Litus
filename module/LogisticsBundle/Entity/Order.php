@@ -36,7 +36,7 @@ use function Functional\push;
 /**
  * This is the entity for an order.
  *
- * @ORM\Entity(repositoryClass="LogisticsBundle\Entity\Order")
+ * @ORM\Entity(repositoryClass="LogisticsBundle\Repository\Order")
  * @ORM\Table(name="logistics_order")
  */
 class Order
@@ -83,7 +83,7 @@ class Order
      * @var Academic The contact used in this order
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
-     * @ORM\JoinColumn(name="contact", referencedColumnName="id")
+     * @ORM\JoinColumn(name="contact", referencedColumnName="id", nullable =true)
      */
     private $contact;
 
@@ -131,20 +131,23 @@ class Order
     private $removed;
 
     /**
-     * @var ArrayCollection An array of \LogisticsBundle\Entity\Order\OrderArticleMap indicating which articles (and how many) are ordered (reserved).
+     * @var array An array of \LogisticsBundle\Entity\Order\OrderArticleMap indicating which articles (and how many) are ordered (reserved).
      *
      * @ORM\OneToMany(targetEntity="LogisticsBundle\Entity\Order\OrderArticleMap", mappedBy="order_id")
      */
     private $articles;
 
     /**
-     * @param Person $contact The order's contact
+     * @param Academic $contact
+     * @param Unit $unit
      */
-    public function __construct(Person $contact)
+    public function __construct(Academic $contact, Unit $unit)
     {
         $this->contact = $contact;
+        $this->unit = $unit;
         $this->dateUpdated = new DateTime();
         $this->removed = false;
+        $this->articles = array();
     }
 
     /**
@@ -152,7 +155,7 @@ class Order
      */
     public function getArticles()
     {
-        return $this->Articles;
+        return $this->articles;
     }
 
     /**
@@ -160,7 +163,7 @@ class Order
      */
     public function addArticles($article)
     {
-        array_push($this->Articles, $article);
+        array_push($this->articles, $article);
     }
 
     /**
@@ -292,6 +295,17 @@ class Order
     }
 
     /**
+     * @param  Unit $unit
+     * @return Order
+     */
+    public function setUnit($unit)
+    {
+        $this->unit = $unit;
+
+        return $this;
+    }
+
+    /**
      * @return Order
      */
     public function updateDate()
@@ -369,5 +383,13 @@ class Order
     public function getContact()
     {
         return $this->contact;
+    }
+
+    /**
+     * @param Person $contact
+     */
+    public function setContact($contact)
+    {
+        $this->contact = $contact;
     }
 }

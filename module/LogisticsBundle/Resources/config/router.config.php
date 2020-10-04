@@ -52,6 +52,50 @@ return array(
                 ),
             ),
         ),
+
+        'logistics_admin_article_typeahead' => array(
+            'type'    => 'Zend\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/logistics/article/typeahead[/:string][/]',
+                'constraints' => array(
+                    'string'       => '[%a-zA-Z0-9:.,_\-\(\)]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'logistics_admin_article',
+                    'action'     => 'typeahead',
+                ),
+            ),
+        ),
+        'logistics_admin_order' => array(
+            'type'    => 'Zend\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/logistics/order[/:action[/:id][/page/:page]][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'logistics_admin_order',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
+        'logistics_admin_request' => array(
+            'type'    => 'Zend\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/logistics/request[/:action[/:id][/page/:page]][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'logistics_admin_request',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
         'logistics_admin_van_reservation' => array(
             'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
@@ -194,6 +238,8 @@ return array(
     'controllers' => array(
         'logistics_admin_driver'            => 'LogisticsBundle\Controller\Admin\DriverController',
         'logistics_admin_article'         => 'LogisticsBundle\Controller\Admin\ArticleController',
+        'logistics_admin_order'         => 'LogisticsBundle\Controller\Admin\OrderController',
+        'logistics_admin_request'         => 'LogisticsBundle\Controller\Admin\RequestController',
         'logistics_admin_van_reservation'   => 'LogisticsBundle\Controller\Admin\VanReservationController',
         'logistics_admin_piano_reservation' => 'LogisticsBundle\Controller\Admin\PianoReservationController',
         'logistics_admin_lease'             => 'LogisticsBundle\Controller\Admin\LeaseController',

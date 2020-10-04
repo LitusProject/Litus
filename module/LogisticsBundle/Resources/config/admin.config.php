@@ -28,6 +28,8 @@ return array(
                 'logistics_admin_piano_reservation' => array('title' => 'Piano Reservations'),
                 'logistics_admin_van_reservation'   => array('title' => 'Van Reservations'),
                 'logistics_admin_article'   => array('title' => 'Inventory'),
+                'logistics_admin_order'   => array('title' => 'Orders'),
+                'logistics_admin_request'   => array('title' => 'Requests'),
             ),
         ),
     ),

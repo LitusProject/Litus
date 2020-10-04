@@ -18,18 +18,20 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace LogisticsBundle\Form\Admin\Article;
+namespace LogisticsBundle\Form\Admin\Order;
 
 use LogisticsBundle\Entity\Article;
+use RuntimeException;
 
 /**
- * The form used to add a new Article
+ * Add Order
  *
- * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    protected $hydrator = 'LogisticsBundle\Hydrator\Article';
+    protected $hydrator = 'LogisticsBundle\Hydrator\Order';
 
     public function init()
     {
@@ -39,12 +41,51 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             array(
                 'type'     => 'text',
                 'name'     => 'name',
-                'label'    => 'Name',
+                'label'    => 'Order Name',
                 'required' => true,
-                'options' => array(
+                'options'  => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name'    => 'StringLength',
+                                'options' => array(
+                                    'max' => '100',
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'datetime',
+                'name'     => 'start_date',
+                'label'    => 'Start Date',
+                'required' => true,
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'datetime',
+                'name'     => 'end_date',
+                'label'    => 'End Date',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name'    => 'DateCompare',
+                                'options' => array(
+                                    'first_date' => 'start_date',
+                                    'format'     => 'd/m/Y H:i',
+                                ),
+                            ),
                         ),
                     ),
                 ),
@@ -54,86 +95,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(
             array(
                 'type'     => 'textarea',
-                'name'     => 'additional_info',
-                'label'    => 'Additional Info',
-                'options' => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
-                ),
-            )
-        );
-
-        $this->add(
-            array(
-                'type'       => 'text',
-                'name'       => 'amount_owned',
-                'label'      => 'Amount Owned',
+                'name'     => 'description',
+                'label'    => 'Description',
+                'required' => true,
                 'options'  => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
-                        'validators' => array(
-                            array('name' => 'Int'),
-                        ),
                     ),
-                ),
-            )
-        );
-
-        $this->add(
-            array(
-                'type'       => 'text',
-                'name'       => 'amount_available',
-                'label'      => 'Amount Available',
-                'options'  => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array('name' => 'Int'),
-                        ),
-                    ),
-                ),
-            )
-        );
-
-        $this->add(
-            array(
-                'type'       => 'select',
-                'name'       => 'visibility',
-                'label'      => 'Visibility',
-                'required'   => true,
-                'attributes' => array(
-                    'options' => Article::$POSSIBLE_VISIBILITIES,
-                ),
-            )
-        );
-
-        $this->add(
-            array(
-                'type'       => 'select',
-                'name'       => 'status',
-                'label'      => 'Status',
-                'required'   => true,
-                'attributes' => array(
-                    'options' => Article::$POSSIBLE_STATUSES,
-                ),
-            )
-        );
-
-        $this->add(
-            array(
-                'type'       => 'select',
-                'name'       => 'category',
-                'label'      => 'Category',
-                'required'   => true,
-                'attributes' => array(
-                    'options' => Article::$POSSIBLE_CATEGORIES,
                 ),
             )
         );
@@ -152,13 +122,29 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'text',
-                'name'     => 'spot',
-                'label'    => 'Spot',
-                'options' => array(
+                'type'       => 'select',
+                'name'       => 'unit',
+                'label'      => 'Unit',
+                'required'   => true,
+                'attributes' => array(
+                    'options' => $this->createUnitsArray(),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'typeahead',
+                'name'     => 'contact',
+                'label'    => 'Contact',
+                'required' => true,
+                'options'  => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'TypeaheadPerson'),
                         ),
                     ),
                 ),
@@ -168,40 +154,25 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(
             array(
                 'type'     => 'text',
-                'name'     => 'warranty',
-                'label'    => 'External Warranty',
-                'options' => array(
+                'name'     => 'email',
+                'label'    => 'Email',
+                'required' => false,
+                'options'  => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
-                            array('name' => 'Price'),
+                            array(
+                                'name' => 'EmailAddress',
+                            ),
                         ),
                     ),
                 ),
             )
         );
 
-        $this->add(
-            array(
-                'type'     => 'text',
-                'name'     => 'rent',
-                'label'    => 'External Rent',
-                'options' => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array('name' => 'Price'),
-                        ),
-                    ),
-                ),
-            )
-        );
-
-        $this->addSubmit('Add', 'article_add');
+        $this->addSubmit('Add');
     }
 
     /**
@@ -219,5 +190,26 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         }
 
         return $locationsArray;
+    }
+
+    /**
+     * @return array
+     */
+    private function createUnitsArray()
+    {
+        $units = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+            ->findAllActive();
+
+        if (count($units) == 0) {
+            throw new RuntimeException('There needs to be at least one unit before you can add a RegistrationShift');
+        }
+
+        $unitsArray = array();
+        foreach ($units as $unit) {
+            $unitsArray[$unit->getId()] = $unit->getName();
+        }
+
+        return $unitsArray;
     }
 }

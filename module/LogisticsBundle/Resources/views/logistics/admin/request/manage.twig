@@ -1,0 +1,42 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'logistics/admin/request/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <h1><b>Requests</b></h1>
+        <table class="full_width manage">
+            <tr>
+                <th>Name</th>
+                <th>Unit</th>
+                <th >Creation Time</th>
+                <th width="70px">Action</th>
+            </tr>
+
+            {% for request in requests %}
+                <tr class="item item-{{ request.getId() }}">
+                    <td>{{ request.getOrder().getName() }}</td>
+                    <td>{{ request.getOrder().getUnit().getName() }}</td>
+                    <td>{{ request.getCreationTime().format('d/m/Y H:i') }}</td>
+                    <td class="actions">
+                        {% if hasAccess('logistics_career_order', 'view') %}
+                            <a href="{{ url('logistics_career_order', {"action": "view", "id": request.getOrder().getId()}) }}" class="view">View</a>
+                        {% endif %}
+                        {% if hasAccess('logistics_admin_request', 'approve') %}
+                            <a href="{{ url('logistics_admin_request', {"action": "approve", "id": request.getId()}) }}" class="accept_request">Approve</a>
+                        {% endif %}
+                        {% if hasAccess('logistics_admin_request', 'reject') %}
+                            <a href="{{ url('logistics_admin_request', {"action": "reject", "id": request.getId()}) }}" class="reject_request">Reject</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <br>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+{% endblock %}

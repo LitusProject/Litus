@@ -34,8 +34,8 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $this->stdExtract($object, self::$stdKeys);
         $data['location'] = $object->getLocation()->getId();
-        $data['warranty'] = number_format($object->getWarranty() / 100, 2);
-        $data['rent'] = number_format($object->getRent() / 100, 2);
+        $data['warranty'] = number_format($object->getWarranty() * 100, 0);
+        $data['rent'] = number_format($object->getRent() * 100, 0);
         $data['visibility'] = $object->getVisibilityCode();
         $data['status'] = $object->getStatusCode();
         $data['category'] = $object->getCategoryCode();

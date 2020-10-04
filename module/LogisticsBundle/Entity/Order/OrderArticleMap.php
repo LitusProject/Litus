@@ -27,7 +27,7 @@ use LogisticsBundle\Entity\Order;
 use SyllabusBundle\Entity\Subject;
 
 /**
- * @ORM\Entity(repositoryClass="LogisticsBundle\Entity\Order\OrderArticleMap")
+ * @ORM\Entity(repositoryClass="LogisticsBundle\Repository\Order\OrderArticleMap")
  * @ORM\Table(name="logistics_order_order_article_map")
  */
 class OrderArticleMap
