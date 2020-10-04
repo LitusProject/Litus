@@ -33,7 +33,7 @@ class RequiredCheckbox extends \CommonBundle\Component\Validator\AbstractValidat
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_CHECKED => 'The checkbox is required to be selected to submit the form.',
+        self::NOT_CHECKED => 'The checkbox is required',
     );
 
     /**

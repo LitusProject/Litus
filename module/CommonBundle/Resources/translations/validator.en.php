@@ -33,4 +33,5 @@ return array(
     'This entity does not exist'                                               => 'This entity does not exist',
     'The username already exists'                                              => 'The username already exists',
     'The given year is not valid'                                              => 'The given year is not valid',
+    'The checkbox is required'                                                 => 'The checkbox is required',
 );
