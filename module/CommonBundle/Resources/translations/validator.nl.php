@@ -31,6 +31,7 @@ return array(
     'The given price is not valid'                                             => 'De opgegeven prijs is niet geldig',
     'The role already exists'                                                  => 'De rol bestaat reeds',
     'This entity does not exits'                                               => 'Deze entiteit bestaat niet ',
-    'The username already exists'                                              => 'De gebruikersnaam bestaad reeds',
+    'The username already exists'                                              => 'De gebruikersnaam bestaat reeds',
     'The given year is not valid'                                              => 'Op opgegeven jaar is niet geldig',
+    'The checkbox is required'                                                 => 'Deze checkbox is verplicht',
 );
