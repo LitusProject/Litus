@@ -151,7 +151,7 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
         foreach ($items as $item) {
             $results[] = array(
                 $item->getPerson()->getFullName(),
-                $item->getPerson()->getCredential(),
+                $item->getPerson()->getUniversityIdentification(),
                 $item->getProduct()->getName(),
                 (string) $item->getAmount(),
                 (string) $item->getAmount() * $item->getProduct()->getSellPrice(),
