@@ -24,7 +24,6 @@ use CommonBundle\Entity\General\AcademicYear;
 use Doctrine\ORM\Mapping as ORM;
 use LogisticsBundle\Entity\Article;
 use LogisticsBundle\Entity\Order;
-use SyllabusBundle\Entity\Subject;
 
 /**
  * @ORM\Entity(repositoryClass="LogisticsBundle\Repository\Order\OrderArticleMap")
@@ -65,6 +64,26 @@ class OrderArticleMap
     private $amount;
 
     /**
+     * @var string status of this Article-request in this order
+     *
+     * @ORM\Column(name="status", type="text")
+     */
+    private $status;
+
+    /**
+     * @static
+     * @var array All the possible statuses allowed
+     */
+    public static $POSSIBLE_STATUSES = array(
+        'okay' => 'Okay',
+        'lost' => 'Lost',
+        'broken' => 'Broken',
+        'dirty' => 'Dirty',
+        'none' => 'None',
+//        TODO: vragen aan Sietze
+    );
+
+    /**
      * OrderArticleMap constructor.
      * @param Order $order
      * @param Article $article
@@ -75,6 +94,7 @@ class OrderArticleMap
         $this->order = $order;
         $this->article = $article;
         $this->amount = $amount;
+        $this->status = 'None';
     }
 
     /**
@@ -133,4 +153,27 @@ class OrderArticleMap
         return $this->id;
     }
 
+    /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status?OrderArticleMap::$POSSIBLE_STATUSES[$this->status]:"None";
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatusCode()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
 }

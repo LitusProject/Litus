@@ -20,49 +20,39 @@
 
 namespace LogisticsBundle\Hydrator;
 
-use LogisticsBundle\Entity\Article as ArticleEntity;
+use LogisticsBundle\Entity\Order\OrderArticleMap as MapEntity;
 
-class Article extends \CommonBundle\Component\Hydrator\Hydrator
+class OrderArticleMap extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $stdKeys = array('name', 'additional_info', 'spot', 'amount_owned', 'amount_available', );
+    private static $stdKeys = array();
 
     protected function doExtract($object = null)
     {
         if ($object === null) {
             return array();
         }
+        $data['amount'] = $object->getAmount();
+        $data['status'] = $object->getStatusCode();
 
         $data = $this->stdExtract($object, self::$stdKeys);
-        $data['location'] = $object->getLocation()->getId();
-        $data['warranty'] = $object->getWarranty()/100;
-        $data['rent'] = $object->getRent()/100;
-        $data['visibility'] = $object->getVisibilityCode();
-        $data['status'] = $object->getStatusCode();
-        $data['category'] = $object->getCategoryCode();
-
         return $data;
-
-
     }
 
     protected function doHydrate(array $data, $object = null)
     {
         if ($object === null) {
-            $object = new ArticleEntity();
+            $object = new MapEntity(
+                $this->getEntityManager()
+                ->getRepository('LogisticsBundle\Entity\Order')
+                ->findOneById($data['order']['id']),
+                $this->getEntityManager()
+                    ->getRepository('LogisticsBundle\Entity\Article')
+                    ->findOneById($data['article']['id']),
+                $data['amount']);
         }
 
-
-        $object->setWarranty($data['warranty']!== null?$data['warranty'] *100:0);
-        $object->setRent($data['rent']!== null?$data['rent'] *100:0);
-
-        $object->setVisibility($data['visibility']);
         $object->setStatus($data['status']);
-        $object->setCategory($data['category']);
-        $object->setLocation(
-            $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Location')
-            ->findOneById($data['location'])
-        );
+        $object->setAmount($data['amount']);
 
         return $this->stdHydrate($data, $object, self::$stdKeys);
     }

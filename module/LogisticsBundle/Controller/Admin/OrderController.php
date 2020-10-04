@@ -21,6 +21,7 @@
 namespace LogisticsBundle\Controller\Admin;
 
 use LogisticsBundle\Entity\Order;
+use LogisticsBundle\Entity\Order\OrderArticleMap;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -137,6 +138,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'form'    => $form,
+                'order'   => $order,
             )
         );
     }
@@ -149,10 +151,10 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $articles = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+            ->getRepository('LogisticsBundle\Entity\Article')
             ->findAll();
 
-        $form = $this->getForm('logistics_order_article_add', array('articles' => $articles));
+        $form = $this->getForm('logistics_order_orderArticleMap_add', array('articles' => $articles));
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -204,7 +206,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         $articles = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
-            ->findAllByOrder($order);
+            ->findAllByOrderQuery($order)
+            ->getResult();
 
 
         return new ViewModel(
@@ -214,6 +217,55 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 'articles'             => $articles,
             )
         );
+    }
+
+    public function articleMappingAction()
+    {
+        $order = $this->getOrderEntity();
+        if ($order === null) {
+            return new ViewModel();
+        }
+
+        $map = $this->getArticleMapEntity();
+        if ($map === null) {
+            return new ViewModel();
+        }
+
+        $form = $this->getForm('logistics_order_orderArticleMap_edit', array('map' => $map, 'order' => $order));
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The Order-Article Mapping was successfully edited!'
+                );
+
+                $this->redirect()->toRoute(
+                    'logistics_admin_order',
+                    array(
+                        'action' => 'articles',
+                        'id'  => $order->getId(),
+                        'map'  => $map->getId(),
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form'    => $form,
+                'orderArticleMap'   => $map,
+                //hmm
+            )
+        );
+
     }
 
     public function deleteArticleAction()
@@ -281,13 +333,13 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return Order\OrderArticleMap |null
+     * @return OrderArticleMap |null
      */
     private function getArticleMapEntity()
     {
-        $order = $this->getEntityById('LogisticsBundle\Entity\Order\OrderArticleMap');
+        $map = $this->getEntityById('LogisticsBundle\Entity\Order\OrderArticleMap', 'map');
 
-        if (!($order instanceof Order)) {
+        if (!($map instanceof OrderArticleMap)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No mapping was found!'
@@ -297,12 +349,13 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 'logistics_admin_order',
                 array(
                     'action' => 'manage',
+
                 )
             );
 
             return;
         }
 
-        return $order;
+        return $map;
     }
 }

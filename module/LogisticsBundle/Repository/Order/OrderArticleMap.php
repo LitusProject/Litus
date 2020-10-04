@@ -37,7 +37,7 @@ class OrderArticleMap extends \CommonBundle\Component\Doctrine\ORM\EntityReposit
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('m', 'a')
-            ->from('SyllabusBundle\Entity\Order\StudyMap', 'm')
+            ->from('LogisticsBundle\Entity\Order\OrderArticleMap', 'm')
             ->innerJoin('m.article', 'a')
             ->where(
                     $query->expr()->eq('m.order', ':order'),
@@ -50,7 +50,7 @@ class OrderArticleMap extends \CommonBundle\Component\Doctrine\ORM\EntityReposit
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('m')
-            ->from('SyllabusBundle\Entity\Order\StudyMap', 'm')
+            ->from('LogisticsBundle\Entity\Order\OrderArticleMap', 'm')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('m.order', ':order'),
@@ -68,7 +68,7 @@ class OrderArticleMap extends \CommonBundle\Component\Doctrine\ORM\EntityReposit
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('m')
-            ->from('SyllabusBundle\Entity\Order\StudyMap', 'm')
+            ->from('LogisticsBundle\Entity\Order\OrderArticleMap', 'm')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('m.article', ':article')

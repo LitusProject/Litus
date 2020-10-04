@@ -138,24 +138,6 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel();
         }
 
-//        $orderRepo = $this->getEntityManager()
-//            ->getRepository('LogisticsBundle\Entity\Order');
-//
-//        if (count($orderRepo->findUnreturnedByArticle($article)) > 0) {
-//            return new ViewModel(
-//                array(
-//                    'result' => array(
-//                        'status' => 'unreturned_orders',
-//                    ),
-//                )
-//            );
-//        }
-//
-//        $orders = $orderRepo->findByArticle($article);
-//        foreach ($orders as $order) {
-//            $this->getEntityManager()->remove($order);
-//        }
-
         $this->getEntityManager()->remove($article);
 
         $this->getEntityManager()->flush();

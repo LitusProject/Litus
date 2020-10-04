@@ -26,16 +26,25 @@
         {{ forms.renderForm(form) }}
         <br>
 
-        <table class="full_width manage">
+        <table class="manage">
             <tr>
-                <th>Name</th>
+                <th width="200px">Name</th>
+                <th width="90px">Amount</th>
+                <th width="90px">Status</th>
                 <th width="90px">Actions</th>
             </tr>
             {% for mapping in articles %}
                 <tr class="item item-{{ mapping.getId() }}">
-                    <td>{{ mapping.getArticle().getName() }}&mdash;Amount {{ mapping.getAmount() }}</td>
+                    <td>{{ mapping.getArticle().getName() }}</td>
+                    <td>{{ mapping.getAmount() }}</td>
+                    <td>{{ mapping.getStatus() }}</td>
                     <td>
-                        <a href="#" data-id="{{ mapping.getId() }}" data-article="{{ mapping.getArticle().getName() }}" class="delete">Delete</a>
+                        {% if hasAccess('logistics_admin_order', 'articleMapping') %}
+                            <a href="{{ url('logistics_admin_order', {"action": "articleMapping", "id": order.getId(), "map": mapping.getId()}) }}" class="edit">Edit</a>
+                        {% endif %}
+                        {% if hasAccess('logistics_admin_order', 'articleDelete') %}
+                            <a href="#" class="delete" data-id="{{ mapping.getId() }}" data-article="{{ mapping.getArticle().getName() }}">Delete</a>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
@@ -73,7 +82,7 @@
             $('#articleSearch').typeaheadRemote(
                 {
                     source: '{{ url('logistics_admin_article_typeahead')}}',
-                    items: 60,
+                    items: 10,
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {

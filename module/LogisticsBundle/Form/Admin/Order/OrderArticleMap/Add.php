@@ -67,7 +67,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         $articleNames = array();
         foreach ($this->articles as $article) {
-            $articleNames[$article->getId()] = $article->getCategory() . ' - ' . $article->getTitle();
+            $articleNames[$article->getId()] = $article->getCategory() . ' - ' . $article->getName();
         }
 
         return $articleNames;

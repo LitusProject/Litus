@@ -69,10 +69,11 @@ return array(
         'logistics_admin_order' => array(
             'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/logistics/order[/:action[/:id][/page/:page]][/]',
+                'route'       => '/admin/logistics/order[/:action[/:id][/:map][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
+                    'map'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
                 'defaults' => array(

@@ -25,9 +25,9 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
- * Version 20200929144025
+ * Version 20201004191550
  */
-class Version20200929144025 extends \Doctrine\Migrations\AbstractMigration
+class Version20201004191550 extends \Doctrine\Migrations\AbstractMigration
 {
     /**
      * @param  \Doctrine\DBAL\Schema\Schema $schema
@@ -60,7 +60,7 @@ class Version20200929144025 extends \Doctrine\Migrations\AbstractMigration
         $this->addSql('ALTER TABLE logistics_order_order_article_map ADD CONSTRAINT FK_D35D2B3E8D9F6D38 FOREIGN KEY (order_id) REFERENCES logistics_order (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE logistics_order_order_article_map ADD CONSTRAINT FK_D35D2B3E7294869C FOREIGN KEY (article_id) REFERENCES logistics_article (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE logistics_order ADD CONSTRAINT FK_E9BFCB065E9E89CB FOREIGN KEY (location) REFERENCES general_locations (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE logistics_order ADD CONSTRAINT FK_E9BFCB064C62E638 FOREGN KEY (contact) REFERENCES users_people_academic (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE logistics_order ADD CONSTRAINT FK_E9BFCB064C62E638 FOREIGN KEY (contact) REFERENCES users_people_academic (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE logistics_order ADD CONSTRAINT FK_E9BFCB06DCBB0C53 FOREIGN KEY (unit) REFERENCES general_organizations_units (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE logistics_article ADD CONSTRAINT FK_88486CA25E9E89CB FOREIGN KEY (location) REFERENCES general_locations (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
