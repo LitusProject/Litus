@@ -139,5 +139,5 @@ return array(
 
     'Register for a timeslot in the current Corona situation.'   => 'Register for a timeslot in the current Corona situation.',
     'Timeslots'                                                  => 'Timeslots',
-    'Timeslot registration'=>'Timeslot registration',
+    'Timeslot Registration'                                      => 'Timeslot Registration',
 );
