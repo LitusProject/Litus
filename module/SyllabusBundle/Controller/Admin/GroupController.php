@@ -259,7 +259,11 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                     )
                 );
 
-                return new ViewModel();
+                return new ViewModel(
+                    array(
+                        'currentAcademicYear' => $academicYear,
+                    )
+                );
             }
         }
 
