@@ -74,39 +74,49 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    {% if registrationShifts.enable %}
                         <div class="page-header" style="margin-top: 20px;">
                             <a class="heading" href="{{ url('registration_shift') }}">
-                                <h3>{{ translate('Timeslot Registration')}}</h3>
+                                <h3>{{ translate('Timeslot registration')}}</h3>
                             </a>
                         </div>
+
 
                         <p style="text-align: left;">
                             {{ translate('Register for a timeslot in the current Corona situation.')}}
                         </p>
 
+
                         <p>
                             <a href="{{ url('registration_shift') }}" class="btn btn-sm btn-primary">{{ translate('Timeslots') }}
                             </a>
                         </p>
-                    {% endif %}
-
                     {% if shop.enable %}
                          <div class="page-header" style="margin-top: 20px;">
                             <a class="heading" href="{{ url('shop') }}">
                                 <h3>{{ shop.name }}</h3>
                             </a>
                         </div>
-
+                        
+                        
                         <p style="text-align: left;">
                             {{ translate('Order sandwiches and snacks.')}}
                         </p>
+                        
 
                         <p>
                             <a href="{{ url('shop') }}" class="btn btn-sm btn-primary">{{ translate('Reservations') }}
                             </a>
                         </p>
-                    {% endif %}
+
+                        {#uncomment to change button design btn-sm -> block #}
+
+                        {# 
+                        <p>
+                            <a href="{{ url('shop') }}" class="btn btn-block btn-primary">{{ translate('Reservation') }}
+                            </a>
+                        </p> 
+                        #}
+                    {% endif %} 
 
                     {% if wiki.enable %}
                         <div class="page-header" style="margin-top: 20px;">
@@ -114,17 +124,16 @@
                                 <h3>{{ translate('Wiki') }}</h3>
                             </a>
                         </div>
-
                         <p>
-                            <a href="{{ wiki.url }}" class="btn btn-block btn-primary">{{ translate('Wiki') }}</a>
-                        </p>
+                            <a href="{{ wiki.url }}" class="btn btn-block btn-primary">{{ translate('Wiki') }}</a>                      
+                        </p> 
+
                     {% else %}
                         <div class="page-header" style="margin-top: 20px;">
                             <a class="heading" href="{{ url('cudi_booking') }}">
                                 <h3>{{ translate('Cudi') }}</h3>
                             </a>
                         </div>
-
                         {% if cudi.currentOpeningHour %}
                             <h3>{{ translate('Open Session') }}</h3>
                             {% autoescape false %}
@@ -255,14 +264,14 @@
                  <div class="col-md-6">
                     <div class="page-header" style="margin-top: 20px;">
                         <a class="heading" href={{pocUrlOverview}}>
-                            <h3>{{ translate('Poc') }}</h3>
+                            <h3>{{ translate('POC') }}</h3>
                         </a>
                     </div>
 
                     <div class="heading-spacer"></div>
                     <div class="alert alert-warning">
                     {{translate('The POC\'ers are elected! You can find your POC\'ers here!')}}
-                    {{translate('Visit the poc page for more ')}}
+                    {{translate('Visit the POC page for more ')}}
                     <a href={{pocUrl}}>info</a>
 
 
