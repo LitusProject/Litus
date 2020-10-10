@@ -131,7 +131,7 @@ class Order
     private $removed;
 
     /**
-     * @var array An array of \LogisticsBundle\Entity\Order\OrderArticleMap indicating which articles (and how many) are ordered (reserved).
+     * @var ArrayCollection An array of \LogisticsBundle\Entity\Order\OrderArticleMap indicating which articles (and how many) are ordered (reserved).
      *
      * @ORM\OneToMany(targetEntity="LogisticsBundle\Entity\Order\OrderArticleMap", mappedBy="order_id")
      */
@@ -147,11 +147,11 @@ class Order
         $this->unit = $unit;
         $this->dateUpdated = new DateTime();
         $this->removed = false;
-        $this->articles = array();
+        $this->articles = new ArrayCollection();
     }
 
     /**
-     * @return array
+     * @return arrayCollection
      */
     public function getArticles()
     {
@@ -163,7 +163,7 @@ class Order
      */
     public function addArticles($article)
     {
-        array_push($this->articles, $article);
+        $this->articles->add($article);
     }
 
     /**
@@ -391,5 +391,13 @@ class Order
     public function setContact($contact)
     {
         $this->contact = $contact;
+    }
+
+    /**
+     * @param Order\OrderArticleMap $mapping
+     */
+    public function removeMapping(Order\OrderArticleMap $mapping)
+    {
+        $this->articles->remove($mapping);
     }
 }

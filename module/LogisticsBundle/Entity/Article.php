@@ -422,5 +422,13 @@ class Article
         $this->dateUpdated = $dateUpdated;
     }
 
+    /**
+     * @param Order\OrderArticleMap $mapping
+     */
+    public function removeMapping(Order\OrderArticleMap $mapping)
+    {
+        $this->orders->remove($mapping);
+    }
+
 
 }

@@ -42,8 +42,8 @@
                         {% if hasAccess('logistics_admin_order', 'articleMapping') %}
                             <a href="{{ url('logistics_admin_order', {"action": "articleMapping", "id": order.getId(), "map": mapping.getId()}) }}" class="edit">Edit</a>
                         {% endif %}
-                        {% if hasAccess('logistics_admin_order', 'articleDelete') %}
-                            <a href="#" class="delete" data-id="{{ mapping.getId() }}" data-article="{{ mapping.getArticle().getName() }}">Delete</a>
+                        {% if hasAccess('logistics_admin_order', 'deleteArticle') %}
+                            <a href="#" class="delete" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getArticle().getName() }}">{{ translate('Delete') }}</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -82,7 +82,7 @@
             $('#articleSearch').typeaheadRemote(
                 {
                     source: '{{ url('logistics_admin_article_typeahead')}}',
-                    items: 10,
+                    items: 60,
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {
@@ -98,22 +98,21 @@
             var $this = $(this);
 
             e.preventDefault();
-            var removeMapping = $('#removeMapping');
-            removeMapping.find('.articleName').html($(this).data('article'));
-            var id = $this.data('id');
-            removeMapping.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('logistics_admin_order', {"action": "deleteArticle"})}}' + id, function (data) {
+            var removeArticle = $('#removeMapping');
+            removeArticle.find('.articleName').html($(this).data('article'));
+            removeArticle.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('logistics_admin_order', {"action": "deleteArticle", "id": order.getId()})}}' +  $this.data('id'), function (data) {
                     if (data && 'success' == data.status) {
-                        $('.flashmessage').addClass('hide');
-                        $('.mapping_removed_success').removeClass('hide');
-                        $('.item-' + id).remove();
-                        removeMapping.modal('hide');
+                        $('.flashmessage').removeClass('in');
+                        $('#mapping_removed_success').addClass('in');
+                        $this.parent().parent().remove();
+                        removeArticle.modal('hide');
                     } else {
                         errorRemove();
                     }
                 }, 'json').error(errorRemove);
             });
-            removeMapping.modal();
+            removeArticle.modal();
         }
 
         function errorRemove() {

@@ -36,6 +36,7 @@ class Edit extends \LogisticsBundle\Form\Admin\Order\OrderArticleMap\Add
      */
     private $orderArticleMap;
 
+
     public function init()
     {
         $this->add(
@@ -43,6 +44,7 @@ class Edit extends \LogisticsBundle\Form\Admin\Order\OrderArticleMap\Add
                 'type'       => 'text',
                 'name'       => 'amount',
                 'label'      => 'Amount',
+                'required'  => true,
                 'options'  => array(
                     'input' => array(
                         'filters' => array(
@@ -83,4 +85,5 @@ class Edit extends \LogisticsBundle\Form\Admin\Order\OrderArticleMap\Add
 
         return $this;
     }
+
 }

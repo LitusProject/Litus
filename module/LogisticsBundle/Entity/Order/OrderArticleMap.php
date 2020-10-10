@@ -94,7 +94,7 @@ class OrderArticleMap
         $this->order = $order;
         $this->article = $article;
         $this->amount = $amount;
-        $this->status = 'None';
+        $this->status = 'none';
     }
 
     /**
@@ -106,27 +106,11 @@ class OrderArticleMap
     }
 
     /**
-     * @param Order $order
-     */
-    public function setOrder($order)
-    {
-        $this->order = $order;
-    }
-
-    /**
      * @return Article
      */
     public function getArticle()
     {
         return $this->article;
-    }
-
-    /**
-     * @param Article $article
-     */
-    public function setArticle($article)
-    {
-        $this->article = $article;
     }
 
     /**
@@ -158,7 +142,7 @@ class OrderArticleMap
      */
     public function getStatus()
     {
-        return $this->status?OrderArticleMap::$POSSIBLE_STATUSES[$this->status]:"None";
+        return OrderArticleMap::$POSSIBLE_STATUSES[$this->status];
     }
 
     /**
@@ -166,7 +150,7 @@ class OrderArticleMap
      */
     public function getStatusCode()
     {
-        return $this->status;
+        return $this->status?$this->status:'none';
     }
 
     /**
@@ -176,4 +160,6 @@ class OrderArticleMap
     {
         $this->status = $status;
     }
+
+
 }

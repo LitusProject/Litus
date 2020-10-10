@@ -18,23 +18,24 @@
      * @license http://litus.cc/LICENSE
      */
 
-namespace LogisticsBundle\Hydrator;
+namespace LogisticsBundle\Hydrator\Order;
 
 use LogisticsBundle\Entity\Order\OrderArticleMap as MapEntity;
 
 class OrderArticleMap extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $stdKeys = array();
+    private static $stdKeys = array('amount');
 
     protected function doExtract($object = null)
     {
         if ($object === null) {
             return array();
         }
-        $data['amount'] = $object->getAmount();
-        $data['status'] = $object->getStatusCode();
+
 
         $data = $this->stdExtract($object, self::$stdKeys);
+        $data['status'] = $object->getStatusCode();
+
         return $data;
     }
 
@@ -52,7 +53,7 @@ class OrderArticleMap extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $object->setStatus($data['status']);
-        $object->setAmount($data['amount']);
+        print_r($data);die();
 
         return $this->stdHydrate($data, $object, self::$stdKeys);
     }

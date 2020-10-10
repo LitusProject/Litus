@@ -48,12 +48,12 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    public function oldAction()
+    public function removedAction()
     {
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Order')
-                ->findAllOldQuery(),
+                ->findAllRemovedOrOldQuery(),
             $this->getParam('page')
         );
 
@@ -177,6 +177,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                         if ($map === null) {
                             $this->getEntityManager()->persist(new Order\OrderArticleMap($order, $article, 1));
                         }
+                        //+1 als map bestaat
                     }
                 } else {
                     $this->flashMessenger()->error(
@@ -226,23 +227,50 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $map = $this->getArticleMapEntity();
-        if ($map === null) {
+        $orderArticleMap = $this->getArticleMapEntity();
+        if ($orderArticleMap === null) {
             return new ViewModel();
         }
 
-        $form = $this->getForm('logistics_order_orderArticleMap_edit', array('map' => $map, 'order' => $order));
+        $form = $this->getForm('logistics_order_orderArticleMap_edit', array('orderArticleMap' => $orderArticleMap));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
+                $formData = $form->getData();
+
+                $articleIds = $formData['articles'];
+
+                if ($articleIds) {
+                    foreach ($articleIds as $articleId) {
+                        $article = $this->getEntityManager()
+                            ->getRepository('LogisticsBundle\Entity\Article')
+                            ->findOneById($articleId);
+
+                        $map = $this->getEntityManager()
+                            ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+                            ->findOneByOrderArticle($order, $article);
+
+                        if ($map === null) {
+                            $this->getEntityManager()->persist(new OrderArticleMap($order, $article, 1));
+                        }
+                        else{
+                            $map->setAmount($formData['amount']);
+                        }
+                    }
+                } else {
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'No articles were selected to add to the order!'
+                    );
+                }
+
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
-                    'Success',
-                    'The Order-Article Mapping was successfully edited!'
+                    'Succes',
+                    'The order-article mapping was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -250,7 +278,6 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     array(
                         'action' => 'articles',
                         'id'  => $order->getId(),
-                        'map'  => $map->getId(),
                     )
                 );
 
@@ -261,8 +288,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'form'    => $form,
-                'orderArticleMap'   => $map,
-                //hmm
+                'orderArticleMap'   => $orderArticleMap,
             )
         );
 

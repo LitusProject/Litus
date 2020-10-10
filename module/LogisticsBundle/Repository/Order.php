@@ -35,13 +35,16 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     /**
      * @return \Doctrine\ORM\Query
      */
-    public function findAllOldQuery()
+    public function findAllRemovedOrOldQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('o')
             ->from('LogisticsBundle\Entity\Order', 'o')
             ->where(
-                $query->expr()->lt('o.endDate', ':now')
+                $query->expr()->orX(
+                    $query->expr()->eq('o.removed', 'TRUE'),
+                    $query->expr()->lt('o.endDate', ':now'),
+                )
             )
             ->orderBy('o.startDate', 'ASC')
             ->setParameter('now', new DateTime())
@@ -57,7 +60,10 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         return $query->select('o')
             ->from('LogisticsBundle\Entity\Order', 'o')
             ->where(
-                $query->expr()->gt('o.endDate', ':now')
+                $query->expr()->andx(
+                    $query->expr()->gt('o.endDate', ':now'),
+                    $query->expr()->eq('o.removed', 'FALSE')
+                )
             )
             ->orderBy('o.startDate', 'ASC')
             ->setParameter('now', new DateTime())

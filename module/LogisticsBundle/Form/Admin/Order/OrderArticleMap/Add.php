@@ -32,6 +32,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      */
     private $articles;
 
+    protected $hydrator = 'LogisticsBundle\Hydrator\Order\OrderArticleMap';
+
+
     public function init()
     {
         parent::init();
@@ -44,7 +47,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'required'   => true,
                 'attributes' => array(
                     'multiple' => true,
-                    'style'    => 'max-width: 100%;height: 600px;',
+                    'style'    => 'max-width: 100%;height: 300px;',
                     'options'  => $this->getArticleNames(),
                 ),
                 'options' => array(
