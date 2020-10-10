@@ -141,6 +141,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'label'      => 'Master',
                 'attributes' => array(
                     'options' => Company::POSSIBLE_MASTERS,
+                    'multiple' => true,
                 ),
             )
         );

@@ -100,9 +100,64 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
 
         $this->flashMessenger()->success(
             'Success',
-            'The stock period was succesfully created.'
+            'The stock period was successfully created.'
         );
 
+        $this->redirect()->toRoute(
+            'cudi_admin_stock_period',
+            array(
+                'action' => 'manage',
+            )
+        );
+
+        return new ViewModel();
+    }
+
+    public function revertNewAction() {
+        $msg = 'The stock period was successfully reverted.';
+
+        /* Find current period */
+        $current = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Stock\Period')
+            ->findOneActive();
+
+        /* Find previous period */
+        $previous = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Stock\Period')
+            ->findLastInactive();
+
+        if ($previous) {
+            /* Open the previous period again */
+            $previous->open();
+        } else {
+            $msg .= 'No previous stock period found, none are activated now.';
+        }
+
+        /* Remove the current period from existence */
+        if ($current) {
+            /* Remove newly created start values (associated with the deleted period) */
+            $startValues = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Stock\Period\Value\Start')
+                ->findAllByPeriod($current);
+            foreach ($startValues as $startValue) {
+                $this->getEntityManager()->remove($startValue);
+            }
+
+            $this->getEntityManager()->remove($current);
+        } else {
+            $msg .= 'No current stock period found, none are deleted.';
+        }
+
+        /* Flush and perform all database operations */
+        $this->getEntityManager()->flush();
+
+        /* Message success */
+        $this->flashMessenger()->success(
+            'Success',
+            $msg
+        );
+
+        /* Redirect back to manage */
         $this->redirect()->toRoute(
             'cudi_admin_stock_period',
             array(

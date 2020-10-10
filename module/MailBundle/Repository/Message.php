@@ -28,4 +28,13 @@ namespace MailBundle\Repository;
  */
 class Message extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
+    public function findAllOrdered()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('m')
+            ->from('MailBundle\Entity\Message', 'm')
+            ->orderBy('m.creationTime', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }

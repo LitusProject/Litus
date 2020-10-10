@@ -36,7 +36,7 @@ return array(
     ),
     array(
         'key'         => 'fop_command',
-        'value'       => '/usr/local/bin/fop',
+        'value'       => '/opt/fop/fop',
         'description' => 'The command to call Apache FOP',
     ),
     array(
@@ -592,5 +592,20 @@ Dit is de rechtstreekse link naar onze online-privacy pagina: <a href="https://w
         'key'         => 'cudi.show_mandatory_column',
         'value'       => '1',
         'description' => 'Whether or not to show the column obligatory.',
+    ),
+    array(
+        'key'         => 'cudi.show_extra_text_reservation_page',
+        'value'       => '0',
+        'description' => 'Whether or not to show the text above the reservations.',
+    ),
+    array(
+        'key'   => 'cudi.extra_text_reservation_page',
+        'value' => serialize(
+            array(
+                'en' => 'This is a placeholder text, please change me',
+                'nl' => 'Deze tekst moet nog aanepast worden',
+            )
+        ),
+        'description' => 'The additional displayed above the reservation overview.',
     ),
 );

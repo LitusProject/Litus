@@ -1,4 +1,4 @@
-# These files should be explicitly created
+# These files should be created explicitlys
 config/database.config.php
 config/proxy.config.php
 config/redis.config.php
@@ -6,24 +6,24 @@ config/sentry.config.php
 config/session.config.php
 
 # We don't want data in our repository
-data/banner/images
-data/br/companies
-data/br/files
-data/cache
-data/calendar/posters
-data/certificates/private
-data/cudi/files
-data/hydrators
-data/page/files
-data/proxies
-data/form/files
+data/banner/images/
+data/br/companies/
+data/br/files/
+data/cache/
+data/calendar/posters/
+data/certificates/private/
+data/cudi/files/
+data/hydrators/
+data/page/files/
+data/proxies/
+data/form/files/
 
-public/_assetic
-public/_common/profile
-public/_gallery/albums
-public/_publications/pdf
-public/_publications/html
-public/_br/img
+public/_assetic/
+public/_common/profile/
+public/_gallery/albums/
+public/_publications/pdf/
+public/_publications/html/
+public/_br/img/
 
 # Exclude dependencies
 vendor/

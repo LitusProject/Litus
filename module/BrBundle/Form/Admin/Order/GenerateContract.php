@@ -37,6 +37,12 @@ class GenerateContract extends \CommonBundle\Component\Form\Admin\Form
      */
     private $order;
 
+
+    /**
+     * @var Order
+     */
+    private $lang;
+
     public function init()
     {
         parent::init();
@@ -77,12 +83,28 @@ class GenerateContract extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
+//        $this->add(
+//            array(
+//                'type'    => 'textarea',
+//                'name'    => 'payment_details_nl',
+//                'label'   => 'Payment Details NL',
+//                'value'   => $this->getPaymentDetailsText('nl'),
+//                'options' => array(
+//                    'input' => array(
+//                        'filters' => array(
+//                            array('name' => 'StringTrim'),
+//                        ),
+//                    ),
+//                ),
+//            )
+//        );
+
         $this->add(
             array(
                 'type'    => 'textarea',
                 'name'    => 'payment_details',
                 'label'   => 'Payment Details',
-                'value'   => $this->getPaymentDetailsText(),
+                'value'   => $this->getPaymentDetailsText('nl'),
                 'options' => array(
                     'input' => array(
                         'filters' => array(
@@ -93,12 +115,60 @@ class GenerateContract extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
+//        $this->add(
+//            array(
+//                'type'    => 'textarea',
+//                'name'    => 'payment_details_en',
+//                'label'   => 'Payment Details EN',
+//                'value'   => $this->getPaymentDetailsText('en'),
+//                'options' => array(
+//                    'input' => array(
+//                        'filters' => array(
+//                            array('name' => 'StringTrim'),
+//                        ),
+//                    ),
+//                ),
+//            )
+//        );
+
+//        $this->add(
+//            array(
+//                'type'    => 'textarea',
+//                'name'    => 'auto_discount_text_nl',
+//                'label'   => 'Auto Discount Text NL',
+//                'value'   => $this->getAutoDiscountText('nl'),
+//                'options' => array(
+//                    'input' => array(
+//                        'filters' => array(
+//                            array('name' => 'StringTrim'),
+//                        ),
+//                    ),
+//                ),
+//            )
+//        );
+//
+//        $this->add(
+//            array(
+//                'type'    => 'textarea',
+//                'name'    => 'auto_discount_text_en',
+//                'label'   => 'Auto Discount Text EN',
+//                'value'   => $this->getAutoDiscountText('en'),
+//                'options' => array(
+//                    'input' => array(
+//                        'filters' => array(
+//                            array('name' => 'StringTrim'),
+//                        ),
+//                    ),
+//                ),
+//            )
+//        );
+
         $this->add(
             array(
                 'type'    => 'textarea',
                 'name'    => 'auto_discount_text',
                 'label'   => 'Auto Discount Text',
-                'value'   => $this->getAutoDiscountText(),
+                'value'   => $this->getAutoDiscountText('nl'),
                 'options' => array(
                     'input' => array(
                         'filters' => array(
@@ -128,24 +198,26 @@ class GenerateContract extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
+     * @param $lang
      * @return string
      */
-    private function getPaymentDetailsText()
+    private function getPaymentDetailsText($lang)
     {
-        return $this->getEntityManager()
+        return unserialize($this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.contract_payment_details');
+            ->getConfigValue('br.contract_payment_details'))[$lang];
     }
 
     /**
+     * @param $lang
      * @return string
      */
-    private function getAutoDiscountText()
+    private function getAutoDiscountText($lang)
     {
         if (isset($this->order) && $this->order->getAutoDiscountPercentage() > 0) {
-            return $this->getEntityManager()
+            return unserialize($this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('br.contract_auto_discount_text');
+                ->getConfigValue('br.contract_auto_discount_text'))[$lang];
         }
 
         return '';

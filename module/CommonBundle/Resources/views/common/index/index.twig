@@ -74,8 +74,23 @@
 
             <div class="row">
                 <div class="col-md-6">
+                        <div class="page-header" style="margin-top: 20px;">
+                            <a class="heading" href="{{ url('registration_shift') }}">
+                                <h3>{{ translate('Timeslot registration')}}</h3>
+                            </a>
+                        </div>
 
-                    {% if shop.enable %}                       
+
+                        <p style="text-align: left;">
+                            {{ translate('Register for a timeslot in the current Corona situation.')}}
+                        </p>
+
+
+                        <p>
+                            <a href="{{ url('registration_shift') }}" class="btn btn-sm btn-primary">{{ translate('Timeslots') }}
+                            </a>
+                        </p>
+                    {% if shop.enable %}
                          <div class="page-header" style="margin-top: 20px;">
                             <a class="heading" href="{{ url('shop') }}">
                                 <h3>{{ shop.name }}</h3>
@@ -249,14 +264,14 @@
                  <div class="col-md-6">
                     <div class="page-header" style="margin-top: 20px;">
                         <a class="heading" href={{pocUrlOverview}}>
-                            <h3>{{ translate('Poc') }}</h3>
+                            <h3>{{ translate('POC') }}</h3>
                         </a>
                     </div>
 
                     <div class="heading-spacer"></div>
                     <div class="alert alert-warning">
                     {{translate('The POC\'ers are elected! You can find your POC\'ers here!')}}
-                    {{translate('Visit the poc page for more ')}}
+                    {{translate('Visit the POC page for more ')}}
                     <a href={{pocUrl}}>info</a>
 
 

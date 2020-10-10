@@ -362,7 +362,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form = $this->getForm('br_order_generate-contract', array('order' => $order));
+        $form = $this->getForm('br_order_generate-contract', array('order' => $order, 'language' => $this));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();

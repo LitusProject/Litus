@@ -1,0 +1,7 @@
+:8080
+
+root * /app/public
+
+file_server
+php_fastcgi php-fpm:9000
+try_files {path} {path}/ /app/public/index.php?{query}

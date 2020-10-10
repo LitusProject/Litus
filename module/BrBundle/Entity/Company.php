@@ -185,6 +185,7 @@ class Company
      * @var array The possible sectors of a company
      */
     const POSSIBLE_SECTORS = array(
+        'aerospace'    => 'Aerospace',
         'architecture' => 'Architecture & Construction',
         'audit'        => 'Audit',
         'automobile'   => 'Automobile',

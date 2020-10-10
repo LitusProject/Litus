@@ -81,10 +81,11 @@ return array(
         'br_admin_company_job' => array(
             'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/br/company/job[/:action[/:id]][/]',
+                'route'       => '/admin/br/company/job[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[a-zA-Z0-9_-]*',
+                    'page'   => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'br_admin_company_job',
@@ -146,6 +147,7 @@ return array(
                     'id'     => '[0-9]*',
                     'signed' => '(true|false)',
                     'page'   => '[0-9]*',
+//                    'language'    => '(en|nl)',
                 ),
                 'defaults' => array(
                     'controller' => 'br_admin_contract',
@@ -203,7 +205,7 @@ return array(
         'br_admin_invoice' => array(
             'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/br/invoice[/:action[/:invoiceyear][/:id][/:payed][/date/:date][/page/:page][/:language]][/]',
+                'route'       => '/admin/br/invoice[/:action[/:id][/:payed][/date/:date][/page/:page][/:language]][/]',
                 'constraints' => array(
                     'action'      => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'          => '[0-9]*',
@@ -385,6 +387,22 @@ return array(
                 ),
             ),
         ),
+        'br_career_student_job' => array(
+            'type'    => 'Zend\Router\Http\Segment',
+            'options' => array(
+                'route'       => '[/:language]/career/studentjob[/:action[/:id][/page/:page]][/]',
+                'constraints' => array(
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'       => '[0-9_-]*',
+                    'language' => '(en|nl)',
+                    'page'     => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_career_student_job',
+                    'action'     => 'overview',
+                ),
+            ),
+        ),
         'br_career_file' => array(
             'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
@@ -496,6 +514,22 @@ return array(
                 ),
             ),
         ),
+        'br_corporate_student_job' => array(
+            'type'    => 'Zend\Router\Http\Segment',
+            'options' => array(
+                'route'       => '[/:language]/corporate/studentjob[/:action[/:id][/page/:page]][/]',
+                'constraints' => array(
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'       => '[0-9_-]*',
+                    'language' => '(en|nl)',
+                    'page'     => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_corporate_student_job',
+                    'action'     => 'overview',
+                ),
+            ),
+        ),
         'br_corporate_company' => array(
             'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
@@ -551,11 +585,13 @@ return array(
         'br_corporate_jobfair'    => 'BrBundle\Controller\Corporate\JobfairController',
         'br_corporate_vacancy'    => 'BrBundle\Controller\Corporate\VacancyController',
         'br_corporate_internship' => 'BrBundle\Controller\Corporate\InternshipController',
+        'br_corporate_student_job'=> 'BrBundle\Controller\Corporate\StudentJobController',
         'br_corporate_company'    => 'BrBundle\Controller\Corporate\CompanyController',
 
         'br_career_index'      => 'BrBundle\Controller\Career\IndexController',
         'br_career_vacancy'    => 'BrBundle\Controller\Career\VacancyController',
         'br_career_internship' => 'BrBundle\Controller\Career\InternshipController',
+        'br_career_student_job' => 'BrBundle\Controller\Career\StudentJobController',
         'br_career_event'      => 'BrBundle\Controller\Career\EventController',
         'br_career_company'    => 'BrBundle\Controller\Career\CompanyController',
 

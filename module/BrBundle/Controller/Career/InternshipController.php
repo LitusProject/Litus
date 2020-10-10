@@ -54,7 +54,7 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
 
                 if ($formData['searchType'] == 'company') {
                     $query = $repository->findAllActiveByTypeQuery('internship', $sector, $location, $master);
-                } elseif ($formData['searchType'] == 'vacancy') {
+                } elseif ($formData['searchType'] == 'internship') {
                     $query = $repository->findAllActiveByTypeSortedByJobNameQuery('internship', $sector, $location, $master);
                 } elseif ($formData['searchType'] == 'mostRecent') {
                     $query = $repository->findAllActiveByTypeSortedByDateQuery('internship', $sector, $location, $master);

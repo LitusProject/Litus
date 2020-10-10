@@ -55,7 +55,7 @@ return array(
             'manage', 'add', 'delete',
         ),
         'br_admin_contract' => array(
-            'manage', 'edit', 'view', 'history', 'sign', 'signedList', 'download', 'delete', 'csv',
+            'manage', 'edit', 'view', 'history', 'sign', 'signedList', 'download', 'delete', 'csv', 'unfinishedList', 'archiveUnsigned'
         ),
         'br_admin_cv_entry' => array(
             'manage', 'delete', 'export', 'exportAcademics',
@@ -99,6 +99,9 @@ return array(
         'br_career_internship' => array(
             'view', 'overview',
         ),
+        'br_career_student_job' => array(
+            'view', 'overview',
+        ),
         'br_cv_index' => array(
             'cv', 'edit', 'complete', 'delete', 'download', 'uploadProfileImage',
         ),
@@ -118,6 +121,9 @@ return array(
             'overview', 'add', 'delete', 'edit',
         ),
         'br_corporate_vacancy' => array(
+            'overview', 'add', 'delete', 'edit',
+        ),
+        'br_corporate_student_job' => array(
             'overview', 'add', 'delete', 'edit',
         ),
         'br_corporate_company' => array(

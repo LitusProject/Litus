@@ -61,7 +61,7 @@
                             <input type="checkbox" disabled id="{{ row['contract'].getId() }}"/>
                         </td>
                     {% endif %}
-                    <td>&euro; {{row['value']}}</d>
+                    <td>&euro; {{row['value']}}</td>
                     <td class="actions">
                         {% if hasAccess('br_admin_contract', 'edit') and row['contract'].isSigned() == false %}
                             <a href="{{ url('br_admin_contract', {"action": "edit", "id": row['contract'].getId()}) }}" class="edit">Edit</a>

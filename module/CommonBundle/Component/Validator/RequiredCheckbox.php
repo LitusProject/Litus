@@ -18,22 +18,22 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace FormBundle\Component\Validator;
+namespace CommonBundle\Component\Validator;
 
 /**
- * Checks whether a field may be required or not (visibility)
+ * Checks whether a checkbox is true is it is required
  *
- * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Belian Callaerts <belian.callaerts@vtk.be>
  */
-class FieldRequired extends \CommonBundle\Component\Validator\AbstractValidator
+class RequiredCheckbox extends \CommonBundle\Component\Validator\AbstractValidator
 {
-    const MAY_NOT_BE_REQUIRED = 'mayNotBeRequired';
+    const NOT_CHECKED = 'notChecked';
 
     /**
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::MAY_NOT_BE_REQUIRED => 'The field may not be required because it can be invisible',
+        self::NOT_CHECKED => 'The checkbox is required',
     );
 
     /**
@@ -47,8 +47,9 @@ class FieldRequired extends \CommonBundle\Component\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        if ($value == '1' && isset($context['visible_if']) && $context['visible_if'] != '0') {
-            $this->error(self::MAY_NOT_BE_REQUIRED);
+
+        if ($value == '0') {
+            $this->error(self::NOT_CHECKED);
 
             return false;
         }

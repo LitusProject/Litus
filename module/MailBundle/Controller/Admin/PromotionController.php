@@ -192,10 +192,9 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                 $uniqueAddresses = array_unique($addresses);
 
                 if ($formData['test']) {
-                    $body = '<br/>This email would have been sent to:<br/>';
-                    foreach ($addresses as $address) {
-                        $body .= $address . '<br/>';
-                    }
+                    $body = '<br/>This email would have been sent to';
+                    $body .= count($uniqueAddresses);
+                    $body .= ' addresses.<br/>';
                     $part = new Part($body);
                     $part->type = Mime::TYPE_HTML;
                     $message->addPart($part);

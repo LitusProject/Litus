@@ -103,19 +103,49 @@ class Contract
      */
     private $discountText;
 
-    /**
-     * @var string The text for the automatic discount of the contract
-     *
-     * @ORM\Column(name="auto_discount_text", type="text", nullable=true)
-     */
-    private $autoDiscountText;
+//    /**
+//     * @var string The text for the automatic discount of the contract nl
+//     *
+//     * @ORM\Column(name="auto_discount_text_nl", type="text", nullable=true)
+//     */
+//    private $autoDiscountTextNL;
+
+//    /**
+//     * @var string The text for the automatic discount of the contract en
+//     *
+//     * @ORM\Column(name="auto_discount_text_en", type="text", nullable=true)
+//     */
+//    private $autoDiscountTextEN;
+
+//    /**
+//     * @var string The paymentdetails of the contract nl
+//     *
+//     * @ORM\Column(name="payment_details_nl", type="text", nullable=true)
+//     */
+//    private $paymentDetailsNL;
+//
+//    /**
+//     * @var string The paymentdetails of the contract en
+//     *
+//     * @ORM\Column(name="payment_details_en", type="text", nullable=true)
+//     */
+//    private $paymentDetailsEN;
+
 
     /**
-     * @var string The paymentdetails of the contract
+     * @var string The paymentdetails of the contract en
      *
      * @ORM\Column(name="payment_details", type="text", nullable=true)
      */
     private $paymentDetails;
+
+
+    /**
+     * @var string The text for the automatic discount of the contract en
+     *
+     * @ORM\Column(name="auto_discount_text", type="text", nullable=true)
+     */
+    private $autoDiscountText;
 
     /**
      * @var integer The paymentdays of the contract
@@ -208,6 +238,22 @@ class Contract
         return $this;
     }
 
+//    /**
+//     * @return string
+//     */
+//    public function getPaymentDetailsNL()
+//    {
+//        return $this->paymentDetailsNL;
+//    }
+//
+//    /**
+//     * @return string
+//     */
+//    public function getPaymentDetailsEN()
+//    {
+//        return $this->paymentDetailsEN;
+//    }
+
     /**
      * @return string
      */
@@ -215,6 +261,29 @@ class Contract
     {
         return $this->paymentDetails;
     }
+
+//    /**
+//     * @param  string $paymentDetails
+//     * @return self
+//     */
+//    public function setPaymentDetailsNL($paymentDetails)
+//    {
+//        $this->paymentDetailsNL = $paymentDetails;
+//
+//        return $this;
+//    }
+//
+//    /**
+//     * @param  string $paymentDetails
+//     * @return self
+//     */
+//    public function setPaymentDetailsEN($paymentDetails)
+//    {
+//        $this->paymentDetailsEN = $paymentDetails;
+//
+//        return $this;
+//    }
+
 
     /**
      * @param  string $paymentDetails
@@ -246,6 +315,23 @@ class Contract
         return $this;
     }
 
+
+//    /**
+//     * @return string
+//     */
+//    public function getAutoDiscountTextNL()
+//    {
+//        return $this->autoDiscountTextNL;
+//    }
+//
+//    /**
+//     * @return string
+//     */
+//    public function getAutoDiscountTextEN()
+//    {
+//        return $this->autoDiscountTextEN;
+//    }
+
     /**
      * @return string
      */
@@ -255,7 +341,7 @@ class Contract
     }
 
     /**
-     * @param  string $discountText
+     * @param  string $autoDiscountText
      * @return self
      */
     public function setAutoDiscountText($autoDiscountText)
@@ -265,6 +351,28 @@ class Contract
         return $this;
     }
 
+//    /**
+////     * @param  string $autoDiscountText
+////     * @return self
+////     */
+////    public function setAutoDiscountTextNL($autoDiscountText)
+////    {
+////        $this->autoDiscountTextNL = $autoDiscountText;
+////
+////        return $this;
+////    }
+////
+////    /**
+////     * @param  string $autoDiscountText
+////     * @return self
+////     */
+////    public function setAutoDiscountTextEN($autoDiscountText)
+////    {
+////        $this->autoDiscountTextEN = $autoDiscountText;
+////
+////        return $this;
+////    }
+///
     /**
      * @return Order
      */

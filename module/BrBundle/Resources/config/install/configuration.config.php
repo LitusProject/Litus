@@ -236,14 +236,23 @@ Example content of this section.
         'description' => 'The automatic discount: (money value (in cents, discount percentage)',
     ),
     array(
-        'key'   => 'br.contract_payment_details',
-        'value' => '* Het Bedrijf verklaart de volgende betalingsvoorwaarden na te leven:
-  <total_price/> te betalen uiterlijk <payment_days/> dagen na facturatiedatum. De storting dient te gebeuren op het rekeningnummer 745-0175900-11 van VTK Ondersteuning vzw met vermelding van het factuurnummer.',
+        'key' => 'br.contract_payment_details',
+        'value' => serialize(
+            array(
+                'nl' => '* Het Bedrijf verklaart de volgende betalingsvoorwaarden na te leven: <total_price/> te betalen uiterlijk <payment_days/> dagen na facturatiedatum. De storting dient te gebeuren op het rekeningnummer BE30 7450 1759 0011 van VTK Ondersteuning vzw met vermelding van het factuurnummer.',
+                'en' => '* The company will comply to the following terms of payment: <total_price/> to be paid <payment_days/> days after the invoice date. The payment will need to happen in the account of VTK Ondersteuning VZW with IBAN BE30 7450 1759 0011 stating the invoice number.',
+            )
+        ),
         'description' => 'The standard payment details text that is displayed on the creation of a new contract.',
     ),
     array(
         'key'         => 'br.contract_auto_discount_text',
-        'value'       => '* Vanwege de trouwe samenwerking biedt VTK een partnership aan. Dit houdt in dat het logo van het bedrijf gratis in ons wekelijks boekje \'t Bakske en op de homepage van de website www.vtk.be te zien zal zijn. Zo staat het bedrijf het hele jaar door in de spotlights. Bovendien krijgt het bedrijf een korting van 5% op het totale bedrag van dit contract.',
+        'value'       => serialize(
+            array(
+                'nl' =>'* Vanwege de trouwe samenwerking biedt VTK een partnership aan. Dit houdt in dat het logo van het bedrijf gratis in ons wekelijks boekje \'t Bakske en op de homepage van de website www.vtk.be te zien zal zijn. Zo staat het bedrijf het hele jaar door in de spotlights. Bovendien krijgt het bedrijf een korting van 5% op het totale bedrag van dit contract.',
+                'en' =>'* ?'
+            )
+        ),
         'description' => 'The standard auto discount text that is displayed on the creation of a new contract.',
     ),
     array(
@@ -263,6 +272,21 @@ Example content of this section.
     ),
     array(
         'key'         => 'br.vacancy_link',
+        'value'       => 'https://vtk.be/admin/br/request/',
+        'description' => '',
+    ),
+    array(
+        'key'         => 'br.student_job_mail',
+        'value'       => 'bedrijvenrelaties@vtk.be',
+        'description' => 'The mail address to which notifications should be send when a company makes a new vacancy/StudentJob request.',
+    ),
+    array(
+        'key'         => 'br.student_job_mail_name',
+        'value'       => 'VTK Bedrijvenrelaties',
+        'description' => '',
+    ),
+    array(
+        'key'         => 'br.student_job_link',
         'value'       => 'https://vtk.be/admin/br/request/',
         'description' => '',
     ),

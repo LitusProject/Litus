@@ -218,7 +218,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
     {
         $storedMessages = $this->getEntityManager()
             ->getRepository('MailBundle\Entity\Message')
-            ->findAll();
+            ->findAllOrdered();
 
         $storedMessagesTitles = array(
             '' => '',

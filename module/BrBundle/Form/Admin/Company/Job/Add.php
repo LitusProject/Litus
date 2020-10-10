@@ -22,6 +22,7 @@ namespace BrBundle\Form\Admin\Company\Job;
 
 use BrBundle\Entity\Company;
 use BrBundle\Entity\Company\Job;
+use RuntimeException;
 
 /**
  * Add Job
@@ -96,8 +97,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type'       => 'select',
                 'name'       => 'sector',
                 'label'      => 'Sector',
+                'required'   => true,
                 'attributes' => array(
                     'options' => Company::POSSIBLE_SECTORS,
+                    'multiple' => true,
                 ),
             )
         );
@@ -214,6 +217,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'label'      => 'Master',
                 'attributes' => array(
                     'options' => Company::POSSIBLE_MASTERS,
+                    'multiple' => true,
                 ),
             )
         );

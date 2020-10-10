@@ -33,7 +33,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
  *     "internship"="BrBundle\Entity\Company\Request\Internship",
- *     "vacancy"="BrBundle\Entity\Company\Request\Vacancy"
+ *     "vacancy"="BrBundle\Entity\Company\Request\Vacancy",
+ *     "student_job"="BrBundle\Entity\Company\Request\StudentJob"
  * })
  */
 abstract class Request

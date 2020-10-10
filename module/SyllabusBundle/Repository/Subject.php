@@ -58,6 +58,25 @@ class Subject extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     }
 
     /**
+     * @param  string $nameOrCode
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllByNameOrCodeQuery($nameOrCode)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('s')
+            ->from('SyllabusBundle\Entity\Subject', 's')
+            ->where(
+                $query->expr()->orX($query->expr()->like($query->expr()->lower('s.name'), ':name'),
+                                    $query->expr()->like($query->expr()->lower('s.code'), ':name')
+            )
+            )
+            ->setParameter('name', '%' . strtolower($nameOrCode) . '%')
+            ->orderBy('s.name')
+            ->getQuery();
+    }
+
+    /**
      * @param  string $code
      * @return \Doctrine\ORM\Query
      */

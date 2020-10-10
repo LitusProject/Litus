@@ -121,6 +121,9 @@ return array(
     'The POC\'ers are elected! You can find your POC\'ers here!' => 'The POC\'ers are elected! You can find your POC\'ers here!',
     'We could not find any POC\'ers for you, try again later!'   => 'We could not find any POC\'ers for you, try again later!',
     'Please login to see your POC\'ers!'                         => 'Please login to see your POC\'ers!',
-    'Visit the poc page for more '                               => 'Visit the poc page for more ',
+    'Visit the POC page for more '                               => 'Visit the POC page for more ',
     'Order sandwiches and snacks.'                               => 'Order sandwiches and snacks.',
+    'Register for a timeslot in the current Corona situation.' => 'Register for a timeslot in the current Corona situation.',
+    'Timeslots' => 'Timeslots',
+    'Timeslot registration'=>'Timeslot registration',
 );

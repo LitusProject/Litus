@@ -47,6 +47,20 @@
                     </p>
                 </div>
             </div>
+        {%  endif %}
+
+        {% if hasAccess('cudi_admin_stock_period', 'revertNew') %}
+            <div class="sidebox" data-help="Revert the current stock period back to the previous one in case of an accidental creation.">
+                <div class="title">Revert Stock Period</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to revert the stock period back to the previous one!</i>
+                    </p>
+                    <p>
+                        <a href="#revertPeriod" data-toggle="modal">&rarr; Revert Stock Period</a>
+                    </p>
+                </div>
+            </div>
         {% endif %}
     </aside>
 
@@ -73,6 +87,31 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="revertPeriod" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Revert Stock Period
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to revert the current stock period!
+                        Please note that this operation may have some side effects!
+                        Only use when absolutely necessary!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="new">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
@@ -80,6 +119,9 @@
         $(document).ready(function () {
             $('#newPeriod .new').click(function () {
                 window.location = "{{ url("cudi_admin_stock_period", {"action": "new"}) }}";
+            });
+            $('#revertPeriod .new').click(function () {
+                window.location = "{{ url("cudi_admin_stock_period", {"action": "revertNew"}) }}";
             });
         });
     </script>

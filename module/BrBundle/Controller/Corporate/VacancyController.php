@@ -55,11 +55,7 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 
         $unfinishedRequestsJobs = array();
         foreach ($requests as $request) {
-            if ($request->getRequestType() == 'edit' || $request->getRequestType() == 'edit reject') {
-                $unfinishedRequestsJobs[$request->getEditJob()->getId()] = $request->getRequestType();
-            } else {
                 $unfinishedRequestsJobs[$request->getJob()->getId()] = $request->getRequestType();
-            }
         }
 
         return new ViewModel(

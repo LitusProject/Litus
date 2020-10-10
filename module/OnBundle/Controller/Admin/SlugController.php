@@ -166,7 +166,6 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
             $item->hits = $slug->getHits();
             $result[] = $item;
         }
-
         return new ViewModel(
             array(
                 'result' => $result,

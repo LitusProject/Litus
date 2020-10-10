@@ -139,6 +139,11 @@ Student IT',
         'description' => 'The URL of the organization',
     ),
     array(
+        'key'         => 'enable_organization_signature',
+        'value'       => '0',
+        'description' => 'The signature of the organization',
+    ),
+    array(
         'key'         => 'university',
         'value'       => 'KU Leuven',
         'description' => 'The name of the university',
@@ -159,13 +164,8 @@ Student IT',
         'description' => 'The date interval the academic year will start before the official start',
     ),
     array(
-        'key'   => 'shibboleth_url',
-        'value' => serialize(
-            array(
-                'faye' => 'https://faye.vtk.be:8443/Shibboleth.sso/Login?target=https%3A%2F%2Ffaye.vtk.be%3A8443%2Fshibboleth%2F',
-                'liv'  => 'https://liv.vtk.be:8443/Shibboleth.sso/Login?target=https%3A%2F%2Fliv.vtk.be%3A8443%2Fshibboleth%2F',
-            )
-        ),
+        'key'         => 'shibboleth_url',
+        'value'       => 'https://faye.vtk.be:8443/Shibboleth.sso/Login?target=https%3A%2F%2Ffaye.vtk.be%3A8443%2Fshibboleth%2F',
         'description' => 'The Shibboleth authentication URL, wherein the target parameter specifies the redirect',
     ),
     array(
@@ -454,10 +454,14 @@ You can remove any installed cookies from your computer or mobile device at any 
         'value'       => '#',
         'description' => 'The url to the overview page',
     ),
-
     array(
         'key'         => 'common.save_visits',
         'value'       => '0',
         'description' => 'Flag to log all visits in the database, will create a lot of data!',
     ),
+    array(
+        'key'         => 'common.show_new_stock_period_warning',
+        'value'       => '1',
+        'description' => 'Flag to enable/disable the warning to create a new stock period.',
+    )
 );

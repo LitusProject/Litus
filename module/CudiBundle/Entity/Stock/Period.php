@@ -122,6 +122,16 @@ class Period
     /**
      * @return self
      */
+    public function open()
+    {
+        $this->endDate = null;
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
     public function close()
     {
         $this->endDate = new DateTime();
