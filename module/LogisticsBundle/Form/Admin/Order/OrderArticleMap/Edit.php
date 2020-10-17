@@ -29,16 +29,20 @@ use LogisticsBundle\Entity\Order\OrderArticleMap;
  * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends \LogisticsBundle\Form\Admin\Order\OrderArticleMap\Add
+class Edit extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
      * @var OrderArticleMap
      */
     private $orderArticleMap;
 
+    protected $hydrator = 'LogisticsBundle\Hydrator\Order\OrderArticleMap';
 
     public function init()
     {
+        parent::init();
+
+
         $this->add(
             array(
                 'type'       => 'text',
@@ -70,12 +74,10 @@ class Edit extends \LogisticsBundle\Form\Admin\Order\OrderArticleMap\Add
             )
         );
 
-        $this->remove('submit')
-            ->addSubmit('Save Changes');
+        $this->addSubmit('Save Changes');
 
         if ($this->orderArticleMap !== null) {
-            $hydrator = $this->getHydrator();
-            $this->populateValues($hydrator->extract($this->orderArticleMap));
+            $this->bind($this->orderArticleMap);
         }
     }
 

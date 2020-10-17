@@ -43,7 +43,7 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->where(
                 $query->expr()->orX(
                     $query->expr()->eq('o.removed', 'TRUE'),
-                    $query->expr()->lt('o.endDate', ':now'),
+                    $query->expr()->lt('o.endDate', ':now')
                 )
             )
             ->orderBy('o.startDate', 'ASC')
@@ -74,7 +74,7 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
      * @param  integer $id
      * @return \LogisticsBundle\Entity\Order
      */
-    public function findOneActiveById($type, $id)
+    public function findOneActiveById($id)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('o')
@@ -157,153 +157,23 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery();
     }
 
-//    /**
-//     * @param  string $type
-//     * @param  string $sector
-//     * @param  string $location
-//     * @param  string $master
-//     * @return \Doctrine\ORM\Query
-//     */
-//    public function findAllActiveByTypeQuery($type, $sector, $location, $master)
-//    {
-//        $query = $this->getEntityManager()->createQueryBuilder();
-//        $query->select('v, c')
-//            ->from('LogisticsBundle\Entity\Company\Job', 'v')
-//            ->innerJoin('v.company', 'c')
-//            ->where(
-//                $query->expr()->andx(
-//                    $query->expr()->eq('v.type', ':type'),
-//                    $query->expr()->gt('v.endDate', ':now'),
-//                    $query->expr()->eq('c.active', 'true'),
-//                    $query->expr()->eq('v.removed', 'FALSE'),
-//                    $query->expr()->eq('v.approved', 'TRUE')
-//                )
-//            );
-//
-//        if ($sector !== null) {
-//            $query->andWhere(
-//                $query->expr()->eq('v.sector', ':sector')
-//            )
-//                ->setParameter('sector', $sector);
-//        }
-//
-//        if ($location !== null) {
-//            $query->andWhere(
-//                $query->expr()->eq('v.location', ':location')
-//            )
-//                ->setParameter('location', $location);
-//        }
-//
-//        if ($master !== null) {
-//            $query->andWhere(
-//                $query->expr()->eq('v.master', ':master')
-//            )
-//                ->setParameter('master', $master);
-//        }
-//
-//        return $query->setParameter('type', $type)
-//            ->setParameter('now', new DateTime())
-//            ->orderBy('c.name', 'ASC')
-//            ->addOrderBy('v.name', 'ASC')
-//            ->getQuery();
-//    }
 
 //    /**
-//     * @param  string $type
-//     * @param  string $sector
-//     * @param  string $location
-//     * @param  string $master
 //     * @return \Doctrine\ORM\Query
 //     */
-//    public function findAllActiveByTypeSortedByDateQuery($type, $sector, $location, $master)
+//    public function findOverlappingOrderByArticleByOrderQuery(OrderEntity   )
 //    {
 //        $query = $this->getEntityManager()->createQueryBuilder();
-//        $query->select('v, c')
-//            ->from('LogisticsBundle\Entity\Company\Job', 'v')
-//            ->innerJoin('v.company', 'c')
+//        return $query->select('o')
+//            ->from('LogisticsBundle\Entity\Order', 'o')
 //            ->where(
 //                $query->expr()->andx(
-//                    $query->expr()->eq('v.type', ':type'),
-//                    $query->expr()->gt('v.endDate', ':now'),
-//                    $query->expr()->eq('c.active', 'true'),
-//                    $query->expr()->eq('v.removed', 'FALSE'),
-//                    $query->expr()->eq('v.approved', 'TRUE')
+//                    $query->expr()->gt('o.endDate', ':now'),
+//                    $query->expr()->eq('o.removed', 'FALSE')
 //                )
-//            );
-//        if ($sector !== null) {
-//            $query->andWhere(
-//                $query->expr()->eq('v.sector', ':sector')
 //            )
-//                ->setParameter('sector', $sector);
-//        }
-//
-//        if ($location !== null) {
-//            $query->andWhere(
-//                $query->expr()->eq('v.location', ':location')
-//            )
-//                ->setParameter('location', $location);
-//        }
-//
-//        if ($master !== null) {
-//            $query->andWhere(
-//                $query->expr()->eq('v.master', ':master')
-//            )
-//                ->setParameter('master', $master);
-//        }
-//
-//        return $query->setParameter('type', $type)
+//            ->orderBy('o.startDate', 'ASC')
 //            ->setParameter('now', new DateTime())
-//            ->orderBy('v.dateUpdated', 'DESC')
-//            ->getQuery();
-//    }
-//
-//    /**
-//     * @param  string $type
-//     * @param  string $sector
-//     * @param  string $location
-//     * @param  string $master
-//     * @return \Doctrine\ORM\Query
-//     */
-//    public function findAllActiveByTypeSortedByJobNameQuery($type, $sector, $location, $master)
-//    {
-//        $query = $this->getEntityManager()->createQueryBuilder();
-//        $query->select('v, c')
-//            ->from('LogisticsBundle\Entity\Company\Job', 'v')
-//            ->innerJoin('v.company', 'c')
-//            ->where(
-//                $query->expr()->andx(
-//                    $query->expr()->eq('v.type', ':type'),
-//                    $query->expr()->gt('v.endDate', ':now'),
-//                    $query->expr()->eq('c.active', 'true'),
-//                    $query->expr()->eq('v.removed', 'FALSE'),
-//                    $query->expr()->eq('v.approved', 'TRUE')
-//                )
-//            );
-//
-//        if ($sector !== null) {
-//            $query->andWhere(
-//                $query->expr()->eq('v.sector', ':sector')
-//            )
-//                ->setParameter('sector', $sector);
-//        }
-//
-//        if ($location !== null) {
-//            $query->andWhere(
-//                $query->expr()->eq('v.location', ':location')
-//            )
-//                ->setParameter('location', $location);
-//        }
-//
-//        if ($master !== null) {
-//            $query->andWhere(
-//                $query->expr()->eq('v.master', ':master')
-//            )
-//                ->setParameter('master', $master);
-//        }
-//
-//        return $query->setParameter('type', $type)
-//            ->setParameter('now', new DateTime())
-//            ->orderBy('v.name', 'ASC')
 //            ->getQuery();
 //    }
 }

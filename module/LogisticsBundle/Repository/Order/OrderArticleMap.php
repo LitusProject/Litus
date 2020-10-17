@@ -23,6 +23,7 @@ namespace LogisticsBundle\Repository\Order;
 use Doctrine\ORM\Query;
 use LogisticsBundle\Entity\Article as ArticleEntity;
 use LogisticsBundle\Entity\Order as OrderEntity;
+use LogisticsBundle\Repository\Order;
 
 /**
  * OrderArticleMap
@@ -64,7 +65,7 @@ class OrderArticleMap extends \CommonBundle\Component\Doctrine\ORM\EntityReposit
             ->getOneOrNullResult();
     }
 
-    public function findMapsFromStudyQuery(ArticleEntity $article)
+    public function findAllByArticleQuery(ArticleEntity $article)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('m')
@@ -77,5 +78,4 @@ class OrderArticleMap extends \CommonBundle\Component\Doctrine\ORM\EntityReposit
             ->setParameter('article', $article)
             ->getQuery();
     }
-
 }

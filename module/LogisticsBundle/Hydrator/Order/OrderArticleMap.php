@@ -26,21 +26,9 @@ class OrderArticleMap extends \CommonBundle\Component\Hydrator\Hydrator
 {
     private static $stdKeys = array('amount');
 
-    protected function doExtract($object = null)
-    {
-        if ($object === null) {
-            return array();
-        }
-
-
-        $data = $this->stdExtract($object, self::$stdKeys);
-        $data['status'] = $object->getStatusCode();
-
-        return $data;
-    }
-
     protected function doHydrate(array $data, $object = null)
     {
+//        print("here");die();
         if ($object === null) {
             $object = new MapEntity(
                 $this->getEntityManager()
@@ -53,8 +41,19 @@ class OrderArticleMap extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $object->setStatus($data['status']);
-        print_r($data);die();
 
         return $this->stdHydrate($data, $object, self::$stdKeys);
+    }
+
+    protected function doExtract($object = null)
+    {
+        if ($object === null) {
+            return array();
+        }
+
+        $data = $this->stdExtract($object, self::$stdKeys);
+        $data['status'] = $object->getStatusCode();
+
+        return $data;
     }
 }

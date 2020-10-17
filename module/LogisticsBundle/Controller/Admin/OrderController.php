@@ -177,21 +177,23 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                         if ($map === null) {
                             $this->getEntityManager()->persist(new Order\OrderArticleMap($order, $article, 1));
                         }
-                        //+1 als map bestaat
+                        else {
+                            $map->setAmount($map->getAmount() + 1);
+                            $this->getEntityManager()->flush(); // Moet dit??
+                        }
                     }
+                    $this->flashMessenger()->success(
+                        'Succes',
+                        'The order article mapping was successfully added!'
+                    );
                 } else {
                     $this->flashMessenger()->error(
-                        'Error',
+                        'Warning',
                         'No articles were selected to add to the order!'
                     );
                 }
 
                 $this->getEntityManager()->flush();
-
-                $this->flashMessenger()->success(
-                    'Succes',
-                    'The order article mapping was successfully added!'
-                );
 
                 $this->redirect()->toRoute(
                     'logistics_admin_order',
@@ -235,42 +237,18 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         $form = $this->getForm('logistics_order_orderArticleMap_edit', array('orderArticleMap' => $orderArticleMap));
 
         if ($this->getRequest()->isPost()) {
-            $form->setData($this->getRequest()->getPost());
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getData();
-
-                $articleIds = $formData['articles'];
-
-                if ($articleIds) {
-                    foreach ($articleIds as $articleId) {
-                        $article = $this->getEntityManager()
-                            ->getRepository('LogisticsBundle\Entity\Article')
-                            ->findOneById($articleId);
-
-                        $map = $this->getEntityManager()
-                            ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
-                            ->findOneByOrderArticle($order, $article);
-
-                        if ($map === null) {
-                            $this->getEntityManager()->persist(new OrderArticleMap($order, $article, 1));
-                        }
-                        else{
-                            $map->setAmount($formData['amount']);
-                        }
-                    }
-                } else {
-                    $this->flashMessenger()->error(
-                        'Error',
-                        'No articles were selected to add to the order!'
-                    );
-                }
-
+                //TODO: DIT MOET NOG VIA DE HYDRATOR EIGENLIJK!!!
+//                $orderArticleMap->setAmount($formData['amount']);
+//                $orderArticleMap->setStatus($formData['status']);
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
-                    'Succes',
-                    'The order-article mapping was successfully added!'
+                    'Success',
+                    'The order-article mapping was successfully edited!'
                 );
 
                 $this->redirect()->toRoute(

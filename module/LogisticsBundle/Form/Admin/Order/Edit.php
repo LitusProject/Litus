@@ -43,8 +43,7 @@ class Edit extends \LogisticsBundle\Form\Admin\Order\Add
             ->addSubmit('Save Changes');
 
         if ($this->order !== null) {
-            $hydrator = $this->getHydrator();
-            $this->populateValues($hydrator->extract($this->order));
+            $this->bind($this->order);
         }
     }
 
