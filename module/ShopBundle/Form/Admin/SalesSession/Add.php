@@ -44,6 +44,19 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'name'     => 'start_date',
                 'label'    => 'Start Date',
                 'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name'    => 'DateCompare',
+                                'options' => array(
+                                    'first_date' => 'final_reservation_date',
+                                    'format'     => 'd/m/Y H:i',
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
             )
         );
 
@@ -63,9 +76,24 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                     'format'     => 'd/m/Y H:i',
                                 ),
                             ),
+                            array(
+                                'name'    => 'DateCompare',
+                                'options' => array(
+                                    'first_date' => 'final_reservation_date',
+                                    'format'     => 'd/m/Y H:i',
+                                ),
+                            ),
                         ),
                     ),
                 ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'datetime',
+                'name'     => 'final_reservation_date',
+                'label'    => 'Final Reservation Date',
             )
         );
 

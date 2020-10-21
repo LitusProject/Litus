@@ -63,10 +63,10 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             if ($reserveForm->isValid()) {
                 $reservation = $reserveForm->hydrateObject();
                 $reservation->setSalesSession($this->getSalesSessionEntity());
-                if ($reservation->getSalesSession()->getStartDate() <= new DateTime()) {
+                if ($reservation->getSalesSession()->getFinalReservationDate() <= new DateTime()) {
                     $this->flashMessenger()->error(
                         'Error',
-                        $this->getTranslator()->translate('You can only make reservations for sales sessions that have not started yet.')
+                        $this->getTranslator()->translate('You can only make reservations for sales sessions until the final reservation date.')
                     );
                 } else {
                     $reservation->setPerson($this->getPersonEntity());
