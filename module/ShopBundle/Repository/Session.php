@@ -113,13 +113,15 @@ class Session extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 $query->expr()->andX(
                     $query->expr()->eq('s.reservationsPossible', ':reservations_possible'),
                     $query->expr()->lt('s.startDate', ':end_date'),
-                    $query->expr()->gt('s.startDate', ':start_date')
+                    $query->expr()->gt('s.startDate', ':start_date'),
+                    $query->expr()->gt('s.finalReservationDate', ':now')
                 )
             )
             ->orderBy('s.startDate', 'ASC')
             ->setParameter('reservations_possible', true)
             ->setParameter('start_date', $startDate)
             ->setParameter('end_date', $endDate)
+            ->setParameter('now', new DateTime())
             ->getQuery()
             ->getResult();
     }

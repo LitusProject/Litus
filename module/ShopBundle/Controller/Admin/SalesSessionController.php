@@ -233,6 +233,7 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
             $item->id = $session->getId();
             $item->start_date = $session->getStartDate()->format('d/m/Y H:i');
             $item->end_date = $session->getEndDate()->format('d/m/Y H:i');
+            $item->final_reservation_date = $session->getReservationDate()->format('d/m/Y H:i');
             $item->remarks = $session->getRemarks();
             $item->reservations_possible = $session->getReservationsPossible();
 
@@ -265,6 +266,7 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
             $item->id = $session->getId();
             $item->start_date = $session->getStartDate()->format('d/m/Y H:i');
             $item->end_date = $session->getEndDate()->format('d/m/Y H:i');
+            $item->final_reservation_date = $session->getReservationDate()->format('d/m/Y H:i');
             $item->remarks = $session->getRemarks();
             $item->reservations_possible = $session->getReservationsPossible();
 

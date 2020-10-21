@@ -20,6 +20,7 @@
 
 namespace ShopBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -40,23 +41,30 @@ class Session
     private $id;
 
     /**
-     * @var \DateTime The start date of this sales session
+     * @var DateTime The start date of this sales session
      *
      * @ORM\Column(type="datetime")
      */
     private $startDate;
 
     /**
-     * @var \DateTime The end date of this sales session
+     * @var DateTime The end date of this sales session
      *
      * @ORM\Column(type="datetime")
      */
     private $endDate;
 
     /**
+     * @var DateTime The end date for reservations for this sales session
+     *
+     * @ORM\Column(type="datetime")
+     */
+    private $finalReservationDate;
+
+    /**
      * @var boolean Whether reservations can be made for this sales session
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $reservationsPossible;
 
@@ -79,7 +87,7 @@ class Session
     // TODO: Add __construct()
 
     /**
-     * @param  \DateTime $startDate
+     * @param  DateTime $startDate
      * @return self
      */
     public function setStartDate($startDate)
@@ -90,7 +98,7 @@ class Session
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getStartDate()
     {
@@ -98,7 +106,7 @@ class Session
     }
 
     /**
-     * @param  \DateTime $endDate
+     * @param  DateTime $endDate
      * @return self
      */
     public function setEndDate($endDate)
@@ -109,11 +117,30 @@ class Session
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getEndDate()
     {
         return $this->endDate;
+    }
+
+    /**
+     * @param  DateTime $finalReservationDate
+     * @return self
+     */
+    public function setFinalReservationDate($finalReservationDate)
+    {
+        $this->finalReservationDate = $finalReservationDate;
+
+        return $this;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getFinalReservationDate()
+    {
+        return $this->finalReservationDate;
     }
 
     /**
