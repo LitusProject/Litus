@@ -21,7 +21,7 @@
 namespace NotificationBundle\Controller\Admin;
 
 use NotificationBundle\Entity\Node\Notification;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * NotificationController

@@ -24,8 +24,8 @@ use CommonBundle\Entity\User\Person;
 use ShiftBundle\Entity\Shift;
 use ShiftBundle\Entity\Shift\Responsible;
 use ShiftBundle\Entity\Shift\Volunteer;
-use Zend\Mail\Message;
-use Zend\View\Model\ViewModel;
+use Laminas\Mail\Message;
+use Laminas\View\Model\ViewModel;
 
 /**
  * ShiftController

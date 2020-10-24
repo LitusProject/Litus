@@ -21,7 +21,7 @@
 namespace PageBundle\Controller\Admin;
 
 use PageBundle\Entity\Category;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * CategoryController

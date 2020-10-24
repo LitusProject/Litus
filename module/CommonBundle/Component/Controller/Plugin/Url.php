@@ -27,7 +27,7 @@ use CommonBundle\Entity\General\Language;
  *
  * @autor Kristof Mariën <kristof.marien@litus.cc>
  */
-class Url extends \Zend\Mvc\Controller\Plugin\Url
+class Url extends \Laminas\Mvc\Controller\Plugin\Url
 {
     /**
      * @var Language

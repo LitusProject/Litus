@@ -26,7 +26,7 @@ use CudiBundle\Component\Socket\Sale\Printer;
 use CudiBundle\Component\Socket\Sale\Queue;
 use Ratchet\ConnectionInterface;
 use React\EventLoop\LoopInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 /**
  * This is the server to handle all requests by the WebSocket protocol

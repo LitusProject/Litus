@@ -23,7 +23,7 @@ namespace DoorBundle\Controller\Admin;
 use DateInterval;
 use DateTime;
 use DoorBundle\Entity\Rule;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * RuleController

@@ -24,7 +24,7 @@ use CommonBundle\Component\Util\AcademicYear;
 use DateInterval;
 use GalleryBundle\Entity\Album;
 use GalleryBundle\Entity\Album\Photo;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * GalleryController

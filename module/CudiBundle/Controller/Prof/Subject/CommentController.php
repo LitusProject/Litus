@@ -24,7 +24,7 @@ use SyllabusBundle\Entity\Subject;
 use SyllabusBundle\Entity\Subject\Comment;
 use SyllabusBundle\Entity\Subject\ProfMap;
 use SyllabusBundle\Entity\Subject\Reply;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * CommentController

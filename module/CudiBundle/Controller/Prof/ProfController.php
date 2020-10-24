@@ -22,7 +22,7 @@ namespace CudiBundle\Controller\Prof;
 
 use SyllabusBundle\Entity\Subject;
 use SyllabusBundle\Entity\Subject\ProfMap;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * ProfController

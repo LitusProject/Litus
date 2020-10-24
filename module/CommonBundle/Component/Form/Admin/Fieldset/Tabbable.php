@@ -29,7 +29,7 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use CommonBundle\Entity\General\Language;
 use Locale;
 use RuntimeException;
-use Zend\Form\FormInterface;
+use Laminas\Form\FormInterface;
 
 /**
  * Extending Zend's fieldset component, so that our forms look the way we want

@@ -21,7 +21,7 @@
 namespace MailBundle\Controller\Admin;
 
 use MailBundle\Entity\Alias;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 class AliasController extends \MailBundle\Component\Controller\AdminController
 {

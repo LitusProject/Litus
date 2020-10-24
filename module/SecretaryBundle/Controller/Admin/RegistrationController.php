@@ -31,8 +31,8 @@ use InvalidArgumentException;
 use SecretaryBundle\Component\Registration\Articles as RegistrationArticles;
 use SecretaryBundle\Entity\Organization\MetaData;
 use SecretaryBundle\Entity\Registration;
-use Zend\Validator\Barcode\Ean12 as Ean12Validator;
-use Zend\View\Model\ViewModel;
+use Laminas\Validator\Barcode\Ean12 as Ean12Validator;
+use Laminas\View\Model\ViewModel;
 
 /**
  * RegistrationController

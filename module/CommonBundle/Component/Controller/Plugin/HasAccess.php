@@ -28,7 +28,7 @@ use CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver;
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class HasAccess extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
+class HasAccess extends \Laminas\Mvc\Controller\Plugin\AbstractPlugin
 {
     /**
      * @var HasAccessDriver The driver object

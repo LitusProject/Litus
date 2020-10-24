@@ -27,7 +27,7 @@ use CommonBundle\Component\Form\ElementTrait;
  *
  * @author Matthias Swiggers <matthias.swiggers@vtk.be>
  */
-class Submit extends \Zend\Form\Element\Submit implements \CommonBundle\Component\Form\ElementInterface
+class Submit extends \Laminas\Form\Element\Submit implements \CommonBundle\Component\Form\ElementInterface
 {
     use ElementTrait;
 }

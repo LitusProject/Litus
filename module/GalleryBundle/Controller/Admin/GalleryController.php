@@ -24,11 +24,11 @@ use GalleryBundle\Entity\Album;
 use GalleryBundle\Entity\Album\Photo;
 use Imagick;
 use ImagickPixel;
-use Zend\Validator\File\IsImage as IsImageValidator;
-use Zend\Validator\File\Size as SizeValidator;
-use Zend\Validator\File\UploadFile as UploadFileValidator;
-use Zend\Validator\ValidatorChain;
-use Zend\View\Model\ViewModel;
+use Laminas\Validator\File\IsImage as IsImageValidator;
+use Laminas\Validator\File\Size as SizeValidator;
+use Laminas\Validator\File\UploadFile as UploadFileValidator;
+use Laminas\Validator\ValidatorChain;
+use Laminas\View\Model\ViewModel;
 
 /**
  * GalleryController

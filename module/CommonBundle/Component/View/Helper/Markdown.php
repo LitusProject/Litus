@@ -27,7 +27,7 @@ use Parsedown;
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Markdown extends \Zend\View\Helper\AbstractHelper
+class Markdown extends \Laminas\View\Helper\AbstractHelper
 {
     /**
      * @param  string|null

@@ -25,7 +25,7 @@ use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
 use SyllabusBundle\Entity\Subject;
 use SyllabusBundle\Entity\Subject\Comment;
 use SyllabusBundle\Entity\Subject\Reply;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * CommentController

@@ -21,7 +21,7 @@
 return array(
     'routes' => array(
         'shift_admin_shift' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/shift[/:action[/:id][/:field/:string][/page/:page]][/]',
                 'constraints' => array(
@@ -38,7 +38,7 @@ return array(
             ),
         ),
         'shift_admin_registration_shift' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/shift/registration-shift[/:action[/:id][/:field/:string][/page/:page]][/]',
                 'constraints' => array(
@@ -55,7 +55,7 @@ return array(
             ),
         ),
         'shift_admin_shift_counter' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/shift/counter[/:action[/:id[/:person[/:payed]]]][/:academicyear][/:field/:string][/]',
                 'constraints' => array(
@@ -74,7 +74,7 @@ return array(
             ),
         ),
         'shift_admin_shift_ranking' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/shift/ranking[/:action][/:academicyear][/]',
                 'constraints' => array(
@@ -88,7 +88,7 @@ return array(
             ),
         ),
         'shift_admin_shift_subscription' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/shift/subscription[/:action[/:id][/type/:type][/page/:page]][/]',
                 'constraints' => array(
@@ -104,7 +104,7 @@ return array(
             ),
         ),
         'shift_admin_registration_shift_subscription' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/shift/registration-subscription[/:action[/:shift][/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -120,7 +120,7 @@ return array(
             ),
         ),
         'shift' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/shift[/:action[/:id]][/]',
                 'constraints' => array(
@@ -135,7 +135,7 @@ return array(
             ),
         ),
         'registration_shift' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/registration-shift[/:action[/:id]][/]',
                 'constraints' => array(
@@ -150,7 +150,7 @@ return array(
             ),
         ),
         'registration_shift_auth' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/registration-shift/auth[/:action[/identification/:identification[/hash/:hash]]][/]',
                 'constraints' => array(
@@ -166,7 +166,7 @@ return array(
             ),
         ),
         'shift_export' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/shift/export/:token/ical.ics',
                 'constraints' => array(

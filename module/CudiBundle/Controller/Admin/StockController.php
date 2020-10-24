@@ -28,8 +28,8 @@ use CudiBundle\Entity\Stock\Delivery;
 use CudiBundle\Entity\Stock\Order\Virtual as VirtualOrder;
 use CudiBundle\Entity\Stock\Period;
 use CudiBundle\Entity\Stock\Period\Value\Delta;
-use Zend\Http\Headers;
-use Zend\View\Model\ViewModel;
+use Laminas\Http\Headers;
+use Laminas\View\Model\ViewModel;
 
 /**
  * StockController

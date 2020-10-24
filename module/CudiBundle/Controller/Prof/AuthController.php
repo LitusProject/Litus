@@ -23,7 +23,7 @@ namespace CudiBundle\Controller\Prof;
 use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter;
 use CommonBundle\Component\Authentication\Authentication;
 use CommonBundle\Component\Controller\Exception\HasNoAccessException;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * AuthController

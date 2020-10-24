@@ -20,7 +20,7 @@
 
 namespace CommonBundle\Component\Form\Bootstrap;
 
-use Zend\Form\Element\Csrf;
+use Laminas\Form\Element\Csrf;
 
 /**
  * Extending Zend's form component, so that our forms look the way we want

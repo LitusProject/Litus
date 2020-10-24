@@ -27,7 +27,7 @@ use MailBundle\Entity\MailingList\AdminRoleMap as ListAdminRole;
 use MailBundle\Entity\MailingList\Entry\MailingList as MailingListEntry;
 use MailBundle\Entity\MailingList\Entry\Person\Academic as AcademicEntry;
 use MailBundle\Entity\MailingList\Entry\Person\External as ExternalEntry;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * MailingListController

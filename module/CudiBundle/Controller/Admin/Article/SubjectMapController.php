@@ -25,7 +25,7 @@ use CudiBundle\Entity\Article\Internal as InternalArticle;
 use CudiBundle\Entity\Article\SubjectMap;
 use CudiBundle\Entity\Log\Article\SubjectMap\Added as AddedLog;
 use CudiBundle\Entity\Log\Article\SubjectMap\Removed as RemovedLog;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * SubjectMapController

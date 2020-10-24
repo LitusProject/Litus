@@ -30,7 +30,7 @@ use Doctrine\ORM\QueryBuilder;
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
+abstract class Doctrine implements \Laminas\Authentication\Adapter\AdapterInterface
 {
     /**
      * @var EntityManager The EntityManager instance

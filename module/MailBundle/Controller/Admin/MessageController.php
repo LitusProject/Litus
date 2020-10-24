@@ -21,7 +21,7 @@
 namespace MailBundle\Controller\Admin;
 
 use MailBundle\Entity\Message;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * MessageController

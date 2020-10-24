@@ -26,9 +26,9 @@ use DateInterval;
 use DateTime;
 use ShiftBundle\Component\Document\Generator\Event\Pdf as PdfGenerator;
 use ShiftBundle\Entity\Shift;
-use Zend\Http\Headers;
-use Zend\Mail\Message;
-use Zend\View\Model\ViewModel;
+use Laminas\Http\Headers;
+use Laminas\Mail\Message;
+use Laminas\View\Model\ViewModel;
 
 /**
  * ShiftController

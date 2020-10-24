@@ -26,12 +26,12 @@ use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use Imagick;
-use Zend\Filter\File\RenameUpload as RenameUploadFilter;
-use Zend\Http\Headers;
-use Zend\Validator\File\IsImage as IsImageValidator;
-use Zend\Validator\File\UploadFile as UploadFileValidator;
-use Zend\Validator\ValidatorChain;
-use Zend\View\Model\ViewModel;
+use Laminas\Filter\File\RenameUpload as RenameUploadFilter;
+use Laminas\Http\Headers;
+use Laminas\Validator\File\IsImage as IsImageValidator;
+use Laminas\Validator\File\UploadFile as UploadFileValidator;
+use Laminas\Validator\ValidatorChain;
+use Laminas\View\Model\ViewModel;
 
 /**
  * CompanyController

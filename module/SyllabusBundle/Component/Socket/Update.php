@@ -31,7 +31,7 @@ use Ko\Process;
 use Ratchet\ConnectionInterface;
 use React\EventLoop\LoopInterface;
 use SyllabusBundle\Component\Parser\Study as StudyParser;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 /**
  * This is the server to handle all requests by the WebSocket protocol

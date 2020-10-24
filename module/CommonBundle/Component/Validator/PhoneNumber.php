@@ -26,7 +26,7 @@ namespace CommonBundle\Component\Validator;
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class PhoneNumber extends \Zend\Validator\Regex
+class PhoneNumber extends \Laminas\Validator\Regex
 {
     public function __construct()
     {

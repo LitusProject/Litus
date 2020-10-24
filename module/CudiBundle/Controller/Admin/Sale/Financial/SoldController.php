@@ -26,7 +26,7 @@ use CudiBundle\Entity\Sale\SaleItem\External as ExternalItem;
 use CudiBundle\Entity\Sale\SaleItem\Prof as ProfItem;
 use CudiBundle\Entity\Sale\Session;
 use CudiBundle\Entity\Supplier;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * SoldController

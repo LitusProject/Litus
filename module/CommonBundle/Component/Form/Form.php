@@ -28,12 +28,12 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Component\Validator\FormAwareInterface;
 use RuntimeException;
-use Zend\Form\FieldsetInterface as ZendFieldsetInterface;
-use Zend\Form\FormInterface;
-use Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
-use Zend\InputFilter\InputFilterAwareInterface;
-use Zend\InputFilter\InputFilterInterface;
-use Zend\InputFilter\InputInterface;
+use Laminas\Form\FieldsetInterface as ZendFieldsetInterface;
+use Laminas\Form\FormInterface;
+use Laminas\Hydrator\ClassMethods as ClassMethodsHydrator;
+use Laminas\InputFilter\InputFilterAwareInterface;
+use Laminas\InputFilter\InputFilterInterface;
+use Laminas\InputFilter\InputInterface;
 
 /**
  * Extending Zend's form component, so that our forms look the way we want
@@ -42,7 +42,7 @@ use Zend\InputFilter\InputInterface;
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface, ServiceLocatorAwareInterface, ZendFieldsetInterface
+abstract class Form extends \Laminas\Form\Form implements InputFilterAwareInterface, ServiceLocatorAwareInterface, ZendFieldsetInterface
 {
     use ElementTrait {
         ElementTrait::setRequired as setElementRequired;
@@ -71,7 +71,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     }
 
     /**
-     * @return \Zend\Hydrator\HydratorInterface
+     * @return \Laminas\Hydrator\HydratorInterface
      */
     public function getHydrator()
     {
@@ -153,7 +153,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     }
 
     /**
-     * @return \Zend\InputFilter\Factory
+     * @return \Laminas\InputFilter\Factory
      */
     public function getInputFilterFactory()
     {

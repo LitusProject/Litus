@@ -26,9 +26,9 @@ use ShiftBundle\Entity\Shift\Responsible;
 use ShiftBundle\Entity\Shift\Volunteer;
 use ShiftBundle\Entity\Token;
 use ShiftBundle\Entity\User\Person\AcademicYearMap;
-use Zend\Http\Headers;
-use Zend\Mail\Message;
-use Zend\View\Model\ViewModel;
+use Laminas\Http\Headers;
+use Laminas\Mail\Message;
+use Laminas\View\Model\ViewModel;
 
 /**
  * ShiftController

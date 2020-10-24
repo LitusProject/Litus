@@ -27,7 +27,7 @@ use CommonBundle\Entity\General\Language;
 use Doctrine\ORM\EntityManager;
 use Locale;
 use NewsBundle\Entity\Node\News;
-use Zend\Http\PhpEnvironment\Request;
+use Laminas\Http\PhpEnvironment\Request;
 
 /**
  * Feed

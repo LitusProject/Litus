@@ -23,9 +23,9 @@ namespace CommonBundle\Component\Form\ServiceManager;
 use CommonBundle\Component\Form\Factory;
 use CommonBundle\Component\Form\FormElementManager;
 use Interop\Container\ContainerInterface;
-use Zend\Filter\FilterChain;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\Validator\ValidatorChain;
+use Laminas\Filter\FilterChain;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\Validator\ValidatorChain;
 
 /**
  * A factory class for form factories.

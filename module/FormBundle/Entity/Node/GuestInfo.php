@@ -22,7 +22,7 @@ namespace FormBundle\Entity\Node;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
-use Zend\Http\PhpEnvironment\Request;
+use Laminas\Http\PhpEnvironment\Request;
 use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
 
 

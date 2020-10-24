@@ -21,7 +21,7 @@
 return array(
     'routes' => array(
         'door_admin_rule' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/door/rule[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(

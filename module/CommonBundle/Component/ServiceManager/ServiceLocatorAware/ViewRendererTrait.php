@@ -20,7 +20,7 @@
 
 namespace CommonBundle\Component\ServiceManager\ServiceLocatorAware;
 
-use Zend\View\Renderer\PhpRenderer;
+use Laminas\View\Renderer\PhpRenderer;
 
 /**
  * A trait to define some common methods for classes with a ServiceLocator.
@@ -31,7 +31,7 @@ use Zend\View\Renderer\PhpRenderer;
 trait ViewRendererTrait
 {
     /**
-     * @return \Zend\View\Renderer\RendererInterface
+     * @return \Laminas\View\Renderer\RendererInterface
      */
     public function getViewRenderer()
     {
@@ -39,7 +39,7 @@ trait ViewRendererTrait
     }
 
     /**
-     * @return \Zend\ServiceManager\ServiceLocatorInterface
+     * @return \Laminas\ServiceManager\ServiceLocatorInterface
      */
     abstract public function getServiceLocator();
 }

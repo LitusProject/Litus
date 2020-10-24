@@ -27,7 +27,7 @@ use CommonBundle\Component\Form\ElementTrait;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Password extends \Zend\Form\Element\Password implements \CommonBundle\Component\Form\ElementInterface
+class Password extends \Laminas\Form\Element\Password implements \CommonBundle\Component\Form\ElementInterface
 {
     use ElementTrait;
 }

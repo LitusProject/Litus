@@ -31,7 +31,7 @@ use IntlDateFormatter;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class DateLocalized extends \Zend\View\Helper\AbstractHelper implements ServiceLocatorAwareInterface
+class DateLocalized extends \Laminas\View\Helper\AbstractHelper implements ServiceLocatorAwareInterface
 {
     use ServiceLocatorAwareTrait;
 

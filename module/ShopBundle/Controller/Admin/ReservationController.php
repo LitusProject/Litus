@@ -25,8 +25,8 @@ use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use ShopBundle\Entity\Reservation;
 use ShopBundle\Entity\Reservation\Permission as ReservationPermission;
 use ShopBundle\Entity\Session as SalesSession;
-use Zend\Http\Headers;
-use Zend\View\Model\ViewModel;
+use Laminas\Http\Headers;
+use Laminas\View\Model\ViewModel;
 
 /**
  * ReservationController

@@ -22,8 +22,8 @@ namespace CommonBundle\Component\Controller\Plugin\ServiceManager;
 
 use CommonBundle\Component\Controller\Plugin\Paginator;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Factory to instantiate a paginator.

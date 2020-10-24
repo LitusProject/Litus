@@ -22,7 +22,7 @@ namespace QuizBundle\Controller\Admin;
 
 use QuizBundle\Entity\Quiz;
 use QuizBundle\Entity\Round;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * RoundController

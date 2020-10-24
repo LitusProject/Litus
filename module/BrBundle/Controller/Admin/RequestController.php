@@ -21,7 +21,7 @@
 namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Company\Request;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * RequestController

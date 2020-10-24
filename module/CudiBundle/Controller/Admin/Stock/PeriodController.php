@@ -22,7 +22,7 @@ namespace CudiBundle\Controller\Admin\Stock;
 
 use CudiBundle\Entity\Stock\Period;
 use CudiBundle\Entity\Stock\Period\Value\Start as StartValue;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * PeriodController

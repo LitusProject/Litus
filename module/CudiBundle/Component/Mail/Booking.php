@@ -22,8 +22,8 @@ namespace CudiBundle\Component\Mail;
 
 use CommonBundle\Entity\User\Person;
 use Doctrine\ORM\EntityManager;
-use Zend\Mail\Message;
-use Zend\Mail\Transport\TransportInterface;
+use Laminas\Mail\Message;
+use Laminas\Mail\Transport\TransportInterface;
 
 /**
  * Booking

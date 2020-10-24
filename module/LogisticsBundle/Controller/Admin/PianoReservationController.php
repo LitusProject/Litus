@@ -22,8 +22,8 @@ namespace LogisticsBundle\Controller\Admin;
 
 use IntlDateFormatter;
 use LogisticsBundle\Entity\Reservation\Piano as PianoReservation;
-use Zend\Mail\Message;
-use Zend\View\Model\ViewModel;
+use Laminas\Mail\Message;
+use Laminas\View\Model\ViewModel;
 
 class PianoReservationController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {

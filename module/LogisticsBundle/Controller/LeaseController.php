@@ -23,7 +23,7 @@ namespace LogisticsBundle\Controller;
 use DateTime;
 use LogisticsBundle\Entity\Lease;
 use LogisticsBundle\Entity\Lease\Item;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * LeaseController

@@ -22,8 +22,8 @@ namespace BrBundle\Controller\Corporate;
 
 use BrBundle\Component\Util\Cv;
 use CommonBundle\Entity\General\AcademicYear;
-use Zend\Http\Headers;
-use Zend\View\Model\ViewModel;
+use Laminas\Http\Headers;
+use Laminas\View\Model\ViewModel;
 
 /**
  * CvController

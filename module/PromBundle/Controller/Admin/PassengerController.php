@@ -21,8 +21,8 @@
 namespace PromBundle\Controller\Admin;
 
 use PromBundle\Entity\Bus\Passenger;
-use Zend\Mail\Message;
-use Zend\View\Model\ViewModel;
+use Laminas\Mail\Message;
+use Laminas\View\Model\ViewModel;
 
 /**
  * PassengerController

@@ -29,7 +29,7 @@ namespace CommonBundle\Component\ServiceManager\ServiceLocatorAware;
 trait RouterTrait
 {
     /**
-     * @return \Zend\Router\RouteStackInterface
+     * @return \Laminas\Router\RouteStackInterface
      */
     public function getRouter()
     {
@@ -37,7 +37,7 @@ trait RouterTrait
     }
 
     /**
-     * @return \Zend\ServiceManager\ServiceLocatorInterface
+     * @return \Laminas\ServiceManager\ServiceLocatorInterface
      */
     abstract public function getServiceLocator();
 }

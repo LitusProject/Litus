@@ -25,7 +25,7 @@ namespace ApiBundle\Component\Uri;
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Litus extends \Zend\Uri\Uri
+class Litus extends \Laminas\Uri\Uri
 {
     protected static $validSchemes = array('litus');
 

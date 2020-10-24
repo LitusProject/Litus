@@ -22,7 +22,7 @@ namespace CommonBundle\Component\Controller\ServiceManager;
 
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Initializer\InitializerInterface;
+use Laminas\ServiceManager\Initializer\InitializerInterface;
 
 class AbstractActionControllerInitializer implements InitializerInterface
 {

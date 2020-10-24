@@ -25,7 +25,7 @@ use QuizBundle\Entity\Point;
 use QuizBundle\Entity\Quiz;
 use QuizBundle\Entity\Round;
 use QuizBundle\Entity\Team;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * QuizController

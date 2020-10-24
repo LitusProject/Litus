@@ -26,8 +26,8 @@ use FormBundle\Entity\Node\Entry as FormEntry;
 use FormBundle\Entity\Node\Form;
 use FormBundle\Entity\Node\Group;
 use FormBundle\Entity\Node\GuestInfo;
-use Zend\Http\Headers;
-use Zend\View\Model\ViewModel;
+use Laminas\Http\Headers;
+use Laminas\View\Model\ViewModel;
 
 /**
  * FormController

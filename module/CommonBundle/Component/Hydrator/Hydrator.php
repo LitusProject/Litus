@@ -30,8 +30,8 @@ use DateTime;
 use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
 use RuntimeException;
-use Zend\Hydrator\Filter\FilterComposite;
-use Zend\Hydrator\HydratorInterface;
+use Laminas\Hydrator\Filter\FilterComposite;
+use Laminas\Hydrator\HydratorInterface;
 
 /**
  * A common superclass for hydrators.

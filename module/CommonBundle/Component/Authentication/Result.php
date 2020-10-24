@@ -27,7 +27,7 @@ namespace CommonBundle\Component\Authentication;
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-abstract class Result extends \Zend\Authentication\Result
+abstract class Result extends \Laminas\Authentication\Result
 {
     /**
      * Return the user object.

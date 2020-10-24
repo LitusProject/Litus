@@ -25,7 +25,7 @@ namespace SportBundle\Component\Validator;
  *
  * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
  */
-class UniversityIdentification extends \Zend\Validator\Regex
+class UniversityIdentification extends \Laminas\Validator\Regex
 {
     public function __construct()
     {

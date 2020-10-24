@@ -24,7 +24,7 @@ use DateInterval;
 use DateTime;
 use ShopBundle\Entity\Reservation;
 use ShopBundle\Entity\Session as SalesSession;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * ShopController

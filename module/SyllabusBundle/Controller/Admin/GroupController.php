@@ -27,7 +27,7 @@ use SyllabusBundle\Component\Document\Generator\Group as CsvGenerator;
 use SyllabusBundle\Entity\Group;
 use SyllabusBundle\Entity\Group\StudyMap;
 use SyllabusBundle\Entity\Poc as PocEntity;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * GroupController

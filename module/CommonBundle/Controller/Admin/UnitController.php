@@ -28,9 +28,9 @@ use CommonBundle\Entity\User\Person\Organization\UnitMap\Academic as UnitMapAcad
 use CommonBundle\Entity\User\Person\Organization\UnitMap\External as UnitMapExternal;
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
-use Zend\Http\Headers;
+use Laminas\Http\Headers;
 use Imagick;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * UnitController

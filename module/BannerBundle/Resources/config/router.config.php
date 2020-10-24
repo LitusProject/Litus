@@ -21,7 +21,7 @@
 return array(
     'routes' => array(
         'banner_admin_banner' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/site/banner[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -36,7 +36,7 @@ return array(
             ),
         ),
         'banner' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/banner[/:action[/image/:image]][/]',
                 'constraints' => array(

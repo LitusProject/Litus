@@ -21,7 +21,7 @@
 namespace LogisticsBundle\Controller\Admin;
 
 use LogisticsBundle\Entity\Reservation\Van as VanReservation;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 class VanReservationController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {

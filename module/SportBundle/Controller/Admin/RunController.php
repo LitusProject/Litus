@@ -26,7 +26,7 @@ use DateInterval;
 use DateTime;
 use SportBundle\Entity\Group;
 use SportBundle\Entity\Runner;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * RunController
