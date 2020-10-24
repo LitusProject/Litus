@@ -22,9 +22,9 @@ namespace ShopBundle\Controller;
 
 use DateInterval;
 use DateTime;
+use Laminas\View\Model\ViewModel;
 use ShopBundle\Entity\Reservation;
 use ShopBundle\Entity\Session as SalesSession;
-use Laminas\View\Model\ViewModel;
 
 /**
  * ShopController

@@ -20,8 +20,8 @@
 
 namespace MailBundle\Controller\Admin;
 
-use MailBundle\Entity\Message;
 use Laminas\View\Model\ViewModel;
+use MailBundle\Entity\Message;
 
 /**
  * MessageController

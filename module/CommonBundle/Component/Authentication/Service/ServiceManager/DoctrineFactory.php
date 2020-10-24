@@ -24,10 +24,10 @@ use CommonBundle\Component\Authentication\Action\Doctrine as DoctrineAction;
 use CommonBundle\Component\Authentication\Service\Doctrine as DoctrineService;
 use CommonBundle\Entity\User\Session;
 use Interop\Container\ContainerInterface;
-use RuntimeException;
 use Laminas\Authentication\Storage\Session as SessionStorage;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\ServiceManager\ServiceLocatorInterface;
+use RuntimeException;
 
 /**
  * Factory to instantiate a Doctrine service.

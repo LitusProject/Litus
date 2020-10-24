@@ -23,9 +23,9 @@ namespace CommonBundle\Component\Form;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\Util\StringUtil;
 use Interop\Container\ContainerInterface;
-use RuntimeException;
 use Laminas\Form\FormFactoryAwareInterface;
 use Laminas\Hydrator\ClassMethods as ClassMethodsHydrator;
+use RuntimeException;
 
 /**
  * @author Bram Gotink <bram.gotink@litus.cc>
@@ -53,9 +53,9 @@ class FormElementManager extends \Laminas\Form\FormElementManager
     private $data;
 
     /**
-     * @param boolean                                                      $isAdmin
+     * @param boolean                                                         $isAdmin
      * @param \Laminas\ServiceManager\ConfigInterface|ContainerInterface|null $configInstanceOrParentLocator
-     * @param array                                                        $config
+     * @param array                                                           $config
      */
     public function __construct($isAdmin, $configInstanceOrParentLocator = null, array $config = array())
     {

@@ -50,35 +50,35 @@ class Registered
     private $signupTime;
 
     /**
-     * @var String The id to recognize the Registered
+     * @var string The id to recognize the Registered
      *
      * @ORM\Column(type="string", length=50)
      */
     private $username;
 
     /**
-     * @var String The first name of the registered
+     * @var string The first name of the registered
      *
      * @ORM\Column(name="first_name",type="string", length=50)
      */
     private $firstName;
 
     /**
-     * @var String The last name of the registered
+     * @var string The last name of the registered
      *
      * @ORM\Column(name="last_name",type="string", length=50)
      */
     private $lastName;
 
     /**
-     * @var String The email address of the registered
+     * @var string The email address of the registered
      *
      * @ORM\Column(type="string", length=100)
      */
     private $email;
 
     /**
-     * @var String The ticket code of the registered
+     * @var string The ticket code of the registered
      *
      * @ORM\Column(name="ticket_code",type="string", length=100, nullable=true)
      */
@@ -101,12 +101,11 @@ class Registered
      */
     private $person;
 
-
     public function __construct(AcademicYear $academicYear, Person $person = null)
     {
         $this->signupTime = new DateTime();
 
-        if ($person !== null){
+        if ($person !== null) {
             $this->firstName = $person->getFirstName();
             $this->lastName = $person->getLastName();
             $this->username = $person->getUsername();
@@ -150,7 +149,6 @@ class Registered
     {
         return $this->signupTime;
     }
-
 
     /**
      * @return string

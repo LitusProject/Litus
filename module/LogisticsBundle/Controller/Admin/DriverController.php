@@ -20,8 +20,8 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
-use LogisticsBundle\Entity\Driver;
 use Laminas\View\Model\ViewModel;
+use LogisticsBundle\Entity\Driver;
 
 /**
  * DriverController

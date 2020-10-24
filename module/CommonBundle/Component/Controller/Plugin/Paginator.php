@@ -216,7 +216,7 @@ class Paginator extends \Laminas\Mvc\Controller\Plugin\AbstractPlugin implements
             'fullWidth'          => $fullWidth,
             'matchedRouteName'   => $controller->getEvent()->getRouteMatch()->getMatchedRouteName(),
             'matchedRouteParams' => $params,
-            'query'              => count($query) > 0 ? ('?' . $query->toString()) : '',
+            'query'              => count($query) > 0 ? '?' . $query->toString() : '',
             'pages'              => $this->paginator->getPages(),
         );
     }

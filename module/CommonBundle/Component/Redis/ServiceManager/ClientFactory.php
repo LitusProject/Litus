@@ -22,9 +22,9 @@ namespace CommonBundle\Component\Redis\ServiceManager;
 
 use CommonBundle\Component\Redis\Client;
 use Interop\Container\ContainerInterface;
-use RuntimeException;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\ServiceManager\ServiceLocatorInterface;
+use RuntimeException;
 
 /**
  * Factory to create the Credis_Client instance.

@@ -22,12 +22,12 @@ namespace PromBundle\Controller\Admin;
 
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
-use PromBundle\Entity\Bus\ReservationCode;
-use PromBundle\Entity\Bus\ReservationCode\Academic as AcademicCode;
-use PromBundle\Entity\Bus\ReservationCode\External as ExternalCode;
 use Laminas\Http\Headers;
 use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
+use PromBundle\Entity\Bus\ReservationCode;
+use PromBundle\Entity\Bus\ReservationCode\Academic as AcademicCode;
+use PromBundle\Entity\Bus\ReservationCode\External as ExternalCode;
 
 /**
  * CodeController

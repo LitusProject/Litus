@@ -113,7 +113,8 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
         return new ViewModel();
     }
 
-    public function revertNewAction() {
+    public function revertNewAction()
+    {
         $msg = 'The stock period was successfully reverted.';
 
         /* Find current period */

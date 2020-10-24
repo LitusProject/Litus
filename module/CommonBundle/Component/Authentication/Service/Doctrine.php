@@ -83,8 +83,8 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
      * Authenticates against the supplied adapter
      *
      * @param \Laminas\Authentication\Adapter\AdapterInterface|null $adapter
-     * @param boolean                                            $rememberMe Remember this authentication session
-     * @param boolean                                            $shibboleth Whether or not this is sessions initiated by Shibboleth
+     * @param boolean                                               $rememberMe Remember this authentication session
+     * @param boolean                                               $shibboleth Whether or not this is sessions initiated by Shibboleth
      *
      * @return Result|null
      */

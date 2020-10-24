@@ -24,9 +24,9 @@ use CommonBundle\Component\Console\Command;
 use CommonBundle\Component\Socket\User;
 use CudiBundle\Component\Socket\Sale\Printer;
 use CudiBundle\Component\Socket\Sale\Queue;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 use Ratchet\ConnectionInterface;
 use React\EventLoop\LoopInterface;
-use Laminas\ServiceManager\ServiceLocatorInterface;
 
 /**
  * This is the server to handle all requests by the WebSocket protocol

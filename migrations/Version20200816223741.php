@@ -36,7 +36,6 @@ class Version20200816223741 extends \Doctrine\Migrations\AbstractMigration
     public function up(Schema $schema) : void
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
-
     }
 
     /**

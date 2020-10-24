@@ -22,9 +22,9 @@ namespace SyllabusBundle\Controller\Admin\Subject;
 
 use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+use Laminas\View\Model\ViewModel;
 use SyllabusBundle\Entity\Subject;
 use SyllabusBundle\Entity\Subject\ProfMap;
-use Laminas\View\Model\ViewModel;
 
 /**
  * ProfController

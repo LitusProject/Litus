@@ -20,9 +20,9 @@
 
 namespace PageBundle\Controller;
 
-use PageBundle\Entity\Node\Page;
 use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
+use PageBundle\Entity\Node\Page;
 
 /**
  * PageController

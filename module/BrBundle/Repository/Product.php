@@ -78,7 +78,7 @@ class Product extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         return $query->select('p')
             ->from('BrBundle\Entity\Product', 'p')
             ->where(
-                    $query->expr()->eq('p.old', 'FALSE')
+                $query->expr()->eq('p.old', 'FALSE')
             )
             ->orderBy('p.name', 'ASC')
             ->getQuery()

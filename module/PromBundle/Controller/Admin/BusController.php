@@ -21,11 +21,11 @@
 namespace PromBundle\Controller\Admin;
 
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
-use PromBundle\Component\Document\Generator\Bus\Csv as CsvGenerator;
-use PromBundle\Entity\Bus;
 use Laminas\Http\Headers;
 use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
+use PromBundle\Component\Document\Generator\Bus\Csv as CsvGenerator;
+use PromBundle\Entity\Bus;
 
 /**
  * BusController

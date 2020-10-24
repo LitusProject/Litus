@@ -21,10 +21,10 @@
 namespace NewsBundle\Controller;
 
 use CommonBundle\Component\Util\File\TmpFile;
-use NewsBundle\Component\Document\Generator\Feed as FeedGenerator;
-use NewsBundle\Entity\Node\News;
 use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
+use NewsBundle\Component\Document\Generator\Feed as FeedGenerator;
+use NewsBundle\Entity\Node\News;
 
 /**
  * NewsController

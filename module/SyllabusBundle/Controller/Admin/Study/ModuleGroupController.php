@@ -22,8 +22,8 @@ namespace SyllabusBundle\Controller\Admin\Study;
 
 use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
-use SyllabusBundle\Entity\Study\ModuleGroup;
 use Laminas\View\Model\ViewModel;
+use SyllabusBundle\Entity\Study\ModuleGroup;
 
 /**
  * ModuleGroupController

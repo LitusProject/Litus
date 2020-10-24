@@ -20,8 +20,8 @@
 
 namespace QuizBundle\Controller\Admin;
 
-use QuizBundle\Entity\Quiz;
 use Laminas\View\Model\ViewModel;
+use QuizBundle\Entity\Quiz;
 
 /**
  * QuizController

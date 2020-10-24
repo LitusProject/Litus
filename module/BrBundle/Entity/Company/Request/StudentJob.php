@@ -150,8 +150,9 @@ class StudentJob extends \BrBundle\Entity\Company\Request
 
             case 'edit reject':
                 $this->getJob()->approve();
-                if (($editJob = $this->getEditJob())!== null)
+                if (($editJob = $this->getEditJob()) !== null) {
                     $editJob->remove();
+                }
                 break;
 
             case 'delete':

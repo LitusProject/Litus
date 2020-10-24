@@ -24,9 +24,9 @@ use CommonBundle\Entity\User\Person;
 use DateInterval;
 use DateTime;
 use IntlDateFormatter;
-use LogisticsBundle\Entity\Reservation\Piano as PianoReservation;
 use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
+use LogisticsBundle\Entity\Reservation\Piano as PianoReservation;
 
 /**
  * @author Kristof Mariën <kristof.marien@litus.cc>

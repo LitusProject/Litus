@@ -28,10 +28,10 @@ use CommonBundle\Component\Redis\Uri as RedisUri;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\RedisClientTrait;
 use Exception;
 use Ko\Process;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 use Ratchet\ConnectionInterface;
 use React\EventLoop\LoopInterface;
 use SyllabusBundle\Component\Parser\Study as StudyParser;
-use Laminas\ServiceManager\ServiceLocatorInterface;
 
 /**
  * This is the server to handle all requests by the WebSocket protocol

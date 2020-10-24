@@ -43,9 +43,11 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.show_extra_text_reservation_page');
 
-        $reservationText = unserialize($this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.extra_text_reservation_page'))[$this->getLanguage()->getAbbrev()];
+        $reservationText = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.extra_text_reservation_page')
+        )[$this->getLanguage()->getAbbrev()];
 
         $bookings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')

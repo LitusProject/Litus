@@ -20,8 +20,8 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
-use LogisticsBundle\Entity\Lease\Item;
 use Laminas\View\Model\ViewModel;
+use LogisticsBundle\Entity\Lease\Item;
 
 /**
  * LeaseController

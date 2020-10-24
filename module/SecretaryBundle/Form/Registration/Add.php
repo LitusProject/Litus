@@ -22,8 +22,8 @@ namespace SecretaryBundle\Form\Registration;
 
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\HydratorPluginManagerTrait;
 use CommonBundle\Entity\User\Person\Academic;
-use SecretaryBundle\Entity\Organization\MetaData;
 use Laminas\Validator\Identical;
+use SecretaryBundle\Entity\Organization\MetaData;
 
 /**
  * Add Registration

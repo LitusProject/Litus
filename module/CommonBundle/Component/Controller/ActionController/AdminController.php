@@ -59,7 +59,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
                 || ($period->getStartDate()->format('Y') < date('Y') && (($period->getStartDate()->format('n') < 12) || ($period->getStartDate()->format('j') <= 15)))
                 || $period->getStartDate() < $this->getCurrentAcademicYear()->getStartDate())
                 && $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('common.show_new_stock_period_warning');
+                ->getConfigValue('common.show_new_stock_period_warning');
         }
 
         $result->servedBy = null;
@@ -209,7 +209,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
 
             $newSubmenu['subtitle'] = $submenu['subtitle'][0];
             for ($i = 1; $i < $nbSubtitles; $i++) {
-                if ($i == ($nbSubtitles - 1)) {
+                if ($i == $nbSubtitles - 1) {
                     $newSubmenu['subtitle'] .= ' & ' . $submenu['subtitle'][$i];
                     break;
                 }

@@ -20,8 +20,8 @@
 
 namespace ShopBundle\Controller\Admin;
 
-use ShopBundle\Entity\Product;
 use Laminas\View\Model\ViewModel;
+use ShopBundle\Entity\Product;
 
 /**
  * ProductController

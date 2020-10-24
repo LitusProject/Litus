@@ -33,7 +33,7 @@ class HydratorPluginManager extends \Laminas\Hydrator\HydratorPluginManager
 {
     /**
      * @param \Laminas\ServiceManager\ConfigInterface|ContainerInterface|null $configInstanceOrParentLocator
-     * @param array                                                        $config
+     * @param array                                                           $config
      */
     public function __construct($configInstanceOrParentLocator = null, array $config = array())
     {

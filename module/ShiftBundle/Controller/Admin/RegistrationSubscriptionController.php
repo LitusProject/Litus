@@ -20,11 +20,10 @@
 
 namespace ShiftBundle\Controller\Admin;
 
-use ShiftBundle\Entity\RegistrationShift;
-use ShiftBundle\Entity\Shift\Registered;
 use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
-use function GuzzleHttp\Psr7\str;
+use ShiftBundle\Entity\RegistrationShift;
+use ShiftBundle\Entity\Shift\Registered;
 
 /**
  * RegistrationSubscriptionController

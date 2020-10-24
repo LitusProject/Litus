@@ -20,8 +20,8 @@
 
 namespace PageBundle\Controller\Admin;
 
-use PageBundle\Entity\Category;
 use Laminas\View\Model\ViewModel;
+use PageBundle\Entity\Category;
 
 /**
  * CategoryController

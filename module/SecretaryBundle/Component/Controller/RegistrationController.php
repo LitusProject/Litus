@@ -27,11 +27,11 @@ use CommonBundle\Entity\User\Person\Organization\AcademicYearMap;
 use CommonBundle\Entity\User\Status\University as UniversityStatus;
 use DateInterval;
 use DateTime;
+use Laminas\View\Model\ViewModel;
 use SecretaryBundle\Component\Registration\Articles as RegistrationArticles;
 use SecretaryBundle\Entity\Syllabus\Enrollment\Study as StudyEnrollment;
 use SecretaryBundle\Entity\Syllabus\Enrollment\Subject as SubjectEnrollment;
 use SecretaryBundle\Form\Registration\Subject\Add as AddSubjectForm;
-use Laminas\View\Model\ViewModel;
 
 /**
  * @author Kristof Mariën <kristof.marien@litus.cc>
