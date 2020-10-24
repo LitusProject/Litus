@@ -278,6 +278,10 @@
                                     <dd>{{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }}</dd>
                                     <dt>{{ translate('End') }}</dt>
                                     <dd>{{ dateLocalized(shift.getEndDate(), 'd/M/y HH:mm') }}</dd>
+                                    <dt>{{ translate('Final Signup') }}</dt>
+                                    <dd>{{ dateLocalized(shift.getFinalSigninDate(), 'd/M/y HH:mm') }}</dd>
+                                    <dt>{{ translate('Final Signout') }}</dt>
+                                    <dd>{{ dateLocalized(shift.getSignoutDate(), 'd/M/y HH:mm') }}</dd>
                                 </dl>
                             </div>
                             <div class="col-sm-4">
@@ -334,16 +338,16 @@
     {% import _self as self %}
 
     {% if 'search' == accordionName %}
-        {% if shift.canHaveAsRegistered(entityManager, authenticatedPerson) and 0 != shift.getNbRegistered() %}
-            <button class="btn btn-default btn-xs {{ self.buttonStyle(shift, 'registered') }} registered" data-id="{{ shift.getId() }}" data-count="{{ shift.countRegistered() }}" data-max="{{ shift.getNbRegistered() }}" data-panel="#group_{{ accordionName }}_shift-{{ shift.getId() }}" type="button">
-                {{ translate('Registered') }} (<span class="count">{{ shift.countRegistered() }}</span>/{{ shift.getNbRegistered() }})
-            </button>
-        {% endif %}
-        {% if shift.countRegistered() == shift.getNbRegistered() %}
-            <button class="btn btn-default btn-xs {{ self.buttonStyle(shift, 'registered') }} registered" data-id="{{ shift.getId() }}" data-count="{{ shift.countRegistered() }}" data-max="{{ shift.getNbRegistered() }}" data-panel="#group_{{ accordionName }}_shift-{{ shift.getId() }}" type="button" disabled>
-                {{ translate('Registered') }} (<span class="count">{{ shift.countRegistered() }}</span>/{{ shift.getNbRegistered() }})
-            </button>
-        {% endif %}
+            {% if shift.canHaveAsRegistered(entityManager, authenticatedPerson) and 0 != shift.getNbRegistered() %}
+                <button class="btn btn-default btn-xs {{ self.buttonStyle(shift, 'registered') }} registered" data-id="{{ shift.getId() }}" data-count="{{ shift.countRegistered() }}" data-max="{{ shift.getNbRegistered() }}" data-panel="#group_{{ accordionName }}_shift-{{ shift.getId() }}" type="button">
+                    {{ translate('Registered') }} (<span class="count">{{ shift.countRegistered() }}</span>/{{ shift.getNbRegistered() }})
+                </button>
+            {% endif %}
+            {% if shift.countRegistered() == shift.getNbRegistered() %}
+                <button disabled class="btn btn-default btn-xs {{ self.buttonStyle(shift, 'registered') }} registered" data-id="{{ shift.getId() }}" data-count="{{ shift.countRegistered() }}" data-max="{{ shift.getNbRegistered() }}" data-panel="#group_{{ accordionName }}_shift-{{ shift.getId() }}" type="button" disabled>
+                    {{ translate('Registered') }} (<span class="count">{{ shift.countRegistered() }}</span>/{{ shift.getNbRegistered() }})
+                </button>
+            {% endif %}
 
     {% else %}
         {% if shift.canSignOut(entityManager) %}

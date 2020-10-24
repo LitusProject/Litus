@@ -179,6 +179,7 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
                 'token'            => $token,
                 'searchResults'    => $searchResults,
                 'entityManager'    => $this->getEntityManager(),
+                'now'              => new DateTime(),
             )
         );
     }
