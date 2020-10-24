@@ -28,7 +28,7 @@ use CommonBundle\Component\Util\Xml\Generator as XmlGenerator;
 use CommonBundle\Component\Util\Xml\Node as XmlNode;
 use Doctrine\ORM\EntityManager;
 use IntlDateFormatter;
-use Zend\I18n\Translator\TranslatorInterface;
+use Laminas\I18n\Translator\TranslatorInterface;
 
 /**
  * Generate a PDF for a contract.

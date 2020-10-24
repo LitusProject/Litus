@@ -23,8 +23,8 @@ namespace CommonBundle\Component\Authentication\Adapter\Doctrine\ServiceManager;
 use CommonBundle\Component\Authentication\Adapter\Doctrine\Credential;
 use CommonBundle\Entity\User\Person;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Factory to instantiate a Doctrine credential adapter.

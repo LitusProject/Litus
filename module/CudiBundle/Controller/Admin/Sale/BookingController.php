@@ -30,7 +30,7 @@ use CudiBundle\Entity\Sale\ReturnItem;
 use CudiBundle\Entity\Stock\Period;
 use DateInterval;
 use DateTime;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * BookingController

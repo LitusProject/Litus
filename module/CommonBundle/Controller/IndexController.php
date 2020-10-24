@@ -23,7 +23,7 @@ namespace CommonBundle\Controller;
 use CommonBundle\Entity\User\Person\Academic;
 use DateInterval;
 use DateTime;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * IndexController

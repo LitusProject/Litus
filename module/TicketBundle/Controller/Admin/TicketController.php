@@ -26,8 +26,8 @@ use DateTime;
 use TicketBundle\Component\Document\Generator\Event\Csv as CsvGenerator;
 use TicketBundle\Component\Document\Generator\Event\Pdf as PdfGenerator;
 use TicketBundle\Entity\Event;
-use Zend\Http\Headers;
-use Zend\View\Model\ViewModel;
+use Laminas\Http\Headers;
+use Laminas\View\Model\ViewModel;
 
 /**
  * TicketController

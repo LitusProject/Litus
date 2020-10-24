@@ -21,15 +21,15 @@
 namespace CommonBundle\Component\Session\ServiceManager;
 
 use Interop\Container\ContainerInterface;
-use Zend\Session\SessionManager;
-use Zend\Session\Validator\RemoteAddr;
+use Laminas\Session\SessionManager;
+use Laminas\Session\Validator\RemoteAddr;
 
 /**
  * Factory to instantiate the session container.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class SessionManagerFactory extends \Zend\Session\Service\SessionManagerFactory
+class SessionManagerFactory extends \Laminas\Session\Service\SessionManagerFactory
 {
     /**
      * @param  ContainerInterface $container

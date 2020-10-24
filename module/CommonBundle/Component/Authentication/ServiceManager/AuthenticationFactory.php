@@ -22,8 +22,8 @@ namespace CommonBundle\Component\Authentication\ServiceManager;
 
 use CommonBundle\Component\Authentication\Authentication;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Factory to create an authentication instance.

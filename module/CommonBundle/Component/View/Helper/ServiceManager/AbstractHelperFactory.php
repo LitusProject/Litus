@@ -22,8 +22,8 @@ namespace CommonBundle\Component\View\Helper\ServiceManager;
 
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\AbstractFactoryInterface;
-use Zend\View\Helper\AbstractHelper;
+use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
+use Laminas\View\Helper\AbstractHelper;
 
 /**
  * Abstract factory instantiating an installer.

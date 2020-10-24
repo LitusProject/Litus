@@ -23,8 +23,8 @@ namespace CommonBundle\Component\Authentication\Service;
 use CommonBundle\Component\Authentication\Action;
 use CommonBundle\Component\Authentication\Result\Doctrine as Result;
 use Doctrine\ORM\EntityManager;
-use Zend\Authentication\Adapter\AdapterInterface;
-use Zend\Authentication\Storage\StorageInterface;
+use Laminas\Authentication\Adapter\AdapterInterface;
+use Laminas\Authentication\Storage\StorageInterface;
 
 /**
  * An authentication service that uses a Doctrine result.
@@ -82,7 +82,7 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
     /**
      * Authenticates against the supplied adapter
      *
-     * @param \Zend\Authentication\Adapter\AdapterInterface|null $adapter
+     * @param \Laminas\Authentication\Adapter\AdapterInterface|null $adapter
      * @param boolean                                            $rememberMe Remember this authentication session
      * @param boolean                                            $shibboleth Whether or not this is sessions initiated by Shibboleth
      *

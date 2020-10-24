@@ -23,7 +23,7 @@ namespace CudiBundle\Controller\Admin\Sale\Article;
 use CudiBundle\Entity\Sale\Article as SaleArticle;
 use CudiBundle\Entity\Sale\SaleItem\External as ExternalItem;
 use CudiBundle\Entity\Sale\SaleItem\Prof as ProfItem;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * SaleController

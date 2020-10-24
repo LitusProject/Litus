@@ -21,18 +21,18 @@
 namespace CommonBundle\Component\Authentication;
 
 use CommonBundle\Component\Authentication\Action;
-use Zend\Authentication\Storage\StorageInterface;
-use Zend\Http\Header\Cookie;
-use Zend\Http\Header\SetCookie;
-use Zend\Http\PhpEnvironment\Request;
-use Zend\Http\PhpEnvironment\Response;
+use Laminas\Authentication\Storage\StorageInterface;
+use Laminas\Http\Header\Cookie;
+use Laminas\Http\Header\SetCookie;
+use Laminas\Http\PhpEnvironment\Request;
+use Laminas\Http\PhpEnvironment\Response;
 
 /**
  * An authentication service superclass that handles the setting and clearing of the cookie.
  *
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-abstract class AbstractAuthenticationService extends \Zend\Authentication\AuthenticationService
+abstract class AbstractAuthenticationService extends \Laminas\Authentication\AuthenticationService
 {
     /**
      * @var string The name of the cookie

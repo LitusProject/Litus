@@ -21,7 +21,7 @@
 namespace PublicationBundle\Controller\Admin;
 
 use PublicationBundle\Entity\Publication;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * PublicationController

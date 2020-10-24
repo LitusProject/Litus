@@ -22,7 +22,7 @@ namespace BrBundle\Controller\Admin\Company;
 
 use BrBundle\Entity\Company;
 use BrBundle\Entity\User\Person\Corporate;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * ContactController

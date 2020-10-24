@@ -21,8 +21,8 @@
 namespace CommonBundle\Component\Controller\ActionController;
 
 use PageBundle\Entity\Node\Page;
-use Zend\Http\Request as HttpRequest;
-use Zend\Mvc\MvcEvent;
+use Laminas\Http\Request as HttpRequest;
+use Laminas\Mvc\MvcEvent;
 
 /**
  * We extend the CommonBundle controller.

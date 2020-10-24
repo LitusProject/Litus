@@ -21,7 +21,7 @@
 namespace NewsBundle\Controller\Admin;
 
 use NewsBundle\Entity\Node\News;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * NewsController

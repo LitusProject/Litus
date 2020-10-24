@@ -19,17 +19,18 @@
  */
 
 $modules = array(
-    'Zend\Cache',
-    'Zend\Filter',
-    'Zend\Form',
-    'Zend\I18n',
-    'Zend\Mvc\I18n',
-    'Zend\InputFilter',
-    'Zend\Paginator',
-    'Zend\Router',
-    'Zend\Serializer',
-    'Zend\Session',
-    'Zend\Validator',
+    'Laminas\Cache',
+    'Laminas\Filter',
+    'Laminas\Form',
+    'Laminas\I18n',
+    'Laminas\Mvc\I18n',
+    'Laminas\InputFilter',
+    'Laminas\Paginator',
+    'Laminas\Router',
+    'Laminas\Serializer',
+    'Laminas\Session',
+    'Laminas\Validator',
+    'Laminas\ZendFrameworkBridge',
 
     'AsseticBundle',
     'DoctrineModule',
@@ -69,7 +70,7 @@ if (getenv('APPLICATION_ENV') == 'development') {
         $modules,
         array_search('ZendTwig', $modules),
         0,
-        'ZendDeveloperTools'
+        'Laminas\DeveloperTools'
     );
 }
 

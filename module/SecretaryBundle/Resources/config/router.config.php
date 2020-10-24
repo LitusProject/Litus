@@ -21,7 +21,7 @@
 return array(
     'routes' => array(
         'secretary_admin_registration' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/secretary/registration[/:action[/:id][/organization/:organization]][/:academicyear][/:field/:string][/]',
                 'constraints' => array(
@@ -39,7 +39,7 @@ return array(
             ),
         ),
         'secretary_admin_export' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/secretary/export[/:action[/:id][/organization/:organization]][/:academicyear][/]',
                 'constraints' => array(
@@ -55,7 +55,7 @@ return array(
             ),
         ),
         'secretary_admin_photos' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/secretary/photos[/:action][/]',
                 'constraints' => array(
@@ -68,7 +68,7 @@ return array(
             ),
         ),
         'secretary_admin_promotion' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/secretary/promotion[/:action[/:id][/page/:page]][/:academicyear][/:field/:string][/]',
                 'constraints' => array(
@@ -86,7 +86,7 @@ return array(
             ),
         ),
         'secretary_registration' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/secretary/registration[/:action][/identification/:identification[/hash/:hash]][/]',
                 'constraints' => array(
@@ -102,7 +102,7 @@ return array(
             ),
         ),
         'secretary_admin_working_group' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/secretary/workinggroup[/:action[/:id][/:field/:string][/page/:page]][/]',
                 'constraints' => array(

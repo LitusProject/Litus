@@ -22,7 +22,7 @@ namespace FormBundle\Controller\Admin;
 
 use FormBundle\Entity\Node\Form;
 use FormBundle\Entity\ViewerMap;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * ViewerController

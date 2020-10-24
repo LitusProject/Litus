@@ -22,7 +22,7 @@ namespace PublicationBundle\Controller\Archive;
 
 use CommonBundle\Entity\General\AcademicYear;
 use PublicationBundle\Entity\Publication;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * IndexController

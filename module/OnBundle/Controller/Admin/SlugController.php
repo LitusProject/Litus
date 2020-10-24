@@ -21,7 +21,7 @@
 namespace OnBundle\Controller\Admin;
 
 use OnBundle\Entity\Slug;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * SlugController

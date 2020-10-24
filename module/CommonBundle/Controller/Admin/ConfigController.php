@@ -21,7 +21,7 @@
 namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Entity\General\Config;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * ConfigController

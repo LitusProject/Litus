@@ -31,7 +31,7 @@ use SecretaryBundle\Component\Registration\Articles as RegistrationArticles;
 use SecretaryBundle\Entity\Syllabus\Enrollment\Study as StudyEnrollment;
 use SecretaryBundle\Entity\Syllabus\Enrollment\Subject as SubjectEnrollment;
 use SecretaryBundle\Form\Registration\Subject\Add as AddSubjectForm;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * @author Kristof Mariën <kristof.marien@litus.cc>

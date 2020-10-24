@@ -29,10 +29,10 @@ use RuntimeException;
  *
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class HydratorPluginManager extends \Zend\Hydrator\HydratorPluginManager
+class HydratorPluginManager extends \Laminas\Hydrator\HydratorPluginManager
 {
     /**
-     * @param \Zend\ServiceManager\ConfigInterface|ContainerInterface|null $configInstanceOrParentLocator
+     * @param \Laminas\ServiceManager\ConfigInterface|ContainerInterface|null $configInstanceOrParentLocator
      * @param array                                                        $config
      */
     public function __construct($configInstanceOrParentLocator = null, array $config = array())

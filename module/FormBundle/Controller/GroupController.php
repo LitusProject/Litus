@@ -23,7 +23,7 @@ namespace FormBundle\Controller;
 use DateTime;
 use FormBundle\Entity\Node\Group;
 use FormBundle\Entity\Node\GuestInfo;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * GroupController

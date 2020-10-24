@@ -27,7 +27,7 @@ use CommonBundle\Component\Form\ElementTrait;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Reset extends \Zend\Form\Element\Submit implements \CommonBundle\Component\Form\ElementInterface
+class Reset extends \Laminas\Form\Element\Submit implements \CommonBundle\Component\Form\ElementInterface
 {
     use ElementTrait;
 

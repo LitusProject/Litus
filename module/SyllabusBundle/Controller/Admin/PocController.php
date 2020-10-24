@@ -24,7 +24,7 @@ use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
 use SyllabusBundle\Entity\Group;
 use SyllabusBundle\Entity\Poc;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * PocController

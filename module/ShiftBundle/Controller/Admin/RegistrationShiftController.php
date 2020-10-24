@@ -27,9 +27,9 @@ use DateTime;
 use ShiftBundle\Component\Document\Generator\Event\Pdf as PdfGenerator;
 use ShiftBundle\Entity\RegistrationShift;
 use ShiftBundle\Entity\Shift;
-use Zend\Http\Headers;
-use Zend\Mail\Message;
-use Zend\View\Model\ViewModel;
+use Laminas\Http\Headers;
+use Laminas\Mail\Message;
+use Laminas\View\Model\ViewModel;
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 

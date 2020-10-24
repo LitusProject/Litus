@@ -23,7 +23,7 @@ namespace BrBundle\Controller\Admin\Company;
 use BrBundle\Entity\Company;
 use BrBundle\Entity\Company\Event;
 use Imagick;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * EventController

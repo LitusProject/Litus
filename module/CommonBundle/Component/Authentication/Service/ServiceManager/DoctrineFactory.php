@@ -25,9 +25,9 @@ use CommonBundle\Component\Authentication\Service\Doctrine as DoctrineService;
 use CommonBundle\Entity\User\Session;
 use Interop\Container\ContainerInterface;
 use RuntimeException;
-use Zend\Authentication\Storage\Session as SessionStorage;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\Authentication\Storage\Session as SessionStorage;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Factory to instantiate a Doctrine service.

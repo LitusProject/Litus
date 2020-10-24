@@ -21,8 +21,8 @@
 namespace ApiBundle\Controller;
 
 use RuntimeException;
-use Zend\Http\Headers;
-use Zend\View\Model\ViewModel;
+use Laminas\Http\Headers;
+use Laminas\View\Model\ViewModel;
 
 /**
  * MailController

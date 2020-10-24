@@ -21,7 +21,7 @@
 namespace ShopBundle\Controller\Admin;
 
 use ShopBundle\Entity\Reservation\Permission as ReservationPermission;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * ReservationPermissionController

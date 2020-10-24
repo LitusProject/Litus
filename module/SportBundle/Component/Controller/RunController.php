@@ -20,7 +20,7 @@
 
 namespace SportBundle\Component\Controller;
 
-use Zend\Mvc\MvcEvent;
+use Laminas\Mvc\MvcEvent;
 
 /**
  * We extend the CommonBundle controller.

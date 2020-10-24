@@ -21,7 +21,7 @@
 namespace ApiBundle\Form\Admin\Key;
 
 use RuntimeException;
-use Zend\Validator\Hostname as HostnameValidator;
+use Laminas\Validator\Hostname as HostnameValidator;
 
 /**
  * Add Key

@@ -22,7 +22,7 @@ namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Entity\User\Person\Academic;
 use Doctrine\ORM\Query;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * AcademicController

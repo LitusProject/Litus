@@ -23,8 +23,8 @@ namespace PublicationBundle\Controller\Admin\Edition;
 use DateTime;
 use PublicationBundle\Entity\Edition\Pdf as PdfEdition;
 use PublicationBundle\Entity\Publication;
-use Zend\Http\Headers;
-use Zend\View\Model\ViewModel;
+use Laminas\Http\Headers;
+use Laminas\View\Model\ViewModel;
 
 /**
  * PdfController

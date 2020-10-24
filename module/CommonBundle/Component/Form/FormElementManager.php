@@ -24,13 +24,13 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\Util\StringUtil;
 use Interop\Container\ContainerInterface;
 use RuntimeException;
-use Zend\Form\FormFactoryAwareInterface;
-use Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
+use Laminas\Form\FormFactoryAwareInterface;
+use Laminas\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 /**
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class FormElementManager extends \Zend\Form\FormElementManager
+class FormElementManager extends \Laminas\Form\FormElementManager
 {
     /**
      * @var string
@@ -54,7 +54,7 @@ class FormElementManager extends \Zend\Form\FormElementManager
 
     /**
      * @param boolean                                                      $isAdmin
-     * @param \Zend\ServiceManager\ConfigInterface|ContainerInterface|null $configInstanceOrParentLocator
+     * @param \Laminas\ServiceManager\ConfigInterface|ContainerInterface|null $configInstanceOrParentLocator
      * @param array                                                        $config
      */
     public function __construct($isAdmin, $configInstanceOrParentLocator = null, array $config = array())

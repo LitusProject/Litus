@@ -26,7 +26,7 @@ use CudiBundle\Entity\Sale\Session\Restriction;
 use CudiBundle\Entity\Sale\Session\Restriction\Name as NameRestriction;
 use CudiBundle\Entity\Sale\Session\Restriction\Study as StudyRestriction;
 use CudiBundle\Entity\Sale\Session\Restriction\Year as YearRestriction;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * RestrictionController

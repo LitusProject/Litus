@@ -27,7 +27,7 @@ use CommonBundle\Component\Form\ElementTrait;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Textarea extends \Zend\Form\Element\Textarea implements \CommonBundle\Component\Form\ElementInterface
+class Textarea extends \Laminas\Form\Element\Textarea implements \CommonBundle\Component\Form\ElementInterface
 {
     use ElementTrait;
 

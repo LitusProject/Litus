@@ -26,7 +26,7 @@ use CommonBundle\Entity\User\Person\Academic;
 use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
 use Imagick;
 use SecretaryBundle\Entity\Registration;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * Handles account page.

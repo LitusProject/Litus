@@ -23,7 +23,7 @@ namespace TicketBundle\Controller;
 use TicketBundle\Component\Ticket\Ticket as TicketBook;
 use TicketBundle\Entity\Event;
 use TicketBundle\Entity\Ticket;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * TicketController

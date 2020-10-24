@@ -20,14 +20,14 @@
 
 namespace CommonBundle\Component\View\Helper;
 
-use Zend\Router\RouteMatch;
+use Laminas\Router\RouteMatch;
 
 /**
  * This view helper makes sure we can access the request paramaters in our view.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class GetParam extends \Zend\View\Helper\AbstractHelper
+class GetParam extends \Laminas\View\Helper\AbstractHelper
 {
     /**
      * @var RouteMatch The matched router object

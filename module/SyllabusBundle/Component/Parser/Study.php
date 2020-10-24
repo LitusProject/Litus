@@ -33,8 +33,8 @@ use SyllabusBundle\Entity\Study\ModuleGroup;
 use SyllabusBundle\Entity\Study\SubjectMap;
 use SyllabusBundle\Entity\Subject;
 use SyllabusBundle\Entity\Subject\ProfMap;
-use Zend\Http\Client as HttpClient;
-use Zend\Mail\Transport\TransportInterface;
+use Laminas\Http\Client as HttpClient;
+use Laminas\Mail\Transport\TransportInterface;
 
 /**
  * Study

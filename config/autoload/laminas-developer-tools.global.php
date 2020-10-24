@@ -19,7 +19,7 @@
  */
 
 return array(
-    'zenddevelopertools' => array(
+    'laminas-developer-tools' => array(
         'profiler' => array(
             'enabled'     => true,
             'strict'      => false,

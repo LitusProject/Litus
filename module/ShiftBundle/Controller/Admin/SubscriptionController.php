@@ -21,8 +21,8 @@
 namespace ShiftBundle\Controller\Admin;
 
 use ShiftBundle\Entity\Shift;
-use Zend\Mail\Message;
-use Zend\View\Model\ViewModel;
+use Laminas\Mail\Message;
+use Laminas\View\Model\ViewModel;
 
 /**
  * ShiftController

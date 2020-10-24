@@ -21,7 +21,7 @@
 namespace TicketBundle\Controller\Sale;
 
 use TicketBundle\Entity\Ticket;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * TicketController

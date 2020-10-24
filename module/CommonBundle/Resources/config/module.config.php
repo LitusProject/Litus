@@ -50,14 +50,14 @@ use CommonBundle\Component\View\Helper\ServiceManager\AbstractHelperFactory;
 use Doctrine\Common\Cache\RedisCache as DoctrineRedisCache;
 use Raven_Client;
 use Symfony\Component\Console\Application as ConsoleApplication;
-use Zend\Cache\Storage\StorageInterface as CacheStorage;
-use Zend\Form\ElementFactory;
-use Zend\I18n\Translator\Resources as TranslatorResources;
-use Zend\Mail\Transport\Sendmail;
-use Zend\Mvc\I18n\Translator as MvcTranslator;
-use Zend\ServiceManager\Factory\InvokableFactory;
-use Zend\Session\Container as SessionContainer;
-use Zend\Session\ManagerInterface;
+use Laminas\Cache\Storage\StorageInterface as CacheStorage;
+use Laminas\Form\ElementFactory;
+use Laminas\I18n\Translator\Resources as TranslatorResources;
+use Laminas\Mail\Transport\Sendmail;
+use Laminas\Mvc\I18n\Translator as MvcTranslator;
+use Laminas\ServiceManager\Factory\InvokableFactory;
+use Laminas\Session\Container as SessionContainer;
+use Laminas\Session\ManagerInterface;
 
 return Config::create(
     array(

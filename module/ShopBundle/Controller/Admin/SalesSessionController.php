@@ -22,7 +22,7 @@ namespace ShopBundle\Controller\Admin;
 
 use ShopBundle\Entity\Session as SalesSession;
 use ShopBundle\Entity\Session\Stock;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * SalesSessionController

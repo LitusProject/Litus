@@ -23,8 +23,8 @@ namespace CommonBundle\Component\Controller\ActionController;
 use CommonBundle\Component\Form\Factory;
 use CommonBundle\Component\Util\NamedPriorityQueue;
 use CommonBundle\Entity\General\Language;
-use Zend\Mvc\MvcEvent;
-use Zend\Validator\AbstractValidator;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Validator\AbstractValidator;
 
 /**
  * We extend the CommonBundle controller.

@@ -20,7 +20,7 @@
 
 namespace CudiBundle\Controller\Supplier;
 
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * IndexController

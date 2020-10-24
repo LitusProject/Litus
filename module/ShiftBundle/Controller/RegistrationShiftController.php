@@ -24,9 +24,9 @@ use DateInterval;
 use DateTime;
 use ShiftBundle\Entity\Shift\Registered;
 use ShiftBundle\Entity\Token;
-use Zend\Http\Headers;
-use Zend\Mail\Message;
-use Zend\View\Model\ViewModel;
+use Laminas\Http\Headers;
+use Laminas\Mail\Message;
+use Laminas\View\Model\ViewModel;
 
 /**
  * RegistrationShiftController

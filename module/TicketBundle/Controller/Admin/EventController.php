@@ -21,7 +21,7 @@
 namespace TicketBundle\Controller\Admin;
 
 use TicketBundle\Entity\Event;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * EventController

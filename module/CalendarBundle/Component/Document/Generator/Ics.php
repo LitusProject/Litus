@@ -25,7 +25,7 @@ use CommonBundle\Component\Controller\Plugin\Url;
 use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Entity\General\Language;
 use Doctrine\ORM\EntityManager;
-use Zend\Http\PhpEnvironment\Request;
+use Laminas\Http\PhpEnvironment\Request;
 
 /**
  * Ics

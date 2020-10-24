@@ -23,7 +23,7 @@ namespace BrBundle\Component\Controller;
 use BrBundle\Entity\User\Person\Corporate;
 use CommonBundle\Component\Controller\Exception\HasNoAccessException;
 use CommonBundle\Component\Util\AcademicYear;
-use Zend\Mvc\MvcEvent;
+use Laminas\Mvc\MvcEvent;
 
 /**
  * We extend the CommonBundle controller.
@@ -35,7 +35,7 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
     /**
      * Execute the request.
      *
-     * @param  \Zend\Mvc\MvcEvent $e The MVC event
+     * @param  \Laminas\Mvc\MvcEvent $e The MVC event
      * @return array
      * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
      */

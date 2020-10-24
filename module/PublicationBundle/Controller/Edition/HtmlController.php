@@ -21,7 +21,7 @@
 namespace PublicationBundle\Controller\Edition;
 
 use PublicationBundle\Entity\Edition\Html as HtmlEdition;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * HtmlController
