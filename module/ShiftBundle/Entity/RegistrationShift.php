@@ -97,6 +97,13 @@ class RegistrationShift
     private $signoutDate;
 
     /**
+     * @var DateTime The moment after which there can be no signins
+     *
+     * @ORM\Column(name="final_signin_date", type="datetime", nullable=true)
+     */
+    private $finalSigninDate;
+
+    /**
      * @var integer The required number of volunteers for this shift
      *
      * @ORM\Column(name="nb_registered", type="integer")
@@ -256,6 +263,22 @@ class RegistrationShift
     }
 
     /**
+     * @return DateTime|null
+     */
+    public function getFinalSigninDate(): DateTime
+    {
+        return $this->finalSigninDate;
+    }
+
+    /**
+     * @param DateTime $finalSigninDate
+     */
+    public function setFinalSigninDate(DateTime $finalSigninDate)
+    {
+        $this->finalSigninDate = $finalSigninDate;
+    }
+
+    /**
      * @return DateTime
      */
     public function getVisibleDate()
@@ -378,8 +401,10 @@ class RegistrationShift
     {
         $shifts = $entityManager->getRepository('ShiftBundle\Entity\RegistrationShift')
             ->findAllActiveByPerson($registered);//TODO: Create
+        error_log($shifts?"yes":"no");
 
         foreach ($shifts as $shift) {
+
             if ($shift === $this) {
                 return false;
             }
@@ -388,7 +413,12 @@ class RegistrationShift
                 return false;
             }
         }
-        error_log(boolval(!($this->countRegistered() >= $this->getNbRegistered())));
+
+        if ($this->getFinalSigninDate() < new DateTime()) {
+            error_log("here1");
+            return false;
+        }
+//        error_log(boolval(!($this->countRegistered() >= $this->getNbRegistered())));
 
         return !($this->countRegistered() >= $this->getNbRegistered());
     }

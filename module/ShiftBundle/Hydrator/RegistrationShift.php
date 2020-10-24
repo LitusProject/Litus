@@ -45,6 +45,7 @@ class RegistrationShift extends \CommonBundle\Component\Hydrator\Hydrator
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
         $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
         $data['visible_date'] = $object->getVisibleDate()->format('d/m/Y H:i');
+        $data['final_signin_date'] = $object->getFinalSigninDate()->format('d/m/Y H:i');
         $data['signout_date'] = $object->getSignoutDate()->format('d/m/Y H:i');
         $data['unit'] = $object->getUnit()->getId();
         $data['event'] = $object->getEvent() === null ? '' : $object->getEvent()->getId();
@@ -81,7 +82,8 @@ class RegistrationShift extends \CommonBundle\Component\Hydrator\Hydrator
             $object->setStartDate(self::loadDateTime($data['start_date']))
                 ->setEndDate(self::loadDateTime($data['end_date']))
             ->setVisibleDate(self::loadDateTime($data['visible_date']))
-                ->setSignoutDate(self::loadDateTime($data['signout_date']));
+                ->setSignoutDate(self::loadDateTime($data['signout_date']))
+            ->setFinalSigninDate(self::loadDateTime($data['final_signin_date']));
         }
 
         $editRoles = array();

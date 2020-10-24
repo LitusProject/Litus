@@ -62,6 +62,14 @@ class Edit extends \ShiftBundle\Form\Admin\RegistrationShift\Add
                     )
                 );
 
+            $this->remove('final_signin_date')
+                ->add(
+                    array(
+                        'type' => 'hidden',
+                        'name' => 'final_signin_date',
+                    )
+                );
+
             $this->remove('signout_date')
                 ->add(
                     array(
