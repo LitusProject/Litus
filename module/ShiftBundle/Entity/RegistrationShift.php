@@ -265,7 +265,7 @@ class RegistrationShift
     /**
      * @return DateTime|null
      */
-    public function getFinalSigninDate(): DateTime
+    public function getFinalSigninDate()
     {
         return $this->finalSigninDate;
     }
