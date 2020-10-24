@@ -22,8 +22,8 @@ namespace ApiBundle\Controller;
 
 use DateInterval;
 use DateTime;
-use Parsedown;
 use Laminas\View\Model\ViewModel;
+use Parsedown;
 
 /**
  * NewsController

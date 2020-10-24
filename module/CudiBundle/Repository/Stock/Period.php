@@ -59,7 +59,8 @@ class Period extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getOneOrNullResult();
     }
 
-    public function findLastInactive() {
+    public function findLastInactive()
+    {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('p')
             ->from('CudiBundle\Entity\Stock\Period', 'p')

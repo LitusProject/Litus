@@ -20,8 +20,8 @@
 
 namespace NotificationBundle\Controller\Admin;
 
-use NotificationBundle\Entity\Node\Notification;
 use Laminas\View\Model\ViewModel;
+use NotificationBundle\Entity\Node\Notification;
 
 /**
  * NotificationController

@@ -20,8 +20,8 @@
 
 namespace PageBundle\Controller\Admin;
 
-use PageBundle\Entity\Link;
 use Laminas\View\Model\ViewModel;
+use PageBundle\Entity\Link;
 
 /**
  * LinkController

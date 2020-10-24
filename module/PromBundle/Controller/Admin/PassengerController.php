@@ -20,9 +20,9 @@
 
 namespace PromBundle\Controller\Admin;
 
-use PromBundle\Entity\Bus\Passenger;
 use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
+use PromBundle\Entity\Bus\Passenger;
 
 /**
  * PassengerController

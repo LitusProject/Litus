@@ -20,9 +20,9 @@
 
 namespace QuizBundle\Controller\Admin;
 
+use Laminas\View\Model\ViewModel;
 use QuizBundle\Entity\Quiz;
 use QuizBundle\Entity\Round;
-use Laminas\View\Model\ViewModel;
 
 /**
  * RoundController

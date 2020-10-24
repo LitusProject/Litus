@@ -109,7 +109,7 @@ class Ean12 extends \CommonBundle\Entity\User\Barcode
         );
 
         do {
-            $ean12 = rand(0, (pow(10, 12) - 1));
+            $ean12 = rand(0, pow(10, 12) - 1);
 
             $barcode = $entityManager
                 ->getRepository('CommonBundle\Entity\User\Barcode\Ean12')

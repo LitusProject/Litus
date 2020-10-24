@@ -21,10 +21,10 @@
 namespace PublicationBundle\Controller\Admin\Edition;
 
 use DateTime;
-use PublicationBundle\Entity\Edition\Pdf as PdfEdition;
-use PublicationBundle\Entity\Publication;
 use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
+use PublicationBundle\Entity\Edition\Pdf as PdfEdition;
+use PublicationBundle\Entity\Publication;
 
 /**
  * PdfController

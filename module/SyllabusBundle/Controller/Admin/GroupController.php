@@ -23,11 +23,11 @@ namespace SyllabusBundle\Controller\Admin;
 use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+use Laminas\View\Model\ViewModel;
 use SyllabusBundle\Component\Document\Generator\Group as CsvGenerator;
 use SyllabusBundle\Entity\Group;
 use SyllabusBundle\Entity\Group\StudyMap;
 use SyllabusBundle\Entity\Poc as PocEntity;
-use Laminas\View\Model\ViewModel;
 
 /**
  * GroupController

@@ -21,9 +21,9 @@
 namespace SecretaryBundle\Controller\Admin;
 
 use CommonBundle\Component\Util\File\TmpFile;
-use SecretaryBundle\Component\Document\Generator\PhotosZip as PhotosZipGenerator;
 use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
+use SecretaryBundle\Component\Document\Generator\PhotosZip as PhotosZipGenerator;
 
 /**
  * PhotosController

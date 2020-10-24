@@ -20,8 +20,8 @@
 
 namespace ShopBundle\Controller\Admin;
 
-use ShopBundle\Entity\Reservation\Permission as ReservationPermission;
 use Laminas\View\Model\ViewModel;
+use ShopBundle\Entity\Reservation\Permission as ReservationPermission;
 
 /**
  * ReservationPermissionController

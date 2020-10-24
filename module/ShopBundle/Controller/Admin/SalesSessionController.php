@@ -20,9 +20,9 @@
 
 namespace ShopBundle\Controller\Admin;
 
+use Laminas\View\Model\ViewModel;
 use ShopBundle\Entity\Session as SalesSession;
 use ShopBundle\Entity\Session\Stock;
-use Laminas\View\Model\ViewModel;
 
 /**
  * SalesSessionController

@@ -20,8 +20,8 @@
 
 namespace TicketBundle\Controller\Sale;
 
-use TicketBundle\Entity\Ticket;
 use Laminas\View\Model\ViewModel;
+use TicketBundle\Entity\Ticket;
 
 /**
  * TicketController

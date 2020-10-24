@@ -20,8 +20,8 @@
 
 namespace TicketBundle\Controller\Admin;
 
-use TicketBundle\Entity\Event;
 use Laminas\View\Model\ViewModel;
+use TicketBundle\Entity\Event;
 
 /**
  * EventController

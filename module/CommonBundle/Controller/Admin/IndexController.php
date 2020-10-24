@@ -23,8 +23,8 @@ namespace CommonBundle\Controller\Admin;
 use CommonBundle\Component\Version\Version;
 use DateInterval;
 use DateTime;
-use PackageVersions\Versions;
 use Laminas\View\Model\ViewModel;
+use PackageVersions\Versions;
 
 /**
  * IndexController

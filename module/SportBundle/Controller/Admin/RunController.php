@@ -24,9 +24,9 @@ use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
 use DateInterval;
 use DateTime;
+use Laminas\View\Model\ViewModel;
 use SportBundle\Entity\Group;
 use SportBundle\Entity\Runner;
-use Laminas\View\Model\ViewModel;
 
 /**
  * RunController

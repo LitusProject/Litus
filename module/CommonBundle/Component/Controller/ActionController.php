@@ -40,11 +40,11 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Entity\General\Language;
 use CommonBundle\Entity\General\Visit;
-use Locale;
 use Laminas\Http\Header\HeaderInterface;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Validator\AbstractValidator;
 use Laminas\View\Model\ViewModel;
+use Locale;
 
 /**
  * We extend the basic Zend controller to simplify database access, authentication

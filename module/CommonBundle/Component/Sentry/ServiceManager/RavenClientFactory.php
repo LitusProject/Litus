@@ -21,10 +21,10 @@
 namespace CommonBundle\Component\Sentry\ServiceManager;
 
 use Interop\Container\ContainerInterface;
-use Raven_Client;
-use RuntimeException;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\ServiceManager\ServiceLocatorInterface;
+use Raven_Client;
+use RuntimeException;
 
 /**
  * Factory to create the Raven_Client instance.

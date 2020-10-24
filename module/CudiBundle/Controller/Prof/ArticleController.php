@@ -24,9 +24,9 @@ use CudiBundle\Entity\Article;
 use CudiBundle\Entity\Article\Internal;
 use CudiBundle\Entity\Article\SubjectMap;
 use CudiBundle\Entity\Prof\Action;
+use Laminas\View\Model\ViewModel;
 use SyllabusBundle\Entity\Subject;
 use SyllabusBundle\Entity\Subject\ProfMap;
-use Laminas\View\Model\ViewModel;
 
 /**
  * ArticleController

@@ -20,8 +20,8 @@
 
 namespace NewsBundle\Controller\Admin;
 
-use NewsBundle\Entity\Node\News;
 use Laminas\View\Model\ViewModel;
+use NewsBundle\Entity\Node\News;
 
 /**
  * NewsController

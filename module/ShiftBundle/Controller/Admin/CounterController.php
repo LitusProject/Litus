@@ -24,9 +24,9 @@ use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use CommonBundle\Entity\User\Person;
 use DateTime;
-use ShiftBundle\Component\Document\Generator\Counter\Csv as CsvGenerator;
 use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
+use ShiftBundle\Component\Document\Generator\Counter\Csv as CsvGenerator;
 
 /**
  * CounterController

@@ -24,11 +24,11 @@ use CalendarBundle\Entity\Node\Event;
 use CommonBundle\Component\Util\File\TmpFile;
 use DateInterval;
 use DateTime;
-use ShiftBundle\Component\Document\Generator\Event\Pdf as PdfGenerator;
-use ShiftBundle\Entity\Shift;
 use Laminas\Http\Headers;
 use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
+use ShiftBundle\Component\Document\Generator\Event\Pdf as PdfGenerator;
+use ShiftBundle\Entity\Shift;
 
 /**
  * ShiftController

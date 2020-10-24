@@ -551,7 +551,7 @@ return array(
         'br_corporate_jobfair'    => 'BrBundle\Controller\Corporate\JobfairController',
         'br_corporate_vacancy'    => 'BrBundle\Controller\Corporate\VacancyController',
         'br_corporate_internship' => 'BrBundle\Controller\Corporate\InternshipController',
-        'br_corporate_student_job'=> 'BrBundle\Controller\Corporate\StudentJobController',
+        'br_corporate_student_job' => 'BrBundle\Controller\Corporate\StudentJobController',
         'br_corporate_company'    => 'BrBundle\Controller\Corporate\CompanyController',
 
         'br_career_index'      => 'BrBundle\Controller\Career\IndexController',

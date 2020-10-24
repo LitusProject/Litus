@@ -21,10 +21,10 @@
 namespace CudiBundle\Controller\Prof;
 
 use DateInterval;
+use Laminas\View\Model\ViewModel;
 use SyllabusBundle\Entity\Subject;
 use SyllabusBundle\Entity\Subject\ProfMap;
 use SyllabusBundle\Entity\Subject\StudentEnrollment;
-use Laminas\View\Model\ViewModel;
 
 /**
  * SubjectController

@@ -20,8 +20,8 @@
 
 namespace PublicationBundle\Controller\Edition;
 
-use PublicationBundle\Entity\Edition\Html as HtmlEdition;
 use Laminas\View\Model\ViewModel;
+use PublicationBundle\Entity\Edition\Html as HtmlEdition;
 
 /**
  * HtmlController

@@ -22,11 +22,10 @@ namespace ShiftBundle\Controller;
 
 use DateInterval;
 use DateTime;
-use ShiftBundle\Entity\Shift\Registered;
-use ShiftBundle\Entity\Token;
-use Laminas\Http\Headers;
 use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
+use ShiftBundle\Entity\Shift\Registered;
+use ShiftBundle\Entity\Token;
 
 /**
  * RegistrationShiftController
@@ -217,7 +216,6 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
         if ($shift->countRegistered() >= $shift->getNbRegistered()) {
             foreach (array_reverse($shift->getRegistered()) as $registered) {
                 if ($registered->getPerson()->isPraesidium($this->getCurrentAcademicYear())) {
-
                     $mailAddress = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('shift.mail');

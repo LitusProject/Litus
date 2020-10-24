@@ -27,13 +27,13 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Component\Validator\FormAwareInterface;
-use RuntimeException;
 use Laminas\Form\FieldsetInterface as ZendFieldsetInterface;
 use Laminas\Form\FormInterface;
 use Laminas\Hydrator\ClassMethods as ClassMethodsHydrator;
 use Laminas\InputFilter\InputFilterAwareInterface;
 use Laminas\InputFilter\InputFilterInterface;
 use Laminas\InputFilter\InputInterface;
+use RuntimeException;
 
 /**
  * Extending Zend's form component, so that our forms look the way we want

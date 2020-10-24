@@ -20,8 +20,8 @@
 
 namespace ApiBundle\Form\Admin\Key;
 
-use RuntimeException;
 use Laminas\Validator\Hostname as HostnameValidator;
+use RuntimeException;
 
 /**
  * Add Key

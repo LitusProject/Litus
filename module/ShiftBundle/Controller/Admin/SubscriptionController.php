@@ -20,9 +20,9 @@
 
 namespace ShiftBundle\Controller\Admin;
 
-use ShiftBundle\Entity\Shift;
 use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
+use ShiftBundle\Entity\Shift;
 
 /**
  * ShiftController

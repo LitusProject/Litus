@@ -22,9 +22,9 @@ namespace CommonBundle\Component\Form;
 
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
-use Traversable;
 use Laminas\Form\FormInterface;
 use Laminas\Stdlib\ArrayUtils;
+use Traversable;
 
 class Collection extends \Laminas\Form\Element\Collection implements FieldsetInterface, ServiceLocatorAwareInterface
 {

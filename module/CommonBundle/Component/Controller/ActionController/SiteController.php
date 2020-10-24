@@ -20,9 +20,9 @@
 
 namespace CommonBundle\Component\Controller\ActionController;
 
-use PageBundle\Entity\Node\Page;
 use Laminas\Http\Request as HttpRequest;
 use Laminas\Mvc\MvcEvent;
+use PageBundle\Entity\Node\Page;
 
 /**
  * We extend the CommonBundle controller.

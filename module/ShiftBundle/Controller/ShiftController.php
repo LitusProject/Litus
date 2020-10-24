@@ -22,13 +22,13 @@ namespace ShiftBundle\Controller;
 
 use DateInterval;
 use DateTime;
+use Laminas\Http\Headers;
+use Laminas\Mail\Message;
+use Laminas\View\Model\ViewModel;
 use ShiftBundle\Entity\Shift\Responsible;
 use ShiftBundle\Entity\Shift\Volunteer;
 use ShiftBundle\Entity\Token;
 use ShiftBundle\Entity\User\Person\AcademicYearMap;
-use Laminas\Http\Headers;
-use Laminas\Mail\Message;
-use Laminas\View\Model\ViewModel;
 
 /**
  * ShiftController

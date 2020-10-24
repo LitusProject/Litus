@@ -27,9 +27,9 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use CommonBundle\Entity\General\Language;
+use Laminas\Form\FormInterface;
 use Locale;
 use RuntimeException;
-use Laminas\Form\FormInterface;
 
 /**
  * Extending Zend's fieldset component, so that our forms look the way we want

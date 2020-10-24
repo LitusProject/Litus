@@ -24,12 +24,12 @@ use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person;
 use DateInterval;
 use DateTime;
-use Parsedown;
 use Laminas\Mail\Message;
 use Laminas\Mime\Message as MimeMessage;
 use Laminas\Mime\Mime;
 use Laminas\Mime\Part;
 use Laminas\View\Model\ViewModel;
+use Parsedown;
 
 /**
  * ProfController

@@ -21,9 +21,9 @@
 namespace LogisticsBundle\Controller;
 
 use DateTime;
+use Laminas\View\Model\ViewModel;
 use LogisticsBundle\Entity\Lease;
 use LogisticsBundle\Entity\Lease\Item;
-use Laminas\View\Model\ViewModel;
 
 /**
  * LeaseController

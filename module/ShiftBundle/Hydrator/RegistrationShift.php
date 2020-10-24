@@ -20,7 +20,6 @@
 
 namespace ShiftBundle\Hydrator;
 
-use CommonBundle\Entity\User\Person\Academic;
 use ShiftBundle\Entity\RegistrationShift as RegistrationShiftEntity;
 
 class RegistrationShift extends \CommonBundle\Component\Hydrator\Hydrator
