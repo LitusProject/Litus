@@ -401,7 +401,6 @@ class RegistrationShift
     {
         $shifts = $entityManager->getRepository('ShiftBundle\Entity\RegistrationShift')
             ->findAllActiveByPerson($registered);//TODO: Create
-        error_log($shifts?"yes":"no");
 
         foreach ($shifts as $shift) {
 
@@ -414,11 +413,9 @@ class RegistrationShift
             }
         }
 
-        if ($this->getFinalSigninDate() < new DateTime()) {
-            error_log("here1");
+        if ($this->getFinalSigninDate()!==null && $this->getFinalSigninDate() < new DateTime()) {
             return false;
         }
-//        error_log(boolval(!($this->countRegistered() >= $this->getNbRegistered())));
 
         return !($this->countRegistered() >= $this->getNbRegistered());
     }

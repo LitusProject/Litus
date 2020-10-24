@@ -278,10 +278,15 @@
                                     <dd>{{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }}</dd>
                                     <dt>{{ translate('End') }}</dt>
                                     <dd>{{ dateLocalized(shift.getEndDate(), 'd/M/y HH:mm') }}</dd>
-                                    <dt>{{ translate('Final Signup') }}</dt>
-                                    <dd>{{ dateLocalized(shift.getFinalSigninDate(), 'd/M/y HH:mm') }}</dd>
-                                    <dt>{{ translate('Final Signout') }}</dt>
-                                    <dd>{{ dateLocalized(shift.getSignoutDate(), 'd/M/y HH:mm') }}</dd>
+                                    {% if shift.getFinalSigninDate() %}
+                                        <dt>{{ translate('Final Signup') }}</dt>
+                                        <dd>{{ dateLocalized(shift.getFinalSigninDate(), 'd/M/y HH:mm') }}</dd>
+                                    {% endif %}
+                                    {% if shift.getSignoutDate() %}
+                                        <dt>{{ translate('Final Signout') }}</dt>
+                                        <dd>{{ dateLocalized(shift.getSignoutDate(), 'd/M/y HH:mm') }}</dd>
+                                    {% endif %}
+
                                 </dl>
                             </div>
                             <div class="col-sm-4">
