@@ -1,3 +1,0 @@
-steps:
-  - script: php bin/console.php install:all
-    displayName: 'Run Install All'

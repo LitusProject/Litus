@@ -1,3 +1,0 @@
-steps:
-  - script: bin/update.sh
-    displayName: 'Run Update'

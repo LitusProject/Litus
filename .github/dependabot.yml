@@ -9,3 +9,8 @@ updates:
       - dependency-name: twitter/bootstrap
         versions:
           - "> 3.4.1"
+
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: daily
