@@ -402,7 +402,6 @@ class RegistrationShift
             ->findAllActiveByPerson($registered);//TODO: Create
 
         foreach ($shifts as $shift) {
-
             if ($shift === $this) {
                 return false;
             }
@@ -412,7 +411,7 @@ class RegistrationShift
             }
         }
 
-        if ($this->getFinalSigninDate()!==null && $this->getFinalSigninDate() < new DateTime()) {
+        if ($this->getFinalSigninDate() !== null && $this->getFinalSigninDate() < new DateTime()) {
             return false;
         }
 
