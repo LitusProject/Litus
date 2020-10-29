@@ -8,7 +8,7 @@ variables:
 build:
     stage: build
     script:
-        - composer install --no-dev
+        - composer update --no-dev
         - echo $CI_COMMIT_SHA > COMMIT
         - tar czf litus.tar.gz bin/ config/ data/ migrations/ module/ public/ shibboleth/ vendor/ COMMIT LICENSE.md NOTICE.md README.md
     only:
