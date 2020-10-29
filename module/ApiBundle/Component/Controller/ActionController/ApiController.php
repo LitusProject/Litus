@@ -37,11 +37,11 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Entity\General\Language;
 use CommonBundle\Entity\General\Visit;
-use Zend\Http\Header\HeaderInterface;
-use Zend\Mvc\MvcEvent;
-use Zend\Uri\UriFactory;
-use Zend\Validator\AbstractValidator;
-use Zend\View\Model\ViewModel;
+use Laminas\Http\Header\HeaderInterface;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Uri\UriFactory;
+use Laminas\Validator\AbstractValidator;
+use Laminas\View\Model\ViewModel;
 
 /**
  * We extend the CommonBundle controller.
@@ -51,7 +51,7 @@ use Zend\View\Model\ViewModel;
  * @method \CommonBundle\Component\Controller\Plugin\FlashMessenger flashMessenger()
  * @method \CommonBundle\Component\Controller\Plugin\HasAccess hasAccess()
  */
-class ApiController extends \Zend\Mvc\Controller\AbstractActionController implements ServiceLocatorAwareInterface
+class ApiController extends \Laminas\Mvc\Controller\AbstractActionController implements ServiceLocatorAwareInterface
 {
     use ServiceLocatorAwareTrait;
 
@@ -78,7 +78,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     /**
      * Execute the request.
      *
-     * @param  \Zend\Mvc\MvcEvent $e The MVC event
+     * @param  \Laminas\Mvc\MvcEvent $e The MVC event
      * @return array
      */
     public function onDispatch(MvcEvent $e)
@@ -147,7 +147,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      *
      * @param  integer $code    The HTTP status code
      * @param  string  $message The error message
-     * @return \Zend\View\Model\ViewModel
+     * @return \Laminas\View\Model\ViewModel
      */
     public function error($code, $message)
     {

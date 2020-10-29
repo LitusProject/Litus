@@ -20,8 +20,8 @@
 
 namespace PageBundle\Controller;
 
+use Laminas\View\Model\ViewModel;
 use PageBundle\Entity\Link;
-use Zend\View\Model\ViewModel;
 
 /**
  * LinkController

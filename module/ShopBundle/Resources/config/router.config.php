@@ -21,7 +21,7 @@
 return array(
     'routes' => array(
         'shop_admin_shop' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/shop[/:action[/:id]]',
                 'constraints' => array(
@@ -35,7 +35,7 @@ return array(
             ),
         ),
         'shop_admin_shop_product' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/shop/product[/:action[/:id][/:field[/:string]][/page/:page]][/]',
                 'constraints' => array(
@@ -52,7 +52,7 @@ return array(
             ),
         ),
         'shop_admin_shop_salessession' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/shop/salessession[/:action[/:id][:field[/:string]][/page/:page]][/]',
                 'constraints' => array(
@@ -69,7 +69,7 @@ return array(
             ),
         ),
         'shop_admin_shop_reservation' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/shop/reservation[/:action[/:id]][/:field/:string][/type/:type][/page/:page][/]',
                 'constraints' => array(
@@ -87,7 +87,7 @@ return array(
             ),
         ),
         'shop_admin_shop_reservationpermission' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/shop/reservationpermission[/:action[/:id][/type/:type][/page/:page]][/:field/:string][/]',
                 'constraints' => array(
@@ -105,7 +105,7 @@ return array(
             ),
         ),
         'shop' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/shop[/:action[/:id]][/]',
                 'constraints' => array(

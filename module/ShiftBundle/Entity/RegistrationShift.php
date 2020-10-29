@@ -316,7 +316,6 @@ class RegistrationShift
         return $this;
     }
 
-
     /**
      * @return integer
      */
@@ -394,7 +393,7 @@ class RegistrationShift
      * shift.
      *
      * @param  EntityManager $entityManager The EntityManager instance
-     * @param  Person    $registered        The person that should be checked
+     * @param  Person        $registered    The person that should be checked
      * @return boolean
      */
     public function canHaveAsRegistered(EntityManager $entityManager, Person $registered)

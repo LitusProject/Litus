@@ -25,7 +25,7 @@ namespace CommonBundle\Component\Validator;
  *
  * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  */
-class Year extends \Zend\Validator\Date
+class Year extends \Laminas\Validator\Date
 {
     public function __construct()
     {

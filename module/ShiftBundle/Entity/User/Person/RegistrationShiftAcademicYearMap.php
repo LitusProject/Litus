@@ -60,8 +60,8 @@ class RegistrationShiftAcademicYearMap
     private $academicYear;
 
     /**
-     * @param Person       $person           The person associated with this entity
-     * @param AcademicYear $academicYear     The acadmic year when this was read
+     * @param Person       $person       The person associated with this entity
+     * @param AcademicYear $academicYear The acadmic year when this was read
      */
     public function __construct(Person $person, AcademicYear $academicYear)
     {

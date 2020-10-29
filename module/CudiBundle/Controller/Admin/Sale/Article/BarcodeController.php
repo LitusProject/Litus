@@ -22,7 +22,7 @@ namespace CudiBundle\Controller\Admin\Sale\Article;
 
 use CudiBundle\Entity\Sale\Article as SaleArticle;
 use CudiBundle\Entity\Sale\Article\Barcode;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * BarcodeController

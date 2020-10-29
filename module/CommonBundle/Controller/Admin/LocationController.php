@@ -21,8 +21,8 @@
 namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Entity\General\Location;
-use Zend\Http\Client;
-use Zend\View\Model\ViewModel;
+use Laminas\Http\Client;
+use Laminas\View\Model\ViewModel;
 
 /**
  * LocationController

@@ -25,9 +25,9 @@ use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Component\Util\Xml\Node as XmlNode;
 use CommonBundle\Entity\General\Language;
 use Doctrine\ORM\EntityManager;
+use Laminas\Http\PhpEnvironment\Request;
 use Locale;
 use NewsBundle\Entity\Node\News;
-use Zend\Http\PhpEnvironment\Request;
 
 /**
  * Feed

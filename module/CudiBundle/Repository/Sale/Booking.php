@@ -30,7 +30,7 @@ use CudiBundle\Entity\Sale\Booking as BookingEntity;
 use CudiBundle\Entity\Stock\Period;
 use DateTime;
 use Exception;
-use Zend\Mail\Transport\TransportInterface;
+use Laminas\Mail\Transport\TransportInterface;
 
 /**
  * Booking

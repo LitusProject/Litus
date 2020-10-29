@@ -22,7 +22,7 @@ namespace CudiBundle\Controller;
 
 use DateInterval;
 use DateTime;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * OpeningHourController

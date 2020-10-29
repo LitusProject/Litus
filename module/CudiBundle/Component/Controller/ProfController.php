@@ -21,7 +21,7 @@
 namespace CudiBundle\Component\Controller;
 
 use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException;
-use Zend\Mvc\MvcEvent;
+use Laminas\Mvc\MvcEvent;
 
 /**
  * We extend the CommonBundle controller.

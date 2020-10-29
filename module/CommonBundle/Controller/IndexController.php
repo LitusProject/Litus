@@ -23,7 +23,7 @@ namespace CommonBundle\Controller;
 use CommonBundle\Entity\User\Person\Academic;
 use DateInterval;
 use DateTime;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * IndexController
@@ -102,7 +102,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 $behind = 0;
                 if ($currentPlace !== null && $currentPlace > 0) {
                     $firstData = $resultPage['teams'][0];
-                    $behind = round(($firstData->laps + $firstData->position) - ($teamData->laps + $teamData->position), 2);
+                    $behind = round($firstData->laps + $firstData->position - ($teamData->laps + $teamData->position), 2);
                 }
 
                 $returnArray = array(

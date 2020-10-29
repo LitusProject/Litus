@@ -21,7 +21,7 @@
 return array(
     'routes' => array(
         'cudi_admin_article' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/article[/:action[/:id][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
@@ -38,7 +38,7 @@ return array(
             ),
         ),
         'cudi_admin_article_subject' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/article/subject[/:action[/:id]][/:academicyear][/]',
                 'constraints' => array(
@@ -53,7 +53,7 @@ return array(
             ),
         ),
         'cudi_admin_article_comment' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/article/comment[/:action[/:id[/:article]][/page/:page]][/]',
                 'constraints' => array(
@@ -68,7 +68,7 @@ return array(
             ),
         ),
         'cudi_admin_article_file' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/article/file[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -83,7 +83,7 @@ return array(
             ),
         ),
         'cudi_admin_sales_article' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/sales/article[/:action[/:id][/:academicyear][/semester/:semester][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
@@ -102,7 +102,7 @@ return array(
             ),
         ),
         'cudi_admin_sales_article_typeahead' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/sales/article/:academicyear/typeahead[/:string][/]',
                 'constraints' => array(
@@ -116,7 +116,7 @@ return array(
             ),
         ),
         'cudi_admin_sales_article_sale' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/sales/article/sale[/:action[/:id]][/]',
                 'constraints' => array(
@@ -130,7 +130,7 @@ return array(
             ),
         ),
         'cudi_admin_sales_article_discount' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/sales/article/discount[/:action[/:id]][/]',
                 'constraints' => array(
@@ -144,7 +144,7 @@ return array(
             ),
         ),
         'cudi_admin_sales_article_discount_template' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/sales/article/discount/template[/:action[/:id]][/]',
                 'constraints' => array(
@@ -158,7 +158,7 @@ return array(
             ),
         ),
         'cudi_admin_sales_article_barcode' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/sales/article/barcode[/:action[/:id]][/]',
                 'constraints' => array(
@@ -172,7 +172,7 @@ return array(
             ),
         ),
         'cudi_admin_sales_article_restriction' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/sales/article/restriction[/:action[/:id]][/]',
                 'constraints' => array(
@@ -186,7 +186,7 @@ return array(
             ),
         ),
         'cudi_admin_sales_booking' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/sales/booking[/:action[/:id][/period/:period][/:type[/:field/:string]][/page/:page][/date/:date][/number/:number]][/]',
                 'constraints' => array(
@@ -206,7 +206,7 @@ return array(
             ),
         ),
         'cudi_admin_sales_session' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/sales/session[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -221,7 +221,7 @@ return array(
             ),
         ),
         'cudi_admin_sales_session_restriction' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/sales/session/restriction[/:action[/:id]][/]',
                 'constraints' => array(
@@ -235,7 +235,7 @@ return array(
             ),
         ),
         'cudi_admin_sales_session_openinghour' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/sales/session/openinghours[/:action[/page/:page][/:id]][/]',
                 'constraints' => array(
@@ -250,7 +250,7 @@ return array(
             ),
         ),
         'cudi_admin_sales_financial' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/sales/financial[/:action[/:id][/:academicyear]][/]',
                 'constraints' => array(
@@ -265,7 +265,7 @@ return array(
             ),
         ),
         'cudi_admin_sales_financial_sold' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/sales/financial/sold[/:action[/:id][/:academicyear][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
@@ -283,7 +283,7 @@ return array(
             ),
         ),
         'cudi_admin_sales_financial_returned' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/sales/financial/returned[/:action[/:id][/:academicyear][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
@@ -301,7 +301,7 @@ return array(
             ),
         ),
         'cudi_admin_sales_financial_ordered' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/sales/financial/ordered[/:action[/:id][/:academicyear][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
@@ -319,7 +319,7 @@ return array(
             ),
         ),
         'cudi_admin_sales_financial_delivered' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/sales/financial/delivered[/:action[/:id][/:academicyear][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
@@ -337,7 +337,7 @@ return array(
             ),
         ),
         'cudi_admin_supplier' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/supplier[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -352,7 +352,7 @@ return array(
             ),
         ),
         'cudi_admin_supplier_user' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/supplier/user[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -367,7 +367,7 @@ return array(
             ),
         ),
         'cudi_admin_stock' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/stock[/:action[/:id][/semester/:semester][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
@@ -385,7 +385,7 @@ return array(
             ),
         ),
         'cudi_admin_stock_period' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/stock/period[/:action[/:id[/:field/:string]][/page/:page]][/]',
                 'constraints' => array(
@@ -402,7 +402,7 @@ return array(
             ),
         ),
         'cudi_admin_stock_order' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/stock/order[/:action[/:id[/:date][/:order]][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
@@ -421,7 +421,7 @@ return array(
             ),
         ),
         'cudi_admin_stock_delivery' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/stock/delivery[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -436,7 +436,7 @@ return array(
             ),
         ),
         'cudi_admin_stock_delivery_typeahead' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/stock/article/:academicyear/typeahead[/:string][/]',
                 'constraints' => array(
@@ -450,7 +450,7 @@ return array(
             ),
         ),
         'cudi_admin_stock_retour' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/stock/retour[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -465,7 +465,7 @@ return array(
             ),
         ),
         'cudi_admin_syllabus' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/syllabus[/:action[/:id][/:field/:string][/page/:page]][/]',
                 'constraints' => array(
@@ -482,7 +482,7 @@ return array(
             ),
         ),
         'cudi_admin_syllabus_typeahead' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/syllabus/typeahead/:academicyear[/:string][/]',
                 'constraints' => array(
@@ -496,7 +496,7 @@ return array(
             ),
         ),
         'cudi_admin_prof_action' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'      => '/admin/cudi/prof/actions[/:action[/:id][/page/:page]][/]',
                 'contraints' => array(
@@ -511,7 +511,7 @@ return array(
             ),
         ),
         'cudi_admin_special_action' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'      => '/admin/cudi/special[/:action[/:id]][/]',
                 'contraints' => array(
@@ -525,7 +525,7 @@ return array(
             ),
         ),
         'cudi_admin_mail' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/mail[/]',
                 'constraints' => array(),
@@ -536,7 +536,7 @@ return array(
             ),
         ),
         'cudi_sale_queue' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/cudi/queue[[/:action]/:session][/]',
                 'constraints' => array(
@@ -550,7 +550,7 @@ return array(
             ),
         ),
         'cudi_sale_sale' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/cudi/sale[/:action[/:session[/:id]]][/]',
                 'constraints' => array(
@@ -565,7 +565,7 @@ return array(
             ),
         ),
         'cudi_sale_auth' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/cudi/auth[/:action[/identification/:identification[/hash/:hash]]][/]',
                 'constraints' => array(
@@ -581,7 +581,7 @@ return array(
             ),
         ),
         'cudi_supplier_index' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/cudi/supplier[/:action][/]',
                 'constraints' => array(
@@ -596,7 +596,7 @@ return array(
             ),
         ),
         'cudi_supplier_auth' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/cudi/supplier/auth[/:action][/]',
                 'constraints' => array(
@@ -611,7 +611,7 @@ return array(
             ),
         ),
         'cudi_supplier_article' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/cudi/supplier/article[/:action][/]',
                 'constraints' => array(
@@ -626,7 +626,7 @@ return array(
             ),
         ),
         'cudi_prof_index' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/cudi/prof[/:action[/page/:page]][/]',
                 'constraints' => array(
@@ -641,7 +641,7 @@ return array(
             ),
         ),
         'cudi_prof_auth' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/cudi/prof/auth[/:action[/identification/:identification[/hash/:hash]]][/]',
                 'constraints' => array(
@@ -657,7 +657,7 @@ return array(
             ),
         ),
         'cudi_prof_subject' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/cudi/prof/subject[/:action[/:id]][/]',
                 'constraints' => array(
@@ -672,7 +672,7 @@ return array(
             ),
         ),
         'cudi_prof_subject_typeahead' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/cudi/prof/subject/typeahead[/:string][/]',
                 'constraints' => array(
@@ -686,7 +686,7 @@ return array(
             ),
         ),
         'cudi_prof_article' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/cudi/prof/article[/:action[/:id]][/]',
                 'constraints' => array(
@@ -701,7 +701,7 @@ return array(
             ),
         ),
         'cudi_prof_article_typeahead' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/cudi/prof/article/typeahead[/:string][/]',
                 'constraints' => array(
@@ -715,7 +715,7 @@ return array(
             ),
         ),
         'cudi_prof_article_mapping' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/cudi/prof/article/mapping[/:action[/:id]][/]',
                 'constraints' => array(
@@ -730,7 +730,7 @@ return array(
             ),
         ),
         'cudi_prof_file' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/cudi/prof/files[/:action[/:id]][/]',
                 'constraints' => array(
@@ -745,7 +745,7 @@ return array(
             ),
         ),
         'cudi_prof_article_comment' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/cudi/prof/article/comments[/:action[/:id]][/]',
                 'constraints' => array(
@@ -760,7 +760,7 @@ return array(
             ),
         ),
         'cudi_prof_subject_comment' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/cudi/prof/subject/comments[/:action[/:id]][/]',
                 'constraints' => array(
@@ -775,7 +775,7 @@ return array(
             ),
         ),
         'cudi_prof_prof' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/cudi/prof/prof[/:action[/:id]][/]',
                 'constraints' => array(
@@ -790,7 +790,7 @@ return array(
             ),
         ),
         'cudi_prof_help' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/cudi/prof/help[/:action][/]',
                 'constraints' => array(
@@ -804,7 +804,7 @@ return array(
             ),
         ),
         'cudi_prof_typeahead' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/cudi/prof/prof/typeahead[/:string][/]',
                 'constraints' => array(
@@ -818,7 +818,7 @@ return array(
             ),
         ),
         'cudi_booking' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/cudi/booking[/:action[/:id]][/]',
                 'constraints' => array(
@@ -833,7 +833,7 @@ return array(
             ),
         ),
         'cudi_opening_hour' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/cudi/opening_hours[/:action[/:id]][/]',
                 'constraints' => array(
@@ -848,7 +848,7 @@ return array(
             ),
         ),
         'cudi_admin_isic' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/cudi/isic[/:action[/:id][/:field/:string][/page/:page]][/]',
                 'constraints' => array(
@@ -866,7 +866,7 @@ return array(
         ),
 
         'cudi_isic' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/cudi/isic[/:action][/redirect/:redirect[/:rediraction]][/membership/:organization][/]',
                 'constraints' => array(

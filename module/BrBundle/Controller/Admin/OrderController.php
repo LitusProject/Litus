@@ -26,7 +26,7 @@ use BrBundle\Entity\Contract\Entry as ContractEntry;
 use BrBundle\Entity\Contract\History;
 use BrBundle\Entity\Product\Order;
 use BrBundle\Entity\Product\Order\Entry as OrderEntry;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * OrderController

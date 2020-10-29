@@ -21,8 +21,8 @@
 namespace SecretaryBundle\Controller\Admin;
 
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use Laminas\View\Model\ViewModel;
 use SecretaryBundle\Component\Document\Generator\Registration as CsvGenerator;
-use Zend\View\Model\ViewModel;
 
 /**
  * ExportController

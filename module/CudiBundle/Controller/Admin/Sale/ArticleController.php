@@ -30,8 +30,8 @@ use CudiBundle\Entity\Log\Article\Sale\Unbookable as UnbookableLog;
 use CudiBundle\Entity\Log\Sale\Cancellations as LogCancellations;
 use CudiBundle\Entity\Sale\Article as SaleArticle;
 use CudiBundle\Entity\Sale\Article\History;
-use Zend\Mail\Message;
-use Zend\View\Model\ViewModel;
+use Laminas\Mail\Message;
+use Laminas\View\Model\ViewModel;
 
 /**
  * ArticleController

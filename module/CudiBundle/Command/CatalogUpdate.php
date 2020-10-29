@@ -23,7 +23,7 @@ namespace CudiBundle\Command;
 use CommonBundle\Entity\General\AcademicYear;
 use DateInterval;
 use DateTime;
-use Zend\Mail\Message as Mail;
+use Laminas\Mail\Message as Mail;
 
 /**
  * CatalogUpdate

@@ -20,11 +20,11 @@
 
 namespace MailBundle\Controller\Admin;
 
-use Zend\Mail\Message;
-use Zend\Mime\Message as MimeMessage;
-use Zend\Mime\Mime;
-use Zend\Mime\Part;
-use Zend\View\Model\ViewModel;
+use Laminas\Mail\Message;
+use Laminas\Mime\Message as MimeMessage;
+use Laminas\Mime\Mime;
+use Laminas\Mime\Part;
+use Laminas\View\Model\ViewModel;
 
 /**
  * PromotionController

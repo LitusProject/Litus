@@ -20,11 +20,10 @@
 
 namespace FormBundle\Entity\Node;
 
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
-use Zend\Http\PhpEnvironment\Request;
-use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
-
+use Laminas\Http\PhpEnvironment\Request;
 
 /**
  * This entity stores info about a guest.
@@ -186,7 +185,7 @@ class GuestInfo
     /**
      * @return string
      */
-     public function getOrganizationStatus(AcademicYearEntity $academicYear)
+    public function getOrganizationStatus(AcademicYearEntity $academicYear)
     {
         return '';
     }

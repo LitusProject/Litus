@@ -70,7 +70,8 @@ class Start extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         return $value->getValue();
     }
 
-    public function findAllByPeriod(Period $period) {
+    public function findAllByPeriod(Period $period)
+    {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('v')
             ->from('CudiBundle\Entity\Stock\Period\Value\Start', 'v')

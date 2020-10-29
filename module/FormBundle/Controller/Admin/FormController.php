@@ -24,7 +24,7 @@ use FormBundle\Entity\Node\Form;
 use FormBundle\Entity\Node\Form\Doodle;
 use FormBundle\Entity\Node\Form\Form as RegularForm;
 use FormBundle\Entity\ViewerMap;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * FormController

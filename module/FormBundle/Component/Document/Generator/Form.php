@@ -20,12 +20,10 @@
 
 namespace FormBundle\Component\Document\Generator;
 
+use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil;
 use CommonBundle\Entity\General\Language;
 use Doctrine\ORM\EntityManager;
 use FormBundle\Entity\ViewerMap;
-use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
-use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil;
-
 
 /**
  * Form
@@ -55,7 +53,7 @@ class Form extends \CommonBundle\Component\Document\Generator\Csv
             ->getRepository('FormBundle\Entity\Node\Entry')
             ->findAllByForm($viewerMap->getForm());
 
-        $academicYear =  AcademicYearUtil::getOrganizationYear($entityManager, null);
+        $academicYear = AcademicYearUtil::getOrganizationYear($entityManager, null);
 
         $results = array();
         foreach ($entries as $entry) {
@@ -63,12 +61,12 @@ class Form extends \CommonBundle\Component\Document\Generator\Csv
 
             $result[] = $entry->getPersonInfo()->getUsername();
 
-            if (!($status = $entry->getPersonInfo()->getOrganizationStatus($academicYear))){
+            if (!($status = $entry->getPersonInfo()->getOrganizationStatus($academicYear))) {
                 $status = '';
-            };
+            }
 
 
-            if (!is_string($status)){
+            if (!is_string($status)) {
                 $status = $status->getStatus();
             }
             $result[] = $status;

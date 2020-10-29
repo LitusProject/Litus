@@ -20,12 +20,12 @@
 
 namespace PageBundle\Controller\Admin;
 
+use Laminas\Filter\File\RenameUpload as RenameUploadFilter;
+use Laminas\Validator\File\IsImage as IsImageValidator;
+use Laminas\Validator\File\UploadFile as UploadFileValidator;
+use Laminas\Validator\ValidatorChain;
+use Laminas\View\Model\ViewModel;
 use PageBundle\Entity\Node\Page;
-use Zend\Filter\File\RenameUpload as RenameUploadFilter;
-use Zend\Validator\File\IsImage as IsImageValidator;
-use Zend\Validator\File\UploadFile as UploadFileValidator;
-use Zend\Validator\ValidatorChain;
-use Zend\View\Model\ViewModel;
 
 /**
  * PageController

@@ -21,11 +21,11 @@
 namespace PromBundle\Controller\Registration;
 
 use CommonBundle\Component\Form\Form;
+use Laminas\Mail\Message;
+use Laminas\View\Model\ViewModel;
 use PromBundle\Entity\Bus;
 use PromBundle\Entity\Bus\Passenger;
 use PromBundle\Entity\Bus\ReservationCode;
-use Zend\Mail\Message;
-use Zend\View\Model\ViewModel;
 
 /**
  * IndexController

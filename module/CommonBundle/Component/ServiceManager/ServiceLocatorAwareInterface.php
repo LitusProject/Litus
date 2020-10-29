@@ -20,7 +20,7 @@
 
 namespace CommonBundle\Component\ServiceManager;
 
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 interface ServiceLocatorAwareInterface
 {

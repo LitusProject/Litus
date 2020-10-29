@@ -20,9 +20,9 @@
 
 namespace ApiBundle\Controller;
 
+use Laminas\Http\Headers;
+use Laminas\View\Model\ViewModel;
 use RuntimeException;
-use Zend\Http\Headers;
-use Zend\View\Model\ViewModel;
 
 /**
  * MailController

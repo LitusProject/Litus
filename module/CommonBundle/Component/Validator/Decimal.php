@@ -26,7 +26,7 @@ namespace CommonBundle\Component\Validator;
  * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Decimal extends \Zend\Validator\Regex
+class Decimal extends \Laminas\Validator\Regex
 {
     /**
      * Sets validator options

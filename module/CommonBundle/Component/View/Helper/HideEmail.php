@@ -25,7 +25,7 @@ namespace CommonBundle\Component\View\Helper;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class HideEmail extends \Zend\View\Helper\AbstractHelper
+class HideEmail extends \Laminas\View\Helper\AbstractHelper
 {
     /**
      * @param  string $text

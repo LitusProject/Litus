@@ -23,8 +23,8 @@ namespace CudiBundle\Controller\Admin\Sale;
 use CommonBundle\Component\Util\File\TmpFile;
 use CudiBundle\Component\Document\Generator\Financial as FinancialGenerator;
 use DateTime;
-use Zend\Http\Headers;
-use Zend\View\Model\ViewModel;
+use Laminas\Http\Headers;
+use Laminas\View\Model\ViewModel;
 
 /**
  * FinancialController

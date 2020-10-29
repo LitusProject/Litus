@@ -21,7 +21,7 @@
 namespace SecretaryBundle\Controller\Admin;
 
 use CommonBundle\Entity\User\Person\Academic;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 class WorkingGroupController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {

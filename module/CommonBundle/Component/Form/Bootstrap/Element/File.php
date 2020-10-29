@@ -21,14 +21,14 @@
 namespace CommonBundle\Component\Form\Bootstrap\Element;
 
 use CommonBundle\Component\Form\ElementTrait;
-use Zend\Form\FormInterface;
+use Laminas\Form\FormInterface;
 
 /**
  * File form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class File extends \Zend\Form\Element\File implements \CommonBundle\Component\Form\ElementInterface
+class File extends \Laminas\Form\Element\File implements \CommonBundle\Component\Form\ElementInterface
 {
     use ElementTrait {
         ElementTrait::getInputSpecification as getTraitInputSpecification;
@@ -47,7 +47,7 @@ class File extends \Zend\Form\Element\File implements \CommonBundle\Component\Fo
     public function getInputSpecification()
     {
         $specification = $this->getTraitInputSpecification();
-        $specification['type'] = 'Zend\InputFilter\FileInput';
+        $specification['type'] = 'Laminas\InputFilter\FileInput';
 
         return $specification;
     }

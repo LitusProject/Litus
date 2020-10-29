@@ -22,8 +22,8 @@ namespace MailBundle\Controller\Admin;
 
 use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
 use CommonBundle\Entity\User\Status\University as UniversityStatus;
-use Zend\Mail\Message;
-use Zend\View\Model\ViewModel;
+use Laminas\Mail\Message;
+use Laminas\View\Model\ViewModel;
 
 /**
  * GroupController

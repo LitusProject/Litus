@@ -20,9 +20,9 @@
 
 namespace PageBundle\Controller;
 
+use Laminas\Http\Headers;
+use Laminas\View\Model\ViewModel;
 use PageBundle\Entity\Node\Page;
-use Zend\Http\Headers;
-use Zend\View\Model\ViewModel;
 
 /**
  * PageController

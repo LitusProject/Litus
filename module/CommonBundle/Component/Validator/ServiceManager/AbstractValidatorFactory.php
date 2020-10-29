@@ -23,8 +23,8 @@ namespace CommonBundle\Component\Validator\ServiceManager;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\Validator\AbstractValidator;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\AbstractFactoryInterface;
-use Zend\Validator\AbstractValidator as ZendAbstractValidator;
+use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
+use Laminas\Validator\AbstractValidator as ZendAbstractValidator;
 
 /**
  * Abstract factory instantiating an installer.

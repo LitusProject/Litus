@@ -29,7 +29,7 @@ use Doctrine\ORM\EntityManager;
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class StaticMap extends \Zend\View\Helper\AbstractHelper
+class StaticMap extends \Laminas\View\Helper\AbstractHelper
 {
     /**
      * @var EntityManager The EntityManager instance

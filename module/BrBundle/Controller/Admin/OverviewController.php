@@ -26,8 +26,8 @@ use BrBundle\Entity\Company;
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
-use Zend\Http\Headers;
-use Zend\View\Model\ViewModel;
+use Laminas\Http\Headers;
+use Laminas\View\Model\ViewModel;
 
 /**
  * OverviewController.
@@ -133,7 +133,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                         $entry->getQuantity(),
                         $entry->getProduct()->getSignedPrice() / 100,
                         $totalContractValue,
-                    $contract->isSigned() ? $invoice->getInvoiceNumber() : '/',
+                        $contract->isSigned() ? $invoice->getInvoiceNumber() : '/',
                     );
                 }
             }

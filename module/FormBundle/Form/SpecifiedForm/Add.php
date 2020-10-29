@@ -179,7 +179,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 $specification['attributes']['options'] = $fieldSpecification->getOptionsArray($this->language);
             } elseif ($fieldSpecification instanceof CheckboxFieldEntity) {
                 $specification['type'] = 'checkbox';
-                if ($fieldSpecification->isRequired()){
+                if ($fieldSpecification->isRequired()) {
                     $specification['options']['input']['validators'] = array(
                         array(
                             'name'    => 'RequiredCheckbox',

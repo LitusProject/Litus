@@ -181,7 +181,7 @@ class Order
         foreach ($this->entries as $entry) {
             if (!$entry->getProduct()->isRefund()) {
                 $entry->getProduct()->setEntityManager($this->entityManager);
-                $costNoRefund += ($entry->getProduct()->getSignedPrice() * $entry->getQuantity());
+                $costNoRefund += $entry->getProduct()->getSignedPrice() * $entry->getQuantity();
             }
         }
 
@@ -376,7 +376,7 @@ class Order
             }
         }
 
-        $cost = ($cost - ($cost * $this->getAutoDiscountPercentage() / 100));
+        $cost = $cost - ($cost * $this->getAutoDiscountPercentage() / 100);
 
         return (float) $cost;
     }
@@ -390,7 +390,7 @@ class Order
 
         foreach ($this->entries as $entry) {
             $entry->getProduct()->setEntityManager($this->entityManager);
-            $cost += ($entry->getProduct()->getSignedPrice() * $entry->getQuantity());
+            $cost += $entry->getProduct()->getSignedPrice() * $entry->getQuantity();
         }
 
         return (float) $cost;
@@ -405,7 +405,7 @@ class Order
 
         $cost -= $this->getDiscount();
 
-        $cost = ($cost - ($cost * $this->getAutoDiscountPercentage() / 100));
+        $cost = $cost - ($cost * $this->getAutoDiscountPercentage() / 100);
 
         return (float) $cost / 100;
     }

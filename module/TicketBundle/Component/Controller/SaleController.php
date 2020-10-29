@@ -22,7 +22,7 @@ namespace TicketBundle\Component\Controller;
 
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\FormFactoryTrait;
 use Exception;
-use Zend\Mvc\MvcEvent;
+use Laminas\Mvc\MvcEvent;
 
 /**
  * We extend the CommonBundle controller.

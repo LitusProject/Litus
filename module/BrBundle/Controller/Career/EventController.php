@@ -22,7 +22,7 @@ namespace BrBundle\Controller\Career;
 
 use BrBundle\Entity\Company\Event;
 use DateTime;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * EventController

@@ -25,7 +25,7 @@ namespace CommonBundle\Component\Validator;
  *
  * @author Alan Szepieniec <alan.szepieniec@litus.cc>
  */
-class Price extends \Zend\Validator\Regex
+class Price extends \Laminas\Validator\Regex
 {
     public function __construct()
     {

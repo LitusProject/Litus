@@ -20,8 +20,8 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
+use Laminas\View\Model\ViewModel;
 use LogisticsBundle\Entity\Driver;
-use Zend\View\Model\ViewModel;
 
 /**
  * DriverController

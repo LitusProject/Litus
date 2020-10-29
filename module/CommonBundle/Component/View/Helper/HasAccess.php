@@ -28,7 +28,7 @@ use CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver;
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class HasAccess extends \Zend\View\Helper\AbstractHelper
+class HasAccess extends \Laminas\View\Helper\AbstractHelper
 {
     /**
      * @var HasAccessDriver The driver object

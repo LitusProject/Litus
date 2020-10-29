@@ -23,9 +23,9 @@ namespace CudiBundle\Controller;
 use CommonBundle\Entity\User\Person\Academic;
 use CudiBundle\Entity\IsicCard;
 use CudiBundle\Entity\Sale\Booking;
+use Laminas\Soap\Client as SoapClient;
+use Laminas\View\Model\ViewModel;
 use SecretaryBundle\Component\Registration\Articles as RegistrationArticles;
-use Zend\Soap\Client as SoapClient;
-use Zend\View\Model\ViewModel;
 
 class IsicController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {

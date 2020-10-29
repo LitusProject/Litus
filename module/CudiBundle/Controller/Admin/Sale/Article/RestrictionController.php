@@ -27,7 +27,7 @@ use CudiBundle\Entity\Sale\Article\Restriction\Amount as AmountRestriction;
 use CudiBundle\Entity\Sale\Article\Restriction\Available as AvailableRestriction;
 use CudiBundle\Entity\Sale\Article\Restriction\Member as MemberRestriction;
 use CudiBundle\Entity\Sale\Article\Restriction\Study as StudyRestriction;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * RestrictionController

@@ -22,11 +22,11 @@ namespace CommonBundle\Component\Form;
 
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use Laminas\Form\FormInterface;
+use Laminas\Stdlib\ArrayUtils;
 use Traversable;
-use Zend\Form\FormInterface;
-use Zend\Stdlib\ArrayUtils;
 
-class Collection extends \Zend\Form\Element\Collection implements FieldsetInterface, ServiceLocatorAwareInterface
+class Collection extends \Laminas\Form\Element\Collection implements FieldsetInterface, ServiceLocatorAwareInterface
 {
     use ElementTrait {
         ElementTrait::setRequired as setElementRequired;

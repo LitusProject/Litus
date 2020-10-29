@@ -22,9 +22,9 @@ namespace CommonBundle\Component\Sentry;
 
 use CommonBundle\Component\Authentication\Authentication;
 use Exception;
+use Laminas\Mvc\MvcEvent;
 use Raven_Client;
 use Symfony\Component\Console\Event\ConsoleErrorEvent;
-use Zend\Mvc\MvcEvent;
 
 /**
  * Sentry is an open-source error tracking platform that provides complete app logic,

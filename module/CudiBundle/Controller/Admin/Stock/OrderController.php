@@ -31,8 +31,8 @@ use CudiBundle\Entity\Stock\Order\Item as OrderItem;
 use CudiBundle\Entity\Stock\Period;
 use CudiBundle\Entity\Supplier;
 use DateTime;
-use Zend\Http\Headers;
-use Zend\View\Model\ViewModel;
+use Laminas\Http\Headers;
+use Laminas\View\Model\ViewModel;
 
 /**
  * OrderController

@@ -25,9 +25,9 @@ use CommonBundle\Component\Authentication\Authentication;
 use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException;
 use CommonBundle\Entity\User\Person\Academic;
 use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
+use Laminas\Mvc\MvcEvent;
+use Laminas\View\Model\ViewModel;
 use SecretaryBundle\Entity\Registration;
-use Zend\Mvc\MvcEvent;
-use Zend\View\Model\ViewModel;
 
 /**
  * RegistrationController

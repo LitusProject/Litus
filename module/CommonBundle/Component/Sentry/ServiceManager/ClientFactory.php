@@ -22,9 +22,9 @@ namespace CommonBundle\Component\Sentry\ServiceManager;
 
 use CommonBundle\Component\Sentry\Client;
 use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 use Raven_Client;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Factory to create a Sentry client instance.

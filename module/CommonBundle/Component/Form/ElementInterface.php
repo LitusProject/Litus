@@ -20,7 +20,7 @@
 
 namespace CommonBundle\Component\Form;
 
-use Zend\Form\FormInterface;
+use Laminas\Form\FormInterface;
 
 /**
  * Extending Zend's form element component, so that our forms look the way we want
@@ -28,7 +28,7 @@ use Zend\Form\FormInterface;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-interface ElementInterface extends \Zend\Form\ElementInterface, \Zend\InputFilter\InputProviderInterface, \Zend\Form\ElementPrepareAwareInterface
+interface ElementInterface extends \Laminas\Form\ElementInterface, \Laminas\InputFilter\InputProviderInterface, \Laminas\Form\ElementPrepareAwareInterface
 {
     /**
      * Specifies whether this element is a required field. Also sets the HTML5
