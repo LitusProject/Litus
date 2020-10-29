@@ -20,7 +20,6 @@
 
 namespace ShiftBundle\Controller\Admin;
 
-use CalendarBundle\Entity\Node\Event;
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use DateInterval;
@@ -82,8 +81,6 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
             if ($form->isValid()) {
                 $startDate = self::loadDate($formData['start_date']);
                 $endDate = self::loadDate($formData['end_date']);
-                $visibleDate = self::loadDate($formData['visible_date']);
-                $signoutDate = self::loadDate($formData['signout_date']);
 
                 $formData = $form->getData();
                 $interval = $startDate->diff($endDate);
@@ -407,32 +404,6 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
         }
 
         return $shift;
-    }
-
-    /**
-     * @return Event|null
-     */
-    private function getEventEntity()
-    {
-        $event = $this->getEntityById('CalendarBundle\Entity\Node\Event');
-
-        if (!($event instanceof Event)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No event was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'shift_admin_registration_shift',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $event;
     }
 
     /**
