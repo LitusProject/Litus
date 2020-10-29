@@ -11,7 +11,6 @@ ENV COMMIT_SHA=${COMMIT_SHA}
 
 COPY composer.* /app/
 
-RUN composer global require hirak/prestissimo
 RUN \
   if [ "${APPLICATION_ENV}" = "development" ]; then \
     composer install \
