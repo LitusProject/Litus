@@ -5,7 +5,7 @@ namespace BrBundle\Controller\Admin\Event;
 
 
 use BrBundle\Entity\Event;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 class LocationController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {

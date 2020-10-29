@@ -22,7 +22,7 @@ namespace BrBundle\Controller\Admin\Event;
 
 use BrBundle\Entity\Event;
 use BrBundle\Entity\Event\CompanyMap;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * CompanyController

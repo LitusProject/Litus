@@ -171,7 +171,7 @@ return array(
             ),
         ),
         'br_admin_event_company' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/br/event/:event/company[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -187,7 +187,7 @@ return array(
             ),
         ),
         'br_admin_event_location' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/br/event/:event/location[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
