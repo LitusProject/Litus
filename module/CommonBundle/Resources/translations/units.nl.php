@@ -28,7 +28,7 @@ return array(
     'Fakbar' => 'Fakbar',
     'Groep 5' => 'Groep 5',
     'Internationaal' => 'Internationaal',
-    'IT' =>: 'IT',
+    'IT' => 'IT',
     'Logistiek' => 'Logistiek',
     'Lustrum' => 'Lustrum',
     'Onderwijs' => 'Onderwijs',
