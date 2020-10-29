@@ -21,7 +21,7 @@
 return array(
     'routes' => array(
         'sport_admin_run' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/run[/:action[/:id]][/page/:page][/]',
                 'constraints' => array(

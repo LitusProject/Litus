@@ -22,10 +22,10 @@ namespace SecretaryBundle\Controller\Admin;
 
 use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil;
 use CommonBundle\Entity\General\AcademicYear;
+use Laminas\View\Model\ViewModel;
 use SecretaryBundle\Entity\Promotion;
 use SecretaryBundle\Entity\Promotion\Academic;
 use SecretaryBundle\Entity\Promotion\External;
-use Zend\View\Model\ViewModel;
 
 /**
  * PromotionController

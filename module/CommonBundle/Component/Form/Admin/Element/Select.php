@@ -27,7 +27,7 @@ use CommonBundle\Component\Form\ElementTrait;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Select extends \Zend\Form\Element\Select implements \CommonBundle\Component\Form\ElementInterface
+class Select extends \Laminas\Form\Element\Select implements \CommonBundle\Component\Form\ElementInterface
 {
     use ElementTrait;
 }

@@ -23,7 +23,7 @@ namespace CudiBundle\Controller\Admin\Stock;
 use CudiBundle\Entity\Stock\Delivery;
 use CudiBundle\Entity\Stock\Order\Virtual as VirtualOrder;
 use CudiBundle\Entity\Supplier;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * DeliveryController

@@ -25,7 +25,7 @@ namespace CommonBundle\Component\View\Helper;
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class GetClass extends \Zend\View\Helper\AbstractHelper
+class GetClass extends \Laminas\View\Helper\AbstractHelper
 {
     /**
      * @param  object $object

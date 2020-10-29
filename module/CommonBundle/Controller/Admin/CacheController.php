@@ -21,11 +21,11 @@
 namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Component\Util\Bytes as BytesUtil;
-use Zend\Cache\Storage\Adapter\Redis;
-use Zend\Cache\Storage\AvailableSpaceCapableInterface;
-use Zend\Cache\Storage\FlushableInterface;
-use Zend\Cache\Storage\TotalSpaceCapableInterface;
-use Zend\View\Model\ViewModel;
+use Laminas\Cache\Storage\Adapter\Redis;
+use Laminas\Cache\Storage\AvailableSpaceCapableInterface;
+use Laminas\Cache\Storage\FlushableInterface;
+use Laminas\Cache\Storage\TotalSpaceCapableInterface;
+use Laminas\View\Model\ViewModel;
 
 /**
  * CacheController

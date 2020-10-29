@@ -67,9 +67,10 @@ class Subject extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         return $query->select('s')
             ->from('SyllabusBundle\Entity\Subject', 's')
             ->where(
-                $query->expr()->orX($query->expr()->like($query->expr()->lower('s.name'), ':name'),
-                                    $query->expr()->like($query->expr()->lower('s.code'), ':name')
-            )
+                $query->expr()->orX(
+                    $query->expr()->like($query->expr()->lower('s.name'), ':name'),
+                    $query->expr()->like($query->expr()->lower('s.code'), ':name')
+                )
             )
             ->setParameter('name', '%' . strtolower($nameOrCode) . '%')
             ->orderBy('s.name')

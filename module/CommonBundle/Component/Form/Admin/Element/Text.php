@@ -27,7 +27,7 @@ use CommonBundle\Component\Form\ElementTrait;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Text extends \Zend\Form\Element\Text implements \CommonBundle\Component\Form\ElementInterface
+class Text extends \Laminas\Form\Element\Text implements \CommonBundle\Component\Form\ElementInterface
 {
     use ElementTrait;
 }

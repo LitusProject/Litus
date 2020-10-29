@@ -23,7 +23,7 @@ namespace CudiBundle\Controller\Admin\Sale\Financial;
 use CommonBundle\Entity\General\AcademicYear;
 use CudiBundle\Entity\Sale\Article as SaleArticle;
 use CudiBundle\Entity\Supplier;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * DeliveredController

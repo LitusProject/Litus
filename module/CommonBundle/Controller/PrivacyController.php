@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Controller;
 
+use Laminas\View\Model\ViewModel;
 use Locale;
-use Zend\View\Model\ViewModel;
 
 /**
  * PrivacyController

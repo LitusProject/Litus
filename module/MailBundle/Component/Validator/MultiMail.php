@@ -20,7 +20,7 @@
 
 namespace MailBundle\Component\Validator;
 
-use Zend\Validator\EmailAddress as EmailAddressValidator;
+use Laminas\Validator\EmailAddress as EmailAddressValidator;
 
 /**
  * Validates multiple email addresses separated by commas or whitespaces.

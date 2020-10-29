@@ -27,7 +27,7 @@ use CommonBundle\Entity\General\Language;
  *
  * @autor Kristof Mariën <kristof.marien@litus.cc>
  */
-class Url extends \Zend\View\Helper\Url
+class Url extends \Laminas\View\Helper\Url
 {
     /**
      * @var Language
@@ -48,7 +48,7 @@ class Url extends \Zend\View\Helper\Url
     /**
      * Generates an url given the name of a route.
      *
-     * @see    Zend\Router\RouteInterface::assemble()
+     * @see    Laminas\Router\RouteInterface::assemble()
      * @param  string|null $name               Name of the route
      * @param  array       $params             Parameters for the link
      * @param  array       $options            Options for the route

@@ -27,7 +27,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage;
  *
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class FlashMessenger extends \Zend\Mvc\Plugin\FlashMessenger\FlashMessenger
+class FlashMessenger extends \Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger
 {
     /**
      * @param  string $type

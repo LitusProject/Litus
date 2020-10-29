@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Component\Form;
 
-use Zend\InputFilter\InputFilterProviderInterface;
-use Zend\InputFilter\InputProviderInterface;
+use Laminas\InputFilter\InputFilterProviderInterface;
+use Laminas\InputFilter\InputProviderInterface;
 
 /**
  * FieldsetTrait

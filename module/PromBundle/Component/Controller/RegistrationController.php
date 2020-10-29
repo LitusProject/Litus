@@ -21,7 +21,7 @@
 namespace PromBundle\Component\Controller;
 
 use CommonBundle\Entity\General\Language;
-use Zend\Mvc\MvcEvent;
+use Laminas\Mvc\MvcEvent;
 
 /**
  * We extend the CommonBundle controller.

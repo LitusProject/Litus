@@ -21,10 +21,10 @@
 namespace CommonBundle;
 
 use CommonBundle\Component\Mvc\View\Http\InjectTemplateListener;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Session\SessionManager;
+use Laminas\Stdlib\DispatchableInterface;
 use Raven_ErrorHandler;
-use Zend\Mvc\MvcEvent;
-use Zend\Session\SessionManager;
-use Zend\Stdlib\DispatchableInterface;
 
 class Module
 {

@@ -27,7 +27,7 @@ use CommonBundle\Component\Form\ElementTrait;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Button extends \Zend\Form\Element\Button implements \CommonBundle\Component\Form\ElementInterface
+class Button extends \Laminas\Form\Element\Button implements \CommonBundle\Component\Form\ElementInterface
 {
     use ElementTrait;
 

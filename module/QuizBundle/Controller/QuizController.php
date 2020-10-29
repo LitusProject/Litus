@@ -21,11 +21,11 @@
 namespace QuizBundle\Controller;
 
 use CommonBundle\Entity\User\Person;
+use Laminas\View\Model\ViewModel;
 use QuizBundle\Entity\Point;
 use QuizBundle\Entity\Quiz;
 use QuizBundle\Entity\Round;
 use QuizBundle\Entity\Team;
-use Zend\View\Model\ViewModel;
 
 /**
  * QuizController

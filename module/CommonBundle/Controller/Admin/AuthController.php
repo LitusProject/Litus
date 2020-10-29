@@ -24,7 +24,7 @@ use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as Shibbol
 use CommonBundle\Component\Authentication\Authentication;
 use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException;
 use CommonBundle\Component\Controller\Exception\HasNoAccessException;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * AuthController

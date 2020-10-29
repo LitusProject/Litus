@@ -22,11 +22,11 @@ namespace LogisticsBundle\Controller;
 
 use CommonBundle\Component\Util\File\TmpFile;
 use DateTime;
+use Laminas\Http\Headers;
+use Laminas\View\Model\ViewModel;
 use LogisticsBundle\Component\Document\Generator\Ics as IcsGenerator;
 use LogisticsBundle\Entity\Reservation\Van as VanReservation;
 use LogisticsBundle\Entity\Token;
-use Zend\Http\Headers;
-use Zend\View\Model\ViewModel;
 
 /**
  * @author Niels Avonds <niels.avonds@litus.cc>

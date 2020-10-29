@@ -21,7 +21,7 @@
 return array(
     'routes' => array(
         'br_install' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'    => '/admin/br/install/br[/]',
                 'defaults' => array(
@@ -32,7 +32,7 @@ return array(
         ),
 
         'br_admin_collaborator' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/br/collaborator[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -48,7 +48,7 @@ return array(
         ),
 
         'br_admin_company' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/br/company[/:action[/:id][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
@@ -65,7 +65,7 @@ return array(
             ),
         ),
         'br_admin_company_event' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/br/company/event[/:action[/:id]][/]',
                 'constraints' => array(
@@ -79,7 +79,7 @@ return array(
             ),
         ),
         'br_admin_company_job' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/br/company/job[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -94,7 +94,7 @@ return array(
             ),
         ),
         'br_admin_company_user' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/br/company/user[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -109,7 +109,7 @@ return array(
             ),
         ),
         'br_admin_company_logo' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/br/company/logos[/:action[/:id]][/]',
                 'constraints' => array(
@@ -123,7 +123,7 @@ return array(
             ),
         ),
         'br_admin_cv_entry' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/br/cv/entry[/:action[/:id][/page/:page][/:academicyear]][/]',
                 'constraints' => array(
@@ -139,7 +139,7 @@ return array(
             ),
         ),
         'br_admin_contract' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/br/contract[/:action[/:id[/:signed]][/page/:page][/:language]][/]',
                 'constraints' => array(
@@ -156,7 +156,7 @@ return array(
             ),
         ),
         'br_admin_event' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/br/event[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -203,7 +203,7 @@ return array(
             ),
         ),
         'br_admin_invoice' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/br/invoice[/:action[/:id][/:payed][/date/:date][/page/:page][/:language]][/]',
                 'constraints' => array(
@@ -222,7 +222,7 @@ return array(
             ),
         ),
         'br_admin_order' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/br/order[/:action[/:id[/:entry]][/page/:page]][/]',
                 'constraints' => array(
@@ -238,7 +238,7 @@ return array(
             ),
         ),
         'br_admin_overview' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/br/overview[/:action[/:id]][/]',
                 'constraints' => array(
@@ -252,7 +252,7 @@ return array(
             ),
         ),
         'br_admin_product' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/br/product[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -267,7 +267,7 @@ return array(
             ),
         ),
         'br_admin_request' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/br/request[/:action[/:id[/:approved]]][/]',
                 'constraints' => array(
@@ -282,7 +282,7 @@ return array(
             ),
         ),
         'br_career_index' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/career[/:action][/]',
                 'constraints' => array(
@@ -296,7 +296,7 @@ return array(
             ),
         ),
         'br_career_company' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/career/company[/:action[/:company][/id/:id]][/]',
                 'constraints' => array(
@@ -312,7 +312,7 @@ return array(
             ),
         ),
         'br_career_company_search' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/career/company/search[/]',
                 'constraints' => array(
@@ -326,7 +326,7 @@ return array(
             ),
         ),
         'br_career_event' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/career/event[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -342,7 +342,7 @@ return array(
             ),
         ),
         'br_event_fetch' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/career/event/fetch[/:start][/:end][/]',
                 'constraints' => array(
@@ -356,7 +356,7 @@ return array(
             ),
         ),
         'br_career_vacancy' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/career/vacancy[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -372,7 +372,7 @@ return array(
             ),
         ),
         'br_career_internship' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/career/internship[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -388,7 +388,7 @@ return array(
             ),
         ),
         'br_career_student_job' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/career/studentjob[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -404,7 +404,7 @@ return array(
             ),
         ),
         'br_career_file' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/career/company/file/:name[/]',
                 'constraints' => array(
@@ -417,7 +417,7 @@ return array(
             ),
         ),
         'br_corporate_index' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/corporate[/:action][/]',
                 'constraints' => array(
@@ -433,7 +433,7 @@ return array(
             ),
         ),
         'br_corporate_cv' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/corporate/cv[/:action[/type/:type][/string/:string][/min/:min][/max/:max][/image/:image][/:academicyear]][/]',
                 'constraints' => array(
@@ -453,7 +453,7 @@ return array(
             ),
         ),
         'br_corporate_auth' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/corporate/auth[/:action][/]',
                 'constraints' => array(
@@ -468,7 +468,7 @@ return array(
             ),
         ),
         'br_corporate_jobfair' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/corporate/jobfair[/:action[/:id]][/]',
                 'constraints' => array(
@@ -483,7 +483,7 @@ return array(
             ),
         ),
         'br_corporate_vacancy' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/corporate/vacancy[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -499,7 +499,7 @@ return array(
             ),
         ),
         'br_corporate_internship' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/corporate/internship[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -515,7 +515,7 @@ return array(
             ),
         ),
         'br_corporate_student_job' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/corporate/studentjob[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -531,7 +531,7 @@ return array(
             ),
         ),
         'br_corporate_company' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/corporate/company[/:action][/]',
                 'constraints' => array(
@@ -546,7 +546,7 @@ return array(
             ),
         ),
         'br_cv_index' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/cv[/:action][/]',
                 'constraints' => array(
@@ -585,7 +585,7 @@ return array(
         'br_corporate_jobfair'    => 'BrBundle\Controller\Corporate\JobfairController',
         'br_corporate_vacancy'    => 'BrBundle\Controller\Corporate\VacancyController',
         'br_corporate_internship' => 'BrBundle\Controller\Corporate\InternshipController',
-        'br_corporate_student_job'=> 'BrBundle\Controller\Corporate\StudentJobController',
+        'br_corporate_student_job' => 'BrBundle\Controller\Corporate\StudentJobController',
         'br_corporate_company'    => 'BrBundle\Controller\Corporate\CompanyController',
 
         'br_career_index'      => 'BrBundle\Controller\Career\IndexController',

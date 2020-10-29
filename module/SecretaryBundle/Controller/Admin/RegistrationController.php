@@ -28,11 +28,11 @@ use CommonBundle\Entity\User\Person\Organization\AcademicYearMap;
 use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
 use CudiBundle\Component\Socket\Sale\Printer;
 use InvalidArgumentException;
+use Laminas\Validator\Barcode\Ean12 as Ean12Validator;
+use Laminas\View\Model\ViewModel;
 use SecretaryBundle\Component\Registration\Articles as RegistrationArticles;
 use SecretaryBundle\Entity\Organization\MetaData;
 use SecretaryBundle\Entity\Registration;
-use Zend\Validator\Barcode\Ean12 as Ean12Validator;
-use Zend\View\Model\ViewModel;
 
 /**
  * RegistrationController

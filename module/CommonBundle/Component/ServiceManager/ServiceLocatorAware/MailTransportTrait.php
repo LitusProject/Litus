@@ -29,7 +29,7 @@ namespace CommonBundle\Component\ServiceManager\ServiceLocatorAware;
 trait MailTransportTrait
 {
     /**
-     * @return \Zend\Mail\Transport\TransportInterface
+     * @return \Laminas\Mail\Transport\TransportInterface
      */
     public function getMailTransport()
     {
@@ -37,7 +37,7 @@ trait MailTransportTrait
     }
 
     /**
-     * @return \Zend\ServiceManager\ServiceLocatorInterface
+     * @return \Laminas\ServiceManager\ServiceLocatorInterface
      */
     abstract public function getServiceLocator();
 }

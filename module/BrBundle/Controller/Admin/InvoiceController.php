@@ -28,9 +28,9 @@ use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File as FileUtil;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use DateTime;
+use Laminas\Http\Headers;
+use Laminas\View\Model\ViewModel;
 use RuntimeException;
-use Zend\Http\Headers;
-use Zend\View\Model\ViewModel;
 
 /**
  * InvoiceController

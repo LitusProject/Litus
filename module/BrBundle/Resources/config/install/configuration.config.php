@@ -249,8 +249,8 @@ Example content of this section.
         'key'         => 'br.contract_auto_discount_text',
         'value'       => serialize(
             array(
-                'nl' =>'* Vanwege de trouwe samenwerking biedt VTK een partnership aan. Dit houdt in dat het logo van het bedrijf gratis in ons wekelijks boekje \'t Bakske en op de homepage van de website www.vtk.be te zien zal zijn. Zo staat het bedrijf het hele jaar door in de spotlights. Bovendien krijgt het bedrijf een korting van 5% op het totale bedrag van dit contract.',
-                'en' =>'* ?'
+                'nl' => '* Vanwege de trouwe samenwerking biedt VTK een partnership aan. Dit houdt in dat het logo van het bedrijf gratis in ons wekelijks boekje \'t Bakske en op de homepage van de website www.vtk.be te zien zal zijn. Zo staat het bedrijf het hele jaar door in de spotlights. Bovendien krijgt het bedrijf een korting van 5% op het totale bedrag van dit contract.',
+                'en' => '* ?'
             )
         ),
         'description' => 'The standard auto discount text that is displayed on the creation of a new contract.',

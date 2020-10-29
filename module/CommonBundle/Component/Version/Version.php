@@ -33,7 +33,7 @@ class Version
      */
     public static function getCommitHash($length = null)
     {
-        $commitHash = "(devel)";
+        $commitHash = '(devel)';
         if (isset($_ENV['COMMIT'])) {
             $commitHash = $_ENV['COMMIT'];
             if ($length !== null) {

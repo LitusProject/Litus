@@ -43,7 +43,7 @@ class RegistrationShift extends \CommonBundle\Component\Doctrine\ORM\EntityRepos
         return $query->select('s')
             ->from('ShiftBundle\Entity\RegistrationShift', 's')
             ->where(
-                    $query->expr()->gt('s.endDate', ':now')
+                $query->expr()->gt('s.endDate', ':now')
             )
             ->orderBy('s.startDate', 'ASC')
             ->setParameter('now', new DateTime())
@@ -306,4 +306,6 @@ class RegistrationShift extends \CommonBundle\Component\Doctrine\ORM\EntityRepos
 
         return array_values($shifts);
     }
+
+
 }

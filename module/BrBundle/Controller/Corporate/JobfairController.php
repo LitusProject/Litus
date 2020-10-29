@@ -20,7 +20,7 @@
 
 namespace BrBundle\Controller\Corporate;
 
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * JobfairController
@@ -32,11 +32,11 @@ class JobfairController extends \BrBundle\Component\Controller\CorporateControll
     public function overviewAction()
     {
         return new ViewModel(
-          array(
-            'jobfairInfo' => $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('br.corporate_jobfair_info'),
-              )
+            array(
+                'jobfairInfo' => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('br.corporate_jobfair_info'),
+            )
         );
     }
 }

@@ -22,9 +22,9 @@ namespace SyllabusBundle\Controller\Admin\Subject;
 
 use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+use Laminas\View\Model\ViewModel;
 use SyllabusBundle\Entity\Study\SubjectMap;
 use SyllabusBundle\Entity\Subject;
-use Zend\View\Model\ViewModel;
 
 /**
  * ModuleGroupController

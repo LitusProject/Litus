@@ -27,7 +27,7 @@ use CommonBundle\Component\Form\ElementTrait;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Hidden extends \Zend\Form\Element\Hidden implements \CommonBundle\Component\Form\ElementInterface
+class Hidden extends \Laminas\Form\Element\Hidden implements \CommonBundle\Component\Form\ElementInterface
 {
     use ElementTrait;
 }

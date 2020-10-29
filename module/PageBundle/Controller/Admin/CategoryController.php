@@ -20,8 +20,8 @@
 
 namespace PageBundle\Controller\Admin;
 
+use Laminas\View\Model\ViewModel;
 use PageBundle\Entity\Category;
-use Zend\View\Model\ViewModel;
 
 /**
  * CategoryController

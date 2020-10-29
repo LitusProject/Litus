@@ -24,8 +24,8 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAware\CacheTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
-use Zend\Form\FormInterface;
-use Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
+use Laminas\Form\FormInterface;
+use Laminas\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 /**
  * Extending Zend's fieldset component, so that our forms look the way we want
@@ -33,7 +33,7 @@ use Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Fieldset extends \Zend\Form\Fieldset implements FieldsetInterface, ServiceLocatorAwareInterface
+class Fieldset extends \Laminas\Form\Fieldset implements FieldsetInterface, ServiceLocatorAwareInterface
 {
     use ElementTrait {
         ElementTrait::setRequired as setElementRequired;

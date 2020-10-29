@@ -48,16 +48,16 @@ use CommonBundle\Component\Session\ServiceManager\SessionManagerFactory;
 use CommonBundle\Component\Validator\ServiceManager\AbstractValidatorFactory;
 use CommonBundle\Component\View\Helper\ServiceManager\AbstractHelperFactory;
 use Doctrine\Common\Cache\RedisCache as DoctrineRedisCache;
+use Laminas\Cache\Storage\StorageInterface as CacheStorage;
+use Laminas\Form\ElementFactory;
+use Laminas\I18n\Translator\Resources as TranslatorResources;
+use Laminas\Mail\Transport\Sendmail;
+use Laminas\Mvc\I18n\Translator as MvcTranslator;
+use Laminas\ServiceManager\Factory\InvokableFactory;
+use Laminas\Session\Container as SessionContainer;
+use Laminas\Session\ManagerInterface;
 use Raven_Client;
 use Symfony\Component\Console\Application as ConsoleApplication;
-use Zend\Cache\Storage\StorageInterface as CacheStorage;
-use Zend\Form\ElementFactory;
-use Zend\I18n\Translator\Resources as TranslatorResources;
-use Zend\Mail\Transport\Sendmail;
-use Zend\Mvc\I18n\Translator as MvcTranslator;
-use Zend\ServiceManager\Factory\InvokableFactory;
-use Zend\Session\Container as SessionContainer;
-use Zend\Session\ManagerInterface;
 
 return Config::create(
     array(
@@ -182,9 +182,9 @@ return Config::create(
                 'PositiveNumber'  => Component\Validator\PositiveNumber::class,
                 'price'           => Component\Validator\Price::class,
                 'Price'           => Component\Validator\Price::class,
-                'requiredcheckbox'=> Component\Validator\RequiredCheckbox::class,
-                'requiredCheckbox'=> Component\Validator\RequiredCheckbox::class,
-                'RequiredCheckbox'=> Component\Validator\RequiredCheckbox::class,
+                'requiredcheckbox' => Component\Validator\RequiredCheckbox::class,
+                'requiredCheckbox' => Component\Validator\RequiredCheckbox::class,
+                'RequiredCheckbox' => Component\Validator\RequiredCheckbox::class,
                 'role'            => Component\Validator\Role::class,
                 'Role'            => Component\Validator\Role::class,
                 'typeaheadperson' => Component\Validator\Typeahead\Person::class,

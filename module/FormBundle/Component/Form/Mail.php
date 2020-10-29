@@ -23,10 +23,10 @@ namespace FormBundle\Component\Form;
 use CommonBundle\Entity\General\Language;
 use FormBundle\Entity\Node\Entry as FormEntry;
 use FormBundle\Entity\Node\Form as FormEntity;
-use Zend\Http\PhpEnvironment\Request;
-use Zend\Mail\Message;
-use Zend\Mail\Transport\TransportInterface as MailTransport;
-use Zend\Mvc\Controller\Plugin\Url;
+use Laminas\Http\PhpEnvironment\Request;
+use Laminas\Mail\Message;
+use Laminas\Mail\Transport\TransportInterface as MailTransport;
+use Laminas\Mvc\Controller\Plugin\Url;
 
 /**
  * Send form mail

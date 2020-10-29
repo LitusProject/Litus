@@ -32,7 +32,7 @@ use Doctrine\ORM\QueryBuilder;
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Acl extends \Zend\Permissions\Acl\Acl
+class Acl extends \Laminas\Permissions\Acl\Acl
 {
     /**
      * @var EntityManager The EntityManager instance

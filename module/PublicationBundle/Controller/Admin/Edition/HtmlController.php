@@ -21,9 +21,9 @@
 namespace PublicationBundle\Controller\Admin\Edition;
 
 use DateTime;
+use Laminas\View\Model\ViewModel;
 use PublicationBundle\Entity\Edition\Html as HtmlEdition;
 use PublicationBundle\Entity\Publication;
-use Zend\View\Model\ViewModel;
 use ZipArchive;
 
 /**

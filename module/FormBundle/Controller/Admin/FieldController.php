@@ -28,7 +28,7 @@ use FormBundle\Entity\Field\File as FileField;
 use FormBundle\Entity\Field\Text as StringField;
 use FormBundle\Entity\Field\TimeSlot as TimeSlotField;
 use FormBundle\Entity\Node\Form;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * FieldController

@@ -20,8 +20,8 @@
 
 namespace TicketBundle\Controller\Admin;
 
+use Laminas\View\Model\ViewModel;
 use TicketBundle\Entity\Event;
-use Zend\View\Model\ViewModel;
 
 /**
  * EventController

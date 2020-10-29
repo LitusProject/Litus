@@ -21,7 +21,7 @@
 return array(
     'routes' => array(
         'notification_admin_notification' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/site/notification[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(

@@ -24,12 +24,12 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use CommonBundle\Component\Util\AcademicYear;
-use Zend\Form\ElementInterface;
+use Laminas\Form\ElementInterface;
 
 /**
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-abstract class AbstractValidator extends \Zend\Validator\AbstractValidator implements ServiceLocatorAwareInterface
+abstract class AbstractValidator extends \Laminas\Validator\AbstractValidator implements ServiceLocatorAwareInterface
 {
     use ServiceLocatorAwareTrait;
 
@@ -67,7 +67,7 @@ abstract class AbstractValidator extends \Zend\Validator\AbstractValidator imple
      */
     private static function takeStep($context, $step)
     {
-        if ($context instanceof \Zend\Form\Fieldset) {
+        if ($context instanceof \Laminas\Form\Fieldset) {
             if (!$context->has($step)) {
                 return null;
             }

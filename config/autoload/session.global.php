@@ -19,9 +19,9 @@
  */
 
 use CommonBundle\Component\Redis\Uri as RedisUri;
-use Zend\Session\Storage\SessionArrayStorage;
-use Zend\Session\Validator\HttpUserAgent;
-use Zend\Session\Validator\RemoteAddr;
+use Laminas\Session\Storage\SessionArrayStorage;
+use Laminas\Session\Validator\HttpUserAgent;
+use Laminas\Session\Validator\RemoteAddr;
 
 if (file_exists(__DIR__ . '/../session.config.php')) {
     // TODO: Remove this branch once all deployments have been containerized

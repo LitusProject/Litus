@@ -16,18 +16,20 @@ RUN \
   if [ "${APPLICATION_ENV}" = "development" ]; then \
     composer install \
       --ignore-platform-reqs \
+      --no-interaction \
+      --no-progress \
       --no-scripts \
       --no-suggest \
-      --no-interaction \
       --optimize-autoloader \
       --prefer-dist; \
   else \
     composer install \
       --ignore-platform-reqs \
       --no-dev \
+      --no-interaction \
+      --no-progress \
       --no-scripts \
       --no-suggest \
-      --no-interaction \
       --optimize-autoloader \
       --prefer-dist; \
   fi
@@ -105,12 +107,12 @@ ARG COMMIT_SHA
 ENV COMMIT_SHA=${COMMIT_SHA}
 
 RUN apk add --no-cache \
-    icu \
-    imagemagick \
-    libpq \
-    libxml2 \
-    libzip \
-    openjdk11-jre
+  icu \
+  imagemagick \
+  libpq \
+  libxml2 \
+  libzip \
+  openjdk11-jre
 
 RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.10/main --update-cache \
     nodejs==10.19.0-r0 \

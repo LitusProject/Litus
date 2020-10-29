@@ -27,7 +27,7 @@ use CommonBundle\Component\Form\ElementTrait;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Checkbox extends \Zend\Form\Element\Checkbox implements \CommonBundle\Component\Form\ElementInterface
+class Checkbox extends \Laminas\Form\Element\Checkbox implements \CommonBundle\Component\Form\ElementInterface
 {
     use ElementTrait;
 }

@@ -284,7 +284,6 @@ class Contract
 //        return $this;
 //    }
 
-
     /**
      * @param  string $paymentDetails
      * @return self
@@ -314,7 +313,6 @@ class Contract
 
         return $this;
     }
-
 
 //    /**
 //     * @return string
@@ -373,6 +371,7 @@ class Contract
 ////        return $this;
 ////    }
 ///
+
     /**
      * @return Order
      */

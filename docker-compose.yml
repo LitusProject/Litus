@@ -31,7 +31,7 @@ services:
     restart: unless-stopped
 
   php-cli:
-    image: litusproject/litus:php-cli
+    image: litusproject/litus:php-cli-latest
     build:
       context: .
       target: php-cli
@@ -47,7 +47,7 @@ services:
       LITUS_REDIS_HOST: redis
 
   php-fpm:
-    image: litusproject/litus:php-fpm
+    image: litusproject/litus:php-fpm-latest
     build:
       context: .
       target: php-fpm

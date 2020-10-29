@@ -21,7 +21,7 @@
 namespace CudiBundle\Component\Controller;
 
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\FormFactoryTrait;
-use Zend\Mvc\MvcEvent;
+use Laminas\Mvc\MvcEvent;
 
 /**
  * We extend the CommonBundle controller to check a sale session is selected.

@@ -26,7 +26,7 @@ use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Component\Util\Xml\Generator;
 use CommonBundle\Component\Util\Xml\Node;
 use Doctrine\ORM\EntityManager;
-use Zend\Mvc\I18n\Translator;
+use Laminas\Mvc\I18n\Translator;
 
 /**
  * Generates the CV Book for one academic year.

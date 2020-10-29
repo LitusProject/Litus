@@ -20,9 +20,9 @@
 
 namespace CommonBundle\Component\Controller\ActionController;
 
+use Laminas\Http\Request as HttpRequest;
+use Laminas\Mvc\MvcEvent;
 use PageBundle\Entity\Node\Page;
-use Zend\Http\Request as HttpRequest;
-use Zend\Mvc\MvcEvent;
 
 /**
  * We extend the CommonBundle controller.

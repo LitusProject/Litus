@@ -24,7 +24,7 @@ use DateInterval;
 use DateTime;
 use FormBundle\Entity\Field\TimeSlot;
 use FormBundle\Entity\Node\Form\Doodle;
-use Zend\Mail\Message;
+use Laminas\Mail\Message;
 
 /**
  * Send reminder mails for forms.

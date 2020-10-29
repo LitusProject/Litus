@@ -216,6 +216,6 @@ class Reservation
     {
         $timestamp = new DateTime();
 
-        return $timestamp < $this->getSalesSession()->getStartDate();
+        return $timestamp < $this->getSalesSession()->getFinalReservationDate();
     }
 }

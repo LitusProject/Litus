@@ -21,7 +21,7 @@
 namespace BannerBundle\Controller\Admin;
 
 use BannerBundle\Entity\Node\Banner;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * BannerController

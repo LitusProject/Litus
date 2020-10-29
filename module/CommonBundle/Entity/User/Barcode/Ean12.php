@@ -23,7 +23,7 @@ namespace CommonBundle\Entity\User\Barcode;
 use CommonBundle\Entity\User\Person;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
-use Zend\Validator\Barcode as BarcodeValidator;
+use Laminas\Validator\Barcode as BarcodeValidator;
 
 /**
  * This entity stores an EAN12 barcode.
@@ -109,7 +109,7 @@ class Ean12 extends \CommonBundle\Entity\User\Barcode
         );
 
         do {
-            $ean12 = rand(0, (pow(10, 12) - 1));
+            $ean12 = rand(0, pow(10, 12) - 1);
 
             $barcode = $entityManager
                 ->getRepository('CommonBundle\Entity\User\Barcode\Ean12')
