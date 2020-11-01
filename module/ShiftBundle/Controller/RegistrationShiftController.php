@@ -183,7 +183,7 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
         );
     }
 
-    public function RegisteredAction()
+    public function registeredAction()
     {
         $this->initAjax();
 

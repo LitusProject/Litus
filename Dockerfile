@@ -1,8 +1,8 @@
 # dependencies
-FROM caddy:2.1.1 AS caddy
+FROM caddy:2.2.1 AS caddy
 
 # development
-FROM composer:1.10.8 AS composer
+FROM composer:2.0.3 AS composer
 
 ARG APPLICATION_ENV=development
 ENV APPLICATION_ENV=${APPLICATION_ENV}
@@ -11,7 +11,6 @@ ENV COMMIT_SHA=${COMMIT_SHA}
 
 COPY composer.* /app/
 
-RUN composer global require hirak/prestissimo
 RUN \
   if [ "${APPLICATION_ENV}" = "development" ]; then \
     composer install \
@@ -48,7 +47,7 @@ RUN \
       --optimize; \
   fi
 
-FROM php:7.4.8-cli-alpine AS php-cli
+FROM php:7.4.12-cli-alpine AS php-cli
 
 ARG APPLICATION_ENV=development
 ENV APPLICATION_ENV=${APPLICATION_ENV}
@@ -99,7 +98,7 @@ COPY docker/php-cli/entrypoint.sh /
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-FROM php:7.4.8-fpm-alpine AS php-fpm
+FROM php:7.4.12-fpm-alpine AS php-fpm
 
 ARG APPLICATION_ENV=development
 ENV APPLICATION_ENV=${APPLICATION_ENV}
