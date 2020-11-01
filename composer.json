@@ -4,7 +4,7 @@
     "require": {
         "laminas/laminas-authentication": "^2.6",
         "laminas/laminas-cache": "^2.8",
-        "laminas/laminas-dependency-plugin": "^1.0",
+        "laminas/laminas-dependency-plugin": "^2.0",
         "laminas/laminas-eventmanager": "^3.2",
         "laminas/laminas-file": "^2.8",
         "laminas/laminas-filter": "^2.8",
