@@ -33,7 +33,7 @@
         "laminas/laminas-view": "^2.10",
 
         "doctrine/doctrine-orm-module": "@stable",
-        "doctrine/migrations": "^3.0",
+        "doctrine/migrations": "^2.0",
 
         "cboden/ratchet": "^0.4",
         "clue/redis-react": "^2.2",
@@ -49,7 +49,7 @@
         "symfony/console": "^3.4",
         "symfony/event-dispatcher": "^4.3",
         "widmogrod/zf2-assetic-module": "^2.4",
-
+	"twig/extensions": "*",
         "twitter/bootstrap": "^3.3"
     },
     "require-dev": {
