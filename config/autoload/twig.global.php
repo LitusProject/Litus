@@ -18,6 +18,8 @@
  * @license http://litus.cc/LICENSE
  */
 
+use Twig\Extension\DebugExtension;
+
 if (getenv('APPLICATION_ENV') != 'development') {
     return array(
         'zend_twig' => array(
@@ -35,7 +37,7 @@ return array(
             'debug' => true,
         ),
         'extensions' => array(
-            Twig_Extension_Debug::class,
+            DebugExtension::class,
         ),
     ),
 );

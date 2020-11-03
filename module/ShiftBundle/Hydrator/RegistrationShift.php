@@ -27,6 +27,7 @@ class RegistrationShift extends \CommonBundle\Component\Hydrator\Hydrator
     private static $stdKeys = array(
         'nb_registered',
         'members_only',
+        'members_visible',
         'name',
         'description',
         'handled_on_event',

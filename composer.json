@@ -49,7 +49,6 @@
         "symfony/console": "^3.4",
         "symfony/event-dispatcher": "^4.3",
         "widmogrod/zf2-assetic-module": "^2.4",
-	"twig/extensions": "*",
         "twitter/bootstrap": "^3.3"
     },
     "require-dev": {
