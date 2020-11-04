@@ -19,9 +19,11 @@
                             {% if hoursPerBlock > 0 %}
                                 <th ># Shifts of {{ hoursPerBlock }}h</th>
                                 <th ># Shifts of {{ hoursPerBlock }}h, {{ weeklyChangeInterval }} ago</th>
+                                <th ># Shifts of {{ hoursPerBlock }}h, in the past {{ weeklyChangeInterval }}</th>
                             {% else %}
                                 <th ># Shifts</th>
                                 <th ># Shifts, {{ weeklyChangeInterval }} ago</th>
+                                <th ># Shifts in the past {{ weeklyChangeInterval }}</th>
                             {% endif %}
                         {% endif %}
                     </tr>
@@ -36,6 +38,7 @@
                             <td>{{ volunteer['rankThen'] }}</td>
                             <td>{{ volunteer['resultCount'] }}</td>
                             <td>{{ volunteer['resultCountThen'] }}</td>
+                            <td>{{ volunteer['resultCount'] - volunteer['resultCountThen'] }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
