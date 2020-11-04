@@ -24,7 +24,7 @@ use CommonBundle\Component\Acl\Acl;
 use CommonBundle\Entity\Acl\Action;
 use CommonBundle\Entity\Acl\Role;
 use CommonBundle\Entity\User\Person;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * RoleController

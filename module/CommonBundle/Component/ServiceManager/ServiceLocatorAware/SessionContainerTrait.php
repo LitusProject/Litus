@@ -29,7 +29,7 @@ namespace CommonBundle\Component\ServiceManager\ServiceLocatorAware;
 trait SessionContainerTrait
 {
     /**
-     * @return \Zend\Session\Container
+     * @return \Laminas\Session\Container
      */
     public function getSessionContainer()
     {
@@ -37,7 +37,7 @@ trait SessionContainerTrait
     }
 
     /**
-     * @return \Zend\ServiceManager\ServiceLocatorInterface
+     * @return \Laminas\ServiceManager\ServiceLocatorInterface
      */
     abstract public function getServiceLocator();
 }

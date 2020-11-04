@@ -26,8 +26,8 @@ use CommonBundle\Component\Util\File\TmpFile;
 use DateInterval;
 use DateTime;
 use IntlDateFormatter;
-use Zend\Http\Headers;
-use Zend\View\Model\ViewModel;
+use Laminas\Http\Headers;
+use Laminas\View\Model\ViewModel;
 
 /**
  * CalendarController
@@ -56,6 +56,10 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findAllActiveByEvent($event);
 
+        $timeslots = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\RegistrationShift')
+            ->findAllActiveByEvent($event);
+
         $ticketEvent = $this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Event')
             ->findOneByActivity($event);
@@ -64,6 +68,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             array(
                 'event'       => $event,
                 'hasShifts'   => count($shifts) > 0,
+                'hasRegistrationShifts'   => count($timeslots) > 0,
                 'ticketEvent' => $ticketEvent,
             )
         );

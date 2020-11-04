@@ -187,4 +187,50 @@ class Volunteer extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->setParameter('now', new DateTime())
             ->getQuery();
     }
+
+    /**
+     * @param AcademicYear $academicYear
+     * @param $hoursPerBlock
+     * @param $points
+     * @param DateTime $date
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllCountsAtTimeByAcademicYearQuery(AcademicYear $academicYear, $hoursPerBlock, $points, DateTime $date)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+
+        if ($points) {
+            $select = 'SUM(s.points) resultCount';
+        } else {
+            if ($hoursPerBlock > 0) {
+                $select = 'SUM(CASE WHEN s.endDate < DATE_ADD(s.startDate,'. strval($hoursPerBlock * 2) .',\'hour\') THEN 1 ';
+                $block = 2;
+                while ($block < 24 / $hoursPerBlock) {
+                    $select .= 'WHEN (DATE_ADD(s.startDate,'. strval($hoursPerBlock * $block) .',\'hour\') <= s.endDate AND s.endDate < DATE_ADD(s.startDate,'. strval($hoursPerBlock * $block + $hoursPerBlock) .',\'hour\')) THEN '. strval($block) .' ';
+                    $block += 1;
+                }
+                $select .= 'ELSE '. strval($block) .' END) resultCount';
+            } else {
+                $select = 'count(p.id) resultCount';
+            }
+        }
+
+        return $query->select('p.id', $select)
+            ->from('ShiftBundle\Entity\Shift', 's')
+            ->innerJoin('s.volunteers', 'v')
+            ->innerJoin('v.person', 'p')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gt('v.signupTime', ':startAcademicYear'),
+                    $query->expr()->lt('v.signupTime', ':endAcademicYear'),
+                    $query->expr()->lte('s.endDate', ':date')
+                )
+            )
+            ->groupBy('p.id')
+            ->orderBy('resultCount')
+            ->setParameter('startAcademicYear', $academicYear->getStartDate())
+            ->setParameter('endAcademicYear', $academicYear->getEndDate())
+            ->setParameter('date', $date)
+            ->getQuery();
+    }
 }

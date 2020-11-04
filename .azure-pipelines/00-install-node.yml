@@ -1,8 +1,0 @@
-parameters:
-  nodeVersion: ''
-
-steps:
-  - task: NodeTool@0
-    inputs:
-      versionSpec: '${{ parameters.nodeVersion }}.x'
-    displayName: 'Install Node ${{ parameters.nodeVersion }}'

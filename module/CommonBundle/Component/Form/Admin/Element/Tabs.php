@@ -27,7 +27,7 @@ use CommonBundle\Component\Form\ElementTrait;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Tabs extends \Zend\Form\Element implements \CommonBundle\Component\Form\ElementInterface
+class Tabs extends \Laminas\Form\Element implements \CommonBundle\Component\Form\ElementInterface
 {
     use ElementTrait;
 

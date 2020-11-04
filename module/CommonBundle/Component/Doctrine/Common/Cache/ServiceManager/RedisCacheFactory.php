@@ -22,11 +22,11 @@ namespace CommonBundle\Component\Doctrine\Common\Cache\ServiceManager;
 
 use Doctrine\Common\Cache\RedisCache;
 use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 use Redis;
 use RedisException;
 use RuntimeException;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Factory to create the Doctrine Redis cache instance.

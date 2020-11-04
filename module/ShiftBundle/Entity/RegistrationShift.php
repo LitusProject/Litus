@@ -97,6 +97,13 @@ class RegistrationShift
     private $signoutDate;
 
     /**
+     * @var DateTime The moment after which there can be no signins
+     *
+     * @ORM\Column(name="final_signin_date", type="datetime", nullable=true)
+     */
+    private $finalSigninDate;
+
+    /**
      * @var integer The required number of volunteers for this shift
      *
      * @ORM\Column(name="nb_registered", type="integer")
@@ -181,6 +188,13 @@ class RegistrationShift
     private $membersOnly;
 
     /**
+     * @var boolean If the members of this timeslot can be seen by members
+     *
+     * @ORM\Column(name="members_visible",type="boolean",options={"default" = false})
+     */
+    private $membersVisible;
+
+    /**
      * @param Person       $creationPerson
      * @param AcademicYear $academicYear
      */
@@ -256,6 +270,22 @@ class RegistrationShift
     }
 
     /**
+     * @return DateTime|null
+     */
+    public function getFinalSigninDate()
+    {
+        return $this->finalSigninDate;
+    }
+
+    /**
+     * @param DateTime $finalSigninDate
+     */
+    public function setFinalSigninDate(DateTime $finalSigninDate)
+    {
+        $this->finalSigninDate = $finalSigninDate;
+    }
+
+    /**
      * @return DateTime
      */
     public function getVisibleDate()
@@ -292,7 +322,6 @@ class RegistrationShift
 
         return $this;
     }
-
 
     /**
      * @return integer
@@ -371,7 +400,7 @@ class RegistrationShift
      * shift.
      *
      * @param  EntityManager $entityManager The EntityManager instance
-     * @param  Registered    $registered        The person that should be checked
+     * @param  Person        $registered    The person that should be checked
      * @return boolean
      */
     public function canHaveAsRegistered(EntityManager $entityManager, Person $registered)
@@ -388,7 +417,10 @@ class RegistrationShift
                 return false;
             }
         }
-        error_log(boolval(!($this->countRegistered() >= $this->getNbRegistered())));
+
+        if ($this->getFinalSigninDate() !== null && $this->getFinalSigninDate() < new DateTime()) {
+            return false;
+        }
 
         return !($this->countRegistered() >= $this->getNbRegistered());
     }
@@ -606,4 +638,22 @@ class RegistrationShift
     {
         return $this->membersOnly;
     }
+
+    /**
+     * @return bool
+     */
+    public function isMembersVisible(): bool
+    {
+        return $this->membersVisible;
+    }
+
+    /**
+     * @param bool $membersVisible
+     */
+    public function setMembersVisible(bool $membersVisible)
+    {
+        $this->membersVisible = $membersVisible;
+    }
+
+
 }

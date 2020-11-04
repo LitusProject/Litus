@@ -25,7 +25,7 @@ use CudiBundle\Entity\Sale\Article;
 use CudiBundle\Entity\Sale\Booking;
 use CudiBundle\Entity\Sale\QueueItem;
 use DateInterval;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * CudiController

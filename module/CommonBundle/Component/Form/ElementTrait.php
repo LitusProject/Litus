@@ -20,7 +20,7 @@
 
 namespace CommonBundle\Component\Form;
 
-use Zend\Form\FormInterface;
+use Laminas\Form\FormInterface;
 
 /**
  * ElementTrait

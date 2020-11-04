@@ -29,7 +29,7 @@ namespace CommonBundle\Component\ServiceManager\ServiceLocatorAware;
 trait HydratorPluginManagerTrait
 {
     /**
-     * @return \Zend\Hydrator\HydratorPluginManager
+     * @return \Laminas\Hydrator\HydratorPluginManager
      */
     public function getHydratorPluginManager()
     {
@@ -37,7 +37,7 @@ trait HydratorPluginManagerTrait
     }
 
     /**
-     * @return \Zend\ServiceManager\ServiceLocatorInterface
+     * @return \Laminas\ServiceManager\ServiceLocatorInterface
      */
     abstract public function getServiceLocator();
 }

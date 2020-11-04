@@ -22,8 +22,8 @@ namespace ApiBundle\Controller;
 
 use DateInterval;
 use DateTime;
+use Laminas\View\Model\ViewModel;
 use Parsedown;
-use Zend\View\Model\ViewModel;
 
 /**
  * NewsController

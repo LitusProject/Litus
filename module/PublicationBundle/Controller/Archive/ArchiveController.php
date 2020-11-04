@@ -21,8 +21,8 @@
 namespace PublicationBundle\Controller\Archive;
 
 use CommonBundle\Entity\General\AcademicYear;
+use Laminas\View\Model\ViewModel;
 use PublicationBundle\Entity\Publication;
-use Zend\View\Model\ViewModel;
 
 /**
  * IndexController

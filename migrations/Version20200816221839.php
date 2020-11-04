@@ -35,7 +35,6 @@ class Version20200816221839 extends \Doctrine\Migrations\AbstractMigration
      */
     public function up(Schema $schema) : void
     {
-
     }
 
     /**

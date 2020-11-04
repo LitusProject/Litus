@@ -23,9 +23,9 @@ namespace SyllabusBundle\Controller\Admin;
 use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
 use CommonBundle\Entity\User\Person\Academic;
+use Laminas\View\Model\ViewModel;
 use SecretaryBundle\Entity\Syllabus\Enrollment\Study as StudyEnrollment;
 use SecretaryBundle\Entity\Syllabus\Enrollment\Subject as SubjectEnrollment;
-use Zend\View\Model\ViewModel;
 
 /**
  * AcademicController

@@ -21,7 +21,7 @@
 return array(
     'routes' => array(
         'api_admin_key' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/api/key[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -36,7 +36,7 @@ return array(
             ),
         ),
         'api_auth' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/api/auth[/:action][/]',
                 'constraints' => array(
@@ -49,7 +49,7 @@ return array(
             ),
         ),
         'api_calendar' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/api/calendar[/:action][/]',
                 'constraints' => array(
@@ -62,7 +62,7 @@ return array(
             ),
         ),
         'api_config' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/api/config[/:action][/]',
                 'constraints' => array(
@@ -75,7 +75,7 @@ return array(
             ),
         ),
         'api_cudi' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/api/cudi[/:action][/]',
                 'constraints' => array(
@@ -88,7 +88,7 @@ return array(
             ),
         ),
         'api_door' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/api/door[/:action][/]',
                 'constraints' => array(
@@ -101,7 +101,7 @@ return array(
             ),
         ),
         'api_mail' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/api/mail[/:action[/type/:type]][/]',
                 'constraints' => array(
@@ -115,7 +115,7 @@ return array(
             ),
         ),
         'api_member' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/api/members[/:action][/]',
                 'constraints' => array(
@@ -129,7 +129,7 @@ return array(
             ),
         ),
         'api_news' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/api/news[/:action][/]',
                 'constraints' => array(
@@ -142,7 +142,7 @@ return array(
             ),
         ),
         'api_oauth' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/api/oauth[/:action[/identification/:identification[/hash/:hash]]][/]',
                 'constraints' => array(
@@ -158,7 +158,7 @@ return array(
             ),
         ),
         'api_shift' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/api/shift[/:action][/]',
                 'constraints' => array(

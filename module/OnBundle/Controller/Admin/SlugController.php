@@ -20,8 +20,8 @@
 
 namespace OnBundle\Controller\Admin;
 
+use Laminas\View\Model\ViewModel;
 use OnBundle\Entity\Slug;
-use Zend\View\Model\ViewModel;
 
 /**
  * SlugController

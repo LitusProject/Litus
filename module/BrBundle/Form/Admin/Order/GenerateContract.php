@@ -37,12 +37,6 @@ class GenerateContract extends \CommonBundle\Component\Form\Admin\Form
      */
     private $order;
 
-
-    /**
-     * @var Order
-     */
-    private $lang;
-
     public function init()
     {
         parent::init();
@@ -203,9 +197,11 @@ class GenerateContract extends \CommonBundle\Component\Form\Admin\Form
      */
     private function getPaymentDetailsText($lang)
     {
-        return unserialize($this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.contract_payment_details'))[$lang];
+        return unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.contract_payment_details')
+        )[$lang];
     }
 
     /**
@@ -215,9 +211,11 @@ class GenerateContract extends \CommonBundle\Component\Form\Admin\Form
     private function getAutoDiscountText($lang)
     {
         if (isset($this->order) && $this->order->getAutoDiscountPercentage() > 0) {
-            return unserialize($this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('br.contract_auto_discount_text'))[$lang];
+            return unserialize(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('br.contract_auto_discount_text')
+            )[$lang];
         }
 
         return '';

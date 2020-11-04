@@ -25,8 +25,8 @@ use CommonBundle\Entity\User\Person;
 use CommonBundle\Entity\User\Person\Academic;
 use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
 use Imagick;
+use Laminas\View\Model\ViewModel;
 use SecretaryBundle\Entity\Registration;
-use Zend\View\Model\ViewModel;
 
 /**
  * Handles account page.
@@ -101,7 +101,6 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         );
     }
 
-
     public function editAction()
     {
         $academic = $this->getAcademicEntity();
@@ -149,8 +148,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 ->getConfigValue('secretary.membership_article')
         );
         $isicMembership = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('secretary.isic_membership') == 1;
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('secretary.isic_membership') == 1;
         $isicRedirect = false;
         $isicOrder = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\IsicCard')
@@ -437,8 +436,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             );
 
             $filePath = 'public' . $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('common.profile_path');
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('common.profile_path');
 
             if ($form->isValid()) {
                 $formData = $form->getData();
@@ -484,8 +483,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                         'result' => array(
                             'status' => 'success',
                             'profile' => $this->getEntityManager()
-                                    ->getRepository('CommonBundle\Entity\General\Config')
-                                    ->getConfigValue('common.profile_path') . '/' . $newFileName,
+                                ->getRepository('CommonBundle\Entity\General\Config')
+                                ->getConfigValue('common.profile_path') . '/' . $newFileName,
                         ),
                     )
                 );

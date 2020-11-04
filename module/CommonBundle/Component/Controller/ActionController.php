@@ -40,11 +40,11 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Entity\General\Language;
 use CommonBundle\Entity\General\Visit;
+use Laminas\Http\Header\HeaderInterface;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Validator\AbstractValidator;
+use Laminas\View\Model\ViewModel;
 use Locale;
-use Zend\Http\Header\HeaderInterface;
-use Zend\Mvc\MvcEvent;
-use Zend\Validator\AbstractValidator;
-use Zend\View\Model\ViewModel;
 
 /**
  * We extend the basic Zend controller to simplify database access, authentication
@@ -56,10 +56,10 @@ use Zend\View\Model\ViewModel;
  * @method \CommonBundle\Component\Controller\Plugin\HasAccess hasAccess()
  * @method \CommonBundle\Component\Controller\Plugin\Paginator paginator()
  * @method \CommonBundle\Component\Controller\Plugin\Url url()
- * @method \Zend\Http\PhpEnvironment\Response getResponse()
- * @method \Zend\Http\PhpEnvironment\Request getRequest()
+ * @method \Laminas\Http\PhpEnvironment\Response getResponse()
+ * @method \Laminas\Http\PhpEnvironment\Request getRequest()
  */
-class ActionController extends \Zend\Mvc\Controller\AbstractActionController implements ServiceLocatorAwareInterface
+class ActionController extends \Laminas\Mvc\Controller\AbstractActionController implements ServiceLocatorAwareInterface
 {
     use ServiceLocatorAwareTrait;
 
@@ -299,7 +299,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     /**
      * Initializes the authentication.
      *
-     * @return \Zend\Http\Response|null
+     * @return \Laminas\Http\Response|null
      */
     protected function initAuthentication()
     {
@@ -479,7 +479,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      * Redirects after a successful authentication.
      * If this returns null, no redirection will take place.
      *
-     * @return \Zend\Http\Response
+     * @return \Laminas\Http\Response
      */
     protected function redirectAfterAuthentication()
     {

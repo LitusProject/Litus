@@ -20,7 +20,7 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * PersonController

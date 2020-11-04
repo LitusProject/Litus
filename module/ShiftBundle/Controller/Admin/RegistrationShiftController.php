@@ -20,18 +20,14 @@
 
 namespace ShiftBundle\Controller\Admin;
 
-use CalendarBundle\Entity\Node\Event;
-use CommonBundle\Component\Util\File\TmpFile;
-use DateInterval;
-use DateTime;
-use ShiftBundle\Component\Document\Generator\Event\Pdf as PdfGenerator;
-use ShiftBundle\Entity\RegistrationShift;
-use ShiftBundle\Entity\Shift;
-use Zend\Http\Headers;
-use Zend\Mail\Message;
-use Zend\View\Model\ViewModel;
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use DateInterval;
+use DateTime;
+use Laminas\Http\Headers;
+use Laminas\Mail\Message;
+use Laminas\View\Model\ViewModel;
+use ShiftBundle\Entity\RegistrationShift;
 
 /**
  * ShiftController
@@ -85,8 +81,6 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
             if ($form->isValid()) {
                 $startDate = self::loadDate($formData['start_date']);
                 $endDate = self::loadDate($formData['end_date']);
-                $visibleDate = self::loadDate($formData['visible_date']);
-                $signoutDate = self::loadDate($formData['signout_date']);
 
                 $formData = $form->getData();
                 $interval = $startDate->diff($endDate);
@@ -222,31 +216,30 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
 
     public function csvAction()
     {
-        $file = new CsvFile();
-        $heading = array('Timeslot Title', 'Author', 'Start Date', 'End Date', 'Registered Name', 'Phone Number', 'Email Address',);
+        $timeslot = $this->getRegistrationShiftEntity();
+        if ($timeslot === null) {
+            return new ViewModel();
+        }
 
-        $timeslots = $this->getEntityManager()
-            ->getRepository('ShiftBundle\Entity\RegistrationShift')
-            ->findAll();
+        $file = new CsvFile();
+        $heading = array('Timeslot Title', 'Author', 'Start Date', 'End Date', 'Registered Name', 'r-number', 'Phone Number', 'Email Address',);
 
         $results = array();
 
-        foreach ($timeslots as $timeslot) {
-//            $timeslot->getDate()->setEntityManager($this->getEntityManager());
-//            $value = $timeslot->getOrder()->getTotalCostExclusive();
-            $registered = $timeslot->getRegistered();
+        $registered = $timeslot->getRegistered();
 
-            foreach ($registered as $register) {
-                $results[] = array($timeslot->getName(),
-                    $timeslot->getCreationPerson()->getFullName(),
-                    $timeslot->getStartDate()->format('j/m/Y'),
-                    $timeslot->getEndDate()->format('j/m/Y'),
-                    $register->getPerson()->getFullName(),
-                    $register->getPerson()->getPhoneNumber(),
-                    $register->getPerson()->getPersonalEmail(),
-                );
-            }
+        foreach ($registered as $register) {
+            $results[] = array($timeslot->getName(),
+                $timeslot->getCreationPerson()->getFullName(),
+                $timeslot->getStartDate()->format('j/m/Y'),
+                $timeslot->getEndDate()->format('j/m/Y'),
+                $register->getPerson()->getFullName(),
+                $register->getPerson()->getUniversityIdentification(),
+                $register->getPerson()->getPhoneNumber(),
+                $register->getPerson()->getPersonalEmail(),
+            );
         }
+
 
         $document = new CsvGenerator($heading, $results);
         $document->generateDocument($file);
@@ -411,32 +404,6 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
         }
 
         return $shift;
-    }
-
-    /**
-     * @return Event|null
-     */
-    private function getEventEntity()
-    {
-        $event = $this->getEntityById('CalendarBundle\Entity\Node\Event');
-
-        if (!($event instanceof Event)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No event was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'shift_admin_registration_shift',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $event;
     }
 
     /**

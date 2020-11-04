@@ -22,7 +22,7 @@ namespace CudiBundle\Controller\Admin\Stock;
 
 use CudiBundle\Entity\Stock\Period;
 use CudiBundle\Entity\Stock\Period\Value\Start as StartValue;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * PeriodController
@@ -113,7 +113,8 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
         return new ViewModel();
     }
 
-    public function revertNewAction() {
+    public function revertNewAction()
+    {
         $msg = 'The stock period was successfully reverted.';
 
         /* Find current period */

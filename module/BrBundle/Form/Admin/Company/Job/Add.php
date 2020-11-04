@@ -22,7 +22,6 @@ namespace BrBundle\Form\Admin\Company\Job;
 
 use BrBundle\Entity\Company;
 use BrBundle\Entity\Company\Job;
-use RuntimeException;
 
 /**
  * Add Job

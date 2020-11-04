@@ -23,7 +23,7 @@ namespace CudiBundle\Controller\Admin\Prof;
 use CudiBundle\Entity\Article\History;
 use CudiBundle\Entity\Log\Article\SubjectMap\Added as SubjectMapAddedLog;
 use CudiBundle\Entity\Prof\Action;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * ActionController

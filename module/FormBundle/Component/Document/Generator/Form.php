@@ -20,12 +20,10 @@
 
 namespace FormBundle\Component\Document\Generator;
 
+use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil;
 use CommonBundle\Entity\General\Language;
 use Doctrine\ORM\EntityManager;
 use FormBundle\Entity\ViewerMap;
-use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
-use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil;
-
 
 /**
  * Form
@@ -55,22 +53,27 @@ class Form extends \CommonBundle\Component\Document\Generator\Csv
             ->getRepository('FormBundle\Entity\Node\Entry')
             ->findAllByForm($viewerMap->getForm());
 
-        $academicYear =  AcademicYearUtil::getOrganizationYear($entityManager, null);
+        $academicYear = AcademicYearUtil::getOrganizationYear($entityManager, null);
 
         $results = array();
         foreach ($entries as $entry) {
-            $result = array($entry->getId(), $entry->getPersonInfo()->getFirstName() . ' ' . $entry->getPersonInfo()->getLastName(), $entry->getCreationTime()->format('d/m/Y H:i'));
+            $result = array(
+                $entry->getId(),
+                $entry->getPersonInfo()->getFirstName() . ' ' . $entry->getPersonInfo()->getLastName(),
+                $entry->getCreationTime()->format('d/m/Y H:i')
+            );
 
             $result[] = $entry->getPersonInfo()->getUsername();
 
-            if (!($status = $entry->getPersonInfo()->getOrganizationStatus($academicYear))){
+            $status = $entry->getPersonInfo()->getOrganizationStatus($academicYear);
+            if ($status === null) {
                 $status = '';
-            };
+            }
 
-
-            if (!is_string($status)){
+            if (!is_string($status)) {
                 $status = $status->getStatus();
             }
+
             $result[] = $status;
 
             if ($viewerMap->isMail()) {
@@ -87,6 +90,7 @@ class Form extends \CommonBundle\Component\Document\Generator\Csv
                     $result[] = '';
                 }
             }
+
             $results[] = $result;
         }
 

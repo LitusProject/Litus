@@ -25,6 +25,8 @@ use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Entity\User\Person\Academic;
 use CommonBundle\Entity\User\Status\University as UniversityStatus;
 use Doctrine\ORM\EntityManager;
+use Laminas\Http\Client as HttpClient;
+use Laminas\Mail\Transport\TransportInterface;
 use RuntimeException;
 use SimpleXMLElement;
 use SyllabusBundle\Entity\Study as StudyEntity;
@@ -33,8 +35,6 @@ use SyllabusBundle\Entity\Study\ModuleGroup;
 use SyllabusBundle\Entity\Study\SubjectMap;
 use SyllabusBundle\Entity\Subject;
 use SyllabusBundle\Entity\Subject\ProfMap;
-use Zend\Http\Client as HttpClient;
-use Zend\Mail\Transport\TransportInterface;
 
 /**
  * Study

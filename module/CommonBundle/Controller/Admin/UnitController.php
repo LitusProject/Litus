@@ -20,17 +20,17 @@
 
 namespace CommonBundle\Controller\Admin;
 
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use CommonBundle\Entity\Acl\Role;
 use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
 use CommonBundle\Entity\General\Organization\Unit;
 use CommonBundle\Entity\User\Person\Organization\UnitMap\Academic as UnitMapAcademic;
 use CommonBundle\Entity\User\Person\Organization\UnitMap\External as UnitMapExternal;
-use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
-use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
-use Zend\Http\Headers;
 use Imagick;
-use Zend\View\Model\ViewModel;
+use Laminas\Http\Headers;
+use Laminas\View\Model\ViewModel;
 
 /**
  * UnitController
@@ -143,7 +143,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
         $results = array();
         foreach ($unitsWithMembers as $unit) {
-            $unitFormat = strtolower(str_replace(' ','',$unit->getName()));
+            $unitFormat = strtolower(str_replace(' ', '', $unit->getName()));
             $unitYearFormat = $unitFormat . '_' . $academicYear->getCode(true);
 
             $members = $this->getEntityManager()
@@ -156,7 +156,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                 // Remove accents by transliterating one character set onto another
                 // setlocale is necessary, otherwise accents become question marks
                 setlocale(LC_ALL, 'en_US.utf8');
-                $nameFormat = iconv("UTF-8",'ASCII//TRANSLIT',$nameFormatWithAccents);
+                $nameFormat = iconv('UTF-8', 'ASCII//TRANSLIT', $nameFormatWithAccents);
 
                 $results[] = array($domain, $unitYearFormat, $nameFormat);
             }

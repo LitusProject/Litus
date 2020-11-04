@@ -22,8 +22,8 @@ namespace BrBundle\Controller\Corporate;
 
 use BrBundle\Entity\Company\Job;
 use BrBundle\Entity\Company\Request\Vacancy;
-use Zend\Mail\Message;
-use Zend\View\Model\ViewModel;
+use Laminas\Mail\Message;
+use Laminas\View\Model\ViewModel;
 
 /**
  * VacancyController

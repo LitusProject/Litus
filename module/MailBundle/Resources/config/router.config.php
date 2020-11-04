@@ -21,7 +21,7 @@
 return array(
     'routes' => array(
         'mail_admin_alias' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/mail/alias[/:action[/:id][/:field/:string][/page/:page]][/]',
                 'constraints' => array(
@@ -38,7 +38,7 @@ return array(
             ),
         ),
         'mail_admin_bakske' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/mail/bakske[/:action][/]',
                 'constraints' => array(
@@ -51,7 +51,7 @@ return array(
             ),
         ),
         'mail_admin_group' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/mail/groups[/:action[/:type/:group]][/]',
                 'constraints' => array(
@@ -65,7 +65,7 @@ return array(
             ),
         ),
         'mail_admin_list' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/mail/list[/:action[/:id][/:field/:string][/page/:page]][/]',
                 'constraints' => array(
@@ -82,7 +82,7 @@ return array(
             ),
         ),
         'mail_admin_message' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/mail/message[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -97,7 +97,7 @@ return array(
             ),
         ),
         'mail_admin_prof' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/mail/prof[/:action][/]',
                 'constraints' => array(
@@ -110,7 +110,7 @@ return array(
             ),
         ),
         'mail_admin_promotion' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/mail/promotion[/:action][/]',
                 'constraints' => array(
@@ -123,7 +123,7 @@ return array(
             ),
         ),
         'mail_admin_study' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/mail/study[/:action][/]',
                 'constraints' => array(
@@ -136,7 +136,7 @@ return array(
             ),
         ),
         'mail_admin_volunteer' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/mail/volunteer[/:action][/]',
                 'constraints' => array(

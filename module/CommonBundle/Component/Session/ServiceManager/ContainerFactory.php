@@ -21,9 +21,9 @@
 namespace CommonBundle\Component\Session\ServiceManager;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\Session\Container;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
+use Laminas\Session\Container;
 
 /**
  * Factory to instantiate the session container.
@@ -49,6 +49,6 @@ class ContainerFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        return $this($serviceLocator, 'Zend\Session\Container');
+        return $this($serviceLocator, 'Laminas\Session\Container');
     }
 }

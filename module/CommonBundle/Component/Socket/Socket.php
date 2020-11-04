@@ -29,11 +29,11 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use Exception;
 use Ko\ProcessManager;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 use Ratchet\ConnectionInterface;
 use Ratchet\MessageComponentInterface;
 use React\EventLoop\LoopInterface;
 use SplObjectStorage;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Socket

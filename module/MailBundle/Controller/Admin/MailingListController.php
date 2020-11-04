@@ -21,13 +21,13 @@
 namespace MailBundle\Controller\Admin;
 
 use CommonBundle\Entity\User\Person\Academic;
+use Laminas\View\Model\ViewModel;
 use MailBundle\Entity\MailingList;
 use MailBundle\Entity\MailingList\AdminMap as ListAdmin;
 use MailBundle\Entity\MailingList\AdminRoleMap as ListAdminRole;
 use MailBundle\Entity\MailingList\Entry\MailingList as MailingListEntry;
 use MailBundle\Entity\MailingList\Entry\Person\Academic as AcademicEntry;
 use MailBundle\Entity\MailingList\Entry\Person\External as ExternalEntry;
-use Zend\View\Model\ViewModel;
 
 /**
  * MailingListController

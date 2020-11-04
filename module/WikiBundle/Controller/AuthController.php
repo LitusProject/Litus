@@ -23,7 +23,7 @@ namespace WikiBundle\Controller;
 use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter;
 use CommonBundle\Component\Authentication\Authentication;
 use Exception;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * AuthController
@@ -190,7 +190,7 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
     }
 
     /**
-     * @return \Zend\Http\Response|null
+     * @return \Laminas\Http\Response|null
      */
     protected function redirectAfterAuthentication()
     {

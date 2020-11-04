@@ -27,25 +27,25 @@ use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrinePaginatorAdapter;
-use Zend\Http\Request as HttpRequest;
-use Zend\Mvc\Controller\AbstractController;
-use Zend\Mvc\Exception;
-use Zend\Paginator\Adapter\ArrayAdapter;
-use Zend\Paginator\Paginator as ZendPaginator;
+use Laminas\Http\Request as HttpRequest;
+use Laminas\Mvc\Controller\AbstractController;
+use Laminas\Mvc\Exception;
+use Laminas\Paginator\Adapter\ArrayAdapter;
+use Laminas\Paginator\Paginator as LaminasPaginator;
 
 /**
  * A controller plugin containing some utility methods for pagination.
  *
  * @autor Pieter Maene <pieter.maene@litus.cc>
  */
-class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin implements ServiceLocatorAwareInterface
+class Paginator extends \Laminas\Mvc\Controller\Plugin\AbstractPlugin implements ServiceLocatorAwareInterface
 {
     use ServiceLocatorAwareTrait;
 
     use DoctrineTrait;
 
     /**
-     * @var ZendPaginator $paginator The paginator
+     * @var LaminasPaginator $paginator The paginator
      */
     private $paginator = null;
 
@@ -84,11 +84,11 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin implements Se
      *
      * @param  array   $records     The array containing the paginated records
      * @param  integer $currentPage The page we now are on
-     * @return ZendPaginator
+     * @return LaminasPaginator
      */
     public function createFromArray(array $records, $currentPage)
     {
-        $this->paginator = new ZendPaginator(
+        $this->paginator = new LaminasPaginator(
             new ArrayAdapter($records)
         );
 
@@ -107,7 +107,7 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin implements Se
      * @param  integer $currentPage The page we now are on
      * @param  array   $conditions  These conditions will be passed to the Repository call
      * @param  array   $orderBy     An array containing constraints on how to order the results
-     * @return ZendPaginator
+     * @return LaminasPaginator
      */
     public function createFromEntity($entity, $currentPage, array $conditions = array(), array $orderBy = array())
     {
@@ -130,11 +130,11 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin implements Se
      *
      * @param  Query|QueryBuilder $query       The query that should be paginated
      * @param  integer            $currentPage The page we now are on
-     * @return ZendPaginator
+     * @return LaminasPaginator
      */
     public function createFromQuery($query, $currentPage)
     {
-        $this->paginator = new ZendPaginator(
+        $this->paginator = new LaminasPaginator(
             new DoctrinePaginatorAdapter(new DoctrinePaginator($query))
         );
 
@@ -148,7 +148,7 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin implements Se
      * Create a paginator for a given entity.
      *
      * @param  integer $currentPage The page we now are on
-     * @return ZendPaginator
+     * @return LaminasPaginator
      */
     public function createFromPaginatorRepository(array $records, $currentPage, $totalNumber)
     {
@@ -170,7 +170,7 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin implements Se
             $suffix
         );
 
-        $this->paginator = new ZendPaginator(
+        $this->paginator = new LaminasPaginator(
             new ArrayAdapter($data)
         );
 
@@ -216,7 +216,7 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin implements Se
             'fullWidth'          => $fullWidth,
             'matchedRouteName'   => $controller->getEvent()->getRouteMatch()->getMatchedRouteName(),
             'matchedRouteParams' => $params,
-            'query'              => count($query) > 0 ? ('?' . $query->toString()) : '',
+            'query'              => count($query) > 0 ? '?' . $query->toString() : '',
             'pages'              => $this->paginator->getPages(),
         );
     }

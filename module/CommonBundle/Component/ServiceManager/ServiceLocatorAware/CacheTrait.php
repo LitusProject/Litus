@@ -29,7 +29,7 @@ namespace CommonBundle\Component\ServiceManager\ServiceLocatorAware;
 trait CacheTrait
 {
     /**
-     * @return \Zend\Cache\Storage\StorageInterface
+     * @return \Laminas\Cache\Storage\StorageInterface
      */
     public function getCache()
     {
@@ -37,7 +37,7 @@ trait CacheTrait
     }
 
     /**
-     * @return \Zend\ServiceManager\ServiceLocatorInterface
+     * @return \Laminas\ServiceManager\ServiceLocatorInterface
      */
     abstract public function getServiceLocator();
 }

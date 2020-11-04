@@ -22,7 +22,7 @@ namespace CudiBundle\Controller\Admin\Sale;
 
 use CommonBundle\Entity\General\Bank\CashRegister;
 use CudiBundle\Entity\Sale\Session;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * SessionController

@@ -21,7 +21,7 @@
 return array(
     'routes' => array(
         'wiki_auth' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '/wiki/auth[/:action[/identification/:identification[/hash/:hash]][/redirect/:redirect]][/]',
                 'constraints' => array(

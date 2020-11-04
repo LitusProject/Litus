@@ -21,7 +21,7 @@
 namespace ApiBundle\Controller\Admin;
 
 use ApiBundle\Entity\Key;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * KeyController

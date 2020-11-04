@@ -23,7 +23,7 @@ namespace CommonBundle\Controller;
 use CommonBundle\Entity\User\Person\Academic;
 use DateInterval;
 use DateTime;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * IndexController
@@ -42,20 +42,21 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'bookings'       => $this->getBookings(),
-                'calendarItems'  => $this->getCalendarItems(),
-                'wiki'           => $this->getWiki(),
-                'cudi'           => $this->getCudiInfo(),
-                'shop'           => $this->getShopInfo(),
-                'newsItems'      => $this->getNewsItems(),
-                'notifications'  => $notifications,
-                'fathom'         => $this->getFathomInfo(),
-                'sportInfo'      => $this->getSportResults(),
-                'myShifts'       => $this->getMyShifts(),
-                'myPocers'       => $this->getMyPocers(),
-                'pocUrl'         => $this->getPocUrl(),
-                'pocUrlOverview' => $this->getPocUrlOverview(),
-                'profilePath'    => $this->getEntityManager()
+                'bookings'           => $this->getBookings(),
+                'calendarItems'      => $this->getCalendarItems(),
+                'wiki'               => $this->getWiki(),
+                'cudi'               => $this->getCudiInfo(),
+                'shop'               => $this->getShopInfo(),
+                'newsItems'          => $this->getNewsItems(),
+                'registrationShifts' => $this->getRegistrationShiftsInfo(),
+                'notifications'      => $notifications,
+                'fathom'             => $this->getFathomInfo(),
+                'sportInfo'          => $this->getSportResults(),
+                'myShifts'           => $this->getMyShifts(),
+                'myPocers'           => $this->getMyPocers(),
+                'pocUrl'             => $this->getPocUrl(),
+                'pocUrlOverview'     => $this->getPocUrlOverview(),
+                'profilePath'        => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
             )
@@ -101,7 +102,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 $behind = 0;
                 if ($currentPlace !== null && $currentPlace > 0) {
                     $firstData = $resultPage['teams'][0];
-                    $behind = round(($firstData->laps + $firstData->position) - ($teamData->laps + $teamData->position), 2);
+                    $behind = round($firstData->laps + $firstData->position - ($teamData->laps + $teamData->position), 2);
                 }
 
                 $returnArray = array(
@@ -366,6 +367,18 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getConfigValue('common.poc'),
                 'pocItem' => $pocItem,
             );
+    }
+
+    /**
+     * @return array
+     */
+    private function getRegistrationShiftsInfo()
+    {
+        return array(
+            'enable' => $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shift.enable_registration_shifts_button_homepage'),
+        );
     }
 
     /**

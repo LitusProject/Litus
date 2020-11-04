@@ -94,7 +94,7 @@ class Invoice extends \Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        return (int) ++$highestInvoiceNb;
+        return $highestInvoiceNb + 1;
     }
 
     /**

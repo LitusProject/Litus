@@ -20,8 +20,8 @@
 
 namespace MailBundle\Controller\Admin;
 
+use Laminas\View\Model\ViewModel;
 use MailBundle\Entity\Message;
-use Zend\View\Model\ViewModel;
 
 /**
  * MessageController

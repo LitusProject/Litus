@@ -23,13 +23,13 @@ namespace CommonBundle\Component\Form;
 use CommonBundle\Component\InputFilter\Factory as InputFilterFactory;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
-use Zend\Form\ElementInterface as ZendElementInterface;
-use Zend\Form\FieldsetInterface as ZendFieldsetInterface;
+use Laminas\Form\ElementInterface as ZendElementInterface;
+use Laminas\Form\FieldsetInterface as ZendFieldsetInterface;
 
 /**
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class Factory extends \Zend\Form\Factory implements ServiceLocatorAwareInterface
+class Factory extends \Laminas\Form\Factory implements ServiceLocatorAwareInterface
 {
     use ServiceLocatorAwareTrait;
 
@@ -52,7 +52,7 @@ class Factory extends \Zend\Form\Factory implements ServiceLocatorAwareInterface
      *
      * @param  array|\Traversable $spec
      * @param  array|object|null  $data
-     * @return \Zend\Form\ElementInterface
+     * @return \Laminas\Form\ElementInterface
      */
     public function create($spec, $data = null)
     {

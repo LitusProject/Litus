@@ -21,11 +21,11 @@
 namespace ApiBundle\Controller;
 
 use CommonBundle\Entity\User\Person;
+use Laminas\Mail\Message;
+use Laminas\View\Model\ViewModel;
 use ShiftBundle\Entity\Shift;
 use ShiftBundle\Entity\Shift\Responsible;
 use ShiftBundle\Entity\Shift\Volunteer;
-use Zend\Mail\Message;
-use Zend\View\Model\ViewModel;
 
 /**
  * ShiftController

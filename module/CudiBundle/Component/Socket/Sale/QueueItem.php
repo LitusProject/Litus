@@ -29,8 +29,8 @@ use CudiBundle\Entity\Sale\Booking;
 use CudiBundle\Entity\Sale\SaleItem;
 use CudiBundle\Entity\User\Person\Sale\Acco as AccoCard;
 use Doctrine\ORM\EntityManager;
+use Laminas\Soap\Client as SoapClient;
 use SecretaryBundle\Entity\Registration;
-use Zend\Soap\Client as SoapClient;
 
 /**
  * QueueItem Object

@@ -23,10 +23,10 @@ namespace CommonBundle\Component\Filter;
 /**
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class StripCarriageReturn extends \Zend\Filter\AbstractFilter
+class StripCarriageReturn extends \Laminas\Filter\AbstractFilter
 {
     /**
-     * Defined by Zend\Filter\FilterInterface
+     * Defined by Laminas\Filter\FilterInterface
      *
      * Returns $value without carriage return control characters
      *

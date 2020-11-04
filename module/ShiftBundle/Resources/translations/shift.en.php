@@ -71,6 +71,9 @@ return array(
     'Friday'    => 'Friday',
     'Saturday'  => 'Saturday',
 
+    'Final Signup' => 'Final Signup',
+    'Final Signout' => 'Final Signout',
+
     'on the event'                                                                                                                                                                                                      => 'on the event',
     'You have currently <span class="label label-info">%unPayedShifts%</span> unpayed shift(s). You can get your reward from the vice-preases at \'blok 6\'. This reward will expire at the end of this academic year.' => 'You have currently <span class="label label-info">%unPayedShifts%</span> unpayed shift(s). You can get your reward from the vice-preases at \'blok 6\'. This reward will expire at the end of this academic year.',
     'You haven\'t done any shifts this year yet. Sign up for a shift, have fun with the others while working and get some coins in return!'                                                                             => 'You haven\'t done any shifts this year yet. Sign up for a shift, have fun with the others while working and get some coins in return!',
@@ -81,9 +84,10 @@ return array(
     'I have read this'                                                                                                                                                                                                  => 'I have read this',
     'I do not agree'                                                                                                                                                                                                    => 'I do not agree',
     'I did not read this'                                                                                                                                                                                               => 'I did not read this',
-    'You need to collect <span class="label label-success">%pointsToNextRanking%</span> more point(s) to get the next ranking.' => 'You need to collect <span class="label label-success">%pointsToNextRanking%</span> more point(s) to get the next ranking.',
-    'Points' => 'Points',
-    'Point' => 'Point',
-    'My Reservations' => 'My Reservations',
-    'Timeslot registration' => 'Timeslot registration',
+    'You need to collect <span class="label label-success">%pointsToNextRanking%</span> more point(s) to get the next ranking.'                                                                                         => 'You need to collect <span class="label label-success">%pointsToNextRanking%</span> more point(s) to get the next ranking.',
+    'Points'                                                                                                                                                                                                            => 'Points',
+    'Point'                                                                                                                                                                                                             => 'Point',
+    'My Reservations'                                                                                                                                                                                                   => 'My Reservations',
+    'Timeslot Registration'                                                                                                                                                                                             => 'Timeslot Registration',
+    'By signing up for a timeslot, you give consent to your information being used for contact tracing.'                                                                                                                => 'By signing up for a timeslot, you give consent to your information being used for contact tracing.',
 );

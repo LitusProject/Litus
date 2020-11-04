@@ -18,6 +18,7 @@
 
             <table class="full_width manage">
                 <tr>
+                    <th>Final Reservation Time</th>
                     <th>Start Time</th>
                     <th>End Time</th>
                     <th>Remarks</th>
@@ -29,6 +30,7 @@
         <div id="default_page">
             <table class="full_width manage">
                 <tr>
+                    <th>Final Reservation Time</th>
                     <th>Start Time</th>
                     <th>End Time</th>
                     <th>Remarks</th>
@@ -38,6 +40,7 @@
 
                 {% for session in paginator %}
                     <tr class="item item-{{ session.getId() }}">
+                        <td>{{ session.getFinalReservationDate().format('d/m/Y H:i') }}</td>
                         <td>{{ session.getStartDate().format('d/m/Y H:i') }}</td>
                         <td>{{ session.getEndDate().format('d/m/Y H:i') }}</td>
                         <td>{{ session.getRemarks() }}</td>
@@ -77,7 +80,8 @@
                         {% if hasAccess('shop_admin_shop_reservation', 'salessession') %}
                         actionTD.append('<a href="{{ url('shop_admin_shop_reservation', {"action": "salessession"}) }}' + this.id + '" class="view">Reservations</a>');
                         {% endif %}
-                        row.append('<td>' + this.start_date + '</td>')
+                        row.append('<td>' + this.final_reservation_date + '</td>')
+                            .append('<td>' + this.start_date + '</td>')
                             .append('<td>' + this.end_date + '</td>')
                             .append('<td>' + this.remarks + '</td>')
                             .append($('<td>')

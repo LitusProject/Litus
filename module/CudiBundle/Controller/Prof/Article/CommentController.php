@@ -23,7 +23,7 @@ namespace CudiBundle\Controller\Prof\Article;
 use CudiBundle\Entity\Article;
 use CudiBundle\Entity\Comment\ArticleMap;
 use CudiBundle\Entity\Comment\Comment;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * CommentController

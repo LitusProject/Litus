@@ -22,11 +22,11 @@ namespace ShopBundle\Controller\Admin;
 
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use Laminas\Http\Headers;
+use Laminas\View\Model\ViewModel;
 use ShopBundle\Entity\Reservation;
 use ShopBundle\Entity\Reservation\Permission as ReservationPermission;
 use ShopBundle\Entity\Session as SalesSession;
-use Zend\Http\Headers;
-use Zend\View\Model\ViewModel;
 
 /**
  * ReservationController
@@ -146,11 +146,12 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             ->getResult();
         $file = new CsvFile();
 
-        $heading = array('Person', 'Product', 'Amount','Total Price', 'Picked Up');
+        $heading = array('Person', 'r-Number', 'Product', 'Amount','Total Price', 'Picked Up');
         $results = array();
         foreach ($items as $item) {
             $results[] = array(
                 $item->getPerson()->getFullName(),
+                $item->getPerson()->getUniversityIdentification(),
                 $item->getProduct()->getName(),
                 (string) $item->getAmount(),
                 (string) $item->getAmount() * $item->getProduct()->getSellPrice(),

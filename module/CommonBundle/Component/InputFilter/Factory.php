@@ -20,7 +20,7 @@
 
 namespace CommonBundle\Component\InputFilter;
 
-class Factory extends \Zend\InputFilter\Factory
+class Factory extends \Laminas\InputFilter\Factory
 {
     /**
      * {@inheritdoc}

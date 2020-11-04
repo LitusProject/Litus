@@ -150,8 +150,12 @@ class Vacancy extends \BrBundle\Entity\Company\Request
 
             case 'edit reject':
                 $this->getJob()->approve();
-                if (($editJob = $this->getEditJob())!== null)
+
+                $editJob = $this->getEditJob();
+                if ($editJob !== null) {
                     $editJob->remove();
+                }
+
                 break;
 
             case 'delete':

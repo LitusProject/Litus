@@ -27,7 +27,7 @@ use CudiBundle\Entity\Article\Internal;
 use CudiBundle\Entity\Article\SubjectMap;
 use CudiBundle\Entity\Comment\ArticleMap as CommentArticleMap;
 use CudiBundle\Entity\Log\Article\SubjectMap\Added as SubjectMapAddedLog;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * ArticleController

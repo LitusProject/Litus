@@ -22,7 +22,7 @@ namespace CommonBundle\Controller;
 
 use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil;
 use CommonBundle\Entity\General\AcademicYear;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * PraesidiumController

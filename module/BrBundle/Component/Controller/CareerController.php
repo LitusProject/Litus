@@ -20,7 +20,7 @@
 
 namespace BrBundle\Component\Controller;
 
-use Zend\Mvc\MvcEvent;
+use Laminas\Mvc\MvcEvent;
 
 /**
  * We extend the CommonBundle controller.
@@ -32,7 +32,7 @@ class CareerController extends \CommonBundle\Component\Controller\ActionControll
     /**
      * Execute the request.
      *
-     * @param  \Zend\Mvc\MvcEvent $e The MVC event
+     * @param  \Laminas\Mvc\MvcEvent $e The MVC event
      * @return array
      * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
      */

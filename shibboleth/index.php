@@ -27,7 +27,7 @@ chdir(dirname(__DIR__));
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$application = Zend\Mvc\Application::init(include 'config/application.config.php');
+$application = Laminas\Mvc\Application::init(include 'config/application.config.php');
 $em = $application->getServiceManager()->get('doctrine.entitymanager.orm_default');
 
 $shibbolethPersonKey = $em->getRepository('CommonBundle\Entity\General\Config')

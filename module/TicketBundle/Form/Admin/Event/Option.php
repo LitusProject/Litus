@@ -20,7 +20,7 @@
 
 namespace TicketBundle\Form\Admin\Event;
 
-use Zend\InputFilter\InputFilterProviderInterface;
+use Laminas\InputFilter\InputFilterProviderInterface;
 
 /**
  * Add Option

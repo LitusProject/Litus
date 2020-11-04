@@ -105,6 +105,37 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(
             array(
                 'type'     => 'datetime',
+                'name'     => 'final_signin_date',
+                'label'    => 'Final Signin Date',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name'    => 'DateCompare',
+                                'options' => array(
+                                    'first_date' => 'now',
+                                    'last_date'  => 'start_date',
+                                    'format'     => 'd/m/Y H:i',
+                                ),
+                            ),
+                            array(
+                                'name'    => 'DateCompare',
+                                'options' => array(
+                                    'first_date' => 'now',
+                                    'last_date'  => 'signout_date',
+                                    'format'     => 'd/m/Y H:i',
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'datetime',
                 'name'     => 'signout_date',
                 'label'    => 'Sign out Date',
                 'required' => true,
@@ -226,6 +257,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type'  => 'checkbox',
                 'name'  => 'members_only',
                 'label' => 'Members only',
+            )
+        );
+
+        $this->add(
+            array(
+                'type'  => 'checkbox',
+                'name'  => 'members_visible',
+                'label' => 'Show attendees',
+                'required' => true,
             )
         );
 
@@ -386,5 +426,4 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         return $rolesArray;
     }
-
 }

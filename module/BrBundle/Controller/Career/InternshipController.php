@@ -21,7 +21,7 @@
 namespace BrBundle\Controller\Career;
 
 use BrBundle\Entity\Company\Job;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * InternshipController

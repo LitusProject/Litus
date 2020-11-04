@@ -24,9 +24,9 @@ use CudiBundle\Entity\Article;
 use CudiBundle\Entity\Article\Internal;
 use CudiBundle\Entity\Article\SubjectMap;
 use CudiBundle\Entity\Prof\Action;
+use Laminas\View\Model\ViewModel;
 use SyllabusBundle\Entity\Subject;
 use SyllabusBundle\Entity\Subject\ProfMap;
-use Zend\View\Model\ViewModel;
 
 /**
  * ArticleController
@@ -147,7 +147,6 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 'subject' => $subject,
             )
         );
-        $formData = null;
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -211,7 +210,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 'form'           => $form,
                 'subject'        => $subject,
                 'isPost'         => $this->getRequest()->isPost(),
-                'isInternalPost' => isset($formData) && $formData['internal'],
+                'isInternalPost' => $this->getRequest()->isPost() ? $form->getData()['internal'] : false,
             )
         );
     }

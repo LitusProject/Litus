@@ -67,7 +67,7 @@ class Contract extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        return (int) ++$highestContractNb;
+        return $highestContractNb + 1;
     }
 
     /**

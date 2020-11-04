@@ -21,10 +21,10 @@
 namespace CommonBundle\Component\Cache\ServiceManager;
 
 use Interop\Container\ContainerInterface;
-use Zend\Cache\Storage\StorageInterface;
-use Zend\Cache\StorageFactory as ZendStorageFactory;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\Cache\Storage\StorageInterface;
+use Laminas\Cache\StorageFactory as ZendStorageFactory;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Factory to instantiate the configured cache storage adapter.
@@ -52,6 +52,6 @@ class StorageFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        return $this($serviceLocator, 'Zend\Cache\Storage\StorageInterface');
+        return $this($serviceLocator, 'Laminas\Cache\Storage\StorageInterface');
     }
 }

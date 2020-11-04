@@ -23,8 +23,8 @@ namespace CommonBundle\Controller\Admin;
 use CommonBundle\Component\Version\Version;
 use DateInterval;
 use DateTime;
+use Laminas\View\Model\ViewModel;
 use PackageVersions\Versions;
-use Zend\View\Model\ViewModel;
 
 /**
  * IndexController
@@ -86,7 +86,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     private function getVersions()
     {
         preg_match('/(\d.\d.\d)/', phpversion(), $phpVersion);
-        preg_match('/(\d.\d.\d)/', Versions::getVersion('zendframework/zend-mvc'), $zfVersion);
+        preg_match('/(\d.\d.\d)/', Versions::getVersion('laminas/laminas-mvc'), $zfVersion);
 
         return array(
             'php'   => $phpVersion[0],

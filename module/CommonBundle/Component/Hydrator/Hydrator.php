@@ -27,11 +27,11 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use CommonBundle\Component\Util\AcademicYear;
 use DateTime;
+use Laminas\Hydrator\Filter\FilterComposite;
+use Laminas\Hydrator\HydratorInterface;
 use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
 use RuntimeException;
-use Zend\Hydrator\Filter\FilterComposite;
-use Zend\Hydrator\HydratorInterface;
 
 /**
  * A common superclass for hydrators.

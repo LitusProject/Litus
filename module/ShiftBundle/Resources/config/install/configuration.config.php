@@ -184,4 +184,14 @@ U bent verwijderd van de volgende shift door een administrator:
         'value'       => '0',
         'description' => 'Enables the shifts points systems. Points are a non-payable fictive measurement to build the shift ranking. When enabling the ranking will no longer be based on the amount of shifts, but on the points per shift.',
     ),
+    array(
+        'key'         => 'shift.enable_registration_shifts_button_homepage',
+        'value'       => '1',
+        'description' => 'Enable the registration shifts button on the homepage',
+    ),
+    array(
+        'key'         => 'shift.weekly_change_interval',
+        'value'       => 'P1W',
+        'description' => 'Set how far the weekly change goes back',
+    )
 );

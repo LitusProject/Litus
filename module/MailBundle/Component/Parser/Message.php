@@ -169,7 +169,7 @@ class Message
 
                         $filename = $this->getPartHeaders($part)[$header];
                         if (substr($filename, 0, 1) == '<' && substr($filename, -1) == '>') {
-                            $filename = substr($filename, 1, (strlen($filename) - 2));
+                            $filename = substr($filename, 1, strlen($filename) - 2);
                         }
 
                         $attachment = new Attachment(
@@ -265,7 +265,7 @@ class Message
         return substr(
             $this->message,
             $part['starting-pos-body'],
-            ($part['ending-pos-body'] - $part['starting-pos-body'])
+            $part['ending-pos-body'] - $part['starting-pos-body']
         );
     }
 

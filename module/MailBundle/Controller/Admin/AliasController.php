@@ -20,8 +20,8 @@
 
 namespace MailBundle\Controller\Admin;
 
+use Laminas\View\Model\ViewModel;
 use MailBundle\Entity\Alias;
-use Zend\View\Model\ViewModel;
 
 class AliasController extends \MailBundle\Component\Controller\AdminController
 {
