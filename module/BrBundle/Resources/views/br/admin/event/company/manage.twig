@@ -1,7 +1,6 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-    {% include 'br/admin/event/partials/navigation.twig' %}
     {% include 'br/admin/event/partials/eventNavigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
@@ -9,13 +8,13 @@
     <div class="flashmessage success_message full_width company_removed_success hide">
         <div class="title">Success</div>
         <div class="content">
-            <p>The event was successfully removed!</p>
+            <p>The company was successfully removed!</p>
         </div>
     </div>
     <div class="flashmessage error_message full_width company_removed_error hide">
         <div class="title">Error</div>
         <div class="content">
-            <p>An error occurred while trying to delete an event.</p>
+            <p>An error occurred while trying to delete a company.</p>
         </div>
     </div>
     <div id="controller_action">
@@ -43,7 +42,7 @@
                                 <a href="{{  url('br_admin_event_company', {"action": "edit", "event": event.getId()}) }}" class="edit">Edit</a>
                             {% endif %}
                             {% if hasAccess('br_admin_event_company', 'delete') %}
-                                <a href="#" class="delete" data-id="{{  companyMap.getId() }}">Delete</a>
+                                <a href="#" class="delete" data-id="{{  companyMap.getId() }}" data-name="{{ companyMap.getCompany().getName() }}">Delete</a>
                             {% endif %}
                         </td>
                     </tr>
@@ -59,7 +58,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <span>Litus Admin</span>
-                    /Delete Event
+                    /Delete Company
                 </div>
                 <div class="modal-body">
                     <p>
@@ -91,7 +90,7 @@
 
             e.preventDefault();
             var removeCompany = $('#removeCompany');
-            removeCompany.find('.eventTitle').html($(this).data('title'));
+            removeCompany.find('.companyTitle').html($(this).data('name'));
             var id = $this.data('id');
             removeCompany.find('.delete').unbind('click').click(function () {
                 $.post('{{ url('br_admin_event_company', {"action": "delete", "event": event.getId()})}}' + id, function (data) {

@@ -1,5 +1,7 @@
-<header class="controller_sub_header">
-    <nav class="controller_sub_nav">
+<header id="controller_header">
+    <div class="title"><span class="event">Corporate Relations Event: {{ event.getTitle() }}</span></div>
+
+    <nav id="controller_nav">
         <ul>
             {% if hasAccess('br_admin_event', 'edit') %}
                 <li><a {% if 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_event', {"action": "edit", "id": event.getId()}) }}">Edit Event</a></li>
@@ -9,6 +11,9 @@
             {% endif %}
             {% if hasAccess('br_admin_event_location', 'view') %}
                 <li><a {% if 'view' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_event_location', {"action": "view", "event": event.getId()}) }}">Location</a></li>
+            {% endif %}
+            {% if hasAccess('br_admin_event_subscription', 'overview') %}
+                <li><a {% if 'overview' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_event_subscription', {"action": "overview", "event": event.getId()}) }}">Subscription</a></li>
             {% endif %}
         </ul>
     </nav>

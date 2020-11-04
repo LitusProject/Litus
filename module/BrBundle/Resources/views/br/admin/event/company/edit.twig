@@ -17,69 +17,52 @@
             <p>An error occurred while trying to delete the company.</p>
         </div>
     </div>
-    <div>
-        <h1>Participants</h1>
-        {% import 'admin/partials/form.twig' as forms %}
-        {{ forms.renderForm(form) }}
-    </div>
 
-{#    <br>#}
+    <h1>Participants</h1>
+    {{ forms.renderForm(companyMapForm) }}
 
-{#    <table class="manage">#}
-{#        <tr>#}
-{#            <th>Name</th>#}
-{#            <th width="90px">Actions</th>#}
-{#        </tr>#}
-{#        {% for eventCompanyMap in eventCompanyMaps %}#}
-{#            {% if '' != eventCompanyMap.getCompany().getName() %}#}
-{#                <tr class="item item-{{ eventCompanyMap.getId() }}">#}
-{#                    <td>{{ eventCompanyMap.getCompany().getName() }}</td>#}
-{#                    <td>#}
-{#                        {% if hasAccess('br_admin_event', 'deleteAttendee') %}#}
-{#                            <a href="#" data-id="{{ eventCompanyMap.getCompany().getId() }}" data-name="{{ eventCompanyMap.getCompany().getName() }}" class="delete">Delete</a>#}
-{#                        {% endif %}#}
-{#                    </td>#}
-{#                </tr>#}
-{#            {% endif %}#}
-{#        {% endfor %}#}
-{#    </table>#}
+    <table class="manage">
+        <tr>
+        <th>Name</th>
+        <th width="90px">Actions</th>
+        </tr>
+            {% for eventCompanyMap in eventCompanyMaps %}
+            {% if '' != eventCompanyMap.getCompany().getName() %}
+        <tr class="item item-{{ eventCompanyMap.getId() }}">
+        <td>{{ eventCompanyMap.getCompany().getName() }}</td>
+        <td>
+            {% if hasAccess('br_admin_event', 'deleteAttendee') %}
+        <a href="#" data-id="{{ eventCompanyMap.getCompany().getId() }}" data-name="{{ eventCompanyMap.getCompany().getName() }}" class="delete">Delete</a>
+            {% endif %}
+        </td>
+        </tr>
+            {% endif %}
+            {% endfor %}
+    </table>
 
     <aside>
         {% if hasAccess('br_admin_event', 'edit') %}
             <div class="sidebox">
-                <div class="title">Edit Event</div>
+                <div class="title">Event info</div>
                 <div class="content">
                     <p>
-                        <i>Please hit the link below to edit the event!</i>
+                        <i>Please hit the link below to edit the Event info!</i>
                     </p>
                     <p>
-                        <a href="{{ url('br_admin_event', {"action": "edit", "id": event.getId()}) }}">&rarr; Edit Event</a>
+                        <a href="#" class="companies">&rarr; Edit event</a>
                     </p>
                 </div>
             </div>
         {% endif %}
-        {% if hasAccess('br_admin_event_location', 'manage') %}
+        {% if hasAccess('br_admin_event_location', 'index') %}
             <div class="sidebox">
-                <div class="title">Manage Location</div>
+                <div class="title">Location overview</div>
                 <div class="content">
                     <p>
-                        <i>Please hit the link below to manage the location at the event!</i>
+                        <i>Please hit the link below to view the location layout!</i>
                     </p>
                     <p>
-                        <a href="{{ url('br_admin_event_location', {"action": "manage", "event": event.getId()}) }}">&rarr; Manage location</a>
-                    </p>
-                </div>
-            </div>
-        {% endif %}
-        {% if hasAccess('br_admin_event_company', 'add') %}
-            <div class="sidebox">
-                <div class="title">Edit Event</div>
-                <div class="content">
-                    <p>
-                        <i>Please hit the link below to add companies!</i>
-                    </p>
-                    <p>
-                        <a href="{{ url('br_admin_event_company', {"action": "add", "event": event.getId()}) }}">&rarr; Add companies</a>
+                        <a href="#" class="map">&rarr; See Location</a>
                     </p>
                 </div>
             </div>

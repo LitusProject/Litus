@@ -202,6 +202,22 @@ return array(
                 ),
             ),
         ),
+        'br_admin_event_subscription' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/br/event/:event/subscription[/:action[/:id][/page/:page]][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'event'  => '[0-9]+',
+                    'page'   => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_admin_event_subscription',
+                    'action'     => 'overview',
+                ),
+            ),
+        ),
         'br_admin_invoice' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -573,6 +589,7 @@ return array(
         'br_admin_event'        => 'BrBundle\Controller\Admin\EventController',
         'br_admin_event_company'=> 'BrBundle\Controller\Admin\Event\CompanyController',
         'br_admin_event_location'=> 'BrBundle\Controller\Admin\Event\LocationController',
+        'br_admin_event_subscription'=> 'BrBundle\Controller\Admin\Event\SubscriptionController',
         'br_admin_order'        => 'BrBundle\Controller\Admin\OrderController',
         'br_admin_product'      => 'BrBundle\Controller\Admin\ProductController',
         'br_admin_invoice'      => 'BrBundle\Controller\Admin\InvoiceController',
