@@ -301,6 +301,15 @@
                                     <dd>{{ shift.getUnit().getName() }}</dd>
                                 </dl>
                             </div>
+                            {% if 0 != shift.getNbRegistered() and shift.isMembersVisible() %}
+                                <dl>
+                                    <dt>{{ translate('Registered') }}</dt>
+
+                                    {% for registered in shift.getRegistered() %}
+                                        <dd>{{ registered.getPerson().getFullName() }}</dd>
+                                    {% endfor %}
+                                </dl>
+                            {% endif %}
                         </div>
                         <dl>
                             <dt>{{ translate('Description') }}</dt>

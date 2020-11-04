@@ -18,26 +18,20 @@
  * @license http://litus.cc/LICENSE
  */
 
-use Twig\Extension\DebugExtension;
-
-if (getenv('APPLICATION_ENV') != 'development') {
-    return array(
-        'zend_twig' => array(
-            'environment' => array(
-                'cache' => 'data/cache/twig',
-            ),
-        ),
-    );
-}
-
 return array(
-    'zend_twig' => array(
-        'environment' => array(
-            'cache' => 'data/cache/twig',
-            'debug' => true,
-        ),
-        'extensions' => array(
-            DebugExtension::class,
-        ),
-    ),
+    'Activiteiten' => 'Activiteiten',
+    'Bedrijvenrelaties' => 'Bedrijvenrelaties',
+    'Communicatie' => 'Communicatie',
+    'Cultuur' => 'Cultuur',
+    'Cursusdienst' => 'Cursusdienst',
+    'Development' => 'Development',
+    'Fakbar' => 'Fakbar',
+    'Groep 5' => 'Groep 5',
+    'Internationaal' => 'Internationaal',
+    'IT' => 'IT',
+    'Logistiek' => 'Logistiek',
+    'Lustrum' => 'Lustrum',
+    'Onderwijs' => 'Onderwijs',
+    'Sport' => 'Sport',
+    'Theokot' => 'Theokot',
 );

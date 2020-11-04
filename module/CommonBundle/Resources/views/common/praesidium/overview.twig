@@ -26,7 +26,7 @@
     </div>
 
     {% for unit in units %}
-        <h3>{{ unit['unit'].getName() }}{% if activeAcademicYear.getCode() == currentAcademicYear.getCode() %}<small>&mdash;{{ hideEmail('<a href="mailto:' ~ unit['unit'].getMail() ~ '">' ~ unit['unit'].getMail() ~ '</a>') }}</small>{% endif %}</h3>
+        <h3>{{ translate(unit['unit'].getName()) }}{% if activeAcademicYear.getCode() == currentAcademicYear.getCode() %}<small>&mdash;{{ hideEmail('<a href="mailto:' ~ unit['unit'].getMail() ~ '">' ~ unit['unit'].getMail() ~ '</a>') }}</small>{% endif %}</h3>
         <div class="row">
             {% for member in unit['members'] %}
                 <div class="col-xs-6 col-md-3">

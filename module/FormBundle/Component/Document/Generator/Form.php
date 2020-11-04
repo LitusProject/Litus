@@ -57,18 +57,23 @@ class Form extends \CommonBundle\Component\Document\Generator\Csv
 
         $results = array();
         foreach ($entries as $entry) {
-            $result = array($entry->getId(), $entry->getPersonInfo()->getFirstName() . ' ' . $entry->getPersonInfo()->getLastName(), $entry->getCreationTime()->format('d/m/Y H:i'));
+            $result = array(
+                $entry->getId(),
+                $entry->getPersonInfo()->getFirstName() . ' ' . $entry->getPersonInfo()->getLastName(),
+                $entry->getCreationTime()->format('d/m/Y H:i')
+            );
 
             $result[] = $entry->getPersonInfo()->getUsername();
 
-            if (!($status = $entry->getPersonInfo()->getOrganizationStatus($academicYear))) {
+            $status = $entry->getPersonInfo()->getOrganizationStatus($academicYear);
+            if ($status === null) {
                 $status = '';
             }
-
 
             if (!is_string($status)) {
                 $status = $status->getStatus();
             }
+
             $result[] = $status;
 
             if ($viewerMap->isMail()) {
@@ -85,6 +90,7 @@ class Form extends \CommonBundle\Component\Document\Generator\Csv
                     $result[] = '';
                 }
             }
+
             $results[] = $result;
         }
 

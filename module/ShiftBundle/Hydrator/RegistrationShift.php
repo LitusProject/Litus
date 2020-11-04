@@ -27,6 +27,7 @@ class RegistrationShift extends \CommonBundle\Component\Hydrator\Hydrator
     private static $stdKeys = array(
         'nb_registered',
         'members_only',
+        'members_visible',
         'name',
         'description',
         'handled_on_event',
@@ -43,9 +44,9 @@ class RegistrationShift extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
         $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
-        $data['visible_date'] = $object->getVisibleDate()?$object->getVisibleDate()->format('d/m/Y H:i'):"";
-        $data['final_signin_date'] = $object->getFinalSigninDate()?$object->getFinalSigninDate()->format('d/m/Y H:i'):"";
-        $data['signout_date'] = $object->getSignoutDate()?$object->getSignoutDate()->format('d/m/Y H:i'):"";
+        $data['visible_date'] = $object->getVisibleDate() ? $object->getVisibleDate()->format('d/m/Y H:i') : '';
+        $data['final_signin_date'] = $object->getFinalSigninDate() ? $object->getFinalSigninDate()->format('d/m/Y H:i') : '';
+        $data['signout_date'] = $object->getSignoutDate() ? $object->getSignoutDate()->format('d/m/Y H:i') : '';
         $data['unit'] = $object->getUnit()->getId();
         $data['event'] = $object->getEvent() === null ? '' : $object->getEvent()->getId();
         $data['location'] = $object->getLocation()->getId();
@@ -80,9 +81,9 @@ class RegistrationShift extends \CommonBundle\Component\Hydrator\Hydrator
         if ($object->canEditDates()) {
             $object->setStartDate(self::loadDateTime($data['start_date']))
                 ->setEndDate(self::loadDateTime($data['end_date']))
-            ->setVisibleDate(self::loadDateTime($data['visible_date']))
+                ->setVisibleDate(self::loadDateTime($data['visible_date']))
                 ->setSignoutDate(self::loadDateTime($data['signout_date']))
-            ->setFinalSigninDate(self::loadDateTime($data['final_signin_date']));
+                ->setFinalSigninDate(self::loadDateTime($data['final_signin_date']));
         }
 
         $editRoles = array();

@@ -1,4 +1,4 @@
-Litus [![Build Status](https://dev.azure.com/LitusProject/Litus/_apis/build/status/LitusProject.Litus?branchName=master)](https://dev.azure.com/LitusProject/Litus/_build/latest?definitionId=4&branchName=master)
+Litus
 =====
 
 <p align="center">

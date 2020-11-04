@@ -306,6 +306,4 @@ class RegistrationShift extends \CommonBundle\Component\Doctrine\ORM\EntityRepos
 
         return array_values($shifts);
     }
-
-
 }

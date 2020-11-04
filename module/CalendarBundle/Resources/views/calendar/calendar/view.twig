@@ -21,6 +21,17 @@
                 </form>
             </div>
         {% endif %}
+        {% if hasAccess('registration_shift', 'index') and hasRegistrationShifts %}
+            <div class="pull-right" style="line-height: 50px">
+                <form action="{{ url('registration_shift') }}" method="post">
+                    <input type="hidden" name="event" value="{{ event.getId() }}">
+                    <button type="submit" class="btn btn-default">
+                        <span class="glyphicon glyphicon-tasks"></span>
+                        {{ translate('Timeslots') }}
+                    </button>
+                </form>
+            </div>
+        {% endif %}
         <h2>{{ translate('Calendar') }}</h2>
     </div>
 

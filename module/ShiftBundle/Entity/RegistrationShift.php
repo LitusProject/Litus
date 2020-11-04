@@ -188,6 +188,13 @@ class RegistrationShift
     private $membersOnly;
 
     /**
+     * @var boolean If the members of this timeslot can be seen by members
+     *
+     * @ORM\Column(name="members_visible",type="boolean",options={"default" = false})
+     */
+    private $membersVisible;
+
+    /**
      * @param Person       $creationPerson
      * @param AcademicYear $academicYear
      */
@@ -402,7 +409,6 @@ class RegistrationShift
             ->findAllActiveByPerson($registered);//TODO: Create
 
         foreach ($shifts as $shift) {
-
             if ($shift === $this) {
                 return false;
             }
@@ -412,7 +418,7 @@ class RegistrationShift
             }
         }
 
-        if ($this->getFinalSigninDate()!==null && $this->getFinalSigninDate() < new DateTime()) {
+        if ($this->getFinalSigninDate() !== null && $this->getFinalSigninDate() < new DateTime()) {
             return false;
         }
 
@@ -632,4 +638,22 @@ class RegistrationShift
     {
         return $this->membersOnly;
     }
+
+    /**
+     * @return bool
+     */
+    public function isMembersVisible(): bool
+    {
+        return $this->membersVisible;
+    }
+
+    /**
+     * @param bool $membersVisible
+     */
+    public function setMembersVisible(bool $membersVisible)
+    {
+        $this->membersVisible = $membersVisible;
+    }
+
+
 }
