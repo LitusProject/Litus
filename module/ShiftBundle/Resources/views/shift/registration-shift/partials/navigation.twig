@@ -1,0 +1,9 @@
+<ul class="nav nav-tabs hidden-xs">
+    {% if hasAccess('registration_shift', 'index') %}
+        <li {% if getParam('action') == 'index' %}class="active"{% endif %}>
+            <a href="{{ url('registration_shift', {'action': 'index'}) }}">
+                {{ translate('Registration Shifts') }}
+            </a>
+        </li>
+    {% endif %}
+</ul>

@@ -1,0 +1,32 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{{ translate('Registration Shifts') }}</h1>
+    </div>
+
+    {% include 'shift/registration-shift/partials/navigation.twig' %}
+
+    <div style="text-align: justify;">
+        {{ translate('Here you can see some statistics about registration shifts you have done before.') }}
+    </div>
+    <br>
+
+    {% if shiftsAsRegistered %}
+        <div style="text-align: justify;">
+            {{ translate('You have done your last shift on %lastShift%.')|replace({'%lastShift%': lastShift}) }}
+        </div>
+        <br>
+        <dl class="dl-horizontal">
+            {% for unit in shiftsAsRegistered %}
+                <dt>{{ unit['unitName'] }}</dt>
+                <dd>{{ unit['count'] }}</dd>
+            {% endfor %}
+
+            <dt>{{ translate('Total') }}</dt>
+            <dd>{{ totalAsRegistered }}</dd>
+        </dl>
+    {% else %}
+        {{ translate('You haven\'t done any registration shifts this year yet. Sign up for a registration shift!')}}
+    {% endif %}
+{% endblock %}

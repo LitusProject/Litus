@@ -31,6 +31,10 @@ return array(
                     'action' => 'index',
                     'title'  => 'Ranking',
                 ),
+                'shift_admin_shift_weekly_change' => array(
+                    'action' => 'index',
+                    'title'  => 'Weekly Change',
+                ),
                 'shift_admin_shift' => array(
                     'action' => 'manage',
                     'title'  => 'Shifts',
