@@ -26,4 +26,19 @@ class Subscription extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->setParameter('event', $event->getId())
             ->getQuery();
     }
+
+    public function findByQR(string $qrCode)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('s')
+            ->from('BrBundle\Entity\Event\Subscription', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('s.qr_code', ':qr_code')
+                )
+            )
+            ->setParameter('qr_code', $qrCode)
+            ->getQuery()
+            ->getResult();
+    }
 }

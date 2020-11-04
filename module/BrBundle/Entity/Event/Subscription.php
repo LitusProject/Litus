@@ -3,9 +3,9 @@
 
 namespace BrBundle\Entity\Event;
 
-use BrBundle\Entity\Company;
 use BrBundle\Entity\Event;
 use Doctrine\ORM\Mapping as ORM;
+use function Monad\Either\tryCatch;
 
 /**
  * Subscription
@@ -129,6 +129,18 @@ class Subscription
      *
      */
     private $consent;
+
+    /**
+     * Subscription constructor. It generates a random 20 hexadecimal characters qr code
+     */
+    public function __construct()
+    {
+        try {
+            $this->qrCode = bin2hex(random_bytes(10));
+        } catch (\Exception $e) {
+            echo "Something went wrong";
+        }
+    }
 
     /**
      * @return int

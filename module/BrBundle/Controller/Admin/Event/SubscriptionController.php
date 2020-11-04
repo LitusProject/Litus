@@ -78,6 +78,43 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
+    public function addAction()
+    {
+
+        $form = $this->getForm('br_event_subscription_add');
+
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->getRequest()->getPost());
+
+            if ($form->isValid()) {
+                $this->getEntityManager()->persist(
+                    $form->hydrateObject()
+                );
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The Subscription was succesfully created!'
+                );
+
+                $this->redirect()->toRoute(
+                    'br_admin_event_subscription',
+                    array(
+                        'action' => 'overview',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
+
     public function editAction()
     {
         $subscription = $this->getSubscriptionEntity();
