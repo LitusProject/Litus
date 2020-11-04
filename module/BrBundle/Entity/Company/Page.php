@@ -68,6 +68,14 @@ class Page
     private $years;
 
     /**
+     * @var boolean Whether or not this is company should be displayed on the event page
+     * (temporary remove after internship fair 20-21)
+     *
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $atEvent;
+
+    /**
      * @param Company $company The company
      */
     public function __construct(Company $company)
@@ -102,7 +110,7 @@ class Page
 
     /**
      * @param  string $description
-     * @return \BrBundle\Entity\Company\Page
+     * @return Page
      */
     public function setDescription($description)
     {
@@ -136,11 +144,35 @@ class Page
 
     /**
      * @param  array $years Sets the years in which this page existed.
-     * @return \BrBundle\Entity\Company\Page This
+     * @return Page This
      */
     public function setYears(array $years)
     {
         $this->years = new ArrayCollection($years);
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isAtEvent()
+    {
+        if ($this->atEvent === null) {
+            return false;
+        } else {
+            return $this->atEvent;
+        }
+    }
+
+    /**
+     * @param boolean $atEvent Set whether or not this company should be displayed on the event page
+     *
+     * @return Page This
+     */
+    public function setAtEvent($atEvent)
+    {
+        $this->atEvent = $atEvent;
 
         return $this;
     }
