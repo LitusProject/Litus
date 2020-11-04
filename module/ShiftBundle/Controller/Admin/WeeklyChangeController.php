@@ -81,8 +81,7 @@ class WeeklyChangeController extends \CommonBundle\Component\Controller\ActionCo
                         array_push($oldVolunteers, $volunteer['id']);
                         //check which ranking the person IS in
                         $isLast = !isset($rankingCriteria[$i + 1]);
-                        if ($volunteer['resultCount'] >= $rankingCriteria[$i]['limit'] && ($isLast || $volunteer['resultCount'] < $rankingCriteria[$i + 1]['limit'])
-                            && $volunteerThen['resultCount'] < $rankingCriteria[$i]['limit']) {
+                        if ($volunteer['resultCount'] >= $rankingCriteria[$i]['limit'] && ($isLast || $volunteer['resultCount'] < $rankingCriteria[$i + 1]['limit'])) {
 
                             //check which ranking the person WAS in
                             $previous_i = null;
@@ -101,7 +100,7 @@ class WeeklyChangeController extends \CommonBundle\Component\Controller\ActionCo
                                 'person' => $person,
                                 'resultCount' => $volunteer['resultCount'],
                                 'rank' => $rankingCriteria[$i]['name'],
-                                'rankThen' => $previous_i?$rankingCriteria[$previous_i]['name']:"none",
+                                'rankThen' => ($previous_i===null)?"none":$rankingCriteria[$previous_i+1]['name'],
                                 'resultCountThen' => $volunteerThen['resultCount'],
                             );
                         }
@@ -109,8 +108,7 @@ class WeeklyChangeController extends \CommonBundle\Component\Controller\ActionCo
                 }
                 if (!in_array($volunteer['id'],$oldVolunteers)){
                     $isLast = !isset($rankingCriteria[$i + 1]);
-                    if ($volunteer['resultCount'] >= $rankingCriteria[$i]['limit'] && ($isLast || $volunteer['resultCount'] < $rankingCriteria[$i + 1]['limit'])
-                        && $volunteerThen['resultCount'] < $rankingCriteria[$i]['limit']) {
+                    if ($volunteer['resultCount'] >= $rankingCriteria[$i]['limit'] && ($isLast || $volunteer['resultCount'] < $rankingCriteria[$i + 1]['limit'])) {
 
 
                         $person = $this->getEntityManager()
