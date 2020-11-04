@@ -188,5 +188,10 @@ U bent verwijderd van de volgende shift door een administrator:
         'key'         => 'shift.enable_registration_shifts_button_homepage',
         'value'       => '1',
         'description' => 'Enable the registration shifts button on the homepage',
+    ),
+    array(
+        'key'         => 'shift.weekly_change_interval',
+        'value'       => 'P1W',
+        'description' => 'Set how far the weekly change goes back',
     )
 );

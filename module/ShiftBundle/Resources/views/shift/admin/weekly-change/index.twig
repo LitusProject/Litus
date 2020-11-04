@@ -1,0 +1,45 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        {% for rankingCriterium, volunteers in ranking %}
+            <h1>{{ rankingCriterium|capitalize }}</h1>
+            <table class="full_width">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th width="250px">E-mail</th>
+                        <th>Rank</th>
+                        <th>Rank, {{ weeklyChangeInterval }} ago</th>
+                        {% if points_enabled %}
+                            <th ># Points</th>
+                        {% else %}
+                            {% if hoursPerBlock > 0 %}
+                                <th ># Shifts of {{ hoursPerBlock }}h</th>
+                                <th ># Shifts of {{ hoursPerBlock }}h, {{ weeklyChangeInterval }} ago</th>
+                            {% else %}
+                                <th ># Shifts</th>
+                                <th ># Shifts, {{ weeklyChangeInterval }} ago</th>
+                            {% endif %}
+                        {% endif %}
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for volunteer in volunteers %}
+                        <tr class="item">
+                            <td>{{ volunteer['person'].getFullName() }}</td>
+                            <td>{{ volunteer['person'].getEmail() }}</td>
+                            <td>{{ volunteer['rank'] }}</td>
+                            <td>{{ volunteer['rankThen'] }}</td>
+                            <td>{{ volunteer['resultCount'] }}</td>
+                            <td>{{ volunteer['resultCountThen'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
+    </div>
+{% endblock %}

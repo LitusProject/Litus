@@ -264,7 +264,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             array(
                 'type'  => 'checkbox',
                 'name'  => 'members_visible',
-                'label' => 'Show the list of sign-ups to the members',
+                'label' => 'Show attendees',
                 'required' => true,
             )
         );

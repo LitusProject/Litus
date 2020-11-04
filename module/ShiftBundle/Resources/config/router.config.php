@@ -87,6 +87,20 @@ return array(
                 ),
             ),
         ),
+        'shift_admin_shift_weekly_change' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/shift/weekly-change[/:action][/:academicyear][/]',
+                'constraints' => array(
+                    'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'academicyear' => '[0-9]{4}-[0-9]{4}',
+                ),
+                'defaults' => array(
+                    'controller' => 'shift_admin_shift_weekly_change',
+                    'action'     => 'index',
+                ),
+            ),
+        ),
         'shift_admin_shift_subscription' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -186,6 +200,7 @@ return array(
         'shift_admin_registration_shift' => 'ShiftBundle\Controller\Admin\RegistrationShiftController',
         'shift_admin_shift_counter'      => 'ShiftBundle\Controller\Admin\CounterController',
         'shift_admin_shift_ranking'      => 'ShiftBundle\Controller\Admin\RankingController',
+        'shift_admin_shift_weekly_change'=> 'ShiftBundle\Controller\Admin\WeeklyChangeController',
         'shift_admin_shift_subscription' => 'ShiftBundle\Controller\Admin\SubscriptionController',
         'shift_admin_registration_shift_subscription' => 'ShiftBundle\Controller\Admin\RegistrationSubscriptionController',
 
