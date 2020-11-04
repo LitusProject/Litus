@@ -173,7 +173,7 @@ return array(
             ),
         ),
         'logistics_catalog' => array(
-            'type' => 'Zend\Router\Http\Segment',
+            'type' => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/logistics/catalog[/]',
                 'defaults' => array(

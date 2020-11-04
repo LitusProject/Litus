@@ -21,7 +21,7 @@
 namespace LogisticsBundle\Controller\Admin;
 
 use LogisticsBundle\Entity\Request;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 /**
  * RequestController
