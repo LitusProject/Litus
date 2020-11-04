@@ -31,6 +31,7 @@
 
                 <tbody>
                     {% for volunteer in volunteers %}
+                        {% if volunteer['resultCount'] - volunteer['resultCountThen'] > 0 %}
                         <tr class="item">
                             <td>{{ volunteer['person'].getFullName() }}</td>
                             <td>{{ volunteer['person'].getEmail() }}</td>
@@ -40,6 +41,7 @@
                             <td>{{ volunteer['resultCountThen'] }}</td>
                             <td>{{ volunteer['resultCount'] - volunteer['resultCountThen'] }}</td>
                         </tr>
+                        {% endif %}
                     {% endfor %}
                 </tbody>
             </table>
