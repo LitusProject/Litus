@@ -117,7 +117,7 @@ class Article
     /**
      * @var Location the location of the article
      *
-     * @ORM\ManytoOne(targetEntity="\CommonBundle\Entity\General\Location")
+     * @ORM\ManyToOne(targetEntity="\CommonBundle\Entity\General\Location")
      * @ORM\JoinColumn(name="location", referencedColumnName="id")
      */
     private $location;
