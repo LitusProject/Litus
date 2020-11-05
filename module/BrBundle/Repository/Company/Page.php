@@ -110,4 +110,38 @@ class Page extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 
         return $query->getQuery();
     }
+
+    /**
+     * @param  AcademicYear $academicYear
+     * @param  string       $name
+     * @param  string       $sector
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllAtEventBySearchQuery(AcademicYear $academicYear, $name = '%%', $sector = '')
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $query = $query->select('p, c')
+            ->from('BrBundle\Entity\Company\Page', 'p')
+            // ->innerJoin('p.years', 'y')
+            ->innerJoin('p.company', 'c')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('p.atEvent', 'true'),
+                    // $query->expr()->eq('y', ':year'),
+                    $query->expr()->like($query->expr()->lower('c.name'), ':name')
+                )
+            )
+            ->orderBy('c.name', 'ASC')
+            ->setParameter('name', strtolower($name));
+            // ->setParameter('year', $academicYear);
+
+        if ($sector !== '' && $sector !== 'all') {
+            $query->andWhere(
+                $query->expr()->eq('c.sector', ':sector')
+            )
+                ->setParameter('sector', $sector);
+        }
+
+        return $query->getQuery();
+    }
 }

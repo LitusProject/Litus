@@ -29,6 +29,9 @@
                     <li {% if 'br_career_student_job' == getParam('controller') %}class="active"{% endif %}>
                         <a href="{{ url('br_career_student_job') }}">{{ translate('Student Jobs') }}</a>
                     </li>
+                    <li {% if 'br_career_internshipfair' == getParam('controller') %}class="active"{% endif %}>
+                        <a href="{{ url('br_career_internshipfair') }}">{{ translate('Internship Fair') }}</a>
+                    </li>
                 </ul>
             </div>
         </div>

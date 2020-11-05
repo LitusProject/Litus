@@ -527,6 +527,22 @@ return array(
                 ),
             ),
         ),
+        'br_career_internshipfair' => array(
+            'type'    => 'Zend\Router\Http\Segment',
+            'options' => array(
+                'route'       => '[/:language]/career/internshipfair[/:action[/:company][/id/:id]][/]',
+                'constraints' => array(
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'company'  => '[a-zA-Z0-9_-]*',
+                    'language' => '(en|nl)',
+                    'id'       => '[a-zA-Z0-9_-]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_career_internshipfair',
+                    'action'     => 'overview',
+                ),
+            ),
+        ),
     ),
     'controllers' => array(
         'br_admin_company'       => 'BrBundle\Controller\Admin\CompanyController',
@@ -554,12 +570,13 @@ return array(
         'br_corporate_student_job' => 'BrBundle\Controller\Corporate\StudentJobController',
         'br_corporate_company'    => 'BrBundle\Controller\Corporate\CompanyController',
 
-        'br_career_index'      => 'BrBundle\Controller\Career\IndexController',
-        'br_career_vacancy'    => 'BrBundle\Controller\Career\VacancyController',
-        'br_career_internship' => 'BrBundle\Controller\Career\InternshipController',
-        'br_career_student_job' => 'BrBundle\Controller\Career\StudentJobController',
-        'br_career_event'      => 'BrBundle\Controller\Career\EventController',
-        'br_career_company'    => 'BrBundle\Controller\Career\CompanyController',
+        'br_career_index'          => 'BrBundle\Controller\Career\IndexController',
+        'br_career_vacancy'        => 'BrBundle\Controller\Career\VacancyController',
+        'br_career_internship'     => 'BrBundle\Controller\Career\InternshipController',
+        'br_career_student_job'    => 'BrBundle\Controller\Career\StudentJobController',
+        'br_career_event'          => 'BrBundle\Controller\Career\EventController',
+        'br_career_company'        => 'BrBundle\Controller\Career\CompanyController',
+        'br_career_internshipfair' => 'BrBundle\Controller\Career\InternshipfairController',
 
         'br_cv_index' => 'BrBundle\Controller\CvController',
     ),
