@@ -57,6 +57,32 @@ class Page extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     }
 
     /**
+     * @param  string       $slug
+     * @param  AcademicYear $academicYear
+     * @return \BrBundle\Entity\Company\Page
+     */
+    public function findOneBySlug($slug, AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('p')
+            ->from('BrBundle\Entity\Company\Page', 'p')
+            // ->innerJoin('p.years', 'y')
+            ->innerJoin('p.company', 'c')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('c.active', 'true'),
+                    $query->expr()->eq('c.slug', ':slug')
+                    // $query->expr()->eq('y', ':year')
+                )
+            )
+            ->setParameter('slug', $slug)
+            // ->setParameter('year', $academicYear)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
      * @param  AcademicYear $academicYear
      * @return \Doctrine\ORM\Query
      */
