@@ -20,9 +20,89 @@
 
 namespace LogisticsBundle\Controller;
 
+use Laminas\View\Model\ViewModel;
+use LogisticsBundle\Entity\Article;
+
 /**
  */
 class CatalogController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
+    public function indexAction()
+    {
+        $articleSearchForm = $this->getForm('logistics_catalog_search_article');
+        $query = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Article')
+            ->findAllQuery(); //TODO: welke query moet hier?
 
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $articleSearchForm->setData($formData);
+
+            if ($articleSearchForm->isValid()) {
+                $formData = $articleSearchForm->getData();
+
+                $repository = $this->getEntityManager()
+                    ->getRepository('LogisticsBundle\Entity\Article');
+
+                $type = $formData['type'] == 'all' ? null : $formData['type'];
+                $location = $formData['location'] == 'all' ? null : $formData['location'];
+
+//                $query = $repository->findAllActiveByTypeAndLocationQuery($type, $location); //TODO: create
+                $query = $repository->findAllQuery(); //TODO: make line above functional
+            }
+        }
+        $paginator = $this->paginator()->createFromQuery(
+            $query,
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator'         => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+                'catalogSearchForm' => $articleSearchForm,
+            )
+        );
+    }
+
+    public function viewAction()
+    {
+        $article = $this->getArticleEntity();
+        if ($article === null) {
+            return new ViewModel();
+        }
+
+
+        return new ViewModel(
+            array(
+                'article'  => $article,
+            )
+        );
+    }
+
+    /**
+     * @return Article|null
+     */
+    private function getArticleEntity()
+    {
+        $article = $this->getEntityById('LogisticsBundle\Entity\Article');
+
+        if (!($article instanceof Article)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No Article was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'logistics_catalog',
+                array(
+                    'action' => 'index',
+                )
+            );
+
+            return;
+        }
+
+        return $article;
+    }
 }

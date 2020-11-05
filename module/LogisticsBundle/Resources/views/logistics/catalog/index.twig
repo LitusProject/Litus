@@ -1,9 +1,65 @@
-{% extends 'site/base.twig' %}
+{% extends 'logistics/base.twig' %}
 
-{% block content %}
 
-    <div class="page-header">
-        <h1>{{ 'Catalog test' }}</h1>
+{% block page_content %}
+    <h1>{{ translate('Catalog') }}</h1>
+    <div class="row">
+        <div class="col-md-4">
+            {% if catalogSearchForm is defined %}
+                {% do catalogSearchForm.prepare() %}
+                {% autoescape false %}
+                    {{ form().openTag(catalogSearchForm) }}
+                    {{ formElement(catalogSearchForm.get('csrf')) }}
+
+                    <div class="well">
+                        <h4>{{ translate('Type') }}</h4>
+                        <div class="form-group">
+                            <div class="input-group">
+                                {{ formElement(catalogSearchForm.get('type')) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="well">
+                        <h4>{{ translate('Location') }}</h4>
+                        <div class="form-group">
+                            <div class="input-group">
+                                {{ formElement(catalogSearchForm.get('location')) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group-btn">
+                        {{ formElement(catalogSearchForm.get('submit')) }}
+                    </div>
+
+                    {{ form().closeTag() }}
+                {% endautoescape %}
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+            <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">
+                {% for article in paginator %}
+                    <tr>
+                        <td>
+                            <strong>{{ article.getName() }}: {{ article.getAmountAvailable() }}</strong>
+                            <br/>
+                            <br/>
+                            {{ article.getAdditionalInfo() }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <div class="flashmessage alert alert-warning fade in">
+                        <a class="close" data-dismiss="alert">&times;</a>
+                        {{ translate('No items found') }}
+                    </div>
+                {% endfor %}
+            </table>
+
+            {% include 'site/partials/paginationControl.twig' %}
+        </div>
     </div>
 
 {% endblock %}
+
+

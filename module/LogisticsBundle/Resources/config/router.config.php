@@ -225,6 +225,7 @@ return array(
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
+                    'language' => '(en|nl)',
                     'page'   => '[0-9]*',
                 ),
                 'defaults' => array(
@@ -236,7 +237,14 @@ return array(
         'logistics_catalog' => array(
             'type' => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '[/:language]/logistics/catalog[/]',
+                'route'       => '[/:language]/logistics/catalog[/:action[/:order[/:id]][/page/:page]][/]',
+                'constraints' => array(
+                    'action'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'order'     => '[0-9]*',
+                    'id'        => '[0-9]*',
+                    'language' => '(en|nl)',
+                    'page'      => '[0-9]*',
+                ),
                 'defaults' => array(
                     'controller' => 'logistics_catalog',
                     'action' => 'index',
