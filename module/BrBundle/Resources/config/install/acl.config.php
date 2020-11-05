@@ -93,6 +93,9 @@ return array(
         'br_career_student_job' => array(
             'view', 'overview',
         ),
+        'br_career_internshipfair' => array(
+            'view', 'overview', 'file', 'search',
+        ),
         'br_cv_index' => array(
             'cv', 'edit', 'complete', 'delete', 'download', 'uploadProfileImage',
         ),
