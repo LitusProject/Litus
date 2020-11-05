@@ -148,7 +148,7 @@ class InternshipfairController extends \BrBundle\Component\Controller\CareerCont
     {
         $page = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Page')
-            ->findOneActiveBySlug($this->getParam('company', 0), $this->getCurrentAcademicYear());
+            ->findOneBySlug($this->getParam('company', 0), $this->getCurrentAcademicYear());
 
         if (!($page instanceof Page)) {
             $this->flashMessenger()->error(
