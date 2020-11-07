@@ -39,7 +39,7 @@
                         <td>{% if companyMap.getMetadata().isCvBookRequested() %}X{% endif %}</td>
                         <td class="actions">
                             {% if hasAccess('br_admin_event_company', 'edit') %}
-                                <a href="{{  url('br_admin_event_company', {"action": "edit", "event": event.getId()}) }}" class="edit">Edit</a>
+                                <a href="{{  url('br_admin_event_company', {"action": "edit", "event": event.getId(), 'id': companyMap.getId()}) }}" class="edit">Edit</a>
                             {% endif %}
                             {% if hasAccess('br_admin_event_company', 'delete') %}
                                 <a href="#" class="delete" data-id="{{  companyMap.getId() }}" data-name="{{ companyMap.getCompany().getName() }}">Delete</a>

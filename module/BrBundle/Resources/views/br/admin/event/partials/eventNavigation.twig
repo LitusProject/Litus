@@ -4,16 +4,16 @@
     <nav id="controller_nav">
         <ul>
             {% if hasAccess('br_admin_event', 'edit') %}
-                <li><a {% if 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_event', {"action": "edit", "id": event.getId()}) }}">Edit Event</a></li>
+                <li><a {% if 'edit' == getParam('action') and not getParam('event') %} class="active" {% endif %} href="{{ url('br_admin_event', {"action": "edit", "id": event.getId()}) }}">Edit Event</a></li>
             {% endif %}
             {% if hasAccess('br_admin_event_company', 'manage') %}
-                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_event_company', {"action": "manage", "event": event.getId()}) }}">Companies</a></li>
+                <li><a {% if getParam('event') and ('edit' == getParam('action') or 'addAttendee' == getParam('action')) %} class="active" {% endif %} href="{{ url('br_admin_event_company', {"action": "manage", "event": event.getId()}) }}">Companies</a></li>
             {% endif %}
             {% if hasAccess('br_admin_event_location', 'view') %}
-                <li><a {% if 'view' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_event_location', {"action": "view", "event": event.getId()}) }}">Location</a></li>
+                <li><a {% if getParam('event') and ('view' == getParam('action')) %} class="active" {% endif %} href="{{ url('br_admin_event_location', {"action": "view", "event": event.getId()}) }}">Location</a></li>
             {% endif %}
             {% if hasAccess('br_admin_event_subscription', 'overview') %}
-                <li><a {% if 'overview' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_event_subscription', {"action": "overview", "event": event.getId()}) }}">Subscription</a></li>
+                <li><a {% if getParam('event') and ('overview' == getParam('action')) %} class="active" {% endif %} href="{{ url('br_admin_event_subscription', {"action": "overview", "event": event.getId()}) }}">Subscription</a></li>
             {% endif %}
         </ul>
     </nav>

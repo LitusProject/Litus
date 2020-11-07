@@ -68,8 +68,6 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                         'event'  => $eventObject->getId(),
                     )
                 );
-
-                return new ViewModel();
             }
         }
         $paginator = $this->paginator()->createFromQuery(
@@ -109,23 +107,73 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    public function editAction()
+    public function deleteAttendeeAction()
+    {
+        $this->initAjax();
+
+        $attendee = $this->getAttendeeEntity();
+        if ($attendee === null) {
+            return new ViewModel();
+        }
+
+        $this->getEntityManager()->remove($attendee);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+    public function editAction() {
+        $companyMap = $this->getCompanyMapEntity();
+        if ($companyMap === null) {
+            return new ViewModel();
+        }
+
+        return new ViewModel(
+            array(
+                'event' => $companyMap->getEvent(),
+                'eventCompanyMap' => $companyMap,
+            )
+        );
+    }
+
+    public function addAttendeeAction()
     {
         $companyMap = $this->getCompanyMapEntity();
         if ($companyMap === null) {
             return new ViewModel();
         }
 
-        $form = $this->getForm('br_admin_event_company_edit');
+        $form = $this->getForm('br_admin_event_company_addAttendee');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $attendee = $form->hydrateObject(new Event\CompanyAttendee($companyMap));
+                $this->getEntityManager()->persist($attendee);
+                $this->getEntityManager()->flush();
 
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The attendee was successfully added!'
+                );
+
+                $form->setData(array());
             }
         }
+
+        return new ViewModel(
+            array(
+                'event' => $companyMap->getEvent(),
+                'eventCompanyMap' => $companyMap,
+                'companyMapForm' => $form,
+            )
+        );
     }
 
 
@@ -149,14 +197,14 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 )
             );
 
-            return;
+            return null;
         }
 
         return $event;
     }
 
     /**
-     * @return Event|null
+     * @return CompanyMap|null
      */
     private function getCompanyMapEntity()
     {
@@ -176,9 +224,36 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 )
             );
 
-            return;
+            return null;
         }
 
         return $companyMap;
+    }
+
+    /**
+     * @return Event\CompanyAttendee|null
+     */
+    private function getAttendeeEntity()
+    {
+        $attendee = $this->getEntityById('BrBundle\Entity\Event\CompanyAttendee');
+
+        if (!($attendee instanceof Event\CompanyAttendee)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No attendee mapping was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_event_company',
+                array(
+                    'action' => 'manage',
+                    'event'  => $this->getEventEntity(),
+                )
+            );
+
+            return null;
+        }
+
+        return $attendee;
     }
 }

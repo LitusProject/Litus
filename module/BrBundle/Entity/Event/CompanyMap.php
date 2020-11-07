@@ -57,6 +57,13 @@ class CompanyMap
     private $event;
 
     /**
+     * @var CompanyAttendee All the attendees that will be attending for this company
+     *
+     * @ORM\OneToMany(targetEntity="BrBundle\Entity\Event\CompanyAttendee", mappedBy="companyMap")
+     */
+    private $attendees;
+
+    /**
      *@var CompanyMetadata The metadata of the company for this event
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Event\CompanyMetadata")
@@ -96,6 +103,22 @@ class CompanyMap
     public function getEvent()
     {
         return $this->event;
+    }
+
+    /**
+     * @return CompanyAttendee
+     */
+    public function getAttendees()
+    {
+        return $this->attendees;
+    }
+
+    /**
+     * @param CompanyAttendee $attendees
+     */
+    public function setAttendees($attendees)
+    {
+        $this->attendees = $attendees;
     }
 
     /**

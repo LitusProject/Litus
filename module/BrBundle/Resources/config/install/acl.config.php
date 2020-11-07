@@ -40,7 +40,7 @@ return array(
             'add', 'retire', 'edit', 'manage', 'rehire',
         ),
         'br_admin_company' => array(
-            'add', 'delete', 'editLogo', 'edit', 'manage', 'search', 'upload', 'csv', 'pdf',
+            'add', 'delete', 'editLogo', 'edit', 'manage', 'search', 'upload', 'csv', 'pdf'
         ),
         'br_admin_company_event' => array(
             'add', 'delete', 'edit', 'editPoster', 'manage', 'upload',
@@ -64,7 +64,7 @@ return array(
             'manage', 'delete', 'add', 'edit', 'old',
         ),
         'br_admin_event_company' => array(
-            'manage',
+            'manage', 'edit', 'delete', 'addAttendee', 'deleteAttendee'
         ),
         'br_admin_event_location' => array(
             'manage',
