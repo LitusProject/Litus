@@ -400,4 +400,9 @@ class Order
     {
         $this->articles->remove($mapping);
     }
+
+    public function isCancellable()
+    {
+        return(!$this->isApproved() && !$this->isRemoved());
+    }
 }

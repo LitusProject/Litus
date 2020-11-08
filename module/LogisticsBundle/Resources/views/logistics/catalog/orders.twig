@@ -1,0 +1,111 @@
+{% extends 'logistics/base.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{{ translate('My Orders') }}</h1>
+    </div>
+
+    <div class="flashmessage alert alert-danger order_canceled_error fade">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to cancel the order. Please try again later.</p>
+        </div>
+    </div>
+
+    {% if authenticatedPerson is null %}
+        {{ translate('Please login to view your orders.') }}
+    {% else %}
+
+        {% if enableExtraText %}
+            <p>{{ orderText }}</p>
+        {% endif %}
+        <table class="table">
+            <tr>
+                <th>{{ translate('Booking') }}</th>
+                <th class="hidden-xs">{{ translate('Author') }}</th>
+                <th>{{ translate('Event') }}</th>
+                <th class="hidden-xs">{{ translate('Start Date') }}</th>
+                <th class="hidden-xs">{{ translate('End Date') }}</th>
+                <th class="hidden-xs">{{ translate('Status') }}</th>
+                <th>{{ translate('Actions') }}</th>
+            </tr>
+            {% for order in orders %}
+                <tr class="item item-{{ order.getId() }} {% if 'confirmed' == order.getStatus() %}success{% endif %}">
+                    <td>{{ order.getName() }}</td>
+                    <td class="hidden-xs">{{ order.getContact() }}</td>
+                    <td class="hidden-xs">{{ order.getEvent() }}</td>
+                    <td class="hidden-xs">{{ order.getStartDate() }}</td>
+                    <td class="hidden-xs">{{ order.getEndDate() }}</td>
+                    <td class="hidden-xs">{{ translate(order.getStatus()) }}</td>
+                    <td class="actions">
+                        {% if order.isCancellable() %}
+                            <a href="#" class="btn btn-default btn-sm cancel" data-id="{{ order.getId() }}" data-title="{{ order.getName() }}">
+                                {{ translate('Cancel') }}
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+
+        </table>
+
+        <a href="{{ url('logistics_catalog', {"action" : 'addOrder'}) }}" class="btn btn-primary pull-right">{{ translate('New Reservation') }}</a>
+
+    {% endif %}
+
+    <div class="modal fade" id="cancelReservation">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>{{ translate('Logistics') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        {{ translate('Are you sure you want to cancel the following order:') }} <b class="orderName"></b>?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger continue">Yes</button>
+                    <button class="btn btn-default cancel" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true, 'container': 'body'});
+            $('.item .cancel').click(openModal);
+        });
+
+        function openModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var cancelReservation = $('#cancelReservation');
+            cancelReservation.find('.articleTitle').html($(this).data('title'));
+            var id = $this.data('id');
+            cancelReservation.find('.continue').unbind('click').click(function () {
+                $.post('{{ url('logistics_catalog', {"action": "remove"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.item-' + id).remove();
+                        $('#cancelReservation').modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            cancelReservation.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.reservation_canceled_error').removeClass('hide');
+            $('#cancelReservation').modal('hide');
+        }
+
+    </script>
+{% endblock %}

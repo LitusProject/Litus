@@ -20,6 +20,7 @@
 
 namespace LogisticsBundle\Repository;
 
+use CommonBundle\Entity\User\Person;
 use LogisticsBundle\Entity\Article as ArticleEntity;
 
 use DateTime;
@@ -91,6 +92,28 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    /**
+     * @param  Person $contact
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllActiveByContact($contact)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('o')
+            ->from('LogisticsBundle\Entity\Order', 'o')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('o.contact', ':contact'),
+                    $query->expr()->gt('o.endDate', ':now'),
+                    $query->expr()->eq('o.removed', 'FALSE')
+                )
+            )
+            ->setParameter('contact', $contact)
+            ->setParameter('now', new DateTime())
+            ->setMaxResults(1)
+            ->getQuery();
     }
 
     /**

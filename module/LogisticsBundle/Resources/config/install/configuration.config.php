@@ -143,4 +143,19 @@ Student IT
         'value'       => 'logistics.vtk.be',
         'description' => 'The suffix of an iCalendar event uid',
     ),
+    array(
+        'key'         => 'logistics.show_extra_text_reservation_page',
+        'value'       => '0',
+        'description' => 'Whether or not to show the text above the reservations.',
+    ),
+    array(
+        'key'   => 'logistics.extra_text_reservation_page',
+        'value' => serialize(
+            array(
+                'en' => 'This is a placeholder text, please change me',
+                'nl' => 'Deze tekst moet nog aanepast worden',
+            )
+        ),
+        'description' => 'The additional displayed above the reservation overview.',
+    ),
 );

@@ -248,9 +248,17 @@ class Article
     /**
      * @param ArrayCollection $orders
      */
-    public function addOrder($orders)
+    public function addOrders($orders)
     {
         $this->orders->add($orders);
+    }
+
+    /**
+     * @param ArrayCollection $orders
+     */
+    public function removeOrders($orders)
+    {
+        $this->orders->remove($orders);
     }
 
     /**

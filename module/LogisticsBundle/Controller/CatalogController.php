@@ -20,16 +20,20 @@
 
 namespace LogisticsBundle\Controller;
 
+use CommonBundle\Entity\User\Person\Academic;
+use Doctrine\Common\Collections\ArrayCollection;
 use Laminas\View\Model\ViewModel;
 use LogisticsBundle\Entity\Article;
+use LogisticsBundle\Entity\Order;
 
 /**
  */
 class CatalogController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
-    public function indexAction()
+    public function addItemsAction()
     {
         $articleSearchForm = $this->getForm('logistics_catalog_search_article');
+//        print_r($articleSearchForm->getElements());die();
         $query = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Article')
             ->findAllQuery(); //TODO: welke query moet hier?
@@ -65,7 +69,64 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    public function viewAction()
+    public function ordersAction()
+    {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
+            return $this->notFoundAction();
+        }
+
+        $orders = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Order')
+            ->findAllActiveByContact($academic);
+
+        return new ViewModel(
+            array(
+                'bookings' => $orders,
+            )
+        );
+    }
+
+    public function removeAction()
+    {
+        $this->initAjax();
+
+        $order = $this->getOrderEntity();
+        if ($order === null) {
+            return $this->notFoundAction();
+        }
+
+        if (!$order->isCancellable()) {
+            $this->flashMessenger()->error(
+                'Error',
+                'The given order cannot be removed!'
+            );
+
+            $this->redirect()->toRoute(
+                'logistics_catalog',
+                array(
+                    'action' => 'orders',
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $order->remove();
+        $articles = $order->getArticles();
+        foreach ($articles as $article){
+            $article->getArticle()->removeOrder(new ArrayCollection($article)); //TODO: Is dit correct???
+        }
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+    public function viewArticleAction()
     {
         $article = $this->getArticleEntity();
         if ($article === null) {
@@ -104,5 +165,49 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         return $article;
+    }
+
+    /**
+     * @return Academic|null
+     */
+    private function getAcademicEntity()
+    {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            return null;
+        }
+
+        $academic = $this->getAuthentication()->getPersonObject();
+
+        if (!($academic instanceof Academic)) {
+            return;
+        }
+
+        return $academic;
+    }
+
+    /**
+     * @return Order|null
+     */
+    private function getOrderEntity()
+    {
+        $order = $this->getEntityById('LogisticsBundle\Entity\Order');
+
+        if (!($order instanceof Order)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No Order was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'logistics_catalog',
+                array(
+                    'action' => 'index',
+                )
+            );
+
+            return;
+        }
+
+        return $order;
     }
 }
