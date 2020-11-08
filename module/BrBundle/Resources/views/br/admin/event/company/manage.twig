@@ -2,6 +2,7 @@
 
 {% block content %}
     {% include 'br/admin/event/partials/eventNavigation.twig' %}
+    {% include 'br/admin/event/partials/companyCsvNavigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
@@ -20,6 +21,7 @@
     <div id="controller_action">
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
+
         <table class="manage full_width">
             <tr>
                 <th>Company</th>
@@ -33,10 +35,10 @@
                 {% if '' != companyMap.getCompany().getName() %}
                     <tr class="item item-{{ companyMap.getId() }}">
                         <td>{{ companyMap.getCompany().getName() }}</td>
-                        <td>{{ companyMap.getMetadata().getNumberRepresentatives() }}</td>
+                        <td>{{ companyMap.getAttendees() | length }}</td>
                         <td>{{ companyMap.getMetadata().getLocation() }}</td>
+                        <td>{% if currentYear in companyMap.getCompany().getCvBookYears() %}X{% endif %}</td>
                         <td>{% if companyMap.getMetadata().isLogisticsChecked() %}X{% endif %}</td>
-                        <td>{% if companyMap.getMetadata().isCvBookRequested() %}X{% endif %}</td>
                         <td class="actions">
                             {% if hasAccess('br_admin_event_company', 'edit') %}
                                 <a href="{{  url('br_admin_event_company', {"action": "edit", "event": event.getId(), 'id': companyMap.getId()}) }}" class="edit">Edit</a>
@@ -50,8 +52,9 @@
             {% endfor %}
         </table>
         {% include 'admin/partials/paginationControl.twig' %}
-
     </div>
+
+
 
     <div class="modal fade" id="removeCompany" tabindex="-1">
         <div class="modal-dialog">

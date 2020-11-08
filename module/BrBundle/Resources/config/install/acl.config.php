@@ -64,7 +64,7 @@ return array(
             'manage', 'delete', 'add', 'edit', 'old',
         ),
         'br_admin_event_company' => array(
-            'manage', 'edit', 'delete', 'addAttendee', 'deleteAttendee'
+            'manage', 'edit', 'delete', 'addAttendee', 'deleteAttendee', 'csv', 'csvAttendees',
         ),
         'br_admin_event_location' => array(
             'manage',

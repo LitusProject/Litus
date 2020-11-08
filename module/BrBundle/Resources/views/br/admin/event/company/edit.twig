@@ -19,7 +19,10 @@
         </div>
     </div>
 
-    EDIT METADATA
+    <div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(companyMetadataForm) }}
+    </div>
 
 {% endblock %}
 

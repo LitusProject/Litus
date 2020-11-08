@@ -23,6 +23,7 @@ namespace BrBundle\Entity\Event;
 use BrBundle\Entity\Company;
 use BrBundle\Entity\Event;
 use Doctrine\ORM\Mapping as ORM;
+use RuntimeException;
 
 /**
  * CompanyMetadata
@@ -43,9 +44,16 @@ class CompanyMetadata
      */
     private $id;
 
-    // The metadata is not defined yet
+    // TODO: The metadata is not defined yet
+    /**
+     * @var string The master interests of the company
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $master_interests;
 
 
+    const POSSIBLE_MASTERS = Company::POSSIBLE_MASTERS + array('other' => 'Other');
 
     /**
      * @param Company $company
@@ -60,5 +68,31 @@ class CompanyMetadata
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return
+     */
+    public function getMasterInterests()
+    {
+        if (substr($this->master_interests, 0, 2) != 'a:') {
+            throw new RuntimeException('Badly formatted master interests in company metadata (get)');
+        }
+        return unserialize($this->master_interests);
+    }
+
+    /**
+     * @param  array $master_interests
+     * @return CompanyMetadata
+     */
+    public function setMasterInterests($master_interests)
+    {
+        if (is_string($master_interests) && substr($this->master_interests, 0, 2) != 'a:') {
+            throw new RuntimeException('Badly formatted master interests in company metadata (set)');
+        }
+
+        $this->master_interests = serialize($master_interests);
+
+        return $this;
     }
 }

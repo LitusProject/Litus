@@ -279,9 +279,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      * @return array of possible universities
      */
     protected function getStudies(){
-        $masters = Company::POSSIBLE_MASTERS;
-        $masters['other'] = 'Other';
-        return $masters;
+        return Event\CompanyMetadata::POSSIBLE_MASTERS;
     }
 
     /**
