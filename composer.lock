@@ -211,16 +211,16 @@
         },
         {
             "name": "colinmollenhour/credis",
-            "version": "v1.12.0",
+            "version": "v1.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/colinmollenhour/credis.git",
-                "reference": "efdf60db997e8f4330b24cfb7e5c5dc0bd612a48"
+                "reference": "c27faa11724229986335c23f4b6d0f1d8d6547fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/colinmollenhour/credis/zipball/efdf60db997e8f4330b24cfb7e5c5dc0bd612a48",
-                "reference": "efdf60db997e8f4330b24cfb7e5c5dc0bd612a48",
+                "url": "https://api.github.com/repos/colinmollenhour/credis/zipball/c27faa11724229986335c23f4b6d0f1d8d6547fb",
+                "reference": "c27faa11724229986335c23f4b6d0f1d8d6547fb",
                 "shasum": ""
             },
             "require": {
@@ -247,7 +247,7 @@
             ],
             "description": "Credis is a lightweight interface to the Redis key-value store which wraps the phpredis library when available for better performance.",
             "homepage": "https://github.com/colinmollenhour/credis",
-            "time": "2020-11-02T17:20:09+00:00"
+            "time": "2020-11-06T16:09:14+00:00"
         },
         {
             "name": "composer/package-versions-deprecated",
