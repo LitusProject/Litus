@@ -30,7 +30,7 @@ use LogisticsBundle\Entity\Order;
  */
 class CatalogController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
-    public function addItemsAction()
+    public function catalogAction()
     {
         $articleSearchForm = $this->getForm('logistics_catalog_search_article');
 //        print_r($articleSearchForm->getElements());die();
@@ -84,7 +84,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    public function removeAction()
+    public function removeOrderAction()
     {
         $this->initAjax();
 
