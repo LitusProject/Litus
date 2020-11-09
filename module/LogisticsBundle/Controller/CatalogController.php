@@ -72,9 +72,6 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
     public function ordersAction()
     {
         $academic = $this->getAcademicEntity();
-        if ($academic === null) {
-            return $this->notFoundAction();
-        }
 
         $orders = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Order')

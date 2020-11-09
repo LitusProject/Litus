@@ -247,7 +247,7 @@ return array(
                 ),
                 'defaults' => array(
                     'controller' => 'logistics_catalog',
-                    'action' => 'addItems',
+                    'action' => 'orders',
                 ),
             ),
         ),
