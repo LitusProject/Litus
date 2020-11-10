@@ -160,7 +160,7 @@ class Order
      */
     public function getDiscount()
     {
-        return (!$this->discount===null)?$this->discount:0;
+        return $this->discount ?? 0;
     }
 
     /**

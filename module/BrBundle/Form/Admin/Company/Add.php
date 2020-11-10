@@ -245,9 +245,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         ),
                     ),
                     array(
-                      'type'        => 'checkbox',
-                      'name'        => 'atEvent',
-                      'label'       => 'company is at internshipfair',
+                        'type'        => 'checkbox',
+                        'name'        => 'atEvent',
+                        'label'       => 'company is at internshipfair',
                     ),
                 ),
             )
