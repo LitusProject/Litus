@@ -26,8 +26,7 @@ use Laminas\View\Model\ViewModel;
 
 /**
  * OrderController
- *
- * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Robin Wroblowski <robin.wroblowski@vtk.be>
  */
 class OrderController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {

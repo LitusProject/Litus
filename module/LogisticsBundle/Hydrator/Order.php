@@ -46,21 +46,13 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
         if ($object === null) {
             $object = new OrderEntity($this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                ->findOneById($data['contact']['id']),
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Organization\Unit')
-                    ->findOneById($data['unit']['id']));
+                ->findOneById($data['contact']['id']));
         }
         else{
             $object->setContact(
                 $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Academic')
                     ->findOneById($data['contact']['id'])
-            );
-            $object->setUnit(
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Organization\Unit')
-                    ->findOneById($data['unit']['id'])
             );
         }
 
@@ -69,6 +61,13 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
                 ->getRepository('CommonBundle\Entity\General\Location')
                 ->findOneById($data['location'])
         );
+
+        $object->setUnit(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+                ->findOneById($data['unit']['id'])
+        );
+
         $object->updateDate();
 
         $object->setStartDate(self::loadDateTime($data['start_date']))

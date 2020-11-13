@@ -158,4 +158,19 @@ Student IT
         ),
         'description' => 'The additional displayed above the reservation overview.',
     ),
+    array(
+        'key'         => 'logistics.order_mail',
+        'value'       => 'logi@vtk.be',
+        'description' => 'The mail address to which notifications should be send when a new order request has been made.',
+    ),
+    array(
+        'key'         => 'logistics.order_mail_name',
+        'value'       => 'VTK Logistiek',
+        'description' => '',
+    ),
+    array(
+        'key'         => 'logistics.order_link',
+        'value'       => 'https://vtk.be/admin/logistics/request/',
+        'description' => '',
+    )
 );

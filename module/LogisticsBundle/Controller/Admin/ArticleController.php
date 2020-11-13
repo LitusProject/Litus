@@ -26,8 +26,7 @@ use Laminas\View\Model\ViewModel;
 
 /**
  * ArticleController
- *
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Robin Wroblowski <robin.wroblowski@vtk.be>
  */
 class ArticleController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {

@@ -22,11 +22,15 @@ namespace LogisticsBundle\Controller;
 
 use CommonBundle\Entity\User\Person\Academic;
 use Doctrine\Common\Collections\ArrayCollection;
+use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
 use LogisticsBundle\Entity\Article;
+use LogisticsBundle\Entity\Request;
 use LogisticsBundle\Entity\Order;
 
 /**
+ * CatalogController
+ * @author Robin Wroblowski <robin.wroblowski@vtk.be>
  */
 class CatalogController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
@@ -80,6 +84,117 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'bookings' => $orders,
+            )
+        );
+    }
+
+    public function addOrderAction()
+    {
+        $person = $this->getAcademicEntity();
+        if ($person === null) {
+            return new ViewModel();
+        }
+
+        $form = $this->getForm('logistics_catalog_order_add', array('academic' => $person, 'academicYear' => $this->getCurrentAcademicYear()));
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $order = $form->hydrateObject(
+                    new Order($person)
+                );
+
+                $this->getEntityManager()->persist($order);
+                $this->getEntityManager()->flush();
+
+                $this->redirect()->toRoute(
+                    'logistics_catalog',
+                    array(
+                        'action' => 'orders',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
+
+    public function basketAction()
+    {
+        $person = $this->getAcademicEntity();
+        if ($person === null) {
+            return new ViewModel();
+        }
+
+        $form = $this->getForm('logistics_catalog_order_basket');
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $order = $form->hydrateObject(
+                    new Order($person)
+                );
+
+                $order->pending();
+
+                $this->getEntityManager()->persist($order);
+
+                $request = new Request($person, $order, 'add');
+
+                $this->getEntityManager()->persist($request);
+                $this->getEntityManager()->flush();
+
+                $mailAddress = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('logistics.order_mail');
+
+                $mailName = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('logistics.order_mail_name');
+
+                $link = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('logistics.order_link');
+
+                $mail = new Message();
+                $mail->setBody($link)
+                    ->setFrom($mailAddress, $mailName)
+                    ->addTo($mailAddress, $mailName)
+                    ->setSubject('New Order Request ' . $person->getFullName());
+
+                if (getenv('APPLICATION_ENV') != 'development') {
+                    $this->getMailTransport()->send($mail);
+                }
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The request has been sent to our administrators for approval.'
+                );
+
+                $this->redirect()->toRoute(
+                    'logistics_catalog',
+                    array(
+                        'action' => 'orders',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
             )
         );
     }

@@ -25,8 +25,7 @@ use Laminas\View\Model\ViewModel;
 
 /**
  * RequestController
- *
- * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Robin Wroblowski <robin.wroblowski@vtk.be>
  */
 class RequestController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {

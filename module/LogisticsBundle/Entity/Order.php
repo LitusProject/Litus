@@ -91,7 +91,7 @@ class Order
      * @var Unit The unit of the order
      *
      * @ORM\ManyToOne(targetEntity="\CommonBundle\Entity\General\Organization\Unit")
-     * @ORM\JoinColumn(name="unit", referencedColumnName="id")
+     * @ORM\JoinColumn(name="unit", referencedColumnName="id", nullable=true)
      */
     private $unit;
 
@@ -139,12 +139,10 @@ class Order
 
     /**
      * @param Academic $contact
-     * @param Unit $unit
      */
-    public function __construct(Academic $contact, Unit $unit)
+    public function __construct(Academic $contact)
     {
         $this->contact = $contact;
-        $this->unit = $unit;
         $this->dateUpdated = new DateTime();
         $this->removed = false;
         $this->articles = new ArrayCollection();
