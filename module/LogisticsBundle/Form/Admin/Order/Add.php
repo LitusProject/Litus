@@ -134,17 +134,30 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'typeahead',
-                'name'     => 'contact',
-                'label'    => 'Contact',
+                'type'     => 'text',
+                'name'     => 'creator',
+                'label'    => 'Creator Name',
                 'required' => true,
                 'options'  => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
-                        'validators' => array(
-                            array('name' => 'TypeaheadPerson'),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'contact',
+                'label'    => 'Contact Name',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
                         ),
                     ),
                 ),

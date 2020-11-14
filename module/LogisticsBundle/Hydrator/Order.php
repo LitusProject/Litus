@@ -39,21 +39,16 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $stdKeys = array('name', 'description', 'email',);
+    private static $stdKeys = array('name', 'description', 'email', 'contact');
 
     protected function doHydrate(array $data, $object = null)
     {
+        $creator = $this->getPersonEntity();
         if ($object === null) {
-            $object = new OrderEntity($this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                ->findOneById($data['contact']['id']));
+            $object = new OrderEntity($creator);
         }
         else{
-            $object->setContact(
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                    ->findOneById($data['contact']['id'])
-            );
+            $object->setCreator($creator);
         }
 
         $object->setLocation(
@@ -81,16 +76,14 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
         if ($object === null) {
             return array();
         }
-        $contact = $object->getContact();
+        $creator = $object->getCreator();
         $unit = $object->getUnit();
 
         $data = $this->stdExtract($object, self::$stdKeys);
 
-        echo '<script>console.log(' . json_encode($data) . ')</script>';
-
-        $data['contact']['id'] = $contact->getId();
-        $data['contact']['value'] = $contact->getFullName()
-            . ($contact instanceof Academic ? ' - ' . $contact->getUniversityIdentification() : '');
+        $data['creator']['id'] = $creator->getId();
+        $data['creator']['value'] = $creator->getFullName()
+            . ($creator instanceof Academic ? ' - ' . $creator->getUniversityIdentification() : '');
         $data['location'] = $object->getLocation()->getId();
         $data['unit'] = $unit->getId();
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');

@@ -80,12 +80,19 @@ class Order
     private $location;
 
     /**
-     * @var Academic The contact used in this order
+     * @var string The contact used in this order
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
-     * @ORM\JoinColumn(name="contact", referencedColumnName="id", nullable =true)
+     * @ORM\Column(name="contact", type="text", nullable=true)
      */
     private $contact;
+
+    /**
+     * @var Academic The creator used in this order
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
+     * @ORM\JoinColumn(name="creator", referencedColumnName="id", nullable =true)
+     */
+    private $creator;
 
     /**
      * @var Unit The unit of the order
@@ -138,9 +145,9 @@ class Order
     private $articles;
 
     /**
-     * @param Academic $contact
+     * @param string $contact
      */
-    public function __construct(Academic $contact)
+    public function __construct($contact)
     {
         $this->contact = $contact;
         $this->dateUpdated = new DateTime();
@@ -162,6 +169,17 @@ class Order
     public function addArticles($article)
     {
         $this->articles->add($article);
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        if ($this->pending()){return "Pending";}
+        if ($this->isRemoved()){return "Removed";}
+        if ($this->isApproved()){return "Approved";}
+        return "Null";
     }
 
     /**
@@ -376,7 +394,7 @@ class Order
     }
 
     /**
-     * @return Person
+     * @return string
      */
     public function getContact()
     {
@@ -384,7 +402,7 @@ class Order
     }
 
     /**
-     * @param Person $contact
+     * @param string $contact
      */
     public function setContact($contact)
     {
@@ -403,4 +421,22 @@ class Order
     {
         return(!$this->isApproved() && !$this->isRemoved());
     }
+
+    /**
+     * @return Academic
+     */
+    public function getCreator()
+    {
+        return $this->creator;
+    }
+
+    /**
+     * @param Academic $creator
+     */
+    public function setCreator(Academic $creator)
+    {
+        $this->creator = $creator;
+    }
+
+
 }

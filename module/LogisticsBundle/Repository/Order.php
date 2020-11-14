@@ -95,25 +95,26 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     }
 
     /**
-     * @param  Person $contact
+     * @param  Person $creator
      * @return \Doctrine\ORM\Query
      */
-    public function findAllActiveByContact($contact)
+    public function findAllActiveByCreator($creator)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('o')
             ->from('LogisticsBundle\Entity\Order', 'o')
             ->where(
                 $query->expr()->andx(
-                    $query->expr()->eq('o.contact', ':contact'),
+                    $query->expr()->eq('o.creator', ':creator'),
                     $query->expr()->gt('o.endDate', ':now'),
                     $query->expr()->eq('o.removed', 'FALSE')
                 )
             )
-            ->setParameter('contact', $contact)
+            ->setParameter('creator', $creator)
             ->setParameter('now', new DateTime())
             ->setMaxResults(1)
-            ->getQuery();
+            ->getQuery()
+            ->getResult();
     }
 
     /**

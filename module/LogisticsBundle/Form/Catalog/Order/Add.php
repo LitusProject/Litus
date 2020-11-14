@@ -47,7 +47,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add(
             array(
                 'type'    => 'text',
-                'name'    => 'order_name',
+                'name'    => 'name',
                 'label'   => 'Order Name',
                 'options' => array(
                     'input' => array(
@@ -58,11 +58,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 ),
             )
         );
-
-        if ($this->academic->getOrganizationStatus($this->academicYear)) {
+        if ($this->academic->getUnit($this->academicYear)) { //TODO:isPraesidium() werkt niet??
             $this->add(
                 array(
                     'type' => 'select',
+                    'label' => 'Unit that has access',
                     'name' => 'unit',
                     'attributes' => array(
                         'options' => $this->createUnitsArray(),
@@ -76,17 +76,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             );
         }
 
-        if (!$this->academic) {
-            $this->add(
+        $this->add(
                 array(
                     'type' => 'text',
                     'name' => 'contact',
-                    'label' => 'Contact',
+                    'label' => 'Contact Name',
                     'required' => true,
-                    'attributes' => array(
-                        'id' => 'contact',
-                        'autocomplete' => false,
-                    ),
                     'options' => array(
                         'input' => array(
                             'filters' => array(
@@ -96,17 +91,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 )
             );
-        }
-        else {
-            $this->add(
-                array(
-                    'type' => 'hidden',
-                    'name' => 'contact',
-                    'label' => 'Contact',
-                    'value' => $this->academic,
-                )
-            );
-        }
+
         $this->add(
             array(
                 'type'       => 'text',
@@ -125,10 +110,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->add(
             array(
-                'type'       => 'text',
+                'type'       => 'select',
                 'name'       => 'location',
                 'label'      => 'Location',
                 'required'   => true,
+                'attributes' => array(
+                    'options' => $this->createLocationsArray(),
+                ),
                 'options' => array(
                     'input' => array(
                         'filters' => array(
@@ -205,6 +193,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->addSubmit('Submit', 'btn btn-primary', 'submit');
     }
 
+    /**
+     * @return array
+     */
     private function createUnitsArray()
     {
         $units = $this->getEntityManager()
@@ -219,5 +210,38 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         return $unitsArray;
+    }
+
+    /**
+     * @return array
+     */
+    private function createLocationsArray()
+    {
+        $locations = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Location')
+            ->findAllActive();
+
+        $locationsArray = array();
+        foreach ($locations as $location) {
+            $locationsArray[$location->getId()] = $location->getName();
+        }
+
+        return $locationsArray;
+    }
+
+    /**
+     * @param Academic $academic
+     */
+    public function setAcademic(Academic $academic)
+    {
+        $this->academic = $academic;
+    }
+
+    /**
+     * @param AcademicYear $academicYear
+     */
+    public function setAcademicYear(AcademicYear $academicYear)
+    {
+        $this->academicYear = $academicYear;
     }
 }

@@ -79,11 +79,10 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
 
         $orders = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Order')
-            ->findAllActiveByContact($academic);
-
+            ->findAllActiveByCreator($academic);
         return new ViewModel(
             array(
-                'bookings' => $orders,
+                'orders' => $orders,
             )
         );
     }
@@ -95,7 +94,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel();
         }
 
-        $form = $this->getForm('logistics_catalog_order_add', array('academic' => $person, 'academicYear' => $this->getCurrentAcademicYear()));
+        $form = $this->getForm('logistics_catalog_order_add', array('academic' => $person, 'academicYear' => $this->getCurrentAcademicYear(true)));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
