@@ -4404,16 +4404,16 @@
         },
         {
             "name": "laminas/laminas-router",
-            "version": "3.4.0",
+            "version": "3.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-router.git",
-                "reference": "163fc498e9e4ac3253cd8254ef738fa9fd141f61"
+                "reference": "338e55010c9090d7a79c6e6aed68b886b849801f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-router/zipball/163fc498e9e4ac3253cd8254ef738fa9fd141f61",
-                "reference": "163fc498e9e4ac3253cd8254ef738fa9fd141f61",
+                "url": "https://api.github.com/repos/laminas/laminas-router/zipball/338e55010c9090d7a79c6e6aed68b886b849801f",
+                "reference": "338e55010c9090d7a79c6e6aed68b886b849801f",
                 "shasum": ""
             },
             "require": {
@@ -4460,7 +4460,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2020-11-17T21:31:53+00:00"
+            "time": "2020-11-19T19:42:10+00:00"
         },
         {
             "name": "laminas/laminas-serializer",
