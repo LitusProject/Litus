@@ -95,7 +95,7 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     }
 
     /**
-     * @param  Person $creator
+     * @param  Person\Academic $creator
      * @return \Doctrine\ORM\Query
      */
     public function findAllActiveByCreator($creator)

@@ -37,7 +37,6 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
     public function catalogAction()
     {
         $articleSearchForm = $this->getForm('logistics_catalog_search_article');
-//        print_r($articleSearchForm->getElements());die();
         $query = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Article')
             ->findAllQuery(); //TODO: welke query moet hier?
@@ -80,9 +79,14 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
         $orders = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Order')
             ->findAllActiveByCreator($academic);
+
+        $requests = $this->getOpenRequests($academic);
+
+
         return new ViewModel(
             array(
                 'orders' => $orders,
+                'requests' => $requests,
             )
         );
     }
@@ -104,9 +108,85 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
                 $order = $form->hydrateObject(
                     new Order($person)
                 );
-
+                $order->pending();
                 $this->getEntityManager()->persist($order);
+                $request = new Request($person, $order,'edit');
+                $this->getEntityManager()->persist($request);
                 $this->getEntityManager()->flush();
+
+                $this->redirect()->toRoute(
+                    'logistics_catalog',
+                    array(
+                        'action' => 'orders',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
+
+    public function editOrderAction()
+    {
+        $person = $this->getAcademicEntity();
+        if ($person === null) {
+            return new ViewModel();
+        }
+
+        $order = $this->getOrderEntity();
+        if ($order === null) {
+            return new ViewModel();
+        }
+
+        $requests = $this->getOpenRequests($person);
+
+        $unfinishedRequestsOrders = array();
+        foreach ($requests as $request) {
+            if ($request->getRequestType() == 'edit reject' || $request->getRequestType() == 'edit' ) {
+                $unfinishedRequestsOrders[$request->getEditOrder()->getId()] = $request->getRequestType();
+            } elseif ($request->getRequestType() == 'delete') {
+                $unfinishedRequestsOrders[$request->getOrder()->getId()] = 'delete';
+            }
+        }
+
+        if (isset($unfinishedRequestsOrders[$order->getId()])) {
+            $this->flashMessenger()->error(
+                'Error',
+                'You cannot edit a Job that has an open request.'
+            );
+
+            $this->redirect()->toRoute(
+                'logistics_catalog',
+                array(
+                    'action' => 'orders',
+                )
+            );
+        }
+
+        $form = $this->getForm('logistics_catalog_order_edit', array('academic' => $person, 'academicYear' => $this->getCurrentAcademicYear(true), 'order' => $order));
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $newOrder = $form->hydrateObject(new Order($person));
+                $newOrder->pending();
+                $this->getEntityManager()->persist($newOrder);
+                $request = new Request($person, $newOrder,'edit', $order);
+                $this->getEntityManager()->persist($request);
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The request has been sent to our administrators for approval.'
+                );
 
                 $this->redirect()->toRoute(
                     'logistics_catalog',
@@ -237,6 +317,45 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function removeRequestAction()
+    {
+        $this->initAjax();
+
+        $order = $this->getOrderEntity();
+        if ($order === null) {
+            return $this->notFoundAction();
+        }
+
+        if (!$order->isCancellable()) {
+            $this->flashMessenger()->error(
+                'Error',
+                'The given order cannot be removed!'
+            );
+
+            $this->redirect()->toRoute(
+                'logistics_catalog',
+                array(
+                    'action' => 'orders',
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $order->remove();
+        $articles = $order->getArticles();
+        foreach ($articles as $article){
+            $article->getArticle()->removeOrder(new ArrayCollection($article)); //TODO: Is dit correct???
+        }
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
     public function viewArticleAction()
     {
         $article = $this->getArticleEntity();
@@ -268,7 +387,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'logistics_catalog',
                 array(
-                    'action' => 'index',
+                    'action' => 'orders',
                 )
             );
 
@@ -301,7 +420,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
      */
     private function getOrderEntity()
     {
-        $order = $this->getEntityById('LogisticsBundle\Entity\Order');
+        $order = $this->getEntityById('LogisticsBundle\Entity\Order', 'order');
 
         if (!($order instanceof Order)) {
             $this->flashMessenger()->error(
@@ -312,7 +431,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'logistics_catalog',
                 array(
-                    'action' => 'index',
+                    'action' => 'orders',
                 )
             );
 
@@ -320,5 +439,21 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         return $order;
+    }
+
+    /**
+     * @return array
+     */
+    private function getOpenRequests($academic)
+    {
+        $unhandledRequests = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Request')
+            ->findAllUnhandledByAcademic($academic);
+
+        $handledRejects = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Request')
+            ->findRejectsByAcademic($academic);
+
+        return array_merge($handledRejects, $unhandledRequests);
     }
 }

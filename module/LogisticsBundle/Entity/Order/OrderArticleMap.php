@@ -46,7 +46,7 @@ class OrderArticleMap
      * @ORM\ManyToOne(targetEntity="LogisticsBundle\Entity\Order")
      * @ORM\JoinColumn(referencedColumnName="id")
      */
-    private $order;
+    private $referencedOrder;
 
     /**
      * @var Article The Article of the mapping
@@ -75,6 +75,7 @@ class OrderArticleMap
      * @var array All the possible statuses allowed
      */
     public static $POSSIBLE_STATUSES = array(
+        'approved' => 'Approved',
         'okay' => 'Okay',
         'lost' => 'Lost',
         'broken' => 'Broken',
@@ -91,7 +92,7 @@ class OrderArticleMap
      */
     public function __construct(Order $order, Article $article, $amount)
     {
-        $this->order = $order;
+        $this->referencedOrder = $order;
         $this->article = $article;
         $this->amount = $amount;
         $this->status = 'none';
@@ -102,7 +103,7 @@ class OrderArticleMap
      */
     public function getOrder()
     {
-        return $this->order;
+        return $this->referencedOrder;
     }
 
     /**

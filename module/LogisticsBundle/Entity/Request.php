@@ -74,18 +74,18 @@ class Request
     private $requestType;
 
     /**
-     * @var Order
+     * @var Order The order this is associated with
      *
      * @ORM\ManyToOne(targetEntity="LogisticsBundle\Entity\Order")
-     * @ORM\JoinColumn(name="order", referencedColumnName="id")
+     * @ORM\JoinColumn(name="referenced_order", referencedColumnName="id")
      */
-    private $order;
+    private $referencedOrder;
 
     /**
-     * @var Order
+     * @var Order The new order
      *
      * @ORM\ManyToOne(targetEntity="LogisticsBundle\Entity\Order")
-     * @ORM\JoinColumn(name="edit_job", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="edit_order", referencedColumnName="id", nullable=true)
      */
     private $editOrder;
 
@@ -118,7 +118,7 @@ class Request
         $this->creationTime = new DateTime();
         $this->contact = $contact;
         $this->handled = false;
-        $this->order = $order;
+        $this->referencedOrder = $order;
         $this->setRequestType($requestType);
         $this->editOrder = $editOrder;
     }
@@ -203,7 +203,7 @@ class Request
      */
     public function getOrder()
     {
-        return $this->order;
+        return $this->referencedOrder;
     }
 
     /**

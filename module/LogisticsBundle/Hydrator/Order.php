@@ -56,11 +56,10 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
                 ->getRepository('CommonBundle\Entity\General\Location')
                 ->findOneById($data['location'])
         );
-
         $object->setUnit(
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Organization\Unit')
-                ->findOneById($data['unit']['id'])
+                ->findOneById($data['unit'])
         );
 
         $object->updateDate();

@@ -142,6 +142,22 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function viewAction()
+    {
+        $order = $this->getOrderEntity();
+        if ($order === null) {
+            return new ViewModel();
+        }
+        $articles = $order->getArticles();
+
+        return new ViewModel(
+            array(
+                'order'   => $order,
+                'articles' => $articles,
+            )
+        );
+    }
+
     public function articlesAction()
     {
         $order = $this->getOrderEntity();
@@ -282,6 +298,24 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         $this->getEntityManager()->remove($mapping);
         $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+    public function approveArticleAction()
+    {
+        $this->initAjax();
+
+        $mapping = $this->getArticleMapEntity();
+        if ($mapping === null) {
+            return new ViewModel();
+        }
+
+        $mapping->setStatus('approved');
 
         return new ViewModel(
             array(

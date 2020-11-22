@@ -105,7 +105,7 @@ class Order
     /**
      * @var DateTime The last time this order was updated.
      *
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     private $dateUpdated;
 
@@ -140,7 +140,7 @@ class Order
     /**
      * @var ArrayCollection An array of \LogisticsBundle\Entity\Order\OrderArticleMap indicating which articles (and how many) are ordered (reserved).
      *
-     * @ORM\OneToMany(targetEntity="LogisticsBundle\Entity\Order\OrderArticleMap", mappedBy="order_id")
+     * @ORM\OneToMany(targetEntity="LogisticsBundle\Entity\Order\OrderArticleMap", mappedBy="referencedorder_id")
      */
     private $articles;
 
@@ -420,6 +420,11 @@ class Order
     public function isCancellable()
     {
         return(!$this->isApproved() && !$this->isRemoved());
+    }
+
+    public function isEditable()
+    {
+        return $this->isCancellable();
     }
 
     /**

@@ -30,7 +30,7 @@ return array(
             'add', 'delete', 'edit', 'manage', 'search', 'typeahead',
         ),
         'logistics_admin_order' => array(
-            'add', 'delete', 'edit', 'manage', 'removed', 'articles', 'deleteArticle', 'articleMapping'
+            'add', 'delete', 'edit', 'manage', 'removed', 'articles', 'deleteArticle', 'articleMapping', 'approveArticleMapping',
         ),
         'logistics_admin_request' => array(
             'reject', 'approve', 'manage', 'view',

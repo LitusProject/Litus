@@ -10,6 +10,7 @@
         <table class="full_width manage">
             <tr>
                 <th>Name</th>
+                <th>Creator</th>
                 <th>Unit</th>
                 <th >Creation Time</th>
                 <th width="70px">Action</th>
@@ -18,6 +19,7 @@
             {% for request in requests %}
                 <tr class="item item-{{ request.getId() }}">
                     <td>{{ request.getOrder().getName() }}</td>
+                    <td>{{ request.getOrder().getCreator().getFullName() }}</td>
                     <td>{{ request.getOrder().getUnit().getName() }}</td>
                     <td>{{ request.getCreationTime().format('d/m/Y H:i') }}</td>
                     <td class="actions">

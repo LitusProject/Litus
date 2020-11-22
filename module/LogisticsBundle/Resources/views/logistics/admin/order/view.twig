@@ -1,0 +1,55 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'logistics/admin/order/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+        <div id="controller_action">
+            <h1>Order</h1>
+            <p>Name: <b>{{ order.getName() }}</b></p>
+            <p>Location: <b>{{ order.getLocation().getName() }}</b></p>
+            <p>Start Date: <b>{{ order.getStartDate().format('d/m/Y H:i') }}</b></p>
+            <p>End Date: <b>{{ order.getEndDate().format('d/m/Y H:i') }}</b></p>
+                <br>
+            <p>Creator: <b>{{ order.getCreator().getFullName() }}</b></p>
+            <p>Unit: <b>{{ order.getUnit().getName() }}</b></p>
+            <p>Contact: <b>{{ order.getContact() }}</b></p>
+            <p>Email:<b>{{ order.getEmail() }}</b></p>
+                <br>
+            <p>Description: {{ order.getEndDate().format('d/m/Y H:i') }}</p>
+            <br />
+            {% if articles %}
+            <div id="default_page">
+                <table class="full_width manage">
+                    <tr>
+                        <th>Name</th>
+                        <th width="70px">Amount</th>
+                        <th width="60px">Status</th>
+                        <th width="70px">Actions</th>
+                    </tr>
+
+                    {% for mapping in articles %}
+                        <tr class="item">
+                            <td>{{ mapping.getArticle().getName() }}</td>
+                            <td>{{ mapping.getStatus() }}</td>
+                            <td class="actions">
+                                {% if hasAccess('logistics_admin_order', 'approveArticle') %}
+                                    <a href="{{ url('logistics_admin_order', {"action": "approveArticle", "id": order.getId(), "map": mapping.getId()}) }}" class="accept_request">Approve</a>
+                                {% endif %}
+                                {% if hasAccess('logistics_admin_order', 'articleMapping') %}
+                                    <a href="{{ url('logistics_admin_order', {"action": "articleMapping", "id": order.getId(), "map": mapping.getId()}) }}" class="edit">Edit</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            {% endif %}
+        </div>
+    {% endblock %}
+
+{% block content_script %}
+
+
+{% endblock %}

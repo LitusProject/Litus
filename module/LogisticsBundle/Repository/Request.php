@@ -23,6 +23,7 @@ namespace LogisticsBundle\Repository;
 use CommonBundle\Entity\General\Organization\Unit as UnitEntity;
 use LogisticsBundle\Entity\Order as OrderEntity;
 use Doctrine\Common\Collections\ArrayCollection;
+use CommonBundle\Entity\User\Person\Academic;
 
 /**
  * Request
@@ -67,12 +68,12 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     /**
      * @return ArrayCollection
      */
-    public function findAllUnhandledByCompany(UnitEntity $unit)
+    public function findAllUnhandledByUnit(UnitEntity $unit)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('r')
             ->from('LogisticsBundle\Entity\Request', 'r')
-            ->innerJoin('r.order', 'o')
+            ->innerJoin('r.referencedOrder', 'o')
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('r.handled', 'FALSE'),
@@ -96,11 +97,56 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('r.handled', 'FALSE'),
-                    $query->expr()->eq('r.order', ':order')
+                    $query->expr()->eq('r.referencedOrder', ':order')
                 )
             )
             ->setParameter('order', $order->getId())
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function findAllUnhandledByAcademic(Academic $academic)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('r')
+            ->from('LogisticsBundle\Entity\Request', 'r')
+            ->innerJoin('r.referencedOrder', 'o')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('r.handled', 'FALSE'),
+                    $query->expr()->eq('o.creator', ':academic'),
+                    $query->expr()->eq('o.removed', 'FALSE')
+                )
+            )
+            ->setParameter('academic', $academic->getId())
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param Academic $academic
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function findRejectsByAcademic(Academic $academic)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('r')
+            ->from('LogisticsBundle\Entity\Request', 'r')
+            ->innerJoin('r.referencedOrder', 'o')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('r.handled', 'TRUE'),
+                    $query->expr()->eq('o.approved', 'FALSE'),
+                    $query->expr()->eq('o.removed', 'FALSE'),
+                    $query->expr()->eq('o.creator', ':academic')
+                )
+            )
+            ->setParameter('academic', $academic->getId())
+            ->getQuery()
+            ->getResult();
+    }
+
 }
