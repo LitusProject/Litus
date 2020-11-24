@@ -4404,16 +4404,16 @@
         },
         {
             "name": "laminas/laminas-router",
-            "version": "3.4.1",
+            "version": "3.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-router.git",
-                "reference": "338e55010c9090d7a79c6e6aed68b886b849801f"
+                "reference": "45673a19a4221b26b1c35e2980cdf0300057f4b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-router/zipball/338e55010c9090d7a79c6e6aed68b886b849801f",
-                "reference": "338e55010c9090d7a79c6e6aed68b886b849801f",
+                "url": "https://api.github.com/repos/laminas/laminas-router/zipball/45673a19a4221b26b1c35e2980cdf0300057f4b3",
+                "reference": "45673a19a4221b26b1c35e2980cdf0300057f4b3",
                 "shasum": ""
             },
             "require": {
@@ -4423,6 +4423,9 @@
                 "laminas/laminas-stdlib": "^3.3",
                 "laminas/laminas-zendframework-bridge": "^1.0",
                 "php": "^7.3 || ~8.0.0"
+            },
+            "replace": {
+                "zendframework/zend-router": "^3.3.0"
             },
             "require-dev": {
                 "laminas/laminas-coding-standard": "~1.0.0",
@@ -4460,7 +4463,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2020-11-19T19:42:10+00:00"
+            "time": "2020-11-23T15:34:57+00:00"
         },
         {
             "name": "laminas/laminas-serializer",
