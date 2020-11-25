@@ -38,7 +38,7 @@
         "cboden/ratchet": "^0.4",
         "clue/redis-react": "^2.2",
         "colinmollenhour/credis": "^1.10",
-        "dragonmantank/cron-expression": "^1.2",
+        "dragonmantank/cron-expression": "^3.1",
         "erusev/parsedown": "^1.7",
         "league/uri-parser": "^1.4",
         "misterion/ko-process": "^0.5",
