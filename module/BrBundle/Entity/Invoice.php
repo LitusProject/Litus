@@ -56,6 +56,13 @@ abstract class Invoice
     private $taxFree;
 
     /**
+     * @var boolean True if this invoice is for a EU company (different VAT text).
+     *
+     * @ORM\Column(name="eu", type="boolean", options={"default" = null}, nullable=true)
+     */
+    private $eu;
+
+    /**
      * @var DateTime The time of creation of this invoice
      *
      * @ORM\Column(name="creation_time", type="datetime")
@@ -359,5 +366,22 @@ abstract class Invoice
     public function isPaid()
     {
         return $this->paidTime !== null;
+    }
+
+    /**
+     * @return boolean|null
+     */
+    public function isEU()
+    {
+        return $this->eu;
+    }
+
+    /**
+     * @param $eu
+     * @return void
+     */
+    public function setEU($eu)
+    {
+        $this->eu = $eu;
     }
 }

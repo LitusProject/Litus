@@ -200,7 +200,7 @@ return array(
         'shift_admin_registration_shift' => 'ShiftBundle\Controller\Admin\RegistrationShiftController',
         'shift_admin_shift_counter'      => 'ShiftBundle\Controller\Admin\CounterController',
         'shift_admin_shift_ranking'      => 'ShiftBundle\Controller\Admin\RankingController',
-        'shift_admin_shift_weekly_change'=> 'ShiftBundle\Controller\Admin\WeeklyChangeController',
+        'shift_admin_shift_weekly_change' => 'ShiftBundle\Controller\Admin\WeeklyChangeController',
         'shift_admin_shift_subscription' => 'ShiftBundle\Controller\Admin\SubscriptionController',
         'shift_admin_registration_shift_subscription' => 'ShiftBundle\Controller\Admin\RegistrationSubscriptionController',
 

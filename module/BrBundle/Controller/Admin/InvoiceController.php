@@ -354,7 +354,9 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         $language = $this->getParam('language');
+
         if ($invoice->hasContract()) {
+
             $generator = new InvoiceGenerator($this->getEntityManager(), $invoice, $language);
             $generator->generate();
         }

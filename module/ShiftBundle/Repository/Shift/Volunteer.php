@@ -189,10 +189,10 @@ class Volunteer extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     }
 
     /**
-     * @param AcademicYear $academicYear
+     * @param AcademicYear  $academicYear
      * @param $hoursPerBlock
      * @param $points
-     * @param DateTime $date
+     * @param DateTime      $date
      * @return \Doctrine\ORM\Query
      */
     public function findAllCountsAtTimeByAcademicYearQuery(AcademicYear $academicYear, $hoursPerBlock, $points, DateTime $date)
