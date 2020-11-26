@@ -51,7 +51,11 @@ return array(
     ),
     array(
         'key'         => 'br.invoice_vat_explanation',
-        'value'       => 'CHANGE ME I should explain VAT',
+        'value'       => serialize(
+            array(
+            'eu' => 'Vul in VAT voor EU companies',
+            'non-eu'    => 'Vul dit in VAT voor non-EU companies'
+        )),
         'description' => 'Explains what the VAT',
     ),
     array(
