@@ -38,9 +38,8 @@ class Version20201126152828 extends \Doctrine\Migrations\AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
 
-        $this->addSql('ALTER TABLE br_invoices ADD eu BOOLEAN DEFAULT NULL NULLABLE TRUE');
-        $this->addSql('ALTER TABLE br_invoices ALTER eu DROP DEFAULT');
-        $this->addSql('ALTER TABLE br_invoices ALTER eu DROP NOT NULL');
+        $this->addSql('ALTER TABLE br_invoices ADD eu BOOLEAN DEFAULT NULL');
+
 
     }
 
