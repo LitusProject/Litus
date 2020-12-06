@@ -102,11 +102,14 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         $unionVat = $configs->getConfigValue('br.vat_number');
 
 
-        if ($this->invoice->isEU()===null){
-            throw new \ErrorException('This invoice hasn\'t defined if it\'s for a EU company or not');
+        if ($this->invoice->getTaxFree() === true) {
+            if ($this->invoice->isEU() === null){
+                throw new \ErrorException("This company has not defined if it is EU or not");
+            }
+            $isEU = $this->invoice->isEU() ? 'eu' : 'non-eu';
+            $vatTypeExplanation = unserialize($configs->getConfigValue('br.invoice_vat_explanation'))[$isEU] . ' ' . $this->invoice->getVatContext();
         }
-        $isEU = $this->invoice->isEU()?'eu':'non-eu';
-        $vatTypeExplanation = unserialize($configs->getConfigValue('br.invoice_vat_explanation'))[$isEU] . ' ' . $this->invoice->getVatContext();
+
 
         $subEntries = unserialize($configs->getConfigValue('br.invoice_below_entries'))[$this->lang];
 

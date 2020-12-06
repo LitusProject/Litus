@@ -39,8 +39,6 @@ class Version20201126152828 extends \Doctrine\Migrations\AbstractMigration
 
 
         $this->addSql('ALTER TABLE br_invoices ADD eu BOOLEAN DEFAULT NULL');
-
-
     }
 
     /**
