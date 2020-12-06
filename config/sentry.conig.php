@@ -19,24 +19,9 @@
  */
 
 return array(
-    'secretarybundle' => array(
-        'secretary_registration' => array(
-            'add', 'complete', 'edit', 'saveStudies', 'saveSubjects', 'studies', 'subjects',
-        ),
-        'secretary_admin_registration' => array(
-            'add', 'barcode', 'cancel', 'edit', 'manage', 'reprint', 'search',
-        ),
-        'secretary_admin_export' => array(
-            'download', 'export',
-        ),
-        'secretary_admin_photos' => array(
-            'download', 'photos',
-        ),
-        'secretary_admin_promotion' => array(
-            'add', 'delete', 'manage', 'search', 'update',
-        ),
-        'secretary_admin_working_group' => array(
-            'manage', 'add', 'delete', 'search',
-        ),
+    'dsn'     => 'https://61238ecf9b0d318bd431673db627592b:1fe5b3bd982d40fbb3c93a99f2d5192f@localhost/1',
+    'options' => array(
+        'name'     => gethostname(),
+        'app_path' => '',
     ),
 );
