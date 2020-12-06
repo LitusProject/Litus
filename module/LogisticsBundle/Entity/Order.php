@@ -87,9 +87,9 @@ class Order
     private $contact;
 
     /**
-     * @var Academic The creator used in this order
+     * @var Person The creator used in this order
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="creator", referencedColumnName="id", nullable =true)
      */
     private $creator;
@@ -138,13 +138,6 @@ class Order
     private $removed;
 
     /**
-     * @var ArrayCollection An array of \LogisticsBundle\Entity\Order\OrderArticleMap indicating which articles (and how many) are ordered (reserved).
-     *
-     * @ORM\OneToMany(targetEntity="LogisticsBundle\Entity\Order\OrderArticleMap", mappedBy="referencedorder_id")
-     */
-    private $articles;
-
-    /**
      * @param string $contact
      */
     public function __construct($contact)
@@ -152,23 +145,6 @@ class Order
         $this->contact = $contact;
         $this->dateUpdated = new DateTime();
         $this->removed = false;
-        $this->articles = new ArrayCollection();
-    }
-
-    /**
-     * @return arrayCollection
-     */
-    public function getArticles()
-    {
-        return $this->articles;
-    }
-
-    /**
-     * @param orderArticleMap $article
-     */
-    public function addArticles($article)
-    {
-        $this->articles->add($article);
     }
 
     /**
@@ -428,7 +404,7 @@ class Order
     }
 
     /**
-     * @return Academic
+     * @return Person
      */
     public function getCreator()
     {
@@ -436,9 +412,9 @@ class Order
     }
 
     /**
-     * @param Academic $creator
+     * @param Person $creator
      */
-    public function setCreator(Academic $creator)
+    public function setCreator(Person $creator)
     {
         $this->creator = $creator;
     }

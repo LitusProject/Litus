@@ -43,14 +43,12 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        $creator = $this->getPersonEntity();
         if ($object === null) {
-            $object = new OrderEntity($creator);
-        }
-        else{
-            $object->setCreator($creator);
+            $object = new OrderEntity($data['contact']);
         }
 
+        $creator = $this->getPersonEntity();
+        $object->setCreator($creator);
         $object->setLocation(
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Location')
@@ -75,14 +73,10 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
         if ($object === null) {
             return array();
         }
-        $creator = $object->getCreator();
         $unit = $object->getUnit();
 
         $data = $this->stdExtract($object, self::$stdKeys);
 
-        $data['creator']['id'] = $creator->getId();
-        $data['creator']['value'] = $creator->getFullName()
-            . ($creator instanceof Academic ? ' - ' . $creator->getUniversityIdentification() : '');
         $data['location'] = $object->getLocation()->getId();
         $data['unit'] = $unit->getId();
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');

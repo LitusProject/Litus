@@ -14,15 +14,15 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#contact').typeaheadRemote(
+            $('#creator').typeaheadRemote(
                 {
-                    source: '{{ url("common_admin_academic_typeahead")}}',
+                    source: '{{ url("common_admin_academic_typeahead", {}) }}',
                 }
-            ).change(function (e) {
+            ).change(function(e) {
                 if ($(this).data('value')) {
-                    $('[name="contact[id]"]').val($(this).data('value').id);
+                    $('[name="creator[id]"]').val($(this).data('value').id);
                 } else {
-                    $('[name="contact[id]"]').val('');
+                    $('[name="creator[id]"]').val('');
                 }
             });
         });

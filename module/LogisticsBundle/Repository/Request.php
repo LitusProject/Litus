@@ -20,6 +20,7 @@
 
 namespace LogisticsBundle\Repository;
 
+use CommonBundle\Entity\General\Organization\Unit;
 use CommonBundle\Entity\General\Organization\Unit as UnitEntity;
 use LogisticsBundle\Entity\Order as OrderEntity;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -59,7 +60,10 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         return $query->select('r')
             ->from('LogisticsBundle\Entity\Request', 'r')
             ->where(
-                $query->expr()->eq('r.handled', 'FALSE')
+                $query->expr()->andx(
+                    $query->expr()->eq('r.handled', 'FALSE'),
+                    $query->expr()->eq('r.removed', 'FALSE')
+                )
             )
             ->getQuery()
             ->getResult();
@@ -145,6 +149,29 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 )
             )
             ->setParameter('academic', $academic->getId())
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param Unit $unit
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function findRejectsByUnit(Unit $unit)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('r')
+            ->from('LogisticsBundle\Entity\Request', 'r')
+            ->innerJoin('r.referencedOrder', 'o')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('r.handled', 'TRUE'),
+                    $query->expr()->eq('o.approved', 'FALSE'),
+                    $query->expr()->eq('o.removed', 'FALSE'),
+                    $query->expr()->eq('o.unit', ':unit')
+                )
+            )
+            ->setParameter('unit', $unit->getId())
             ->getQuery()
             ->getResult();
     }

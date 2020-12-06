@@ -20,6 +20,7 @@
 
 namespace LogisticsBundle\Repository;
 
+use CommonBundle\Entity\General\Organization\Unit;
 use CommonBundle\Entity\User\Person;
 use LogisticsBundle\Entity\Article as ArticleEntity;
 
@@ -111,6 +112,29 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 )
             )
             ->setParameter('creator', $creator)
+            ->setParameter('now', new DateTime())
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param Unit $unit
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllActiveByUnit(Unit $unit)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('o')
+            ->from('LogisticsBundle\Entity\Order', 'o')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('o.unit', ':unit'),
+                    $query->expr()->gt('o.endDate', ':now'),
+                    $query->expr()->eq('o.removed', 'FALSE')
+                )
+            )
+            ->setParameter('unit', $unit)
             ->setParameter('now', new DateTime())
             ->setMaxResults(1)
             ->getQuery()

@@ -54,7 +54,7 @@ return array(
             'index',
         ),
         'logistics_catalog' => array(
-            'addOrder', 'editOrder', 'orders', 'catalog', 'basket', 'removeOrder'
+            'addOrder', 'editOrder', 'overview', 'catalog', 'basket', 'removeOrder', 'editRequest', 'removeRequest'
         ),
     ),
 );

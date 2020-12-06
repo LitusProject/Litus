@@ -144,6 +144,7 @@ return array(
             '@common_jqueryui',
             '@common_remote_typeahead',
             '@common_jquery_form',
+            '@bootstrap_js_modal',
             '@display_form_error_js',
             '@bootstrap_css',
             '@bootstrap_js_dropdown',

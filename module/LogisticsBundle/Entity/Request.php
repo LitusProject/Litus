@@ -67,6 +67,13 @@ class Request
     private $handled;
 
     /**
+     * @var boolean True if the request has been removed, false if not.
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $removed;
+
+    /**
      * @var string The type of the request
      *
      * @ORM\Column(type="text")
@@ -118,6 +125,7 @@ class Request
         $this->creationTime = new DateTime();
         $this->contact = $contact;
         $this->handled = false;
+        $this->removed = false;
         $this->referencedOrder = $order;
         $this->setRequestType($requestType);
         $this->editOrder = $editOrder;
@@ -141,6 +149,40 @@ class Request
 
         return $this;
     }
+
+    /**
+     * @return bool
+     */
+    public function isHandled()
+    {
+        return $this->handled;
+    }
+
+    /**
+     * @param bool $handled
+     */
+    public function setHandled(bool $handled)
+    {
+        $this->handled = $handled;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRemoved()
+    {
+        return $this->removed;
+    }
+
+    /**
+     * @param bool $removed
+     */
+    public function setRemoved(bool $removed)
+    {
+        $this->removed = $removed;
+    }
+
+
 
     /**
      * @return Academic
@@ -181,6 +223,9 @@ class Request
             if ($this->getOrder()->isApproved()) {
                 $result = 'approved';
             }
+        }
+        elseif ($this->removed) {
+            $result = 'removed';
         }
 
         return $result;

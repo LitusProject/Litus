@@ -39,9 +39,9 @@ class OrderArticleMap extends \CommonBundle\Component\Doctrine\ORM\EntityReposit
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('m', 'a')
             ->from('LogisticsBundle\Entity\Order\OrderArticleMap', 'm')
-            ->innerJoin('m.article', 'a')
+            ->innerJoin('m.referencedArticle', 'a')
             ->where(
-                    $query->expr()->eq('m.order', ':order'),
+                    $query->expr()->eq('m.referencedOrder', ':order')
             )
             ->setParameter('order', $order)
             ->getQuery();
@@ -54,8 +54,8 @@ class OrderArticleMap extends \CommonBundle\Component\Doctrine\ORM\EntityReposit
             ->from('LogisticsBundle\Entity\Order\OrderArticleMap', 'm')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->eq('m.order', ':order'),
-                    $query->expr()->eq('m.article', ':article')
+                    $query->expr()->eq('m.referencedOrder', ':order'),
+                    $query->expr()->eq('m.referencedArticle', ':article')
                 )
             )
             ->setParameter('order', $order)
@@ -72,7 +72,7 @@ class OrderArticleMap extends \CommonBundle\Component\Doctrine\ORM\EntityReposit
             ->from('LogisticsBundle\Entity\Order\OrderArticleMap', 'm')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->eq('m.article', ':article')
+                    $query->expr()->eq('m.referencedArticle', ':article')
                 )
             )
             ->setParameter('article', $article)

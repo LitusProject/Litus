@@ -51,6 +51,8 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
         $request->approveRequest();
         $request->handled();
+        $request->getOrder()->remove();
+        $request->getEditOrder()->approve();
 
         $this->getEntityManager()->flush();
 

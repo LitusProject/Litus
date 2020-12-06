@@ -148,7 +148,11 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         if ($order === null) {
             return new ViewModel();
         }
-        $articles = $order->getArticles();
+
+        $articles = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+            ->findAllByOrderQuery($order)->getResult();
+
 
         return new ViewModel(
             array(

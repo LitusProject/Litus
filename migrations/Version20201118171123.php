@@ -56,9 +56,9 @@ class Version20201118171123 extends \Doctrine\Migrations\AbstractMigration
         $this->addSql('CREATE INDEX IDX_B1E5ED5BCC9BE6E5 ON logistics_request (edit_order)');
         $this->addSql('ALTER TABLE logistics_order_order_article_map DROP CONSTRAINT fk_d35d2b3e8d9f6d38');
         $this->addSql('DROP INDEX idx_d35d2b3e8d9f6d38');
-        $this->addSql('ALTER TABLE logistics_order_order_article_map RENAME COLUMN order_id TO referencedOrder_id');
-        $this->addSql('ALTER TABLE logistics_order_order_article_map ADD CONSTRAINT FK_D35D2B3E870A1E FOREIGN KEY (referencedOrder_id) REFERENCES logistics_order (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('CREATE INDEX IDX_D35D2B3E870A1E ON logistics_order_order_article_map (referencedOrder_id)');
+        $this->addSql('ALTER TABLE logistics_order_order_article_map RENAME COLUMN order_id TO referenced_order');
+        $this->addSql('ALTER TABLE logistics_order_order_article_map ADD CONSTRAINT FK_D35D2B3E870A1E FOREIGN KEY (referenced_order) REFERENCES logistics_order (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('CREATE INDEX IDX_D35D2B3E870A1E ON logistics_order_order_article_map (referenced_order)');
 
     }
 

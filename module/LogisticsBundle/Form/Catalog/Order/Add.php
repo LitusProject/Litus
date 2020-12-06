@@ -58,7 +58,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 ),
             )
         );
-        if ($this->academic->getUnit($this->academicYear)) { //TODO:isPraesidium() werkt niet??
+        if ($this->academic->isPraesidium($this->academicYear)) { //TODO:isPraesidium() werkt niet??
             $this->add(
                 array(
                     'type' => 'select',
@@ -200,7 +200,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         $units = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization\Unit')
-            ->findAllActiveAndDisplayed();
+            ->findAllActiveAndDisplayedQuery()->getResult();
 
         $unitsArray = array(
             '' => '',

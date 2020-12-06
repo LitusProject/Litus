@@ -18,6 +18,20 @@
             <p>An error occurred while trying to edit the order. Please try again later.</p>
         </div>
     </div>
+    <div class="flashmessage alert alert-danger request_canceled_error fade">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to cancel the request. Please try again later.</p>
+        </div>
+    </div>
+
+    <div class="flashmessage alert alert-danger request_edited_error fade">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to edit the request. Please try again later.</p>
+        </div>
+    </div>
+
 
     {% if authenticatedPerson is null %}
         {{ translate('Please login to view your orders.') }}
@@ -94,7 +108,7 @@
                                 </td>
                                 <td width="230" style="vertical-align: middle;">
                                     {% if not (request.getRequestType() == 'delete') %}
-                                        <a class="btn btn-sm btn-warning" href="{{ url('logistics_catalog', {'action': 'edit', 'id': request.getOrder().getId()}) }}">{{ translate('Edit') }}</a>
+                                        <a class="btn btn-sm btn-warning" href="{{ url('logistics_catalog', {'action': 'editRequest', 'request': request.getId()}) }}">{{ translate('Edit') }}</a>
                                     {% endif %}
                                     <a class="btn btn-sm btn-danger deleteRequest" data-id="{{ request.getId() }}" href="#">{{ translate('Delete') }}</a>
                                 </td>
@@ -145,7 +159,7 @@
                     <h4>{{ translate('Remove request') }}</h4>
                 </div>
                 <div class="modal-body">
-                    {{ translate('Are you sure that you want to remove this request') }}?
+                    {{ translate('Are you sure you want to remove this request') }}?
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
@@ -188,11 +202,12 @@
 
         function openRemoveRequest(e) {
             var $this = $(this);
-
             e.preventDefault();
+
             var deleteRequest = $('#modalDeleteRequest');
+            var id = $this.data('id');
             deleteRequest.find('.confirm').unbind('click').click(function () {
-                $.post('{{ url('logistics_catalog', {"action": "deleteRequest"})}}' + $this.data('id'), function (data) {
+                $.post('{{ url('logistics_catalog', {"action": "removeRequest"})}}' + 'request/' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').removeClass('in');
                         $('#request_removed_success').addClass('in');
@@ -207,14 +222,16 @@
         }
 
         function errorRemove() {
-            $('.flashmessage').addClass('hide');
-            $('.reservation_canceled_error').removeClass('hide');
+            $('.flashmessage').addClass('in');
+            $('.flashmessage').addClass('hidden');
+            $('.order_canceled_error').removeClass('hidden');
             $('#cancelReservation').modal('hide');
         }
 
         function errorDeleteRequest() {
-            $('.flashmessage').removeClass('in');
-            $('#request_removed_error').addClass('in');
+            $('.flashmessage').addClass('in');
+            $('.flashmessage').addClass('hidden');
+            $('.request_canceled_error').removeClass('hidden');
             $('#modalDeleteRequest').modal('hide');
         }
 

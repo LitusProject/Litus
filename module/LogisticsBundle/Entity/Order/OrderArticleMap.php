@@ -44,7 +44,7 @@ class OrderArticleMap
      * @var Order The Order of the mapping
      *
      * @ORM\ManyToOne(targetEntity="LogisticsBundle\Entity\Order")
-     * @ORM\JoinColumn(referencedColumnName="id")
+     * @ORM\JoinColumn(name="referenced_order", referencedColumnName="id")
      */
     private $referencedOrder;
 
@@ -52,9 +52,9 @@ class OrderArticleMap
      * @var Article The Article of the mapping
      *
      * @ORM\ManyToOne(targetEntity="LogisticsBundle\Entity\Article")
-     * @ORM\JoinColumn(referencedColumnName="id")
+     * @ORM\JoinColumn(name="referenced_article", referencedColumnName="id")
      */
-    private $article;
+    private $referencedArticle;
 
     /**
      * @var integer amount of this Article in this order
@@ -93,7 +93,7 @@ class OrderArticleMap
     public function __construct(Order $order, Article $article, $amount)
     {
         $this->referencedOrder = $order;
-        $this->article = $article;
+        $this->referencedArticle= $article;
         $this->amount = $amount;
         $this->status = 'none';
     }
@@ -111,7 +111,7 @@ class OrderArticleMap
      */
     public function getArticle()
     {
-        return $this->article;
+        return $this->referencedArticle;
     }
 
     /**
