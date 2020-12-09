@@ -212,6 +212,33 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                         ),
                     ),
+                    array(
+                        'type'       => 'textarea',
+                        'name'       => 'extra',
+                        'label'      => 'Extra Information (Year Abroad, Born Outside Belgium, ...)',
+                        'attributes' => array(
+                            'rows'       => 2,
+                            'class'      => 'count',
+                            'data-count' => 100,
+                            'style'      => 'resize: none;',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'FieldLength',
+                                        'options' => array(
+                                            'max_length'      => 100,
+                                            'new_line_length' => 75,
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
                 ),
             )
         );
@@ -290,33 +317,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
                 'elements' => array(
-                    array(
-                        'type'       => 'textarea',
-                        'name'       => 'extra',
-                        'label'      => 'Extra Information (Year Abroad, Born Outside Belgium, ...)',
-                        'attributes' => array(
-                            'rows'       => 2,
-                            'class'      => 'count',
-                            'data-count' => 100,
-                            'style'      => 'resize: none;',
-                        ),
-                        'options' => array(
-                            'input' => array(
-                                'filters' => array(
-                                    array('name' => 'StringTrim'),
-                                ),
-                                'validators' => array(
-                                    array(
-                                        'name'    => 'FieldLength',
-                                        'options' => array(
-                                            'max_length'      => 100,
-                                            'new_line_length' => 75,
-                                        ),
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
+                    // Intentionally blank
                 ),
             )
         );
