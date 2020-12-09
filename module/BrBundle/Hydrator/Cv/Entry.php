@@ -62,7 +62,7 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
             ->setAdditionalDiplomas($data['studies']['additional_diplomas'])
             ->setErasmusPeriod($data['erasmus']['period'])
             ->setErasmusLocation($data['erasmus']['location'])
-            ->setLanguageExtra($data['studies']['extra'])
+            ->setLanguageExtra($data['languages_extra']['extra'])
             ->setComputerSkills($data['capabilities']['computer_skills'])
             ->setThesisSummary($data['thesis']['summary'])
             ->setFutureInterest($data['future']['field_of_interest'])
@@ -158,7 +158,7 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
         $data['erasmus']['period'] = $object->getErasmusPeriod();
         $data['erasmus']['location'] = $object->getErasmusLocation();
 
-        $data['studies']['extra'] = $object->getLanguageExtra();
+        $data['languages_extra']['extra'] = $object->getLanguageExtra();
         foreach ($object->getLanguages() as $language) {
             $data['languages'][] = array(
                 'language_name'    => $language->getName(),
