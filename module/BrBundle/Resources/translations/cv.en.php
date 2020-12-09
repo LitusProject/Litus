@@ -44,6 +44,7 @@ return array(
     'None_skills'                                                               => 'None',
     'Add Language'                                                              => 'Add Language',
     'Remove Language'                                                           => 'Remove Language',
+    'Languages Extra Info'                                                      => 'Language Experience',
     'Capabilities'                                                              => 'Capabilities',
     'Computer Skills'                                                           => 'Computer Skills, Soft skills, ...',
     'Experiences, Projects (e.g. Internship, Holiday Jobs) (Max 4)'             => 'Experiences, Projects (e.g. Internship, Holiday Jobs) (Max 4)',
