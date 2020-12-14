@@ -102,6 +102,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         $unionVat = $configs->getConfigValue('br.vat_number');
 
 
+        $vatTypeExplanation = '';
         if ($this->invoice->getTaxFree() === true) {
             if ($this->invoice->isEU() === null) {
                 throw new \ErrorException('This company has not defined if it is EU or not');
