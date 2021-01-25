@@ -4202,16 +4202,16 @@
         },
         {
             "name": "laminas/laminas-math",
-            "version": "3.3.0",
+            "version": "3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-math.git",
-                "reference": "67fb8962d11c75bb494a23b273e3453720353515"
+                "reference": "0921d16529e00b37927ba96129e49567d8bfaf31"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-math/zipball/67fb8962d11c75bb494a23b273e3453720353515",
-                "reference": "67fb8962d11c75bb494a23b273e3453720353515",
+                "url": "https://api.github.com/repos/laminas/laminas-math/zipball/0921d16529e00b37927ba96129e49567d8bfaf31",
+                "reference": "0921d16529e00b37927ba96129e49567d8bfaf31",
                 "shasum": ""
             },
             "require": {
@@ -4266,7 +4266,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2021-01-21T20:01:27+00:00"
+            "time": "2021-01-22T09:29:45+00:00"
         },
         {
             "name": "laminas/laminas-mime",
