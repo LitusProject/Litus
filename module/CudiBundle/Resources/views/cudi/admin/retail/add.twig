@@ -1,0 +1,49 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'cudi/admin/retail/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+
+    </div>
+{% endblock %}
+
+{% block content_script %}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#person').typeaheadRemote(
+                {
+                    source: '{{ url("common_admin_academic_typeahead", {}) }}',
+                }
+            ).change(function(e) {
+                if ($(this).data('value')) {
+                    $('[name="owner[id]"]').val($(this).data('value').id);
+                } else {
+                    $('[name="owner[id]"]').val('');
+                }
+            });
+        });
+
+        $(document).ready(function () {
+            $('#article').typeaheadRemote(
+                {
+                    source: '{{ url("cudi_admin_retail_typeahead_article", {}) }}',
+                }
+            ).change(function(e) {
+                if ($(this).data('value')) {
+                    $('[name="article[id]"]').val($(this).data('value').id);
+                } else {
+                    $('[name="article[id]"]').val('');
+                }
+            });
+        });
+
+    </script>
+
+{% endblock %}
