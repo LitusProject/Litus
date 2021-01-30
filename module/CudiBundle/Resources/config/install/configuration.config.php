@@ -603,4 +603,9 @@ Dit is de rechtstreekse link naar onze online-privacy pagina: <a href="https://w
         ),
         'description' => 'The additional displayed above the reservation overview.',
     ),
+    array(
+        'key'         => 'cudi.retail_maximal_relative_price',
+        'value'       => '0.8',
+        'description' => 'The maximal relative price to the sell price.',
+    ),
 );

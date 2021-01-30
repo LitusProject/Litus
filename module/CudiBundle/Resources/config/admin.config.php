@@ -84,6 +84,10 @@ return array(
                     'title' => 'ISIC Cards',
                     'help'  => 'Manage the ISIC Card reservations',
                 ),
+                'cudi_admin_retail' => array(
+                    'title' => 'Retail',
+                    'help'  => 'Manage Retail (second-hand) shop for students',
+                ),
             ),
             'controllers' => array(
                 'cudi_admin_article_subject',
@@ -104,6 +108,7 @@ return array(
                 'cudi_admin_stock_delivery',
                 'cudi_admin_stock_retour',
                 'cudi_admin_isic',
+                'cudi_admin_retail',
             ),
         ),
     ),

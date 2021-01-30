@@ -883,6 +883,54 @@ return array(
                 ),
             ),
         ),
+        'cudi_admin_retail' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/cudi/retail[/:action[/:id][/page/:page][/:field/:string]][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'string' => '[%a-zA-Z0-9:.,_-]*',
+                    'page'   => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'cudi_admin_retail',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
+        'cudi_admin_retail_typeahead_article' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/cudi/retail/typeahead/article[/:string][/]',
+                'constraints' => array(
+                    'string'   => '[%a-zA-Z0-9:.,_-]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'cudi_admin_retail',
+                    'action'     => 'articleTypeahead',
+                ),
+            ),
+        ),
+        'cudi_retail' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '[/:language]/cudi/retail[/:action[/:id][/page/:page][/:field/:string]][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'language'     => '(en|nl)',
+                    'id'     => '[0-9]*',
+                    'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'string' => '[%a-zA-Z0-9:.,_-]*',
+                    'page'   => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'cudi_retail',
+                    'action'     => 'overview',
+                ),
+            ),
+        ),
     ),
 
     'controllers' => array(
@@ -917,6 +965,9 @@ return array(
         'cudi_admin_syllabus'                        => 'CudiBundle\Controller\Admin\SyllabusController',
         'cudi_admin_mail'                            => 'CudiBundle\Controller\Admin\MailController',
         'cudi_admin_isic'                            => 'CudiBundle\Controller\Admin\IsicController',
+        'cudi_admin_retail'                          => 'CudiBundle\Controller\Admin\RetailController',
+
+
 
         'cudi_sale_sale'  => 'CudiBundle\Controller\Sale\SaleController',
         'cudi_sale_queue' => 'CudiBundle\Controller\Sale\QueueController',
@@ -941,5 +992,6 @@ return array(
         'cudi_opening_hour' => 'CudiBundle\Controller\OpeningHourController',
 
         'cudi_isic' => 'CudiBundle\Controller\IsicController',
+        'cudi_retail'     => 'CudiBundle\Controller\RetailController',
     ),
 );

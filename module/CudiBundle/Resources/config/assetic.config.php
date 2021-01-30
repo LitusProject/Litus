@@ -430,6 +430,27 @@ return array(
             '@opening_hour_css',
             '@opening_hour_js',
         ),
+        'cudi_admin_retail' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+            '@common_remote_typeahead',
+        ),
+        'cudi_retail' => array(
+            '@common_jquery',
+            '@bootstrap_css',
+            '@site_css',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+            '@bootstrap_js_carousel',
+            '@bootstrap_js_tooltip',
+            '@bootstrap_js_popover',
+            '@bootstrap_js_collapse',
+            '@bootstrap_js_alert',
+        ),
     ),
 
     'collections' => array(
