@@ -24,11 +24,14 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <a class="close" data-dismiss="modal">&times;</a>
-                    <h4>{{ translate('Sign Up') }}</h4>
+                    <h4>{{ translate('Confirmation') }}</h4>
                 </div>
                 <div class="modal-body">
                     <p>
-                        {{ translate('You are about to sign up for a retail sale. A mail will be sent out to the seller. Do you want to continue?') }}
+                        {{ translate('You are about to sign up for a retail sale. A mail will be sent out to the seller. By pressing "yes" you agree that your name and email address will be sent to the seller.') }}
+                    </p>
+                    <p>
+                        {{ translate('Do you want to continue?') }}
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -43,16 +46,16 @@
         <h1>{{ translate('Second-Hand Book Sales') }}</h1>
     </div>
 
-    <div style="text-align: justify;">
+    {% include 'cudi/retail/partials/navigation.twig' %}
+    <div>
         {{ translate('Here you can sign up for the inter-student second-hand book store') }}
     </div>
 
     <div class="row">
         <div class="col-md-4 bookSearchForms">
-            <h2>{{ translate('Search') }}</h2>
 
             <div class="well">
-                <h4>{{ translate('By Book') }}</h4>
+                <h4>{{ translate('Search by Book') }}</h4>
 
                 {% if bookSearchForm is defined %}
                     {% do bookSearchForm.prepare() %}
@@ -74,16 +77,17 @@
             </div>
         </div>
         <div class="col-md-8">
-            {{ self.displayDeals(entityManager, authenticatedPerson, myDeals, 'myDeals') }}
+            <div class="well">
+                <h2>{{ translate('Retails') }}</h2>
+                {% if searchResults is not null %}
+                    {{ self.displayRetails(searchResults, 'search') }}
+                {% else %}
+                    <div class="alert alert-warning">
+                        {{ translate('There are no Deals to be shown yet; please use the search function on the left.') }}
+                    </div>
+                {% endif %}
+            </div>
 
-            <h2>{{ resultString }}</h2>
-            {% if searchResults is not null %}
-                {{ self.displayRetails(entityManager, authenticatedPerson, searchResults, 'search') }}
-            {% else %}
-                <div class="alert alert-warning">
-                    {{ translate('There are no Deals to be shown yet; please use the search function on the left.') }}
-                </div>
-            {% endif %}
         </div>
     </div>
 {% endblock %}
@@ -95,9 +99,9 @@
         $(document).ready(function () {
             $('.retail').click(function () {
                 let button = $(this);
+                let id = '#modalSignInWarning';
 
                 if (!button.hasClass('disabled')) {
-                    let id = '#modalSignInWarning';
                     $(id).modal();
                     $(id +' .confirm').one('click', function (){
                         $(id).modal('hide');
@@ -154,11 +158,11 @@
         function enquireDeal(button) {
             $.post(
                 '{{ url('cudi_retail', {"action": "deal"}) }}',
-                {"id": button.data('id')},
+                {id: button.data('id')},
                 function (data) {
                     if (data && 'success' === data.status) {
                         $('.flashmessage').removeClass('in');
-                        $('#deal_success').addClass('in');
+                        $('#retail_success').addClass('in');
 
                         var panel = $(button.data('panel')).clone();
                         panel.find('.buttons').html('').css('display', 'none');
@@ -178,52 +182,7 @@
     </script>
 {% endblock %}
 
-{% macro displayDeals(entityManager, authenticatedPerson, deals, accordionName) %}
-    {% import _self as self %}
-    <div class="panel-group" id="deals-{{ accordionName }}">
-        {% for deal in deals %}
-            <div class="panel panel-default" id="group_{{ accordionName }}_deal-{{ deal.getId() }}">
-                <div class="panel-heading">
-                    <span class="buttons pull-right hidden-xs hidden-sm">
-                        {{ self.buttons(entityManager, authenticatedPerson, deal, accordionName) }}
-                    </span>
-                    <a class="panel-toggle" data-toggle="collapse" data-parent="#deals-{{ accordionName }}" href="#collapse_{{ accordionName }}_deal-{{ deal.getId() }}" style="overflow: hidden;">
-                        {{ deal.getRetail().getArticle().getTitle() }} <br> €{{ deal.getRetail().getPrice() }}  |  {{ deal.getRetail().getOwner().getFullName() }}
-                    </a>
-                </div>
-                <div id="collapse_{{ accordionName }}_deal-{{ deal.getId() }}" class="panel-collapse collapse">
-                    <div class="panel-body">
-                        <div class="buttons hidden-md hidden-lg" style="text-align: right">
-                            {{ self.buttons(entityManager, authenticatedPerson, deal, accordionName) }}
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <dl>
-                                    <dt>{{ translate('Book') }}</dt>
-                                    <dd>{{ deal.getRetail().getArticle().getTitle() }}</dd>
-                                    <dt>€{{ translate('Price') }}</dt>
-                                    <dd>{{ deal.getRetail().getPrice() }}</dd>
-                                    <dt>{{ translate('Seller') }}</dt>
-                                    <dd>{{ deal.getRetail().getOwner().getFullName() }}</dd>
-                                </dl>
-                            </div>
-                        </div>
-                        <dl>
-                            <dt>{{ translate('Description') }}</dt>
-                            <dd style="text-align: justify;">{{ deal.getRetail().getComment() }}</dd>
-                        </dl>
-                    </div>
-                </div>
-            </div>
-        {% else %}
-            <div class="alert alert-warning">
-                {{ translate('No deals were found that match the given query.') }}
-            </div>
-        {% endfor %}
-    </div>
-{% endmacro %}
-
-{% macro displayRetails(entityManager, authenticatedPerson, retails, accordionName) %}
+{% macro displayRetails(retails, accordionName) %}
     {% import _self as self %}
 
     <div class="panel-group" id="retails-{{ accordionName }}">
@@ -231,7 +190,7 @@
             <div class="panel panel-default" id="group_{{ accordionName }}_retail-{{ retail.getId() }}">
                 <div class="panel-heading">
                     <span class="buttons pull-right hidden-xs hidden-sm">
-                        {{ self.buttons(entityManager, authenticatedPerson, retail, accordionName) }}
+                        {{ self.buttons(retail, accordionName) }}
                     </span>
                     <a class="panel-toggle" data-toggle="collapse" data-parent="#retails-{{ accordionName }}" href="#collapse_{{ accordionName }}_retail-{{ retail.getId() }}" style="overflow: hidden;">
                         {{ retail.getArticle().getTitle() }} <br> €{{ retail.getPrice() }}  |  {{ retail.getOwner().getFullName() }}
@@ -240,7 +199,7 @@
                 <div id="collapse_{{ accordionName }}_retail-{{ retail.getId() }}" class="panel-collapse collapse">
                     <div class="panel-body">
                         <div class="buttons hidden-md hidden-lg" style="text-align: right">
-                            {{ self.buttons(entityManager, authenticatedPerson, retail, accordionName) }}
+                            {{ self.buttons(retail, accordionName) }}
                         </div>
                         <div class="row">
                             <div class="col-sm-10">
@@ -270,17 +229,10 @@
 {% endmacro %}
 
 
-{% macro buttons(entityManager, authenticatedPerson, retail, accordionName) %}
+{% macro buttons(retail, accordionName) %}
     {% import _self as self %}
 
-    {% if 'search' == accordionName %}
-        <button class="btn btn-default btn-xs retail" data-id="{{ retail.getId() }}" data-panel="#group_{{ accordionName }}_retail-{{ retail.getId() }}" type="button">
-            {{ translate('Enquire') }}
-        </button>
-
-    {% else %}
-            <button class="btn btn-default btn-xs signOut" data-id="{{ deal.getId() }}" data-panel="#group_{{ accordionName }}_deal-{{ deal.getId() }}" type="button">
-                {{ translate('Sign Out') }}
-            </button>
-    {% endif %}
+    <button class="btn btn-default btn-xs retail" data-id="{{ retail.getId() }}" data-panel="#group_{{ accordionName }}_retail-{{ retail.getId() }}" type="button">
+        {{ translate('Enquire') }}
+    </button>
 {% endmacro %}

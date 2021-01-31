@@ -450,6 +450,7 @@ return array(
             '@bootstrap_js_popover',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
+            '@common_remote_typeahead',
         ),
     ),
 

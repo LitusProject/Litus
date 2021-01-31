@@ -21,11 +21,8 @@
 namespace CudiBundle\Entity;
 
 use CommonBundle\Entity\User\Person\Academic;
-use CudiBundle\Entity\Article as Article;
-use DateTime;
-use Doctrine\ORM\EntityManager;
+use CudiBundle\Entity\Article;
 use Doctrine\ORM\Mapping as ORM;
-use InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Retail")
@@ -54,7 +51,7 @@ class Retail
      * @var Academic The owner of the article
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
-     * @ORM\JoinColumn(name="person", referencedColumnName="id")
+     * @ORM\JoinColumn(name="owner", referencedColumnName="id")
      *
      */
     private $owner;
@@ -80,7 +77,6 @@ class Retail
      */
     private $comment;
 
-
     public function __construct(Article $article, Academic $owner)
     {
         $this->owner = $owner;
@@ -90,7 +86,7 @@ class Retail
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId(): int
     {
@@ -114,7 +110,7 @@ class Retail
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getPrice(): int
     {
@@ -122,7 +118,7 @@ class Retail
     }
 
     /**
-     * @param int $price
+     * @param integer $price
      */
     public function setPrice(int $price)
     {
@@ -130,7 +126,7 @@ class Retail
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isAnonymous(): bool
     {
@@ -138,7 +134,7 @@ class Retail
     }
 
     /**
-     * @param bool $isAnonymous
+     * @param boolean $isAnonymous
      */
     public function setAnonymous(bool $isAnonymous)
     {
@@ -150,7 +146,7 @@ class Retail
      */
     public function getComment()
     {
-        return $this->comment ?? "";
+        return $this->comment ?? '';
     }
 
     /**

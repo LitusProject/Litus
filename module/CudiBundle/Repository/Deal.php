@@ -20,7 +20,6 @@
 
 namespace CudiBundle\Repository;
 
-
 /**
  * Deal
  *
@@ -82,23 +81,19 @@ class Deal extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     }
 
     /**
-     * @param  string $retail
+     * @param  string $retailId
      * @return \Doctrine\ORM\Query
      */
-    public function findAllByRetail($retail)
+    public function findAllByRetail($retailId)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('d')
             ->from('CudiBundle\Entity\Deal', 'd')
-            ->innerjoin('d.buyer', 'b')
             ->innerjoin('d.retail', 'r')
-            ->innerjoin('r.article', 'a')
             ->where(
-                $query->expr()->eq('b.id', ':buyer')
+                $query->expr()->eq('r.id', ':retailId')
             )
-            ->setParameter('buyer', $buyer)
-            ->orderBy('a.title', 'ASC')
-            ->getQuery();
+            ->setParameter('retailId', $retailId)
+            ->getQuery()->getResult();
     }
-
 }

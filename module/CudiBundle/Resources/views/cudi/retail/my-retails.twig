@@ -1,0 +1,239 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="flashmessage alert alert-success fade" id="retail_success">
+        <div class="content">
+            {{ translate('You successfully deleted the retail!') }}
+        </div>
+    </div>
+    <div class="flashmessage alert alert-danger fade" id="error">
+        <div class="content">
+            {{ translate('An error occurred while processing your request!') }}
+        </div>
+    </div>
+
+    <div class="page-header">
+        <h1>{{ translate('Second-Hand Book Sales') }}</h1>
+    </div>
+
+    <div id="modalAddRetail" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Add new retail') }}</h4>
+                </div>
+                <div class="modal-body">
+                    {% import 'site/partials/form.twig' as forms %}
+                    {{ forms.renderForm(addForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalEditRetail" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Edit retail') }}</h4>
+                </div>
+                <div class="modal-body">
+                    {% import 'site/partials/form.twig' as forms %}
+                    {{ forms.renderForm(editForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalDeleteRetail" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Delete retail') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        {{ translate('') }}
+                    </p>
+                    <p>
+                        {{ translate('Do you want to continue?') }}
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default deny">{{ translate('No') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'cudi/retail/partials/navigation.twig' %}
+    {% import _self as self %}
+
+    <div>
+        {{ translate('Here you can edit your own retails') }}
+        <button class="btn btn-default btn-xs add-retail" type="button">
+            {{ translate('Add new retail') }}
+        </button>
+    </div>
+
+    <div class="well">
+        {{ self.displayRetails(retails, 'retails') }}
+    </div>
+
+{% endblock %}
+
+{% block content_script %}
+    {% import _self as self %}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.add-retail').click(function () {
+                let id = '#modalAddRetail';
+
+                $(id).modal();
+                $(id +' .confirm').one('click', function (){
+                    $(id).modal('hide');
+                    enquireDeal();
+                });
+
+                $(id +' .deny').one('click', function () {
+                    $(id).modal('hide');
+                });
+            });
+
+            $('#article').typeaheadRemote(
+                {
+                    source: '{{ url("cudi_retail_typeahead_article", {}) }}',
+                }
+            ).change(function(e) {
+                if ($(this).data('value')) {
+                    $('[name="article[id]"]').val($(this).data('value').id);
+                } else {
+                    $('[name="article[id]"]').val('');
+                }
+            });
+
+            $('.edit-retail').click(function () {
+                let button = $(this);
+                let id = '#modalEditRetail';
+
+                $(id).modal();
+                $(id).find('input[name="price"]').val(button.data('price'));
+                $(id).find('input[name="anonymous"]').val(button.data('anonymous'));
+                $(id).find('textarea[name="comment"]').val(button.data('comment'));
+                $(id).find('input[name="retailId"]').val(button.data('id'));
+            });
+
+            $('.delete-retail').click(function () {
+                let button = $(this);
+                let id = '#modalDeleteRetail';
+
+                $(id).modal();
+                $(id +' .confirm').one('click', function (){
+                    $(id).modal('hide');
+                    deleteRetail(button);
+                });
+
+                $(id +' .deny').one('click', function () {
+                    $(id).modal('hide');
+                });
+            });
+        });
+
+        function deleteRetail(button) {
+            $.post(
+                '{{ url('cudi_retail', {"action": "deleteRetail"}) }}'+ button.data('id'),
+                {},
+                function (data) {
+                    if (data && 'success' === data.status) {
+                        $('.flashmessage').removeClass('in');
+                        $('#retail_success').addClass('in');
+
+                        var panel = $(button.data('panel')).clone();
+                        panel.find('.buttons').html('').css('display', 'none');
+
+                        // $('#deals-myDeals .alert').remove();
+                        // $('#deals-myDeals').prepend(panel);
+                        panel.fadeIn();
+                        $('#retails-retails ' + button.data('panel')).fadeOut(function () {
+                            $(this).remove()
+                        });
+                    } else {
+                        error();
+                    }
+                },
+                'json'
+            ).error(error);
+        }
+
+
+        function error() {
+            $('.flashmessage').removeClass('in');
+            $('#error').addClass('in');
+        }
+    </script>
+{% endblock %}
+
+{% macro displayRetails(retails, accordionName) %}
+    {% import _self as self %}
+
+    <div class="panel-group" id="retails-{{ accordionName }}">
+        {% for retail in retails %}
+            <div class="panel panel-default" id="group_{{ accordionName }}_retail-{{ retail.getId() }}">
+                <div class="panel-heading">
+                    <span class="buttons pull-right hidden-xs hidden-sm">
+                        {{ self.buttons(retail, accordionName) }}
+                    </span>
+                    <a class="panel-toggle" data-toggle="collapse" data-parent="#retails-{{ accordionName }}" href="#collapse_{{ accordionName }}_retail-{{ retail.getId() }}" style="overflow: hidden;">
+                        {{ retail.getArticle().getTitle() }} <br> €{{ retail.getPrice() }}  |  {{ retail.getOwner().getFullName() }}
+                    </a>
+                </div>
+                <div id="collapse_{{ accordionName }}_retail-{{ retail.getId() }}" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="buttons hidden-md hidden-lg" style="text-align: right">
+                            {{ self.buttons(retail, accordionName) }}
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <dl>
+                                    <dt>{{ translate('Book') }}</dt>
+                                    <dd>{{ retail.getArticle().getTitle() }}</dd>
+                                    <dt>{{ translate('Price') }}</dt>
+                                    <dd>€{{ retail.getPrice() }}</dd>
+                                    <dt>{{ translate('Seller') }}</dt>
+                                    <dd>{{ retail.getOwner().getFullName() }}</dd>
+                                </dl>
+                            </div>
+                        </div>
+                        <dl>
+                            <dt>{{ translate('Description') }}</dt>
+                            <dd style="text-align: justify;">{{ retail.getComment() }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="alert alert-warning">
+                {{ translate('You have not yet inquired about any retails!') }}
+            </div>
+        {% endfor %}
+    </div>
+{% endmacro %}
+
+
+{% macro buttons(retail, accordionName) %}
+    {% import _self as self %}
+    <button class="btn btn-default btn-xs edit-retail" data-id="{{ retail.getId() }}"
+            data-panel="#group_{{ accordionName }}_deal-{{ retail.getId() }}" type="button"
+            data-price="{{ retail.getPrice() }}" data-anonymous="{{ retail.isAnonymous() }}"
+            data-comment="{{ retail.getComment() }}">
+        {{ translate('Edit') }}
+    </button>
+    <button class="btn btn-default btn-xs delete-retail" data-id="{{ retail.getId() }}" data-panel="#group_{{ accordionName }}_deal-{{ retail.getId() }}" type="button">
+        {{ translate('Delete') }}
+    </button>
+
+{% endmacro %}

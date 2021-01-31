@@ -35,8 +35,6 @@ class Retail extends \CommonBundle\Component\Hydrator\Hydrator
         $data = $this->stdExtract($object, self::$stdKeys);
         $data['price'] = $object->getPrice();
         return $data;
-
-
     }
 
     protected function doHydrate(array $data, $object = null)
@@ -61,12 +59,10 @@ class Retail extends \CommonBundle\Component\Hydrator\Hydrator
         if ($article->getSaleArticle()) {
             if ($data['price'] > $maxRelPrice * $article->getSaleArticle()->getSellPrice()) {
                 $object->setPrice($maxRelPrice * $article->getSaleArticle()->getSellPrice());
-            }
-            else {
+            } else {
                 $object->setPrice($data['price']);
             }
-        }
-        else {
+        } else {
             $object->setPrice($data['price']);
         }
 
