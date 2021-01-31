@@ -916,18 +916,28 @@ return array(
         'cudi_retail' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '[/:language]/cudi/retail[/:action[/:id][/page/:page][/:field/:string]][/]',
+                'route'       => '[/:language]/cudi/retail[/:action[/:id]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'language'     => '(en|nl)',
                     'id'     => '[0-9]*',
-                    'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'string' => '[%a-zA-Z0-9:.,_-]*',
-                    'page'   => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'cudi_retail',
                     'action'     => 'overview',
+                ),
+            ),
+        ),
+        'cudi_retail_typeahead_article' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '[/:language]/cudi/retail/typeahead/article[/:string][/]',
+                'constraints' => array(
+                    'string'   => '[%a-zA-Z0-9:.,_-]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'cudi_retail',
+                    'action'     => 'articleTypeahead',
                 ),
             ),
         ),

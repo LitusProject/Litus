@@ -20,9 +20,6 @@
 
 namespace CudiBundle\Repository;
 
-use CommonBundle\Entity\General\AcademicYear;
-use CommonBundle\Entity\User\Person\Academic;
-
 /**
  * Retail
  *
@@ -63,10 +60,10 @@ class Retail extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     }
 
     /**
-     * @param  string $author
+     * @param  string $authorId
      * @return \Doctrine\ORM\Query
      */
-    public function findAllByOwnerQuery($author)
+    public function findAllByOwnerQuery($authorId)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('a')
@@ -74,13 +71,10 @@ class Retail extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->innerjoin('a.owner', 'o')
             ->innerjoin('a.article', 'art')
             ->where(
-                $query->expr()->andX(
-                    $query->expr()->like($query->expr()->lower('o.first_name' . 'o.last_name'), ':author')
-                )
+                $query->expr()->eq('o.id', ':authorId')
             )
-            ->setParameter('author', '%' . strtolower($author) . '%')
+            ->setParameter('authorId', $authorId)
             ->orderBy('art.title', 'ASC')
             ->getQuery();
     }
-
 }

@@ -613,4 +613,30 @@ Dit is de rechtstreekse link naar onze online-privacy pagina: <a href="https://w
         'value'       => '0.8',
         'description' => 'The maximal relative price to the sell price.',
     ),
+    array(
+        'key'   => 'cudi.retail_enquired_mail',
+        'value' => serialize(
+            array(
+                'en' => array(
+                    'subject' => 'Enquiry for your retail: {{ book }}',
+                    'content' => 'Dear,
+
+You have received an enquiry for the following retail: {{ book }}.
+Please contact {{ name }} via {{ email }}.
+
+-- This is an automatically generated email, please do not reply --',
+                ),
+                'nl' => array(
+                    'subject' => 'Interesse in je verkoop: {{ book }}',
+                    'content' => 'Beste,
+
+Iemand heeft interesse getoond voor het volgende boek: {{ book }}.
+Gelieve contact op te nemen met {{ name }} via {{ email }}.
+
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
+                ),
+            )
+        ),
+        'description' => 'The mail sent to the owner of the retail when an enquiry is made.',
+    ),
 );

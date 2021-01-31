@@ -22,7 +22,6 @@ namespace CudiBundle\Controller\Admin;
 
 use CudiBundle\Entity\Retail;
 use Laminas\View\Model\ViewModel;
-use MongoDB\BSON\Javascript;
 
 /**
  * RetailController
@@ -163,7 +162,6 @@ class RetailController extends \CudiBundle\Component\Controller\ActionController
 
         $result = array();
         foreach ($articles as $article) {
-
             $item = (object) array();
             $item->id = $article->getId();
             $item->article = $article->getArticle()->getTitle();

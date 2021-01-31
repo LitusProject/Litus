@@ -23,6 +23,7 @@ namespace CudiBundle\Controller;
 use CommonBundle\Entity\User\Person\Academic;
 use CudiBundle\Entity\Deal;
 use CudiBundle\Entity\Retail;
+use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
 
 /**
@@ -36,10 +37,9 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
     {
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
-            return $this->notFoundAction();
+            return $this->notFoundAction();  // TODO link to login
         }
         $bookSearchForm = $this->getForm('cudi_retail_search_book', array('language' => $this->getLanguage()));
-//        print("here");die();
 
         $myDeals = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Deal')
@@ -49,30 +49,27 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
             ->getRepository('CudiBundle\Entity\Retail')
             ->FindAllQuery()->getResult();
 
-        $searchResults = null;
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
 
 
                 $bookSearchForm->setData($formData);
-                if ($formData['search_string'] === '') {
-                    $retails = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Retail')
-                        ->findAllQuery()->getResult();
-                }
-                elseif ($bookSearchForm->isValid()) {
-                    $formData = $bookSearchForm->getData();
+            if ($formData['search_string'] === '') {
+                $retails = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Retail')
+                    ->findAllQuery()->getResult();
+            } elseif ($bookSearchForm->isValid()) {
+                $formData = $bookSearchForm->getData();
 
-                    $retails = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Retail')
-                        ->findAllByTitle($formData['search_string']);
-
-                } else {
-                    $this->flashMessenger()->error(
-                        'Error',
-                        'The given search query was invalid!'
-                    );
-                }
+                $retails = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Retail')
+                    ->findAllByTitle($formData['search_string']);
+            } else {
+                $this->flashMessenger()->error(
+                    'Error',
+                    'The given search query was invalid!'
+                );
+            }
         }
 
         foreach ($myDeals as $deal) {
@@ -84,16 +81,13 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
         return new ViewModel(
             array(
                 'bookSearchForm'   => $bookSearchForm,
-                'myDeals'          => $myDeals,
                 'searchResults'    => $retails,
-                'entityManager'    => $this->getEntityManager(),
             )
         );
     }
 
     public function dealAction()
     {
-
         $this->initAjax();
 
         $retail = $this->getRetailEntity();
@@ -115,14 +109,15 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
             );
         }
 
-
-        $enquiredAcademics = $this->getEntityManager()
+        $enquiredDeals = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Deal')
             ->findAllByRetail($retail->getId());
+        $alreadyEnquiredByAcademic = false;
+        foreach ($enquiredDeals as $deal) {
+            $alreadyEnquiredByAcademic = $alreadyEnquiredByAcademic || $deal->getBuyer() === $academic;
+        }
 
-        $alreadyEnquired = in_array($academic, $enquiredAcademics);
-
-        if ($alreadyEnquired === true) {
+        if ($alreadyEnquiredByAcademic === true) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -130,18 +125,176 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
             );
         }
 
-
-        new Deal($retail, $academic);
-
-        // TODO: Mail uitsturen wanneer enquiry gemaakt wordt!
-
+        $deal = new Deal($retail, $academic);
+        $this->getEntityManager()->persist($deal);
         $this->getEntityManager()->flush();
+
+        $this->sendMail($retail, $academic);
 
         return new ViewModel(
             array(
                 'result' => (object) array(
                     'status' => 'success',
                 ),
+            )
+        );
+    }
+
+    public function myDealsAction()
+    {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
+            return $this->notFoundAction();  // TODO link to login
+        }
+
+        $myDeals = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Deal')
+            ->findAllByBuyerQuery($academic->getId())->getResult();
+
+        return new ViewModel(
+            array(
+                'myDeals'          => $myDeals,
+            )
+        );
+    }
+
+    public function myRetailsAction()
+    {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
+            return $this->notFoundAction();  // TODO link to login
+        }
+
+        $addForm = $this->getForm('cudi_retail_add');
+        $editForm = $this->getForm('cudi_retail_edit');
+
+        if ($this->getRequest()->isPost()) {
+            $data = $this->getRequest()->getPost();
+            $isEdit = array_key_exists('retailId', $data);
+
+            if ($isEdit) {
+                $editForm->setData($data);
+
+                if ($editForm->isValid()) {
+                    $retail = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Retail')
+                        ->findOneById($data['retailId']);
+
+                    $editForm->hydrateObject($retail);
+                    $this->getEntityManager()->flush();
+
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'The retail was successfully edited!'
+                    );
+
+                    $this->redirect()->toRoute(
+                        'cudi_retail',
+                        array(
+                            'action' => 'myRetails',
+                        )
+                    );
+                }
+            } else {
+                $addForm->setData($data);
+
+                if ($addForm->isValid()) {
+                    $article = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Article')
+                        ->findOneByTitle($data['article']['value']);
+                    $retail = new Retail($article, $academic);
+
+                    $this->getEntityManager()->persist(
+                        $addForm->hydrateObject($retail)
+                    );
+
+                    $this->getEntityManager()->flush();
+
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'The retail was successfully added!'
+                    );
+
+                    $this->redirect()->toRoute(
+                        'cudi_retail',
+                        array(
+                            'action' => 'myRetails',
+                        )
+                    );
+
+                    return new ViewModel();
+                }
+            }
+        }
+
+        $retails = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Retail')
+            ->findAllByOwnerQuery($academic->getId())
+            ->getResult();
+
+
+        return new ViewModel(
+            array(
+                'retails' => $retails,
+                'addForm' => $addForm,
+                'editForm' => $editForm,
+            )
+        );
+    }
+
+    public function deleteRetailAction()
+    {
+
+        $this->initAjax();
+
+        if ($this->getRequest()->isPost()) {
+            $academic = $this->getAcademicEntity();
+            if ($academic === null) {
+                return $this->notFoundAction();  // TODO link to login
+            }
+
+            $retail = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Retail')
+                ->findOneById($this->getParam('id'));
+
+            if ($retail->getOwner() !== $academic) {
+                return new ViewModel(
+                    array(
+                        'result' => (object) array('status' => 'error'),
+                    )
+                );
+            }
+
+            $this->getEntityManager()->remove($retail);
+            $this->getEntityManager()->flush();
+        }
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+    public function articleTypeaheadAction()
+    {
+        // TODO only able to sell books (not items like pens) (also edit validator?)
+        $articles = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Article')
+            ->findAllByTitleQuery($this->getParam('string'))->getResult();
+
+        $result = array();
+
+        foreach ($articles as $article) {
+            $item = (object) array();
+            $item->id = $article->getId();
+            $item->value = $article->getTitle();
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
             )
         );
     }
@@ -158,7 +311,7 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
         $academic = $this->getAuthentication()->getPersonObject();
 
         if (!($academic instanceof Academic)) {
-            return;
+            return null;
         }
 
         return $academic;
@@ -171,23 +324,61 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
     {
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
-            return;
+            return null;
         }
 
-        if ($this->getParam('id') === null || !is_numeric($this->getParam('id'))) {
-            return;
+        $postData = $this->getRequest()->getPost();
+        $id = $postData['id'];
+        if ($id === null || !is_numeric($id)) {
+            return null;
         }
 
-        $retail = $this->getEntityManager()
+        return $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Retail')
-            ->findOneById($this->getParam('id'));
-
-        if ($retail->getPerson() !== $academic) {
-            return;
-        }
-
-        return $retail;
+            ->findOneById($id);
     }
 
+    private function sendMail($retail, $academic)
+    {
+        $mailAddress = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.mail');
 
+        $mailName = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.mail_name');
+
+        $language = $retail->getOwner()->getLanguage();
+        if ($language === null) {
+            $language = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Language')
+                ->findOneByAbbrev('en');
+        }
+
+        $mailData = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.retail_enquired_mail')
+        );
+
+        $message = $mailData[$language->getAbbrev()]['content'];
+        $subject = $mailData[$language->getAbbrev()]['subject'];
+
+        $mail = new Message();
+        $mail->setEncoding('UTF-8')
+            ->setBody(
+                str_replace(
+                    array('{{ book }}', '{{ name }}', '{{ email }}'),
+                    array($retail->getArticle()->getTitle(), $academic->getFullName(), $academic->getEmail()),
+                    $message
+                )
+            )
+            ->setFrom($mailAddress, $mailName)
+            ->addTo($academic->getEmail(), $academic->getFullName())
+            ->setSubject($subject);
+
+        if (getenv('APPLICATION_ENV') != 'development') {
+            $this->getMailTransport()->send($mail);
+        }
+    }
 }

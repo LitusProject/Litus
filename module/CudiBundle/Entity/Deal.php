@@ -21,11 +21,8 @@
 namespace CudiBundle\Entity;
 
 use CommonBundle\Entity\User\Person\Academic;
-use CudiBundle\Entity\Retail as Retail;
-use DateTime;
-use Doctrine\ORM\EntityManager;
+use CudiBundle\Entity\Retail;
 use Doctrine\ORM\Mapping as ORM;
-use InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Deal")
@@ -59,7 +56,6 @@ class Deal
      */
     private $buyer;
 
-
     public function __construct(Retail $retail, Academic $buyer)
     {
         $this->buyer = $buyer;
@@ -67,7 +63,7 @@ class Deal
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId(): int
     {

@@ -171,7 +171,7 @@ return array(
             'add', 'delete', 'edit', 'manage', 'search', 'articleTypeahead',
         ),
         'cudi_retail' => array(
-            'overview', 'deal'
+            'overview', 'deal', 'myDeals', 'myRetails', 'deleteRetail'
         ),
     ),
 );
