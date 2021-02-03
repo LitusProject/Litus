@@ -70,7 +70,9 @@
 
         <div class="row pull-right">
             <div class="pull-right">
+                {% if 'retailEnabled' %}
                 <a href={{ url('cudi_retail', {"action" : 'overview', "language" : language.getAbbrev()}) }} class="btn btn-primary">{{ translate('Retail Shop') }}</a>
+                {% endif %}
                 <a href={{ url('cudi_booking', {"action" : 'book', "language" : language.getAbbrev()}) }} class="btn btn-primary">{{ translate('Book Textbooks') }}</a>
             </div>
         </div>
