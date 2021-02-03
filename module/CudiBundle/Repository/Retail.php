@@ -60,6 +60,23 @@ class Retail extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     }
 
     /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllByArticle($id)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('a')
+            ->from('CudiBundle\Entity\Retail', 'a')
+            ->innerjoin('a.article', 'art')
+            ->where(
+                $query->expr()->eq('art.id', ':id')
+            )
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * @param  string $authorId
      * @return \Doctrine\ORM\Query
      */
