@@ -103,6 +103,10 @@ return array(
     'Edit' => 'Edit',
     'Yes' => 'Yes',
     'No' => 'No',
+    'My retails' => 'My retails',
+    'Retails' => 'Retails',
+    'Recommended Retails' => 'Recommended Retails',
+
 
     'You currently have no personal retails!' => 'You currently have no personal retails!',
     'You successfully deleted the retail!' => 'You successfully deleted the retail!',
