@@ -416,7 +416,7 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
             ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Subject')
             ->findAllByAcademicAndAcademicYear($academic, $academicYear);
 
-        if (sizeof($subjects) == 0) {
+        if (count($subjects) == 0) {
             error_log('subjects empty');
         }
 
@@ -426,7 +426,7 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
                 ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                 ->findAllBySubjectAndAcademicYearQuery($subject->getSubject(), $academicYear)->getResult();
 
-            if (sizeof($subjectArticleMaps) == 0) {
+            if (count($subjectArticleMaps) == 0) {
                 error_log('subjectArticleMaps empty');
             }
 
@@ -448,7 +448,7 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
             }
         }
 
-        if (sizeof($articles) == 0) {
+        if (count($articles) == 0) {
             error_log('articles empty');
         }
         $retails = array();
@@ -459,7 +459,7 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 
             array_push($retails, $retail);
         }
-        if (sizeof($retails) == 0) {
+        if (count($retails) == 0) {
             error_log('retails empty');
         }
 
