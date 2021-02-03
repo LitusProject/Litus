@@ -62,7 +62,7 @@ class RetailPrice extends \CommonBundle\Component\Validator\AbstractValidator im
     {
 
         $articleField = $this->form->get('article');
-        if ($articleField->get('id')->getValue() == '' ) {
+        if ($articleField->get('id')->getValue() == '') {
             $this->error(self::NOT_VALID);
 
             return false;
@@ -76,15 +76,14 @@ class RetailPrice extends \CommonBundle\Component\Validator\AbstractValidator im
             ->getConfigValue('cudi.retail_maximal_relative_price');
 
         $article->setEntityManager($this->getEntityManager());
-        if (!$value > 0){
+        if (!$value > 0) {
             $this->error(self::NOT_VALID);
             return false;
         }
-        if ($article->getSaleArticle() === null){
+        if ($article->getSaleArticle() === null) {
             $this->error(self::NO_SALE);
             return false;
-        }
-        elseif ($value <= $article->getSaleArticle()->getSellPrice()*$maxRelPrice/100) {
+        } elseif ($value <= $article->getSaleArticle()->getSellPrice() * $maxRelPrice / 100) {
             return true;
         }
 

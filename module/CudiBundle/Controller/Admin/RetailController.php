@@ -141,7 +141,7 @@ class RetailController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CudiBundle\Entity\Deal')
             ->findAllByRetail($retail->getId());
 
-        foreach ($associatedDeals as $deal){
+        foreach ($associatedDeals as $deal) {
             $this->getEntityManager()->remove($deal);
         }
         $this->getEntityManager()->remove($retail);
@@ -192,14 +192,16 @@ class RetailController extends \CudiBundle\Component\Controller\ActionController
             ->findAllByTitleAndAcademicYearQuery($this->getParam('string'), $this->getAcademicYearEntity(), 0)->getResult();
 
 
-        $allowedRetailTypes = unserialize($this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.retail_allowed_types'));
+        $allowedRetailTypes = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.retail_allowed_types')
+        );
 
         $result = array();
         foreach ($articles as $saleArticle) {
             $article = $saleArticle->getMainArticle();
-            if (in_array($article->getType(), $allowedRetailTypes)){
+            if (in_array($article->getType(), $allowedRetailTypes)) {
                 $item = (object) array();
                 $item->id = $article->getId();
                 $item->value = $article->getTitle();

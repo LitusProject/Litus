@@ -59,7 +59,6 @@ class Retail extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery();
     }
 
-
     /**
      * @param  string $authorId
      * @return \Doctrine\ORM\Query

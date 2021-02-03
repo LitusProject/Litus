@@ -43,12 +43,15 @@ class Retail extends \CommonBundle\Component\Validator\Typeahead
 
     public function isValid($value, $context = null)
     {
-        $allowedRetailTypes = unserialize($this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.retail_allowed_types'));
+        $allowedRetailTypes = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.retail_allowed_types')
+        );
 
-        if (!parent::isValid($value, $context))
+        if (!parent::isValid($value, $context)) {
             return false;
+        }
 
         $retailValid = in_array($this->entityObject->getType(), $allowedRetailTypes);
 
@@ -58,6 +61,5 @@ class Retail extends \CommonBundle\Component\Validator\Typeahead
         }
 
         return true;
-
     }
 }

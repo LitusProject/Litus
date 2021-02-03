@@ -101,16 +101,14 @@ class Retail
         return $this->article;
     }
 
-
     /**
      * @return string | null
      */
     public function getVisibleOwnerName(): string
     {
         if ($this->isAnonymous) {
-            return "Anonymous";
-        }
-        else {
+            return 'Anonymous';
+        } else {
             return $this->owner->getFullName();
         }
     }
