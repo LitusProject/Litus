@@ -416,19 +416,11 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
             ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Subject')
             ->findAllByAcademicAndAcademicYear($academic, $academicYear);
 
-        if (count($subjects) == 0) {
-            error_log('subjects empty');
-        }
-
         $articles = array();
         foreach ($subjects as $subject) {
             $subjectArticleMaps = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Article\SubjectMap')
-                ->findAllBySubjectAndAcademicYearQuery($subject->getSubject(), $academicYear)->getResult();
-
-            if (count($subjectArticleMaps) == 0) {
-                error_log('subjectArticleMaps empty');
-            }
+                ->findAllBySubjectAndAcademicYear($subject->getSubject(), $academicYear);
 
             $allowedRetailTypes = unserialize(
                 $this->getEntityManager()
@@ -448,22 +440,16 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
             }
         }
 
-        if (count($articles) == 0) {
-            error_log('articles empty');
-        }
         $retails = array();
         foreach ($articles as $article) {
             $retail = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Retail')
-                ->findAllByTitleQuery($article->getTitle())->getResult();
+                ->findAllByArticle($article->getId());
 
-            array_push($retails, $retail);
-        }
-        if (count($retails) == 0) {
-            error_log('retails empty');
+            $retails = array_merge($retails, $retail);
         }
 
-        return $retails[0];
+        return $retails;
     }
 
     public function articleTypeaheadAction()
