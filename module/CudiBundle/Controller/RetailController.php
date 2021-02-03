@@ -20,6 +20,7 @@
 
 namespace CudiBundle\Controller;
 
+use CommonBundle\Component\Controller\Exception\HasNoAccessException;
 use CommonBundle\Entity\User\Person\Academic;
 use CudiBundle\Entity\Deal;
 use CudiBundle\Entity\Retail;
@@ -35,8 +36,14 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 {
     public function overviewAction()
     {
-        if ($this->disabledRetails() === 1) {
-            throw new \ErrorException('The bookings have been disabled for now');
+        $enableRetail = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.retail_enabled');
+
+        if ($enableRetail == 0) {
+            throw new HasNoAccessException(
+                'The retail section is closed'
+            );
         }
 
         $academic = $this->getAcademicEntity();
@@ -100,8 +107,14 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 
     public function recommendedRetailsAction()
     {
-        if ($this->disabledRetails() === 1) {
-            throw new \ErrorException('The bookings have been disabled for now');
+        $enableRetail = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.retail_enabled');
+
+        if ($enableRetail == 0) {
+            throw new HasNoAccessException(
+                'The retail section is closed'
+            );
         }
 
         $academic = $this->getAcademicEntity();
@@ -141,8 +154,14 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 
     public function dealAction()
     {
-        if ($this->disabledRetails() === 1) {
-            throw new \ErrorException('The bookings have been disabled for now');
+        $enableRetail = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.retail_enabled');
+
+        if ($enableRetail == 0) {
+            throw new HasNoAccessException(
+                'The retail section is closed'
+            );
         }
 
         $this->initAjax();
@@ -199,8 +218,14 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 
     public function myDealsAction()
     {
-        if ($this->disabledRetails() === 1) {
-            throw new \ErrorException('The bookings have been disabled for now');
+        $enableRetail = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.retail_enabled');
+
+        if ($enableRetail == 0) {
+            throw new HasNoAccessException(
+                'The retail section is closed'
+            );
         }
 
         $academic = $this->getAcademicEntity();
@@ -229,8 +254,14 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 
     public function myRetailsAction()
     {
-        if ($this->disabledRetails() === 1) {
-            throw new \ErrorException('The bookings have been disabled for now');
+        $enableRetail = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.retail_enabled');
+
+        if ($enableRetail == 0) {
+            throw new HasNoAccessException(
+                'The retail section is closed'
+            );
         }
 
         $academic = $this->getAcademicEntity();
@@ -322,10 +353,15 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 
     public function deleteRetailAction()
     {
-        if ($this->disabledRetails() === 1) {
-            throw new \ErrorException('The bookings have been disabled for now');
-        }
+        $enableRetail = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.retail_enabled');
 
+        if ($enableRetail == 0) {
+            throw new HasNoAccessException(
+                'The retail section is closed'
+            );
+        }
 
         $this->initAjax();
 
@@ -368,8 +404,14 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 
     public function deleteDealAction()
     {
-        if ($this->disabledRetails() === 1) {
-            throw new \ErrorException('The bookings have been disabled for now');
+        $enableRetail = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.retail_enabled');
+
+        if ($enableRetail == 0) {
+            throw new HasNoAccessException(
+                'The retail section is closed'
+            );
         }
 
         $this->initAjax();
@@ -404,10 +446,17 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 
     public function getRecommendedRetails():array
     {
-        if ($this->disabledRetails() === 1) {
-            throw new \ErrorException('The bookings have been disabled for now');
-        }
 
+        $enableRetail = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.retail_enabled');
+
+        if ($enableRetail == 0) {
+            throw new HasNoAccessException(
+                'The retail section is closed'
+            );
+        }
+        
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
             $this->redirect()->toRoute('common_auth');
@@ -501,18 +550,6 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
         }
 
         return $academic;
-    }
-
-    /**
-     * @return boolean|null
-     */
-    private function disabledRetails()
-    {
-        $enabled = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.retail_enabled');
-
-        return $enabled === 1;
     }
 
 /**
