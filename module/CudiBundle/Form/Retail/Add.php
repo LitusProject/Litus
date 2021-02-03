@@ -44,7 +44,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'options' => array(
                     'input' => array(
                         'validators' => array(
-                            array('name' => 'TypeaheadArticle'),
+                            array('name' => 'TypeaheadRetail'),
                         ),
                     ),
                 ),
@@ -67,6 +67,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         ),
                         'validators' => array(
                             array('name' => 'Price'),
+                            array('name' => 'MaximalRetailPrice')
                         ),
                     ),
                 ),

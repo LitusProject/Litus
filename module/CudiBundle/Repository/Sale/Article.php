@@ -450,4 +450,5 @@ class Article extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 
         return $articles;
     }
+
 }

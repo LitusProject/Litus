@@ -58,8 +58,8 @@
                     <tr class="item item-{{ retail.getId() }}">
                         <td>{{ retail.getArticle().getTitle() }}</td>
                         <td>{{ retail.getOwner().getFullName() }}</td>
-                        <td>{{ retail.getPrice() }}</td>
-                        <td>{{ retail.isAnonymous() }}</td>
+                        <td>€{{ retail.getPrice()|number_format(2) }}</td>
+                        <td>{{ retail.isAnonymous() ? "yes" : "" }}</td>
                         <td class="actions">
                             {% if hasAccess('cudi_admin_retail', 'edit') %}
                                 <a href="{{ url('cudi_admin_retail', {"action": "edit", "id": retail.getId()}) }}" class="edit">Edit</a>

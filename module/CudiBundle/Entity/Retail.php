@@ -96,9 +96,23 @@ class Retail
     /**
      * @return \CudiBundle\Entity\Article
      */
-    public function getArticle(): \CudiBundle\Entity\Article
+    public function getArticle()
     {
         return $this->article;
+    }
+
+
+    /**
+     * @return string | null
+     */
+    public function getVisibleOwnerName(): string
+    {
+        if ($this->isAnonymous) {
+            return "Anonymous";
+        }
+        else {
+            return $this->owner->getFullName();
+        }
     }
 
     /**

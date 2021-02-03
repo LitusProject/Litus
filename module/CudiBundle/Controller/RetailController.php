@@ -35,9 +35,13 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 {
     public function overviewAction()
     {
+        if ($this->disabledBookings() === 1) {
+            throw new \ErrorException("The bookings have been disabled for now");
+        }
+
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
-            return $this->notFoundAction();  // TODO link to login
+            $this->redirect()->toRoute('common_auth');
         }
         $bookSearchForm = $this->getForm('cudi_retail_search_book', array('language' => $this->getLanguage()));
 
@@ -52,12 +56,13 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
 
+            $bookSearchForm->setData($formData);
 
-                $bookSearchForm->setData($formData);
             if ($formData['search_string'] === '') {
                 $retails = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Retail')
                     ->findAllQuery()->getResult();
+
             } elseif ($bookSearchForm->isValid()) {
                 $formData = $bookSearchForm->getData();
 
@@ -78,16 +83,65 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
             }
         }
 
+        $retailOverviewText = unserialize($this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.retail_overview_text'))[$this->getLanguage()->getAbbrev()];
+
+
         return new ViewModel(
             array(
                 'bookSearchForm'   => $bookSearchForm,
                 'searchResults'    => $retails,
+                'retailOverviewText' => $retailOverviewText,
+            )
+        );
+    }
+
+    public function recommendedRetailsAction()
+    {
+        if ($this->disabledBookings() === 1) {
+            throw new \ErrorException("The bookings have been disabled for now");
+        }
+
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
+            $this->redirect()->toRoute('common_auth');
+        }
+
+        $bookSearchForm = $this->getForm('cudi_retail_search_book', array('language' => $this->getLanguage()));
+
+        $myDeals = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Deal')
+            ->findAllByBuyerQuery($academic->getId())->getResult();
+
+        $retails = $this->getRecommendedRetails();
+
+        foreach ($myDeals as $deal) {
+            if (in_array($deal->getRetail(), $retails)) {
+                unset($retails[array_keys($retails, $deal->getRetail())[0]]);
+            }
+        }
+
+        $retailOverviewText = unserialize($this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.retail_overview_text'))[$this->getLanguage()->getAbbrev()];
+
+
+        return new ViewModel(
+            array(
+                'bookSearchForm'   => $bookSearchForm,
+                'searchResults'    => $retails,
+                'retailOverviewText' => $retailOverviewText,
             )
         );
     }
 
     public function dealAction()
     {
+        if ($this->disabledBookings() === 1) {
+            throw new \ErrorException("The bookings have been disabled for now");
+        }
+
         $this->initAjax();
 
         $retail = $this->getRetailEntity();
@@ -142,27 +196,41 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 
     public function myDealsAction()
     {
+        if ($this->disabledBookings() === 1) {
+            throw new \ErrorException("The bookings have been disabled for now");
+        }
+
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
-            return $this->notFoundAction();  // TODO link to login
+            $this->redirect()->toRoute('common_auth');
         }
 
         $myDeals = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Deal')
             ->findAllByBuyerQuery($academic->getId())->getResult();
 
+        $retailMyDealsText = unserialize($this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.retail_my_deals_text'))[$this->getLanguage()->getAbbrev()];
+
         return new ViewModel(
             array(
                 'myDeals'          => $myDeals,
+                'retailMyDealsText' => $retailMyDealsText
+
             )
         );
     }
 
     public function myRetailsAction()
     {
+        if ($this->disabledBookings() === 1) {
+            throw new \ErrorException("The bookings have been disabled for now");
+        }
+
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
-            return $this->notFoundAction();  // TODO link to login
+            $this->redirect()->toRoute('common_auth');
         }
 
         $addForm = $this->getForm('cudi_retail_add');
@@ -170,7 +238,7 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 
         if ($this->getRequest()->isPost()) {
             $data = $this->getRequest()->getPost();
-            $isEdit = array_key_exists('retailId', $data);
+            $isEdit = $data['submit'] == 'Save';
 
             if ($isEdit) {
                 $editForm->setData($data);
@@ -179,7 +247,6 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
                     $retail = $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Retail')
                         ->findOneById($data['retailId']);
-
                     $editForm->hydrateObject($retail);
                     $this->getEntityManager()->flush();
 
@@ -199,9 +266,10 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
                 $addForm->setData($data);
 
                 if ($addForm->isValid()) {
+
                     $article = $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Article')
-                        ->findOneByTitle($data['article']['value']);
+                        ->findOneById($data['article']['id']);
                     $retail = new Retail($article, $academic);
 
                     $this->getEntityManager()->persist(
@@ -232,25 +300,34 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
             ->findAllByOwnerQuery($academic->getId())
             ->getResult();
 
+        $retailMyRetailsText = unserialize($this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.retail_my_retails_text'))[$this->getLanguage()->getAbbrev()];
 
         return new ViewModel(
             array(
                 'retails' => $retails,
                 'addForm' => $addForm,
                 'editForm' => $editForm,
+                'retailMyRetailsText' => $retailMyRetailsText
             )
         );
     }
 
     public function deleteRetailAction()
     {
+        if ($this->disabledBookings() === 1) {
+            throw new \ErrorException("The bookings have been disabled for now");
+        }
+
 
         $this->initAjax();
+
 
         if ($this->getRequest()->isPost()) {
             $academic = $this->getAcademicEntity();
             if ($academic === null) {
-                return $this->notFoundAction();  // TODO link to login
+                $this->redirect()->toRoute('common_auth');
             }
 
             $retail = $this->getEntityManager()
@@ -265,6 +342,13 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
                 );
             }
 
+            $associatedDeals = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Deal')
+                ->findAllByRetail($retail->getId());
+
+            foreach ($associatedDeals as $deal){
+                $this->getEntityManager()->remove($deal);
+            }
             $this->getEntityManager()->remove($retail);
             $this->getEntityManager()->flush();
         }
@@ -276,20 +360,111 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
         );
     }
 
+    public function deleteDealAction()
+    {
+        if ($this->disabledBookings() === 1) {
+            throw new \ErrorException("The bookings have been disabled for now");
+        }
+
+
+        $this->initAjax();
+
+        if ($this->getRequest()->isPost()) {
+            $academic = $this->getAcademicEntity();
+            if ($academic === null) {
+                $this->redirect()->toRoute('common_auth');
+            }
+
+            $deal = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Deal')
+                ->findOneById($this->getParam('id'));
+            if ($deal->getBuyer() !== $academic) {
+                return new ViewModel(
+                    array(
+                        'result' => (object) array('status' => 'error'),
+                    )
+                );
+            }
+
+            $this->getEntityManager()->remove($deal);
+            $this->getEntityManager()->flush();
+        }
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+
+    public function getRecommendedRetails():array {
+
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
+            $this->redirect()->toRoute('common_auth');
+        }
+
+        $academicYear = $this->getCurrentAcademicYear();
+        $subjects = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Subject')
+            ->findAllByAcademicAndAcademicYear($academic, $academicYear);
+
+        $articles = array();
+        foreach ($subjects as $subject){
+            $subjectArticleMaps = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Article\SubjectMap')
+                ->findAllBySubjectAndAcademicYearQuery($subject->getSubject(), $academicYear)->getResult();
+
+
+            $allowedRetailTypes = unserialize($this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.retail_allowed_types'));
+
+            foreach ($subjectArticleMaps as $articleMap){
+                $article = $articleMap->getArticle();
+                $saleArticle = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
+                    ->findOneByArticle($article, $academicYear);
+
+                if (in_array($article->getType(), $allowedRetailTypes ) && $saleArticle){
+                    array_push($articles, $article);
+                };
+            }
+        }
+
+        $retails = array();
+        foreach ($articles as $article){
+            $retail = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Retail')
+                ->findAllByTitleQuery($article->getTitle())->getResult();
+
+            array_push($retails, $retail);
+        }
+
+        return $retails[0];
+    }
+
     public function articleTypeaheadAction()
     {
-        // TODO only able to sell books (not items like pens) (also edit validator?)
         $articles = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Article')
-            ->findAllByTitleQuery($this->getParam('string'))->getResult();
+            ->getRepository('CudiBundle\Entity\Sale\Article')
+            ->findAllByTitleAndAcademicYearQuery($this->getParam('string'), $this->getCurrentAcademicYear(true))->getResult();
+
+
+        $allowedRetailTypes = unserialize($this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.retail_allowed_types'));
 
         $result = array();
-
-        foreach ($articles as $article) {
-            $item = (object) array();
-            $item->id = $article->getId();
-            $item->value = $article->getTitle();
-            $result[] = $item;
+        foreach ($articles as $saleArticle) {
+            $article = $saleArticle->getMainArticle();
+            if (in_array($article->getType(), $allowedRetailTypes)){
+                $item = (object) array();
+                $item->id = $article->getId();
+                $item->value = $article->getTitle();
+                $result[] = $item;
+            }
         }
 
         return new ViewModel(
@@ -318,6 +493,18 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
     }
 
     /**
+     * @return bool|null
+     */
+    private function disabledBookings()
+    {
+        $enabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.enable_bookings');
+
+        return $enabled===1??0;
+    }
+
+/**
      * @return Retail
      */
     private function getRetailEntity()

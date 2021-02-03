@@ -3,11 +3,6 @@
 {% block content %}
     {% import _self as self %}
 
-    <div class="flashmessage alert alert-success fade" id="retail_success">
-        <div class="content">
-            {{ translate('You sent out a mail for the selected retail!') }}
-        </div>
-    </div>
     <div class="flashmessage alert alert-success fade" id="sign_out">
         <div class="content">
             {{ translate('You canceled your interest in the selected retail!') }}
@@ -23,9 +18,32 @@
         <h1>{{ translate('Second-Hand Book Sales') }}</h1>
     </div>
 
+    <div id="modalDeleteDeal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Delete deal') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        {{ translate('') }}
+                    </p>
+                    <p>
+                        {{ translate('Do you want to continue?') }}
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default deny">{{ translate('No') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {% include 'cudi/retail/partials/navigation.twig' %}
     <div>
-        {{ translate('Here you can find your current deals') }}
+        <p>{{ retailMyDealsText }}</p>
     </div>
 
     <div class="row">
@@ -37,6 +55,58 @@
 {% endblock %}
 
 {% block content_script %}
+    {% import _self as self %}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.signOut').click(function () {
+                let button = $(this);
+                let id = '#modalDeleteDeal';
+                console.log(button.data('id'))
+
+                $(id).modal();
+                $(id +' .confirm').one('click', function (){
+                    $(id).modal('hide');
+                    deleteDeal(button);
+                });
+
+                $(id +' .deny').one('click', function () {
+                    $(id).modal('hide');
+                });
+            });
+        });
+
+        function deleteDeal(button) {
+            $.post(
+                '{{ url('cudi_retail', {"action": "deleteDeal"}) }}'+ button.data('id'),
+                {id: button.data('id')},
+                function (data) {
+                    if (data && 'success' === data.status) {
+                        $('.flashmessage').removeClass('in');
+                        $('#sign_out').addClass('in');
+
+                        var panel = $(button.data('panel')).clone();
+                        panel.find('.buttons').html('').css('display', 'none');
+
+                        panel.fadeIn();
+                        $('#deals-myDeals ' + button.data('panel')).fadeOut(function () {
+                            $(this).remove()
+                        });
+                    } else {
+                        error();
+                    }
+                },
+                'json'
+            ).error(error);
+        }
+
+
+        function error() {
+            $('.flashmessage').removeClass('in');
+            $('#error').addClass('in');
+        }
+    </script>
+
 {% endblock %}
 
 {% macro displayDeals(deals, accordionName) %}
@@ -49,7 +119,7 @@
                         {{ self.buttons(deal, accordionName) }}
                     </span>
                     <a class="panel-toggle" data-toggle="collapse" data-parent="#deals-{{ accordionName }}" href="#collapse_{{ accordionName }}_deal-{{ deal.getId() }}" style="overflow: hidden;">
-                        {{ deal.getRetail().getArticle().getTitle() }} <br> €{{ deal.getRetail().getPrice() }}  |  {{ deal.getRetail().getOwner().getFullName() }}
+                        {{ deal.getRetail().getArticle().getTitle() }} <br> €{{ deal.getRetail().getPrice()|number_format(2) }}  |  {{ deal.getRetail().getVisibleOwnerName() }}
                     </a>
                 </div>
                 <div id="collapse_{{ accordionName }}_deal-{{ deal.getId() }}" class="panel-collapse collapse">
@@ -62,10 +132,10 @@
                                 <dl>
                                     <dt>{{ translate('Book') }}</dt>
                                     <dd>{{ deal.getRetail().getArticle().getTitle() }}</dd>
-                                    <dt>€{{ translate('Price') }}</dt>
-                                    <dd>{{ deal.getRetail().getPrice() }}</dd>
+                                    <dt>{{ translate('Price') }}</dt>
+                                    <dd>€{{ deal.getRetail().getPrice()|number_format(2) }}</dd>
                                     <dt>{{ translate('Seller') }}</dt>
-                                    <dd>{{ deal.getRetail().getOwner().getFullName() }}</dd>
+                                    <dd>{{ deal.getRetail().getVisibleOwnerName() }}</dd>
                                 </dl>
                             </div>
                         </div>
@@ -78,14 +148,14 @@
             </div>
         {% else %}
             <div class="alert alert-warning">
-                {{ translate('No deals were found that match the given query.') }}
+                {{ translate('You currently have no deals. Enquire about a retail to make a deal.') }}
             </div>
         {% endfor %}
     </div>
 {% endmacro %}
 
-{% macro buttons(retail, accordionName) %}
-    <button class="btn btn-default btn-xs signOut" data-id="{{ deal.getId() }}" data-panel="#group_{{ accordionName }}_deal-{{ deal.getId() }}" type="button">
+{% macro buttons(deal, accordionName) %}
+    <button class="btn btn-warning btn-xs signOut" data-id="{{ deal.getId() }}" data-panel="#group_{{ accordionName }}_deal-{{ deal.getId() }}" type="button">
         {{ translate('Sign Out') }}
     </button>
 {% endmacro %}
