@@ -35,7 +35,7 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 {
     public function overviewAction()
     {
-        if ($this->disabledBookings() === 1) {
+        if ($this->disabledRetails() === 1) {
             throw new \ErrorException('The bookings have been disabled for now');
         }
 
@@ -100,7 +100,7 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 
     public function recommendedRetailsAction()
     {
-        if ($this->disabledBookings() === 1) {
+        if ($this->disabledRetails() === 1) {
             throw new \ErrorException('The bookings have been disabled for now');
         }
 
@@ -141,7 +141,7 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 
     public function dealAction()
     {
-        if ($this->disabledBookings() === 1) {
+        if ($this->disabledRetails() === 1) {
             throw new \ErrorException('The bookings have been disabled for now');
         }
 
@@ -199,7 +199,7 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 
     public function myDealsAction()
     {
-        if ($this->disabledBookings() === 1) {
+        if ($this->disabledRetails() === 1) {
             throw new \ErrorException('The bookings have been disabled for now');
         }
 
@@ -229,7 +229,7 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 
     public function myRetailsAction()
     {
-        if ($this->disabledBookings() === 1) {
+        if ($this->disabledRetails() === 1) {
             throw new \ErrorException('The bookings have been disabled for now');
         }
 
@@ -322,7 +322,7 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 
     public function deleteRetailAction()
     {
-        if ($this->disabledBookings() === 1) {
+        if ($this->disabledRetails() === 1) {
             throw new \ErrorException('The bookings have been disabled for now');
         }
 
@@ -368,10 +368,9 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 
     public function deleteDealAction()
     {
-        if ($this->disabledBookings() === 1) {
+        if ($this->disabledRetails() === 1) {
             throw new \ErrorException('The bookings have been disabled for now');
         }
-
 
         $this->initAjax();
 
@@ -405,6 +404,9 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 
     public function getRecommendedRetails():array
     {
+        if ($this->disabledRetails() === 1) {
+            throw new \ErrorException('The bookings have been disabled for now');
+        }
 
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
@@ -444,7 +446,7 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
         foreach ($articles as $article) {
             $retail = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Retail')
-                ->findAllByArticle($article->getId());
+                ->findAllByArticle($article->gSetId());
 
             $retails = array_merge($retails, $retail);
         }
@@ -504,11 +506,11 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
     /**
      * @return boolean|null
      */
-    private function disabledBookings()
+    private function disabledRetails()
     {
         $enabled = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.enable_bookings');
+            ->getConfigValue('cudi.retail_enabled');
 
         return $enabled === 1;
     }

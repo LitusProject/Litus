@@ -122,11 +122,11 @@ class Retail
     }
 
     /**
-     * @return integer
+     * @return
      */
-    public function getPrice(): int
+    public function getPrice()
     {
-        return $this->price;
+        return number_format($this->price / 100, 2);
     }
 
     /**

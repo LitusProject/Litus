@@ -33,7 +33,7 @@ class Retail extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $data = $this->stdExtract($object, self::$stdKeys);
-        $data['price'] = $object->getPrice;
+        $data['price'] = $object->getPrice();
         return $data;
     }
 
@@ -51,7 +51,7 @@ class Retail extends \CommonBundle\Component\Hydrator\Hydrator
             $object = new RetailEntity($article, $owner);
         }
 
-        $object->setPrice($data['price']);
+        $object->setPrice($data['price'] * 100);
         return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 }

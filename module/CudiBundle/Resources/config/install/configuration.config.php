@@ -673,4 +673,9 @@ Gelieve contact op te nemen met {{ name }} via {{ email }}.
             )
         ),        'description' => 'The text on the my_retails page in cudi - retail',
     ),
+    array(
+        'key'         => 'cudi.retail_enabled',
+        'value'       => '0',
+        'description' => 'boolean for retail pages/buttons',
+    ),
 );
