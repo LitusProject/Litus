@@ -30,15 +30,14 @@ class Edit extends \CudiBundle\Form\Retail\Add
     {
         parent::init();
 
-        $this->remove('article');
-
+        $this->get('article')->setAttribute('type', 'hidden');
         $this->add(
             array(
-                'type' => 'hidden',
-                'name' => 'retailId'
+                'type'       => 'hidden',
+                'name'       => 'retailId',
+                'required'   => true,
             )
-        ); // TODO validator must check the user owns the retail
-
+        );
         $this->remove('submit')
             ->addSubmit('Save', 'retail_edit');
     }

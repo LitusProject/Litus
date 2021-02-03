@@ -73,8 +73,8 @@
     {% import _self as self %}
 
     <div>
-        {{ translate('Here you can edit your own retails') }}
-        <button class="btn btn-default btn-xs add-retail" type="button">
+        <p>{{ retailMyRetailsText }}</p><br>
+        <button class="btn btn-primary btn-xs add-retail" type="button">
             {{ translate('Add new retail') }}
         </button>
     </div>
@@ -107,6 +107,7 @@
             $('#article').typeaheadRemote(
                 {
                     source: '{{ url("cudi_retail_typeahead_article", {}) }}',
+                    items: 15,
                 }
             ).change(function(e) {
                 if ($(this).data('value')) {
@@ -122,9 +123,21 @@
 
                 $(id).modal();
                 $(id).find('input[name="price"]').val(button.data('price'));
-                $(id).find('input[name="anonymous"]').val(button.data('anonymous'));
+                $(id).find('input[name="anonymous"]').val(button.data('anonymous')).prop('checked',button.data('anonymous')).click(function() {
+                    if ($(this).val()==="1"){
+                        $(this).prev().val('0');
+                        $(this).val('0');
+                    } else {
+                        $(this).prev().val('1');
+                        $(this).val('1');
+                    }
+                });
+
                 $(id).find('textarea[name="comment"]').val(button.data('comment'));
+                $(id).find('input[name="article[id]"]').val(button.data('article'));
+                $(id).find('input[name="article[value]"]').val(button.data('articlevalue'));
                 $(id).find('input[name="retailId"]').val(button.data('id'));
+
             });
 
             $('.delete-retail').click(function () {
@@ -146,8 +159,9 @@
         function deleteRetail(button) {
             $.post(
                 '{{ url('cudi_retail', {"action": "deleteRetail"}) }}'+ button.data('id'),
-                {},
+                {id: button.data('id')},
                 function (data) {
+                    console.log(data);
                     if (data && 'success' === data.status) {
                         $('.flashmessage').removeClass('in');
                         $('#retail_success').addClass('in');
@@ -155,8 +169,6 @@
                         var panel = $(button.data('panel')).clone();
                         panel.find('.buttons').html('').css('display', 'none');
 
-                        // $('#deals-myDeals .alert').remove();
-                        // $('#deals-myDeals').prepend(panel);
                         panel.fadeIn();
                         $('#retails-retails ' + button.data('panel')).fadeOut(function () {
                             $(this).remove()
@@ -188,7 +200,7 @@
                         {{ self.buttons(retail, accordionName) }}
                     </span>
                     <a class="panel-toggle" data-toggle="collapse" data-parent="#retails-{{ accordionName }}" href="#collapse_{{ accordionName }}_retail-{{ retail.getId() }}" style="overflow: hidden;">
-                        {{ retail.getArticle().getTitle() }} <br> €{{ retail.getPrice() }}  |  {{ retail.getOwner().getFullName() }}
+                        {{ retail.getArticle().getTitle() }} <br> €{{ retail.getPrice()|number_format(2) }}  |  {{ retail.getVisibleOwnerName() }}
                     </a>
                 </div>
                 <div id="collapse_{{ accordionName }}_retail-{{ retail.getId() }}" class="panel-collapse collapse">
@@ -202,9 +214,9 @@
                                     <dt>{{ translate('Book') }}</dt>
                                     <dd>{{ retail.getArticle().getTitle() }}</dd>
                                     <dt>{{ translate('Price') }}</dt>
-                                    <dd>€{{ retail.getPrice() }}</dd>
+                                    <dd>€{{ retail.getPrice()|number_format(2) }}</dd>
                                     <dt>{{ translate('Seller') }}</dt>
-                                    <dd>{{ retail.getOwner().getFullName() }}</dd>
+                                    <dd>{{ retail.getVisibleOwnerName() }}</dd>
                                 </dl>
                             </div>
                         </div>
@@ -217,7 +229,7 @@
             </div>
         {% else %}
             <div class="alert alert-warning">
-                {{ translate('You have not yet inquired about any retails!') }}
+                {{ translate('You currently have no personal retails!') }}
             </div>
         {% endfor %}
     </div>
@@ -227,12 +239,12 @@
 {% macro buttons(retail, accordionName) %}
     {% import _self as self %}
     <button class="btn btn-default btn-xs edit-retail" data-id="{{ retail.getId() }}"
-            data-panel="#group_{{ accordionName }}_deal-{{ retail.getId() }}" type="button"
+            data-panel="#group_{{ accordionName }}_retail-{{ retail.getId() }}" type="button"
             data-price="{{ retail.getPrice() }}" data-anonymous="{{ retail.isAnonymous() }}"
-            data-comment="{{ retail.getComment() }}">
+            data-comment="{{ retail.getComment() }}" data-article="{{ retail.getArticle().getId() }}" data-articlevalue="{{ retail.getArticle().getTitle() }}">
         {{ translate('Edit') }}
     </button>
-    <button class="btn btn-default btn-xs delete-retail" data-id="{{ retail.getId() }}" data-panel="#group_{{ accordionName }}_deal-{{ retail.getId() }}" type="button">
+    <button class="btn btn-default btn-xs delete-retail" data-id="{{ retail.getId() }}" data-panel="#group_{{ accordionName }}_retail-{{ retail.getId() }}" type="button">
         {{ translate('Delete') }}
     </button>
 

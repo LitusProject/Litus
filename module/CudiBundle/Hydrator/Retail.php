@@ -24,7 +24,7 @@ use CudiBundle\Entity\Retail as RetailEntity;
 
 class Retail extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $stdKeys = array('comment', 'anonymous', );
+    private static $stdKeys = array('comment', 'anonymous');
 
     protected function doExtract($object = null)
     {
@@ -33,20 +33,16 @@ class Retail extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $data = $this->stdExtract($object, self::$stdKeys);
-        $data['price'] = $object->getPrice();
+        $data['price'] = $object->getPrice;
         return $data;
     }
 
     protected function doHydrate(array $data, $object = null)
     {
-        $maxRelPrice = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.retail_maximal_relative_price');
-
         if ($object === null) {
             $article = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Article')
-                ->findOneByTitle($data['article']['value']);
+                ->findOneById($data['article']['id']);
 
             $owner = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
@@ -55,17 +51,7 @@ class Retail extends \CommonBundle\Component\Hydrator\Hydrator
             $object = new RetailEntity($article, $owner);
         }
 
-        $article = $object->getArticle();
-        if ($article->getSaleArticle()) {
-            if ($data['price'] > $maxRelPrice * $article->getSaleArticle()->getSellPrice()) {
-                $object->setPrice($maxRelPrice * $article->getSaleArticle()->getSellPrice());
-            } else {
-                $object->setPrice($data['price']);
-            }
-        } else {
-            $object->setPrice($data['price']);
-        }
-
+        $object->setPrice($data['price']);
         return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 }

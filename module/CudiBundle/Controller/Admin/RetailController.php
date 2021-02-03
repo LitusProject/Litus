@@ -137,8 +137,14 @@ class RetailController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $this->getEntityManager()->remove($retail);
+        $associatedDeals = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Deal')
+            ->findAllByRetail($retail->getId());
 
+        foreach ($associatedDeals as $deal) {
+            $this->getEntityManager()->remove($deal);
+        }
+        $this->getEntityManager()->remove($retail);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -182,16 +188,25 @@ class RetailController extends \CudiBundle\Component\Controller\ActionController
     public function articleTypeaheadAction()
     {
         $articles = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Article')
-            ->findAllByTitleQuery($this->getParam('string'))->getResult();
+            ->getRepository('CudiBundle\Entity\Sale\Article')
+            ->findAllByTitleAndAcademicYearQuery($this->getParam('string'), $this->getAcademicYearEntity(), 0)->getResult();
+
+
+        $allowedRetailTypes = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.retail_allowed_types')
+        );
 
         $result = array();
-
-        foreach ($articles as $article) {
-            $item = (object) array();
-            $item->id = $article->getId();
-            $item->value = $article->getTitle();
-            $result[] = $item;
+        foreach ($articles as $saleArticle) {
+            $article = $saleArticle->getMainArticle();
+            if (in_array($article->getType(), $allowedRetailTypes)) {
+                $item = (object) array();
+                $item->id = $article->getId();
+                $item->value = $article->getTitle();
+                $result[] = $item;
+            }
         }
 
         return new ViewModel(
