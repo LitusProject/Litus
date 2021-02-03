@@ -243,7 +243,7 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 
         if ($this->getRequest()->isPost()) {
             $data = $this->getRequest()->getPost();
-            $isEdit = $data['submit'] == 'Save';
+            $isEdit = $data['submit'] == 'Save' || $data['submit'] == 'Opslaan';
 
             if ($isEdit) {
                 $editForm->setData($data);
@@ -572,7 +572,7 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
             )
             ->setFrom($mailAddress, $mailName)
             ->addTo($academic->getEmail(), $academic->getFullName())
-            ->setSubject($subject);
+            ->setSubject(str_replace('{{ book }}', $retail->getArticle()->getTitle(), $subject));
 
         if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);

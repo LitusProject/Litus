@@ -84,6 +84,7 @@ return array(
     'Delete deal' => 'Aanvraag verwijderen',
     'Do you want to continue?' => 'Wilt u doorgaan?',
     'My deals' => 'Mijn aanvragen',
+    'My retails' => 'Mijn aanbiedingen',
     'Price' => 'Prijs',
     'Seller' => 'Verkoper',
     'Description' => 'Beschrijving',
@@ -103,6 +104,9 @@ return array(
     'Edit' => 'Aanpassen',
     'Yes' => 'Ja',
     'No' => 'Nee',
+    'Retails' => 'Aanbiedingen',
+    'Recommended Retails' => 'Aanbevolen Aanbiedingen',
+
 
     'You currently have no personal retails!' => 'Je hebt momenteel geen persoonlijke aanbiedingen!',
     'You successfully deleted the retail!' => 'De aanbieding is succesvol verwijderd!',
