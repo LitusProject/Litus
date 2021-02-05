@@ -205,7 +205,7 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
         $this->getEntityManager()->persist($deal);
         $this->getEntityManager()->flush();
 
-        $this->sendMail($retail, $academic);
+        $this->sendMail($retail, $retail->getOwner());
 
         return new ViewModel(
             array(
