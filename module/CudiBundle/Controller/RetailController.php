@@ -495,7 +495,7 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
         foreach ($articles as $article) {
             $retail = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Retail')
-                ->findAllByArticle($article->gSetId());
+                ->findAllByArticle($article->getId());
 
             $retails = array_merge($retails, $retail);
         }
@@ -609,7 +609,7 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
                 )
             )
             ->setFrom($mailAddress, $mailName)
-            ->addTo($academic->getEmail(), $academic->getFullName())
+            ->addTo($retail->getOwner()->getEmail(), $retail->getOwner()->getFullName())
             ->setSubject(str_replace('{{ book }}', $retail->getArticle()->getTitle(), $subject));
 
         if (getenv('APPLICATION_ENV') != 'development') {
