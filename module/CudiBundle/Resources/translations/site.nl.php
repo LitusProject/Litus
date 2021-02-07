@@ -77,7 +77,7 @@ return array(
     'Color'  => 'Color',
     'Bought' => 'Bought',
 
-    'You sent out a mail for the selected retail!' => 'Er is een email verzonden naar de verkoper!',
+    'You sent out a mail for the selected retail!' => 'Er is een e-mail verzonden naar de verkoper!',
     'You canceled your interest in the selected retail!' => 'Je hebt je aanvraag voor de geselecteerde aanbieding verwijderd!',
     'An error occurred while processing your request!' => 'Er trad een fout op bij het verwerken van je verzoek!',
     'Second-Hand Book Sales' => 'Tweedehands boekenbeurs',
