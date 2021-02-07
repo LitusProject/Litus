@@ -73,7 +73,7 @@ class Retail
     /**
      * @var string Extra information
      *
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $comment;
 
@@ -126,7 +126,7 @@ class Retail
      */
     public function getPrice()
     {
-        return number_format($this->price / 100, 2);
+        return number_format($this->price/100,2);
     }
 
     /**
