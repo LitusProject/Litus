@@ -58,7 +58,7 @@
                     <td class="hidden-xs">{{ translate(order.getStatus()) }}</td>
                     <td class="actions">
                         {% if order.isEditable() %}
-                            <a href="{{ url('logistics_catalog',{ 'action': 'editOrder', 'order': order.getId() }) }}" class="btn btn-primary btn-sm edit">
+                            <a href="{{ url('logistics_catalog',{ 'action': 'editOrder', 'order': order.getId() }) }}" class="btn btn-warning btn-sm edit">
                                 {{ translate('Edit') }}
                             </a>
                         {% endif %}
@@ -107,7 +107,7 @@
                                     {% endif %}
                                 </td>
                                 <td width="230" style="vertical-align: middle;">
-                                    {% if not (request.getRequestType() == 'delete') %}
+                                    {% if request.getRequestType() != 'delete' %}
                                         <a class="btn btn-sm btn-warning" href="{{ url('logistics_catalog', {'action': 'editRequest', 'request': request.getId()}) }}">{{ translate('Edit') }}</a>
                                     {% endif %}
                                     <a class="btn btn-sm btn-danger deleteRequest" data-id="{{ request.getId() }}" href="#">{{ translate('Delete') }}</a>

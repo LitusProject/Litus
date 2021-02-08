@@ -58,7 +58,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 ),
             )
         );
-        if ($this->academic->isPraesidium($this->academicYear)) { //TODO:isPraesidium() werkt niet??
+        if ($this->academic->isPraesidium($this->academicYear)) {
             $this->add(
                 array(
                     'type' => 'select',
@@ -67,11 +67,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'attributes' => array(
                         'options' => $this->createUnitsArray(),
                     ),
-                    'options' => array(
-                        'input' => array(
-                            'required' => true,
-                        ),
-                    ),
+
                 )
             );
         }

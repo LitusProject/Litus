@@ -18,6 +18,39 @@
         </div>
     </div>
 
+    <aside>
+        {% if hasAccess('logistics_admin_order', 'view') %}
+
+            <div class="sidebox">
+                <div class="title">View Order</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to view this order!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('logistics_admin_order', {'action': 'view', 'id': order.getId()}) }}">&rarr; View Order</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if hasAccess('logistics_admin_order', 'edit') %}
+
+            <div class="sidebox">
+                <div class="title">Edit Order</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to edit this order!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('logistics_admin_order', {'action': 'edit', 'id': order.getId()}) }}">&rarr; Edit Order</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+
+    </aside>
+
     <div id="controller_action">
         <h1>Order</h1>
         <p>Name: <b>{{ Order.getName() }}</b></p>

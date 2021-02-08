@@ -5,51 +5,134 @@
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
-        <div id="controller_action">
-            <h1>Order</h1>
-            <p>Name: <b>{{ order.getName() }}</b></p>
-            <p>Location: <b>{{ order.getLocation().getName() }}</b></p>
-            <p>Start Date: <b>{{ order.getStartDate().format('d/m/Y H:i') }}</b></p>
-            <p>End Date: <b>{{ order.getEndDate().format('d/m/Y H:i') }}</b></p>
-                <br>
-            <p>Creator: <b>{{ order.getCreator().getFullName() }}</b></p>
-            <p>Unit: <b>{{ order.getUnit().getName() }}</b></p>
-            <p>Contact: <b>{{ order.getContact() }}</b></p>
-            <p>Email:<b>{{ order.getEmail() }}</b></p>
-                <br>
-            <p>Description: {{ order.getEndDate().format('d/m/Y H:i') }}</p>
-            <br />
-            {% if articles %}
-            <div id="default_page">
-                <table class="full_width manage">
-                    <tr>
-                        <th>Name</th>
-                        <th width="70px">Amount</th>
-                        <th width="60px">Status</th>
-                        <th width="70px">Actions</th>
-                    </tr>
-
-                    {% for mapping in articles %}
-                        <tr class="item">
-                            <td>{{ mapping.getArticle().getName() }}</td>
-                            <td>{{ mapping.getStatus() }}</td>
-                            <td class="actions">
-                                {% if hasAccess('logistics_admin_order', 'approveArticle') %}
-                                    <a href="{{ url('logistics_admin_order', {"action": "approveArticle", "id": order.getId(), "map": mapping.getId()}) }}" class="accept_request">Approve</a>
-                                {% endif %}
-                                {% if hasAccess('logistics_admin_order', 'articleMapping') %}
-                                    <a href="{{ url('logistics_admin_order', {"action": "articleMapping", "id": order.getId(), "map": mapping.getId()}) }}" class="edit">Edit</a>
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            </div>
-            {% endif %}
+    <div class="flashmessage success_message full_width mapping_approved_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The order was successfully approved!</p>
         </div>
-    {% endblock %}
+    </div>
+    <div class="flashmessage error_message full_width mapping_approved_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to approve an article.</p>
+        </div>
+    </div>
+
+    <aside>
+        {% if hasAccess('logistics_admin_order', 'articles') %}
+
+            <div class="sidebox">
+                <div class="title">Manage Articles</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage the articles of this order!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('logistics_admin_order', {'action': 'articles', 'id': order.getId()}) }}">&rarr; Manage Articles</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if hasAccess('logistics_admin_order', 'edit') %}
+
+            <div class="sidebox">
+                <div class="title">Edit Order</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to edit this order!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('logistics_admin_order', {'action': 'edit', 'id': order.getId()}) }}">&rarr; Edit Order</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+
+    </aside>
+
+    <div id="controller_action">
+        <h1>Order</h1>
+        <p>Name: <b>{{ order.getName() }}</b></p>
+        <p>Location: <b>{{ order.getLocation().getName() }}</b></p>
+        <p>Start Date: <b>{{ order.getStartDate().format('d/m/Y H:i') }}</b></p>
+        <p>End Date: <b>{{ order.getEndDate().format('d/m/Y H:i') }}</b></p>
+            <br>
+        <p>Creator: <b>{{ order.getCreator().getFullName() }}</b></p>
+        <p>Unit: <b>{{ order.getUnit().getName() }}</b></p>
+        <p>Contact: <b>{{ order.getContact() }}</b></p>
+        <p>Email:<b>{{ order.getEmail() }}</b></p>
+            <br>
+        <p>
+            Approved: <b>{{ order.isApproved() ? 'Yes':'No' }}</b>
+        </p>
+        <p>
+            Removed: <b>{{ order.isRemoved() ? 'Yes':'No' }}</b>
+        </p>
+        <br>
+        <p>Description: {{ order.getDescription() }}</p>
+        {% if articles %}
+            <div id="default_page">
+            <table class="full_width manage">
+                <tr>
+                    <th width="200px">Name</th>
+                    <th width="70px">Amount</th>
+                    <th width="60px">Status</th>
+                    <th width="70px">Actions</th>
+                </tr>
+
+                {% for mapping in articles %}
+                    <tr class="item map-{{ mapping.getId() }}">
+                        <td>{{ mapping.getArticle().getName() }}</td>
+                        <td>{{ mapping.getAmount() }}</td>
+                        <td>{{ mapping.getStatus() }}</td>
+                        <td class="actions">
+                            {% if hasAccess('logistics_admin_order', 'approveArticle') %}
+                                <a href="#" class="accept_request approveArticle" data-map="{{ mapping.getId() }}" data-id="{{ mapping.getOrder().getId() }}">Approve</a>
+                            {% endif %}
+                            {% if hasAccess('logistics_admin_order', 'articleMapping') %}
+                                <a href="{{ url('logistics_admin_order', {"action": "articleMapping", "id": order.getId(), "map": mapping.getId()}) }}" class="edit">Edit</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}
 
 {% block content_script %}
 
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.item .approveArticle').click(function () {
+            let button = $(this);
+            approveArticle(button);
+        });
+    });
+
+    function approveArticle(button) {
+        $.post('{{ url('logistics_admin_order', {"action": "approveArticle"})}}',
+            { map: button.data('map')},
+            function (data) {
+            if (data && 'success' === data.status) {
+                $('.flashmessage').addClass('hide');
+                $('.mapping_approved_success').removeClass('hide');
+                // TODO: Update de status field na succes!!!
+            } else {
+                errorApprove();
+            }
+        },
+        'json'
+    ).error(errorApprove);
+    }
+
+    function errorApprove() {
+        $('.flashmessage').addClass('hide');
+        $('.mapping_approved_error').removeClass('hide');
+    }
+
+</script>
 
 {% endblock %}

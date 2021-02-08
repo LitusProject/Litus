@@ -34,7 +34,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     protected $hydrator = 'LogisticsBundle\Hydrator\Order\OrderArticleMap';
 
-
     public function init()
     {
         parent::init();

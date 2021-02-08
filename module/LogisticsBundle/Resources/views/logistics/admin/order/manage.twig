@@ -71,6 +71,9 @@
                             {% if hasAccess('logistics_admin_order', 'edit') %}
                                 <a href="{{ url('logistics_admin_order', {"action": "edit", "id": order.getId()}) }}" class="edit">Edit</a>
                             {% endif %}
+                            {% if hasAccess('logistics_admin_order', 'view') %}
+                                <a href="{{ url('logistics_admin_order', {"action": "view", "id": order.getId()}) }}" class="view">View</a>
+                            {% endif %}
                             {% if hasAccess('logistics_admin_order', 'delete') %}
                                 <a href="#" class="delete" data-id="{{ order.getId() }}" data-name="{{ order.getName() }}">Delete</a>
                             {% endif %}

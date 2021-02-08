@@ -54,8 +54,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
                 $type = $formData['type'] == 'all' ? null : $formData['type'];
                 $location = $formData['location'] == 'all' ? null : $formData['location'];
 
-//                $query = $repository->findAllActiveByTypeAndLocationQuery($type, $location); //TODO: create
-                $query = $repository->findAllQuery(); //TODO: make line above functional
+                $query = $repository->findAllActiveByTypeAndLocationQuery($type, $location);
             }
         }
         $paginator = $this->paginator()->createFromQuery(
@@ -84,7 +83,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
             ->findAllActiveByCreator($academic);
 
         $requests = $this->getOpenRequests($academic);
-        $unit=$academic->getUnit($this->getCurrentAcademicYear(false));
+        $unit=$academic->getUnit($this->getCurrentAcademicYear(true));
 
         if ($unit){
             $unitOrders = $this->getEntityManager()
@@ -413,9 +412,11 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
 
             return new ViewModel();
         }
-
         $request->setRemoved(true);
-        $request->getEditOrder()->remove();
+        if ($request->getRequestType() === 'add')
+            $request->getOrder()->remove();
+        else
+            $request->getEditOrder()->remove();
 
         $this->getEntityManager()->flush();
 
@@ -548,7 +549,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
 
         $handledRejects = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Request')
-            ->findRejectsByAcademic($academic);
+            ->findActiveRejectsByAcademic($academic);
 
         return array_merge($handledRejects, $unhandledRequests);
     }
@@ -564,7 +565,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
 
         $handledRejects = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Request')
-            ->findRejectsByUnit($unit);
+            ->findActiveRejectsByUnit($unit);
 
         return array_merge($handledRejects, $unhandledRequests);
     }

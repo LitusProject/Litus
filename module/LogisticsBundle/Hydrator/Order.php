@@ -20,12 +20,7 @@
 
 namespace LogisticsBundle\Hydrator;
 
-use CommonBundle\Entity\General\Organization\Unit;
-use CommonBundle\Entity\User\Person\Academic;
 use LogisticsBundle\Entity\Order as OrderEntity;
-
-
-use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 
 /**
  * This hydrator hydrates/extracts Order data.

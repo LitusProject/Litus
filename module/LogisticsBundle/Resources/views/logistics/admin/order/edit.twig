@@ -5,8 +5,9 @@
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
-    {% if hasAccess('logistics_admin_order', 'articles') %}
-        <aside>
+    <aside>
+        {% if hasAccess('logistics_admin_order', 'articles') %}
+
             <div class="sidebox">
                 <div class="title">Manage Articles</div>
                 <div class="content">
@@ -18,13 +19,36 @@
                     </p>
                 </div>
             </div>
+        {% endif %}
+
+        {% if hasAccess('logistics_admin_order', 'view') %}
+
+            <div class="sidebox">
+                <div class="title">View Order</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to view this order!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('logistics_admin_order', {'action': 'view', 'id': order.getId()}) }}">&rarr; View Order</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+
         </aside>
-    {% endif %}
+
 
     <div id="controller_action">
         <h1>Order</h1>
         <p>
             Name: <b>{{ order.getName() }}</b>
+        </p>
+        <p>
+            Approved: <b>{{ order.isApproved() ? 'Yes':'No' }}</b>
+        </p>
+        <p>
+            Removed: <b>{{ order.isRemoved() ? 'Yes':'No' }}</b>
         </p>
 
         {% import 'admin/partials/form.twig' as forms %}

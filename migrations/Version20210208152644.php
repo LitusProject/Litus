@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
@@ -18,40 +20,32 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace LogisticsBundle\Form\Catalog\Order;
+namespace Migrations;
 
-use LogisticsBundle\Entity\Order;
+use Doctrine\DBAL\Schema\Schema;
 
 /**
- * The form used to edit an existing Order.
- *
- * @author Robin Wroblowski
+ * Version 20210208152644
  */
-class Edit extends \LogisticsBundle\Form\Catalog\Order\Add
+class Version20210208152644 extends \Doctrine\Migrations\AbstractMigration
 {
     /**
-     * @var Order
+     * @param  \Doctrine\DBAL\Schema\Schema $schema
+     * @return void
      */
-    private $order;
-
-    public function init()
+    public function up(Schema $schema) : void
     {
-        parent::init();
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->remove('submit')
-            ->addSubmit('Save Changes');
-
-        if ($this->order !== null) {
-            $hydrator = $this->getHydrator();
-            $this->populateValues($hydrator->extract($this->order));
-        }
+        $this->addSql('ALTER TABLE logistics_order ADD rejected BOOLEAN DEFAULT \'false\' NOT NULL');
     }
 
     /**
-     * @param Order $order
+     * @param  \Doctrine\DBAL\Schema\Schema $schema
+     * @return void
      */
-    public function setOrder(Order $order)
+    public function down(Schema $schema) : void
     {
-        $this->order = $order;
+        $this->throwIrreversibleMigrationException();
     }
 }

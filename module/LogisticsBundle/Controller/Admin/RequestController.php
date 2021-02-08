@@ -51,8 +51,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
         $request->approveRequest();
         $request->handled();
-        $request->getOrder()->remove();
-        $request->getEditOrder()->approve();
+        $request->setRemoved(true);
 
         $this->getEntityManager()->flush();
 
@@ -133,8 +132,6 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
                     'action' => 'manage',
                 )
             );
-
-            return;
         }
 
         return $request;

@@ -198,7 +198,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                         }
                         else {
                             $map->setAmount($map->getAmount() + 1);
-                            $this->getEntityManager()->flush(); // Moet dit??
+                            $this->getEntityManager()->flush();
                         }
                     }
                     $this->flashMessenger()->success(
@@ -260,9 +260,6 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if ($form->isValid()) {
-                //TODO: DIT MOET NOG VIA DE HYDRATOR EIGENLIJK!!!
-//                $orderArticleMap->setAmount($formData['amount']);
-//                $orderArticleMap->setStatus($formData['status']);
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -314,12 +311,17 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        $mapping = $this->getArticleMapEntity();
+        $mapNb = $this->getRequest()->getPost()->get('map');
+
+        $mapping = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+            ->findOneById($mapNb);
+
         if ($mapping === null) {
             return new ViewModel();
         }
-
         $mapping->setStatus('approved');
+        $this->getEntityManager()->flush();
 
         return new ViewModel(
             array(

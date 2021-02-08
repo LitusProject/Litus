@@ -121,6 +121,7 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('r.handled', 'FALSE'),
+                    $query->expr()->eq('r.removed', 'FALSE'),
                     $query->expr()->eq('o.creator', ':academic'),
                     $query->expr()->eq('o.removed', 'FALSE')
                 )
@@ -134,7 +135,7 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
      * @param Academic $academic
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
-    public function findRejectsByAcademic(Academic $academic)
+    public function findActiveRejectsByAcademic(Academic $academic)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('r')
@@ -143,6 +144,7 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('r.handled', 'TRUE'),
+                    $query->expr()->eq('r.removed', 'FALSE'),
                     $query->expr()->eq('o.approved', 'FALSE'),
                     $query->expr()->eq('o.removed', 'FALSE'),
                     $query->expr()->eq('o.creator', ':academic')
@@ -157,7 +159,7 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
      * @param Unit $unit
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
-    public function findRejectsByUnit(Unit $unit)
+    public function findActiveRejectsByUnit(Unit $unit)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('r')
@@ -166,6 +168,7 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('r.handled', 'TRUE'),
+                    $query->expr()->eq('r.removed', 'FALSE'),
                     $query->expr()->eq('o.approved', 'FALSE'),
                     $query->expr()->eq('o.removed', 'FALSE'),
                     $query->expr()->eq('o.unit', ':unit')

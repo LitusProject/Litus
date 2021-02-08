@@ -182,8 +182,6 @@ class Request
         $this->removed = $removed;
     }
 
-
-
     /**
      * @return Academic
      */
@@ -285,15 +283,9 @@ class Request
                 $this->getOrder()->approve();
                 break;
 
-            case 'edit':
-                $this->getOrder()->approve();
-                $this->getEditOrder()->remove();
-                break;
-
-            case 'edit reject':
-                $this->getOrder()->approve();
-                if (($editOrder = $this->getEditOrder())!== null)
-                    $editOrder->remove();
+            case 'edit' || 'edit reject':
+                $this->getOrder()->remove();
+                $this->getEditOrder()->approve();
                 break;
 
             case 'delete':
@@ -312,6 +304,10 @@ class Request
     public function rejectRequest($message)
     {
         $this->rejectMessage = $message;
+        if ($this->getEditOrder())
+            $this->getEditOrder()->reject();
+        else
+            $this->getOrder()->reject();
         return $this;
     }
 }

@@ -29,7 +29,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
-use LogisticsBundle\Entity\Order\OrderArticleMap;
+use LogisticsBundle\Entity\Order\OrderArticleMap as OrderArticleMapAlias;
 use Parsedown;
 use function Functional\push;
 
@@ -138,6 +138,13 @@ class Order
     private $removed;
 
     /**
+     * @var boolean If this order has been rejected.
+     *
+     * @ORM\Column(type="boolean", options={"default" = false})
+     */
+    private $rejected;
+
+    /**
      * @param string $contact
      */
     public function __construct($contact)
@@ -145,6 +152,7 @@ class Order
         $this->contact = $contact;
         $this->dateUpdated = new DateTime();
         $this->removed = false;
+        $this->rejected = false;
     }
 
     /**
@@ -152,10 +160,10 @@ class Order
      */
     public function getStatus()
     {
-        if ($this->pending()){return "Pending";}
         if ($this->isRemoved()){return "Removed";}
+        if ($this->isRejected()){return "Rejected";}
         if ($this->isApproved()){return "Approved";}
-        return "Null";
+        return "Pending";
     }
 
     /**
@@ -184,6 +192,24 @@ class Order
     public function remove()
     {
         $this->removed = true;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRejected(): bool
+    {
+        return $this->rejected;
+    }
+
+    /**
+     * @return self
+     */
+    public function reject()
+    {
+        $this->rejected = true;
 
         return $this;
     }
@@ -386,18 +412,16 @@ class Order
     }
 
     /**
-     * @param Order\OrderArticleMap $mapping
+     * @return boolean
      */
-    public function removeMapping(Order\OrderArticleMap $mapping)
-    {
-        $this->articles->remove($mapping);
-    }
-
     public function isCancellable()
     {
-        return(!$this->isApproved() && !$this->isRemoved());
+        return(!$this->isRemoved() && $this->isApproved());
     }
 
+    /**
+     * @return boolean
+     */
     public function isEditable()
     {
         return $this->isCancellable();

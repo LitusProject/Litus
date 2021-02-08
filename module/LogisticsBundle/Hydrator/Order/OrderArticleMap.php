@@ -32,12 +32,13 @@ class OrderArticleMap extends \CommonBundle\Component\Hydrator\Hydrator
         if ($object === null) {
             $object = new MapEntity(
                 $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Order')
-                ->findOneById($data['order']['id']),
+                    ->getRepository('LogisticsBundle\Entity\Order')
+                    ->findOneById($data['order']['id']),
                 $this->getEntityManager()
                     ->getRepository('LogisticsBundle\Entity\Article')
                     ->findOneById($data['article']['id']),
-                $data['amount']);
+                $data['amount']
+            );
         }
 
         $object->setStatus($data['status']);

@@ -56,7 +56,6 @@ class Article extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 $query->expr()->like($query->expr()->lower('a.name'), ':name')
             )
             ->setParameter('name', '%' . strtolower($name) . '%')
-            ->setMaxResults(20)
             ->getQuery();
     }
 
@@ -73,7 +72,6 @@ class Article extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 $query->expr()->like($query->expr()->lower('a.visibility'), ':visibility')
             )
             ->setParameter('visibility', '%' . strtolower($visibility) . '%')
-            ->setMaxResults(20)
             ->getQuery();
     }
 
@@ -90,7 +88,6 @@ class Article extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 $query->expr()->like($query->expr()->lower('a.status'), ':status')
             )
             ->setParameter('status', '%' . strtolower($status) . '%')
-            ->setMaxResults(20)
             ->getQuery();
     }
 
@@ -107,7 +104,27 @@ class Article extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 $query->expr()->like($query->expr()->lower('a.location'), ':location')
             )
             ->setParameter('location', '%' . strtolower($location) . '%')
-            ->setMaxResults(20)
+            ->getQuery();
+    }
+
+    /**
+     * @param string $type
+     * @param string $location
+     * @return Query
+     */
+    public function findAllByTypeAndLocationQuery($type, $location)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('a')
+            ->from('LogisticsBundle\Entity\Article', 'a')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->like($query->expr()->lower('a.location'), ':location'),
+                    $query->expr()->like($query->expr()->lower('a.category'), ':type'),
+                )
+            )
+            ->setParameter('location', '%' . strtolower($location) . '%')
+            ->setParameter('type', '%' . strtolower($type) . '%')
             ->getQuery();
     }
 }
