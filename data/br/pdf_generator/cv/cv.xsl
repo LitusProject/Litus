@@ -220,9 +220,9 @@
             <!-- Move the table header to the title height (line height * font size) -->
             <fo:table margin-top="-{$line-height}*{$font-size}pt">
 
-                <fo:table-column column-width="80mm"/>
-                <fo:table-column column-width="50mm"/>
-                <fo:table-column column-width="50mm"/>
+                <fo:table-column column-width="30mm"/>
+                <fo:table-column column-width="40mm"/>
+                <fo:table-column column-width="40mm"/>
 
                 <fo:table-header>
                     <fo:table-row>
