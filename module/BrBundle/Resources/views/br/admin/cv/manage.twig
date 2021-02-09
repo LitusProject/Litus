@@ -74,6 +74,19 @@
                 </div>
             </div>
         {% endif %}
+        {% if hasAccess('br_admin_cv_entry', 'exportCvCsv') %}
+            <div class="sidebox">
+                <div class="title">Export CV as CSV</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to export the cv in csv format!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('br_admin_cv_entry', {"action": "exportCvCsv", "academicyear": activeAcademicYear.getCode()}) }}">&rarr; Export CV as CSV</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
     </aside>
 
     <div class="modal fade" id="removeCv" tabindex="-1">

@@ -58,7 +58,7 @@ return array(
             'manage', 'edit', 'view', 'history', 'sign', 'signedList', 'download', 'delete', 'csv', 'unfinishedList', 'archiveUnsigned'
         ),
         'br_admin_cv_entry' => array(
-            'manage', 'delete', 'export', 'exportAcademics',
+            'manage', 'delete', 'export', 'exportAcademics', 'exportCvCsv'
         ),
         'br_admin_invoice' => array(
             'history', 'view', 'edit', 'manage', 'download', 'payed', 'pay', 'manualAdd', 'csv', 'payedList',
