@@ -138,7 +138,6 @@ class CvController extends \BrBundle\Component\Controller\CvController
         );
     }
 
-
     public function exportCvCsvAction()
     {
         $translator = $this->getTranslator();
@@ -146,8 +145,6 @@ class CvController extends \BrBundle\Component\Controller\CvController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.cv_book_language');
         $translator->setLocale($locale);
-
-//        print($translator->translate("Languages"));die();
 
         $entries = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Cv\Entry')
@@ -157,8 +154,8 @@ class CvController extends \BrBundle\Component\Controller\CvController
         $heading = array('First Name', 'Last Name', 'birthday', 'Email', 'Phone', 'img', 'Study', 'street', 'nr', 'postal', 'city', 'country', 'about', 'grade', 'priorGrade', 'SS_start_master', 'SS_end_master', 'SS_percentage_master', 'SS_title_master', 'SS_start_bach', 'SS_end_bach', 'SS_percentage_bach', 'SS_title_bach', 'additional_diplomas', 'SE_location', 'SE_period', 'L_name', 'L_oral', 'L_written', 'L_extra', 'ComputerSkills', 'Experiences', 'EXP_type', 'EXP_function', 'EXP_start', 'EXP_end', 'thesis', 'futureInterest', 'mobilityEU', 'mobilityWorld','careerExpectations', 'hobbies');
 
         $picturePath = 'public' . $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('common.profile_path');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.profile_path');
         $monthsEnglish = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' );
         $monthsDutch = array('Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December' );
 
@@ -178,16 +175,16 @@ class CvController extends \BrBundle\Component\Controller\CvController
             if ($entry->getPriorGrade() == 0) {
                 $bachelorGrade = '-';
             }
-            $mail = str_replace('vtk.be.test-google-a.com', "vtk.be", $entry->getEmail());
+            $mail = str_replace('vtk.be.test-google-a.com', 'vtk.be', $entry->getEmail());
 
             //languages
             $lang = '';
             $langOral = '';
             $langWritten = '';
-            foreach ($entry->getLanguages() as $l){
-                $lang = $lang . $translator->translate($l->getName()) . ";";
-                $langOral = $langOral . $translator->translate($l->getOralSkill()) . ";";
-                $langWritten = $langWritten . $translator->translate($l->getWrittenSkill()) . ";";
+            foreach ($entry->getLanguages() as $l) {
+                $lang .= $translator->translate($l->getName()) . ';';
+                $langOral .= $translator->translate($l->getOralSkill()) . ';';
+                $langWritten .= $translator->translate($l->getWrittenSkill()) . ';';
             }
 
             //experiences
@@ -195,11 +192,11 @@ class CvController extends \BrBundle\Component\Controller\CvController
             $expFunctions = '';
             $expStarts = '';
             $expEnds = '';
-            foreach ($entry->getExperiences() as $e){
-                $expTypes = $expTypes . $translator->translate($e->getType()) . ";";
-                $expFunctions = $expFunctions . $e->getFunction() . ";";
-                $expStarts = $expStarts . strval($e->getStartYear()) . ";";
-                $expEnds = $expEnds . strval($e->getEndYear()) . ";";
+            foreach ($entry->getExperiences() as $e) {
+                $expTypes .= $translator->translate($e->getType()) . ';';
+                $expFunctions .= $e->getFunction() . ';';
+                $expStarts .= strval($e->getStartYear()) . ';';
+                $expEnds .= strval($e->getEndYear()) . ';';
             }
 
             $results[] = array(
@@ -246,7 +243,7 @@ class CvController extends \BrBundle\Component\Controller\CvController
                 $entry->getHobbies(),
             );
             if ($entry->getAddress()->getMailbox() !== null && $entry->getAddress()->getMailbox() !== '') {
-                $result['bus'] = $entry->getAddress()->getMailbox();
+                $results['bus'] = $entry->getAddress()->getMailbox();
             }
         }
 

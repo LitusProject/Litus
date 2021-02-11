@@ -126,7 +126,7 @@ class Retail
      */
     public function getPrice()
     {
-        return number_format($this->price/100,2);
+        return number_format($this->price / 100, 2);
     }
 
     /**

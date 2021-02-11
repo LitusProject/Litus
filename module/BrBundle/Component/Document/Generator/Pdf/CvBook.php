@@ -76,18 +76,8 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         $groups = array();
 
         foreach ($data as $studyData) {
-//            print($studyData['name'] );
             $groups[] = $this->generateGroup($studyData['name'], $studyData['entries']);
         }
-//        die();
-
-//        $done = false;
-//        foreach ($groups as $group)
-//        {
-//            if($done === false)
-//            print_r($group);
-//            $done = true;
-//        }
 
         $organization_logo = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
