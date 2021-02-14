@@ -91,4 +91,5 @@ return array(
     'My Timeslots'                                                                                                                                                                                                      => 'Mijn Tijdsloten',
     'Timeslot Registration'                                                                                                                                                                                             => 'Tijdslot Registratie',
     'By signing up for a timeslot, you give consent to your information being used for contact tracing.'                                                                                                                => 'Door je in te schrijven voor een tijdslot, stem je in dat jouw gegevens gebruikt mogen worden in het kader van contact tracing.',
+
 );

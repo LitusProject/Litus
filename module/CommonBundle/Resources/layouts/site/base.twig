@@ -76,13 +76,16 @@
 
                                 <li class="divider"></li>
 
-                                {% if hasAccess('cudi_booking', 'view') or hasAccess('shift', 'index') %}
+                                {% if hasAccess('cudi_booking', 'view') or hasAccess('shift', 'index') or hasAccess('registration_shift', 'index')%}
                                     <li>
                                         {% if hasAccess('cudi_booking', 'view') %}
                                             <a href="{{ url('cudi_booking') }}">{{ translate('My Bookings') }}</a>
                                         {% endif %}
                                         {% if hasAccess('shift', 'index') %}
                                             <a href="{{ url('shift') }}">{{ translate('My Shifts') }}</a>
+                                        {% endif %}
+                                        {% if hasAccess('registration_shift', 'index') %}
+                                            <a href="{{ url('registration_shift') }}">{{ translate('My Timeslots') }}</a>
                                         {% endif %}
                                     </li>
 
@@ -163,6 +166,9 @@
                                         {% endif %}
                                         {% if hasAccess('shift', 'index') %}
                                             <a href="{{ url('shift') }}">{{ translate('My Shifts') }}</a>
+                                        {% endif %}
+                                        {% if hasAccess('registration_shift', 'index') %}
+                                            <a href="{{ url('registration_shift') }}">{{ translate('My Timeslots') }}</a>
                                         {% endif %}
                                     </li>
 
