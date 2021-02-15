@@ -3409,25 +3409,25 @@
         },
         {
             "name": "laminas/laminas-file",
-            "version": "2.8.3",
+            "version": "2.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-file.git",
-                "reference": "cb0bf270cc3e7a4d7dd780b573e2481a09951993"
+                "reference": "3bfa2ea25d53d27d35736d7806f4b21bad13689c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-file/zipball/cb0bf270cc3e7a4d7dd780b573e2481a09951993",
-                "reference": "cb0bf270cc3e7a4d7dd780b573e2481a09951993",
+                "url": "https://api.github.com/repos/laminas/laminas-file/zipball/3bfa2ea25d53d27d35736d7806f4b21bad13689c",
+                "reference": "3bfa2ea25d53d27d35736d7806f4b21bad13689c",
                 "shasum": ""
             },
             "require": {
                 "laminas/laminas-stdlib": "^2.7.7 || ^3.1",
                 "laminas/laminas-zendframework-bridge": "^1.0",
-                "php": "^5.6 || ^7.0"
+                "php": "^7.3 || ~8.0.0"
             },
             "replace": {
-                "zendframework/zend-file": "self.version"
+                "zendframework/zend-file": "^2.8.3"
             },
             "require-dev": {
                 "laminas/laminas-coding-standard": "~1.0.0",
@@ -3437,7 +3437,7 @@
                 "laminas/laminas-servicemanager": "^2.7.8 || ^3.3",
                 "laminas/laminas-session": "^2.8",
                 "laminas/laminas-validator": "^2.10.1",
-                "phpunit/phpunit": "^5.7.27 || ^6.5.8 || ^7.1.2"
+                "phpunit/phpunit": "^9.3.0"
             },
             "suggest": {
                 "laminas/laminas-filter": "Laminas\\Filter component",
@@ -3445,12 +3445,6 @@
                 "laminas/laminas-validator": "Laminas\\Validator component"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.8.x-dev",
-                    "dev-develop": "2.9.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Laminas\\File\\": "src/"
@@ -3474,7 +3468,13 @@
                 "rss": "https://github.com/laminas/laminas-file/releases.atom",
                 "source": "https://github.com/laminas/laminas-file"
             },
-            "time": "2019-12-31T16:51:52+00:00"
+            "funding": [
+                {
+                    "url": "https://funding.communitybridge.org/projects/laminas-project",
+                    "type": "community_bridge"
+                }
+            ],
+            "time": "2021-02-12T15:05:42+00:00"
         },
         {
             "name": "laminas/laminas-filter",
