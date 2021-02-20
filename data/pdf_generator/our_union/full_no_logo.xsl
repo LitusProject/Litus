@@ -12,6 +12,8 @@
             <xsl:apply-templates select="address"/>
             <fo:block/>
             <xsl:value-of select="vat_number"/>
+            <fo:block/>
+            <xsl:value-of select="header_extra_text"/>
         </fo:block>
     </xsl:template>
 

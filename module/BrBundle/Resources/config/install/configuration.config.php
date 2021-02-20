@@ -295,4 +295,9 @@ Example content of this section.
         'value'       => 'https://vtk.be/admin/br/request/',
         'description' => '',
     ),
+    array(
+        'key'         => 'br.invoice_header_extra_text',
+        'value'       => 'RPR Leuven',
+        'description' => '',
+    ),
 );

@@ -100,13 +100,14 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         $unionAddressArray = unserialize($configs->getConfigValue('organization_address_array'));
         $logo = $configs->getConfigValue('organization_logo');
         $unionVat = $configs->getConfigValue('br.vat_number');
+        $headerExtraText = $configs->getConfigValue('br.invoice_header_extra_text');
 
 
         $vatTypeExplanation = '';
         if ($this->invoice->getTaxFree() === true) {
-            if ($this->invoice->isEU() === null) {
-                throw new \ErrorException('This company has not defined if it is EU or not');
-            }
+//            if ($this->invoice->isEU() === null) {
+//                throw new \ErrorException('This company has not defined if it is EU or not');
+//            }
             $isEU = $this->invoice->isEU() ? 'eu' : 'non-eu';
             $vatTypeExplanation = unserialize($configs->getConfigValue('br.invoice_vat_explanation'))[$isEU] . ' ' . $this->invoice->getVatContext();
         }
@@ -283,6 +284,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
                             ),
                             new XmlNode('logo', null, $logo),
                             new XmlNode('vat_number', null, $unionVat),
+                            new XmlNode('header_extra_text', null, $headerExtraText),
                         )
                     ),
 
