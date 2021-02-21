@@ -64,7 +64,7 @@ abstract class Person extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         if (isset($data['roles'])) {
-            $object->setRoles($this->dataToRoles(array_merge($data['roles'], $object->getSystemRoles())));
+            $object->setRoles(array_unique(array_merge($this->dataToRoles($data['roles']), $object->getSystemRoles())));
         } else {
             $object->setRoles($this->dataToRoles($object->getSystemRoles()));
         }

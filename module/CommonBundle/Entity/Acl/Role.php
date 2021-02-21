@@ -195,4 +195,8 @@ class Role
 
         return false;
     }
+
+    public function __toString() {
+        return $this->getName();
+    }
 }
