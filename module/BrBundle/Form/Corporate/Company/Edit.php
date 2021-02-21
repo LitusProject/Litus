@@ -139,6 +139,7 @@ class Edit extends \CommonBundle\Component\Form\Bootstrap\Form
                     'multiple'  => true,
                     'options'   => $this->getCvBookYears(),
                     'data-help' => 'The selected years will be visible in the corporate app of this company. The archived ones are downloadable in pdf format.',
+                    'disabled' => true,
                 ),
             )
         );
