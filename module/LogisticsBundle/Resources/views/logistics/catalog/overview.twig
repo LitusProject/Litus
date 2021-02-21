@@ -62,8 +62,11 @@
                                 {{ translate('Edit') }}
                             </a>
                         {% endif %}
+                        <a href="{{ url('logistics_catalog', {"action" : 'view', "order" : order.getId()}) }}" class="btn btn-primary btn-sm articles">
+                            {{ translate('Articles') }}
+                        </a>
                         {% if order.isCancellable() %}
-                            <a href="#" class="btn btn-warning btn-sm cancel" data-id="{{ order.getId() }}" data-title="{{ order.getName() }}">
+                            <a href="#" class="btn btn-danger btn-sm cancel" data-id="{{ order.getId() }}" data-title="{{ order.getName() }}">
                                 {{ translate('Cancel') }}
                             </a>
                         {% endif %}
@@ -96,19 +99,24 @@
                                     Status: <strong>{{ translate(request.getStatus()) }}</strong>
                                 </td>
                                 <td>
-                                    <strong>{{ request.getOrder().getName() }} </strong>
+                                    <strong>{{ request.getEditOrder().getName() }} </strong>
                                     <br/>
-                                    <div class="pull-right hidden-xs">{{ translate('Last Updated') }}: <strong>{{ request.getOrder().getLastUpdateDate().format('d/m/Y H:i') }}</strong></div>
+                                    <div class="pull-right hidden-xs">{{ translate('Last Updated') }}: <strong>{{ request.getEditOrder().getLastUpdateDate().format('d/m/Y H:i') }}</strong></div>
                                     <br/>
                                     {% if request.getStatus() == 'rejected' %}
                                         <font color="red">{{ request.getRejectMessage()|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}</font>
                                     {% else %}
-                                        {{ request.getOrder().getDescription(200)|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
+                                        {{ request.getEditOrder().getDescription(200)|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
                                     {% endif %}
                                 </td>
                                 <td width="230" style="vertical-align: middle;">
                                     {% if request.getRequestType() != 'delete' %}
                                         <a class="btn btn-sm btn-warning" href="{{ url('logistics_catalog', {'action': 'editRequest', 'request': request.getId()}) }}">{{ translate('Edit') }}</a>
+                                    {% endif %}
+                                    {% if request.getRequestType() != 'add' %}
+                                        <a class="btn btn-sm btn-primary" href="{{ url('logistics_catalog', {'action': 'view', 'order': request.getOrder().getId()}) }}">{{ translate('View') }}</a>
+                                    {% else %}
+                                        <a class="btn btn-sm btn-primary" href="{{ url('logistics_catalog', {'action': 'view', 'order': request.getEditOrder().getId() }) }}">{{ translate('View') }}</a>
                                     {% endif %}
                                     <a class="btn btn-sm btn-danger deleteRequest" data-id="{{ request.getId() }}" href="#">{{ translate('Delete') }}</a>
                                 </td>

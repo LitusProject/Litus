@@ -20,6 +20,8 @@
 
 namespace LogisticsBundle\Form\Catalog\Order;
 
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person\Academic;
 use LogisticsBundle\Entity\Order;
 
 /**
@@ -27,7 +29,7 @@ use LogisticsBundle\Entity\Order;
  *
  * @author Robin Wroblowski
  */
-class Edit extends \LogisticsBundle\Form\Catalog\Order\Add
+class Edit extends Add
 {
     /**
      * @var Order
@@ -54,4 +56,5 @@ class Edit extends \LogisticsBundle\Form\Catalog\Order\Add
     {
         $this->order = $order;
     }
+
 }

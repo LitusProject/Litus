@@ -20,6 +20,7 @@
 
 namespace LogisticsBundle\Entity\Order;
 
+use CommonBundle\Entity\General\AcademicYear;
 use Doctrine\ORM\Mapping as ORM;
 use LogisticsBundle\Entity\Article;
 use LogisticsBundle\Entity\Order;
@@ -85,14 +86,14 @@ class OrderArticleMap
 
     /**
      * OrderArticleMap constructor.
-     * @param Order   $order
+     * @param Order $order
      * @param Article $article
      * @param integer $amount
      */
     public function __construct(Order $order, Article $article, $amount)
     {
         $this->referencedOrder = $order;
-        $this->referencedArticle = $article;
+        $this->referencedArticle= $article;
         $this->amount = $amount;
         $this->status = 'none';
     }
@@ -150,7 +151,7 @@ class OrderArticleMap
      */
     public function getStatusCode()
     {
-        return $this->status ? $this->status : 'none';
+        return $this->status?$this->status:'none';
     }
 
     /**
@@ -160,4 +161,6 @@ class OrderArticleMap
     {
         $this->status = $status;
     }
+
+
 }

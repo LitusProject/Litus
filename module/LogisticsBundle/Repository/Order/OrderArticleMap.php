@@ -20,8 +20,10 @@
 
 namespace LogisticsBundle\Repository\Order;
 
+use Doctrine\ORM\Query;
 use LogisticsBundle\Entity\Article as ArticleEntity;
 use LogisticsBundle\Entity\Order as OrderEntity;
+use LogisticsBundle\Repository\Order;
 
 /**
  * OrderArticleMap
@@ -31,6 +33,7 @@ use LogisticsBundle\Entity\Order as OrderEntity;
  */
 class OrderArticleMap extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
+
     public function findAllByOrderQuery(OrderEntity $order)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -38,7 +41,7 @@ class OrderArticleMap extends \CommonBundle\Component\Doctrine\ORM\EntityReposit
             ->from('LogisticsBundle\Entity\Order\OrderArticleMap', 'm')
             ->innerJoin('m.referencedArticle', 'a')
             ->where(
-                $query->expr()->eq('m.referencedOrder', ':order')
+                    $query->expr()->eq('m.referencedOrder', ':order')
             )
             ->setParameter('order', $order)
             ->getQuery();

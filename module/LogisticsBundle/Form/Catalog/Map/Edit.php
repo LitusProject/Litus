@@ -18,72 +18,61 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace LogisticsBundle\Form\Admin\Order\OrderArticleMap;
+namespace LogisticsBundle\Form\Catalog\Map;
+
+use LogisticsBundle\Entity\Order\OrderArticleMap as Map;
 
 /**
- * Add an OrderArticleMap
+ * Edit OrderArticleMap
  *
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Edit extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * @var array All possible articles
+     * @var Map
      */
-    private $articles;
+    private $map;
 
     protected $hydrator = 'LogisticsBundle\Hydrator\Order\OrderArticleMap';
-
 
     public function init()
     {
         parent::init();
 
+
         $this->add(
             array(
-                'type'       => 'select',
-                'name'       => 'articles',
-                'label'      => 'Articles',
-                'required'   => true,
-                'attributes' => array(
-                    'multiple' => true,
-                    'style'    => 'max-width: 100%;height: 300px;',
-                    'options'  => $this->getArticleNames(),
-                ),
-                'options' => array(
+                'type'       => 'text',
+                'name'       => 'amount',
+                'label'      => 'Amount',
+                'required'  => true,
+                'options'  => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
                         ),
                     ),
                 ),
             )
         );
 
-        $this->addSubmit('Add', 'add');
-    }
+        $this->addSubmit('Save Changes');
 
-    /**
-     * @return array
-     */
-    private function getArticleNames()
-    {
-        $articleNames = array();
-        foreach ($this->articles as $article) {
-            $articleNames[$article->getId()] = $article->getCategory() . ' - ' . $article->getName();
+        if ($this->map !== null) {
+            $this->bind($this->map);
         }
-
-        return $articleNames;
     }
 
-    /**
-     * @param  array All possible studies
-     * @return self
-     */
-    public function setArticles(array $articles)
+    public function setMap(Map $map)
     {
-        $this->articles = $articles;
+        $this->map = $map;
 
         return $this;
     }
+
 }

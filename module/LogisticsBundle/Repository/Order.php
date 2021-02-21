@@ -22,8 +22,9 @@ namespace LogisticsBundle\Repository;
 
 use CommonBundle\Entity\General\Organization\Unit;
 use CommonBundle\Entity\User\Person;
-use DateTime;
 use LogisticsBundle\Entity\Article as ArticleEntity;
+
+use DateTime;
 
 /**
  * Order
@@ -47,7 +48,7 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                     $query->expr()->lt('o.endDate', ':now')
                 )
             )
-            ->orderBy('o.startDate', 'ASC')
+            ->orderBy('o.id', 'ASC')
             ->setParameter('now', new DateTime())
             ->getQuery();
     }
@@ -203,6 +204,7 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->orderBy('o.dateUpdated', 'DESC')
             ->getQuery();
     }
+
 
 //    /**
 //     * @return \Doctrine\ORM\Query

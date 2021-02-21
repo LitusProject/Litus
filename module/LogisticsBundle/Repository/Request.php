@@ -77,7 +77,7 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('r')
             ->from('LogisticsBundle\Entity\Request', 'r')
-            ->innerJoin('r.referencedOrder', 'o')
+            ->innerJoin('r.editOrder', 'o')
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('r.handled', 'FALSE'),
@@ -101,7 +101,7 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('r.handled', 'FALSE'),
-                    $query->expr()->eq('r.referencedOrder', ':order')
+                    $query->expr()->eq('r.editOrder', ':order')
                 )
             )
             ->setParameter('order', $order->getId())
@@ -117,7 +117,7 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('r')
             ->from('LogisticsBundle\Entity\Request', 'r')
-            ->innerJoin('r.referencedOrder', 'o')
+            ->innerJoin('r.editOrder', 'o')
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('r.handled', 'FALSE'),
@@ -140,7 +140,7 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('r')
             ->from('LogisticsBundle\Entity\Request', 'r')
-            ->innerJoin('r.referencedOrder', 'o')
+            ->innerJoin('r.editOrder', 'o')
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('r.handled', 'TRUE'),
@@ -164,7 +164,7 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('r')
             ->from('LogisticsBundle\Entity\Request', 'r')
-            ->innerJoin('r.referencedOrder', 'o')
+            ->innerJoin('r.editOrder', 'o')
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('r.handled', 'TRUE'),

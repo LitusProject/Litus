@@ -56,6 +56,7 @@ class Article extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 $query->expr()->like($query->expr()->lower('a.name'), ':name')
             )
             ->setParameter('name', '%' . strtolower($name) . '%')
+            ->orderBy('a.name', 'ASC')
             ->getQuery();
     }
 
@@ -72,6 +73,7 @@ class Article extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 $query->expr()->like($query->expr()->lower('a.visibility'), ':visibility')
             )
             ->setParameter('visibility', '%' . strtolower($visibility) . '%')
+            ->orderBy('a.name', 'ASC')
             ->getQuery();
     }
 
@@ -88,6 +90,7 @@ class Article extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 $query->expr()->like($query->expr()->lower('a.status'), ':status')
             )
             ->setParameter('status', '%' . strtolower($status) . '%')
+            ->orderBy('a.name', 'ASC')
             ->getQuery();
     }
 
@@ -104,6 +107,7 @@ class Article extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 $query->expr()->like($query->expr()->lower('a.location'), ':location')
             )
             ->setParameter('location', '%' . strtolower($location) . '%')
+            ->orderBy('a.name', 'ASC')
             ->getQuery();
     }
 
@@ -125,6 +129,7 @@ class Article extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             )
             ->setParameter('location', '%' . strtolower($location) . '%')
             ->setParameter('type', '%' . strtolower($type) . '%')
+            ->orderBy('a.name', 'ASC')
             ->getQuery();
     }
 }

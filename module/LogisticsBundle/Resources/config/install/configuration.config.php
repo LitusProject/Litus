@@ -172,5 +172,93 @@ Student IT
         'key'         => 'logistics.order_link',
         'value'       => 'https://vtk.be/admin/logistics/request/',
         'description' => '',
-    )
+    ),
+    array(
+        'key'         => 'logistics.catalog_search_max_results',
+        'value'       => 50,
+        'description' => '',
+    ),
+    array(
+        'key'   => 'logistics.order_request',
+        'value' => serialize(
+            array(
+                    'subject' => 'Nieuwe Order Request {{ name }}',
+                    'content' => 'Beste,
+
+Een nieuwe order request is aangemaakt:
+
+{{ name }} ({{ type }}) van {{ person }}.
+Datum: {{ start }} tot {{ end }}.
+
+Student IT
+
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
+                )
+            ),
+        'description' => 'The mail sent when a new order request is created',
+    ),
+    array(
+        'key'   => 'logistics.order_request_confirmed',
+        'value' => serialize(
+            array(
+                'en' => array(
+                    'subject' => 'Order Request Approved {{ name }}',
+                    'content' => 'Dear,
+
+Your recent order request has been approved:
+{{ name }}
+Date: {{ start }} tot {{ end }}.
+
+Student IT
+
+-- This is an automatically generated email, please do not reply --',
+                ),
+                'nl' => array(
+                    'subject' => 'Order Request Geaccepteerd {{ name }}',
+                    'content' => 'Beste,
+
+Je order request is geaccepteerd:
+{{ name }}
+Datum: {{ start }} tot {{ end }}.
+
+Student IT
+
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
+                ),
+            )
+        ),
+        'description' => 'The mail sent when an order request is confirmed',
+    ),
+    array(
+        'key'   => 'logistics.order_request_rejected',
+        'value' => serialize(
+            array(
+                'en' => array(
+                    'subject' => 'Order Request Rejected  {{ name }}',
+                    'content' => 'Dear,
+
+Your recent order request has been rejected:
+{{ name }}
+Date: {{ start }} tot {{ end }}.
+
+Student IT
+
+-- This is an automatically generated email, please do not reply --',
+                ),
+                'nl' => array(
+                    'subject' => 'Order Request Geweigerd  {{ name }}',
+                    'content' => 'Beste,
+
+Je order request is geweigerd:
+{{ name }}
+Datum: {{ start }} tot {{ end }}.
+
+Student IT
+
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
+                ),
+            )
+        ),
+        'description' => 'The mail sent when an order request is rejected',
+    ),
 );

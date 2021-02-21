@@ -18,13 +18,13 @@
 
             {% for request in requests %}
                 <tr class="item item-{{ request.getId() }}">
-                    <td>{{ request.getOrder().getName() }}</td>
-                    <td>{{ request.getOrder().getCreator().getFullName() }}</td>
-                    <td>{{ request.getOrder().getUnit().getName() }}</td>
+                    <td>{{ request.getEditOrder().getName() }}</td>
+                    <td>{{ request.getEditOrder().getCreator().getFullName() }}</td>
+                    <td>{{ request.getEditOrder().getUnit().getName() }}</td>
                     <td>{{ request.getCreationTime().format('d/m/Y H:i') }}</td>
                     <td class="actions">
-                        {% if hasAccess('logistics_admin_order', 'view') %}
-                            <a href="{{ url('logistics_admin_order', {"action": "view", "id": request.getOrder().getId()}) }}" class="view">View</a>
+                        {% if hasAccess('logistics_admin_request', 'view') %}
+                            <a href="{{ url('logistics_admin_request', {"action": "view", "id": request.getId()}) }}" class="view">View</a>
                         {% endif %}
                         {% if hasAccess('logistics_admin_request', 'approve') %}
                             <a href="{{ url('logistics_admin_request', {"action": "approve", "id": request.getId()}) }}" class="accept_request">Approve</a>

@@ -20,9 +20,11 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
+use Laminas\Mail\Message;
 use LogisticsBundle\Entity\Order;
 use LogisticsBundle\Entity\Order\OrderArticleMap;
 use Laminas\View\Model\ViewModel;
+use LogisticsBundle\Entity\Request;
 
 /**
  * OrderController

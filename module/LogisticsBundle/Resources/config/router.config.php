@@ -237,18 +237,32 @@ return array(
         'logistics_catalog' => array(
             'type' => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '[/:language]/logistics/catalog[/:action[/:order[/:id]][/request/:request][/page/:page]][/]',
+                'route'       => '[/:language]/logistics/catalog[/:action[/:order][/request/:request][/page/:page]][/]',
                 'constraints' => array(
                     'action'    => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'order'     => '[0-9]*',
                     'request'     => '[0-9]*',
-                    'id'        => '[0-9]*',
                     'language' => '(en|nl)',
                     'page'      => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'logistics_catalog',
                     'action' => 'overview',
+                ),
+            ),
+        ),
+        'logistics_catalog_typeahead' => array(
+            'type' => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '[/:language]/logistics/catalog[/:order]/typeahead[/:string][/]',
+                'constraints' => array(
+                    'order'     => '[0-9]*',
+                    'language' => '(en|nl)',
+                    'string'       => '[%a-zA-Z0-9:.,_-]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'logistics_catalog',
+                    'action' => 'search',
                 ),
             ),
         ),

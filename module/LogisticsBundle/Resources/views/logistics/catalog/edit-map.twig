@@ -1,0 +1,28 @@
+{% extends 'logistics/base.twig' %}
+{% import 'site/partials/form.twig' as forms %}
+
+{% block content %}
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div class="flashmessage error_message full_width mapping_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to edit the map.</p>
+        </div>
+    </div>
+
+    <h1>{{ translate('Article') }}</h1>
+    <div id="controller_action">
+        <h4>Order</h4>
+        <p>{{ translate('Name') }}: <b>{{ order.getName() }}</b></p>
+        <h4>Article</h4>
+        <p>{{ translate('Name') }}: <b>{{ map.getArticle().getName() }}</b></p>
+    </div>
+    <br>
+    <div>
+        {{ forms.renderForm(form) }}
+    </div>
+{% endblock %}
+
+{% block content_script %}
+{% endblock %}

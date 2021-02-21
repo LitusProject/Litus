@@ -20,6 +20,7 @@
 
 namespace LogisticsBundle\Form\Admin\Order\OrderArticleMap;
 
+use LogisticsBundle\Entity\Order;
 use LogisticsBundle\Entity\Order\OrderArticleMap;
 
 /**
@@ -86,4 +87,5 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
 
         return $this;
     }
+
 }

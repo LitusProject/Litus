@@ -20,6 +20,7 @@
 
 namespace LogisticsBundle\Form\Admin\Order;
 
+use LogisticsBundle\Entity\Article;
 use RuntimeException;
 
 /**

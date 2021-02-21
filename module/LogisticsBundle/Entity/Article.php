@@ -21,6 +21,7 @@
 namespace LogisticsBundle\Entity;
 
 use CommonBundle\Entity\General\Location;
+use CommonBundle\Entity\User\Person\Academic;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -57,7 +58,7 @@ class Article
     private $additionalInfo;
 
     /**
-     * @var integer The amount of owned articles
+     * @var int The amount of owned articles
      *
      * @ORM\Column(name="amount_owned", type="integer")
      */
@@ -159,6 +160,8 @@ class Article
      */
     private $dateUpdated;
 
+    /**
+     */
     public function __construct()
     {
         $this->dateUpdated = new DateTime();
@@ -339,6 +342,7 @@ class Article
         return $this->location;
     }
 
+
     /**
      * @param string $location
      */
@@ -426,4 +430,6 @@ class Article
     {
         $this->orders->remove($mapping);
     }
+
+
 }

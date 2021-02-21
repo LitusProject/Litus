@@ -218,7 +218,7 @@ class Request
         if ($this->handled) {
             $result = 'rejected';
 
-            if ($this->getOrder()->isApproved()) {
+            if ($this->getEditOrder()->isApproved()) {
                 $result = 'approved';
             }
         }
