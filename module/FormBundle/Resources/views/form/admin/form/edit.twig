@@ -5,6 +5,19 @@
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
+    <div class="flashmessage success_message full_width entries_cleared_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The entries were successfully cleared!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width entries_cleared_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to clear the entries.</p>
+        </div>
+    </div>
+
     <div id="controller_action">
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
@@ -76,7 +89,44 @@
                 </div>
             </div>
         {% endif %}
+        {% if hasAccess('form_admin_form', 'clear') and formSpecification.canBeViewedBy(authenticatedPerson) %}
+            <div class="sidebox">
+                <div class="title">Clear Entries</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to clear the entries of this form!</i>
+                    </p>
+                    <p>
+                        <a id="clearEntries" href="#">&rarr; Clear Entries</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
     </aside>
+
+    <div class="modal fade" id="clearEntriesModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Clear Entries
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to clear all entries of this form...
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
@@ -91,7 +141,34 @@
             $('#reminder_mail').click(toggleReminder);
             toggleReminder();
             $('#send_guest_login_mail').change(toggleGuestMail);
+
+            $('#clearEntries').click(openModal);
         });
+
+        function openModal(e) {
+            e.preventDefault();
+            var clearEntriesModal = $('#clearEntriesModal');
+            clearEntriesModal.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('form_admin_form', {"action": "clear", "id": formSpecification.getId()}) }}', function (data) {
+                        if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.entries_cleared_success').removeClass('hide');
+                        clearEntriesModal.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }
+                , 'json'
+                ).error(errorRemove);
+            });
+            clearEntriesModal.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.entries_cleared_error').removeClass('hide');
+            $('#clearEntriesModal').modal('hide');
+        }
 
         function toggleMail() {
             if ($('#mail').is(':checked')) {
