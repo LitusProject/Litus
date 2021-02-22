@@ -149,4 +149,7 @@ return array(
 
     'General'  => 'Algemeen',
     'Personal' => 'Persoonlijk',
+
+    'Article Name'  => 'Artikel Naam',
+    'Order Name'     => 'Bestelling Naam',
 );

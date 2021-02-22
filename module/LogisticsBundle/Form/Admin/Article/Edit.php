@@ -1,6 +1,4 @@
 <?php
-declare(strict_types=1);
-
 /**
  * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
@@ -20,32 +18,20 @@ declare(strict_types=1);
  * @license http://litus.cc/LICENSE
  */
 
-namespace Migrations;
-
-use Doctrine\DBAL\Schema\Schema;
+namespace LogisticsBundle\Form\Admin\Article;
 
 /**
- * Version 20201018221308
+ * This form allows the user to edit the article.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Version20201018221308 extends \Doctrine\Migrations\AbstractMigration
+class Edit extends \LogisticsBundle\Form\Admin\Article\Add
 {
-    /**
-     * @param  \Doctrine\DBAL\Schema\Schema $schema
-     * @return void
-     */
-    public function up(Schema $schema) : void
+    public function init()
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
+        parent::init();
 
-        $this->addSql('ALTER TABLE shop_sessions ADD finalReservationDate TIMESTAMP(0) WITHOUT TIME ZONE');
-    }
-
-    /**
-     * @param  \Doctrine\DBAL\Schema\Schema $schema
-     * @return void
-     */
-    public function down(Schema $schema) : void
-    {
-        $this->throwIrreversibleMigrationException();
+        $this->remove('submit')
+            ->addSubmit('Save', 'article_edit');
     }
 }

@@ -1,0 +1,34 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'logistics/admin/order/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <h1>Order</h1>
+        <p>Name: <b>{{ orderArticleMap.getOrder().getName() }}</b></p>
+        <p>Location: <b>{{ orderArticleMap.getOrder().getLocation().getName() }}</b></p>
+        <p>Start Date: <b>{{ orderArticleMap.getOrder().getStartDate().format('d/m/Y H:i') }}</b></p>
+        <p>End Date: <b>{{ orderArticleMap.getOrder().getEndDate().format('d/m/Y H:i') }}</b></p>
+        <br>
+        <h1>Article</h1>
+        <p>Name: <b>{{ orderArticleMap.getArticle().getName() }}</b></p>
+        <p>Location: <b>{{ orderArticleMap.getArticle().getLocation().getName() }}</b></p>
+        <p>Owned/Available: <b>{{ orderArticleMap.getArticle().getAmountOwned() }} / {{ orderArticleMap.getArticle().getAmountAvailable() }}</b></p>
+        <p>Amount: <b>{{ orderArticleMap.getAmount() }}</b></p>
+        <p>Status: <b>{{ orderArticleMap.getStatus() }}</b></p>
+
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+        <br>
+
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+
+    </script>
+{% endblock %}

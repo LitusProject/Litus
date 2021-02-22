@@ -149,4 +149,8 @@ return array(
 
     'General'  => 'General',
     'Personal' => 'Personal',
+
+    'Article Name'  => 'Article Name',
+    'Order Name'     => 'Order Name',
+
 );
