@@ -87,6 +87,14 @@ class ContractEdit extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
+        $this->add(
+            array(
+                'type'    => 'checkbox',
+                'name'    => 'eu',
+                'label'   => 'EU (for the VAT explanation in tax-free invoices)',
+            )
+        );
+
         $this->addSubmit('Save', 'invoice_edit');
 
         if ($this->invoice !== null) {

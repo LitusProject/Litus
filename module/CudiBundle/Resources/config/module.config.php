@@ -56,6 +56,12 @@ return Config::create(
                 'typeaheadsalearticle'         => Component\Validator\Typeahead\Sale\Article::class,
                 'typeaheadSaleArticle'         => Component\Validator\Typeahead\Sale\Article::class,
                 'TypeaheadSaleArticle'         => Component\Validator\Typeahead\Sale\Article::class,
+                'TypeaheadRetail'         => Component\Validator\Typeahead\Retail::class,
+                'typeaheadRetail'         => Component\Validator\Typeahead\Retail::class,
+                'typeaheadretail'         => Component\Validator\Typeahead\Retail::class,
+                'MaximalRetailPrice'         => Component\Validator\RetailPrice::class,
+                'maximalRetailPrice'         => Component\Validator\RetailPrice::class,
+                'maximalretailprice'         => Component\Validator\RetailPrice::class,
             ),
         ),
     )

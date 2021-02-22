@@ -1,0 +1,210 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    {% import _self as self %}
+
+    <div class="flashmessage alert alert-success fade" id="retail_success">
+        <div class="content">
+            {{ translate('You sent out a mail for the selected retail!') }}
+        </div>
+    </div>
+    <div class="flashmessage alert alert-danger fade" id="error">
+        <div class="content">
+            {{ translate('An error occurred while processing your request!') }}
+        </div>
+    </div>
+
+    <div id="modalSignInWarning" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Confirmation') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        {{ translate('You are about to sign up for a retail sale. A mail will be sent out to the seller. By pressing "yes" you agree that your name and email address will be sent to the seller.') }}
+                    </p>
+                    <p>
+                        {{ translate('Do you want to continue?') }}
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default deny">{{ translate('No') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-header">
+        <h1>{{ translate('Second-Hand Book Sales') }}</h1>
+    </div>
+
+    {% include 'cudi/retail/partials/navigation.twig' %}
+    <div>
+        <p>{{ retailOverviewText }}</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 bookSearchForms">
+
+            <div class="well">
+                <h4>{{ translate('Search by Book') }}</h4>
+
+                {% if bookSearchForm is defined %}
+                    {% do bookSearchForm.prepare() %}
+                    {% autoescape false %}
+                        {{ form().openTag(bookSearchForm) }}
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                {{ formElement(bookSearchForm.get('search_string')) }}
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{ form().closeTag() }}
+                    {% endautoescape %}
+                {% endif %}
+            </div>
+            <div class="well">
+                <a href="{{ url('cudi_retail', {"action": "recommendedRetails"}) }}" class="btn btn-primary btn-lg recommendedRetails" >{{ translate('Recommended Retails') }}</a>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="well">
+                <h2>{{ translate('Retails') }}</h2>
+                {% if searchResults is not null %}
+                    {{ self.displayRetails(searchResults, 'search') }}
+                {% else %}
+                    <div class="alert alert-warning">
+                        {{ translate('There are no retails to be shown yet; please use the search function on the left.') }}
+                    </div>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    {% import _self as self %}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.retail').click(function () {
+                let button = $(this);
+                let id = '#modalSignInWarning';
+
+                if (!button.hasClass('disabled')) {
+                    $(id).modal();
+                    $(id +' .confirm').one('click', function (){
+                        $(id).modal('hide');
+                        enquireDeal(button);
+                    });
+                }
+
+                button.parent().find('button').each(function(i) {
+                    $(this).addClass('disabled');
+                });
+
+                $(id +' .deny').one('click', function () {
+                    $(id).modal('hide');
+
+                    button.parent().find('button').each(function(i) {
+                        $(this).removeClass('disabled');
+                    });
+                });
+            });
+
+        });
+
+        function errorSave() {
+            $('.flashmessage').removeClass('in');
+            $('#error').addClass('in');
+        }
+
+        function enquireDeal(button) {
+            $.post(
+                '{{ url('cudi_retail', {"action": "deal"}) }}',
+                {id: button.data('id')},
+                function (data) {
+                    if (data && 'success' === data.status) {
+                        $('.flashmessage').removeClass('in');
+                        $('#retail_success').addClass('in');
+
+                        var panel = $(button.data('panel')).clone();
+                        panel.find('.buttons').html('').css('display', 'none');
+
+                        $('#deals-myDeals .alert').remove();
+                        $('#deals-myDeals').prepend(panel);
+                        panel.fadeIn();
+                        $('#retails-search ' + button.data('panel')).fadeOut(function () {$(this).remove()});
+                    } else {
+                        errorSave();
+                    }
+                },
+                'json'
+            ).error(errorSave);
+        }
+
+    </script>
+{% endblock %}
+
+{% macro displayRetails(retails, accordionName) %}
+    {% import _self as self %}
+
+    <div class="panel-group" id="retails-{{ accordionName }}">
+        {% for retail in retails %}
+            <div class="panel panel-default" id="group_{{ accordionName }}_retail-{{ retail.getId() }}">
+                <div class="panel-heading">
+                    <span class="buttons pull-right hidden-xs hidden-sm">
+                        {{ self.buttons(retail, accordionName) }}
+                    </span>
+                    <a class="panel-toggle" data-toggle="collapse" data-parent="#retails-{{ accordionName }}" href="#collapse_{{ accordionName }}_retail-{{ retail.getId() }}" style="overflow: hidden;">
+                        {{ retail.getArticle().getTitle() }} <br> €{{ retail.getPrice()|number_format(2) }}  |  {{ retail.getVisibleOwnerName() }}
+                    </a>
+                </div>
+                <div id="collapse_{{ accordionName }}_retail-{{ retail.getId() }}" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="buttons hidden-md hidden-lg" style="text-align: right">
+                            {{ self.buttons(retail, accordionName) }}
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <dl>
+                                    <dt>{{ translate('Book') }}</dt>
+                                    <dd>{{ retail.getArticle().getTitle() }}</dd>
+                                    <dt>{{ translate('Price') }}</dt>
+                                    <dd>€{{ retail.getPrice()|number_format(2) }}</dd>
+                                    <dt>{{ translate('Seller') }}</dt>
+                                    <dd>{{ retail.getVisibleOwnerName() }}</dd>
+                                </dl>
+                            </div>
+                        </div>
+                        <dl>
+                            <dt>{{ translate('Description') }}</dt>
+                            <dd style="text-align: justify;">{{ retail.getComment() }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="alert alert-warning">
+                {{ translate('There are no retails to be shown!') }}
+            </div>
+        {% endfor %}
+    </div>
+{% endmacro %}
+
+
+{% macro buttons(retail, accordionName) %}
+    {% import _self as self %}
+
+    <button class="btn btn-primary btn-xs retail" data-id="{{ retail.getId() }}" data-panel="#group_{{ accordionName }}_retail-{{ retail.getId() }}" type="button">
+        {{ translate('Enquire') }}
+    </button>
+{% endmacro %}

@@ -112,6 +112,7 @@ return array(
     'other'      => 'andere',
     'internship' => 'stage',
     'jobstudent' => 'jobstudent',
+    'English' => 'Engels',
 
     'Delete CV' => 'Verwijder mijn CV',
     'Your curriculum vitae has been removed.' => 'Uw curriculum vitae is verwijderd.',

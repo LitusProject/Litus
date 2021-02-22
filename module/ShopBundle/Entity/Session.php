@@ -57,7 +57,7 @@ class Session
     /**
      * @var DateTime The end date for reservations for this sales session
      *
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $finalReservationDate;
 

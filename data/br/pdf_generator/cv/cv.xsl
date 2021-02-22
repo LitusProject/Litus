@@ -64,9 +64,14 @@
 
     </xsl:template>
 
+    <xsl:attribute-set name="largerFont">
+        <xsl:attribute name="font-size">13pt</xsl:attribute>
+        <xsl:attribute name="font-weight">bold</xsl:attribute>
+    </xsl:attribute-set>
+
     <!-- The identification column -->
     <xsl:template name="identification">
-        <fo:inline font-weight="bold">
+        <fo:inline xsl:use-attribute-sets="largerFont">
             <xsl:value-of select="@firstname"/><xsl:text> </xsl:text><xsl:value-of select="@lastname"/>
         </fo:inline>
         <fo:block>
@@ -82,7 +87,7 @@
 
     <!-- The address column -->
     <xsl:template match="address">
-        <fo:block>
+        <fo:block margin-top="17pt">
             <xsl:value-of select="@street"/><xsl:text> </xsl:text><xsl:value-of select="@nr"/>
             <xsl:choose>
                 <xsl:when test="./@bus">
@@ -124,7 +129,9 @@
                             <fo:block><xsl:value-of select="@start_master"/> - <xsl:value-of select="@end_master"/></fo:block>
                         </fo:table-cell>
                         <fo:table-cell>
-                            <fo:block><xsl:value-of select="@percentage_master"/>%</fo:block>
+                            <xsl:if test="string-length(@percentage_bach)!=0">
+                                <fo:block><xsl:value-of select="@percentage_master"/>%</fo:block>
+                            </xsl:if>
                         </fo:table-cell>
                     </fo:table-row>
 
@@ -136,7 +143,9 @@
                             <fo:block><xsl:value-of select="@start_bach"/> - <xsl:value-of select="@end_bach"/></fo:block>
                         </fo:table-cell>
                         <fo:table-cell>
-                            <fo:block><xsl:value-of select="@percentage_bach"/>%</fo:block>
+                            <xsl:if test="string-length(@percentage_bach)!=0">
+                                <fo:block><xsl:value-of select="@percentage_bach"/>%</fo:block>
+                            </xsl:if>
                         </fo:table-cell>
                     </fo:table-row>
                 </fo:table-body>
@@ -220,9 +229,9 @@
             <!-- Move the table header to the title height (line height * font size) -->
             <fo:table margin-top="-{$line-height}*{$font-size}pt">
 
-                <fo:table-column column-width="80mm"/>
-                <fo:table-column column-width="50mm"/>
-                <fo:table-column column-width="50mm"/>
+                <fo:table-column column-width="40mm"/>
+                <fo:table-column column-width="40mm"/>
+                <fo:table-column column-width="40mm"/>
 
                 <fo:table-header>
                     <fo:table-row>
@@ -320,8 +329,8 @@
             <fo:table margin-right="0mm">
 
                 <fo:table-column column-width="20mm"/>
-                <fo:table-column column-width="120mm"/>
-                <fo:table-column column-width="25mm"/>
+                <fo:table-column column-width="95mm"/>
+                <fo:table-column column-width="35mm"/>
 
                 <fo:table-body>
                     <fo:table-row>

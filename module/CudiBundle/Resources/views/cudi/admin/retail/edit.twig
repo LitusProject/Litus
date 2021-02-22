@@ -1,0 +1,27 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'cudi/admin/retail/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+
+    <div id="controller_action">
+        <h1>Retail</h1>
+        <p>
+            Name: <b>{{ retail.getArticle().getTitle() }}</b> </p>
+            Owner: <b>{{ retail.getOwner().getFullName() }}</b>
+        </p>
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+
+    </div>
+{% endblock %}
+
+{% block content_script %}
+
+    <script type="text/javascript">
+    </script>
+
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends 'career/partials/layout.twig' %}
+
+{% block page_content %}
+
+    <div class="page-header">
+        <h1>{{ 'Internship Fair 20-21' }}</h1>
+    </div>
+
+    <div class="flashmessage alert alert-danger full_width search_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to perform the search.</p>
+        </div>
+    </div>
+
+    <div style="text-align:right;margin-bottom: 10px;" class="form-inline">
+        <select id="sector" class="form-control" name="Sector" required="required">
+            {% for sector_id, sector_name in possible_sectors %}
+                <option value={{ sector_id }}>{{ sector_name }}</option>
+            {% endfor %}
+        </select>
+        <input id="searchbox" type="text" class="search-query form-control" placeholder="{{ translate('Search') }}">
+    </div>
+
+    <div id="companies" class="row" style="min-height: 100px">
+    </div>
+
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#searchbox').bind("input propertychange", function() {
+                setTimer(500);
+            });
+
+            $('#sector').change(function(){
+                setTimer(500);
+            });
+
+            performSearch();
+
+            function setTimer(delay) {
+                var $this = $(this)
+
+                clearTimeout($this.data("timer"));
+                $this.data("timer", setTimeout(function() {
+                    $this.removeData("timer");
+                    performSearch();
+                }, delay));
+            }
+        });
+
+        function performSearch() {
+            $('#companies').html('').spin({
+                color: '#ccc',
+                length: 0,
+                width: 4,
+                lines: 10
+            });
+
+            $.ajax({
+                type: "POST",
+                url: '{{ url('br_career_internshipfair', {'action': 'search'}) }}',
+                data: {query: '%' + $('#searchbox').val() + '%', sector: $('#sector').val()},
+                success: function (data) {
+                    $('#companies').html('');
+                    $.each(data, function(index, element) {
+                        $('#companies').append(
+                            $('<div>', {'class': 'col-xs-6 col-sm-4 col-md-2'}).append(
+                                $('<div>', {'class': 'thumbnail'}).append(
+                                    $('<a>', {'href': '{{ url("br_career_internshipfair", {"action": "view"}) }}' + element.slug}).append(
+                                        $('<span>').append(
+                                            element.logo ?
+                                                $('<img>', {'src': '/{{ logoPath }}/' + element.logo, 'alt': element.name}).css({'max-height': '100px', 'max-width': '120px', 'vertical-align': 'middle'})
+                                                :
+                                                $('<h4>').html(element.name).css({'position': 'absolute', 'top': '0', 'left': '0', 'width': '120px', 'line-height': '20px'}),
+                                            $('<span>').html(element.name).css({'position': 'absolute', 'bottom': '0', 'left': '0', 'width': '120px', 'line-height': '20px'})
+                                        ).css({'display': 'block', 'line-height': '120px', 'height': '150px', 'width': '120px', 'margin': '0 auto', 'text-align': 'center', 'position': 'relative'})
+                                    )
+                                ).css({'text-align': 'center'})
+                            )
+                        );
+                    });
+                },
+                dataType: 'json',
+                error: errorSearch,
+                }
+            );
+        }
+
+        function errorSearch() {
+            $('.search_error').show();
+        }
+    </script>
+{% endblock %}

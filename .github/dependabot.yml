@@ -6,9 +6,12 @@ updates:
       interval: daily
 
     ignore:
+      - dependency-name: symfony/event-dispatcher
+        versions:
+          - ^5.0
       - dependency-name: twitter/bootstrap
         versions:
-          - "> 3.4.1"
+          - ^4.0
 
   - package-ecosystem: docker
     directory: /

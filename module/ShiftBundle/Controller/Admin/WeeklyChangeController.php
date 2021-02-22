@@ -24,8 +24,6 @@ use CommonBundle\Component\Util\AcademicYear;
 use DateInterval;
 use DateTime;
 use Laminas\View\Model\ViewModel;
-use ShiftBundle\Form\Shift\Search\Date;
-use function Functional\push;
 
 /**
  * WeeklyChangeController
@@ -63,9 +61,11 @@ class WeeklyChangeController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('ShiftBundle\Entity\Shift\Volunteer')
             ->findAllCountsByAcademicYear($academicYear, $hoursPerBlock, $points_enabled);
 
-        $changeInterval = New DateInterval($this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('shift.weekly_change_interval'));
+        $changeInterval = new DateInterval(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shift.weekly_change_interval')
+        );
 
         $volunteersThen = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift\Volunteer')
@@ -73,7 +73,7 @@ class WeeklyChangeController extends \CommonBundle\Component\Controller\ActionCo
 
 //        print_r($volunteersThen); print_r($volunteersNow); die();
 
-        $oldVolunteers = Array();
+        $oldVolunteers = array();
         for ($i = 0; isset($rankingCriteria[$i]); $i++) {
             foreach ($volunteersNow as $volunteer) {
                 foreach ($volunteersThen as $volunteerThen) {
@@ -81,16 +81,14 @@ class WeeklyChangeController extends \CommonBundle\Component\Controller\ActionCo
                         array_push($oldVolunteers, $volunteer['id']);
                         //check which ranking the person IS in
                         $isLast = !isset($rankingCriteria[$i + 1]);
-                        if ($volunteer['resultCount'] >= $rankingCriteria[$i]['limit'] && ($isLast || $volunteer['resultCount'] < $rankingCriteria[$i + 1]['limit'])
-                            && $volunteerThen['resultCount'] < $rankingCriteria[$i]['limit']) {
-
+                        if ($volunteer['resultCount'] >= $rankingCriteria[$i]['limit'] && ($isLast || $volunteer['resultCount'] < $rankingCriteria[$i + 1]['limit'])) {
                             //check which ranking the person WAS in
                             $previous_i = null;
                             for ($a = 0; isset($rankingCriteria[$a]); $a++) {
                                 $isLast = !isset($rankingCriteria[$a + 1]);
-                                if ($volunteerThen['resultCount'] >= $rankingCriteria[$a]['limit'] && ($isLast || $volunteerThen['resultCount'] < $rankingCriteria[$a + 1]['limit'])){
+                                if ($volunteerThen['resultCount'] >= $rankingCriteria[$a]['limit'] && ($isLast || $volunteerThen['resultCount'] < $rankingCriteria[$a + 1]['limit'])) {
                                     $previous_i = $a;
-                                    }
+                                }
                             }
 
                             $person = $this->getEntityManager()
@@ -101,18 +99,15 @@ class WeeklyChangeController extends \CommonBundle\Component\Controller\ActionCo
                                 'person' => $person,
                                 'resultCount' => $volunteer['resultCount'],
                                 'rank' => $rankingCriteria[$i]['name'],
-                                'rankThen' => $previous_i?$rankingCriteria[$previous_i]['name']:"none",
+                                'rankThen' => $previous_i === null ? 'none' : $rankingCriteria[$previous_i + 1]['name'],
                                 'resultCountThen' => $volunteerThen['resultCount'],
                             );
                         }
                     }
                 }
-                if (!in_array($volunteer['id'],$oldVolunteers)){
+                if (!in_array($volunteer['id'], $oldVolunteers)) {
                     $isLast = !isset($rankingCriteria[$i + 1]);
-                    if ($volunteer['resultCount'] >= $rankingCriteria[$i]['limit'] && ($isLast || $volunteer['resultCount'] < $rankingCriteria[$i + 1]['limit'])
-                        && $volunteerThen['resultCount'] < $rankingCriteria[$i]['limit']) {
-
-
+                    if ($volunteer['resultCount'] >= $rankingCriteria[$i]['limit'] && ($isLast || $volunteer['resultCount'] < $rankingCriteria[$i + 1]['limit'])) {
                         $person = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\User\Person\Academic')
                             ->findOneById($volunteer['id']);
@@ -121,7 +116,7 @@ class WeeklyChangeController extends \CommonBundle\Component\Controller\ActionCo
                             'person' => $person,
                             'resultCount' => $volunteer['resultCount'],
                             'rank' => $rankingCriteria[$i]['name'],
-                            'rankThen' => "none",
+                            'rankThen' => 'none',
                             'resultCountThen' => 0,
                         );
                     }

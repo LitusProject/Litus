@@ -34,6 +34,7 @@ return array(
     'Company'             => 'Company',
     'Vacancy'             => 'Vacancy',
     'Internship'          => 'Internship',
+    'Internship Fair'     => 'Internship Fair',
     'Most Recent'         => 'Most Recent',
     'All'                 => 'All',
 

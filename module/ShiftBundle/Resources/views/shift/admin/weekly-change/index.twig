@@ -11,17 +11,17 @@
                     <tr>
                         <th>Name</th>
                         <th width="250px">E-mail</th>
-                        <th>Rank</th>
+                        <th>Rank Now</th>
                         <th>Rank, {{ weeklyChangeInterval }} ago</th>
                         {% if points_enabled %}
                             <th ># Points</th>
                         {% else %}
                             {% if hoursPerBlock > 0 %}
-                                <th ># Shifts of {{ hoursPerBlock }}h</th>
-                                <th ># Shifts of {{ hoursPerBlock }}h, {{ weeklyChangeInterval }} ago</th>
-                                <th ># Shifts of {{ hoursPerBlock }}h, in the past {{ weeklyChangeInterval }}</th>
+                                <th ># Shifts Now</th>
+                                <th ># Shifts, {{ weeklyChangeInterval }} ago</th>
+                                <th ># Shifts in the past {{ weeklyChangeInterval }}</th>
                             {% else %}
-                                <th ># Shifts</th>
+                                <th ># Shifts Now</th>
                                 <th ># Shifts, {{ weeklyChangeInterval }} ago</th>
                                 <th ># Shifts in the past {{ weeklyChangeInterval }}</th>
                             {% endif %}
@@ -31,6 +31,7 @@
 
                 <tbody>
                     {% for volunteer in volunteers %}
+                        {% if volunteer['resultCount'] - volunteer['resultCountThen'] > 0 %}
                         <tr class="item">
                             <td>{{ volunteer['person'].getFullName() }}</td>
                             <td>{{ volunteer['person'].getEmail() }}</td>
@@ -40,6 +41,7 @@
                             <td>{{ volunteer['resultCountThen'] }}</td>
                             <td>{{ volunteer['resultCount'] - volunteer['resultCountThen'] }}</td>
                         </tr>
+                        {% endif %}
                     {% endfor %}
                 </tbody>
             </table>

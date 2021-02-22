@@ -51,7 +51,12 @@ return array(
     ),
     array(
         'key'         => 'br.invoice_vat_explanation',
-        'value'       => 'CHANGE ME I should explain VAT',
+        'value'       => serialize(
+            array(
+                'eu' => 'Vul in VAT voor EU companies',
+                'non-eu'    => 'Vul dit in VAT voor non-EU companies'
+            )
+        ),
         'description' => 'Explains what the VAT',
     ),
     array(
@@ -288,6 +293,11 @@ Example content of this section.
     array(
         'key'         => 'br.student_job_link',
         'value'       => 'https://vtk.be/admin/br/request/',
+        'description' => '',
+    ),
+    array(
+        'key'         => 'br.invoice_header_extra_text',
+        'value'       => 'RPR Leuven',
         'description' => '',
     ),
 );

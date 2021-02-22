@@ -640,7 +640,7 @@ class RegistrationShift
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isMembersVisible(): bool
     {
@@ -648,12 +648,10 @@ class RegistrationShift
     }
 
     /**
-     * @param bool $membersVisible
+     * @param boolean $membersVisible
      */
     public function setMembersVisible(bool $membersVisible)
     {
         $this->membersVisible = $membersVisible;
     }
-
-
 }
