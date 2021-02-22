@@ -19,41 +19,12 @@
     </div>
 
     <div id="controller_action">
-        <aside>
-            {% if hasAccess('logistics_admin_order', 'view') %}
-
-                <div class="sidebox">
-                    <div class="title">View old order</div>
-                    <div class="content">
-                        <p>
-                            <i>Please hit the link below to view the old order!</i>
-                        </p>
-                        <p>
-                            <a href="{{ url('logistics_admin_order', {'action': 'articles', 'id': oldOrder.getId()}) }}">&rarr; View Old</a>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="sidebox">
-                    <div class="title">View new order</div>
-                    <div class="content">
-                        <p>
-                            <i>Please hit the link below to view the new order!</i>
-                        </p>
-                        <p>
-                            <a href="{{ url('logistics_admin_order', {'action': 'articles', 'id': newOrder.getId()}) }}">&rarr; View New</a>
-                        </p>
-                    </div>
-                </div>
-            {% endif %}
-        </aside>
-
         <h1>Request</h1>
         <div class="col-md-6">
-            Name: <b>{{ request.getEditOrder().getName() }}</b><br>
+            Name: <b>{{ request.getRecentOrder().getName() }}</b><br>
             Creation Time: <b>{{ request.getCreationTime().format('d/m/Y H:i') }}</b>
         </div>
-        <h1 style="padding-top: 30px">Detail Differences</h1>
+        <h1 style="padding-top: 30px">Details</h1>
         {% if diffs %}
         <div class="col-md-3">
             {% for item, value in diffs %}
@@ -64,10 +35,10 @@
         {% else %}
             <p>{{ translate('No details were changed') }}</p>
         {% endif %}
-        <h1 style="padding-top: 30px">Article Differences</h1>
+        <h1 style="padding-top: 30px">Articles</h1>
         {% if mappings %}
             <div id="default_page">
-            <table class="full_width manage">
+            <table class="manage">
                 <tr>
                     <th width="200px">Name</th>
                     <th width="70px">Old Amount</th>
@@ -88,13 +59,41 @@
         {% endif %}
         <div class="row" style="padding-top: 20px">
             {% if hasAccess('logistics_admin_request', 'approve') %}
-                <a class="accept_request" href="{{ url('logistics_admin_request', {"action": "approve", "id": request.getId()}) }}" style="padding-right: 15px; text-indent: 4px">Approve</a>
+                <a class="accept_request" href="{{ url('logistics_admin_request', {"action": "approve", "id": request.getId()}) }}" style="padding-right: 15px; text-indent: 4px"><b>Approve</b></a>
             {% endif %}
             {% if hasAccess('logistics_admin_request', 'reject') %}
-                <a href="{{ url('logistics_admin_request', {"action": "reject", "id": request.getId()}) }}" class="reject_request" style="padding-right: 15px; text-indent: 4px">  Reject</a>
+                <a href="{{ url('logistics_admin_request', {"action": "reject", "id": request.getId()}) }}" class="reject_request" style="padding-right: 15px; text-indent: 4px"><b>Reject</b></a>
             {% endif %}
         </div>
     </div>
+    <aside>
+        {% if hasAccess('logistics_admin_order', 'view') %}
+
+            <div class="sidebox">
+                <div class="title">View old order</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to view the old order!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('logistics_admin_order', {'action': 'articles', 'id': oldOrder.getId()}) }}">&rarr; View Old</a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="sidebox">
+                <div class="title">View new order</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to view the new order!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('logistics_admin_order', {'action': 'articles', 'id': newOrder.getId()}) }}">&rarr; View New</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
 {% endblock %}
 
 {% block content_script %}

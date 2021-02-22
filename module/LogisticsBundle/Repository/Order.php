@@ -22,9 +22,8 @@ namespace LogisticsBundle\Repository;
 
 use CommonBundle\Entity\General\Organization\Unit;
 use CommonBundle\Entity\User\Person;
-use LogisticsBundle\Entity\Article as ArticleEntity;
-
 use DateTime;
+use LogisticsBundle\Entity\Article as ArticleEntity;
 
 /**
  * Order
@@ -204,7 +203,6 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->orderBy('o.dateUpdated', 'DESC')
             ->getQuery();
     }
-
 
 //    /**
 //     * @return \Doctrine\ORM\Query

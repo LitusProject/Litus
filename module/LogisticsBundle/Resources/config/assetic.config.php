@@ -156,6 +156,10 @@ return array(
             '@bootstrap_js_carousel',
             '@bootstrap_js_collapse',
             '@logistics_css',
+            '@common_jqueryui',
+            '@common_jqueryui_datepicker',
+            '@common_jqueryui_css',
+            '@common_jqueryui_datepicker_css',
         ),
     ),
 

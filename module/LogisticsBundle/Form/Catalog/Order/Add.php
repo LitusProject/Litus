@@ -73,20 +73,20 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         $this->add(
-                array(
-                    'type' => 'text',
-                    'name' => 'contact',
-                    'label' => 'Contact Name',
-                    'required' => true,
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
+            array(
+                'type' => 'text',
+                'name' => 'contact',
+                'label' => 'Contact Name',
+                'required' => true,
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
                         ),
                     ),
-                )
-            );
+                ),
+            )
+        );
 
         $this->add(
             array(

@@ -20,11 +20,10 @@
 
 namespace LogisticsBundle\Entity;
 
-use LogisticsBundle\Entity\Order;
 use CommonBundle\Entity\User\Person\Academic;
-use LogisticsBundle\Entity\Article;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use LogisticsBundle\Entity\Order;
 use RuntimeException;
 
 /**
@@ -115,9 +114,9 @@ class Request
     );
 
     /**
-     * @param Academic $contact
-     * @param Order $order
-     * @param string $requestType
+     * @param Academic   $contact
+     * @param Order      $order
+     * @param string     $requestType
      * @param Order|null $editOrder
      */
     public function __construct(Academic $contact, Order $order, $requestType, Order $editOrder = null)
@@ -151,7 +150,7 @@ class Request
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isHandled()
     {
@@ -159,7 +158,7 @@ class Request
     }
 
     /**
-     * @param bool $handled
+     * @param boolean $handled
      */
     public function setHandled(bool $handled)
     {
@@ -167,7 +166,7 @@ class Request
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isRemoved()
     {
@@ -175,7 +174,7 @@ class Request
     }
 
     /**
-     * @param bool $removed
+     * @param boolean $removed
      */
     public function setRemoved(bool $removed)
     {
@@ -221,8 +220,7 @@ class Request
             if ($this->getEditOrder()->isApproved()) {
                 $result = 'approved';
             }
-        }
-        elseif ($this->removed) {
+        } elseif ($this->removed) {
             $result = 'removed';
         }
 
@@ -266,6 +264,14 @@ class Request
     }
 
     /**
+     * @return Order
+     */
+    public function getRecentOrder()
+    {
+        return $this->getEditOrder() ?? $this->getOrder();
+    }
+
+    /**
      * @return string
      */
     public function getRequestType()
@@ -304,10 +310,11 @@ class Request
     public function rejectRequest($message)
     {
         $this->rejectMessage = $message;
-        if ($this->getEditOrder())
+        if ($this->getEditOrder()) {
             $this->getEditOrder()->reject();
-        else
+        } else {
             $this->getOrder()->reject();
+        }
         return $this;
     }
 }

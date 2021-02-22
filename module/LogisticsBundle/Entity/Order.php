@@ -20,18 +20,12 @@
 
 namespace LogisticsBundle\Entity;
 
-use CommonBundle\Component\Util\StringUtil;
 use CommonBundle\Entity\General\Location;
 use CommonBundle\Entity\General\Organization\Unit;
 use CommonBundle\Entity\User\Person;
-use CommonBundle\Entity\User\Person\Academic;
 use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
-use LogisticsBundle\Entity\Order\OrderArticleMap as OrderArticleMapAlias;
-use Parsedown;
-use function Functional\push;
 
 /**
  * This is the entity for an order.
@@ -160,10 +154,16 @@ class Order
      */
     public function getStatus()
     {
-        if ($this->isRemoved()){return "Removed";}
-        if ($this->isRejected()){return "Rejected";}
-        if ($this->isApproved()){return "Approved";}
-        return "Pending";
+        if ($this->isRemoved()) {
+            return 'Removed';
+        }
+        if ($this->isRejected()) {
+            return 'Rejected';
+        }
+        if ($this->isApproved()) {
+            return 'Approved';
+        }
+        return 'Pending';
     }
 
     /**
@@ -197,7 +197,7 @@ class Order
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isRejected(): bool
     {
@@ -302,7 +302,6 @@ class Order
     {
         return $this->email;
     }
-
 
     /**
      * @return Unit
@@ -442,6 +441,4 @@ class Order
     {
         $this->creator = $creator;
     }
-
-
 }

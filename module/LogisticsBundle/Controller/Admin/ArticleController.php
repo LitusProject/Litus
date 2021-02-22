@@ -20,9 +20,8 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
-use LogisticsBundle\Entity\Article;
-use LogisticsBundle\Entity\Lease\Item;
 use Laminas\View\Model\ViewModel;
+use LogisticsBundle\Entity\Article;
 
 /**
  * ArticleController
@@ -164,7 +163,6 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 
         $result = array();
         foreach ($articles as $article) {
-
             $item = (object) array();
             $item->id = $article->getId();
             $item->name = $article->getName();

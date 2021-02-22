@@ -18,9 +18,9 @@
 
             {% for request in requests %}
                 <tr class="item item-{{ request.getId() }}">
-                    <td>{{ request.getEditOrder().getName() }}</td>
-                    <td>{{ request.getEditOrder().getCreator().getFullName() }}</td>
-                    <td>{{ request.getEditOrder().getUnit().getName() }}</td>
+                    <td>{{ request.getRecentOrder().getName() }}</td>
+                    <td>{{ request.getRecentOrder().getCreator().getFullName() }}</td>
+                    <td>{{ request.getRecentOrder().getUnit().getName() }}</td>
                     <td>{{ request.getCreationTime().format('d/m/Y H:i') }}</td>
                     <td class="actions">
                         {% if hasAccess('logistics_admin_request', 'view') %}

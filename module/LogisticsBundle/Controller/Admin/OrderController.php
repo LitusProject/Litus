@@ -20,11 +20,9 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
-use Laminas\Mail\Message;
+use Laminas\View\Model\ViewModel;
 use LogisticsBundle\Entity\Order;
 use LogisticsBundle\Entity\Order\OrderArticleMap;
-use Laminas\View\Model\ViewModel;
-use LogisticsBundle\Entity\Request;
 
 /**
  * OrderController
@@ -197,8 +195,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
                         if ($map === null) {
                             $this->getEntityManager()->persist(new Order\OrderArticleMap($order, $article, 1));
-                        }
-                        else {
+                        } else {
                             $map->setAmount($map->getAmount() + 1);
                             $this->getEntityManager()->flush();
                         }
@@ -287,7 +284,6 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 'orderArticleMap'   => $orderArticleMap,
             )
         );
-
     }
 
     public function deleteArticleAction()

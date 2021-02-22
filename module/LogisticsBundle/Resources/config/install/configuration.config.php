@@ -182,8 +182,8 @@ Student IT
         'key'   => 'logistics.order_request',
         'value' => serialize(
             array(
-                    'subject' => 'Nieuwe Order Request {{ name }}',
-                    'content' => 'Beste,
+                'subject' => 'Nieuwe Order Request {{ name }}',
+                'content' => 'Beste,
 
 Een nieuwe order request is aangemaakt:
 
@@ -193,8 +193,8 @@ Datum: {{ start }} tot {{ end }}.
 Student IT
 
 -- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
-                )
-            ),
+            )
+        ),
         'description' => 'The mail sent when a new order request is created',
     ),
     array(

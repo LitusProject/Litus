@@ -34,15 +34,13 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $this->stdExtract($object, self::$stdKeys);
         $data['location'] = $object->getLocation()->getId();
-        $data['warranty'] = $object->getWarranty()/100;
-        $data['rent'] = $object->getRent()/100;
+        $data['warranty'] = $object->getWarranty() / 100;
+        $data['rent'] = $object->getRent() / 100;
         $data['visibility'] = $object->getVisibilityCode();
         $data['status'] = $object->getStatusCode();
         $data['category'] = $object->getCategoryCode();
 
         return $data;
-
-
     }
 
     protected function doHydrate(array $data, $object = null)
@@ -52,16 +50,16 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
 
-        $object->setWarranty($data['warranty']!== null?$data['warranty'] *100:0);
-        $object->setRent($data['rent']!== null?$data['rent'] *100:0);
+        $object->setWarranty($data['warranty'] !== null ? $data['warranty'] * 100 : 0);
+        $object->setRent($data['rent'] !== null ? $data['rent'] * 100 : 0);
 
         $object->setVisibility($data['visibility']);
         $object->setStatus($data['status']);
         $object->setCategory($data['category']);
         $object->setLocation(
             $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Location')
-            ->findOneById($data['location'])
+                ->getRepository('CommonBundle\Entity\General\Location')
+                ->findOneById($data['location'])
         );
 
         return $this->stdHydrate($data, $object, self::$stdKeys);

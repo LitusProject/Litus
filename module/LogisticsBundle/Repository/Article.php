@@ -21,7 +21,6 @@
 namespace LogisticsBundle\Repository;
 
 use Doctrine\ORM\Query;
-use LogisticsBundle\Entity\Article as ArticleEntity;
 
 /**
  * Article

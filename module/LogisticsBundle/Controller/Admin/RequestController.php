@@ -21,8 +21,8 @@
 namespace LogisticsBundle\Controller\Admin;
 
 use Laminas\Mail\Message;
-use LogisticsBundle\Entity\Request;
 use Laminas\View\Model\ViewModel;
+use LogisticsBundle\Entity\Request;
 
 /**
  * RequestController
@@ -53,61 +53,61 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
         $newOrder = $request->getEditOrder();
         $oldOrder = $request->getOrder();
 
-        $oldMaps = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
-            ->findAllByOrderQuery($oldOrder)->getResult();
-        $newMaps = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
-            ->findAllByOrderQuery($newOrder)->getResult();
-
         $mappings = array();
 
-        foreach ($oldMaps as $map){
-            $id = $map->getArticle()->getId();
-            $mappings[$id] = array(
-                'name'  =>  $map->getArticle()->getName(),
-                'old'   =>  $map->getAmount(),
-                'new'   =>  0,
-            );
-        }
-        foreach ($newMaps as $map){
-            $id = $map->getArticle()->getId();
-            if (array_key_exists($id, $mappings)){
-                $mappings[$id]['new'] = $map->getAmount();
-            }
-            else{
+        if ($newOrder === null) {
+            $newMaps = $this->getEntityManager()
+                ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+                ->findAllByOrderQuery($oldOrder)->getResult();
+        } else {
+            $oldMaps = $this->getEntityManager()
+                ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+                ->findAllByOrderQuery($oldOrder)->getResult();
+            $newMaps = $this->getEntityManager()
+                ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+                ->findAllByOrderQuery($newOrder)->getResult();
+
+            foreach ($oldMaps as $map) {
+                $id = $map->getArticle()->getId();
                 $mappings[$id] = array(
-                    'name'  =>  $map->getArticle()->getName(),
-                    'new'   =>  $map->getAmount(),
-                    'old'   =>  0,
+                    'name'  => $map->getArticle()->getName(),
+                    'old'   => $map->getAmount(),
+                    'new'   => 0,
                 );
             }
         }
 
-        // Dit is een heeeel vies stukje code, I know
-        $diffs = array();
+        foreach ($newMaps as $map) {
+            $id = $map->getArticle()->getId();
+            if (array_key_exists($id, $mappings)) {
+                $mappings[$id]['new'] = $map->getAmount();
+            } else {
+                $mappings[$id] = array(
+                    'name'  => $map->getArticle()->getName(),
+                    'new'   => $map->getAmount(),
+                    'old'   => 0,
+                );
+            }
+        }
 
-        if ($newOrder->getName()!==$oldOrder->getName())
-            {$diffs['Name'] = array($oldOrder->getName(), $newOrder->getName());}
-
-        if ($newOrder->getLocation()!==$oldOrder->getLocation())
-            {$diffs['Location'] = array($oldOrder->getLocation()->getName(), $newOrder->getLocation()->getName());}
-
-        if ($newOrder->getCreator()!==$oldOrder->getCreator())
-            {$diffs['Creator'] = array($oldOrder->getCreator()->getFullName(), $newOrder->getCreator()->getFullName());}
-
-        if ($newOrder->getContact()!==$oldOrder->getContact())
-            {$diffs['Contact'] = array($oldOrder->getContact(), $newOrder->getContact());}
-
-        if ($newOrder->getUnit()!==$oldOrder->getUnit())
-            {$diffs['Unit'] = array($oldOrder->getUnit()->getName(), $newOrder->getUnit()->getName());}
-
-        if ($newOrder->getStartDate()->format('d/m/Y H:i')!==$oldOrder->getStartDate()->format('d/m/Y H:i'))
-            {$diffs['Start Date'] = array($oldOrder->getStartDate()->format('d/m/Y H:i'), $newOrder->getStartDate()->format('d/m/Y H:i'));}
-
-        if ($newOrder->getEndDate()->format('d/m/Y H:i')!==$oldOrder->getEndDate()->format('d/m/Y H:i'))
-            {$diffs['End Date'] = array($oldOrder->getEndDate()->format('d/m/Y H:i'), $newOrder->getEndDate()->format('d/m/Y H:i'));}
-
+        $diffs = array(
+            'Name' => array($oldOrder->getName()),
+            'Location' => array($oldOrder->getLocation()->getName()),
+            'Creator' => array($oldOrder->getCreator()->getFullName()),
+            'Contact' => array($oldOrder->getContact()),
+            'Start Date' => array($oldOrder->getStartDate()->format('d/m/Y H:i')),
+            'End Date' => array($oldOrder->getEndDate()->format('d/m/Y H:i')),
+            'Description' => array($oldOrder->getDescription()),
+        );
+        if ($newOrder !== null) {
+            $diffs['Name'][] = $newOrder->getName();
+            $diffs['Location'][] = $newOrder->getLocation()->getName();
+            $diffs['Creator'][] = $newOrder->getCreator()->getFullName();
+            $diffs['Contact'][] = $newOrder->getContact();
+            $diffs['Start Date'][] = $newOrder->getStartDate()->format('d/m/Y H:i');
+            $diffs['End Date'][] = $newOrder->getEndDate()->format('d/m/Y H:i');
+            $diffs['Description'][] = $newOrder->getDescription();
+        }
 
         return new ViewModel(
             array(
@@ -170,7 +170,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
                 $this->getEntityManager()->flush();
 
-                $this->sendMailToContact($request);
+                $this->sendMailToContact($request, true);
                 $this->flashMessenger()->success(
                     'Success',
                     'The request was succesfully rejected.'
@@ -220,9 +220,9 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
     /**
      * @param Request $request
      */
-    private function sendMailToContact(Request $request)
+    private function sendMailToContact(Request $request, $rejected = false)
     {
-        $order = $request->getEditOrder()??$request->getOrder();
+        $order = $request->getEditOrder() ?? $request->getOrder();
         $mailAddress = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('logistics.order_mail');
@@ -238,11 +238,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('logistics.order_mail_name');
 
-        $mailData = unserialize(
-            $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('logistics.order_request_mail')
-        );
+        $mailData = $rejected ? unserialize($this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')->getConfigValue('logistics.order_request_rejected')) : unserialize($this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')->getConfigValue('logistics.order_request_confirmed'));
 
         $message = $mailData[$language->getAbbrev()]['content'];
         $subject = $mailData[$language->getAbbrev()]['subject'];

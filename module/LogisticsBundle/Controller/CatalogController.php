@@ -589,58 +589,6 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
     }
 
     /**
-     * @return Article|null
-     */
-    private function getArticleEntity()
-    {
-        $article = $this->getEntityById('LogisticsBundle\Entity\Article');
-
-        if (!($article instanceof Article)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No Article was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'logistics_catalog',
-                array(
-                    'action' => 'overview',
-                )
-            );
-
-            return;
-        }
-
-        return $article;
-    }
-
-    /**
-     * @return Map|null
-     */
-    private function getMapEntity()
-    {
-        $map = $this->getEntityById('LogisticsBundle\Entity\Order\OrderArticleMap', 'map');
-
-        if (!($map instanceof Map)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No Map was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'logistics_catalog',
-                array(
-                    'action' => 'overview',
-                )
-            );
-
-            return;
-        }
-
-        return $map;
-    }
-
-    /**
      * @return Academic|null
      */
     private function getAcademicEntity()
@@ -791,7 +739,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
         $mailData = unserialize(
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('logistics.order_request_mail')
+                ->getConfigValue('logistics.order_request')
         );
 
         $message = $mailData['nl']['content'];

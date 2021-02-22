@@ -22,9 +22,9 @@ namespace LogisticsBundle\Repository;
 
 use CommonBundle\Entity\General\Organization\Unit;
 use CommonBundle\Entity\General\Organization\Unit as UnitEntity;
-use LogisticsBundle\Entity\Order as OrderEntity;
-use Doctrine\Common\Collections\ArrayCollection;
 use CommonBundle\Entity\User\Person\Academic;
+use Doctrine\Common\Collections\ArrayCollection;
+use LogisticsBundle\Entity\Order as OrderEntity;
 
 /**
  * Request
@@ -117,16 +117,27 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('r')
             ->from('LogisticsBundle\Entity\Request', 'r')
-            ->innerJoin('r.editOrder', 'o')
+            ->join('r.referencedOrder', 'ro')
+            ->leftJoin('r.editOrder', 'o')
             ->where(
-                $query->expr()->andx(
-                    $query->expr()->eq('r.handled', 'FALSE'),
-                    $query->expr()->eq('r.removed', 'FALSE'),
-                    $query->expr()->eq('o.creator', ':academic'),
-                    $query->expr()->eq('o.removed', 'FALSE')
+                $query->expr()->orX(
+                    $query->expr()->andx(
+                        $query->expr()->eq('r.handled', 'FALSE'),
+                        $query->expr()->eq('r.removed', 'FALSE'),
+                        $query->expr()->isNull('r.editOrder'),
+                        $query->expr()->eq('ro.removed', 'FALSE'),
+                        $query->expr()->eq('ro.creator', ':academic')
+                    ),
+                    $query->expr()->andx(
+                        $query->expr()->eq('r.handled', 'FALSE'),
+                        $query->expr()->eq('r.removed', 'FALSE'),
+                        $query->expr()->isNotNull('r.editOrder'),
+                        $query->expr()->eq('o.removed', 'FALSE'),
+                        $query->expr()->eq('o.creator', ':academic')
+                    )
                 )
             )
-            ->setParameter('academic', $academic->getId())
+            ->setParameter('academic', $academic)
             ->getQuery()
             ->getResult();
     }
@@ -178,5 +189,4 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getResult();
     }
-
 }
