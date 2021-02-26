@@ -2070,16 +2070,16 @@
         },
         {
             "name": "laminas/laminas-cache",
-            "version": "2.10.0",
+            "version": "2.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-cache.git",
-                "reference": "060b2a71d42b12122a3546594727e7d4b870abd5"
+                "reference": "c0c24cb12f6180c4025eaabe092f63309876c2a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-cache/zipball/060b2a71d42b12122a3546594727e7d4b870abd5",
-                "reference": "060b2a71d42b12122a3546594727e7d4b870abd5",
+                "url": "https://api.github.com/repos/laminas/laminas-cache/zipball/c0c24cb12f6180c4025eaabe092f63309876c2a9",
+                "reference": "c0c24cb12f6180c4025eaabe092f63309876c2a9",
                 "shasum": ""
             },
             "require": {
@@ -2164,7 +2164,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2020-11-08T13:01:19+00:00"
+            "time": "2021-02-25T20:03:34+00:00"
         },
         {
             "name": "laminas/laminas-cache-storage-adapter-apc",
@@ -2292,16 +2292,16 @@
         },
         {
             "name": "laminas/laminas-cache-storage-adapter-blackhole",
-            "version": "1.0.1",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-cache-storage-adapter-blackhole.git",
-                "reference": "5f2cb437160fbc01d7f216b11e4f1ff4c9b95c49"
+                "reference": "78aab2ceac8464e27aa330d2b5bba314b44accee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-cache-storage-adapter-blackhole/zipball/5f2cb437160fbc01d7f216b11e4f1ff4c9b95c49",
-                "reference": "5f2cb437160fbc01d7f216b11e4f1ff4c9b95c49",
+                "url": "https://api.github.com/repos/laminas/laminas-cache-storage-adapter-blackhole/zipball/78aab2ceac8464e27aa330d2b5bba314b44accee",
+                "reference": "78aab2ceac8464e27aa330d2b5bba314b44accee",
                 "shasum": ""
             },
             "require": {
@@ -2315,7 +2315,7 @@
             },
             "require-dev": {
                 "laminas/laminas-cache": "^2.10",
-                "laminas/laminas-cache-storage-adapter-test": "^1.0@dev",
+                "laminas/laminas-cache-storage-adapter-test": "^1.0.2",
                 "laminas/laminas-coding-standard": "~1.0.0",
                 "squizlabs/php_codesniffer": "^2.7"
             },
@@ -2347,7 +2347,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2020-10-12T16:07:07+00:00"
+            "time": "2021-02-25T17:11:16+00:00"
         },
         {
             "name": "laminas/laminas-cache-storage-adapter-dba",
@@ -2475,29 +2475,26 @@
         },
         {
             "name": "laminas/laminas-cache-storage-adapter-filesystem",
-            "version": "1.0.1",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-cache-storage-adapter-filesystem.git",
-                "reference": "ae1723bcd84efbdae8f20cbb1bacb9ce9c13dbde"
+                "reference": "e803d9942b30396491efbe649a3886450d22385f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-cache-storage-adapter-filesystem/zipball/ae1723bcd84efbdae8f20cbb1bacb9ce9c13dbde",
-                "reference": "ae1723bcd84efbdae8f20cbb1bacb9ce9c13dbde",
+                "url": "https://api.github.com/repos/laminas/laminas-cache-storage-adapter-filesystem/zipball/e803d9942b30396491efbe649a3886450d22385f",
+                "reference": "e803d9942b30396491efbe649a3886450d22385f",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.6 || ^7.0"
-            },
-            "conflict": {
-                "laminas/laminas-cache": "<2.10"
+                "laminas/laminas-cache": "^2.10@dev",
+                "php": "^7.3 || ~8.0.0"
             },
             "provide": {
                 "laminas/laminas-cache-storage-implementation": "1.0"
             },
             "require-dev": {
-                "laminas/laminas-cache": "^2.10",
                 "laminas/laminas-cache-storage-adapter-test": "^1.0@dev",
                 "laminas/laminas-coding-standard": "~1.0.0",
                 "squizlabs/php_codesniffer": "^2.7"
@@ -2530,7 +2527,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2020-10-12T16:12:14+00:00"
+            "time": "2020-12-31T04:18:10+00:00"
         },
         {
             "name": "laminas/laminas-cache-storage-adapter-memcache",
