@@ -1,13 +1,18 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-    {% if submenu is not empty %}
-        {% include 'page/page/partials/submenu.twig' %}
-    {% endif %}
 
-    <div class="page-header">
-        <h1>{{ page.getTitle(language) }}</h1>
+    <div class="container">
+
+        {% if submenu is not empty %}
+            {% include 'page/page/partials/submenu.twig' %}
+        {% endif %}
+
+        <div class="page-header">
+            <h1>{{ page.getTitle(language) }}</h1>
+        </div>
+
+        {{ hideEmail(markdown(page.getContent(language)))|raw }}
+
     </div>
-
-    {{ hideEmail(markdown(page.getContent(language)))|raw }}
 {% endblock %}
