@@ -85,8 +85,8 @@ RUN apk add --no-cache \
 RUN apk add --no-cache \
     openjdk11-jre && \
   apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.10/main --update-cache \
-    nodejs==10.19.0-r0 \
-    npm==10.19.0-r0 && \
+    nodejs==10.24.0-r0 \
+    npm==10.24.0-r0 && \
   npm install -g less
 
 RUN mv "${PHP_INI_DIR}/php.ini-production" "${PHP_INI_DIR}/php.ini"
@@ -114,8 +114,8 @@ RUN apk add --no-cache \
   openjdk11-jre
 
 RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.10/main --update-cache \
-    nodejs==10.19.0-r0 \
-    npm==10.19.0-r0 && \
+    nodejs==10.24.0-r0 \
+    npm==10.24.0-r0 && \
   npm install -g less
 
 RUN curl -fsSL -o /tmp/fop-2.5-bin.tar.gz https://downloads.apache.org/xmlgraphics/fop/binaries/fop-2.5-bin.tar.gz && \
