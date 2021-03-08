@@ -22,7 +22,6 @@ namespace LogisticsBundle\Entity;
 
 use CommonBundle\Entity\General\Location;
 use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -162,7 +161,6 @@ class Article
     public function __construct()
     {
         $this->dateUpdated = new DateTime();
-        $this->orders = new ArrayCollection();
     }
 
     /**
@@ -225,30 +223,6 @@ class Article
         $this->additionalInfo = $additionalInfo;
 
         return $this;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getOrders()
-    {
-        return $this->orders;
-    }
-
-    /**
-     * @param ArrayCollection $orders
-     */
-    public function addOrders($orders)
-    {
-        $this->orders->add($orders);
-    }
-
-    /**
-     * @param ArrayCollection $orders
-     */
-    public function removeOrders($orders)
-    {
-        $this->orders->remove($orders);
     }
 
     /**
@@ -417,13 +391,5 @@ class Article
     public function setDateUpdated($dateUpdated)
     {
         $this->dateUpdated = $dateUpdated;
-    }
-
-    /**
-     * @param Order\OrderArticleMap $mapping
-     */
-    public function removeMapping(Order\OrderArticleMap $mapping)
-    {
-        $this->orders->remove($mapping);
     }
 }

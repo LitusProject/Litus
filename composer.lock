@@ -2070,16 +2070,16 @@
         },
         {
             "name": "laminas/laminas-cache",
-            "version": "2.10.0",
+            "version": "2.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-cache.git",
-                "reference": "060b2a71d42b12122a3546594727e7d4b870abd5"
+                "reference": "c0c24cb12f6180c4025eaabe092f63309876c2a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-cache/zipball/060b2a71d42b12122a3546594727e7d4b870abd5",
-                "reference": "060b2a71d42b12122a3546594727e7d4b870abd5",
+                "url": "https://api.github.com/repos/laminas/laminas-cache/zipball/c0c24cb12f6180c4025eaabe092f63309876c2a9",
+                "reference": "c0c24cb12f6180c4025eaabe092f63309876c2a9",
                 "shasum": ""
             },
             "require": {
@@ -2164,7 +2164,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2020-11-08T13:01:19+00:00"
+            "time": "2021-02-25T20:03:34+00:00"
         },
         {
             "name": "laminas/laminas-cache-storage-adapter-apc",
@@ -2292,16 +2292,16 @@
         },
         {
             "name": "laminas/laminas-cache-storage-adapter-blackhole",
-            "version": "1.0.1",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-cache-storage-adapter-blackhole.git",
-                "reference": "5f2cb437160fbc01d7f216b11e4f1ff4c9b95c49"
+                "reference": "78aab2ceac8464e27aa330d2b5bba314b44accee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-cache-storage-adapter-blackhole/zipball/5f2cb437160fbc01d7f216b11e4f1ff4c9b95c49",
-                "reference": "5f2cb437160fbc01d7f216b11e4f1ff4c9b95c49",
+                "url": "https://api.github.com/repos/laminas/laminas-cache-storage-adapter-blackhole/zipball/78aab2ceac8464e27aa330d2b5bba314b44accee",
+                "reference": "78aab2ceac8464e27aa330d2b5bba314b44accee",
                 "shasum": ""
             },
             "require": {
@@ -2315,7 +2315,7 @@
             },
             "require-dev": {
                 "laminas/laminas-cache": "^2.10",
-                "laminas/laminas-cache-storage-adapter-test": "^1.0@dev",
+                "laminas/laminas-cache-storage-adapter-test": "^1.0.2",
                 "laminas/laminas-coding-standard": "~1.0.0",
                 "squizlabs/php_codesniffer": "^2.7"
             },
@@ -2347,7 +2347,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2020-10-12T16:07:07+00:00"
+            "time": "2021-02-25T17:11:16+00:00"
         },
         {
             "name": "laminas/laminas-cache-storage-adapter-dba",
@@ -2475,29 +2475,26 @@
         },
         {
             "name": "laminas/laminas-cache-storage-adapter-filesystem",
-            "version": "1.0.1",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-cache-storage-adapter-filesystem.git",
-                "reference": "ae1723bcd84efbdae8f20cbb1bacb9ce9c13dbde"
+                "reference": "e803d9942b30396491efbe649a3886450d22385f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-cache-storage-adapter-filesystem/zipball/ae1723bcd84efbdae8f20cbb1bacb9ce9c13dbde",
-                "reference": "ae1723bcd84efbdae8f20cbb1bacb9ce9c13dbde",
+                "url": "https://api.github.com/repos/laminas/laminas-cache-storage-adapter-filesystem/zipball/e803d9942b30396491efbe649a3886450d22385f",
+                "reference": "e803d9942b30396491efbe649a3886450d22385f",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.6 || ^7.0"
-            },
-            "conflict": {
-                "laminas/laminas-cache": "<2.10"
+                "laminas/laminas-cache": "^2.10@dev",
+                "php": "^7.3 || ~8.0.0"
             },
             "provide": {
                 "laminas/laminas-cache-storage-implementation": "1.0"
             },
             "require-dev": {
-                "laminas/laminas-cache": "^2.10",
                 "laminas/laminas-cache-storage-adapter-test": "^1.0@dev",
                 "laminas/laminas-coding-standard": "~1.0.0",
                 "squizlabs/php_codesniffer": "^2.7"
@@ -2530,7 +2527,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2020-10-12T16:12:14+00:00"
+            "time": "2020-12-31T04:18:10+00:00"
         },
         {
             "name": "laminas/laminas-cache-storage-adapter-memcache",
@@ -4633,42 +4630,42 @@
         },
         {
             "name": "laminas/laminas-paginator",
-            "version": "2.9.0",
+            "version": "2.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-paginator.git",
-                "reference": "f1cf5c29d8dd7d6aa77f490e322326b3b670e28c"
+                "reference": "14ce4a397e6329954389cc40aa635caa9573f695"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-paginator/zipball/f1cf5c29d8dd7d6aa77f490e322326b3b670e28c",
-                "reference": "f1cf5c29d8dd7d6aa77f490e322326b3b670e28c",
+                "url": "https://api.github.com/repos/laminas/laminas-paginator/zipball/14ce4a397e6329954389cc40aa635caa9573f695",
+                "reference": "14ce4a397e6329954389cc40aa635caa9573f695",
                 "shasum": ""
             },
             "require": {
+                "ext-json": "*",
                 "laminas/laminas-stdlib": "^3.2.1",
                 "laminas/laminas-zendframework-bridge": "^1.0.4",
-                "php": "^7.3"
+                "php": "^7.3 || ~8.0.0"
             },
             "replace": {
                 "zendframework/zend-paginator": "^2.8.2"
             },
             "require-dev": {
                 "laminas/laminas-cache": "^2.9.0",
-                "laminas/laminas-coding-standard": "~1.0.0",
+                "laminas/laminas-coding-standard": "~2.1.4",
                 "laminas/laminas-config": "^2.6.0",
-                "laminas/laminas-db": "^2.11.3",
                 "laminas/laminas-filter": "^2.9.4",
-                "laminas/laminas-json": "^2.6.1",
                 "laminas/laminas-servicemanager": "^3.4.1",
                 "laminas/laminas-view": "^2.11.4",
-                "phpunit/phpunit": "^8.5.8"
+                "phpunit/phpunit": "^9.3",
+                "psalm/plugin-phpunit": "^0.15.1",
+                "vimeo/psalm": "^4.6"
             },
             "suggest": {
                 "laminas/laminas-cache": "Laminas\\Cache component to support cache features",
-                "laminas/laminas-db": "Laminas\\Db component",
                 "laminas/laminas-filter": "Laminas\\Filter component",
-                "laminas/laminas-json": "Laminas\\Json component",
+                "laminas/laminas-paginator-adapter-laminasdb": "Provides pagination adapters for Select statements and TableGateway instances",
                 "laminas/laminas-servicemanager": "Laminas\\ServiceManager component",
                 "laminas/laminas-view": "Laminas\\View component"
             },
@@ -4708,7 +4705,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2020-09-10T14:55:55+00:00"
+            "time": "2021-02-25T21:39:49+00:00"
         },
         {
             "name": "laminas/laminas-permissions-acl",
@@ -5526,24 +5523,26 @@
         },
         {
             "name": "laminas/laminas-zendframework-bridge",
-            "version": "1.1.1",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-zendframework-bridge.git",
-                "reference": "6ede70583e101030bcace4dcddd648f760ddf642"
+                "reference": "6cccbddfcfc742eb02158d6137ca5687d92cee32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-zendframework-bridge/zipball/6ede70583e101030bcace4dcddd648f760ddf642",
-                "reference": "6ede70583e101030bcace4dcddd648f760ddf642",
+                "url": "https://api.github.com/repos/laminas/laminas-zendframework-bridge/zipball/6cccbddfcfc742eb02158d6137ca5687d92cee32",
+                "reference": "6cccbddfcfc742eb02158d6137ca5687d92cee32",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.6 || ^7.0 || ^8.0"
+                "php": "^7.3 || ^8.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "^5.7 || ^6.5 || ^7.5 || ^8.1 || ^9.3",
-                "squizlabs/php_codesniffer": "^3.5"
+                "psalm/plugin-phpunit": "^0.15.1",
+                "squizlabs/php_codesniffer": "^3.5",
+                "vimeo/psalm": "^4.6"
             },
             "type": "library",
             "extra": {
@@ -5582,7 +5581,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2020-09-14T14:23:00+00:00"
+            "time": "2021-02-25T21:54:58+00:00"
         },
         {
             "name": "league/uri-parser",
@@ -7132,7 +7131,7 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v4.4.19",
+            "version": "v4.4.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
@@ -7195,7 +7194,7 @@
             "description": "Provides tools that allow your application components to communicate with each other by dispatching events and listening to them",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/event-dispatcher/tree/v4.4.19"
+                "source": "https://github.com/symfony/event-dispatcher/tree/v4.4.20"
             },
             "funding": [
                 {

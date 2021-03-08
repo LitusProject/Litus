@@ -2,7 +2,7 @@
 FROM caddy:2.3.0 AS caddy
 
 # development
-FROM composer:2.0.9 AS composer
+FROM composer:2.0.11 AS composer
 
 ARG APPLICATION_ENV=development
 ENV APPLICATION_ENV=${APPLICATION_ENV}
@@ -85,8 +85,8 @@ RUN apk add --no-cache \
 RUN apk add --no-cache \
     openjdk11-jre && \
   apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.10/main --update-cache \
-    nodejs==10.19.0-r0 \
-    npm==10.19.0-r0 && \
+    nodejs==10.24.0-r0 \
+    npm==10.24.0-r0 && \
   npm install -g less
 
 RUN mv "${PHP_INI_DIR}/php.ini-production" "${PHP_INI_DIR}/php.ini"
@@ -114,13 +114,13 @@ RUN apk add --no-cache \
   openjdk11-jre
 
 RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.10/main --update-cache \
-    nodejs==10.19.0-r0 \
-    npm==10.19.0-r0 && \
+    nodejs==10.24.0-r0 \
+    npm==10.24.0-r0 && \
   npm install -g less
 
-RUN curl -fsSL -o /tmp/fop-2.5-bin.tar.gz https://downloads.apache.org/xmlgraphics/fop/binaries/fop-2.5-bin.tar.gz && \
-  tar --strip-components=1 -C /opt -xzf /tmp/fop-2.5-bin.tar.gz fop-2.5/fop && \
-  rm /tmp/fop-2.5-bin.tar.gz
+RUN curl -fsSL -o /tmp/fop-2.6-bin.tar.gz https://downloads.apache.org/xmlgraphics/fop/binaries/fop-2.6-bin.tar.gz && \
+  tar --strip-components=1 -C /opt -xzf /tmp/fop-2.6-bin.tar.gz fop-2.6/fop && \
+  rm /tmp/fop-2.6-bin.tar.gz
 
 RUN mv "${PHP_INI_DIR}/php.ini-production" "${PHP_INI_DIR}/php.ini"
 
