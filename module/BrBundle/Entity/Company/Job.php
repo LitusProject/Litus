@@ -484,7 +484,7 @@ class Job
             }
             return implode(', ', $mastersArray);
         } else {
-            return $this->master;
+            return Company::POSSIBLE_MASTERS[$this->master];
         }
     }
 
@@ -568,7 +568,7 @@ class Job
             }
             return implode(', ', $sectorsArray);
         } else {
-            return $this->sector;
+            return Company::POSSIBLE_SECTORS[$this->sector];
         }
     }
 
@@ -588,18 +588,25 @@ class Job
     }
 
     /**
-     * @return string
+     * @return string|array
      */
     public function getSectorCode()
     {
-        $unserializedSectors = unserialize($this->sector);
-        if ($unserializedSectors !== false) {
-            foreach ($unserializedSectors as $sector) {
-                if (!Company::isValidsector($sector)) {
-                    throw new InvalidArgumentException('The sector is not valid.');
+        $sectorsArray = array();
+        if (substr($this->sector, 0, 2) === 'a:') {
+            $unserializedSectors = unserialize($this->sector);
+            if ($unserializedSectors !== false) {
+                foreach ($unserializedSectors as $sector) {
+                    if (!Company::isValidsector($sector)) {
+                        throw new InvalidArgumentException('The sector is not valid.');
+                    }
+                    array_push($sectorsArray, $sector);
                 }
             }
+            return $sectorsArray;
+        } else {
+            return $this->sector;
         }
-        return $unserializedSectors;
+
     }
 }
