@@ -470,10 +470,13 @@ class Job
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getMaster()
     {
+        if (!$this->master || substr($this->master, 0, 1) == 'N') {
+            return null;
+        }
         $mastersArray = array();
         if (substr($this->master, 0, 2) == 'a:') {
             $masters = unserialize($this->master);
@@ -489,11 +492,15 @@ class Job
     }
 
     /**
-     * @param  array $masters
+     * @param  array|null $masters
      * @return Job
      */
     public function setMaster($masters)
     {
+        if ($masters) {
+            $this->masters = null;
+        }
+
         if (!is_string($masters)) {
             $masters = serialize($masters);
         }
@@ -504,10 +511,14 @@ class Job
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getMasterCode()
     {
+        if (!$this->master || substr($this->master, 0, 1) == 'N') {
+            return null;
+        }
+
         $unserializedMasters = unserialize($this->master);
 
         foreach ($unserializedMasters as $master) {
@@ -554,10 +565,13 @@ class Job
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getSector()
     {
+        if (!$this->sector) {
+            return null;
+        }
         $sectorsArray = array();
         if (substr($this->sector, 0, 2) === 'a:') {
             $sectors = unserialize($this->sector);
@@ -588,10 +602,13 @@ class Job
     }
 
     /**
-     * @return string|array
+     * @return string|array|null
      */
     public function getSectorCode()
     {
+        if (!$this->sector) {
+            return null;
+        }
         $sectorsArray = array();
         if (substr($this->sector, 0, 2) === 'a:') {
             $unserializedSectors = unserialize($this->sector);
@@ -607,6 +624,5 @@ class Job
         } else {
             return $this->sector;
         }
-
     }
 }
