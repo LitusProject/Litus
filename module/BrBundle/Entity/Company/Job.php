@@ -497,8 +497,8 @@ class Job
      */
     public function setMaster($masters)
     {
-        if ($masters) {
-            $this->masters = null;
+        if (!$masters) {
+            $this->master = null;
         }
 
         if (!is_string($masters)) {
