@@ -41,7 +41,16 @@ class Link extends \CommonBundle\Component\Hydrator\Hydrator
             ->getRepository('PageBundle\Entity\Category')
             ->findOneById($data['category']);
 
-        $object->setCategory($category);
+        $forcedLanguage = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Language')
+            ->findOneByAbbrev($data['forced_language']);
+
+        $object->setCategory($category)
+            ->setForcedLanguage($forcedLanguage)
+            ->setOrderNumber($data['order_number'])
+            ->setActive($data['active']);
+
+
 
         if ($data['parent_' . $category->getId()] != '') {
             $parent = $this->getEntityManager()
@@ -92,6 +101,9 @@ class Link extends \CommonBundle\Component\Hydrator\Hydrator
             $data['tab_content']['tab_' . $language->getAbbrev()]['name'] = $object->getName($language, false);
             $data['tab_content']['tab_' . $language->getAbbrev()]['url'] = $object->getUrl($language, false);
         }
+        $data['forced_language'] = $object->getForcedLanguage()->getAbbrev();
+        $data['order_number'] = $object->getOrderNumber();
+        $data['active'] = $object->isActive();
 
         $data['category'] = $object->getCategory()->getId();
         $data['parent_' . $object->getCategory()->getId()] = $object->getParent() ? $object->getParent()->getId() : '';

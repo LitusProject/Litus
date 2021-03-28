@@ -67,6 +67,28 @@ class Link
      */
     private $translations;
 
+    /**
+     * @var integer|null The ordering number for the page in the category
+     *
+     * @ORM\Column(name="order_number", type="integer", nullable=true)
+     */
+    private $orderNumber;
+
+    /**
+     * @var Language|null The Language of the forced language (null if it's a normal page)
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
+     * @ORM\JoinColumn(name="forced_language", referencedColumnName="id", nullable=true)
+     */
+    private $forcedLanguage;
+
+    /**
+     * @var boolean reflects if the page is active.
+     *
+     * @ORM\Column(name="active", type="boolean", options={"default" = true})
+     */
+    private $active;
+
     public function __construct()
     {
         $this->translations = new ArrayCollection();
@@ -172,5 +194,68 @@ class Link
         }
 
         return '';
+    }
+
+    /**
+     * @return integer
+     */
+    public function getOrderNumber()
+    {
+        return $this->orderNumber;
+    }
+
+    /**
+     * @param integer $orderNumber
+     * @return self
+     */
+    public function setOrderNumber(int $orderNumber)
+    {
+        $this->orderNumber = $orderNumber;
+        return $this;
+    }
+
+    /**
+     * @return Language|null
+     */
+    public function getForcedLanguage()
+    {
+        return $this->forcedLanguage;
+    }
+
+    /**
+     * @param Language|null $forcedLanguage
+     * @return self
+     */
+    public function setForcedLanguage(Language $forcedLanguage)
+    {
+        $this->forcedLanguage = $forcedLanguage;
+        return $this;
+    }
+
+    /**
+     * @param Language $lang
+     * @return boolean
+     */
+    public function isLanguageAvailable(Language $lang)
+    {
+        return $this->getForcedLanguage() == null || $this->getForcedLanguage() === $lang;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param boolean $active
+     * @return self
+     */
+    public function setActive(bool $active)
+    {
+        $this->active = $active;
+        return $this;
     }
 }

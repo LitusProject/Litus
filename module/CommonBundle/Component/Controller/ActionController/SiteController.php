@@ -146,34 +146,40 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
                 );
 
             foreach ($pages as $page) {
-                $menu[$i]['items'][] = array(
-                    'type'  => 'page',
-                    'id'    => $page->getId(),
-                    'name'  => $page->getName(),
-                    'title' => $page->getTitle($this->getLanguage()),
-                );
+                if ($page->isLanguageAvailable($this->getLanguage()) && $page->isActive()) {
+                    $menu[$i]['items'][] = array(
+                        'type'  => 'page',
+                        'id'    => $page->getId(),
+                        'name'  => $page->getName(),
+                        'title' => $page->getTitle($this->getLanguage()),
+                        'orderNumber' => $page->getOrderNumber(),
+                    );
 
-                if ($activeItem < 0 && $this->getParam('controller') == 'page' && $this->getParam('name') == $page->getName()) {
-                    $activeItem = $i;
+                    if ($activeItem < 0 && $this->getParam('controller') == 'page' && $this->getParam('name') == $page->getName()) {
+                        $activeItem = $i;
+                    }
                 }
             }
 
             foreach ($links as $link) {
-                $menu[$i]['items'][] = array(
-                    'type' => 'link',
-                    'id'   => $link->getId(),
-                    'name' => $link->getName($this->getLanguage()),
-                    'url'  => $link->getUrl($this->getLanguage()),
-                );
+                if ($link->isLanguageAvailable($this->getLanguage()) && $link->isActive()) {
+                    $menu[$i]['items'][] = array(
+                        'type' => 'link',
+                        'id'   => $link->getId(),
+                        'name' => $link->getName($this->getLanguage()),
+                        'url'  => $link->getUrl($this->getLanguage()),
+                        'orderNumber' => $link->getOrderNumber(),
+                    );
 
-                if ($activeItem < 0 && strpos($this->getRequest()->getRequestUri(), $link->getUrl($this->getLanguage())) === 0) {
-                    $activeItem = $i;
+                    if ($activeItem < 0 && strpos($this->getRequest()->getRequestUri(), $link->getUrl($this->getLanguage())) === 0) {
+                        $activeItem = $i;
+                    }
                 }
             }
 
             $sort = array();
             foreach ($menu[$i]['items'] as $key => $value) {
-                $sort[$key] = $value['title'] ?? $value['name'];
+                $sort[$key] = $value['orderNumber'] ?? ($value['title'] ?? $value['name']);
             }
 
             array_multisort($sort, $menu[$i]['items']);
