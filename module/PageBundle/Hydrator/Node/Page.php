@@ -83,9 +83,17 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
 
         $fallbackLanguage = Locale::getDefault();
 
+        $forcedLanguage = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Language')
+            ->findOneByAbbrev($data['forced_language']);
+
+
         $newPage->setCategory($category)
             ->setEditRoles($editRoles)
-            ->setName($data['tab_content']['tab_' . $fallbackLanguage]['title']);
+            ->setName($data['tab_content']['tab_' . $fallbackLanguage]['title'])
+            ->setForcedLanguage($forcedLanguage)
+            ->setOrderNumber($data['order_number'])
+            ->setActive($data['active']);
 
         if ($data['parent_' . $category->getId()] != '') {
             $parent = $this->getEntityManager()
@@ -96,23 +104,25 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         foreach ($this->getLanguages() as $language) {
-            $translation = $newPage->getTranslation($language, false);
+            if ($data['forced_language'] === null || $data['forced_language'] === $language->getAbbrev()) {
+                $translation = $newPage->getTranslation($language, false);
 
-            $translationData = $data['tab_content']['tab_' . $language->getAbbrev()];
+                $translationData = $data['tab_content']['tab_' . $language->getAbbrev()];
 
-            if ($translation !== null) {
-                $translation->setTitle($translationData['title'])
-                    ->setContent($translationData['content']);
-            } else {
-                if ($translationData['title'] != '' && $translationData['content'] != '') {
-                    $translation = new TranslationEntity(
-                        $newPage,
-                        $language,
-                        $translationData['title'],
-                        $translationData['content']
-                    );
+                if ($translation !== null) {
+                    $translation->setTitle($translationData['title'])
+                        ->setContent($translationData['content']);
+                } else {
+                    if ($translationData['title'] != '' && $translationData['content'] != '') {
+                        $translation = new TranslationEntity(
+                            $newPage,
+                            $language,
+                            $translationData['title'],
+                            $translationData['content']
+                        );
 
-                    $this->getEntityManager()->persist($translation);
+                        $this->getEntityManager()->persist($translation);
+                    }
                 }
             }
         }
@@ -134,6 +144,10 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $data['category'] = $object->getCategory()->getId();
+        $data['forced_language'] = $object->getForcedLanguage()->getAbbrev();
+        $data['order_number'] = $object->getOrderNumber();
+        $data['active'] = $object->isActive();
+
 
         $data['edit_roles'] = array();
         foreach ($object->getEditRoles() as $role) {

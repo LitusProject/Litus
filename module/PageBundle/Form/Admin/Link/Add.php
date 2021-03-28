@@ -75,6 +75,45 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             );
         }
 
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'forced_language',
+                'label'      => 'Force Language',
+                'required'   => true,
+                'options' => array(
+                    'options' => $this->createForcedLanguagesArray(),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'  => 'checkbox',
+                'name'  => 'active',
+                'label' => 'Active',
+                'value' => true,
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'order_number',
+                'label'    => 'Ordering Number',
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
         $this->addSubmit('Add', 'link_add');
     }
 
@@ -150,5 +189,20 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         }
 
         return $pageOptions;
+    }
+
+    private function createForcedLanguagesArray()
+    {
+        $languages = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Language')
+            ->findAll();
+
+        $langArray = array();
+        $langArray['None'] = 'None';
+        foreach ($languages as $language) {
+            $langArray[$language->getAbbrev()] = $language->getName();
+        }
+
+        return $langArray;
     }
 }
