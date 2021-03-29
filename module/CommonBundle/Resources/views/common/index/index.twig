@@ -38,8 +38,8 @@
         <h2>Kalender</h2>
         <div style="margin-top: 100px; margin-bottom: 120px">
             <div class="calendar-grid" style="margin-bottom: 40px" >
-                {% for day in calendarItems %}
-                    {% for event in day.events %}
+                {% for day in calendarItems | slice(0, 3)%}
+                    {% for event in day.events | slice(0, 1)%}
                         <div class="calendar-item">
                             <h4>{{event.getTitle(language)}} | {{ dateLocalized(day.date, 'LLL')|capitalize }} {{ dateLocalized(day.date, 'd') }} </h4>
                             <p class="calendar-emptyfill">{{event.getSummary(100, language)}}</p>

@@ -72,6 +72,8 @@
 </script>  
 
 <body>
+    <div class="contentHolder">
+    <div class="contentStretch">
     <nav class="vtk-primary-navbar hidden-sm hidden-xs" role="navigation">
         <div style="text-align: right" class="container">
             <a class="vtk-primary-menuitem">Boeken bestellen</a>
@@ -226,6 +228,7 @@
             {% block content %} {% endblock %}
         </div>
     </div>
+    </div>
 
 {# Footer #}
     <footer style="margin-bottom: 0px; margin-top:50px; position: relative">
@@ -345,5 +348,7 @@
             fathom('trackPageview');
         </script>
     {% endif %}
+    
+</div>
 </body>
 </html>
