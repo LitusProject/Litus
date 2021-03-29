@@ -24,7 +24,7 @@
         </div>
     {% endfor %}
     {# END OF TO DO #}
-    {# START OF NEW #}
+
     <div class="vtk-home-header">
         <div style="height:175px"></div>
         <div class="container">
@@ -33,31 +33,37 @@
             <button class="yellow">Let's Go</button>
         </div>
     </div>
-    
+
     <div style="margin-top: -100px; position: relative; padding: 20px 15px" class="container">
         <h2>Kalender</h2>
-        <div class="row" style="margin-top: 40px; margin-bottom: 40px" >
-            <div class="col-md-4">
-                <h4>TD Der Heverleese Kringen</h4>
-                <p>Lorem ipsul dolor sit amet, consectetur adipiscing elit. Donec porta velit quis mauris fermentum maximus. Praesent arcu ante, finibus vel volutpat.</p>
-                <button style="margin-bottom: 20px" class="yellow unfilled">Lees Meer</button>
-                <div class="DELETE-BGIMAGE"></div>
+        <div style="margin-top: 100px; margin-bottom: 120px">
+            <div class="calendar-grid" style="margin-bottom: 40px" >
+                {% for day in calendarItems %}
+                    {% for event in day.events %}
+                        <div class="calendar-item">
+                            <h4>{{event.getTitle(language)}} | {{ dateLocalized(day.date, 'LLL')|capitalize }} {{ dateLocalized(day.date, 'd') }} </h4>
+                            <p class="calendar-emptyfill">{{event.getSummary(100, language)}}</p>
+                            <div class="button" style="margin-bottom: 30px; margin-top: 20px">
+                                <a href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">Lees Meer</a>
+                            </div>
+                            <div class="DELETE-BGIMAGE"></div>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+
+                {# ?? Is kalender ooit leeg 
+                
+                {% else %}
+                    <div class="heading-spacer"></div>
+                    <div class="alert alert-warning">
+                        {{ translate('No upcoming events are available.') }}
+                    </div> 
+                {% endfor %} #}
             </div>
-            <div class="col-md-4">
-                <h4>TD Der Heverleese Kringen</h4>
-                <p>Lorem ipsul dolor sit amet, consectetur adipiscing elit. Donec porta velit quis mauris fermentum maximus. Praesent arcu ante, finibus vel volutpat.</p>
-                <button style="margin-bottom: 20px" class="yellow unfilled">Lees Meer</button>
-                <div class="DELETE-BGIMAGE"></div>
-            </div>
-            <div class="col-md-4">
-                <h4>TD Der Heverleese Kringen</h4>
-                <p>Lorem ipsul dolor sit amet, consectetur adipiscing elit. Donec porta velit quis mauris fermentum maximus. Praesent arcu ante, finibus vel volutpat.</p>
-                <button style="margin-bottom: 20px" class="yellow unfilled">Lees Meer</button>
-                <div class="DELETE-BGIMAGE"></div>
-            </div>
+            <button class="calendar-button">Bekijk de hele kalender →</button>
         </div>
-        <button class="calendar-button">Bekijk de hele kalender →</button>
     </div>
+    
 
     <div class="vtk-home-technical">
         <div style="padding: 50px 15px" class="container">
@@ -69,8 +75,10 @@
                             <h4>{{ item.getTitle(language) }} <small>&mdash; {{ dateLocalized(item.getCreationTime(), 'd MMMM') }}</small></h4>
 
                             <div style="padding-left: 5px">
-                                {{ hideEmail(item.getSummary(300, language)) | replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
-                                &mdash; <a href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('Read More') }}</a>
+                                <p>{{ hideEmail(item.getSummary(300, language)) | replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}</p>
+                                <div class="button" style="margin-top: 20px">
+                                    <a href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('Read More') }}</a>
+                                </div>
                             </div>
                         </div>
                     {% else %}
@@ -127,10 +135,23 @@
         {% endfor %}
 
     </div>
+{% endblock %}
 
-    {# END OF NEW #}
+{# {% block content_script %}
+    <script type="text/javascript">
+        $('a[rel=popover]').popover({'trigger': 'hover', 'html': true, 'container': 'body'});
+    </script>
+     <script type="text/javascript">
+        $(document).ready(function () {
+            $('.profileImagePreloaded').each(function () {
+                $(this).attr('src', $(this).data('url'));
+            });
+        });
+    </script>
+{% endblock %} #}
 
 {# 
+    SAMEN DOORGAAN OM NA TE KIJKEN OF MOET VERVANGEN WORDEN
     <div class="row">
         <div class="col-md-4">
             <div class="page-header" style="margin-top: 20px;">
@@ -404,18 +425,3 @@
 
         </div>
     </div> #}
-    </div>
-{% endblock %}
-
-{% block content_script %}
-    <script type="text/javascript">
-        $('a[rel=popover]').popover({'trigger': 'hover', 'html': true, 'container': 'body'});
-    </script>
-     <script type="text/javascript">
-        $(document).ready(function () {
-            $('.profileImagePreloaded').each(function () {
-                $(this).attr('src', $(this).data('url'));
-            });
-        });
-    </script>
-{% endblock %}

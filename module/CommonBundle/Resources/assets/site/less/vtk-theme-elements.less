@@ -63,11 +63,15 @@ button.white.unfilled:hover {
 // Alerts
 
 .alert {
+  position: fixed;
+  display: inline-block;
+  top: 100px;
+  right: 10px;
+  z-index: 10000;
   font-family: "Open sans";
   background-color: @color-blue;
   border: none;
   font-size: 14px;
-  width: 100%;
   font-weight: 500;
 }
 
@@ -81,6 +85,16 @@ button.white.unfilled:hover {
   width: auto;
   border-radius: 3px;
   opacity: 90%;
+}
+
+//Links
+
+div.button a {
+  background-color: @color-blue;
+  border: none;
+  color: white;
+  font-family: "Open Sans";
+  padding: 8px 20px;
 }
 
 // ...
