@@ -59,10 +59,11 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
                 $object,
                 array(
                     self::$internalKeys,
-                    array('perforated', 'colored', 'hardcovered', 'official'),
+                    array('perforated', 'hardcovered', 'official'),
                 )
             );
 
+            $data['internal']['colored'] = $object->isColored();
             $data['internal']['binding'] = $object->getBinding() ? $object->getBinding()->getId() : '';
             $data['internal']['front_color'] = $object->getFrontColor() ? $object->getFrontColor()->getId() : '';
             $data['internal']['rectoverso'] = $object->isRectoVerso();
@@ -109,12 +110,13 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
 
             $this->stdHydrate($data['internal'], $object, self::$internalKeys);
 
+            $colored = ($data['internal']['colored'] || $data['internal']['nb_colored'] > 0);
             $object->setBinding($binding)
                 ->setIsOfficial($data['internal']['official'] ?? true)
                 ->setIsRectoVerso($data['internal']['rectoverso'])
                 ->setFrontColor($frontPageColor)
                 ->setIsPerforated($data['internal']['perforated'])
-                ->setIsColored($data['internal']['colored'])
+                ->setIsColored($colored)
                 ->setIsHardCovered($data['internal']['hardcovered'] ?? false);
         }
 
