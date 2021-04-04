@@ -82,7 +82,7 @@
     <nav class="vtk-navbar" role="navigation">
         <div class="container">
             <div class="vtk-flex-stretch">
-                <div style="position: relative; margin-top: 5px"><div class="vtk-logo"></div></div>
+                <div style="position: relative; margin-top: 5px"><a class="vtk-logo" href="/{{ language.getAbbrev() }}"></a></div>
 
                 {# Menu items on desktop #}
                 <div class="vtk-flex-horizontal hidden-sm hidden-xs">
@@ -233,8 +233,7 @@
             <div class="container" style="text-align: left">
                 <h3>{{ translate('Partners') }}</h3>
                 {% for logo in logos %}
-                    {# <a href="{{ logo.getUrl() }}" target="_blank" style="background-image: url('/{{ logoPath }}/{{ logo.getPath() }}');height: 40px;width: {{ (logo.getWidth()*40/logo.getHeight())|number_format(0) }}px;"></a> #}
-                    <a href="{{ logo.getUrl() }}" target="_blank" style="display: inline-block; background-position: center; background-size: contain; background-repeat: no-repeat; background-image: url('../img/logo_placeholder.png'); height: 60px; width: {{ (logo.getWidth()*60/logo.getHeight())|number_format(0) }}px;"></a>
+                    <a href="{{ logo.getUrl() }}" target="_blank" style="display: inline-block; background-image: url('/{{ logoPath }}/{{ logo.getPath() }}'); background-size:cover; height: 40px; width: {{ (logo.getWidth()*40/logo.getHeight())|number_format(0) }}px;"></a>
                 {% endfor %}
             </div>
         </div>
