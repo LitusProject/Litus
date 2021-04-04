@@ -5,7 +5,7 @@
       rgba(255, 255, 255, 0.6) 45%,
       rgba(255, 255, 255, 0.35) 100%
     ),
-    url(https://images.unsplash.com/photo-1514478987080-19824684a6a4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80);
+    url(https://images.unsplash.com/photo-1496517463163-3550265405c1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=967&q=80);
   // url(../img/DJI_0172.png);
   background-position: 50% 70%;
   background-size: cover;
@@ -71,6 +71,12 @@
   font-size: 18px;
   font-family: "Assistant";
   font-weight: 600;
+  background-color: @color-blue; 
+  color: white; 
+}
+
+.calendar-button:hover {
+  color: white; 
 }
 
 .DELETE-BGIMAGE {
@@ -121,4 +127,41 @@
   -webkit-align-self: auto;
   -ms-flex-item-align: auto;
   align-self: auto;
+}
+
+.vtk-hometitle {
+  font-size: 85px; 
+  margin-bottom: 0px; 
+}
+
+@media (max-width: 991px) {
+  .menuitems-flexbox {
+    justify-content: flex-start;
+    -ms-flex-line-pack: flex-start;
+  }
+
+  .menulink {
+    margin-bottom: 0px; 
+    padding: 10px; 
+    background-color: whitesmoke; 
+    margin-bottom: 5px; 
+  }
+}
+
+@media (max-width: 575.98px) {
+  .vtk-hometitle {
+    font-size: 50px; 
+  }
+
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, 1fr);
+    grid-row-gap: 50px;
+  }
+
+  .calendar-item {
+    background-color: whitesmoke; 
+    padding: 10px; 
+  }
 }

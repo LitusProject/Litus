@@ -38,27 +38,27 @@ button {
   padding: 6px 10px;
 }
 
-button.yellow {
-  background-color: @color-yellow;
-  font-weight: 600;
-}
+// button.yellow {
+//   background-color: @color-yellow;
+//   font-weight: 600;
+// }
 
-button.yellow.unfilled {
-  background-color: transparent;
-  border: 1px solid @color-yellow;
-  color: @color-blue;
-  font-weight: 500;
-}
+// button.yellow.unfilled {
+//   background-color: transparent;
+//   border: 1px solid @color-yellow;
+//   color: @color-blue;
+//   font-weight: 500;
+// }
 
-button.white.unfilled {
-  background-color: transparent;
-  border: 1px solid white;
-}
+// button.white.unfilled {
+//   background-color: transparent;
+//   border: 1px solid white;
+// }
 
-button.white.unfilled:hover {
-  background-color: white;
-  color: @color-blue;
-}
+// button.white.unfilled:hover {
+//   background-color: white;
+//   color: @color-blue;
+// }
 
 // Alerts
 
@@ -79,12 +79,23 @@ button.white.unfilled:hover {
 
 //Links
 
-div.button a {
+div.button {
   background-color: @color-blue;
-  border: none;
-  color: white;
-  font-family: "Open Sans";
   padding: 8px 20px;
+  margin-bottom: 5px;
+  cursor: pointer; 
+  display: inline-block;  
+
+  a {
+    border: none;
+    color: white;
+    font-family: "Open Sans";
+  }
+}
+
+div.button.white.unfilled {
+  background-color: transparent; 
+  border: 1px solid white; 
 }
 
 .contentHolder {

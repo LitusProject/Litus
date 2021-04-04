@@ -27,7 +27,7 @@
     <div class="vtk-home-header">
         <div style="height:175px"></div>
         <div class="container">
-            <h1 style="font-size: 85px; margin-bottom: 0px">Welkom bij <span class="vtk-textspan">vtk</span></h1>
+            <h1 class="vtk-hometitle">Welkom bij <span class="vtk-textspan">vtk</span></h1>
             <h3>Vlaamse Technische Kring - partner in crime since 1920</h3>
             <button class="yellow">Let's Go</button>
         </div>
@@ -35,7 +35,7 @@
 
     <div style="margin-top: -100px; position: relative; padding: 20px 15px" class="container">
         <h2>Kalender</h2>
-        <div style="margin-top: 100px; margin-bottom: 120px">
+        <div style="margin-top: 50px; margin-bottom: 120px">
             <div class="calendar-grid" style="margin-bottom: 40px" >
                 {% for day in calendarItems | slice(0, 3)%}
                     {% for event in day.events | slice(0, 1)%}
@@ -59,7 +59,7 @@
                     </div> 
                 {% endfor %} #}
             </div>
-            <button class="calendar-button">Bekijk de hele kalender →</button>
+            <a class="calendar-button" href="{{ url('calendar') }}">Bekijk de hele kalender →</a>
         </div>
     </div>
     
@@ -70,12 +70,13 @@
                 <div class="col-md-6">
                     <h2>Laatste nieuws</h2>
                     {% for item in newsItems %}
-                        <div class="item">
+                        <div class="item" style="margin-bottom: 20px">
                             <h4>{{ item.getTitle(language) }} <small>&mdash; {{ dateLocalized(item.getCreationTime(), 'd MMMM') }}</small></h4>
 
-                            <div style="padding-left: 5px">
+                            <div>
                                 <p>{{ hideEmail(item.getSummary(300, language)) | replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}</p>
-                                <div class="button" style="margin-top: 20px">
+                                <div style="height: 20px"></div>
+                                <div class="button">
                                     <a href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('Read More') }}</a>
                                 </div>
                             </div>
@@ -102,8 +103,8 @@
             <h1 style="color:white">Never to early to build your <span class="vtk-textspan">career</span></h1>
             <p style="max-width: 400px; color:white">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porta velit quis mauris fermentum maximus. Praesent arcu ante, finibus vel volutpat a, cursus sed tortor. Maecenas convallis magna ut eros volutpat, </p>
             <div>
-                <button class="white unfilled">Studenten</button>
-                <button class="white unfilled">Bedrijven</button>
+                <div class="button white unfilled"><a>Studenten</a></div>
+                <div class="button white unfilled"><a>Bedrijven</a></div>
             </div>
         </div>
     </div>
