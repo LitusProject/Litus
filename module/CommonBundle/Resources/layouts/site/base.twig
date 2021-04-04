@@ -24,7 +24,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        var menuItems = document.getElementsByClassName('vtk-menuitem-holder');
+        var menuItems = document.getElementsByClassName('vtk-menuitem-holder dropdown');
         
         for(var i = 0; i < menuItems.length; i++) {
             var current = menuItems[i]; 
@@ -90,7 +90,7 @@
                     {# Menu items #}
                     {% for item in menu %}
                         {% if 'category' == item.type %}
-                            <div class="vtk-menuitem-holder">
+                            <div class="vtk-menuitem-holder dropdown">
                                 <a class="vtk-menuitem" href="#">
                                     {{ item.name }} 
                                 </a>
@@ -117,7 +117,7 @@
                     <div style="color: #ffd400; height: 30px; margin-top: 7px">|</div> 
 
                     {# Language picker #}
-                    <div class="vtk-menuitem-holder">
+                    <div class="vtk-menuitem-holder dropdown">
                         <a class="vtk-menuitem" href="#">
                             {{ language.getAbbrev() }}
                         </a>
@@ -130,7 +130,7 @@
 
                     {# KNOP AANMELDEN OP PC #}
                     {% if authenticatedPerson is not null %}
-                        <div class="vtk-menuitem-holder">
+                        <div class="vtk-menuitem-holder dropdown">
                         <div class="vtk-menuitem">
                             <div class="vtk-profile"></div>
                         </div>
@@ -140,7 +140,6 @@
 
                                 {% if hasAccess('common_account', 'index') %}
                                 <a class="vtk-dropdownitem-link" href="{{ url('common_account')}}">
-                                {# <a href="{{ url('common_account') }}"> #}
                                 {% else %}
                                     <div style="padding: 3px 20px;">
                                 {% endif %}
@@ -266,13 +265,13 @@
                         {% for categoryItem in item.items %}
                             {% if 'page' == categoryItem.type %}
                                 {% if hasAccess('page', 'view') %}
-                                    <div><a class="vtk-mobilelink" title=categoryItem.title style="color:white" href="{{ url('page', {"name": categoryItem.name}) }}">{{ categoryItem.title }}</a></div>
+                                    <a class="vtk-mobilelink" title=categoryItem.title href="{{ url('page', {"name": categoryItem.name}) }}">{{ categoryItem.title }}</a>
                                 {% endif %}
                             {% endif %}
 
                             {% if 'link' == categoryItem.type %}
                                 {% if hasAccess('page_link', 'view') %}
-                                    <div><a class="vtk-mobilelink" title=categoryItem.title href="{{ categoryItem.url }}">{{ categoryItem.name }}</a></div>
+                                    <a class="vtk-mobilelink" title=categoryItem.title href="{{ categoryItem.url }}">{{ categoryItem.name }}</a>
                                 {% endif %}
                             {% endif %}
                         {% endfor %}
