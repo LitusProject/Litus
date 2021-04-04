@@ -177,60 +177,6 @@
                             <a style="cursor: pointer" class="vtk-menuitem" href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('Login') }}{% endautoescape %}</a>
                         </li>
                     {% endif %}
-
-                        {# VRAGEN WAAR DEZE LIJN VOOR DIENT #}
-                        {# <li class="dropdown {% if getParam('controller') == 'common_account' %}active{% endif %}" id="accountDropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                <span class="profile-wrapper">
-                                    <i class="profile"></i>
-                                </span>
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-right">
-                                <li>
-                                    {% if hasAccess('common_account', 'index') %}
-                                    <a href="{{ url('common_account') }}">
-                                    {% else %}
-                                        <div style="padding: 3px 20px;">
-                                    {% endif %}
-                                        <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
-                                        <small class="metadata">{{ authenticatedPerson.getUniversityIdentification() }}</small>
-                                    {% if hasAccess('common_account', 'index') %}
-                                    </a>
-                                    {% else %}
-                                        </div>
-                                    {% endif %}
-                                </li>
-                                <li class="divider"></li>
-                                {% if hasAccess('cudi_booking', 'view') or hasAccess('shift', 'index') %}
-                                    <li>
-                                        {% if hasAccess('cudi_booking', 'view') %}
-                                            <a href="{{ url('cudi_booking') }}">{{ translate('My Bookings') }}</a>
-                                        {% endif %}
-                                        {% if hasAccess('shift', 'index') %}
-                                            <a href="{{ url('shift') }}">{{ translate('My Shifts') }}</a>
-                                        {% endif %}
-                                    </li>
-
-                                    <li class="divider"></li>
-                                {% endif %}
-                                {% if hasAccess('common_admin_index', 'index') %}
-                                    <li>
-                                        <a href="{{ url('common_admin_index') }}">{{ translate('Admin') }}</a>
-                                    </li>
-
-                                    <li class="divider"></li>
-                                {% endif %}
-                                <li>
-                                    <a href="{{ url("common_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
-                                </li>
-                            </ul>
-                        </li> #}
-
-
-
-
-
                 </div> 
 
             </div>
@@ -241,18 +187,10 @@
                 <div style="transition: all 0ms" class="vtk-menu-bar"></div>
                 <div class="vtk-menu-bar"></div>
             </div>
-
-            {# <div class="vtk-menu hidden-lg hidden-md">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="vtk-"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div> #}
         </div>
     </nav>
 
+    {# Mobile menu #}
     <div class="vtk-mobile-menu hidden-lg hidden-md">
         <div class="container vtk-mobile-container">
         {# Menu items #}
@@ -276,261 +214,10 @@
                             {% endif %}
                         {% endfor %}
                     </div>
-
-
-                    {# <div class="vtk-menuitem-holder">
-                        <a style="color:white" class="vtk-menuitem" href="#">
-                            {{ item.name }} 
-                        </a>
-                        <div class="vtk-dropdownitem-holder">
-                            {% for categoryItem in item.items %}
-                                {% if 'page' == categoryItem.type %}
-                                    {% if hasAccess('page', 'view') %}
-                                        <div class="vtk-dropdownitem"><a title=categoryItem.title class="vtk-dropdownitem-link" href="{{ url('page', {"name": categoryItem.name}) }}">{{ categoryItem.title }}</a></div>
-                                    {% endif %}
-                                {% endif %}
-
-                                {% if 'link' == categoryItem.type %}
-                                    {% if hasAccess('page_link', 'view') %}
-                                        <div class="vtk-dropdownitem"><a title=categoryItem.title class="vtk-dropdownitem-link" href="{{ categoryItem.url }}">{{ categoryItem.name }}</a></div>
-                                    {% endif %}
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    </div> #}
                 {% endif %}
             {% endfor %}
         </div>
     </div>
-
-    {# <div style="padding-top: 200px" class="tempdelete">
-        <div style="font-family:'Raleway'; font-weight: 700; color: white; font-size:82px" class="container">Welkom bij VTK<div style="font-size: 23px; font-weight: 300" >We guide you through uni</div></div>
-    </div> #}
-
-    {# <div class="tempcalendarholder">
-        <div class="container">
-            <div class="tempcalendaritem"></div>
-            <div class="tempcalendaritem"></div>
-        </div>
-    </div> #}
-
-
-    {# ORIGINAL COPY TO REMOVE AFTERWARDS #}
-    {# <nav class="navbar navbar-default navbar-fixed-top navbar-main" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    {% for item in menu %}
-                        {% if 'category' == item.type %}
-                            <li class="dropdown {% if item.active %}active{% endif %}">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                    {{ item.name }} <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    {% for categoryItem in item.items %}
-                                        {% if 'page' == categoryItem.type %}
-                                            {% if hasAccess('page', 'view') %}
-                                                <li><a href="{{ url('page', {"name": categoryItem.name}) }}">{{ categoryItem.title }}</a></li>
-                                            {% endif %}
-                                        {% endif %}
-
-                                        {% if 'link' == categoryItem.type %}
-                                            {% if hasAccess('page_link', 'view') %}
-                                                <li><a href="{{ categoryItem.url }}">{{ categoryItem.name }}</a></li>
-                                            {% endif %}
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul>
-                            </li>
-                        {% endif %}
-                    {% endfor %}
-
-                    {# ALLES HIERONDER IS KNOP "AANMELDEN" MOBIEL 
-                    {% if authenticatedPerson is not null %}
-                        <li class="dropdown hidden-lg hidden-md {% if getParam('controller') == 'common_account' %}active{% endif %}" id="accountDropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                Account <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    {% if hasAccess('common_account', 'index') %}
-                                        <a href="{{ url('common_account') }}">
-                                    {% else %}
-                                        <div style="padding: 3px 20px;">
-                                    {% endif %}
-                                    <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
-                                    <small class="metadata">{{ authenticatedPerson.getUniversityIdentification() }}</small>
-                                    {% if hasAccess('common_account', 'index') %}
-                                        </a>
-                                    {% else %}
-                                        </div>
-                                    {% endif %}
-                                </li>
-
-                                <li class="divider"></li>
-
-                                {% if hasAccess('cudi_booking', 'view') or hasAccess('shift', 'index') %}
-                                    <li>
-                                        {% if hasAccess('cudi_booking', 'view') %}
-                                            <a href="{{ url('cudi_booking') }}">{{ translate('My Bookings') }}</a>
-                                        {% endif %}
-                                        {% if hasAccess('shift', 'index') %}
-                                            <a href="{{ url('shift') }}">{{ translate('My Shifts') }}</a>
-                                        {% endif %}
-                                    </li>
-
-                                    <li class="divider"></li>
-                                {% endif %}
-
-                                {% if hasAccess('common_admin_index', 'index') %}
-                                    <li>
-                                        <a href="{{ url('common_admin_index') }}">{{ translate('Admin') }}</a>
-                                    </li>
-
-                                    <li class="divider"></li>
-                                {% endif %}
-
-                                <li>
-                                    <a href="{{ url("common_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
-                                </li>
-                            </ul>
-                        </li>
-                    {% else %}
-                        <li class="hidden-lg hidden-md">
-                            <a href="{{ shibbolethUrl }}">{{ translate('Login') }}</a>
-                        </li>
-                    {% endif %}
-
-                    {# KNOP TALEN OP MOBIEL 
-                    <li class="dropdown hidden-lg hidden-md">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            Language <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            {% for language in languages %}
-                                <li><a href="{{ url(getParam('controller'), {'language': language.getAbbrev(), 'action': getParam('action'), 'parent': getParam('parent'), 'name': getParam('name'), 'id': getParam('id')}) }}">{{ translate(language.getName()) }}</a></li>
-                            {% endfor %}
-                        </ul>
-                    </li>
-                </ul>
-
-                {# KNOP TALEN OP PC  
-                <ul class="nav navbar-nav pull-right lang-nav hidden-xs hidden-sm">
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            Language <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-right">
-                            {% for language in languages %}
-                                <li><a href="{{ url(getParam('controller'), {'language': language.getAbbrev(), 'action': getParam('action'), 'parent': getParam('parent'), 'name': getParam('name'), 'id': getParam('id')}) }}">{{ translate(language.getName()) }}</a></li>
-                            {% endfor %}
-                        </ul>
-                    </li>
-                </ul>
-
-                {# KNOP AANMELDEN OP PC 
-                <ul class="nav navbar-nav pull-right auth-nav hidden-xs hidden-sm">
-                    {% if authenticatedPerson is not null %}
-                        <li class="dropdown {% if getParam('controller') == 'common_account' %}active{% endif %}" id="accountDropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                <span class="profile-wrapper">
-                                    <i class="profile"></i>
-                                </span>
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-right">
-                                <li>
-                                    {% if hasAccess('common_account', 'index') %}
-                                    <a href="{{ url('common_account') }}">
-                                    {% else %}
-                                        <div style="padding: 3px 20px;">
-                                    {% endif %}
-                                        <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
-                                        <small class="metadata">{{ authenticatedPerson.getUniversityIdentification() }}</small>
-                                    {% if hasAccess('common_account', 'index') %}
-                                    </a>
-                                    {% else %}
-                                        </div>
-                                    {% endif %}
-                                </li>
-                                <li class="divider"></li>
-                                {% if hasAccess('cudi_booking', 'view') or hasAccess('shift', 'index') %}
-                                    <li>
-                                        {% if hasAccess('cudi_booking', 'view') %}
-                                            <a href="{{ url('cudi_booking') }}">{{ translate('My Bookings') }}</a>
-                                        {% endif %}
-                                        {% if hasAccess('shift', 'index') %}
-                                            <a href="{{ url('shift') }}">{{ translate('My Shifts') }}</a>
-                                        {% endif %}
-                                    </li>
-
-                                    <li class="divider"></li>
-                                {% endif %}
-                                {% if hasAccess('common_admin_index', 'index') %}
-                                    <li>
-                                        <a href="{{ url('common_admin_index') }}">{{ translate('Admin') }}</a>
-                                    </li>
-
-                                    <li class="divider"></li>
-                                {% endif %}
-                                <li>
-                                    <a href="{{ url("common_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
-                                </li>
-                            </ul>
-                        </li>
-                    {% else %}
-                        <li>
-                            <a href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('Login') }}{% endautoescape %}</a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    </nav> #}
-
-{# HIER BEGINT EFFECTIEVE WEBSITE ONDER MENU ==== IGNORE #}
-    {# <header>
-        <div class="container">
-            <a class="site-link" href="{{ url('common_index') }}">
-                <h1 class="site-name">{{ translate('Student IT') }}</h1>
-            </a>
-
-            {% if banners|length > 0 %}
-                <div id="carouselHeader" class="carousel slide hidden-sm hidden-xs" data-ride="carousel">
-                    <div class="carousel-inner">
-                        {% for key, banner in banners %}
-                            <div class="item item-{{ key }}">
-                                {% if banner.getUrl() != '' %}
-                                    <a href="{{ banner.getUrl() }}">
-                                        {% endif %}
-                                            <img src="/banner/view/image{{ banner.getImage() }}" alt="">
-                                        {% if banner.getUrl() != '' %}
-                                    </a>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                    </div>
-
-                    {% if banners|length > 1 %}
-                        <a class="left carousel-control" href="#carouselHeader" data-slide="prev">
-                            <span class="glyphicon glyphicon-chevron-left"></span>
-                        </a>
-                        <a class="right carousel-control" href="#carouselHeader" data-slide="next">
-                            <span class="glyphicon glyphicon-chevron-right"></span>
-                        </a>
-                    {% endif %}
-                </div>
-            {% endif %}
-        </div>
-    </header> #}
 
     <div id="page">
         <div id="content" class="container">
@@ -540,7 +227,7 @@
         </div>
     </div>
 
-{# Footer #}
+    {# Footer #}
     <footer style="margin-bottom: 0px; position: relative">
         <div style="background-color: whitesmoke; margin-top: 100px; padding: 50px 0px">
             <div class="container" style="text-align: left">
