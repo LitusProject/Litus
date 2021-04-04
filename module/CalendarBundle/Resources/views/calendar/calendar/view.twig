@@ -1,101 +1,103 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-    <div class="page-header">
-        {% if hasAccess('ticket', 'event') and ticketEvent is not null and ticketEvent.isActive() %}
-            <div class="pull-right" style="line-height: 50px">
-                <a href="{{ url('ticket', {'id': ticketEvent.getId()}) }}" class="btn btn-default">
-                    <span class="glyphicon glyphicon-tags"></span>
-                    {{ translate('Tickets') }}
-                </a>
-            </div>
-        {% endif %}
-        {% if hasAccess('shift', 'index') and hasShifts %}
-            <div class="pull-right" style="line-height: 50px">
-                <form action="{{ url('shift') }}" method="post">
-                    <input type="hidden" name="event" value="{{ event.getId() }}">
-                    <button type="submit" class="btn btn-default">
-                        <span class="glyphicon glyphicon-tasks"></span>
-                        {{ translate('Shifts') }}
-                    </button>
-                </form>
-            </div>
-        {% endif %}
-        {% if hasAccess('registration_shift', 'index') and hasRegistrationShifts %}
-            <div class="pull-right" style="line-height: 50px">
-                <form action="{{ url('registration_shift') }}" method="post">
-                    <input type="hidden" name="event" value="{{ event.getId() }}">
-                    <button type="submit" class="btn btn-default">
-                        <span class="glyphicon glyphicon-tasks"></span>
-                        {{ translate('Timeslots') }}
-                    </button>
-                </form>
-            </div>
-        {% endif %}
-        <h2>{{ translate('Calendar') }}</h2>
-    </div>
-
-    <h3>{{ event.getTitle(language) }}</h3>
-
-    <div class="item">
-        <div class="date">
-            <div class="month">{{ dateLocalized(event.getStartDate(), 'LLL')|capitalize }}</div>
-            <div class="day">{{ dateLocalized(event.getStartDate(), 'd') }}</div>
-        </div>
-
-        <div class="dayItem">
-            <p>
-                <span class="glyphicon glyphicon-time time"></span>
-                {% if event.getEndDate() %}
-                    {% if event.getEndDate().format('d/M/Y') == event.getStartDate().format('d/M/Y')%}
-                        {{ dateLocalized(event.getStartDate(), 'HH:mm') }} - {{ dateLocalized(event.getEndDate(), 'HH:mm') }}
-                    {% else %}
-                        {{ dateLocalized(event.getStartDate(), 'd MMM HH:mm') }} - {{ dateLocalized(event.getEndDate(), 'd MMM HH:mm') }}
-                    {% endif %}
-                {% else %}
-                    {{ dateLocalized(event.getStartDate(), 'HH:mm') }}
-                {% endif %}
-            </p>
-            <p>
-                <span class="glyphicon glyphicon-home time"></span>
-                {{ translate('Location') }}: {{ event.getLocation(language) }}
-            </p>
-
-            {% if event.getPoster() %}
-                <div class="row">
-                    <div class="col-sm-3" style="text-align: center;">
-                        <a href="#" data-target="#modalPoster" data-toggle="modal">
-                            <img src="{{ url('calendar', {'action':'poster', 'name': event.getPoster()}) }}" alt="{{ event.getTitle(language) }}" style="width: 100%"/>
-                        </a>
-                    </div>
-                    <div class="col-sm-9">
-                        <div style="margin-left: 5px;">
-                            {% autoescape false %}
-                                {{ hideEmail(markdown(event.getContent(language))) }}
-                            {% endautoescape %}
-                        </div>
-                    </div>
-                </div>
-            {% else %}
-                <div style="margin-left: 5px;">
-                    {{ hideEmail(markdown(event.getContent(language))) }}
+    <div class="container">
+        <div class="page-header">
+            {% if hasAccess('ticket', 'event') and ticketEvent is not null and ticketEvent.isActive() %}
+                <div class="pull-right" style="line-height: 50px">
+                    <a href="{{ url('ticket', {'id': ticketEvent.getId()}) }}" class="btn btn-default">
+                        <span class="glyphicon glyphicon-tags"></span>
+                        {{ translate('Tickets') }}
+                    </a>
                 </div>
             {% endif %}
+            {% if hasAccess('shift', 'index') and hasShifts %}
+                <div class="pull-right" style="line-height: 50px">
+                    <form action="{{ url('shift') }}" method="post">
+                        <input type="hidden" name="event" value="{{ event.getId() }}">
+                        <button type="submit" class="btn btn-default">
+                            <span class="glyphicon glyphicon-tasks"></span>
+                            {{ translate('Shifts') }}
+                        </button>
+                    </form>
+                </div>
+            {% endif %}
+            {% if hasAccess('registration_shift', 'index') and hasRegistrationShifts %}
+                <div class="pull-right" style="line-height: 50px">
+                    <form action="{{ url('registration_shift') }}" method="post">
+                        <input type="hidden" name="event" value="{{ event.getId() }}">
+                        <button type="submit" class="btn btn-default">
+                            <span class="glyphicon glyphicon-tasks"></span>
+                            {{ translate('Timeslots') }}
+                        </button>
+                    </form>
+                </div>
+            {% endif %}
+            <h2>{{ translate('Calendar') }}</h2>
         </div>
-    </div>
 
-    <div id="modalPoster" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <a class="close" data-dismiss="modal">&times;</a>
-                    <h4>{{ event.getTitle(language) }}</h4>
-                </div>
-                <div class="modal-body">
-                    <img src="{{ url('calendar', {'action':'poster', 'name': event.getPoster()}) }}" alt="{{ event.getTitle(language) }}" style="width: 100%"/>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-default" data-dismiss="modal">{{ translate('Close') }}</button>
+        <h3>{{ event.getTitle(language) }}</h3>
+
+        <div class="item">
+            <div class="date">
+                <div class="month">{{ dateLocalized(event.getStartDate(), 'LLL')|capitalize }}</div>
+                <div class="day">{{ dateLocalized(event.getStartDate(), 'd') }}</div>
+            </div>
+
+            <div class="dayItem">
+                <p>
+                    <span class="glyphicon glyphicon-time time"></span>
+                    {% if event.getEndDate() %}
+                        {% if event.getEndDate().format('d/M/Y') == event.getStartDate().format('d/M/Y')%}
+                            {{ dateLocalized(event.getStartDate(), 'HH:mm') }} - {{ dateLocalized(event.getEndDate(), 'HH:mm') }}
+                        {% else %}
+                            {{ dateLocalized(event.getStartDate(), 'd MMM HH:mm') }} - {{ dateLocalized(event.getEndDate(), 'd MMM HH:mm') }}
+                        {% endif %}
+                    {% else %}
+                        {{ dateLocalized(event.getStartDate(), 'HH:mm') }}
+                    {% endif %}
+                </p>
+                <p>
+                    <span class="glyphicon glyphicon-home time"></span>
+                    {{ translate('Location') }}: {{ event.getLocation(language) }}
+                </p>
+
+                {% if event.getPoster() %}
+                    <div class="row">
+                        <div class="col-sm-3" style="text-align: center;">
+                            <a href="#" data-target="#modalPoster" data-toggle="modal">
+                                <img src="{{ url('calendar', {'action':'poster', 'name': event.getPoster()}) }}" alt="{{ event.getTitle(language) }}" style="width: 100%"/>
+                            </a>
+                        </div>
+                        <div class="col-sm-9">
+                            <div style="margin-left: 5px;">
+                                {% autoescape false %}
+                                    {{ hideEmail(markdown(event.getContent(language))) }}
+                                {% endautoescape %}
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div style="margin-left: 5px;">
+                        {{ hideEmail(markdown(event.getContent(language))) }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div id="modalPoster" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a class="close" data-dismiss="modal">&times;</a>
+                        <h4>{{ event.getTitle(language) }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <img src="{{ url('calendar', {'action':'poster', 'name': event.getPoster()}) }}" alt="{{ event.getTitle(language) }}" style="width: 100%"/>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default" data-dismiss="modal">{{ translate('Close') }}</button>
+                    </div>
                 </div>
             </div>
         </div>

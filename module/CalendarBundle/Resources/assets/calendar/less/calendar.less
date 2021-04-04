@@ -1,5 +1,87 @@
 .calendarBrowser {
-    .calendarColumn {
-        min-height: 100px;
-    }
+  .calendarRow {
+    min-height: 60px; 
+    margin-bottom: 10px; 
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-align-content: flex-start;
+    -ms-flex-line-pack: start;
+    align-content: flex-start;
+    -webkit-align-items: stretch;
+    -ms-flex-align: stretch;
+    align-items: stretch;
+  }
+}
+
+.calendarItemHolder {
+    min-width: 30%; 
+    padding: 10px; 
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-align-content: flex-start;
+    -ms-flex-line-pack: start;
+    align-content: flex-start;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: flex-start;
+    align-items: flex-start; 
+}
+
+.calendarTitleStretch {
+    -webkit-order: 0;
+    -ms-flex-order: 0;
+    order: 0;
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    -webkit-align-self: auto;
+    -ms-flex-item-align: auto;
+    align-self: auto;
+}
+
+
+// Need !important here because gets overriden by bootstrap because of JS file 
+.calendarButton {
+  color: #1a1f4a;
+  border: 1px solid #1a1f4a !important;
+  padding: 10px 20px !important;
+  background-color: transparent !important;
+  transition-duration: 200ms;
+  border-radius: 0px !important; 
+  font-family: 'Open Sans' !important; 
+  font-size: 14px !important; 
+  cursor: pointer !important; 
+}
+
+.calendarButton:hover {
+  background-color: #1a1f4a !important;
+  color: white !important;
+}
+
+.calendarImagePlaceHolder {
+  width: 100%;
+  background-image: url(https://picsum.photos/400/275); 
+  min-height: 200px; 
+  background-position: center; 
+  background-size: cover; 
+  margin-bottom: 10px; 
 }
