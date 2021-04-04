@@ -5,21 +5,25 @@
 
     <div class="flashmessage alert alert-success fade" id="responsible_success">
         <div class="content">
+            <a class="close" data-dismiss="alert">&times;</a>
             {{ translate('You were signed in as a responsible for the selected shift!') }}
         </div>
     </div>
     <div class="flashmessage alert alert-success fade" id="responsible_success">
         <div class="content">
+            <a class="close" data-dismiss="alert">&times;</a>
             {{ translate('You were signed in as a volunteer for the selected shift!') }}
         </div>
     </div>
     <div class="flashmessage alert alert-success fade" id="sign_out">
         <div class="content">
+            <a class="close" data-dismiss="alert">&times;</a>
             {{ translate('You were signed out from the selected shift!') }}
         </div>
     </div>
     <div class="flashmessage alert alert-danger fade" id="error">
         <div class="content">
+            <a class="close" data-dismiss="alert">&times;</a>
             {{ translate('An error occurred while processing your request!') }}
         </div>
     </div>
@@ -84,454 +88,540 @@
         </div>
     </div>
 
-    <div class="page-header">
+    <div class="container">
+        <div style="height: 50px"></div>
         <h1>{{ translate('Shifts') }}</h1>
-    </div>
 
-    {% include 'shift/shift/partials/navigation.twig' %}
+        {% include 'shift/shift/partials/navigation.twig' %}
 
-    <div style="text-align: justify;">
-        {{ translate('If you would like to help Student IT from time to time, you can just sign up for a shift. In the left-hand column, you can choose shift according to date, event or category (like Cursusdienst or Theokot), but you don\'t have to. To the right, you find a list of all the shift to which you can enroll. If you click on a shift, all the useful information appears. Just click \'Sign In\' and you\'re done! Attention: you can only unsubscribe yourself up to 24 hours beforehand! If a shift is already completely full, you can probably still sign up by kicking off somebody from Student IT itself. By doing so, you relieve that person\'s working load for which this person will be grateful the rest of his/her life :).') }}
-    </div>
+        {# <div style="text-align: justify;">
+            {{ translate('If you would like to help Student IT from time to time, you can just sign up for a shift. In the left-hand column, you can choose shift according to date, event or category (like Cursusdienst or Theokot), but you don\'t have to. To the right, you find a list of all the shift to which you can enroll. If you click on a shift, all the useful information appears. Just click \'Sign In\' and you\'re done! Attention: you can only unsubscribe yourself up to 24 hours beforehand! If a shift is already completely full, you can probably still sign up by kicking off somebody from Student IT itself. By doing so, you relieve that person\'s working load for which this person will be grateful the rest of his/her life :).') }}
+        </div> #}
 
-    <div class="row">
-        <div class="col-md-4 shiftSearchForms">
-            <h2>{{ translate('Search') }}</h2>
+        {# BEGIN VAN TWEE KOLOMMEN VR SHIFTEN #}
 
-            <div class="well">
-                <h4>{{ translate('By Date') }}</h4>
+        <div style="height: 40px"></div>
+        <div>
+            <p>Filters</p>
+            <div class="filterGrid">
 
-                {% if dateSearchForm is defined %}
-                    {% do dateSearchForm.prepare() %}
-                    {% autoescape false %}
-                        {{ form().openTag(dateSearchForm) }}
+                <div class="well">
+                    <h4>{{ translate('By Date') }}</h4>
 
-                        <div class="form-group">
-                            <div class="input-group">
-                                {{ formElement(dateSearchForm.get('date')) }}
-                                <div class="input-group-btn">
-                                    <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                    {% if dateSearchForm is defined %}
+                        {% do dateSearchForm.prepare() %}
+                        {% autoescape false %}
+                            {{ form().openTag(dateSearchForm) }}
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    {{ formElement(dateSearchForm.get('date')) }}
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        {{ form().closeTag() }}
-                    {% endautoescape %}
-                {% endif %}
-            </div>
+                            {{ form().closeTag() }}
+                        {% endautoescape %}
+                    {% endif %}
+                </div>
 
-            <div class="well">
-                <h4>{{ translate('By Event') }}</h4>
+                <div class="well">
+                    <h4>{{ translate('By Event') }}</h4>
 
-                {% if eventSearchForm is defined %}
-                    {% do eventSearchForm.prepare() %}
-                    {% autoescape false %}
-                        {{ form().openTag(eventSearchForm) }}
+                    {% if eventSearchForm is defined %}
+                        {% do eventSearchForm.prepare() %}
+                        {% autoescape false %}
+                            {{ form().openTag(eventSearchForm) }}
 
-                        <div class="form-group">
-                            <div class="input-group">
-                                {{ formElement(eventSearchForm.get('event')) }}
-                                <div class="input-group-btn">
-                                    <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    {{ formElement(eventSearchForm.get('event')) }}
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        {{ form().closeTag() }}
-                    {% endautoescape %}
-                {% endif %}
-            </div>
+                            {{ form().closeTag() }}
+                        {% endautoescape %}
+                    {% endif %}
+                </div>
 
-            <div class="well">
-                <h4>{{ translate('By Unit') }}</h4>
+                <div class="well">
+                    <h4>{{ translate('By Unit') }}</h4>
 
-                {% if unitSearchForm is defined %}
-                    {% do unitSearchForm.prepare() %}
-                    {% autoescape false %}
-                        {{ form().openTag(unitSearchForm) }}
+                    {% if unitSearchForm is defined %}
+                        {% do unitSearchForm.prepare() %}
+                        {% autoescape false %}
+                            {{ form().openTag(unitSearchForm) }}
 
-                        <div class="form-group">
-                            <div class="input-group">
-                                {{ formElement(unitSearchForm.get('unit')) }}
-                                <div class="input-group-btn">
-                                    <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    {{ formElement(unitSearchForm.get('unit')) }}
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        {{ form().closeTag() }}
-                    {% endautoescape %}
-                {% endif %}
-            </div>
+                            {{ form().closeTag() }}
+                        {% endautoescape %}
+                    {% endif %}
+                </div>
 
+            </div> 
         </div>
-        <div class="col-md-8">
-            <h2>
-                {% if authenticatedPerson != null and hasAccess('shift', 'export') %}
-                    <div class="pull-right hidden-xs hidden-sm">
-                        <a href="{{ url('shift_export', { 'token' : token.getHash() }) }}" class="btn btn-default"><span class="glyphicon glyphicon-arrow-down"></span> {{ translate('Download') }}</a>
+
+        <div style="height: 40px"></div>
+
+        {# <div class="row"> #}
+            {# <div class="col-md-4 shiftSearchForms">
+                <h2>{{ translate('Search') }}</h2>
+
+                <div class="well">
+                    <h4>{{ translate('By Date') }}</h4>
+
+                    {% if dateSearchForm is defined %}
+                        {% do dateSearchForm.prepare() %}
+                        {% autoescape false %}
+                            {{ form().openTag(dateSearchForm) }}
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    {{ formElement(dateSearchForm.get('date')) }}
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{ form().closeTag() }}
+                        {% endautoescape %}
+                    {% endif %}
+                </div>
+
+                <div class="well">
+                    <h4>{{ translate('By Event') }}</h4>
+
+                    {% if eventSearchForm is defined %}
+                        {% do eventSearchForm.prepare() %}
+                        {% autoescape false %}
+                            {{ form().openTag(eventSearchForm) }}
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    {{ formElement(eventSearchForm.get('event')) }}
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{ form().closeTag() }}
+                        {% endautoescape %}
+                    {% endif %}
+                </div>
+
+                <div class="well">
+                    <h4>{{ translate('By Unit') }}</h4>
+
+                    {% if unitSearchForm is defined %}
+                        {% do unitSearchForm.prepare() %}
+                        {% autoescape false %}
+                            {{ form().openTag(unitSearchForm) }}
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    {{ formElement(unitSearchForm.get('unit')) }}
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{ form().closeTag() }}
+                        {% endautoescape %}
+                    {% endif %}
+                </div> #}
+
+            {# </div> #}
+            {# <div class="col-md-8"> #}
+
+            <div>
+                <h2>
+                    {% if authenticatedPerson != null and hasAccess('shift', 'export') %}
+                        <div class="pull-right hidden-xs hidden-sm">
+                            <a href="{{ url('shift_export', { 'token' : token.getHash() }) }}" class="btn btn-default"><span class="glyphicon glyphicon-arrow-down"></span> {{ translate('Download') }}</a>
+                        </div>
+                    {% endif %}
+
+                    {{ translate('My Shifts') }}
+                </h2>
+
+                {{ self.displayShifts(entityManager, authenticatedPerson, myShifts, 'myShifts') }}
+
+                <h2>{{ resultString }}</h2>
+                {% if searchResults is not null %}
+                    {{ self.displayShifts(entityManager, authenticatedPerson, searchResults, 'search') }}
+                {% else %}
+                    <div class="alert alert-warning">
+                        <a class="close" data-dismiss="alert">&times;</a>
+                        {{ translate('There are no shifts to be shown yet; please use the search functions on the left.') }}
                     </div>
                 {% endif %}
+            </div>
+            {# </div> #}
+        {# </div> #}
+    {% endblock %}
 
-                {{ translate('My Shifts') }}
-            </h2>
+    {% block content_script %}
+        {% import _self as self %}
 
-            {{ self.displayShifts(entityManager, authenticatedPerson, myShifts, 'myShifts') }}
-
-            <h2>{{ resultString }}</h2>
-            {% if searchResults is not null %}
-                {{ self.displayShifts(entityManager, authenticatedPerson, searchResults, 'search') }}
-            {% else %}
-                <div class="alert alert-warning">
-                    {{ translate('There are no shifts to be shown yet; please use the search functions on the left.') }}
-                </div>
-            {% endif %}
-        </div>
-    </div>
-{% endblock %}
-
-{% block content_script %}
-    {% import _self as self %}
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('.responsible').click(function () {
-                var button = $(this);
-                var count = parseInt(button.data('count'), 10);
-                if (!button.hasClass('disabled')) {
-                    $('#modalSignInWarning').modal();
-                    $('#modalSignInWarning .confirm').one('click', function () {
-                        $('#modalSignInWarning').modal('hide');
-                        if(!{{ hasReadInsurance }}) {
-                            $('#modalInsurance').modal();
-                            $('#modalInsurance .confirm').one('click', function () {
-                                $('#modalInsurance').modal('hide');
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('.responsible').click(function () {
+                    var button = $(this);
+                    var count = parseInt(button.data('count'), 10);
+                    if (!button.hasClass('disabled')) {
+                        $('#modalSignInWarning').modal();
+                        $('#modalSignInWarning .confirm').one('click', function () {
+                            $('#modalSignInWarning').modal('hide');
+                            if(!{{ hasReadInsurance }}) {
+                                $('#modalInsurance').modal();
+                                $('#modalInsurance .confirm').one('click', function () {
+                                    $('#modalInsurance').modal('hide');
+                                    responsibleSignIn(button, count);
+                                });
+                            } else {
                                 responsibleSignIn(button, count);
-                            });
-                        } else {
-                            responsibleSignIn(button, count);
-                        }
-                    });
-                }
-
-                button.parent().find('button').each(function(i) {
-                    $(this).addClass('active disabled');
-                });
-
-                $('#modalSignInWarning .deny').one('click', function () {
-                    $('#modalSignInWarning').modal('hide');
-
-                    button.parent().find('button').each(function(i) {
-                        $(this).removeClass('disabled');
-                    });
-                });
-
-                $('#modalInsurance .deny').one('click', function () {
-                    $('#modalInsurance').modal('hide');
-
-                    button.parent().find('button').each(function(i) {
-                        $(this).removeClass('disabled');
-                    });
-                });
-            });
-
-            $('.volunteer').click(function () {
-                var button = $(this);
-                var count = parseInt($(this).data('count'));
-
-                if (!button.hasClass('disabled')) {
-                    var id;
-                    if(button.data('ticket')){
-                        id = '#modalSignInWarningWithTicket';
-                    }else{
-                        id = '#modalSignInWarning';
+                            }
+                        });
                     }
-                    $(id).modal();
-                    $(id +' .confirm').one('click', function (){
+
+                    button.parent().find('button').each(function(i) {
+                        $(this).addClass('active disabled');
+                    });
+
+                    $('#modalSignInWarning .deny').one('click', function () {
+                        $('#modalSignInWarning').modal('hide');
+
+                        button.parent().find('button').each(function(i) {
+                            $(this).removeClass('disabled');
+                        });
+                    });
+
+                    $('#modalInsurance .deny').one('click', function () {
+                        $('#modalInsurance').modal('hide');
+
+                        button.parent().find('button').each(function(i) {
+                            $(this).removeClass('disabled');
+                        });
+                    });
+                });
+
+                $('.volunteer').click(function () {
+                    var button = $(this);
+                    var count = parseInt($(this).data('count'));
+
+                    if (!button.hasClass('disabled')) {
+                        var id;
+                        if(button.data('ticket')){
+                            id = '#modalSignInWarningWithTicket';
+                        }else{
+                            id = '#modalSignInWarning';
+                        }
+                        $(id).modal();
+                        $(id +' .confirm').one('click', function (){
+                            $(id).modal('hide');
+
+                            if(!{{ hasReadInsurance }}) {
+                                $(id).modal();
+                                $(id +' .confirm').one('click', function () {
+                                    $(id).modal('hide');
+                                    volunteerSignIn(button, count);
+                                });
+                            } else {
+                                volunteerSignIn(button, count);
+                            }
+                        });
+                    }
+
+                    button.parent().find('button').each(function(i) {
+                        $(this).addClass('disabled');
+                    });
+
+                    $(id +' .deny').one('click', function () {
                         $(id).modal('hide');
 
-                        if(!{{ hasReadInsurance }}) {
-                            $(id).modal();
-                            $(id +' .confirm').one('click', function () {
-                                $(id).modal('hide');
-                                volunteerSignIn(button, count);
-                            });
-                        } else {
-                            volunteerSignIn(button, count);
-                        }
+                        button.parent().find('button').each(function(i) {
+                            $(this).removeClass('disabled');
+                        });
                     });
-                }
 
-                button.parent().find('button').each(function(i) {
-                    $(this).addClass('disabled');
-                });
+                    $('#modalInsurance .deny').one('click', function () {
+                        $('#modalInsurance').modal('hide');
 
-                $(id +' .deny').one('click', function () {
-                    $(id).modal('hide');
-
-                    button.parent().find('button').each(function(i) {
-                        $(this).removeClass('disabled');
+                        button.parent().find('button').each(function(i) {
+                            $(this).removeClass('disabled');
+                        });
                     });
                 });
 
-                $('#modalInsurance .deny').one('click', function () {
-                    $('#modalInsurance').modal('hide');
+                $('.signOut').click(function () {
+                    var button = $(this);
+                    button.addClass('disabled');
 
-                    button.parent().find('button').each(function(i) {
-                        $(this).removeClass('disabled');
-                    });
+                    $.post(
+                        '{{ url('shift', {"action": "signOut"}) }}',
+                        {"id": $(this).data('id')},
+                        function (data) {
+                            if (data && 'success' == data.status) {
+                                $('.flashmessage').removeClass('in');
+                                $('#sign_out').addClass('in');
+
+                                var panel = $(button.data('panel')).clone();
+                                panel.find('.buttons').html('').css('display', 'none');
+
+                                $('#shifts-search .alert').remove();
+                                $('#shifts-search').prepend(panel);
+                                panel.fadeIn();
+                                $('#shifts-myShifts ' + button.data('panel')).fadeOut(function () {$(this).remove()});
+                            } else {
+                                errorSave();
+                            }
+                        },
+                        'json'
+                    ).error(errorSave);
                 });
             });
 
-            $('.signOut').click(function () {
-                var button = $(this);
-                button.addClass('disabled');
+            function updateButton(button, ratio, count) {
+                button.removeClass('btn-success btn-warning btn-danger');
 
+                if (ratio < 0.5) {
+                    button.addClass('btn-success');
+                } else if (ratio < 0.75) {
+                    button.addClass('btn-warning');
+                } else if (ratio == 1) {
+                    button.addClass('btn-danger');
+                }
+
+                button.find('.count').text(ratio == 1 ? button.data('max') : ++count);
+            }
+
+            function errorSave() {
+                $('.flashmessage').removeClass('in');
+                $('#error').addClass('in');
+            }
+
+            function volunteerSignIn(button, count) {
                 $.post(
-                    '{{ url('shift', {"action": "signOut"}) }}',
-                    {"id": $(this).data('id')},
+                    '{{ url('shift', {"action": "volunteer"}) }}',
+                    {"id": button.data('id')},
                     function (data) {
                         if (data && 'success' == data.status) {
                             $('.flashmessage').removeClass('in');
-                            $('#sign_out').addClass('in');
+                            $('#volunteer_success').addClass('in');
 
+                            updateButton(button, parseInt(data.ratio, 10), count);
                             var panel = $(button.data('panel')).clone();
                             panel.find('.buttons').html('').css('display', 'none');
 
-                            $('#shifts-search .alert').remove();
-                            $('#shifts-search').prepend(panel);
+                            $('#shifts-myShifts .alert').remove();
+                            $('#shifts-myShifts').prepend(panel);
                             panel.fadeIn();
-                            $('#shifts-myShifts ' + button.data('panel')).fadeOut(function () {$(this).remove()});
+                            $('#shifts-search ' + button.data('panel')).fadeOut(function () {$(this).remove()});
                         } else {
                             errorSave();
                         }
                     },
                     'json'
                 ).error(errorSave);
-            });
-        });
-
-        function updateButton(button, ratio, count) {
-            button.removeClass('btn-success btn-warning btn-danger');
-
-            if (ratio < 0.5) {
-                button.addClass('btn-success');
-            } else if (ratio < 0.75) {
-                button.addClass('btn-warning');
-            } else if (ratio == 1) {
-                button.addClass('btn-danger');
             }
 
-            button.find('.count').text(ratio == 1 ? button.data('max') : ++count);
-        }
+            function responsibleSignIn(button, count) {
+                $.post(
+                    '{{ url('shift', {"action": "responsible"}) }}',
+                    {"id": button.data('id')},
+                    function (data) {
+                        if (data && 'success' == data.status) {
+                            $('.flashmessage').removeClass('in');
+                            $('#responsible_success').addClass('in');
 
-        function errorSave() {
-            $('.flashmessage').removeClass('in');
-            $('#error').addClass('in');
-        }
+                            updateButton(button, parseInt(data.ratio, 10), count);
+                            var panel = $(button.data('panel')).clone();
+                            panel.find('.buttons').html('').css('display', 'none');
 
-        function volunteerSignIn(button, count) {
-            $.post(
-                '{{ url('shift', {"action": "volunteer"}) }}',
-                {"id": button.data('id')},
-                function (data) {
-                    if (data && 'success' == data.status) {
-                        $('.flashmessage').removeClass('in');
-                        $('#volunteer_success').addClass('in');
+                            $('#shifts-myShifts .alert').remove();
+                            $('#shifts-myShifts').prepend(panel);
+                            panel.fadeIn();
+                            $('#shifts-search ' + button.data('panel')).fadeOut(function () {$(this).remove()});
+                        } else {
+                            errorSave();
+                        }
+                    },
+                    'json'
+                ).error(errorSave);
+            }
+        </script>
+    {% endblock %}
 
-                        updateButton(button, parseInt(data.ratio, 10), count);
-                        var panel = $(button.data('panel')).clone();
-                        panel.find('.buttons').html('').css('display', 'none');
 
-                        $('#shifts-myShifts .alert').remove();
-                        $('#shifts-myShifts').prepend(panel);
-                        panel.fadeIn();
-                        $('#shifts-search ' + button.data('panel')).fadeOut(function () {$(this).remove()});
-                    } else {
-                        errorSave();
-                    }
-                },
-                'json'
-            ).error(errorSave);
-        }
+    {# DISPLAYING ACTUAL SHIFTS #}
+    {% macro displayShifts(entityManager, authenticatedPerson, shifts, accordionName) %}
+        {% import _self as self %}
+        {% set previousShift = null %}
+        <div class="panel-group" id="shifts-{{ accordionName }}">
+            {% for shift in shifts %}
+                {% if previousShift.getStartDate().format('Ymd') < shift.getStartDate().format('Ymd') %}
+                    <h3>{{translate('Shifts on')}} {{ translate(shift.getStartDate().format('l')) }}  {{ dateLocalized(shift.getStartDate(), 'd/M/y') }}</h3>
+                {% endif %}
 
-        function responsibleSignIn(button, count) {
-            $.post(
-                '{{ url('shift', {"action": "responsible"}) }}',
-                {"id": button.data('id')},
-                function (data) {
-                    if (data && 'success' == data.status) {
-                        $('.flashmessage').removeClass('in');
-                        $('#responsible_success').addClass('in');
+                {% set previousShift = shift %}
 
-                        updateButton(button, parseInt(data.ratio, 10), count);
-                        var panel = $(button.data('panel')).clone();
-                        panel.find('.buttons').html('').css('display', 'none');
-
-                        $('#shifts-myShifts .alert').remove();
-                        $('#shifts-myShifts').prepend(panel);
-                        panel.fadeIn();
-                        $('#shifts-search ' + button.data('panel')).fadeOut(function () {$(this).remove()});
-                    } else {
-                        errorSave();
-                    }
-                },
-                'json'
-            ).error(errorSave);
-        }
-    </script>
-{% endblock %}
-
-{% macro displayShifts(entityManager, authenticatedPerson, shifts, accordionName) %}
-    {% import _self as self %}
-    {% set previousShift = null %}
-    <div class="panel-group" id="shifts-{{ accordionName }}">
-        {% for shift in shifts %}
-            {% if previousShift.getStartDate().format('Ymd') < shift.getStartDate().format('Ymd') %}
-                <h3>{{translate('Shifts on')}} {{ translate(shift.getStartDate().format('l')) }}  {{ dateLocalized(shift.getStartDate(), 'd/M/y') }}</h3>
-            {% endif %}
-
-            {% set previousShift = shift %}
-
-            <div class="panel panel-default" id="group_{{ accordionName }}_shift-{{ shift.getId() }}">
-                <div class="panel-heading">
-                    <span class="buttons pull-right hidden-xs hidden-sm">
-                        {{ self.buttons(entityManager, authenticatedPerson, shift, accordionName) }}
-                    </span>
-                    <a class="panel-toggle" data-toggle="collapse" data-parent="#shifts-{{ accordionName }}" href="#collapse_{{ accordionName }}_shift-{{ shift.getId() }}" style="overflow: hidden;">
-                        {{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }}-{{ dateLocalized(shift.getEndDate(), 'HH:mm') }}&mdash;{{ shift.getName() }}
-                    </a>
-                </div>
-                <div id="collapse_{{ accordionName }}_shift-{{ shift.getId() }}" class="panel-collapse collapse">
-                    <div class="panel-body">
-                        <div class="buttons hidden-md hidden-lg" style="text-align: right">
+                <div class="panel panel-default" id="group_{{ accordionName }}_shift-{{ shift.getId() }}">
+                    <div class="panel-heading">
+                        <span class="buttons pull-right hidden-xs hidden-sm">
                             {{ self.buttons(entityManager, authenticatedPerson, shift, accordionName) }}
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <dl>
-                                    <dt>{{ translate('Name') }}</dt>
-                                    <dd>{{ shift.getName() }}</dd>
-                                    {% if shift.getReward() > 0 %}
-                                        <dt>{{ translate('Reward') }}</dt>
-                                        <dd>{{ shift.getReward() }} {{ translate('Coins') }}
-                                            {% if shift.getHandledOnEvent() %}
-                                                {{ translate('on the event')}}
-                                            {% endif %}
-                                        </dd>
-                                    {% endif %}
-                                    {% if shift.getPoints() > 0 %}
-                                        <dt>{{ translate('Points') }}</dt>
-                                        <dd>{{ shift.getPoints() }} {{ translate('Points') }}</dd>
-                                    {% endif %}
-                                    <dt>{{ translate('Start') }}</dt>
-                                    <dd>{{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }}</dd>
-                                    <dt>{{ translate('End') }}</dt>
-                                    <dd>{{ dateLocalized(shift.getEndDate(), 'd/M/y HH:mm') }}</dd>
-                                </dl>
+                        </span>
+                        <a class="panel-toggle" data-toggle="collapse" data-parent="#shifts-{{ accordionName }}" href="#collapse_{{ accordionName }}_shift-{{ shift.getId() }}" style="overflow: hidden;">
+                            {{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }}-{{ dateLocalized(shift.getEndDate(), 'HH:mm') }}&mdash;{{ shift.getName() }}
+                        </a>
+                    </div>
+                    <div id="collapse_{{ accordionName }}_shift-{{ shift.getId() }}" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="buttons hidden-md hidden-lg" style="text-align: right">
+                                {{ self.buttons(entityManager, authenticatedPerson, shift, accordionName) }}
                             </div>
-                            <div class="col-sm-4">
-                                <dl>
-                                    <dt>{{ translate('Manager') }}</dt>
-                                    <dd>{{ shift.getManager().getFullName() }}</dd>
-
-                                    {% if shift.getEvent() is not null %}
-                                        <dt>{{ translate('Event') }}</dt>
-                                        <dd>{{ shift.getEvent().getTitle(language) }}</dd>
-                                    {% endif %}
-
-                                    <dt>{{ translate('Unit') }}</dt>
-                                    <dd>{{ shift.getUnit().getName() }}</dd>
-                                </dl>
-                            </div>
-                            <div class="col-sm-4">
-                                {% if 0 != shift.getNbResponsibles() %}
+                            <div class="row">
+                                <div class="col-sm-4">
                                     <dl>
-                                        <dt>{{ translate('Responsibles') }}</dt>
-
-                                        {% for responsible in shift.getResponsibles() %}
-                                            <dd>{{ responsible.getPerson().getFullName() }}</dd>
-                                        {% endfor %}
+                                        <dt>{{ translate('Name') }}</dt>
+                                        <dd>{{ shift.getName() }}</dd>
+                                        {% if shift.getReward() > 0 %}
+                                            <dt>{{ translate('Reward') }}</dt>
+                                            <dd>{{ shift.getReward() }} {{ translate('Coins') }}
+                                                {% if shift.getHandledOnEvent() %}
+                                                    {{ translate('on the event')}}
+                                                {% endif %}
+                                            </dd>
+                                        {% endif %}
+                                        {% if shift.getPoints() > 0 %}
+                                            <dt>{{ translate('Points') }}</dt>
+                                            <dd>{{ shift.getPoints() }} {{ translate('Points') }}</dd>
+                                        {% endif %}
+                                        <dt>{{ translate('Start') }}</dt>
+                                        <dd>{{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }}</dd>
+                                        <dt>{{ translate('End') }}</dt>
+                                        <dd>{{ dateLocalized(shift.getEndDate(), 'd/M/y HH:mm') }}</dd>
                                     </dl>
-                                {% endif %}
-
-                                {% if 0 != shift.getNbVolunteers() %}
+                                </div>
+                                <div class="col-sm-4">
                                     <dl>
-                                        <dt>{{ translate('Volunteers') }}</dt>
+                                        <dt>{{ translate('Manager') }}</dt>
+                                        <dd>{{ shift.getManager().getFullName() }}</dd>
 
-                                        {% for volunteer in shift.getVolunteers() %}
-                                            <dd>{{ volunteer.getPerson().getFullName() }}</dd>
-                                        {% endfor %}
+                                        {% if shift.getEvent() is not null %}
+                                            <dt>{{ translate('Event') }}</dt>
+                                            <dd>{{ shift.getEvent().getTitle(language) }}</dd>
+                                        {% endif %}
+
+                                        <dt>{{ translate('Unit') }}</dt>
+                                        <dd>{{ shift.getUnit().getName() }}</dd>
                                     </dl>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <dl>
-                            <dt>{{ translate('Description') }}</dt>
-                            <dd style="text-align: justify;">{{ shift.getDescription() }}</dd>
+                                </div>
+                                <div class="col-sm-4">
+                                    {% if 0 != shift.getNbResponsibles() %}
+                                        <dl>
+                                            <dt>{{ translate('Responsibles') }}</dt>
 
-                            <dt>{{ translate('Location') }}</dt>
-                            <dd>
-                                {{ shift.getLocation().getName() }}
-                            </dd>
-                            <dd style="margin-top: 5px;">
-                                <img class="img-rounded" src="{{ staticMap(shift.getLocation(), '367x125', '7a43b6') }}" />
-                            </dd>
-                        </dl>
+                                            {% for responsible in shift.getResponsibles() %}
+                                                <dd>{{ responsible.getPerson().getFullName() }}</dd>
+                                            {% endfor %}
+                                        </dl>
+                                    {% endif %}
+
+                                    {% if 0 != shift.getNbVolunteers() %}
+                                        <dl>
+                                            <dt>{{ translate('Volunteers') }}</dt>
+
+                                            {% for volunteer in shift.getVolunteers() %}
+                                                <dd>{{ volunteer.getPerson().getFullName() }}</dd>
+                                            {% endfor %}
+                                        </dl>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <dl>
+                                <dt>{{ translate('Description') }}</dt>
+                                <dd style="text-align: justify;">{{ shift.getDescription() }}</dd>
+
+                                <dt>{{ translate('Location') }}</dt>
+                                <dd>
+                                    {{ shift.getLocation().getName() }}
+                                </dd>
+                                <dd style="margin-top: 5px;">
+                                    <img class="img-rounded" src="{{ staticMap(shift.getLocation(), '367x125', '7a43b6') }}" />
+                                </dd>
+                            </dl>
+                        </div>
                     </div>
                 </div>
-            </div>
+            {% else %}
+                {# Iets ander bedenken voor deze stuff anders alert alert-warning class #}
+                <div>
+                    {% if 'search' == accordionName %}
+                        {{ translate('No shifts were found that match the given query.') }}
+                    {% else %}
+                        {{ translate('You have not yet signed up for any shifts. You can use the search functions on the left to look for some!') }}
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endmacro %}
+
+    {% macro buttonStyle(shift, type) %}
+        {% if 'responsibles' == type %}
+            {% set ratio = shift.countResponsibles() / shift.getNbResponsibles() %}
         {% else %}
-            <div class="alert alert-warning">
-                {% if 'search' == accordionName %}
-                    {{ translate('No shifts were found that match the given query.') }}
-                {% else %}
-                    {{ translate('You have not yet signed up for any shifts. You can use the search functions on the left to look for some!') }}
-                {% endif %}
-            </div>
-        {% endfor %}
+            {% set ratio = shift.countVolunteers() / shift.getNbVolunteers() %}
+        {% endif %}
+
+        {% if ratio < 0.5 %}
+            btn-success
+        {% elseif ratio < 0.75 %}
+            btn-warning
+        {% elseif ratio == 1 %}
+            btn-danger
+        {% endif %}
+    {% endmacro %}
+
+    {% macro buttons(entityManager, authenticatedPerson, shift, accordionName) %}
+        {% import _self as self %}
+
+        {% if 'search' == accordionName %}
+            {% if (shift.canHaveAsResponsible(entityManager, authenticatedPerson) and 0 != shift.getNbResponsibles()) or (shift.canHaveAsVolunteer(entityManager, authenticatedPerson) and 0 != shift.getNbVolunteers()) %}
+                <i>{{ translate('Sign In') }}:</i>
+            {% endif %}
+
+            {% if shift.canHaveAsResponsible(entityManager, authenticatedPerson) and 0 != shift.getNbResponsibles() %}
+                <button class="btn btn-default btn-xs {{ self.buttonStyle(shift, 'responsibles') }} responsible" data-id="{{ shift.getId() }}" data-count="{{ shift.countResponsibles() }}" data-max="{{ shift.getNbResponsibles() }}" data-panel="#group_{{ accordionName }}_shift-{{ shift.getId() }}" type="button">
+                    {{ translate('Responsible') }} (<span class="count">{{ shift.countResponsibles() }}</span>/{{ shift.getNbResponsibles() }})
+                </button>
+            {% endif %}
+            {% if shift.canHaveAsVolunteer(entityManager, authenticatedPerson) and 0 != shift.getNbVolunteers() %}
+                <button class="btn btn-default btn-xs {{ self.buttonStyle(shift, 'volunteers') }} volunteer" data-id="{{ shift.getId() }}" data-count="{{ shift.countVolunteers() }}" data-max="{{ shift.getNbVolunteers() }}" data-ticket="{{ shift.getTicketNeeded() }}" data-panel="#group_{{ accordionName }}_shift-{{ shift.getId() }}" type="button">
+                    {{ translate('Volunteer') }} (<span class="count">{{ shift.countVolunteers() }}</span>/{{ shift.getNbVolunteers() }})
+                </button>
+            {% endif %}
+        {% else %}
+            {% if shift.canSignOut(entityManager) %}
+                <button class="btn btn-default btn-xs signOut" data-id="{{ shift.getId() }}" data-panel="#group_{{ accordionName }}_shift-{{ shift.getId() }}" type="button">
+                    {{ translate('Sign Out') }}
+                </button>
+            {% endif %}
+        {% endif %}
     </div>
-{% endmacro %}
-
-{% macro buttonStyle(shift, type) %}
-    {% if 'responsibles' == type %}
-        {% set ratio = shift.countResponsibles() / shift.getNbResponsibles() %}
-    {% else %}
-        {% set ratio = shift.countVolunteers() / shift.getNbVolunteers() %}
-    {% endif %}
-
-    {% if ratio < 0.5 %}
-        btn-success
-    {% elseif ratio < 0.75 %}
-        btn-warning
-    {% elseif ratio == 1 %}
-        btn-danger
-    {% endif %}
-{% endmacro %}
-
-{% macro buttons(entityManager, authenticatedPerson, shift, accordionName) %}
-    {% import _self as self %}
-
-    {% if 'search' == accordionName %}
-        {% if (shift.canHaveAsResponsible(entityManager, authenticatedPerson) and 0 != shift.getNbResponsibles()) or (shift.canHaveAsVolunteer(entityManager, authenticatedPerson) and 0 != shift.getNbVolunteers()) %}
-            <i>{{ translate('Sign In') }}:</i>
-        {% endif %}
-
-        {% if shift.canHaveAsResponsible(entityManager, authenticatedPerson) and 0 != shift.getNbResponsibles() %}
-            <button class="btn btn-default btn-xs {{ self.buttonStyle(shift, 'responsibles') }} responsible" data-id="{{ shift.getId() }}" data-count="{{ shift.countResponsibles() }}" data-max="{{ shift.getNbResponsibles() }}" data-panel="#group_{{ accordionName }}_shift-{{ shift.getId() }}" type="button">
-                {{ translate('Responsible') }} (<span class="count">{{ shift.countResponsibles() }}</span>/{{ shift.getNbResponsibles() }})
-            </button>
-        {% endif %}
-        {% if shift.canHaveAsVolunteer(entityManager, authenticatedPerson) and 0 != shift.getNbVolunteers() %}
-            <button class="btn btn-default btn-xs {{ self.buttonStyle(shift, 'volunteers') }} volunteer" data-id="{{ shift.getId() }}" data-count="{{ shift.countVolunteers() }}" data-max="{{ shift.getNbVolunteers() }}" data-ticket="{{ shift.getTicketNeeded() }}" data-panel="#group_{{ accordionName }}_shift-{{ shift.getId() }}" type="button">
-                {{ translate('Volunteer') }} (<span class="count">{{ shift.countVolunteers() }}</span>/{{ shift.getNbVolunteers() }})
-            </button>
-        {% endif %}
-    {% else %}
-        {% if shift.canSignOut(entityManager) %}
-            <button class="btn btn-default btn-xs signOut" data-id="{{ shift.getId() }}" data-panel="#group_{{ accordionName }}_shift-{{ shift.getId() }}" type="button">
-                {{ translate('Sign Out') }}
-            </button>
-        {% endif %}
-    {% endif %}
 {% endmacro %}

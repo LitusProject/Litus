@@ -131,41 +131,43 @@
 
         <div style="height: 40px"></div>
 
-        {% if hasAccess('ticket', 'event') and ticketEvent is not null and ticketEvent.isActive() %}
-            <div class="pull-right" style="line-height: 50px">
-                <a href="{{ url('ticket', {'id': ticketEvent.getId()}) }}" class="btn btn-default">
-                    <span class="glyphicon glyphicon-tags"></span>
-                    {{ translate('Tickets') }}
-                </a>
+        <div class="flexHorizontal">
+            <div>
+                {% if hasAccess('ticket', 'event') and ticketEvent is not null and ticketEvent.isActive() %}
+                    <div style="margin-right: 20px">
+                        <div style="white-space: nowrap" class="button">    
+                            <a href="{{ url('ticket', {'id': ticketEvent.getId()}) }}" class="btn btn-default">
+                                <span class="glyphicon glyphicon-tags"></span>
+                                {{ translate('Tickets') }}
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if hasAccess('shift', 'index') and hasShifts %}
+                    <div style="margin-right: 20px">
+                        <form action="{{ url('shift') }}" method="post">
+                            <input type="hidden" name="event" value="{{ event.getId() }}">
+                            <button style="white-space: nowrap" type="submit">
+                                <span class="glyphicon glyphicon-tasks"></span>
+                                {{ translate('Shifts') }}
+                            </button>
+                        </form>
+                    </div>
+                {% endif %}
+                {# {% if hasAccess('registration_shift', 'index') and hasRegistrationShifts %} #}
+                {% if hasRegistrationShifts %}
+                    <div style="margin-right: 20px">
+                        <form action="{{ url('registration_shift') }}" method="post">
+                            <input type="hidden" name="event" value="{{ event.getId() }}">
+                            <button style="white-space: nowrap" type="submit">
+                                <span class="glyphicon glyphicon-tasks"></span>
+                                {{ translate('Timeslots') }}
+                            </button>
+                        </form>
+                    </div>
+                {% endif %}
             </div>
-        {% endif %}
-        {% if hasAccess('shift', 'index') and hasShifts %}
-            <div class="pull-right" style="line-height: 50px">
-                <form action="{{ url('shift') }}" method="post">
-                    <input type="hidden" name="event" value="{{ event.getId() }}">
-                    <button type="submit" class="btn btn-default">
-                        <span class="glyphicon glyphicon-tasks"></span>
-                        {{ translate('Shifts') }}
-                    </button>
-                </form>
-            </div>
-        {% endif %}
-        {% if hasAccess('registration_shift', 'index') and hasRegistrationShifts %}
-            <div class="pull-right" style="line-height: 50px">
-                <form action="{{ url('registration_shift') }}" method="post">
-                    <input type="hidden" name="event" value="{{ event.getId() }}">
-                    <button type="submit" class="btn btn-default">
-                        <span class="glyphicon glyphicon-tasks"></span>
-                        {{ translate('Timeslots') }}
-                    </button>
-                </form>
-            </div>
-        {% endif %}
-
-        <div class="item">
-
-            <div class="dayItem">
-
+            <div class="flexChild">
                 {% if event.getPoster() %}
                     <div class="row">
                         <div class="col-sm-3" style="text-align: center;">
@@ -182,14 +184,15 @@
                         </div>
                     </div>
                 {% else %}
-                    <div class="markdown" style="margin-left: 5px;">
+                    <div class="markdown">
                         {{ hideEmail(markdown(event.getContent(language))) }}
                     </div>
                 {% endif %}
             </div>
         </div>
 
-        <div id="modalPoster" class="modal fade">
+        {# Ik vermoed dat poster op deze manier niet meer gebruikt zal worden?  #}
+        {# <div id="modalPoster" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -204,6 +207,6 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> #}
     </div>
 {% endblock %}

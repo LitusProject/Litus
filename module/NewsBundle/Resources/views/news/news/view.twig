@@ -1,13 +1,13 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-    <div class="page-header">
-        <h2>{{ translate('News') }}</h2>
-    </div>
+    <div class="container"> 
+        <div style="height: 70px"></div>
+        <h3>{{translate('News')}} - {{ news.getTitle(language) }} <small>&mdash; {{ dateLocalized(news.getCreationTime(), 'd MMMM') }}</small></h3>
 
-    <h3>{{ news.getTitle(language) }} <small>&mdash; {{ dateLocalized(news.getCreationTime(), 'd MMMM') }}</small></h3>
-
-    <div style="margin-left: 5px;">
-        {{ hideEmail(markdown(news.getContent(language)))|raw }}
+        <div class="markdown">
+            {{ hideEmail(markdown(news.getContent(language)))|raw }}
+        </div>
+        <div style="height: 40px"></div>
     </div>
 {% endblock %}
