@@ -2,17 +2,24 @@
 
 {% block content %}
 
+    <div class="pageBanner"></div>
+
     <div class="container">
 
+        {# Should be deleted !!! #}
         {% if submenu is not empty %}
             {% include 'page/page/partials/submenu.twig' %}
         {% endif %}
 
-        <div class="page-header">
+        <div class="pageTitleHolder">
             <h1>{{ page.getTitle(language) }}</h1>
+            <div class="pageTitleDeco"></div>
         </div>
+        <div style="height: 40px"></div>
 
-        {{ hideEmail(markdown(page.getContent(language)))|raw }}
+        <div class="markdown">
+            {{ hideEmail(markdown(page.getContent(language)))|raw }}
+        </div>
 
     </div>
 {% endblock %}
