@@ -119,7 +119,9 @@
                         {{ dateLocalized(event.getStartDate(), 'd MMM HH:mm') }} - {{ dateLocalized(event.getEndDate(), 'd MMM HH:mm') }}
                     {% endif %}
                 {% else %}
-                    {{ dateLocalized(event.getStartDate(), 'HH:mm') }}
+                    <div class="markdown" style="margin-left: 5px;">
+                        {{ hideEmail(markdown(event.getContent(language))) }}
+                    </div>
                 {% endif %}
             </div>
             <div class="label">
