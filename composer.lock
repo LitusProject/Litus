@@ -4710,29 +4710,32 @@
         },
         {
             "name": "laminas/laminas-permissions-acl",
-            "version": "2.7.2",
+            "version": "2.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-permissions-acl.git",
-                "reference": "d8cd35ed94eef5d3d2533af4a72cf1c2932084bb"
+                "reference": "7af6463695d76dbf25c6b03e6ebb792c8f1ab67e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-permissions-acl/zipball/d8cd35ed94eef5d3d2533af4a72cf1c2932084bb",
-                "reference": "d8cd35ed94eef5d3d2533af4a72cf1c2932084bb",
+                "url": "https://api.github.com/repos/laminas/laminas-permissions-acl/zipball/7af6463695d76dbf25c6b03e6ebb792c8f1ab67e",
+                "reference": "7af6463695d76dbf25c6b03e6ebb792c8f1ab67e",
                 "shasum": ""
             },
             "require": {
                 "laminas/laminas-zendframework-bridge": "^1.0",
-                "php": "^5.6 || ^7.0"
+                "php": "^7.3 || ~8.0.0"
+            },
+            "conflict": {
+                "laminas/laminas-servicemanager": "<3.0"
             },
             "replace": {
                 "zendframework/zend-permissions-acl": "^2.7.1"
             },
             "require-dev": {
                 "laminas/laminas-coding-standard": "~1.0.0",
-                "laminas/laminas-servicemanager": "^2.7.5 || ^3.0.3",
-                "phpunit/phpunit": "^5.7.27 || ^6.5.8 || ^7.1.5"
+                "laminas/laminas-servicemanager": "^3.0.3",
+                "phpunit/phpunit": "^9.5"
             },
             "suggest": {
                 "laminas/laminas-servicemanager": "To support Laminas\\Permissions\\Acl\\Assertion\\AssertionManager plugin manager usage"
@@ -4767,7 +4770,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2020-09-22T14:08:17+00:00"
+            "time": "2021-04-08T12:56:14+00:00"
         },
         {
             "name": "laminas/laminas-router",
