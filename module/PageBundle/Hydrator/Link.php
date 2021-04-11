@@ -101,7 +101,7 @@ class Link extends \CommonBundle\Component\Hydrator\Hydrator
             $data['tab_content']['tab_' . $language->getAbbrev()]['name'] = $object->getName($language, false);
             $data['tab_content']['tab_' . $language->getAbbrev()]['url'] = $object->getUrl($language, false);
         }
-        $data['forced_language'] = $object->getForcedLanguage()->getAbbrev();
+        $data['forced_language'] = $object->getForcedLanguage() ? $object->getForcedLanguage()->getAbbrev() : '';
         $data['order_number'] = $object->getOrderNumber();
         $data['active'] = $object->isActive();
 
