@@ -95,7 +95,7 @@ class Page extends \CommonBundle\Entity\Node
     private $translations;
 
     /**
-     * @var integer|null The ordering number for the page in the category
+     * @var int|null The ordering number for the page in the category
      *
      * @ORM\Column(name="order_number", type="integer", nullable=true)
      */
@@ -234,7 +234,7 @@ class Page extends \CommonBundle\Entity\Node
 
     /**
      * @param Language|null $language
-     * @param boolean       $allowFallback
+     * @param boolean $allowFallback
      * @return Translation|null
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
@@ -260,7 +260,7 @@ class Page extends \CommonBundle\Entity\Node
 
     /**
      * @param Language|null $language
-     * @param boolean       $allowFallback
+     * @param boolean $allowFallback
      * @return string
      */
     public function getTitle(Language $language = null, $allowFallback = true)
@@ -276,7 +276,7 @@ class Page extends \CommonBundle\Entity\Node
 
     /**
      * @param Language|null $language
-     * @param boolean       $allowFallback
+     * @param boolean $allowFallback
      * @return string
      */
     public function getContent(Language $language = null, $allowFallback = true)
@@ -324,7 +324,7 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getOrderNumber()
     {
@@ -332,12 +332,17 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param integer $orderNumber
+     * @param $orderNumber
      * @return self
      */
-    public function setOrderNumber(int $orderNumber)
+    public function setOrderNumber($orderNumber)
     {
-        $this->orderNumber = $orderNumber;
+        if ($orderNumber === null || gettype($orderNumber) !== 'int') {
+            $this->orderNumber = null;
+        }
+        else {
+            $this->orderNumber = $orderNumber;
+        }
         return $this;
     }
 
@@ -350,26 +355,34 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param Language|null $forcedLanguage
+     * @param $forcedLanguage
      * @return self
      */
-    public function setForcedLanguage(Language $forcedLanguage)
+    public function setForcedLanguage($forcedLanguage)
     {
-        $this->forcedLanguage = $forcedLanguage;
+        if ($forcedLanguage === null || get_class($forcedLanguage) !== Language::class){
+            $this->forcedLanguage = null;
+        }
+        else{
+            $this->forcedLanguage = $forcedLanguage;
+        }
         return $this;
     }
 
     /**
      * @param Language $lang
-     * @return boolean
+     * @return bool
      */
     public function isLanguageAvailable(Language $lang)
     {
-        return $this->getForcedLanguage() == null || $this->getForcedLanguage() === $lang;
+        if ($this->getForcedLanguage() == null || $this->getForcedLanguage() === $lang){
+            return true;
+        }
+        return false;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isActive()
     {
@@ -377,7 +390,7 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param boolean $active
+     * @param bool $active
      * @return self
      */
     public function setActive(bool $active)
@@ -385,4 +398,5 @@ class Page extends \CommonBundle\Entity\Node
         $this->active = $active;
         return $this;
     }
+
 }
