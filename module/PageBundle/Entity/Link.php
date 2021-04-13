@@ -68,7 +68,7 @@ class Link
     private $translations;
 
     /**
-     * @var integer|null The ordering number for the page in the category
+     * @var int|null The ordering number for the page in the category
      *
      * @ORM\Column(name="order_number", type="integer", nullable=true)
      */
@@ -197,7 +197,7 @@ class Link
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getOrderNumber()
     {
@@ -205,12 +205,17 @@ class Link
     }
 
     /**
-     * @param integer $orderNumber
+     * @param $orderNumber
      * @return self
      */
-    public function setOrderNumber(int $orderNumber)
+    public function setOrderNumber($orderNumber)
     {
-        $this->orderNumber = $orderNumber;
+        if (get_class($orderNumber) !== 'int') {
+            $this->orderNumber = null;
+        }
+        else {
+            $this->orderNumber = $orderNumber;
+        }
         return $this;
     }
 
@@ -223,26 +228,34 @@ class Link
     }
 
     /**
-     * @param Language|null $forcedLanguage
+     * @param $forcedLanguage
      * @return self
      */
-    public function setForcedLanguage(Language $forcedLanguage)
+    public function setForcedLanguage($forcedLanguage)
     {
-        $this->forcedLanguage = $forcedLanguage;
+        if (get_class($forcedLanguage) !== Language::class){
+            $this->forcedLanguage = null;
+        }
+        else{
+            $this->forcedLanguage = $forcedLanguage;
+        }
         return $this;
     }
 
     /**
      * @param Language $lang
-     * @return boolean
+     * @return bool
      */
     public function isLanguageAvailable(Language $lang)
     {
-        return $this->getForcedLanguage() == null || $this->getForcedLanguage() === $lang;
+        if ($this->getForcedLanguage() == null || $this->getForcedLanguage() === $lang){
+            return true;
+        }
+        return false;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isActive()
     {
@@ -250,7 +263,7 @@ class Link
     }
 
     /**
-     * @param boolean $active
+     * @param bool $active
      * @return self
      */
     public function setActive(bool $active)

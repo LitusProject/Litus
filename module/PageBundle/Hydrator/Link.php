@@ -65,6 +65,7 @@ class Link extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         foreach ($this->getLanguages() as $language) {
+
             $translation = $object->getTranslation($language, false);
 
             $translationData = $data['tab_content']['tab_' . $language->getAbbrev()];

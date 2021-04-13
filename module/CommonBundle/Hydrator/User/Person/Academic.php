@@ -85,7 +85,7 @@ class Academic extends \CommonBundle\Hydrator\User\Person
         if ($object === null) {
             $object = new AcademicEntity();
             if (isset($data['username']) && $data['username'] != '') {
-                $object->setUsername($data['username']);
+                $object->setUsername(strtolower($data['username']));
             } else {
                 $object->setUsername($data['university']['identification']);
             }

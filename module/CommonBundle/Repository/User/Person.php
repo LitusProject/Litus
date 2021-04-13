@@ -106,7 +106,7 @@ class Person extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->where(
                 $query->expr()->eq('p.username', ':username')
             )
-            ->setParameter('username', $username)
+            ->setParameter('username', strtolower($username))
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
