@@ -11,7 +11,8 @@ h5 {
 h1,
 h2,
 h3,
-h4 {
+h4, 
+h5 {
   font-family: "Assistant";
   color: @color-blue;
   font-weight: 700;
@@ -96,6 +97,15 @@ div.button {
 div.button.white.unfilled {
   background-color: transparent; 
   border: 1px solid white; 
+}
+
+div.button.blue.unfilled {
+  background-color: transparent;  
+  border: 1px solid @color-blue; 
+
+  a {
+    color: @color-blue;
+  }
 }
 
 // This CSS makes sure the footer sticks to the bottom of the page on short pages 

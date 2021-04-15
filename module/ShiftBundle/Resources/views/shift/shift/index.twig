@@ -1,6 +1,30 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
+
+    {# Script for collapsing shift items #}
+    {{ inlineScript() }}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var faqItems = document.getElementsByClassName('shiftHolder'); 
+            for(var i = 0; i < faqItems.length; i++) {
+                var currentFAQ = faqItems[i]; 
+                var currentContent = currentFAQ.querySelector('.shiftDetails'); 
+                currentContent.setAttribute("style", "height: 0px;"); 
+                currentFAQ.addEventListener("click", func, false);
+                function func() {
+                    var currentContent = this.querySelector('.shiftDetails'); 
+                    if (currentContent.style.height === "0px") {
+                        currentContent.setAttribute("style", "height: auto");
+                    } else {
+                        currentContent.setAttribute("style", "height: 0px");
+                    }
+                }
+            }
+        })
+    </script>  
+
     {% import _self as self %}
 
     <div class="flashmessage alert alert-success fade" id="responsible_success">
@@ -101,6 +125,7 @@
         {# BEGIN VAN TWEE KOLOMMEN VR SHIFTEN #}
 
         <div style="height: 40px"></div>
+
         <div>
             <p>Filters</p>
             <div class="filterGrid">
@@ -250,19 +275,24 @@
             {# <div class="col-md-8"> #}
 
             <div>
-                <h2>
+                <div class="shiftHeader">
+                    <h2>
+                        {{ translate('My Shifts') }}
+                    </h2>
+                    <div class="flexStretch"></div>
                     {% if authenticatedPerson != null and hasAccess('shift', 'export') %}
-                        <div class="pull-right hidden-xs hidden-sm">
-                            <a href="{{ url('shift_export', { 'token' : token.getHash() }) }}" class="btn btn-default"><span class="glyphicon glyphicon-arrow-down"></span> {{ translate('Download') }}</a>
-                        </div>
+                            <div class="button">
+                                <a href="{{ url('shift_export', { 'token' : token.getHash() }) }}"><span class="glyphicon glyphicon-arrow-down"></span> {{ translate('Download') }}</a>
+                            </div>
                     {% endif %}
-
-                    {{ translate('My Shifts') }}
-                </h2>
+                </div>
 
                 {{ self.displayShifts(entityManager, authenticatedPerson, myShifts, 'myShifts') }}
-
+                
+                <div style="height: 50px"></div>
+                
                 <h2>{{ resultString }}</h2>
+
                 {% if searchResults is not null %}
                     {{ self.displayShifts(entityManager, authenticatedPerson, searchResults, 'search') }}
                 {% else %}
@@ -476,97 +506,92 @@
         <div class="panel-group" id="shifts-{{ accordionName }}">
             {% for shift in shifts %}
                 {% if previousShift.getStartDate().format('Ymd') < shift.getStartDate().format('Ymd') %}
-                    <h3>{{translate('Shifts on')}} {{ translate(shift.getStartDate().format('l')) }}  {{ dateLocalized(shift.getStartDate(), 'd/M/y') }}</h3>
+                    <h4 style="margin-top: 30px">{{translate('Shifts on')}} {{ translate(shift.getStartDate().format('l')) }}  {{ dateLocalized(shift.getStartDate(), 'd/M/y') }}</h3>
                 {% endif %}
 
                 {% set previousShift = shift %}
 
-                <div class="panel panel-default" id="group_{{ accordionName }}_shift-{{ shift.getId() }}">
-                    <div class="panel-heading">
-                        <span class="buttons pull-right hidden-xs hidden-sm">
-                            {{ self.buttons(entityManager, authenticatedPerson, shift, accordionName) }}
-                        </span>
-                        <a class="panel-toggle" data-toggle="collapse" data-parent="#shifts-{{ accordionName }}" href="#collapse_{{ accordionName }}_shift-{{ shift.getId() }}" style="overflow: hidden;">
-                            {{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }}-{{ dateLocalized(shift.getEndDate(), 'HH:mm') }}&mdash;{{ shift.getName() }}
-                        </a>
-                    </div>
-                    <div id="collapse_{{ accordionName }}_shift-{{ shift.getId() }}" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            <div class="buttons hidden-md hidden-lg" style="text-align: right">
-                                {{ self.buttons(entityManager, authenticatedPerson, shift, accordionName) }}
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <dl>
-                                        <dt>{{ translate('Name') }}</dt>
-                                        <dd>{{ shift.getName() }}</dd>
-                                        {% if shift.getReward() > 0 %}
-                                            <dt>{{ translate('Reward') }}</dt>
-                                            <dd>{{ shift.getReward() }} {{ translate('Coins') }}
-                                                {% if shift.getHandledOnEvent() %}
-                                                    {{ translate('on the event')}}
-                                                {% endif %}
-                                            </dd>
-                                        {% endif %}
-                                        {% if shift.getPoints() > 0 %}
-                                            <dt>{{ translate('Points') }}</dt>
-                                            <dd>{{ shift.getPoints() }} {{ translate('Points') }}</dd>
-                                        {% endif %}
-                                        <dt>{{ translate('Start') }}</dt>
-                                        <dd>{{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }}</dd>
-                                        <dt>{{ translate('End') }}</dt>
-                                        <dd>{{ dateLocalized(shift.getEndDate(), 'd/M/y HH:mm') }}</dd>
-                                    </dl>
-                                </div>
-                                <div class="col-sm-4">
-                                    <dl>
-                                        <dt>{{ translate('Manager') }}</dt>
-                                        <dd>{{ shift.getManager().getFullName() }}</dd>
-
-                                        {% if shift.getEvent() is not null %}
-                                            <dt>{{ translate('Event') }}</dt>
-                                            <dd>{{ shift.getEvent().getTitle(language) }}</dd>
-                                        {% endif %}
-
-                                        <dt>{{ translate('Unit') }}</dt>
-                                        <dd>{{ shift.getUnit().getName() }}</dd>
-                                    </dl>
-                                </div>
-                                <div class="col-sm-4">
-                                    {% if 0 != shift.getNbResponsibles() %}
-                                        <dl>
-                                            <dt>{{ translate('Responsibles') }}</dt>
-
-                                            {% for responsible in shift.getResponsibles() %}
-                                                <dd>{{ responsible.getPerson().getFullName() }}</dd>
-                                            {% endfor %}
-                                        </dl>
-                                    {% endif %}
-
-                                    {% if 0 != shift.getNbVolunteers() %}
-                                        <dl>
-                                            <dt>{{ translate('Volunteers') }}</dt>
-
-                                            {% for volunteer in shift.getVolunteers() %}
-                                                <dd>{{ volunteer.getPerson().getFullName() }}</dd>
-                                            {% endfor %}
-                                        </dl>
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <dl>
-                                <dt>{{ translate('Description') }}</dt>
-                                <dd style="text-align: justify;">{{ shift.getDescription() }}</dd>
-
-                                <dt>{{ translate('Location') }}</dt>
-                                <dd>
-                                    {{ shift.getLocation().getName() }}
-                                </dd>
-                                <dd style="margin-top: 5px;">
-                                    <img class="img-rounded" src="{{ staticMap(shift.getLocation(), '367x125', '7a43b6') }}" />
-                                </dd>
-                            </dl>
+                <div class="shiftHolder">
+                    <div class="shiftHeader">
+                        <div> 
+                            <h5 style="margin-bottom: 0px">{{ shift.getName() }}</h5>
+                            <p style="font-size: 14px; margin-bottom: 0px">{{dateLocalized(shift.getStartDate(), 'd/M/y')}} | {{ dateLocalized(shift.getStartDate(), 'HH:mm') }}-{{ dateLocalized(shift.getEndDate(), 'HH:mm') }}</p> 
                         </div>
+                        <div class="flexStretch"></div>
+                        <div class="buttons" style="text-align: right">
+                            {{ self.buttons(entityManager, authenticatedPerson, shift, accordionName) }}
+                        </div>
+                    </div>
+                    <div class="shiftDetails">
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <dl>
+                                    <dt>{{ translate('Name') }}</dt>
+                                    <dd>{{ shift.getName() }}</dd>
+                                    {% if shift.getReward() > 0 %}
+                                        <dt>{{ translate('Reward') }}</dt>
+                                        <dd>{{ shift.getReward() }} {{ translate('Coins') }}
+                                            {% if shift.getHandledOnEvent() %}
+                                                {{ translate('on the event')}}
+                                            {% endif %}
+                                        </dd>
+                                    {% endif %}
+                                    {% if shift.getPoints() > 0 %}
+                                        <dt>{{ translate('Points') }}</dt>
+                                        <dd>{{ shift.getPoints() }} {{ translate('Points') }}</dd>
+                                    {% endif %}
+                                    <dt>{{ translate('Start') }}</dt>
+                                    <dd>{{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }}</dd>
+                                    <dt>{{ translate('End') }}</dt>
+                                    <dd>{{ dateLocalized(shift.getEndDate(), 'd/M/y HH:mm') }}</dd>
+                                </dl>
+                            </div>
+                            <div class="col-sm-4">
+                                <dl>
+                                    <dt>{{ translate('Manager') }}</dt>
+                                    <dd>{{ shift.getManager().getFullName() }}</dd>
+
+                                    {% if shift.getEvent() is not null %}
+                                        <dt>{{ translate('Event') }}</dt>
+                                        <dd>{{ shift.getEvent().getTitle(language) }}</dd>
+                                    {% endif %}
+
+                                    <dt>{{ translate('Unit') }}</dt>
+                                    <dd>{{ shift.getUnit().getName() }}</dd>
+                                </dl>
+                            </div>
+                            <div class="col-sm-4">
+                                {% if 0 != shift.getNbResponsibles() %}
+                                    <dl>
+                                        <dt>{{ translate('Responsibles') }}</dt>
+
+                                        {% for responsible in shift.getResponsibles() %}
+                                            <dd>{{ responsible.getPerson().getFullName() }}</dd>
+                                        {% endfor %}
+                                    </dl>
+                                {% endif %}
+
+                                {% if 0 != shift.getNbVolunteers() %}
+                                    <dl>
+                                        <dt>{{ translate('Volunteers') }}</dt>
+
+                                        {% for volunteer in shift.getVolunteers() %}
+                                            <dd>{{ volunteer.getPerson().getFullName() }}</dd>
+                                        {% endfor %}
+                                    </dl>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <dl>
+                            <dt>{{ translate('Description') }}</dt>
+                            <dd style="text-align: justify;">{{ shift.getDescription() }}</dd>
+
+                            <dt>{{ translate('Location') }}</dt>
+                            <dd>
+                                {{ shift.getLocation().getName() }}
+                            </dd>
+                        </dl> 
                     </div>
                 </div>
             {% else %}
@@ -607,21 +632,20 @@
             {% endif %}
 
             {% if shift.canHaveAsResponsible(entityManager, authenticatedPerson) and 0 != shift.getNbResponsibles() %}
-                <button class="btn btn-default btn-xs {{ self.buttonStyle(shift, 'responsibles') }} responsible" data-id="{{ shift.getId() }}" data-count="{{ shift.countResponsibles() }}" data-max="{{ shift.getNbResponsibles() }}" data-panel="#group_{{ accordionName }}_shift-{{ shift.getId() }}" type="button">
-                    {{ translate('Responsible') }} (<span class="count">{{ shift.countResponsibles() }}</span>/{{ shift.getNbResponsibles() }})
-                </button>
+                <div onclick="event.stopPropagation()" class="button blue unfilled {{ self.buttonStyle(shift, 'responsibles') }} responsible" data-id="{{ shift.getId() }}" data-count="{{ shift.countResponsibles() }}" data-max="{{ shift.getNbResponsibles() }}">
+                    <a>{{ translate('Responsible') }} (<span class="count">{{ shift.countResponsibles() }}</span>/{{ shift.getNbResponsibles() }})</a>
+                </div>                  
             {% endif %}
             {% if shift.canHaveAsVolunteer(entityManager, authenticatedPerson) and 0 != shift.getNbVolunteers() %}
-                <button class="btn btn-default btn-xs {{ self.buttonStyle(shift, 'volunteers') }} volunteer" data-id="{{ shift.getId() }}" data-count="{{ shift.countVolunteers() }}" data-max="{{ shift.getNbVolunteers() }}" data-ticket="{{ shift.getTicketNeeded() }}" data-panel="#group_{{ accordionName }}_shift-{{ shift.getId() }}" type="button">
-                    {{ translate('Volunteer') }} (<span class="count">{{ shift.countVolunteers() }}</span>/{{ shift.getNbVolunteers() }})
-                </button>
+                <div onclick="event.stopPropagation()" class="button blue unfilled {{ self.buttonStyle(shift, 'volunteers') }} volunteer" data-id="{{ shift.getId() }}" data-count="{{ shift.countVolunteers() }}" data-max="{{ shift.getNbVolunteers() }}" data-ticket="{{ shift.getTicketNeeded() }}">
+                    <a>{{ translate('Volunteer') }} (<span class="count">{{ shift.countVolunteers() }}</span>/{{ shift.getNbVolunteers() }})</a>
+                </div>  
             {% endif %}
         {% else %}
             {% if shift.canSignOut(entityManager) %}
-                <button class="btn btn-default btn-xs signOut" data-id="{{ shift.getId() }}" data-panel="#group_{{ accordionName }}_shift-{{ shift.getId() }}" type="button">
-                    {{ translate('Sign Out') }}
-                </button>
+                <div onclick="event.stopPropagation()" class="button blue unfilled signOut" data-id="{{ shift.getId() }}">
+                    <a>{{ translate('Sign Out') }}</a>
+                </div>
             {% endif %}
         {% endif %}
-    </div>
 {% endmacro %}
