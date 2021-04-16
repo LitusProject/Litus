@@ -102,8 +102,8 @@ class Product
     public function getName($lang = 'nl')
     {
 
-        if($lang === 'en'){
-            if($this->name_en !== null) {
+        if ($lang === 'en') {
+            if ($this->name_en !== null) {
                 return $this->name_en;
             }
         }
