@@ -51,7 +51,7 @@ class Reserve extends \CommonBundle\Component\Form\Admin\Form
                 array(
                     'type'       => 'number',
                     'name'       => 'product-' . $product->getId(),
-                    'label'      => $product->getName() . ' (&euro; ' . sprintf('%0.2f', $product->getSellPrice()) . ')',
+                    'label'      => $product->getName($this->getLanguage()->getAbbrev()) . ' (&euro; ' . sprintf('%0.2f', $product->getSellPrice()) . ')',
                     'attributes' => array(
                         'value' => '0',
                         'min'   => '0',

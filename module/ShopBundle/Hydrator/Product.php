@@ -38,6 +38,7 @@ class Product extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $this->stdExtract($object, self::$stdKeys);
         $data['sell_price'] = $object->getSellPrice();
+        $data['name_en'] = $object->getName('en');
 
         return $data;
     }
@@ -55,6 +56,7 @@ class Product extends \CommonBundle\Component\Hydrator\Hydrator
 
         $object = $this->stdHydrate($data, $object, self::$stdKeys);
         $object->setSellPrice(floatval(str_replace(',', '.', $data['sell_price'])));
+        $object->setNameEN($data['name_en']);
 
         return $object;
     }
