@@ -95,7 +95,7 @@ class Page extends \CommonBundle\Entity\Node
     private $translations;
 
     /**
-     * @var int|null The ordering number for the page in the category
+     * @var integer|null The ordering number for the page in the category
      *
      * @ORM\Column(name="order_number", type="integer", nullable=true)
      */
@@ -234,7 +234,7 @@ class Page extends \CommonBundle\Entity\Node
 
     /**
      * @param Language|null $language
-     * @param boolean $allowFallback
+     * @param boolean       $allowFallback
      * @return Translation|null
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
@@ -260,7 +260,7 @@ class Page extends \CommonBundle\Entity\Node
 
     /**
      * @param Language|null $language
-     * @param boolean $allowFallback
+     * @param boolean       $allowFallback
      * @return string
      */
     public function getTitle(Language $language = null, $allowFallback = true)
@@ -276,7 +276,7 @@ class Page extends \CommonBundle\Entity\Node
 
     /**
      * @param Language|null $language
-     * @param boolean $allowFallback
+     * @param boolean       $allowFallback
      * @return string
      */
     public function getContent(Language $language = null, $allowFallback = true)
@@ -324,7 +324,7 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getOrderNumber()
     {
@@ -339,8 +339,7 @@ class Page extends \CommonBundle\Entity\Node
     {
         if ($orderNumber === null || gettype($orderNumber) !== 'int') {
             $this->orderNumber = null;
-        }
-        else {
+        } else {
             $this->orderNumber = $orderNumber;
         }
         return $this;
@@ -360,10 +359,9 @@ class Page extends \CommonBundle\Entity\Node
      */
     public function setForcedLanguage($forcedLanguage)
     {
-        if ($forcedLanguage === null || get_class($forcedLanguage) !== Language::class){
+        if ($forcedLanguage === null || get_class($forcedLanguage) !== Language::class) {
             $this->forcedLanguage = null;
-        }
-        else{
+        } else {
             $this->forcedLanguage = $forcedLanguage;
         }
         return $this;
@@ -371,18 +369,15 @@ class Page extends \CommonBundle\Entity\Node
 
     /**
      * @param Language $lang
-     * @return bool
+     * @return boolean
      */
     public function isLanguageAvailable(Language $lang)
     {
-        if ($this->getForcedLanguage() == null || $this->getForcedLanguage() === $lang){
-            return true;
-        }
-        return false;
+        return $this->getForcedLanguage() == null || $this->getForcedLanguage() === $lang;
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isActive()
     {
@@ -390,7 +385,7 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param bool $active
+     * @param boolean $active
      * @return self
      */
     public function setActive(bool $active)
@@ -398,5 +393,4 @@ class Page extends \CommonBundle\Entity\Node
         $this->active = $active;
         return $this;
     }
-
 }

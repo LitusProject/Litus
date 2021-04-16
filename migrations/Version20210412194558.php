@@ -40,7 +40,6 @@ class Version20210412194558 extends \Doctrine\Migrations\AbstractMigration
         $this->addSql('ALTER TABLE shift_registration_shifts ADD final_signin_date TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL');
     }
 
-
     /**
      * @param  \Doctrine\DBAL\Schema\Schema $schema
      * @return void

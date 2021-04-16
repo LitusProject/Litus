@@ -68,7 +68,7 @@ class Link
     private $translations;
 
     /**
-     * @var int|null The ordering number for the page in the category
+     * @var integer|null The ordering number for the page in the category
      *
      * @ORM\Column(name="order_number", type="integer", nullable=true)
      */
@@ -197,7 +197,7 @@ class Link
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getOrderNumber()
     {
@@ -212,8 +212,7 @@ class Link
     {
         if (get_class($orderNumber) !== 'int') {
             $this->orderNumber = null;
-        }
-        else {
+        } else {
             $this->orderNumber = $orderNumber;
         }
         return $this;
@@ -233,10 +232,9 @@ class Link
      */
     public function setForcedLanguage($forcedLanguage)
     {
-        if (get_class($forcedLanguage) !== Language::class){
+        if (get_class($forcedLanguage) !== Language::class) {
             $this->forcedLanguage = null;
-        }
-        else{
+        } else {
             $this->forcedLanguage = $forcedLanguage;
         }
         return $this;
@@ -244,18 +242,15 @@ class Link
 
     /**
      * @param Language $lang
-     * @return bool
+     * @return boolean
      */
     public function isLanguageAvailable(Language $lang)
     {
-        if ($this->getForcedLanguage() == null || $this->getForcedLanguage() === $lang){
-            return true;
-        }
-        return false;
+        return $this->getForcedLanguage() == null || $this->getForcedLanguage() === $lang;
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isActive()
     {
@@ -263,7 +258,7 @@ class Link
     }
 
     /**
-     * @param bool $active
+     * @param boolean $active
      * @return self
      */
     public function setActive(bool $active)

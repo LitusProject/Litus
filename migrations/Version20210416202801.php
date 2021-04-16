@@ -49,4 +49,3 @@ class Version20201103165524 extends \Doctrine\Migrations\AbstractMigration
         $this->throwIrreversibleMigrationException();
     }
 }
-
