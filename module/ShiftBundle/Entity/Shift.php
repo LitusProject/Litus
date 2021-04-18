@@ -33,6 +33,7 @@ use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use ShiftBundle\Entity\Shift\Responsible;
 use ShiftBundle\Entity\Shift\Volunteer;
+use CommonBundle\Component\GoogleCalendar\GoogleCalendar;
 
 /**
  * This entity stores a shift.
@@ -53,6 +54,13 @@ class Shift
      * @ORM\Column(type="bigint")
      */
     private $id;
+
+    /**
+     * @var string The ID of the google calendar of this shift
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $calendarId;
 
     /**
      * @var Person The person who created this shift
@@ -798,5 +806,71 @@ class Shift
     public function getTicketNeeded()
     {
         return $this->ticketNeeded;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCalendarId()
+    {
+        return $this->calendarId;
+    }
+
+    /**
+     * @param string|null $calendarId
+     * @return $this
+     */
+    public function setCalendarId(string $calendarId)
+    {
+        $this->calendarId = $calendarId;
+        return $this;
+    }
+
+    /**
+     * @param $entitymanager
+     * @return string
+     * @throws \Google\Exception
+     */
+    public function createGoogleCalendarEvent($entitymanager)
+    {
+        $googleCalendarEnabled = $entitymanager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.google_calendar');
+
+        if (getenv('APPLICATION_ENV') != 'development'
+            && $googleCalendarEnabled === true) {
+            return GoogleCalendar::createEvent($entitymanager,
+                $this->getName(),
+                $this->getLocation()->getName() . $this->getLocation()->getAddress()->getFullAddress(),
+                $this->getDescription(),
+                $this->getStartDate(),
+                $this->getEndDate(), array()
+            );
+        }
+        return null;
+    }
+
+    /**
+     * @param $entitymanager
+     * @return string
+     * @throws \Google\Exception
+     */
+    public function updateGoogleCalendarEvent($entitymanager)
+    {
+        $googleCalendarEnabled = $entitymanager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.google_calendar');
+
+        if (getenv('APPLICATION_ENV') != 'development'
+            && $googleCalendarEnabled === true) {
+            return GoogleCalendar::updateEvent($entitymanager, $this->getCalendarId(),
+                $this->getName(),
+                $this->getLocation()->getAddress()->getFullAddress(),
+                $this->getDescription(),
+                $this->getStartDate(),
+                $this->getEndDate()
+            );
+        }
+        return;
     }
 }

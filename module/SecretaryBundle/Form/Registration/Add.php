@@ -237,6 +237,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'value' => false,
                     ),
                     array(
+                        'type'  => 'checkbox',
+                        'name'  => 'calendar_updates',
+                        'label' => 'Google Calendar Invites (for shifts/timeslots)',
+                        'value' => false,
+                    ),
+                    array(
                         'type'     => 'common_address_add-primary',
                         'name'     => 'primary_address',
                         'label'    => 'Primary Address&mdash;Student Room or Home',

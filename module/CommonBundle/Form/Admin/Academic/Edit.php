@@ -159,6 +159,12 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                         'name'  => 'is_in_workinggroup',
                         'label' => 'Working Group',
                     ),
+                    array(
+                        'type'  => 'checkbox',
+                        'name'  => 'calendar_updates',
+                        'label' => 'Google Calendar Invites (for shifts/timeslots)',
+                        'value' => true,
+                    ),
                 ),
             )
         );

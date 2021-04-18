@@ -49,7 +49,10 @@
         "symfony/console": "^3.4",
         "symfony/event-dispatcher": "^4.4",
         "widmogrod/zf2-assetic-module": "^2.4",
-        "twitter/bootstrap": "^3.3"
+	"twig/extensions": "*",
+        "twitter/bootstrap": "^3.3",
+        "ext-json": "*",
+        "google/apiclient":"^2.7"
     },
     "require-dev": {
         "laminas/laminas-developer-tools": "^2.0",
@@ -90,5 +93,13 @@
             "TicketBundle\\": "module/TicketBundle",
             "WikiBundle\\": "module/WikiBundle"
         }
+    },
+    "scripts": {
+        "post-update-cmd": "Google\\Task\\Composer::cleanup"
+    },
+    "extra": {
+    "google/apiclient-services": [
+        "Calendar"
+    ]
     }
 }

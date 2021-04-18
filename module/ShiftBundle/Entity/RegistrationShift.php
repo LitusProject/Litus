@@ -21,6 +21,7 @@
 namespace ShiftBundle\Entity;
 
 use CalendarBundle\Entity\Node\Event;
+use CommonBundle\Component\GoogleCalendar\GoogleCalendar;
 use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\General\Location;
 use CommonBundle\Entity\General\Organization\Unit;
@@ -35,8 +36,7 @@ use ShiftBundle\Entity\Shift\Registered;
 /**
  * This entity stores a shift.
  *
- * Flight Mode
- * This file was edited by Pieter Maene while in flight from Vienna to Brussels
+ * Robin Wroblowski copied from shift
  *
  * @ORM\Entity(repositoryClass="ShiftBundle\Repository\RegistrationShift")
  * @ORM\Table(name="shift_registration_shifts")
@@ -51,6 +51,13 @@ class RegistrationShift
      * @ORM\Column(type="bigint")
      */
     private $id;
+
+    /**
+     * @var string The ID of the google calendar of this shift
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $calendarId;
 
     /**
      * @var Person The person who created this shift
@@ -640,7 +647,7 @@ class RegistrationShift
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isMembersVisible(): bool
     {
@@ -648,10 +655,74 @@ class RegistrationShift
     }
 
     /**
-     * @param boolean $membersVisible
+     * @param bool $membersVisible
      */
     public function setMembersVisible(bool $membersVisible)
     {
         $this->membersVisible = $membersVisible;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCalendarId()
+    {
+        return $this->calendarId;
+    }
+
+    /**
+     * @param string|null $calendarId
+     * @return $this
+     */
+    public function setCalendarId(string $calendarId)
+    {
+        $this->calendarId = $calendarId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     * @throws \Google\Exception
+     */
+    public function createGoogleCalendarEvent($entitymanager)
+    {
+        $googleCalendarEnabled = $entitymanager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.google_calendar');
+
+        if (getenv('APPLICATION_ENV') != 'development'
+            && $googleCalendarEnabled === true) {
+            return GoogleCalendar::createEvent($entitymanager,
+                $this->getName(),
+                $this->getLocation()->getName() . $this->getLocation()->getAddress()->getFullAddress(),
+                $this->getDescription(),
+                $this->getStartDate(),
+                $this->getEndDate(), array()
+            );
+        }
+        return null;
+    }
+
+    /**
+     * @return string
+     * @throws \Google\Exception
+     */
+    public function updateGoogleCalendarEvent($entitymanager)
+    {
+        $googleCalendarEnabled = $entitymanager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.google_calendar');
+
+        if (getenv('APPLICATION_ENV') != 'development'
+            && $googleCalendarEnabled === true) {
+            return GoogleCalendar::updateEvent($entitymanager, $this->getCalendarId(),
+                $this->getName(),
+                $this->getLocation()->getAddress()->getFullAddress(),
+                $this->getDescription(),
+                $this->getStartDate(),
+                $this->getEndDate()
+            );
+        }
+        return;
     }
 }

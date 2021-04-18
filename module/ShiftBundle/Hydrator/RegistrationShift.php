@@ -119,6 +119,13 @@ class RegistrationShift extends \CommonBundle\Component\Hydrator\Hydrator
             $object->setEvent(null);
         }
 
+        if ($object->getCalendarId() === null) {
+            $eventId = $object->createGoogleCalendarEvent();
+            $object->setCalendarId($eventId);
+        } else {
+            $object->updateGoogleCalendarEvent();
+        }
+
         return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 }

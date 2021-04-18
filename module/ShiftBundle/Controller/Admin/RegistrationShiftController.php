@@ -21,13 +21,16 @@
 namespace ShiftBundle\Controller\Admin;
 
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\GoogleCalendar\GoogleCalendar;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use CommonBundle\Entity\User\Person;
 use DateInterval;
 use DateTime;
 use Laminas\Http\Headers;
 use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
 use ShiftBundle\Entity\RegistrationShift;
+use ShiftBundle\Entity\Shift;
 
 /**
  * ShiftController
@@ -306,6 +309,9 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
         if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);
         }
+        if (new DateTime() > $shift->getEndDate()) {
+            $this->removeEvent($shift);
+        }
 
         $this->getEntityManager()->remove(
             $shift->prepareRemove()
@@ -413,5 +419,20 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
     private static function loadDate($date)
     {
         return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
+    }
+
+    private function removeEvent(RegistrationShift $shift)
+    {
+        $googleCalendarEnabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.google_calendar');
+
+        if (getenv('APPLICATION_ENV') != 'development'
+            && $googleCalendarEnabled === true) {
+            GoogleCalendar::remove($this->getEntityManager(),
+                $shift->getCalendarId()
+            );
+        }
+        return;
     }
 }

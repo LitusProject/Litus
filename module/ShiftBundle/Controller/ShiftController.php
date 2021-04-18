@@ -20,15 +20,18 @@
 
 namespace ShiftBundle\Controller;
 
+use CommonBundle\Entity\User\Person;
 use DateInterval;
 use DateTime;
 use Laminas\Http\Headers;
 use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
+use ShiftBundle\Entity\Shift;
 use ShiftBundle\Entity\Shift\Responsible;
 use ShiftBundle\Entity\Shift\Volunteer;
 use ShiftBundle\Entity\Token;
 use ShiftBundle\Entity\User\Person\AcademicYearMap;
+use CommonBundle\Component\GoogleCalendar\GoogleCalendar;
 
 /**
  * ShiftController
@@ -272,6 +275,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         $this->getEntityManager()->flush();
 
+        $this->sendEventInvite($shift, $person);
+
         return new ViewModel(
             array(
                 'result' => (object) array(
@@ -372,7 +377,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 $payed
             )
         );
-
+        $this->sendEventInvite($shift, $person);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -421,8 +426,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         // TODO: If a responsible signs out, and there's another praesidium member signed up as a volunteer, promote him
-
+        $this->removeEventInvite($shift, $person);
         $this->getEntityManager()->flush();
+
 
         return new ViewModel(
             array(
@@ -698,5 +704,37 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         return $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findOneById($this->getRequest()->getPost('id', 0));
+    }
+
+    private function sendEventInvite(Shift $shift, Person $person)
+    {
+        $googleCalendarEnabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.google_calendar');
+
+        if (getenv('APPLICATION_ENV') != 'development'
+            && $person->wantsCalendarInvites() === true
+            && $googleCalendarEnabled === true) {
+            GoogleCalendar::addAttendees($this->getEntityManager(),
+                $shift->getCalendarId(),
+                array($person->getEmail())
+            );
+        }
+    }
+
+    private function removeEventInvite(Shift $shift, Person $person)
+    {
+        $googleCalendarEnabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.google_calendar');
+
+        if (getenv('APPLICATION_ENV') != 'development'
+            && $person->wantsCalendarInvites() === true
+            && $googleCalendarEnabled === true) {
+            GoogleCalendar::removeAttendees($this->getEntityManager(),
+                $shift->getCalendarId(),
+                array($person->getEmail())
+            );
+        }
     }
 }

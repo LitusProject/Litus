@@ -180,6 +180,12 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
                         'label' => 'International',
                         'value' => false,
                     ),
+                    array(
+                        'type'  => 'checkbox',
+                        'name'  => 'calendar_updates',
+                        'label' => 'Google Calendar Invites (for shifts/timeslots)',
+                        'value' => false,
+                    ),
                 ),
             )
         );

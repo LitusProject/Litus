@@ -82,7 +82,7 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
 
         $fallbackLanguage = Locale::getDefault();
 
-        $forcedLanguage =  $this->getEntityManager()
+        $forcedLanguage = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findOneByAbbrev($data['forced_language']);
 
@@ -102,7 +102,6 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         foreach ($this->getLanguages() as $language) {
-
             $translation = $newPage->getTranslation($language, false);
 
             $translationData = $data['tab_content']['tab_' . $language->getAbbrev()];
@@ -141,7 +140,7 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $data['category'] = $object->getCategory()->getId();
-        $data['forced_language'] =  $object->getForcedLanguage()?$object->getForcedLanguage()->getAbbrev():"";
+        $data['forced_language'] = $object->getForcedLanguage() ? $object->getForcedLanguage()->getAbbrev() : '';
         $data['order_number'] = $object->getOrderNumber();
         $data['active'] = $object->isActive();
 

@@ -511,4 +511,15 @@ class Address
 
         return false;
     }
+
+    public function getFullAddress()
+    {
+        $address = $this->getStreet(). ' ';
+        $address .= $this->getNumber();
+        $address .= $this->getMailbox() ? '/ '. $this->getMailbox().', ' : ', ';
+        $address .= $this->getCity(). ' ';
+        $address .= $this->getPostal(). ', ';
+        $address .= $this->getCountry();
+        return $address;
+    }
 }

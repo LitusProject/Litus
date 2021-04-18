@@ -26,7 +26,7 @@ use CommonBundle\Entity\User\Status\University as UniversityStatus;
 class Academic extends \CommonBundle\Hydrator\User\Person
 {
     protected static $stdKeys = array(
-        'university_identification', 'personal_email', 'is_international',
+        'university_identification', 'personal_email', 'is_international', 'calendar_updates',
     );
 
     public function doExtract($object = null)

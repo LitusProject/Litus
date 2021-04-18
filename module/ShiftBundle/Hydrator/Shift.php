@@ -124,6 +124,15 @@ class Shift extends \CommonBundle\Component\Hydrator\Hydrator
             $object->setEvent(null);
         }
 
-        return $this->stdHydrate($data, $object, self::$stdKeys);
+        $this->stdHydrate($data, $object, self::$stdKeys);
+
+        if ($object->getCalendarId() === null) {
+            $eventId = $object->createGoogleCalendarEvent();
+            $object->setCalendarId($eventId);
+        } else {
+            $object->updateGoogleCalendarEvent();
+        }
+
+        return $object;
     }
 }
