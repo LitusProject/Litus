@@ -36,7 +36,7 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     /**
      * @return \Doctrine\ORM\Query
      */
-    public function findAllRemovedOrOldQuery()
+    public function findAllRejectedRemovedOrOldQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('o')
@@ -44,6 +44,7 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->where(
                 $query->expr()->orX(
                     $query->expr()->eq('o.removed', 'TRUE'),
+                    $query->expr()->eq('o.rejected', 'TRUE'),
                     $query->expr()->lt('o.endDate', ':now')
                 )
             )
@@ -63,7 +64,8 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->where(
                 $query->expr()->andx(
                     $query->expr()->gt('o.endDate', ':now'),
-                    $query->expr()->eq('o.removed', 'FALSE')
+                    $query->expr()->eq('o.removed', 'FALSE'),
+                    $query->expr()->eq('o.rejected', 'FALSE')
                 )
             )
             ->orderBy('o.startDate', 'ASC')
@@ -112,7 +114,6 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             )
             ->setParameter('creator', $creator)
             ->setParameter('now', new DateTime())
-            ->setMaxResults(1)
             ->getQuery()
             ->getResult();
     }
@@ -135,7 +136,6 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             )
             ->setParameter('unit', $unit)
             ->setParameter('now', new DateTime())
-            ->setMaxResults(1)
             ->getQuery()
             ->getResult();
     }
@@ -152,15 +152,16 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('o.removed', 'FALSE'),
-                    $query->expr()->eq('o.approved', 'TRUE')
+                    $query->expr()->gt('o.endDate', ':now')
                 )
             )
-            ->innerJoin('LogisticsBundle\Entity\Order\OrderArticleMap', 'oam')
-            ->where(
-                $query->expr()->eq('oam.article', ':article')
-            )
-            ->setParameter('article', $article->getId())
-            ->orderBy('o.name', 'ASC')
+//            ->innerJoin('LogisticsBundle\Entity\Order\OrderArticleMap', 'oam')
+//            ->where(
+//                $query->expr()->eq('oam.referencedArticle', ':article')
+//            )
+            ->setParameter('now', new DateTime())
+//            ->setParameter('article', $article->getId())
+            ->orderBy('o.startDate', 'ASC')
             ->getQuery();
     }
 

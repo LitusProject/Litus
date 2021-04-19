@@ -73,7 +73,7 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        $this->addSubmit('Save Changes');
+        $this->addSubmit('Save Changes', 'article_edit');
 
         if ($this->orderArticleMap !== null) {
             $this->bind($this->orderArticleMap);

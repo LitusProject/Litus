@@ -74,13 +74,15 @@ class OrderArticleMap
      * @var array All the possible statuses allowed
      */
     public static $POSSIBLE_STATUSES = array(
-        'approved' => 'Approved',
-        'okay' => 'Okay',
-        'lost' => 'Lost',
-        'broken' => 'Broken',
-        'dirty' => 'Dirty',
+        'aangevraagd' => 'Aangevraagd',
+        'op locatie' => 'Op Locatie',
+        'vermist' => 'Vermist',
+        'terug' => 'Terug',
+        'klaar' => 'Klaar',
+        'weggezet' => 'Weggezet',
         'none' => 'None',
-//        TODO: vragen aan Sietze
+        'vuil' => 'Vuil',
+        'kapot' => 'Kapot'
     );
 
     /**

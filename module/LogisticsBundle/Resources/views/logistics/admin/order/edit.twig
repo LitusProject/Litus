@@ -5,41 +5,40 @@
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
-    <aside>
-        {% if hasAccess('logistics_admin_order', 'articles') %}
 
-            <div class="sidebox">
-                <div class="title">Manage Articles</div>
-                <div class="content">
-                    <p>
-                        <i>Please hit the link below to manage the articles of this order!</i>
-                    </p>
-                    <p>
-                        <a href="{{ url('logistics_admin_order', {'action': 'articles', 'id': order.getId()}) }}">&rarr; Manage Articles</a>
-                    </p>
+    <div id="controller_action" style="width:inherit;">
+        <aside>
+            {% if hasAccess('logistics_admin_order', 'articles') %}
+
+                <div class="sidebox">
+                    <div class="title">Manage Articles</div>
+                    <div class="content">
+                        <p>
+                            <i>Please hit the link below to manage the articles of this order!</i>
+                        </p>
+                        <p>
+                            <a href="{{ url('logistics_admin_order', {'action': 'articles', 'id': order.getId()}) }}">&rarr; Manage Articles</a>
+                        </p>
+                    </div>
                 </div>
-            </div>
-        {% endif %}
+            {% endif %}
 
-        {% if hasAccess('logistics_admin_order', 'view') %}
+            {% if hasAccess('logistics_admin_order', 'view') %}
 
-            <div class="sidebox">
-                <div class="title">View Order</div>
-                <div class="content">
-                    <p>
-                        <i>Please hit the link below to view this order!</i>
-                    </p>
-                    <p>
-                        <a href="{{ url('logistics_admin_order', {'action': 'view', 'id': order.getId()}) }}">&rarr; View Order</a>
-                    </p>
+                <div class="sidebox">
+                    <div class="title">View Order</div>
+                    <div class="content">
+                        <p>
+                            <i>Please hit the link below to view this order!</i>
+                        </p>
+                        <p>
+                            <a href="{{ url('logistics_admin_order', {'action': 'view', 'id': order.getId()}) }}">&rarr; View Order</a>
+                        </p>
+                    </div>
                 </div>
-            </div>
-        {% endif %}
-
+            {% endif %}
         </aside>
 
-
-    <div id="controller_action">
         <h1>Order</h1>
         <p>
             Name: <b>{{ order.getName() }}</b>
