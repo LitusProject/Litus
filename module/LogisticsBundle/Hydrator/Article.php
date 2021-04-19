@@ -24,7 +24,7 @@ use LogisticsBundle\Entity\Article as ArticleEntity;
 
 class Article extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $stdKeys = array('name', 'additional_info', 'spot', 'amount_owned', 'amount_available', );
+    private static $stdKeys = array('name', 'additional_info', 'spot', 'amount_owned', 'amount_available', 'internal_comment');
 
     protected function doExtract($object = null)
     {

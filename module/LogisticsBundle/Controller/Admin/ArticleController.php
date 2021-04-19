@@ -20,6 +20,8 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
+use DateTime;
+use Imagick;
 use Laminas\View\Model\ViewModel;
 use LogisticsBundle\Entity\Article;
 
@@ -100,6 +102,17 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 
         $form = $this->getForm('logistics_article_edit', $article);
 
+        $pictureForm = $this->getForm('logistics_admin_article_picture');
+        $pictureForm->setAttribute(
+            'action',
+            $this->url()->fromRoute(
+                'logistics_admin_article',
+                array(
+                    'action' => 'uploadProfileImage',
+                )
+            )
+        );
+
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
 
@@ -123,6 +136,11 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'form' => $form,
+                'article' => $article,
+                'picturePath' => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('logistics.article_picture_path'),
+                'pictureForm' => $pictureForm,
             )
         );
     }
@@ -145,6 +163,32 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                 'result' => array(
                     'status' => 'success',
                 ),
+            )
+        );
+    }
+
+    public function ordersAction()
+    {
+        $article = $this->getArticleEntity();
+        if ($article === null) {
+            return new ViewModel();
+        }
+
+        $mappings = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+            ->findAllByArticleQuery($article)->getResult();
+        $orders = array();
+
+        foreach ($mappings as $map){
+            if (!$map->getOrder()->isRemoved() && $map->getOrder()->getEndDate() > new DateTime()){
+                array_push($orders, $map);
+            }
+    }
+
+        return new ViewModel(
+            array(
+                'orders'               => $orders,
+                'article'             => $article,
             )
         );
     }
@@ -233,5 +277,90 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                     ->findAllByVisibilityQuery($this->getParam('string'));
         }
         return;
+    }
+
+    public function uploadImageAction()
+    {
+        $article = $this->getArticleEntity();
+        if ($article === null) {
+            return new ViewModel();
+        }
+
+        $form = $this->getForm('logistics_admin_article_picture');
+
+        if ($this->getRequest()->isPost()) {
+            $form->setData(
+                array_merge_recursive(
+                    $this->getRequest()->getPost()->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
+
+            $filePath = 'public' . $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('logistics.article_picture_path');
+
+            if ($form->isValid()) {
+                $formData = $form->getData();
+
+                if ($formData['picture']) {
+                    $image = new Imagick($formData['picture']['tmp_name']);
+                } else {
+                    $image = new Imagick($filePath . '/' . $article->getPhotoPath());
+                }
+
+                if ($formData['x'] == 0 && $formData['y'] == 0 && $formData['x2'] == 0 && $formData['y2'] == 0 && $formData['w'] == 0 && $formData['h'] == 0) {
+                    $image->cropThumbnailImage(320, 240);
+                } else {
+                    $ratio = $image->getImageWidth() / 320;
+                    $x = $formData['x'] * $ratio;
+                    $y = $formData['y'] * $ratio;
+                    $w = $formData['w'] * $ratio;
+                    $h = $formData['h'] * $ratio;
+
+                    $image->cropImage($w, $h, $x, $y);
+                    $image->cropThumbnailImage(320, 240);
+                }
+
+                do {
+                    $newFileName = sha1(uniqid());
+                } while (file_exists($filePath . '/' . $newFileName));
+
+                if ($article->getPhotoPath() != '' || $article->getPhotoPath() !== null) {
+                    $fileName = $article->getPhotoPath();
+
+                    if (file_exists($filePath . '/' . $fileName)) {
+                        unlink($filePath . '/' . $fileName);
+                    }
+                }
+
+                $image->writeImage($filePath . '/' . $newFileName);
+                $article->setPhotoPath($newFileName);
+
+                $this->getEntityManager()->flush();
+
+                return new ViewModel(
+                    array(
+                        'result' => array(
+                            'status' => 'success',
+                            'picture' => $this->getEntityManager()
+                                    ->getRepository('CommonBundle\Entity\General\Config')
+                                    ->getConfigValue('logistics.article_picture_path') . '/' . $newFileName,
+                        ),
+                    )
+                );
+            } else {
+                return new ViewModel(
+                    array(
+                        'result' => array(
+                            'status' => 'error',
+                            'form' => array(
+                                'errors' => $form->getMessages(),
+                            ),
+                        ),
+                    )
+                );
+            }
+        }
     }
 }

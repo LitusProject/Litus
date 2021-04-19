@@ -68,6 +68,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'     => 'textarea',
+                'name'     => 'internal_comment',
+                'label'    => 'Internal Comment',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
                 'type'       => 'text',
                 'name'       => 'amount_owned',
                 'label'      => 'Amount Owned',

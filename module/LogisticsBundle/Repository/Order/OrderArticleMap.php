@@ -62,7 +62,7 @@ class OrderArticleMap extends \CommonBundle\Component\Doctrine\ORM\EntityReposit
             ->getOneOrNullResult();
     }
 
-    public function findAllByArticleQuery(ArticleEntity $article)
+    public function findAllActiveByArticleQuery(ArticleEntity $article)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('m')
@@ -74,5 +74,27 @@ class OrderArticleMap extends \CommonBundle\Component\Doctrine\ORM\EntityReposit
             )
             ->setParameter('article', $article)
             ->getQuery();
+    }
+
+    public function findAllOverlappingWith(OrderEntity\OrderArticleMap $map)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('m')
+            ->from('LogisticsBundle\Entity\Order\OrderArticleMap', 'm')
+            ->innerJoin('m.referencedOrder', 'o')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('m.referencedArticle', ':article'),
+                    $query->expr()->orX(
+                        $query->expr()->between('o.startDate', ':startDate', ':endDate'),
+                        $query->expr()->between('o.endDate', ':startDate', ':endDate')
+                    )
+                )
+            )
+            ->setParameter('startDate', $map->getOrder()->getStartDate())
+            ->setParameter('endDate', $map->getOrder()->getStartDate())
+            ->setParameter('article', $map->getArticle()->getId())
+            ->getQuery()
+            ->getResult();
     }
 }

@@ -33,6 +33,9 @@ return array(
             'logistics_piano' => array(
                 'index',
             ),
+            'logistics_catalog' => array(
+                'overview',
+            ),
         ),
     ),
 );
