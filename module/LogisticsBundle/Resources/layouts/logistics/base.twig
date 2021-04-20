@@ -37,7 +37,7 @@
                                 <a href="{{ url('logistics_lease', {"language": language.getAbbrev()}) }}">{{ translate('Lease') }}</a>
                             </li>
                         {% endif %}
-                        {% if hasAccess('logistics_catalog', 'index') %}
+                        {% if hasAccess('logistics_catalog', 'overview') %}
                             <li {% if 'logistics_catalog' == getParam('controller') %}class="active"{% endif %}>
                                 <a href="{{ url('logistics_catalog', {"language": language.getAbbrev()}) }}">{{ translate('Catalog') }}</a>
                             </li>

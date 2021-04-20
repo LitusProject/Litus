@@ -40,7 +40,7 @@ class Edit extends \LogisticsBundle\Form\Admin\Order\Add
         parent::init();
 
         $this->remove('submit')
-            ->addSubmit('Save Changes');
+            ->addSubmit('Save Changes', 'order_edit');
 
         if ($this->order !== null) {
             $this->bind($this->order);

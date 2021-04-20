@@ -3863,36 +3863,30 @@
         },
         {
             "name": "laminas/laminas-i18n-resources",
-            "version": "2.6.1",
+            "version": "2.7.0",
             "source": {
                 "type": "git",
-                "url": "git@github.com:laminas/laminas-i18n-resources.git",
-                "reference": "7585cd3a4f9656814425b35689919a220c73834b"
+                "url": "https://github.com/laminas/laminas-i18n-resources.git",
+                "reference": "fc0211052aa7576bc960b30194c87f6f60a0089c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-i18n-resources/zipball/7585cd3a4f9656814425b35689919a220c73834b",
-                "reference": "7585cd3a4f9656814425b35689919a220c73834b",
+                "url": "https://api.github.com/repos/laminas/laminas-i18n-resources/zipball/fc0211052aa7576bc960b30194c87f6f60a0089c",
+                "reference": "fc0211052aa7576bc960b30194c87f6f60a0089c",
                 "shasum": ""
             },
             "require": {
                 "laminas/laminas-zendframework-bridge": "^1.0",
-                "php": "^5.6 || ^7.0"
+                "php": "^7.3 || ~8.0.0"
             },
             "replace": {
-                "zendframework/zend-i18n-resources": "self.version"
+                "zendframework/zend-i18n-resources": "^2.6.1"
             },
             "require-dev": {
                 "laminas/laminas-coding-standard": "~1.0.0",
-                "phpunit/phpunit": "^5.7.27 || ^6.5.8 || ^7.1.5"
+                "phpunit/phpunit": "^9.5"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.6.x-dev",
-                    "dev-develop": "2.7.x-dev"
-                }
-            },
             "autoload": {
                 "classmap": [
                     "src/Resources.php"
@@ -3902,7 +3896,7 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "description": "Provides validator translations for laminas-i18n's Translator",
+            "description": "Provides validator and captcha translations for laminas-i18n's Translator",
             "homepage": "https://laminas.dev",
             "keywords": [
                 "laminas",
@@ -3917,7 +3911,13 @@
                 "rss": "https://github.com/laminas/laminas-i18n-resources/releases.atom",
                 "source": "https://github.com/laminas/laminas-i18n-resources"
             },
-            "time": "2019-12-31T17:11:35+00:00"
+            "funding": [
+                {
+                    "url": "https://funding.communitybridge.org/projects/laminas-project",
+                    "type": "community_bridge"
+                }
+            ],
+            "time": "2021-04-15T13:39:19+00:00"
         },
         {
             "name": "laminas/laminas-inputfilter",
@@ -4771,16 +4771,16 @@
         },
         {
             "name": "laminas/laminas-router",
-            "version": "3.4.4",
+            "version": "3.4.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-router.git",
-                "reference": "2a7068508af4de67d80ea292e0cc7c37563a33c6"
+                "reference": "aaf2eb364eedeb5c4d5b9ee14cd2938d0f7e89b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-router/zipball/2a7068508af4de67d80ea292e0cc7c37563a33c6",
-                "reference": "2a7068508af4de67d80ea292e0cc7c37563a33c6",
+                "url": "https://api.github.com/repos/laminas/laminas-router/zipball/aaf2eb364eedeb5c4d5b9ee14cd2938d0f7e89b7",
+                "reference": "aaf2eb364eedeb5c4d5b9ee14cd2938d0f7e89b7",
                 "shasum": ""
             },
             "require": {
@@ -4838,7 +4838,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2020-12-16T22:10:51+00:00"
+            "time": "2021-04-19T16:06:00+00:00"
         },
         {
             "name": "laminas/laminas-serializer",

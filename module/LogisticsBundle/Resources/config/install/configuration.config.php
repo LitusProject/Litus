@@ -179,6 +179,11 @@ VTK
         'description' => '',
     ),
     array(
+        'key'         => 'logistics.article_picture_path',
+        'value'       => '/_logistics/article',
+        'description' => 'The path for article photo\'s',
+    ),
+    array(
         'key'   => 'logistics.order_request',
         'value' => serialize(
             array(

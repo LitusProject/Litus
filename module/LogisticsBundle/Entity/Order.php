@@ -68,7 +68,7 @@ class Order
     /**
      * @var Location the location of the order
      *
-     * @ORM\ManytoOne(targetEntity="\CommonBundle\Entity\General\Location")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Location")
      * @ORM\JoinColumn(name="location", referencedColumnName="id")
      */
     private $location;
@@ -139,6 +139,13 @@ class Order
     private $rejected;
 
     /**
+     * @var boolean If this order needs a van ride (een kar-rit).
+     *
+     * @ORM\Column(name="needs_ride", type="boolean", options={"default" = false})
+     */
+    private $needsRide;
+
+    /**
      * @param string $contact
      */
     public function __construct($contact)
@@ -167,11 +174,34 @@ class Order
     }
 
     /**
+     * @param string $status
+     * @return self
+     */
+    public function setStatus(string $status)
+    {
+        if ($status == 'removed') {
+            $this->remove();
+        }
+        if ($status == 'rejected') {
+            $this->reject();
+        }
+        elseif ($status == 'approved') {
+            $this->approve();
+        }
+        elseif ($status == 'pending') {
+            $this->pending();
+        }
+        return $this;
+    }
+
+    /**
      * @return self
      */
     public function approve()
     {
         $this->approved = true;
+        $this->rejected = false;
+        $this->removed = false;
 
         return $this;
     }
@@ -182,7 +212,8 @@ class Order
     public function pending()
     {
         $this->approved = false;
-
+        $this->rejected = false;
+        $this->removed = false;
         return $this;
     }
 
@@ -191,6 +222,8 @@ class Order
      */
     public function remove()
     {
+        $this->approved = false;
+        $this->rejected = false;
         $this->removed = true;
 
         return $this;
@@ -210,7 +243,8 @@ class Order
     public function reject()
     {
         $this->rejected = true;
-
+        $this->removed = false;
+        $this->approved = false;
         return $this;
     }
 
@@ -228,10 +262,22 @@ class Order
     public function isApproved()
     {
         if ($this->approved === null) {
-            return true;
+            return false;
         }
 
         return $this->approved;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isPending()
+    {
+        if ($this->approved === null) {
+            return true;
+        }
+
+        return !$this->approved && !$this->rejected && !$this->removed;
     }
 
     /**
@@ -301,6 +347,23 @@ class Order
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function needsRide()
+    {
+        return $this->needsRide;
+    }
+
+    /**
+     * @param bool $b
+     * @return boolean
+     */
+    public function setNeedsRide(bool $b)
+    {
+        return $this->needsRide = $b;
     }
 
     /**
@@ -415,7 +478,7 @@ class Order
      */
     public function isCancellable()
     {
-        return(!$this->isRemoved() && $this->isApproved());
+        return(!$this->isRemoved() && !$this->isPending());
     }
 
     /**
@@ -423,7 +486,7 @@ class Order
      */
     public function isEditable()
     {
-        return $this->isCancellable();
+        return !$this->isRemoved() && !$this->isRejected();
     }
 
     /**

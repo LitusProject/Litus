@@ -34,7 +34,7 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $stdKeys = array('name', 'description', 'email', 'contact');
+    private static $stdKeys = array('description', 'email', 'contact', 'needs_ride');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -54,11 +54,18 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
                 ->getRepository('CommonBundle\Entity\General\Organization\Unit')
                 ->findOneById($data['unit'])
         );
+        if (isset($data['name']) && $data['name'] !== null)
+            $object->setName($data['name']);
 
         $object->updateDate();
-
         $object->setStartDate(self::loadDateTime($data['start_date']))
             ->setEndDate(self::loadDateTime($data['end_date']));
+
+        if (isset($data['status']))
+            if ($data['status'] !== null){
+            $object->setStatus($data['status']);
+        }
+
 
         return $this->stdHydrate($data, $object, self::$stdKeys);
     }
@@ -74,8 +81,10 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data['location'] = $object->getLocation()->getId();
         $data['unit'] = $unit->getId();
+        $data['name'] = $object->getName();
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
         $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
+        $data['status'] = strtolower($object->getStatus());
 
         return $data;
     }

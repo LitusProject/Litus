@@ -103,6 +103,13 @@ class Request
     private $rejectMessage;
 
     /**
+     * @var string The type of the request
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $flag;
+
+    /**
      * @static
      * @var array All the possible requests allowed
      */
@@ -278,6 +285,25 @@ class Request
     {
         return $this->requestType;
     }
+
+    /**
+     * @return string
+     */
+    public function getFlag()
+    {
+        return $this->flag;
+    }
+
+    /**
+     * @param string $flag
+     * @return self
+     */
+    public function setFlag(string $flag)
+    {
+        $this->flag = $flag;
+        return $this;
+    }
+
 
     /**
      * @return $this

@@ -18,42 +18,42 @@
         </div>
     </div>
 
-    <aside>
-        {% if hasAccess('logistics_admin_order', 'view') %}
+    <div id="controller_action" style="width:inherit;">
+        <aside>
+            {% if hasAccess('logistics_admin_order', 'view') %}
 
-            <div class="sidebox">
-                <div class="title">View Order</div>
-                <div class="content">
-                    <p>
-                        <i>Please hit the link below to view this order!</i>
-                    </p>
-                    <p>
-                        <a href="{{ url('logistics_admin_order', {'action': 'view', 'id': order.getId()}) }}">&rarr; View Order</a>
-                    </p>
+                <div class="sidebox">
+                    <div class="title">View Order</div>
+                    <div class="content">
+                        <p>
+                            <i>Please hit the link below to view this order!</i>
+                        </p>
+                        <p>
+                            <a href="{{ url('logistics_admin_order', {'action': 'view', 'id': order.getId()}) }}">&rarr; View Order</a>
+                        </p>
+                    </div>
                 </div>
-            </div>
-        {% endif %}
+            {% endif %}
 
-        {% if hasAccess('logistics_admin_order', 'edit') %}
+            {% if hasAccess('logistics_admin_order', 'edit') %}
 
-            <div class="sidebox">
-                <div class="title">Edit Order</div>
-                <div class="content">
-                    <p>
-                        <i>Please hit the link below to edit this order!</i>
-                    </p>
-                    <p>
-                        <a href="{{ url('logistics_admin_order', {'action': 'edit', 'id': order.getId()}) }}">&rarr; Edit Order</a>
-                    </p>
+                <div class="sidebox">
+                    <div class="title">Edit Order</div>
+                    <div class="content">
+                        <p>
+                            <i>Please hit the link below to edit this order!</i>
+                        </p>
+                        <p>
+                            <a href="{{ url('logistics_admin_order', {'action': 'edit', 'id': order.getId()}) }}">&rarr; Edit Order</a>
+                        </p>
+                    </div>
                 </div>
-            </div>
-        {% endif %}
+            {% endif %}
 
-    </aside>
+        </aside>
 
-    <div id="controller_action">
         <h1>Order</h1>
-        <p>Name: <b>{{ Order.getName() }}</b></p>
+        <p>Name: <b>{{ order.getName() }}</b></p>
 
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
@@ -74,6 +74,9 @@
                     <td>
                         {% if hasAccess('logistics_admin_order', 'articleMapping') %}
                             <a href="{{ url('logistics_admin_order', {"action": "articleMapping", "id": order.getId(), "map": mapping.getId()}) }}" class="edit">Edit</a>
+                        {% endif %}
+                        {% if hasAccess('logistics_admin_article', 'orders') %}
+                            <a href="{{ url('logistics_admin_article', {"action": "orders", "id": mapping.getArticle().getId()}) }}" class="view">Article</a>
                         {% endif %}
                         {% if hasAccess('logistics_admin_order', 'deleteArticle') %}
                             <a href="#" class="delete" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getArticle().getName() }}">{{ translate('Delete') }}</a>
