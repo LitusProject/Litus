@@ -176,18 +176,11 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 
         $mappings = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
-            ->findAllByArticleQuery($article)->getResult();
-        $orders = array();
-
-        foreach ($mappings as $map){
-            if (!$map->getOrder()->isRemoved() && $map->getOrder()->getEndDate() > new DateTime()){
-                array_push($orders, $map);
-            }
-    }
-
+            ->findAllActiveByArticleQuery($article)->getResult();
+        
         return new ViewModel(
             array(
-                'orders'               => $orders,
+                'orders'               => $mappings,
                 'article'             => $article,
             )
         );
