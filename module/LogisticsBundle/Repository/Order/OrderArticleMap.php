@@ -20,6 +20,7 @@
 
 namespace LogisticsBundle\Repository\Order;
 
+use DateTime;
 use LogisticsBundle\Entity\Article as ArticleEntity;
 use LogisticsBundle\Entity\Order as OrderEntity;
 
@@ -67,12 +68,17 @@ class OrderArticleMap extends \CommonBundle\Component\Doctrine\ORM\EntityReposit
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('m')
             ->from('LogisticsBundle\Entity\Order\OrderArticleMap', 'm')
+            ->innerJoin('m.referencedOrder', 'o')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->eq('m.referencedArticle', ':article')
+                    $query->expr()->eq('m.referencedArticle', ':article'),
+                    $query->expr()->eq('o.removed', 'FALSE'),
+                    $query->expr()->gt('o.endDate', ':now')
+
                 )
             )
             ->setParameter('article', $article)
+            ->setParameter('now', new DateTime())
             ->getQuery();
     }
 
