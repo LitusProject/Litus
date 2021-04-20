@@ -719,6 +719,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
         $new->setName($order->getName());
         $new->setStartDate($order->getStartDate());
         $new->setUnit($order->getUnit());
+        $new->setNeedsRide($order->needsRide());
 
         return $new;
     }
