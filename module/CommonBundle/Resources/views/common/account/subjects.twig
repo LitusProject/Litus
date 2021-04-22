@@ -16,41 +16,43 @@
         </div>
     </div>
 
-    <div class="page-header">
-        <h1>{{ translate('Account') }} <small>&mdash; {{ translate('Subjects') }}</small></h1>
-    </div>
+    <div class="container">
+        <div class="page-header">
+            <h1>{{ translate('Account') }} <small>&mdash; {{ translate('Subjects') }}</small></h1>
+        </div>
 
-    {% include 'common/account/partials/navigation.twig' %}
+        {# {% include 'common/account/partials/navigation.twig' %} #}
 
-    <h2>
-        {{ translate('Choose Your Subjects') }}
-    </h2>
-    {% for mapping in mappings %}
-        <h3>{{ mapping.enrollment.getStudy().getTitle() }}<small>&mdash;{{ translate('Phase') }} {{ mapping.enrollment.getStudy().getPhase() }}</small></h3>
-        {% for subject in mapping.subjects %}
+        <h2>
+            {{ translate('Choose Your Subjects') }}
+        </h2>
+        {% for mapping in mappings %}
+            <h3>{{ mapping.enrollment.getStudy().getTitle() }}<small>&mdash;{{ translate('Phase') }} {{ mapping.enrollment.getStudy().getPhase() }}</small></h3>
+            {% for subject in mapping.subjects %}
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" class="subject_enroll" data-id="{{ subject.getSubject().getId() }}" {% if subject.getSubject().getId() in enrollments %}checked="checked"{% endif %}> {{ subject.getSubject().getName() }}<small>&mdash;{{ subject.getSubject().getCode() }}</small>
+                    </label>
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        <h2>{{ translate('Other Subjects') }}</h2>
+        {% for subject in otherSubjects %}
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" class="subject_enroll" data-id="{{ subject.getSubject().getId() }}" {% if subject.getSubject().getId() in enrollments %}checked="checked"{% endif %}> {{ subject.getSubject().getName() }}<small>&mdash;{{ subject.getSubject().getCode() }}</small>
+                    <input type="checkbox" class="subject_enroll" data-id="{{ subject.getId() }}" checked="checked"> {{ subject.getName() }}<small>&mdash;{{ subject.getCode() }}</small>
                 </label>
             </div>
+        {% else %}
+            <em>{{ translate('You have not yet added any other subjects.') }}</em>
         {% endfor %}
-    {% endfor %}
 
-    <h2>{{ translate('Other Subjects') }}</h2>
-    {% for subject in otherSubjects %}
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" class="subject_enroll" data-id="{{ subject.getId() }}" checked="checked"> {{ subject.getName() }}<small>&mdash;{{ subject.getCode() }}</small>
-            </label>
-        </div>
-    {% else %}
-        <em>{{ translate('You have not yet added any other subjects.') }}</em>
-    {% endfor %}
+        <h2>{{ translate('Add Other Subjects') }}</h2>
 
-    <h2>{{ translate('Add Other Subjects') }}</h2>
-
-    {% import 'site/partials/form.twig' as forms %}
-    {{ forms.renderForm(form) }}
+        {% import 'site/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
 {% endblock %}
 
 {% block content_script %}
