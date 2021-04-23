@@ -2,12 +2,12 @@
 
 {% block content %}
     <div class="container"> 
-        <div style="height: 70px"></div>
+        <div class="spacer50"></div>
         <h3>{{translate('News')}} - {{ news.getTitle(language) }} <small>&mdash; {{ dateLocalized(news.getCreationTime(), 'd MMMM') }}</small></h3>
 
         <div class="markdown">
             {{ hideEmail(markdown(news.getContent(language)))|raw }}
         </div>
-        <div style="height: 40px"></div>
+        <div class="spacer40"></div>
     </div>
 {% endblock %}

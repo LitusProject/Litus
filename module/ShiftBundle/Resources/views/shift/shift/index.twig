@@ -113,7 +113,7 @@
     </div>
 
     <div class="container">
-        <div style="height: 50px"></div>
+        <div class="spacer50"></div>
         <h1>{{ translate('Shifts') }}</h1>
 
         {% include 'shift/shift/partials/navigation.twig' %}
@@ -124,7 +124,7 @@
 
         {# BEGIN VAN TWEE KOLOMMEN VR SHIFTEN #}
 
-        <div style="height: 40px"></div>
+        <div class="spacer40"></div>
 
         <div>
             <p>Filters</p>
@@ -199,7 +199,7 @@
             </div> 
         </div>
 
-        <div style="height: 40px"></div>
+        <div class="spacer40"></div>
 
         {# <div class="row"> #}
             {# <div class="col-md-4 shiftSearchForms">
@@ -289,7 +289,7 @@
 
                 {{ self.displayShifts(entityManager, authenticatedPerson, myShifts, 'myShifts') }}
                 
-                <div style="height: 50px"></div>
+                <div class="spacer50"></div>
                 
                 <h2>{{ resultString }}</h2>
 

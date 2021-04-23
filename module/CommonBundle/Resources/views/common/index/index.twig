@@ -75,7 +75,7 @@
 
                             <div>
                                 <p>{{ hideEmail(item.getSummary(300, language)) | replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}</p>
-                                <div style="height: 20px"></div>
+                                <div class="spacer20"></div>
                                 <div class="button">
                                     <a href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('Read More') }}</a>
                                 </div>
