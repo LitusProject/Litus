@@ -3,11 +3,12 @@
 {% block content %}
 
     {#Still needs verification#}
-    {% if bookings is not null %}
+    {# WOULD DITCH THIS #}
+    {# {% if bookings is not null %}
         <div class="alert alert-success">
+            <a class="close">&times;</a>
             <p>
-                <a class="pull-right hidden-xs hidden-sm" href="{{ url('cudi_booking') }}" style="color:inherit">{{ translate('View Bookings') }}</a>
-                <b>{{ translate('New bookings have been assigned to you, and you can go and collect them.') }}</b>
+                <div style="inline-block"><a style="color:white; font-weight: 600; text-decoration: none" href="{{ url('cudi_booking') }}">{{ translate('New bookings have been assigned to you, and you can go and collect them.') }}</a></div>
             </p>
 
             <ul>
@@ -16,7 +17,7 @@
                 {% endfor %}
             </ul>
         </div>
-    {% endif %}
+    {% endif %} #}
 
     {% for notification in notifications %}
         <div class="alert alert-info notification">
@@ -29,7 +30,6 @@
         <div class="container">
             <h1 class="vtk-hometitle">Welkom bij <span class="vtk-textspan">vtk</span></h1>
             <h3>Vlaamse Technische Kring - partner in crime since 1920</h3>
-            <button class="yellow">Let's Go</button>
         </div>
     </div>
 
@@ -102,6 +102,7 @@
         <div class="container">
             <h1 style="color:white">Never to early to build your <span class="vtk-textspan">career</span></h1>
             <p style="max-width: 400px; color:white">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porta velit quis mauris fermentum maximus. Praesent arcu ante, finibus vel volutpat a, cursus sed tortor. Maecenas convallis magna ut eros volutpat, </p>
+            <div class="spacer10"></div>
             <div>
                 <div class="button white unfilled"><a>Studenten</a></div>
                 <div class="button white unfilled"><a>Bedrijven</a></div>

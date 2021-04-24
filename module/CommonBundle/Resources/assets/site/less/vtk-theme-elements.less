@@ -90,6 +90,7 @@ div.button {
   margin-bottom: 5px;
   cursor: pointer; 
   display: inline-block;  
+  transition-duration: 200ms; 
 
   a {
     border: none;
@@ -98,9 +99,21 @@ div.button {
   }
 }
 
+div.button:hover {
+  background-color: @color-blue-light; 
+}
+
 div.button.white.unfilled {
   background-color: transparent; 
   border: 1px solid white; 
+}
+
+div.button.white.unfilled:hover {
+  background-color: white;
+  
+  a {
+    color: @color-blue; 
+  }
 }
 
 div.button.blue.unfilled {
@@ -109,6 +122,14 @@ div.button.blue.unfilled {
 
   a {
     color: @color-blue;
+  }
+}
+
+div.button.blue.unfilled:hover {
+  background-color: @color-blue;  
+
+  a {
+    color: white;
   }
 }
 

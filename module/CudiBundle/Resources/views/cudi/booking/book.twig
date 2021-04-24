@@ -31,11 +31,11 @@
                 <div>
                     {# PAS DEZE NOG AAN --> refresh pagina needed? #}
                     {% if hasAccess('cudi_booking', 'keepUpdated') %}
-                        <div class="button" {% if isSubscribed %}style="display: none"{% endif %}><a id="keepUpdated" rel="tooltip" data-toggle="tooltip" title="{{ translate('You will receive an e-mail when the catalog is updated.') }}">{{ translate('Enable catalog update mails') }}</a></div>
-                        <div class="button" {% if not isSubscribed %}style="display: none"{% endif %}><a id="dontKeepUpdated" rel="tooltip" data-toggle="tooltip" title="{{ translate('You won\'t receive an e-mail when the catalog is updated.') }}">{{ translate('Disable catalog update mails') }}</a></div>
+                        <div class="button blue unfilled" {% if isSubscribed %}style="display: none"{% endif %}><a id="keepUpdated" rel="tooltip" data-toggle="tooltip" title="{{ translate('You will receive an e-mail when the catalog is updated.') }}">{{ translate('Enable catalog update mails') }}</a></div>
+                        <div class="button blue unfilled" {% if not isSubscribed %}style="display: none"{% endif %}><a id="dontKeepUpdated" rel="tooltip" data-toggle="tooltip" title="{{ translate('You won\'t receive an e-mail when the catalog is updated.') }}">{{ translate('Disable catalog update mails') }}</a></div>
                     {% endif %}
                     {% if hasAccess('cudi_booking', 'search') %}
-                        <div class="button"><a href="#" id="searchArticles">{{ translate('Search') }}</a></div>
+                        <div class="button blue unfilled"><a href="#" id="searchArticles">{{ translate('Search') }}</a></div>
                     {% endif %}
                 </div>
 
@@ -67,8 +67,8 @@
                             </tbody>
                         </table>
 
-                        <div class="button"><a href="{{ url('cudi_booking', {'action' : 'view'}) }}">{{ translate('Back') }}</a></div>
-                        <div class="button"><a id="bookSearchArticles" style="display: none">{{ translate('Book') }}</a></div>
+                        <div class="button blue unfilled"><a href="{{ url('cudi_booking', {'action' : 'view'}) }}">{{ translate('Back') }}</a></div>
+                        <div class="button blue unfilled"><a id="bookSearchArticles" style="display: none">{{ translate('Book') }}</a></div>
                     </div>
                 {% endif %}
             {% endif %}
@@ -241,7 +241,7 @@
                         </table>
 
                         <div>
-                            <div class="button"><a href="{{ url('cudi_booking', {'action' : 'view'}) }}">{{ translate('Back') }}</a></div>
+                            <div class="button blue unfilled"><a href="{{ url('cudi_booking', {'action' : 'view'}) }}">{{ translate('Back') }}</a></div>
 
                             {% if form.get('submit') %}
                                 {{ formElement(form.get('submit')) }}
