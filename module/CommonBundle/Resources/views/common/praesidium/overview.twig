@@ -1,42 +1,44 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-    <div class="page-header">
-        <h1>{{ translate('Praesidium') }}</h1>
-    </div>
 
-    <div class="navbar navbar-default"  role="navigation">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#academicYearSubNav">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+    <div class="container"> 
+
+        <div class="spacer50"></div>
+        
+        <div class="topHolder">
+            <h1 style="margin-right: 20px; display: inline-block">{{ translate('Praesidium') }}</h1>
+            <div class="dropdown">
+                <button onclick="myFunction()" class="dropbtn">
+                    {{ activeAcademicYear.getCode() }} ▼
                 </button>
-            </div>
-            <div class="collapse navbar-collapse" id="academicYearSubNav">
-                <ul class="nav navbar-nav">
+                <div id="myDropdown" class="dropdown-content">
                     {% for academicYear in academicYears %}
-                        <li {% if academicYear.getCode() == activeAcademicYear.getCode() %}class="active"{% endif %}><a href="{{ url('common_praesidium', {'academicyear': academicYear.getCode()}) }}">{{ academicYear.getCode() }}</a></li>
+                        <a href="{{ url('common_praesidium', {'academicyear': academicYear.getCode()}) }}">{{ academicYear.getCode() }}</a>
                     {% endfor %}
-                </ul>
+                </div>
             </div>
         </div>
-    </div>
 
-    {% for unit in units %}
-        <h3>{{ translate(unit['unit'].getName()) }}{% if activeAcademicYear.getCode() == currentAcademicYear.getCode() %}<small>&mdash;{{ hideEmail('<a href="mailto:' ~ unit['unit'].getMail() ~ '">' ~ unit['unit'].getMail() ~ '</a>') }}</small>{% endif %}</h3>
-        <div class="row">
-            {% for member in unit['members'] %}
-                <div class="col-xs-6 col-md-3">
-                    <div class="thumbnail" style="height: 250px; text-align: center">
+
+        <div style="height: 75px"></div>
+
+
+        {% for unit in units %}
+            <div style="border-left: 20px solid #ffd400; margin-bottom: 20px">
+                <h3 style="margin-left: -8px; margin-bottom: 0px">{{ translate(unit['unit'].getName()) }}{% if activeAcademicYear.getCode() == currentAcademicYear.getCode() %}{% endif %}</h3>
+                <h5 style="margin-left: -8px">{{ hideEmail('<a href="mailto:' ~ unit['unit'].getMail() ~ '">' ~ unit['unit'].getMail() ~ '</a>') }}</h5>
+            </div>
+            <div class="memberHolder">
+                {% for member in unit['members'] %}
+                    <div class="member">
+
                         {% if member.getPhotoPath() %}
-                            <img class="profileImagePreloaded holderjs" data-url="{{ profilePath }}/{{ member.getPhotoPath() }}" style="background:url(?holder.js/180x135/auto/text:Image) no-repeat; width: 180px; height: 135px;" alt="">
+                            <div class="memberPhoto" style="background-image: url({{ profilePath }}/{{ member.getPhotoPath() }})"></div>
                         {% else %}
                             <img data-src="holder.js/180x135/auto/text:Image" alt="">
                         {% endif %}
-                        <h4>{{ member.getFullName() }}</h4>
+                        <h4 style="margin-bottom: 0px">{{ member.getFullName() }}</h4>
                         {% if member.isCoordinator() %}
                             <p style="text-align: center;">{{ translate('Groupcoordinator') }}</p>
                         {% endif %}
@@ -47,10 +49,10 @@
                             <p style="text-align: center;">{{ hideEmail('<a href="mailto:' ~ extraUnit.getMail() ~ '">' ~ extraUnit.getName() ~ '</a>') }}</p>
                         {% endfor %}
                     </div>
-                </div>
-            {% endfor %}
-        </div>
-    {% endfor %}
+                {% endfor %}
+            </div> 
+        {% endfor %}
+    </div>
 {% endblock %}
 
 {% block content_script %}
@@ -60,5 +62,23 @@
                 $(this).attr('src', $(this).data('url'));
             });
         });
-    </script>
+
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+                }
+            }
+        }
+
+    </script>  
 {% endblock %}

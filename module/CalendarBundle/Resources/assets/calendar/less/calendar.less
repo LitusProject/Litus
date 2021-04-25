@@ -1,5 +1,149 @@
 .calendarBrowser {
-    .calendarColumn {
-        min-height: 100px;
-    }
+  .calendarRow {
+    min-height: 60px; 
+    margin-bottom: 10px; 
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-align-content: flex-start;
+    -ms-flex-line-pack: start;
+    align-content: flex-start;
+    -webkit-align-items: stretch;
+    -ms-flex-align: stretch;
+    align-items: stretch;
+  }
+}
+
+.calendarItemHolder {
+    min-width: 30%; 
+    padding: 10px; 
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-align-content: flex-start;
+    -ms-flex-line-pack: start;
+    align-content: flex-start;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: flex-start;
+    align-items: flex-start; 
+}
+
+.calendarTitleStretch {
+    -webkit-order: 0;
+    -ms-flex-order: 0;
+    order: 0;
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    -webkit-align-self: auto;
+    -ms-flex-item-align: auto;
+    align-self: auto;
+}
+
+
+// Need !important here because gets overriden by bootstrap because of JS file 
+.calendarButton {
+  color: #1a1f4a;
+  border: 1px solid #1a1f4a !important;
+  padding: 10px 20px !important;
+  background-color: transparent !important;
+  transition-duration: 200ms;
+  border-radius: 0px !important; 
+  font-family: 'Open Sans' !important; 
+  font-size: 14px !important; 
+  cursor: pointer !important; 
+}
+
+.calendarButton:hover {
+  background-color: #1a1f4a !important;
+  color: white !important;
+}
+
+.calendarImagePlaceHolder {
+  width: 100%;
+  background-image: url(https://picsum.photos/400/275); 
+  min-height: 200px; 
+  background-position: center; 
+  background-size: cover; 
+  margin-bottom: 10px; 
+}
+
+.calendarColumn {
+    min-height: 100px;
+}
+
+.pageBanner {
+    min-height: 300px; 
+    background-position: center; 
+    background-image: url(https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80); 
+    width: 100%
+}
+
+.pageTitleHolder {
+    display: inline-block; 
+    margin-top: -50px; 
+    padding: 30px; 
+    background-color: white; 
+    border-radius: 3px;
+}
+
+.pageTitleDeco {
+    width: 100px; 
+    height: 4px; 
+    background-color: #ffd400; 
+    margin-top: -10px;
+}
+
+.label {
+    padding: 5px 12px; 
+    color: #1a1f4a; 
+    font-weight: 600; 
+    font-size: 15px; 
+    margin-right: 10px; 
+    border-bottom: 2px solid #ffd400;
+}
+
+.flexHorizontal {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-align-content: stretch;
+    -ms-flex-line-pack: stretch;
+    align-content: stretch;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+}
+
+.flexChild {
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
 }

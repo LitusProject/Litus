@@ -1,19 +1,42 @@
 table.bookings {
     .course-title {
-        background-color: @cCourseTitleBackground;
+        font-size: 15px;
+        font-family: 'Assistant';
+        font-weight: 600;
+        color: #1a1f4a
+    }
+
+    .course-title-inner {
+        border-bottom: 1px solid #ddd
+    }
+
+    thead {
+
+        background-color: whitesmoke; 
+
+        tr {
+            th {
+                border-bottom: 0px; 
+            }
+        }
+    }
+
+    tr {
+        td {
+            border-top: none; 
+            border-bottom: 1px solid #ddd
+        }
     }
 
     .spacer {
-        height: 10px;
+        height: 20px;
 
         td {
             padding: 0;
             margin: 0;
+            border:none; 
         }
 
-        &:first-of-type {
-            height: 0;
-        }
     }
 
     input.input-very-mini {
@@ -39,4 +62,42 @@ table.bookings {
 
 table tr.total {
     font-weight: bold;
+}
+
+.flexHorizontal {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-align-content: stretch;
+    -ms-flex-line-pack: stretch;
+    align-content: stretch;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+}
+
+.flexStretch {
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;    
+}
+
+// Hack for book button
+form {
+    input {
+        background-color: #1a1f4a !important; 
+        border: none !important;
+        color: white !important;
+        font-family: "Open Sans" !important;
+        padding: 6px 10px !important;
+    }
 }
