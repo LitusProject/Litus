@@ -345,6 +345,21 @@ return array(
             '@jcrop_js',
             '@common_jquery_form',
         ),
+        'br_career_internshipfair' => array(
+            '@common_jquery',
+            '@bootstrap_css',
+            '@site_css',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+            '@bootstrap_js_carousel',
+            '@bootstrap_js_tooltip',
+            '@bootstrap_js_popover',
+            '@bootstrap_js_collapse',
+            '@bootstrap_js_alert',
+            '@bootstrap_js_rowlink',
+            '@common_spin_js',
+        ),
     ),
 
     'collections' => array(

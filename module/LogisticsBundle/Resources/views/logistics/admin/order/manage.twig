@@ -1,0 +1,193 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'logistics/admin/order/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div class="flashmessage success_message full_width order_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The order was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width order_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete an order. An order can't be deleted, only put to old.</p>
+        </div>
+    </div>
+
+    <div id="controller_action">
+
+        <div id="article_search" style="display:none;">
+            <div style="padding:4px;text-align:right">
+                Search:
+                <select id="searchField">
+                    <option value="name">Name</option>
+                    <option value="location">Location</option>
+                    <option value="unit">Unit</option>
+                </select>
+                is
+                <input type="text" id="searchString" size="30" />
+            </div>
+
+            <table class="full_width manage">
+                <tr>
+                    <th>Name</th>
+                    <th width="150px">Unit</th>
+                    <th width="120px">Location</th>
+                    <th width="80px">Status</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th width="70px">Actions</th>
+                </tr>
+            </table>
+        </div>
+
+        <div id="normal_page">
+
+            <table class="full_width manage">
+                <tr>
+                    <th>Name</th>
+                    <th width="150px">Unit</th>
+                    <th width="120px">Location</th>
+                    <th width="80px">Status</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th width="70px">Actions</th>
+                </tr>
+
+                {% for order in paginator %}
+
+                    <tr class="item item-{{ order.getId() }}">
+                        <td>{{ order.getName() }}</td>
+                        <td>{{ order.getUnit().getName() }}</td>
+                        <td>{{ order.getLocation().getName() }}</td>
+                        <td>{{ order.getStatus() }}</td>
+                        <td>{{ order.getStartDate().format('d/m/Y H:i') }}</td>
+                        <td>{{ order.getEndDate().format('d/m/Y H:i') }}</td>
+                        <td class="actions">
+                            {% if hasAccess('logistics_admin_order', 'edit') %}
+                                <a href="{{ url('logistics_admin_order', {"action": "edit", "id": order.getId()}) }}" class="edit">Edit</a>
+                            {% endif %}
+                            {% if hasAccess('logistics_admin_order', 'view') %}
+                                <a href="{{ url('logistics_admin_order', {"action": "view", "id": order.getId()}) }}" class="view">View</a>
+                            {% endif %}
+                            {% if hasAccess('logistics_admin_order', 'delete') %}
+                                <a href="#" class="delete" data-id="{{ order.getId() }}" data-name="{{ order.getName() }}">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                {% endfor %}
+
+            </table>
+
+        </div>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+    <div class="modal fade" id="removeOrder" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Order
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following order: <b class="orderName"></b>!
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            {% if hasAccess('logistics_admin_order', 'search') %}
+            $.searchDatabase({
+                defaultPage: $('#normal_page'),
+                searchDiv: $('#order_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                searchPage: '{{ url('logistics_admin_order', {'action': 'manage'}) }}manage/',
+                url: '{{ url('logistics_admin_order', {'action': 'search'}) }}',
+                display: function (data) {
+                    $('#order_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#order_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
+                        row.append('<td>' + this.name + '</td>')
+                            .append('<td>' + this.unit + '</td>')
+                            .append('<td>' + this.location + '</td>')
+                            .append('<td>' + this.status + '</td>')
+                            .append('<td>' + this.startDate + '</td>')
+                            .append('<td>' + this.endDate + '</td>')
+                            .append(
+                                actions = $('<td>', {'class': 'actions'})
+                            );
+
+                        {% if hasAccess('logistics_admin_order', 'edit') %}
+                        actions.append('<a href="{{ url('logistics_admin_order', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
+                        {% endif %}
+
+                        {% if hasAccess('logistics_admin_order', 'delete') %}
+                        actions.append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
+                        deleteButton.data({
+                            id: this.id,
+                        });
+                        {% endif %}
+                    });
+                    $('#order_search .delete').click(openModal);
+                    $('#order_search table').change();
+                },
+                clear: function () {
+                    $('#order_search table').find('tr.item').remove();
+                }
+            });
+            {% endif %}
+            $('.item .delete').click(openModal);
+        });
+
+        function openModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeOrder = $('#removeOrder');
+            removeOrder.find('.driverName').html($(this).data('name'));
+            var id = $this.data('id');
+            removeOrder.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('logistics_admin_order', {"action": "delete"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.order_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeOrder.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeOrder.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.order_removed_error').removeClass('hide');
+            $('#removeOrder').modal('hide');
+        }
+
+    </script>
+{% endblock %}

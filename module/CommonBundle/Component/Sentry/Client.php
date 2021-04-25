@@ -130,16 +130,13 @@ class Client
     {
         if ($this->authentication->isAuthenticated()) {
             $user = array(
-                'id'       => $this->authentication->getPersonObject()->getId(),
-                'username' => $this->authentication->getPersonObject()->getUsername(),
-                'email'    => $this->authentication->getPersonObject()->getEmail(),
-                'name'     => $this->authentication->getPersonObject()->getFullName(),
-                'session'  => $this->authentication->getSessionObject()->getId(),
+                'id'      => $this->authentication->getPersonObject()->getId(),
+                'session' => $this->authentication->getSessionObject()->getId(),
             );
         } else {
             $user = array(
-                'id'       => 0,
-                'username' => 'guest',
+                'id'      => 0,
+                'session' => '',
             );
         }
 

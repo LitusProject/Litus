@@ -39,6 +39,10 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             return $this->notFoundAction();
         }
 
+        $enableRetail = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.retail_enabled');
+
         $enableReservationText = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.show_extra_text_reservation_page');
@@ -64,6 +68,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 'total'    => $total,
                 'enableExtraText' => $enableReservationText,
                 'reservationText' => $reservationText,
+                'retailEnabled' => $enableRetail,
             )
         );
     }

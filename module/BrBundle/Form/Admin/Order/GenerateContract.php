@@ -37,12 +37,6 @@ class GenerateContract extends \CommonBundle\Component\Form\Admin\Form
      */
     private $order;
 
-
-    /**
-     * @var Order
-     */
-    private $lang;
-
     public function init()
     {
         parent::init();

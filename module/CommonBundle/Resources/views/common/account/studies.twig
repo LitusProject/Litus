@@ -18,29 +18,31 @@
         </div>
     </div>
 
-    <div class="page-header">
-        <h1>{{ translate('Account') }} <small>&mdash; {{ translate('Studies') }}</small></h1>
-    </div>
-
-    {% include 'common/account/partials/navigation.twig' %}
-
-    <div class="pull-right">
-        <a href="{{ url('common_account', {'action': 'subjects'}) }}" class="btn btn-primary">{{ translate('Choose Your Subjects') }}</a>
-    </div>
-    <h2>
-        {{ translate('Choose Your Study: Year') }} {{ academicYear.getCode() }}
-    </h2>
-    {% if dateInfoMessage %}
-        <div class="alert alert-info notification">
-            <b>{{ translate('The changes you make will still be for last year. You will be able to select your study for next year from:') }} {{startNewUniversityYear.format('Y-m-d')}}</b>
+    <div class="container">
+        <div class="page-header">
+            <h1>{{ translate('Account') }} <small>&mdash; {{ translate('Studies') }}</small></h1>
         </div>
-        </br>
-    {% endif %}
-    <div id="studies">
-        {{ self.displayStudies(studies, enrollments) }}
-    </div>
-    <div style="text-align: center;">
-        <a href="{{ url('common_account', {'action': 'subjects'}) }}" class="btn btn-primary">{{ translate('Choose Your Subjects') }}</a>
+
+        {# {% include 'common/account/partials/navigation.twig' %} #}
+
+        <div class="button">
+            <a href="{{ url('common_account', {'action': 'subjects'}) }}">{{ translate('Choose Your Subjects') }}</a>
+        </div>
+        <h2>
+            {{ translate('Choose Your Study: Year') }} {{ academicYear.getCode() }}
+        </h2>
+        {% if dateInfoMessage %}
+            <div class="alert alert-info notification">
+                <b>{{ translate('The changes you make will still be for last year. You will be able to select your study for next year from:') }} {{startNewUniversityYear.format('Y-m-d')}}</b>
+            </div>
+            </br>
+        {% endif %}
+        <div id="studies">
+            {{ self.displayStudies(studies, enrollments) }}
+        </div>
+        <div class="button">
+            <a href="{{ url('common_account', {'action': 'subjects'}) }}">{{ translate('Choose Your Subjects') }}</a>
+        </div>
     </div>
 {% endblock %}
 

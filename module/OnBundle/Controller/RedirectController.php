@@ -20,6 +20,7 @@
 
 namespace OnBundle\Controller;
 
+use Doctrine\DBAL\Exception;
 use Laminas\View\Model\ViewModel;
 
 /**
@@ -33,7 +34,7 @@ class RedirectController extends \CommonBundle\Component\Controller\ActionContro
     {
         $slug = $this->getSlug();
         if ($slug === null) {
-            return $this->notFoundAction();
+            throw new Exception('Given webpage could not be found :(', 404);
         }
 
         $slug->incrementHits();

@@ -1,8 +1,8 @@
 # dependencies
-FROM caddy:2.1.1 AS caddy
+FROM caddy:2.3.0 AS caddy
 
 # development
-FROM composer:1.10.8 AS composer
+FROM composer:2.0.12 AS composer
 
 ARG APPLICATION_ENV=development
 ENV APPLICATION_ENV=${APPLICATION_ENV}
@@ -11,23 +11,24 @@ ENV COMMIT_SHA=${COMMIT_SHA}
 
 COPY composer.* /app/
 
-RUN composer global require hirak/prestissimo
 RUN \
   if [ "${APPLICATION_ENV}" = "development" ]; then \
     composer install \
       --ignore-platform-reqs \
+      --no-interaction \
+      --no-progress \
       --no-scripts \
       --no-suggest \
-      --no-interaction \
       --optimize-autoloader \
       --prefer-dist; \
   else \
     composer install \
       --ignore-platform-reqs \
       --no-dev \
+      --no-interaction \
+      --no-progress \
       --no-scripts \
       --no-suggest \
-      --no-interaction \
       --optimize-autoloader \
       --prefer-dist; \
   fi
@@ -46,7 +47,7 @@ RUN \
       --optimize; \
   fi
 
-FROM php:7.4.8-cli-alpine AS php-cli
+FROM php:7.4.12-cli-alpine AS php-cli
 
 ARG APPLICATION_ENV=development
 ENV APPLICATION_ENV=${APPLICATION_ENV}
@@ -84,8 +85,8 @@ RUN apk add --no-cache \
 RUN apk add --no-cache \
     openjdk11-jre && \
   apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.10/main --update-cache \
-    nodejs==10.19.0-r0 \
-    npm==10.19.0-r0 && \
+    nodejs==10.24.0-r0 \
+    npm==10.24.0-r0 && \
   npm install -g less
 
 RUN mv "${PHP_INI_DIR}/php.ini-production" "${PHP_INI_DIR}/php.ini"
@@ -97,7 +98,7 @@ COPY docker/php-cli/entrypoint.sh /
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-FROM php:7.4.8-fpm-alpine AS php-fpm
+FROM php:7.4.12-fpm-alpine AS php-fpm
 
 ARG APPLICATION_ENV=development
 ENV APPLICATION_ENV=${APPLICATION_ENV}
@@ -105,21 +106,21 @@ ARG COMMIT_SHA
 ENV COMMIT_SHA=${COMMIT_SHA}
 
 RUN apk add --no-cache \
-    icu \
-    imagemagick \
-    libpq \
-    libxml2 \
-    libzip \
-    openjdk11-jre
+  icu \
+  imagemagick \
+  libpq \
+  libxml2 \
+  libzip \
+  openjdk11-jre
 
 RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.10/main --update-cache \
-    nodejs==10.19.0-r0 \
-    npm==10.19.0-r0 && \
+    nodejs==10.24.0-r0 \
+    npm==10.24.0-r0 && \
   npm install -g less
 
-RUN curl -fsSL -o /tmp/fop-2.5-bin.tar.gz https://downloads.apache.org/xmlgraphics/fop/binaries/fop-2.5-bin.tar.gz && \
-  tar --strip-components=1 -C /opt -xzf /tmp/fop-2.5-bin.tar.gz fop-2.5/fop && \
-  rm /tmp/fop-2.5-bin.tar.gz
+RUN curl -fsSL -o /tmp/fop-2.6-bin.tar.gz https://downloads.apache.org/xmlgraphics/fop/binaries/fop-2.6-bin.tar.gz && \
+  tar --strip-components=1 -C /opt -xzf /tmp/fop-2.6-bin.tar.gz fop-2.6/fop && \
+  rm /tmp/fop-2.6-bin.tar.gz
 
 RUN mv "${PHP_INI_DIR}/php.ini-production" "${PHP_INI_DIR}/php.ini"
 

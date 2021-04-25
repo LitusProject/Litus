@@ -167,5 +167,11 @@ return array(
         'cudi_opening_hour' => array(
             'week',
         ),
+        'cudi_admin_retail' => array(
+            'add', 'delete', 'edit', 'manage', 'search', 'articleTypeahead',
+        ),
+        'cudi_retail' => array(
+            'overview', 'deal', 'myDeals', 'myRetails', 'deleteRetail', 'deleteDeal','articleTypeahead', 'recommendedRetails'
+        ),
     ),
 );

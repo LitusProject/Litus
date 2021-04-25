@@ -470,10 +470,13 @@ class Job
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getMaster()
     {
+        if (!$this->master || substr($this->master, 0, 1) == 'N') {
+            return null;
+        }
         $mastersArray = array();
         if (substr($this->master, 0, 2) == 'a:') {
             $masters = unserialize($this->master);
@@ -484,16 +487,20 @@ class Job
             }
             return implode(', ', $mastersArray);
         } else {
-            return $this->master;
+            return Company::POSSIBLE_MASTERS[$this->master];
         }
     }
 
     /**
-     * @param  array $masters
+     * @param  array|null $masters
      * @return Job
      */
     public function setMaster($masters)
     {
+        if (!$masters) {
+            $this->master = null;
+        }
+
         if (!is_string($masters)) {
             $masters = serialize($masters);
         }
@@ -504,10 +511,14 @@ class Job
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getMasterCode()
     {
+        if (!$this->master || substr($this->master, 0, 1) == 'N') {
+            return null;
+        }
+
         $unserializedMasters = unserialize($this->master);
 
         foreach ($unserializedMasters as $master) {
@@ -554,10 +565,13 @@ class Job
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getSector()
     {
+        if (!$this->sector) {
+            return null;
+        }
         $sectorsArray = array();
         if (substr($this->sector, 0, 2) === 'a:') {
             $sectors = unserialize($this->sector);
@@ -568,7 +582,7 @@ class Job
             }
             return implode(', ', $sectorsArray);
         } else {
-            return $this->sector;
+            return Company::POSSIBLE_SECTORS[$this->sector];
         }
     }
 
@@ -588,18 +602,27 @@ class Job
     }
 
     /**
-     * @return string
+     * @return string|array|null
      */
     public function getSectorCode()
     {
-        $unserializedSectors = unserialize($this->sector);
-        if ($unserializedSectors !== false) {
-            foreach ($unserializedSectors as $sector) {
-                if (!Company::isValidsector($sector)) {
-                    throw new InvalidArgumentException('The sector is not valid.');
+        if (!$this->sector) {
+            return null;
+        }
+        $sectorsArray = array();
+        if (substr($this->sector, 0, 2) === 'a:') {
+            $unserializedSectors = unserialize($this->sector);
+            if ($unserializedSectors !== false) {
+                foreach ($unserializedSectors as $sector) {
+                    if (!Company::isValidsector($sector)) {
+                        throw new InvalidArgumentException('The sector is not valid.');
+                    }
+                    array_push($sectorsArray, $sector);
                 }
             }
+            return $sectorsArray;
+        } else {
+            return $this->sector;
         }
-        return $unserializedSectors;
     }
 }

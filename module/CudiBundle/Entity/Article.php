@@ -503,7 +503,6 @@ abstract class Article
         if ($this->entityManager == null) {
             return null;
         }
-
         return $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findOneByArticle($this);

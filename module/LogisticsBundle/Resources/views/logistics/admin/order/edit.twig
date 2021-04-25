@@ -1,0 +1,78 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'logistics/admin/order/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+
+    <div id="controller_action" style="width:inherit;">
+        <aside>
+            {% if hasAccess('logistics_admin_order', 'articles') %}
+
+                <div class="sidebox">
+                    <div class="title">Manage Articles</div>
+                    <div class="content">
+                        <p>
+                            <i>Please hit the link below to manage the articles of this order!</i>
+                        </p>
+                        <p>
+                            <a href="{{ url('logistics_admin_order', {'action': 'articles', 'id': order.getId()}) }}">&rarr; Manage Articles</a>
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if hasAccess('logistics_admin_order', 'view') %}
+
+                <div class="sidebox">
+                    <div class="title">View Order</div>
+                    <div class="content">
+                        <p>
+                            <i>Please hit the link below to view this order!</i>
+                        </p>
+                        <p>
+                            <a href="{{ url('logistics_admin_order', {'action': 'view', 'id': order.getId()}) }}">&rarr; View Order</a>
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
+        </aside>
+
+        <h1>Order</h1>
+        <p>
+            Name: <b>{{ order.getName() }}</b>
+        </p>
+        <p>
+            Approved: <b>{{ order.isApproved() ? 'Yes':'No' }}</b>
+        </p>
+        <p>
+            Removed: <b>{{ order.isRemoved() ? 'Yes':'No' }}</b>
+        </p>
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+
+    </div>
+
+{% endblock %}
+
+{% block content_script %}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#contact').typeaheadRemote(
+                {
+                    source: '{{ url("common_admin_academic_typeahead")}}',
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('[name="contact[id]"]').val($(this).data('value').id);
+                } else {
+                    $('[name="contact[id]"]').val('');
+                }
+            });
+        });
+    </script>
+
+{% endblock %}

@@ -262,6 +262,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'  => 'checkbox',
+                'name'  => 'members_visible',
+                'label' => 'Show attendees',
+                'required' => true,
+            )
+        );
+
+        $this->add(
+            array(
                 'type'       => 'select',
                 'name'       => 'event',
                 'label'      => 'Event',

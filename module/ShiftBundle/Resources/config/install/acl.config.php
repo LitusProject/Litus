@@ -32,6 +32,9 @@ return array(
         'shift_admin_shift_ranking' => array(
             'index',
         ),
+        'shift_admin_shift_weekly_change' => array(
+            'index',
+        ),
         'shift_admin_shift_subscription' => array(
             'manage', 'delete', 'superdelete', 'superadd',
         ),

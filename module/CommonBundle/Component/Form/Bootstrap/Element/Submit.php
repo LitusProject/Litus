@@ -33,6 +33,6 @@ class Submit extends \Laminas\Form\Element\Submit implements \CommonBundle\Compo
 
     public function init()
     {
-        $this->addClass('btn btn-primary');
+        $this->addClass('btn btn-primary button');
     }
 }

@@ -46,10 +46,12 @@ class Cv
                 ->getRepository('BrBundle\Entity\Cv\Entry')
                 ->findAllByGroupAndAcademicYear($group, $academicYear);
 
+            $groupName = $group->getName();
+
             if (count($entries) > 0) {
                 $result[] = array(
                     'id'      => 'group-' . $group->getId(),
-                    'name'    => $group->getName(),
+                    'name'    => $groupName,
                     'entries' => $entries,
                 );
             }

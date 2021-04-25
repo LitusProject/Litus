@@ -26,6 +26,15 @@ return array(
         'logistics_admin_piano_reservation' => array(
             'add', 'delete', 'edit', 'manage', 'old',
         ),
+        'logistics_admin_article' => array(
+            'add', 'delete', 'edit', 'manage', 'search', 'typeahead', 'uploadImage', 'orders'
+        ),
+        'logistics_admin_order' => array(
+            'add', 'delete', 'edit', 'manage', 'removed', 'articles', 'deleteArticle', 'articleMapping', 'approveArticleMapping', 'conflicting'
+        ),
+        'logistics_admin_request' => array(
+            'reject', 'approve', 'manage', 'view',
+        ),
         'logistics_admin_van_reservation' => array(
             'add', 'delete', 'edit', 'manage', 'old',
         ),
@@ -43,6 +52,9 @@ return array(
         ),
         'logistics_piano' => array(
             'index',
+        ),
+        'logistics_catalog' => array(
+            'addOrder', 'editOrder', 'overview', 'catalog', 'removeOrder', 'editRequest', 'removeRequest', 'editMap', 'deleteMap', 'view', 'search'
         ),
     ),
 );

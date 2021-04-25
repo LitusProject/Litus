@@ -58,7 +58,7 @@ return array(
             'manage', 'edit', 'view', 'history', 'sign', 'signedList', 'download', 'delete', 'csv', 'unfinishedList', 'archiveUnsigned'
         ),
         'br_admin_cv_entry' => array(
-            'manage', 'delete', 'export', 'exportAcademics',
+            'manage', 'delete', 'export', 'exportAcademics', 'exportCvCsv'
         ),
         'br_admin_invoice' => array(
             'history', 'view', 'edit', 'manage', 'download', 'payed', 'pay', 'manualAdd', 'csv', 'payedList',
@@ -92,6 +92,9 @@ return array(
         ),
         'br_career_student_job' => array(
             'view', 'overview',
+        ),
+        'br_career_internshipfair' => array(
+            'view', 'overview', 'file', 'search',
         ),
         'br_cv_index' => array(
             'cv', 'edit', 'complete', 'delete', 'download', 'uploadProfileImage',

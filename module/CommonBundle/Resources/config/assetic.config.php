@@ -398,6 +398,17 @@ return array(
             ),
         ),
 
+        // 'dropdown_hover_js' => array(
+        //     'assets' => array(
+        //         'site/js/dropdownHover.js',
+        //     ),
+        //     'filters' => array(
+        //         '?JsFilter' => array(
+        //             'name' => JsFilter::class,
+        //         ),
+        //     ),
+        // ),
+
         'site_css' => array(
             'assets' => array(
                 'site/less/base.less',

@@ -264,7 +264,7 @@ class Internal extends \CudiBundle\Entity\Article
      */
     public function isColored()
     {
-        return $this->colored;
+        return $this->colored || $this->getNbColored() > 0;
     }
 
     /**

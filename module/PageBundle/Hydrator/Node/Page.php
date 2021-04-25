@@ -38,7 +38,6 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
 
         if ($object !== null && $object->getName() !== null) {
             $object->close();
-
             $newPage->setName($object->getName());
 
             $this->getEntityManager()->persist($newPage);
@@ -83,9 +82,16 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
 
         $fallbackLanguage = Locale::getDefault();
 
+        $forcedLanguage = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Language')
+            ->findOneByAbbrev($data['forced_language']);
+
         $newPage->setCategory($category)
             ->setEditRoles($editRoles)
-            ->setName($data['tab_content']['tab_' . $fallbackLanguage]['title']);
+            ->setName($data['tab_content']['tab_' . $fallbackLanguage]['title'])
+            ->setForcedLanguage($forcedLanguage)
+            ->setOrderNumber($data['order_number'])
+            ->setActive($data['active']);
 
         if ($data['parent_' . $category->getId()] != '') {
             $parent = $this->getEntityManager()
@@ -134,6 +140,10 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $data['category'] = $object->getCategory()->getId();
+        $data['forced_language'] = $object->getForcedLanguage() ? $object->getForcedLanguage()->getAbbrev() : '';
+        $data['order_number'] = $object->getOrderNumber();
+        $data['active'] = $object->isActive();
+
 
         $data['edit_roles'] = array();
         foreach ($object->getEditRoles() as $role) {

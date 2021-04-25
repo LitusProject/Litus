@@ -64,22 +64,23 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
 
         $object->setSector($data['sector']);
 
-        $years = array();
-        $archiveYears = array();
-        if (isset($data['cvbook']) && count($data['cvbook']) > 0) {
-            $repository = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\AcademicYear');
-            foreach ($data['cvbook'] as $yearId) {
-                if (strpos($yearId, 'archive-') === 0) {
-                    $archiveYears[] = substr($yearId, strlen('archive-'));
-                } else {
-                    $years[] = $repository->findOneById(substr($yearId, strlen('year-')));
+        if (isset($data['cvbook'])) {
+            $years = array();
+            $archiveYears = array();
+            if (count($data['cvbook']) > 0) {
+                $repository = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\AcademicYear');
+                foreach ($data['cvbook'] as $yearId) {
+                    if (strpos($yearId, 'archive-') === 0) {
+                        $archiveYears[] = substr($yearId, strlen('archive-'));
+                    } else {
+                        $years[] = $repository->findOneById(substr($yearId, strlen('year-')));
+                    }
                 }
             }
+            $object->setCvBookYears($years);
+            $object->setCvBookArchiveYears($archiveYears);
         }
-
-        $object->setCvBookYears($years);
-        $object->setCvBookArchiveYears($archiveYears);
 
         $years = array();
         if (isset($data['page']['years']) && count($data['page']['years']) > 0) {
@@ -101,7 +102,8 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $object->getPage()->setYears($years)
-            ->setDescription($data['page']['description']);
+            ->setDescription($data['page']['description'])
+            ->setAtEvent($data['page']['atEvent']);
 
         return $this->stdHydrate($data, $object, self::$stdKeys);
     }
@@ -144,6 +146,7 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
                 $data['page']['years'][] = $year->getId();
             }
             $data['page']['description'] = $page->getDescription();
+            $data['page']['atEvent'] = $page->isAtEvent();
         }
 
         return $data;

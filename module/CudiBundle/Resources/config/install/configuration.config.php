@@ -608,4 +608,79 @@ Dit is de rechtstreekse link naar onze online-privacy pagina: <a href="https://w
         ),
         'description' => 'The additional displayed above the reservation overview.',
     ),
+    array(
+        'key'         => 'cudi.retail_maximal_relative_price',
+        'value'       => '0.8',
+        'description' => 'The maximal relative price to the sell price.',
+    ),
+    array(
+        'key'   => 'cudi.retail_enquired_mail',
+        'value' => serialize(
+            array(
+                'en' => array(
+                    'subject' => 'Enquiry for your retail: {{ book }}',
+                    'content' => 'Dear,
+
+You have received an enquiry for the following retail: {{ book }}.
+Please contact {{ name }} via {{ email }}.
+
+-- This is an automatically generated email, please do not reply --',
+                ),
+                'nl' => array(
+                    'subject' => 'Interesse in je verkoop: {{ book }}',
+                    'content' => 'Beste,
+
+Iemand heeft interesse getoond voor het volgende boek: {{ book }}.
+Gelieve contact op te nemen met {{ name }} via {{ email }}.
+
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
+                ),
+            )
+        ),
+        'description' => 'The mail sent to the owner of the retail when an enquiry is made.',
+    ),
+    array(
+        'key'         => 'cudi.retail_allowed_types',
+        'value'       => serialize(
+            array(
+                'slides',
+                'textbook',
+                'exercises'
+            )
+        ),
+        'description' => 'An array of all allowed article types for retails.',
+    ),
+    array(
+        'key'         => 'cudi.retail_overview_text',
+        'value'       => serialize(
+            array(
+                'en' => 'Here you can sign up for the inter-student second-hand book store.',
+                'nl' => 'Hier kan je je opgeven voor de tweedehandsbeurs',
+            )
+        ),
+        'description' => 'The text on the overview page in cudi - retail',
+    ),
+    array(
+        'key'         => 'cudi.retail_my_deals_text',
+        'value'       => serialize(
+            array(
+                'en' => 'Here you can see your deals.',
+                'nl' => 'Hier zie je je huidige aanvragen.',
+            )
+        ),        'description' => 'The text on the my_deals page in cudi - retail',
+    ),
+    array(
+        'key'         => 'cudi.retail_my_retails_text',
+        'value'       => serialize(
+            array(
+                'en' => 'Here you can see your personal retails, edit them or add new ones.',
+                'nl' => 'Hier zie je je huidige aanbiedingen en kan je er nieuwe aanmaken.',
+            )
+        ),        'description' => 'The text on the my_retails page in cudi - retail',
+    ),
+    array(
+        'key'         => 'cudi.retail_enabled',
+        'value'       => '0',
+        'description' => 'boolean for retail pages/buttons',
+    ),
 );

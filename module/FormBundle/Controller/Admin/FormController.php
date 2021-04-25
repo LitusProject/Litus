@@ -243,6 +243,53 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
         $this->getEntityManager()->remove($form);
 
+//        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success',
+                ),
+            )
+        );
+    }
+
+    public function clearAction()
+    {
+        $this->initAjax();
+
+        $formSpecification = $this->getFormEntity();
+        if ($formSpecification === null) {
+            return new ViewModel();
+        }
+
+        $formSpecification->setEntityManager($this->getEntityManager());
+
+        if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not authorized to delete these entries!'
+            );
+
+            $this->redirect()->toRoute(
+                'form_admin_form',
+                array(
+                    'action' => 'edit',
+                    'id'     => $formSpecification->getId(),
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $entries = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Node\Entry')
+            ->findAllByForm($formSpecification);
+
+        foreach ($entries as $entry) {
+            $this->getEntityManager()->remove($entry);
+        }
+
         $this->getEntityManager()->flush();
 
         return new ViewModel(

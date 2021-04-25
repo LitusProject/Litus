@@ -290,6 +290,17 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
                 'elements' => array(
+
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'    => 'fieldset',
+                'name'    => 'languages_extra',
+                'label'   => 'Languages Extra Info',
+                'elements' => array(
                     array(
                         'type'       => 'textarea',
                         'name'       => 'extra',

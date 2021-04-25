@@ -35,6 +35,7 @@ return array(
     'Company'             => 'Bedrijf',
     'Vacancy'             => 'Job',
     'Internship'          => 'Stage',
+    'Internship Fair'     => 'Stagebeurs',
     'Most Recent'         => 'Meest Recent',
     'All'                 => 'Alle',
 

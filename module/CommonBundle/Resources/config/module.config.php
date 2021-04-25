@@ -63,7 +63,7 @@ return Config::create(
     array(
         'namespace'         => __NAMESPACE__,
         'directory'         => __DIR__,
-        'translation_files' => array('site', 'countries', 'validator'),
+        'translation_files' => array('site', 'countries', 'validator', 'units'),
         'has_layouts'       => true,
     ),
     array(
@@ -244,7 +244,7 @@ return Config::create(
             'buildOnRequest' => getenv('APPLICATION_ENV') == 'development',
             'debug'          => false,
             'webPath'        => __DIR__ . '/../../../../public/_assetic',
-            'cacheEnabled'   => getenv('APPLICATION_ENV') != 'development',
+            'cacheEnabled'   => false,
             'cachePath'      => __DIR__ . '/../../../../data/cache',
             'basePath'       => '/_assetic/',
         ),
