@@ -55,7 +55,7 @@ class RegistrationShift
     /**
      * @var string The ID of the google calendar of this shift
      *
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(name="calendar_id", type="text", nullable=true)
      */
     private $calendarId;
 
@@ -688,7 +688,7 @@ class RegistrationShift
     {
         $googleCalendarEnabled = $entitymanager
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.google_calendar');
+            ->getConfigValue('common.enable_google_calendar');
 
         if (getenv('APPLICATION_ENV') != 'development'
             && $googleCalendarEnabled === true) {
@@ -711,7 +711,7 @@ class RegistrationShift
     {
         $googleCalendarEnabled = $entitymanager
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.google_calendar');
+            ->getConfigValue('common.enable_google_calendar');
 
         if (getenv('APPLICATION_ENV') != 'development'
             && $googleCalendarEnabled === true) {

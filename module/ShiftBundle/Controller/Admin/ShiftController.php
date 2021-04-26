@@ -452,7 +452,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $googleCalendarEnabled = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.google_calendar');
+            ->getConfigValue('common.enable_google_calendar');
 
         if (getenv('APPLICATION_ENV') != 'development'
             && $googleCalendarEnabled === true) {

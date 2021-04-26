@@ -37,8 +37,8 @@ class Version20210415160750 extends \Doctrine\Migrations\AbstractMigration
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('ALTER TABLE shift_shifts ADD calendarId TEXT DEFAULT NULL');
-        $this->addSql('ALTER TABLE shift_registration_shifts ADD calendarId TEXT DEFAULT NULL');
+        $this->addSql('ALTER TABLE shift_shifts ADD calendar_id TEXT DEFAULT NULL');
+        $this->addSql('ALTER TABLE shift_registration_shifts ADD calendar_id TEXT DEFAULT NULL');
         $this->addSql('ALTER TABLE users_people_academic ADD calendar_invites BOOLEAN NOT NULL DEFAULT \'false\'');
 
     }

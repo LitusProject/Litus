@@ -710,10 +710,10 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $googleCalendarEnabled = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.google_calendar');
+            ->getConfigValue('common.enable_google_calendar');
 
         if (getenv('APPLICATION_ENV') != 'development'
-            && $person->wantsCalendarInvites() === true
+            && $person->enabledCalendarInvites() === true
             && $googleCalendarEnabled === true) {
             GoogleCalendar::addAttendees($this->getEntityManager(),
                 $shift->getCalendarId(),
@@ -726,10 +726,10 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $googleCalendarEnabled = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.google_calendar');
+            ->getConfigValue('common.enable_google_calendar');
 
         if (getenv('APPLICATION_ENV') != 'development'
-            && $person->wantsCalendarInvites() === true
+            && $person->enabledCalendarInvites() === true
             && $googleCalendarEnabled === true) {
             GoogleCalendar::removeAttendees($this->getEntityManager(),
                 $shift->getCalendarId(),

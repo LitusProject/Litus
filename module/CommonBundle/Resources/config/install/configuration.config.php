@@ -465,13 +465,18 @@ You can remove any installed cookies from your computer or mobile device at any 
         'description' => 'Flag to enable/disable the warning to create a new stock period.',
     ),
     array(
-        'key'         => 'common.google_calendar',
+        'key'         => 'common.enable_google_calendar',
         'value'       => '1',
         'description' => 'Flag to enable the google calendar API (for shifts and registration shifts)',
     ),
     array(
-        'key'         => 'common.google_calendar_credential',
+        'key'         => 'common.google_api_credentials',
         'value'       => '',
         'description' => 'Set the google calendar API credential (must be in JSON)',
+    ),
+    array(
+        'key'         => 'common.google_calendar_service_account',
+        'value'       => 'calendar@vtk.be',
+        'description' => 'Set the google calendar API Service Account',
     )
 );

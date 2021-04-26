@@ -17,29 +17,33 @@ class GoogleCalendar
 {
     /**
      * Returns an API client.
-     * @param $entitymanager
+     * @param $entityManager
      * @return Google_Client the authorized client object
      * @throws Exception
      */
-    public static function getClient($entitymanager)
+    public static function getClient($entityManager)
     {
         $client = new Google_Client();
 
-        $credentials = $entitymanager
+        $credentials = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.google_calendar_credential');
+            ->getConfigValue('common.google_api_credentials');
+
+        $serviceAccount = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.google_calendar_service_account');
 
         $client->setAuthConfig($credentials);
-        $client->setApplicationName("VTK Shifts");
+        $client->setApplicationName("Shifts");
         $client->setScopes(array(Google_Service_Calendar::CALENDAR, Google_Service_Calendar::CALENDAR_EVENTS));
         $client->setAccessType( 'offline' );
-        $client->setSubject('calendar@vtk.be');
+        $client->setSubject($serviceAccount);
 
         return $client;
     }
 
     /**
-     * @param $entitymanager
+     * @param $entityManager
      * @param string $name
      * @param string $location
      * @param string $description
@@ -49,14 +53,14 @@ class GoogleCalendar
      * @return int
      * @throws Exception
      */
-    public static function createEvent($entitymanager, string $name, string $location, string $description, DateTime $start, DateTime $end, array $attendees){
+    public static function createEvent($entityManager, string $name, string $location, string $description, DateTime $start, DateTime $end, array $attendees){
         // Get the API client and construct the service object.
         $attenders = array();
         foreach ($attendees as $att){
             $attenders[] = array('email' => $att);
         }
 
-        $client = self::getClient($entitymanager);
+        $client = self::getClient($entityManager);
         $service = new Google_Service_Calendar($client);
 
         $event = new Google_Service_Calendar_Event(array(
@@ -81,7 +85,7 @@ class GoogleCalendar
     }
 
     /**
-     * @param $entitymanager
+     * @param $entityManager
      * @param string $eventId
      * @param string $name
      * @param string $location
@@ -91,9 +95,9 @@ class GoogleCalendar
      * @return int
      * @throws Exception
      */
-    public static function updateEvent($entitymanager, string $eventId, string $name, string $location, string $description, DateTime $start, DateTime $end){
+    public static function updateEvent($entityManager, string $eventId, string $name, string $location, string $description, DateTime $start, DateTime $end){
         // Get the API client and construct the service object.
-        $client = self::getClient($entitymanager);
+        $client = self::getClient($entityManager);
         $service = new Google_Service_Calendar($client);
         $calendarId = 'primary';
 
@@ -114,15 +118,15 @@ class GoogleCalendar
     }
 
     /**
-     * @param $entitymanager
+     * @param $entityManager
      * @param string $eventId
      * @param array $attendees
      * @return int
      * @throws Exception
      */
-    public static function addAttendees($entitymanager, string $eventId, array $attendees){
+    public static function addAttendees($entityManager, string $eventId, array $attendees){
         // Get the API client and construct the service object.
-        $client = self::getClient($entitymanager);
+        $client = self::getClient($entityManager);
         $service = new Google_Service_Calendar($client);
         $calendarId = 'primary';
         $event = $service->events->get($calendarId,$eventId);
@@ -140,15 +144,15 @@ class GoogleCalendar
     }
 
     /**
-     * @param $entitymanager
+     * @param $entityManager
      * @param string $eventId
      * @param array $attendees
      * @return int
      * @throws Exception
      */
-    public static function removeAttendees($entitymanager, string $eventId, array $attendees){
+    public static function removeAttendees($entityManager, string $eventId, array $attendees){
         // Get the API client and construct the service object.
-        $client = self::getClient($entitymanager);
+        $client = self::getClient($entityManager);
         $service = new Google_Service_Calendar($client);
         $calendarId = 'primary';
         $attenders = array();
@@ -165,15 +169,15 @@ class GoogleCalendar
     }
 
     /**
-     * @param $entitymanager
+     * @param $entityManager
      * @param string $eventId
      * @param array $attendees
      * @return int
      * @throws Exception
      */
-    public static function editAttendees($entitymanager, string $eventId, array $attendees){
+    public static function editAttendees($entityManager, string $eventId, array $attendees){
         // Get the API client and construct the service object.
-        $client = self::getClient($entitymanager);
+        $client = self::getClient($entityManager);
         $service = new Google_Service_Calendar($client);
         $calendarId = 'primary';
 
@@ -189,14 +193,14 @@ class GoogleCalendar
     }
 
     /**
-     * @param $entitymanager
+     * @param $entityManager
      * @param string $eventId
      * @return void
      * @throws Exception
      */
-    public static function remove($entitymanager, string $eventId){
+    public static function remove($entityManager, string $eventId){
         // Get the API client and construct the service object.
-        $client = self::getClient($entitymanager);
+        $client = self::getClient($entityManager);
         $service = new Google_Service_Calendar($client);
         $calendarId = 'primary';
 

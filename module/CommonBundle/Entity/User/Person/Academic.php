@@ -124,9 +124,9 @@ class Academic extends \CommonBundle\Entity\User\Person
     /**
      * @var boolean Whether or not this user wants Google Calendar updates
      *
-     * @ORM\Column(name="calendar_invites", type="boolean")
+     * @ORM\Column(name="enable_calendar_invites", type="boolean", options={"default" = false})
      */
-    private $calendarInvites;
+    private $enableCalendarInvites;
 
     public function __construct()
     {
@@ -135,24 +135,24 @@ class Academic extends \CommonBundle\Entity\User\Person
         $this->universityStatuses = new ArrayCollection();
         $this->organizationMap = new ArrayCollection();
         $this->unitMap = new ArrayCollection();
-        $this->calendarInvites = true;
+        $this->enableCalendarInvites = true;
     }
 
     /**
      * @return boolean
      */
-    public function wantsCalendarInvites()
+    public function enabledCalendarInvites()
     {
-        return $this->calendarInvites;
+        return $this->enableCalendarInvites;
     }
 
     /**
-     * @param boolean $calendarInvites
+     * @param boolean $enableCalendarInvites
      * @return $this
      */
-    public function setCalendarInvites(bool $calendarInvites)
+    public function setCalendarInvites(bool $enableCalendarInvites)
     {
-        $this->calendarInvites = $calendarInvites;
+        $this->enableCalendarInvites = $enableCalendarInvites;
         return $this;
     }
 
