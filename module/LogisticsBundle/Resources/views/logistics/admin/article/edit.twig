@@ -5,7 +5,24 @@
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
-    <div id="controller_action">
+    <div id="controller_action" style="width: 100%">
+        <aside>
+            {% if hasAccess('logistics_admin_article', 'orders') %}
+
+                <div class="sidebox">
+                    <div class="title">View Orders</div>
+                    <div class="content">
+                        <p>
+                            <i>Please hit the link below to view the orders of this article!</i>
+                        </p>
+                        <p>
+                            <a href="{{ url('logistics_admin_article', {'action': 'orders', 'id': article.getId()}) }}">&rarr; View Orders</a>
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
+
+        </aside>
         <h1>Article</h1>
         <p>
             Name: <b>{{ article.getName() }}</b>

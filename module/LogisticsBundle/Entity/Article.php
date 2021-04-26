@@ -22,6 +22,7 @@ namespace LogisticsBundle\Entity;
 
 use CommonBundle\Entity\General\Location;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -56,6 +57,13 @@ class Article
     private $additionalInfo;
 
     /**
+     * @var string Additional information about the article (internal)
+     *
+     * @ORM\Column(name="internal_comment", type="text", nullable=true)
+     */
+    private $internalComment;
+
+    /**
      * @var integer The amount of owned articles
      *
      * @ORM\Column(name="amount_owned", type="integer")
@@ -77,33 +85,11 @@ class Article
     private $visibility;
 
     /**
-     * @static
-     * @var array All the possible visibilities allowed
-     */
-    public static $POSSIBLE_VISIBILITIES = array(
-        'internal' => 'Internal',
-        'external' => 'External',
-        'private' => 'Private',
-    );
-
-    /**
      * @var string The status of this article
      *
      * @ORM\Column(name="status", type="text")
      */
     private $status;
-
-    /**
-     * @static
-     * @var array All the possible statuses allowed
-     */
-    public static $POSSIBLE_STATUSES = array(
-        'okay' => 'Okay',
-        'lost' => 'Lost',
-        'broken' => 'Broken',
-        'dirty' => 'Dirty',
-//        TODO: vragen aan Sietze
-    );
 
     /**
      * @var Location the location of the article
@@ -142,21 +128,80 @@ class Article
     private $category;
 
     /**
-     * @static
-     * @var array All the possible categories allowed
-     */
-    public static $POSSIBLE_CATEGORIES = array(
-//        TODO: vragen aan Sietze
-        'varia' => 'Varia',
-        'sound' => 'Sound',
-    );
-
-    /**
      * @var DateTime The last time this article was updated.
      *
      * @ORM\Column(name="date_updated", type="date")
      */
     private $dateUpdated;
+
+    /**
+     * @var string The path to the article's photo
+     *
+     * @ORM\Column(name="photo_path", type="string", nullable=true)
+     */
+    private $photoPath;
+
+
+    /**
+     * @static
+     * @var array All the possible categories allowed
+     */
+    public static $POSSIBLE_CATEGORIES = array(
+        'geluid' => 'Geluid',
+        'kabels' => 'Kabels',
+        'elektrisch gereedschap' => 'Elektrisch Gereedschap & toebehoren',
+        'hand' => 'Handgereedschap',
+        'kledij' => 'Werkkledij',
+        'materiaal' => 'Material (eindig)',
+        'sanitair' => 'Sanitair',
+        'electronica' => 'Electronica',
+        'vastmaken' => 'Vastmaken & CO',
+        'bouwen' => 'Bouwen',
+        'lijm en silicoon' => 'Lijmen & Siliconen',
+        'verf' => 'Verven & CO',
+        'stof' => 'Stof',
+        'br' => 'BR',
+        'verkleed' => 'Verkleedkledij',
+        'sport' => 'Sport',
+        'fak' => 'Fak',
+        'varia' => 'Varia',
+        'logistiek' => 'Logistiek',
+        'cultuur' => 'Cultuur',
+        'huis' => 'Huishoudelijk',
+        'acti' => 'Activiteiten',
+        'bier' => 'Bierpotten',
+        'glazen' => 'Glazen',
+        'elektriciteitskabels' => 'Elektriciteitskabels',
+        'kook' => 'Kookgerief',
+        'corona' => 'Coronaproofing',
+        'it' => 'IT',
+        'theokot' => 'Theokot',
+        'secri' => 'Secri'
+    );
+
+    /**
+     * @static
+     * @var array All the possible visibilities allowed
+     */
+    public static $POSSIBLE_VISIBILITIES = array(
+        'internal' => 'Internal',
+        'external' => 'External',
+        'private' => 'Private',
+    );
+
+    /**
+     * @static
+     * @var array All the possible statuses allowed
+     */
+    public static $POSSIBLE_STATUSES = array(
+        'ok' => 'In Orde',
+        'vermist' => 'Vermist',
+        'weg' => 'Weg',
+        'kapot' => 'Kapot',
+        'vuil' => 'Vuil',
+        'aankopen' => 'Aankopen',
+        'nakijken' => 'Nakijken',
+    );
 
     public function __construct()
     {
@@ -221,6 +266,25 @@ class Article
     public function setAdditionalInfo($additionalInfo)
     {
         $this->additionalInfo = $additionalInfo;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInternalComment()
+    {
+        return $this->internalComment;
+    }
+
+    /**
+     * @param  string $internalComment
+     * @return self
+     */
+    public function setInternalComment($internalComment)
+    {
+        $this->internalComment = $internalComment;
 
         return $this;
     }
@@ -391,5 +455,24 @@ class Article
     public function setDateUpdated($dateUpdated)
     {
         $this->dateUpdated = $dateUpdated;
+    }
+
+    /**
+     * @param  string $photoPath
+     * @return self
+     */
+    public function setPhotoPath($photoPath)
+    {
+        $this->photoPath = $photoPath;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhotoPath()
+    {
+        return $this->photoPath;
     }
 }

@@ -78,6 +78,9 @@
                             {% if hasAccess('logistics_admin_article', 'delete') %}
                                 <a href="#" class="delete" data-id="{{ article.getId() }}" data-name="{{ article.getName() }}">Delete</a>
                             {% endif %}
+                            {% if hasAccess('logistics_admin_article', 'orders') %}
+                                <a href="{{ url('logistics_admin_article', {"action": "orders", "id": article.getId()}) }}" class="order">Orders</a>
+                            {% endif %}
                         </td>
                     </tr>
 
@@ -150,6 +153,9 @@
                         deleteButton.data({
                             id: this.id,
                         });
+                        {% endif %}
+                        {% if hasAccess('logistics_admin_article', 'orders') %}
+                        actions.append('<a href="{{ url('logistics_admin_article', {"action": "orders"}) }}' + this.id + '" class="order">Orders</a>')
                         {% endif %}
                     });
                     $('#article_search .delete').click(openModal);

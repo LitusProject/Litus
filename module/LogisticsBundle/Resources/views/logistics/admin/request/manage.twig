@@ -12,7 +12,9 @@
                 <th>Name</th>
                 <th>Creator</th>
                 <th>Unit</th>
-                <th >Creation Time</th>
+                <th>Creation Time</th>
+                <th>Type</th>
+{#                <th>Flag</th>#}
                 <th width="70px">Action</th>
             </tr>
 
@@ -22,6 +24,8 @@
                     <td>{{ request.getRecentOrder().getCreator().getFullName() }}</td>
                     <td>{{ request.getRecentOrder().getUnit().getName() }}</td>
                     <td>{{ request.getCreationTime().format('d/m/Y H:i') }}</td>
+                    <td>{{ request.getRequestType() }}</td>
+{#                    <td>{{ request.getFlag() }}</td>#}
                     <td class="actions">
                         {% if hasAccess('logistics_admin_request', 'view') %}
                             <a href="{{ url('logistics_admin_request', {"action": "view", "id": request.getId()}) }}" class="view">View</a>

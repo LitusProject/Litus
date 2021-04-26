@@ -27,10 +27,10 @@ return array(
             'add', 'delete', 'edit', 'manage', 'old',
         ),
         'logistics_admin_article' => array(
-            'add', 'delete', 'edit', 'manage', 'search', 'typeahead',
+            'add', 'delete', 'edit', 'manage', 'search', 'typeahead', 'uploadImage', 'orders'
         ),
         'logistics_admin_order' => array(
-            'add', 'delete', 'edit', 'manage', 'removed', 'articles', 'deleteArticle', 'articleMapping', 'approveArticleMapping',
+            'add', 'delete', 'edit', 'manage', 'removed', 'articles', 'deleteArticle', 'articleMapping', 'approveArticleMapping', 'conflicting'
         ),
         'logistics_admin_request' => array(
             'reject', 'approve', 'manage', 'view',

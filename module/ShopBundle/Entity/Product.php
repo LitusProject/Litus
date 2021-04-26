@@ -36,15 +36,21 @@ class Product
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="bigint")
+     *
      */
     private $id;
 
     /**
      * @var string The name of this product
-     *
      * @ORM\Column(type="text")
      */
     private $name;
+
+    /**
+     * @var string The English name of this product
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $name_en;
 
     /**
      * @var float The selling price of the product
@@ -80,10 +86,27 @@ class Product
     }
 
     /**
+     * @param  string $name_en
+     * @return self
+     */
+    public function setNameEN($name_en)
+    {
+        $this->name_en = $name_en;
+        return $this;
+    }
+
+    /**
+     * @param string $lang
      * @return string
      */
-    public function getName()
+    public function getName($lang = 'nl')
     {
+
+        if ($lang === 'en') {
+            if ($this->name_en !== null) {
+                return $this->name_en;
+            }
+        }
         return $this->name;
     }
 

@@ -186,6 +186,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             )
         );
 
+        $this->add(
+            array(
+                'type'  => 'checkbox',
+                'name' => 'needs_ride',
+                'label' => 'Needs a Van-ride (Kar-rit)',
+            )
+        );
+
         $this->addSubmit('Submit', 'btn btn-primary', 'submit');
     }
 

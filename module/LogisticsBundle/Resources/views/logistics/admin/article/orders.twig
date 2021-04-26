@@ -1,0 +1,73 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'logistics/admin/order/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action" style="width:inherit;">
+        <aside>
+            {% if hasAccess('logistics_admin_article', 'edit') %}
+
+                <div class="sidebox">
+                    <div class="title">Edit Article</div>
+                    <div class="content">
+                        <p>
+                            <i>Please hit the link below to edit this article!</i>
+                        </p>
+                        <p>
+                            <a href="{{ url('logistics_admin_article', {'action': 'edit', 'id': article.getId()}) }}">&rarr; Edit Article</a>
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
+
+        </aside>
+
+        <h1><b>Article:</b></h1>
+        <p>Name: <b>{{ article.getName() }}</b></p>
+        <p>Amount available/owned: <b>{{ article.getAmountAvailable() }}/{{ article.getAmountOwned() }}</b></p>
+        <p>Status: <b>{{ article.getStatus() }}</b></p>
+        <p>Visibility: <b>{{ article.getVisibility() }}</b></p>
+        <p>Location: <b>{{ article.getLocation().getName() }}</b></p>
+        <p>Spot: <b>{{ article.getSpot() }}</b></p>
+        <p>Rent: <b>{{ article.getRent() }}</b></p>
+        <p>Warranty: <b>{{ article.getWarranty() }}</b></p>
+        <p>Category: <b>{{ article.getCategory() }}</b></p>
+        <p>DateUpdated: <b>{{ article.getDateUpdated().format('d/m/Y H:i') }}</b></p>
+
+        <br>
+        <h1><b>Orders:</b></h1>
+        <table class="manage" style="width:100%">
+            <tr>
+                <th width="150px">Name</th>
+                <th width="150px">Location</th>
+                <th>Date</th>
+                <th width="100px">Order Status</th>
+                <th width="70px">Amount</th>
+                <th width="100px">Article Status</th>
+                <th width="70px">Actions</th>
+            </tr>
+            {% for mapping in orders %}
+                <tr class="item item-{{ mapping.getId() }}">
+                    <td>{{ mapping.getOrder().getName() }}</td>
+                    <td>{{ mapping.getOrder().getLocation().getName() }}</td>
+                    <td>{{ mapping.getOrder().getStartDate().format('d/m/Y H:i') }} - {{ mapping.getOrder().getEndDate().format('d/m/Y H:i') }}</td>
+                    <td>{{ mapping.getOrder().getStatus() }}</td>
+                    <td>{{ mapping.getAmount() }}</td>
+                    <td>{{ mapping.getStatus() }}</td>
+                    <td>
+                        {% if hasAccess('logistics_admin_order', 'articleMapping') %}
+                            <a href="{{ url('logistics_admin_order', {"action": "articleMapping", "id": mapping.getOrder().getId(), "map": mapping.getId()}) }}" class="edit">Edit</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+    </script>
+{% endblock %}

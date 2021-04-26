@@ -25,9 +25,9 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
- * Version 20210412194558
+ * Version 20201103165524
  */
-class Version20210412194558 extends \Doctrine\Migrations\AbstractMigration
+class Version20201103165524 extends \Doctrine\Migrations\AbstractMigration
 {
     /**
      * @param  \Doctrine\DBAL\Schema\Schema $schema
@@ -37,7 +37,7 @@ class Version20210412194558 extends \Doctrine\Migrations\AbstractMigration
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('ALTER TABLE shift_registration_shifts ADD final_signin_date TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL');
+        $this->addSql('ALTER TABLE shift_registration_shifts ADD members_visible BOOLEAN DEFAULT \'false\' NOT NULL');
     }
 
     /**
