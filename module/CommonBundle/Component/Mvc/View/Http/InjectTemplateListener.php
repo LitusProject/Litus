@@ -92,7 +92,9 @@ class InjectTemplateListener implements ListenerAggregateInterface
         $routeMatch = $e->getRouteMatch();
         $controller = $e->getTarget();
         if (is_object($controller)) {
-            $controller = $controller::class;
+            // phpcs:disable SlevomatCodingStandard.Classes.ModernClassNameReference.ClassNameReferencedViaFunctionCall
+            $controller = get_class($controller);
+            // phpcs:enable
         }
         if (!$controller) {
             $controller = $routeMatch->getParam('controller', '');
