@@ -304,7 +304,6 @@ class Request
         return $this;
     }
 
-
     /**
      * @return $this
      */

@@ -295,40 +295,41 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         $conflicts = array();
 
-        foreach ($articles as $article){
-            $mappings =array();
+        foreach ($articles as $article) {
+            $mappings = array();
             $allmaps = $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
                 ->findAllActiveByArticleQuery($article)->getResult();
 
-            foreach($allmaps as $map){
-                if ($map->getOrder()->getEndDate() > new DateTime() && !$map->getOrder()->isRemoved()){
+            foreach ($allmaps as $map) {
+                if ($map->getOrder()->getEndDate() > new DateTime() && !$map->getOrder()->isRemoved()) {
                     array_push($mappings, $map);
-                }}
+                }
+            }
 
             $max = $article->getAmountAvailable();
             $allOverlap = array();
 
-            foreach ($mappings as $map){
+            foreach ($mappings as $map) {
                 $overlapping_maps = $this->findOverlapping($mappings, $map);
 
                 foreach ($overlapping_maps as $overlap) {
-                    if (!in_array($overlap, $allOverlap)){
+                    if (!in_array($overlap, $allOverlap)) {
                         array_push($allOverlap, $overlap);
                     }
                 }
             }
 
             $total = 0;
-            foreach ($allOverlap as $overlap){
+            foreach ($allOverlap as $overlap) {
                 $total += $overlap->getAmount();
             }
-            if ($total>$max) {
+            if ($total > $max) {
                 $conflict = array(
                     'article' => $article,
                     'mappings' => $allOverlap,
                     'total' => $total
-                    );
+                );
                 array_push($conflicts, $conflict);
             }
         }
@@ -454,14 +455,15 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         return $map;
     }
 
-    private function findOverlapping(array $array, OrderArticleMap $mapping){
+    private function findOverlapping(array $array, OrderArticleMap $mapping)
+    {
         $start = $mapping->getOrder()->getStartDate();
         $end = $mapping->getOrder()->getEndDate();
         $overlapping = array();
-        foreach ($array as $map){
+        foreach ($array as $map) {
             if ($map->getOrder() !== $mapping->getOrder()
-                && !($map->getOrder()->getStartDate() > $end || $map->getOrder()->getEndDate()<= $start)
-            ){
+                && !($map->getOrder()->getStartDate() > $end || $map->getOrder()->getEndDate() <= $start)
+            ) {
                 array_push($overlapping, $map);
             }
         }

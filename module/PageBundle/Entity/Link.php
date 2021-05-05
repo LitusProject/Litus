@@ -210,7 +210,7 @@ class Link
      */
     public function setOrderNumber($orderNumber)
     {
-        if (get_class($orderNumber) !== 'int') {
+        if ($orderNumber::class !== 'int') {
             $this->orderNumber = null;
         } else {
             $this->orderNumber = $orderNumber;
@@ -232,7 +232,7 @@ class Link
      */
     public function setForcedLanguage($forcedLanguage)
     {
-        if (get_class($forcedLanguage) !== Language::class) {
+        if ($forcedLanguage::class !== Language::class) {
             $this->forcedLanguage = null;
         } else {
             $this->forcedLanguage = $forcedLanguage;
