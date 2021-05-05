@@ -210,7 +210,9 @@ class Link
      */
     public function setOrderNumber($orderNumber)
     {
-        if ($orderNumber::class !== 'int') {
+        // phpcs:disable SlevomatCodingStandard.Classes.ModernClassNameReference.ClassNameReferencedViaFunctionCall
+        if (get_class($orderNumber) !== 'int') {
+        // phpcs:enable
             $this->orderNumber = null;
         } else {
             $this->orderNumber = $orderNumber;
@@ -232,7 +234,9 @@ class Link
      */
     public function setForcedLanguage($forcedLanguage)
     {
-        if ($forcedLanguage::class !== Language::class) {
+        // phpcs:disable SlevomatCodingStandard.Classes.ModernClassNameReference.ClassNameReferencedViaFunctionCall
+        if (get_class($forcedLanguage) !== Language::class) {
+        // phpcs:enable
             $this->forcedLanguage = null;
         } else {
             $this->forcedLanguage = $forcedLanguage;
