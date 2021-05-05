@@ -141,7 +141,7 @@ abstract class Hydrator implements HydratorInterface, ServiceLocatorAwareInterfa
                         '%s expects an object of type %s but got %s',
                         $method,
                         $this->entity,
-                        is_object($object) ? get_class($object) : gettype($object)
+                        is_object($object) ? $object::class : gettype($object)
                     )
                 );
             }

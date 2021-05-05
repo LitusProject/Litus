@@ -359,7 +359,7 @@ class Page extends \CommonBundle\Entity\Node
      */
     public function setForcedLanguage($forcedLanguage)
     {
-        if ($forcedLanguage === null || get_class($forcedLanguage) !== Language::class) {
+        if ($forcedLanguage === null || $forcedLanguage::class !== Language::class) {
             $this->forcedLanguage = null;
         } else {
             $this->forcedLanguage = $forcedLanguage;

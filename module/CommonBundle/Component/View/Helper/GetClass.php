@@ -33,6 +33,6 @@ class GetClass extends \Laminas\View\Helper\AbstractHelper
      */
     public function __invoke(object $object)
     {
-        return get_class($object);
+        return $object::class;
     }
 }
