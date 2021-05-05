@@ -20,8 +20,6 @@
 
 namespace CommonBundle\Component\Ratchet\Redis;
 
-// phpcs:disable SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameAfterKeyword
 interface MessageComponentInterface extends ComponentInterface, MessageInterface
-// phpcs:enable
 {
 }
