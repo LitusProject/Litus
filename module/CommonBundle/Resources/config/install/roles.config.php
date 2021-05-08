@@ -63,4 +63,13 @@ return array(
             ),
         ),
     ),
+    'editor' => array(
+        'system'  => true,
+        'parents' => array(),
+        'actions' => array(
+            'common_admin_faq' => array(
+                'add', 'delete', 'edit', 'manage', 'search'
+            ),
+        ),
+    ),
 );

@@ -93,6 +93,19 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
+        'common_admin_faq' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_tab',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+            '@common_jquery_form',
+            '@common_form_upload_progress',
+            '@gollum_css',
+            '@gollum_js',
+            '@common_remote_typeahead',
+        ),
 
         'common_account' => array(
             '@bootstrap_css',

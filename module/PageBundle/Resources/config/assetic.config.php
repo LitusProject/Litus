@@ -31,6 +31,7 @@ return array(
             '@common_form_upload_progress',
             '@gollum_css',
             '@gollum_js',
+            '@common_remote_typeahead',
         ),
         'page_admin_category' => array(
             '@common_jquery',

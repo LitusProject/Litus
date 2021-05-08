@@ -131,12 +131,45 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
+        $faqs = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Node\FAQ\FAQ')
+            ->findAllByPageQuery($page)->getResult();
+
         $form = $this->getForm('page_page_edit', array('page' => $page));
+        $pageForm = $this->getForm('page_page_FAQ', array('page' => $page));
 
         if ($this->getRequest()->isPost()) {
-            $form->setData($this->getRequest()->getPost());
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+            $pageForm->setData($formData);
 
-            if ($form->isValid()) {
+//            if (isset($formData['page_add']) && $pageForm->isValid()) {
+            if (isset($formData['page_add'])) {
+                error_log("hereeeeeeeeeeeee!");
+                $faq = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Node\FAQ\FAQ')
+                    ->findOneById(intval($formData['faq_typeahead']['id']));
+
+                $page->addFAQ($faq);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The faq was successfully added!'
+                );
+
+                $this->redirect()->toRoute(
+                    'page_admin_page',
+                    array(
+                        'action' => 'edit',
+                        'id'   => $page->getId(),
+                    )
+                );
+                return new ViewModel();
+            }
+
+            elseif (isset($formData['page_edit']) && $form->isValid()) {
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -158,6 +191,8 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'form' => $form,
+                'faqs' => $faqs,
+                'page' => $page,
             )
         );
     }
@@ -259,6 +294,33 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             $item->category = $page->getCategory() ? $page->getCategory()->getName($this->getLanguage()) : '';
             $item->parent = $page->getParent() ? $page->getParent()->getTitle($this->getLanguage()) : '';
             $item->author = $page->getCreationPerson()->getFullName();
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+    public function typeaheadAction()
+    {
+        $this->initAjax();
+
+        $pages = $this->getEntityManager()
+            ->getRepository('PageBundle\Entity\Node\Page')
+            ->findAllByTitleQuery($this->getParam('string'))
+            ->setMaxResults(15)
+            ->getResult();
+
+        $result = array();
+        foreach ($pages as $page) {
+            $item = (object) array();
+            $item->id = $page->getId();
+            $item->title = $page->getName();
+            $item->category = $page->getCategory()->getName();
+            $item->value = $page->getCategory()->getName() . ' - ' . $page->getTitle();
             $result[] = $item;
         }
 

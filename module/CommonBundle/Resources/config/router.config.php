@@ -194,6 +194,37 @@ return array(
                 ),
             ),
         ),
+        'common_admin_faq' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/faq[/:action[/:id][/page/:page][/map/:map][/:field/:string]][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
+                    'map'   => '[0-9]*',
+                    'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'common_admin_faq',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
+        'common_admin_faq_typeahead' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/faq/typeahead[/:string][/]',
+                'constraints' => array(
+                    'string' => '[%a-zA-Z0-9:.,_-]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'common_admin_faq',
+                    'action'     => 'typeahead',
+                ),
+            ),
+        ),
         'common_index' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -324,6 +355,8 @@ return array(
         'common_admin_session'  => 'CommonBundle\Controller\Admin\SessionController',
         'common_admin_unit'     => 'CommonBundle\Controller\Admin\UnitController',
         'common_admin_visit'    => 'CommonBundle\Controller\Admin\VisitController',
+        'common_admin_faq'    => 'CommonBundle\Controller\Admin\FAQController',
+
 
         'common_index'      => 'CommonBundle\Controller\IndexController',
         'common_account'    => 'CommonBundle\Controller\AccountController',

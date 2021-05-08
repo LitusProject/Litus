@@ -36,6 +36,7 @@ use Doctrine\ORM\Mapping as ORM;
  *      "form"="FormBundle\Entity\Node\Form",
  *      "form_group"="FormBundle\Entity\Node\Group",
  *      "page"="PageBundle\Entity\Node\Page",
+ *      "faq"="CommonBundle\Entity\General\Node\FAQ\FAQ",
  *      "news"="NewsBundle\Entity\Node\News",
  *      "notification"="NotificationBundle\Entity\Node\Notification",
  *      "event"="CalendarBundle\Entity\Node\Event"

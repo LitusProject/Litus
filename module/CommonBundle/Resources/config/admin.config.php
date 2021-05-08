@@ -38,6 +38,7 @@ return array(
         'general_3' => array(
             'common_admin_location' => array('title' => 'Locations'),
             'common_admin_unit'     => array('title' => 'Units'),
+            'common_admin_faq'     => array('title' => 'FAQs'),
         ),
     ),
 );

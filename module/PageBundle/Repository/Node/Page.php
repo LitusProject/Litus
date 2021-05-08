@@ -20,6 +20,7 @@
 
 namespace PageBundle\Repository\Node;
 
+use CommonBundle\Entity\General\Node\FAQ\FAQ;
 use PageBundle\Entity\Node\Page as PageEntity;
 
 /**
@@ -129,6 +130,23 @@ class Page extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                     $query->expr()->isNull('p.endTime')
                 )
             )
+            ->getQuery();
+    }
+
+    /**
+     * @param FAQ $faq
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllByFAQQuery(FAQ $faq)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('p')
+            ->from('PageBundle\Entity\Node\Page', 'p')
+            ->innerJoin('p.faqs', 'f')
+            ->where(
+                $query->expr()->eq(':id', 'f.id'))
+            ->orderBy('p.name', 'ASC')
+            ->setParameter('id', $faq->getId())
             ->getQuery();
     }
 }

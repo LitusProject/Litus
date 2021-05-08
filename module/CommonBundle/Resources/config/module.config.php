@@ -194,6 +194,8 @@ return Config::create(
                 'Username'        => Component\Validator\Username::class,
                 'year'            => Component\Validator\Year::class,
                 'Year'            => Component\Validator\Year::class,
+                'Page'            => Component\Validator\Page::class,
+                'page'            => Component\Validator\Page::class,
             ),
         ),
         'view_manager' => array(

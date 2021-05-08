@@ -18,100 +18,72 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace PageBundle\Entity\Node;
+namespace CommonBundle\Entity\General\Node\FAQ;
 
-use CommonBundle\Component\Util\Url;
 use CommonBundle\Entity\General\Language;
-use CommonBundle\Entity\General\Node\FAQ\FAQ;
 use CommonBundle\Entity\User\Person;
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\Node\FAQ\Translation;
 use Locale;
-use PageBundle\Entity\Category;
-use PageBundle\Entity\Node\Page\Translation;
+use PageBundle\Entity\Node\Page;
 
 /**
- * This entity stores the node item.
+ * This class represents a Frequently Asked Question that is saved in the database
  *
- * @ORM\Entity(repositoryClass="PageBundle\Repository\Node\Page")
- * @ORM\Table(name="nodes_pages")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\Node\FAQ\FAQ")
+ * @ORM\Table(name="nodes_faq")
  */
-class Page extends \CommonBundle\Entity\Node
+class FAQ extends \CommonBundle\Entity\Node
 {
     /**
-     * @var DateTime The time at which this version was created
-     *
-     * @ORM\Column(name="start_time", type="datetime")
-     */
-    private $startTime;
-
-    /**
-     * @var DateTime The time at which this version was rendered obsolete
-     *
-     * @ORM\Column(name="end_time", type="datetime", nullable=true)
-     */
-    private $endTime;
-
-    /**
-     * @var Category The page's category
-     *
-     * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Category")
-     * @ORM\JoinColumn(name="category", referencedColumnName="id")
-     */
-    private $category;
-
-    /**
-     * @var ArrayCollection The faqs that are shown on this page
-     *
-     * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\General\Node\FAQ\FAQ")
-     */
-    private $faqs;
-
-    /**
-     * @var ArrayCollection The roles that can edit this page
-     *
-     * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
-     * @ORM\JoinTable(
-     *      name="nodes_pages_roles_map",
-     *      joinColumns={@ORM\JoinColumn(name="page", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="role", referencedColumnName="name")}
-     * )
-     */
-    private $editRoles;
-
-    /**
-     * @var Page|null The page's parent
-     *
-     * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Node\Page")
-     * @ORM\JoinColumn(name="parent", referencedColumnName="id")
-     */
-    private $parent;
-
-    /**
-     * @var string The name of this page
+     * @var string The name for this FAQ
      *
      * @ORM\Column(type="string")
      */
     private $name;
 
     /**
-     * @var ArrayCollection The translations of this page
+     * @var ArrayCollection The roles that can edit this FAQ
      *
-     * @ORM\OneToMany(targetEntity="PageBundle\Entity\Node\Page\Translation", mappedBy="page", cascade={"remove"})
+     * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
+     * @ORM\JoinTable(
+     *      name="faq_roles_map",
+     *      joinColumns={@ORM\JoinColumn(name="faq", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="role", referencedColumnName="name")}
+     * )
+     */
+    private $editRoles;
+
+    /**
+     * @var ArrayCollection The pages that show this FAQ
+     *
+     * @ORM\ManyToMany(targetEntity="PageBundle\Entity\Node\Page")
+     * @ORM\JoinTable(
+     *      name="faq_pages_map",
+     *      joinColumns={@ORM\JoinColumn(name="faq", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="page", referencedColumnName="id")}
+     * )
+     */
+    private $pages;
+
+    /**
+     * @var ArrayCollection The translations of this faq
+     *
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\General\Node\FAQ\Translation", mappedBy="faq", cascade={"remove"})
      */
     private $translations;
 
     /**
-     * @var integer|null The ordering number for the page in the category
+     * @var integer|null The ordering number for the faq on the page
      *
      * @ORM\Column(name="order_number", type="integer", nullable=true)
      */
     private $orderNumber;
 
     /**
-     * @var Language|null The Language of the forced language (null if it's a normal page)
+     * @var Language|null The Language of the forced language (null if it's a normal faq)
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
      * @ORM\JoinColumn(name="forced_language", referencedColumnName="id", nullable=true)
@@ -119,9 +91,9 @@ class Page extends \CommonBundle\Entity\Node
     private $forcedLanguage;
 
     /**
-     * @var boolean reflects if the page is active.
+     * @var boolean reflects if the faq is active.
      *
-     * @ORM\Column(name="active", type="boolean", options={"default" = true})
+     * @ORM\Column(name="active", type="boolean")
      */
     private $active;
 
@@ -132,57 +104,10 @@ class Page extends \CommonBundle\Entity\Node
     {
         parent::__construct($person);
 
-        $this->startTime = new DateTime();
-
+        $this->active = true;
         $this->editRoles = new ArrayCollection();
         $this->translations = new ArrayCollection();
-        $this->faqs = new ArrayCollection();
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getStartTime()
-    {
-        return $this->startTime;
-    }
-
-    /**
-     * @param DateTime $endTime
-     * @return self
-     */
-    public function setEndTime($endTime)
-    {
-        $this->endTime = $endTime;
-
-        return $this;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getEndTime()
-    {
-        return $this->endTime;
-    }
-
-    /**
-     * @param Category $category
-     * @return self
-     */
-    public function setCategory(Category $category)
-    {
-        $this->category = $category;
-
-        return $this;
-    }
-
-    /**
-     * @return Category
-     */
-    public function getCategory()
-    {
-        return $this->category;
+        $this->pages = new ArrayCollection();
     }
 
     /**
@@ -205,31 +130,12 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param Page $parent
-     * @return self
-     */
-    public function setParent(Page $parent)
-    {
-        $this->parent = $parent;
-
-        return $this;
-    }
-
-    /**
-     * @return Page|null
-     */
-    public function getParent()
-    {
-        return $this->parent;
-    }
-
-    /**
      * @param string $name
      * @return self
      */
     public function setName($name)
     {
-        $this->name = Url::createSlug($name);
+        $this->name = $name;
 
         return $this;
     }
@@ -301,19 +207,7 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * Closes this version of the page.
-     *
-     * @return void
-     */
-    public function close()
-    {
-        if ($this->endTime === null) {
-            $this->endTime = new DateTime();
-        }
-    }
-
-    /**
-     * Checks whether or not the given user can edit the page.
+     * Checks whether the given user can edit the page.
      *
      * @param Person|null $person The person that should be checked
      * @return boolean
@@ -403,37 +297,36 @@ class Page extends \CommonBundle\Entity\Node
         $this->active = $active;
         return $this;
     }
+
     /**
      * @return Collection
      */
-    public function getFAQs(): Collection
+    public function getPages(): Collection
     {
-        return $this->faqs;
+        return $this->pages;
     }
 
     /**
-     * @param Collection $faqs
+     * @param Collection $pages
      */
-    public function setFAQs(Collection $faqs)
+    public function setPages(Collection $pages)
     {
-        $this->faqs = $faqs;
+        $this->pages = $pages;
     }
 
     /**
-     * @param FAQ $faq
+     * @param Page $page
      */
-    public function addFAQ(FAQ $faq)
+    public function addPage(Page $page)
     {
-        $faq->addPage($this);
-        $this->faqs->add($faq);
+        $this->pages->add($page);
     }
 
     /**
-     * @param FAQ $faq
+     * @param Page $page
      */
-    public function removeFAQ(FAQ $faq)
+    public function removePage(Page $page)
     {
-        $faq->removePage($this);
-        $this->faqs->removeElement($faq);
+        $this->pages->removeElement($page);
     }
 }

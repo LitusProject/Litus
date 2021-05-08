@@ -53,6 +53,9 @@ return array(
         'common_admin_visit' => array(
             'manage', 'search',
         ),
+        'common_admin_faq' => array(
+            'add', 'delete', 'edit', 'manage', 'search',
+        ),
         'common_account' => array(
             'activate', 'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'uploadProfileImage',
         ),
