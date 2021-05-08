@@ -1,0 +1,63 @@
+.contentBlock {
+    background-color: whitesmoke; 
+    position: relative; 
+    padding: 40px 20px
+}
+
+.headingHolder {
+    position: absolute; 
+    top: -20px;
+}
+
+.lineDecoration {
+    border-bottom: 2px solid #ffd400; 
+    width: 90px
+}
+
+.columnGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 10px;
+    grid-row-gap: 0px;
+}
+
+.spacer40 {
+    height: 40px; 
+}
+
+.itemHolder {
+    background-color: white; 
+    padding: 10px 20px; 
+    border-radius: 5px; 
+    margin-bottom: 10px; 
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-align-content: stretch;
+    -ms-flex-line-pack: stretch;
+    align-content: stretch;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.flexStretch {
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+}
+
+.accountInfo {
+    font-weight: 600; 
+    width: 200px; 
+}

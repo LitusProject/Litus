@@ -1,40 +1,38 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-    <div class="page-header">
-        <h1>{{ publication.getTitle() }} - {{ year.getCode() }}</h1>
-    </div>
+    <div class="container"> 
+        <div class="page-header">
+            <h1>{{ publication.getTitle() }} - {{ year.getCode() }}</h1>
+        </div>
 
-    {% if pdfs %}
-        <h1>{{ translate('PDF Editions') }}</h1>
-        <div class="row">
-            {% for pdf in pdfs %}
-                <div class="col-xs-6 col-md-2">
-                    <div class="thumbnail" style="height: 70px;text-align: center">
-                        <a class="archive-item" target="_blank" href="{{ publicPdfDir}}{{ pdf.getFileName() }}">
+        {% if pdfs %}
+            <h3>{{ translate('PDF Editions') }}</h3>
+            <div class="row">
+                {% for pdf in pdfs %}
+                    <div class="col-xs-6 col-md-2">
+                        <a class="publication-link" target="_blank" href="{{ publicPdfDir}}{{ pdf.getFileName() }}">
                             {{ pdf.getTitle() }}<br />
                             <span class="date">({{ dateLocalized(pdf.getDate(), 'd MMM Y') }})</span>
                         </a>
                     </div>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
 
 
-    {% if htmls %}
-        <h1>{{ translate('HTML Editions') }}</h1>
-        <div class="row">
-            {% for html in htmls %}
-                <div class="col-xs-6 col-md-2">
-                    <div class="thumbnail" style="height: 70px;text-align: center">
-                        <a class="archive-item" target="_blank" href="{{ url('publication_edition_html', {'action': 'view', 'id': html.getId()}) }}">
+        {% if htmls %}
+            <h3>{{ translate('HTML Editions') }}</h3>
+            <div class="row">
+                {% for html in htmls %}
+                    <div class="col-xs-6 col-md-2">
+                        <a class="publication-link" target="_blank" href="{{ url('publication_edition_html', {'action': 'view', 'id': html.getId()}) }}">
                             {{ html.getTitle() }}<br />
                             <span class="date">({{ dateLocalized(html.getDate(), 'd MMM Y') }})</span>
                         </a>
                     </div>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}

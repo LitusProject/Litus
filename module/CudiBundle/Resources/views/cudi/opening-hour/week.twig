@@ -1,41 +1,40 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-    {% if submenu is not empty %}
+    {# {% if submenu is not empty %}
         {% include 'page/page/partials/submenu.twig' %}
-    {% endif %}
+    {% endif %} #}
 
-    <div class="page-header">
+    <div class="container">
         <h1>{{ translate('Opening Hours') }}</h1>
-    </div>
 
-    <p>
-        {{ translate('The opening hours for next week are:') }}
-    </p>
+        <p>{{ translate('The opening hours for next week are:') }}</p>
 
-    <div class="hidden-md hidden-lg">
-        {% set previousDay = '' %}
-        {% for openingHour in openingHours %}
-            <div>
-                {% if previousDay != openingHour.getStart().format('d/M') %}
-                    <div class="label label-info" style="display: block; width: 110px; text-align: center;">
-                        {{ dateLocalized(openingHour.getStart(), 'EEEE (d/M)')|capitalize }}
-                    </div>
-                {% endif %}
-                <div style="margin-left: 20px;">
-                    {% if openingHour.getComment(language)|length > 0 %}
-                        <b>{{ dateLocalized(openingHour.getStart(), 'H:mm') }}&mdash;{{ dateLocalized(openingHour.getEnd(), 'H:mm') }}:</b>
-                        <small>{{ openingHour.getComment(language) }}</small>
-                    {% else %}
-                        <b>{{ dateLocalized(openingHour.getStart(), 'H:mm') }}&mdash;{{ dateLocalized(openingHour.getEnd(), 'H:mm') }}</b>
+        <div class="hidden-md hidden-lg">
+            {% set previousDay = '' %}
+            {% for openingHour in openingHours %}
+                <div>
+                    {% if previousDay != openingHour.getStart().format('d/M') %}
+                        <div class="label label-info" style="display: block; width: 110px; text-align: center;">
+                            {{ dateLocalized(openingHour.getStart(), 'EEEE (d/M)')|capitalize }}
+                        </div>
                     {% endif %}
+                    <div style="margin-left: 20px;">
+                        {% if openingHour.getComment(language)|length > 0 %}
+                            <b>{{ dateLocalized(openingHour.getStart(), 'H:mm') }}&mdash;{{ dateLocalized(openingHour.getEnd(), 'H:mm') }}:</b>
+                            <small>{{ openingHour.getComment(language) }}</small>
+                        {% else %}
+                            <b>{{ dateLocalized(openingHour.getStart(), 'H:mm') }}&mdash;{{ dateLocalized(openingHour.getEnd(), 'H:mm') }}</b>
+                        {% endif %}
+                    </div>
+                    {% set previousDay = openingHour.getStart().format('d/M') %}
                 </div>
-                {% set previousDay = openingHour.getStart().format('d/M') %}
-            </div>
-        {% endfor %}
-    </div>
+            {% endfor %}
+        </div>
 
-    <div id="schedule" class="hidden-xs hidden-sm"></div>
+        <div id="schedule" class="hidden-xs hidden-sm"></div>
+
+    </div>
 {% endblock %}
 
 {% block content_script %}

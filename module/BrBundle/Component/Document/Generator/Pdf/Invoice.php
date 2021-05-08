@@ -103,6 +103,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         $headerExtraText = $configs->getConfigValue('br.invoice_header_extra_text');
 
 
+
         $vatTypeExplanation = '';
         if ($this->invoice->getTaxFree() === true) {
 //            if ($this->invoice->isEU() === null) {
@@ -110,7 +111,10 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
 //            }
             $isEU = $this->invoice->isEU() ? 'eu' : 'non-eu';
             $vatTypeExplanation = unserialize($configs->getConfigValue('br.invoice_vat_explanation'))[$isEU] . ' ' . $this->invoice->getVatContext();
+
         }
+        $isEU = $this->invoice->isEU() ? 'eu' : 'non-eu';
+        $vatTypeExplanation = unserialize($configs->getConfigValue('br.invoice_vat_explanation'))[$isEU] . ' ' . $this->invoice->getVatContext();
 
 
         $subEntries = unserialize($configs->getConfigValue('br.invoice_below_entries'))[$this->lang];

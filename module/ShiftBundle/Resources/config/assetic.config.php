@@ -90,6 +90,7 @@ return array(
             '@common_jquery',
             '@bootstrap_css',
             '@site_css',
+            '@shift_css',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
@@ -112,6 +113,22 @@ return array(
             '@bootstrap_js_popover',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
+        ),
+    ),
+
+    'collections' => array(
+        'shift_css' => array(
+            'assets' => array(
+                'shift/less/shifts.less',
+            ),
+            'filters' => array(
+                '?LessFilter' => array(
+                    'name' => LessFilter::class,
+                ),
+            ),
+            'options' => array(
+                'output' => 'shift_css.css',
+            ),
         ),
     ),
 );

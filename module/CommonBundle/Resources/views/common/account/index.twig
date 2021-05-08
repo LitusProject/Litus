@@ -1,7 +1,211 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-    <div class="page-header">
+
+    <div class="container">
+        <div class="spacer40"></div>
+        <h1>Mijn VTK</h1>
+        <div class="spacer40"></div>
+
+        <div class="contentBlock">
+            <div class="headingHolder">
+                <h2 style="margin-bottom: 0px">Studierichting & vakken</h2>
+                <div class="lineDecoration"></div>
+            </div>
+
+            <div class="columnGrid">
+                <div>
+                    <h5>Semester 1</h5>
+                    <div class="itemHolder">
+                        <p>Inleiding tot de ingenieurswetenschappen</p>
+                        <div class="flexStretch"></div>
+                        <p style="opacity: 50%">H2301</p>
+                    </div>
+                    <div class="itemHolder">
+                        <p>Inleiding tot de ingenieurswetenschappen</p>
+                        <div class="flexStretch"></div>
+                        <p style="opacity: 50%">H2301</p>
+                    </div>
+                    <div class="itemHolder">
+                        <p>Inleiding tot de ingenieurswetenschappen</p>
+                        <div class="flexStretch"></div>
+                        <p style="opacity: 50%">H2301</p>
+                    </div>
+                </div>
+                <div>
+                    <h5>Semester 2</h5>
+                    <div class="itemHolder">
+                        <p>Inleiding tot de ingenieurswetenschappen</p>
+                        <div class="flexStretch"></div>
+                        <p style="opacity: 50%">H2301</p>
+                    </div>
+                    <div class="itemHolder">
+                        <p>Inleiding tot de ingenieurswetenschappen</p>
+                        <div class="flexStretch"></div>
+                        <p style="opacity: 50%">H2301</p>
+                    </div>
+                    <div class="itemHolder">
+                        <p>Inleiding tot de ingenieurswetenschappen</p>
+                        <div class="flexStretch"></div>
+                        <p style="opacity: 50%">H2301</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 25px">
+                <h5>MOGELIJKE ACTIES</h5>
+                <div class="button blue unfilled"><a href="{{ url('common_account', {'action': 'subjects'}) }}">Vakken aanpassen</a></div>
+                <div class="button blue unfilled"><a href="{{ url('common_account', {'action': 'studies'}) }}">Studierichting aanpassen</a></div>
+            </div>
+
+        </div>
+
+        <div class="spacer40"></div>
+
+        <div class="columnGrid">
+            <div class="contentBlock">
+                <div class="headingHolder">
+                    <h2 style="margin-bottom: 0px">Cursusdienst</h2>
+                    <div class="lineDecoration"></div>
+                </div>
+
+                <h5>Deze boeken liggen voor je klaar: </h5>
+                <div class="itemHolder">
+                    <p>Slides inleiding tot de ingenieurswetenschappen</p>
+                    <div class="flexStretch"></div>
+                    <p style="opacity: 50%">2,10</p>
+                </div>
+                <div class="itemHolder">
+                    <p>Slides inleiding tot de ingenieurswetenschappen</p>
+                    <div class="flexStretch"></div>
+                    <p style="opacity: 50%">2,10</p>
+                </div>
+                <div class="itemHolder">
+                    <p>Slides inleiding tot de ingenieurswetenschappen</p>
+                    <div class="flexStretch"></div>
+                    <p style="opacity: 50%">2,10</p>
+                </div>
+
+                <div style="margin-top: 25px">
+                    <h5>MOGELIJKE ACTIES</h5>
+                    <div class="button blue unfilled"><a>Boeken bestellen</a></div>
+                </div>
+
+            </div>
+            <div class="contentBlock">
+                <div class="headingHolder">
+                    <h2 style="margin-bottom: 0px">Theokot</h2>
+                    <div class="lineDecoration"></div>
+                </div>
+
+                <div style="margin-top: 25px">
+                    <h5>MOGELIJKE ACTIES</h5>
+                    <div class="button blue unfilled"><a>Broodjes bestellen</a></div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="spacer40"></div>
+
+        <div class="contentBlock">
+            <div class="headingHolder">
+                <h2 style="margin-bottom: 0px">Mijn shiften</h2>
+                <div class="lineDecoration"></div>
+            </div>
+
+            <div style="margin-top: 25px">
+                <h5>MOGELIJKE ACTIES</h5>
+                <div class="button blue unfilled"><a>Meer shiften zoeken</a></div>
+            </div>
+        </div>
+
+        <div class="spacer40"></div>
+
+        <div class="contentBlock">
+            <div class="headingHolder">
+                <h2 style="margin-bottom: 0px">Accountgegevens</h2>
+                <div class="lineDecoration"></div>
+            </div>
+
+            <div>
+                <div>
+                    <div class="accountInfo" style="display: inline-block">{{ translate('Name') }}</div>
+                    <div style="display: inline-block">{{ authenticatedPerson.getFullName() }}&nbsp;</div>
+                </div>
+                <div>
+                    <div class="accountInfo" style="display: inline-block">{{ translate('Birthday') }}</div>
+                    <div style="display: inline-block">{{ dateLocalized(authenticatedPerson.getBirthday(), 'd MMMM y') }}&nbsp;</div>
+                </div>
+                <div>
+                    <div class="accountInfo" style="display: inline-block">{{ translate('Sex') }}</div>
+                    <div style="display: inline-block">{{ authenticatedPerson.getSex()|capitalize }}&nbsp;</div>
+                </div>
+                <div>
+                    <div class="accountInfo" style="display: inline-block">{{ translate('Phone Number') }}</div>
+                    <div style="display: inline-block">{{ authenticatedPerson.getPhoneNumber() }}&nbsp;</div>
+                </div>
+                <div>
+                    <div class="accountInfo" style="display: inline-block">{{ translate('University Identification') }}</div>
+                    <div style="display: inline-block">{{ authenticatedPerson.getUniversityIdentification() }}&nbsp;</div>
+                </div>
+                <div>
+                    <div class="accountInfo" style="display: inline-block">{{ translate('University E-mail') }}</div>
+                    <div style="display: inline-block">{{ authenticatedPerson.getUniversityEmail() }}&nbsp;</div>
+                </div>
+                <div>
+                    <div class="accountInfo" style="display: inline-block">{{ translate('Personal E-mail') }}</div>
+                    <div style="display: inline-block">{{ authenticatedPerson.getPersonalEmail() }}&nbsp;</div>
+                </div>
+                <div>
+                    <div class="accountInfo" style="display: inline-block">{{ translate('International Student') }}</div>
+                    <div style="display: inline-block">{% if  authenticatedPerson.isInternational() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}&nbsp;</div>
+                </div>
+
+                <div>
+                    <div class="accountInfo" style="display: inline-block">{{ translate('Primary Address') }}</div>
+                    <div style="display: inline-block">
+                        {{ authenticatedPerson.getPrimaryAddress().getStreet() }} {{ authenticatedPerson.getPrimaryAddress().getNumber() }}{% if '' != authenticatedPerson.getPrimaryAddress().getMailbox() %}/{{ authenticatedPerson.getPrimaryAddress().getMailbox() }}{% endif %}
+                        {{ authenticatedPerson.getPrimaryAddress().getPostal() }} {{ authenticatedPerson.getPrimaryAddress().getCity() }}
+                        {{ authenticatedPerson.getPrimaryAddress().getCountry() }}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="accountInfo" style="display: inline-block">{{ translate('Secondary Address') }}</div>
+                    <div style="display: inline-block">
+                        {{ authenticatedPerson.getSecondaryAddress().getStreet() }} {{ authenticatedPerson.getSecondaryAddress().getNumber() }}{% if '' != authenticatedPerson.getSecondaryAddress().getMailbox() %}/{{ authenticatedPerson.getSecondaryAddress().getMailbox() }}{% endif %}
+                        {{ authenticatedPerson.getSecondaryAddress().getPostal() }} {{ authenticatedPerson.getSecondaryAddress().getCity() }}
+                        {{ authenticatedPerson.getSecondaryAddress().getCountry() }}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="accountInfo" style="display: inline-block">{{ translate('Student Organization') }}</div>
+                    <div style="display: inline-block">
+                        {{ authenticatedPerson.getOrganization(currentAcademicYear).getName() }}&nbsp;
+                    </div>
+                </div>
+
+                <div>
+                    <div class="accountInfo" style="display: inline-block">{{ translate('Membership') }}</div>
+                    <div style="display: inline-block">
+                        {% if authenticatedPerson.isMember(currentAcademicYear) or metaData.becomeMember() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}
+                    </div>
+                </div>
+
+            </div>
+            
+
+            <div style="margin-top: 25px">
+                <h5>MOGELIJKE ACTIES</h5>
+                <div class="button blue unfilled"><a href="{{ url('common_account', {'action': 'edit'}) }}">Accountgegevens bijwerken</a></div>
+            </div>
+        </div>
+
+    </div> 
+
+    {# <div class="page-header">
         <h1>{{ translate('Account') }}</h1>
     </div>
 
@@ -190,7 +394,7 @@
             </div>
         </div>
     </div>
-    {% endif %}
+    {% endif %} #}
 
 
 {% endblock %}
