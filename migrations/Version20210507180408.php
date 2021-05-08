@@ -46,22 +46,18 @@ class Version20210507180408 extends \Doctrine\Migrations\AbstractMigration
         $this->addSql('CREATE TABLE faq_roles_map (faq BIGINT NOT NULL, role VARCHAR(255) NOT NULL, PRIMARY KEY(faq, role))');
         $this->addSql('CREATE INDEX IDX_E76724EEE8FF75CC ON faq_roles_map (faq)');
         $this->addSql('CREATE INDEX IDX_E76724EE57698A6A ON faq_roles_map (role)');
-        $this->addSql('CREATE TABLE faq_pages_map (faq BIGINT NOT NULL, page BIGINT NOT NULL, PRIMARY KEY(faq, page))');
-        $this->addSql('CREATE INDEX IDX_F801013BE8FF75CC ON faq_pages_map (faq)');
-        $this->addSql('CREATE INDEX IDX_F801013B140AB620 ON faq_pages_map (page)');
         $this->addSql('ALTER TABLE nodes_faq_translation ADD CONSTRAINT FK_D5444E5FE8FF75CC FOREIGN KEY (faq) REFERENCES nodes_faq (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE nodes_faq_translation ADD CONSTRAINT FK_D5444E5FD4DB71B5 FOREIGN KEY (language) REFERENCES general_languages (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE nodes_faq ADD CONSTRAINT FK_660123A5DA76015 FOREIGN KEY (forced_language) REFERENCES general_languages (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE nodes_faq ADD CONSTRAINT FK_660123A5BF396750 FOREIGN KEY (id) REFERENCES nodes_nodes (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE faq_roles_map ADD CONSTRAINT FK_E76724EEE8FF75CC FOREIGN KEY (faq) REFERENCES nodes_faq (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE faq_roles_map ADD CONSTRAINT FK_E76724EE57698A6A FOREIGN KEY (role) REFERENCES acl_roles (name) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE faq_pages_map ADD CONSTRAINT FK_F801013BE8FF75CC FOREIGN KEY (faq) REFERENCES nodes_faq (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE faq_pages_map ADD CONSTRAINT FK_F801013B140AB620 FOREIGN KEY (page) REFERENCES nodes_pages (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('CREATE TABLE page_faq (page_id BIGINT NOT NULL, faq_id BIGINT NOT NULL, PRIMARY KEY(page_id, faq_id))');
-        $this->addSql('CREATE INDEX IDX_24407D5DC4663E4 ON page_faq (page_id)');
-        $this->addSql('CREATE INDEX IDX_24407D5D81BEC8C2 ON page_faq (faq_id)');
-        $this->addSql('ALTER TABLE page_faq ADD CONSTRAINT FK_24407D5DC4663E4 FOREIGN KEY (page_id) REFERENCES nodes_pages (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE page_faq ADD CONSTRAINT FK_24407D5D81BEC8C2 FOREIGN KEY (faq_id) REFERENCES nodes_faq (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('CREATE SEQUENCE faq_page_map_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE TABLE faq_page_map (id BIGINT NOT NULL, referenced_faq BIGINT DEFAULT NULL, referenced_page BIGINT DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE INDEX IDX_A3B05B3D4A61D01 ON faq_page_map (referenced_faq)');
+        $this->addSql('CREATE INDEX IDX_A3B05B3DF1335145 ON faq_page_map (referenced_page)');
+        $this->addSql('ALTER TABLE faq_page_map ADD CONSTRAINT FK_A3B05B3D4A61D01 FOREIGN KEY (referenced_faq) REFERENCES nodes_faq (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE faq_page_map ADD CONSTRAINT FK_A3B05B3DF1335145 FOREIGN KEY (referenced_page) REFERENCES nodes_pages (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
 
     /**

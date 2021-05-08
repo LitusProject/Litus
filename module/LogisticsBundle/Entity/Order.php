@@ -184,11 +184,9 @@ class Order
         }
         if ($status == 'rejected') {
             $this->reject();
-        }
-        elseif ($status == 'approved') {
+        } elseif ($status == 'approved') {
             $this->approve();
-        }
-        elseif ($status == 'pending') {
+        } elseif ($status == 'pending') {
             $this->pending();
         }
         return $this;
@@ -358,7 +356,7 @@ class Order
     }
 
     /**
-     * @param bool $b
+     * @param boolean $b
      * @return boolean
      */
     public function setNeedsRide(bool $b)

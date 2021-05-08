@@ -71,12 +71,18 @@ class Page extends \CommonBundle\Component\Validator\AbstractValidator
             ->getRepository('PageBundle\Entity\Node\Page')
             ->findOneById(intval($context['id']));
 
-        if (!in_array($page, $this->options['faq']->getPages()->toArray())) {
-            return true;
+        $faq = $this->options['faq'];
+
+        $maps = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Node\FAQ\FAQPageMap')
+            ->findAllByFAQQuery($faq)->getResult();
+
+        foreach ($maps as $map) {
+            if ($map->getPage()->getId() === $page->getId()) {
+                $this->error(self::NOT_VALID);
+                return false;
+            }
         }
-
-        $this->error(self::NOT_VALID);
-
-        return false;
+        return true;
     }
 }

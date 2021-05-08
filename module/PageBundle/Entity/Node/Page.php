@@ -22,11 +22,9 @@ namespace PageBundle\Entity\Node;
 
 use CommonBundle\Component\Util\Url;
 use CommonBundle\Entity\General\Language;
-use CommonBundle\Entity\General\Node\FAQ\FAQ;
 use CommonBundle\Entity\User\Person;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Locale;
 use PageBundle\Entity\Category;
@@ -61,13 +59,6 @@ class Page extends \CommonBundle\Entity\Node
      * @ORM\JoinColumn(name="category", referencedColumnName="id")
      */
     private $category;
-
-    /**
-     * @var ArrayCollection The faqs that are shown on this page
-     *
-     * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\General\Node\FAQ\FAQ")
-     */
-    private $faqs;
 
     /**
      * @var ArrayCollection The roles that can edit this page
@@ -136,7 +127,6 @@ class Page extends \CommonBundle\Entity\Node
 
         $this->editRoles = new ArrayCollection();
         $this->translations = new ArrayCollection();
-        $this->faqs = new ArrayCollection();
     }
 
     /**
@@ -402,38 +392,5 @@ class Page extends \CommonBundle\Entity\Node
     {
         $this->active = $active;
         return $this;
-    }
-    /**
-     * @return Collection
-     */
-    public function getFAQs(): Collection
-    {
-        return $this->faqs;
-    }
-
-    /**
-     * @param Collection $faqs
-     */
-    public function setFAQs(Collection $faqs)
-    {
-        $this->faqs = $faqs;
-    }
-
-    /**
-     * @param FAQ $faq
-     */
-    public function addFAQ(FAQ $faq)
-    {
-        $faq->addPage($this);
-        $this->faqs->add($faq);
-    }
-
-    /**
-     * @param FAQ $faq
-     */
-    public function removeFAQ(FAQ $faq)
-    {
-        $faq->removePage($this);
-        $this->faqs->removeElement($faq);
     }
 }

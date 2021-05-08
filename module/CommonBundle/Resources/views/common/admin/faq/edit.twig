@@ -25,23 +25,23 @@
         <br style="clear:both">
 
         <h2>Add Page</h2>
-        {{ forms.renderForm(faqForm) }}
+        {{ forms.renderForm(pageForm) }}
 
         <table class="manage">
             <tr>
                 <th>Name</th>
                 <th width="120px">Actions</th>
             </tr>
-            {% for entry in pages %}
-                {% if '' != entry.getName() %}
+            {% for entry in maps %}
+                {% if '' != entry.getPage().getName() %}
                     <tr class="item item-{{ entry.getId() }}">
-                        <td>{{ entry.getName() }}</td>
+                        <td>{{ entry.getPage().getName() }}</td>
                         <td>
-                            {% if hasAccess('page_admin_page', 'deletePageMap') %}
-                                <a href="#" data-id="{{ entry.getId() }}" data-name="{{ entry.getName() }}" class="delete">Delete</a>
+                            {% if hasAccess('common_admin_faq', 'deletePageMap') %}
+                                <a href="#" data-id="{{ entry.getId() }}" data-name="{{ entry.getPage().getName() }}" class="delete">Delete</a>
                             {% endif %}
                             {% if hasAccess('page_admin_page', 'edit') %}
-                                <a href="{{ url('page_admin_page', {'action': 'edit', 'id': entry.getId()}) }}" class="edit">Edit</a>
+                                <a href="{{ url('page_admin_page', {'action': 'edit', 'id': entry.getPage().getId()}) }}" class="edit">Edit</a>
                             {% endif %}
                         </td>
                     </tr>
@@ -102,7 +102,7 @@
             removeEntry.find('.entryName').html($(this).data('name'));
             var id = $this.data('id');
             removeEntry.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('common_admin_faq', {"action": "deletePageMap", "id": faq.getId(), "map": id})}}', function (data) {
+                $.post('{{ url('common_admin_faq', {"action": "deletePageMap", "id": faq.getId(), "map": "&map&"})}}'.replace('&map&', id), function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.entry_removed_success').removeClass('hide');

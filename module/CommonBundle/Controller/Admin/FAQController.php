@@ -21,9 +21,8 @@
 namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Entity\General\Node\FAQ\FAQ;
-use Laminas\Validator\ValidatorChain;
+use CommonBundle\Entity\General\Node\FAQ\FAQPageMap;
 use Laminas\View\Model\ViewModel;
-use PageBundle\Entity\Node\Page;
 
 /**
  * FAQController
@@ -67,7 +66,7 @@ class FAQController extends \CommonBundle\Component\Controller\ActionController\
     public function addAction()
     {
         $form = $this->getForm('common_FAQ_add');
-        $pageForm = $this->getForm('common_FAQ_page', array());
+        $pageForm = $this->getForm('common_FAQ_page');
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -98,7 +97,6 @@ class FAQController extends \CommonBundle\Component\Controller\ActionController\
             array(
                 'form' => $form,
                 'pageForm' => $pageForm,
-                'pages' => array(),
             )
         );
     }
@@ -109,8 +107,9 @@ class FAQController extends \CommonBundle\Component\Controller\ActionController\
         if ($faq === null) {
             return new ViewModel();
         }
-        $pages = $this->getEntityManager()
-            ->getRepository('PageBundle\Entity\Node\Page')
+
+        $maps = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Node\FAQ\FAQPageMap')
             ->findAllByFAQQuery($faq)->getResult();
 
         $faqForm = $this->getForm('common_FAQ_edit', array('faq' => $faq));
@@ -121,23 +120,18 @@ class FAQController extends \CommonBundle\Component\Controller\ActionController\
             $faqForm->setData($formData);
             $pageForm->setData($formData);
 
-//            if (isset($formData['page_add']) && $pageForm->isValid()) {
-            if (isset($formData['page_add'])) {
-                error_log("hereeeeeeeeeeeee!");
-
-                $page = $this->getEntityManager()
-                    ->getRepository('PageBundle\Entity\Node\Page')
+            if (in_array('page_add', $formData) && $pageForm->isValid() && !in_array('submit', $formData)) {
+                $page = $this->getEntityManager()->getRepository('PageBundle\Entity\Node\Page')
                     ->findOneById(intval($formData['page_typeahead']['id']));
 
-                $page->addFAQ($faq);
-
+                $map = new FAQPageMap($faq, $page);
+                $this->getEntityManager()->persist($map);
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
                     'Succes',
                     'The page was successfully added!'
                 );
-
                 $this->redirect()->toRoute(
                     'common_admin_faq',
                     array(
@@ -146,17 +140,12 @@ class FAQController extends \CommonBundle\Component\Controller\ActionController\
                     )
                 );
                 return new ViewModel();
-            }
-
-            elseif (isset($formData['faq_edit']) && $faqForm->isValid()) {
-                error_log("here2!");
+            } elseif (in_array('submit', $formData)  && $faqForm->isValid() && !in_array('page_add', $formData)) {
                 $this->getEntityManager()->flush();
-
                 $this->flashMessenger()->success(
                     'Succes',
                     'The faq was successfully edited!'
                 );
-
                 $this->redirect()->toRoute(
                     'common_admin_faq',
                     array(
@@ -165,14 +154,13 @@ class FAQController extends \CommonBundle\Component\Controller\ActionController\
                 );
                 return new ViewModel();
             }
-
         }
 
         return new ViewModel(
             array(
                 'form' => $faqForm,
                 'pageForm' => $pageForm,
-                'pages' => $pages,
+                'maps' => $maps,
                 'faq' => $faq,
             )
         );
@@ -187,6 +175,13 @@ class FAQController extends \CommonBundle\Component\Controller\ActionController\
             return new ViewModel();
         }
 
+        $maps = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Node\FAQ\FAQPageMap')
+            ->findAllByFAQQuery($faq)->getResult();
+
+        foreach ($maps as $map) {
+            $this->getEntityManager()->remove($map);
+        }
         $this->getEntityManager()->remove($faq);
         $this->getEntityManager()->flush();
 
@@ -203,15 +198,12 @@ class FAQController extends \CommonBundle\Component\Controller\ActionController\
     {
         $this->initAjax();
 
-        $faq = $this->getFAQEntity();
-        if ($faq === null) {
+        $map = $this->getMapEntity();
+        if ($map === null) {
             return new ViewModel();
         }
-        $page = $this->getPageEntity();
-        if ($page === null) {
-            return new ViewModel();
-        }
-        $page->removeFAQ($faq);
+
+        $this->getEntityManager()->remove($map);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -324,19 +316,19 @@ class FAQController extends \CommonBundle\Component\Controller\ActionController\
     }
 
     /**
-     * @return Page|null
+     * @return FAQPageMap|null
      */
-    private function getPageEntity()
+    private function getMapEntity()
     {
-        $page = $this->getEntityById('PageBundle\Entity\Node\Page', $this->getParam('map'));
-        if (!($page instanceof Page) || !$page->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+        $map = $this->getEntityById('CommonBundle\Entity\General\Node\FAQ\FAQPageMap', 'map');
+        if (!($map instanceof FAQPageMap) || !$map->getPage()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
             $this->flashMessenger()->error(
                 'Error',
-                'No page was found!'
+                'No FAQ-page-map was found!'
             );
 
             $this->redirect()->toRoute(
-                'page_admin_page',
+                'common_admin_faq',
                 array(
                     'action' => 'manage',
                 )
@@ -345,6 +337,6 @@ class FAQController extends \CommonBundle\Component\Controller\ActionController\
             return;
         }
 
-        return $page;
+        return $map;
     }
 }

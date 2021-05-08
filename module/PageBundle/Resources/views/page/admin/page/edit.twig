@@ -33,16 +33,16 @@
                 <th>Name</th>
                 <th width="120px">Actions</th>
             </tr>
-            {% for entry in faqs %}
-                {% if '' != entry.getName() %}
+            {% for entry in maps %}
+                {% if '' != entry.getFAQ().getName() %}
                     <tr class="item item-{{ entry.getId() }}">
-                        <td>{{ entry.getName() }}</td>
+                        <td>{{ entry.getFAQ().getName() }}</td>
                         <td>
                             {% if hasAccess('common_admin_faq', 'deletePageMap') %}
-                                <a href="#" data-id="{{ entry.getId() }}" data-name="{{ entry.getName() }}" class="delete">Delete</a>
+                                <a href="#" data-id="{{ entry.getId() }}" data-name="{{ entry.getFAQ().getName() }}" class="delete">Delete</a>
                             {% endif %}
                             {% if hasAccess('common_admin_faq', 'edit') %}
-                                <a href="{{ url('common_admin_faq', {'action': 'edit', 'id': entry.getId()}) }}" class="edit">Edit</a>
+                                <a href="{{ url('common_admin_faq', {'action': 'edit', 'id': entry.getFAQ().getId()}) }}" class="edit">Edit</a>
                             {% endif %}
                         </td>
                     </tr>
@@ -111,7 +111,7 @@
             removeEntry.find('.entryName').html($(this).data('name'));
             var id = $this.data('id');
             removeEntry.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('common_admin_faq', {"action": "deletePageMap", "id": "&id&", "map": page.getId() })}}'.replace('&id&', id), function (data) {
+                $.post('{{ url('common_admin_faq', {"action": "deletePageMap", "id": page.getId(), "map": "&map&"})}}'.replace('&map&', id), function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.entry_removed_success').removeClass('hide');

@@ -20,7 +20,6 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
-use DateTime;
 use Imagick;
 use Laminas\View\Model\ViewModel;
 use LogisticsBundle\Entity\Article;
@@ -290,8 +289,8 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $filePath = 'public' . $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('logistics.article_picture_path');
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('logistics.article_picture_path');
 
             if ($form->isValid()) {
                 $formData = $form->getData();
@@ -337,8 +336,8 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                         'result' => array(
                             'status' => 'success',
                             'picture' => $this->getEntityManager()
-                                    ->getRepository('CommonBundle\Entity\General\Config')
-                                    ->getConfigValue('logistics.article_picture_path') . '/' . $newFileName,
+                                ->getRepository('CommonBundle\Entity\General\Config')
+                                ->getConfigValue('logistics.article_picture_path') . '/' . $newFileName,
                         ),
                     )
                 );

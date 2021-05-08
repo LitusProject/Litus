@@ -22,7 +22,6 @@ namespace CommonBundle\Entity\General\Node\FAQ;
 
 use CommonBundle\Entity\General\Language;
 use Doctrine\ORM\Mapping as ORM;
-use PageBundle\Entity\Node\Page;
 
 /**
  * This entity stores the node item.
@@ -72,10 +71,10 @@ class Translation
     private $content;
 
     /**
-     * @param FAQ $faq
+     * @param FAQ      $faq
      * @param Language $language
-     * @param string $title
-     * @param string $content
+     * @param string   $title
+     * @param string   $content
      */
     public function __construct(FAQ $faq, Language $language, $title, $content)
     {

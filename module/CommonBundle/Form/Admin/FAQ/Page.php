@@ -20,18 +20,13 @@
 
 namespace CommonBundle\Form\Admin\FAQ;
 
-use CommonBundle\Component\Form\FieldsetInterface;
-use CommonBundle\Entity\General\Language;
 use CommonBundle\Entity\General\Node\FAQ\FAQ as FAQEntity;
-use RuntimeException;
 
 /**
  * Add FAQ
  */
 class Page extends \CommonBundle\Component\Form\Admin\Form
 {
-    protected $hydrator = 'CommonBundle\Hydrator\General\Node\FAQ\FAQ';
-
     /**
      * @var FAQEntity
      */

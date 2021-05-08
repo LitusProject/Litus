@@ -54,16 +54,18 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
                 ->getRepository('CommonBundle\Entity\General\Organization\Unit')
                 ->findOneById($data['unit'])
         );
-        if (isset($data['name']) && $data['name'] !== null)
+        if (isset($data['name']) && $data['name'] !== null) {
             $object->setName($data['name']);
+        }
 
         $object->updateDate();
         $object->setStartDate(self::loadDateTime($data['start_date']))
             ->setEndDate(self::loadDateTime($data['end_date']));
 
-        if (isset($data['status']))
-            if ($data['status'] !== null){
-            $object->setStatus($data['status']);
+        if (isset($data['status'])) {
+            if ($data['status'] !== null) {
+                $object->setStatus($data['status']);
+            }
         }
 
 

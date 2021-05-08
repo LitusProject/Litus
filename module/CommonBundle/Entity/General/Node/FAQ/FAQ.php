@@ -21,13 +21,11 @@
 namespace CommonBundle\Entity\General\Node\FAQ;
 
 use CommonBundle\Entity\General\Language;
+use CommonBundle\Entity\General\Node\FAQ\Translation;
 use CommonBundle\Entity\User\Person;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use CommonBundle\Entity\General\Node\FAQ\Translation;
 use Locale;
-use PageBundle\Entity\Node\Page;
 
 /**
  * This class represents a Frequently Asked Question that is saved in the database
@@ -55,18 +53,6 @@ class FAQ extends \CommonBundle\Entity\Node
      * )
      */
     private $editRoles;
-
-    /**
-     * @var ArrayCollection The pages that show this FAQ
-     *
-     * @ORM\ManyToMany(targetEntity="PageBundle\Entity\Node\Page")
-     * @ORM\JoinTable(
-     *      name="faq_pages_map",
-     *      joinColumns={@ORM\JoinColumn(name="faq", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="page", referencedColumnName="id")}
-     * )
-     */
-    private $pages;
 
     /**
      * @var ArrayCollection The translations of this faq
@@ -107,7 +93,6 @@ class FAQ extends \CommonBundle\Entity\Node
         $this->active = true;
         $this->editRoles = new ArrayCollection();
         $this->translations = new ArrayCollection();
-        $this->pages = new ArrayCollection();
     }
 
     /**
@@ -296,37 +281,5 @@ class FAQ extends \CommonBundle\Entity\Node
     {
         $this->active = $active;
         return $this;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getPages(): Collection
-    {
-        return $this->pages;
-    }
-
-    /**
-     * @param Collection $pages
-     */
-    public function setPages(Collection $pages)
-    {
-        $this->pages = $pages;
-    }
-
-    /**
-     * @param Page $page
-     */
-    public function addPage(Page $page)
-    {
-        $this->pages->add($page);
-    }
-
-    /**
-     * @param Page $page
-     */
-    public function removePage(Page $page)
-    {
-        $this->pages->removeElement($page);
     }
 }

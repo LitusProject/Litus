@@ -20,7 +20,6 @@
 
 namespace CommonBundle\Hydrator\General\Node\FAQ;
 
-use Locale;
 use CommonBundle\Entity\General\Node\FAQ\FAQ as FAQEntity;
 use CommonBundle\Entity\General\Node\FAQ\Translation as TranslationEntity;
 

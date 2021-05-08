@@ -20,10 +20,7 @@
 
 namespace PageBundle\Form\Admin\Page;
 
-use CommonBundle\Component\Form\FieldsetInterface;
-use CommonBundle\Entity\General\Language;
 use PageBundle\Entity\Node\Page as PageEntity;
-use RuntimeException;
 
 /**
  * Add FAQ
