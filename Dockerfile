@@ -47,7 +47,7 @@ RUN \
       --optimize; \
   fi
 
-FROM php:8.0.5-cli-alpine AS php-cli
+FROM php:8.0.6-cli-alpine AS php-cli
 
 ARG APPLICATION_ENV=development
 ENV APPLICATION_ENV=${APPLICATION_ENV}
