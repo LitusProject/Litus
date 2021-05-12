@@ -137,7 +137,7 @@ class FAQController extends \CommonBundle\Component\Controller\ActionController\
             $faqForm->setData($formData);
             $pageForm->setData($formData);
 
-            if (in_array('page_add', $formData) && $pageForm->isValid() && !in_array('submit', $formData)) {
+            if (isset($formData['page_add']) && $pageForm->isValid() && !isset($formData['submit'])) {
                 $page = $this->getEntityManager()->getRepository('PageBundle\Entity\Node\Page')
                     ->findOneById(intval($formData['page_typeahead']['id']));
 
@@ -158,7 +158,7 @@ class FAQController extends \CommonBundle\Component\Controller\ActionController\
                 );
                 return new ViewModel();
             }
-            elseif (in_array('submit', $formData)  && $faqForm->isValid() && !in_array('page_add', $formData)) {
+            elseif (isset($formData['submit'])  && $faqForm->isValid() && !isset($formData['page_add'])) {
                 $this->getEntityManager()->flush();
                 $this->flashMessenger()->success(
                     'Succes',
