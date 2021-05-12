@@ -22,7 +22,9 @@ namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Entity\General\Node\FAQ\FAQ;
 use CommonBundle\Entity\General\Node\FAQ\FAQPageMap;
+use Laminas\Validator\ValidatorChain;
 use Laminas\View\Model\ViewModel;
+use PageBundle\Entity\Node\Page;
 
 /**
  * FAQController
@@ -33,6 +35,11 @@ class FAQController extends \CommonBundle\Component\Controller\ActionController\
 {
     public function manageAction()
     {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
+            return new ViewModel();
+        }
+
         $faqs = array();
         if ($this->getParam('field') !== null) {
             $faqs = $this->search();
@@ -65,6 +72,11 @@ class FAQController extends \CommonBundle\Component\Controller\ActionController\
 
     public function addAction()
     {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
+            return new ViewModel();
+        }
+
         $form = $this->getForm('common_FAQ_add');
         $pageForm = $this->getForm('common_FAQ_page');
 
@@ -103,6 +115,11 @@ class FAQController extends \CommonBundle\Component\Controller\ActionController\
 
     public function editAction()
     {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
+            return new ViewModel();
+        }
+
         $faq = $this->getFAQEntity();
         if ($faq === null) {
             return new ViewModel();
@@ -140,7 +157,8 @@ class FAQController extends \CommonBundle\Component\Controller\ActionController\
                     )
                 );
                 return new ViewModel();
-            } elseif (in_array('submit', $formData)  && $faqForm->isValid() && !in_array('page_add', $formData)) {
+            }
+            elseif (in_array('submit', $formData)  && $faqForm->isValid() && !in_array('page_add', $formData)) {
                 $this->getEntityManager()->flush();
                 $this->flashMessenger()->success(
                     'Succes',
@@ -168,6 +186,11 @@ class FAQController extends \CommonBundle\Component\Controller\ActionController\
 
     public function deleteAction()
     {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
+            return new ViewModel();
+        }
+
         $this->initAjax();
 
         $faq = $this->getFAQEntity();
@@ -179,7 +202,7 @@ class FAQController extends \CommonBundle\Component\Controller\ActionController\
             ->getRepository('CommonBundle\Entity\General\Node\FAQ\FAQPageMap')
             ->findAllByFAQQuery($faq)->getResult();
 
-        foreach ($maps as $map) {
+        foreach ($maps as $map){
             $this->getEntityManager()->remove($map);
         }
         $this->getEntityManager()->remove($faq);
@@ -196,6 +219,11 @@ class FAQController extends \CommonBundle\Component\Controller\ActionController\
 
     public function deletePageMapAction()
     {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
+            return new ViewModel();
+        }
+
         $this->initAjax();
 
         $map = $this->getMapEntity();
@@ -217,6 +245,11 @@ class FAQController extends \CommonBundle\Component\Controller\ActionController\
 
     public function typeaheadAction()
     {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
+            return new ViewModel();
+        }
+
         $this->initAjax();
 
         $pages = $this->getEntityManager()
@@ -243,6 +276,11 @@ class FAQController extends \CommonBundle\Component\Controller\ActionController\
 
     public function searchAction()
     {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
+            return new ViewModel();
+        }
+
         $this->initAjax();
 
         $faqs = $this->search();
@@ -338,5 +376,17 @@ class FAQController extends \CommonBundle\Component\Controller\ActionController\
         }
 
         return $map;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\User\Person|null
+     */
+    private function getPersonEntity()
+    {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            return null;
+        }
+
+        return $this->getAuthentication()->getPersonObject();
     }
 }

@@ -54,7 +54,7 @@ return array(
             'manage', 'search',
         ),
         'common_admin_faq' => array(
-            'add', 'delete', 'edit', 'manage', 'search',
+            'add', 'delete', 'edit', 'manage', 'search', 'typeahead'
         ),
         'common_account' => array(
             'activate', 'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'uploadProfileImage',
