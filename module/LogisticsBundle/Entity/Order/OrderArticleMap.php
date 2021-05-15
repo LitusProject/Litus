@@ -75,6 +75,7 @@ class OrderArticleMap
      */
     public static $POSSIBLE_STATUSES = array(
         'aangevraagd' => 'Aangevraagd',
+        'goedgekeurd' => 'Goedgekeurd',
         'op locatie' => 'Op Locatie',
         'vermist' => 'Vermist',
         'terug' => 'Terug',

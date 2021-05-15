@@ -359,7 +359,9 @@ class Page extends \CommonBundle\Entity\Node
      */
     public function setForcedLanguage($forcedLanguage)
     {
+        // phpcs:disable SlevomatCodingStandard.Classes.ModernClassNameReference.ClassNameReferencedViaFunctionCall
         if ($forcedLanguage === null || get_class($forcedLanguage) !== Language::class) {
+        // phpcs:enable
             $this->forcedLanguage = null;
         } else {
             $this->forcedLanguage = $forcedLanguage;

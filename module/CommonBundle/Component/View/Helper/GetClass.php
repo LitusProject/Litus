@@ -33,6 +33,8 @@ class GetClass extends \Laminas\View\Helper\AbstractHelper
      */
     public function __invoke(object $object)
     {
+        // phpcs:disable SlevomatCodingStandard.Classes.ModernClassNameReference.ClassNameReferencedViaFunctionCall
         return get_class($object);
+        // phpcs:enable
     }
 }

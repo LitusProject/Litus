@@ -141,7 +141,9 @@ abstract class Hydrator implements HydratorInterface, ServiceLocatorAwareInterfa
                         '%s expects an object of type %s but got %s',
                         $method,
                         $this->entity,
+                        // phpcs:disable SlevomatCodingStandard.Classes.ModernClassNameReference.ClassNameReferencedViaFunctionCall
                         is_object($object) ? get_class($object) : gettype($object)
+                        // phpcs:enable
                     )
                 );
             }

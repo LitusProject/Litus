@@ -59,6 +59,20 @@ class Order
     private $description;
 
     /**
+     * @var string Internal Comment
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $internalComment;
+
+    /**
+     * @var string External Comment
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $externalComment;
+
+    /**
      * @var string The mail-address for the contact for this order
      *
      * @ORM\Column(name="email", type="text", nullable=true)
@@ -184,11 +198,9 @@ class Order
         }
         if ($status == 'rejected') {
             $this->reject();
-        }
-        elseif ($status == 'approved') {
+        } elseif ($status == 'approved') {
             $this->approve();
-        }
-        elseif ($status == 'pending') {
+        } elseif ($status == 'pending') {
             $this->pending();
         }
         return $this;
@@ -331,6 +343,44 @@ class Order
     }
 
     /**
+     * @param  string $internalComment
+     * @return Order
+     */
+    public function setInternalComment($internalComment)
+    {
+        $this->internalComment = $internalComment;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInternalComment()
+    {
+        return $this->internalComment;
+    }
+
+    /**
+     * @param  string $externalComment
+     * @return Order
+     */
+    public function setExternalComment($externalComment)
+    {
+        $this->externalComment = $externalComment;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExternalComment()
+    {
+        return $this->externalComment;
+    }
+
+    /**
      * @param  string $email
      * @return Order
      */
@@ -358,7 +408,7 @@ class Order
     }
 
     /**
-     * @param bool $b
+     * @param boolean $b
      * @return boolean
      */
     public function setNeedsRide(bool $b)

@@ -152,5 +152,5 @@ return array(
 
     'Article Name'  => 'Article Name',
     'Order Name'     => 'Order Name',
-
+    'Material'      => 'Material',
 );

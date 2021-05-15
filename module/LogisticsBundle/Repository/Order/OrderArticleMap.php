@@ -74,7 +74,6 @@ class OrderArticleMap extends \CommonBundle\Component\Doctrine\ORM\EntityReposit
                     $query->expr()->eq('m.referencedArticle', ':article'),
                     $query->expr()->eq('o.removed', 'FALSE'),
                     $query->expr()->gt('o.endDate', ':now')
-
                 )
             )
             ->setParameter('article', $article)

@@ -244,17 +244,31 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
         $subject = $mailData[$language->getAbbrev()]['subject'];
 
         $mail = new Message();
-        $mail->setEncoding('UTF-8')
-            ->setBody(
-                str_replace(
-                    array('{{ name }}', '{{ type }}', '{{ end }}', '{{ start }}'),
-                    array($order->getName(), $request->getRequestType(), $order->getEndDate()->format('d/m/Y H:m'), $order->getStartDate()->format('d/m/Y H:m')),
-                    $message
+        if ($rejected === true) {
+            $mail->setEncoding('UTF-8')
+                ->setBody(
+                    str_replace(
+                        array('{{ name }}', '{{ type }}', '{{ end }}', '{{ start }}', '{{ reason }}'),
+                        array($order->getName(), $request->getRequestType(), $order->getEndDate()->format('d/m/Y H:m'), $order->getStartDate()->format('d/m/Y H:m'), $request->getRejectMessage()),
+                        $message
+                    )
                 )
-            )
-            ->setFrom($mailAddress, $mailName)
-            ->addTo($request->getContact()->getPersonalEmail(), $request->getContact()->getFullName())
-            ->setSubject(str_replace('{{ name }}', $order->getName(), $subject));
+                ->setFrom($mailAddress, $mailName)
+                ->addTo($request->getContact()->getPersonalEmail(), $request->getContact()->getFullName())
+                ->setSubject(str_replace('{{ name }}', $order->getName(), $subject));
+        } else {
+            $mail->setEncoding('UTF-8')
+                ->setBody(
+                    str_replace(
+                        array('{{ name }}', '{{ type }}', '{{ end }}', '{{ start }}'),
+                        array($order->getName(), $request->getRequestType(), $order->getEndDate()->format('d/m/Y H:m'), $order->getStartDate()->format('d/m/Y H:m')),
+                        $message
+                    )
+                )
+                ->setFrom($mailAddress, $mailName)
+                ->addTo($request->getContact()->getPersonalEmail(), $request->getContact()->getFullName())
+                ->setSubject(str_replace('{{ name }}', $order->getName(), $subject));
+        }
 
         if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);

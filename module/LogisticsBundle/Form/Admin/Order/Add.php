@@ -109,6 +109,36 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'     => 'textarea',
+                'name'     => 'internal_comment',
+                'label'    => 'Internal Comment',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'textarea',
+                'name'     => 'external_comment',
+                'label'    => 'External Comment',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
                 'type'       => 'select',
                 'name'       => 'location',
                 'label'      => 'Location',
@@ -175,7 +205,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'label'      => 'Status',
                 'required'   => true,
                 'attributes' => array(
-                    'options' => array('removed' => 'Removed', 'rejected'=>'Rejected', 'approved'=>'Approved', 'pending'=>'Pending'),
+                    'options' => array('removed' => 'Removed', 'rejected' => 'Rejected', 'approved' => 'Approved', 'pending' => 'Pending'),
                 ),
             )
         );

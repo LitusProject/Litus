@@ -56,13 +56,6 @@ class Catalog extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array(
                                     'name' => 'Digits',
                                 ),
-                                array(
-                                    'name'    => 'Between',
-                                    'options' => array(
-                                        'min' => 0,
-                                        'max' => $mapping->getAmountAvailable(),
-                                    ),
-                                ),
                             ),
                         ),
                     ),
