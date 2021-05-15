@@ -256,8 +256,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
                 ->setFrom($mailAddress, $mailName)
                 ->addTo($request->getContact()->getPersonalEmail(), $request->getContact()->getFullName())
                 ->setSubject(str_replace('{{ name }}', $order->getName(), $subject));
-        }
-        else {
+        } else {
             $mail->setEncoding('UTF-8')
                 ->setBody(
                     str_replace(

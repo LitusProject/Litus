@@ -242,8 +242,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      */
     private function createLocationsArray()
     {
-        return unserialize($this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('logistics.locations'));
+        return unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('logistics.locations')
+        );
     }
 }

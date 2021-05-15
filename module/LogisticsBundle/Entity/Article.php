@@ -20,9 +20,7 @@
 
 namespace LogisticsBundle\Entity;
 
-use CommonBundle\Entity\General\Location;
 use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -236,7 +234,6 @@ class Article
     {
         $this->spot = $spot;
     }
-
 
     /**
      * @return string

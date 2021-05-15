@@ -205,7 +205,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'label'      => 'Status',
                 'required'   => true,
                 'attributes' => array(
-                    'options' => array('removed' => 'Removed', 'rejected'=>'Rejected', 'approved'=>'Approved', 'pending'=>'Pending'),
+                    'options' => array('removed' => 'Removed', 'rejected' => 'Rejected', 'approved' => 'Approved', 'pending' => 'Pending'),
                 ),
             )
         );

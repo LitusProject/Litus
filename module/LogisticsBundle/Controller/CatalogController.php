@@ -24,9 +24,9 @@ use CommonBundle\Entity\User\Person\Academic;
 use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
 use LogisticsBundle\Entity\Article;
+use LogisticsBundle\Entity\Order;
 use LogisticsBundle\Entity\Order\OrderArticleMap as Map;
 use LogisticsBundle\Entity\Request;
-use LogisticsBundle\Entity\Order;
 
 /**
  * CatalogController
@@ -55,7 +55,6 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
             $unitRequests = $this->getOpenRequestsByUnit($unit);
             $orders = $this->mergeArraysUnique($orders, $unitOrders);
             $requests = $this->mergeArraysUnique($requests, $unitRequests);
-
         }
         return new ViewModel(
             array(
@@ -79,7 +78,8 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
 
         if ($academic !== $order->getCreator()
             &&(!$academic->getOrganizationStatus($this->getCurrentAcademicYear())
-                ||$academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())){
+            ||$academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
+        ) {
             return $this->notFoundAction();
         }
 
@@ -102,7 +102,6 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
             ->findAllByVisibilityQuery('internal')->getResult();
 
         foreach ($articles as $art) {
-
             $articleInfo = array(
                 'article'   => $art,
                 'mapped'    => $mapped[$art->getId()] ?? 0,
@@ -176,7 +175,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'articles' =>       $allArticles,
+                'articles' => $allArticles,
                 'categories'    => Article::$POSSIBLE_CATEGORIES,
                 'form'              => $form,
                 'searchForm'        => $searchForm,
@@ -239,7 +238,8 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
 
         if ($person !== $order->getCreator()
             &&(!$person->getOrganizationStatus($this->getCurrentAcademicYear())
-                ||$person->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())){
+            ||$person->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
+        ) {
             return $this->notFoundAction();
         }
 
@@ -281,12 +281,12 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
             if ($form->isValid()) {
                 $newOrder = $form->hydrateObject(new Order($person));
                 $newOrder->pending();
-                foreach ($mappings as $map){
+                foreach ($mappings as $map) {
                     $booking = new Map($newOrder, $map->getArticle(), $map->getAmount());
                         $this->getEntityManager()->persist($booking);
                 }
                 $this->getEntityManager()->persist($newOrder);
-                $request = new Request($person, $order , 'edit', $newOrder);
+                $request = new Request($person, $order, 'edit', $newOrder);
                 $this->getEntityManager()->persist($request);
                 $this->getEntityManager()->flush();
 
@@ -330,7 +330,8 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
 
         if ($person !== $order->getCreator()
             &&(!$person->getOrganizationStatus($this->getCurrentAcademicYear())
-                ||$person->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())){
+            ||$person->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
+        ) {
             return $this->notFoundAction();
         }
 
@@ -362,7 +363,8 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
 
         if ($academic !== $order->getCreator()
             &&(!$academic->getOrganizationStatus($this->getCurrentAcademicYear())
-                ||$academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())){
+            ||$academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
+        ) {
             return $this->notFoundAction();
         }
 
@@ -405,11 +407,11 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel();
         }
 
-        if ($person !== $request->getContact()){
+        if ($person !== $request->getContact()) {
             return $this->notFoundAction();
         }
 
-        if (!$request->getEditOrder()){
+        if (!$request->getEditOrder()) {
             $this->flashMessenger()->error(
                 'Error',
                 'The given request cannot be edited! Edit the order instead!'
@@ -434,7 +436,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
                 $this->getEntityManager()->persist($newOrder);
                 $newRequest = new Request($person, $request->getOrder(), 'edit', $newOrder);
                 $this->getEntityManager()->persist($newRequest);
-                $request->rejectRequest("Overwritten by an edit at " . $newRequest->getCreationTime()->format('d/m/Y H:m'));
+                $request->rejectRequest('Overwritten by an edit at ' . $newRequest->getCreationTime()->format('d/m/Y H:m'));
                 $request->handled();
                 $this->getEntityManager()->flush();
 
@@ -476,7 +478,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
             return $this->notFoundAction();
         }
 
-        if ($person !== $request->getContact()){
+        if ($person !== $request->getContact()) {
             return $this->notFoundAction();
         }
 
@@ -496,10 +498,11 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel();
         }
         $request->setRemoved(true);
-        if ($request->getRequestType() === 'add')
+        if ($request->getRequestType() === 'add') {
             $request->getOrder()->remove();
-        else
+        } else {
             $request->getEditOrder()->remove();
+        }
 
         $this->getEntityManager()->flush();
 
@@ -526,13 +529,16 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
 
         if ($academic !== $order->getCreator()
             &&(!$academic->getOrganizationStatus($this->getCurrentAcademicYear())
-                ||$academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())){
+            ||$academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
+        ) {
             return $this->notFoundAction();
         }
 
-        $numResults = unserialize($this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('logistics.catalog_search_max_results'));
+        $numResults = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('logistics.catalog_search_max_results')
+        );
 
         $articles = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Article')
@@ -566,7 +572,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
             $item->status = $article->getStatus();
             $item->category = $article->getCategory();
             $item->amt = $article->getAmountAvailable();
-            $item->mapped = isset($mapped[$article->getId()])?$mapped[$article->getId()]:0;
+            $item->mapped = $mapped[$article->getId()] ?? 0;
             $item->additionalInfo = $article->getAdditionalInfo();
 
             $result[] = $item;
@@ -686,9 +692,10 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
      * @param array $a2
      * @return array
      */
-    private function mergeArraysUnique(array $a1, array $a2){
-        foreach ($a2 as $e2){
-            if (!in_array($e2, $a1)){
+    private function mergeArraysUnique(array $a1, array $a2)
+    {
+        foreach ($a2 as $e2) {
+            if (!in_array($e2, $a1)) {
                 array_push($a1, $e2);
             }
         }
@@ -699,7 +706,8 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
      * @param Order $order
      * @return Order
      */
-    private function recreateOrder(Order $order){
+    private function recreateOrder(Order $order)
+    {
         $new = new Order($order->getContact());
         $new->setCreator($order->getCreator());
         $new->setLocation($order->getLocation());
@@ -782,8 +790,8 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
         $message = $mailData['content'];
         $subject = $mailData['subject'];
 
-        foreach ($mappings as $map){
-            if ($map->getArticle()->getAlertMail() !== null){
+        foreach ($mappings as $map) {
+            if ($map->getArticle()->getAlertMail() !== null) {
                 $mail = new Message();
                 $mail->setEncoding('UTF-8')
                     ->setBody(
