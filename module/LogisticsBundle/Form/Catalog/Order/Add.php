@@ -65,6 +65,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'label' => 'Unit that has access',
                     'name' => 'unit',
                     'attributes' => array(
+                        'multiple'  => true,
                         'options' => $this->createUnitsArray(),
                     ),
 

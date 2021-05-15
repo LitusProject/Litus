@@ -246,6 +246,8 @@ Your recent order request has been rejected:
 {{ name }}
 Date: {{ start }} tot {{ end }}.
 
+reason: {{ reason }}
+
 Student IT
 
 -- This is an automatically generated email, please do not reply --',
@@ -258,6 +260,8 @@ Je order request is geweigerd:
 {{ name }}
 Datum: {{ start }} tot {{ end }}.
 
+reden: {{ reason }}
+
 Student IT
 
 -- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
@@ -265,5 +269,30 @@ Student IT
             )
         ),
         'description' => 'The mail sent when an order request is rejected',
+    ),
+    array(
+        'key'   => 'logistics.order_alert_mail',
+        'value' => serialize(
+            array(
+                'subject' => 'Nieuwe Order Request {{ name }} voor {{ article }}',
+                'content' => 'Beste,
+
+Een nieuwe order request is aangemaakt voor {{ article }}:
+aantal: {{ amount }}.
+
+{{ name }} van {{ person }}.
+Datum: {{ start }} tot {{ end }}.
+
+Student IT
+
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
+            )
+        ),
+        'description' => 'The mail sent when an article is requested that has an alert mail',
+    ),
+    array(
+        'key'         => 'logistics.locations',
+        'value'       => 'Logikot',
+        'description' => 'serialized array of all possible Article locations',
     ),
 );

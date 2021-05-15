@@ -5,6 +5,7 @@
 {% block content %}
     <div class="page-header">
         <h1>{{ translate('Catalog') }}</h1>
+        <a class="btn btn-default pull-right" href="{{ url('logistics_catalog', {'action' : 'view', 'order' : order.getId()}) }}">{{ translate('Back') }}</a><br>
     </div>
 
     <div class="flashmessage alert alert-danger alert-fixed-top fade" id="keep_updated_error">
@@ -130,8 +131,6 @@
                     </table>
 
                     <div>
-                        <a class="btn btn-default" href="{{ url('logistics_catalog', {'action' : 'view', 'order' : order.getId()}) }}">{{ translate('Back') }}</a>
-
                         {% if form.get('submit') %}
                             {{ formElement(form.get('submit')) }}
                         {% endif %}
@@ -156,6 +155,7 @@
                 </tbody>
             </table>
         </div>
+
     {% endif %}
 {% endblock %}
 

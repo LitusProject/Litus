@@ -29,11 +29,24 @@
                     <div class="title"><b>Edit Articles</b></div>
                     <div class="content">
                         <p>
-                            <i>Please hit the link below to edit the articles of this order!<br>(This will generate a new request!)</i>
+                            <i>Hit the link below to edit the articles of this order!<br>(This will generate a new request!)</i>
                         </p>
                         <p>
                             <a class="btn btn-primary btn-sm" href="{{ url('logistics_catalog', {'action': 'catalog', 'order': order.getId()}) }}">
                                 &rarr; Edit Articles
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                <div class="help-block" style="background-color: #D2D0F5; text-align: center; padding: 10px">
+                    <div class="title"><b>Edit Order</b></div>
+                    <div class="content">
+                        <p>
+                            <i>Hit the link below to edit this order!<br>(This will generate a new request!)</i>
+                        </p>
+                        <p>
+                            <a class="btn btn-primary btn-sm" href="{{ url('logistics_catalog', {'action': 'editOrder', 'order': order.getId()}) }}">
+                                &rarr; Edit Order
                             </a>
                         </p>
                     </div>
@@ -44,6 +57,14 @@
             <div class="col-md-12">
                 <h4><b>Description:</b></h4>
                 <p>{{ order.getDescription() }}</p>
+                <br style="clear:both">
+                {% if order.getExternalComment() %}
+                    <div style="border: solid red 2px;">
+                        <b style="color: red;">You received a comment from the logistics team!</b>
+                        <h4><b>Comment:</b></h4>
+                        <p>{{ order.getExternalComment() }}</p>
+                    </div>
+                {% endif %}
             </div>
         </div>
         <div class="row" style="padding-top: 30px">
