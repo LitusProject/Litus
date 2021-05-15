@@ -34,7 +34,8 @@ class RedirectController extends \CommonBundle\Component\Controller\ActionContro
     {
         $slug = $this->getSlug();
         if ($slug === null) {
-            throw new Exception('Given webpage could not be found :(', 404);
+            $this->getResponse()->setStatusCode(404);
+            return $this->getResponse();
         }
 
         $slug->incrementHits();
