@@ -68,6 +68,24 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'     => 'text',
+                'name'     => 'alertMail',
+                'label'    => 'Alert Mail',
+                'options'  => array(
+                    'input' => array(
+                        'filter' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'EmailAddress'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
                 'type'     => 'textarea',
                 'name'     => 'internal_comment',
                 'label'    => 'Internal Comment',
@@ -224,15 +242,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      */
     private function createLocationsArray()
     {
-        $locations = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Location')
-            ->findAllActive();
-
-        $locationsArray = array();
-        foreach ($locations as $location) {
-            $locationsArray[$location->getId()] = $location->getName();
-        }
-
-        return $locationsArray;
+        return unserialize($this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('logistics.locations'));
     }
 }

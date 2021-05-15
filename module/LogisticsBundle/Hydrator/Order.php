@@ -34,7 +34,7 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $stdKeys = array('description', 'email', 'contact', 'needs_ride');
+    private static $stdKeys = array('description', 'email', 'contact', 'needs_ride', 'internal_comment', 'external_comment');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -54,18 +54,16 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
                 ->getRepository('CommonBundle\Entity\General\Organization\Unit')
                 ->findOneById($data['unit'])
         );
-        if (isset($data['name']) && $data['name'] !== null) {
+        if (isset($data['name']) && $data['name'] !== null)
             $object->setName($data['name']);
-        }
 
         $object->updateDate();
         $object->setStartDate(self::loadDateTime($data['start_date']))
             ->setEndDate(self::loadDateTime($data['end_date']));
 
-        if (isset($data['status'])) {
-            if ($data['status'] !== null) {
-                $object->setStatus($data['status']);
-            }
+        if (isset($data['status']))
+            if ($data['status'] !== null){
+            $object->setStatus($data['status']);
         }
 
 

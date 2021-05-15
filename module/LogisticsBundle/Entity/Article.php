@@ -22,6 +22,7 @@ namespace LogisticsBundle\Entity;
 
 use CommonBundle\Entity\General\Location;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -91,10 +92,9 @@ class Article
     private $status;
 
     /**
-     * @var Location the location of the article
+     * @var string The location of storage of this article
      *
-     * @ORM\ManyToOne(targetEntity="\CommonBundle\Entity\General\Location")
-     * @ORM\JoinColumn(name="location", referencedColumnName="id")
+     * @ORM\Column(name="location", type="text")
      */
     private $location;
 
@@ -140,6 +140,12 @@ class Article
      */
     private $photoPath;
 
+    /**
+     * @var string The mailing address to alert when this article gets booked
+     *
+     * @ORM\Column(name="alertMail", type="text", nullable=true)
+     */
+    private $alertMail;
 
     /**
      * @static
@@ -229,6 +235,23 @@ class Article
     public function setSpot($spot)
     {
         $this->spot = $spot;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getAlertMail()
+    {
+        return $this->alertMail;
+    }
+
+    /**
+     * @param string $alertMail
+     */
+    public function setAlertMail($alertMail)
+    {
+        $this->alertMail = $alertMail;
     }
 
     /**

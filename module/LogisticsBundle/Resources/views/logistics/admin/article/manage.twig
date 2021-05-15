@@ -35,11 +35,11 @@
 
             <table class="full_width manage">
                 <tr>
-                    <th>Name</th>
-                    <th width="170px">Available/Owned</th>
+                    <th width="130px">Name</th>
+                    <th width="90px">Available/Owned</th>
                     <th width="150px">Category</th>
                     <th width="120px">Location</th>
-                    <th width="70px">Spot</th>
+                    <th width="100px">Spot</th>
                     <th width="80px">Status</th>
                     <th width="80px">Visibility</th>
                     <th width="70px">Actions</th>
@@ -51,11 +51,11 @@
 
             <table class="full_width manage">
                 <tr>
-                    <th>Name</th>
-                    <th width="170px">Available/Owned</th>
+                    <th width="130px">Name</th>
+                    <th width="90px">Available/Owned</th>
                     <th width="150px">Category</th>
                     <th width="120px">Location</th>
-                    <th width="70px">Spot</th>
+                    <th width="100px">Spot</th>
                     <th width="80px">Status</th>
                     <th width="80px">Visibility</th>
                     <th width="70px">Actions</th>
@@ -67,7 +67,7 @@
                         <td>{{ article.getName() }}</td>
                         <td>{{ article.getAmountAvailable() }}/{{ article.getAmountOwned() }}</td>
                         <td>{{ article.getCategory() }}</td>
-                        <td>{{ article.getLocation().getName() }}</td>
+                        <td>{{ article.getLocation() }}</td>
                         <td>{{ article.getSpot() }}</td>
                         <td>{{ article.getStatus() }}</td>
                         <td>{{ article.getVisibility() }}</td>

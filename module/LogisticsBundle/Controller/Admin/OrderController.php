@@ -110,6 +110,10 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
+        $articles = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+            ->findAllByOrderQuery($order)->getResult();
+
         $form = $this->getForm('logistics_admin_order_edit', $order);
 
         if ($this->getRequest()->isPost()) {
@@ -139,29 +143,11 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             array(
                 'form'    => $form,
                 'order'   => $order,
-            )
-        );
-    }
-
-    public function viewAction()
-    {
-        $order = $this->getOrderEntity();
-        if ($order === null) {
-            return new ViewModel();
-        }
-
-        $articles = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
-            ->findAllByOrderQuery($order)->getResult();
-
-
-        return new ViewModel(
-            array(
-                'order'   => $order,
                 'articles' => $articles,
             )
         );
     }
+
 
     public function articlesAction()
     {
@@ -295,41 +281,40 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         $conflicts = array();
 
-        foreach ($articles as $article) {
-            $mappings = array();
+        foreach ($articles as $article){
+            $mappings =array();
             $allmaps = $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
                 ->findAllActiveByArticleQuery($article)->getResult();
 
-            foreach ($allmaps as $map) {
-                if ($map->getOrder()->getEndDate() > new DateTime() && !$map->getOrder()->isRemoved()) {
+            foreach($allmaps as $map){
+                if ($map->getOrder()->getEndDate() > new DateTime() && !$map->getOrder()->isRemoved()){
                     array_push($mappings, $map);
-                }
-            }
+                }}
 
             $max = $article->getAmountAvailable();
             $allOverlap = array();
 
-            foreach ($mappings as $map) {
+            foreach ($mappings as $map){
                 $overlapping_maps = $this->findOverlapping($mappings, $map);
 
                 foreach ($overlapping_maps as $overlap) {
-                    if (!in_array($overlap, $allOverlap)) {
+                    if (!in_array($overlap, $allOverlap)){
                         array_push($allOverlap, $overlap);
                     }
                 }
             }
 
             $total = 0;
-            foreach ($allOverlap as $overlap) {
+            foreach ($allOverlap as $overlap){
                 $total += $overlap->getAmount();
             }
-            if ($total > $max) {
+            if ($total>$max) {
                 $conflict = array(
                     'article' => $article,
                     'mappings' => $allOverlap,
                     'total' => $total
-                );
+                    );
                 array_push($conflicts, $conflict);
             }
         }
@@ -373,7 +358,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         if ($mapping === null) {
             return new ViewModel();
         }
-        $mapping->setStatus('approved');
+        $mapping->setStatus('goedgekeurd');
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -455,15 +440,14 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         return $map;
     }
 
-    private function findOverlapping(array $array, OrderArticleMap $mapping)
-    {
+    private function findOverlapping(array $array, OrderArticleMap $mapping){
         $start = $mapping->getOrder()->getStartDate();
         $end = $mapping->getOrder()->getEndDate();
         $overlapping = array();
-        foreach ($array as $map) {
+        foreach ($array as $map){
             if ($map->getOrder() !== $mapping->getOrder()
-                && !($map->getOrder()->getStartDate() > $end || $map->getOrder()->getEndDate() <= $start)
-            ) {
+                && !($map->getOrder()->getStartDate() > $end || $map->getOrder()->getEndDate()<= $start)
+            ){
                 array_push($overlapping, $map);
             }
         }
