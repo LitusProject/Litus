@@ -20,7 +20,6 @@
 
 namespace OnBundle\Controller;
 
-use Doctrine\DBAL\Exception;
 use Laminas\View\Model\ViewModel;
 
 /**
