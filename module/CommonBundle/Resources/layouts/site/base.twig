@@ -162,7 +162,10 @@
                                 {% if hasAccess('cudi_booking', 'view') or hasAccess('shift', 'index') %}
                                     <li>
                                         {% if hasAccess('cudi_booking', 'view') %}
-                                            <a href="{{ url('cudi_booking') }}">{{ translate('My Bookings') }}</a>
+                                            <a href="{{ url('cudi_booking') }}">{{ translate('My Books') }}</a>
+                                        {% endif %}
+                                        {% if hasAccess('shop', 'reservations') %}
+                                                <a href="{{ url('shop', {'action': 'reservations'}) }}">{{ translate('My Sandwiches') }}</a>
                                         {% endif %}
                                         {% if hasAccess('shift', 'index') %}
                                             <a href="{{ url('shift') }}">{{ translate('My Shifts') }}</a>

@@ -20,6 +20,7 @@
 
 return array(
     'My Bookings' => 'My Bookings',
+    'My Books'    => 'My Books',
 
     'Please login to view your bookings.' => 'Please login to view your bookings.',
     'Please login to book textbooks.'     => 'Please login to book textbooks.',
