@@ -2,7 +2,7 @@
 FROM caddy:2.4.1 AS caddy
 
 # development
-FROM composer:2.1.1 AS composer
+FROM composer:2.1.2 AS composer
 
 ARG APPLICATION_ENV=development
 ENV APPLICATION_ENV=${APPLICATION_ENV}
