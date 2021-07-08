@@ -2073,16 +2073,16 @@
         },
         {
             "name": "laminas/laminas-cache",
-            "version": "2.11.2",
+            "version": "2.11.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-cache.git",
-                "reference": "f825aecc67f40e8bc499500373e5de700b95d00b"
+                "reference": "775cf8815cfd5a654f9b7b341ebaf28e72aa457d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-cache/zipball/f825aecc67f40e8bc499500373e5de700b95d00b",
-                "reference": "f825aecc67f40e8bc499500373e5de700b95d00b",
+                "url": "https://api.github.com/repos/laminas/laminas-cache/zipball/775cf8815cfd5a654f9b7b341ebaf28e72aa457d",
+                "reference": "775cf8815cfd5a654f9b7b341ebaf28e72aa457d",
                 "shasum": ""
             },
             "require": {
@@ -2167,7 +2167,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2021-06-03T19:18:41+00:00"
+            "time": "2021-07-08T18:22:59+00:00"
         },
         {
             "name": "laminas/laminas-cache-storage-adapter-apc",
@@ -2229,6 +2229,7 @@
                     "type": "community_bridge"
                 }
             ],
+            "abandoned": true,
             "time": "2020-10-12T16:04:12+00:00"
         },
         {
@@ -2413,6 +2414,7 @@
                     "type": "community_bridge"
                 }
             ],
+            "abandoned": true,
             "time": "2020-10-12T16:08:58+00:00"
         },
         {
@@ -2602,6 +2604,7 @@
                     "type": "community_bridge"
                 }
             ],
+            "abandoned": true,
             "time": "2021-04-29T19:57:43+00:00"
         },
         {
@@ -2784,6 +2787,7 @@
                     "type": "community_bridge"
                 }
             ],
+            "abandoned": true,
             "time": "2020-10-12T16:19:10+00:00"
         },
         {
@@ -2973,6 +2977,7 @@
                     "type": "community_bridge"
                 }
             ],
+            "abandoned": true,
             "time": "2020-10-12T16:22:49+00:00"
         },
         {
@@ -3036,6 +3041,7 @@
                     "type": "community_bridge"
                 }
             ],
+            "abandoned": true,
             "time": "2020-10-12T16:23:46+00:00"
         },
         {
