@@ -20,6 +20,7 @@
 
 namespace BrBundle\Repository\Event;
 
+use BrBundle\Entity\Company;
 use BrBundle\Entity\Event;
 
 /**
@@ -43,5 +44,22 @@ class CompanyMap extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->setParameter('event', $event->getId())
             ->getQuery()
             ->getResult();
+    }
+
+    public function findByEventAndCompany(Event $event, Company $company)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('m')
+            ->from('BrBundle\Entity\Event\CompanyMap', 'm')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('m.event', ':event'),
+                    $query->expr()->eq('m.company', ':company')
+                )
+            )
+            ->setParameter('event', $event->getId())
+            ->setParameter('company', $company->getId())
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

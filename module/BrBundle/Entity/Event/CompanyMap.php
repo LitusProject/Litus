@@ -48,6 +48,13 @@ class CompanyMap
     private $company;
 
     /**
+     * @var boolean Whether the contract has been signed
+     *
+     * @ORM\Column(type="boolean", options={"default" = false})
+     */
+    private $done;
+
+    /**
      *@var Event The event that the company will be attending
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Event")
@@ -63,6 +70,7 @@ class CompanyMap
     {
         $this->company = $company;
         $this->event = $event;
+        $this->done = false;
     }
 
     /**
@@ -87,5 +95,33 @@ class CompanyMap
     public function getEvent()
     {
         return $this->event;
+    }
+
+    /**
+     * @return self
+     */
+    public function setDone()
+    {
+        $this->done = true;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isDone()
+    {
+        return $this->done;
+    }
+
+    /**
+     * @return  string The status of the contract for this
+     */
+    public function getStatus()
+    {
+        if ($this->done === true) {
+            return "Done";
+        }
+        return "In Progress";
     }
 }

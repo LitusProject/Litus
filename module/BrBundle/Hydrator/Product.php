@@ -64,7 +64,7 @@ class Product extends \CommonBundle\Component\Hydrator\Hydrator
         if ($data['event'] != '') {
             $object->setEvent(
                 $this->getEntityManager()
-                    ->getRepository('CalendarBundle\Entity\Node\Event')
+                    ->getRepository('BrBundle\Entity\Event')
                     ->findOneById($data['event'])
             );
         }
@@ -76,14 +76,17 @@ class Product extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
+
         if ($object === null) {
             return array();
         }
 
         $data = $this->stdExtract($object, self::$stdKeys);
-
-        if (isset($data['delivery_date'])) {
+        if ($object->getDeliveryDate() !== null){
             $data['delivery_date'] = $object->getDeliveryDate()->format('d/m/Y');
+        }
+        if ($object->getEvent() !== null) {
+            $data['event'] = $object->getEvent()->getId() ?? null;
         }
 
         return $data;
