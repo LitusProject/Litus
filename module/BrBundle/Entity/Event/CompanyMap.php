@@ -120,8 +120,8 @@ class CompanyMap
     public function getStatus()
     {
         if ($this->done === true) {
-            return "Done";
+            return 'Done';
         }
-        return "In Progress";
+        return 'In Progress';
     }
 }

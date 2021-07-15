@@ -246,7 +246,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     private function getCompanyMapEntity()
     {
         $event = $this->getEntityById('BrBundle\Entity\Event\CompanyMap', 'map');
-        error_log($event?'y':'n');
+        error_log($event ? 'y' : 'n');
         if (!($event instanceof CompanyMap)) {
             $this->flashMessenger()->error(
                 'Error',

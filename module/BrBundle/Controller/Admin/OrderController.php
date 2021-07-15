@@ -399,17 +399,15 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                             0
                         )
                     );
-                    if ($entry->getProduct()->getEvent() !== null){
-
+                    if ($entry->getProduct()->getEvent() !== null) {
                         $eventCompanyMaps = $this->getEntityManager()
                             ->getRepository('BrBundle\Entity\Event\CompanyMap')
                             ->findAllByEvent($entry->getProduct()->getEvent());
 
-                        if (in_array($order->getCompany(), $eventCompanyMaps) === false){
+                        if (in_array($order->getCompany(), $eventCompanyMaps) === false) {
                             $map = new CompanyMap($order->getCompany(), $entry->getProduct()->getEvent());
                             $this->getEntityManager()->persist($map);
                         }
-
                     }
 
                     $counter++;

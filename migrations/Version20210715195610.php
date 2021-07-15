@@ -45,7 +45,6 @@ class Version20210715195610 extends \Doctrine\Migrations\AbstractMigration
         $this->addSql('ALTER TABLE br_products ADD br_event BIGINT DEFAULT NULL');
         $this->addSql('ALTER TABLE br_products ADD CONSTRAINT FK_EAF0C0248C4FFE35 FOREIGN KEY (br_event) REFERENCES br_events (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('CREATE INDEX IDX_EAF0C0248C4FFE35 ON br_products (br_event)');
-;
     }
 
     /**

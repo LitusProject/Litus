@@ -23,7 +23,6 @@ namespace BrBundle\Controller\Admin;
 use BrBundle\Component\Document\Generator\Pdf\Contract as ContractGenerator;
 use BrBundle\Entity\Contract;
 use BrBundle\Entity\Contract\History;
-use BrBundle\Entity\Event\CompanyMap;
 use BrBundle\Entity\Invoice\Contract as ContractInvoice;
 use BrBundle\Entity\Invoice\Entry as InvoiceEntry;
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
@@ -345,13 +344,11 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
                     $this->getEntityManager()->persist($invoiceEntry);
 
                     $orderEntry = $entry->getOrderEntry();
-                    if ($orderEntry->getProduct()->getEvent() !== null){
-
+                    if ($orderEntry->getProduct()->getEvent() !== null) {
                         $eventCompanyMap = $this->getEntityManager()
                             ->getRepository('BrBundle\Entity\Event\CompanyMap')
                             ->findByEventAndCompany($orderEntry->getProduct()->getEvent(), $contract->getCompany());
                         $eventCompanyMap->setDone();
-
                     }
                 }
 
