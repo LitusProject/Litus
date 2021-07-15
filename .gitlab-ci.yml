@@ -42,11 +42,3 @@ deploy_leia:
     environment:
         name: leia
         url: https://vtk.be
-
-deploy_lily:
-    <<: *deploy
-    variables:
-        SSH_HOSTNAME: lily.vtk.be
-    environment:
-        name: lily
-        url: https://vtk.be
