@@ -136,7 +136,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('BrBundle\Entity\Company')
                     ->findOneById($formData['company']);
                 $objectMap = new CompanyMap($company, $event);
-
+                $objectMap->setDone();
                 $this->getEntityManager()->persist($objectMap);
 
                 $this->flashMessenger()->success(
@@ -189,6 +189,31 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function deleteAttendeeAction()
+    {
+        $this->initAjax();
+
+
+        $event = $this->getEventEntity();
+        if ($event === null) {
+            return new ViewModel();
+        }
+
+        $companymap = $this->getCompanyMapEntity();
+        if ($companymap === null) {
+            return new ViewModel();
+        }
+
+        $this->getEntityManager()->remove($companymap);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
     /**
      * @return Event|null
      */
@@ -200,6 +225,32 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             $this->flashMessenger()->error(
                 'Error',
                 'No event was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_event',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return;
+        }
+
+        return $event;
+    }
+
+    /**
+     * @return CompanyMap|null
+     */
+    private function getCompanyMapEntity()
+    {
+        $event = $this->getEntityById('BrBundle\Entity\Event\CompanyMap', 'map');
+        error_log($event?'y':'n');
+        if (!($event instanceof CompanyMap)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No Map was found!'
             );
 
             $this->redirect()->toRoute(

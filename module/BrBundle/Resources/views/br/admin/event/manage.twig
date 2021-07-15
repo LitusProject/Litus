@@ -21,6 +21,7 @@
     <div id="controller_action">
         <table class="full_width manage">
             <tr>
+                <th>Title</th>
                 <th>Creator</th>
                 <th>Description</th>
                 <th width="100px">Start Date</th>
@@ -31,6 +32,7 @@
             {% for event in paginator %}
 
                 <tr class="item item-{{ event.getId() }}">
+                    <td>{{ event.getTitle() }}</td>
                     <td>{{ event.getCreator().getFullName() }}</td>
                     <td>{{ event.getDescription() }}</td>
                     <td>{{ event.getStartDate().format('d/m/Y H:i') }}</td>

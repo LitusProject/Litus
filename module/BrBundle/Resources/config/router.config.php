@@ -158,10 +158,11 @@ return array(
         'br_admin_event' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/br/event[/:action[/:id][/page/:page]][/]',
+                'route'       => '/admin/br/event[/:action[/:id][/map/:map][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
+                    'map'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
                 'defaults' => array(
