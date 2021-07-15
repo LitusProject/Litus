@@ -47,8 +47,8 @@ class Job extends \CommonBundle\Component\Hydrator\Hydrator
         $object->setMaster($data['master']);
         $object->updateDate();
 
-        $object->setStartDate(self::loadDateTime($data['start_date']))
-            ->setEndDate(self::loadDateTime($data['end_date']));
+        $object->setStartDate(self::loadDate($data['start_date']))
+            ->setEndDate(self::loadDate($data['end_date']));
 
         return $this->stdHydrate($data, $object, self::$stdKeys);
     }
@@ -66,8 +66,8 @@ class Job extends \CommonBundle\Component\Hydrator\Hydrator
         $data['sector'] = $object->getSectorCode();
         $data['location'] = $object->getLocationCode();
         $data['master'] = $object->getMasterCode();
-        $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
-        $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
+        $data['start_date'] = $object->getStartDate()->format('d/m/Y');
+        $data['end_date'] = $object->getEndDate()->format('d/m/Y');
 
         return $data;
     }

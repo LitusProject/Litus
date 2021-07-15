@@ -24,6 +24,7 @@ use BrBundle\Entity\Collaborator;
 use BrBundle\Entity\Contract;
 use BrBundle\Entity\Contract\Entry as ContractEntry;
 use BrBundle\Entity\Contract\History;
+use BrBundle\Entity\Event\CompanyMap;
 use BrBundle\Entity\Product\Order;
 use BrBundle\Entity\Product\Order\Entry as OrderEntry;
 use Laminas\View\Model\ViewModel;
@@ -398,10 +399,19 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                             0
                         )
                     );
+                    if ($entry->getProduct()->getEvent() !== null) {
+                        $eventCompanyMaps = $this->getEntityManager()
+                            ->getRepository('BrBundle\Entity\Event\CompanyMap')
+                            ->findAllByEvent($entry->getProduct()->getEvent());
+
+                        if (in_array($order->getCompany(), $eventCompanyMaps) === false) {
+                            $map = new CompanyMap($order->getCompany(), $entry->getProduct()->getEvent());
+                            $this->getEntityManager()->persist($map);
+                        }
+                    }
 
                     $counter++;
                 }
-
                 $this->getEntityManager()->persist($contract);
                 $this->getEntityManager()->persist(new History($contract));
 

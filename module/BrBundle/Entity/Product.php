@@ -20,7 +20,7 @@
 
 namespace BrBundle\Entity;
 
-use CalendarBundle\Entity\Node\Event;
+use BrBundle\Entity\Event;
 use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person;
 use DateTime;
@@ -85,8 +85,8 @@ class Product
     /**
      * @var Event The shift's event
      *
-     * @ORM\ManyToOne(targetEntity="CalendarBundle\Entity\Node\Event")
-     * @ORM\JoinColumn(name="event", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Event")
+     * @ORM\JoinColumn(name="br_event", referencedColumnName="id")
      */
     private $event;
 

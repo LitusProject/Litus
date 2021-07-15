@@ -342,11 +342,20 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
                 foreach ($contract->getEntries() as $entry) {
                     $invoiceEntry = new InvoiceEntry($invoice, $entry->getOrderEntry(), $entry->getPosition(), 0);
                     $this->getEntityManager()->persist($invoiceEntry);
+
+                    $orderEntry = $entry->getOrderEntry();
+                    if ($orderEntry->getProduct()->getEvent() !== null) {
+                        $eventCompanyMap = $this->getEntityManager()
+                            ->getRepository('BrBundle\Entity\Event\CompanyMap')
+                            ->findByEventAndCompany($orderEntry->getProduct()->getEvent(), $contract->getCompany());
+                        $eventCompanyMap->setDone();
+                    }
                 }
 
                 $this->getEntityManager()->persist($invoice);
 
                 $contract->setSigned();
+
 
                 $this->getEntityManager()->flush();
 
