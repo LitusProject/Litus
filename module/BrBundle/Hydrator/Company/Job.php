@@ -46,7 +46,6 @@ class Job extends \CommonBundle\Component\Hydrator\Hydrator
         $object->setLocation($data['location']);
         $object->setMaster($data['master']);
         $object->updateDate();
-
         $object->setStartDate(self::loadDate($data['start_date']))
             ->setEndDate(self::loadDate($data['end_date']));
 
