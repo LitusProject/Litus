@@ -62,7 +62,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'datetime',
+                'type'     => 'date',
                 'name'     => 'start_date',
                 'label'    => 'Start Date',
                 'required' => true,
@@ -71,7 +71,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'datetime',
+                'type'     => 'date',
                 'name'     => 'end_date',
                 'label'    => 'End Date',
                 'required' => true,
@@ -82,7 +82,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                 'name'    => 'DateCompare',
                                 'options' => array(
                                     'first_date' => 'start_date',
-                                    'format'     => 'd/m/Y H:i',
+                                    'format'     => 'd/m/Y',
                                 ),
                             ),
                         ),

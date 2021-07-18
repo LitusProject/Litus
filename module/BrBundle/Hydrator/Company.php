@@ -102,8 +102,10 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $object->getPage()->setYears($years)
-            ->setDescription($data['page']['description'])
-            ->setAtEvent($data['page']['atEvent']);
+            ->setDescription($data['page']['description']);
+        if (isset($data['page']['atEvent'])) {
+            $object->getPage()->setAtEvent($data['page']['atEvent']);
+        }
 
         return $this->stdHydrate($data, $object, self::$stdKeys);
     }
