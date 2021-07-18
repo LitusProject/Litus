@@ -159,7 +159,7 @@ class InternshipfairController extends \BrBundle\Component\Controller\CareerCont
             $this->redirect()->toRoute(
                 'br_career_company',
                 array(
-                    'action' => 'manage',
+                    'action' => 'overview',
                 )
             );
 
