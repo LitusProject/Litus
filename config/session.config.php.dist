@@ -19,5 +19,5 @@
  */
 
 return array(
-    'cookie_domain' => '',
+    'cookie_domain' => 'vtk.be',
 );
