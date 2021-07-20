@@ -20,6 +20,7 @@
 
 namespace OnBundle\Form\Admin\Slug;
 
+use DateTime;
 use OnBundle\Entity\Slug as SlugEntity;
 
 /**
@@ -34,7 +35,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @var SlugEntity|null
      */
-    private $slug;
+    protected $slug;
 
     public function init()
     {
@@ -80,6 +81,30 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         ),
                     ),
                 ),
+            )
+        );
+
+        $expirationInterval = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.slugExpirationInterval');
+
+        $this->add(
+            array(
+                'type'     => 'date',
+                'name'     => 'expiration_date',
+                'label'    => 'Expiration Date',
+                'value'    => date_add(new DateTime(), new \DateInterval($expirationInterval))->format('d/m/Y'),
+                'required' => true,
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'checkbox',
+                'name'     => 'active',
+                'label'    => 'Active',
+                'value'    => true,
+                'required' => true,
             )
         );
 

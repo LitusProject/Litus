@@ -32,7 +32,7 @@ class RedirectController extends \CommonBundle\Component\Controller\ActionContro
     public function indexAction()
     {
         $slug = $this->getSlug();
-        if ($slug === null) {
+        if ($slug === null || $slug->isActive() == false) {
             $this->getResponse()->setStatusCode(404);
             return $this->getResponse();
         }

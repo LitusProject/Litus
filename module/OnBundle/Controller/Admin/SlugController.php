@@ -20,6 +20,7 @@
 
 namespace OnBundle\Controller\Admin;
 
+use DateTime;
 use Laminas\View\Model\ViewModel;
 use OnBundle\Entity\Slug;
 
@@ -35,7 +36,30 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
         $paginator = $this->paginator()->createFromEntity(
             'OnBundle\Entity\Slug',
             $this->getParam('page'),
-            array(),
+            array(
+                'active' => true,
+            ),
+            array(
+                'name' => 'ASC',
+            )
+        );
+
+        return new ViewModel(
+            array(
+                'paginator'         => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+
+    public function oldAction()
+    {
+        $paginator = $this->paginator()->createFromEntity(
+            'OnBundle\Entity\Slug',
+            $this->getParam('page'),
+            array(
+                'active' => false,
+            ),
             array(
                 'name' => 'ASC',
             )
@@ -121,6 +145,7 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'form' => $form,
+                'slug' => $slug
             )
         );
     }
@@ -141,6 +166,50 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+    public function cleanAction()
+    {
+        $slugs = $this->getEntityManager()
+            ->getRepository('OnBundle\Entity\Slug')
+            ->findAllActive();
+
+        $now = new DateTime();
+        foreach ($slugs as $slug) {
+            if ($slug->getExpirationDate() < $now && $slug->getExpirationDate() !== null) {
+                $slug->setActive(false);
+            }
+        }
+        $this->getEntityManager()->flush();
+
+        $this->redirect()->toRoute(
+            'on_admin_slug',
+            array(
+                'action' => 'manage',
+            )
+        );
+    }
+
+    public function clearOldAction()
+    {
+        $slugs = $this->getEntityManager()
+            ->getRepository('OnBundle\Entity\Slug')
+            ->findAllOld();
+
+        $now = new DateTime();
+        foreach ($slugs as $slug) {
+            if ($slug->getExpirationDate() < $now && $slug->getExpirationDate() !== null) {
+                $this->getEntityManager()->remove($slug);
+            }
+        }
+        $this->getEntityManager()->flush();
+
+        $this->redirect()->toRoute(
+            'on_admin_slug',
+            array(
+                'action' => 'old',
             )
         );
     }
