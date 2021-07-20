@@ -44,4 +44,34 @@ class Slug extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->orderBy('s.name')
             ->getQuery()->getResult();
     }
+
+    /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllActive()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('s')
+            ->from('OnBundle\Entity\Slug', 's')
+            ->where(
+                $query->expr()->eq('s.active', 'true')
+            )
+            ->orderBy('s.name')
+            ->getQuery()->getResult();
+    }
+
+    /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllOld()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('s')
+            ->from('OnBundle\Entity\Slug', 's')
+            ->where(
+                $query->expr()->eq('s.active', 'false')
+            )
+            ->orderBy('s.name')
+            ->getQuery()->getResult();
+    }
 }

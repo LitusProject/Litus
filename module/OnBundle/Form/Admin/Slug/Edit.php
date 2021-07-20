@@ -36,5 +36,9 @@ class Edit extends \OnBundle\Form\Admin\Slug\Add
 
         $this->remove('submit')
             ->addSubmit('Save', 'slug_edit');
+
+        $dateTimeField = $this->get('expiration_date');
+
+        $dateTimeField->setValue($this->slug->getExpirationDate()->format('d/m/Y'));
     }
 }

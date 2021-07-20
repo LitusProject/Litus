@@ -35,7 +35,7 @@ class Slug extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $stdKeys = array('name', 'url');
+    private static $stdKeys = array('name', 'url', 'active');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -54,6 +54,10 @@ class Slug extends \CommonBundle\Component\Hydrator\Hydrator
             $data['name'] = $name;
         } else {
             $data['name'] = strtolower($data['name']);
+        }
+
+        if (isset($data['expiration_date'])) {
+            $object->setExpirationDate(self::loadDate($data['expiration_date']));
         }
 
         return $this->stdHydrate($data, $object, self::$stdKeys);

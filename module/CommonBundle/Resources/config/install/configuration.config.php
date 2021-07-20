@@ -463,5 +463,10 @@ You can remove any installed cookies from your computer or mobile device at any 
         'key'         => 'common.show_new_stock_period_warning',
         'value'       => '1',
         'description' => 'Flag to enable/disable the warning to create a new stock period.',
+    ),
+    array(
+        'key'         => 'common.slugExpirationInterval',
+        'value'       => 'P6M',
+        'description' => 'DatePeriod which determines the standard slug expiry date',
     )
 );

@@ -109,7 +109,7 @@
                 searchDiv: $('#slug_search'),
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                searchPage: '{{ url('on_admin_slug', {'action': 'manage'}) }}manage/',
+                searchPage: '{{ url('on_admin_slug', {'action': 'old'}) }}manage/',
                 url: '{{ url('on_admin_slug', {'action': 'search'}) }}',
                 display: function (data) {
                     $('#slug_search table').find('tr.item').remove();
