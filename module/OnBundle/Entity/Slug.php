@@ -21,6 +21,7 @@
 namespace OnBundle\Entity;
 
 use CommonBundle\Entity\User\Person;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -73,12 +74,27 @@ class Slug
     private $hits;
 
     /**
+     * @var DateTime The expiration date of this slug
+     *
+     * @ORM\Column(name="expiration_date", type="datetime", nullable=true)
+     */
+    private $expirationDate;
+
+    /**
+     * @var boolean The flag whether the slug is active
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $active;
+
+    /**
      * @param Person|null $creationPerson
      */
     public function __construct($creationPerson)
     {
         $this->creationPerson = $creationPerson;
         $this->hits = 0;
+        $this->active = true;
     }
 
     /**
@@ -155,6 +171,25 @@ class Slug
     }
 
     /**
+     * @param  boolean $active
+     * @return self
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+    /**
      * @return self
      */
     public function incrementHits()
@@ -162,5 +197,25 @@ class Slug
         $this->hits++;
 
         return $this;
+    }
+
+    /**
+     * @param DateTime $expirationDate
+     *
+     * @return self
+     */
+    public function setExpirationDate(DateTime $expirationDate)
+    {
+        $this->expirationDate = $expirationDate;
+
+        return $this;
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getExpirationDate()
+    {
+        return $this->expirationDate;
     }
 }

@@ -1,1 +1,13 @@
-{% extends 'on/admin/slug/add.twig' %}
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'on/admin/slug/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <h2><b>Creator:</b> {{ slug.getCreationPerson().getFullName() }}</h2>
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+{% endblock %}
