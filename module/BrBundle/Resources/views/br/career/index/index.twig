@@ -1,0 +1,11 @@
+{% extends 'career/partials/layout.twig' %}
+
+{% block page_content %}
+
+    <h1>BR</h1>
+    <div style="height: 30px"></div>
+    {% for member in members %}
+        {{ member.getFullName() }}<br>
+    {% endfor %}
+
+{% endblock %}
