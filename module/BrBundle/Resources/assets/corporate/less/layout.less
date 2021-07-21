@@ -7,122 +7,129 @@
  */
 
 body {
-    padding-top: 50px;
+  padding-top: 50px;
 }
 
 .navbar {
-    .brand {
-        padding: 3px 20px 5px;
+  .brand {
+    padding: 3px 20px 5px;
 
-        img {
-            margin-top: 7px;
+    img {
+      margin-top: 7px;
+    }
+  }
+
+  .auth-nav {
+    #accountDropdown {
+      .profile-wrapper {
+        height: 18px;
+        display: block;
+        position: relative;
+        float: left;
+      }
+
+      .profile {
+        margin: -2px 4px 0 0;
+        background: transparent url(/_corporate/img/profile.png) 0 0;
+        display: inline-block;
+        width: 21px;
+        height: 22px;
+      }
+
+      &:hover,
+      &.open {
+        .profile {
+          background-position: 0 -30px;
         }
+      }
+
+      .fullName {
+        display: block;
+      }
+
+      .metadata {
+        display: block;
+        font-size: 12px;
+        color: @cGray;
+      }
     }
 
-    .auth-nav {
-        #accountDropdown {
-            .profile-wrapper {
-                height: 18px;
-                display: block;
-                position: relative;
-                float: left;
-            }
+    #loginDropdown {
+      ul {
+        padding-bottom: 10px;
 
-            .profile {
-                margin: -2px 4px 0 0;
-                background: transparent url(/_corporate/img/profile.png) 0 0;
-                display: inline-block;
-                width: 21px;
-                height: 22px;
-            }
+        li {
+          padding: 10px;
 
-            &:hover,
-            &.open {
-                .profile {
-                    background-position: 0 -30px;
-                }
-            }
+          input[type="checkbox"],
+          label {
+            margin: 0;
+          }
 
-            .fullName {
-                display: block;
-            }
+          form {
+            width: 200px;
+          }
 
-            .metadata {
-                display: block;
-                font-size: 12px;
-                color: @cGray;
-            }
+          input[type="submit"] {
+            margin-top: 5px;
+          }
+
+          .remember_me {
+            float: left;
+            margin-top: 13px;
+          }
         }
-
-        #loginDropdown {
-            ul {
-                padding-bottom: 10px;
-
-                li {
-                    padding: 10px;
-
-                    input[type="checkbox"],
-                    label {
-                        margin: 0;
-                    }
-
-                    form {
-                        width: 200px;
-                    }
-
-                    input[type="submit"] {
-                        margin-top: 5px;
-                    }
-
-                    .remember_me {
-                        float: left;
-                        margin-top: 13px;
-                    }
-                }
-            }
-        }
+      }
     }
+  }
 }
 
 header {
-    padding: 10px 15px 20px;
-    #gradient > .vertical(@cCorporateDark, @cCorporateLight);
-    margin-bottom: 20px;
+  padding: 10px 15px 20px;
+  #gradient > .vertical(@cCorporateDark, @cCorporateLight);
+  margin-bottom: 20px;
 
-    h1 {
-        color: #fff;
-    }
+  h1 {
+    color: #fff;
+  }
 }
 
 footer {
-    padding-top: 40px;
-    padding-bottom: 30px;
-    margin-top: 50px;
-    color: #777;
-    text-align: center;
-    border-top: 1px solid #e5e5e5;
+  padding-top: 40px;
+  padding-bottom: 30px;
+  margin-top: 50px;
+  color: #777;
+  text-align: center;
+  border-top: 1px solid #e5e5e5;
 }
 
 .alert {
-    margin-bottom: 3px;
+  margin-bottom: 3px;
 
-    .title {
-        font-weight: bold;
+  .title {
+    font-weight: bold;
+  }
+
+  &.fade {
+    height: 0;
+    margin-bottom: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    overflow: hidden;
+    border-width: 0px;
+
+    &.in {
+      height: auto;
+      margin-bottom: @line-height-computed;
+      padding: @alert-padding;
+      border-width: 1px;
     }
+  }
+}
 
-    &.fade {
-        height: 0;
-        margin-bottom: 0px;
-        padding-top: 0px;
-        padding-bottom: 0px;
-        overflow: hidden;
-        border-width: 0px;
+// LAYOUT ADDED BY MARTIJN VAN DOOREN 2021
 
-        &.in {
-            height: auto;
-            margin-bottom: @line-height-computed;
-            padding: @alert-padding;
-            border-width: 1px;
-        }
-    }
+.largeCompanyHolder {
+  color: red;
+  background-color: red;
 }

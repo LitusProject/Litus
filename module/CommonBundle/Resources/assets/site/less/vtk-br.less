@@ -1,0 +1,196 @@
+// COMPANY PAGE
+
+.largeCompanyHolder,
+.vacancyHolder {
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid rgb(233, 233, 233);
+  transition-duration: 100ms;
+  margin-bottom: 10px;
+  padding: 30px 20px;
+
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-content: stretch;
+  -ms-flex-line-pack: stretch;
+  align-content: stretch;
+}
+
+.vacancyHolder {
+  padding: 10px;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.largeCompanyHolder:hover,
+.br-smallcompany:hover,
+.vacancyHolder:hover {
+  -webkit-box-shadow: 0px 0px 7px 1px rgba(150, 150, 150, 0.17);
+  box-shadow: 0px 0px 7px 1px rgba(150, 150, 150, 0.17);
+  cursor: pointer;
+}
+
+.companyLogoHolder {
+  width: 120px;
+  height: 60px;
+  background-position: center;
+  background-size: contain;
+  background-image: url(/_site/img/logo_vtk.png);
+}
+
+.br-spacer {
+  width: 1px;
+  background-color: @color-yellow;
+  margin-right: 20px;
+  -webkit-align-self: stretch;
+  -ms-flex-item-align: stretch;
+  align-self: stretch;
+}
+
+.br-companiesholder {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.br-smallcompany {
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid rgb(233, 233, 233);
+  transition-duration: 100ms;
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.br-jobIndication {
+  display: inline-block;
+  padding: 3px;
+  margin-right: 5px;
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: 600;
+  color: @color-blue;
+  border: 1px dashed @color-blue;
+  opacity: 60%;
+}
+
+// VACANCY / STUDENT JOB / STAGE PAGE
+
+.br-filterholder > form {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+// SPECIFIC COMPANY PAGE
+
+.br-companyLogoHolder {
+  display: inline-block;
+  width: 140px;
+  height: 85px;
+  border-radius: 5px;
+  border: 1px solid rgb(233, 233, 233);
+  padding: 10px;
+}
+
+.br-companyLogo {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  width: 100%;
+  height: 100%;
+}
+
+.br-companyTitleHolder {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-content: stretch;
+  -ms-flex-line-pack: stretch;
+  align-content: stretch;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.br-infoHolder {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-content: stretch;
+  -ms-flex-line-pack: stretch;
+  align-content: stretch;
+  -webkit-align-items: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+}
+
+.br-markdown > p {
+  margin-bottom: 10px;
+  text-align: justify;
+  line-height: 22px;
+  font-family: "Montserrat";
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.br-titledecoration {
+  background-color: @color-yellow;
+  width: 20px;
+  height: 30px;
+  position: absolute;
+  left: -5px;
+  top: -3px;
+  z-index: 0;
+}
+
+.br-companyEventHolder {
+  width: 300px;
+  height: 170px;
+  position: relative;
+  background-image: url("https://images.pexels.com/photos/2608517/pexels-photo-2608517.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+  background-position: center;
+  background-size: cover;
+}
+
+.br-eventTitleHolder {
+  background-color: white;
+  padding: 20px;
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
+  -webkit-box-shadow: 0px 0px 7px 1px rgba(150, 150, 150, 0.17);
+  box-shadow: 0px 0px 7px 1px rgba(150, 150, 150, 0.17);
+  max-width: 100%;
+}

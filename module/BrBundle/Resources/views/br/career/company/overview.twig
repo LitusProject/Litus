@@ -2,6 +2,9 @@
 
 {% block page_content %}
 
+    <h1>Partners van vtk</h1>
+    <div style="height: 30px"></div>
+
     <div class="flashmessage alert alert-danger full_width search_error hide">
         <div class="title">Error</div>
         <div class="content">
@@ -9,7 +12,8 @@
         </div>
     </div>
 
-    <div style="text-align:right;margin-bottom: 10px;" class="form-inline">
+    {# SEARCH BOX LATER TERUG TOEVOEGEN -- DISPLAY:NONE, nodig voor werking v companies ...#}
+    <div style="text-align:right;margin-bottom: 10px; display: none" class="form-inline">
         <select id="sector" class="form-control" name="Sector" required="required">
             {% for sector_id, sector_name in possible_sectors %}
                 <option value={{ sector_id }}>{{ sector_name }}</option>
@@ -18,8 +22,23 @@
         <input id="searchbox" type="text" class="search-query form-control" placeholder="{{ translate('Search') }}">
     </div>
 
-    <div id="companies" class="row" style="min-height: 100px">
+    <div class="largeCompanyHolder">
+        <div style="padding: 20px">
+            <div class="companyLogoHolder"></div>
+        </div>
+        <div class="br-spacer"></div>
+        <div style="padding: 10px 0px">
+            <h4 style="text-transform: uppercase">Vlaamse Technische Kring</h4>
+            <p>Welkom op de website van de Vlaamse Technische Kring, de vereniging van de studenten Burgerlijk Ingenieur en Burgerlijk Ingenieur-Architect aan de KU Leuven. Welkom op de website van de Vlaamse Technische Kring, de vereniging van de studenten Burgerlijk Ingenieur en Burgerlijk Ingenieur-Architect aan de KU Leuven.</p> 
+            <p class="br-jobIndication"> STAGES </p>
+            <p class="br-jobIndication"> JOBS </p>
+            <p class="br-jobIndication"> VAKANTIEJOBS </p>
+        </div>
     </div>
+    <div id="companies" class="br-companiesholder" style="min-height: 100px">
+    </div>
+
+    <div style="height: 100px"></div>
 
 {% endblock %}
 
@@ -62,21 +81,24 @@
                 success: function (data) {
                     $('#companies').html('');
                     $.each(data, function(index, element) {
+                        console.log(element); 
+                        element.logo ? 
                         $('#companies').append(
-                            $('<div>', {'class': 'col-xs-6 col-sm-4 col-md-2'}).append(
-                                $('<div>', {'class': 'thumbnail'}).append(
-                                    $('<a>', {'href': '{{ url("br_career_company", {"action": "view"}) }}' + element.slug}).append(
-                                        $('<span>').append(
+                            $('<a>', {'class': 'br-smallcompany', 'href': '{{ url("br_career_company", {"action": "view"}) }}' + element.slug}).append(
+                                $('<div>').append(
                                             element.logo ?
-                                                $('<img>', {'src': '/{{ logoPath }}/' + element.logo, 'alt': element.name}).css({'max-height': '100px', 'max-width': '120px', 'vertical-align': 'middle'})
+                                                $('<div>').css({'margin': 'auto', 'max-width': '120px', 'height': '75px', 'background-position': 'center', 'background-repeat': 'no-repeat', 'background-size': 'contain', 'background-image' : 'url("/{{ logoPath }}/' + element.logo + '")', 'max-width': '120px', 'vertical-align': 'middle'})
                                                 :
-                                                $('<h4>').html(element.name).css({'position': 'absolute', 'top': '0', 'left': '0', 'width': '120px', 'line-height': '20px'}),
-                                            $('<span>').html(element.name).css({'position': 'absolute', 'bottom': '0', 'left': '0', 'width': '120px', 'line-height': '20px'})
-                                        ).css({'display': 'block', 'line-height': '120px', 'height': '150px', 'width': '120px', 'margin': '0 auto', 'text-align': 'center', 'position': 'relative'})
+                                                $('<h4>').html(element.name),
+                                            $('<h4>').html(element.name)
+                                        ).css({'display': 'block', 'margin': '0 auto', 'text-align': 'center', 'position': 'relative'}), 
+                                $('<div>').append(
+                                        $('<div>' , {'class': 'br-jobIndication'}).html('Stages'), 
+                                        $('<div>' , {'class': 'br-jobIndication'}).html('Vakantiejobs'), 
+                                        $('<div>' , {'class': 'br-jobIndication'}).html('Jobs'), 
                                     )
-                                ).css({'text-align': 'center'})
-                            )
-                        );
+                                )
+                        ) : '';
                     });
                 },
                 dataType: 'json',
