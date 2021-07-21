@@ -389,6 +389,7 @@ return array(
                 'output' => 'cv_css.css',
             ),
         ),
+        
         'event_js' => array(
             'assets' => array(
                 'event/js/event.js',
