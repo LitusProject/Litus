@@ -245,12 +245,32 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         ),
                     ),
                     array(
+                        'type'       => 'textarea',
+                        'name'       => 'shortDescription',
+                        'label'      => 'Short Description',
+                        'attributes' => array(
+                            'id' => 'shortDescription',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
                         'type'        => 'checkbox',
                         'name'        => 'atEvent',
                         'label'       => 'company is at internshipfair',
                     ),
                 ),
             )
+        );
+        array(
+            'type'        => 'checkbox',
+            'name'        => 'large',
+            'label'       => 'company has a Large spot in the company overview',
         );
 
         $this->addSubmit('Add', 'company_add');

@@ -103,7 +103,7 @@ return array(
             'login', 'logout',
         ),
         'br_corporate_index' => array(
-            'index',
+            'index', 'events'
         ),
         'br_corporate_jobfair' => array(
             'overview',

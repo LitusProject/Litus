@@ -50,6 +50,13 @@ class Page
     private $description;
 
     /**
+     * @var string The short description of the company (for large companies only)
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $shortDescription;
+
+    /**
      * @var Company
      *
      * @ORM\OneToOne(targetEntity="BrBundle\Entity\Company", inversedBy="page")
@@ -125,6 +132,25 @@ class Page
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * @param  string $description
+     * @return Page
+     */
+    public function setShortDescription($description)
+    {
+        $this->shortDescription = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShortDescription()
+    {
+        return $this->shortDescription;
     }
 
     public function hasYear(AcademicYear $academicYear)

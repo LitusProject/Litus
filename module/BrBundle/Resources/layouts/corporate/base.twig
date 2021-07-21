@@ -29,7 +29,12 @@
                     <ul class="nav navbar-nav">
                         {% if hasAccess('br_corporate_index', 'index') %}
                             <li {% if 'index' == getParam('action') and 'br_corporate_index' == getParam('controller') %} class="active" {% endif %}>
-                                <a href="{{ url("br_corporate_index", {"language": language.getAbbrev()}) }}">{{ translate('Home') }}</a>
+                                <a href="{{ url("br_corporate_index", {"language": language.getAbbrev()}) }}">{{ translate('Launch') }}</a>
+                            </li>
+                        {% endif %}
+                        {% if hasAccess('br_corporate_index', 'events') %}
+                            <li {% if 'events' == getParam('action') and 'br_corporate_index' == getParam('controller') %} class="active" {% endif %}>
+                                <a href="{{ url("br_corporate_index", {"action": 'events', "language": language.getAbbrev()}) }}">{{ translate('Events') }}</a>
                             </li>
                         {% endif %}
                         {% if hasAccess('br_corporate_jobfair', 'overview') %}

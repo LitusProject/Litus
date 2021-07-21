@@ -46,8 +46,6 @@ class IndexController extends \BrBundle\Component\Controller\CareerController
             ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
             ->findAllByUnitAndAcademicYear($br, $academicYear);
 
-        error_log($members[0]->getFullName());
-
         return new ViewModel(
             array(
                 'members'         => $members,

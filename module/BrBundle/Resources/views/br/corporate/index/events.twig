@@ -1,0 +1,8 @@
+{% extends 'corporate/base.twig' %}
+
+{% block content %}
+
+   {% for event in events %}
+   <b>{{ event.getTitle() }}</b><br>
+   {% endfor %}
+{% endblock %}
