@@ -56,8 +56,8 @@
         </div>
         <div style="height: 20px"></div>
         {% for vacancy in vacancies %}
-            <a style="padding: 17px 30px" class="vacancyHolder" href="{{ url('br_career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}"> 
-                <div><h4 style="margin-bottom: 0px">{{ vacancy.getName() }} ►</h4></div>
+            <a class="vacancyHolder br-arrowAnimation" href="{{ url('br_career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}"> 
+                {{ vacancy.getName() }}
             </a>  
         {% endfor %}
         <div style="height: 30px"></div>    
@@ -71,8 +71,8 @@
         </div>
         <div style="height: 20px"></div>
         {% for internship in internships %}
-            <a style="padding: 17px 30px" class="vacancyHolder" href="{{ url('br_career_internship', {'action': 'view', 'id': internship.getId() }) }}"> 
-                <div><h4 style="margin-bottom: 0px">{{ internship.getName() }} ►</h4></div>
+            <a class="vacancyHolder br-arrowAnimation" href="{{ url('br_career_internship', {'action': 'view', 'id': internship.getId() }) }}"> 
+                {{ internship.getName() }}
             </a>  
         {% endfor %}
         <div style="height: 30px"></div>    
@@ -86,8 +86,8 @@
         </div>
         <div style="height: 20px"></div>
         {% for studentJob in studentJobs %}
-            <a style="padding: 17px 30px" class="vacancyHolder" href="{{ url('br_career_student_job', {'action': 'view', 'id': studentJob.getId() }) }}"> 
-                <div><h4 style="margin-bottom: 0px">{{ studentJob.getName() }} ►</h4></div>
+            <a class="vacancyHolder br-arrowAnimation" href="{{ url('br_career_student_job', {'action': 'view', 'id': studentJob.getId() }) }}"> 
+                {{ studentJob.getName() }}
             </a>  
         {% endfor %}
         <div style="height: 30px"></div>    
