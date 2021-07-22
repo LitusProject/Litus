@@ -2,8 +2,14 @@
 
 {% block page_content %}
     <div class="br-companyTitleHolder">
-        <h1 style="display:inline-block; margin-right: 20px">{{ page.getCompany().getName() }}</h1>
-        <div style='background-repeat: no-repeat; background-image: url("/{{ logoPath }}/{{ page.getCompany().getLogo() }}"); background-position: center; background-size: contain; display: inline-block; width: 140px; height: 85px'></div>
+
+        <div style="display:inline-block; margin-right: 20px; flex-grow: 1">
+            <h1 style="display:inline-block">{{ page.getCompany().getName() }}</h1>
+            <div class="pageTitleDeco"></div>
+        </div>
+        <div class="br-companyLogoHolder">
+            <div class="br-companyLogo" style='background-image: url("/{{ logoPath }}/{{ page.getCompany().getLogo() }}")'></div>
+        </div>
     </div>
 
     {# <div>
@@ -30,8 +36,21 @@
 
     <div style="height: 80px"></div>
 
+    <div style="height: 30px"></div>
+    <div style="position:relative">
+        <h3 style="position: relative; z-index: 1">Evenementen</h3> 
+        <div class="br-titledecoration"></div>
+    </div>
+    <div style="height: 20px"></div>
+    <div class="br-companyEventHolder">
+        <div class="br-eventTitleHolder">
+            <h5 style="margin-bottom: 0px; max-width: 100%">Karting voor young potentials</h5>
+        </div>
+    </div>
+    <div style="height: 30px"></div>    
+
     {% if vacancies|length > 0 %}
-        <div style="height: 40px"></div>
+        <div style="height: 30px"></div>
         <div style="position:relative">
             <h3 style="position: relative; z-index: 1">{{ translate('Vacancies') }}</h3> 
             <div class="br-titledecoration"></div>
@@ -42,10 +61,11 @@
                 <div><h4 style="margin-bottom: 0px">{{ vacancy.getName() }} ►</h4></div>
             </a>  
         {% endfor %}
+        <div style="height: 30px"></div>    
     {% endif %}
 
     {% if internships|length > 0 %}
-        <div style="height: 40px"></div>
+        <div style="height: 30px"></div>
         <div style="position:relative">
             <h3 style="position: relative; z-index: 1">{{ translate('Internships') }}</h3> 
             <div class="br-titledecoration"></div>
@@ -56,10 +76,12 @@
                 <div><h4 style="margin-bottom: 0px">{{ internship.getName() }} ►</h4></div>
             </a>  
         {% endfor %}
+
+        <div style="height: 30px"></div>    
     {% endif %}
 
     {% if studentJobs|length > 0 %}
-        <div style="height: 40px"></div>
+        <div style="height: 30px"></div>
         <div style="position:relative">
             <h3 style="position: relative; z-index: 1">{{ translate('StudentJobs') }}</h3> 
             <div class="br-titledecoration"></div>
@@ -70,6 +92,7 @@
                 <div><h4 style="margin-bottom: 0px">{{ studentJob.getName() }} ►</h4></div>
             </a>  
         {% endfor %}
+        <div style="height: 30px"></div>    
     {% endif %}
 
 

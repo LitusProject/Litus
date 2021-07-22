@@ -13,13 +13,21 @@
     {% endif %}
 
     <div class="br-companyTitleHolder">
-        <h1 style="display:inline-block; margin-right: 20px">{{ vacancy.getName() }}</h1>
+        <div style="display:inline-block; margin-right: 20px; flex-grow: 1">
+            <h1 style="display:inline-block">{{ vacancy.getName() }}</h1>
+            <div class="pageTitleDeco"></div>
+        </div>
+
         {% if vacancy.getCompany().getPage().hasYear(currentAcademicYear) %}
             <a href="{{ url('br_career_company',{ 'action': 'view', 'company': vacancy.getCompany().getSlug() }) }}">
-                <div style='background-repeat: no-repeat; background-image: url("/{{ logoPath }}/{{ vacancy.getCompany().getLogo() }}"); background-position: center; background-size: contain; display: inline-block; width: 140px; height: 85px'></div>
+                <div class="br-companyLogoHolder">
+                    <div class="br-companyLogo" style='background-image: url("/{{ logoPath }}/{{ vacancy.getCompany().getLogo() }}")'></div>
+                </div>
             </a>
         {% else %}
-            <div style='background-repeat: no-repeat; background-image: url("/{{ logoPath }}/{{ vacancy.getCompany().getLogo() }}"); background-position: center; background-size: contain; display: inline-block; width: 140px; height: 85px'></div>
+            <div class="br-companyLogoHolder">
+                <div class="br-companyLogo" style='background-image: url("/{{ logoPath }}/{{ vacancy.getCompany().getLogo() }}")'></div>
+            </div>        
         {% endif %}
     </div>
 
