@@ -2,6 +2,11 @@
 
 {% block content %}
     {% if authenticatedPerson is not null %}
+        <h1>BR</h1>
+        <div style="height: 30px"></div>
+        {% for member in members %}
+            {{ member.getFullName() }}<br>
+        {% endfor %}
         <h2>{% autoescape false %}{{ translate('Welcome <i>%name%</i> of <i>%company%</i>')|replace({'%name%': authenticatedPerson.getFullName(), '%company%': authenticatedPerson.getCompany().getName()}) }}{% endautoescape %}</h2>
     {% else %}
         <div style="text-align: center;">

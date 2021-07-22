@@ -29,7 +29,7 @@
         <div class="br-spacer"></div>
         <div style="padding: 10px 0px">
             <h4 style="text-transform: uppercase">Vlaamse Technische Kring</h4>
-            <p>Welkom op de website van de Vlaamse Technische Kring, de vereniging van de studenten Burgerlijk Ingenieur en Burgerlijk Ingenieur-Architect aan de KU Leuven. Welkom op de website van de Vlaamse Technische Kring, de vereniging van de studenten Burgerlijk Ingenieur en Burgerlijk Ingenieur-Architect aan de KU Leuven.</p> 
+            <p>Welkom op de website van de Vlaamse Technische Kring, de vereniging van de studenten Burgerlijk Ingenieur en Burgerlijk Ingenieur-Architect aan de KU Leuven. Welkom op de website van de Vlaamse Technische Kring, de vereniging van de studenten Burgerlijk Ingenieur en Burgerlijk Ingenieur-Architect aan de KU Leuven.</p>
             <p class="br-jobIndication"> STAGES </p>
             <p class="br-jobIndication"> JOBS </p>
             <p class="br-jobIndication"> VAKANTIEJOBS </p>
@@ -81,8 +81,7 @@
                 success: function (data) {
                     $('#companies').html('');
                     $.each(data, function(index, element) {
-                        console.log(element); 
-                        element.logo ? 
+                        element.logo ?
                         $('#companies').append(
                             $('<a>', {'class': 'br-smallcompany', 'href': '{{ url("br_career_company", {"action": "view"}) }}' + element.slug}).append(
                                 $('<div>').append(
@@ -91,7 +90,7 @@
                                                 :
                                                 $('<h4>').html(element.name),
                                             $('<h4>').html(element.name)
-                                        ).css({'display': 'block', 'margin': '0 auto', 'text-align': 'center', 'position': 'relative'}), 
+                                        ).css({'display': 'block', 'margin': '0 auto', 'text-align': 'center', 'position': 'relative'}),
                                 $('<div>').append(
                                         $('<div>' , {'class': 'br-jobIndication'}).html('Stages'), 
                                         $('<div>' , {'class': 'br-jobIndication'}).html('Vakantiejobs'), 

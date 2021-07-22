@@ -31,6 +31,39 @@ class IndexController extends \BrBundle\Component\Controller\CorporateController
 {
     public function indexAction()
     {
-        return new ViewModel();
+
+        $academicYear = $this->getCurrentAcademicYear(true);
+        $units = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+            ->findAllActiveQuery()->getResult();
+
+        foreach ($units as $unit){
+            if ($unit->getName() === 'Bedrijvenrelaties'){
+                $br = $unit;
+            }
+        }
+
+        $members = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
+            ->findAllByUnitAndAcademicYear($br, $academicYear);
+
+        return new ViewModel(
+            array(
+                'members'         => $members,
+            )
+        );
+    }
+
+    public function eventsAction()
+    {
+        $events = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Event')
+            ->findAllActiveQuery()->getResult();
+
+        return new ViewModel(
+            array(
+                'events'         => $events,
+            )
+        );
     }
 }
