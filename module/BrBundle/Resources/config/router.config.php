@@ -249,6 +249,21 @@ return array(
                 ),
             ),
         ),
+        'br_admin_match_feature' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/br/match/feature[/:action[/:id][/page/:page]][/]',
+                'constraints' => array(
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'       => '[0-9_-]*',
+                    'page'     => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_admin_match_feature',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
         'br_career_index' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -560,6 +575,8 @@ return array(
         'br_admin_invoice'      => 'BrBundle\Controller\Admin\InvoiceController',
         'br_admin_overview'     => 'BrBundle\Controller\Admin\OverviewController',
         'br_admin_request'      => 'BrBundle\Controller\Admin\RequestController',
+
+        'br_admin_match_feature'      => 'BrBundle\Controller\Admin\Match\FeatureController',
 
         'br_corporate_index'      => 'BrBundle\Controller\Corporate\IndexController',
         'br_corporate_cv'         => 'BrBundle\Controller\Corporate\CvController',

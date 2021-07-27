@@ -77,13 +77,6 @@ class Language
     private $entry;
 
     /**
-     * @var string The language name.
-     *
-     * @ORM\Column(type="string")
-     */
-    private $name;
-
-    /**
      * @var string The written skills.
      *
      * @ORM\Column(type="string")
