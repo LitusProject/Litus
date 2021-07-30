@@ -48,7 +48,6 @@ return array(
     'session_manager' => array(
         'validators' => array(
             HttpUserAgent::class,
-            RemoteAddr::class,
         ),
     ),
     'session_storage' => array(
