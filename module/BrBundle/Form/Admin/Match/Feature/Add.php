@@ -25,7 +25,7 @@ namespace BrBundle\Form\Admin\Match\Feature;
  *
  * @author Robin Wroblowski <robin.wroblowski@vtk.be>
  */
-class Add extends \CommonBundle\Component\Form\Bootstrap\Form
+class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     protected $hydrator = 'BrBundle\Hydrator\Match\Feature';
 
@@ -57,6 +57,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             )
         );
 
-        $this->addSubmit('Add');
+        $this->addSubmit('Add', 'feature_add');
     }
 }

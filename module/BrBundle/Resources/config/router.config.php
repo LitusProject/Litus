@@ -158,11 +158,10 @@ return array(
         'br_admin_event' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/br/event[/:action[/:id][/map/:map][/page/:page]][/]',
+                'route'       => '/admin/br/event[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
-                    'map'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
                 'defaults' => array(
@@ -261,6 +260,21 @@ return array(
                 ),
                 'defaults' => array(
                     'controller' => 'br_admin_match_feature',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
+        'br_admin_match_profile' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/br/match/profile[/:action[/:id][/page/:page]][/]',
+                'constraints' => array(
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'       => '[0-9_-]*',
+                    'page'     => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_admin_match_profile',
                     'action'     => 'manage',
                 ),
             ),
@@ -578,6 +592,7 @@ return array(
         'br_admin_request'      => 'BrBundle\Controller\Admin\RequestController',
 
         'br_admin_match_feature'      => 'BrBundle\Controller\Admin\Match\FeatureController',
+        'br_admin_match_profile'      => 'BrBundle\Controller\Admin\Match\ProfileController',
 
         'br_corporate_index'      => 'BrBundle\Controller\Corporate\IndexController',
         'br_corporate_cv'         => 'BrBundle\Controller\Corporate\CvController',

@@ -39,7 +39,7 @@ class Edit extends \BrBundle\Form\Admin\Match\Feature\Add
         parent::init();
 
         $this->remove('submit')
-            ->addSubmit('Save Changes');
+            ->addSubmit('Save Changes', 'feature_edit');
 
         if ($this->feature !== null) {
             $hydrator = $this->getHydrator();
