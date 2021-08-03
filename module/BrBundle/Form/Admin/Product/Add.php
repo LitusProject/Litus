@@ -139,8 +139,27 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(
             array(
                 'type'    => 'textarea',
-                'name'    => 'contract_text',
-                'label'   => 'Contract Text',
+                'name'    => 'contract_text_nl',
+                'label'   => 'Contract Text NL',
+                'value'   => $this->getContractText(),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'ContractBullet'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'    => 'textarea',
+                'name'    => 'contract_text_en',
+                'label'   => 'Contract Text EN',
                 'value'   => $this->getContractText(),
                 'options' => array(
                     'input' => array(

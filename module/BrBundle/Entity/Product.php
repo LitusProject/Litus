@@ -67,6 +67,13 @@ class Product
     private $contractText;
 
     /**
+     * @var string The contractText of this product in English
+     *
+     * @ORM\Column(name="contract_text_en", type="text", options={"default" = "none"})
+     */
+    private $contractTextEn;
+
+    /**
      * @var Person The author of this product
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
@@ -243,22 +250,67 @@ class Product
     /**
      * @return string
      */
-    public function getContractText()
+    public function getContractText($lang = 'nl')
+    {
+        if ($lang == 'nl') return $this->getContractTextNl();
+        if ($lang == 'en') return $this->getContractTextEn();
+        return null;
+
+    }
+
+    /**
+     * @param string $contractText The content of this section
+     * @return self
+     */
+    public function setContractText($contractText, $lang = 'nl')
+    {
+        if ($lang == 'nl') return $this->setContractTextNl($contractText);
+        if ($lang == 'en') return $this->setContractTextEn($contractText);
+        return null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContractTextNl()
     {
         return $this->contractText;
     }
 
     /**
-     * @param  string $contractText The content of this section
+     * @param string $contractText The content of this section
      * @return self
      */
-    public function setContractText($contractText)
+    public function setContractTextNl($contractText)
     {
         if ($contractText === null || !is_string($contractText)) {
             throw new InvalidArgumentException('Invalid contract text');
         }
 
         $this->contractText = $contractText;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContractTextEn()
+    {
+        return $this->contractTextEn;
+    }
+
+    /**
+     * @param  string $contractText The content of this section
+     * @return self
+     */
+    public function setContractTextEn($contractText)
+    {
+        if ($contractText === null || !is_string($contractText)) {
+            throw new InvalidArgumentException('Invalid contract text');
+        }
+
+        $this->contractTextEn = $contractText;
 
         return $this;
     }
