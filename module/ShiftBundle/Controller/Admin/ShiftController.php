@@ -21,7 +21,8 @@
 namespace ShiftBundle\Controller\Admin;
 
 use CalendarBundle\Entity\Node\Event;
-use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use DateInterval;
 use DateTime;
 use Laminas\Http\Headers;
@@ -48,7 +49,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'paginator'         => $paginator,
+                'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -65,7 +66,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'paginator'         => $paginator,
+                'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -124,6 +125,89 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'form' => $form,
+            )
+        );
+    }
+
+    public function csvAction()
+    {
+        $form = $this->getForm('shift_shift_csv');
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $shiftForm = $this->getForm('shift_shift_add');
+                $shiftForm->setData($formData);
+                $shift = $shiftForm->hydrateObject();
+
+                $startDate = self::loadDate($formData['start_date']);
+                $endDate = self::loadDate($formData['end_date']);
+
+                $formData = $form->getData();
+                $file = $formData['file'];
+
+                // TODO: make shift for every line of the csv (ignore header line)
+                // here
+                $shift = $form->hydrateObject();
+
+                $shift->setStartDate($startDate);
+                $shift->setEndDate($endDate);
+                $shift->setName('hardcodedtestname');
+                $shift->setDescription('hardcodedtestdescription');
+
+                $this->getEntityManager()->persist($shift);
+                // to here
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The shift was successfully created!'
+                );
+
+                $this->redirect()->toRoute(
+                    'shift_admin_shift',
+                    array(
+                        'action' => 'add',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
+
+    public function csvtemplateAction()
+    {
+        $file = new CsvFile();
+        $heading = array('domain','mailacceptinggeneralid','maildrop');
+
+        $results = array();
+        $results[] = array('testdomain','testid','testdrop');
+
+        $document = new CsvGenerator($heading, $results);
+        $document->generateDocument($file);
+
+        $headers = new Headers();
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="shifts.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
             )
         );
     }
