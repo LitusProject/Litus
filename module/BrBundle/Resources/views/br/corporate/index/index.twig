@@ -2,12 +2,119 @@
 
 {% block content %}
     {% if authenticatedPerson is not null %}
-        <h1>BR</h1>
+        
+        {# <h1>BR</h1>
         <div style="height: 30px"></div>
         {% for member in members %}
             {{ member.getFullName() }}<br>
         {% endfor %}
-        <h2>{% autoescape false %}{{ translate('Welcome <i>%name%</i> of <i>%company%</i>')|replace({'%name%': authenticatedPerson.getFullName(), '%company%': authenticatedPerson.getCompany().getName()}) }}{% endautoescape %}</h2>
+        <h2>{% autoescape false %}{{ translate('Welcome <i>%name%</i> of <i>%company%</i>')|replace({'%name%': authenticatedPerson.getFullName(), '%company%': authenticatedPerson.getCompany().getName()}) }}{% endautoescape %}</h2> #}
+    
+    
+    
+        <div class="br-studentLaunchBg">
+            <div class="container">
+                <h1 style="color:white; margin-bottom: 0px; font-size: 70px; font-weight: 800">VTK als partner voor jouw bedrijf</h1>
+                <h3 style="color:white; font-weight: 500">Kom te weten wat wij voor jou kunnen betekenen</h3>
+                <a class="button white unfilled">Meer weten</a>
+                <a class="button white unfilled">Inloggen</a>
+            </div>
+        </div>
+
+        <div style="height: 100px"></div>
+        
+        <div class="container">
+
+            {# Inleidend blok #}
+            <div>
+                <div style="position:relative">
+                    <h3 style="position: relative; z-index: 1">VTK maakt voor jou het verschil</h3> 
+                    <div class="br-titledecoration"></div>
+                </div>
+                <div style="height: 30px"></div>
+                <div class="br-infoHolder">
+                    <div class="br-markdown" style="margin-right: 40px; text-align: justify; line-height: 25px">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sem mauris, lacinia nec ipsum eget, egestas ornare sapien. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur eget consectetur felis. In tempus, erat et aliquet bibendum, tortor dolor egestas est, vulputate egestas nisl elit sed diam. Nam tincidunt tristique neque tristique bibendum. Quisque ut nisl a ligula hendrerit lobortis. Nullam nec nulla gravida, euismod dui vitae, congue arcu.
+                    </div>
+                    <div style="min-width: 60%" class="temporaryImage">
+                        <iframe width="680px" height="340px" src="https://www.youtube.com/embed/hS_J0xPVdec"></iframe>
+                    </div>
+                </div>
+            </div>
+
+            <div style="height: 50px"></div>
+
+            {# Praesidium voorstelling #}
+            <div>
+                <div style="position:relative">
+                    <h3 style="position: relative; z-index: 1">BR-praesidium</h3> 
+                    <div class="br-titledecoration"></div>
+                </div>    
+
+                <div class="memberHolder">
+                    {% for member in members %}
+                        <div class="member">
+                            {% if member.getPhotoPath() %}
+                                <div class="memberPhoto" style="background-image: url({{ profilePath }}/{{ member.getPhotoPath() }})"></div>
+                            {% else %}
+                                <img data-src="holder.js/180x135/auto/text:Image" alt="">
+                            {% endif %}
+                            <h4 style="margin-bottom: 0px">{{ member.getFullName() }}</h4>
+                            {% if member.isCoordinator() %}
+                                <p style="text-align: center;">{{ translate('Groupcoordinator') }}</p>
+                            {% endif %}
+                            {% if not member.getDescription() == '' %}
+                                <p style="text-align: center;">{{ member.getDescription() }}</p>
+                            {% endif %}
+                            {% for extraUnit in extraUnits[member.getId()] %}
+                                <p style="text-align: center;">{{ hideEmail('<a href="mailto:' ~ extraUnit.getMail() ~ '">' ~ extraUnit.getName() ~ '</a>') }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div> 
+            </div>
+
+        </div>
+
+        <div style="height: 100px"></div>
+
+        {# Doorklikknop vacatures/stages/studentenjobs #}
+        <div class="br-blueBanner">
+            <div class="container">
+                {# TO DO VERTALEN #}
+                <h2 style="color:white">Zien we jou op één van onze volgende evenementen?</h2>
+                {# TO DO links toevoegen #}
+                <a class="button yellow unfilled">Evenementen bekijken</a>
+            </div>
+        </div>
+
+        <div style="height: 50px"></div>
+
+        <div class="container">
+            <div style="position:relative">
+                <h3 style="position: relative; z-index: 1">Hoe wij jou bedrijf mee boosten</h3> 
+                <div class="br-titledecoration"></div>
+            </div>
+
+            {# TO DO  #}
+        </div>
+
+        <div style="height: 50px"></div>    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    {# TO DO login styling #}
     {% else %}
         <div style="text-align: center;">
             <img src="/img/litus.png" alt="Litus" />
