@@ -174,7 +174,7 @@ return array(
         'br_admin_invoice' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/br/invoice[/:action[/:id][/:payed][/date/:date][/page/:page][/:language]][/]',
+                'route'       => '/admin/br/invoice[/:action[/:id][/:payed][/date/:date][/page/:page][/:language][/:invoiceyear]][/]',
                 'constraints' => array(
                     'action'      => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'          => '[0-9]*',

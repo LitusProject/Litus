@@ -26,8 +26,10 @@ use BrBundle\Entity\Invoice\History;
 use BrBundle\Entity\Invoice\Manual as ManualInvoice;
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File as FileUtil;
+use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use DateTime;
+use FormBundle\Component\Document\Generator\Zip as ZipGenerator;
 use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
 use RuntimeException;
@@ -60,7 +62,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
     public function manageAction()
     {
-        $invoiceYear = $this->getParam('id');
+        $invoiceYear = $this->getParam('invoiceyear');
 
         if ($invoiceYear === null || strlen($invoiceYear) !== 4) {
             $invoiceYear = $this->getEntityManager()
@@ -386,6 +388,58 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'data' => $content,
+            )
+        );
+    }
+
+    public function downloadAllAction()
+    {
+        $invoiceYear = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.invoice_year_number');
+
+        $entries = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Invoice')
+            ->findAllByInvoiceYearQuery($invoiceYear)->getResult();
+
+        $language = $this->getParam('language');
+
+        foreach ($entries as $invoice) {
+            if ($invoice->hasContract()) {
+                $generator = new InvoiceGenerator($this->getEntityManager(), $invoice, $language);
+                $generator->generate();
+            }
+
+            $invoiceNb = $invoice->getInvoiceNumber();
+            $companyName = $invoice->getCompany()->getName();
+
+            $headers = new Headers();
+            $headers->addHeaders(
+                array(
+                    'Content-Disposition' => 'attachment; filename="' . $invoiceNb . ' ' . $companyName . '.pdf"',
+                    'Content-Type'        => 'application/pdf',
+                )
+            );
+            $this->getResponse()->setHeaders($headers);
+        }
+
+        $tmpFile = new TmpFile();
+        error_log('hoi');
+        new ZipGenerator($tmpFile, $this->getEntityManager(), $language, $entries, $array = true); // Ik geraak hier niet in...
+
+        $headers = new Headers();
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'inline; filename="invoices_'. $invoiceYear . '.zip"',
+                'Content-Type'        => mime_content_type($tmpFile->getFileName()),
+                'Content-Length'      => filesize($tmpFile->getFileName()),
+            )
+        );
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $tmpFile->getContent(),
             )
         );
     }
