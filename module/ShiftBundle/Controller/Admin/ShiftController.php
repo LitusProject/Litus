@@ -135,42 +135,81 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
+            $fileData = $this->getRequest()->getFiles();
+
+            $fileName = $fileData['file']['tmp_name'];
+
+            $open = fopen($fileName, 'r');
+            if ($open !== false) {
+                $data = fgetcsv($open, 1000, ',');
+                while ($data !== false) {
+                    $shiftArray[] = $data;
+                    $data = fgetcsv($open, 1000, ',');
+                }
+                fclose($open);
+            }
+
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $shiftForm = $this->getForm('shift_shift_add');
-                $shiftForm->setData($formData);
-                $shift = $shiftForm->hydrateObject();
+                $creator = $this->getAuthentication()->getPersonObject();
+                $academicYear = $this->getCurrentAcademicYear(true);
 
-                $startDate = self::loadDate($formData['start_date']);
-                $endDate = self::loadDate($formData['end_date']);
+                $manager = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                    ->findOneById($formData['manager']['id']);
 
-                $formData = $form->getData();
-                $file = $formData['file'];
+                $editRoles = array();
+                if (isset($formData['edit_roles'])) {
+                    $roleRepository = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\Acl\Role');
 
-                // TODO: make shift for every line of the csv (ignore header line)
-                // here
-                $shift = $form->hydrateObject();
+                    foreach ($formData['edit_roles'] as $editRole) {
+                        $editRoles[] = $roleRepository->findOneByName($editRole);
+                    }
+                }
+                $unit = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+                    ->findOneById($formData['unit']);
+                $location = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Location')
+                    ->findOneById($formData['location']);
+                $event = $formData['event'] == '' ? null : $this->getEntityManager()
+                    ->getRepository('CalendarBundle\Entity\Node\Event')
+                    ->findOneById($formData['event']);
+                $handled = $formData['handled_on_event'];
+                $ticket = $formData['ticket_needed'];
 
-                $shift->setStartDate($startDate);
-                $shift->setEndDate($endDate);
-                $shift->setName('hardcodedtestname');
-                $shift->setDescription('hardcodedtestdescription');
+                $count = 0;
+                foreach ($shiftArray as $key => $data) {
+                    if ($key == '0') {
+                        continue;
+                    }
+                    //Create each shift with standard variables
+                    $shift = new Shift($creator, $academicYear);
+                    $shift->setManager($manager)->setUnit($unit)->setLocation($location)->setEditRoles($editRoles)
+                        ->setEvent($event)->setHandledOnEvent($handled)->setTicketNeeded($ticket);
 
-                $this->getEntityManager()->persist($shift);
-                // to here
+                    //Add the custom variables for this particular shift
+                    $shift->setStartDate(self::loadDateTime($data[0]))
+                        ->setEndDate(self::loadDateTime($data[1]))
+                        ->setNbResponsibles($data[2])->setNbVolunteers($data[3])
+                        ->setName($data[4])->setDescription($data[5])->setReward($data[6])
+                        ->setPoints($data[7]);
 
+                    $this->getEntityManager()->persist($shift);
+                    $count += 1;
+                }
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
                     'Succes',
-                    'The shift was successfully created!'
+                    $count . ' shifts were successfully created!'
                 );
 
                 $this->redirect()->toRoute(
                     'shift_admin_shift',
                     array(
-                        'action' => 'add',
+                        'action' => 'manage',
                     )
                 );
 
@@ -188,10 +227,30 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     public function csvtemplateAction()
     {
         $file = new CsvFile();
-        $heading = array('domain','mailacceptinggeneralid','maildrop');
+        $heading = array(
+            'start_date',
+            'end_date',
+            'nb_responsibles',
+            'nb_volunteers',
+            'name',
+            'description',
+            'reward',
+            'points',
+        );
+        $now = new DateTime();
 
         $results = array();
-        $results[] = array('testdomain','testid','testdrop');
+        $results[] = array(
+            $now->format('d/m/Y H:i'),
+            date_add($now, new DateInterval('P1D'))->format('d/m/Y H:i'),
+            0,
+            0,
+            'Name',
+            'Description',
+            'Amount of Rewarded Coins (0,1,2,3,4,6,10)',
+            0,
+        );
+
 
         $document = new CsvGenerator($heading, $results);
         $document->generateDocument($file);
@@ -199,7 +258,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $headers = new Headers();
         $headers->addHeaders(
             array(
-                'Content-Disposition' => 'attachment; filename="shifts.csv"',
+                'Content-Disposition' => 'attachment; filename="shifts_template.csv"',
                 'Content-Type'        => 'text/csv',
             )
         );
@@ -523,6 +582,16 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
      * @return DateTime|null
      */
     private static function loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
+    }
+
+    /**
+     * Loads the given date and time.
+     * @param  string $date
+     * @return DateTime|null
+     */
+    protected static function loadDateTime($date)
     {
         return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }

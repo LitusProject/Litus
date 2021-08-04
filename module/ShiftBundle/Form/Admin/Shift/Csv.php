@@ -38,50 +38,6 @@ class Csv extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type' => 'datetime',
-                'name' => 'start_date',
-                'label' => 'Start Date',
-                'required' => true,
-                'options' => array(
-                    'input' => array(
-                        'validators' => array(
-                            array(
-                                'name' => 'DateCompare',
-                                'options' => array(
-                                    'first_date' => 'now',
-                                    'format' => 'd/m/Y H:i',
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            )
-        );
-
-        $this->add(
-            array(
-                'type' => 'datetime',
-                'name' => 'end_date',
-                'label' => 'End Date',
-                'required' => true,
-                'options' => array(
-                    'input' => array(
-                        'validators' => array(
-                            array(
-                                'name' => 'DateCompare',
-                                'options' => array(
-                                    'first_date' => 'start_date',
-                                    'format' => 'd/m/Y H:i',
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            )
-        );
-
-        $this->add(
-            array(
                 'type' => 'select',
                 'name' => 'edit_roles',
                 'label' => 'Edit Roles',
@@ -113,44 +69,6 @@ class Csv extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type' => 'text',
-                'name' => 'nb_responsibles',
-                'label' => 'Number of Responsibles',
-                'required' => true,
-                'options' => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array('name' => 'Int'),
-                        ),
-                    ),
-                ),
-            )
-        );
-
-        $this->add(
-            array(
-                'type' => 'text',
-                'name' => 'nb_volunteers',
-                'label' => 'Number of Volunteers',
-                'required' => true,
-                'options' => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array('name' => 'Int'),
-                        ),
-                    ),
-                ),
-            )
-        );
-
-        $this->add(
-            array(
                 'type' => 'select',
                 'name' => 'unit',
                 'label' => 'Unit',
@@ -168,18 +86,6 @@ class Csv extends \CommonBundle\Component\Form\Admin\Form
         if ($rewards_enabled) {
             $this->add(
                 array(
-                    'type' => 'select',
-                    'name' => 'reward',
-                    'label' => 'Reward coins',
-                    'required' => true,
-                    'attributes' => array(
-                        'options' => $this->createRewardArray(),
-                    ),
-                )
-            );
-
-            $this->add(
-                array(
                     'type' => 'checkbox',
                     'name' => 'handled_on_event',
                     'label' => 'Payed at event',
@@ -189,47 +95,9 @@ class Csv extends \CommonBundle\Component\Form\Admin\Form
             $this->add(
                 array(
                     'type' => 'hidden',
-                    'name' => 'reward',
-                    'attributes' => array(
-                        'value' => 0,
-                    ),
-                )
-            );
-
-            $this->add(
-                array(
-                    'type' => 'hidden',
                     'name' => 'handled_on_event',
                     'attributes' => array(
                         'value' => '0',
-                    ),
-                )
-            );
-        }
-
-        $points_enabled = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('shift.points_enabled');
-
-        if ($points_enabled) {
-            $this->add(
-                array(
-                    'type' => 'select',
-                    'name' => 'points',
-                    'label' => 'Points',
-                    'required' => true,
-                    'attributes' => array(
-                        'options' => $this->createRewardArray(),
-                    ),
-                )
-            );
-        } else {
-            $this->add(
-                array(
-                    'type' => 'hidden',
-                    'name' => 'points',
-                    'attributes' => array(
-                        'value' => 0,
                     ),
                 )
             );
@@ -271,7 +139,7 @@ class Csv extends \CommonBundle\Component\Form\Admin\Form
                 'type'       => 'file',
                 'name'       => 'file',
                 'label'      => 'Shifts csv',
-                'required'   => true,
+            //                'required'   => true,
                 'attributes' => array(
                     'data-help' => 'The maximum file size is ' . self::FILE_SIZE . '.',
                 ),
