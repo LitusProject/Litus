@@ -20,6 +20,7 @@
 
 namespace FormBundle\Component\Document\Generator;
 
+use CommonBundle\Component\Util\File as FileUtil;
 use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Entity\General\Language;
 use DateTime;
@@ -39,26 +40,48 @@ class Zip
      * @param Language      $language
      * @param array         $entries
      */
-    public function __construct(TmpFile $tmpFile, EntityManager $entityManager, Language $language, $entries)
+    public function __construct(TmpFile $tmpFile, EntityManager $entityManager, Language $language, $entries, $array = false)
     {
+        error_log("YAAAAAAAAAAAAAAAAAAAAAA");
         $zip = new ZipArchive();
         $now = new DateTime();
 
         $zip->open($tmpFile->getFileName(), ZipArchive::CREATE);
         $zip->addFromString('GENERATED', $now->format('YmdHi') . PHP_EOL);
         $zip->close();
+        error_log("SIIIIIIIIIIIIIIIIII");
 
         $filePath = $entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('form.file_upload_path') . '/';
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('form.file_upload_path') . '/';
 
-        foreach ($entries as $entry) {
-            $zip->open($tmpFile->getFileName(), ZipArchive::CREATE);
-            $zip->addFile(
-                $filePath . $entry->getValue(),
-                $entry->getField()->getLabel($language) . '_' . $entry->getFormEntry()->getPersonInfo()->getFullName() . '_' . $entry->getFormEntry()->getId() . '_' . $entry->getReadableValue()
-            );
-            $zip->close();
+        if ($array == false){
+            foreach ($entries as $entry) {
+                $zip->open($tmpFile->getFileName(), ZipArchive::CREATE);
+                $zip->addFile(
+                    $filePath . $entry->getValue(),
+                    $entry->getField()->getLabel($language) . '_' . $entry->getFormEntry()->getPersonInfo()->getFullName() . '_' . $entry->getFormEntry()->getId() . '_' . $entry->getReadableValue()
+                );
+                $zip->close();
+            }
         }
+        else {
+            error_log("OMGGGGGGGGGGGGGGGG");
+            foreach ($entries as $invoice) {
+                $file = FileUtil::getRealFilename(
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('br.file_path') . '/invoices/'
+                    . $invoice->getInvoiceNumberPrefix() . '/'
+                    . $invoice->getInvoiceNumber() . '.pdf'
+                );
+
+                $zip->open($tmpFile->getFileName(), ZipArchive::CREATE);
+                $done = $zip->addFile($file);
+                error_log($done);
+                $zip->close();
+            }
+        }
+
     }
 }

@@ -64,6 +64,23 @@ class Invoice extends \Doctrine\ORM\EntityRepository
     }
 
     /**
+     * @param  string $invoiceYear The year from which you want to find all the invoices.
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllByInvoiceYearQuery($invoiceYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('i')
+            ->from('BrBundle\Entity\Invoice', 'i')
+            ->where(
+                $query->expr()->like('i.invoiceNumberPrefix', ':invoiceYear')
+            )
+            ->setParameter('invoiceYear', $invoiceYear . '%')
+            ->orderBy('i.creationTime', 'DESC')
+            ->getQuery();
+    }
+
+    /**
      * @return \Doctrine\ORM\Query
      */
     public function findAllPayedQuery()
