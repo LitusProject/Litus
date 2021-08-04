@@ -19,20 +19,21 @@
         </div>
     {% endif %} #}
 
-    {% for notification in notifications %}
+    {# {% for notification in notifications %}
         <div class="alert alert-info notification">
             {{ markdown(notification.getContent(language)) }}
         </div>
-    {% endfor %}
+    {% endfor %} #}
 
     <div class="vtk-home-header">
         <div style="height:175px"></div>
         <div class="container">
             <h1 class="vtk-hometitle">Welkom bij <span class="vtk-textspan">vtk</span></h1>
-            <h3>Vlaamse Technische Kring - partner in crime since 1920</h3>
+            <h3 style="font-weight: 500">Vlaamse Technische Kring - partner in crime since 1920</h3>
         </div>
     </div>
 
+    {% if calendarItems.length != 0 %}
     <div style="margin-top: -100px; position: relative; padding: 20px 15px" class="container">
         <h2>Kalender</h2>
         <div style="margin-top: 50px; margin-bottom: 120px">
@@ -62,6 +63,7 @@
             <a class="calendar-button" href="{{ url('calendar') }}">Bekijk de hele kalender →</a>
         </div>
     </div>
+    {% endif %}
     
 
     <div class="vtk-home-technical">
@@ -81,10 +83,10 @@
                                 </div>
                             </div>
                         </div>
-                    {% else %}
+                    {# {% else %}
                         <div class="alert alert-warning">
                             {{ translate('No news items were posted recently.') }}
-                        </div>
+                        </div> #}
                     {% endfor %}
                 </div>
                 <div class="col-md-6"><h2>Openingsuren Cudi</h2>
@@ -100,12 +102,12 @@
 
     <div class="vtk-home-br">
         <div class="container">
-            <h1 style="color:white">Never to early to build your <span class="vtk-textspan">career</span></h1>
+            <h1 style="color:white">Never too early to build your <span class="vtk-textspan">career</span></h1>
             <p style="max-width: 400px; color:white">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porta velit quis mauris fermentum maximus. Praesent arcu ante, finibus vel volutpat a, cursus sed tortor. Maecenas convallis magna ut eros volutpat, </p>
             <div class="spacer10"></div>
             <div>
-                <div class="button white unfilled"><a href="{{ url("br_career_index", {"language": language.getAbbrev()}) }}">Studenten</a></div>
-                <div class="button white unfilled"><a href="{{ url("br_corporate_index", {"language": language.getAbbrev()}) }}">Bedrijven</a></div>
+                <a class="button white unfilled" href="{{ url("br_career_index", {"language": language.getAbbrev()}) }}">Studenten</a>
+                <a class="button white unfilled" href="{{ url("br_corporate_index", {"language": language.getAbbrev()}) }}">Bedrijven</a>
             </div>
         </div>
     </div>
