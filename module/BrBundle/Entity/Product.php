@@ -252,10 +252,13 @@ class Product
      */
     public function getContractText($lang = 'nl')
     {
-        if ($lang == 'nl') return $this->getContractTextNl();
-        if ($lang == 'en') return $this->getContractTextEn();
+        if ($lang == 'nl') {
+            return $this->getContractTextNl();
+        }
+        if ($lang == 'en') {
+            return $this->getContractTextEn();
+        }
         return null;
-
     }
 
     /**
@@ -264,8 +267,12 @@ class Product
      */
     public function setContractText($contractText, $lang = 'nl')
     {
-        if ($lang == 'nl') return $this->setContractTextNl($contractText);
-        if ($lang == 'en') return $this->setContractTextEn($contractText);
+        if ($lang == 'nl') {
+            return $this->setContractTextNl($contractText);
+        }
+        if ($lang == 'en') {
+            return $this->setContractTextEn($contractText);
+        }
         return null;
     }
 

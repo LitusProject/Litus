@@ -42,20 +42,20 @@ class Zip
      */
     public function __construct(TmpFile $tmpFile, EntityManager $entityManager, Language $language, $entries, $array = false)
     {
-        error_log("YAAAAAAAAAAAAAAAAAAAAAA");
+        error_log('YAAAAAAAAAAAAAAAAAAAAAA');
         $zip = new ZipArchive();
         $now = new DateTime();
 
         $zip->open($tmpFile->getFileName(), ZipArchive::CREATE);
         $zip->addFromString('GENERATED', $now->format('YmdHi') . PHP_EOL);
         $zip->close();
-        error_log("SIIIIIIIIIIIIIIIIII");
+        error_log('SIIIIIIIIIIIIIIIIII');
 
         $filePath = $entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('form.file_upload_path') . '/';
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('form.file_upload_path') . '/';
 
-        if ($array == false){
+        if ($array == false) {
             foreach ($entries as $entry) {
                 $zip->open($tmpFile->getFileName(), ZipArchive::CREATE);
                 $zip->addFile(
@@ -64,9 +64,8 @@ class Zip
                 );
                 $zip->close();
             }
-        }
-        else {
-            error_log("OMGGGGGGGGGGGGGGGG");
+        } else {
+            error_log('OMGGGGGGGGGGGGGGGG');
             foreach ($entries as $invoice) {
                 $file = FileUtil::getRealFilename(
                     $this->getEntityManager()
@@ -82,6 +81,5 @@ class Zip
                 $zip->close();
             }
         }
-
     }
 }

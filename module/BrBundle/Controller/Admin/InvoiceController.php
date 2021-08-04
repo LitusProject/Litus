@@ -29,12 +29,10 @@ use CommonBundle\Component\Util\File as FileUtil;
 use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use DateTime;
+use FormBundle\Component\Document\Generator\Zip as ZipGenerator;
 use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
 use RuntimeException;
-use FormBundle\Component\Document\Generator\Zip as ZipGenerator;
-
-
 
 /**
  * InvoiceController
@@ -406,22 +404,11 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
         $language = $this->getParam('language');
 
-        foreach ($entries as $invoice){
+        foreach ($entries as $invoice) {
             if ($invoice->hasContract()) {
                 $generator = new InvoiceGenerator($this->getEntityManager(), $invoice, $language);
                 $generator->generate();
             }
-
-            $file = FileUtil::getRealFilename(
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('br.file_path') . '/invoices/'
-                . $invoice->getInvoiceNumberPrefix() . '/'
-                . $invoice->getInvoiceNumber() . '.pdf'
-            );
-
-            $fileHandler = fopen($file, 'r');
-            $content = fread($fileHandler, filesize($file));
 
             $invoiceNb = $invoice->getInvoiceNumber();
             $companyName = $invoice->getCompany()->getName();
@@ -437,7 +424,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         $tmpFile = new TmpFile();
-        error_log("hoi");
+        error_log('hoi');
         new ZipGenerator($tmpFile, $this->getEntityManager(), $language, $entries, $array = true); // Ik geraak hier niet in...
 
         $headers = new Headers();
