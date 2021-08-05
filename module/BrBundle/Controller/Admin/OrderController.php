@@ -406,6 +406,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
                         if (in_array($order->getCompany(), $eventCompanyMaps) === false) {
                             $map = new CompanyMap($order->getCompany(), $entry->getProduct()->getEvent());
+                            array_push($eventCompanyMaps, $map);
                             $this->getEntityManager()->persist($map);
                         }
                     }
