@@ -217,15 +217,6 @@ class Edit extends \CommonBundle\Component\Form\Bootstrap\Form
                 ),
                 'elements' => array(
                     array(
-                        'type'       => 'select',
-                        'name'       => 'years',
-                        'label'      => 'Page Visible During',
-                        'attributes' => array(
-                            'multiple' => true,
-                            'options'  => $this->getYears(),
-                        ),
-                    ),
-                    array(
                         'type'       => 'textarea',
                         'name'       => 'description',
                         'label'      => 'Description',
@@ -236,6 +227,29 @@ class Edit extends \CommonBundle\Component\Form\Bootstrap\Form
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'       => 'textarea',
+                        'name'       => 'short_description',
+                        'label'      => 'Short Description',
+                        'attributes' => array(
+                            'id' => 'shortDescription',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                            ),
+                            'validators' => array(
+                                array(
+                                    'name'    => 'StringLength',
+                                    'options' => array(
+                                        'max' => '250',
+                                    ),
                                 ),
                             ),
                         ),

@@ -230,6 +230,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         ),
                     ),
                     array(
+                        'type'        => 'checkbox',
+                        'name'        => 'large',
+                        'label'       => 'company has a Large spot in the company overview',
+                    ),
+                    array(
+                        'type'        => 'checkbox',
+                        'name'        => 'atEvent',
+                        'label'       => 'company is at internshipfair',
+                    ),
+                    array(
                         'type'       => 'textarea',
                         'name'       => 'description',
                         'label'      => 'Description',
@@ -259,19 +269,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             ),
                         ),
                     ),
-                    array(
-                        'type'        => 'checkbox',
-                        'name'        => 'atEvent',
-                        'label'       => 'company is at internshipfair',
-                    ),
                 ),
             )
         );
-        array(
-            'type'        => 'checkbox',
-            'name'        => 'large',
-            'label'       => 'company has a Large spot in the company overview',
-        );
+
 
         $this->addSubmit('Add', 'company_add');
 

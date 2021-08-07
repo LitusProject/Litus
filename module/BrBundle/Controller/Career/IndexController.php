@@ -49,6 +49,9 @@ class IndexController extends \BrBundle\Component\Controller\CareerController
         return new ViewModel(
             array(
                 'members'         => $members,
+                'profilePath'         => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.profile_path'),
             )
         );
     }

@@ -47,7 +47,16 @@
             <h5 style="margin-bottom: 0px; max-width: 100%">Karting voor young potentials</h5>
         </div>
     </div>
-    <div style="height: 30px"></div>    
+    <div style="height: 30px"></div>
+
+    {% if events|length > 0 %}
+        {% for corporateEvent in events %}
+            {% set event = corporateEvent.getEvent() %}
+            {{ event.getTitle(language) }}<br>
+            {{ event.getSummary(50, language) }}<br>
+            {{ event.getContent(language) }}
+        {% endfor %}
+    {% endif %}
 
     {% if vacancies|length > 0 %}
         <div style="height: 30px"></div>

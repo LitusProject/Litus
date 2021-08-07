@@ -54,6 +54,19 @@ class IndexController extends \BrBundle\Component\Controller\CorporateController
         );
     }
 
+    public function loginAction()
+    {
+        $events = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Event')
+            ->findAllActiveQuery()->getResult();
+
+        return new ViewModel(
+            array(
+                'events'         => $events,
+            )
+        );
+    }
+
     public function eventsAction()
     {
         $events = $this->getEntityManager()

@@ -54,6 +54,8 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
             return new ViewModel();
         }
 
+        $language = $this->getLanguage();
+
         $logoPath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.public_logo_path');
@@ -77,6 +79,7 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
                 'events'      => $events,
                 'internships' => $internships,
                 'vacancies'   => $vacancies,
+                'language'    => $language,
             )
         );
     }

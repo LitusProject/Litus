@@ -2,15 +2,13 @@
 
 {% block content %}
 
-    {% if authenticatedPerson is not null %}
-        
         {# <h1>BR</h1>
         <div style="height: 30px"></div>
         {% for member in members %}
             {{ member.getFullName() }}<br>
         {% endfor %}
         <h2>{% autoescape false %}{{ translate('Welcome <i>%name%</i> of <i>%company%</i>')|replace({'%name%': authenticatedPerson.getFullName(), '%company%': authenticatedPerson.getCompany().getName()}) }}{% endautoescape %}</h2> #}
-    
+
         {# TO DO favicon bedrijvenrelaties in orde brengen #}
         {# TO DO translations overal op deze pagina #}
         <div class="br-corporateLaunchBg">
@@ -20,18 +18,18 @@
                 <div style="height: 20px"></div>
                 {# TO DO buttons invullen & doen werken #}
                 <a class="button white unfilled">Meer weten</a>
-                <a class="button white unfilled">Inloggen</a>
+                <a class="button white unfilled" href="{{ url("br_corporate_index", {"action": "login"}) }}">Inloggen</a>
             </div>
         </div>
 
         <div style="height: 100px"></div>
-        
+
         <div class="container">
 
             {# Inleidend blok #}
             <div>
                 <div style="position:relative">
-                    <h3 style="position: relative; z-index: 1">VTK maakt voor jou het verschil</h3> 
+                    <h3 style="position: relative; z-index: 1">VTK maakt voor jou het verschil</h3>
                     <div class="br-titledecoration"></div>
                 </div>
                 <div style="height: 30px"></div>
@@ -50,9 +48,9 @@
             {# Praesidium voorstelling #}
             <div>
                 <div style="position:relative">
-                    <h3 style="position: relative; z-index: 1">BR-praesidium</h3> 
+                    <h3 style="position: relative; z-index: 1">BR-praesidium</h3>
                     <div class="br-titledecoration"></div>
-                </div>    
+                </div>
 
                 <div class="memberHolder">
                     {% for member in members %}
@@ -76,7 +74,7 @@
                             {% endfor %}
                         </div>
                     {% endfor %}
-                </div> 
+                </div>
             </div>
 
             <div style="height: 50px"></div>
@@ -84,9 +82,9 @@
             {# Gallerij #}
             <div>
                 <div style="position:relative">
-                    <h3 style="position: relative; z-index: 1">BR impressie - VTKatjes</h3> 
+                    <h3 style="position: relative; z-index: 1">BR impressie - VTKatjes</h3>
                     <div class="br-titledecoration"></div>
-                </div>    
+                </div>
 
                 <div style="height: 30px"></div>
 
@@ -101,13 +99,13 @@
 
                 <!-- The Modal/Lightbox -->
                 <div id="myModal" class="modal">
-                    
+
                     <span class="closeModal cursor" onclick="closeModal()">&times;</span>
-                    
+
                     <div class="lightboxParentmodal-content">
-                    
+
                         <div class="br-lightboxContainer">
-                            
+
                             <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
 
                             <div style="height: 100%; flex-grow: 1">
@@ -157,14 +155,14 @@
                             <div class="lightbox1">
                                 <img class="demo" src="img4.jpg" onclick="currentSlide(4)" alt="Lights">
                             </div> #}
-                        </div>    
+                        </div>
                     </div>
 
                 </div>
-                
+
             </div>
         </div>
-      
+
 
         <div style="height: 100px"></div>
 
@@ -181,7 +179,7 @@
 
         <div class="container">
             <div style="position:relative">
-                <h3 style="position: relative; z-index: 1">Hoe wij jou bedrijf mee boosten</h3> 
+                <h3 style="position: relative; z-index: 1">Hoe wij jou bedrijf mee boosten</h3>
                 <div class="br-titledecoration"></div>
             </div>
             <div style="height: 50px"></div>
@@ -202,50 +200,8 @@
 
         </div>
 
-        <div style="height: 50px"></div>    
-    
-    
+        <div style="height: 50px"></div>
 
-    
-    {# TO DO vtk logo displayen? #}
-    {# TO DO hoe aanmeldknop hier stylen naar gewone button from theme? #}
-    {% else %}
-        <div style="height: 100px"></div>
-        <div class="container">
-            <h3>{{ translate('Please login to get access to these pages.') }}</h3>
-            <div style="height: 40px"></div>
-            {% if loginForm is defined %}
-                {% do loginForm.prepare() %}
-                {% autoescape false %}
-                    {{ form().openTag(loginForm) }}
-                    {% for element in loginForm.getElements() %}
-                        {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset'or element.getAttribute('type') == 'hidden' %}
-                            {{ formElement(element) }}
-                        {% elseif element.getAttribute('type') == 'checkbox' %}
-                            <div class="remember_me">
-                                <label>
-                                    {{ formElement(element) }}
-                                    {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
-                                </label>
-                            </div>
-                        {% else %}
-                            <div class="form-group {% if element.getMessages()|length > 0 %}has-error{% endif %}">
-                                <label class="control-label">{% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}</label>
-                                <div>{{ formElement(element) }}</div>
-                                {% if element.getMessages()|length > 0 %}
-                                    <div class="help-block">
-                                        {{ formElementErrors(element) }}
-                                    </div>
-                                {% endif %}
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                    {{ form().closeTag() }}
-                {% endautoescape %}
-            {% endif %}            
-        </div>
-
-    {% endif %}
 
     {{ inlineScript () }}
 

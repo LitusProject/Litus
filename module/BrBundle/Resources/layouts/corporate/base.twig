@@ -229,7 +229,7 @@
                                 </div>
                             {% else %}
                                 <div class="vtk-menuitem-holder">
-                                    <a style="cursor: pointer" class="vtk-menuitem" href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('Login') }}{% endautoescape %}</a>
+                                    <a style="cursor: pointer" class="vtk-menuitem" href="{{ url("br_corporate_index", {"action": "login"}) }}">{% autoescape false %}{{ translate('Login') }}{% endautoescape %}</a>
                                 </li>
                             {% endif %}
                         </div> 
