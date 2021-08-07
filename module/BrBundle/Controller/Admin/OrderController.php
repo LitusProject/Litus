@@ -403,10 +403,13 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                         $eventCompanyMaps = $this->getEntityManager()
                             ->getRepository('BrBundle\Entity\Event\CompanyMap')
                             ->findAllByEvent($entry->getProduct()->getEvent());
+                        $eventCompanies = array();
+                        foreach ($eventCompanyMaps as $map){
+                            array_push($eventCompanies, $map->getCompany());
+                        }
 
-                        if (in_array($order->getCompany(), $eventCompanyMaps) === false) {
+                        if (!in_array($order->getCompany(), $eventCompanies)) {
                             $map = new CompanyMap($order->getCompany(), $entry->getProduct()->getEvent());
-                            array_push($eventCompanyMaps, $map);
                             $this->getEntityManager()->persist($map);
                         }
                     }
