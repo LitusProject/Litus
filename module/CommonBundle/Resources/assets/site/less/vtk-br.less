@@ -251,3 +251,259 @@
   background-color: @color-blue;
   padding: 80px 0px;
 }
+
+// CORPORATE LAUNCH PAGE
+
+.br-corporateLaunchBg {
+  background: linear-gradient(
+      0deg,
+      rgba(7, 2, 59, 0.4) 0%,
+      rgba(7, 2, 59, 0.4) 100%
+    ),
+    url(https://images.pexels.com/photos/2020156/pexels-photo-2020156.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+  background-size: cover;
+  background-position: center;
+  padding: 150px 0px;
+  height: 500px;
+}
+
+.servicesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 15px;
+  grid-row-gap: 0px;
+}
+
+.servicesHolder {
+  background-color: #f3f3f3;
+  padding: 30px;
+  position: relative;
+}
+
+.servicesTitle {
+  position: absolute;
+  top: -12px;
+}
+
+// BR Events voor bedrijven
+
+.br-eventHolder {
+  margin-top: 50px;
+  background-color: rgb(243, 243, 243);
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-content: stretch;
+  -ms-flex-line-pack: stretch;
+  align-content: stretch;
+  border-left: 8px solid @color-yellow;
+}
+
+.br-eventTekstHolder {
+  padding: 20px;
+  position: relative;
+  flex-grow: 1;
+}
+
+.br-eventImageHolder {
+  background-image: url(https://images.pexels.com/photos/2020156/pexels-photo-2020156.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+  background-size: cover;
+  background-position: center;
+  flex: 0 0 300px;
+}
+
+.br-eventTitle {
+  position: absolute;
+  top: -17px;
+}
+
+.br-eventInfoHolder {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-content: stretch;
+  -ms-flex-line-pack: stretch;
+  align-content: stretch;
+}
+
+.br-eventInfoTitle {
+  font-weight: 700;
+  font-size: 15px;
+  color: @color-blue;
+}
+
+.br-menuUnderlineStyle {
+  transition-duration: 100ms;
+  border-bottom: 1px solid transparent;
+  cursor: pointer;
+}
+
+.br-menuUnderlineStyle.active {
+  font-weight: 700;
+}
+
+.br-menuUnderlineStyle:hover,
+.br-menuUnderlineStyle:focus,
+.br-menuUnderlineStyle:active {
+  border-bottom: 1px solid @color-yellow;
+  text-decoration: none;
+  color: @color-blue;
+}
+
+// CSS VOOR GALLERIJ
+
+/* The Modal (background) */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 100000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.77);
+}
+
+/* The Close Button */
+.closeModal {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  color: white;
+  font-size: 35px;
+  font-weight: bold;
+  transition: 100ms;
+  padding: 5px;
+  border-radius: 3px;
+}
+
+.closeModal:hover,
+.closeModal:focus {
+  background-color: white;
+  color: @color-blue;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Hide the slides by default */
+.mySlides {
+  display: none;
+}
+
+/* Next & previous buttons */
+.prev,
+.next {
+  cursor: pointer;
+  width: auto;
+  padding: 16px;
+  margin-top: -50px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  transition: 0.6s ease;
+  user-select: none;
+  -webkit-user-select: none;
+  border-radius: 3px;
+}
+
+.prev:hover,
+.next:hover {
+  background-color: white;
+}
+
+.lightboxParent {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  overflow: hidden;
+  height: 500px;
+}
+
+.lightboxImage {
+  background-position: center;
+  background-size: cover;
+  cursor: pointer;
+}
+
+.lightbox1 {
+  grid-area: 1 / 1 / span 2 / span 2;
+}
+
+.lightboxParentmodal-content {
+  height: 100%;
+  padding: 50px 50px;
+}
+
+.mySlides {
+  height: 100%;
+  width: 100%;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.br-lightboxContainer {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.lightboxZoomedImage {
+  max-width: 100%;
+  max-height: 100%;
+}
