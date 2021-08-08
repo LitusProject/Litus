@@ -163,7 +163,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
 
         $contractText = '';
         foreach ($entries as $entry) {
-            $contractText .= "\n" . $entry->getOrderEntry()->getProduct()->getContractText($this->lang);
+            $contractText .= "\n" . $entry->getContractText($this->lang);
         }
         if ($this->contract->getAutoDiscountText() != '') {
             $contractText .= "\n" . $this->contract->getAutoDiscountText();

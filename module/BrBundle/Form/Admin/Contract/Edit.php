@@ -38,6 +38,16 @@ class Edit extends \BrBundle\Form\Admin\Order\GenerateContract
      */
     private $contract;
 
+    /**
+     * @var string
+     */
+    private $lang;
+
+    /**
+     * @var string
+     */
+    private $notLang;
+
     public function init()
     {
         parent::init();
@@ -46,7 +56,21 @@ class Edit extends \BrBundle\Form\Admin\Order\GenerateContract
             $this->add(
                 array(
                     'type'    => 'textarea',
-                    'name'    => 'entry_' . $entry->getId(),
+                    'name'    => 'entry_' . $entry->getId() . '_' . $this->lang,
+                    'label'   => $entry->getOrderEntry()->getProduct()->getName(),
+                    'options' => array(
+                        'input' => array(
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                )
+            );
+            $this->add(
+                array(
+                    'type'    => 'hidden',
+                    'name'    => 'entry_' . $entry->getId() . '_' . $this->notLang,
                     'label'   => $entry->getOrderEntry()->getProduct()->getName(),
                     'options' => array(
                         'input' => array(
@@ -73,6 +97,18 @@ class Edit extends \BrBundle\Form\Admin\Order\GenerateContract
     public function setContract(Contract $contract)
     {
         $this->contract = $contract;
+
+        return $this;
+    }
+
+    /**
+     * @param string $lang
+     * @return self
+     */
+    public function setLang(string $lang)
+    {
+        $this->lang = $lang;
+        $this->notLang = $lang == 'nl' ? 'en' : 'nl';
 
         return $this;
     }

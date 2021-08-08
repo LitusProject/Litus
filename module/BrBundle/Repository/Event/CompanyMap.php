@@ -60,6 +60,6 @@ class CompanyMap extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->setParameter('event', $event->getId())
             ->setParameter('company', $company->getId())
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getResult();
     }
 }

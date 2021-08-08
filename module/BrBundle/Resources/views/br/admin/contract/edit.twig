@@ -66,5 +66,17 @@
                 </p>
             </div>
         </div>
+        <div class="sidebox">
+            <div class="title">Switch Language</div>
+            <div class="content">
+                <p>
+                    <i>Please hit the link below to switch language!</i>
+                </p>
+                <p>
+                    <a href="{{ url('br_admin_contract', {"action": "edit", "id": contract.getId(), "language": notLang}) }}">&rarr;
+                        Change Language</a>
+                </p>
+            </div>
+        </div>
     </aside>
 {% endblock %}
