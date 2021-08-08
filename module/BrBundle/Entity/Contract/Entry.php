@@ -22,6 +22,7 @@ namespace BrBundle\Entity\Contract;
 
 use BrBundle\Entity\Contract;
 use BrBundle\Entity\Product\Order\Entry as OrderEntry;
+use CommonBundle\Entity\General\Language;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 
@@ -66,6 +67,13 @@ class Entry
     private $contractText;
 
     /**
+     * @var string The contract text of this product in English
+     *
+     * @ORM\Column(name="contract_text_en", type="text", nullable=true)
+     */
+    private $contractTextEn;
+
+    /**
      * @var integer The position number of the entry in the contract
      *
      * @ORM\Column(type="integer")
@@ -89,7 +97,10 @@ class Entry
     {
         $this->contract = $contract;
         $this->orderEntry = $orderEntry;
-        $this->setContractText($orderEntry->getProduct()->getContractText());
+        error_log('nl= '.$orderEntry->getProduct()->getContractText('nl'));
+        error_log('en= '.$orderEntry->getProduct()->getContractText('en'));
+        $this->setContractText($orderEntry->getProduct()->getContractText('nl'), 'nl');
+        $this->setContractText($orderEntry->getProduct()->getContractText('en'), 'en');
         $this->setPosition($position);
         $this->setVersion($version);
     }
@@ -140,9 +151,36 @@ class Entry
     }
 
     /**
+     * @param bool $replace
+     * @param string $language
      * @return string
      */
-    public function getContractText($replace = true)
+    public function getContractText($language, $replace = true)
+    {
+        if ($language == null || $language == 'nl') {
+            return $this->getContractTextNl($replace);
+        }
+        return $this->getContractTextEn($replace);
+    }
+
+    /**
+     * @param string $contractText
+     * @param string $language
+     * @return Entry
+     */
+    public function setContractText($contractText, $language)
+    {
+        if ($language == null || $language == 'nl') {
+            return $this->setContractTextNl($contractText);
+        } else {
+            return $this->setContractTextEn($contractText);
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getContractTextNl($replace = true)
     {
         if ($replace === true) {
             return str_replace('<amount />', (String) $this->getOrderEntry()->getQuantity(), $this->contractText);
@@ -155,9 +193,32 @@ class Entry
      * @param  string $contractText
      * @return Entry
      */
-    public function setContractText($contractText)
+    public function setContractTextNl($contractText)
     {
         $this->contractText = $contractText;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContractTextEn($replace = true)
+    {
+        if ($replace === true) {
+            return str_replace('<amount />', (String) $this->getOrderEntry()->getQuantity(), $this->contractTextEn);
+        }
+
+        return $this->contractTextEn;
+    }
+
+    /**
+     * @param  string $contractText
+     * @return Entry
+     */
+    public function setContractTextEn($contractText)
+    {
+        $this->contractTextEn = $contractText;
 
         return $this;
     }

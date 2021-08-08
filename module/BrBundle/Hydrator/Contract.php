@@ -54,7 +54,8 @@ class Contract extends \CommonBundle\Component\Hydrator\Hydrator
                     $newVersionNb
                 );
 
-                $newEntry->setContractText($data['entry_' . $entry->getId()]);
+                $newEntry->setContractText($data['entry_' . $entry->getId().'_nl'], 'nl');
+                $newEntry->setContractText($data['entry_' . $entry->getId().'_en'], 'en');
 
                 $this->getEntityManager()->persist($newEntry);
             }
@@ -74,7 +75,8 @@ class Contract extends \CommonBundle\Component\Hydrator\Hydrator
         $data = $this->stdExtract($object, self::$stdKeys);
 
         foreach ($object->getEntries() as $entry) {
-            $data['entry_' . $entry->getId()] = $entry->getContractText(false);
+            $data['entry_' . $entry->getId().'_nl'] = $entry->getContractText('nl', false);
+            $data['entry_' . $entry->getId().'_en'] = $entry->getContractText('en', false);
         }
 
         return $data;

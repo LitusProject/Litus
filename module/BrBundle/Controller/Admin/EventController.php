@@ -156,9 +156,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             $this->getEntityManager()->flush();
         }
 
-        $eventCompanyMaps = $this->getEntityManager()
+        $eventCompanyMaps = array_unique($this->getEntityManager()
             ->getRepository('BrBundle\Entity\Event\CompanyMap')
-            ->findAllByEvent($event);
+            ->findAllByEvent($event));
 
         return new ViewModel(
             array(

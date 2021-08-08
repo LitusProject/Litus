@@ -155,9 +155,14 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             return new ViewModel();
         }
 
+        $lang = $this->getParam('language');
+        $notLang = $lang == 'nl'?'en':'nl';
+
         return new ViewModel(
             array(
                 'contract' => $contract,
+                'lang' => $lang,
+                'notLang'   => $notLang
             )
         );
     }
@@ -234,8 +239,9 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         if ($contract === null) {
             return new ViewModel();
         }
-
-        $form = $this->getForm('br_contract_edit', array('contract' => $contract));
+        $lang = $this->getParam('language');
+        $notLang = $lang == 'nl'?'en':'nl';
+        $form = $this->getForm('br_contract_edit', array('contract' => $contract, 'lang' => $lang));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -268,6 +274,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             array(
                 'contract' => $contract,
                 'form'     => $form,
+                'notLang'  => $notLang,
             )
         );
     }
@@ -348,7 +355,9 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
                         $eventCompanyMap = $this->getEntityManager()
                             ->getRepository('BrBundle\Entity\Event\CompanyMap')
                             ->findByEventAndCompany($orderEntry->getProduct()->getEvent(), $contract->getCompany());
-                        $eventCompanyMap->setDone();
+                        foreach($eventCompanyMap as $map){
+                            $map->setDone();
+                        }
                     }
                 }
 
@@ -389,6 +398,10 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         }
         $language = $this->getParam('language');
 
+//        foreach ($contract->getEntries() as $entry){
+//            print($entry->getContractText());
+//        }
+//        die();
         $generator = new ContractGenerator($this->getEntityManager(), $contract, $this->getTranslator()->getTranslator(), $language);
         $generator->generate();
 
