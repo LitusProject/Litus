@@ -1,0 +1,435 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    
+    <div class="container">
+        <div class="spacer40"></div>
+        <h1>{{ translate('My VTK') }}</h1>
+        <div class="spacer40"></div>
+        {% include 'common/account/partials/navigation.twig' %}<br><br>
+        <h1>{{ translate('My Profile') }}</h1>
+
+        <div class="contentBlock">
+            <div class="headingHolder">
+                <h2 style="margin-bottom: 0px">Studierichting & vakken</h2>
+                <div class="lineDecoration"></div>
+            </div>
+
+            <h5>Studierichting:{% for study in studies %}{{ studies }}{% endfor %}</h5>
+
+
+            <div class="columnGrid">
+                <div>
+                    <h5>Semester 1</h5>
+                    {% for subject in subjects %}
+                        {% if subject.getSubject().getSemester() == 1 %}
+                            <div class="itemHolder">
+                                <p>{{ subject.getSubject().getName() }}</p>
+                                <div class="flexStretch"></div>
+                                <p style="opacity: 50%">{{ subject.getSubject().getCode() }}</p>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div>
+                    <h5>Semester 2</h5>
+                    {% for subject in subjects %}
+                        {% if subject.getSubject().getSemester() == 2 %}
+                            <div class="itemHolder">
+                                <p>{{ subject.getSubject().getName() }}</p>
+                                <div class="flexStretch"></div>
+                                <p style="opacity: 50%">{{ subject.getSubject().getCode() }}</p>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div style="margin-top: 25px">
+                <h5>MOGELIJKE ACTIES</h5>
+                <a class="button blue unfilled" href="{{ url('common_account', {'action': 'subjects'}) }}">Vakken aanpassen</a>
+                <a class="button blue unfilled" href="{{ url('common_account', {'action': 'studies'}) }}">Studierichting aanpassen</a>
+            </div>
+
+        </div>
+
+        <div class="spacer40"></div>
+
+        <div class="contentBlock">
+            <div class="headingHolder">
+                <h2 style="margin-bottom: 0px">Accountgegevens</h2>
+                <div class="lineDecoration"></div>
+            </div>
+
+            <div>
+                <div>
+                    <div class="accountInfo" style="display: inline-block">{{ translate('Name') }}</div>
+                    <div style="display: inline-block">{{ authenticatedPerson.getFullName() }}&nbsp;</div>
+                </div>
+                <div>
+                    <div class="accountInfo" style="display: inline-block">{{ translate('Birthday') }}</div>
+                    <div style="display: inline-block">{{ dateLocalized(authenticatedPerson.getBirthday(), 'd MMMM y') }}&nbsp;</div>
+                </div>
+                <div>
+                    <div class="accountInfo" style="display: inline-block">{{ translate('Sex') }}</div>
+                    <div style="display: inline-block">{{ authenticatedPerson.getSex()|capitalize }}&nbsp;</div>
+                </div>
+                <div>
+                    <div class="accountInfo" style="display: inline-block">{{ translate('Phone Number') }}</div>
+                    <div style="display: inline-block">{{ authenticatedPerson.getPhoneNumber() }}&nbsp;</div>
+                </div>
+                <div>
+                    <div class="accountInfo" style="display: inline-block">{{ translate('University Identification') }}</div>
+                    <div style="display: inline-block">{{ authenticatedPerson.getUniversityIdentification() }}&nbsp;</div>
+                </div>
+                <div>
+                    <div class="accountInfo" style="display: inline-block">{{ translate('University E-mail') }}</div>
+                    <div style="display: inline-block">{{ authenticatedPerson.getUniversityEmail() }}&nbsp;</div>
+                </div>
+                <div>
+                    <div class="accountInfo" style="display: inline-block">{{ translate('Personal E-mail') }}</div>
+                    <div style="display: inline-block">{{ authenticatedPerson.getPersonalEmail() }}&nbsp;</div>
+                </div>
+                <div>
+                    <div class="accountInfo" style="display: inline-block">{{ translate('International Student') }}</div>
+                    <div style="display: inline-block">{% if  authenticatedPerson.isInternational() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}&nbsp;</div>
+                </div>
+
+                <div>
+                    <div class="accountInfo" style="display: inline-block">{{ translate('Primary Address') }}</div>
+                    <div style="display: inline-block">
+                        {{ authenticatedPerson.getPrimaryAddress().getStreet() }} {{ authenticatedPerson.getPrimaryAddress().getNumber() }}{% if '' != authenticatedPerson.getPrimaryAddress().getMailbox() %}/{{ authenticatedPerson.getPrimaryAddress().getMailbox() }}{% endif %}
+                        {{ authenticatedPerson.getPrimaryAddress().getPostal() }} {{ authenticatedPerson.getPrimaryAddress().getCity() }}
+                        {{ authenticatedPerson.getPrimaryAddress().getCountry() }}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="accountInfo" style="display: inline-block">{{ translate('Secondary Address') }}</div>
+                    <div style="display: inline-block">
+                        {{ authenticatedPerson.getSecondaryAddress().getStreet() }} {{ authenticatedPerson.getSecondaryAddress().getNumber() }}{% if '' != authenticatedPerson.getSecondaryAddress().getMailbox() %}/{{ authenticatedPerson.getSecondaryAddress().getMailbox() }}{% endif %}
+                        {{ authenticatedPerson.getSecondaryAddress().getPostal() }} {{ authenticatedPerson.getSecondaryAddress().getCity() }}
+                        {{ authenticatedPerson.getSecondaryAddress().getCountry() }}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="accountInfo" style="display: inline-block">{{ translate('Student Organization') }}</div>
+                    <div style="display: inline-block">
+                        {{ authenticatedPerson.getOrganization(currentAcademicYear).getName() }}&nbsp;
+                    </div>
+                </div>
+
+                <div>
+                    <div class="accountInfo" style="display: inline-block">{{ translate('Membership') }}</div>
+                    <div style="display: inline-block">
+                        {% if authenticatedPerson.isMember(currentAcademicYear) or metaData.becomeMember() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}
+                    </div>
+                </div>
+
+            </div>
+            
+
+            <div style="margin-top: 25px">
+                <h5>MOGELIJKE ACTIES</h5>
+                <a class="button blue unfilled" href="{{ url('common_account', {'action': 'edit'}) }}">Accountgegevens bijwerken</a>
+            </div>
+        </div>
+
+    </div> 
+
+    <h3>{{ translate('Personal') }}</h3>
+    <div class="row">
+        <div class="col-sm-3">
+            <div id="accountProfileImage" class="thumbnail"
+                 style="width: 180px; height: 135px; margin-top: 18px; position: relative;">
+                {% if authenticatedPerson.getPhotoPath() %}
+                    <img src="{{ profilePath }}/{{ authenticatedPerson.getPhotoPath() }}" alt="">
+                {% else %}
+                    <img data-src="holder.js/180x135/auto/text:Profile Image" alt="">
+                {% endif %}
+                <button id="editProfile" class="btn btn-default btn-sm hidden-xs hidden-sm"
+                        style="position: absolute; bottom: 5px; right: 5px;">{{ translate('Edit') }}</button>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <div id="modalProfileImage" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Profile Image') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="imageCrop">
+                        <div style="width: 320px; margin: 10px auto;">
+                            {% if authenticatedPerson.getPhotoPath() %}
+                                <img class="image" src="{{ profilePath }}/{{ authenticatedPerson.getPhotoPath() }}"
+                                     alt="" width="320">
+                            {% else %}
+                                <img class="image" width="320"/>
+                            {% endif %}
+                        </div>
+                        <div class="flashmessage alert alert-danger fade" id="file_size_error">
+                            <div class="content">
+                                {{ translate('The selected file is too large.') }}
+                                {{ translate('The selected file is too large.') }}
+                            </div>
+                        </div>
+                        {% import 'site/partials/form.twig' as forms %}
+                        {{ forms.renderForm(profileForm) }}
+                    </div>
+
+                    <div class="imageForm" style="display: none;">
+                        {% import 'site/partials/form.twig' as forms %}
+                        {{ forms.renderForm(profileForm) }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success save">{{ translate('Save') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('Close') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id='editButton' class="hidden-sm hidden-xs" style="text-align: center;">
+        <a href="{{ url('common_account', {'action': 'edit'}) }}" class="btn btn-primary">{{ translate('Edit') }}</a>
+    </div>
+
+    {% if (authenticatedPerson.isPraesidium(currentAcademicYear) and signatureEnabled) %}
+
+        <div id="signatureButton" class="hidden-sm hidden-xs" style="text-align: center;">
+            <button id="signaturePopup" class="btn btn-default btn-sm hidden-xs hidden-sm"
+                    style="margin-bottom: 10%;">{{ translate("Signature") }}</button>
+        </div>
+
+        <div id="modalSignature" class="modal fade">
+
+            <div class="modal-dialog" style="width:30%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a class="close" data-dismiss="modal">&times;</a>
+                        <h4>Genereer je persoonlijke handtekening</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="signatureInput">
+                            <input type="url" id="twitterLink" value="https://twitter.com/" placeholder="(optioneel)"
+                                   style="font-size: 13px; width: 100%"><br>
+                            <input type="url" id="linkedInLink" value="https://linkedin.com/in/"
+                                   placeholder="(optioneel)" style="font-size: 13px; width: 100%"><br>
+                            <input type="tel" id="phoneNumber" value="{{ authenticatedPerson.getPhoneNumber() }}"
+                                   style="font-size: 13px; width: 100%"><br>
+                            <input type="checkbox" id="facebook">
+                            <label for="facebook"> Ik wil een link naar de VTK-Facebookpagina op mijn
+                                handtekening</label><br>
+                            <input type="checkbox" id="instagram">
+                            <label for="instagram"> Ik wil een link naar de VTK-Instagrampagina op mijn
+                                handtekening</label><br>
+                            <div id="signatureHTML">
+                                {% include 'common/account/signature.twig' %}
+                            </div>
+                        </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" id="rawHTML" style="float: left;">Genereer raw HTML</button><br>
+                        <label for="rawHTML" style="font-size: 14px; float: left">(je kan de handtekening ook rechtstreeks kopiëren)</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        var jcrop_api;
+        $(document).ready(function () {
+            $('.flashmessage .close').click(function () {
+                $(this).closest('.flashmessage').removeClass('in');
+            });
+
+            {% if authenticatedPerson.isPraesidium(currentAcademicYear) and signatureEnabled %}
+            $('#signaturePopup').click(function () {
+                $('#modalSignature').modal().off('shown.bs.modal').on('shown.bs.modal', function () {
+                });
+            });
+
+            const fbCheckbox = document.getElementById('facebook')
+            const igCheckbox = document.getElementById('instagram')
+            const twitter = document.getElementById('twitterLink')
+            const linkedIn = document.getElementById('linkedInLink')
+            const phoneNumber = document.getElementById('phoneNumber')
+            const rawHTML = document.getElementById('rawHTML')
+            const phoneNumberVTK = document.getElementById('phoneNumberVTK')
+            const socialMedia = document.getElementById('socialMediaSpace')
+            const signatureHTML = document.getElementById('signatureHTML')
+
+
+            fbCheckbox.addEventListener('change', (event) => {
+                if (event.target.checked) {
+                    socialMedia.innerHTML += '<!-- ### FACEBOOKBUTTON ### --><a id="fbSpot" href="https://www.facebook.com/VTKLeuven/"style="border-width:0px; border:0px; text-decoration: none"><img width="20" height="20" style="border: none; width: 20px; max-width: 25px !important; height: 20px; max-height: 20px !important;" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-512.png"> </a>';
+                } else {
+                    socialMedia.removeChild(document.getElementById("fbSpot"));
+                }
+            })
+
+            igCheckbox.addEventListener('change', (event) => {
+                if (event.target.checked) {
+                    socialMedia.innerHTML += '<!-- ### INSTA BUTTON ### --><a id = "igSpot" href = "https://www.instagram.com/vtkleuven/" style = "border-width:0px; border:0px; text-decoration: none"><img width = "20" height = "20" style = "border: none; width: 20px; max-width: 25px !important; height: 20px; max-height: 20px !important;" src = "http://www.cosmeticlab.com.ua/wp-content/uploads/2016/03/1491580635-yumminkysocialmedia26_83102.png"> </a>';
+                } else {
+                    socialMedia.removeChild(document.getElementById("igSpot"));
+                }
+            })
+
+            twitter.addEventListener('change', (event) => {
+                if (document.getElementById('twitterSpot')) {
+                    socialMedia.removeChild(document.getElementById("twitterSpot"));
+                }
+                socialMedia.innerHTML += '<!-- ### TWITTER BUTTON ### --><a id ="twitterSpot" href="" style="border-width:0px; border:0px; text-decoration: none;"><img width="20" height="20" style="border: none; width: 20px; max-width: 25px !important; height: 20px; max-height: 20px !important;" src="https://cdn3.iconfinder.com/data/icons/inficons-round-brand-set-2/512/twitter-512.png"></a>'
+                twitterSpot.setAttribute('href', twitter.value);
+            })
+
+            linkedIn.addEventListener('change', (event) => {
+                if (document.getElementById('linkedInSpot')) {
+                    socialMedia.removeChild(document.getElementById("linkedInSpot"));
+                }
+                socialMedia.innerHTML += '<!-- ### LINKEDIN BUTTON ### --><a id ="linkedInSpot" href="" style="border-width:0px; border:0px; text-decoration: none;"><img width="20" height="20" style="border: none; width: 20px; max-width: 25px !important; height: 20px; max-height: 20px !important;" src="https://cdn3.iconfinder.com/data/icons/sociocons/256/linkedin-sociocon.png"></a>'
+                linkedInSpot.setAttribute('href', linkedIn.value);
+            })
+
+            phoneNumber.addEventListener('change', (event) => {
+                phoneNumberVTK.setAttribute('href', phoneNumber.value);
+                phoneNumberVTK.innerHTML = phoneNumber.value;
+            })
+
+            rawHTML.addEventListener('click', (event) => {
+                var newWindow = window.open("", "signatureRaw", "fullscreen = 1");
+                newWindow.document.write("<textarea onclick='this.select()' style='height: 100%; width: 100%'>" +signatureHTML.innerHTML+ "</textarea>");
+                newWindow.focus()
+            })
+            {% endif %}
+
+
+            $('#editProfile').click(function () {
+                var image = $('#modalProfileImage .image:first');
+                $('#modalProfileImage').modal().off('shown.bs.modal').on('shown.bs.modal', function () {
+                    if (typeof jcrop_api != 'undefined')
+                        jcrop_api.destroy();
+
+                    if (image.attr('src'))
+                        enableJCrop(image);
+                });
+
+                if (window.File && window.FileReader && window.FileList && window.Blob) {
+                    $('#modalProfileImage input[type=file]').change(function () {
+                        var oFile = $(this)[0].files[0];
+
+                        $('#file_size_error').removeClass('in');
+
+                        if (oFile === undefined)
+                            return;
+
+                        if (oFile.size > 2000 * 1024) {
+                            $('#file_size_error').addClass('in');
+                            return;
+                        }
+
+                        var oReader = new FileReader();
+                        oReader.onload = function (e) {
+                            if (typeof jcrop_api != 'undefined')
+                                jcrop_api.destroy();
+
+                            image.attr('src', e.target.result).attr('style', '');
+                            image.load(function () {
+                                enableJCrop(image);
+                            });
+                        }
+                        oReader.readAsDataURL(oFile);
+
+                    });
+
+                    $('#modalProfileImage .save').one('click', function () {
+                        $('#modalProfileImage .imageCrop form').ajaxSubmit({
+                            'error': function () {
+                                $('#profile_upload_error').addClass('in');
+                                $('#modalProfileImage').modal('hide');
+                            },
+                            'success': function (data) {
+                                if (data.status !== undefined && data.status == 'success') {
+                                    $('#accountProfileImage img').attr('src', data.profile + '?time=' + (new Date()).getTime());
+                                    image.attr('src', data.profile + '?time=' + (new Date()).getTime());
+                                    $('#profile_upload_error').removeClass('in');
+                                    $('#modalProfileImage').modal('hide');
+                                } else {
+                                    $('#profile_upload_error').addClass('in');
+                                    $('#modalProfileImage').modal('hide');
+                                }
+                            },
+                            'dataType': 'json'
+                        });
+                    });
+                } else {
+                    $('#modalProfileImage .imageCrop').hide();
+                    $('#modalProfileImage .imageForm').show();
+
+                    $('#modalProfileImage .save').one('click', function () {
+                        $('#modalProfileImage .imageForm form').ajaxSubmit({
+                            'error': function () {
+                                $('#profile_upload_error').addClass('in');
+                                $('#modalProfileImage').modal('hide');
+                            },
+                            'success': function (data) {
+                                if (data.status !== undefined && data.status == 'success') {
+                                    $('#accountProfileImage img').attr('src', data.profile + '?time=' + (new Date()).getTime());
+                                    image.attr('src', data.profile + '?time=' + (new Date()).getTime());
+                                    $('#modalProfileImage').modal('hide');
+                                } else {
+                                    $('#profile_upload_error').addClass('in');
+                                    $('#modalProfileImage').modal('hide');
+                                }
+                            },
+                            'dataType': 'json'
+                        });
+                    });
+                }
+            });
+        });
+
+
+        function enableJCrop(image) {
+            var w = image.outerWidth();
+            var h = w * 240 / 320;
+            if (h > image.outerHeight()) {
+                h = image.outerHeight(),
+                    w = h * 320 / 240;
+            }
+
+            var x = image.outerWidth() / 2 - w / 2;
+            var y = image.outerHeight() / 2 - h / 2;
+
+            image.Jcrop({
+                keySupport: false,
+                aspectRatio: 320 / 240,
+                setSelect: [x, y, x + w, y + h],
+                onChange: function (e) {
+                    $('#modalProfileImage .imageCrop #x').val(Math.round(e.x));
+                    $('#modalProfileImage .imageCrop #y').val(Math.round(e.y));
+                    $('#modalProfileImage .imageCrop #x2').val(Math.round(e.x2));
+                    $('#modalProfileImage .imageCrop #x2').val(Math.round(e.y2));
+                    $('#modalProfileImage .imageCrop #w').val(Math.round(e.w));
+                    $('#modalProfileImage .imageCrop #h').val(Math.round(e.h));
+                }
+            }, function () {
+                jcrop_api = this;
+            });
+
+        }
+    </script>
+{% endblock %}

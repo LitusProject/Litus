@@ -38,102 +38,108 @@
             </div>
         </div>
     </div>
+    <div class="container">
+        <div class="spacer40"></div>
+        <h1>Mijn VTK</h1>
+        <div class="spacer40"></div>
+        {% include 'common/account/partials/navigation.twig' %}
 
-    <div class="page-header">
-        <h1>{{ translate('Timeslots') }}</h1>
-    </div>
-
-    <div style="text-align: justify;">
-        {{ translate('By signing up for a timeslot, you give consent to your information being used for contact tracing.') }}
-    </div>
-
-    <div class="row">
-        <div class="col-md-4 shiftSearchForms">
-            <h2>{{ translate('Search') }}</h2>
-
-            <div class="well">
-                <h4>{{ translate('By Date') }}</h4>
-
-                {% if dateSearchForm is defined %}
-                    {% do dateSearchForm.prepare() %}
-                    {% autoescape false %}
-                        {{ form().openTag(dateSearchForm) }}
-
-                        <div class="form-group">
-                            <div class="input-group">
-                                {{ formElement(dateSearchForm.get('date')) }}
-                                <div class="input-group-btn">
-                                    <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        {{ form().closeTag() }}
-                    {% endautoescape %}
-                {% endif %}
-            </div>
-
-            <div class="well">
-                <h4>{{ translate('By Event') }}</h4>
-
-                {% if eventSearchForm is defined %}
-                    {% do eventSearchForm.prepare() %}
-                    {% autoescape false %}
-                        {{ form().openTag(eventSearchForm) }}
-
-                        <div class="form-group">
-                            <div class="input-group">
-                                {{ formElement(eventSearchForm.get('event')) }}
-                                <div class="input-group-btn">
-                                    <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        {{ form().closeTag() }}
-                    {% endautoescape %}
-                {% endif %}
-            </div>
-
-            <div class="well">
-                <h4>{{ translate('By Unit') }}</h4>
-
-                {% if unitSearchForm is defined %}
-                    {% do unitSearchForm.prepare() %}
-                    {% autoescape false %}
-                        {{ form().openTag(unitSearchForm) }}
-
-                        <div class="form-group">
-                            <div class="input-group">
-                                {{ formElement(unitSearchForm.get('unit')) }}
-                                <div class="input-group-btn">
-                                    <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        {{ form().closeTag() }}
-                    {% endautoescape %}
-                {% endif %}
-            </div>
-
+        <div class="page-header">
+            <h2>{{ translate('Timeslots') }}</h2>
         </div>
-        
-        <div class="col-md-8">
-            <h2>
-                {{ translate('My Timeslots') }}
-            </h2>
 
-            {{ self.displayShifts(entityManager, authenticatedPerson, myShifts, 'myTimeslots') }}
+        <div style="text-align: justify;">
+            {{ translate('By signing up for a timeslot, you give consent to your information being used for contact tracing.') }}
+        </div>
 
-            <h2>{{ resultString }}</h2>
-            {% if searchResults is not null %}
-                {{ self.displayShifts(entityManager, authenticatedPerson, searchResults, 'search') }}
-            {% else %}
-                <div class="alert alert-warning">
-                    {{ translate('There are no timeslots to be shown yet; please use the search functions on the left.') }}
+        <div class="row">
+            <div class="col-md-4 shiftSearchForms">
+                <h2>{{ translate('Search') }}</h2>
+
+                <div class="well">
+                    <h4>{{ translate('By Date') }}</h4>
+
+                    {% if dateSearchForm is defined %}
+                        {% do dateSearchForm.prepare() %}
+                        {% autoescape false %}
+                            {{ form().openTag(dateSearchForm) }}
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    {{ formElement(dateSearchForm.get('date')) }}
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{ form().closeTag() }}
+                        {% endautoescape %}
+                    {% endif %}
                 </div>
-            {% endif %}
+
+                <div class="well">
+                    <h4>{{ translate('By Event') }}</h4>
+
+                    {% if eventSearchForm is defined %}
+                        {% do eventSearchForm.prepare() %}
+                        {% autoescape false %}
+                            {{ form().openTag(eventSearchForm) }}
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    {{ formElement(eventSearchForm.get('event')) }}
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{ form().closeTag() }}
+                        {% endautoescape %}
+                    {% endif %}
+                </div>
+
+                <div class="well">
+                    <h4>{{ translate('By Unit') }}</h4>
+
+                    {% if unitSearchForm is defined %}
+                        {% do unitSearchForm.prepare() %}
+                        {% autoescape false %}
+                            {{ form().openTag(unitSearchForm) }}
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    {{ formElement(unitSearchForm.get('unit')) }}
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{ form().closeTag() }}
+                        {% endautoescape %}
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <div class="col-md-8">
+                <h2>
+                    {{ translate('My Timeslots') }}
+                </h2>
+
+                {{ self.displayShifts(entityManager, authenticatedPerson, myShifts, 'myTimeslots') }}
+
+                <h2>{{ resultString }}</h2>
+                {% if searchResults is not null %}
+                    {{ self.displayShifts(entityManager, authenticatedPerson, searchResults, 'search') }}
+                {% else %}
+                    <div class="alert alert-warning">
+                        {{ translate('There are no timeslots to be shown yet; please use the search functions on the left.') }}
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 {% endblock %}

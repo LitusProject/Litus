@@ -42,6 +42,59 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             return new ViewModel();
         }
 
+        // Cudi (All assigned bookings)
+        $allBookings = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
+            ->findAllOpenByPerson($academic);
+        $bookings = array();
+        $futureBookings = array();
+        foreach ($allBookings as $booking){
+            if ($booking->getStatus() == 'assigned') array_push($bookings, $booking);
+            else array_push($futureBookings, $booking);
+        }
+
+        $total = 0;
+        foreach ($bookings as $booking) {
+            $total += $booking->getArticle()->getSellPrice() * $booking->getNumber();
+        }
+
+        // Shifts
+        $myShifts = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findAllActiveByPerson($academic);
+
+        // Timeslots
+        $mySlots = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\RegistrationShift')
+            ->findAllActiveByPerson($academic);
+
+        // Reservations
+        $reservations = $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\Reservation')
+            ->getAllCurrentReservationsByPerson($academic);
+
+        return new ViewModel(
+            array(
+                'academicYear' => $this->getCurrentAcademicYear(),
+                'organizationYear' => $this->getCurrentAcademicYear(true),
+                'bookings' => $bookings,
+                'futureBookings' => $futureBookings,
+                'total'    => $total,
+                'shifts'   => $myShifts,
+                'timeslots'   => $mySlots,
+                'reservations' => $reservations,
+                'shopName'     => $this->getShopName(),
+            )
+        );
+    }
+
+    public function profileAction()
+    {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
+            return new ViewModel();
+        }
+
         $metaData = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
             ->findOneByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
@@ -578,5 +631,15 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 $this->getParam('return')
             );
         }
+    }
+
+    /**
+     * @return string
+     */
+    private function getShopName()
+    {
+        return $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shop.name');
     }
 }
