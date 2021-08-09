@@ -80,49 +80,49 @@
 
                             {# Menu items #}
                             {% if hasAccess('br_corporate_index', 'index') %}
-                                <div class="vtk-menuitem-holder">
+                                <div class="vtk-menuitem-holder br">
                                     <a {% if 'index' == getParam('action') and 'br_corporate_index' == getParam('controller') %} class="br-menuUnderlineStyle active" {% else %} class="br-menuUnderlineStyle" {% endif %} href="{{ url("br_corporate_index", {"language": language.getAbbrev()}) }}">
                                         {{ translate('Launch') }}
                                     </a>
                                 </div>
                             {% endif %}
                             {% if hasAccess('br_corporate_index', 'events') %}
-                                <div class="vtk-menuitem-holder">
+                                <div class="vtk-menuitem-holder br">
                                     <a {% if 'events' == getParam('action') and 'br_corporate_index' == getParam('controller') %} class="br-menuUnderlineStyle active" {% else %} class="br-menuUnderlineStyle"  {% endif %} href="{{ url("br_corporate_index", {"action": 'events', "language": language.getAbbrev()}) }}">
                                         {{ translate('Events') }}
                                     </a>
                                 </div>
                             {% endif %}
                             {% if hasAccess('br_corporate_jobfair', 'overview') %}
-                                <div class="vtk-menuitem-holder">
+                                <div class="vtk-menuitem-holder br">
                                     <a {% if 'overview' == getParam('action') and 'br_corporate_jobfair' == getParam('controller') %} class="br-menuUnderlineStyle active" {% else %} class="br-menuUnderlineStyle" {% endif %} href="{{ url("br_corporate_jobfair", {"action": 'overview', "language": language.getAbbrev()}) }}">
                                         {{ translate('Jobfair Information') }}
                                     </a>
                                 </div>
                                 {% endif %}
                             {% if (hasAccess('br_corporate_cv', 'grouped') or hasAccess('br_corporate_cv', 'list')) and authenticatedPerson != null and (authenticatedPerson.getCompany().getCvBookYears()|length > 0 or authenticatedPerson.getCompany().getCvBookArchiveYears()|length > 0) %}
-                                <div class="vtk-menuitem-holder">
+                                <div class="vtk-menuitem-holder br">
                                     <a {% if 'br_corporate_cv' == getParam('controller') %} class="active" %} class="br-menuUnderlineStyle active" {% else %} class="br-menuUnderlineStyle" {% endif %} href="{{ url("br_corporate_cv", {"action": "grouped", "language": language.getAbbrev()}) }}">
                                         {{ translate('CV Book') }}
                                     </a>   
                                 </div>                            
                             {% endif %}
                             {% if hasAccess('br_corporate_vacancy', 'overview') %}
-                                <div class="vtk-menuitem-holder">
+                                <div class="vtk-menuitem-holder br">
                                     <a {% if 'overview' == getParam('action') and 'br_corporate_vacancy' == getParam('controller') %} class="br-menuUnderlineStyle active" {% else %} class="br-menuUnderlineStyle" {% endif %} href="{{ url("br_corporate_vacancy", {"action": "overview", "language": language.getAbbrev()}) }}">
                                         {{ translate('Vacancies') }}
                                     </a>   
                                 </div>                            
                             {% endif %}
                             {% if hasAccess('br_corporate_internship', 'overview') %}
-                                <div class="vtk-menuitem-holder">
+                                <div class="vtk-menuitem-holder br">
                                     <a {% if 'overview' == getParam('action') and 'br_corporate_internship' == getParam('controller') %} class="br-menuUnderlineStyle active" {% else %} class="br-menuUnderlineStyle" {% endif %} href="{{ url("br_corporate_internship", {"action": "overview", "language": language.getAbbrev()}) }}">
                                         {{ translate('Internship') }}
                                     </a>  
                                 </div>                            
                             {% endif %}                           
                             {% if hasAccess('br_corporate_student_job', 'overview') %}
-                                <div class="vtk-menuitem-holder">
+                                <div class="vtk-menuitem-holder br">
                                     <a {% if 'overview' == getParam('action') and 'br_corporate_student_job' == getParam('controller') %} class="br-menuUnderlineStyle active" {% else %} class="br-menuUnderlineStyle" {% endif %} href="{{ url("br_corporate_student_job", {"action": "overview", "language": language.getAbbrev()}) }}">
                                         {{ translate('Student Jobs') }}
                                     </a>    

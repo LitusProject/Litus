@@ -11,7 +11,86 @@
             </div>
         </div>
     {% endif %}
-    <div class="row">
+
+        <div class="br-companyTitleHolder">
+        <div style="display:inline-block; margin-right: 20px; flex-grow: 1">
+            <h1 style="display:inline-block">{{ internship.getName() }}</h1>
+            <div class="pageTitleDeco"></div>
+        </div>
+
+        {% if internship.getCompany().getPage().hasYear(currentAcademicYear) %}
+            <a href="{{ url('br_career_company',{ 'action': 'view', 'company': internship.getCompany().getSlug() }) }}">
+                <div class="br-companyLogoHolder">
+                    <div class="br-companyLogo" style='background-image: url("/{{ logoPath }}/{{ internship.getCompany().getLogo() }}")'></div>
+                </div>
+            </a>
+        {% else %}
+            <div class="br-companyLogoHolder">
+                <div class="br-companyLogo" style='background-image: url("/{{ logoPath }}/{{ internship.getCompany().getLogo() }}")'></div>
+            </div>        
+        {% endif %}
+    </div>
+
+    <div style="height: 40px"></div>
+
+    <div class="br-infoHolder">
+        <div class="br-markdown" style="padding: 20px 20px 0px 0px">
+            {{ markdown(internship.getDescription())|raw }}
+        </div>
+        <div style="min-width: 50%; padding: 20px; ">
+
+            <div style="display: inline-flex; background-color: whitesmoke; margin-bottom: 30px; padding: 20px" class="br-eventInfoHolder">
+
+                {% if internship.getMaster() %}
+                    <div style="margin-right: 20px">
+                        <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('Master') }}</h6>
+                        <p class="br-eventInfoTitle">{{ internship.getMaster() }}</p>
+                    </div>
+                {% endif %}
+
+                {% if internship.getSector() %}
+                    <div style="margin-right: 20px">
+                        <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('Sector') }}</h6>
+                        <p class="br-eventInfoTitle">{{ internship.getSector() }}</p>      
+                    </div>          
+                {% endif %}
+
+                {% if internship.getLocation() %}
+                    <div style="margin-right: 20px">
+                        <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('Location') }}</h6>
+                        <p class="br-eventInfoTitle">{{ internship.getLocation() }}</p>    
+                    </div>            
+                {% endif %}
+
+                {% if internship.getCity() %}
+                    <div style="margin-right: 20px">
+                        <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('City') }}</h6>
+                        <p class="br-eventInfoTitle">{{ internship.getCity() }}</p>              
+                    </div>  
+                {% endif %}                                        
+            </div>
+        
+            <div style="background-color: whitesmoke; padding: 20px; margin-bottom: 30px">
+                <h5>{{ translate('Benefits') }}</h5>
+                {{ markdown(internship.getBenefits())|raw }}
+            </div>
+        
+            <div style="background-color: whitesmoke; padding: 20px">
+                <h5>{{ translate('Wanted Profile') }}</h5>
+                {{ markdown(internship.getProfile())|raw }}
+            </div>
+
+        </div>
+    </div>
+
+    <div style="height: 30px"></div>
+
+    {% if internship.getEmail() %}
+        <a class="button blue unfilled" href="mailto:{{ (internship.getEmail()) }}">{{ translate('Mail') }}</a>
+    {% endif %}
+
+
+    {# <div class="row">
         <div class="col-sm-2">
             {% if internship.getCompany().getPage().hasYear(currentAcademicYear) %}
                 <a href="{{ url('br_career_company',{ 'action': 'view', 'company': internship.getCompany().getSlug() }) }}">
@@ -111,5 +190,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> #}
 {% endblock %}

@@ -353,8 +353,9 @@
 
 .br-menuUnderlineStyle {
   transition-duration: 100ms;
-  border-bottom: 1px solid transparent;
   cursor: pointer;
+  padding: 10px;
+  color: @color-blue;
 }
 
 .br-menuUnderlineStyle.active {
@@ -364,9 +365,17 @@
 .br-menuUnderlineStyle:hover,
 .br-menuUnderlineStyle:focus,
 .br-menuUnderlineStyle:active {
-  border-bottom: 1px solid @color-yellow;
+  background-color: whitesmoke;
   text-decoration: none;
   color: @color-blue;
+}
+
+.vtk-menuitem-holder.br {
+  padding: 10px 0px;
+}
+
+.vtk-menuitem-holder.br:hover {
+  background-color: white;
 }
 
 // CSS VOOR GALLERIJ

@@ -31,10 +31,6 @@
         {% endif %}
     </div>
 
-    {# <div class="pull-right hidden-xs" style="margin-top:-35px;">
-        {{ translate('Last Updated') }}: <strong>{{ dateLocalized(vacancy.getLastUpdateDate(), 'd  MMMM y') }}</strong>
-    </div> #}
-
     <div style="height: 40px"></div>
 
     <div class="br-infoHolder">
@@ -42,6 +38,37 @@
             {{ markdown(vacancy.getDescription())|raw }}
         </div>
         <div style="min-width: 50%; padding: 20px; ">
+
+            <div style="display: inline-flex; background-color: whitesmoke; margin-bottom: 30px; padding: 20px" class="br-eventInfoHolder">
+
+                {% if vacancy.getMaster() %}
+                    <div style="margin-right: 20px">
+                        <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('Master') }}</h6>
+                        <p class="br-eventInfoTitle">{{ vacancy.getMaster() }}</p>
+                    </div>
+                {% endif %}
+
+                {% if vacancy.getSector() %}
+                    <div style="margin-right: 20px">
+                        <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('Sector') }}</h6>
+                        <p class="br-eventInfoTitle">{{ vacancy.getSector() }}</p>      
+                    </div>          
+                {% endif %}
+
+                {% if vacancy.getLocation() %}
+                    <div style="margin-right: 20px">
+                        <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('Location') }}</h6>
+                        <p class="br-eventInfoTitle">{{ vacancy.getLocation() }}</p>    
+                    </div>            
+                {% endif %}
+
+                {% if vacancy.getCity() %}
+                    <div style="margin-right: 20px">
+                        <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('City') }}</h6>
+                        <p class="br-eventInfoTitle">{{ vacancy.getCity() }}</p>              
+                    </div>  
+                {% endif %}                                        
+            </div>
         
             <div style="background-color: whitesmoke; padding: 20px; margin-bottom: 30px">
                 <h5>{{ translate('Benefits') }}</h5>

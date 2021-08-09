@@ -1,14 +1,15 @@
 .vtk-navbar {
   position: sticky;
-  top: 0;
+  top: -2px;
   width: 100vw;
   max-width: 100%;
   background-color: white;
   height: 90px;
-  -webkit-box-shadow: 0 3px 12px rgba(0, 0, 0, 0.13);
-  box-shadow: 0 3px 12px rgba(82, 71, 71, 0.13);
+  // -webkit-box-shadow: 0 3px 12px rgba(0, 0, 0, 0.13);
+  // box-shadow: 0 3px 12px rgba(82, 71, 71, 0.13);
   z-index: 1000;
   margin-top: -1px;
+  border-bottom: 1px solid whitesmoke;
 }
 
 .vtk-flex-stretch {
@@ -61,11 +62,15 @@
 
 .vtk-menuitem-holder:hover {
   cursor: default;
+  background-color: whitesmoke;
 }
 
 .vtk-menuitem {
   color: #1a1f4a;
   font-family: "Open Sans";
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 12px;
 }
 
 .vtk-menuitem:hover {
@@ -98,18 +103,18 @@
 .vtk-dropdownitem-holder {
   position: absolute;
   top: 38px;
-  border-radius: 5px;
   z-index: 1100;
   width: auto;
   margin: 2px 0 0;
   list-style: none;
   font-size: 15px;
   background-color: #ffffff;
-  -webkit-box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.13);
-  box-shadow: 0 -3px 12px rgba(82, 71, 71, 0.13);
+  -webkit-box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 -3px 12px rgba(82, 71, 71, 0.08);
   background-clip: padding-box;
   visibility: hidden;
   padding: 20px;
+  margin-left: -10px;
 }
 
 .vtk-dropdownitem-holder.right {
@@ -128,7 +133,7 @@
 
 .vtk-dropdownitem-link {
   color: #1a1f4a;
-  font-size: 14px;
+  font-size: 13px;
   display: inline-block;
   height: 100%;
   text-decoration: none !important;
@@ -162,20 +167,21 @@
 }
 
 .vtk-primary-navbar {
-  background-color: #1a1f4a;
-  padding: 3px 0px;
+  background-color: white;
+  padding: 8px 0px;
+  border-bottom: 3px solid whitesmoke;
 }
 
 .vtk-primary-menuitem {
-  color: white;
+  color: grey;
   padding: 0px 5px;
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-family: "Open Sans";
   //font-family: "Raleway";
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .vtk-primary-menuitem:hover {
-  color: white;
+  color: grey;
   cursor: pointer;
   text-decoration: underline;
   text-decoration-color: #ffd400;
