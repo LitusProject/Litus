@@ -41,7 +41,6 @@
                 {{ total/100|number_format(2) }}
 
                 <div style="margin-top: 25px">
-                    <h5>MOGELIJKE ACTIES</h5>
                     <a class="button blue unfilled" href="{{ url('cudi_booking', {"action": "book"}) }}">Boeken bestellen</a>
                 </div>
 
@@ -62,7 +61,6 @@
                 {% endfor %}
 
                 <div style="margin-top: 25px">
-                    <h5>MOGELIJKE ACTIES</h5>
                     <a class="button blue unfilled" href="{{ url('shop', {"action": "reserve"}) }}">Broodjes bestellen</a>
                 </div>
 
@@ -86,7 +84,6 @@
             {% endfor %}
 
             <div style="margin-top: 25px">
-                <h5>MOGELIJKE ACTIES</h5>
                 <a class="button blue unfilled" href="{{ url('shift', {"action": "index"}) }}">Meer shiften zoeken</a>
             </div>
         </div>
@@ -108,7 +105,6 @@
             {% endfor %}
 
             <div style="margin-top: 25px">
-                <h5>MOGELIJKE ACTIES</h5>
                 <a class="button blue unfilled" href="{{ url('registration_shift', {"action": "index"}) }}">Een tijdsslot reserveren</a>
             </div>
         </div>

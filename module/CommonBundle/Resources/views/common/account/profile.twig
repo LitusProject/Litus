@@ -4,10 +4,11 @@
     
     <div class="container">
         <div class="spacer40"></div>
-        <h1>{{ translate('My VTK') }}</h1>
-        <div class="spacer40"></div>
-        {% include 'common/account/partials/navigation.twig' %}<br><br>
         <h1>{{ translate('My Profile') }}</h1>
+        <div class="spacer40"></div>
+        {% include 'common/account/partials/navigation.twig' %}
+        <h1>{{ translate('My Profile') }}</h1>
+        <div class="spacer40"></div>
 
         <div class="contentBlock">
             <div class="headingHolder">
@@ -46,9 +47,8 @@
             </div>
 
             <div style="margin-top: 25px">
-                <h5>MOGELIJKE ACTIES</h5>
-                <a class="button blue unfilled" href="{{ url('common_account', {'action': 'subjects'}) }}">Vakken aanpassen</a>
-                <a class="button blue unfilled" href="{{ url('common_account', {'action': 'studies'}) }}">Studierichting aanpassen</a>
+                <a class="button blue unfilled" href="{{ url('common_account', {'action': 'subjects'}) }}">{{ translate('Edit Subjects') }}</a>
+                <a class="button blue unfilled" href="{{ url('common_account', {'action': 'studies'}) }}">{{ translate('Edit Study') }}</a>
             </div>
 
         </div>
@@ -131,7 +131,6 @@
             
 
             <div style="margin-top: 25px">
-                <h5>MOGELIJKE ACTIES</h5>
                 <a class="button blue unfilled" href="{{ url('common_account', {'action': 'edit'}) }}">Accountgegevens bijwerken</a>
             </div>
         </div>
@@ -196,10 +195,13 @@
             </div>
         </div>
     </div>
-
-    <div id='editButton' class="hidden-sm hidden-xs" style="text-align: center;">
-        <a href="{{ url('common_account', {'action': 'edit'}) }}" class="btn btn-primary">{{ translate('Edit') }}</a>
+    
+    <div class="hidden-sm hidden-xs" style="text-align: center;">
+        <a href="{{ url('common_session', {'action': 'manage'}) }}">
+            {{ translate('Sessions') }}
+        </a>
     </div>
+
 
     {% if (authenticatedPerson.isPraesidium(currentAcademicYear) and signatureEnabled) %}
 

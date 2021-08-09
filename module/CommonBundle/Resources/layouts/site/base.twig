@@ -77,10 +77,10 @@
     <nav class="vtk-primary-navbar hidden-sm hidden-xs" role="navigation">
         {# TO DO links toevoegen #}
         <div style="text-align: right" class="container">
-            <a class="vtk-primary-menuitem">Boeken bestellen</a>
-            <a class="vtk-primary-menuitem">Broodje bestellen</a>
-            <a class="vtk-primary-menuitem">Shiften</a>
-            <a class="vtk-primary-menuitem">Tijdssloten</a>            
+            <a class="vtk-primary-menuitem" href="{{ url('cudi_booking', {'action': 'book'}) }}">{{ translate('Order Books') }}</a>
+            <a class="vtk-primary-menuitem" href="{{ url('shop', {'action': 'reserve'}) }}">{{ translate('Reservations') }}</a>
+            <a class="vtk-primary-menuitem" href="{{ url('shift', {'action': 'index'}) }}">{{ translate('Shifts') }}</a>
+            <a class="vtk-primary-menuitem" href="{{ url('registration_shift', {'action': 'index'}) }}">{{ translate('Timeslots') }}</a>
         </div>
     </nav>
     <nav class="vtk-navbar" role="navigation">
