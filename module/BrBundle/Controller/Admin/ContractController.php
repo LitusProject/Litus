@@ -156,7 +156,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         }
 
         $lang = $this->getParam('language');
-        $notLang = $lang == 'nl'?'en':'nl';
+        $notLang = $lang == 'nl' ? 'en' : 'nl';
 
         return new ViewModel(
             array(
@@ -240,7 +240,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             return new ViewModel();
         }
         $lang = $this->getParam('language');
-        $notLang = $lang == 'nl'?'en':'nl';
+        $notLang = $lang == 'nl' ? 'en' : 'nl';
         $form = $this->getForm('br_contract_edit', array('contract' => $contract, 'lang' => $lang));
 
         if ($this->getRequest()->isPost()) {
@@ -275,6 +275,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
                 'contract' => $contract,
                 'form'     => $form,
                 'notLang'  => $notLang,
+                'lang'  => $lang,
             )
         );
     }
@@ -355,7 +356,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
                         $eventCompanyMap = $this->getEntityManager()
                             ->getRepository('BrBundle\Entity\Event\CompanyMap')
                             ->findByEventAndCompany($orderEntry->getProduct()->getEvent(), $contract->getCompany());
-                        foreach($eventCompanyMap as $map){
+                        foreach ($eventCompanyMap as $map) {
                             $map->setDone();
                         }
                     }

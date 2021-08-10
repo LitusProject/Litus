@@ -404,7 +404,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                             ->getRepository('BrBundle\Entity\Event\CompanyMap')
                             ->findAllByEvent($entry->getProduct()->getEvent());
                         $eventCompanies = array();
-                        foreach ($eventCompanyMaps as $map){
+                        foreach ($eventCompanyMaps as $map) {
                             array_push($eventCompanies, $map->getCompany());
                         }
 

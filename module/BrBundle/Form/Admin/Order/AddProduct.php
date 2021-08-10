@@ -36,7 +36,7 @@ class AddProduct extends \BrBundle\Form\Admin\Order\Add
     /**
      * The maximum number allowed to enter in the corporate order form.
      */
-    const MAX_ORDER_NUMBER = 10;
+    const MAX_ORDER_NUMBER = 12;
 
     public function init()
     {

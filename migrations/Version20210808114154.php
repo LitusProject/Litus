@@ -39,7 +39,6 @@ class Version20210808114154 extends \Doctrine\Migrations\AbstractMigration
 
         $this->addSql('ALTER TABLE br_products ALTER contract_text_en SET DEFAULT \'none\'');
         $this->addSql('ALTER TABLE br_contracts_entries ADD contract_text_en TEXT');
-
     }
 
     /**
