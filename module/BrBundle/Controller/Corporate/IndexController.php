@@ -50,19 +50,17 @@ class IndexController extends \BrBundle\Component\Controller\CorporateController
         return new ViewModel(
             array(
                 'members'         => $members,
+                'profilePath'         => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.profile_path'),
             )
         );
     }
 
     public function loginAction()
     {
-        $events = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Event')
-            ->findAllActiveQuery()->getResult();
-
         return new ViewModel(
             array(
-                'events'         => $events,
             )
         );
     }

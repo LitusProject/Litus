@@ -28,14 +28,14 @@
     <div class="vtk-home-header">
         <div style="height:175px"></div>
         <div class="container">
-            <h1 class="vtk-hometitle">Welkom bij <span class="vtk-textspan">vtk</span></h1>
+            <h1 class="vtk-hometitle">{{ translate('Welcome to')}} <span class="vtk-textspan">vtk</span></h1>
             <h3 style="font-weight: 500">Vlaamse Technische Kring - partner in crime since 1920</h3>
         </div>
     </div>
 
     {# {% if calendarItems.length != 0 %} #}
     <div style="margin-top: -100px; position: relative; padding: 20px 15px" class="container">
-        <h2>Kalender</h2>
+        <h2>{{ translate('Calendar') }}</h2>
         <div style="margin-top: 50px; margin-bottom: 120px">
             <div class="calendar-grid" style="margin-bottom: 40px" >
                 {% for day in calendarItems | slice(0, 3)%}
@@ -60,7 +60,7 @@
                     </div> 
                 {% endfor %} #}
             </div>
-            <a class="calendar-button" href="{{ url('calendar') }}">Bekijk de hele kalender →</a>
+            <a class="calendar-button" href="{{ url('calendar') }}">{{ translate('View the whole Calendar Here') }} →</a>
         </div>
     </div>
     {# {% endif %} #}
@@ -70,7 +70,7 @@
         <div style="padding: 50px 15px" class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <h2>Laatste nieuws</h2>
+                    <h2>{{ translate('Latest news') }}</h2>
                     {% for item in newsItems %}
                         <div class="item" style="margin-bottom: 20px">
                             <h4>{{ item.getTitle(language) }} <small>&mdash; {{ dateLocalized(item.getCreationTime(), 'd MMMM') }}</small></h4>
@@ -89,13 +89,14 @@
                         </div> #}
                     {% endfor %}
                 </div>
-                <div class="col-md-6"><h2>Openingsuren Cudi</h2>
-                    <div><p style="display:inline-block">Maandag</p><p style="float:right">10.00-12.00</p></div>
-                    <div><p style="display:inline-block">Dinsdag</p><p style="float:right">10.00-12.00</p></div>
-                    <div><p style="display:inline-block">Woensdag</p><p style="float:right">10.00-12.00</p></div>
-                    <div><p style="display:inline-block">Donderdag</p><p style="float:right">10.00-12.00</p></div>
-                    <div><p style="display:inline-block">Vrijdag</p><p style="float:right">10.00-12.00</p></div>
-                </div>
+                {% if cudi.openingHours|length > 0 %}
+                    <div class="col-md-6"><h2>{{ translate('Cudi Opening Hours') }}</h2>
+                        {% for opening in cudi.openingHours %}
+                            <div><p style="display:inline-block">{{ dateLocalized(opening.getStart(), 'EEEE (d/M)')|capitalize }}</p><p style="float:right">{{ opening.getStart().format('H:i') }}-{{ opening.getEnd().format('H:i') }}</p></div>
+                        {% endfor %}
+                    </div>
+
+                {% endif %}
             </div>
         </div>
     </div>

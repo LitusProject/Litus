@@ -16,38 +16,40 @@
       <b>{{ event.getTitle() }}</b><br>
       {% endfor %} #}
 
-      <div class="br-eventHolder" >
-         <div class="br-eventTekstHolder">
-            <h3 class="br-eventTitle">Jobfair</h3>
-            <div style="height: 15px"></div>
-            <p style="text-align: justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. </p>
-            <div style="height: 20px"></div>
-            <div class="br-eventInfoHolder">
-               <div style="margin-right: 20px">
-                  <h6 style="margin-bottom: 0px; opacity: 0.6">Datum</h6>
-                  <p class="br-eventInfoTitle">08/08/2021</p>
+      {% for event in events %}
+         <div class="br-eventHolder" >
+            <div class="br-eventTekstHolder">
+               <h3 class="br-eventTitle">{{ event.getTitle() }}</h3>
+               <div style="height: 15px"></div>
+               <p style="text-align: justify">{{ event.getDescription() }}</p>
+               <div style="height: 20px"></div>
+               <div class="br-eventInfoHolder">
+                  {% if event.getStartDate().format('Y-m-d') == event.getEndDate().format('Y-m-d') %}
+                     <div style="margin-right: 20px">
+                        <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('Date') }}</h6>
+                        <p class="br-eventInfoTitle">{{ event.getStartDate().format('Y-m-d') }}</p>
+                     </div>
+                     <div style="margin-right: 20px">
+                        <h6 style="margin-bottom: 0px; opacity: 0.6">Tijd</h6>
+                        <p class="br-eventInfoTitle">
+                           {{ event.getStartDate().format('H:i') }}-{{ event.getEndDate().format('H:i') }}</p>
+                     </div>
+                  {% else %}
+                     <div style="margin-right: 20px">
+                        <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('Start Date') }}</h6>
+                        <p class="br-eventInfoTitle">{{ event.getStartDate().format('Y-m-d H:i') }}</p>
+                     </div>
+                     <div style="margin-right: 20px">
+                        <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('Start Date') }}</h6>
+                        <p class="br-eventInfoTitle">{{ event.getEndDate().format('Y-m-d H:i') }}</p>
+                     </div>
+                  {% endif %}
                </div>
-               <div style="margin-right: 20px">
-                  <h6 style="margin-bottom: 0px; opacity: 0.6">Tijd</h6>
-                  <p class="br-eventInfoTitle">20.00-22.00</p>
-               </div>               
-               <div style="margin-right: 20px">
-                  <h6 style="margin-bottom: 0px; opacity: 0.6">Prijs</h6>
-                  <p class="br-eventInfoTitle">Gratis</p>
-               </div>
-               <div style="margin-right: 20px">
-                  <h6 style="margin-bottom: 0px; opacity: 0.6">Locatie</h6>
-                  <p class="br-eventInfoTitle">Brabanthal Leuven</p>
-               </div>
-               <div style="margin-right: 20px">
-                  <h6 style="margin-bottom: 0px; opacity: 0.6"># Werknemers</h6>
-                  <p class="br-eventInfoTitle">5</p>
-               </div>                                             
+            </div>
+            <div class="br-eventImageHolder">
             </div>
          </div>
-         <div class="br-eventImageHolder">
-         </div>
-      </div>
+      {% endfor %}
 
       <div class="br-eventHolder" >
          <div class="br-eventTekstHolder">
