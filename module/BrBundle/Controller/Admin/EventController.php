@@ -135,14 +135,26 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 $company = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Company')
                     ->findOneById($formData['company']);
-                $objectMap = new CompanyMap($company, $event);
-                $objectMap->setDone();
-                $this->getEntityManager()->persist($objectMap);
+                if (count(
+                    $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Event\CompanyMap')
+                        ->findByEventAndCompany($event, $company)
+                ) == 0
+                ) {
+                    $objectMap = new CompanyMap($company, $event);
+                    $objectMap->setDone();
+                    $this->getEntityManager()->persist($objectMap);
 
-                $this->flashMessenger()->success(
-                    'Success',
-                    'The attendee was successfully added!'
-                );
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'The attendee was successfully added!'
+                    );
+                } else {
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'That company is already attending this event!'
+                    );
+                }
 
                 $this->redirect()->toRoute(
                     'br_admin_event',
@@ -156,15 +168,26 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             $this->getEntityManager()->flush();
         }
 
-        $eventCompanyMaps = array_unique($this->getEntityManager()
+
+        $allEventCompanyMaps = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Event\CompanyMap')
-            ->findAllByEvent($event));
+            ->findAllByEvent($event);
+        $maps = array();
+        $comps = array();
+
+        foreach ($allEventCompanyMaps as $map) {
+            $comp = $map->getCompany()->getId();
+            if (!in_array($comp, $comps)) {
+                array_push($allMaps, $comp);
+                array_push($maps, $map);
+            }
+        }
 
         return new ViewModel(
             array(
                 'propertiesForm'   => $propertiesForm,
                 'companyMapForm'   => $companyMapForm,
-                'eventCompanyMaps' => $eventCompanyMaps,
+                'eventCompanyMaps' => $maps,
                 'event'            => $event,
             )
         );

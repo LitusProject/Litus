@@ -7,6 +7,11 @@
 
     <div id="controller_action">
 
+        <div style="border-bottom: 1px solid grey; padding-bottom: 10px; padding-bottom: 10px;">
+            <h1><b>Language:</b> {{ lang }}</h1>
+            <h4>Switch the language by pressing the button on the right side!</h4>
+        </div>
+
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
 

@@ -22,7 +22,6 @@ namespace BrBundle\Entity\Contract;
 
 use BrBundle\Entity\Contract;
 use BrBundle\Entity\Product\Order\Entry as OrderEntry;
-use CommonBundle\Entity\General\Language;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 
@@ -151,8 +150,8 @@ class Entry
     }
 
     /**
-     * @param bool $replace
-     * @param string $language
+     * @param boolean $replace
+     * @param string  $language
      * @return string
      */
     public function getContractText($language, $replace = true)
