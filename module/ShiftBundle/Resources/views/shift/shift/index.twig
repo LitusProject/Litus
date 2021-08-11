@@ -132,6 +132,8 @@
 
         {# <div class="spacer40"></div> #}
         <div style="height: 20px"></div>
+        {% include 'shift/shift/partials/navigation.twig' %}
+        <div style="height: 20px"></div>
 
         <div>
             {# <p>Filters</p> #}
@@ -527,7 +529,7 @@
 
     {# DISPLAYING ACTUAL SEARCH SHIFTS #}
     {% macro displayShifts(entityManager, authenticatedPerson, shifts, accordionName) %}
-        {% import _self as self %}
+{#        {% import _self as self %}#}
         {% set previousShift = null %}
         <div class="panel-group" id="shifts-{{ accordionName }}">
             {% for shift in shifts %}

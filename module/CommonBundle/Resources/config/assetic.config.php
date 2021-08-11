@@ -97,6 +97,7 @@ return array(
         'common_account' => array(
             '@bootstrap_css',
             '@site_css',
+            '@shift_css',
             '@common_jquery',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_transition',

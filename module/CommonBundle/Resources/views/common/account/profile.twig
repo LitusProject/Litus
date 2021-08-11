@@ -15,18 +15,21 @@
                 <h3 style="margin-bottom: 0px">Studierichting & vakken</h3>
             </div>
 
-            <h5>Studierichting:{% for study in studies %}{{ studies }}{% endfor %}</h5>
-
+            <h5>Studierichting:
+                {% for study in studies %}
+                    {{ study.getTitle() }}{% if loop.index0 >0 %} - {% endif %}
+                {% endfor %}
+            </h5>
 
             <div class="columnGrid">
                 <div>
                     <h5>Semester 1</h5>
                     {% for subject in subjects %}
-                        {% if subject.getSubject().getSemester() == 1 %}
+                        {% if subject.getSemester() == 1 %}
                             <div class="itemHolder">
-                                <p>{{ subject.getSubject().getName() }}</p>
+                                <p>{{ subject.getName() }}</p>
                                 <div class="flexStretch"></div>
-                                <p style="opacity: 50%">{{ subject.getSubject().getCode() }}</p>
+                                <p style="opacity: 50%">{{ subject.getCode() }}</p>
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -34,16 +37,25 @@
                 <div>
                     <h5>Semester 2</h5>
                     {% for subject in subjects %}
-                        {% if subject.getSubject().getSemester() == 2 %}
+                        {% if subject.getSemester() == 2 %}
                             <div class="itemHolder">
-                                <p>{{ subject.getSubject().getName() }}</p>
+                                <p>{{ subject.getName() }}</p>
                                 <div class="flexStretch"></div>
-                                <p style="opacity: 50%">{{ subject.getSubject().getCode() }}</p>
+                                <p style="opacity: 50%">{{ subject.getCode() }}</p>
                             </div>
                         {% endif %}
                     {% endfor %}
                 </div>
             </div>
+            {% for subject in subjects %}
+                {% if subject.getSemester() == 3 %}
+                    <div class="itemHolder">
+                        <p>{{ subject.getName() }}</p>
+                        <div class="flexStretch"></div>
+                        <p style="opacity: 50%">{{ subject.getCode() }}</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
 
             <div class="buttonHolder">
                 <a class="myVtkButton" href="{{ url('common_account', {'action': 'subjects'}) }}">{{ translate('Edit Subjects') }}</a>

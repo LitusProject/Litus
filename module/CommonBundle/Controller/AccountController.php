@@ -76,6 +76,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         return new ViewModel(
             array(
                 'academicYear' => $this->getCurrentAcademicYear(),
+                'entityManager'    => $this->getEntityManager(),
                 'organizationYear' => $this->getCurrentAcademicYear(true),
                 'bookings' => $bookings,
                 'futureBookings' => $futureBookings,
@@ -99,27 +100,37 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
             ->findOneByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
+        // Retrieve the studies and its subjects
         $studies = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
             ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
-        $mappings = array();
-        foreach ($studies as $enrollment) {
-            $mappings[] = array(
-                'enrollment' => $enrollment,
-                'subjects' => $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
-                    ->findAllByStudy($enrollment->getStudy()),
-            );
+        $allStudies = array();
+        $allSubjects = array();
+        $subjectIds = array();  // To avoid duplicates
+        foreach ($studies as $study) {
+            $subjects = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
+                ->findAllByStudy($study->getStudy());
+            $allStudies[] = $study->getStudy();
+            foreach ($subjects as $subject) {
+                if (!in_array($subject->getSubject()->getId(), $subjectIds)){
+                    $subjectIds[] = $subject->getSubject()->getId();
+                    $allSubjects[] = $subject->getSubject();
+                }
+            }
         }
 
+        // Retrieve the other subjects
         $subjects = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Subject')
             ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
-        $subjectIds = array();
-        foreach ($subjects as $enrollment) {
-            $subjectIds[] = $enrollment->getSubject()->getId();
+        foreach ($subjects as $subject) {
+            if (!in_array($subject->getSubject()->getId(), $subjectIds)){
+                $subjectIds[] = $subject->getSubject()->getId();
+                $allSubjects[] = $subject->getSubject();
+            }
         }
 
         $profileForm = $this->getForm('common_account_profile');
@@ -137,15 +148,14 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('enable_organization_signature');
 
-
         return new ViewModel(
             array(
                 'academicYear' => $this->getCurrentAcademicYear(),
                 'organizationYear' => $this->getCurrentAcademicYear(true),
                 'signatureEnabled' => $signatureEnabled,
                 'metaData' => $metaData,
-                'studies' => $mappings,
-                'subjects' => $subjectIds,
+                'studies' => $allStudies,
+                'subjects' => $allSubjects,
                 'profilePath' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),

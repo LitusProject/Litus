@@ -1,7 +1,32 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-    
+
+    {# Script for collapsing shift items #}
+    {{ inlineScript() }}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var faqItems = document.getElementsByClassName('shiftHolder');
+            for(var i = 0; i < faqItems.length; i++) {
+                var currentFAQ = faqItems[i];
+                var currentContent = currentFAQ.querySelector('.shiftDetails');
+                currentContent.setAttribute("style", "height: 0px;");
+                currentFAQ.addEventListener("click", func, false);
+                function func() {
+                    var currentContent = this.querySelector('.shiftDetails');
+                    if (currentContent.style.height === "0px") {
+                        currentContent.setAttribute("style", "height: auto");
+                    } else {
+                        currentContent.setAttribute("style", "height: 0px");
+                    }
+                }
+            }
+        })
+    </script>
+
+    {% import _self as self %}
+
     <div class="container">
         <div class="pageTitleHolder">
             {# TRANSLATIONS #}
@@ -58,61 +83,7 @@
                         </div>
                     {% endfor %} 
                 
-                </div>                
-
-
-
-
-
-
-
-
-
-
-        {# <table id="table-reservations" class="table table-condensed table-striped table-hover">
-                    <thead>
-                    <tr>
-                        <th>{{ translate('Reservation time') }}</th>
-                        <th>{{ translate('Sales session') }}</th>
-                        <th>{{ translate('Product') }}</th>
-                        <th>{{ translate('Amount') }}</th>
-                        <th>{{ translate('Price') }}</th>
-                        <th>{{ translate('Total price') }}</th>
-                        <th>{{ translate('Cancel') }}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for reservation in reservations %}
-                        <tr>
-                            <td>{{ translate(reservation.getTimestamp().format('l')) }} {{ reservation.getTimestamp().format('d/m/Y H:i') }}</td>
-                            <td>{{ translate(reservation.getSalesSession().getStartDate().format('l')) }} {{ reservation.getSalesSession().getStartDate().format('d/m/Y H:i') }}
-                                - {{ reservation.getSalesSession().getEndDate().format('H:i') }}</td>
-                            <td>{{ reservation.getProduct().getName() }}</td>
-                            <td>{{ reservation.getAmount }}</td>
-                            <td>&euro; {{ reservation.getProduct().getSellPrice()|number_format(2, '.', ',') }}</td>
-                            <td>&euro; {{ (reservation.getProduct().getSellPrice() * reservation.getAmount()) |number_format(2, '.', ',') }}</td>
-                            <td>
-                                {% if reservation.canCancel() %}
-                                    <a class="btn btn-xs btn-default"
-                                       href="{{ url('shop', {action: 'deleteReservation', id: reservation.getId()}) }}">
-                                        <i class="glyphicon glyphicon-remove"></i>
-                                    </a>
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table> #}
-
-
-                {# {% for reservation in reservations %}
-                    <div class="itemHolder">
-                        <p>{{ reservation.getAmount() }}# :</p>
-                        <p>{{ reservation.getProduct().getName() }}</p>
-                        <div class="flexStretch"></div>
-                        <p style="opacity: 50%">€{{ (reservation.getAmount() * reservation.getProduct().getSellPrice()/100)|number_format(2) }}</p>
-                    </div>
-                {% endfor %} #}
+                </div>
             {% endif %}
             <div style="height: 20px"></div>
             <div class="buttonHolder">
@@ -204,16 +175,6 @@
                 <div style="height: 20px"></div>
                 {% endif %}
             {% endif %}
-
-            {# <h5>{{ translate('Deze boeken heb je gereserveerd: ') }}</h5>
-            {% for booking in futureBookings %}
-            <div class="itemHolder">
-                <p>{{ booking.getNumber() }}# :</p>
-                <p>{{ booking.getArticle().getMainArticle().getTitle() }}</p>
-                <div class="flexStretch"></div>
-                <p style="opacity: 50%">€{{ (booking.getNumber() * booking.getArticle().getSellPrice()/100)|number_format(2) }}</p>
-            </div>
-            {% endfor %} #}
             <div class="buttonHolder">
                 <a class="myVtkButton" href="{{ url('cudi_booking', {"action": "book"}) }}">Boeken bestellen</a>
             </div>
@@ -242,28 +203,29 @@
 
         <div class="contentBlock">
             <div class="headingHolder">
-                <h3 style="margin-bottom: 0px">Mijn shiften</h3>
+                <h3 style="margin-bottom: 0px">{{ translate('My Shifts') }}</h3>
             </div>
 
             <div style="height: 20px"></div>
 
-            {% if shifts|length == 0 %}
-                <p>Je hebt geen shiften momenteel</p>
-                <div style="height: 20px"></div>
-            {% else %}
-                {% for shift in shifts %}
-                    <div class="itemHolder">
-                        <p>{{ shift.getName() }}</p>
-                        <div class="flexStretch"></div>
-                        <p style="opacity: 50%">{{dateLocalized(shift.getStartDate(), 'd/M/y')}} | {{ dateLocalized(shift.getStartDate(), 'HH:mm') }}-{{ dateLocalized(shift.getEndDate(), 'HH:mm') }}</p>
-                    </div>
-                {% endfor %}
-            {% endif %}
+{#            {% if shifts|length == 0 %}#}
+{#                <p>Je hebt geen shiften momenteel</p>#}
+{#                <div style="height: 20px"></div>#}
+{#            {% else %}#}
+{#                {% for shift in shifts %}#}
+{#                    <div class="itemHolder">#}
+{#                        <p>{{ shift.getName() }}</p>#}
+{#                        <div class="flexStretch"></div>#}
+{#                        <p style="opacity: 50%">{{dateLocalized(shift.getStartDate(), 'd/M/y')}} | {{ dateLocalized(shift.getStartDate(), 'HH:mm') }}-{{ dateLocalized(shift.getEndDate(), 'HH:mm') }}</p>#}
+{#                    </div>#}
+{#                {% endfor %}#}
+{#            {% endif %}#}
+
+            {{ self.displayShifts(entityManager, authenticatedPerson, shifts, 'myShifts') }}
 
             <div class="buttonHolder">
                 <a class="myVtkButton" href="{{ url('shift', {"action": "index"}) }}">Meer shiften zoeken</a>
-                {# TO DO wat doen we hiermee?  #}
-                {# <a class="myVtkButton" href="{{ url('shift', {"action": "index"}) }}">Geschiedenis bekijken</a>             #}
+                <a class="myVtkButton" href="{{ url('shift', {"action": "history"}) }}">Geschiedenis bekijken</a>
             </div>
         </div>
 
@@ -271,23 +233,12 @@
 
         <div class="contentBlock">
             <div class="headingHolder">
-                <h3 style="margin-bottom: 0px">Mijn tijdssloten</h3>
+                <h3 style="margin-bottom: 0px">{{ translate('My Timeslots') }}</h3>
             </div>
 
             <div style="height: 20px"></div>
 
-            {% if timeslots|length == 0 %}
-                <p>Je hebt geen tijdsslots momenteel</p>
-                <div style="height: 20px"></div>
-            {% else %}
-                {% for shift in timeslots %}
-                    <div class="itemHolder">
-                        <p>{{ shift.getName() }}</p>
-                        <div class="flexStretch"></div>
-                        <p style="opacity: 50%">{{dateLocalized(shift.getStartDate(), 'd/M/y')}} | {{ dateLocalized(shift.getStartDate(), 'HH:mm') }}-{{ dateLocalized(shift.getEndDate(), 'HH:mm') }}</p>
-                    </div>
-                {% endfor %}
-            {% endif %}
+            {{ self.displayShifts(entityManager, authenticatedPerson, timeslots, 'myTimeSlots') }}
 
             <div class="buttonHolder">
                 <a class="myVtkButton" href="{{ url('registration_shift', {"action": "index"}) }}">Een tijdsslot reserveren</a>
@@ -335,3 +286,115 @@
 
     </script>
 {% endblock %}
+
+
+{# DISPLAYING ACTUAL SHIFTS #}
+{% macro displayShifts(entityManager, authenticatedPerson, shifts, accordionName, timeslots = false) %}
+    {% import _self as self %}
+    {% set previousShift = null %}
+    <div class="panel-group" id="shifts-{{ accordionName }}">
+        {% for shift in shifts %}
+            {% if previousShift.getStartDate().format('Ymd') < shift.getStartDate().format('Ymd') %}
+                <h4 style="margin-top: 15px">{#{{translate('Shifts on')}}#} {{ translate(shift.getStartDate().format('l')) }}  {{ dateLocalized(shift.getStartDate(), 'd/M/y') }}</h4>
+            {% endif %}
+
+            {% set previousShift = shift %}
+
+            <div class="shiftHolder">
+                <div class="shiftHeader">
+                    <div class="shiftFlexCenter">
+                        <h5 style="margin-bottom: 0px">{{ shift.getName() }}</h5>
+                        <p style="font-size: 14px; margin-bottom: 0px">{{dateLocalized(shift.getStartDate(), 'd/M/y')}} | {{ dateLocalized(shift.getStartDate(), 'HH:mm') }}-{{ dateLocalized(shift.getEndDate(), 'HH:mm') }}</p>
+                    </div>
+                    <div class="flexStretch"></div>
+                </div>
+                <div class="shiftDetails">
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <dl>
+                                <dt>{{ translate('Name') }}</dt>
+                                <dd>{{ shift.getName() }}</dd>
+                                {% if shift.getReward() > 0 %}
+                                    <dt>{{ translate('Reward') }}</dt>
+                                    <dd>{{ shift.getReward() }} {{ translate('Coins') }}
+                                        {% if shift.getHandledOnEvent() %}
+                                            {{ translate('on the event')}}
+                                        {% endif %}
+                                    </dd>
+                                {% endif %}
+                                {% if shift.getPoints() > 0 %}
+                                    <dt>{{ translate('Points') }}</dt>
+                                    <dd>{{ shift.getPoints() }} {{ translate('Points') }}</dd>
+                                {% endif %}
+                                <dt>{{ translate('Start') }}</dt>
+                                <dd>{{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }}</dd>
+                                <dt>{{ translate('End') }}</dt>
+                                <dd>{{ dateLocalized(shift.getEndDate(), 'd/M/y HH:mm') }}</dd>
+                            </dl>
+                        </div>
+                        <div class="col-sm-4">
+                            <dl>
+                                <dt>{{ translate('Manager') }}</dt>
+                                <dd>{{ shift.getManager().getFullName() }}</dd>
+
+                                {% if shift.getEvent() is not null %}
+                                    <dt>{{ translate('Event') }}</dt>
+                                    <dd>{{ shift.getEvent().getTitle(language) }}</dd>
+                                {% endif %}
+
+                                <dt>{{ translate('Unit') }}</dt>
+                                <dd>{{ shift.getUnit().getName() }}</dd>
+                            </dl>
+                        </div>
+                        <div class="col-sm-4">
+                            {% if 0 != shift.getNbResponsibles() %}
+                                <dl>
+                                    <dt>{{ translate('Responsibles') }}</dt>
+
+                                    {% for responsible in shift.getResponsibles() %}
+                                        <dd>{{ responsible.getPerson().getFullName() }}</dd>
+                                    {% endfor %}
+                                </dl>
+                            {% endif %}
+
+                            {% if 0 != shift.getNbVolunteers() %}
+                                <dl>
+                                    <dt>{{ translate('Volunteers') }}</dt>
+
+                                    {% for volunteer in shift.getVolunteers() %}
+                                        <dd>{{ volunteer.getPerson().getFullName() }}</dd>
+                                    {% endfor %}
+                                </dl>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <dl>
+                        <dt>{{ translate('Description') }}</dt>
+                        <dd style="text-align: justify;">{{ shift.getDescription() }}</dd>
+
+                        <dt>{{ translate('Location') }}</dt>
+                        <dd>
+                            {{ shift.getLocation().getName() }}
+                        </dd>
+                        <dd style="margin-top: 5px;">
+                            <img class="img-rounded" src="{{ staticMap(shift.getLocation(), '367x125', '7a43b6') }}" />
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+        {% else %}
+            {# Iets ander bedenken voor deze stuff anders alert alert-warning class #}
+            <div>
+                {% if 'search' == accordionName %}
+                    {{ translate('No shifts were found that match the given query.') }}
+                {% elseif timeslots == false %}
+                    {{ translate('You have not yet signed up for any shifts. Click the button below to add yourself to a shift!') }}
+                {% else %}
+                    {{ translate('You have not yet signed up for any timeslots. Click the button below to add yourself to a timeslots!') }}
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% endmacro %}

@@ -105,6 +105,7 @@ return array(
             '@common_jquery',
             '@bootstrap_css',
             '@site_css',
+            '@shift_css',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
