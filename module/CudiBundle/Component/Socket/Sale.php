@@ -339,7 +339,7 @@ class Sale extends \CommonBundle\Component\Socket\Socket
     /**
      * @param  User   $user
      * @param  string $universityIdentification
-     * @return integer
+     * @return integer|null
      */
     private function signIn(User $user, $universityIdentification)
     {

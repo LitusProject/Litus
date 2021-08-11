@@ -332,7 +332,7 @@ class Discount
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getRounding()
     {

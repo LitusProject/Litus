@@ -172,13 +172,13 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         $allEventCompanyMaps = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Event\CompanyMap')
             ->findAllByEvent($event);
+
         $maps = array();
         $comps = array();
 
         foreach ($allEventCompanyMaps as $map) {
             $comp = $map->getCompany()->getId();
             if (!in_array($comp, $comps)) {
-                array_push($allMaps, $comp);
                 array_push($maps, $map);
             }
         }
@@ -269,7 +269,6 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     private function getCompanyMapEntity()
     {
         $event = $this->getEntityById('BrBundle\Entity\Event\CompanyMap', 'map');
-        error_log($event ? 'y' : 'n');
         if (!($event instanceof CompanyMap)) {
             $this->flashMessenger()->error(
                 'Error',

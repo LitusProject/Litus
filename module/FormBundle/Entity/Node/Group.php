@@ -71,7 +71,7 @@ class Group extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @return DateTime
+     * @return DateTime|null
      */
     public function getStartDate()
     {
@@ -96,7 +96,7 @@ class Group extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @return DateTime
+     * @return DateTime|null
      */
     public function getEndDate()
     {
@@ -121,7 +121,7 @@ class Group extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @return boolean
+     * @return boolean|null
      */
     public function isActive()
     {
@@ -146,7 +146,7 @@ class Group extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @return integer
+     * @return integer|null
      */
     public function getMax()
     {
@@ -171,7 +171,7 @@ class Group extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @return boolean
+     * @return boolean|null
      */
     public function isEditableByUser()
     {
@@ -196,7 +196,7 @@ class Group extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @return boolean
+     * @return boolean|null
      */
     public function isNonMember()
     {

@@ -96,8 +96,7 @@ class Entry
     {
         $this->contract = $contract;
         $this->orderEntry = $orderEntry;
-        error_log('nl= '.$orderEntry->getProduct()->getContractText('nl'));
-        error_log('en= '.$orderEntry->getProduct()->getContractText('en'));
+
         $this->setContractText($orderEntry->getProduct()->getContractText('nl'), 'nl');
         $this->setContractText($orderEntry->getProduct()->getContractText('en'), 'en');
         $this->setPosition($position);
