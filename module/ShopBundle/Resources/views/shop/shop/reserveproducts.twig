@@ -2,12 +2,15 @@
 
 {% block content %}
     <div class="container">
+        
         {% import 'admin/partials/form.twig' as forms %}
-        <div class="page-header">
+        
+        <div class="pageTitleHolder">
             <h1>{{ shopName }} - {{ translate('Reserve') }}</h1>
+            <div class="pageTitleDeco"></div>
         </div>
 
-        {% include 'shop/shop/partials/navigation.twig' %}
+        {# {% include 'shop/shop/partials/navigation.twig' %} #}
         <div class="flashmessage alert alert-danger fade" id="error">
             <div class="content">
                 {{ translate('An error occurred while processing your reservation!') }}
@@ -17,6 +20,7 @@
         <div style="text-align: justify;">
             {% if canReserve %}
                 {{ translate("You can reserve some items from the shop. Be aware that you might lose the permission to reserve items if you don't come and buy your reserved items on the right date.") }}
+                <div style="height: 30px"></div>
                 <div>
                     {% if form is defined %}
                         {% do form.prepare() %}
@@ -28,14 +32,14 @@
                                 {% set name = 'product-' ~ stockEntry.product.getId() %}
                                 {% set element = form.get(name) %}
                                 <div class="form-group">
-                                    <label for="{{ name }}" class="control-label col-sm-3">{{ element.label }}</label>
+                                    <label for="{{ name }}" class="col-sm-3">{{ element.label }}</label>
 
                                     <div class="col-sm-1">
                                         {{ formElement(element) }}
                                     </div>
 
                                     <div class=" text-left col-sm-2">
-                                        <span class="control-label">{{ element.attributes.max }} {{ translate('available') }}</span>
+                                        <span>{{ element.attributes.max }} {{ translate('available') }}</span>
                                     </div>
                                 </div>
                             {% endfor %}

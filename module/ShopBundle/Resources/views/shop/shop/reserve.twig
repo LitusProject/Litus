@@ -4,11 +4,14 @@
     {% import 'admin/partials/form.twig' as forms %}
     <div class="container">
 
-        <div class="page-header">
-        <h1>{{ shopName }} - {{ translate('Reserve') }}</h1>
+        <div class="pageTitleHolder">
+            <h1>{{ shopName }} - {{ translate('Reserve') }}</h1>
+            <div class="pageTitleDeco"></div>
         </div>
 
-        {% include 'shop/shop/partials/navigation.twig' %}
+        <div style="height: 40px"></div>
+
+        {# {% include 'shop/shop/partials/navigation.twig' %} #}
 
         <div class="flashmessage alert alert-success fade" id="success">
             <div class="content">
@@ -24,6 +27,7 @@
         <div style="text-align: justify;">
             {% if canReserve %}
                 {{ translate("You can reserve some items from the shop. Be aware that you might lose the permission to reserve items if you don't come and buy your reserved items on the right date.") }}
+                <div style="height: 30px"></div>
                 <div>
                     {% if salesSessionsAvailable %}
                         {% if form is defined %}

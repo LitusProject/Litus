@@ -1,63 +1,163 @@
 .contentBlock {
-    background-color: whitesmoke; 
-    position: relative; 
-    padding: 40px 20px
+  background-color: whitesmoke;
+  position: relative;
+  padding: 25px 20px;
 }
 
 .headingHolder {
-    position: absolute; 
-    top: -20px;
+  position: absolute;
+  top: -20px;
+}
+
+.buttonHolder {
+  position: absolute;
+  bottom: -20px;
+}
+
+.myVtkButton {
+  display: inline-block;
+  margin-right: 10px;
+  padding: 10px 25px;
+  -webkit-box-shadow: 0px 0px 8px 1px #f0f0f0;
+  box-shadow: 0px 0px 8px 1px #f0f0f0;
+  z-index: 100;
+  background-color: white;
+  font-size: 13px;
+  font-weight: 500;
+  transition-duration: 200ms;
+  border-left: 6px solid @color-yellow;
+  color: @color-blue;
+}
+
+.myVtkButton:hover {
+  background-color: @color-blue;
+  color: white;
+  -webkit-box-shadow: 0px 0px 8px 1px #e9e9e9;
+  box-shadow: 0px 0px 8px 1px #e9e9e9;
 }
 
 .lineDecoration {
-    border-bottom: 2px solid #ffd400; 
-    width: 90px
+  border-bottom: 2px solid #ffd400;
+  width: 90px;
 }
 
 .columnGrid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 1fr;
-    grid-column-gap: 10px;
-    grid-row-gap: 0px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 0px;
 }
 
 .spacer40 {
-    height: 40px; 
+  height: 40px;
 }
 
 .itemHolder {
-    background-color: white; 
-    padding: 10px 20px; 
-    border-radius: 5px; 
-    margin-bottom: 10px; 
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    -webkit-flex-wrap: nowrap;
-    -ms-flex-wrap: nowrap;
-    flex-wrap: nowrap;
-    -webkit-justify-content: flex-start;
-    -ms-flex-pack: start;
-    justify-content: flex-start;
-    -webkit-align-content: stretch;
-    -ms-flex-line-pack: stretch;
-    align-content: stretch;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
-    align-items: center;
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-content: stretch;
+  -ms-flex-line-pack: stretch;
+  align-content: stretch;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .flexStretch {
-    -webkit-flex: 1 1 auto;
-    -ms-flex: 1 1 auto;
-    flex: 1 1 auto;
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
 }
 
 .accountInfo {
-    font-weight: 600; 
-    width: 200px; 
+  font-weight: 600;
+  width: 200px;
+}
+
+// FINAL CSS FOR CUDI TABLE USING FLEXBOX
+
+.itemHolder {
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-content: stretch;
+  -ms-flex-line-pack: stretch;
+  align-content: stretch;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.article-column {
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+
+.amount-column {
+  -webkit-flex: 0 0 20px;
+  -ms-flex: 0 0 20px;
+  flex: 0 0 20px;
+}
+
+.price-column {
+  -webkit-flex: 0 0 55px;
+  -ms-flex: 0 0 55px;
+  flex: 0 0 55px;
+}
+
+.date-column {
+  -webkit-flex: 0 0 90px;
+  -ms-flex: 0 0 90px;
+  flex: 0 0 90px;
+}
+
+.action-column {
+  -webkit-flex: 0 0 120px;
+  -ms-flex: 0 0 120px;
+  flex: 0 0 120px;
+}
+
+.action-column > a.button {
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.fullDate1-column {
+  -webkit-flex: 0 0 120px;
+  -ms-flex: 0 0 120px;
+  flex: 0 0 120px;
+}
+
+.fullDate2-column {
+  -webkit-flex: 0 0 155px;
+  -ms-flex: 0 0 155px;
+  flex: 0 0 155px;
 }

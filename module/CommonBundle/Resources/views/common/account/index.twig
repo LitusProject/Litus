@@ -3,110 +3,335 @@
 {% block content %}
     
     <div class="container">
-        <div class="spacer40"></div>
-        <h1>Mijn VTK</h1>
-        <div class="spacer40"></div>
+        <div class="pageTitleHolder">
+            {# TRANSLATIONS #}
+            <h1>Mijn VTK</h1>
+            <div class="pageTitleDeco"></div>
+        </div>
+
+        <div style="height:40px"></div>
+
         {% include 'common/account/partials/navigation.twig' %}
 
-        <div class="spacer40"></div>
+        <div style="height:40px"></div>
 
-        <div class="columnGrid">
-            <div class="contentBlock">
-                <div class="headingHolder">
-                    <h2 style="margin-bottom: 0px">{{ translate('Cudi') }}</h2>
-                    <div class="lineDecoration"></div>
-                </div>
-
-                <h5>{{ translate('Deze boeken liggen voor je klaar: ') }}</h5> {# Todo: Translate#}
-                {% for booking in bookings %}
-                    <div class="itemHolder">
-                        <p>{{ booking.getNumber() }}# :</p>
-                        <p>{{ booking.getArticle().getMainArticle().getTitle() }}</p>
-                        <div class="flexStretch"></div>
-                        <p style="opacity: 50%">€{{ (booking.getNumber() * booking.getArticle().getSellPrice()/100)|number_format(2) }}</p>
-                    </div>
-                {% endfor %}
-
-                <div style="height: 20px"></div>
-
-                <h5>{{ translate('Deze boeken heb je gereserveerd: ') }}</h5>
-                {% for booking in futureBookings %}
-                <div class="itemHolder">
-                    <p>{{ booking.getNumber() }}# :</p>
-                    <p>{{ booking.getArticle().getMainArticle().getTitle() }}</p>
-                    <div class="flexStretch"></div>
-                    <p style="opacity: 50%">€{{ (booking.getNumber() * booking.getArticle().getSellPrice()/100)|number_format(2) }}</p>
-                </div>
-                {% endfor %}
-                {{ total/100|number_format(2) }}
-
-                <div style="margin-top: 25px">
-                    <a class="button blue unfilled" href="{{ url('cudi_booking', {"action": "book"}) }}">Boeken bestellen</a>
-                </div>
-
+        <div class="contentBlock">
+            <div class="headingHolder">
+                <h3 style="margin-bottom: 0px">Mijn {{ shopName }}</h3>
             </div>
-            <div class="contentBlock">
-                <div class="headingHolder">
-                    <h2 style="margin-bottom: 0px">{{ shopName }}</h2>
-                    <div class="lineDecoration"></div>
-                </div>
+            
+            <div style="height: 20px"></div>
 
-                {% for reservation in reservations %}
+            {% if reservations|length == 0 %}
+                <p>Je hebt geen reserveringen momenteel</p>
+            {% else %}
+
+                <div>
+
+                    <div class="itemHolder">
+                        <p class="fullDate1-column">Ogenblik reservatie</p>
+                        {# {{ translate('Reservation time') }} TO DO korter maken #}
+                        <p class="fullDate2-column">{{ translate('Sales session') }}</p>
+                        <p class="article-column">{{ translate('Product') }}</p> 
+                        <p class="amount-column">#</p>
+                        <p class="price-column">€</p>   
+                        <p class="action-column">{{ translate('Cancel') }}</p>               
+                    </div>
+
+                    {% for reservation in reservations %}
+                        <div class="itemHolder item-{{ booking.getId() }}">
+                            <div class="fullDate1-column" >{#{{ translate(reservation.getTimestamp().format('l')) }}#} {{ reservation.getTimestamp().format('d/m/Y H:i') }}</div>
+                            <div class="fullDate2-column" >{#{{ translate(reservation.getSalesSession().getStartDate().format('l')) }}#} {{ reservation.getSalesSession().getStartDate().format('d/m/Y H:i') }}
+                                - {{ reservation.getSalesSession().getEndDate().format('H:i') }}</div>
+                            <div class="article-column" >{{ reservation.getProduct().getName() }}</div>
+                            <div class="amount-column" >{{ reservation.getAmount }}</div>
+                            <div class="price-column" >€{{ reservation.getProduct().getSellPrice()|number_format(2, '.', ',') }}</div>
+                            <div class="action-column" >
+                                {% if reservation.canCancel() %}
+                                    <a class="button blue unfilled"
+                                       href="{{ url('shop', {action: 'deleteReservation', id: reservation.getId()}) }}">
+                                        {# <i class="glyphicon glyphicon-remove"></i> #}
+                                        Annuleren
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %} 
+                
+                </div>                
+
+
+
+
+
+
+
+
+
+
+        {# <table id="table-reservations" class="table table-condensed table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>{{ translate('Reservation time') }}</th>
+                        <th>{{ translate('Sales session') }}</th>
+                        <th>{{ translate('Product') }}</th>
+                        <th>{{ translate('Amount') }}</th>
+                        <th>{{ translate('Price') }}</th>
+                        <th>{{ translate('Total price') }}</th>
+                        <th>{{ translate('Cancel') }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for reservation in reservations %}
+                        <tr>
+                            <td>{{ translate(reservation.getTimestamp().format('l')) }} {{ reservation.getTimestamp().format('d/m/Y H:i') }}</td>
+                            <td>{{ translate(reservation.getSalesSession().getStartDate().format('l')) }} {{ reservation.getSalesSession().getStartDate().format('d/m/Y H:i') }}
+                                - {{ reservation.getSalesSession().getEndDate().format('H:i') }}</td>
+                            <td>{{ reservation.getProduct().getName() }}</td>
+                            <td>{{ reservation.getAmount }}</td>
+                            <td>&euro; {{ reservation.getProduct().getSellPrice()|number_format(2, '.', ',') }}</td>
+                            <td>&euro; {{ (reservation.getProduct().getSellPrice() * reservation.getAmount()) |number_format(2, '.', ',') }}</td>
+                            <td>
+                                {% if reservation.canCancel() %}
+                                    <a class="btn btn-xs btn-default"
+                                       href="{{ url('shop', {action: 'deleteReservation', id: reservation.getId()}) }}">
+                                        <i class="glyphicon glyphicon-remove"></i>
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table> #}
+
+
+                {# {% for reservation in reservations %}
                     <div class="itemHolder">
                         <p>{{ reservation.getAmount() }}# :</p>
                         <p>{{ reservation.getProduct().getName() }}</p>
                         <div class="flexStretch"></div>
                         <p style="opacity: 50%">€{{ (reservation.getAmount() * reservation.getProduct().getSellPrice()/100)|number_format(2) }}</p>
                     </div>
+                {% endfor %} #}
+            {% endif %}
+            <div style="height: 20px"></div>
+            <div class="buttonHolder">
+                <a class="myVtkButton" href="{{ url('shop', {"action": "reserve"}) }}">Broodjes bestellen</a>
+            </div>
+
+        </div>
+
+        <div style="height: 100px"></div>        
+
+        <div class="contentBlock">
+            <div class="headingHolder">
+                <h3 style="margin-bottom: 0px">Mijn {{ translate('Cudi') }}</h3>
+            </div>
+
+            <div style="height: 20px"></div>
+
+            {% if bookings|length == 0 and futureBookings|length == 0 %}
+                <p>Je hebt geen boeken gereserveerd momenteel</p>
+                <div style="height: 20px"></div>
+            {% else %}
+                {% if bookings|length > 0 %}
+                <div>
+
+                    <h5>{{ translate('Items die voor je klaarliggen') }}</h5> {# TO DO : Translate#}
+
+                    <div class="itemHolder">
+                        <p class="article-column">{{ translate('Article') }}</p>
+                        <p class="amount-column">#</p>
+                        <p class="price-column">€</p> 
+                        {# {{ translate('Price / Piece') }} vervangen door geowon euroteken! #}
+                        <p class="date-column">{{ translate('Expiration Date') }}</p>
+                        <p class="action-column">{{ translate('Actions') }}</p>                
+                    </div>
+
+                    {% for booking in bookings %}
+                        <div class="itemHolder item-{{ booking.getId() }}">
+                            <div class="article-column" >{{ booking.getArticle().getMainArticle().getTitle() }}</div>
+                            <div class="amount-column" >{{ booking.getNumber() }}</div>
+                            <div class="price-column" >€{{ (booking.getNumber() * booking.getArticle().getSellPrice()/100)|number_format(2) }}</div>
+                            <div class="date-column" >{{ dateLocalized(booking.getExpirationDate(), 'dd/MM/y') }}</div>
+                            <div class="action-column" >
+                            {% if booking.getArticle().isUnbookable() %}
+                                <a href="#" class="button blue unfilled cancel" data-id="{{ booking.getId() }}" data-title="{{ booking.getArticle().getMainArticle().getTitle() }}">
+                                    {{ translate('Cancel') }}
+                                </a>
+                            {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %} 
+                
+                </div>
+
+                <div style="height: 20px"></div>
+                {% endif %}
+
+                {% if futureBookings|length > 0 %}
+                <div>
+
+                    <h5>{{ translate('Items die je gereserveerd hebt') }}</h5> {# TO DO : Translate#}
+
+                    <div class="itemHolder">
+                        <p class="article-column">{{ translate('Article') }}</p>
+                        <p class="amount-column">#</p>
+                        <p class="price-column">€</p> 
+                        {# {{ translate('Price / Piece') }} vervangen door geowon euroteken! #}
+                        <p class="date-column">{{ translate('Expiration Date') }}</p>
+                        <p class="action-column">{{ translate('Actions') }}</p>                
+                    </div>
+
+                    {% for booking in futureBookings %}
+                        <div class="itemHolder item-{{ booking.getId() }}">
+                            <div class="article-column" >{{ booking.getArticle().getMainArticle().getTitle() }}</div>
+                            <div class="amount-column" >{{ booking.getNumber() }}</div>
+                            <div class="price-column" >€{{ (booking.getNumber() * booking.getArticle().getSellPrice()/100)|number_format(2) }}</div>
+                            <div class="date-column" >{{ dateLocalized(booking.getExpirationDate(), 'dd/MM/y') }}</div>
+                            <div class="action-column" >
+                            {% if booking.getArticle().isUnbookable() %}
+                                <a href="#" class="button blue unfilled cancel" data-id="{{ booking.getId() }}" data-title="{{ booking.getArticle().getMainArticle().getTitle() }}">
+                                    {{ translate('Cancel') }}
+                                </a>
+                            {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %} 
+                
+                </div>
+
+                <div style="height: 20px"></div>
+                {% endif %}
+            {% endif %}
+
+            {# <h5>{{ translate('Deze boeken heb je gereserveerd: ') }}</h5>
+            {% for booking in futureBookings %}
+            <div class="itemHolder">
+                <p>{{ booking.getNumber() }}# :</p>
+                <p>{{ booking.getArticle().getMainArticle().getTitle() }}</p>
+                <div class="flexStretch"></div>
+                <p style="opacity: 50%">€{{ (booking.getNumber() * booking.getArticle().getSellPrice()/100)|number_format(2) }}</p>
+            </div>
+            {% endfor %} #}
+            <div class="buttonHolder">
+                <a class="myVtkButton" href="{{ url('cudi_booking', {"action": "book"}) }}">Boeken bestellen</a>
+            </div>
+        </div>
+
+        <div class="modal fade" id="cancelBooking">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4>Cursusdienst</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            {{ translate('Are you sure you want to cancel the following article:') }} <b class="articleTitle"></b>?
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-danger continue">Yes</button>
+                        <button class="btn btn-default cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>        
+
+        <div style="height: 100px"></div>
+
+        <div class="contentBlock">
+            <div class="headingHolder">
+                <h3 style="margin-bottom: 0px">Mijn shiften</h3>
+            </div>
+
+            <div style="height: 20px"></div>
+
+            {% if shifts|length == 0 %}
+                <p>Je hebt geen shiften momenteel</p>
+                <div style="height: 20px"></div>
+            {% else %}
+                {% for shift in shifts %}
+                    <div class="itemHolder">
+                        <p>{{ shift.getName() }}</p>
+                        <div class="flexStretch"></div>
+                        <p style="opacity: 50%">{{dateLocalized(shift.getStartDate(), 'd/M/y')}} | {{ dateLocalized(shift.getStartDate(), 'HH:mm') }}-{{ dateLocalized(shift.getEndDate(), 'HH:mm') }}</p>
+                    </div>
                 {% endfor %}
+            {% endif %}
 
-                <div style="margin-top: 25px">
-                    <a class="button blue unfilled" href="{{ url('shop', {"action": "reserve"}) }}">Broodjes bestellen</a>
-                </div>
-
+            <div class="buttonHolder">
+                <a class="myVtkButton" href="{{ url('shift', {"action": "index"}) }}">Meer shiften zoeken</a>
+                {# TO DO wat doen we hiermee?  #}
+                {# <a class="myVtkButton" href="{{ url('shift', {"action": "index"}) }}">Geschiedenis bekijken</a>             #}
             </div>
         </div>
 
-        <div class="spacer40"></div>
+        <div style="height: 100px"></div>
 
         <div class="contentBlock">
             <div class="headingHolder">
-                <h2 style="margin-bottom: 0px">Mijn shiften</h2>
-                <div class="lineDecoration"></div>
+                <h3 style="margin-bottom: 0px">Mijn tijdssloten</h3>
             </div>
 
-            {% for shift in shifts %}
-                <div class="itemHolder">
-                    <p>{{ shift.getName() }}</p>
-                    <div class="flexStretch"></div>
-                    <p style="opacity: 50%">{{dateLocalized(shift.getStartDate(), 'd/M/y')}} | {{ dateLocalized(shift.getStartDate(), 'HH:mm') }}-{{ dateLocalized(shift.getEndDate(), 'HH:mm') }}</p>
-                </div>
-            {% endfor %}
+            <div style="height: 20px"></div>
 
-            <div style="margin-top: 25px">
-                <a class="button blue unfilled" href="{{ url('shift', {"action": "index"}) }}">Meer shiften zoeken</a>
-            </div>
-        </div>
+            {% if timeslots|length == 0 %}
+                <p>Je hebt geen tijdsslots momenteel</p>
+                <div style="height: 20px"></div>
+            {% else %}
+                {% for shift in timeslots %}
+                    <div class="itemHolder">
+                        <p>{{ shift.getName() }}</p>
+                        <div class="flexStretch"></div>
+                        <p style="opacity: 50%">{{dateLocalized(shift.getStartDate(), 'd/M/y')}} | {{ dateLocalized(shift.getStartDate(), 'HH:mm') }}-{{ dateLocalized(shift.getEndDate(), 'HH:mm') }}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
 
-        <div class="spacer40"></div>
-
-        <div class="contentBlock">
-            <div class="headingHolder">
-                <h2 style="margin-bottom: 0px">Mijn tijdssloten</h2>
-                <div class="lineDecoration"></div>
-            </div>
-
-            {% for shift in timeslots %}
-                <div class="itemHolder">
-                    <p>{{ shift.getName() }}</p>
-                    <div class="flexStretch"></div>
-                    <p style="opacity: 50%">{{dateLocalized(shift.getStartDate(), 'd/M/y')}} | {{ dateLocalized(shift.getStartDate(), 'HH:mm') }}-{{ dateLocalized(shift.getEndDate(), 'HH:mm') }}</p>
-                </div>
-            {% endfor %}
-
-            <div style="margin-top: 25px">
-                <a class="button blue unfilled" href="{{ url('registration_shift', {"action": "index"}) }}">Een tijdsslot reserveren</a>
+            <div class="buttonHolder">
+                <a class="myVtkButton" href="{{ url('registration_shift', {"action": "index"}) }}">Een tijdsslot reserveren</a>
             </div>
         </div>
 
+        <div style="height: 100px"></div>
+
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true, 'container': 'body'});
+            $('.cancel').click(openModal);
+        });
+
+        function openModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var cancelBooking = $('#cancelBooking');
+            cancelBooking.find('.articleTitle').html($(this).data('title'));
+            var id = $this.data('id');
+            cancelBooking.find('.continue').unbind('click').click(function () {
+                $.post('{{ url('cudi_booking', {"action": "cancel"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('#totalPrice').html(($('#totalPrice').html() - $('.item-' + id).data('price')/100).toFixed(2));
+                        $('.item-' + id).remove();
+                        $('#cancelBooking').modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            cancelBooking.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.booking_canceled_error').removeClass('hide');
+            $('#cancelBooking').modal('hide');
+        }
+
+    </script>
 {% endblock %}

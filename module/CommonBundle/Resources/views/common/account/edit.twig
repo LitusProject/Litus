@@ -3,11 +3,14 @@
 {% block content %}
 
     <div class="container">
-        <div class="page-header">
-            <h1>{{ translate('Account') }} <small>&mdash; {{ translate('Edit') }}</small></h1>
+        <div style="height: 40px"></div>
+
+        <div>
+            {# TO DO translation #}
+            <h1>Accountgegevens bewerken</small></h1>
         </div>
 
-         {% include 'common/account/partials/navigation.twig' %}
+        <div style="height: 20px"></div>
 
         {% import 'site/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}

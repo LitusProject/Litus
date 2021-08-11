@@ -3,82 +3,84 @@
 {% block content %}
     {% import _self as self %}
 
-    <div class="page-header">
-        <h1>{{ translate('Piano') }}</h1>
-    </div>
+    <div class="container">
+        <div class="pageTitleHolder">
+            <h1>{{ translate('Piano') }}</h1>
+            <div class="pageTitleDecoration"></div>
+        </div>
 
-    {% autoescape false %}
-        {{ translate('<p>For the culture lovers who didn\'t know it, VTK has its own piano! You can find it in room 01.52 (next to the proclamation hall) of the castle. Students can make weekly use of it for free and on the following time slots:<p>
+        {% autoescape false %}
+            {{ translate('<p>For the culture lovers who didn\'t know it, VTK has its own piano! You can find it in room 01.52 (next to the proclamation hall) of the castle. Students can make weekly use of it for free and on the following time slots:<p>
 
-        <ul>
-            <li>every Monday, Tuesday and Thursday evening from 19h until 22h from week 39 until 21, except official closing days of the KU Leuven</li>
-            <li>all workdays between 9h and 18h in the Christmas and Easter holidays, except official closing days of KU Leuven</li>
-            <li>all workdays between 9h and 18h in July (from week 28) and August, except official closing days of KU Leuven</li>
-        </ul>
+            <ul>
+                <li>every Monday, Tuesday and Thursday evening from 19h until 22h from week 39 until 21, except official closing days of the KU Leuven</li>
+                <li>all workdays between 9h and 18h in the Christmas and Easter holidays, except official closing days of KU Leuven</li>
+                <li>all workdays between 9h and 18h in July (from week 28) and August, except official closing days of KU Leuven</li>
+            </ul>
 
-        <p>Choose a moment you want to play music below, and reserve it! One reservation each week will be assigned to you, if you want to play more times a week, other students are given priority.</p>
+            <p>Choose a moment you want to play music below, and reserve it! One reservation each week will be assigned to you, if you want to play more times a week, other students are given priority.</p>
 
-        <p>It is important you always have the accompanying letter with you if you are going to play. You can get this in Blok 6 (Studentenwijk Arenberg) from the vice. You should be able to show this letter when security asks for it.</p>') }}
-    {% endautoescape %}
+            <p>It is important you always have the accompanying letter with you if you are going to play. You can get this in Blok 6 (Studentenwijk Arenberg) from the vice. You should be able to show this letter when security asks for it.</p>') }}
+        {% endautoescape %}
 
-    {% if authenticated %}
-        <ul id="weeks" class="nav nav-tabs">
-            {% for key, week in form.getWeeks() %}
-                <li><a href="#week-{{ key }}" data-toggle="tab">{{ dateLocalized(week['start'], 'd MMM') }} - {{ dateLocalized(week['end'], 'd MMM') }}</a></li>
-            {% endfor %}
+        {% if authenticated %}
+            <ul id="weeks" class="nav nav-tabs">
+                {% for key, week in form.getWeeks() %}
+                    <li><a href="#week-{{ key }}" data-toggle="tab">{{ dateLocalized(week['start'], 'd MMM') }} - {{ dateLocalized(week['end'], 'd MMM') }}</a></li>
+                {% endfor %}
 
-            <li class="pull-right">
-                <a href="#overview-reservations" data-toggle="tab">{{ translate('Reservations') }}</a>
-            </li>
-        </ul>
+                <li class="pull-right">
+                    <a href="#overview-reservations" data-toggle="tab">{{ translate('Reservations') }}</a>
+                </li>
+            </ul>
 
-        {% if form is defined %}
-            {% do form.prepare() %}
-            {% autoescape false %}
-                {{ form().openTag(form) }}
-                {{ formElement(form.get('csrf')) }}
+            {% if form is defined %}
+                {% do form.prepare() %}
+                {% autoescape false %}
+                    {{ form().openTag(form) }}
+                    {{ formElement(form.get('csrf')) }}
 
-                <div class="tab-content">
-                    {% for key, week in form.getWeeks() %}
-                        <div class="tab-pane fade" id="week-{{ key }}">
-                            {{ self.renderSelect(form.get('week_' ~ key).get('start_date')) }}
-                            {{ self.renderSelect(form.get('week_' ~ key).get('end_date')) }}
-                            <div style="text-align: center;">
-                                {{ formElement(form.get('week_' ~ key).get('submit')) }}
+                    <div class="tab-content">
+                        {% for key, week in form.getWeeks() %}
+                            <div class="tab-pane fade" id="week-{{ key }}">
+                                {{ self.renderSelect(form.get('week_' ~ key).get('start_date')) }}
+                                {{ self.renderSelect(form.get('week_' ~ key).get('end_date')) }}
+                                <div style="text-align: center;">
+                                    {{ formElement(form.get('week_' ~ key).get('submit')) }}
+                                </div>
                             </div>
-                        </div>
-                    {% endfor %}
+                        {% endfor %}
 
-                    <div class="tab-pane fade" id="overview-reservations">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>{{ translate('Confirmed') }}</th>
-                                    <th>{{ translate('Start Date') }}</th>
-                                    <th>{{ translate('End Date') }}</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                {% for reservation in reservations %}
+                        <div class="tab-pane fade" id="overview-reservations">
+                            <table class="table table-striped">
+                                <thead>
                                     <tr>
-                                        <td>{% if reservation.isConfirmed() %}&times;{% endif %}</td>
-                                        <td>{{ dateLocalized(reservation.getStartDate(), 'E d MMMM Y H:mm') }}</td>
-                                        <td>{{ dateLocalized(reservation.getEndDate(), 'E d MMMM Y H:mm') }}</td>
+                                        <th>{{ translate('Confirmed') }}</th>
+                                        <th>{{ translate('Start Date') }}</th>
+                                        <th>{{ translate('End Date') }}</th>
                                     </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                                </thead>
+
+                                <tbody>
+                                    {% for reservation in reservations %}
+                                        <tr>
+                                            <td>{% if reservation.isConfirmed() %}&times;{% endif %}</td>
+                                            <td>{{ dateLocalized(reservation.getStartDate(), 'E d MMMM Y H:mm') }}</td>
+                                            <td>{{ dateLocalized(reservation.getEndDate(), 'E d MMMM Y H:mm') }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
 
-                {{ form().closeTag() }}
-            {% endautoescape %}
+                    {{ form().closeTag() }}
+                {% endautoescape %}
+            {% endif %}
+        {% else %}
+            <div class="alert alert-warning">{{ translate('Please login to reserve a slot.') }}</div>
         {% endif %}
-    {% else %}
-        <div class="alert alert-warning">{{ translate('Please login to reserve a slot.') }}</div>
-    {% endif %}
-
+    </div>
 {% endblock %}
 
 {% block content_script %}

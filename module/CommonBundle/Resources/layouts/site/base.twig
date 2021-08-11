@@ -142,10 +142,16 @@
 
                             <div class="vtk-dropdownitem">
 
+                                <p style="padding: 3px 6px; background-color: whitesmoke; white-space: nowrap; font-size: 14px">{{ authenticatedPerson.getFullName() }}</p>
+                                <small class="metadata">{{ authenticatedPerson.getUniversityIdentification() }}</small>
+
                                 {% if hasAccess('common_account', 'index') %}
+                                    <a class="vtk-dropdownitem-link" href="{{ url('common_account')}}">Mijn VTK</a>
+                                {% endif %}
+
+                                {# {% if hasAccess('common_account', 'index') %}
                                 <a class="vtk-dropdownitem-link" href="{{ url('common_account')}}">
-                                {% else %}
-                                    <div style="padding: 3px 20px;">
+
                                 {% endif %}
                                     <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
                                     <small class="metadata">{{ authenticatedPerson.getUniversityIdentification() }}</small>
@@ -153,13 +159,13 @@
                                 </a>
                                 {% else %}
                                 </div>
-                                {% endif %}
+                                {% endif %} #}
 
                             </div>
 
-                            <div style="border-bottom: 1px solid grey; width: 100%"></div>
+                            {# <div style="border-bottom: 1px solid grey; width: 100%"></div> #}
 
-                            {% if hasAccess('cudi_booking', 'view') %}
+                            {# {% if hasAccess('cudi_booking', 'view') %}
                                 <div class="vtk-dropdownitem">
                                 <a class="vtk-dropdownitem-link" href="{{ url('cudi_booking') }}">{{ translate('My Bookings') }}</a>
                                 </div>
@@ -169,7 +175,7 @@
                                 <div class="vtk-dropdownitem">
                                 <a class="vtk-dropdownitem-link" href="{{ url('shift') }}">{{ translate('My Shifts') }}</a>
                                 </div>
-                            {% endif %}
+                            {% endif %} #}
 
                             <div class="vtk-dropdownitem">
                                 <a class="vtk-dropdownitem-link" href="{{ url("common_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>

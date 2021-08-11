@@ -1,13 +1,13 @@
 <ul class="nav nav-tabs">
     {% if hasAccess('common_account', 'index') %}
-        <li {% if getParam('action') == 'index' and getParam('controller') == 'account' %}class="active"{% endif %}>
-            <a href="{{ url('common_account', {'action': 'index'}) }}">
+        <li>
+            <a style="margin-left: 10px" class="{% if getParam('action') == 'index' %} activeTab {% else %} tab {% endif %}" href="{{ url('common_account', {'action': 'index'}) }}">
                 {{ translate('My VTK') }}
             </a>
         </li>
     {% endif %}
 
-    {% if hasAccess('cudi_booking', 'view') %}
+    {# {% if hasAccess('cudi_booking', 'view') %}
         <li {% if getParam('controller') == 'cudi' %}class="active"{% endif %}>
             <a href="{{ url('cudi_booking', {'action': 'view'}) }}">
                 {{ translate('Cudi') }}
@@ -21,12 +21,12 @@
                 {{ translate('Shifts') }}
             </a>
         </li>
-    {% endif %}
+    {% endif %} #}
 
 
     {% if hasAccess('common_account', 'profile') %}
-        <li class="pull-right {% if getParam('action') == 'profile' %}active{% endif %}">
-            <a href="{{ url('common_account', {'action': 'profile'}) }}">
+        <li>
+            <a class="{% if getParam('action') == 'profile' %} activeTab {% else %} tab {% endif %}" href="{{ url('common_account', {'action': 'profile'}) }}">
                 {{ translate('Profile') }}
             </a>
         </li>

@@ -4,16 +4,15 @@
     
     <div class="container">
         <div class="spacer40"></div>
-        <h1>{{ translate('My Profile') }}</h1>
+        <h1>{{ translate('My VTK') }}</h1>
+        <div class="lineDecoration"></div>
         <div class="spacer40"></div>
         {% include 'common/account/partials/navigation.twig' %}
-        <h1>{{ translate('My Profile') }}</h1>
         <div class="spacer40"></div>
 
         <div class="contentBlock">
             <div class="headingHolder">
-                <h2 style="margin-bottom: 0px">Studierichting & vakken</h2>
-                <div class="lineDecoration"></div>
+                <h3 style="margin-bottom: 0px">Studierichting & vakken</h3>
             </div>
 
             <h5>Studierichting:{% for study in studies %}{{ studies }}{% endfor %}</h5>
@@ -46,19 +45,18 @@
                 </div>
             </div>
 
-            <div style="margin-top: 25px">
-                <a class="button blue unfilled" href="{{ url('common_account', {'action': 'subjects'}) }}">{{ translate('Edit Subjects') }}</a>
-                <a class="button blue unfilled" href="{{ url('common_account', {'action': 'studies'}) }}">{{ translate('Edit Study') }}</a>
+            <div class="buttonHolder">
+                <a class="myVtkButton" href="{{ url('common_account', {'action': 'subjects'}) }}">{{ translate('Edit Subjects') }}</a>
+                <a class="myVtkButton" href="{{ url('common_account', {'action': 'studies'}) }}">{{ translate('Edit Study') }}</a>
             </div>
 
         </div>
 
-        <div class="spacer40"></div>
+        <div style="height: 80px"></div>
 
         <div class="contentBlock">
             <div class="headingHolder">
-                <h2 style="margin-bottom: 0px">Accountgegevens</h2>
-                <div class="lineDecoration"></div>
+                <h3 style="margin-bottom: 0px">Accountgegevens</h3>
             </div>
 
             <div>
@@ -128,31 +126,47 @@
                 </div>
 
             </div>
+
+            <div style="height: 20px"></div>
             
 
-            <div style="margin-top: 25px">
-                <a class="button blue unfilled" href="{{ url('common_account', {'action': 'edit'}) }}">Accountgegevens bijwerken</a>
+            <div class="buttonHolder">
+                <a class="myVtkButton" href="{{ url('common_account', {'action': 'edit'}) }}">Accountgegevens bijwerken</a>
             </div>
         </div>
+
+        <div style="height: 80px"></div>
+
+        <div class="contentBlock">
+            <div class="headingHolder">
+                <h3 style="margin-bottom: 0px">{{ translate('Personal') }}</h3>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">
+                    <div id="accountProfileImage" class="thumbnail"
+                        style="width: 180px; height: 135px; margin-top: 18px; position: relative;">
+                        {% if authenticatedPerson.getPhotoPath() %}
+                            <img src="{{ profilePath }}/{{ authenticatedPerson.getPhotoPath() }}" alt="">
+                        {% else %}
+                            <img data-src="holder.js/180x135/auto/text:Profile Image" alt="">
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="buttonHolder">
+                <button id="editProfile" class="myVtkButton">Bewerk profielfoto</button>
+                {% if (authenticatedPerson.isPraesidium(currentAcademicYear) and signatureEnabled) %}
+                    <button id="signaturePopup" class="myVtkButton" href="{{ url('common_account', {'action': 'studies'}) }}">VTK-handtekening</button>
+                {% endif %}
+                <a class="myVtkButton" href="{{ url('common_session', {'action': 'manage'}) }}">{{ translate('Sessions') }}</a>           
+            </div>
+
+        </div>
+        
 
     </div> 
-
-    <h3>{{ translate('Personal') }}</h3>
-    <div class="row">
-        <div class="col-sm-3">
-            <div id="accountProfileImage" class="thumbnail"
-                 style="width: 180px; height: 135px; margin-top: 18px; position: relative;">
-                {% if authenticatedPerson.getPhotoPath() %}
-                    <img src="{{ profilePath }}/{{ authenticatedPerson.getPhotoPath() }}" alt="">
-                {% else %}
-                    <img data-src="holder.js/180x135/auto/text:Profile Image" alt="">
-                {% endif %}
-                <button id="editProfile" class="btn btn-default btn-sm hidden-xs hidden-sm"
-                        style="position: absolute; bottom: 5px; right: 5px;">{{ translate('Edit') }}</button>
-            </div>
-        </div>
-
-    </div>
 
 
 
@@ -196,19 +210,20 @@
         </div>
     </div>
     
-    <div class="hidden-sm hidden-xs" style="text-align: center;">
+    <div style="height: 50px"></div>
+    {# <div class="hidden-sm hidden-xs" style="text-align: center;">
         <a href="{{ url('common_session', {'action': 'manage'}) }}">
             {{ translate('Sessions') }}
         </a>
-    </div>
+    </div> #}
 
 
     {% if (authenticatedPerson.isPraesidium(currentAcademicYear) and signatureEnabled) %}
 
-        <div id="signatureButton" class="hidden-sm hidden-xs" style="text-align: center;">
+        {# <div id="signatureButton" class="hidden-sm hidden-xs" style="text-align: center;">
             <button id="signaturePopup" class="btn btn-default btn-sm hidden-xs hidden-sm"
                     style="margin-bottom: 10%;">{{ translate("Signature") }}</button>
-        </div>
+        </div> #}
 
         <div id="modalSignature" class="modal fade">
 
