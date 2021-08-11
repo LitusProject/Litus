@@ -39,10 +39,46 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.public_logo_path');
 
+        $pages = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Page')
+            ->findAllActiveQuery($this->getCurrentAcademicYear())->getResult();
+
+        $smallComps = array();
+        $largeComps = array();
+        foreach ($pages as $page) {
+            $item = (object) array();
+            $company = $page->getCompany();
+
+            $vacancies = count($this->getEntityManager()->getRepository('BrBundle\Entity\Company\Job')
+                ->findAllActiveByCompanyAndTypeQuery($company, 'vacancy')->getResult());
+            $internships = count($this->getEntityManager()->getRepository('BrBundle\Entity\Company\Job')
+                ->findAllActiveByCompanyAndTypeQuery($company, 'internship')->getResult());
+            $studentJobs = count($this->getEntityManager()->getRepository('BrBundle\Entity\Company\Job')
+                ->findAllActiveByCompanyAndTypeQuery($company, 'student job')->getResult());
+
+            $item->name = $company->getName();
+            $item->logo = $company->getLogo();
+            $item->slug = $company->getSlug();
+            $item->vacancies = $vacancies;
+            $item->internships = $internships;
+            $item->studentJobs = $studentJobs;
+            if ($page->getCompany()->isLarge() == false) {
+                $smallComps[] = $item;
+            } else {
+                $item->description = $page->getShortDescription();
+                $largeComps[] = $item;
+            }
+        }
+        shuffle($smallComps);
+        shuffle($largeComps);
+        $allComps = array();
+
         return new ViewModel(
             array(
                 'logoPath'         => $logoPath,
-                'possible_sectors' => array('all' => 'All') + Company::POSSIBLE_SECTORS,
+                'smallCompanies'   => $smallComps,
+                'largeCompanies'   => $largeComps,
+//                'possible_sectors' => array('all' => 'All') + Company::POSSIBLE_SECTORS,
             )
         );
     }

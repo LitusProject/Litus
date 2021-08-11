@@ -85,7 +85,7 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
         $this->redirect()->toRoute(
                     'br_corporate_index',
                     array(
-                        'action' => 'login',
+                        'action' => 'index',
                     )
         );
     }
