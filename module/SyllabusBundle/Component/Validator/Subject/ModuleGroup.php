@@ -70,10 +70,13 @@ class ModuleGroup extends \CommonBundle\Component\Validator\AbstractValidator im
 
     /**
      * @param Form $form
+     * @return self
      */
     public function setForm(Form $form)
     {
         $this->form = $form;
+
+        return $this;
     }
 
     /**

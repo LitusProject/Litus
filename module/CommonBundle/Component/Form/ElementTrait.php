@@ -52,7 +52,6 @@ trait ElementTrait
     public function setRequired($flag = true)
     {
         $this->required = $flag;
-
         $this->setAttribute('required', $flag);
 
         $labelAttributes = $this->getLabelAttributes() ?: array();
@@ -117,6 +116,7 @@ trait ElementTrait
 
     /**
      * @param array $attributes
+     * @return void
      */
     public function setAttributes($attributes)
     {

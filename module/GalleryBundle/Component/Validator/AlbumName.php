@@ -53,10 +53,13 @@ class AlbumName extends \CommonBundle\Component\Validator\AbstractValidator impl
 
     /**
      * @param Form $form
+     * @return self
      */
     public function setForm(Form $form)
     {
         $this->form = $form;
+
+        return $this;
     }
 
     /**

@@ -424,7 +424,6 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         $tmpFile = new TmpFile();
-        error_log('hoi');
         new ZipGenerator($tmpFile, $this->getEntityManager(), $language, $entries, $array = true); // Ik geraak hier niet in...
 
         $headers = new Headers();

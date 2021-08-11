@@ -42,14 +42,12 @@ class Zip
      */
     public function __construct(TmpFile $tmpFile, EntityManager $entityManager, Language $language, $entries, $array = false)
     {
-        error_log('YAAAAAAAAAAAAAAAAAAAAAA');
         $zip = new ZipArchive();
         $now = new DateTime();
 
         $zip->open($tmpFile->getFileName(), ZipArchive::CREATE);
         $zip->addFromString('GENERATED', $now->format('YmdHi') . PHP_EOL);
         $zip->close();
-        error_log('SIIIIIIIIIIIIIIIIII');
 
         $filePath = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -65,19 +63,16 @@ class Zip
                 $zip->close();
             }
         } else {
-            error_log('OMGGGGGGGGGGGGGGGG');
             foreach ($entries as $invoice) {
                 $file = FileUtil::getRealFilename(
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
+                    $entityManager->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('br.file_path') . '/invoices/'
                     . $invoice->getInvoiceNumberPrefix() . '/'
                     . $invoice->getInvoiceNumber() . '.pdf'
                 );
 
                 $zip->open($tmpFile->getFileName(), ZipArchive::CREATE);
-                $done = $zip->addFile($file);
-                error_log($done);
+                $zip->addFile($file);
                 $zip->close();
             }
         }

@@ -24,6 +24,8 @@ use SyllabusBundle\Entity\Poc as PocEntity;
 
 class Poc extends \CommonBundle\Component\Hydrator\Hydrator
 {
+    private static $stdKeys = array();
+
     protected function doHydrate(array $data, $object = null)
     {
         if ($object === null) {
@@ -41,12 +43,10 @@ class Poc extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-    }
+        if ($object === null) {
+            return array();
+        }
 
-    protected function dataToGroup($groupData)
-    {
-        return $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Group')
-            ->findOneByName($groupData);
+        return $this->stdExtract($object, self::$stdKeys);
     }
 }
