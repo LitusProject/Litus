@@ -6,22 +6,15 @@
       
       <div style="height: 100px"></div>
 
-      {# TO DO translate #}
-      <h1>Evenementen voor bedrijven</h1>
+      <h1>{{ translate("Events for companies") }}</h1>
       <div style="height: 30px"></div>
-
-
-      {# TO DO vervangen door echte events zodra volledig aangevuld #}
-      {# {% for event in events %}
-      <b>{{ event.getTitle() }}</b><br>
-      {% endfor %} #}
 
       {% for event in events %}
          <div class="br-eventHolder" >
-            <div class="br-eventTekstHolder">
+            <div class="br-eventTextHolder">
                <h3 class="br-eventTitle">{{ event.getTitle() }}</h3>
                <div style="height: 15px"></div>
-               <p style="text-align: justify">{{ event.getDescription() }}</p>
+               <p style="text-align: justify">{{ event.getDescriptionForCompanies() }}</p>
                <div style="height: 20px"></div>
                <div class="br-eventInfoHolder">
                   {% if event.getStartDate().format('Y-m-d') == event.getEndDate().format('Y-m-d') %}
@@ -30,7 +23,7 @@
                         <p class="br-eventInfoTitle">{{ event.getStartDate().format('Y-m-d') }}</p>
                      </div>
                      <div style="margin-right: 20px">
-                        <h6 style="margin-bottom: 0px; opacity: 0.6">Tijd</h6>
+                        <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate("Time") }}</h6>
                         <p class="br-eventInfoTitle">
                            {{ event.getStartDate().format('H:i') }}-{{ event.getEndDate().format('H:i') }}</p>
                      </div>
@@ -40,9 +33,32 @@
                         <p class="br-eventInfoTitle">{{ event.getStartDate().format('Y-m-d H:i') }}</p>
                      </div>
                      <div style="margin-right: 20px">
-                        <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('Start Date') }}</h6>
+                        <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('End Date') }}</h6>
                         <p class="br-eventInfoTitle">{{ event.getEndDate().format('Y-m-d H:i') }}</p>
                      </div>
+                  {% endif %}
+                  {% if event.getLocation() %}
+                  <div style="margin-right: 20px">
+                     <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('Location') }}</h6>
+                     <p class="br-eventInfoTitle">{{ event.getLocation() }}</p>
+                  </div>
+                  {% endif %}
+                  {% if event.getNbStudents() %}
+                  <div style="margin-right: 20px">
+                     <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('#Students') }}</h6>
+                     <p class="br-eventInfoTitle">{{ event.getNbStudents() }}</p>
+                  </div>
+                  {% endif %}
+                  {% if event.getNbCompanies() %}                  <div style="margin-right: 20px">
+                     <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('#Companies') }}</h6>
+                     <p class="br-eventInfoTitle">{{ event.getNbCompanies() }}</p>
+                  </div>
+                  {% endif %}
+                  {% if event.getAudience() %}
+                  <div style="margin-right: 20px">
+                     <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('Audience') }}</h6>
+                     <p class="br-eventInfoTitle">{{ event.getAudience() }}</p>
+                  </div>
                   {% endif %}
                </div>
             </div>
@@ -50,72 +66,6 @@
             </div>
          </div>
       {% endfor %}
-
-      <div class="br-eventHolder" >
-         <div class="br-eventTekstHolder">
-            <h3 class="br-eventTitle">Scouting event</h3>
-            <div style="height: 15px"></div>
-            <p style="text-align: justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. </p>
-            <div style="height: 20px"></div>
-            <div class="br-eventInfoHolder">
-               <div style="margin-right: 20px">
-                  <h6 style="margin-bottom: 0px; opacity: 0.6">Datum</h6>
-                  <p class="br-eventInfoTitle">12/11/2021</p>
-               </div>
-               <div style="margin-right: 20px">
-                  <h6 style="margin-bottom: 0px; opacity: 0.6">Tijd</h6>
-                  <p class="br-eventInfoTitle">08.00-10.00</p>
-               </div>               
-               <div style="margin-right: 20px">
-                  <h6 style="margin-bottom: 0px; opacity: 0.6">Prijs</h6>
-                  <p class="br-eventInfoTitle">100</p>
-               </div>
-               <div style="margin-right: 20px">
-                  <h6 style="margin-bottom: 0px; opacity: 0.6">Locatie</h6>
-                  <p class="br-eventInfoTitle">Café Allee</p>
-               </div>
-               <div style="margin-right: 20px">
-                  <h6 style="margin-bottom: 0px; opacity: 0.6"># Werknemers</h6>
-                  <p class="br-eventInfoTitle">2</p>
-               </div>                                             
-            </div>
-         </div>
-         <div class="br-eventImageHolder">
-         </div>
-      </div>
-
-      <div class="br-eventHolder" >
-         <div class="br-eventTekstHolder">
-            <h3 class="br-eventTitle">Jobfair</h3>
-            <div style="height: 15px"></div>
-            <p style="text-align: justify">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. </p>
-            <div style="height: 20px"></div>
-            <div class="br-eventInfoHolder">
-               <div style="margin-right: 20px">
-                  <h6 style="margin-bottom: 0px; opacity: 0.6">Datum</h6>
-                  <p class="br-eventInfoTitle">08/08/2021</p>
-               </div>
-               <div style="margin-right: 20px">
-                  <h6 style="margin-bottom: 0px; opacity: 0.6">Tijd</h6>
-                  <p class="br-eventInfoTitle">20.00-22.00</p>
-               </div>               
-               <div style="margin-right: 20px">
-                  <h6 style="margin-bottom: 0px; opacity: 0.6">Prijs</h6>
-                  <p class="br-eventInfoTitle">Gratis</p>
-               </div>
-               <div style="margin-right: 20px">
-                  <h6 style="margin-bottom: 0px; opacity: 0.6">Locatie</h6>
-                  <p class="br-eventInfoTitle">Leuven</p>
-               </div>
-               <div style="margin-right: 20px">
-                  <h6 style="margin-bottom: 0px; opacity: 0.6"># Werknemers</h6>
-                  <p class="br-eventInfoTitle">5</p>
-               </div>                                             
-            </div>
-         </div>
-         <div class="br-eventImageHolder">
-         </div>
-      </div>            
 
       <div style="height: 100px"></div>
 

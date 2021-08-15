@@ -20,6 +20,7 @@
 
 namespace BrBundle\Entity;
 
+use CommonBundle\Entity\General\Language;
 use CommonBundle\Entity\User\Person;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
@@ -60,11 +61,18 @@ class Event
     private $title;
 
     /**
-     * @var string The description for this event
+     * @var string The description for this event for students
      *
-     * @ORM\Column(name="description", type="text", nullable=true)
+     * @ORM\Column(name="description_for_students", type="text", nullable=true)
      */
-    private $description;
+    private $descriptionForStudents;
+
+    /**
+     * @var string The description for this event for companies
+     *
+     * @ORM\Column(name="description_for_companies", type="text", nullable=true)
+     */
+    private $descriptionForCompanies;
 
     /**
      * @var DateTime The start date and time of this reservation.
@@ -79,6 +87,50 @@ class Event
      * @ORM\Column(name="end_date", type="datetime")
      */
     private $endDate;
+
+    /**
+     * @var integer The number of companies that will attend
+     *
+     * @ORM\Column(name="nb_companies", type="integer", nullable=true)
+     */
+    private $nbCompanies;
+
+    /**
+     * @var integer The number of students that will attend
+     *
+     * @ORM\Column(name="nb_students", type="integer", nullable=true)
+     */
+    private $nbStudents;
+
+    /**
+     * @var boolean The flag whether the Event is visible for Companies
+     *
+     * @ORM\Column(name="visible_for_companies", type="boolean", nullable=true)
+     */
+    private $visibleForCompanies;
+
+    /**
+     * @var boolean The flag whether the Event is visible for Students
+     *
+     * @ORM\Column(name="visible_for_students", type="boolean", nullable=true)
+     */
+    private $visibleForStudents;
+
+    /**
+     * @var string Location of the event
+     *
+     * @ORM\Column(name="location", type="text", nullable=true)
+     *
+     */
+    private $location;
+
+    /**
+     * @var string Audience of the event
+     *
+     * @ORM\Column(name="audience", type="text", nullable=true)
+     *
+     */
+    private $audience;
 
     /**
      * @param Person $creator
@@ -162,21 +214,130 @@ class Event
     }
 
     /**
-     * @param  string $description
-     * @return self
+     * @return string
      */
-    public function setDescription($description)
+    public function getDescriptionForStudents()
     {
-        $this->description = $description;
+        return $this->descriptionForStudents;
+    }
 
-        return $this;
+    /**
+     * @param string $descriptionForStudents
+     */
+    public function setDescriptionForStudents(string $descriptionForStudents)
+    {
+        $this->descriptionForStudents = $descriptionForStudents;
     }
 
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescriptionForCompanies()
     {
-        return $this->description;
+        return $this->descriptionForCompanies;
+    }
+
+    /**
+     * @param string $descriptionForCompanies
+     */
+    public function setDescriptionForCompanies(string $descriptionForCompanies)
+    {
+        $this->descriptionForCompanies = $descriptionForCompanies;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNbCompanies()
+    {
+        return $this->nbCompanies;
+    }
+
+    /**
+     * @param int $nbCompanies
+     */
+    public function setNbCompanies(int $nbCompanies)
+    {
+        $this->nbCompanies = $nbCompanies;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNbStudents()
+    {
+        return $this->nbStudents;
+    }
+
+    /**
+     * @param int $nbStudents
+     */
+    public function setNbStudents(int $nbStudents)
+    {
+        $this->nbStudents = $nbStudents;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isVisibleForCompanies()
+    {
+        return $this->visibleForCompanies;
+    }
+
+    /**
+     * @param bool $visibleForCompanies
+     */
+    public function setVisibleForCompanies(bool $visibleForCompanies)
+    {
+        $this->visibleForCompanies = $visibleForCompanies;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isVisibleForStudents()
+    {
+        return $this->visibleForStudents;
+    }
+
+    /**
+     * @param bool $visibleForStudents
+     */
+    public function setVisibleForStudents(bool $visibleForStudents)
+    {
+        $this->visibleForStudents = $visibleForStudents;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * @param string $location
+     */
+    public function setLocation(string $location)
+    {
+        $this->location = $location;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAudience()
+    {
+        return $this->audience;
+    }
+
+    /**
+     * @param string $audience
+     */
+    public function setAudience(string $audience)
+    {
+        $this->audience = $audience;
     }
 }

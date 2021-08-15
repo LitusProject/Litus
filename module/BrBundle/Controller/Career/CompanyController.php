@@ -63,8 +63,10 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
             $item->internships = $internships;
             $item->studentJobs = $studentJobs;
             if ($page->getCompany()->isLarge() == false) {
+                $item->large = 0;
                 $smallComps[] = $item;
             } else {
+                $item->large = 1;
                 $item->description = $page->getShortDescription();
                 $largeComps[] = $item;
             }
@@ -73,11 +75,28 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
         shuffle($largeComps);
         $allComps = array();
 
+        while (count($smallComps) > 0 || count($largeComps) >0){
+            if (count($largeComps) > 0) {
+                $comp = array_pop($largeComps);
+                array_push($allComps, $comp);
+            }
+            if (count($smallComps) >= 4) {
+                $comp = array_splice($smallComps,0,4);
+                array_push($allComps, $comp);
+            } else {
+                array_push($allComps, $smallComps);
+                $smallComps = array();
+            }
+        }
+
+        error_log(print_r($allComps[0],true));
+
         return new ViewModel(
             array(
                 'logoPath'         => $logoPath,
                 'smallCompanies'   => $smallComps,
                 'largeCompanies'   => $largeComps,
+                'allCompanies'     => $allComps
 //                'possible_sectors' => array('all' => 'All') + Company::POSSIBLE_SECTORS,
             )
         );

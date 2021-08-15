@@ -33,9 +33,13 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 {
     public function overviewAction()
     {
+        $events = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Event')
+            ->findAllActiveQuery()->getResult();
+
         return new ViewModel(
             array(
-                'date' => $this->getParam('date'),
+                'events'    => $events,
             )
         );
     }
