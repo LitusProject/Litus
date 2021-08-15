@@ -209,13 +209,7 @@ class CommunicationController extends \CommonBundle\Component\Controller\ActionC
                 )
             );
 
-//        $mail->setBody("There is a double booking on " .$date)
-//            ->setFrom($mailAddress, $mailName)
-//            ->addTo($mailAddress, $mailName)
-//            ->setSubject('Duplicate Communication Date ' .$date);
-        echo $mail->toString();
-        die(1);
-//        $this->getMailTransport()->send($mail);
+        $this->getMailTransport()->send($mail);
     }
 
     private function checkDuplicateDate(string $date, Company $company, string $audience)
