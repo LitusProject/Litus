@@ -64,6 +64,10 @@ return array(
                     'title' => 'Events',
                     'help'  => 'Here you can manage all events by VTK Corporate Relations.',
                 ),
+                'br_admin_communication' => array(
+                    'title' => 'Communications',
+                    'help' => 'Here you can view all outgoing communications.',
+                )
             ),
             'controllers' => array(
                 'br_admin_company_event',

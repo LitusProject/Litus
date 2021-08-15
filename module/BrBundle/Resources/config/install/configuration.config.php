@@ -300,4 +300,40 @@ Example content of this section.
         'value'       => 'RPR Leuven',
         'description' => '',
     ),
+    array(
+        'key'         => 'br.communication_options',
+        'value'       => serialize(
+            array(
+                'Mailkalender',
+                'Brief',
+                'Telefoon',
+            )
+        ),
+        'description' => 'The options displayed in the communications tab in the br admin',
+    ),
+    array(
+        'key'         => 'br.communication_mail',
+        'value'       => 'stan.cardinaels@vtk.be',
+        'description' => 'The mail address to which notifications should be send when a duplicate communication date is chosen.',
+    ),
+    array(
+        'key'         => 'br.communication_mail_name',
+        'value'       => 'VTK Bedrijvenrelaties',
+        'description' => '',
+    ),
+    array(
+        'key'         =>  'br.communication_mail_body',
+        'value' => serialize(
+            array(
+                'subject' => 'Dubbele booking voor communication op {{ date }}',
+                'content' => 'Beste,
+Er is een nieuwe communicatie aangemaakt op {{ date }},
+voor {{ companyName }}.
+Nieuw Doelpubliek: {{ audience }}.
+
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
+            )
+        ),
+        'description' => 'The mail sent when a duplicate date is chosen for a communication'
+    ),
 );
