@@ -322,7 +322,7 @@ Example content of this section.
         'description' => '',
     ),
     array(
-        'key'         =>  'br.communication_mail_body',
+        'key'         => 'br.communication_mail_body',
         'value' => serialize(
             array(
                 'subject' => 'Dubbele booking voor communication op {{ date }}',

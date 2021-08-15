@@ -22,7 +22,8 @@ namespace BrBundle\Repository;
 
 use BrBundle\Entity\Company;
 
-class Communication extends \CommonBundle\Component\Doctrine\ORM\EntityRepository {
+class Communication extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
+{
     /**
      * @param Company $company
      * @return \Doctrine\ORM\Query
@@ -39,7 +40,8 @@ class Communication extends \CommonBundle\Component\Doctrine\ORM\EntityRepositor
             ->getQuery();
     }
 
-    public function findAllActiveQuery() {
+    public function findAllActiveQuery()
+    {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('r')
             ->from('BrBundle\Entity\Communication', 'r')

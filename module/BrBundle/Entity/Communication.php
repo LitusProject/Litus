@@ -23,11 +23,9 @@
 namespace BrBundle\Entity;
 
 use BrBundle\Entity\Company;
-use Clue\Redis\Protocol\Model\IntegerReply;
 use CommonBundle\Entity\User\Person;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use SyllabusBundle\Entity\Group;
 
 /**
  * This is the entity for a communication option
@@ -88,28 +86,32 @@ class Communication
      * Communication constructor.
      * @param Person $creator
      */
-    public function __construct(Person $creator) {
+    public function __construct(Person $creator)
+    {
         $this->creator = $creator;
     }
 
     /**
      * @return Person
      */
-    public function getCreator() {
+    public function getCreator()
+    {
         return $this->creator;
     }
 
     /**
-     * @return int
+     * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
      * @return \BrBundle\Entity\Company
      */
-    public function getCompany() {
+    public function getCompany()
+    {
         return $this->company;
     }
 
@@ -117,7 +119,8 @@ class Communication
      * @param \BrBundle\Entity\Company|null $company
      * @return Communication
      */
-    public function setCompany(Company $company = null) {
+    public function setCompany(Company $company = null)
+    {
         $this->company = $company;
 
         return $this;
@@ -126,7 +129,8 @@ class Communication
     /**
      * @return DateTime
      */
-    public function getDate() {
+    public function getDate()
+    {
         return $this->date;
     }
 
@@ -134,7 +138,8 @@ class Communication
      * @param DateTime $date
      * @return Communication
      */
-    public function setDate(DateTime $date) {
+    public function setDate(DateTime $date)
+    {
         $this->date = $date;
 
         return $this;
@@ -143,7 +148,8 @@ class Communication
     /**
      * @return string
      */
-    public function getAudience() {
+    public function getAudience()
+    {
         return $this->audience;
     }
 
@@ -151,7 +157,8 @@ class Communication
      * @param string $audience
      * @return Communication
      */
-    public function setAudience(string $audience) {
+    public function setAudience(string $audience)
+    {
         $this->audience = $audience;
 
         return $this;
@@ -160,15 +167,17 @@ class Communication
     /**
      * @return string
      */
-    public function getOption() {
+    public function getOption()
+    {
         return $this->option;
     }
 
     /**
-     * @param String $option
+     * @param string $option
      * @return Communication
      */
-    public function setOption(String $option) {
+    public function setOption(String $option)
+    {
         $this->option = $option;
 
         return $this;

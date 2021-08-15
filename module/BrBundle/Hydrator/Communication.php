@@ -17,24 +17,25 @@
  *
  * @license http://litus.cc/LICENSE
  */
+
 namespace BrBundle\Hydrator;
 
 use BrBundle\Entity\Communication as CommunicationEntity;
-use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 
 /**
  * This hydrator hydrates/extracts Communication data.
  *
  * @autho Stan Cardinaels <stan.cardinaels@vtk.be>
  */
-class Communication extends \CommonBundle\Component\Hydrator\Hydrator {
+class Communication extends \CommonBundle\Component\Hydrator\Hydrator
+{
 
     private static $stdKeys = array('option', 'audience');
 
     protected function doHydrate(array $data, $object = null)
     {
         if ($object === null) {
-            $object = new CommunicationEntity( $this->getPersonEntity());
+            $object = new CommunicationEntity($this->getPersonEntity());
         }
 
         if (isset($data['companyId'])) {
@@ -67,6 +68,4 @@ class Communication extends \CommonBundle\Component\Hydrator\Hydrator {
 
         return $data;
     }
-
-
 }

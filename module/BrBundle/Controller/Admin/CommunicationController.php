@@ -17,52 +17,55 @@
  *
  * @license http://litus.cc/LICENSE
  */
+
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Entity\Company;
-use CommonBundle\Component\Form\Admin\Element\DateTime;
-use Laminas\View\Model\ViewModel;
 use BrBundle\Entity\Communication;
+use BrBundle\Entity\Company;
 use Laminas\Mail\Message;
+use Laminas\View\Model\ViewModel;
 
 /**
  * CommunicationController
  * @author Stan Cardinaels <stan.cardinaels@vtk.be>
  */
-class CommunicationController extends \CommonBundle\Component\Controller\ActionController\AdminController {
-
-    public function manageAction() {
+class CommunicationController extends \CommonBundle\Component\Controller\ActionController\AdminController
+{
+    public function manageAction()
+    {
         if ($this->getParam('option') === null) {
             $paginator = $this->paginator()->createFromArray(
                 $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Communication')
-                    ->findBy(array(), ['date' => 'asc']),
+                    ->findBy(array(), array('date' => 'asc')),
                 $this->getParam('page')
             );
-        }
-        else {
+        } else {
             $paginator = $this->paginator()->createFromArray(
                 $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Communication')
-                    ->findBy(['option' => $this->getParam('option')], ['date' => 'asc']),
+                    ->findBy(array('option' => $this->getParam('option')), array('date' => 'asc')),
                 $this->getParam('page')
             );
         }
 
-        $config = unserialize($this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.communication_options'));
+        $config = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.communication_options')
+        );
 
         return new ViewModel(
             array(
                 'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'options'           => $config === 0 ? null:$config,
+                'options'           => $config === 0 ? null : $config,
             )
         );
     }
 
-    public function addAction() {
+    public function addAction()
+    {
         $form = $this->getForm('br_communication_add');
 
         if ($this->getRequest()->isPost()) {
@@ -110,7 +113,8 @@ class CommunicationController extends \CommonBundle\Component\Controller\ActionC
         );
     }
 
-    public function deleteAction() {
+    public function deleteAction()
+    {
         $this->initAjax();
 
         $communication = $this->getCommunicationEntity();
@@ -128,7 +132,8 @@ class CommunicationController extends \CommonBundle\Component\Controller\ActionC
         );
     }
 
-    private function getCommunicationEntity() {
+    private function getCommunicationEntity()
+    {
         $communication = $this->getEntityById('BrBundle\Entity\Communication');
 
         if (!($communication instanceof Communication)) {
@@ -150,7 +155,8 @@ class CommunicationController extends \CommonBundle\Component\Controller\ActionC
         return $communication;
     }
 
-    private function getDatesArray() {
+    private function getDatesArray()
+    {
         $dates = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Communication')
             ->findAll();
@@ -159,14 +165,15 @@ class CommunicationController extends \CommonBundle\Component\Controller\ActionC
             -1 => '',
         );
 
-        foreach($dates as $date) {
+        foreach ($dates as $date) {
             $datesArray[$date->getId()] = $date->getDate()->format('d/m/Y');
         }
 
         return $datesArray;
     }
 
-    private function sendMail(string $date, Company $company, string $audience) {
+    private function sendMail(string $date, Company $company, string $audience)
+    {
         $mailAddress = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.communication_mail');
@@ -185,35 +192,38 @@ class CommunicationController extends \CommonBundle\Component\Controller\ActionC
 
         $mail = new Message();
         $mail->setEncoding('UTF-8')
-            ->setBody(str_replace(
-                array('{{ date }}', '{{ companyName }}', '{{ audience }}'),
-                array($date, $company->getName(), $audience),
-                $message
-            ))
+            ->setBody(
+                str_replace(
+                    array('{{ date }}', '{{ companyName }}', '{{ audience }}'),
+                    array($date, $company->getName(), $audience),
+                    $message
+                )
+            )
             ->setFrom($mailAddress, $mailName)
             ->addTo($mailAddress, $mailName)
-            ->setSubject(str_replace(
-                array('{{ date }}'),
-                array($date),
-                $subject
-            ));
+            ->setSubject(
+                str_replace(
+                    array('{{ date }}'),
+                    array($date),
+                    $subject
+                )
+            );
 
 //        $mail->setBody("There is a double booking on " .$date)
 //            ->setFrom($mailAddress, $mailName)
 //            ->addTo($mailAddress, $mailName)
 //            ->setSubject('Duplicate Communication Date ' .$date);
-//
         echo $mail->toString();
         die(1);
 //        $this->getMailTransport()->send($mail);
     }
 
-    private function checkDuplicateDate(string $date, Company $company, string $audience) {
+    private function checkDuplicateDate(string $date, Company $company, string $audience)
+    {
         $datesArray = $this->getDatesArray();
         $dateToCheck = $date;
         if (in_array($dateToCheck, $datesArray)) {
             $this->sendMail($dateToCheck, $company, $audience);
         }
-
     }
 }
