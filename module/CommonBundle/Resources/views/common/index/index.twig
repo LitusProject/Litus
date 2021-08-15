@@ -26,27 +26,33 @@
     {% endfor %} #}
 
     <div class="vtk-home-header">
-        <div style="height:175px"></div>
-        <div class="container">
-            <h1 class="vtk-hometitle">{{ translate('Welcome to')}} <span class="vtk-textspan">vtk</span></h1>
-            <h3 style="font-weight: 500">Vlaamse Technische Kring - partner in crime since 1920</h3>
+        <div class="vtk-home-image">
+            <div class="container" style="text-align: center">
+                {# <div class="vtk-home-tekstholder"> #}
+                    <h1 class="vtk-hometitle">{{ translate('welcome to')}} VTK</h1>
+                    <div class="vtk-home-titleDecoration"></div>
+                    <h2 class="vtk-home-subtitle" style="color: white; font-weight: 500">Vlaamse Technische Kring - partner in crime since 1920</h2>
+                    <div style="height: 100px"></div>
+                    {# <h3 style="color: white; font-weight: 500">partner in crime since 1920</h3>                     #}
+                {# </div> #}
+            </div>
         </div>
     </div>
 
-    {# {% if calendarItems.length != 0 %} #}
-    <div style="margin-top: -100px; position: relative; padding: 20px 15px" class="container">
-        <h2>{{ translate('Calendar') }}</h2>
-        <div style="margin-top: 50px; margin-bottom: 120px">
+    {% if calendarItems|length != 0 %} 
+    <div style="position: relative; padding: 20px 15px; margin-top: -75px; margin-bottom: 50px" class="container">
+        {# <h2>{{ translate('Calendar') }}</h2> #}
+        {# <div style="margin-top: 50px; margin-bottom: 120px"> #}
             <div class="calendar-grid" style="margin-bottom: 40px" >
                 {% for day in calendarItems | slice(0, 3)%}
                     {% for event in day.events | slice(0, 1)%}
-                        <div class="calendar-item">
-                            <h4>{{event.getTitle(language)}} | {{ dateLocalized(day.date, 'LLL')|capitalize }} {{ dateLocalized(day.date, 'd') }} </h4>
-                            <p class="calendar-emptyfill">{{event.getSummary(100, language)}}</p>
-                            <div class="button" style="margin-bottom: 30px; margin-top: 20px">
-                                <a href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">Lees Meer</a>
-                            </div>
+                        <div style="position: relative" class="calendar-item">
                             <div class="DELETE-BGIMAGE"></div>
+                            <div class="calendar-item-tekst">
+                                <h4>{{event.getTitle(language)}} | {{ dateLocalized(day.date, 'LLL')|capitalize }} {{ dateLocalized(day.date, 'd') }} </h4>
+                                <p class="calendar-emptyfill">{{event.getSummary(150, language)}}</p>
+                                <a style="position: absolute; bottom: -10px" class="myVtkButton" href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">Lees Meer</a>
+                            </div>
                         </div>
                     {% endfor %}
                 {% endfor %}
@@ -60,46 +66,83 @@
                     </div> 
                 {% endfor %} #}
             </div>
-            <a class="calendar-button" href="{{ url('calendar') }}">{{ translate('View the whole Calendar Here') }} →</a>
+            <a class="button blue unfilled" href="{{ url('calendar') }}">{{ translate('View the whole Calendar Here') }} →</a>
         </div>
     </div>
-    {# {% endif %} #}
+    {% endif %}
     
-
+    {% if newsItems|length > 0 or cudi.openingHours|length > 0 %}
     <div class="vtk-home-technical">
         <div style="padding: 50px 15px" class="container">
             <div class="row">
-                <div class="col-md-6">
-                    <h2>{{ translate('Latest news') }}</h2>
-                    {% for item in newsItems %}
-                        <div class="item" style="margin-bottom: 20px">
-                            <h4>{{ item.getTitle(language) }} <small>&mdash; {{ dateLocalized(item.getCreationTime(), 'd MMMM') }}</small></h4>
+                {% if newsItems|length > 0 %}
+                    <div class="col-md-6">
+                        <h2>{{ translate('Latest news') }}</h2>
+                        {% for item in newsItems %}
+                            <div style="background-color: white; padding: 20px; margin-bottom: 20px">
+                                <h4>{{ item.getTitle(language) }} <small>&mdash; {{ dateLocalized(item.getCreationTime(), 'd MMMM') }}</small></h4>
 
-                            <div>
-                                <p>{{ hideEmail(item.getSummary(300, language)) | replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}</p>
-                                <div class="spacer20"></div>
-                                <div class="button">
-                                    <a href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('Read More') }}</a>
+                                <div>
+                                    <p>{{ hideEmail(item.getSummary(300, language)) | replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}</p>
+                                    <div style="height: 10px"></div>
+                                    <a class="button blue unfilled" href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('Read More') }}</a>
                                 </div>
                             </div>
-                        </div>
-                    {# {% else %}
-                        <div class="alert alert-warning">
-                            {{ translate('No news items were posted recently.') }}
-                        </div> #}
-                    {% endfor %}
-                </div>
+                        {# {% else %}
+                            <div class="alert alert-warning">
+                                {{ translate('No news items were posted recently.') }}
+                            </div> #}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {# TO DO CUDI STUFF GOED ZETTEN #}
+                {# {% if cudi.currentOpeningHour %}
+                    <h3>{{ translate('Open Session') }}</h3>
+                    {% autoescape false %}
+                        <p>
+                            {{ translate('Cudi is open until <span class="label label-warning">%time%</span>.')|replace({'%time%': dateLocalized(cudi.currentOpeningHour.getEnd(), 'H:mm')}) }}
+                            {% if cudi.currentOpeningHour.getComment(language)|length > 0 %}
+                                <br><small style="margin-left: 20px;">{{ cudi.currentOpeningHour.getComment(language) }}</small>
+                            {% endif %}
+                        </p>
+                    {% endautoescape %}
+
+                    {% if cudi.currentSession %}
+                            {% autoescape false %}
+                                <p>
+                                    {% if cudi.currentStudents == 1 %}
+                                        {{ translate('Currently there is <span class="label label-info">%number%</span> student in the queue at Cudi.')|replace({'%number%': cudi.currentStudents}) }}
+                                    {% else %}
+                                        {{ translate('Currently there are <span class="label label-info">%number%</span> students in the queue at Cudi.')|replace({'%number%': cudi.currentStudents}) }}
+                                    {% endif %}
+                                </p>
+                            {% endautoescape %}
+                    {% endif %}
+                {% else %}
+                    <div class="alert alert-info" style="margin-bottom: 20px;">
+                        {{ translate('Cudi is currently closed.') }}
+                    </div>
+                {% endif %}
+
+                {% if hasAccess('cudi_booking', 'view') %}
+                    <p style="text-align: left;">
+                        {{ translate('Reserve textbooks and other study material.') }}
+                    </p>
+                    <p>
+                        <a href="{{ url('cudi_booking') }}" class="btn btn-sm btn-primary">{{ translate('Reservations') }}</a>
+                    </p>
+                {% endif %} #}
                 {% if cudi.openingHours|length > 0 %}
                     <div class="col-md-6"><h2>{{ translate('Cudi Opening Hours') }}</h2>
                         {% for opening in cudi.openingHours %}
                             <div><p style="display:inline-block">{{ dateLocalized(opening.getStart(), 'EEEE (d/M)')|capitalize }}</p><p style="float:right">{{ opening.getStart().format('H:i') }}-{{ opening.getEnd().format('H:i') }}</p></div>
                         {% endfor %}
                     </div>
-
                 {% endif %}
             </div>
         </div>
     </div>
+    {% endif %}
 
     <div class="vtk-home-br">
         <div class="container">
@@ -118,7 +161,7 @@
         {% for item in menu %}
             {% if 'category' == item.type %}
                 <div style="margin-right: 40px; margin-bottom: 50px">
-                    <h3 class="vtk-menuitem" style="margin-bottom: 22px" href="#">
+                    <h3 style="margin-bottom: 22px" href="#">
                         {{ item.name }} 
                     </h3>
                     {% for categoryItem in item.items | slice(0, 5) %}

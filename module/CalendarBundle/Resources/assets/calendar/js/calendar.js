@@ -92,16 +92,14 @@
 
                 column.html('')
                 .append(
-                    $('<h2>', {'style': 'width: 100%'}).html(data.month)
+                    $('<div>', {'style': 'height: 30px; width: 1px'}),
+                    $('<h3>', {'style': 'width: 100%'}).html(data.month)
                 );
 
                 $.each(data.days, function (key, value) {
                     $(value.events).each(function () {
                         column.append(
-                        $('<div>', {'class': 'col-md-4 calendarItemHolder'}).append(
-                            $('<div>', {'class': 'date'}).append(
-                                $('<div>').html(value.month + " " + value.day)
-                            ),
+                        $('<div>', {'class': 'col-md-4 calendarItemHolder', 'style': 'border: 2px solid white'}).append(
                             $('<h4>',
                                 {
                                     'class': 'calendarTitleStretch', 
@@ -109,7 +107,8 @@
                             ).append(
                                 this.title + " | " + value.month + " " + value.day
                             ),
-                            $('<div>', {'class': 'button', 'style': 'margin-bottom: 20px; margin-top: 20px'}).append($('<a>', {'href': this.url}).append('Lees meer')),
+                            // $('<div>', {'class': 'button', 'style': 'margin-bottom: 20px; margin-top: 20px'}).append($('<a>', {'href': this.url}).append('Lees meer')),
+                            $('<a>', {'class': 'button blue unfilled', 'href': this.url}).append('Lees meer'), 
                             $('<div>', {'class': 'calendarImagePlaceHolder'}), 
                             $('<p>', {'style': 'min-height: 63px'}).append(this.summary)
                             
@@ -149,7 +148,9 @@
         } else {
             column.html('')
                 .append(
-                    $('<h2>', {'style': 'width: 100%'}).html(data.month)
+                    $('<div>', {'style': 'height: 30px; width: 1px'}),
+                    $('<h3>', {'style': 'width: 100%'}).html(data.month)
+                   
                 ); 
         }; 
 

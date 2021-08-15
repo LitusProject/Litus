@@ -22,7 +22,7 @@
             </h5>
 
             <div class="columnGrid">
-                <div>
+                <div style="border-right: 1px solid #ffd400; padding-right: 5px">
                     <h5>Semester 1</h5>
                     {% for subject in subjects %}
                         {% if subject.getSemester() == 1 %}
@@ -34,7 +34,7 @@
                         {% endif %}
                     {% endfor %}
                 </div>
-                <div>
+                <div style="padding-left: 5px">
                     <h5>Semester 2</h5>
                     {% for subject in subjects %}
                         {% if subject.getSemester() == 2 %}
@@ -47,15 +47,18 @@
                     {% endfor %}
                 </div>
             </div>
-            {% for subject in subjects %}
-                {% if subject.getSemester() == 3 %}
-                    <div class="itemHolder">
-                        <p>{{ subject.getName() }}</p>
-                        <div class="flexStretch"></div>
-                        <p style="opacity: 50%">{{ subject.getCode() }}</p>
-                    </div>
-                {% endif %}
-            {% endfor %}
+            <div>
+                <h5>Jaarvakken</h5>
+                {% for subject in subjects %}
+                    {% if subject.getSemester() == 3 %}
+                        <div class="itemHolder">
+                            <p>{{ subject.getName() }}</p>
+                            <div class="flexStretch"></div>
+                            <p style="opacity: 50%">{{ subject.getCode() }}</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
 
             <div class="buttonHolder">
                 <a class="myVtkButton" href="{{ url('common_account', {'action': 'subjects'}) }}">{{ translate('Edit Subjects') }}</a>
