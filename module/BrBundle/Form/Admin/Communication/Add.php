@@ -20,20 +20,21 @@
 
 namespace BrBundle\Form\Admin\Communication;
 
-use BrBundle\Entity\Communication as Communication;
-use BrBundle\Entity\Company as Company;
+use BrBundle\Entity\Communication;
 
 /**
  * Add a communication.
  *
  * @author Stan Cardinaels <stan.cardinaels@vtk.be>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form {
+class Add extends \CommonBundle\Component\Form\Admin\Form
+{
     protected $hydrator = 'BrBundle\Hydrator\Communication';
 
     protected $communication;
 
-    public function init() {
+    public function init()
+    {
         parent::init();
 
         $this->add(
@@ -43,9 +44,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form {
                 'label' => 'Communication Option',
                 'required' => true,
                 'attributes' => array(
-                    'options' => unserialize($this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('br.communication_options')),
+                    'options' => unserialize(
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('br.communication_options')
+                    ),
                 ),
             )
         );
@@ -72,36 +75,38 @@ class Add extends \CommonBundle\Component\Form\Admin\Form {
         );
 
         $this->add(
-          array(
-              'type' => 'text',
-              'name' => 'audience',
-              'label' => 'Audience',
-              'required' => true,
-              'options' => array(
-                  'input' => array(
-                      'filters' => array(
-                          array('name' => 'StringTrim'),
-                      ),
-                  ),
-              ),
-          )
+            array(
+                'type' => 'text',
+                'name' => 'audience',
+                'label' => 'Audience',
+                'required' => true,
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
         );
 
 
         $this->addSubmit('Add', 'communication_add');
 
-        if($this->communication !== null) {
+        if ($this->communication !== null) {
             $this->bind($this->communication);
         }
     }
 
-    public function setCommunication(Communication $communication) {
+    public function setCommunication(Communication $communication)
+    {
         $this->communication = $communication;
 
         return $this;
     }
 
-    private function getCompanyArray() {
+    private function getCompanyArray()
+    {
         $companies = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
             ->findAll();
@@ -115,5 +120,4 @@ class Add extends \CommonBundle\Component\Form\Admin\Form {
 
         return $companyArray;
     }
-
 }
