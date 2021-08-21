@@ -49,16 +49,16 @@ class ProfileFeatureMap
     /**
      * @var Feature
      *
-     * @ORM\OneToOne(targetEntity="\BrBundle\Entity\Match\Feature")
-     * @ORM\JoinColumn(name="feature", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="\BrBundle\Entity\Match\Feature")
+     * @ORM\JoinColumn(name="feature", referencedColumnName="id", unique=false)
      */
     private $feature;
 
     /**
      * @var Profile
      *
-     * @ORM\OneToOne(targetEntity="\BrBundle\Entity\Match\Profile")
-     * @ORM\JoinColumn(name="profile", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="\BrBundle\Entity\Match\Profile")
+     * @ORM\JoinColumn(name="profile", referencedColumnName="id", unique=false)
      */
     private $profile;
 
@@ -72,11 +72,13 @@ class ProfileFeatureMap
     /**
      * @param Feature $feature
      * @param Profile $profile
+     * @param int $importance
      */
-    public function __construct(Feature $feature, Profile $profile)
+    public function __construct(Feature $feature, Profile $profile, $importance = 1)
     {
         $this->feature = $feature;
         $this->profile = $profile;
+        $this->importance = $importance;
     }
 
     /**

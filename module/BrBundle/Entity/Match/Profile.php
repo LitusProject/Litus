@@ -20,6 +20,7 @@
 
 namespace BrBundle\Entity\Match;
 
+use BrBundle\Entity\Match\Profile\ProfileFeatureMap;
 use CommonBundle\Entity\User\Person;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -47,6 +48,14 @@ class Profile
      * @ORM\OneToMany(targetEntity="BrBundle\Entity\Match\Profile\ProfileFeatureMap", mappedBy="profile")
      */
     private $features;
+
+    /**
+     * @var array The possible types for a profile
+     */
+    const POSSIBLE_TYPES = array(
+        'student'         => 'Student Profile',
+        'company'        => 'Company Profile',
+    );
 
     /**
      */

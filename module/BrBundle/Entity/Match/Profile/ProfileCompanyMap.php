@@ -29,27 +29,45 @@ use Doctrine\ORM\Mapping as ORM;
  * This is a profile for a company. The company will use this to save company traits,
  * the student will use this to indicate which traits they desire in future employers.
  *
- * @ORM\Entity(repositoryClass="BrBundle\Repository\Profile\CompanyProfile")
- * @ORM\Table(name="br_match_profile_companyprofile")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Match\Profile\ProfileCompanyMap")
+ * @ORM\Table(name="br_match_profile_company_map")
  */
-class CompanyProfile extends Profile
+class ProfileCompanyMap
 {
     /**
-     * @var \BrBundle\Entity\Company The profile for a company
+     * @var integer The map's ID
      *
-     * @ORM\OneToOne(targetEntity="\BrBundle\Entity\Company")
-     * @ORM\JoinColumn(name="company", referencedColumnName="id")
+     * @ORM\Id
+     * @ORM\Column(type="bigint")
+     * @ORM\GeneratedValue
+     */
+    private $id;
+
+    /**
+     * @var Company The company
+     *
+     * @ORM\ManyToOne(targetEntity="\BrBundle\Entity\Company")
+     * @ORM\JoinColumn(name="company", referencedColumnName="id", unique=false)
      */
     private $company;
+
+    /**
+     * @var Profile The profile
+     *
+     * @ORM\ManyToOne(targetEntity="\BrBundle\Entity\Match\Profile")
+     * @ORM\JoinColumn(name="profile", referencedColumnName="id", unique=false)
+     */
+    private $profile;
 
 
     /**
      * @param Company $company
+     * @param Profile $profile
      */
-    public function __construct(Company $company)
+    public function __construct(Company $company, Profile $profile)
     {
-        Profile::__construct();
         $this->company = $company;
+        $this->profile = $profile;
     }
 
     /**
@@ -58,5 +76,21 @@ class CompanyProfile extends Profile
     public function getCompany()
     {
         return $this->company;
+    }
+
+    /**
+     * @return Profile
+     */
+    public function getProfile()
+    {
+        return $this->profile;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUserName()
+    {
+        return $this->company->getName();
     }
 }

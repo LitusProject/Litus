@@ -1,7 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-    {% include 'br/admin/match/feature/partials/navigation.twig' %}
+    {% include 'br/admin/match/profile/partials/navigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
@@ -10,4 +10,34 @@
         {{ forms.renderForm(form) }}
     </div>
     
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#type').change(function(){
+                var type = $('#type').val();
+
+                $('#company_select').closest('.row').hide();
+                $('#student_typeahead').closest('.row').hide();
+                if (type === 'student'){
+                    $('#student_typeahead').closest('.row').show();
+                } else if (type === 'company'){
+                    $('#company_select').closest('.row').show();
+                }
+            }).change();
+            $('#student_typeahead').typeaheadRemote(
+                {
+                    source: '{{ url('common_admin_academic_typeahead', {})}}',
+                    items: 20,
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('[name="student[id]"]').val($(this).data('value').id);
+                } else {
+                    $('[name="student[id]"]').val('');
+                }
+            });
+        });
+    </script>
 {% endblock %}

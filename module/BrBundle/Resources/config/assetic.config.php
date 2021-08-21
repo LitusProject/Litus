@@ -170,6 +170,7 @@ return array(
             '@common_jqueryui_datepicker',
             '@common_jqueryui_css',
             '@common_jqueryui_datepicker_css',
+            '@common_remote_typeahead',
         ),
         'br_admin_match_profile' => array(
             '@common_jquery',
@@ -181,6 +182,7 @@ return array(
             '@common_jqueryui_datepicker',
             '@common_jqueryui_css',
             '@common_jqueryui_datepicker_css',
+            '@common_remote_typeahead',
         ),
         'br_corporate_index' => array(
             '@bootstrap_css',

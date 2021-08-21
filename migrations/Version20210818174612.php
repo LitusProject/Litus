@@ -25,9 +25,9 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
- * Version 20210328225705
+ * Version 20210818174612
  */
-class Version20220328225705 extends \Doctrine\Migrations\AbstractMigration
+class Version20210818174612 extends \Doctrine\Migrations\AbstractMigration
 {
     /**
      * @param  \Doctrine\DBAL\Schema\Schema $schema
@@ -37,17 +37,19 @@ class Version20220328225705 extends \Doctrine\Migrations\AbstractMigration
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('ALTER TABLE nodes_pages ADD forced_language BIGINT DEFAULT NULL');
-        $this->addSql('ALTER TABLE nodes_pages ADD order_number INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE nodes_pages ADD CONSTRAINT FK_16434FA4DA76015 FOREIGN KEY (forced_language) REFERENCES general_languages (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE nodes_pages ADD active BOOLEAN DEFAULT \'true\' NOT NULL');
-        $this->addSql('ALTER TABLE nodes_pages_links ADD forced_language BIGINT DEFAULT NULL');
-        $this->addSql('ALTER TABLE nodes_pages_links ADD order_number INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE nodes_pages_links ADD active BOOLEAN DEFAULT \'true\' NOT NULL');
-        $this->addSql('ALTER TABLE nodes_pages_links ADD CONSTRAINT FK_929EF9F5DA76015 FOREIGN KEY (forced_language) REFERENCES general_languages (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('CREATE INDEX IDX_929EF9F5DA76015 ON nodes_pages_links (forced_language)');
-        $this->addSql('CREATE INDEX IDX_16434FA4DA76015 ON nodes_pages (forced_language)');
-    }
+        $this->addSql('DROP INDEX uniq_4c170ba94fbf094f');
+        $this->addSql('DROP INDEX uniq_4c170ba98157aa0f');
+        $this->addSql('CREATE INDEX IDX_4C170BA94FBF094F ON br_match_profile_company_map (company)');
+        $this->addSql('CREATE INDEX IDX_4C170BA98157AA0F ON br_match_profile_company_map (profile)');
+        $this->addSql('DROP INDEX uniq_a89ca721fd77566');
+        $this->addSql('DROP INDEX uniq_a89ca728157aa0f');
+        $this->addSql('CREATE INDEX IDX_A89CA721FD77566 ON br_match_profile_feature_map (feature)');
+        $this->addSql('CREATE INDEX IDX_A89CA728157AA0F ON br_match_profile_feature_map (profile)');
+        $this->addSql('DROP INDEX uniq_de998a67b723af33');
+        $this->addSql('DROP INDEX uniq_de998a678157aa0f');
+        $this->addSql('CREATE INDEX IDX_DE998A67B723AF33 ON br_match_profile_student_map (student)');
+        $this->addSql('CREATE INDEX IDX_DE998A678157AA0F ON br_match_profile_student_map (profile)');
+        }
 
     /**
      * @param  \Doctrine\DBAL\Schema\Schema $schema

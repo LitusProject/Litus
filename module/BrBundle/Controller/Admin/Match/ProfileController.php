@@ -21,9 +21,14 @@
 namespace BrBundle\Controller\Admin\Match;
 
 use BrBundle\Entity\Match\Feature;
+use BrBundle\Entity\Match\Profile;
+use BrBundle\Entity\Match\Profile\ProfileFeatureMap;
+use BrBundle\Entity\Match\Profile\ProfileStudentMap;
+use BrBundle\Entity\Match\Profile\ProfileCompanyMap;
 use BrBundle\Entity\Product;
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use Doctrine\Common\Collections\ArrayCollection;
 use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
 
@@ -36,12 +41,16 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function manageAction()
     {
-        $features = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Match\Profile')
+        $profileStudents = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Match\Profile\ProfileStudentMap')
             ->findAll();
+        $profileCompanies = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Match\Profile\ProfileCompanyMap')
+            ->findAll();
+        $profiles = array_merge($profileStudents, $profileCompanies);
 
         $paginator = $this->paginator()->createFromArray(
-            $features,
+            $profiles,
             $this->getParam('page')
         );
 
@@ -56,16 +65,43 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
 
     public function addAction()
     {
-        $form = $this->getForm('br_match_profile_add');
+        $features = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Match\Feature')
+            ->findAll();
+
+        $form = $this->getForm('br_match_profile_add', array('features' => $features));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $feature = $form->hydrateObject(new Feature());
+                $profile = $form->hydrateObject();
 
-                $this->getEntityManager()->persist($feature);
+                $this->getEntityManager()->persist($profile);
+
+                if ($formData['type'] == 'student'){
+                    $user = new ProfileStudentMap(
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\User\Person')
+                            ->findOneById($formData['student']['id']), $profile);
+                } elseif ($formData['type'] == 'company'){
+                    $user = new ProfileCompanyMap(
+                        $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Company')
+                        ->findOneById($formData['company']), $profile);
+                }
+                $this->getEntityManager()->persist($user);
+
+                $maps = new ArrayCollection();
+                foreach ($formData['features'] as $feature){
+                    $map = new ProfileFeatureMap($this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Match\Feature')
+                        ->findOneById($feature), $profile);
+                    $maps->add($map);
+                    $this->getEntityManager()->persist($map);
+                }
+                $profile->setFeatures($maps);
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
