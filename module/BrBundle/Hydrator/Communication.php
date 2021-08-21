@@ -56,7 +56,7 @@ class Communication extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (object === null) {
+        if ($object === null) {
             return array();
         }
 
