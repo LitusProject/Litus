@@ -304,9 +304,11 @@ Example content of this section.
         'key'         => 'br.communication_options',
         'value'       => serialize(
             array(
-                'Mailkalender',
-                'Brief',
-                'Telefoon',
+                'Mail',
+                'Facebook',
+                'Instagram',
+                'Bakske',
+                'IrReeel',
             )
         ),
         'description' => 'The options displayed in the communications tab in the br admin',
@@ -325,11 +327,15 @@ Example content of this section.
         'key'         => 'br.communication_mail_body',
         'value' => serialize(
             array(
-                'subject' => 'Dubbele booking voor communication op {{ date }}',
-                'content' => 'Beste,
-Er is een nieuwe communicatie aangemaakt op {{ date }},
-voor {{ companyName }}.
-Nieuw Doelpubliek: {{ audience }}.
+                'subject' => 'Dubbele boeking voor communicatie op {{ date }}',
+                'content' => 'Beste
+Er is een dubbele communicatie boeking aangemaakt op {{ date }} door {{ person }}.
+Communicatie optie: {{ option }}.
+Nieuw Doelpubliek: {{ newAudience }}.
+Nieuw Bedrijf: {{ newCompany }}.
+
+Bestaand Doelpubliek: {{ oldAudience }}.
+Bestaand Bedrijf: {{ oldCompany }}.
 
 -- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
             )

@@ -22,6 +22,7 @@ namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Communication;
 use BrBundle\Entity\Company;
+use CommonBundle\Entity\User\Person;
 use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
 
@@ -73,17 +74,36 @@ class CommunicationController extends \CommonBundle\Component\Controller\ActionC
 
             if ($form->isValid()) {
                 $formData = $form->getData();
-//                echo json_encode($formData);
-//                die(1);
+
                 $date = $formData['date'];
-                $company = $this->getEntityManager()
+
+                $newCompany = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Company')
                     ->findOneById($formData['companyId']);
-//                echo json_encode($company);
-//                die(1);
-                $audience = $formData['audience'];
+                $person = $this->getPersonEntity();
+                $newAudience = $formData['audience'];
 
-                $this->checkDuplicateDate($date, $company, $audience);
+                $optionKey = $formData['option'];
+                $option = unserialize(
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('br.communication_options')
+                )[$optionKey];
+
+                $oldCommunications = $this->getByDate($date);
+                $datesArray = $this->getDatesArray();
+                $dateToCheck = $date;
+
+                if (in_array($dateToCheck, $datesArray) ) {
+                    $optionsArray = $this->getOptionsArray($oldCommunications);
+                    if (in_array($optionKey, $optionsArray)) {
+                        $oldCommunication = $oldCommunications[0];
+                        $oldAudience = $oldCommunication->getAudience();
+                        $oldCompany = $oldCommunication->getCompany();
+
+                        $this->sendMail($dateToCheck, $person, $option, $newAudience, $newCompany, $oldAudience, $oldCompany);
+                    }
+                }
 
                 $this->getEntityManager()->persist(
                     $form->hydrateObject()
@@ -172,7 +192,37 @@ class CommunicationController extends \CommonBundle\Component\Controller\ActionC
         return $datesArray;
     }
 
-    private function sendMail(string $date, Company $company, string $audience)
+    private function getOptionsArray($test): array
+    {
+        $optionsArray = array(
+            -1 => '',
+        );
+
+        foreach ($test as $communication) {
+            $optionsArray[$communication->getId()] = $communication->getOption();
+        }
+
+        return $optionsArray;
+    }
+
+    private function getByDate(string $date)
+    {
+        $allCommunications = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Communication')
+            ->findAll();
+
+        $sameDateArray = array();
+
+        foreach($allCommunications as $comm) {
+            if ($comm->getDate()->format('d/m/Y') === $date) {
+                array_push($sameDateArray, $comm);
+            }
+        }
+
+        return $sameDateArray;
+    }
+
+    private function sendMail(string $date, Person $person, string $option, string $newAudience,Company $newCompany, string $oldAudience, Company $oldCompany)
     {
         $mailAddress = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -194,8 +244,8 @@ class CommunicationController extends \CommonBundle\Component\Controller\ActionC
         $mail->setEncoding('UTF-8')
             ->setBody(
                 str_replace(
-                    array('{{ date }}', '{{ companyName }}', '{{ audience }}'),
-                    array($date, $company->getName(), $audience),
+                    array('{{ date }}', '{{ person }}', '{{ option }}', '{{ newAudience }}', '{{ newCompany }}', '{{ oldAudience }}', '{{ oldCompany }}'),
+                    array($date, $person->getFullName(), $option, $newAudience, $newCompany->getName(), $oldAudience, $oldCompany->getName()),
                     $message
                 )
             )
@@ -212,12 +262,16 @@ class CommunicationController extends \CommonBundle\Component\Controller\ActionC
         $this->getMailTransport()->send($mail);
     }
 
-    private function checkDuplicateDate(string $date, Company $company, string $audience)
+    /**
+     * @return \CommonBundle\Entity\User\Person|null
+     */
+    private function getPersonEntity()
     {
-        $datesArray = $this->getDatesArray();
-        $dateToCheck = $date;
-        if (in_array($dateToCheck, $datesArray)) {
-            $this->sendMail($dateToCheck, $company, $audience);
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            return;
         }
+
+        return $this->getAuthentication()->getPersonObject();
     }
+
 }
