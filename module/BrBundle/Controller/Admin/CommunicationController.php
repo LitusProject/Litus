@@ -94,10 +94,10 @@ class CommunicationController extends \CommonBundle\Component\Controller\ActionC
                 $datesArray = $this->getDatesArray();
                 $dateToCheck = $date;
 
-                if (in_array($dateToCheck, $datesArray) ) {
+                if (in_array($dateToCheck, $datesArray)) {
                     $optionsArray = $this->getOptionsArray($oldCommunications);
                     if (in_array($optionKey, $optionsArray)) {
-                        $oldCommunication = $oldCommunications[0];
+                        $oldCommunication = $this->getByOption($optionKey, $oldCommunications)[0];
                         $oldAudience = $oldCommunication->getAudience();
                         $oldCompany = $oldCommunication->getCompany();
 
@@ -213,7 +213,7 @@ class CommunicationController extends \CommonBundle\Component\Controller\ActionC
 
         $sameDateArray = array();
 
-        foreach($allCommunications as $comm) {
+        foreach ($allCommunications as $comm) {
             if ($comm->getDate()->format('d/m/Y') === $date) {
                 array_push($sameDateArray, $comm);
             }
@@ -222,7 +222,20 @@ class CommunicationController extends \CommonBundle\Component\Controller\ActionC
         return $sameDateArray;
     }
 
-    private function sendMail(string $date, Person $person, string $option, string $newAudience,Company $newCompany, string $oldAudience, Company $oldCompany)
+    private function getByOption(string $option, $array)
+    {
+        $sameOptionsArray = array();
+
+        foreach ($array as $comm) {
+            if ($comm->getOption() === $option) {
+                array_push($sameOptionsArray, $comm);
+            }
+        }
+
+        return $sameOptionsArray;
+    }
+
+    private function sendMail(string $date, Person $person, string $option, string $newAudience, Company $newCompany, string $oldAudience, Company $oldCompany)
     {
         $mailAddress = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -273,5 +286,4 @@ class CommunicationController extends \CommonBundle\Component\Controller\ActionC
 
         return $this->getAuthentication()->getPersonObject();
     }
-
 }
