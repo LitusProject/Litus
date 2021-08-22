@@ -97,7 +97,7 @@ class CommunicationController extends \CommonBundle\Component\Controller\ActionC
                 if (in_array($dateToCheck, $datesArray)) {
                     $optionsArray = $this->getOptionsArray($oldCommunications);
                     if (in_array($optionKey, $optionsArray)) {
-                        $oldCommunication = $oldCommunications[0];
+                        $oldCommunication = $this->getByOption($optionKey, $oldCommunications)[0];
                         $oldAudience = $oldCommunication->getAudience();
                         $oldCompany = $oldCommunication->getCompany();
 
@@ -220,6 +220,19 @@ class CommunicationController extends \CommonBundle\Component\Controller\ActionC
         }
 
         return $sameDateArray;
+    }
+
+    private function getByOption(string $option, $array)
+    {
+        $sameOptionsArray = array();
+
+        foreach ($array as $comm) {
+            if ($comm->getOption() === $option) {
+                array_push($sameOptionsArray, $comm);
+            }
+        }
+
+        return $sameOptionsArray;
     }
 
     private function sendMail(string $date, Person $person, string $option, string $newAudience, Company $newCompany, string $oldAudience, Company $oldCompany)
