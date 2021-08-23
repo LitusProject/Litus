@@ -464,9 +464,16 @@ You can remove any installed cookies from your computer or mobile device at any 
         'value'       => '1',
         'description' => 'Flag to enable/disable the warning to create a new stock period.',
     ),
+
     array(
-        'key'         => 'common.slugExpirationInterval',
-        'value'       => 'P6M',
-        'description' => 'DatePeriod which determines the standard slug expiry date',
-    )
+        'key'   => 'common.kbc_secret_info',
+        'value' => serialize(
+            array(
+                'shaIn' => '',
+                'shaOut' => '',
+                'urlPrefix' => '',
+            )
+        ),
+        'description' => 'The shaIn, shaOut and urlPrefix for KBC',
+    ),
 );

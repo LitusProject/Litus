@@ -43,44 +43,55 @@
             </p>
 
             <div style="text-indent: 0">
-                <div class="page-header">
-                    <h2>{{ translate('Prices') }}</h2>
-                </div>
-                {% if event.getOptions()|length == 0 %}
-                    <dl class="dl-horizontal">
-                        <dt>{{ translate('Member') }}</dt>
-                        <dd>&euro;{{ (event.getPriceMembers()/100)|number_format(2) }}</dd>
-                        {% if not event.isOnlyMembers() %}
-                            <dt>{{ translate('Non Member') }}</dt>
-                            <dd>&euro;{{ (event.getPriceNonMembers()/100)|number_format(2) }}</dd>
+                <div class="container">
+                        <div class="page-header">
+                            <h2>{{ translate('Prices') }}</h2>
+                        </div>
+                        {% if event.getOptions()|length == 0 %}
+                            <dl class="dl-horizontal">
+                                <dt>{{ translate('Member') }}</dt>
+                                <dd>&euro;{{ (event.getPriceMembers()/100)|number_format(2) }}</dd>
+                                {% if not event.isOnlyMembers() %}
+                                    <dt>{{ translate('Non Member') }}</dt>
+                                    <dd>&euro;{{ (event.getPriceNonMembers()/100)|number_format(2) }}</dd>
+                                {% endif %}
+                            </dl>
+                        {% else %}
+                            <dl class="dl-horizontal" style="width: 50%;">
+                                {% for option in event.getOptions() %}
+                                    <div class="row" style="border-bottom: solid black 1px; margin-bottom: 5px;">
+                                        <dt style="width: fit-content;">{{ option.getName() }}&mdash;{{ translate('Member') }}</dt>
+                                        <dd class="pull-right">&euro;{{ (option.getPriceMembers()/100)|number_format(2) }}</dd>
+                                    </div>
+                                    {% if not event.isOnlyMembers() %}
+                                        <div class="row" style="border-bottom: solid black 1px; margin-bottom: 5px;">
+                                            <dt style="width: fit-content">{{ option.getName() }}&mdash;{{ translate('Non Member') }}</dt>
+                                            <dd class="pull-right">&euro;{{ (option.getPriceNonMembers()/100)|number_format(2) }}</dd>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </dl>
                         {% endif %}
-                    </dl>
-                {% else %}
-                    <dl class="dl-horizontal">
-                        {% for option in event.getOptions() %}
-                            <dt>{{ option.getName() }}&mdash;{{ translate('Member') }}</dt>
-                            <dd>&euro;{{ (option.getPriceMembers()/100)|number_format(2) }}</dd>
-                            {% if not event.isOnlyMembers() %}
-                                <dt>{{ option.getName() }}&mdash;{{ translate('Non Member') }}</dt>
-                                <dd>&euro;{{ (option.getPriceNonMembers()/100)|number_format(2) }}</dd>
-                            {% endif %}
-                        {% endfor %}
-                    </dl>
-                {% endif %}
-
-                {% if event.isStillBookable() or (event.isStillBookablePraesidium() and isPraesidium) %}
-                    <div class="page-header">
-                        <h2>{{ translate('Book Tickets') }}</h2>
-                    </div>
-                    {% import 'site/partials/form.twig' as forms %}
-                    {{ forms.renderForm(form) }}
-                {% endif %}
-
-                <div class="page-header">
-                    <h2>{{ translate('Your Tickets') }}</h2>
                 </div>
-                <table class="table table-striped">
-                    <thead>
+                <div>
+                    {% if canBook == true and (event.isStillBookable() or (event.isStillBookablePraesidium() and isPraesidium)) %}
+                        <div class="page-header">
+                            <h2>{{ translate('Book Tickets') }}</h2>
+                        </div>
+                        {% import 'site/partials/form.twig' as forms %}
+                        {{ forms.renderForm(form) }}
+                    {% else %}
+                        <div class="page-header">
+                            <h4>{{ translate('You can not book any more tickets.') }}</h4>
+                        </div>
+                    {% endif %}
+                </div>
+                <div>
+                    <div class="page-header">
+                        <h2>{{ translate('Your Tickets') }}</h2>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
                         <tr>
                             <th width="80px">{{ translate('Status') }}</th>
                             <th width="160px">{{ translate('Option') }}</th>
@@ -89,12 +100,12 @@
                             <th width="150px" class="hidden-xs">{{ translate('Sold Date') }}</th>
                             <th width="90px">{{ translate('Actions') }}</th>
                         </tr>
-                    </thead>
+                        </thead>
 
-                    <tbody>
+                        <tbody>
                         {% for ticket in tickets %}
                             <tr class="item">
-                                <td>{{ translate(ticket.getStatus()) }}</td>
+                                <td><b>{{ translate(ticket.getStatus()) }}</b></td>
                                 <td class="status">{{ ticket.getOption().getName() }} ({% if ticket.isMember() %}{{ translate('Member') }}{% else %}{{ translate('Non Member') }}{% endif %})</td>
                                 <td class="hidden-sm hidden-xs">{{ "%010d"|format(ticket.getNumber()) }}</td>
                                 <td class="hidden-xs">{{ dateLocalized(ticket.getBookDate(), 'd/MM/YYYY HH:mm') }}</td>
@@ -103,11 +114,15 @@
                                     {% if hasAccess('ticket', 'delete') and canRemoveReservations %}
                                         <a href="#" data-id="{{ ticket.getId() }}" class="btn btn-danger btn-sm deleteTicket">{{ translate('Remove') }}</a>
                                     {% endif %}
+                                    {% if hasAccess('ticket', 'pay') and ticket.getStatus() != 'Sold' %}
+                                        <a href="{{ url("ticket_sale_index", {"action": "pay", "id": event.getId()}) }}" data-id="{{ ticket.getId() }}" class="btn btn-success btn-sm payTicket">{{ translate('Pay') }}</a>
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% endfor %}
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

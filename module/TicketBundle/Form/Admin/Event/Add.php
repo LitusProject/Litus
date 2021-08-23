@@ -300,7 +300,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     public function getInputFilterSpecification()
     {
         $specs = parent::getInputFilterSpecification();
-
         if (!$this->data['generate_tickets']) {
             foreach ($specs['number_of_tickets']['validators'] as $key => $validator) {
                 if ($validator['name'] == 'greaterthan') {

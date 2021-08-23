@@ -21,6 +21,7 @@
 namespace TicketBundle\Controller;
 
 use Laminas\View\Model\ViewModel;
+use TicketBundle\Component\Payment\PaymentParam;
 use TicketBundle\Component\Ticket\Ticket as TicketBook;
 use TicketBundle\Entity\Event;
 use TicketBundle\Entity\Ticket;
@@ -48,6 +49,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             ->getRepository('TicketBundle\Entity\Ticket')
             ->findAllByEventAndPerson($event, $person);
 
+        if (count($tickets) >= $event->getLimitPerPerson() || $event->getNumberFree() <= 0){
+            $canBook = false;
+        }
         $form = $this->getForm('ticket_ticket_book', array('event' => $event, 'person' => $person));
 
         if ($this->getRequest()->isPost()) {
@@ -57,7 +61,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 $formData = $form->getData();
 
                 $numbers = array(
-                    'member'     => $formData['number_member'] ?? 0,
+                    'member' => $formData['number_member'] ?? 0,
                     'non_member' => $formData['number_non_member'] ?? 0,
                 );
 
@@ -86,7 +90,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                     'ticket',
                     array(
                         'action' => 'event',
-                        'id'     => $event->getId(),
+                        'id' => $event->getId(),
                     )
                 );
             }
@@ -101,6 +105,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 'form'                  => $form,
                 'canRemoveReservations' => $event->canRemoveReservation($this->getEntityManager()),
                 'isPraesidium'          => $organizationStatus ? $organizationStatus->getStatus() == 'praesidium' : false,
+                'canBook'               => $canBook,
             )
         );
     }
@@ -125,6 +130,76 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         return new ViewModel(
             array(
                 'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+    public function payAction()
+    {
+        $ticket = $this->getTicketEntity();
+        if ($ticket === null) {
+            return $this->notFoundAction();
+        }
+
+        $secretInfo = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.kbc_secret_info');
+
+        $shaIn = $secretInfo['shaIn']; #Hash for params to the paypage
+        $shaOut = $secretInfo['shaOut']; #Hash for params from the paypage to accepturl
+        $urlPrefix = $secretInfo['urlPrefix'];   #Change prod to test for testenvironment
+
+        $url = $this->url()->fromRoute(
+            'ticket',
+            array(
+                'action' => 'event',
+                'id' => $ticket->getEvent()->getId(),
+            )
+        );
+
+        $price = $ticket->getOption()->getPriceNonMembers();
+        if ($ticket->isMember() === true){
+            $price = $ticket->getOption()->getPriceMembers();
+        }
+        $mail = $ticket->getPerson()->getEmail();
+        if ($ticket->getGuestInfo() !== null) {
+            $mail = $ticket->getGuestInfo()->getEmail();
+        }
+
+        // TODO: AcceptUrl, COM, OrderID and shaOut!!
+        $data = [   #These are in alphabetical order as that is required for the hash
+            new PaymentParam("ACCEPTURL", $url), #URL where user is redirected to when payment is accepted, the same parameters that were sent to paypage will be returned, and hashed (sha-512) to check for validity. (https://support-paypage.ecom-psp.com/en/integration-solutions/integrations/hosted-payment-page#e_commerce_integration_guides_transaction_feedback)
+            new PaymentParam("AMOUNT", $price ), #Required, in cents
+            new PaymentParam("CN", $ticket->getFullName() ),
+            new PaymentParam("COM", "700100 2022-001-0001" ),  #Required for beheer: char 0-15 given by beheer, last 4 should increment with each payment
+            new PaymentParam("COMPLUS", $ticket->getOption()->getName() ),  #Comment
+            new PaymentParam("CURRENCY", "EUR" ),  #Required
+            new PaymentParam("EMAIL", $mail ),
+            new PaymentParam("LANGUAGE", "nl_NL" ),
+            new PaymentParam("LOGO", "logo.png" ), #Required
+            new PaymentParam("ORDERID", "20220010001" ), #Required, char 0-6 given by beheer, last 4 should increment with each payment
+            new PaymentParam("PMLISTTYPE", "2" ), #Required
+            new PaymentParam("PSPID", "vtkprod" ), #Required
+            new PaymentParam("TP", "ingenicoResponsivePaymentPageTemplate_index.html" ), #Required
+        ];
+
+        $data_filtered = array_filter($data, "PaymentParam::nonEmptyPaymentParam"); #No empty params in url/hash
+        $paymentUrl = PaymentParam::getUrl($data_filtered, $shaIn, $urlPrefix);
+        $this->redirect()->toUrl($paymentUrl);
+
+        $ticket->setStatus('payed');
+
+        $this->getEntityManager()->flush();
+
+        $this->flashMessenger()->success(
+            'Success',
+            'The ticket was succesfully payed for!'
+        );
+
+        $this->redirect()->toRoute(
+            'ticket',
+            array(
+                'action' => 'event',
+                'id' => $ticket->getEvent()->getId(),
             )
         );
     }
