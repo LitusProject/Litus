@@ -24,7 +24,7 @@ use Doctrine\ORM\Mapping as ORM;
 use TicketBundle\Entity\Event;
 
 /**
- * @ORM\Entity(repositoryClass="TicketBundle\Repository\Option")
+ * @ORM\Entity(repositoryClass="TicketBundle\Repository\Event\Option")
  * @ORM\Table(name="ticket_events_options")
  */
 class Option

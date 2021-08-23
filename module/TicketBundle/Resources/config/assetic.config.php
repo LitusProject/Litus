@@ -63,6 +63,7 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
             '@ticket_css',
+            '@common_remote_typeahead',
         ),
         'ticket' => array(
             '@common_jquery',

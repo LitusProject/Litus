@@ -15,7 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection,
 
 /**
  * @ORM\Entity(repositoryClass="TicketBundle\Repository\Category")
- * @ORM\Table(name="tickets.events_categories")
+ * @ORM\Table(name="tickets_events_categories")
  */
 class Category {
 
@@ -74,7 +74,7 @@ class Category {
     /**
      * @var ArrayCollection The options for this category.
      *
-     * @ORM\OneToMany(targetEntity="TicketBundle\Entity\Option", mappedBy="category", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="TicketBundle\Entity\Event\Option", mappedBy="category", cascade={"remove"})
      */
     private $options;
 

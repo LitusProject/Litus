@@ -73,6 +73,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                                     'options' => array(
                                         'event'  => $this->event,
                                         'person' => $this->person,
+                                        'maximum'=> $this->event->getLimitPerPerson(),
                                     ),
                                 ),
                             ),
@@ -99,6 +100,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                                         'options' => array(
                                             'event'  => $this->event,
                                             'person' => $this->person,
+                                            'maximum'=> $this->event->getLimitPerPerson(),
                                         ),
                                     ),
                                 ),
@@ -126,6 +128,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                                         'options' => array(
                                             'event'  => $this->event,
                                             'person' => $this->person,
+                                            'maximum'=> $this->event->getLimitPerPerson(),
                                         ),
                                     ),
                                 ),
@@ -152,6 +155,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                                             'options' => array(
                                                 'event'  => $this->event,
                                                 'person' => $this->person,
+                                                'maximum'=> $this->event->getLimitPerPerson(),
                                             ),
                                         ),
                                     ),

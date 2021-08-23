@@ -27,7 +27,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="TicketBundle\Repository\OrderEntity")
- * @ORM\Table(name="tickets.orders")
+ * @ORM\Table(name="tickets_orders")
  */
 class OrderEntity
 {

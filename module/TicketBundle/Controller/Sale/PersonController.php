@@ -31,13 +31,14 @@ class PersonController extends \CommonBundle\Component\Controller\ActionControll
 {
     public function typeaheadAction()
     {
+        $academicYear = $this->getCurrentAcademicYear();
         $persons = array_merge(
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                ->findAllByName($this->getParam('string')),
+                ->findAllByName($this->getParam('string'), $academicYear),
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                ->findAllByUniversityIdentification($this->getParam('string')),
+                ->findAllByUniversityIdentification($this->getParam('string'), $academicYear),
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findAllByBarcode($this->getParam('string'))
@@ -55,7 +56,6 @@ class PersonController extends \CommonBundle\Component\Controller\ActionControll
 
             $result[] = $item;
         }
-
         return new ViewModel(
             array(
                 'result' => $result,
