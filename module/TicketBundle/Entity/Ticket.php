@@ -121,6 +121,13 @@ class Ticket
     private $member;
 
     /**
+     * @var integer|null The number of the ticket (unique for an event)
+     *
+     * @ORM\Column(type="string", nullable=true, length=4)
+     */
+    private $invoiceNb;
+
+    /**
      * @param  Event          $event
      * @param  string         $status
      * @param  Person|null    $person
@@ -137,6 +144,8 @@ class Ticket
         }
 
         $this->event = $event;
+        if ($event->isOnlinePayment()) $this->invoiceNb = $event->getNextInvoiceNb();
+        error_log($this->invoiceNb);
         $this->status = $status;
         $this->person = $person;
         $this->guestInfo = $guestInfo;
@@ -364,5 +373,21 @@ class Ticket
         $this->member = $member;
 
         return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getInvoiceNb()
+    {
+        return $this->invoiceNb;
+    }
+
+    /**
+     * @param int|null $invoiceNb
+     */
+    public function setInvoiceNb(int $invoiceNb)
+    {
+        $this->invoiceNb = $invoiceNb;
     }
 }

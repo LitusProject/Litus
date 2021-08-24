@@ -6,6 +6,7 @@
     {% include 'admin/partials/flashMessenger.twig' %}
 
     <div id="controller_action">
+        <p>Next Invoice Nb: {{ event.getNextinvoiceNb() }}</p>
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
     </div>

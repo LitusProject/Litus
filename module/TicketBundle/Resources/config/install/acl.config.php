@@ -36,7 +36,7 @@ return array(
             'typeahead',
         ),
         'ticket' => array(
-            'delete', 'event', 'pay'
+            'delete', 'event', 'pay', 'payed'
         ),
     ),
 );

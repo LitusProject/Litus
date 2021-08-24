@@ -30,7 +30,7 @@ class PaymentParam     #Class to create parameters to send in a payment, hash th
     public static function implodeHash($arr, $shapass) #Just stitching all params behind each other
     {
         $hashstring = "";
-        foreach ($arr as &$value) {
+        foreach ($arr as $value) {
             $hashstring .= $value->name . "=" . $value->value . $shapass;
         }
         unset($value);
@@ -42,8 +42,9 @@ class PaymentParam     #Class to create parameters to send in a payment, hash th
         $hashstring = PaymentParam::implodeHash($arr, $shapass);
         $hash = hash('sha512',$hashstring);
 
+        error_log(gettype($arr));
         $url = $urlPrefix;
-        foreach ($arr as &$value) {
+        foreach ($arr as $value) {
             $url .= $value->name . "=" .$value->value . "&";
         }
         $url .= "SHASIGN=" . $hash;

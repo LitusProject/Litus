@@ -196,6 +196,51 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'     => 'checkbox',
+                'name'     => 'online_payment',
+                'label'    => 'Online Payment',
+                'required' => false,
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'invoice_base_id',
+                'label'    => 'Invoice Base ID',
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'InvoiceBase'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'order_base_id',
+                'label'    => 'Order Base ID',
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'OrderBase'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
                 'type'     => 'hidden',
                 'name'     => 'enable_options_hidden',
                 'required' => false,

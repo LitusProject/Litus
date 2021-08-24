@@ -79,7 +79,7 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
             return new ViewModel();
         }
 
-        if (!$ticket->getEvent()->areTicketsGenerated()) {
+        if ($ticket->getEvent()->areTicketsGenerated()) {
             return new ViewModel();
         }
 

@@ -49,6 +49,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             ->getRepository('TicketBundle\Entity\Ticket')
             ->findAllByEventAndPerson($event, $person);
 
+        $canBook = true;
         if (count($tickets) >= $event->getLimitPerPerson() || $event->getNumberFree() <= 0){
             $canBook = false;
         }
@@ -106,6 +107,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 'canRemoveReservations' => $event->canRemoveReservation($this->getEntityManager()),
                 'isPraesidium'          => $organizationStatus ? $organizationStatus->getStatus() == 'praesidium' : false,
                 'canBook'               => $canBook,
+                'maximumAmount'         => $event->getLimitPerPerson(),
             )
         );
     }
@@ -134,6 +136,81 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         );
     }
 
+    public function payedAction()
+    {
+        $ticket = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Ticket')
+            ->findOneById($this->getParam('id'));
+        if ($ticket === null) {
+            return $this->notFoundAction();
+        }
+
+        $secretInfo = unserialize($this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.kbc_secret_info'));
+
+        $shaOut = $secretInfo['shaOut']; #Hash for params from the paypage to accepturl
+        $urlPrefix = $secretInfo['urlPrefix'];   #Change prod to test for testenvironment
+
+//         https://vtk.be/en/ticket/payed/420/?orderID=20220020052&STATUS=9&PAYID=6132815586&NCERROR=0&SHASIGN=07FE512C732A050409519E866F997C6FA1FAFC0227A8DA7DE5890770695205FF6B8BBCA45EFA9A26135F3B58E953DE132EF920F3C7BB83AC706F8465DF4C65E6
+
+        $url = "$_SERVER[REQUEST_URI]";
+        $allParams = substr($url, strpos($url, "?") + 1);
+        $data = array();
+        $paymentParams = array();
+        $shasign = '';
+
+        $params = explode("&",$allParams );
+        foreach ($params as $param){
+            $keyAndVal = explode("=", $param);
+            if ($keyAndVal[0] !== 'SHASIGN'){
+                $paymentParams[strtoupper($keyAndVal[0])] = $keyAndVal[1];
+            }
+            else {
+                $shasign = $keyAndVal[1];
+            }
+        }
+
+        ksort($paymentParams);
+        foreach (array_keys($paymentParams) as $paymentKey){
+            $data[] = new PaymentParam($paymentKey, $paymentParams[$paymentKey]);
+        }
+        $paymentUrl = PaymentParam::getUrl($data, $shaOut, $urlPrefix);
+        $generatedHash = substr($paymentUrl, strpos($paymentUrl, "SHASIGN=") + strlen("SHASIGN="));
+
+        if (strtoupper($generatedHash) !== $shasign){
+            $this->flashMessenger()->error(
+                'Error',
+                'The transaction could not be verified!'
+            );
+
+            $this->redirect()->toRoute(
+                'ticket',
+                array(
+                    'action' => 'event',
+                    'id' => $ticket->getEvent()->getId(),
+                )
+            );
+        } else {
+            $ticket->setStatus('sold');
+
+            $this->getEntityManager()->flush();
+
+            $this->flashMessenger()->success(
+                'Success',
+                'The ticket was successfully payed for!'
+            );
+
+            $this->redirect()->toRoute(
+                'ticket',
+                array(
+                    'action' => 'event',
+                    'id' => $ticket->getEvent()->getId(),
+                )
+            );
+        }
+        return new ViewModel();
+    }
+
     public function payAction()
     {
         $ticket = $this->getTicketEntity();
@@ -141,67 +218,67 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             return $this->notFoundAction();
         }
 
-        $secretInfo = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.kbc_secret_info');
+        if ($ticket->getEvent()->isOnlinePayment() === false){
+            return $this->notFoundAction();
+        }
+
+        $secretInfo = unserialize($this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.kbc_secret_info'));
 
         $shaIn = $secretInfo['shaIn']; #Hash for params to the paypage
-        $shaOut = $secretInfo['shaOut']; #Hash for params from the paypage to accepturl
         $urlPrefix = $secretInfo['urlPrefix'];   #Change prod to test for testenvironment
 
-        $url = $this->url()->fromRoute(
+        $url = "https://vtk.be" . $this->url()->fromRoute(
             'ticket',
             array(
-                'action' => 'event',
-                'id' => $ticket->getEvent()->getId(),
+                'action' => 'payed',
+                'id' => $ticket->getId(),
             )
         );
 
-        $price = $ticket->getOption()->getPriceNonMembers();
+        $priceHolder = $ticket->getOption()??$ticket->getEvent();
+        $price = $priceHolder->getPriceNonMembers();
         if ($ticket->isMember() === true){
-            $price = $ticket->getOption()->getPriceMembers();
+            $price = $priceHolder->getPriceMembers();
         }
         $mail = $ticket->getPerson()->getEmail();
         if ($ticket->getGuestInfo() !== null) {
             $mail = $ticket->getGuestInfo()->getEmail();
         }
 
-        // TODO: AcceptUrl, COM, OrderID and shaOut!!
+        $invoiceNb = str_pad($ticket->getInvoiceNb(), 4, '0', STR_PAD_LEFT);
+        $com = $ticket->getEvent()->getInvoiceIdBase() . $invoiceNb;
+        $orderId = $ticket->getEvent()->getOrderIdBase() . $invoiceNb;
+
+        $comment = $ticket->getOption()?$ticket->getOption()->getName() : $ticket->isMember()? "member" : "non-member";
+
+        // TODO: AcceptUrl and shaOut!!
         $data = [   #These are in alphabetical order as that is required for the hash
             new PaymentParam("ACCEPTURL", $url), #URL where user is redirected to when payment is accepted, the same parameters that were sent to paypage will be returned, and hashed (sha-512) to check for validity. (https://support-paypage.ecom-psp.com/en/integration-solutions/integrations/hosted-payment-page#e_commerce_integration_guides_transaction_feedback)
             new PaymentParam("AMOUNT", $price ), #Required, in cents
             new PaymentParam("CN", $ticket->getFullName() ),
-            new PaymentParam("COM", "700100 2022-001-0001" ),  #Required for beheer: char 0-15 given by beheer, last 4 should increment with each payment
-            new PaymentParam("COMPLUS", $ticket->getOption()->getName() ),  #Comment
+            new PaymentParam("COM", $com ),  #Required for beheer: char 0-15 given by beheer, last 4 should increment with each payment
+            new PaymentParam("COMPLUS", $comment ),  #Comment
             new PaymentParam("CURRENCY", "EUR" ),  #Required
             new PaymentParam("EMAIL", $mail ),
             new PaymentParam("LANGUAGE", "nl_NL" ),
             new PaymentParam("LOGO", "logo.png" ), #Required
-            new PaymentParam("ORDERID", "20220010001" ), #Required, char 0-6 given by beheer, last 4 should increment with each payment
+            new PaymentParam("ORDERID", $orderId ), #Required, char 0-6 given by beheer, last 4 should increment with each payment
             new PaymentParam("PMLISTTYPE", "2" ), #Required
             new PaymentParam("PSPID", "vtkprod" ), #Required
             new PaymentParam("TP", "ingenicoResponsivePaymentPageTemplate_index.html" ), #Required
         ];
 
-        $data_filtered = array_filter($data, "PaymentParam::nonEmptyPaymentParam"); #No empty params in url/hash
-        $paymentUrl = PaymentParam::getUrl($data_filtered, $shaIn, $urlPrefix);
+        $newData = array();
+        foreach ($data as $param){
+            if (!$param->isEmpty()){
+                array_push($newData, $param);
+            }
+        }
+        $paymentUrl = PaymentParam::getUrl($newData, $shaIn, $urlPrefix);
         $this->redirect()->toUrl($paymentUrl);
 
-        $ticket->setStatus('payed');
-
-        $this->getEntityManager()->flush();
-
-        $this->flashMessenger()->success(
-            'Success',
-            'The ticket was succesfully payed for!'
-        );
-
-        $this->redirect()->toRoute(
-            'ticket',
-            array(
-                'action' => 'event',
-                'id' => $ticket->getEvent()->getId(),
-            )
-        );
+//        return new ViewModel();
     }
 
     /**
