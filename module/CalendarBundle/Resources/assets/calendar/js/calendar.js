@@ -42,88 +42,117 @@
 
         $this.addClass('calendarBrowser')
             .html('').append(
-                $('<div>', {'class': 'col-md-3 calendarColumn', 'id': 'calendarColumn1'}),
-                $('<div>', {'class': 'col-md-3 calendarColumn', 'id': 'calendarColumn2'}),
-                $('<div>', {'class': 'col-md-3 calendarColumn', 'id': 'calendarColumn3'}),
-                $('<div>', {'class': 'col-md-3 calendarColumn', 'id': 'calendarColumn4'}),
+                $('<div>', {'class': 'row calendarRow', 'style': 'margin-left: 0px; margin-right: 0px', 'id': 'calendarRow1'}),
+                $('<div>', {'class': 'row calendarRow', 'style': 'margin-left: 0px; margin-right: 0px', 'id': 'calendarRow2'}),
+                $('<div>', {'class': 'row calendarRow', 'style': 'margin-left: 0px; margin-right: 0px', 'id': 'calendarRow3'}),
+                $('<div>', {'class': 'row calendarRow', 'style': 'margin-left: 0px; margin-right: 0px', 'id': 'calendarRow4'}),
                 $('<div>', {'class': 'col-md-12 hr clearFix'}),
                 $('<ul>', {'class': 'col-md-12 pager'}).append(
                     $('<li>', {'class': 'previous'}).append(
-                        $('<a>', {'href': '#'}).html('&larr; ' + $this.data('calendar').previousText).click(function () {$this.calendar('previous'); return false;})
+                        $('<a class="calendarButton">', {'href': '#'}).html('&larr; ' + $this.data('calendar').previousText).click(function () {$this.calendar('previous'); return false;})
                     ),
                     $('<li>', {'class': 'next'}).append(
-                        $('<a>', {'href': '#'}).html($this.data('calendar').nextText + ' &rarr;').click(function () {$this.calendar('next'); return false;})
+                        $('<a>', {'class': 'calendarButton', 'href': '#'}).html($this.data('calendar').nextText + ' &rarr;').click(function () {$this.calendar('next'); return false;})
                     )
                 )
         );
 
-        _loadColumn($this, 1, month + '-' + year);
+        _loadRow($this, 1, month + '-' + year);
         month = month + 1 > 12 ? 1 : month + 1;
         year = month == 1 ? year + 1 : year;
 
-        _loadColumn($this, 2, month + '-' + year);
+        _loadRow($this, 2, month + '-' + year);
         month = month + 1 > 12 ? 1 : month + 1;
         year = month == 1 ? year + 1 : year;
 
-        _loadColumn($this, 3, month + '-' + year);
+        _loadRow($this, 3, month + '-' + year);
         month = month + 1 > 12 ? 1 : month + 1;
         year = month == 1 ? year + 1 : year;
 
-        _loadColumn($this, 4, month + '-' + year);
+        _loadRow($this, 4, month + '-' + year);
     }
 
-    function _loadColumn($this, columnNum, param) {
-        $('#calendarColumn' + columnNum).html('').spin({
-            color: '#ccc',
+    function _loadRow($this, columnNum, param) {
+        $('#calendarRow' + columnNum).html('').spin({
+            color: '#abcabc',
             length: 0,
             width: 4,
-            lines: 10
+            lines: 10, 
+            position: "relative", 
         }).attr('month', param);
         $.post($this.data('calendar').url + param, function (data) {
-            var column = $this.find('.calendarColumn[month="' + param + '"]');
+            var column = $this.find('.calendarRow[month="' + param + '"]');
 
-            column.html('')
-                .append(
-                    $('<h2>').html(data.month)
-                );
-
+            var nestedEvents = []; 
             $.each(data.days, function (key, value) {
-                column.append(
-                    day = $('<div>', {'class': 'item'}).append(
-                        $('<div>', {'class': 'date'}).append(
-                            $('<div>', {'class': 'month'}).html(value.month),
-                            $('<div>', {'class': 'day'}).html(value.day)
-                        ),
-                        dayItem = $('<div>', {'class': 'dayItem'})
-                    )
+                nestedEvents.push(value.events); 
+            })
+
+            if (nestedEvents.length > 0) {
+
+                column.html('')
+                .append(
+                    $('<div>', {'style': 'height: 30px; width: 1px'}),
+                    $('<h3>', {'style': 'width: 100%'}).html(data.month)
                 );
-                $(value.events).each(function () {
-                    dayItem.append(
-                        $('<div>').append(
-                            $('<a>',
+
+                $.each(data.days, function (key, value) {
+                    $(value.events).each(function () {
+                        column.append(
+                        $('<div>', {'class': 'col-md-4 calendarItemHolder', 'style': 'border: 2px solid white'}).append(
+                            $('<h4>',
                                 {
-                                    'href': this.url,
-                                    'rel': 'popover',
-                                    'data-original-title': this.title,
-                                    'data-content': $('<div>').append(
-                                        $('<small>').append(
-                                            $('<em>').append(
-                                                $('<span>', {'class': 'glyphicon glyphicon-time time'}),
-                                                ' ' + this.fullTime
-                                            )
-                                        ),
-                                        $('<p>').html(this.content)
-                                    ).html()
+                                    'class': 'calendarTitleStretch', 
                                 }
                             ).append(
-                                this.title
+                                this.title + " | " + value.month + " " + value.day
                             ),
-                            $('<br>'),
-                            this.summary
+                            // $('<div>', {'class': 'button', 'style': 'margin-bottom: 20px; margin-top: 20px'}).append($('<a>', {'href': this.url}).append('Lees meer')),
+                            $('<a>', {'class': 'button blue unfilled', 'href': this.url}).append('Lees meer'), 
+                            $('<div>', {'class': 'calendarImagePlaceHolder'}), 
+                            $('<p>', {'style': 'min-height: 63px'}).append(this.summary)
+                            
                         )
                     );
+
+                    // NOTE TO SELF: give calendar row min height in order for spinner to become visible --> look at alternatives for spinner? 
+
+
+                    // dayItem.append(
+                    //     $('<div>').append(
+                    //         $('<a>',
+                    //             {
+                    //                 'href': this.url,
+                    //                 'rel': 'popover',
+                    //                 'data-original-title': this.title,
+                    //                 'data-content': $('<div>').append(
+                    //                     $('<small>').append(
+                    //                         $('<em>').append(
+                    //                             $('<span>', {'class': 'glyphicon glyphicon-time time'}),
+                    //                             ' ' + this.fullTime
+                    //                         )
+                    //                     ),
+                    //                     $('<p>').html(this.content)
+                    //                 ).html()
+                    //             }
+                    //         ).append(
+                    //             this.title
+                    //         ),
+                    //         $('<br>'),
+                    //         this.summary
+                    //     )
+                    // );
                 });
-            });
+                
+            }); 
+        } else {
+            column.html('')
+                .append(
+                    $('<div>', {'style': 'height: 30px; width: 1px'}),
+                    $('<h3>', {'style': 'width: 100%'}).html(data.month)
+                   
+                ); 
+        }; 
 
             $('a[rel=popover]').popover({'trigger': 'hover', 'html': true, 'container': 'body'});
         }, 'json');
@@ -146,14 +175,14 @@
         month = month + 1 > 12 ? 1 : month + 1;
         year = month == 1 ? year + 1 : year;
 
-        $('#calendarColumn1').html($('#calendarColumn2').html())
-            .attr('month', $('#calendarColumn2').attr('month'));
-        $('#calendarColumn2').html($('#calendarColumn3').html())
-            .attr('month', $('#calendarColumn3').attr('month'));
-        $('#calendarColumn3').html($('#calendarColumn4').html())
-            .attr('month', $('#calendarColumn4').attr('month'));
+        $('#calendarRow1').html($('#calendarRow2').html())
+            .attr('month', $('#calendarRow2').attr('month'));
+        $('#calendarRow2').html($('#calendarRow3').html())
+            .attr('month', $('#calendarRow3').attr('month'));
+        $('#calendarRow3').html($('#calendarRow4').html())
+            .attr('month', $('#calendarRow4').attr('month'));
 
-        _loadColumn($this, 4, month + '-' + year);
+        _loadRow($this, 4, month + '-' + year);
     }
 
     function _previous($this) {
@@ -166,13 +195,13 @@
         $this.data('calendar').month = month;
         $this.data('calendar').year = year;
 
-        $('#calendarColumn4').html($('#calendarColumn3').html())
-            .attr('month', $('#calendarColumn3').attr('month'));
-        $('#calendarColumn3').html($('#calendarColumn2').html())
-            .attr('month', $('#calendarColumn2').attr('month'));
-        $('#calendarColumn2').html($('#calendarColumn1').html())
-            .attr('month', $('#calendarColumn1').attr('month'));
+        $('#calendarRow4').html($('#calendarRow3').html())
+            .attr('month', $('#calendarRow3').attr('month'));
+        $('#calendarRow3').html($('#calendarRow2').html())
+            .attr('month', $('#calendarRow2').attr('month'));
+        $('#calendarRow2').html($('#calendarRow1').html())
+            .attr('month', $('#calendarRow1').attr('month'));
 
-        _loadColumn($this, 1, month + '-' + year);
+        _loadRow($this, 1, month + '-' + year);
     }
 }) (jQuery);
