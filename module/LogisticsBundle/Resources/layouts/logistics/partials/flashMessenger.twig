@@ -1,6 +1,6 @@
 {% for flashMessage in flashMessenger %}
     <div class="flashmessage alert alert-{{ flashMessage.getType() }} fade in">
-        <a class="close" data-dismiss="alert">&times;</a>
+        <a class="close" style="margin-left: 10px" data-dismiss="alert">&times;</a>
         {{ translate(flashMessage.getMessage())|raw }}
     </div>
 {% endfor %}

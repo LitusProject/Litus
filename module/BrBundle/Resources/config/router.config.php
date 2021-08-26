@@ -250,22 +250,6 @@ return array(
                 ),
             ),
         ),
-        'br_admin_communication' => array(
-            'type'    => 'Laminas\Router\Http\Segment',
-            'options' => array(
-                'route'       => '/admin/br/communication[/:action[/option/:option][/:id]][/]',
-                'constraints' => array(
-                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'       => '[0-9]*',
-                    // 'option'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'option' => '[0-9]*',
-                ),
-                'defaults' => array(
-                    'controller' => 'br_admin_communication',
-                    'action'     => 'manage',
-                ),
-            ),
-        ),
         'br_career_index' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -568,7 +552,6 @@ return array(
         'br_admin_company_user'  => 'BrBundle\Controller\Admin\Company\UserController',
         'br_admin_company_logo'  => 'BrBundle\Controller\Admin\Company\LogoController',
         'br_admin_cv_entry'      => 'BrBundle\Controller\Admin\CvController',
-        'br_admin_communication' => 'BrBundle\Controller\Admin\CommunicationController',
 
         'br_admin_collaborator' => 'BrBundle\Controller\Admin\CollaboratorController',
         'br_admin_contract'     => 'BrBundle\Controller\Admin\ContractController',

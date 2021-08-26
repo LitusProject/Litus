@@ -53,8 +53,11 @@ return array(
         'common_admin_visit' => array(
             'manage', 'search',
         ),
+        'common_admin_faq' => array(
+            'add', 'delete', 'edit', 'manage', 'search', 'typeahead'
+        ),
         'common_account' => array(
-            'activate', 'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'uploadProfileImage',
+            'activate', 'edit', 'index', 'profile', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'uploadProfileImage',
         ),
         'common_session' => array(
             'manage', 'expire',

@@ -27,7 +27,16 @@ use BrBundle\Entity\Event as EventEntity;
  */
 class Event extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $stdKeys = array('title', 'description');
+    private static $stdKeys = array('title',
+        'description_for_students',
+        'description_for_companies',
+        'nb_companies',
+        'nb_students',
+        'visible_for_companies',
+        'visible_for_students',
+        'location',
+        'audience'
+    );
 
     protected function doExtract($object = null)
     {

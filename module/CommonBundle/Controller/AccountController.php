@@ -42,31 +42,95 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             return new ViewModel();
         }
 
+        // Cudi (All assigned bookings)
+        $allBookings = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
+            ->findAllOpenByPerson($academic);
+        $bookings = array();
+        $futureBookings = array();
+        foreach ($allBookings as $booking){
+            if ($booking->getStatus() == 'assigned') array_push($bookings, $booking);
+            else array_push($futureBookings, $booking);
+        }
+
+        $total = 0;
+        foreach ($bookings as $booking) {
+            $total += $booking->getArticle()->getSellPrice() * $booking->getNumber();
+        }
+
+        // Shifts
+        $myShifts = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findAllActiveByPerson($academic);
+
+        // Timeslots
+        $mySlots = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\RegistrationShift')
+            ->findAllActiveByPerson($academic);
+
+        // Reservations
+        $reservations = $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\Reservation')
+            ->getAllCurrentReservationsByPerson($academic);
+
+        return new ViewModel(
+            array(
+                'academicYear' => $this->getCurrentAcademicYear(),
+                'entityManager'    => $this->getEntityManager(),
+                'organizationYear' => $this->getCurrentAcademicYear(true),
+                'bookings' => $bookings,
+                'futureBookings' => $futureBookings,
+                'total'    => $total,
+                'shifts'   => $myShifts,
+                'timeslots'   => $mySlots,
+                'reservations' => $reservations,
+                'shopName'     => $this->getShopName(),
+            )
+        );
+    }
+
+    public function profileAction()
+    {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
+            return new ViewModel();
+        }
+
         $metaData = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
             ->findOneByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
+        // Retrieve the studies and its subjects
         $studies = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
             ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
-        $mappings = array();
-        foreach ($studies as $enrollment) {
-            $mappings[] = array(
-                'enrollment' => $enrollment,
-                'subjects' => $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
-                    ->findAllByStudy($enrollment->getStudy()),
-            );
+        $allStudies = array();
+        $allSubjects = array();
+        $subjectIds = array();  // To avoid duplicates
+        foreach ($studies as $study) {
+            $subjects = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
+                ->findAllByStudy($study->getStudy());
+            $allStudies[] = $study->getStudy();
+            foreach ($subjects as $subject) {
+                if (!in_array($subject->getSubject()->getId(), $subjectIds)){
+                    $subjectIds[] = $subject->getSubject()->getId();
+                    $allSubjects[] = $subject->getSubject();
+                }
+            }
         }
 
+        // Retrieve the other subjects
         $subjects = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Subject')
             ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
-        $subjectIds = array();
-        foreach ($subjects as $enrollment) {
-            $subjectIds[] = $enrollment->getSubject()->getId();
+        foreach ($subjects as $subject) {
+            if (!in_array($subject->getSubject()->getId(), $subjectIds)){
+                $subjectIds[] = $subject->getSubject()->getId();
+                $allSubjects[] = $subject->getSubject();
+            }
         }
 
         $profileForm = $this->getForm('common_account_profile');
@@ -84,15 +148,14 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('enable_organization_signature');
 
-
         return new ViewModel(
             array(
                 'academicYear' => $this->getCurrentAcademicYear(),
                 'organizationYear' => $this->getCurrentAcademicYear(true),
                 'signatureEnabled' => $signatureEnabled,
                 'metaData' => $metaData,
-                'studies' => $mappings,
-                'subjects' => $subjectIds,
+                'studies' => $allStudies,
+                'subjects' => $allSubjects,
                 'profilePath' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
@@ -578,5 +641,15 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 $this->getParam('return')
             );
         }
+    }
+
+    /**
+     * @return string
+     */
+    private function getShopName()
+    {
+        return $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shop.name');
     }
 }

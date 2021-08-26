@@ -39,10 +39,65 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.public_logo_path');
 
+        $pages = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Page')
+            ->findAllActiveQuery($this->getCurrentAcademicYear())->getResult();
+
+        $smallComps = array();
+        $largeComps = array();
+        foreach ($pages as $page) {
+            $item = (object) array();
+            $company = $page->getCompany();
+
+            $vacancies = count($this->getEntityManager()->getRepository('BrBundle\Entity\Company\Job')
+                ->findAllActiveByCompanyAndTypeQuery($company, 'vacancy')->getResult());
+            $internships = count($this->getEntityManager()->getRepository('BrBundle\Entity\Company\Job')
+                ->findAllActiveByCompanyAndTypeQuery($company, 'internship')->getResult());
+            $studentJobs = count($this->getEntityManager()->getRepository('BrBundle\Entity\Company\Job')
+                ->findAllActiveByCompanyAndTypeQuery($company, 'student job')->getResult());
+
+            $item->name = $company->getName();
+            $item->logo = $company->getLogo();
+            $item->slug = $company->getSlug();
+            $item->vacancies = $vacancies;
+            $item->internships = $internships;
+            $item->studentJobs = $studentJobs;
+            if ($page->getCompany()->isLarge() == false) {
+                $item->large = 0;
+                $smallComps[] = $item;
+            } else {
+                $item->large = 1;
+                $item->description = $page->getShortDescription();
+                $largeComps[] = $item;
+            }
+        }
+        shuffle($smallComps);
+        shuffle($largeComps);
+        $allComps = array();
+
+        while (count($smallComps) > 0 || count($largeComps) >0){
+            if (count($largeComps) > 0) {
+                $comp = array_pop($largeComps);
+                array_push($allComps, $comp);
+            }
+            if (count($smallComps) >= 4) {
+                $comp = array_splice($smallComps,0,4);
+                array_push($allComps, $comp);
+            } else {
+                array_push($allComps, $smallComps);
+                $smallComps = array();
+            }
+        }
+
+        error_log(print_r($allComps[0],true));
+
         return new ViewModel(
             array(
                 'logoPath'         => $logoPath,
-                'possible_sectors' => array('all' => 'All') + Company::POSSIBLE_SECTORS,
+                'smallCompanies'   => $smallComps,
+                'largeCompanies'   => $largeComps,
+                'allCompanies'     => $allComps
+//                'possible_sectors' => array('all' => 'All') + Company::POSSIBLE_SECTORS,
             )
         );
     }
@@ -53,6 +108,8 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
         if ($page === null) {
             return new ViewModel();
         }
+
+        $language = $this->getLanguage();
 
         $logoPath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -77,6 +134,7 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
                 'events'      => $events,
                 'internships' => $internships,
                 'vacancies'   => $vacancies,
+                'language'    => $language,
             )
         );
     }

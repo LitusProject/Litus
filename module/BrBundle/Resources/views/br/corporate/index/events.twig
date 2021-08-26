@@ -1,0 +1,73 @@
+{% extends 'corporate/base.twig' %}
+
+{% block content %}
+
+   <div class="container">
+      
+      <div style="height: 100px"></div>
+
+      <h1>{{ translate("Events for companies") }}</h1>
+      <div style="height: 30px"></div>
+
+      {% for event in events %}
+         <div class="br-eventHolder" >
+            <div class="br-eventTextHolder">
+               <h3 class="br-eventTitle">{{ event.getTitle() }}</h3>
+               <div style="height: 15px"></div>
+               <p style="text-align: justify">{{ event.getDescriptionForCompanies() }}</p>
+               <div style="height: 20px"></div>
+               <div class="br-eventInfoHolder">
+                  {% if event.getStartDate().format('Y-m-d') == event.getEndDate().format('Y-m-d') %}
+                     <div style="margin-right: 20px">
+                        <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('Date') }}</h6>
+                        <p class="br-eventInfoTitle">{{ event.getStartDate().format('Y-m-d') }}</p>
+                     </div>
+                     <div style="margin-right: 20px">
+                        <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate("Time") }}</h6>
+                        <p class="br-eventInfoTitle">
+                           {{ event.getStartDate().format('H:i') }}-{{ event.getEndDate().format('H:i') }}</p>
+                     </div>
+                  {% else %}
+                     <div style="margin-right: 20px">
+                        <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('Start Date') }}</h6>
+                        <p class="br-eventInfoTitle">{{ event.getStartDate().format('Y-m-d H:i') }}</p>
+                     </div>
+                     <div style="margin-right: 20px">
+                        <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('End Date') }}</h6>
+                        <p class="br-eventInfoTitle">{{ event.getEndDate().format('Y-m-d H:i') }}</p>
+                     </div>
+                  {% endif %}
+                  {% if event.getLocation() %}
+                  <div style="margin-right: 20px">
+                     <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('Location') }}</h6>
+                     <p class="br-eventInfoTitle">{{ event.getLocation() }}</p>
+                  </div>
+                  {% endif %}
+                  {% if event.getNbStudents() %}
+                  <div style="margin-right: 20px">
+                     <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('#Students') }}</h6>
+                     <p class="br-eventInfoTitle">{{ event.getNbStudents() }}</p>
+                  </div>
+                  {% endif %}
+                  {% if event.getNbCompanies() %}                  <div style="margin-right: 20px">
+                     <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('#Companies') }}</h6>
+                     <p class="br-eventInfoTitle">{{ event.getNbCompanies() }}</p>
+                  </div>
+                  {% endif %}
+                  {% if event.getAudience() %}
+                  <div style="margin-right: 20px">
+                     <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('Audience') }}</h6>
+                     <p class="br-eventInfoTitle">{{ event.getAudience() }}</p>
+                  </div>
+                  {% endif %}
+               </div>
+            </div>
+            <div class="br-eventImageHolder">
+            </div>
+         </div>
+      {% endfor %}
+
+      <div style="height: 100px"></div>
+
+   </div>
+{% endblock %}

@@ -85,4 +85,36 @@ class Event extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->setParameter('end', $end)
             ->getQuery();
     }
+
+    public function findAllActiveCareerQuery()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('r')
+            ->from('BrBundle\Entity\Event', 'r')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gte('r.endDate', ':start'),
+                    $query->expr()->eq('r.visibleForStudents', 'true')
+                )
+            )
+            ->setParameter('start', new DateTime())
+            ->orderBy('r.startDate')
+            ->getQuery();
+    }
+
+    public function findAllActiveCorporateQuery()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('r')
+            ->from('BrBundle\Entity\Event', 'r')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gte('r.endDate', ':start'),
+                    $query->expr()->eq('r.visibleForCompanies', 'true')
+                )
+            )
+            ->setParameter('start', new DateTime())
+            ->orderBy('r.startDate')
+            ->getQuery();
+    }
 }

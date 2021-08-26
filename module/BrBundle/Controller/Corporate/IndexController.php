@@ -31,6 +31,57 @@ class IndexController extends \BrBundle\Component\Controller\CorporateController
 {
     public function indexAction()
     {
-        return new ViewModel();
+
+        $academicYear = $this->getCurrentAcademicYear(true);
+        $units = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+            ->findAllActiveQuery()->getResult();
+
+        foreach ($units as $unit){
+            if ($unit->getName() === 'Bedrijvenrelaties'){
+                $br = $unit;
+            }
+        }
+
+        $members = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
+            ->findAllByUnitAndAcademicYear($br, $academicYear);
+
+        $texts = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.corporate_page_text')
+        )[$this->getLanguage()->getAbbrev()];
+
+        return new ViewModel(
+            array(
+                'members'         => $members,
+                'profilePath'         => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.profile_path'),
+                'texts'    => $texts,
+            )
+        );
+    }
+
+    public function loginAction()
+    {
+        return new ViewModel(
+            array(
+            )
+        );
+    }
+
+    public function eventsAction()
+    {
+        $events = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Event')
+            ->findAllActiveQuery()->getResult();
+
+        return new ViewModel(
+            array(
+                'events'         => $events,
+            )
+        );
     }
 }

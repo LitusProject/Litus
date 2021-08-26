@@ -179,6 +179,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         foreach ($allEventCompanyMaps as $map) {
             $comp = $map->getCompany()->getId();
             if (!in_array($comp, $comps)) {
+                array_push($comps, $comp);
                 array_push($maps, $map);
             }
         }

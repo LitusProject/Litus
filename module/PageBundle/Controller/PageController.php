@@ -45,10 +45,17 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             $submenu = $this->buildSubmenu($parent);
         }
 
+        $enabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.enable_faq');
+
+        $faqs = $enabled ? $this->getMaps($page) : null;
+
         return new ViewModel(
             array(
                 'page'    => $page,
                 'submenu' => $submenu,
+                'faqs'    => $faqs,
             )
         );
     }
@@ -82,6 +89,31 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                 'data' => $data,
             )
         );
+    }
+
+    /**
+     * Returns all the faqs for this page, in an array (id, title, content) in the correct language.
+     * @param Page $page
+     */
+    private function getMaps(Page $page)
+    {
+
+        $maps = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Node\FAQ\FAQPageMap')
+            ->findAllByPageQuery($page)->getResult();
+
+        $allMaps = array();
+        $lang = $this->getLanguage();
+
+        foreach ($maps as $map) {
+            $allMaps[] = array(
+                'id'        => $map->getId(),
+                'title'     => $map->getFAQ()->getTitle($lang),
+                'content'   => $map->getFAQ()->getContent($lang),
+            );
+        }
+
+        return $allMaps;
     }
 
     /**

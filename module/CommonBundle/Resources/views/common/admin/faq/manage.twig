@@ -1,0 +1,173 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'common/admin/faq/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+    <div class="flashmessage success_message faq_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The FAQ was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message faq_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the FAQ.</p>
+        </div>
+    </div>
+
+    <div id="controller_action">
+        <div id="faq_search" style="display:none;">
+            <div style="padding:4px;text-align:right">
+                Search:
+                <select id="searchField">
+                    <option value="title">Name</option>
+                </select>
+                is
+                <input type="text" id="searchString" size="30" />
+            </div>
+
+            <table class="manage">
+                <tr>
+                    <th>Name</th>
+                    <th>Title</th>
+                    <th width="120px">Author</th>
+                    <th width="70px">Actions</th>
+                </tr>
+            </table>
+        </div>
+
+        <div id="default_page" class="full-width">
+            <table class="manage">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Title</th>
+                        <th width="120px">Author</th>
+                        <th width="70px">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for faq in paginator %}
+                        <tr class="item item-{{ faq.getId() }}">
+                            <td>{{ faq.getName() }}</td>
+                            <td>{{ faq.getTranslation().getTitle() }}</td>
+                            <td>{{ faq.getCreationPerson().getFullName() }}</td>
+                            <td class="actions">
+                                {% if faq.canBeEditedBy(authenticatedPerson) %}
+                                    {% if hasAccess('common_admin_faq', 'edit') %}
+                                        <a href="{{ url('common_admin_faq', {"action": "edit", "id": faq.getId()}) }}" class="edit">Edit</a>
+                                    {% endif %}
+                                    {% if hasAccess('common_admin_faq', 'delete') %}
+                                        <a href="#" data-id="{{ faq.getId() }}" data-title="{{ faq.getName(language) }}" class="delete">Delete</a>
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+    </div>
+
+    <div class="modal fade" id="removeFAQ" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete FAQ
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following FAQ: <b class="title"></b>?
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .delete').click(openRemoveModal);
+
+            {% if hasAccess('common_admin_faq', 'search') %}
+            $.searchDatabase({
+                defaultPage: $('#default_page'),
+                searchDiv: $('#faq_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                searchPage: '{{ url('common_admin_faq', {'action': 'manage'}) }}',
+                url: '{{ url('common_admin_faq', {'action': 'search'}) }}',
+                display: function (data) {
+                    $('#faq_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#faq_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
+                        row.append('<td>' + this.name + '</td>')
+                            .append('<td>' + this.author + '</td>')
+                            .append(
+                                actions = $('<td>', {'class': 'actions'})
+                            );
+
+                            {% if hasAccess('common_admin_faq', 'edit') %}
+                                actions.append('<a href="{{ url('common_admin_faq', {'action': 'edit'}) }}' + this.id + '" class="edit">Edit</a>');
+                            {% endif %}
+
+                            {% if hasAccess('common_admin_faq', 'delete') %}
+                                actions.append('<a href="#" data-title="' + this.name + '" data-id="' + this.id + '" class="delete">Delete</a>');
+                            {% endif %}
+                    });
+                    $('.item .delete').unbind('click').click(openRemoveModal);
+                    $('#faq_search table').change();
+                },
+                clear: function () {
+                    $('#faq_search table').find('tr.item').remove();
+                }
+            });
+            {% endif %}
+        });
+
+        function openRemoveModal(e) {
+            var $this = $(this);
+            e.preventDefault();
+            var removeFAQ = $('#removeFAQ');
+            removeFAQ.find('.title').html($(this).data('title'));
+            removeFAQ.find('.cancel').one('click', function () {
+                removeFAQ.modal('hide');
+            });
+            var id = $this.data('id');
+            removeFAQ.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('common_admin_faq', {"action": "delete"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.faq_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeFAQ.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeFAQ.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.faq_removed_error').removeClass('hide');
+            $('#removeFAQ').modal('hide');
+        }
+    </script>
+{% endblock %}
