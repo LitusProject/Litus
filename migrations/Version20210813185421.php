@@ -25,9 +25,9 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
- * Version Version20210416202801
+ * Version 20210813185421
  */
-class Version20210416202801 extends \Doctrine\Migrations\AbstractMigration
+class Version20210813185421 extends \Doctrine\Migrations\AbstractMigration
 {
     /**
      * @param  \Doctrine\DBAL\Schema\Schema $schema
@@ -37,7 +37,14 @@ class Version20210416202801 extends \Doctrine\Migrations\AbstractMigration
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('ALTER TABLE shift_registration_shifts ADD members_visible BOOLEAN DEFAULT \'false\' NOT NULL');
+        $this->addSql('ALTER TABLE br_events ADD description_for_companies TEXT DEFAULT NULL');
+        $this->addSql('ALTER TABLE br_events ADD nb_companies INT');
+        $this->addSql('ALTER TABLE br_events ADD nb_students INT');
+        $this->addSql('ALTER TABLE br_events ADD visible_for_companies BOOLEAN');
+        $this->addSql('ALTER TABLE br_events ADD visible_for_students BOOLEAN');
+        $this->addSql('ALTER TABLE br_events ADD location TEXT');
+        $this->addSql('ALTER TABLE br_events ADD audience TEXT');
+        $this->addSql('ALTER TABLE br_events RENAME COLUMN description TO description_for_students');
     }
 
     /**

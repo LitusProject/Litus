@@ -25,9 +25,9 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
- * Version Version20210416202801
+ * Version 20201103165524
  */
-class Version20210416202801 extends \Doctrine\Migrations\AbstractMigration
+class Version20201103165524 extends \Doctrine\Migrations\AbstractMigration
 {
     /**
      * @param  \Doctrine\DBAL\Schema\Schema $schema
