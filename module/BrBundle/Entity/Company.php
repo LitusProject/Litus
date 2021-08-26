@@ -164,6 +164,13 @@ class Company
     private $page;
 
     /**
+     * @var boolean Whether this is a large company (on the company page)
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $large;
+
+    /**
      * @var array The possible masters for students
      */
     const POSSIBLE_MASTERS = array(
@@ -541,6 +548,24 @@ class Company
     {
         $this->active = false;
 
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isLarge()
+    {
+        return $this->large;
+    }
+
+    /**
+     * @param boolean $large
+     * @return self
+     */
+    public function setLarge($large)
+    {
+        $this->large = $large;
         return $this;
     }
 

@@ -59,11 +59,23 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(
             array(
                 'type'       => 'textarea',
-                'name'       => 'description',
-                'label'      => 'Description',
-                'attributes' => array(
-                    'id' => 'description',
+                'name'       => 'description_for_students',
+                'label'      => 'Description For Students',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
                 ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'textarea',
+                'name'       => 'description_for_companies',
+                'label'      => 'Description For Companies',
                 'options' => array(
                     'input' => array(
                         'filters' => array(
@@ -114,6 +126,90 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         ),
                     ),
                 ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'nb_companies',
+                'label'    => 'Amount of Companies',
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'nb_students',
+                'label'    => 'Amount of Students',
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'textarea',
+                'name'       => 'audience',
+                'label'      => 'Audience',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'textarea',
+                'name'       => 'location',
+                'label'      => 'Location',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'checkbox',
+                'name'     => 'visible_for_companies',
+                'label'    => 'Visible for Companies',
+                'required' => true,
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'checkbox',
+                'name'     => 'visible_for_students',
+                'label'    => 'Visible for Students',
+                'required' => true,
             )
         );
 

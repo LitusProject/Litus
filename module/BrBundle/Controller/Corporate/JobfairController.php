@@ -31,6 +31,11 @@ class JobfairController extends \BrBundle\Component\Controller\CorporateControll
 {
     public function overviewAction()
     {
+        $person = $this->getCorporateEntity();
+        if ($person === null) {
+            return new ViewModel();
+        }
+
         return new ViewModel(
             array(
                 'jobfairInfo' => $this->getEntityManager()

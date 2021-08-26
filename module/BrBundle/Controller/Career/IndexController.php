@@ -31,13 +31,35 @@ class IndexController extends \BrBundle\Component\Controller\CareerController
 {
     public function indexAction()
     {
-        $this->redirect()->toRoute(
-            'br_career_company',
+        $academicYear = $this->getCurrentAcademicYear(true);
+        $units = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+            ->findAllActiveQuery()->getResult();
+
+        foreach ($units as $unit){
+            if ($unit->getName() === 'Bedrijvenrelaties'){
+                $br = $unit;
+            }
+        }
+
+        $members = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
+            ->findAllByUnitAndAcademicYear($br, $academicYear);
+
+        $texts = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.career_page_text')
+        )[$this->getLanguage()->getAbbrev()];
+
+        return new ViewModel(
             array(
-                'action' => 'overview',
+                'members'         => $members,
+                'profilePath'         => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.profile_path'),
+                'texts'  => $texts,
             )
         );
-
-        return new ViewModel();
     }
 }

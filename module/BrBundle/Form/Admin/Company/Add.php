@@ -149,6 +149,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'        => 'checkbox',
+                'name'        => 'large',
+                'label'       => 'company has a Large spot in the company overview',
+            )
+        );
+
+        $this->add(
+            array(
                 'type'     => 'common_address_add',
                 'name'     => 'address',
                 'label'    => 'Address',
@@ -245,13 +253,32 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         ),
                     ),
                     array(
-                        'type'        => 'checkbox',
-                        'name'        => 'atEvent',
-                        'label'       => 'company is at internshipfair',
+                        'type'       => 'textarea',
+                        'name'       => 'shortDescription',
+                        'label'      => 'Short Description',
+                        'attributes' => array(
+                            'id' => 'shortDescription',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'FieldLength',
+                                        'options' => array(
+                                            'max_length'      => 350,
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
                     ),
                 ),
             )
         );
+
 
         $this->addSubmit('Add', 'company_add');
 

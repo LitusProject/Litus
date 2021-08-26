@@ -301,45 +301,85 @@ Example content of this section.
         'description' => '',
     ),
     array(
-        'key'         => 'br.communication_options',
+        'key'         => 'br.career_page_text',
         'value'       => serialize(
             array(
-                'Mail',
-                'Facebook',
-                'Instagram',
-                'Bakske',
-                'IrReeel',
+                'nl' => array(
+                    'br_career_student_launch' => array(
+                        'main' => 'VTK als accelerator van jouw carrière',
+                        'sub'  => 'Ontdek wat wij voor jou als toekomstig ingenieur betekenen',
+                    ),
+                    'br_career_student_container' => array(
+                        'main' => 'VTK maakt voor jou het vershil',
+                        'sub'  => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
+                    ),
+                    'br_career_student_search' => array(
+                        'search' => 'Op zoek naar een stage, job of studentenjob?',
+                    ),
+                ),
+                'en' => array(
+                    'br_career_student_launch' => array(
+                        'main' => 'VTK as accelerator for your future',
+                        'sub'  => 'Discover what we can do for your future',
+                    ),
+                    'br_career_student_container' => array(
+                        'main' => 'VTK makes the difference',
+                        'sub'  => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
+                    ),
+                    'br_career_student_search' => array(
+                        'search' => 'Searching for an internship, job or student job?',
+                    ),
+                ),
             )
         ),
-        'description' => 'The options displayed in the communications tab in the br admin',
+        'description' => 'The texts for the career page',
     ),
     array(
-        'key'         => 'br.communication_mail',
-        'value'       => 'stan.cardinaels@vtk.be',
-        'description' => 'The mail address to which notifications should be send when a duplicate communication date is chosen.',
-    ),
-    array(
-        'key'         => 'br.communication_mail_name',
-        'value'       => 'VTK Bedrijvenrelaties',
-        'description' => '',
-    ),
-    array(
-        'key'         => 'br.communication_mail_body',
-        'value' => serialize(
+        'key'         => 'br.corporate_page_text',
+        'value'       => serialize(
             array(
-                'subject' => 'Dubbele boeking voor communicatie op {{ date }}',
-                'content' => 'Beste
-Er is een dubbele communicatie boeking aangemaakt op {{ date }} door {{ person }}.
-Communicatie optie: {{ option }}.
-Nieuw Doelpubliek: {{ newAudience }}.
-Nieuw Bedrijf: {{ newCompany }}.
-
-Bestaand Doelpubliek: {{ oldAudience }}.
-Bestaand Bedrijf: {{ oldCompany }}.
-
--- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
-            )
+                'nl' => array(
+                   'br_corporate_launch' => array(
+                       'main' => 'VTK als partner voor jouw bedrijf',
+                       'sub'  => 'Kom te weten wat wij voor jou kunnen betekenen',
+                   ),
+                    'br_corporate_intro' => array(
+                        'main' => 'VTK maakt voor jou het vershil',
+                        'sub'  => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
+                    ),
+                    'br_corporate_events' => array(
+                        'main' => 'Zien we jou op één van onze volgende evenementen?',
+                        'sub'  => 'Evenementen bekijken',
+                    ),
+                    'br_corporate_services' => array(
+                        'title' => 'Hoe wij u bedrijf mee boosten',
+                        'one'   => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
+                        'two'   => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
+                        'three' => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
+                    ),
+                ),
+                'en' => array(
+                    'br_corporate_launch' => array(
+                        'main' => 'VTK as partner for your company',
+                        'sub'  => 'Get to know what we can do for you',
+                    ),
+                    'br_corporate_intro' => array(
+                        'main' => 'VTK makes the difference for you',
+                        'sub'  => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
+                    ),
+                    'br_corporate_events' => array(
+                        'main' => 'Do we see you on one of our next events?',
+                        'sub'  => 'See events',
+                    ),
+                    'br_corporate_services' => array(
+                        'title' => 'How we help to boost your company',
+                        'one'   => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
+                        'two'   => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
+                        'three' => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
+                    ),
+                ),
+            ),
         ),
-        'description' => 'The mail sent when a duplicate date is chosen for a communication'
+        'description' => 'The texts for the corporate page'
     ),
 );

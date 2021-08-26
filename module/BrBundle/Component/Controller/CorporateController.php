@@ -70,7 +70,7 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
     }
 
     /**
-     * @return Corporate
+     * @return Corporate|void
      */
     protected function getCorporateEntity()
     {
@@ -82,7 +82,12 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
             }
         }
 
-        throw new HasNoAccessException('You do not have sufficient permissions to access this resource');
+        $this->redirect()->toRoute(
+                    'br_corporate_index',
+                    array(
+                        'action' => 'index',
+                    )
+        );
     }
 
     /**

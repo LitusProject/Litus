@@ -1,41 +1,35 @@
 <ul class="nav nav-tabs">
     {% if hasAccess('common_account', 'index') %}
-        <li {% if getParam('action') == 'index' %}class="active"{% endif %}>
-            <a href="{{ url('common_account', {'action': 'index'}) }}">
-                {{ translate('Overview') }}
+        <li>
+            <a style="margin-left: 10px" class="{% if getParam('action') == 'index' %} activeTab {% else %} tab {% endif %}" href="{{ url('common_account', {'action': 'index'}) }}">
+                {{ translate('My VTK') }}
             </a>
         </li>
     {% endif %}
 
-    {% if hasAccess('common_account', 'edit') %}
-        <li {% if getParam('action') == 'edit' %}class="active"{% endif %}>
-            <a href="{{ url('common_account', {'action': 'edit'}) }}">
-                {{ translate('Edit') }}
+    {# {% if hasAccess('cudi_booking', 'view') %}
+        <li {% if getParam('controller') == 'cudi' %}class="active"{% endif %}>
+            <a href="{{ url('cudi_booking', {'action': 'view'}) }}">
+                {{ translate('Cudi') }}
             </a>
         </li>
     {% endif %}
 
-    {% if hasAccess('common_account', 'studies') %}
-        <li {% if getParam('action') == 'studies' %}class="active"{% endif %}>
-            <a href="{{ url('common_account', {'action': 'studies'}) }}">
-                {{ translate('Studies') }}
+    {% if hasAccess('shift', 'index') %}
+        <li {% if getParam('controller') == 'shift' %}class="active"{% endif %}>
+            <a href="{{ url('shift', {'action': 'index'}) }}">
+                {{ translate('Shifts') }}
+            </a>
+        </li>
+    {% endif %} #}
+
+
+    {% if hasAccess('common_account', 'profile') %}
+        <li>
+            <a class="{% if getParam('action') == 'profile' %} activeTab {% else %} tab {% endif %}" href="{{ url('common_account', {'action': 'profile'}) }}">
+                {{ translate('Profile') }}
             </a>
         </li>
     {% endif %}
 
-    {% if hasAccess('common_account', 'subjects') %}
-        <li {% if getParam('action') == 'subjects' %}class="active"{% endif %}>
-            <a href="{{ url('common_account', {'action': 'subjects'}) }}">
-                {{ translate('Subjects') }}
-            </a>
-        </li>
-    {% endif %}
-
-    {% if hasAccess('common_session', 'manage') %}
-        <li class="pull-right {% if getParam('controller') == 'common_session' %}active{% endif %}">
-            <a href="{{ url('common_session', {'action': 'manage'}) }}">
-                {{ translate('Sessions') }}
-            </a>
-        </li>
-    {% endif %}
 </ul>

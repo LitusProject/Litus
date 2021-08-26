@@ -1,17 +1,17 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-    <div class="page-header">
-        <h1>{{ publication.getTitle() }} </h1>
-    </div>
+    <div class="container">
+        <div class="page-header">
+            <h1>{{ publication.getTitle() }} </h1>
+        </div>
 
-    <div class="row">
-        {% for year in years %}
-            <div class="col-xs-6 col-md-2">
-                <div class="thumbnail" style="height: 70px;line-height: 60px;text-align: center">
-                    <a href="{{ url('publication_archive', { 'action': 'view', 'publication': publication.getId(), 'year': year.getId() }) }}">{{ year.getCode() }}</a>
+        <div class="row">
+            {% for year in years %}
+                <div class="col-xs-6 col-md-2">
+                    <a class="publication-link" href="{{ url('publication_archive', { 'action': 'view', 'publication': publication.getId(), 'year': year.getId() }) }}">{{ year.getCode() }}</a>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}

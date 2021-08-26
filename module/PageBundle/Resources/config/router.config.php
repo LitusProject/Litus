@@ -67,7 +67,19 @@ return array(
                 ),
             ),
         ),
-
+        'page_admin_page_typeahead' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/site/page/typeahead[/:string][/]',
+                'constraints' => array(
+                    'string' => '[%a-zA-Z0-9:.,_-]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'page_admin_page',
+                    'action'     => 'typeahead',
+                ),
+            ),
+        ),
         'page_link' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(

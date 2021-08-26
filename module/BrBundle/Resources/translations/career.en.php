@@ -20,7 +20,6 @@
 
 return array(
     'Companies'           => 'Companies',
-    'Events'              => 'Events',
     'Vacancies'           => 'Vacancies',
     'Internships'         => 'Internships',
     'About'               => 'About',
@@ -37,6 +36,11 @@ return array(
     'Internship Fair'     => 'Internship Fair',
     'Most Recent'         => 'Most Recent',
     'All'                 => 'All',
+    'View Site'           => 'View Site',
+    'Events'              => 'Events',
+    'View Internships'    => 'View Internships',
+    'View Jobs'           => 'View Jobs',
+    'View Studentjobs'    => "View Studentjobs",
 
     'Welcome to the online BR platform! Here you can find interesting job or internship offers, check out the latest event info or just explore what kind of companies are out there.' => 'Welcome to the online BR platform! Here you can find interesting job or internship offers, check out the latest event info or just explore what kind of companies are out there.',
     'So just look around and you might just find what you are looking for!'                                                                                                            => 'So just look around and you might just find what you are looking for!',

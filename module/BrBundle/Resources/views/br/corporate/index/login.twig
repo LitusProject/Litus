@@ -1,0 +1,93 @@
+{% extends 'corporate/base.twig' %}
+
+{% block content %}
+
+    {% if authenticatedPerson is not null %}
+
+       You're logged in, but do not have access to these pages.
+
+    {# TO DO vtk logo displayen? #}
+    {# TO DO hoe aanmeldknop hier stylen naar gewone button from theme? #}
+    {% else %}
+        <div style="height: 100px"></div>
+        <div class="container">
+            <h3>{{ translate('Login') }}</h3>
+            <div style="height: 40px"></div>
+            {% if loginForm is defined %}
+                {% do loginForm.prepare() %}
+                {% autoescape false %}
+                    {{ form().openTag(loginForm) }}
+                    {% for element in loginForm.getElements() %}
+                        {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset'or element.getAttribute('type') == 'hidden' %}
+                            {{ formElement(element) }}
+                        {% elseif element.getAttribute('type') == 'checkbox' %}
+                            <div class="remember_me">
+                                <label>
+                                    {{ formElement(element) }}
+                                    {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
+                                </label>
+                            </div>
+                        {% else %}
+                            <div class="form-group {% if element.getMessages()|length > 0 %}has-error{% endif %}">
+                                <label class="control-label">{% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}</label>
+                                <div>{{ formElement(element) }}</div>
+                                {% if element.getMessages()|length > 0 %}
+                                    <div class="help-block">
+                                        {{ formElementErrors(element) }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    {{ form().closeTag() }}
+                {% endautoescape %}
+            {% endif %}
+        </div>
+
+    {% endif %}
+
+    {{ inlineScript () }}
+
+        <script>
+        // Open the Modal
+        function openModal() {
+        document.getElementById("myModal").style.display = "block";
+        }
+
+        // Close the Modal
+        function closeModal() {
+        document.getElementById("myModal").style.display = "none";
+        }
+
+        var slideIndex = 1;
+        showSlides(slideIndex);
+
+        // Next/previous controls
+        function plusSlides(n) {
+        showSlides(slideIndex += n);
+        }
+
+        // Thumbnail image controls
+        function currentSlide(n) {
+        showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+        var i;
+        var slides = document.getElementsByClassName("mySlides");
+        var dots = document.getElementsByClassName("demo");
+        var captionText = document.getElementById("caption");
+        if (n > slides.length) {slideIndex = 1}
+        if (n < 1) {slideIndex = slides.length}
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex-1].style.display = "flex";
+        dots[slideIndex-1].className += " active";
+        captionText.innerHTML = dots[slideIndex-1].alt;
+        }
+    </script>
+{% endblock %}

@@ -140,4 +140,23 @@ return array(
     'Register for a timeslot in the current Corona situation.'   => 'Register for a timeslot in the current Corona situation.',
     'Timeslots'                                                  => 'Timeslots',
     'Timeslot Registration'                                      => 'Timeslot Registration',
+
+    'My VTK'                                => 'My VTK',
+    'My'                                    => 'My',
+    'You currently have no books assigned'  => 'You currently have no books assigned',
+    'Date of Reservation'                   => 'Date of Reservation',
+    'Order sandwiches'                      => 'Order sandwiches',
+    'Items ready for pickup'                => 'Items ready for pickup',
+    'Order Books'                           => 'Order Books',
+    'Reserved items'                        => 'Reserved items',
+    'Search more Shifts'                    => 'Search more Shifts',
+    'View history'                          => 'View history',
+    'Reserve Timeslots'                     => 'Reserve Timeslots',
+    'Edit Account'                          => 'Edit Account',
+    'Year-long Subjects'                    => 'Year-long Subjects',
+    'Account Details'                       => 'Account Details',
+    'Edit Account Details'                  => 'Edit Account Details',
+    'Edit Profile Image'                    => 'Edit Profile Image',
+
+
 );
