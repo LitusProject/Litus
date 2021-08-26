@@ -77,8 +77,8 @@ class Match
     {
         $this->companyMatchee = $company;
         $this->studentMatchee = $student;
-        $this->matchPercentage = ($this->getMatchPercentages($company->getCompanyProfile(), $student->getCompanyProfile()) +
-                $this->getMatchPercentages($company->getStudentProfile(), $student->getStudentProfile())) / 2;
+        $this->matchPercentage = round(($this->getMatchPercentages($company->getCompanyProfile(), $student->getCompanyProfile()) +
+                $this->getMatchPercentages($company->getStudentProfile(), $student->getStudentProfile())) / 2);
     }
 
     /**
@@ -134,7 +134,7 @@ class Match
      */
     public function setMatchPercentage($matchPercentage)
     {
-        $this->matchPercentage = $matchPercentage*100;
+        $this->matchPercentage = round($matchPercentage*100);
     }
 
     /**
