@@ -37,7 +37,7 @@ class Version20210816000735 extends \Doctrine\Migrations\AbstractMigration
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('ALTER TABLE br_events_companies_map ADD done BOOLEAN DEFAULT \'false\' NOT NULL');
+       // $this->addSql('ALTER TABLE br_events_companies_map ADD done BOOLEAN DEFAULT \'false\' NOT NULL');
     }
 
     /**
