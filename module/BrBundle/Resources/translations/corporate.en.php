@@ -75,4 +75,7 @@ return array(
     'pending'                                                                                                                                                                              => 'pending',
     'rejected'                                                                                                                                                                             => 'rejected',
     'currently listed on our website'                                                                                                                                                      => 'currently listed on our website',
+    'Log In'                                                                                                                                                                               => 'Log In',
+    'More Information'                                                                                                                                                                     => 'More Information',
+    'Corporate Relations'                                                                                                                                                                  => 'Corporate Relations',
 );

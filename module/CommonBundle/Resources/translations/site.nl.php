@@ -141,5 +141,24 @@ return array(
 
     'Register for a timeslot in the current Corona situation.'            => 'Registreer voor een tijdslot in de huidige Corona situatie.',
     'Timeslots'                                                           => 'Tijdsloten',
-    'Timeslot Registration'                                               => 'Tijdslot Registratie'
+    'Timeslot Registration'                                               => 'Tijdslot Registratie',
+
+    'My VTK'                                => 'Mijn VTK',
+    'My'                                    => 'Mijn',
+    'You currently have no items assigned'  => 'Je hebt geen reserveringen momenteel',
+    'Date of Reservation'                   => 'Reservatie-ogenblik',
+    'Order sandwiches'                      => 'Broodjes bestellen',
+    'Items ready for pickup'                => 'Items die klaar zijn om op te halen',
+    'Order Books'                           => 'Boeken Bestellen',
+    'Reserved items'                        => 'Gereserveerde items',
+    'Search more Shifts'                    => 'Meer Shifts zoeken',
+    'View history'                          => 'Geschiedenis bekijken',
+    'Reserve Timeslots'                     => 'Tijdsloten reserveren',
+    'Edit Account'                          => 'Accountgegevens aanpassen',
+    'Year-long Subjects'                    => 'Jaarvakken',
+    'Account Details'                       => 'Accountgegevens',
+    'Edit Account Details'                  => 'Accountgegevens aanpassen',
+    'Edit Profile Image'                    => 'Profielfoto aanpassen',
+
+
 );

@@ -11,141 +11,427 @@
         <!--[if lt IE 9]>
           <script src="/js/html5shiv.js"></script>
         <![endif]-->
-    </head>
+    </head> 
+
+    {{ inlineScript() }}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var menuItems = document.getElementsByClassName('vtk-menuitem-holder dropdown');
+            
+            for(var i = 0; i < menuItems.length; i++) {
+                var current = menuItems[i]; 
+                current.addEventListener("mouseover", func, false);
+                current.addEventListener("mouseout", func1, false);  
+
+                function func() {   
+                    var currentDropdown = this.querySelector('.vtk-dropdownitem-holder');
+                    currentDropdown.setAttribute("style", "visibility:visible;"); 
+                }
+
+                function func1() {  
+                    var currentDropdown = this.querySelector('.vtk-dropdownitem-holder');
+                    currentDropdown.setAttribute("style", "visibility:hidden;"); 
+                }
+            }
+            
+        });
+
+        $(document).ready(function() {
+            var isOpen = false 
+
+            var mobileMenuButton = document.getElementsByClassName('vtk-menu')[0]; 
+            var menuBars = document.getElementsByClassName('vtk-menu-bar'); 
+            mobileMenuButton.addEventListener("click", openCloseMenu, false); 
+
+            function openCloseMenu() {
+                if (!isOpen) {
+                    var menuHolder = document.getElementsByClassName('vtk-mobile-menu')[0]; 
+                    menuHolder.setAttribute("style", "visibility:visible; opacity: 0%; transition: all 200ms"); 
+                    menuHolder.setAttribute("style", "visibility:visible; opacity: 100%; transition: all 200ms"); 
+                    menuBars[1].setAttribute("style", "visibility:hidden; transition: all 0ms"); 
+                    menuBars[0].setAttribute("style", "margin-top: 10px; transform: rotate(45deg)");
+                    menuBars[2].setAttribute("style", "margin-top: -10px; transform: rotate(-45deg)");
+                } else {
+                    var menuHolder = document.getElementsByClassName('vtk-mobile-menu')[0]; 
+                    menuHolder.setAttribute("style", "visibility:hidden; opacity: 0%; transition: all 200ms"); 
+                    menuBars[1].setAttribute("style", "visibility:visible; transition: all 0ms");
+                    menuBars[0].setAttribute("style", "margin-top: 6px; transform: rotate(0deg)");
+                    menuBars[2].setAttribute("style", "margin-top: 6px; transform: rotate(0deg)");
+                }
+                isOpen = ! isOpen; 
+            }
+        })
+    </script>
 
     <body>
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a href="{{ organizationUrl }}" class="brand"><img src="/_corporate/img/logo.png" /></a>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        {% if hasAccess('br_corporate_index', 'index') %}
-                            <li {% if 'index' == getParam('action') and 'br_corporate_index' == getParam('controller') %} class="active" {% endif %}>
-                                <a href="{{ url("br_corporate_index", {"language": language.getAbbrev()}) }}">{{ translate('Home') }}</a>
-                            </li>
-                        {% endif %}
-                        {% if hasAccess('br_corporate_jobfair', 'overview') %}
-                            <li {% if 'overview' == getParam('action') and 'br_corporate_jobfair' == getParam('controller') %} class="active" {% endif %}>
-                                <a href="{{ url("br_corporate_jobfair", {"action": "overview", "language": language.getAbbrev()}) }}">{{ translate('Jobfair Information') }}</a>
-                            </li>
-                        {% endif %}
-                        {% if (hasAccess('br_corporate_cv', 'grouped') or hasAccess('br_corporate_cv', 'list')) and authenticatedPerson != null and (authenticatedPerson.getCompany().getCvBookYears()|length > 0 or authenticatedPerson.getCompany().getCvBookArchiveYears()|length > 0) %}
-                            <li {% if 'br_corporate_cv' == getParam('controller') %} class="active" {% endif %}>
-                                <a href="{{ url("br_corporate_cv", {"action": "grouped", "language": language.getAbbrev()}) }}">{{ translate('CV Book') }}</a>
-                            </li>
-                        {% endif %}
-                        {% if hasAccess('br_corporate_vacancy', 'overview') %}
-                            <li {% if 'overview' == getParam('action') and 'br_corporate_vacancy' == getParam('controller') %} class="active" {% endif %}>
-                                <a href="{{ url("br_corporate_vacancy", {"action": "overview", "language": language.getAbbrev()}) }}">{{ translate('Vacancies') }}</a>
-                            </li>
-                        {% endif %}
-                        {% if hasAccess('br_corporate_internship', 'overview') %}
-                            <li {% if 'overview' == getParam('action') and 'br_corporate_internship' == getParam('controller') %} class="active" {% endif %}>
-                                <a href="{{ url("br_corporate_internship", {"action": "overview", "language": language.getAbbrev()}) }}">{{ translate('Internship') }}</a>
-                            </li>
-                        {% endif %}
-                        {% if hasAccess('br_corporate_student_job', 'overview') %}
-                            <li {% if 'overview' == getParam('action') and 'br_corporate_student_job' == getParam('controller') %} class="active" {% endif %}>
-                                <a href="{{ url("br_corporate_student_job", {"action": "overview", "language": language.getAbbrev()}) }}">{{ translate('Student Jobs') }}</a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                    <ul class="nav navbar-nav pull-right lang-nav hidden-xs hidden-sm">
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                Language <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-right">
-                                {% for language in languages %}
-                                    <li>
-                                        <a href="{{ url("br_corporate_index", {"language": language.getAbbrev()}) }}">{{ translate(language.getName()) }}</a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </li>
-                    </ul>
-                    <ul class="nav navbar-nav pull-right auth-nav">
-                        {% if authenticatedPerson is not null %}
-                            <li class="dropdown" id="accountDropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                    <span class="profile-wrapper">
-                                        <i class="profile"></i>
-                                    </span>
-                                    <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-right">
-                                    <li>
-                                        <a href="{{ url("br_corporate_company", {"action": "edit", "language": language.getAbbrev()}) }}">
-                                            <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
-                                            <small class="metadata">{{ authenticatedPerson.getCompany().getName() }}</small>
+
+    <div class="contentHolder">
+        <div class="contentStretch">
+            <nav class="vtk-navbar" role="navigation">
+                <div class="container" style="position: relative">
+                    {# TO DO translation #}
+                    <div class="brTag">Bedrijvenrelaties</div>
+                    <div class="vtk-flex-stretch">
+                        <div style="position: relative; margin-top: 5px"><a class="vtk-logo" href="/{{ language.getAbbrev() }}/corporate"></a></div>
+
+                        {# Menu items on desktop #}
+                        <div class="vtk-flex-horizontal hidden-sm hidden-xs">
+
+                            {# Menu items #}
+                            {% if hasAccess('br_corporate_index', 'index') %}
+                                <div class="vtk-menuitem-holder br">
+                                    <a {% if 'index' == getParam('action') and 'br_corporate_index' == getParam('controller') %} class="br-menuUnderlineStyle active" {% else %} class="br-menuUnderlineStyle" {% endif %} href="{{ url("br_corporate_index", {"language": language.getAbbrev()}) }}">
+                                        {{ translate('Launch') }}
+                                    </a>
+                                </div>
+                            {% endif %}
+                            {% if hasAccess('br_corporate_index', 'events') %}
+                                <div class="vtk-menuitem-holder br">
+                                    <a {% if 'events' == getParam('action') and 'br_corporate_index' == getParam('controller') %} class="br-menuUnderlineStyle active" {% else %} class="br-menuUnderlineStyle"  {% endif %} href="{{ url("br_corporate_index", {"action": 'events', "language": language.getAbbrev()}) }}">
+                                        {{ translate('Events') }}
+                                    </a>
+                                </div>
+                            {% endif %}
+                            {% if hasAccess('br_corporate_jobfair', 'overview') %}
+                                <div class="vtk-menuitem-holder br">
+                                    <a {% if 'overview' == getParam('action') and 'br_corporate_jobfair' == getParam('controller') %} class="br-menuUnderlineStyle active" {% else %} class="br-menuUnderlineStyle" {% endif %} href="{{ url("br_corporate_jobfair", {"action": 'overview', "language": language.getAbbrev()}) }}">
+                                        {{ translate('Jobfair Information') }}
+                                    </a>
+                                </div>
+                                {% endif %}
+                            {% if (hasAccess('br_corporate_cv', 'grouped') or hasAccess('br_corporate_cv', 'list')) and authenticatedPerson != null and (authenticatedPerson.getCompany().getCvBookYears()|length > 0 or authenticatedPerson.getCompany().getCvBookArchiveYears()|length > 0) %}
+                                <div class="vtk-menuitem-holder br">
+                                    <a {% if 'br_corporate_cv' == getParam('controller') %} class="active" %} class="br-menuUnderlineStyle active" {% else %} class="br-menuUnderlineStyle" {% endif %} href="{{ url("br_corporate_cv", {"action": "grouped", "language": language.getAbbrev()}) }}">
+                                        {{ translate('CV Book') }}
+                                    </a>   
+                                </div>                            
+                            {% endif %}
+                            {% if hasAccess('br_corporate_vacancy', 'overview') %}
+                                <div class="vtk-menuitem-holder br">
+                                    <a {% if 'overview' == getParam('action') and 'br_corporate_vacancy' == getParam('controller') %} class="br-menuUnderlineStyle active" {% else %} class="br-menuUnderlineStyle" {% endif %} href="{{ url("br_corporate_vacancy", {"action": "overview", "language": language.getAbbrev()}) }}">
+                                        {{ translate('Vacancies') }}
+                                    </a>   
+                                </div>                            
+                            {% endif %}
+                            {% if hasAccess('br_corporate_internship', 'overview') %}
+                                <div class="vtk-menuitem-holder br">
+                                    <a {% if 'overview' == getParam('action') and 'br_corporate_internship' == getParam('controller') %} class="br-menuUnderlineStyle active" {% else %} class="br-menuUnderlineStyle" {% endif %} href="{{ url("br_corporate_internship", {"action": "overview", "language": language.getAbbrev()}) }}">
+                                        {{ translate('Internship') }}
+                                    </a>  
+                                </div>                            
+                            {% endif %}                           
+                            {% if hasAccess('br_corporate_student_job', 'overview') %}
+                                <div class="vtk-menuitem-holder br">
+                                    <a {% if 'overview' == getParam('action') and 'br_corporate_student_job' == getParam('controller') %} class="br-menuUnderlineStyle active" {% else %} class="br-menuUnderlineStyle" {% endif %} href="{{ url("br_corporate_student_job", {"action": "overview", "language": language.getAbbrev()}) }}">
+                                        {{ translate('Student Jobs') }}
+                                    </a>    
+                                </div>                 
+                            {% endif %}
+                            {# {% for item in menu %}
+                                {% if 'category' == item.type %}
+                                    <div class="vtk-menuitem-holder dropdown">
+                                        <a class="vtk-menuitem" href="#">
+                                            {{ item.name }} 
                                         </a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li>
-                                        <a href="{{ url("br_corporate_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        {% else %}
-                            <li class="dropdown" id="loginDropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                    {{ translate('Login') }} <span class="caret"></span>
+                                        <div class="vtk-dropdownitem-holder">
+                                            {% for categoryItem in item.items %}
+                                                {% if 'page' == categoryItem.type %}
+                                                    {% if hasAccess('page', 'view') %}
+                                                        <div class="vtk-dropdownitem"><a title=categoryItem.title class="vtk-dropdownitem-link" href="{{ url('page', {"name": categoryItem.name}) }}">{{ categoryItem.title }}</a></div>
+                                                    {% endif %}
+                                                {% endif %}
+
+                                                {% if 'link' == categoryItem.type %}
+                                                    {% if hasAccess('page_link', 'view') %}
+                                                        <div class="vtk-dropdownitem"><a title=categoryItem.title class="vtk-dropdownitem-link" href="{{ categoryItem.url }}">{{ categoryItem.name }}</a></div>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %} #}
+
+                            {# Separator #}
+                            <div style="color: #ffd400; height: 30px; margin-top: 7px">|</div> 
+
+                            {# Language picker #}
+                            <div class="vtk-menuitem-holder dropdown">
+                                <a class="vtk-menuitem" href="#">
+                                    {{ language.getAbbrev() }}
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-right">
-                                    <li>
-                                        {% if loginForm is defined %}
-                                            {% do loginForm.prepare() %}
-                                            {% autoescape false %}
-                                                {{ form().openTag(loginForm) }}
-                                                    {% for element in loginForm.getElements() %}
-                                                        {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset'or element.getAttribute('type') == 'hidden' %}
-                                                            {{ formElement(element) }}
-                                                        {% elseif element.getAttribute('type') == 'checkbox' %}
-                                                            <div class="remember_me">
-                                                                <label>
-                                                                    {{ formElement(element) }}
-                                                                    {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
-                                                                </label>
-                                                            </div>
-                                                        {% else %}
-                                                            <div class="form-group {% if element.getMessages()|length > 0 %}has-error{% endif %}">
-                                                                <label class="control-label">{% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}</label>
-                                                                <div>{{ formElement(element) }}</div>
-                                                                {% if element.getMessages()|length > 0 %}
-                                                                    <div class="help-block">
-                                                                        {{ formElementErrors(element) }}
-                                                                    </div>
-                                                                {% endif %}
-                                                            </div>
-                                                        {% endif %}
-                                                    {% endfor %}
-                                                {{ form().closeTag() }}
-                                            {% endautoescape %}
-                                        {% endif %}
-                                    </li>
-                                </ul>
-                            </li>
+                                <div class="vtk-dropdownitem-holder">
+                                    {% for language in languages %}
+                                        <div class="vtk-dropdownitem"><a class="vtk-dropdownitem-link" href="{{ url(getParam('controller'), {'language': language.getAbbrev(), 'action': getParam('action'), 'parent': getParam('parent'), 'name': getParam('name'), 'id': getParam('id')}) }}">{{ translate(language.getName()) }}</a></div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            {# KNOP AANMELDEN OP PC #}
+                            {% if authenticatedPerson is not null %}
+                                <div class="vtk-menuitem-holder dropdown">
+                                <div class="vtk-menuitem">
+                                    <div class="vtk-profile"></div>
+                                </div>
+                                <div class="vtk-dropdownitem-holder right">
+
+                                    <div class="vtk-dropdownitem">
+                                            <a class="vtk-dropdownitem-link" href="{{ url("br_corporate_company", {"action": "edit", "language": language.getAbbrev()}) }}">
+                                                <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
+                                                <small class="metadata">{{ authenticatedPerson.getCompany().getName() }}</small>
+                                            </a>
+                                    </div>
+
+                                    <div class="vtk-dropdownitem">
+                                        <a class="vtk-dropdownitem-link" href="{{ url("br_corporate_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
+                                    </div>
+                                    
+                                    {# {% if authenticatedPerson is not null %}
+                                <li class="dropdown" id="accountDropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                        <span class="profile-wrapper">
+                                            <i class="profile"></i>
+                                        </span>
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>
+                                            <a href="{{ url("br_corporate_company", {"action": "edit", "language": language.getAbbrev()}) }}">
+                                                <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
+                                                <small class="metadata">{{ authenticatedPerson.getCompany().getName() }}</small>
+                                            </a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a href="{{ url("br_corporate_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            {% else %} #}
+{# 
+                                    {% if hasAccess('cudi_booking', 'view') %}
+                                        <div class="vtk-dropdownitem">
+                                        <a class="vtk-dropdownitem-link" href="{{ url('cudi_booking') }}">{{ translate('My Bookings') }}</a>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if hasAccess('shift', 'index') %}
+                                        <div class="vtk-dropdownitem">
+                                        <a class="vtk-dropdownitem-link" href="{{ url('shift') }}">{{ translate('My Shifts') }}</a>
+                                        </div>
+                                    {% endif %}
+
+                                    <div class="vtk-dropdownitem">
+                                        <a class="vtk-dropdownitem-link" href="{{ url("common_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
+                                    </div> #}
+            
+                                </div>
+                            {% else %}
+                                <div class="vtk-menuitem-holder">
+                                    <a style="cursor: pointer" class="vtk-menuitem" href="{{ url("br_corporate_index", {"action": "login"}) }}">{% autoescape false %}{{ translate('Login') }}{% endautoescape %}</a>
+                                </li>
+                            {% endif %}
+                        </div> 
+
+                    </div>
+
+                    {# Toggle and menu items for mobile #}
+                    <div class="vtk-menu hidden-lg hidden-md">
+                        <div class="vtk-menu-bar"></div>
+                        <div style="transition: all 0ms" class="vtk-menu-bar"></div>
+                        <div class="vtk-menu-bar"></div>
+                    </div>
+                </div>
+            </nav>
+
+            {# Mobile menu #}
+            <div class="vtk-mobile-menu hidden-lg hidden-md">
+                <div class="container">
+                    <div style="height: 30px"></div>
+                {# Menu items #}
+                    {% if hasAccess('br_corporate_index', 'index') %}
+                        <a class="vtk-mobile-primary-menuitem" style="width: 100%; text-align: center"  href="{{ url("br_corporate_index", {"language": language.getAbbrev()}) }}">
+                            {{ translate('Launch') }}
+                        </a>
+                    {% endif %}
+                    {% if hasAccess('br_corporate_index', 'events') %}
+                        <a class="vtk-mobile-primary-menuitem" style="width: 100%; text-align: center" href="{{ url("br_corporate_index", {"action": 'events', "language": language.getAbbrev()}) }}">
+                            {{ translate('Events') }}
+                        </a>
+                    {% endif %}
+                    {% if hasAccess('br_corporate_jobfair', 'overview') %}
+                        <a class="vtk-mobile-primary-menuitem" style="width: 100%; text-align: center" href="{{ url("br_corporate_jobfair", {"action": 'overview', "language": language.getAbbrev()}) }}">
+                            {{ translate('Jobfair Information') }}
+                        </a>
                         {% endif %}
-                    </ul>
+                    {% if (hasAccess('br_corporate_cv', 'grouped') or hasAccess('br_corporate_cv', 'list')) and authenticatedPerson != null and (authenticatedPerson.getCompany().getCvBookYears()|length > 0 or authenticatedPerson.getCompany().getCvBookArchiveYears()|length > 0) %}
+                        <a class="vtk-mobile-primary-menuitem" style="width: 100%; text-align: center" href="{{ url("br_corporate_cv", {"action": "grouped", "language": language.getAbbrev()}) }}">
+                            {{ translate('CV Book') }}
+                        </a>   
+                    {% endif %}
+                    {% if hasAccess('br_corporate_vacancy', 'overview') %}
+                        <a class="vtk-mobile-primary-menuitem" style="width: 100%; text-align: center" href="{{ url("br_corporate_vacancy", {"action": "overview", "language": language.getAbbrev()}) }}">
+                            {{ translate('Vacancies') }}
+                        </a>   
+                    {% endif %}
+                    {% if hasAccess('br_corporate_internship', 'overview') %}
+                        <a class="vtk-mobile-primary-menuitem" style="width: 100%; text-align: center" href="{{ url("br_corporate_internship", {"action": "overview", "language": language.getAbbrev()}) }}">
+                            {{ translate('Internship') }}
+                        </a>  
+                    {% endif %}                           
+                    {% if hasAccess('br_corporate_student_job', 'overview') %}
+                        <a class="vtk-mobile-primary-menuitem" style="width: 100%; text-align: center" href="{{ url("br_corporate_student_job", {"action": "overview", "language": language.getAbbrev()}) }}">
+                            {{ translate('Student Jobs') }}
+                        </a>    
+                    {% endif %}
+                    <div style="height: 20px"></div>
+                    {% if authenticatedPerson is not null %}
+                        <a class="vtk-mobile-primary-menuitem" style="width: 100%; text-align: center" href="{{ url("br_corporate_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
+                    {% else %}
+                        <a class="vtk-mobile-primary-menuitem" style="width: 100%; text-align: center" href="{{ url("br_corporate_index", {"action": "login"}) }}">{% autoescape false %}{{ translate('Login') }}{% endautoescape %}</a>
+                    {% endif %}
+
                 </div>
             </div>
-        </nav>
 
-        <header>
-            <div class="container">
-                <h1>{{ translate('Corporate') }}</h1>
-            </div>
-        </header>
+            {#  TO DO LANGUAGES AND PROFILE + ERROR FOR WHEN NO DROPDOWN!  #}
+            {# <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a href="{{ organizationUrl }}" class="brand"><img src="/_corporate/img/logo.png" /></a>
+                    </div>
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            {% if hasAccess('br_corporate_index', 'index') %}
+                                <li {% if 'index' == getParam('action') and 'br_corporate_index' == getParam('controller') %} class="active" {% endif %}>
+                                    <a href="{{ url("br_corporate_index", {"language": language.getAbbrev()}) }}">{{ translate('Launch') }}</a>
+                                </li>
+                            {% endif %}
+                            {% if hasAccess('br_corporate_index', 'events') %}
+                                <li {% if 'events' == getParam('action') and 'br_corporate_index' == getParam('controller') %} class="active" {% endif %}>
+                                    <a href="{{ url("br_corporate_index", {"action": 'events', "language": language.getAbbrev()}) }}">{{ translate('Events') }}</a>
+                                </li>
+                            {% endif %}
+                            {% if hasAccess('br_corporate_jobfair', 'overview') %}
+                                <li {% if 'overview' == getParam('action') and 'br_corporate_jobfair' == getParam('controller') %} class="active" {% endif %}>
+                                    <a href="{{ url("br_corporate_jobfair", {"action": "overview", "language": language.getAbbrev()}) }}">{{ translate('Jobfair Information') }}</a>
+                                </li>
+                            {% endif %}
+                            {% if (hasAccess('br_corporate_cv', 'grouped') or hasAccess('br_corporate_cv', 'list')) and authenticatedPerson != null and (authenticatedPerson.getCompany().getCvBookYears()|length > 0 or authenticatedPerson.getCompany().getCvBookArchiveYears()|length > 0) %}
+                                <li {% if 'br_corporate_cv' == getParam('controller') %} class="active" {% endif %}>
+                                    <a href="{{ url("br_corporate_cv", {"action": "grouped", "language": language.getAbbrev()}) }}">{{ translate('CV Book') }}</a>
+                                </li>
+                            {% endif %}
+                            {% if hasAccess('br_corporate_vacancy', 'overview') %}
+                                <li {% if 'overview' == getParam('action') and 'br_corporate_vacancy' == getParam('controller') %} class="active" {% endif %}>
+                                    <a href="{{ url("br_corporate_vacancy", {"action": "overview", "language": language.getAbbrev()}) }}">{{ translate('Vacancies') }}</a>
+                                </li>
+                            {% endif %}
+                            {% if hasAccess('br_corporate_internship', 'overview') %}
+                                <li {% if 'overview' == getParam('action') and 'br_corporate_internship' == getParam('controller') %} class="active" {% endif %}>
+                                    <a href="{{ url("br_corporate_internship", {"action": "overview", "language": language.getAbbrev()}) }}">{{ translate('Internship') }}</a>
+                                </li>
+                            {% endif %}
+                            {% if hasAccess('br_corporate_student_job', 'overview') %}
+                                <li {% if 'overview' == getParam('action') and 'br_corporate_student_job' == getParam('controller') %} class="active" {% endif %}>
+                                    <a href="{{ url("br_corporate_student_job", {"action": "overview", "language": language.getAbbrev()}) }}">{{ translate('Student Jobs') }}</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                        <ul class="nav navbar-nav pull-right lang-nav hidden-xs hidden-sm">
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    Language <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    {% for language in languages %}
+                                        <li>
+                                            <a href="{{ url("br_corporate_index", {"language": language.getAbbrev()}) }}">{{ translate(language.getName()) }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav pull-right auth-nav hidden-xs hidden-sm">
+                            {% if authenticatedPerson is not null %}
+                                <li class="dropdown" id="accountDropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                        <span class="profile-wrapper">
+                                            <i class="profile"></i>
+                                        </span>
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>
+                                            <a href="{{ url("br_corporate_company", {"action": "edit", "language": language.getAbbrev()}) }}">
+                                                <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
+                                                <small class="metadata">{{ authenticatedPerson.getCompany().getName() }}</small>
+                                            </a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a href="{{ url("br_corporate_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            {% else %}
+                                <li class="dropdown" id="loginDropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                        {{ translate('Login') }} <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>
+                                            {% if loginForm is defined %}
+                                                {% do loginForm.prepare() %}
+                                                {% autoescape false %}
+                                                    {{ form().openTag(loginForm) }}
+                                                        {% for element in loginForm.getElements() %}
+                                                            {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset'or element.getAttribute('type') == 'hidden' %}
+                                                                {{ formElement(element) }}
+                                                            {% elseif element.getAttribute('type') == 'checkbox' %}
+                                                                <div class="remember_me">
+                                                                    <label>
+                                                                        {{ formElement(element) }}
+                                                                        {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
+                                                                    </label>
+                                                                </div>
+                                                            {% else %}
+                                                                <div class="form-group {% if element.getMessages()|length > 0 %}has-error{% endif %}">
+                                                                    <label class="control-label">{% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}</label>
+                                                                    <div>{{ formElement(element) }}</div>
+                                                                    {% if element.getMessages()|length > 0 %}
+                                                                        <div class="help-block">
+                                                                            {{ formElementErrors(element) }}
+                                                                        </div>
+                                                                    {% endif %}
+                                                                </div>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {{ form().closeTag() }}
+                                                {% endautoescape %}
+                                            {% endif %}
+                                        </li>
+                                    </ul>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </nav> #}
 
-        <div class="container">
+            {# <header>
+                <div class="container">
+                    <h1>{{ translate('Corporate') }}</h1>
+                </div>
+            </header> #}
+
             {% include 'corporate/partials/flashMessenger.twig' %}
 
             <div id="content_controller">
@@ -153,8 +439,26 @@
             </div>
         </div>
 
-        <footer>
+        {# <footer>
             Litus Corporate | Code by <a href="http://litus.cc">Litus</a>
+        </footer> #}
+
+        <footer style="margin-bottom: 0px; margin-top:50px; position: relative">
+            <div style="text-align: left; background-color: #1a1f4a; padding: 100px 0px; color: white">
+                <div class="container">
+                    <div class="col-md-4">
+                        <div class="vtk-footerlogo"></div>
+                        <div style="height: 20px"></div>
+                        <a target="_blank" class="vtk-social-icon" href="http://facebook.com/VTKLeuven" style="background-image: url(/_site/img/icon-05.png)"></a>
+                        <a target="_blank" class="vtk-social-icon" href="https://www.instagram.com/vtkleuven/" style="background-image: url(/_site/img/icon-06.png)"></a>
+                        <a target="_blank" class="vtk-social-icon" href="http://twitter.com/VTKLeuven" style="background-image: url(/_site/img/icon-07.png)"></a>
+                        <a target="_blank" class="vtk-social-icon" href="https://www.linkedin.com/company/vtk/" style="background-image: url(/_site/img/icon-02.png)"></a>                    
+                        <h5>&copy; {{ 'now'|date('Y') }} {{ translate('Vlaamse Technische Kring vzw') }}</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vtk-footer-triangle"></div>
         </footer>
 
         {{ inlineScript() }}
@@ -168,5 +472,6 @@
         </script>
 
         {% block content_script %}{% endblock %}
+    </div>
     </body>
 </html>

@@ -2,7 +2,11 @@
 
 {% block content %}
 
-    <div class="flashmessage alert alert-danger fade" id="internship_removed_error">
+    <div class="container">
+    <div style="height: 100px"></div>
+
+
+    {# <div class="flashmessage alert alert-danger fade" id="internship_removed_error">
         <a class="close">&times;</a>
         <div class="content">
             {{ translate('An error occurred while removing internship.') }}
@@ -25,12 +29,12 @@
         <div class="content">
             {{ translate('The removal of the request was succesfully registered.') }}
         </div>
-    </div>
+    </div> #}
 
     <div class="row">
         <div class="col-md-6">
-            <h1 style="float:left;">{{ translate('Internships') }}</h1>
-            <div style="margin-top: 37px;"><strong>&nbsp;&nbsp;{{ translate('currently listed on our website') }}</div></strong>
+            <h1 style="margin-bottom: 0px">{{ translate('Internships') }}</h1>
+            <div style="font-size: 12px; opacity: 0.8">{{ translate('currently listed on our website') }}</div>
         </div>
         <div class="col-md-6">
             <a class="btn btn-success pull-right" href="{{ url('br_corporate_internship', {'action': 'add'}) }}" style="margin-bottom: 5px; margin-top: 20px;">{{ translate('Add Internship') }}</a>
@@ -57,14 +61,13 @@
                             <strong>{{ internship.getCompany().getName() }} - {{ internship.getName() }}</strong>
                             <br/>
                             <div class="pull-right hidden-xs">{{ translate('Last Updated') }}: <strong>{{ dateLocalized(internship.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
-                            <br/>
                             {{ internship.getSummary(200)|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
                         </td>
                         <td width="230" style="vertical-align: middle;">
-                            <a class="btn btn-sm btn-info" href="{{ url('br_career_internship', {'action': 'view', 'id': internship.getId() }) }}">{{ translate('View') }}</a>
+                            <a class="btn btn-sm btn-primary" href="{{ url('br_career_internship', {'action': 'view', 'id': internship.getId() }) }}">{{ translate('View') }}</a>
                             {% set disabled =  ((unfinishedRequests[internship.getId()] == 'delete' or unfinishedRequests[internship.getId()] == 'edit') or unfinishedRequests[internship.getId()] == 'edit reject') %}
                             <a class="btn btn-sm btn-primary {% if disabled == true %}disabled{% endif %}" href="{{ url('br_corporate_internship', {'action': 'edit', 'id': internship.getId()}) }}">{{ translate('Edit') }}</a>
-                            <a class="btn btn-sm btn-danger deleteInternship {% if disabled == true %}disabled{% endif %}" data-id="{{ internship.getId() }}" href="#">{{ translate('Delete') }}</a>
+                            <a class="btn btn-sm btn-primary deleteInternship {% if disabled == true %}disabled{% endif %}" data-id="{{ internship.getId() }}" href="#">{{ translate('Delete') }}</a>
                             {% if disabled == true %} {% set onceDisabled = true %}{% endif %}
                         </td>
                     </tr>
@@ -102,12 +105,11 @@
                         <tr>
                             <td width="200">
                                 Type: <strong>{{ translate(request.getRequestType()) }}</strong>
-                                <br/><br/>
+                                <br/>
                                 Status: <strong>{{ translate(request.getStatus()) }}</strong>
                             </td>
                             <td>
                                 <strong>{{ request.getJob().getCompany().getName() }} - {{ request.getJob().getName() }}</strong>
-                                <br/>
                                 <div class="pull-right hidden-xs">{{ translate('Last Updated') }}: <strong>{{ dateLocalized(request.getJob().getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
                                 <br/>
                                 {% if request.getStatus() == 'rejected' %}
@@ -117,11 +119,11 @@
                                 {% endif %}
                             </td>
                             <td width="230" style="vertical-align: middle;">
-                                <a class="btn btn-sm btn-info" href="{{ url('br_career_internship', {'action': 'view', 'id': request.getJob().getId() }) }}">{{ translate('View') }}</a>
+                                <a class="btn btn-sm btn-primary" href="{{ url('br_career_internship', {'action': 'view', 'id': request.getJob().getId() }) }}">{{ translate('View') }}</a>
                                 {% if not (request.getRequestType() == 'delete') %}
                                     <a class="btn btn-sm btn-primary" href="{{ url('br_corporate_internship', {'action': 'edit', 'id': request.getJob().getId()}) }}">{{ translate('Edit') }}</a>
                                 {% endif %}
-                                <a class="btn btn-sm btn-danger deleteRequest" data-id="{{ request.getId() }}" href="#">{{ translate('Delete') }}</a>
+                                <a class="btn btn-sm btn-primary deleteRequest" data-id="{{ request.getId() }}" href="#">{{ translate('Delete') }}</a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -175,6 +177,8 @@
                 </div>
             </div>
         </div>
+    </div>
+
     </div>
 {% endblock %}
 

@@ -20,6 +20,7 @@
 
 namespace PageBundle\Controller\Admin;
 
+use CommonBundle\Entity\General\Node\FAQ\FAQPageMap;
 use Laminas\Filter\File\RenameUpload as RenameUploadFilter;
 use Laminas\Validator\File\IsImage as IsImageValidator;
 use Laminas\Validator\File\UploadFile as UploadFileValidator;
@@ -131,12 +132,42 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
+        $maps = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Node\FAQ\FAQPageMap')
+            ->findAllByPageQuery($page)->getResult();
+
         $form = $this->getForm('page_page_edit', array('page' => $page));
+        $faqForm = $this->getForm('page_page_FAQ', array('page' => $page));
 
         if ($this->getRequest()->isPost()) {
-            $form->setData($this->getRequest()->getPost());
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+            $faqForm->setData($formData);
 
-            if ($form->isValid()) {
+            if (isset($formData['page_edit']) && $faqForm->isValid()) {
+                error_log('hereeeeeeeeeeeee!');
+                $faq = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Node\FAQ\FAQ')
+                    ->findOneById(intval($formData['faq_typeahead']['id']));
+
+                $map = new FAQPageMap($faq, $page);
+                $this->getEntityManager()->persist($map);
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The faq was successfully added!'
+                );
+
+                $this->redirect()->toRoute(
+                    'page_admin_page',
+                    array(
+                        'action' => 'edit',
+                        'id'   => $page->getId(),
+                    )
+                );
+                return new ViewModel();
+            } elseif (isset($formData['page_edit']) && $form->isValid()) {
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -158,6 +189,9 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'form' => $form,
+                'faqForm' => $faqForm,
+                'maps' => $maps,
+                'page' => $page,
             )
         );
     }
@@ -169,6 +203,14 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         $page = $this->getPageEntity();
         if ($page === null) {
             return new ViewModel();
+        }
+
+        $maps = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Node\FAQ\FAQPageMap')
+            ->findAllByPageQuery($page)->getResult();
+
+        foreach ($maps as $map) {
+            $this->getEntityManager()->remove($map);
         }
 
         $page->close();
@@ -259,6 +301,33 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             $item->category = $page->getCategory() ? $page->getCategory()->getName($this->getLanguage()) : '';
             $item->parent = $page->getParent() ? $page->getParent()->getTitle($this->getLanguage()) : '';
             $item->author = $page->getCreationPerson()->getFullName();
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+    public function typeaheadAction()
+    {
+        $this->initAjax();
+
+        $pages = $this->getEntityManager()
+            ->getRepository('PageBundle\Entity\Node\Page')
+            ->findAllByTitleQuery($this->getParam('string'))
+            ->setMaxResults(15)
+            ->getResult();
+
+        $result = array();
+        foreach ($pages as $page) {
+            $item = (object) array();
+            $item->id = $page->getId();
+            $item->title = $page->getName();
+            $item->category = $page->getCategory()->getName();
+            $item->value = $page->getCategory()->getName() . ' - ' . $page->getTitle();
             $result[] = $item;
         }
 

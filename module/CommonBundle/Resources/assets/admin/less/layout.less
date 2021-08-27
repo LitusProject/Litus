@@ -8,709 +8,714 @@
  */
 
 // Base
-html, body {
-    height: 100%;
+html,
+body {
+  height: 100%;
 }
 
 body {
-    background: @cWhite url(@iBaseBackground) 50% 0 repeat-x;
-    font-family: Tahoma, Verdana, Segoe, sans-serif;
-    font-size: @tSize;
-    color: @cText;
+  background: @cWhite url(@iBaseBackground) 50% 0 repeat-x;
+  font-family: Tahoma, Verdana, Segoe, sans-serif;
+  font-size: @tSize;
+  color: @cText;
 }
 
 h1 {
-    margin-top: 2*@defaultSpacing;
-    margin-bottom: @defaultSpacing;
-    font-size: @tSizeHeadingOne;
+  margin-top: 2 * @defaultSpacing;
+  margin-bottom: @defaultSpacing;
+  font-size: @tSizeHeadingOne;
 
-    &:first-child {
-        margin-top: 0;
-    }
+  &:first-child {
+    margin-top: 0;
+  }
 }
 
 h2 {
-    margin-top: 2*@defaultSpacing;
-    margin-bottom: @defaultSpacing;
-    font-size: @tSizeHeadingTwo;
+  margin-top: 2 * @defaultSpacing;
+  margin-bottom: @defaultSpacing;
+  font-size: @tSizeHeadingTwo;
 }
 
 #layout {
-    display: block;
-    position: relative;
-    width: @layoutWidth;
-    min-height: 100%;
-    height: auto !important;
-    height: 100%;
-    margin: 0 auto -@footerHeight auto;
-    background: @cBase;
+  display: block;
+  position: relative;
+  width: @layoutWidth;
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto -@footerHeight auto;
+  background: @cBase;
 }
 
 #helpButtonWrapper {
-    position: fixed;
-    top: 0;
-    left: 50%;
-    width: @layoutWidth;
-    height: 0;
-    margin-left: -@layoutWidth/2;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  width: @layoutWidth;
+  height: 0;
+  margin-left: -@layoutWidth / 2;
 }
 
 // Content
 #content:after {
-    .clearfix;
+  .clearfix;
 }
 
 // Header
 #content_header {
-    height: 106px;
-    margin-bottom: @defaultSpacing;
-    background: url(@iBaseBackground) 50% 0 repeat-x;
+  height: 106px;
+  margin-bottom: @defaultSpacing;
+  background: url(@iBaseBackground) 50% 0 repeat-x;
+
+  a {
+    position: absolute;
+    width: 139px;
+    height: 36px;
+    margin: 43px 0 0 26px;
+    display: block;
+    background: url(@iHeaderLogo) no-repeat;
+  }
+
+  p {
+    position: absolute;
+    right: 0;
+    top: 56px;
+    font-size: @tSizeSmall;
+
+    time {
+      color: @cWhite;
+      text-transform: uppercase;
+    }
+  }
+
+  #tag {
+    margin-top: @tSizeSmall + 3;
+    color: @cAccent;
 
     a {
-        &.litus {
-            position: absolute;
-            width: 139px;
-            height: 36px;
-            margin: 43px 0 0 26px;
-            display: block;
-            background: url(@iHeaderLitusLogo) no-repeat;
-        }
-
-        &.logo {
-            position: absolute;
-            left: 35%;
-            width: 30%;
-            height: 60px;
-            margin-top: 20px;
-            background: url(@iHeaderLogo) no-repeat center;
-        }
+      position: relative;
+      display: inline;
+      margin: 0;
+      text-decoration: none;
+      color: inherit;
+      background: none;
     }
 
-    p {
-        position: absolute;
-        right: 0;
-        top: 56px;
-        font-size: @tSizeSmall;
-
-        time {
-            color: @cWhite;
-            text-transform: uppercase;
-        }
+    a:hover {
+      text-decoration: underline;
     }
-
-    #tag {
-        margin-top: @tSizeSmall + 3;
-        color: @cAccent;
-
-        a {
-            position: relative;
-            display: inline;
-            margin: 0;
-            text-decoration: none;
-            color: inherit;
-            background: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-    }
+  }
 }
 
 // Navigation
 #content_nav {
-    float: left;
-    width: @leftSidebarWidth;
-    color: @cText;
+  float: left;
+  width: @leftSidebarWidth;
+  color: @cText;
 
-    .topmenu, .submenu {
-        display: block;
+  .topmenu,
+  .submenu {
+    display: block;
+  }
+
+  .topmenu {
+    margin-bottom: @defaultSpacing;
+
+    .title {
+      display: block;
+      height: @menuTitleHeight;
+      margin-bottom: @defaultSpacing;
+      line-height: @menuTitleHeight;
+      text-indent: @tIndent;
+      font-weight: bold;
+      color: @cWhite;
+      background: @cAccent;
     }
 
-    .topmenu {
-        margin-bottom: @defaultSpacing;
+    ul {
+      padding-bottom: 2 * @defaultSpacing - 1;
 
-        .title {
-            display: block;
-            height: @menuTitleHeight;
-            margin-bottom: @defaultSpacing;
-            line-height: @menuTitleHeight;
-            text-indent: @tIndent;
-            font-weight: bold;
-            color: @cWhite;
-            background: @cAccent;
+      li {
+        text-indent: @tIndent;
+
+        a {
+          display: block;
+          line-height: @menuItemHeight;
+          text-decoration: none;
+          color: inherit;
         }
 
-        ul {
-            padding-bottom: 2*@defaultSpacing - 1;
-
-            li {
-                text-indent: @tIndent;
-
-                a {
-                    display: block;
-                    line-height: @menuItemHeight;
-                    text-decoration: none;
-                    color: inherit;
-                }
-
-                a:hover {
-                    color: @cBlack;
-                }
-
-                a:before {
-                    content: @topMenuItem;
-                }
-
-                a:hover:before {
-                    content: @topMenuItem;
-                    color: @cAccent;
-                }
-            }
+        a:hover {
+          color: @cBlack;
         }
 
-        ul:last-child {
-            padding-bottom: 0;
-        }
+        // a:before {
+        //     content: @topMenuItem;
+        // }
+
+        // a:hover:before {
+        //     content: @topMenuItem;
+        //     color: @cAccent;
+        // }
+      }
     }
 
-    .submenu {
-        .title {
+    ul:last-child {
+      padding-bottom: 0;
+    }
+  }
+
+  .submenu {
+    .title {
+      display: block;
+      height: @menuTitleHeight;
+      line-height: @menuTitleHeight;
+      text-indent: @tIndent;
+      font-weight: bold;
+      color: @cAccent;
+      background: @cSubmenuTitleBackground;
+    }
+
+    .subtitle {
+      display: block;
+      height: @menuSubtitleHeight - @defaultSpacing;
+      padding-left: @tIndent;
+      padding-top: @defaultSpacing;
+      #gradient > .vertical(@cSubmenuGradientStart, @cSubmenuGradientStop);
+      cursor: pointer;
+
+      b {
+        color: @cBlack;
+      }
+    }
+
+    .subsubmenu {
+      padding: 0;
+      list-style: none;
+
+      li {
+        padding: 0;
+      }
+
+      ul {
+        display: none;
+        padding: @defaultSpacing 0;
+
+        li {
+          display: block;
+          padding-left: @tIndent;
+          line-height: @menuItemHeight;
+
+          a {
             display: block;
-            height: @menuTitleHeight;
-            line-height: @menuTitleHeight;
-            text-indent: @tIndent;
-            font-weight: bold;
+            line-height: @menuItemHeight;
+            text-decoration: none;
+            color: inherit;
+          }
+
+          a:hover {
+            color: @cBlack;
+          }
+
+          a:hover:before {
             color: @cAccent;
-            background: @cSubmenuTitleBackground;
+          }
         }
-
-        .subtitle {
-            display: block;
-            height: @menuSubtitleHeight - @defaultSpacing;
-            padding-left: @tIndent;
-            padding-top: @defaultSpacing;
-            #gradient > .vertical(@cSubmenuGradientStart, @cSubmenuGradientStop);
-            cursor: pointer;
-
-            b {
-                color: @cBlack;
-            }
-        }
-
-        .subsubmenu {
-            padding: 0;
-            list-style: none;
-
-            li {
-                padding: 0;
-            }
-
-            ul {
-                display: none;
-                padding: @defaultSpacing 0;
-
-                li {
-                    display: block;
-                    padding-left: @tIndent;
-                    line-height: @menuItemHeight;
-
-                    a {
-                        display: block;
-                        line-height: @menuItemHeight;
-                        text-decoration: none;
-                        color: inherit;
-                    }
-
-                    a:hover {
-                        color: @cBlack;
-                    }
-
-                    a:hover:before {
-                        color: @cAccent;
-                    }
-                }
-
-            }
-        }
+      }
     }
+  }
 }
 
 // Controller Content
 #content_controller {
-    float: right;
-    width: @layoutWidth - (@leftSidebarWidth + 2*@defaultSpacing);
-    min-height: @contentHeight;
-    height: auto !important;
-    height: @contentHeight;
-    padding-bottom: @defaultSpacing;
+  float: right;
+  width: @layoutWidth - (@leftSidebarWidth + 2 * @defaultSpacing);
+  min-height: @contentHeight;
+  height: auto !important;
+  height: @contentHeight;
+  padding-bottom: @defaultSpacing;
 
-    .controller_sub_header,
-    #controller_header {
-        height: @contentHeaderHeight;
-        margin: 0 @defaultSpacing @defaultSpacing 0;
-        line-height: @contentHeaderHeight;
-        background: url(@iBorder) repeat-x bottom;
+  .controller_sub_header,
+  #controller_header {
+    height: @contentHeaderHeight;
+    margin: 0 @defaultSpacing @defaultSpacing 0;
+    line-height: @contentHeaderHeight;
+    background: url(@iBorder) repeat-x bottom;
 
-        .title {
-            float: left;
-            margin-top: @iconHeight/2;
+    .title {
+      float: left;
+      margin-top: @iconHeight / 2;
 
-            span {
-                margin-left: 0;
-                padding-left: @iconWidth + 4;
-            }
-        }
-
-        .caret_sub_nav {
-            float: right;
-            font-size: 16px;
-            padding: 1px 5px;
-            margin: 4px 0;
-            height: 20px;
-            line-height: 20px;
-            cursor: pointer;
-
-            &:hover,
-            &.active {
-                background: #ccc;
-                color: @cWhite;
-            }
-        }
-
-        .controller_sub_nav,
-        #controller_nav {
-            display: block;
-            float: right;
-            margin-top: @iconHeight/4 - 2;
-
-            li {
-                display: inline;
-
-                .active {
-                    font-weight: bold;
-                }
-
-                a {
-                    padding: 0 @defaultSpacing 0 1px;
-                    text-decoration: none;
-                    color: inherit;
-                }
-
-                a:hover {
-                    color: @cBlack;
-                }
-            }
-
-            li:after {
-                content: @contentHeaderMenuItem;
-                color: @cBorder;
-            }
-
-            li:last-child {
-                a {
-                    padding-right: 0;
-                }
-            }
-
-            li:last-child:after {
-                content: none;
-            }
-        }
-
-        .controller_sub_nav {
-            float: left;
-        }
+      span {
+        margin-left: 0;
+        padding-left: @iconWidth + 4;
+      }
     }
 
-    .controller_sub_header {
-        overflow: hidden;
+    .caret_sub_nav {
+      float: right;
+      font-size: 16px;
+      padding: 1px 5px;
+      margin: 4px 0;
+      height: 20px;
+      line-height: 20px;
+      cursor: pointer;
+
+      &:hover,
+      &.active {
+        background: #ccc;
+        color: @cWhite;
+      }
     }
 
-    #controller_action {
-        float: left;
+    .controller_sub_nav,
+    #controller_nav {
+      display: block;
+      float: right;
+      margin-top: @iconHeight / 4 - 2;
 
-        img {
-            margin: 5px 0 0 5px;
-            .box-shadow(0 0 5px 2px #7F7C7C);
+      li {
+        display: inline;
 
-            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4*@defaultSpacing) - 10;
-        }
-
-        .chart {
-            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4*@defaultSpacing) - 10;
-        }
-
-        .form {
-            padding: 0;
-
-            .row {
-                clear: both;
-                padding-top: 2*@defaultSpacing;
-                width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4*@defaultSpacing);
-
-                .label {
-                    float: left;
-                    width: @formLabelWidth;
-                    margin-top: @formSpacing;
-                    height: 0px;
-                    text-align: right;
-                }
-
-                .field {
-                    float: right;
-                    width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4*@defaultSpacing) - (@formLabelWidth + 2*@defaultSpacing);
-                    text-align: left;
-                }
-            }
-
-            .errors {
-                clear: both;
-                margin-left: @formLabelWidth + 4*@defaultSpacing;
-                padding-top: @formSpacing;
-
-                li {
-                    color: @cError;
-                }
-            }
-
-            .required {
-                font-weight: bold;
-            }
-
-            .required:after {
-                content: @formRequired;
-            }
+        .active {
+          font-weight: bold;
         }
 
         a {
-            color: inherit;
-
-            &.icon {
-                padding-left: 20px;
-            }
+          padding: 0 @defaultSpacing 0 1px;
+          text-decoration: none;
+          color: inherit;
         }
 
-        .pagination {
-            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4*@defaultSpacing);
-
-            tr {
-                td {
-                    height: @paginationHeight;
-                    text-align: center;
-                    background: none;
-                }
-
-                td:first-child, td:last-child {
-                    width: @paginationSideWidth;
-                }
-
-                td:first-child {
-                    padding-left: @defaultSpacing;
-                    text-indent: 0;
-                    text-align: left;
-                }
-
-                td:last-child {
-                    padding-right: @defaultSpacing;
-                    text-align: right;
-                }
-            }
+        a:hover {
+          color: @cBlack;
         }
+      }
 
-        .moreResults {
-            a {
-                text-decoration: none;
-                color: @cText;
-            }
+      li:after {
+        content: @contentHeaderMenuItem;
+        color: @cBorder;
+      }
+
+      li:last-child {
+        a {
+          padding-right: 0;
         }
+      }
 
-        .sortable {
-            ul {
-                margin: 2*@defaultSpacing;
-
-                li {
-                    margin: @defaultSpacing/2 0;
-                    padding-left: @iconWidth + 4;
-
-                    .disableSelect;
-                }
-
-                li:hover {
-                    cursor: move;
-                }
-            }
-        }
+      li:last-child:after {
+        content: none;
+      }
     }
 
-    .flashmessage {
-        width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4*@defaultSpacing);
-        margin: 0 @defaultSpacing 2*@defaultSpacing 0;
+    .controller_sub_nav {
+      float: left;
+    }
+  }
 
-        .title {
+  .controller_sub_header {
+    overflow: hidden;
+  }
+
+  #controller_action {
+    float: left;
+
+    img {
+      margin: 5px 0 0 5px;
+      .box-shadow(0 0 5px 2px #7f7c7c);
+
+      width: @layoutWidth -
+        (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - 10;
+    }
+
+    .chart {
+      width: @layoutWidth -
+        (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - 10;
+    }
+
+    .form {
+      padding: 0;
+
+      .row {
+        clear: both;
+        padding-top: 2 * @defaultSpacing;
+        width: @layoutWidth -
+          (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
+
+        .label {
+          float: left;
+          width: @formLabelWidth;
+          margin-top: @formSpacing;
+          height: 0px;
+          text-align: right;
+        }
+
+        .field {
+          float: right;
+          width: @layoutWidth -
+            (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) -
+            (@formLabelWidth + 2 * @defaultSpacing);
+          text-align: left;
+        }
+      }
+
+      .errors {
+        clear: both;
+        margin-left: @formLabelWidth + 4 * @defaultSpacing;
+        padding-top: @formSpacing;
+
+        li {
+          color: @cError;
+        }
+      }
+
+      .required {
+        font-weight: bold;
+      }
+
+      .required:after {
+        content: @formRequired;
+      }
+    }
+
+    a {
+      color: inherit;
+
+      &.icon {
+        padding-left: 20px;
+      }
+    }
+
+    .pagination {
+      width: @layoutWidth -
+        (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
+
+      tr {
+        td {
+          height: @paginationHeight;
+          text-align: center;
+          background: none;
+        }
+
+        td:first-child,
+        td:last-child {
+          width: @paginationSideWidth;
+        }
+
+        td:first-child {
+          padding-left: @defaultSpacing;
+          text-indent: 0;
+          text-align: left;
+        }
+
+        td:last-child {
+          padding-right: @defaultSpacing;
+          text-align: right;
+        }
+      }
+    }
+
+    .moreResults {
+      a {
+        text-decoration: none;
+        color: @cText;
+      }
+    }
+
+    .sortable {
+      ul {
+        margin: 2 * @defaultSpacing;
+
+        li {
+          margin: @defaultSpacing / 2 0;
+          padding-left: @iconWidth + 4;
+
+          .disableSelect;
+        }
+
+        li:hover {
+          cursor: move;
+        }
+      }
+    }
+  }
+
+  .flashmessage {
+    width: @layoutWidth -
+      (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing);
+    margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
+
+    .title {
+      display: block;
+      height: @sideboxTitleHeight;
+      line-height: @sideboxTitleHeight;
+      text-indent: @tIndent;
+      text-transform: uppercase;
+      font-size: @tSizeSmall;
+      font-weight: bold;
+      color: @cWhite;
+    }
+
+    .content {
+      padding: @defaultSpacing;
+      color: @cWhite;
+
+      p {
+        margin-top: 2 * @defaultSpacing;
+
+        a {
+          text-decoration: none;
+          font-weight: bold;
+          color: inherit;
+        }
+
+        a:hover {
+          text-decoration: underline;
+        }
+      }
+
+      p:first-child {
+        margin-top: 0;
+      }
+    }
+  }
+
+  .success_message {
+    .title {
+      background: @cSuccessTitleBackground;
+    }
+
+    .content {
+      background: @cSuccessBackground;
+    }
+  }
+
+  .error_message,
+  .danger_message {
+    .title {
+      background: @cErrorTitleBackground;
+    }
+
+    .content {
+      background: @cErrorBackground;
+    }
+  }
+
+  .warning_message {
+    .title {
+      background: @cWarningTitleBackground;
+    }
+
+    .content {
+      background: @cWarningBackground;
+    }
+  }
+
+  .info_message {
+    .title {
+      background: @cNoticeTitleBackground;
+    }
+
+    .content {
+      background: @cNoticeBackground;
+    }
+  }
+
+  .full_width {
+    width: @layoutWidth - (@leftSidebarWidth + 3 * @defaultSpacing) !important;
+  }
+
+  .three_quarter_width {
+    width: @layoutWidth -
+      (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) !important;
+  }
+
+  .table_default_width {
+    width: @layoutWidth -
+      (@leftSidebarWidth + @sideboxWidth + 5 * @defaultSpacing) !important;
+  }
+
+  .half_width {
+    width: (
+        @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing)
+      )/2 !important;
+    float: left;
+    margin-right: @defaultSpacing;
+
+    .gollum-editor {
+      width: (
+          @layoutWidth -
+            (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing)
+        ) * 3/4 !important;
+    }
+  }
+
+  aside {
+    float: right;
+    clear: right;
+    width: @sideboxWidth;
+
+    .sidebox {
+      margin: 0 @defaultSpacing 2 * @defaultSpacing 0;
+
+      .title {
+        display: block;
+        height: @sideboxTitleHeight;
+        line-height: @sideboxTitleHeight;
+        text-indent: @tIndent;
+        text-transform: uppercase;
+        font-size: @tSizeSmall;
+        font-weight: bold;
+        color: @cWhite;
+        background: @cSideboxTitleBackground;
+      }
+
+      .content {
+        padding: @defaultSpacing;
+        color: @cWhite;
+        font-weight: 200;
+        background: @cSideboxBackground;
+
+        p {
+          margin-top: 2 * @defaultSpacing;
+
+          a {
             display: block;
-            height: @sideboxTitleHeight;
-            line-height: @sideboxTitleHeight;
-            text-indent: @tIndent;
-            text-transform: uppercase;
-            font-size: @tSizeSmall;
+            margin-top: 2px;
+            padding-left: @defaultSpacing;
+            text-decoration: none;
+            color: @cWhite;
+          }
+
+          a:first-child {
+            margin-top: 0;
+          }
+
+          a:hover {
             font-weight: bold;
-            color: @cWhite;
+          }
         }
 
-        .content {
-            padding: @defaultSpacing;
-            color: @cWhite;
-
-            p {
-                margin-top: 2*@defaultSpacing;
-
-                a {
-                    text-decoration: none;
-                    font-weight: bold;
-                    color: inherit;
-                }
-
-                a:hover {
-                    text-decoration: underline;
-                }
-            }
-
-            p:first-child {
-                margin-top: 0;
-            }
+        p:first-child {
+          margin-top: 0;
         }
+      }
     }
-
-    .success_message {
-        .title {
-            background: @cSuccessTitleBackground;
-        }
-
-        .content {
-            background: @cSuccessBackground;
-        }
-    }
-
-    .error_message,
-    .danger_message {
-        .title {
-            background: @cErrorTitleBackground;
-        }
-
-        .content {
-            background: @cErrorBackground;
-        }
-    }
-
-    .warning_message {
-        .title {
-            background: @cWarningTitleBackground;
-        }
-
-        .content {
-            background: @cWarningBackground;
-        }
-    }
-
-    .info_message {
-        .title {
-            background: @cNoticeTitleBackground;
-        }
-
-        .content {
-            background: @cNoticeBackground;
-        }
-    }
-
-    .full_width {
-        width: @layoutWidth - (@leftSidebarWidth + 3*@defaultSpacing) !important;
-    }
-
-    .three_quarter_width {
-        width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4*@defaultSpacing) !important;
-    }
-
-    .table_default_width {
-        width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 5*@defaultSpacing) !important;
-    }
-
-    .half_width {
-        width: (@layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4*@defaultSpacing))/2 !important;
-        float: left;
-        margin-right: @defaultSpacing;
-
-        .gollum-editor {
-            width: (@layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4*@defaultSpacing))*3/4 !important;
-        }
-    }
-
-    aside {
-        float: right;
-        clear: right;
-        width: @sideboxWidth;
-
-        .sidebox {
-            margin: 0 @defaultSpacing 2*@defaultSpacing 0;
-
-            .title {
-                display: block;
-                height: @sideboxTitleHeight;
-                line-height: @sideboxTitleHeight;
-                text-indent: @tIndent;
-                text-transform: uppercase;
-                font-size: @tSizeSmall;
-                font-weight: bold;
-                color: @cWhite;
-                background: @cSideboxTitleBackground;
-            }
-
-            .content {
-                padding: @defaultSpacing;
-                color: @cWhite;
-                font-weight: 200;
-                background: @cSideboxBackground;
-
-                p {
-                    margin-top: 2*@defaultSpacing;
-
-                    a {
-                        display: block;
-                        margin-top: 2px;
-                        padding-left: @defaultSpacing;
-                        text-decoration: none;
-                        color: @cWhite;
-                    }
-
-                    a:first-child {
-                        margin-top: 0;
-                    }
-
-                    a:hover {
-                        font-weight: bold;
-                    }
-                }
-
-                p:first-child {
-                    margin-top: 0;
-                }
-            }
-        }
-    }
+  }
 }
 
 .sub_nav_dropdown {
-    position: absolute;
-    background: #ccc;
-    padding: 10px 20px;
+  position: absolute;
+  background: #ccc;
+  padding: 10px 20px;
 
-    a {
-        display: block;
-        padding: 3px 0;
-        color: @cText;
-        text-decoration: none;
+  a {
+    display: block;
+    padding: 3px 0;
+    color: @cText;
+    text-decoration: none;
 
-        &:hover {
-            color: @cBlack;
-        }
-
-        &.active {
-            font-weight: bold;
-        }
+    &:hover {
+      color: @cBlack;
     }
+
+    &.active {
+      font-weight: bold;
+    }
+  }
 }
 
 ul.errors {
-    li {
-        color: @cError;
-    }
+  li {
+    color: @cError;
+  }
 }
 
 // Footer
 #footer_push {
-    height: @footerHeight;
-    display: block;
-    clear: both;
+  height: @footerHeight;
+  display: block;
+  clear: both;
 }
 
 footer {
-    position: relative;
-    width: @layoutWidth - 4*@defaultSpacing;
-    height: @footerHeight;
-    margin: 0 auto;
-    line-height: @footerHeight;
-    text-indent: 2*@defaultSpacing;
-    color: @cText;
-    font-size: @tSizeSmall;
-    background: url(@iBorder) repeat-x 0 0;
+  position: relative;
+  width: @layoutWidth - 4 * @defaultSpacing;
+  height: @footerHeight;
+  margin: 0 auto;
+  line-height: @footerHeight;
+  text-indent: 2 * @defaultSpacing;
+  color: @cText;
+  font-size: @tSizeSmall;
+  background: url(@iBorder) repeat-x 0 0;
 
-    a {
-        text-decoration: underline;
-        color: @cFooterLink;
-    }
+  a {
+    text-decoration: underline;
+    color: @cFooterLink;
+  }
 
-    a:hover {
-        text-decoration: none;
-        color: inherit;
-    }
+  a:hover {
+    text-decoration: none;
+    color: inherit;
+  }
 
-    .right {
-        float: right;
-        margin-right: 2*@defaultSpacing;
-    }
+  .right {
+    float: right;
+    margin-right: 2 * @defaultSpacing;
+  }
 }
 
 .hide {
-    display: none;
+  display: none;
 }
 .show {
-    display: block;
+  display: block;
 }
 
 pre {
-    white-space: pre-wrap;
-    word-break: break-all;
-    word-wrap: break-word;
+  white-space: pre-wrap;
+  word-break: break-all;
+  word-wrap: break-word;
 }
 
 dl {
-    dt {
-        font-weight: bold;
-    }
+  dt {
+    font-weight: bold;
+  }
 
-    dd {
-        margin-left: 20px;
-    }
+  dd {
+    margin-left: 20px;
+  }
 }
 
 .search-button {
-    float: right;
-    width: @iconWidth;
-    height: @iconHeight;
-    margin-right: 10px;
-    cursor: pointer;
-    background: url(@iIcons) no-repeat 0 -31*@iconHeight;
+  float: right;
+  width: @iconWidth;
+  height: @iconHeight;
+  margin-right: 10px;
+  cursor: pointer;
+  background: url(@iIcons) no-repeat 0 -31 * @iconHeight;
 }
 
 .info-button {
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    font-size: 10px;
-    background: #7f7c7c;
-    border-radius: 10px;
-    text-align: center;
-    line-height: 15px;
-    color: #fff;
-    cursor: pointer;
-    text-indent: 0;
-    text-transform: uppercase;
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  font-size: 10px;
+  background: #7f7c7c;
+  border-radius: 10px;
+  text-align: center;
+  line-height: 15px;
+  color: #fff;
+  cursor: pointer;
+  text-indent: 0;
+  text-transform: uppercase;
 }
 
 .ui-widget-content {
-    button {
-        height: auto;
-        margin: 0;
-        text-indent: 0;
-    }
+  button {
+    height: auto;
+    margin: 0;
+    text-indent: 0;
+  }
 }

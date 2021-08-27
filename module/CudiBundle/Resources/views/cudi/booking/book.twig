@@ -3,9 +3,8 @@
 {% import 'site/partials/form.twig' as forms %}
 
 {% block content %}
-    <div class="page-header">
-        <h1>{{ translate('Book Textbooks') }}</h1>
-    </div>
+
+    {# Alerts on page #}
     <div class="page-alert">
         <div class="flashmessage alert alert-danger alert-fixed-top fade" id="keep_updated_error">
             <a class="close">&times;</a>
@@ -31,185 +30,261 @@
     {% if authenticatedPerson is null %}
         {{ translate('Please login to book textbooks.') }}
     {% else %}
-        {% if hasAccess('cudi_booking', 'search') or hasAccess('cudi_booking', 'keepUpdated') %}
-            <div style="height: 30px" class="hidden-xs hidden-sm">
-                <div class="pull-right">
+
+    {# Content #}
+    <div class="container"> 
+
+        <div class="spacer40"></div>
+        <div class="flexHorizontal">
+            <h1 style="margin-bottom: 5px">{{ translate('Book Textbooks') }}</h1>
+            <div class="flexStretch"></div>
+            {% if hasAccess('cudi_booking', 'search') or hasAccess('cudi_booking', 'keepUpdated') %}
+                <div>
+                    {# PAS DEZE NOG AAN --> refresh pagina needed? #}
                     {% if hasAccess('cudi_booking', 'keepUpdated') %}
-                        <button class="btn btn-warning" id="keepUpdated" {% if isSubscribed %}style="display: none"{% endif %} rel="tooltip" data-toggle="tooltip" title="{{ translate('You will receive an e-mail when the catalog is updated.') }}">{{ translate('Enable catalog update mails') }}</button>
-                        <button class="btn btn-warning" id="dontKeepUpdated" {% if not isSubscribed %}style="display: none"{% endif %} rel="tooltip" data-toggle="tooltip" title="{{ translate('You won\'t receive an e-mail when the catalog is updated.') }}">{{ translate('Disable catalog update mails') }}</button>
+                        <div class="button blue unfilled" {% if isSubscribed %}style="display: none"{% endif %}><a id="keepUpdated" rel="tooltip" data-toggle="tooltip" title="{{ translate('You will receive an e-mail when the catalog is updated.') }}">{{ translate('Enable catalog update mails') }}</a></div>
+                        <div class="button blue unfilled" {% if not isSubscribed %}style="display: none"{% endif %}><a id="dontKeepUpdated" rel="tooltip" data-toggle="tooltip" title="{{ translate('You won\'t receive an e-mail when the catalog is updated.') }}">{{ translate('Disable catalog update mails') }}</a></div>
                     {% endif %}
                     {% if hasAccess('cudi_booking', 'search') %}
-                        <a href="#" id="searchArticles" class="btn btn-info">{{ translate('Search') }}</a>
+                        <div class="button blue unfilled"><a href="#" id="searchArticles">{{ translate('Search') }}</a></div>
                     {% endif %}
                 </div>
-            </div>
 
-            {% if hasAccess('cudi_booking', 'search') %}
-                <div id="searchArticlesPage" style="display: none;margin-top: 10px;">
-                    {{ forms.renderForm(searchForm) }}
+                {# STILL TO DO #}
+                {% if hasAccess('cudi_booking', 'search') %}
+                    <div id="searchArticlesPage" style="display: none;margin-top: 10px;">
+                        {{ forms.renderForm(searchForm) }}
 
-                    <table class="table bookings">
-                        <thead>
-                            <tr>
-                                <th>{{ translate('Title') }}</th>
-                                <th class="hidden-xs">{{ translate('Authors') }}</th>
-                                <th style="min-width: 100px">{{ translate('Price / Piece') }}</th>
-                                {% if showMandatory %}
-                                <th class="hidden-xs" style="min-width: 60px">{{ translate('Mandatory') }}</th>
-                                {% endif %}
-                                <th class="hidden-xs" style="min-width: 70px">{{ translate('Remarks') }}</th>
-                                <th style="min-width: 100px"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="spacer">
-                                <td colspan="7"></td>
-                            </tr>
-                            <tr class="course-title">
-                                <td colspan="7"><i>{{ translate('No Articles Found') }}</i></td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <a class="btn btn-default pull-left" href="{{ url('cudi_booking', {'action' : 'view'}) }}">{{ translate('Back') }}</a>
-                    <button id="bookSearchArticles" class="btn btn-primary pull-right" style="display: none">{{ translate('Book') }}</button>
-                </div>
-            {% endif %}
-        {% endif %}
-
-        <div id="viewArticlesPage">
-            {% if form is defined %}
-                {% do form.prepare() %}
-                {% autoescape false %}
-                    {{ form().openTag(form) }}
-                    {{ formElement(form.get('csrf')) }}
-
-                    <table class="table bookings">
-                        <thead>
-                            <tr>
-                                <th>{{ translate('Title') }}</th>
-                                <th class="hidden-xs">{{ translate('Authors') }}</th>
-                                <th style="min-width: 100px">{{ translate('Price / Piece') }}</th>
-                                {% if showMandatory %}
-                                <th class="hidden-xs" style="min-width: 60px">{{ translate('Mandatory') }}</th>
-                                {% endif %}
-                                <th class="hidden-xs" style="min-width: 70px">{{ translate('Remarks') }}</th>
-                                <th style="min-width: 100px"></th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            {% for subjectArticle in subjectArticleMap %}
+                        <table class="table bookings">
+                            <thead>
+                                <tr>
+                                    <th>{{ translate('Title') }}</th>
+                                    <th class="hidden-xs">{{ translate('Authors') }}</th>
+                                    <th style="min-width: 100px">{{ translate('Price / Piece') }}</th>
+                                    {% if showMandatory %}
+                                    <th class="hidden-xs" style="min-width: 60px">{{ translate('Mandatory') }}</th>
+                                    {% endif %}
+                                    <th class="hidden-xs" style="min-width: 70px">{{ translate('Remarks') }}</th>
+                                    <th style="min-width: 100px"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
                                 <tr class="spacer">
                                     <td colspan="7"></td>
                                 </tr>
-
-                                <tr {% if null != subjectArticle['subject'] %}class="course-title"{% endif %}>
-                                    <td colspan="7" {% if null == subjectArticle['subject'] %}style="border: none;"{% endif %}>
-                                        {% if null == subjectArticle['subject'] %}
-                                            <h1>{{ translate('General') }}</h1>
-                                        {% else %}
-                                            {{ subjectArticle['subject'].getCode() }} - {{ subjectArticle['subject'].getName() }}
-                                        {% endif %}
-                                    </td>
+                                <tr class="course-title">
+                                    <td colspan="7"><i>{{ translate('No Articles Found') }}</i></td>
                                 </tr>
+                            </tbody>
+                        </table>
 
-                                {% for map in subjectArticle['articles'] %}
-                                    <tr class="{% if map['booked'] > 0 %}warning{% endif %} {% if map['sold'] > 0 %}success{% endif %}">
-                                        <td>{{ map['article'].getMainArticle().getTitle() }}</td>
-                                        <td class="hidden-xs">{{ map['article'].getMainArticle().getAuthors() }}</td>
-                                        <td>
-                                            {% if map['article'].getDiscounts()|length > 0 %}
-                                                <span rel="popover" data-original-title="{{ translate('Discounts') }}" data-content="
-                                                {% for discount in map['article'].getDiscounts() %}
-                                                    <span class='badge'>{{ translate(discount.getType()) }} {% if discount.getOrganization() %}{{ discount.getOrganization().getName() }}{% endif %}</span> &euro; {{ (discount.apply(map['article'].getSellPrice())/100)|number_format(2) }}<br/>
-                                                {% endfor %}
-                                            " data-placement="right" style="cursor: pointer">&euro; {{ (map['article'].getSellPrice()/100)|number_format(2) }} <span class="glyphicon glyphicon-info-sign"></span></span>
+                        <div class="button blue unfilled"><a href="{{ url('cudi_booking', {'action' : 'view'}) }}">{{ translate('Back') }}</a></div>
+                        <div class="button blue unfilled"><a id="bookSearchArticles" style="display: none">{{ translate('Book') }}</a></div>
+                    </div>
+                {% endif %}
+            {% endif %}
+
+        </div>
+
+        <div>
+            <div style="display: inline-block; padding: 5px 10px; font-size: 12px; background-color: #dff0d8">{{ translate("Bought") }}</div>
+            <div style="display: inline-block; padding: 5px 10px; font-size: 12px; background-color: #fcf8e3">{{ translate("Booked")}}</div>
+        </div>
+
+        {% if isic.enable %}
+            <div class="alert alert-info">
+                <p>
+                    <b>{{ translate('VTK provides you with ISIC cards.') }} <a href="https://vtk.be/page/name/isic/">{{ translate('click here') }}</a> </b>
+                </p>
+            </div>
+        {% endif %}
+
+        {% if authenticatedPerson is null %}
+            {{ translate('Please login to book textbooks.') }}
+        {% else %}
+            {# {% if hasAccess('cudi_booking', 'search') or hasAccess('cudi_booking', 'keepUpdated') %}
+                <div style="height: 60px" class="hidden-xs hidden-sm">
+                    <div class="pull-right">
+                        {% if hasAccess('cudi_booking', 'keepUpdated') %}
+                            <button class="btn btn-warning" id="keepUpdated" {% if isSubscribed %}style="display: none"{% endif %} rel="tooltip" data-toggle="tooltip" title="{{ translate('You will receive an e-mail when the catalog is updated.') }}">{{ translate('Enable catalog update mails') }}</button>
+                            <button class="btn btn-warning" id="dontKeepUpdated" {% if not isSubscribed %}style="display: none"{% endif %} rel="tooltip" data-toggle="tooltip" title="{{ translate('You won\'t receive an e-mail when the catalog is updated.') }}">{{ translate('Disable catalog update mails') }}</button>
+                        {% endif %}
+                        {% if hasAccess('cudi_booking', 'search') %}
+                            <a href="#" id="searchArticles" class="btn btn-info">{{ translate('Search') }}</a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% if hasAccess('cudi_booking', 'search') %}
+                    <div id="searchArticlesPage" style="display: none;margin-top: 10px;">
+                        {{ forms.renderForm(searchForm) }}
+
+                        <table class="table bookings">
+                            <thead>
+                                <tr>
+                                    <th>{{ translate('Title') }}</th>
+                                    <th class="hidden-xs">{{ translate('Authors') }}</th>
+                                    <th style="min-width: 100px">{{ translate('Price / Piece') }}</th>
+                                    {% if showMandatory %}
+                                    <th class="hidden-xs" style="min-width: 60px">{{ translate('Mandatory') }}</th>
+                                    {% endif %}
+                                    <th class="hidden-xs" style="min-width: 70px">{{ translate('Remarks') }}</th>
+                                    <th style="min-width: 100px"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="spacer">
+                                    <td colspan="7"></td>
+                                </tr>
+                                <tr class="course-title">
+                                    <td colspan="7"><i>{{ translate('No Articles Found') }}</i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <a class="btn btn-default pull-left" href="{{ url('cudi_booking', {'action' : 'view'}) }}">{{ translate('Back') }}</a>
+                        <button id="bookSearchArticles" class="btn btn-primary pull-right" style="display: none">{{ translate('Book') }}</button>
+                    </div>
+                {% endif %}
+            {% endif %} #}
+
+            <div id="viewArticlesPage">
+                {% if form is defined %}
+                    {% do form.prepare() %}
+                    {% autoescape false %}
+                        {{ form().openTag(form) }}
+                        {{ formElement(form.get('csrf')) }}
+
+                        <div class="spacer40"></div>
+
+                        <table class="table bookings">
+                            <thead>
+                                <tr>
+                                    <th>{{ translate('Title') }}</th>
+                                    <th class="hidden-xs">{{ translate('Authors') }}</th>
+                                    <th style="min-width: 100px">{{ translate('Price / Piece') }}</th>
+                                    {% if showMandatory %}
+                                    <th class="hidden-xs" style="min-width: 60px">{{ translate('Mandatory') }}</th>
+                                    {% endif %}
+                                    <th class="hidden-xs" style="min-width: 70px">{{ translate('Remarks') }}</th>
+                                    <th style="min-width: 100px"></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for subjectArticle in subjectArticleMap %}
+                                    <tr class="spacer">
+                                        <td colspan="7"></td>
+                                    </tr>
+
+                                    <tr class="course-title">
+                                        <td colspan="7" class="course-title-inner">
+                                            {% if null == subjectArticle['subject'] %}
+                                                {{ translate('General') }}
                                             {% else %}
-                                                <span>&euro; {{ (map['article'].getSellPrice()/100)|number_format(2) }}</span>
-                                            {% endif %}
-                                        </td>
-                                        {% if showMandatory %}
-                                        <td class="hidden-xs">{{ map['mandatory'] ? '&times;' : '' }}</td>
-                                        {% endif %}
-                                        <td class="hidden-xs">
-                                            {% if map['comments']|length > 0 %}
-                                                <a rel="popover" data-original-title="{{ translate('Comments') }}" data-content="
-
-                                                {% for comment in map['comments'] %}
-                                                    <span class='badge badge-info'>{{ loop.index }}</span> {{ comment.getText()|escape }}<br/>
-                                                {% endfor %}
-
-                                                " data-placement="left" class="label label-warning">{{ map['comments']|length }} {{ map['comments']|length > 1 ? translate('Remarks') : translate('Remark') }}</a>
-                                            {% endif %}
-                                        </td>
-                                        <td style="text-align: center;">
-                                            {% if map['bookable'] %}
-                                                {% set name = 'article-' ~ map['article'].getId() %}
-                                                {% set element = form.get(name) %}
-                                                {{ formElement(element) }}
-
-                                                <a href="#" class="decrease-value"><span class="glyphicon glyphicon-minus-sign pull-left" style="margin-top: 3px;"></span></a><b>0</b><a href="#" class="increase-value"><span class="glyphicon glyphicon-plus-sign pull-right" style="margin-top: 3px;"></span></a>
-                                            {% else %}
-                                                <span class="label label-info hidden-xs">{{ translate('Not Bookable') }}</span>
+                                                {{ subjectArticle['subject'].getCode() }} - {{ subjectArticle['subject'].getName() }}
                                             {% endif %}
                                         </td>
                                     </tr>
 
-                                    {% if element.getMessages()|length > 0  and map['bookable'] %}
+                                    {% for map in subjectArticle['articles'] %}
+                                        <tr class="{% if map['booked'] > 0 %}warning{% endif %} {% if map['sold'] > 0 %}success{% endif %}">
+                                            <td>{{ map['article'].getMainArticle().getTitle() }}</td>
+                                            <td class="hidden-xs">{{ map['article'].getMainArticle().getAuthors() }}</td>
+                                            <td>
+                                                {% if map['article'].getDiscounts()|length > 0 %}
+                                                    <span rel="popover" data-original-title="{{ translate('Discounts') }}" data-content="
+                                                    {% for discount in map['article'].getDiscounts() %}
+                                                        <span class='badge'>{{ translate(discount.getType()) }} {% if discount.getOrganization() %}{{ discount.getOrganization().getName() }}{% endif %}</span> &euro; {{ (discount.apply(map['article'].getSellPrice())/100)|number_format(2) }}<br/>
+                                                    {% endfor %}
+                                                " data-placement="right" style="cursor: pointer">&euro; {{ (map['article'].getSellPrice()/100)|number_format(2) }} <span class="glyphicon glyphicon-info-sign"></span></span>
+                                                {% else %}
+                                                    <span>&euro; {{ (map['article'].getSellPrice()/100)|number_format(2) }}</span>
+                                                {% endif %}
+                                            </td>
+                                            {% if showMandatory %}
+                                            <td class="hidden-xs">{{ map['mandatory'] ? '&times;' : '' }}</td>
+                                            {% endif %}
+                                            <td class="hidden-xs">
+                                                {% if map['comments']|length > 0 %}
+                                                    <a rel="popover" data-original-title="{{ translate('Comments') }}" data-content="
+
+                                                    {% for comment in map['comments'] %}
+                                                        <span class='badge badge-info'>{{ loop.index }}</span> {{ comment.getText()|escape }}<br/>
+                                                    {% endfor %}
+
+                                                    " data-placement="left" class="label label-warning">{{ map['comments']|length }} {{ map['comments']|length > 1 ? translate('Remarks') : translate('Remark') }}</a>
+                                                {% endif %}
+                                            </td>
+                                            <td style="text-align: center;">
+                                                {% if map['bookable'] %}
+                                                    {% set name = 'article-' ~ map['article'].getId() %}
+                                                    {% set element = form.get(name) %}
+                                                    {{ formElement(element) }}
+
+                                                    <a href="#" class="decrease-value"><span class="glyphicon glyphicon-minus-sign pull-left" style="margin-top: 3px;"></span></a><b>0</b><a href="#" class="increase-value"><span class="glyphicon glyphicon-plus-sign pull-right" style="margin-top: 3px;"></span></a>
+                                                {% else %}
+                                                    <span class="label label-info hidden-xs">{{ translate('Not Bookable') }}</span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+
+                                        {% if element.getMessages()|length > 0  and map['bookable'] %}
+                                            <tr>
+                                                <td colspan="7" style="border-top-width:0px;">
+                                                    <div class="help-block pull-right">
+                                                        {{ formElementErrors(element) }}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                    {% else %}
                                         <tr>
                                             <td colspan="7" style="border-top-width:0px;">
-                                                <div class="help-block pull-right">
-                                                    {{ formElementErrors(element) }}
+                                                <div>
+                                                    <em>{{ translate('No articles available for this subject.') }}</em>
                                                 </div>
                                             </td>
                                         </tr>
-                                    {% endif %}
-                                {% else %}
-                                    <tr>
-                                        <td colspan="7" style="border-top-width:0px;">
-                                            <div>
-                                                <em>{{ translate('No articles available for this subject.') }}</em>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    {% endfor %}
                                 {% endfor %}
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
 
-                    <div>
-                        <a class="btn btn-default" href="{{ url('cudi_booking', {'action' : 'view'}) }}">{{ translate('Back') }}</a>
+                        <div>
+                            <div class="button blue unfilled"><a href="{{ url('cudi_booking', {'action' : 'view'}) }}">{{ translate('Back') }}</a></div>
 
-                        {% if form.get('submit') %}
-                            {{ formElement(form.get('submit')) }}
-                        {% endif %}
-                    </div>
+                            {% if form.get('submit') %}
+                                {{ formElement(form.get('submit')) }}
+                            {% endif %}
+                        </div>
 
-                    {{ form().closeTag() }}
-                {% endautoescape %}
-            {% endif %}
+                        {{ form().closeTag() }}
+                    {% endautoescape %}
+                {% endif %}
 
-            <table class="table" style="width:16.6666%;margin: 0 auto;">
-                <thead>
-                    <tr>
-                        <th>{{ translate("Color") }}</th>
-                        <th>{{ translate("Status") }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="warning" style="width:40px">&nbsp;</td>
-                        <td>{{ translate("Booked") }}</td>
-                    </tr>
-                    <tr>
-                        <td class="success" style="width:20px">&nbsp;</td>
-                        <td>{{ translate("Bought") }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    {% endif %}
+                {# <table class="table" style="width:16.6666%;margin: 0 auto;">
+                    <thead>
+                        <tr>
+                            <th>{{ translate("Color") }}</th>
+                            <th>{{ translate("Status") }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="warning" style="width:40px">&nbsp;</td>
+                            <td>{{ translate("Booked") }}</td>
+                        </tr>
+                        <tr>
+                            <td class="success" style="width:20px">&nbsp;</td>
+                            <td>{{ translate("Bought") }}</td>
+                        </tr>
+                    </tbody>
+                </table> #}
+            </div>
+        {% endif %}
+
+    </div>
 {% endblock %}
 
 {% block content_script %}

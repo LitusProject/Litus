@@ -78,9 +78,6 @@ return array(
         'br_admin_request' => array(
             'reject', 'approve', 'manage', 'view',
         ),
-        'br_admin_communication' => array(
-            'add', 'manage', 'delete', 'view',
-        ),
         'br_career_index' => array(
             'index',
         ),
@@ -109,7 +106,7 @@ return array(
             'login', 'logout',
         ),
         'br_corporate_index' => array(
-            'index',
+            'index', 'events', 'login'
         ),
         'br_corporate_jobfair' => array(
             'overview',

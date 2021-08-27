@@ -34,7 +34,7 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $stdKeys = array('name', 'vat_number', 'phone_number', 'website');
+    private static $stdKeys = array('name', 'vat_number', 'phone_number', 'website', 'large');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -102,7 +102,8 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $object->getPage()->setYears($years)
-            ->setDescription($data['page']['description']);
+            ->setDescription($data['page']['description'])
+            ->setShortDescription($data['page']['shortDescription']);
         if (isset($data['page']['atEvent'])) {
             $object->getPage()->setAtEvent($data['page']['atEvent']);
         }
@@ -148,7 +149,7 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
                 $data['page']['years'][] = $year->getId();
             }
             $data['page']['description'] = $page->getDescription();
-            $data['page']['atEvent'] = $page->isAtEvent();
+            $data['page']['shortDescription'] = $page->getShortDescription();
         }
 
         return $data;

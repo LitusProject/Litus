@@ -1,393 +1,439 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-    <div class="page-header">
-        <h1>{{ translate('Account') }}</h1>
-    </div>
 
-    <div class="flashmessage alert alert-danger fade" id="profile_upload_error">
-        <a class="close">&times;</a>
-        <div class="content">
-            {{ translate('An error occurred while uploading your profile image.') }}
+    {# Script for collapsing shift items #}
+    {{ inlineScript() }}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var faqItems = document.getElementsByClassName('shiftHolder');
+            for(var i = 0; i < faqItems.length; i++) {
+                var currentFAQ = faqItems[i];
+                var currentContent = currentFAQ.querySelector('.shiftDetails');
+                currentContent.setAttribute("style", "height: 0px;");
+                currentFAQ.addEventListener("click", func, false);
+                function func() {
+                    var currentContent = this.querySelector('.shiftDetails');
+                    if (currentContent.style.height === "0px") {
+                        currentContent.setAttribute("style", "height: auto");
+                    } else {
+                        currentContent.setAttribute("style", "height: 0px");
+                    }
+                }
+            }
+        })
+    </script>
+
+    {% import _self as self %}
+
+    <div class="container">
+        <div class="standardPageTitleHolder">
+            {# TRANSLATIONS #}
+            <h1>{{ translate('My VTK') }}</h1>
+            <div class="pageTitleDeco"></div>
         </div>
-    </div>
 
-    {% include 'common/account/partials/navigation.twig' %}
+        <div style="height:40px"></div>
 
-    {% import 'site/partials/form.twig' as forms %}
+        {% include 'common/account/partials/navigation.twig' %}
 
-    <h3>{{ translate('Personal') }}</h3>
-    <div class="row">
-        <div class="col-sm-9">
-            <dl class="dl-horizontal wide">
-                <dt>{{ translate('Name') }}</dt>
-                <dd>{{ authenticatedPerson.getFullName() }}&nbsp;</dd>
-                <dt>{{ translate('Birthday') }}</dt>
-                <dd>{{ dateLocalized(authenticatedPerson.getBirthday(), 'd MMMM y') }}&nbsp;</dd>
-                <dt>{{ translate('Sex') }}</dt>
-                <dd>{{ authenticatedPerson.getSex()|capitalize }}&nbsp;</dd>
-                <dt>{{ translate('Phone Number') }}</dt>
-                <dd>{{ authenticatedPerson.getPhoneNumber() }}&nbsp;</dd>
-                <dt>{{ translate('University Identification') }}</dt>
-                <dd>{{ authenticatedPerson.getUniversityIdentification() }}&nbsp;</dd>
-                <dt>{{ translate('University E-mail') }}</dt>
-                <dd>{{ authenticatedPerson.getUniversityEmail() }}&nbsp;</dd>
-                <dt>{{ translate('Personal E-mail') }}</dt>
-                <dd>{{ authenticatedPerson.getPersonalEmail() }}&nbsp;</dd>
-                <dt>{{ translate('International Student') }}</dt>
-                <dd>{% if  authenticatedPerson.isInternational() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}
-                    &nbsp;
-                </dd>
-            </dl>
-        </div>
-        <div class="col-sm-3">
-            <div id="accountProfileImage" class="thumbnail"
-                 style="width: 180px; height: 135px; margin-top: 18px; position: relative;">
-                {% if authenticatedPerson.getPhotoPath() %}
-                    <img src="{{ profilePath }}/{{ authenticatedPerson.getPhotoPath() }}" alt="">
-                {% else %}
-                    <img data-src="holder.js/180x135/auto/text:Profile Image" alt="">
-                {% endif %}
-                <button id="editProfile" class="btn btn-default btn-sm hidden-xs hidden-sm"
-                        style="position: absolute; bottom: 5px; right: 5px;">{{ translate('Edit') }}</button>
+        <div style="height:40px"></div>
+
+        <div class="contentBlock">
+            <div class="headingHolder">
+                <h3 style="margin-bottom: 0px">{{ translate("My")}}{{ shopName }}</h3>
             </div>
-        </div>
+            
+            <div style="height: 20px"></div>
 
-    </div>
+            {% if reservations|length == 0 %}
+                <p>{{ translate("You currently have no items assigned") }}</p>
+            {% else %}
 
-    <h3>{{ translate('Addresses') }}</h3>
-    <div class="row">
-        <div class="col-sm-6">
-            <address>
-                <strong>{{ translate('Primary Address&mdash;Student Room or Home') }}</strong><br/>
-                {{ authenticatedPerson.getPrimaryAddress().getStreet() }} {{ authenticatedPerson.getPrimaryAddress().getNumber() }}{% if '' != authenticatedPerson.getPrimaryAddress().getMailbox() %}/{{ authenticatedPerson.getPrimaryAddress().getMailbox() }}{% endif %}
-                <br/>
-                {{ authenticatedPerson.getPrimaryAddress().getPostal() }} {{ authenticatedPerson.getPrimaryAddress().getCity() }}
-                <br/>
-                {{ authenticatedPerson.getPrimaryAddress().getCountry() }}
-            </address>
-        </div>
-        <div class="col-sm-6">
-            <address>
-                <strong>{{ translate('Secondary Address&mdash;Home') }}</strong><br/>
-                {{ authenticatedPerson.getSecondaryAddress().getStreet() }} {{ authenticatedPerson.getSecondaryAddress().getNumber() }}{% if '' != authenticatedPerson.getSecondaryAddress().getMailbox() %}/{{ authenticatedPerson.getSecondaryAddress().getMailbox() }}{% endif %}
-                <br/>
-                {{ authenticatedPerson.getSecondaryAddress().getPostal() }} {{ authenticatedPerson.getSecondaryAddress().getCity() }}
-                <br/>
-                {{ authenticatedPerson.getSecondaryAddress().getCountry() }}
-            </address>
-        </div>
-    </div>
+                <div>
 
-    <h3>{{ translate('Student Organization') }}</h3>
-    <div class="row">
-        <div class="col-sm-6">
-            <dl class="dl-horizontal wide">
-                <dt>{{ translate('Student Organization') }}</dt>
-                <dd>{{ authenticatedPerson.getOrganization(currentAcademicYear).getName() }}&nbsp;</dd>
-                <dt>{{ translate('Membership') }}</dt>
-                <dd>{% if authenticatedPerson.isMember(currentAcademicYear) or metaData.becomeMember() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}</dd>
-                {% if authenticatedPerson.isMember(currentAcademicYear) %}
-                    <dt>{{ translate('I want to receive my Ir.Reëel at CuDi') }}</dt>
-                    <dd>{% if metaData.receiveIrReeelAtCudi() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}</dd>
-                {% endif %}
-                <dt>{{ translate('I want to receive \'t Bakske by e-mail') }}</dt>
-                <dd>{% if metaData.bakskeByMail() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}</dd>
-                {% if authenticatedPerson.isMember(currentAcademicYear) and not authenticatedPerson.isPraesidium(currentAcademicYear) %}
-                    <dt>{{ translate('T-shirt Size')}}</dt>
-                    <dd>{{ metaData.getTshirtSizeName() }}&nbsp;</dd>
-                {% endif %}
-            </dl>
-        </div>
-    </div>
+                    <div class="itemHolder hideOnMobile">
+                        <p class="fullDate1-column">{{ translate('Date of Reservation') }}</p>
+                        {# {{ translate('Reservation time') }} TO DO korter maken #}
+                        <p class="fullDate2-column">{{ translate('Sales session') }}</p>
+                        <p class="article-column">{{ translate('Product') }}</p> 
+                        <p class="amount-column">#</p>
+                        <p class="price-column">€</p>   
+                        <p class="action-column">{{ translate('Cancel') }}</p>               
+                    </div>
 
-    <h3>{{ translate('Studies') }}</h3>
-    {% for study in studies %}
-        <h4>{{ study.enrollment.getStudy().getTitle() }}
-            <small>&mdash;{{ translate('Phase') }} {{ study.enrollment.getStudy().getPhase() }}</small></h4>
-        {% for subject in study.subjects %}
-            <ul>
-                {% if subject.getSubject().getId() in subjects %}
-                    <li>{{ subject.getSubject().getName() }}</li>
-                {% endif %}
-            </ul>
-        {% endfor %}
-    {% endfor %}
-
-
-    <div id="modalProfileImage" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <a class="close" data-dismiss="modal">&times;</a>
-                    <h4>{{ translate('Profile Image') }}</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="imageCrop">
-                        <div style="width: 320px; margin: 10px auto;">
-                            {% if authenticatedPerson.getPhotoPath() %}
-                                <img class="image" src="{{ profilePath }}/{{ authenticatedPerson.getPhotoPath() }}"
-                                     alt="" width="320">
-                            {% else %}
-                                <img class="image" width="320"/>
-                            {% endif %}
-                        </div>
-                        <div class="flashmessage alert alert-danger fade" id="file_size_error">
-                            <div class="content">
-                                {{ translate('The selected file is too large.') }}
-                                {{ translate('The selected file is too large.') }}
+                    {% for reservation in reservations %}
+                        <div class="itemHolder hideOnMobile item-{{ booking.getId() }}">
+                            <div class="fullDate1-column" >{#{{ translate(reservation.getTimestamp().format('l')) }}#} {{ reservation.getTimestamp().format('d/m/Y H:i') }}</div>
+                            <div class="fullDate2-column" >{#{{ translate(reservation.getSalesSession().getStartDate().format('l')) }}#} {{ reservation.getSalesSession().getStartDate().format('d/m/Y H:i') }}
+                                - {{ reservation.getSalesSession().getEndDate().format('H:i') }}</div>
+                            <div class="article-column" >{{ reservation.getProduct().getName() }}</div>
+                            <div class="amount-column" >{{ reservation.getAmount }}</div>
+                            <div class="price-column" >€{{ reservation.getProduct().getSellPrice()|number_format(2, '.', ',') }}</div>
+                            <div class="action-column" >
+                                {% if reservation.canCancel() %}
+                                    <a class="button blue unfilled"
+                                       href="{{ url('shop', {action: 'deleteReservation', id: reservation.getId()}) }}">
+                                        {# <i class="glyphicon glyphicon-remove"></i> #}
+                                        {{ translate('Cancel') }}
+                                    </a>
+                                {% endif %}
                             </div>
                         </div>
-                        {% import 'site/partials/form.twig' as forms %}
-                        {{ forms.renderForm(profileForm) }}
-                    </div>
 
-                    <div class="imageForm" style="display: none;">
-                        {% import 'site/partials/form.twig' as forms %}
-                        {{ forms.renderForm(profileForm) }}
-                    </div>
+                        {# View on mobile #}
+                        <div class="itemHolderMobile item-{{ booking.getId() }}">
+                            <h5 style="margin-bottom: 5px">{{ reservation.getProduct().getName() }}</h5>
+                            <div>{{ reservation.getSalesSession().getStartDate().format('d/m/Y H:i') }} - {{ reservation.getSalesSession().getEndDate().format('H:i') }} </div>
+                            <div>{{ reservation.getAmount }} {{ translate('Pieces') }} | {{ translate('Total:') }} €{{ reservation.getProduct().getSellPrice() * reservation.getAmount|number_format(2, '.', ',') }}</div>
+                            <div style="height: 10px"></div>
+                            <div >
+                                {% if reservation.canCancel() %}
+                                    <a class="button blue unfilled" style="padding: 5px 11px"
+                                       href="{{ url('shop', {action: 'deleteReservation', id: reservation.getId()}) }}">
+                                        Annuleren
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %} 
+                
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-success save">{{ translate('Save') }}</button>
-                    <button class="btn btn-default" data-dismiss="modal">{{ translate('Close') }}</button>
-                </div>
+            {% endif %}
+            <div style="height: 20px"></div>
+            <div class="buttonHolder">
+                <a class="myVtkButton" href="{{ url('shop', {"action": "reserve"}) }}">{{ translate('Order sandwiches') }}</a>
             </div>
         </div>
-    </div>
 
-    <div id='editButton' class="hidden-sm hidden-xs" style="text-align: center;">
-        <a href="{{ url('common_account', {'action': 'edit'}) }}" class="btn btn-primary">{{ translate('Edit') }}</a>
-    </div>
+        <div style="height: 100px"></div>        
 
-    {% if (authenticatedPerson.isPraesidium(organizationYear) and signatureEnabled) %}
+        <div class="contentBlock">
+            <div class="headingHolder">
+                <h3 style="margin-bottom: 0px">{{ translate('My') }} {{ translate('Cudi') }}</h3>
+            </div>
 
-        <div id="signatureButton" class="hidden-sm hidden-xs" style="text-align: center;">
-            <button id="signaturePopup" class="btn btn-default btn-sm hidden-xs hidden-sm"
-                    style="margin-bottom: 10%;">{{ translate("Signature") }}</button>
+            <div style="height: 20px"></div>
+
+            {% if bookings|length == 0 and futureBookings|length == 0 %}
+                <p>{{ translate("You currently have no items reserved") }}</p>
+                <div style="height: 20px"></div>
+            {% else %}
+                {% if bookings|length > 0 %}
+                <div>
+
+                    <h5>{{ translate('Items ready for pickup') }}</h5> {# TO DO : Translate#}
+
+                    <div class="itemHolder hideOnMobile">
+                        <p class="article-column">{{ translate('Article') }}</p>
+                        <p class="amount-column">#</p>
+                        <p class="price-column">€</p> 
+                        {# {{ translate('Price / Piece') }} vervangen door geowon euroteken! #}
+                        <p class="date-column">{{ translate('Expiration Date') }}</p>
+                        <p class="action-column">{{ translate('Actions') }}</p>                
+                    </div>
+
+                    {% for booking in bookings %}
+                        <div class="itemHolder hideOnMobile  item-{{ booking.getId() }}">
+                            <div class="article-column" >{{ booking.getArticle().getMainArticle().getTitle() }}</div>
+                            <div class="amount-column" >{{ booking.getNumber() }}</div>
+                            <div class="price-column" >€{{ (booking.getNumber() * booking.getArticle().getSellPrice()/100)|number_format(2) }}</div>
+                            <div class="date-column" >{{ dateLocalized(booking.getExpirationDate(), 'dd/MM/y') }}</div>
+                            <div class="action-column" >
+                            {% if booking.getArticle().isUnbookable() %}
+                                <a href="#" class="button blue unfilled cancel" data-id="{{ booking.getId() }}" data-title="{{ booking.getArticle().getMainArticle().getTitle() }}">
+                                    {{ translate('Cancel') }}
+                                </a>
+                            {% endif %}
+                            </div>
+                        </div>
+
+                        {# View on mobile #}
+                        <div class="itemHolderMobile item-{{ booking.getId() }}">
+                            <h5 style="margin-bottom: 5px">{{ booking.getArticle().getMainArticle().getTitle() }}</h5>
+                            {% if booking.getExpirationDate %}<div>{{ translate('Expiration Date') }}: {{ dateLocalized(booking.getExpirationDate(), 'dd/MM/y') }}</div>{% endif %}
+                            <div>{{ booking.getNumber() }} {{ translate('Pieces') }} | {{ translate('Total') }}: €{{ (booking.getNumber() * booking.getArticle().getSellPrice()/100)|number_format(2) }}</div>
+                            <div style="height: 10px"></div>
+                            <div >
+                                {% if booking.getArticle().isUnbookable() %}
+                                    <a href="#" style="padding: 5px 11px" class="button blue unfilled cancel" data-id="{{ booking.getId() }}" data-title="{{ booking.getArticle().getMainArticle().getTitle() }}">
+                                        {{ translate('Cancel') }}
+                                    </a>
+                                {% endif %}                            
+                            </div>
+                        </div>
+
+                    {% endfor %} 
+                
+                </div>
+
+                <div style="height: 20px"></div>
+                {% endif %}
+
+                {% if futureBookings|length > 0 %}
+                <div>
+
+                    <h5>{{ translate('Reserved items') }}</h5> {# TO DO : Translate#}
+
+                    <div class="itemHolder">
+                        <p class="article-column">{{ translate('Article') }}</p>
+                        <p class="amount-column">#</p>
+                        <p class="price-column">€</p> 
+                        {# {{ translate('Price / Piece') }} vervangen door geowon euroteken! #}
+                        <p class="date-column">{{ translate('Expiration Date') }}</p>
+                        <p class="action-column">{{ translate('Actions') }}</p>                
+                    </div>
+
+                    {% for booking in futureBookings %}
+                        <div class="itemHolder item-{{ booking.getId() }}">
+                            <div class="article-column" >{{ booking.getArticle().getMainArticle().getTitle() }}</div>
+                            <div class="amount-column" >{{ booking.getNumber() }}</div>
+                            <div class="price-column" >€{{ (booking.getNumber() * booking.getArticle().getSellPrice()/100)|number_format(2) }}</div>
+                            <div class="date-column" >{{ dateLocalized(booking.getExpirationDate(), 'dd/MM/y') }}</div>
+                            <div class="action-column" >
+                            {% if booking.getArticle().isUnbookable() %}
+                                <a href="#" class="button blue unfilled cancel" data-id="{{ booking.getId() }}" data-title="{{ booking.getArticle().getMainArticle().getTitle() }}">
+                                    {{ translate('Cancel') }}
+                                </a>
+                            {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %} 
+                
+                </div>
+
+                <div style="height: 20px"></div>
+                {% endif %}
+            {% endif %}
+            <div class="buttonHolder">
+                <a class="myVtkButton" href="{{ url('cudi_booking', {"action": "book"}) }}">{{ translate("Order Books") }}</a>
+            </div>
         </div>
 
-        <div id="modalSignature" class="modal fade">
-
-            <div class="modal-dialog" style="width:30%;">
+        <div class="modal fade" id="cancelBooking">
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <a class="close" data-dismiss="modal">&times;</a>
-                        <h4>Genereer je persoonlijke handtekening</h4>
+                        <h4>{{ translate("Cudi") }}</h4>
                     </div>
                     <div class="modal-body">
-                        <div class="signatureInput">
-                            <input type="url" id="twitterLink" value="https://twitter.com/" placeholder="(optioneel)"
-                                   style="font-size: 13px; width: 100%"><br>
-                            <input type="url" id="linkedInLink" value="https://linkedin.com/in/"
-                                   placeholder="(optioneel)" style="font-size: 13px; width: 100%"><br>
-                            <input type="tel" id="phoneNumber" value="{{ authenticatedPerson.getPhoneNumber() }}"
-                                   style="font-size: 13px; width: 100%"><br>
-                            <input type="checkbox" id="facebook">
-                            <label for="facebook"> Ik wil een link naar de VTK-Facebookpagina op mijn
-                                handtekening</label><br>
-                            <input type="checkbox" id="instagram">
-                            <label for="instagram"> Ik wil een link naar de VTK-Instagrampagina op mijn
-                                handtekening</label><br>
-                            <div id="signatureHTML">
-                                {% include 'common/account/signature.twig' %}
-                            </div>
-                        </div>
+                        <p>
+                            {{ translate('Are you sure you want to cancel the following article:') }} <b class="articleTitle"></b>?
+                        </p>
+                    </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary" id="rawHTML" style="float: left;">Genereer raw HTML</button><br>
-                        <label for="rawHTML" style="font-size: 14px; float: left">(je kan de handtekening ook rechtstreeks kopiëren)</label>
+                        <button class="btn btn-danger continue">{{ translate("Yes") }}</button>
+                        <button class="btn btn-default cancel" data-dismiss="modal">{{ translate("No") }}</button>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    {% endif %}
+        </div>        
 
+        <div style="height: 100px"></div>
+
+        <div class="contentBlock">
+            <div class="headingHolder">
+                <h3 style="margin-bottom: 0px">{{ translate('My Shifts') }}</h3>
+            </div>
+
+            <div style="height: 20px"></div>
+
+{#            {% if shifts|length == 0 %}#}
+{#                <p>Je hebt geen shiften momenteel</p>#}
+{#                <div style="height: 20px"></div>#}
+{#            {% else %}#}
+{#                {% for shift in shifts %}#}
+{#                    <div class="itemHolder">#}
+{#                        <p>{{ shift.getName() }}</p>#}
+{#                        <div class="flexStretch"></div>#}
+{#                        <p style="opacity: 50%">{{dateLocalized(shift.getStartDate(), 'd/M/y')}} | {{ dateLocalized(shift.getStartDate(), 'HH:mm') }}-{{ dateLocalized(shift.getEndDate(), 'HH:mm') }}</p>#}
+{#                    </div>#}
+{#                {% endfor %}#}
+{#            {% endif %}#}
+
+            {{ self.displayShifts(entityManager, authenticatedPerson, shifts, 'myShifts') }}
+
+            <div class="buttonHolder">
+                <a class="myVtkButton" href="{{ url('shift', {"action": "index"}) }}">{{ translate("Search more Shifts") }}</a>
+                <a class="myVtkButton" href="{{ url('shift', {"action": "history"}) }}">{{ translate("View history") }}</a>
+            </div>
+        </div>
+
+        <div style="height: 100px"></div>
+
+        <div class="contentBlock">
+            <div class="headingHolder">
+                <h3 style="margin-bottom: 0px">{{ translate('My Timeslots') }}</h3>
+            </div>
+
+            <div style="height: 20px"></div>
+
+            {{ self.displayShifts(entityManager, authenticatedPerson, timeslots, 'myTimeSlots') }}
+
+            <div class="buttonHolder">
+                <a class="myVtkButton" href="{{ url('registration_shift', {"action": "index"}) }}">{{ translate('Reserve Timeslots') }}</a>
+            </div>
+        </div>
+
+        <div style="height: 100px"></div>
 
 {% endblock %}
 
 {% block content_script %}
     <script type="text/javascript">
-        var jcrop_api;
         $(document).ready(function () {
-            $('.flashmessage .close').click(function () {
-                $(this).closest('.flashmessage').removeClass('in');
-            });
-
-            {% if authenticatedPerson.isPraesidium(organizationYear) and signatureEnabled %}
-            $('#signaturePopup').click(function () {
-                $('#modalSignature').modal().off('shown.bs.modal').on('shown.bs.modal', function () {
-                });
-            });
-
-            const fbCheckbox = document.getElementById('facebook')
-            const igCheckbox = document.getElementById('instagram')
-            const twitter = document.getElementById('twitterLink')
-            const linkedIn = document.getElementById('linkedInLink')
-            const phoneNumber = document.getElementById('phoneNumber')
-            const rawHTML = document.getElementById('rawHTML')
-            const phoneNumberVTK = document.getElementById('phoneNumberVTK')
-            const socialMedia = document.getElementById('socialMediaSpace')
-            const signatureHTML = document.getElementById('signatureHTML')
-
-
-            fbCheckbox.addEventListener('change', (event) => {
-                if (event.target.checked) {
-                    socialMedia.innerHTML += '<!-- ### FACEBOOKBUTTON ### --><a id="fbSpot" href="https://www.facebook.com/VTKLeuven/"style="border-width:0px; border:0px; text-decoration: none"><img width="20" height="20" style="border: none; width: 20px; max-width: 25px !important; height: 20px; max-height: 20px !important;" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-512.png"> </a>';
-                } else {
-                    socialMedia.removeChild(document.getElementById("fbSpot"));
-                }
-            })
-
-            igCheckbox.addEventListener('change', (event) => {
-                if (event.target.checked) {
-                    socialMedia.innerHTML += '<!-- ### INSTA BUTTON ### --><a id = "igSpot" href = "https://www.instagram.com/vtkleuven/" style = "border-width:0px; border:0px; text-decoration: none"><img width = "20" height = "20" style = "border: none; width: 20px; max-width: 25px !important; height: 20px; max-height: 20px !important;" src = "http://www.cosmeticlab.com.ua/wp-content/uploads/2016/03/1491580635-yumminkysocialmedia26_83102.png"> </a>';
-                } else {
-                    socialMedia.removeChild(document.getElementById("igSpot"));
-                }
-            })
-
-            twitter.addEventListener('change', (event) => {
-                if (document.getElementById('twitterSpot')) {
-                    socialMedia.removeChild(document.getElementById("twitterSpot"));
-                }
-                socialMedia.innerHTML += '<!-- ### TWITTER BUTTON ### --><a id ="twitterSpot" href="" style="border-width:0px; border:0px; text-decoration: none;"><img width="20" height="20" style="border: none; width: 20px; max-width: 25px !important; height: 20px; max-height: 20px !important;" src="https://cdn3.iconfinder.com/data/icons/inficons-round-brand-set-2/512/twitter-512.png"></a>'
-                twitterSpot.setAttribute('href', twitter.value);
-            })
-
-            linkedIn.addEventListener('change', (event) => {
-                if (document.getElementById('linkedInSpot')) {
-                    socialMedia.removeChild(document.getElementById("linkedInSpot"));
-                }
-                socialMedia.innerHTML += '<!-- ### LINKEDIN BUTTON ### --><a id ="linkedInSpot" href="" style="border-width:0px; border:0px; text-decoration: none;"><img width="20" height="20" style="border: none; width: 20px; max-width: 25px !important; height: 20px; max-height: 20px !important;" src="https://cdn3.iconfinder.com/data/icons/sociocons/256/linkedin-sociocon.png"></a>'
-                linkedInSpot.setAttribute('href', linkedIn.value);
-            })
-
-            phoneNumber.addEventListener('change', (event) => {
-                phoneNumberVTK.setAttribute('href', phoneNumber.value);
-                phoneNumberVTK.innerHTML = phoneNumber.value;
-            })
-
-            rawHTML.addEventListener('click', (event) => {
-                var newWindow = window.open("", "signatureRaw", "fullscreen = 1");
-                newWindow.document.write("<textarea onclick='this.select()' style='height: 100%; width: 100%'>" +signatureHTML.innerHTML+ "</textarea>");
-                newWindow.focus()
-            })
-            {% endif %}
-
-
-            $('#editProfile').click(function () {
-                var image = $('#modalProfileImage .image:first');
-                $('#modalProfileImage').modal().off('shown.bs.modal').on('shown.bs.modal', function () {
-                    if (typeof jcrop_api != 'undefined')
-                        jcrop_api.destroy();
-
-                    if (image.attr('src'))
-                        enableJCrop(image);
-                });
-
-                if (window.File && window.FileReader && window.FileList && window.Blob) {
-                    $('#modalProfileImage input[type=file]').change(function () {
-                        var oFile = $(this)[0].files[0];
-
-                        $('#file_size_error').removeClass('in');
-
-                        if (oFile === undefined)
-                            return;
-
-                        if (oFile.size > 2000 * 1024) {
-                            $('#file_size_error').addClass('in');
-                            return;
-                        }
-
-                        var oReader = new FileReader();
-                        oReader.onload = function (e) {
-                            if (typeof jcrop_api != 'undefined')
-                                jcrop_api.destroy();
-
-                            image.attr('src', e.target.result).attr('style', '');
-                            image.load(function () {
-                                enableJCrop(image);
-                            });
-                        }
-                        oReader.readAsDataURL(oFile);
-
-                    });
-
-                    $('#modalProfileImage .save').one('click', function () {
-                        $('#modalProfileImage .imageCrop form').ajaxSubmit({
-                            'error': function () {
-                                $('#profile_upload_error').addClass('in');
-                                $('#modalProfileImage').modal('hide');
-                            },
-                            'success': function (data) {
-                                if (data.status !== undefined && data.status == 'success') {
-                                    $('#accountProfileImage img').attr('src', data.profile + '?time=' + (new Date()).getTime());
-                                    image.attr('src', data.profile + '?time=' + (new Date()).getTime());
-                                    $('#profile_upload_error').removeClass('in');
-                                    $('#modalProfileImage').modal('hide');
-                                } else {
-                                    $('#profile_upload_error').addClass('in');
-                                    $('#modalProfileImage').modal('hide');
-                                }
-                            },
-                            'dataType': 'json'
-                        });
-                    });
-                } else {
-                    $('#modalProfileImage .imageCrop').hide();
-                    $('#modalProfileImage .imageForm').show();
-
-                    $('#modalProfileImage .save').one('click', function () {
-                        $('#modalProfileImage .imageForm form').ajaxSubmit({
-                            'error': function () {
-                                $('#profile_upload_error').addClass('in');
-                                $('#modalProfileImage').modal('hide');
-                            },
-                            'success': function (data) {
-                                if (data.status !== undefined && data.status == 'success') {
-                                    $('#accountProfileImage img').attr('src', data.profile + '?time=' + (new Date()).getTime());
-                                    image.attr('src', data.profile + '?time=' + (new Date()).getTime());
-                                    $('#modalProfileImage').modal('hide');
-                                } else {
-                                    $('#profile_upload_error').addClass('in');
-                                    $('#modalProfileImage').modal('hide');
-                                }
-                            },
-                            'dataType': 'json'
-                        });
-                    });
-                }
-            });
+            $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true, 'container': 'body'});
+            $('.cancel').click(openModal);
         });
 
+        function openModal(e) {
+            var $this = $(this);
 
-        function enableJCrop(image) {
-            var w = image.outerWidth();
-            var h = w * 240 / 320;
-            if (h > image.outerHeight()) {
-                h = image.outerHeight(),
-                    w = h * 320 / 240;
-            }
-
-            var x = image.outerWidth() / 2 - w / 2;
-            var y = image.outerHeight() / 2 - h / 2;
-
-            image.Jcrop({
-                keySupport: false,
-                aspectRatio: 320 / 240,
-                setSelect: [x, y, x + w, y + h],
-                onChange: function (e) {
-                    $('#modalProfileImage .imageCrop #x').val(Math.round(e.x));
-                    $('#modalProfileImage .imageCrop #y').val(Math.round(e.y));
-                    $('#modalProfileImage .imageCrop #x2').val(Math.round(e.x2));
-                    $('#modalProfileImage .imageCrop #x2').val(Math.round(e.y2));
-                    $('#modalProfileImage .imageCrop #w').val(Math.round(e.w));
-                    $('#modalProfileImage .imageCrop #h').val(Math.round(e.h));
-                }
-            }, function () {
-                jcrop_api = this;
+            e.preventDefault();
+            var cancelBooking = $('#cancelBooking');
+            cancelBooking.find('.articleTitle').html($(this).data('title'));
+            var id = $this.data('id');
+            cancelBooking.find('.continue').unbind('click').click(function () {
+                $.post('{{ url('cudi_booking', {"action": "cancel"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('#totalPrice').html(($('#totalPrice').html() - $('.item-' + id).data('price')/100).toFixed(2));
+                        $('.item-' + id).remove();
+                        $('#cancelBooking').modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
             });
-
+            cancelBooking.modal();
         }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.booking_canceled_error').removeClass('hide');
+            $('#cancelBooking').modal('hide');
+        }
+
     </script>
 {% endblock %}
+
+
+{# DISPLAYING ACTUAL SHIFTS #}
+{% macro displayShifts(entityManager, authenticatedPerson, shifts, accordionName, timeslots = false) %}
+    {% import _self as self %}
+    {% set previousShift = null %}
+    <div class="panel-group" id="shifts-{{ accordionName }}">
+        {% for shift in shifts %}
+            {% if previousShift.getStartDate().format('Ymd') < shift.getStartDate().format('Ymd') %}
+                <h4 style="margin-top: 15px">{#{{translate('Shifts on')}}#} {{ translate(shift.getStartDate().format('l')) }}  {{ dateLocalized(shift.getStartDate(), 'd/M/y') }}</h4>
+            {% endif %}
+
+            {% set previousShift = shift %}
+
+            <div class="shiftHolder">
+                <div class="shiftHeader">
+                    <div class="shiftFlexCenter">
+                        <h5 style="margin-bottom: 0px">{{ shift.getName() }}</h5>
+                        <p style="font-size: 14px; margin-bottom: 0px">{{dateLocalized(shift.getStartDate(), 'd/M/y')}} | {{ dateLocalized(shift.getStartDate(), 'HH:mm') }}-{{ dateLocalized(shift.getEndDate(), 'HH:mm') }}</p>
+                    </div>
+                    <div class="flexStretch">
+                        <div class="buttons" style="text-align: right">
+                            {% if shift.canSignOut(entityManager) %}
+                                <div onclick="event.stopPropagation()" class="button blue unfilled signOut" data-id="{{ shift.getId() }}">
+                                    <a>{{ translate('Sign Out') }}</a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="shiftDetails">
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <dl>
+                                <dt>{{ translate('Name') }}</dt>
+                                <dd>{{ shift.getName() }}</dd>
+                                {% if shift.getReward() > 0 %}
+                                    <dt>{{ translate('Reward') }}</dt>
+                                    <dd>{{ shift.getReward() }} {{ translate('Coins') }}
+                                        {% if shift.getHandledOnEvent() %}
+                                            {{ translate('on the event')}}
+                                        {% endif %}
+                                    </dd>
+                                {% endif %}
+                                {% if shift.getPoints() > 0 %}
+                                    <dt>{{ translate('Points') }}</dt>
+                                    <dd>{{ shift.getPoints() }} {{ translate('Points') }}</dd>
+                                {% endif %}
+                                <dt>{{ translate('Start') }}</dt>
+                                <dd>{{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }}</dd>
+                                <dt>{{ translate('End') }}</dt>
+                                <dd>{{ dateLocalized(shift.getEndDate(), 'd/M/y HH:mm') }}</dd>
+                            </dl>
+                        </div>
+                        <div class="col-sm-4">
+                            <dl>
+                                <dt>{{ translate('Manager') }}</dt>
+                                <dd>{{ shift.getManager().getFullName() }}</dd>
+
+                                {% if shift.getEvent() is not null %}
+                                    <dt>{{ translate('Event') }}</dt>
+                                    <dd>{{ shift.getEvent().getTitle(language) }}</dd>
+                                {% endif %}
+
+                                <dt>{{ translate('Unit') }}</dt>
+                                <dd>{{ shift.getUnit().getName() }}</dd>
+                            </dl>
+                        </div>
+                        <div class="col-sm-4">
+                            {% if 0 != shift.getNbResponsibles() %}
+                                <dl>
+                                    <dt>{{ translate('Responsibles') }}</dt>
+
+                                    {% for responsible in shift.getResponsibles() %}
+                                        <dd>{{ responsible.getPerson().getFullName() }}</dd>
+                                    {% endfor %}
+                                </dl>
+                            {% endif %}
+
+                            {% if 0 != shift.getNbVolunteers() %}
+                                <dl>
+                                    <dt>{{ translate('Volunteers') }}</dt>
+
+                                    {% for volunteer in shift.getVolunteers() %}
+                                        <dd>{{ volunteer.getPerson().getFullName() }}</dd>
+                                    {% endfor %}
+                                </dl>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <dl>
+                        <dt>{{ translate('Description') }}</dt>
+                        <dd style="text-align: justify;">{{ shift.getDescription() }}</dd>
+
+                        <dt>{{ translate('Location') }}</dt>
+                        <dd>
+                            {{ shift.getLocation().getName() }}
+                        </dd>
+                        <dd style="margin-top: 5px;">
+                            <img class="img-rounded" src="{{ staticMap(shift.getLocation(), '367x125', '7a43b6') }}" />
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+        {% else %}
+            {# Iets ander bedenken voor deze stuff anders alert alert-warning class #}
+            <div>
+                {% if 'search' == accordionName %}
+                    {{ translate('No shifts were found that match the given query.') }}
+                {% elseif timeslots == false %}
+                    {{ translate('You have not yet signed up for any shifts. Click the button below to add yourself to a shift!') }}
+                {% else %}
+                    {{ translate('You have not yet signed up for any timeslots. Click the button below to add yourself to a timeslots!') }}
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% endmacro %}

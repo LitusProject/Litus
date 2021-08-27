@@ -32,6 +32,9 @@ return Config::create(
         'validators' => array(
             'aliases' => array(
                 'PageTitle' => Component\Validator\PageTitle::class,
+                'FAQ' => Component\Validator\FAQ::class,
+                'faq' => Component\Validator\FAQ::class,
+                'Faq' => Component\Validator\FAQ::class,
             ),
         ),
     )

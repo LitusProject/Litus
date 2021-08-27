@@ -166,7 +166,6 @@
                 '{{ url('cudi_retail', {"action": "deleteRetail"}) }}'+ button.data('id'),
                 {id: button.data('id')},
                 function (data) {
-                    console.log(data);
                     if (data && 'success' === data.status) {
                         $('.flashmessage').removeClass('in');
                         $('#retail_success').addClass('in');
