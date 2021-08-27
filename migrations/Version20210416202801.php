@@ -37,7 +37,7 @@ class Version20210416202801 extends \Doctrine\Migrations\AbstractMigration
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('ALTER TABLE shift_registration_shifts ADD members_visible BOOLEAN DEFAULT \'false\' NOT NULL');
+        // $this->addSql('ALTER TABLE shift_registration_shifts ADD members_visible BOOLEAN DEFAULT \'false\' NOT NULL');
     }
 
     /**
