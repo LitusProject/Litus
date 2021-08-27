@@ -19,15 +19,19 @@ class IndexController extends \BrBundle\Component\Controller\CorporateController
             ->getRepository('CommonBundle\Entity\General\Organization\Unit')
             ->findAllActiveQuery()->getResult();
 
-        foreach ($units as $unit){
-            if ($unit->getName() === 'Bedrijvenrelaties'){
-                $br = $unit;
+            $br = null;
+            foreach ($units as $unit) {
+                if ($unit->getName() === 'Bedrijvenrelaties') {
+                    $br = $unit;
+                }
             }
-        }
 
-        $members = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
-            ->findAllByUnitAndAcademicYear($br, $academicYear);
+            $members = array();
+            if ($br != null) {
+                $members = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
+                    ->findAllByUnitAndAcademicYear($br, $academicYear);
+            }
 
         $texts = unserialize(
             $this->getEntityManager()
@@ -37,11 +41,11 @@ class IndexController extends \BrBundle\Component\Controller\CorporateController
 
         return new ViewModel(
             array(
-                'members'         => $members,
-                'profilePath'         => $this->getEntityManager()
+                'members'     => $members,
+                'profilePath' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
-                'texts'    => $texts,
+                'texts'       => $texts,
             )
         );
     }
@@ -62,7 +66,7 @@ class IndexController extends \BrBundle\Component\Controller\CorporateController
 
         return new ViewModel(
             array(
-                'events'         => $events,
+                'events' => $events,
             )
         );
     }

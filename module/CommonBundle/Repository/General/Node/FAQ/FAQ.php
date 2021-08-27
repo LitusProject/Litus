@@ -12,7 +12,6 @@ use PageBundle\Entity\Node\Page;
  */
 class FAQ extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
-
     /**
      * @param Page $page
      * @return \Doctrine\ORM\Query
@@ -24,7 +23,8 @@ class FAQ extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->from('CommonBundle\Entity\General\Node\FAQ\FAQ', 'f')
             ->innerJoin('f.pages', 'p')
             ->where(
-                $query->expr()->eq(':id', 'p.id'))
+                $query->expr()->eq(':id', 'p.id')
+            )
             ->orderBy('f.name', 'ASC')
             ->setParameter('id', $page->getId())
             ->getQuery();

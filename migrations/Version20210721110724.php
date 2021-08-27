@@ -20,7 +20,6 @@ class Version20210721110724 extends \Doctrine\Migrations\AbstractMigration
 
         $this->addSql('ALTER TABLE br_companies_pages ADD shortDescription TEXT DEFAULT NULL');
         $this->addSql('ALTER TABLE br_companies ADD large BOOLEAN NOT NULL DEFAULT \'false\'');
-
     }
 
     /**

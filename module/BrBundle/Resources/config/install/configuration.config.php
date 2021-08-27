@@ -321,10 +321,10 @@ Example content of this section.
         'value'       => serialize(
             array(
                 'nl' => array(
-                   'br_corporate_launch' => array(
-                       'main' => 'VTK als partner voor jouw bedrijf',
-                       'sub'  => 'Kom te weten wat wij voor jou kunnen betekenen',
-                   ),
+                    'br_corporate_launch' => array(
+                        'main' => 'VTK als partner voor jouw bedrijf',
+                        'sub'  => 'Kom te weten wat wij voor jou kunnen betekenen',
+                    ),
                     'br_corporate_intro' => array(
                         'main' => 'VTK maakt voor jou het vershil',
                         'sub'  => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',

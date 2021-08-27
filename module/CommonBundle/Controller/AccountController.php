@@ -30,9 +30,12 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->findAllOpenByPerson($academic);
         $bookings = array();
         $futureBookings = array();
-        foreach ($allBookings as $booking){
-            if ($booking->getStatus() == 'assigned') array_push($bookings, $booking);
-            else array_push($futureBookings, $booking);
+        foreach ($allBookings as $booking) {
+            if ($booking->getStatus() == 'assigned') {
+                array_push($bookings, $booking);
+            } else {
+                array_push($futureBookings, $booking);
+            }
         }
 
         $total = 0;
@@ -96,7 +99,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 ->findAllByStudy($study->getStudy());
             $allStudies[] = $study->getStudy();
             foreach ($subjects as $subject) {
-                if (!in_array($subject->getSubject()->getId(), $subjectIds)){
+                if (!in_array($subject->getSubject()->getId(), $subjectIds)) {
                     $subjectIds[] = $subject->getSubject()->getId();
                     $allSubjects[] = $subject->getSubject();
                 }
@@ -109,7 +112,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
         foreach ($subjects as $subject) {
-            if (!in_array($subject->getSubject()->getId(), $subjectIds)){
+            if (!in_array($subject->getSubject()->getId(), $subjectIds)) {
                 $subjectIds[] = $subject->getSubject()->getId();
                 $allSubjects[] = $subject->getSubject();
             }
