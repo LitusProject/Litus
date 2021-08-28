@@ -55,8 +55,8 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
     public function getAuthenticationHandler()
     {
         return array(
-            'action'     => 'index',
-            'controller' => 'common_index',
+            'action'         => 'index',
+            'controller'     => 'common_index',
 
             'auth_route'     => 'cudi_supplier_index',
             'redirect_route' => 'cudi_supplier_index',

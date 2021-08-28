@@ -3,8 +3,8 @@
 return array(
     'submenus' => array(
         'Apps' => array(
-            'subtitle' => array('Quiz'),
-            'items'    => array(
+            'subtitle'    => array('Quiz'),
+            'items'       => array(
                 'quiz_admin_quiz' => array('title' => 'Quiz'),
             ),
             'controllers' => array(

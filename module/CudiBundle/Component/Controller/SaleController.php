@@ -92,8 +92,8 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
     public function getAuthenticationHandler()
     {
         return array(
-            'action'     => 'index',
-            'controller' => 'common_index',
+            'action'         => 'index',
+            'controller'     => 'common_index',
 
             'auth_route'     => 'cudi_sale_auth',
             'redirect_route' => 'cudi_sale_sale',

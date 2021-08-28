@@ -23,7 +23,7 @@ class Person extends \CommonBundle\Component\Form\Admin\Form
                     'id'    => 'person_search',
                     'style' => 'width: 400px;',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array('name' => 'TypeaheadPerson'),

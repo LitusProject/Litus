@@ -32,7 +32,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'class'       => 'start',
                     'placeholder' => 'dd/mm/yyyy hh:mm',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -60,7 +60,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'class'       => 'end',
                     'placeholder' => 'dd/mm/yyyy hh:mm',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -95,7 +95,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'class' => 'reason',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -113,7 +113,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'class' => 'load',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -132,7 +132,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'class' => 'additional',
                     'style' => 'height: 80px; resize: none;',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -162,8 +162,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'class' => 'passenger',
                 ),
-                'required' => false,
-                'options'  => array(
+                'required'   => false,
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array('name' => 'TypeaheadPerson'),

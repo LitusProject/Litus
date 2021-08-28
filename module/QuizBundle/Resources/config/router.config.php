@@ -11,7 +11,7 @@ return array(
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'quiz_admin_quiz',
                     'action'     => 'manage',
                 ),
@@ -27,7 +27,7 @@ return array(
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'quiz_admin_round',
                     'action'     => 'manage',
                 ),
@@ -43,7 +43,7 @@ return array(
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'quiz_admin_team',
                     'action'     => 'manage',
                 ),
@@ -59,7 +59,7 @@ return array(
                     'roundid' => '[0-9]*',
                     'teamid'  => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'quiz_quiz',
                     'action'     => 'manage',
                 ),

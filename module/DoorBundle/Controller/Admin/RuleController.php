@@ -211,8 +211,8 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
         $logGraphData = array(
             'expirationTime' => $now->add(new DateInterval('PT1H')),
 
-            'labels'  => array(),
-            'dataset' => array(),
+            'labels'         => array(),
+            'dataset'        => array(),
         );
 
         $data = array();

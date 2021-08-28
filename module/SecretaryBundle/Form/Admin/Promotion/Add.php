@@ -33,7 +33,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'id' => 'academic',
                 ),
-                'elements' => array(
+                'elements'   => array(
                     array(
                         'type'     => 'typeahead',
                         'name'     => 'academic',
@@ -58,7 +58,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'id' => 'external',
                 ),
-                'elements' => array(
+                'elements'   => array(
                     array(
                         'type'     => 'text',
                         'name'     => 'external_first_name',

@@ -37,7 +37,7 @@ class Confirm extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'size' => 70,
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

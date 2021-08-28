@@ -28,7 +28,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'size' => 70,
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -48,7 +48,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'data-help' => 'The file can be of any type and has a file size limit of ' . self::FILE_SIZE . '.',
                     'size'      => 70,
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array(

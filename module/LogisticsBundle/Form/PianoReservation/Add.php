@@ -38,10 +38,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'attributes' => array(
                                 'options' => $week['slotsStart'],
                             ),
-                            'options' => array(
+                            'options'    => array(
                                 'input' => array(
-                                    'required' => true,
-                                    'filters'  => array(
+                                    'required'   => true,
+                                    'filters'    => array(
                                         array('name' => 'StringTrim'),
                                     ),
                                     'validators' => array(
@@ -62,10 +62,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'attributes' => array(
                                 'options' => $week['slotsEnd'],
                             ),
-                            'options' => array(
+                            'options'    => array(
                                 'input' => array(
-                                    'required' => true,
-                                    'filters'  => array(
+                                    'required'   => true,
+                                    'filters'    => array(
                                         array('name' => 'StringTrim'),
                                     ),
                                     'validators' => array(

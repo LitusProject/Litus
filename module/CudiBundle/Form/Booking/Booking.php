@@ -35,7 +35,7 @@ class Booking extends \CommonBundle\Component\Form\Bootstrap\Form
                         'id'          => 'article-' . $saleArticle->getId(),
                         'placeholder' => '0',
                     ),
-                    'options' => array(
+                    'options'    => array(
                         'input' => array(
                             'filters' => array(
                                 array('name' => 'StringTrim'),

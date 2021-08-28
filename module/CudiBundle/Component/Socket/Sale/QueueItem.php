@@ -119,9 +119,9 @@ class QueueItem
         return json_encode(
             array(
                 'collect' => array(
-                    'id'      => $item->getId(),
-                    'comment' => $item->getComment(),
-                    'person'  => array(
+                    'id'       => $item->getId(),
+                    'comment'  => $item->getComment(),
+                    'person'   => array(
                         'id'                       => $item->getPerson()->getId(),
                         'name'                     => $item->getPerson()->getFullName(),
                         'universityIdentification' => $item->getPerson()->getUniversityIdentification(),
@@ -150,9 +150,9 @@ class QueueItem
         return json_encode(
             array(
                 'sale' => array(
-                    'id'      => $item->getId(),
-                    'comment' => $item->getComment(),
-                    'person'  => array(
+                    'id'       => $item->getId(),
+                    'comment'  => $item->getComment(),
+                    'person'   => array(
                         'id'                       => $item->getPerson()->getId(),
                         'name'                     => $item->getPerson()->getFullName(),
                         'universityIdentification' => $item->getPerson()->getUniversityIdentification(),

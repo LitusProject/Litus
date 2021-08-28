@@ -40,7 +40,7 @@ class Typeahead extends \CommonBundle\Component\Form\Fieldset
                     'autocomplete' => 'off',
                     'data-provide' => 'typeahead',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

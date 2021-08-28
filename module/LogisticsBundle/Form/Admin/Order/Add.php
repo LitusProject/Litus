@@ -91,9 +91,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'textarea',
-                'name'     => 'internal_comment',
-                'label'    => 'Internal Comment',
+                'type'    => 'textarea',
+                'name'    => 'internal_comment',
+                'label'   => 'Internal Comment',
                 'options' => array(
                     'input' => array(
                         'filters' => array(
@@ -106,9 +106,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'textarea',
-                'name'     => 'external_comment',
-                'label'    => 'External Comment',
+                'type'    => 'textarea',
+                'name'    => 'external_comment',
+                'label'   => 'External Comment',
                 'options' => array(
                     'input' => array(
                         'filters' => array(
@@ -195,7 +195,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(
             array(
                 'type'  => 'checkbox',
-                'name' => 'needs_ride',
+                'name'  => 'needs_ride',
                 'label' => 'Needs a Van-ride (Kar-rit)',
             )
         );

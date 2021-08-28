@@ -1,15 +1,15 @@
 <?php
 
 return array(
-    'Registration'                                                 => 'Registration',
-    'There already is a user with your university identification!' => 'There already is a user with your university identification!',
+    'Registration'                                                                                            => 'Registration',
+    'There already is a user with your university identification!'                                            => 'There already is a user with your university identification!',
 
-    'Start'    => 'Start',
-    'Studies'  => 'Studies',
-    'Subjects' => 'Subjects',
-    'Complete' => 'Complete',
+    'Start'                                                                                                   => 'Start',
+    'Studies'                                                                                                 => 'Studies',
+    'Subjects'                                                                                                => 'Subjects',
+    'Complete'                                                                                                => 'Complete',
 
-    'Choose your study:' => 'Choose your study:',
+    'Choose your study:'                                                                                      => 'Choose your study:',
 
     'To register, please login first with your KU Leuven account.'                                            => 'To register, please login first with your KU Leuven account.',
     'Personal'                                                                                                => 'Personal',
@@ -48,28 +48,28 @@ return array(
     'Close'                                                                                                   => 'Close',
     'Read Them'                                                                                               => 'Read Them',
 
-    'Choose a Study'                               => 'Choose a Study',
-    'Choose Your Subjects'                         => 'Choose Your Subjects',
-    'Phase'                                        => 'Phase',
-    'Enroll'                                       => 'Enroll',
-    'Your studies were successfully saved!'        => 'Your studies were successfully saved!',
-    'An error occurred while saving your studies!' => 'An error occurred while saving your studies!',
+    'Choose a Study'                                                                                          => 'Choose a Study',
+    'Choose Your Subjects'                                                                                    => 'Choose Your Subjects',
+    'Phase'                                                                                                   => 'Phase',
+    'Enroll'                                                                                                  => 'Enroll',
+    'Your studies were successfully saved!'                                                                   => 'Your studies were successfully saved!',
+    'An error occurred while saving your studies!'                                                            => 'An error occurred while saving your studies!',
 
-    'Complete Your Registration'                   => 'Complete Your Registration',
-    'Your subjects were successfully saved!'       => 'Your subjects were successfully saved!',
-    'An error occurred while saving your subjects' => 'An error occurred while saving your subjects',
+    'Complete Your Registration'                                                                              => 'Complete Your Registration',
+    'Your subjects were successfully saved!'                                                                  => 'Your subjects were successfully saved!',
+    'An error occurred while saving your subjects'                                                            => 'An error occurred while saving your subjects',
 
-    'Addresses'      => 'Addresses',
-    'Organization'   => 'Organization',
-    'Membership'     => 'Membership',
-    'Book Textbooks' => 'Book Textbooks',
+    'Addresses'                                                                                               => 'Addresses',
+    'Organization'                                                                                            => 'Organization',
+    'Membership'                                                                                              => 'Membership',
+    'Book Textbooks'                                                                                          => 'Book Textbooks',
 
-    'Other Subjects'                             => 'Other Subjects',
-    'You have not yet added any other subjects.' => 'You have not yet added any other subjects.',
-    'Add Other Subjects'                         => 'Add Other Subjects',
-    'Add Other Subject'                          => 'Add Other Subject',
-    'The subject was succesfully added!'         => 'The subject was succesfully added!',
+    'Other Subjects'                                                                                          => 'Other Subjects',
+    'You have not yet added any other subjects.'                                                              => 'You have not yet added any other subjects.',
+    'Add Other Subjects'                                                                                      => 'Add Other Subjects',
+    'Add Other Subject'                                                                                       => 'Add Other Subject',
+    'The subject was succesfully added!'                                                                      => 'The subject was succesfully added!',
 
-    'Reservation'                                => 'Reservation',
-    'Order sandwiches and snacks.'               => 'Order sandwiches and snacks.',
+    'Reservation'                                                                                             => 'Reservation',
+    'Order sandwiches and snacks.'                                                                            => 'Order sandwiches and snacks.',
 );

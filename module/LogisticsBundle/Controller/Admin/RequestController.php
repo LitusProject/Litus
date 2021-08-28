@@ -20,7 +20,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'requests'    => $requests,
+                'requests' => $requests,
             )
         );
     }
@@ -52,9 +52,9 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
             foreach ($oldMaps as $map) {
                 $id = $map->getArticle()->getId();
                 $mappings[$id] = array(
-                    'name'  => $map->getArticle()->getName(),
-                    'old'   => $map->getAmount(),
-                    'new'   => 0,
+                    'name' => $map->getArticle()->getName(),
+                    'old'  => $map->getAmount(),
+                    'new'  => 0,
                 );
             }
         }
@@ -65,20 +65,20 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
                 $mappings[$id]['new'] = $map->getAmount();
             } else {
                 $mappings[$id] = array(
-                    'name'  => $map->getArticle()->getName(),
-                    'new'   => $map->getAmount(),
-                    'old'   => 0,
+                    'name' => $map->getArticle()->getName(),
+                    'new'  => $map->getAmount(),
+                    'old'  => 0,
                 );
             }
         }
 
         $diffs = array(
-            'Name' => array($oldOrder->getName()),
-            'Location' => array($oldOrder->getLocation()->getName()),
-            'Creator' => array($oldOrder->getCreator()->getFullName()),
-            'Contact' => array($oldOrder->getContact()),
-            'Start Date' => array($oldOrder->getStartDate()->format('d/m/Y H:i')),
-            'End Date' => array($oldOrder->getEndDate()->format('d/m/Y H:i')),
+            'Name'        => array($oldOrder->getName()),
+            'Location'    => array($oldOrder->getLocation()->getName()),
+            'Creator'     => array($oldOrder->getCreator()->getFullName()),
+            'Contact'     => array($oldOrder->getContact()),
+            'Start Date'  => array($oldOrder->getStartDate()->format('d/m/Y H:i')),
+            'End Date'    => array($oldOrder->getEndDate()->format('d/m/Y H:i')),
             'Description' => array($oldOrder->getDescription()),
         );
         if ($newOrder !== null) {
@@ -93,11 +93,11 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'request'    => $request,
-                'newOrder'   => $newOrder,
-                'oldOrder'   => $oldOrder,
-                'diffs'      => $diffs,
-                'mappings'   => $mappings,
+                'request'  => $request,
+                'newOrder' => $newOrder,
+                'oldOrder' => $oldOrder,
+                'diffs'    => $diffs,
+                'mappings' => $mappings,
             )
         );
     }

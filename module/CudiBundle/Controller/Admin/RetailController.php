@@ -30,8 +30,8 @@ class RetailController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'paginator'           => $paginator,
-                'paginationControl'   => $this->paginator()->createControl(true),
+                'paginator'         => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
@@ -104,7 +104,7 @@ class RetailController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'   => $form,
                 'retail' => $retail,
             )
         );

@@ -3,8 +3,8 @@
 return array(
     'submenus' => array(
         'Publications' => array(
-            'subtitle' => array('Editions', 'Publications'),
-            'items'    => array(
+            'subtitle'    => array('Editions', 'Publications'),
+            'items'       => array(
                 'publication_admin_publication' => array('title' => 'Publications'),
             ),
             'controllers' => array(

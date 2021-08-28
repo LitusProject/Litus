@@ -73,9 +73,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'datetime',
-                'name'     => 'final_reservation_date',
-                'label'    => 'Final Reservation Date',
+                'type'  => 'datetime',
+                'name'  => 'final_reservation_date',
+                'label' => 'Final Reservation Date',
             )
         );
 
@@ -94,9 +94,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         foreach ($this->products as $product) {
             $this->add(
                 array(
-                    'type'    => 'number',
-                    'name'    => $product->getId() . '-quantity',
-                    'options' => array(
+                    'type'       => 'number',
+                    'name'       => $product->getId() . '-quantity',
+                    'options'    => array(
                         'label' => $product->getName(),
                     ),
                     'attributes' => array(
@@ -117,7 +117,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'rows' => 5,
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

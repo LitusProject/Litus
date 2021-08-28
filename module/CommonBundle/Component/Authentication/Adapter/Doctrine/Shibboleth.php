@@ -60,9 +60,9 @@ class Shibboleth extends \CommonBundle\Component\Authentication\Adapter\Doctrine
         } else {
             $this->setAuthenticationResult(
                 array(
-                    'code'     => Result::SUCCESS,
-                    'identity' => $this->getIdentity(),
-                    'message'  => array(
+                    'code'         => Result::SUCCESS,
+                    'identity'     => $this->getIdentity(),
+                    'message'      => array(
                         'Authentication successful',
                     ),
                     'personObject' => $this->getPersonObject(),

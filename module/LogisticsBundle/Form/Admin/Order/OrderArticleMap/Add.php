@@ -31,7 +31,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'style'    => 'max-width: 100%;height: 300px;',
                     'options'  => $this->getArticleNames(),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

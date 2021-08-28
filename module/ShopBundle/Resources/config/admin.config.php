@@ -3,8 +3,8 @@
 return array(
     'submenus' => array(
         'Shop' => array(
-            'subtitle' => array('Products', 'Sessions', 'Reservations'),
-            'items'    => array(
+            'subtitle'    => array('Products', 'Sessions', 'Reservations'),
+            'items'       => array(
                 'shop_admin_shop_product' => array(
                     'action' => 'manage',
                     'title'  => 'Products',

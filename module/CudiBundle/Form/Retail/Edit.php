@@ -15,9 +15,9 @@ class Edit extends \CudiBundle\Form\Retail\Add
         $this->get('article')->setAttribute('type', 'hidden');
         $this->add(
             array(
-                'type'       => 'hidden',
-                'name'       => 'retailId',
-                'required'   => true,
+                'type'     => 'hidden',
+                'name'     => 'retailId',
+                'required' => true,
             )
         );
         $this->remove('submit')

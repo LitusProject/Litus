@@ -76,8 +76,8 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
     public function getAuthenticationHandler()
     {
         return array(
-            'action'     => 'login',
-            'controller' => 'common_auth',
+            'action'         => 'login',
+            'controller'     => 'common_auth',
 
             'auth_route'     => 'common_auth',
             'redirect_route' => 'common_index',
@@ -130,10 +130,10 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             foreach ($pages as $page) {
                 if ($page->isLanguageAvailable($this->getLanguage()) && $page->isActive()) {
                     $menu[$i]['items'][] = array(
-                        'type'  => 'page',
-                        'id'    => $page->getId(),
-                        'name'  => $page->getName(),
-                        'title' => $page->getTitle($this->getLanguage()),
+                        'type'        => 'page',
+                        'id'          => $page->getId(),
+                        'name'        => $page->getName(),
+                        'title'       => $page->getTitle($this->getLanguage()),
                         'orderNumber' => $page->getOrderNumber(),
                     );
 
@@ -146,10 +146,10 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             foreach ($links as $link) {
                 if ($link->isLanguageAvailable($this->getLanguage()) && $link->isActive()) {
                     $menu[$i]['items'][] = array(
-                        'type' => 'link',
-                        'id'   => $link->getId(),
-                        'name' => $link->getName($this->getLanguage()),
-                        'url'  => $link->getUrl($this->getLanguage()),
+                        'type'        => 'link',
+                        'id'          => $link->getId(),
+                        'name'        => $link->getName($this->getLanguage()),
+                        'url'         => $link->getUrl($this->getLanguage()),
                         'orderNumber' => $link->getOrderNumber(),
                     );
 

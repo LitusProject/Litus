@@ -1,11 +1,11 @@
 <?php
 
 return array(
-    'Africa'   => 'Africa',
-    'Americas' => 'Americas',
-    'Asia'     => 'Asia',
-    'Europe'   => 'Europe',
-    'Oceania'  => 'Oceania',
+    'Africa'                                       => 'Africa',
+    'Americas'                                     => 'Americas',
+    'Asia'                                         => 'Asia',
+    'Europe'                                       => 'Europe',
+    'Oceania'                                      => 'Oceania',
 
     'Algeria'                                      => 'Algeria',
     'Angola'                                       => 'Angola',

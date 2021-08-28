@@ -37,8 +37,8 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 'activeAcademicYear' => $academicYear,
                 'academicYears'      => $academicYears,
-                'rewards_enabled'   => $rewards_enabled,
-                'points_enabled'   => $points_enabled,
+                'rewards_enabled'    => $rewards_enabled,
+                'points_enabled'     => $points_enabled,
             )
         );
     }
@@ -141,12 +141,12 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'person'            => $person->getId(),
-                'asResponsible'     => $asResponsible,
-                'asVolunteer'       => $asVolunteer,
-                'payed'             => $payed,
-                'rewards_enabled'   => $rewards_enabled,
-                'points_enabled'    => $points_enabled,
+                'person'          => $person->getId(),
+                'asResponsible'   => $asResponsible,
+                'asVolunteer'     => $asVolunteer,
+                'payed'           => $payed,
+                'rewards_enabled' => $rewards_enabled,
+                'points_enabled'  => $points_enabled,
             )
         );
     }

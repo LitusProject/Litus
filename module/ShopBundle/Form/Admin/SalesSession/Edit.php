@@ -29,9 +29,9 @@ class Edit extends \ShopBundle\Form\Admin\SalesSession\Add
 
             $this->add(
                 array(
-                    'type'    => 'number',
-                    'name'    => $product->getId() . '-quantity',
-                    'options' => array(
+                    'type'       => 'number',
+                    'name'       => $product->getId() . '-quantity',
+                    'options'    => array(
                         'label' => $product->getName(),
                     ),
                     'attributes' => array(

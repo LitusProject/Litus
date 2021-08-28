@@ -164,12 +164,12 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
 
             if (!isset($articleList[$booking->getArticle()->getId()]) && !isset($articles[$booking->getArticle()->getId()])) {
                 $articles[$booking->getArticle()->getId()] = array(
-                    'id'       => $booking->getArticle()->getId(),
-                    'title'    => $booking->getArticle()->getMainArticle()->getTitle(),
-                    'subjects' => array(),
-                    'price'    => $booking->getArticle()->getSellPrice() / 100,
-                    'sold'     => in_array($booking->getArticle()->getId(), $sold),
-                    'bookable' => $booking->getArticle()->isBookable()
+                    'id'         => $booking->getArticle()->getId(),
+                    'title'      => $booking->getArticle()->getMainArticle()->getTitle(),
+                    'subjects'   => array(),
+                    'price'      => $booking->getArticle()->getSellPrice() / 100,
+                    'sold'       => in_array($booking->getArticle()->getId(), $sold),
+                    'bookable'   => $booking->getArticle()->isBookable()
                         && $booking->getArticle()->canBook($person, $this->getEntityManager())
                         && ($enableBookings || in_array($booking->getArticle()->getId(), $bookingsClosedExceptions)),
                     'unbookable' => $booking->getArticle()->isUnbookable(),
@@ -451,17 +451,17 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                         );
                     } else {
                         $articles[$article->getId()] = array(
-                            'id'       => $article->getId(),
-                            'title'    => $article->getMainArticle()->getTitle(),
-                            'subjects' => array(
+                            'id'         => $article->getId(),
+                            'title'      => $article->getMainArticle()->getTitle(),
+                            'subjects'   => array(
                                 array(
                                     'id'        => $subject->getId(),
                                     'mandatory' => $subjectMap->isMandatory(),
                                 ),
                             ),
-                            'price'    => $article->getSellPrice() / 100,
-                            'sold'     => in_array($article->getId(), $sold),
-                            'bookable' => $article->isBookable()
+                            'price'      => $article->getSellPrice() / 100,
+                            'sold'       => in_array($article->getId(), $sold),
+                            'bookable'   => $article->isBookable()
                                 && $article->canBook($person, $this->getEntityManager())
                                 && ($enableBookings || in_array($article->getId(), $bookingsClosedExceptions)),
                             'unbookable' => $article->isUnbookable(),
@@ -483,17 +483,17 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
         foreach ($commonArticles as $commonArticle) {
             if ($commonArticle->isBookable()) {
                 $articles[$commonArticle->getId()] = array(
-                    'id'       => $commonArticle->getId(),
-                    'title'    => $commonArticle->getMainArticle()->getTitle(),
-                    'subjects' => array(
+                    'id'         => $commonArticle->getId(),
+                    'title'      => $commonArticle->getMainArticle()->getTitle(),
+                    'subjects'   => array(
                         array(
                             'id'        => 0,
                             'mandatory' => false,
                         ),
                     ),
-                    'price'    => $commonArticle->getSellPrice() / 100,
-                    'sold'     => in_array($commonArticle->getId(), $sold),
-                    'bookable' => $commonArticle->isBookable()
+                    'price'      => $commonArticle->getSellPrice() / 100,
+                    'sold'       => in_array($commonArticle->getId(), $sold),
+                    'bookable'   => $commonArticle->isBookable()
                         && $commonArticle->canBook($person, $this->getEntityManager())
                         && ($enableBookings || in_array($commonArticle->getId(), $bookingsClosedExceptions)),
                     'unbookable' => $commonArticle->isUnbookable(),

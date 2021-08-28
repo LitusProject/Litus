@@ -132,36 +132,36 @@ class Article
      * @var array All the possible categories allowed
      */
     public static $POSSIBLE_CATEGORIES = array(
-        'geluid' => 'Geluid',
-        'kabels' => 'Kabels',
+        'geluid'                 => 'Geluid',
+        'kabels'                 => 'Kabels',
         'elektrisch gereedschap' => 'Elektrisch Gereedschap & toebehoren',
-        'hand' => 'Handgereedschap',
-        'kledij' => 'Werkkledij',
-        'materiaal' => 'Material (eindig)',
-        'sanitair' => 'Sanitair',
-        'electronica' => 'Electronica',
-        'vastmaken' => 'Vastmaken & CO',
-        'bouwen' => 'Bouwen',
-        'lijm en silicoon' => 'Lijmen & Siliconen',
-        'verf' => 'Verven & CO',
-        'stof' => 'Stof',
-        'br' => 'BR',
-        'verkleed' => 'Verkleedkledij',
-        'sport' => 'Sport',
-        'fak' => 'Fak',
-        'varia' => 'Varia',
-        'logistiek' => 'Logistiek',
-        'cultuur' => 'Cultuur',
-        'huis' => 'Huishoudelijk',
-        'acti' => 'Activiteiten',
-        'bier' => 'Bierpotten',
-        'glazen' => 'Glazen',
-        'elektriciteitskabels' => 'Elektriciteitskabels',
-        'kook' => 'Kookgerief',
-        'corona' => 'Coronaproofing',
-        'it' => 'IT',
-        'theokot' => 'Theokot',
-        'secri' => 'Secri'
+        'hand'                   => 'Handgereedschap',
+        'kledij'                 => 'Werkkledij',
+        'materiaal'              => 'Material (eindig)',
+        'sanitair'               => 'Sanitair',
+        'electronica'            => 'Electronica',
+        'vastmaken'              => 'Vastmaken & CO',
+        'bouwen'                 => 'Bouwen',
+        'lijm en silicoon'       => 'Lijmen & Siliconen',
+        'verf'                   => 'Verven & CO',
+        'stof'                   => 'Stof',
+        'br'                     => 'BR',
+        'verkleed'               => 'Verkleedkledij',
+        'sport'                  => 'Sport',
+        'fak'                    => 'Fak',
+        'varia'                  => 'Varia',
+        'logistiek'              => 'Logistiek',
+        'cultuur'                => 'Cultuur',
+        'huis'                   => 'Huishoudelijk',
+        'acti'                   => 'Activiteiten',
+        'bier'                   => 'Bierpotten',
+        'glazen'                 => 'Glazen',
+        'elektriciteitskabels'   => 'Elektriciteitskabels',
+        'kook'                   => 'Kookgerief',
+        'corona'                 => 'Coronaproofing',
+        'it'                     => 'IT',
+        'theokot'                => 'Theokot',
+        'secri'                  => 'Secri'
     );
 
     /**
@@ -171,7 +171,7 @@ class Article
     public static $POSSIBLE_VISIBILITIES = array(
         'internal' => 'Internal',
         'external' => 'External',
-        'private' => 'Private',
+        'private'  => 'Private',
     );
 
     /**
@@ -179,11 +179,11 @@ class Article
      * @var array All the possible statuses allowed
      */
     public static $POSSIBLE_STATUSES = array(
-        'ok' => 'In Orde',
-        'vermist' => 'Vermist',
-        'weg' => 'Weg',
-        'kapot' => 'Kapot',
-        'vuil' => 'Vuil',
+        'ok'       => 'In Orde',
+        'vermist'  => 'Vermist',
+        'weg'      => 'Weg',
+        'kapot'    => 'Kapot',
+        'vuil'     => 'Vuil',
         'aankopen' => 'Aankopen',
         'nakijken' => 'Nakijken',
     );

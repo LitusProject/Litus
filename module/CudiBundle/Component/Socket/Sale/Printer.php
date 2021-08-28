@@ -43,8 +43,8 @@ class Printer
         }
 
         $data = array(
-            'id'      => $academic->getUniversityIdentification(),
-            'barcode' => (int) $entityManager
+            'id'          => $academic->getUniversityIdentification(),
+            'barcode'     => (int) $entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.queue_item_barcode_prefix') + $queueItem->getId(),
             'name'        => $academic->getFullName(),
@@ -83,8 +83,8 @@ class Printer
         }
 
         $data = array(
-            'id'      => $academic->getUniversityIdentification(),
-            'barcode' => (int) $entityManager
+            'id'          => $academic->getUniversityIdentification(),
+            'barcode'     => (int) $entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.queue_item_barcode_prefix') + $queueItem->getId(),
             'name'        => $academic->getFullName(),
@@ -123,8 +123,8 @@ class Printer
         }
 
         $data = array(
-            'id'      => $academic->getUniversityIdentification(),
-            'barcode' => (int) $entityManager
+            'id'          => $academic->getUniversityIdentification(),
+            'barcode'     => (int) $entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.queue_item_barcode_prefix') + $queueItem->getId(),
             'name'        => $academic->getFullName(),

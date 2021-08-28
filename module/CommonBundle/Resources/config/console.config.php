@@ -1,8 +1,8 @@
 <?php
 
 return array(
-    'install_all'    => CommonBundle\Command\InstallAll::class,
-    'install_common' => CommonBundle\Command\Install::class,
+    'install_all'             => CommonBundle\Command\InstallAll::class,
+    'install_common'          => CommonBundle\Command\Install::class,
 
     'common_cleanup_acl'      => CommonBundle\Command\CleanupAcl::class,
     'common_cleanup_sessions' => CommonBundle\Command\CleanupSessions::class,

@@ -32,7 +32,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'id' => 'purchase_price',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -54,7 +54,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'id' => 'sell_price',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -105,7 +105,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'class'     => 'disableEnter',
                     'data-help' => 'This is the main barcode of the article. This one will be printed on the front page.',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => $barcodeInput,
                 ),
             )

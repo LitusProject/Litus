@@ -46,7 +46,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                     'attributes' => array(
                         'options' => $this->getNumberOptions(),
                     ),
-                    'options' => array(
+                    'options'    => array(
                         'input' => array(
                             'required'   => true,
                             'validators' => array(
@@ -72,7 +72,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'options' => $this->getNumberOptions(),
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'required'   => true,
                                 'validators' => array(
@@ -99,7 +99,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'options' => $this->getNumberOptions(),
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'required'   => true,
                                 'validators' => array(
@@ -125,7 +125,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                             'attributes' => array(
                                 'options' => $this->getNumberOptions(),
                             ),
-                            'options' => array(
+                            'options'    => array(
                                 'input' => array(
                                     'required'   => true,
                                     'validators' => array(

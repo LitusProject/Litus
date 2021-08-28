@@ -30,8 +30,8 @@ class Send extends \CommonBundle\Component\Form\Admin\Form
                 'value'   => $this->email,
                 'options' => array(
                     'input' => array(
-                        'required' => true,
-                        'filters'  => array(
+                        'required'   => true,
+                        'filters'    => array(
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
@@ -67,7 +67,7 @@ class Send extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'style' => 'width: 350px;',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -86,7 +86,7 @@ class Send extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'style' => 'width: 400px;',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

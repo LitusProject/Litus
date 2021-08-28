@@ -30,7 +30,7 @@ class Login extends \CommonBundle\Component\Form\Bootstrap\Form
                     'attributes' => array(
                         'disabled' => 'disabled',
                     ),
-                    'options' => array(
+                    'options'    => array(
                         'input' => array(
                             'filters' => array(
                                 array('name' => 'StringTrim'),

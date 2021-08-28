@@ -11,7 +11,7 @@ return array(
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'gallery_admin_gallery',
                     'action'     => 'manage',
                 ),
@@ -26,7 +26,7 @@ return array(
                     'name'     => '[a-zA-Z0-9_-]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'gallery',
                     'action'     => 'overview',
                 ),
@@ -37,6 +37,6 @@ return array(
     'controllers' => array(
         'gallery_admin_gallery' => 'GalleryBundle\Controller\Admin\GalleryController',
 
-        'gallery' => 'GalleryBundle\Controller\GalleryController',
+        'gallery'               => 'GalleryBundle\Controller\GalleryController',
     ),
 );

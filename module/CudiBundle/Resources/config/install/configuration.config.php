@@ -77,8 +77,8 @@ return array(
         'description' => 'The time a reservation can be extended',
     ),
     array(
-        'key'   => 'cudi.booking_assigned_mail',
-        'value' => serialize(
+        'key'         => 'cudi.booking_assigned_mail',
+        'value'       => serialize(
             array(
                 'en' => array(
                     'subject' => 'New Assignments',
@@ -121,8 +121,8 @@ Student IT Cudi
         'description' => 'The mail sent when a booking is assigned',
     ),
     array(
-        'key'   => 'cudi.booking_expire_warning_mail',
-        'value' => serialize(
+        'key'         => 'cudi.booking_expire_warning_mail',
+        'value'       => serialize(
             array(
                 'en' => array(
                     'subject' => 'Assignment Expiration Warning',
@@ -165,8 +165,8 @@ Student IT Cudi
         'description' => 'The mail sent when a booking is about to expire',
     ),
     array(
-        'key'   => 'cudi.booking_expire_mail',
-        'value' => serialize(
+        'key'         => 'cudi.booking_expire_mail',
+        'value'       => serialize(
             array(
                 'en' => array(
                     'subject' => 'Assignment Expiration',
@@ -220,8 +220,8 @@ Student IT Cudi
         'description' => 'Whether the cudi queue socket is enabled',
     ),
     array(
-        'key'   => 'cudi.purchase_prices',
-        'value' => serialize(
+        'key'         => 'cudi.purchase_prices',
+        'value'       => serialize(
             array(
                 'binding_glued'     => 81620,
                 'binding_stapled'   => 6360,
@@ -236,8 +236,8 @@ Student IT Cudi
         'description' => 'The purchase prices of an internal article (multiplied by 100 000)',
     ),
     array(
-        'key'   => 'cudi.sell_prices',
-        'value' => serialize(
+        'key'         => 'cudi.sell_prices',
+        'value'       => serialize(
             array(
                 'binding_glued'     => 83000,
                 'binding_stapled'   => 7000,
@@ -307,8 +307,8 @@ Student IT Cudi
         'description' => 'The title printed on a ticket',
     ),
     array(
-        'key'   => 'cudi.printers',
-        'value' => serialize(
+        'key'         => 'cudi.printers',
+        'value'       => serialize(
             array(
                 'signin'    => 'LITUS-SignIn',
                 'card'      => 'LITUS-Card',
@@ -323,8 +323,8 @@ Student IT Cudi
         'description' => 'The names of the printers',
     ),
     array(
-        'key'   => 'cudi.tshirt_article',
-        'value' => serialize(
+        'key'         => 'cudi.tshirt_article',
+        'value'       => serialize(
             array(
                 'F_S'  => 232,
                 'F_M'  => 233,
@@ -340,15 +340,15 @@ Student IT Cudi
         'description' => 'The T-shirt articles',
     ),
     array(
-        'key'   => 'cudi.registration_articles',
-        'value' => serialize(
+        'key'         => 'cudi.registration_articles',
+        'value'       => serialize(
             array()
         ),
         'description' => 'The articles assigned at registration',
     ),
     array(
-        'key'   => 'cudi.bookings_closed_exceptions',
-        'value' => serialize(
+        'key'         => 'cudi.bookings_closed_exceptions',
+        'value'       => serialize(
             array()
         ),
         'description' => 'The articles assigned at registration',
@@ -369,8 +369,8 @@ Student IT Cudi
         'description' => 'The interval for sending a warning mail before expiring a booking',
     ),
     array(
-        'key'   => 'cudi.catalog_update_mail',
-        'value' => serialize(
+        'key'         => 'cudi.catalog_update_mail',
+        'value'       => serialize(
             array(
                 'en' => array(
                     'subject' => 'Catalog Updates',
@@ -424,8 +424,8 @@ Student IT Cudi
         'description' => 'Send the cudi booking mails (assigned, expired, warning) to the cudi address',
     ),
     array(
-        'key'   => 'cudi.location',
-        'value' => serialize(
+        'key'         => 'cudi.location',
+        'value'       => serialize(
             array(
                 'latitude'  => 50.8612181,
                 'longitude' => 4.6837506,
@@ -506,8 +506,8 @@ Student IT Cudi
         'description' => 'The client ID for the ISIC SOAP API.',
     ),
     array(
-        'key'   => 'cudi.isic_student_cities',
-        'value' => serialize(
+        'key'         => 'cudi.isic_student_cities',
+        'value'       => serialize(
             array(
                 'Leuven' => 'Leuven',
             )
@@ -515,8 +515,8 @@ Student IT Cudi
         'description' => 'The student city for the ISIC SOAP API.',
     ),
     array(
-        'key'   => 'cudi.isic_schools',
-        'value' => serialize(
+        'key'         => 'cudi.isic_schools',
+        'value'       => serialize(
             array(
                 'KU Leuven' => 'KU Leuven',
             )
@@ -524,8 +524,8 @@ Student IT Cudi
         'description' => 'The school for the ISIC SOAP API.',
     ),
     array(
-        'key'   => 'cudi.isic_studies',
-        'value' => serialize(
+        'key'         => 'cudi.isic_studies',
+        'value'       => serialize(
             array(
                 'Ingenieursstudies' => 'Engineering studies',
             )
@@ -553,8 +553,8 @@ Student IT Cudi
         'description' => 'Whether or not to delay an ISIC order until it has been paid for.',
     ),
     array(
-        'key'   => 'cudi.isic_Guido_conditions',
-        'value' => serialize(
+        'key'         => 'cudi.isic_Guido_conditions',
+        'value'       => serialize(
             array(
                 'en' => '<b>By selecting \'Receive information Guido NV\' I herby consent</b> with the storage of above data by GUIDO NV, Bruiloftstraat 127, 9050 Gentbrugge.<br>
 This allows GUIDO to keep you updated in the future about their hints, tricks, news, activities, games etc...<br>
@@ -581,8 +581,8 @@ Dit is de rechtstreekse link naar onze online-privacy pagina: <a href="https://w
         'description' => 'Whether or not to show the text above the reservations.',
     ),
     array(
-        'key'   => 'cudi.extra_text_reservation_page',
-        'value' => serialize(
+        'key'         => 'cudi.extra_text_reservation_page',
+        'value'       => serialize(
             array(
                 'en' => 'This is a placeholder text, please change me',
                 'nl' => 'Deze tekst moet nog aanepast worden',
@@ -596,8 +596,8 @@ Dit is de rechtstreekse link naar onze online-privacy pagina: <a href="https://w
         'description' => 'The maximal relative price to the sell price.',
     ),
     array(
-        'key'   => 'cudi.retail_enquired_mail',
-        'value' => serialize(
+        'key'         => 'cudi.retail_enquired_mail',
+        'value'       => serialize(
             array(
                 'en' => array(
                     'subject' => 'Enquiry for your retail: {{ book }}',
@@ -643,8 +643,8 @@ Gelieve contact op te nemen met {{ name }} via {{ email }}.
         'description' => 'The text on the overview page in cudi - retail',
     ),
     array(
-        'key'         => 'cudi.retail_my_deals_text',
-        'value'       => serialize(
+        'key'                   => 'cudi.retail_my_deals_text',
+        'value'                 => serialize(
             array(
                 'en' => 'Here you can see your deals.',
                 'nl' => 'Hier zie je je huidige aanvragen.',
@@ -652,8 +652,8 @@ Gelieve contact op te nemen met {{ name }} via {{ email }}.
         ),        'description' => 'The text on the my_deals page in cudi - retail',
     ),
     array(
-        'key'         => 'cudi.retail_my_retails_text',
-        'value'       => serialize(
+        'key'                   => 'cudi.retail_my_retails_text',
+        'value'                 => serialize(
             array(
                 'en' => 'Here you can see your personal retails, edit them or add new ones.',
                 'nl' => 'Hier zie je je huidige aanbiedingen en kan je er nieuwe aanmaken.',

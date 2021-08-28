@@ -12,8 +12,8 @@ return array(
         'description' => 'The ID of the organization on the official result page',
     ),
     array(
-        'key'   => 'sport.points_criteria',
-        'value' => serialize(
+        'key'         => 'sport.points_criteria',
+        'value'       => serialize(
             array(
                 array(
                     'limit'  => '90',

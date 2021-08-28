@@ -159,7 +159,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
                     'attributes' => array(
                         'id' => 'field-' . $fieldSpecification->getId(),
                     ),
-                    'options' => array(
+                    'options'    => array(
                         'input' => array(
                             'validators' => $validators,
                         ),

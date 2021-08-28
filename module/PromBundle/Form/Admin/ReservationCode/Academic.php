@@ -17,18 +17,18 @@ class Academic extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'typeahead',
-                'name'     => 'person',
-                'label'    => 'Name',
-                'required' => true,
+                'type'       => 'typeahead',
+                'name'       => 'person',
+                'label'      => 'Name',
+                'required'   => true,
                 'attributes' => array(
                     'autofocus' => 'true',
                 ),
-                'options'  => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array(
-                                'name'    => 'EntryAcademic'
+                                'name' => 'EntryAcademic'
                             ),
                             array('name' => 'TypeaheadPerson'),
                         ),
@@ -39,14 +39,14 @@ class Academic extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'select',
-                'name'     => 'number_tickets',
-                'label'    => 'Number of tickets',
-                'required' => true,
+                'type'       => 'select',
+                'name'       => 'number_tickets',
+                'label'      => 'Number of tickets',
+                'required'   => true,
                 'attributes' => array(
                     'options' => $this->getNumberOptions(),
                 ),
-                'options'  => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array('name' => 'Int')

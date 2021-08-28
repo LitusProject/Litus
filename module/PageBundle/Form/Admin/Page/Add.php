@@ -51,7 +51,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                         'class' => 'parent',
                         'id'    => 'parent_' . $category->getId(),
                     ),
-                    'options' => array(
+                    'options'    => array(
                         'options' => $this->createPagesArray($category),
                     ),
                 )
@@ -67,7 +67,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 'attributes' => array(
                     'multiple' => true,
                 ),
-                'options' => array(
+                'options'    => array(
                     'options' => $this->createEditRolesArray(),
                 ),
             )
@@ -75,11 +75,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $this->add(
             array(
-                'type'       => 'select',
-                'name'       => 'forced_language',
-                'label'      => 'Force Language',
-                'required'   => true,
-                'options' => array(
+                'type'     => 'select',
+                'name'     => 'forced_language',
+                'label'    => 'Force Language',
+                'required' => true,
+                'options'  => array(
                     'options' => $this->createForcedLanguagesArray(),
                 ),
             )
@@ -96,10 +96,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $this->add(
             array(
-                'type'     => 'text',
-                'name'     => 'order_number',
-                'label'    => 'Ordering Number',
-                'options'  => array(
+                'type'    => 'text',
+                'name'    => 'order_number',
+                'label'   => 'Ordering Number',
+                'options' => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -130,7 +130,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 'attributes' => array(
                     'width' => '400px',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

@@ -301,7 +301,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
             return array(
-                'enable' => $this->getEntityManager()
+                'enable'  => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.poc'),
                 'pocItem' => null,
@@ -326,7 +326,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 $pocItem[] = array(
                     'groupId'      => $lastPocGroup,
                     'pocGroupList' => $pocGroupList,
-                    'pocExample'  => $pocGroupList[0],
+                    'pocExample'   => $pocGroupList[0],
                 );
                 unset($pocGroupList);
                 $pocGroupList = array();
@@ -344,7 +344,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
         return
             array(
-                'enable' => $this->getEntityManager()
+                'enable'  => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.poc'),
                 'pocItem' => $pocItem,

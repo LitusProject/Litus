@@ -54,7 +54,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         'attributes' => array(
                             'class' => 'latitude',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -70,7 +70,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         'attributes' => array(
                             'class' => 'longitude',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),

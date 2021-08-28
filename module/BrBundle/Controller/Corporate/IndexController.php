@@ -20,18 +20,18 @@ class IndexController extends \BrBundle\Component\Controller\CorporateController
             ->findAllActiveQuery()->getResult();
 
             $br = null;
-            foreach ($units as $unit) {
-                if ($unit->getName() === 'Bedrijvenrelaties') {
-                    $br = $unit;
-                }
+        foreach ($units as $unit) {
+            if ($unit->getName() === 'Bedrijvenrelaties') {
+                $br = $unit;
             }
+        }
 
             $members = array();
-            if ($br != null) {
-                $members = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
-                    ->findAllByUnitAndAcademicYear($br, $academicYear);
-            }
+        if ($br != null) {
+            $members = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
+                ->findAllByUnitAndAcademicYear($br, $academicYear);
+        }
 
         $texts = unserialize(
             $this->getEntityManager()

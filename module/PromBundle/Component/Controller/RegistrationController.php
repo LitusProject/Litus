@@ -66,8 +66,8 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
     public function getAuthenticationHandler()
     {
         return array(
-            'action'     => 'index',
-            'controller' => 'common_index',
+            'action'         => 'index',
+            'controller'     => 'common_index',
 
             'auth_route'     => 'prom_registration_index',
             'redirect_route' => 'prom_registration_index',

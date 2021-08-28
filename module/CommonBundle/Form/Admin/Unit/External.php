@@ -71,7 +71,7 @@ class External extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'data-help' => 'The picture must be an image with a file size limit of ' . self::FILE_SIZE . '.',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array(

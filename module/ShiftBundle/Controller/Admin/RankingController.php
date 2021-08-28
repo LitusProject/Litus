@@ -50,7 +50,7 @@ class RankingController extends \CommonBundle\Component\Controller\ActionControl
                         ->findOneById($volunteer['id']);
 
                     $ranking[$rankingCriteria[$i]['name']][] = array(
-                        'person'     => $person,
+                        'person'      => $person,
                         'resultCount' => $volunteer['resultCount'],
                     );
                 }

@@ -83,7 +83,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'placeholder' => '+CCAAANNNNNN',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -131,9 +131,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'        => 'checkbox',
-                'name'        => 'large',
-                'label'       => 'company has a Large spot in the company overview',
+                'type'  => 'checkbox',
+                'name'  => 'large',
+                'label' => 'company has a Large spot in the company overview',
             )
         );
 
@@ -154,7 +154,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'id' => 'invoice_form',
                 ),
-                'elements' => array(
+                'elements'   => array(
                     array(
                         'type'     => 'text',
                         'name'     => 'invoice_name',
@@ -209,7 +209,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'id' => 'page_form',
                 ),
-                'elements' => array(
+                'elements'   => array(
                     array(
                         'type'       => 'select',
                         'name'       => 'years',
@@ -226,7 +226,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         'attributes' => array(
                             'id' => 'description',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -241,7 +241,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         'attributes' => array(
                             'id' => 'shortDescription',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -250,7 +250,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                     array(
                                         'name'    => 'FieldLength',
                                         'options' => array(
-                                            'max_length'      => 350,
+                                            'max_length' => 350,
                                         ),
                                     ),
                                 ),

@@ -152,15 +152,15 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
 
         return new ViewModel(
             array(
-                'resultString'     => $resultString,
-                'eventSearchForm'  => $eventSearchForm,
-                'unitSearchForm'   => $unitSearchForm,
-                'dateSearchForm'   => $dateSearchForm,
-                'myShifts'         => $myShifts,
-                'token'            => $token,
-                'searchResults'    => $searchResults,
-                'entityManager'    => $this->getEntityManager(),
-                'now'              => new DateTime(),
+                'resultString'    => $resultString,
+                'eventSearchForm' => $eventSearchForm,
+                'unitSearchForm'  => $unitSearchForm,
+                'dateSearchForm'  => $dateSearchForm,
+                'myShifts'        => $myShifts,
+                'token'           => $token,
+                'searchResults'   => $searchResults,
+                'entityManager'   => $this->getEntityManager(),
+                'now'             => new DateTime(),
             )
         );
     }

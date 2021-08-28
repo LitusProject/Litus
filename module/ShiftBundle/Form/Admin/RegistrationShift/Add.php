@@ -128,7 +128,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                 'name'    => 'DateCompare',
                                 'options' => array(
                                     'first_date' => 'now',
-                                    'last_date' => 'start_date',
+                                    'last_date'  => 'start_date',
                                     'format'     => 'd/m/Y H:i',
                                 ),
                             ),
@@ -147,7 +147,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'options' => $this->createDuplicatesArray(),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -169,7 +169,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'options' => $this->createDuplicatesArray(),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -187,7 +187,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type'       => 'select',
                 'name'       => 'edit_roles',
                 'label'      => 'Edit Roles',
-                'required' => true,
+                'required'   => true,
                 'attributes' => array(
                     'multiple' => true,
                     'options'  => $this->createEditRolesArray(),
@@ -244,9 +244,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'  => 'checkbox',
-                'name'  => 'members_visible',
-                'label' => 'Show attendees',
+                'type'     => 'checkbox',
+                'name'     => 'members_visible',
+                'label'    => 'Show attendees',
                 'required' => true,
             )
         );
@@ -299,7 +299,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'rows' => 5,
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

@@ -29,7 +29,7 @@ class Catalog extends \CommonBundle\Component\Form\Bootstrap\Form
                         'id'          => 'article-' . $mapping->getId(),
                         'placeholder' => '0',
                     ),
-                    'options' => array(
+                    'options'    => array(
                         'input' => array(
                             'filters' => array(
                                 array('name' => 'StringTrim'),

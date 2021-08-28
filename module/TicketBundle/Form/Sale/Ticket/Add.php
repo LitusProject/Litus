@@ -85,7 +85,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'id' => 'guest_first_name',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -101,7 +101,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'id' => 'guest_last_name',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -117,7 +117,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'id' => 'guest_email',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -147,7 +147,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'data-price' => $this->event->getPriceMembers(),
                         'options'    => $this->getNumberOptions(),
                     ),
-                    'options' => array(
+                    'options'    => array(
                         'input' => array(
                             'validators' => array(
                                 array(
@@ -174,7 +174,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'data-price' => $this->event->getPriceNonMembers(),
                             'options'    => $this->getNumberOptions(),
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'validators' => array(
                                     array(
@@ -202,7 +202,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'data-price' => $option->getPriceMembers(),
                             'options'    => $this->getNumberOptions(),
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'validators' => array(
                                     array(
@@ -229,7 +229,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'data-price' => $option->getPriceNonMembers(),
                                 'options'    => $this->getNumberOptions(),
                             ),
-                            'options' => array(
+                            'options'    => array(
                                 'input' => array(
                                     'validators' => array(
                                         array(

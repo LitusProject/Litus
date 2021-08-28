@@ -13,7 +13,7 @@ return array(
                     'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'on_admin_slug',
                     'action'     => 'manage',
                 ),
@@ -26,7 +26,7 @@ return array(
                 'constraints' => array(
                     'name' => '[a-zA-Z0-9_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'on_redirect',
                     'action'     => 'index',
                 ),
@@ -37,6 +37,6 @@ return array(
     'controllers' => array(
         'on_admin_slug' => 'OnBundle\Controller\Admin\SlugController',
 
-        'on_redirect' => 'OnBundle\Controller\RedirectController',
+        'on_redirect'   => 'OnBundle\Controller\RedirectController',
     ),
 );

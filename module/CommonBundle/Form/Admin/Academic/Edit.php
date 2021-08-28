@@ -31,8 +31,8 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
 
         $this->add(
             array(
-                'type'      => 'hidden',
-                'name'      => 'primary_email'
+                'type' => 'hidden',
+                'name' => 'primary_email'
             )
         );
 
@@ -45,7 +45,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                     'data-help'   => 'The birthday of the user.',
                     'placeholder' => 'dd/mm/yyyy',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -113,7 +113,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                             'class'     => 'disableEnter',
                             'data-help' => 'A barcode that can be used to identify the user.',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -179,7 +179,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                         'attributes' => array(
                             'data-help' => 'The identification used by the university for the student.',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -197,7 +197,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                         'attributes' => array(
                             'data-help' => 'The e-mail address given to the user by the university.',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),

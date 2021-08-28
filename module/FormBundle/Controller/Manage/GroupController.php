@@ -64,8 +64,8 @@ class GroupController extends \FormBundle\Component\Controller\FormController
 
         return new ViewModel(
             array(
-                'group'            => $group,
-                'completedEntries' => $this->getEntityManager()
+                'group'               => $group,
+                'completedEntries'    => $this->getEntityManager()
                     ->getRepository('FormBundle\Entity\Node\Entry')
                     ->findCompletedByGroup($group),
                 'notCompletedEntries' => $this->getEntityManager()

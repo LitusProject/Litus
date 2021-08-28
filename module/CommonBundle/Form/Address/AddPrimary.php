@@ -26,7 +26,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
                     'options' => $cities,
                     'class'   => 'city',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'input' => array(
                             'filters' => array(
@@ -53,7 +53,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
                 'attributes' => array(
                     'class' => 'other',
                 ),
-                'elements' => array(
+                'elements'   => array(
                     array(
                         'type'    => 'text',
                         'name'    => 'postal',
@@ -117,7 +117,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
                     'class'   => 'street street-' . $id,
                     'options' => $collection,
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -151,7 +151,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
                 'attributes' => array(
                     'class' => 'number',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -178,7 +178,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
                 'attributes' => array(
                     'class' => 'mailbox',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

@@ -57,7 +57,7 @@ class AddLease extends \CommonBundle\Component\Form\Bootstrap\Form
                     'id'           => 'leased_to',
                     'autocomplete' => false,
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -94,7 +94,7 @@ class AddLease extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'rows' => 3,
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

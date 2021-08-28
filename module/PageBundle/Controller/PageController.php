@@ -89,9 +89,9 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
         foreach ($maps as $map) {
             $allMaps[] = array(
-                'id'        => $map->getId(),
-                'title'     => $map->getFAQ()->getTitle($lang),
-                'content'   => $map->getFAQ()->getContent($lang),
+                'id'      => $map->getId(),
+                'title'   => $map->getFAQ()->getTitle($lang),
+                'content' => $map->getFAQ()->getContent($lang),
             );
         }
 

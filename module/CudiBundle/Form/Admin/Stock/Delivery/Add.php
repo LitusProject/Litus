@@ -41,7 +41,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'id'    => 'article',
                     'style' => 'width: 400px;',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array('name' => 'TypeaheadSaleArticle'),
@@ -61,7 +61,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'autocomplete' => 'off',
                     'id'           => 'delivery_number',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

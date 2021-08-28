@@ -10,7 +10,7 @@ return array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'shift_admin_shift',
                     'action'     => 'manage',
                 ),
@@ -27,7 +27,7 @@ return array(
                     'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'shop_admin_shop_product',
                     'action'     => 'manage',
                 ),
@@ -44,7 +44,7 @@ return array(
                     'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'shop_admin_shop_salessession',
                     'action'     => 'manage',
                 ),
@@ -62,7 +62,7 @@ return array(
                     'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'string' => '[%a-zA-Z0-9:.,_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'shop_admin_shop_reservation',
                     'action'     => 'salessession',
                 ),
@@ -80,7 +80,7 @@ return array(
                     'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'shop_admin_shop_reservationpermission',
                     'action'     => 'manage',
                 ),
@@ -95,7 +95,7 @@ return array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'       => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'shop',
                     'action'     => 'reserve',
                 ),
@@ -109,6 +109,6 @@ return array(
         'shop_admin_shop_reservation'           => 'ShopBundle\Controller\Admin\ReservationController',
         'shop_admin_shop_reservationpermission' => 'ShopBundle\Controller\Admin\ReservationPermissionController',
 
-        'shop' => 'ShopBundle\Controller\ShopController',
+        'shop'                                  => 'ShopBundle\Controller\ShopController',
     ),
 );

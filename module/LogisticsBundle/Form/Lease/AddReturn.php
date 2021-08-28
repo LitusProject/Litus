@@ -42,7 +42,7 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'id' => 'returned_amount',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -65,7 +65,7 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
                     'id'           => 'returned_by',
                     'autocomplete' => false,
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -84,7 +84,7 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'id' => 'returned_pawn',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -105,7 +105,7 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'rows' => 3,
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

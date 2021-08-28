@@ -46,11 +46,11 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'bookings' => $bookings,
-                'total'    => $total,
+                'bookings'        => $bookings,
+                'total'           => $total,
                 'enableExtraText' => $enableReservationText,
                 'reservationText' => $reservationText,
-                'retailEnabled' => $enableRetail,
+                'retailEnabled'   => $enableRetail,
             )
         );
     }
@@ -354,7 +354,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 'searchForm'        => $searchForm,
                 'isSubscribed'      => $isSubscribed,
                 'isic'              => $this->getIsic(),
-                'showMandatory'    => $showMandatory,
+                'showMandatory'     => $showMandatory,
             )
         );
     }

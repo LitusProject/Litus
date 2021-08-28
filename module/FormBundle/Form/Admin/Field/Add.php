@@ -64,7 +64,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                     'id'        => 'order',
                     'data-help' => 'The display order of the fields, lower numbers are displayed first.',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -85,7 +85,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 'attributes' => array(
                     'id' => 'required',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array('name' => 'FieldRequired'),
@@ -147,7 +147,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 'attributes' => array(
                     'id' => 'visibility',
                 ),
-                'elements' => array(
+                'elements'   => array(
                     array(
                         'type'       => 'select',
                         'name'       => 'if',
@@ -214,7 +214,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 'attributes' => array(
                     'id' => 'visibility',
                 ),
-                'elements' => array(
+                'elements'   => array(
                     array(
                         'type'       => 'select',
                         'name'       => 'if',
@@ -277,7 +277,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 'attributes' => array(
                     'class' => 'field_label',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

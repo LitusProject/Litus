@@ -42,14 +42,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         <li><b>Member:</b> restrict this article to members only</li>
                         <li><b>Study:</b> restrict this article to students of one ore more studies</li>
                     </ul>',
-                    'options' => array(
+                    'options'   => array(
                         'amount'    => 'Amount',
                         'available' => 'Available',
                         'member'    => 'Member',
                         'study'     => 'Study',
                     ),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array(
@@ -71,7 +71,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'class' => 'values',
                 ),
-                'elements' => array(
+                'elements'   => array(
                     array(
                         'type'       => 'text',
                         'name'       => 'amount',
@@ -80,7 +80,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         'attributes' => array(
                             'class' => 'value_amount',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),

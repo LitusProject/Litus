@@ -3,8 +3,8 @@
 return array(
     'submenus' => array(
         'Cudi' => array(
-            'subtitle' => array('Articles', 'Financial', 'Stock'),
-            'items'    => array(
+            'subtitle'    => array('Articles', 'Financial', 'Stock'),
+            'items'       => array(
                 'cudi_admin_article' => array(
                     'title' => 'Articles',
                     'help'  => 'Here you can find all the articles stored in the database. The general information can be managed here. These articles aren\'t sellable yet. To make them sellable a \'Sale Article\' must be created first.',

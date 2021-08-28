@@ -77,7 +77,7 @@ class FAQController extends \CommonBundle\Component\Controller\ActionController\
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'     => $form,
                 'pageForm' => $pageForm,
             )
         );
@@ -118,7 +118,7 @@ class FAQController extends \CommonBundle\Component\Controller\ActionController\
                     'common_admin_faq',
                     array(
                         'action' => 'edit',
-                        'id'   => $faq->getId(),
+                        'id'     => $faq->getId(),
                     )
                 );
                 return new ViewModel();
@@ -140,10 +140,10 @@ class FAQController extends \CommonBundle\Component\Controller\ActionController\
 
         return new ViewModel(
             array(
-                'form' => $faqForm,
+                'form'     => $faqForm,
                 'pageForm' => $pageForm,
-                'maps' => $maps,
-                'faq' => $faq,
+                'maps'     => $maps,
+                'faq'      => $faq,
             )
         );
     }

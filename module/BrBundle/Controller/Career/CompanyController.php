@@ -86,10 +86,10 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
 
         return new ViewModel(
             array(
-                'logoPath'         => $logoPath,
-                'smallCompanies'   => $smallComps,
-                'largeCompanies'   => $largeComps,
-                'allCompanies'     => $allComps
+                'logoPath'       => $logoPath,
+                'smallCompanies' => $smallComps,
+                'largeCompanies' => $largeComps,
+                'allCompanies'   => $allComps
                 // 'possible_sectors' => array('all' => 'All') + Company::POSSIBLE_SECTORS,
             )
         );

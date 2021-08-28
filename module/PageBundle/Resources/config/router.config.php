@@ -13,7 +13,7 @@ return array(
                     'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'page_admin_page',
                     'action'     => 'manage',
                 ),
@@ -28,7 +28,7 @@ return array(
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'page_admin_category',
                     'action'     => 'manage',
                 ),
@@ -43,7 +43,7 @@ return array(
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'page_admin_link',
                     'action'     => 'manage',
                 ),
@@ -56,7 +56,7 @@ return array(
                 'constraints' => array(
                     'string' => '[%a-zA-Z0-9:.,_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'page_admin_page',
                     'action'     => 'typeahead',
                 ),
@@ -70,7 +70,7 @@ return array(
                     'id'       => '[0-9]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'page_link',
                     'action'     => 'view',
                 ),
@@ -85,7 +85,7 @@ return array(
                     'name'     => '[a-zA-Z0-9_-]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'page',
                     'action'     => 'view',
                 ),
@@ -98,7 +98,7 @@ return array(
                 'constraints' => array(
                     'name' => '[a-zA-Z0-9_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'page',
                     'action'     => 'file',
                 ),
@@ -111,7 +111,7 @@ return array(
         'page_admin_category' => 'PageBundle\Controller\Admin\CategoryController',
         'page_admin_link'     => 'PageBundle\Controller\Admin\LinkController',
 
-        'page_link' => 'PageBundle\Controller\LinkController',
-        'page'      => 'PageBundle\Controller\PageController',
+        'page_link'           => 'PageBundle\Controller\LinkController',
+        'page'                => 'PageBundle\Controller\PageController',
     ),
 );

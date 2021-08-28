@@ -27,7 +27,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 'attributes' => array(
                     'id' => 'parent',
                 ),
-                'options' => array(
+                'options'    => array(
                     'options' => $this->createPagesArray(),
                 ),
             )

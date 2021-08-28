@@ -164,7 +164,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 if ($fieldSpecification->isRequired()) {
                     $specification['options']['input']['validators'] = array(
                         array(
-                            'name'    => 'RequiredCheckbox',
+                            'name' => 'RequiredCheckbox',
                         ),
                     );
                 }

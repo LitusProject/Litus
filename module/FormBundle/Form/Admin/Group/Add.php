@@ -61,7 +61,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                     'class' => 'md',
                     'rows'  => 20,
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

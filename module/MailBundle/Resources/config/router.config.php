@@ -13,7 +13,7 @@ return array(
                     'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'mail_admin_alias',
                     'action'     => 'manage',
                 ),
@@ -26,7 +26,7 @@ return array(
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'mail_admin_bakske',
                     'action'     => 'send',
                 ),
@@ -40,7 +40,7 @@ return array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'group'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'mail_admin_group',
                     'action'     => 'groups',
                 ),
@@ -57,7 +57,7 @@ return array(
                     'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'mail_admin_list',
                     'action'     => 'manage',
                 ),
@@ -72,7 +72,7 @@ return array(
                     'id'     => '[a-z0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'mail_admin_message',
                     'action'     => 'manage',
                 ),
@@ -85,7 +85,7 @@ return array(
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'mail_admin_prof',
                     'action'     => 'cudi',
                 ),
@@ -98,7 +98,7 @@ return array(
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'mail_admin_promotion',
                     'action'     => 'send',
                 ),
@@ -111,7 +111,7 @@ return array(
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'mail_admin_study',
                     'action'     => 'send',
                 ),
@@ -124,7 +124,7 @@ return array(
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'mail_admin_volunteer',
                     'action'     => 'send',
                 ),

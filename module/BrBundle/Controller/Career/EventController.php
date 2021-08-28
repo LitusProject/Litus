@@ -21,7 +21,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
         return new ViewModel(
             array(
-                'events'    => $events,
+                'events' => $events,
             )
         );
     }

@@ -24,7 +24,7 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'autocomplete' => 'off',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'required' => true,
                         'filters'  => array(

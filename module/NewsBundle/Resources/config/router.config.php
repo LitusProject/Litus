@@ -11,7 +11,7 @@ return array(
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'news_admin_news',
                     'action'     => 'manage',
                 ),
@@ -27,7 +27,7 @@ return array(
                     'page'     => '[0-9]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'news',
                     'action'     => 'overview',
                 ),
@@ -38,6 +38,6 @@ return array(
     'controllers' => array(
         'news_admin_news' => 'NewsBundle\Controller\Admin\NewsController',
 
-        'news' => 'NewsBundle\Controller\NewsController',
+        'news'            => 'NewsBundle\Controller\NewsController',
     ),
 );

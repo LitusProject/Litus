@@ -35,7 +35,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'size' => 70,
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -63,10 +63,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'  => 'checkbox',
-                'name'  => 'poc_group',
-                'label' => 'Is POC Group',
-                'value' => $this->isPocGroup,
+                'type'       => 'checkbox',
+                'name'       => 'poc_group',
+                'label'      => 'Is POC Group',
+                'value'      => $this->isPocGroup,
                 'attributes' => array(
                     'disabled' => $this->isPocGroup,
                 ),
