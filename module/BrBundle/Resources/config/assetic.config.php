@@ -142,6 +142,18 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
+        'br_admin_communication' => array(
+            '@common_jquery',
+            '@common_remote_typeahead',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+            '@common_jqueryui',
+            '@common_jqueryui_datepicker',
+            '@common_jqueryui_css',
+            '@common_jqueryui_datepicker_css',
+        ),
         'br_corporate_index' => array(
             '@bootstrap_css',
             '@corporate_css',
