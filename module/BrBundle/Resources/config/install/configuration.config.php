@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 return array(
     array(
@@ -381,5 +363,45 @@ Example content of this section.
             ),
         ),
         'description' => 'The texts for the corporate page'
+    ),
+    array(
+        'key'         => 'br.communication_options',
+        'value'       => serialize(
+            array(
+                'Mail',
+                'Facebook',
+                'Instagram',
+                'Bakske',
+                'IrReeel',
+            )
+        ),
+        'description' => 'The options displayed in the communications tab in the br admin',
+    ),
+    array(
+        'key'         => 'br.communication_mail',
+        'value'       => 'stan.cardinaels@vtk.be',
+        'description' => 'The mail address to which notifications should be send when a duplicate communication date is chosen.',
+    ),
+    array(
+        'key'         => 'br.communication_mail_name',
+        'value'       => 'VTK Bedrijvenrelaties',
+        'description' => '',
+    ),
+    array(
+        'key'         => 'br.communication_mail_body',
+        'value' => serialize(
+            array(
+                'subject' => 'Dubbele boeking voor communicatie op {{ date }}',
+                'content' => 'Beste
+Er is een dubbele communicatie boeking aangemaakt op {{ date }} door {{ person }}.
+Communicatie optie: {{ option }}.
+Nieuw Doelpubliek: {{ newAudience }}.
+Nieuw Bedrijf: {{ newCompany }}.
+Bestaand Doelpubliek: {{ oldAudience }}.
+Bestaand Bedrijf: {{ oldCompany }}.
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
+            )
+        ),
+        'description' => 'The mail sent when a duplicate date is chosen for a communication'
     ),
 );
