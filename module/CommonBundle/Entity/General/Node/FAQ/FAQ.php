@@ -230,7 +230,7 @@ class FAQ extends \CommonBundle\Entity\Node
      */
     public function setForcedLanguage($forcedLanguage)
     {
-        if ($forcedLanguage === null || $forcedLanguage::class !== Language::class) {
+        if ($forcedLanguage === null || get_class($forcedLanguage) !== Language::class) {
             $this->forcedLanguage = null;
         } else {
             $this->forcedLanguage = $forcedLanguage;
