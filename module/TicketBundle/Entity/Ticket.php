@@ -30,7 +30,8 @@ use TicketBundle\Entity\Event\Option;
  * @ORM\Entity(repositoryClass="TicketBundle\Repository\Ticket")
  * @ORM\Table(
  *     name="ticket_tickets",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="ticket_tickets_event_number", columns={"event", "number"})}
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="ticket_tickets_event_number", columns={"event", "number"}),
+ *     @ORM\UniqueConstraint(name="ticket_tickets_invoice_id", columns={"invoice_id"})}
  * )
  */
 class Ticket
@@ -123,9 +124,16 @@ class Ticket
     /**
      * @var integer|null The number of the ticket (unique for an event)
      *
-     * @ORM\Column(type="string", nullable=true, length=4)
+     * @ORM\Column(name="invoice_id", type="string", nullable=true, length=20)
      */
-    private $invoiceNb;
+    private $invoiceId;
+
+    /**
+     * @var integer|null The number of the ticket (unique for an event)
+     *
+     * @ORM\Column(name="order_id", type="string", nullable=true, length=10)
+     */
+    private $orderId;
 
     /**
      * @param  Event          $event
@@ -144,8 +152,11 @@ class Ticket
         }
 
         $this->event = $event;
-        if ($event->isOnlinePayment()) $this->invoiceNb = $event->getNextInvoiceNb();
-        error_log($this->invoiceNb);
+        if ($event->isOnlinePayment()) {
+            $nb = $event->getNextInvoiceNb();
+            $this->invoiceId = $event->getInvoiceIdBase() . $nb;
+            $this->orderId = $event->getOrderIdBase() . $nb;
+        }
         $this->status = $status;
         $this->person = $person;
         $this->guestInfo = $guestInfo;
@@ -376,18 +387,34 @@ class Ticket
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getInvoiceNb()
+    public function getInvoiceId()
     {
-        return $this->invoiceNb;
+        return $this->invoiceId;
     }
 
     /**
-     * @param int|null $invoiceNb
+     * @param string $invoiceId
      */
-    public function setInvoiceNb(int $invoiceNb)
+    public function setInvoiceId(string $invoiceId)
     {
-        $this->invoiceNb = $invoiceNb;
+        $this->invoiceId = $invoiceId;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getOrderId()
+    {
+        return $this->orderId;
+    }
+
+    /**
+     * @param string $orderId
+     */
+    public function setOrderId(string $orderId)
+    {
+        $this->orderId = $orderId;
     }
 }

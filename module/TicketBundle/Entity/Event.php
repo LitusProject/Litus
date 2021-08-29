@@ -491,7 +491,7 @@ class Event
     public function getNextInvoiceNb()
     {
         $int = intval($this->nextInvoiceNb) + 1;
-        $this->nextInvoiceNb = strval($int);
+        $this->nextInvoiceNb = str_pad(strval($int), 4 , '0', STR_PAD_LEFT);
         return $this->nextInvoiceNb;
     }
 
@@ -504,19 +504,22 @@ class Event
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
-    public function isOnlinePayment(): bool
+    public function isOnlinePayment()
     {
         return $this->onlinePayment;
     }
 
     /**
-     * @param bool $onlinePayment
+     * @param boolean $onlinePayment
+     * @return self
      */
-    public function setOnlinePayment(bool $onlinePayment)
+    public function setOnlinePayment($onlinePayment)
     {
         $this->onlinePayment = $onlinePayment;
+
+        return $this;
     }
 
     /**

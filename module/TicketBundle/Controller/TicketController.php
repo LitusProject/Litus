@@ -246,9 +246,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             $mail = $ticket->getGuestInfo()->getEmail();
         }
 
-        $invoiceNb = str_pad($ticket->getInvoiceNb(), 4, '0', STR_PAD_LEFT);
-        $com = $ticket->getEvent()->getInvoiceIdBase() . $invoiceNb;
-        $orderId = $ticket->getEvent()->getOrderIdBase() . $invoiceNb;
+        $com = $ticket->getInvoiceId();
+        $orderId = $ticket->getOrderId();
 
         $comment = $ticket->getOption()?$ticket->getOption()->getName() : $ticket->isMember()? "member" : "non-member";
 

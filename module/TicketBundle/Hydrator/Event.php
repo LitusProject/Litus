@@ -31,7 +31,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
      */
     private static $stdKeys = array(
         'active', 'bookable_praesidium', 'bookable', 'number_of_tickets',
-        'limit_per_person', 'only_members', 'online_payment'
+        'limit_per_person', 'only_members'
     );
 
     protected function doHydrate(array $data, $object = null)
@@ -151,6 +151,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             ->setPriceNonMembers($priceNonMembers)
             ->setAllowRemove($data['allow_remove'])
             ->setInvoiceIdBase($data['invoice_base_id'])
+            ->setOnlinePayment($data['online_payment'])
             ->setOrderIdBase($data['order_base_id']);
 
         return $this->stdHydrate($data, $object, self::$stdKeys);
@@ -170,7 +171,8 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         $data['allow_remove'] = $object->allowRemove();
         $data['invoice_base_id'] = $object->getInvoiceIdBase();
         $data['order_base_id'] = $object->getOrderIdBase();
-
+        $data['online_payment'] = $object->isOnlinePayment();
+        error_log($object->isOnlinePayment() );
         if (count($object->getOptions()) == 0) {
             $data['prices']['price_members'] = number_format($object->getPriceMembers() / 100, 2);
             $data['prices']['price_non_members'] = $object->isOnlyMembers() ? '' : number_format($object->getPriceNonMembers() / 100, 2);
