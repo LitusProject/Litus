@@ -11,55 +11,55 @@
         <!--[if lt IE 9]>
           <script src="/js/html5shiv.js"></script>
         <![endif]-->
-    </head> 
+    </head>
 
     {{ inlineScript() }}
 
     <script type="text/javascript">
         $(document).ready(function () {
             var menuItems = document.getElementsByClassName('vtk-menuitem-holder dropdown');
-            
-            for(var i = 0; i < menuItems.length; i++) {
-                var current = menuItems[i]; 
-                current.addEventListener("mouseover", func, false);
-                current.addEventListener("mouseout", func1, false);  
 
-                function func() {   
+            for(var i = 0; i < menuItems.length; i++) {
+                var current = menuItems[i];
+                current.addEventListener("mouseover", func, false);
+                current.addEventListener("mouseout", func1, false);
+
+                function func() {
                     var currentDropdown = this.querySelector('.vtk-dropdownitem-holder');
-                    currentDropdown.setAttribute("style", "visibility:visible;"); 
+                    currentDropdown.setAttribute("style", "visibility:visible;");
                 }
 
-                function func1() {  
+                function func1() {
                     var currentDropdown = this.querySelector('.vtk-dropdownitem-holder');
-                    currentDropdown.setAttribute("style", "visibility:hidden;"); 
+                    currentDropdown.setAttribute("style", "visibility:hidden;");
                 }
             }
-            
+
         });
 
         $(document).ready(function() {
-            var isOpen = false 
+            var isOpen = false
 
-            var mobileMenuButton = document.getElementsByClassName('vtk-menu')[0]; 
-            var menuBars = document.getElementsByClassName('vtk-menu-bar'); 
-            mobileMenuButton.addEventListener("click", openCloseMenu, false); 
+            var mobileMenuButton = document.getElementsByClassName('vtk-menu')[0];
+            var menuBars = document.getElementsByClassName('vtk-menu-bar');
+            mobileMenuButton.addEventListener("click", openCloseMenu, false);
 
             function openCloseMenu() {
                 if (!isOpen) {
-                    var menuHolder = document.getElementsByClassName('vtk-mobile-menu')[0]; 
-                    menuHolder.setAttribute("style", "visibility:visible; opacity: 0%; transition: all 200ms"); 
-                    menuHolder.setAttribute("style", "visibility:visible; opacity: 100%; transition: all 200ms"); 
-                    menuBars[1].setAttribute("style", "visibility:hidden; transition: all 0ms"); 
+                    var menuHolder = document.getElementsByClassName('vtk-mobile-menu')[0];
+                    menuHolder.setAttribute("style", "visibility:visible; opacity: 0%; transition: all 200ms");
+                    menuHolder.setAttribute("style", "visibility:visible; opacity: 100%; transition: all 200ms");
+                    menuBars[1].setAttribute("style", "visibility:hidden; transition: all 0ms");
                     menuBars[0].setAttribute("style", "margin-top: 10px; transform: rotate(45deg)");
                     menuBars[2].setAttribute("style", "margin-top: -10px; transform: rotate(-45deg)");
                 } else {
-                    var menuHolder = document.getElementsByClassName('vtk-mobile-menu')[0]; 
-                    menuHolder.setAttribute("style", "visibility:hidden; opacity: 0%; transition: all 200ms"); 
+                    var menuHolder = document.getElementsByClassName('vtk-mobile-menu')[0];
+                    menuHolder.setAttribute("style", "visibility:hidden; opacity: 0%; transition: all 200ms");
                     menuBars[1].setAttribute("style", "visibility:visible; transition: all 0ms");
                     menuBars[0].setAttribute("style", "margin-top: 6px; transform: rotate(0deg)");
                     menuBars[2].setAttribute("style", "margin-top: 6px; transform: rotate(0deg)");
                 }
-                isOpen = ! isOpen; 
+                isOpen = ! isOpen;
             }
         })
     </script>
@@ -104,35 +104,35 @@
                                 <div class="vtk-menuitem-holder br">
                                     <a {% if 'br_corporate_cv' == getParam('controller') %} class="active" %} class="br-menuUnderlineStyle active" {% else %} class="br-menuUnderlineStyle" {% endif %} href="{{ url("br_corporate_cv", {"action": "grouped", "language": language.getAbbrev()}) }}">
                                         {{ translate('CV Book') }}
-                                    </a>   
-                                </div>                            
+                                    </a>
+                                </div>
                             {% endif %}
                             {% if hasAccess('br_corporate_vacancy', 'overview') %}
                                 <div class="vtk-menuitem-holder br">
                                     <a {% if 'overview' == getParam('action') and 'br_corporate_vacancy' == getParam('controller') %} class="br-menuUnderlineStyle active" {% else %} class="br-menuUnderlineStyle" {% endif %} href="{{ url("br_corporate_vacancy", {"action": "overview", "language": language.getAbbrev()}) }}">
                                         {{ translate('Vacancies') }}
-                                    </a>   
-                                </div>                            
+                                    </a>
+                                </div>
                             {% endif %}
                             {% if hasAccess('br_corporate_internship', 'overview') %}
                                 <div class="vtk-menuitem-holder br">
                                     <a {% if 'overview' == getParam('action') and 'br_corporate_internship' == getParam('controller') %} class="br-menuUnderlineStyle active" {% else %} class="br-menuUnderlineStyle" {% endif %} href="{{ url("br_corporate_internship", {"action": "overview", "language": language.getAbbrev()}) }}">
                                         {{ translate('Internship') }}
-                                    </a>  
-                                </div>                            
-                            {% endif %}                           
+                                    </a>
+                                </div>
+                            {% endif %}
                             {% if hasAccess('br_corporate_student_job', 'overview') %}
                                 <div class="vtk-menuitem-holder br">
                                     <a {% if 'overview' == getParam('action') and 'br_corporate_student_job' == getParam('controller') %} class="br-menuUnderlineStyle active" {% else %} class="br-menuUnderlineStyle" {% endif %} href="{{ url("br_corporate_student_job", {"action": "overview", "language": language.getAbbrev()}) }}">
                                         {{ translate('Student Jobs') }}
-                                    </a>    
-                                </div>                 
+                                    </a>
+                                </div>
                             {% endif %}
                             {# {% for item in menu %}
                                 {% if 'category' == item.type %}
                                     <div class="vtk-menuitem-holder dropdown">
                                         <a class="vtk-menuitem" href="#">
-                                            {{ item.name }} 
+                                            {{ item.name }}
                                         </a>
                                         <div class="vtk-dropdownitem-holder">
                                             {% for categoryItem in item.items %}
@@ -154,7 +154,7 @@
                             {% endfor %} #}
 
                             {# Separator #}
-                            <div style="color: #ffd400; height: 30px; margin-top: 7px">|</div> 
+                            <div style="color: #ffd400; height: 30px; margin-top: 7px">|</div>
 
                             {# Language picker #}
                             <div class="vtk-menuitem-holder dropdown">
@@ -170,69 +170,50 @@
 
                             {# KNOP AANMELDEN OP PC #}
                             {% if authenticatedPerson is not null %}
-                                <div class="vtk-menuitem-holder dropdown">
-                                <div class="vtk-menuitem">
-                                    <div class="vtk-profile"></div>
-                                </div>
-                                <div class="vtk-dropdownitem-holder right">
-
-                                    <div class="vtk-dropdownitem">
-                                            <a class="vtk-dropdownitem-link" href="{{ url("br_corporate_company", {"action": "edit", "language": language.getAbbrev()}) }}">
-                                                <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
-                                                <small class="metadata">{{ authenticatedPerson.getCompany().getName() }}</small>
-                                            </a>
+                                {% if authenticatedPerson.getCompany() != '' %}
+                                    <div class="vtk-menuitem-holder dropdown">
+                                    <div class="vtk-menuitem">
+                                        <div class="vtk-profile"></div>
                                     </div>
+                                    <div class="vtk-dropdownitem-holder right">
 
-                                    <div class="vtk-dropdownitem">
-                                        <a class="vtk-dropdownitem-link" href="{{ url("br_corporate_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
+                                        <div class="vtk-dropdownitem">
+                                                <a class="vtk-dropdownitem-link" href="{{ url("br_corporate_company", {"action": "edit", "language": language.getAbbrev()}) }}">
+                                                    <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
+                                                    <small class="metadata">{{ authenticatedPerson.getCompany().getName() }}</small>
+                                                </a>
+                                        </div>
+
+                                        <div class="vtk-dropdownitem">
+                                            <a class="vtk-dropdownitem-link" href="{{ url("br_corporate_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
+                                        </div>
+
                                     </div>
-                                    
-                                    {# {% if authenticatedPerson is not null %}
-                                <li class="dropdown" id="accountDropdown">
-                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                        <span class="profile-wrapper">
-                                            <i class="profile"></i>
-                                        </span>
-                                        <span class="caret"></span>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-right">
-                                        <li>
-                                            <a href="{{ url("br_corporate_company", {"action": "edit", "language": language.getAbbrev()}) }}">
-                                                <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
-                                                <small class="metadata">{{ authenticatedPerson.getCompany().getName() }}</small>
-                                            </a>
-                                        </li>
-                                        <li class="divider"></li>
-                                        <li>
-                                            <a href="{{ url("br_corporate_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            {% else %} #}
-{# 
-                                    {% if hasAccess('cudi_booking', 'view') %}
-                                        <div class="vtk-dropdownitem">
-                                        <a class="vtk-dropdownitem-link" href="{{ url('cudi_booking') }}">{{ translate('My Bookings') }}</a>
+                                {% else %}
+                                    <div class="vtk-menuitem-holder dropdown">
+                                        <div class="vtk-menuitem">
+                                            <div class="vtk-profile"></div>
                                         </div>
-                                    {% endif %}
+                                        <div class="vtk-dropdownitem-holder right">
 
-                                    {% if hasAccess('shift', 'index') %}
-                                        <div class="vtk-dropdownitem">
-                                        <a class="vtk-dropdownitem-link" href="{{ url('shift') }}">{{ translate('My Shifts') }}</a>
+                                            <div class="vtk-dropdownitem">
+                                                <a class="vtk-dropdownitem-link" href="{{ url("common_account", {"language": language.getAbbrev()}) }}">
+                                                    <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
+                                                </a>
+                                            </div>
+
+                                            <div class="vtk-dropdownitem">
+                                                <a class="vtk-dropdownitem-link" href="{{ url("br_corporate_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
+                                            </div>
+
                                         </div>
-                                    {% endif %}
-
-                                    <div class="vtk-dropdownitem">
-                                        <a class="vtk-dropdownitem-link" href="{{ url("common_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
-                                    </div> #}
-            
-                                </div>
+                                {% endif %}
                             {% else %}
                                 <div class="vtk-menuitem-holder">
                                     <a style="cursor: pointer" class="vtk-menuitem" href="{{ url("br_corporate_index", {"action": "login"}) }}">{% autoescape false %}{{ translate('Login') }}{% endautoescape %}</a>
                                 </li>
                             {% endif %}
-                        </div> 
+                        </div>
 
                     </div>
 
@@ -268,22 +249,22 @@
                     {% if (hasAccess('br_corporate_cv', 'grouped') or hasAccess('br_corporate_cv', 'list')) and authenticatedPerson != null and (authenticatedPerson.getCompany().getCvBookYears()|length > 0 or authenticatedPerson.getCompany().getCvBookArchiveYears()|length > 0) %}
                         <a class="vtk-mobile-primary-menuitem" style="width: 100%; text-align: center" href="{{ url("br_corporate_cv", {"action": "grouped", "language": language.getAbbrev()}) }}">
                             {{ translate('CV Book') }}
-                        </a>   
+                        </a>
                     {% endif %}
                     {% if hasAccess('br_corporate_vacancy', 'overview') %}
                         <a class="vtk-mobile-primary-menuitem" style="width: 100%; text-align: center" href="{{ url("br_corporate_vacancy", {"action": "overview", "language": language.getAbbrev()}) }}">
                             {{ translate('Vacancies') }}
-                        </a>   
+                        </a>
                     {% endif %}
                     {% if hasAccess('br_corporate_internship', 'overview') %}
                         <a class="vtk-mobile-primary-menuitem" style="width: 100%; text-align: center" href="{{ url("br_corporate_internship", {"action": "overview", "language": language.getAbbrev()}) }}">
                             {{ translate('Internship') }}
-                        </a>  
-                    {% endif %}                           
+                        </a>
+                    {% endif %}
                     {% if hasAccess('br_corporate_student_job', 'overview') %}
                         <a class="vtk-mobile-primary-menuitem" style="width: 100%; text-align: center" href="{{ url("br_corporate_student_job", {"action": "overview", "language": language.getAbbrev()}) }}">
                             {{ translate('Student Jobs') }}
-                        </a>    
+                        </a>
                     {% endif %}
                     <div style="height: 20px"></div>
                     {% if authenticatedPerson is not null %}
@@ -452,7 +433,7 @@
                         <a target="_blank" class="vtk-social-icon" href="http://facebook.com/VTKLeuven" style="background-image: url(/_site/img/icon-05.png)"></a>
                         <a target="_blank" class="vtk-social-icon" href="https://www.instagram.com/vtkleuven/" style="background-image: url(/_site/img/icon-06.png)"></a>
                         <a target="_blank" class="vtk-social-icon" href="http://twitter.com/VTKLeuven" style="background-image: url(/_site/img/icon-07.png)"></a>
-                        <a target="_blank" class="vtk-social-icon" href="https://www.linkedin.com/company/vtk/" style="background-image: url(/_site/img/icon-02.png)"></a>                    
+                        <a target="_blank" class="vtk-social-icon" href="https://www.linkedin.com/company/vtk/" style="background-image: url(/_site/img/icon-02.png)"></a>
                         <h5>&copy; {{ 'now'|date('Y') }} {{ translate('Vlaamse Technische Kring vzw') }}</h5>
                     </div>
                 </div>

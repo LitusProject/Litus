@@ -89,34 +89,34 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         $studies = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
             ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
-
-        $allStudies = array();
-        $allSubjects = array();
-        $subjectIds = array();  // To avoid duplicates
-        foreach ($studies as $study) {
-            $subjects = $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
-                ->findAllByStudy($study->getStudy());
-            $allStudies[] = $study->getStudy();
-            foreach ($subjects as $subject) {
-                if (!in_array($subject->getSubject()->getId(), $subjectIds)) {
-                    $subjectIds[] = $subject->getSubject()->getId();
-                    $allSubjects[] = $subject->getSubject();
-                }
-            }
-        }
+//
+//        $allStudies = array();
+//        $allSubjects = array();
+//        $subjectIds = array();  // To avoid duplicates
+//        foreach ($studies as $study) {
+//            $subjects = $this->getEntityManager()
+//                ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
+//                ->findAllByStudy($study->getStudy());
+//            $allStudies[] = $study->getStudy();
+//            foreach ($subjects as $subject) {
+//                if (!in_array($subject->getSubject()->getId(), $subjectIds)) {
+//                    $subjectIds[] = $subject->getSubject()->getId();
+//                    $allSubjects[] = $subject->getSubject();
+//                }
+//            }
+//        }
 
         // Retrieve the other subjects
         $subjects = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Subject')
             ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
-        foreach ($subjects as $subject) {
-            if (!in_array($subject->getSubject()->getId(), $subjectIds)) {
-                $subjectIds[] = $subject->getSubject()->getId();
-                $allSubjects[] = $subject->getSubject();
-            }
-        }
+//        foreach ($subjects as $subject) {
+//            if (!in_array($subject->getSubject()->getId(), $subjectIds)) {
+//                $subjectIds[] = $subject->getSubject()->getId();
+//                $allSubjects[] = $subject->getSubject();
+//            }
+//        }
 
         $profileForm = $this->getForm('common_account_profile');
         $profileForm->setAttribute(
@@ -139,8 +139,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 'organizationYear' => $this->getCurrentAcademicYear(true),
                 'signatureEnabled' => $signatureEnabled,
                 'metaData'         => $metaData,
-                'studies'          => $allStudies,
-                'subjects'         => $allSubjects,
+                'studies'          => $studies,
+                'subjects'         => $subjects,
                 'profilePath'      => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),

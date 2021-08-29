@@ -2,54 +2,57 @@
 
 {% block content %}
     {% import _self as self %}
-
-    <div class="flashmessage alert alert-success fade" id="sign_out">
-        <div class="content">
-            {{ translate('You canceled your interest in the selected retail!') }}
+    <div class="container">
+        <div class="flashmessage alert alert-success fade" id="sign_out">
+            <a class="close" data-dismiss="alert">&times;</a>
+            <div class="content">
+                {{ translate('You canceled your interest in the selected retail!') }}
+            </div>
         </div>
-    </div>
-    <div class="flashmessage alert alert-danger fade" id="error">
-        <div class="content">
-            {{ translate('An error occurred while processing your request!') }}
+        <div class="flashmessage alert alert-danger fade" id="error">
+            <a class="close" data-dismiss="alert">&times;</a>
+            <div class="content">
+                {{ translate('An error occurred while processing your request!') }}
+            </div>
         </div>
-    </div>
 
-    <div class="page-header">
-        <h1>{{ translate('Second-Hand Book Sales') }}</h1>
-    </div>
+        <div class="page-header">
+            <h1>{{ translate('Second-Hand Book Sales') }}</h1>
+        </div>
 
-    <div id="modalDeleteDeal" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <a class="close" data-dismiss="modal">&times;</a>
-                    <h4>{{ translate('Delete deal') }}</h4>
-                </div>
-                <div class="modal-body">
-                    <p>
-                        {{ translate('') }}
-                    </p>
-                    <p>
-                        {{ translate('Do you want to continue?') }}
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary confirm">{{ translate('Yes') }}</button>
-                    <button class="btn btn-default deny">{{ translate('No') }}</button>
+        <div id="modalDeleteDeal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a class="close" data-dismiss="modal">&times;</a>
+                        <h4>{{ translate('Delete deal') }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            {{ translate('') }}
+                        </p>
+                        <p>
+                            {{ translate('Do you want to continue?') }}
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary confirm">{{ translate('Yes') }}</button>
+                        <button class="btn btn-default deny">{{ translate('No') }}</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    {% include 'cudi/retail/partials/navigation.twig' %}
-    <div>
-        <p>{{ retailMyDealsText }}</p>
-    </div>
+        {% include 'cudi/retail/partials/navigation.twig' %}
+        <div>
+            <p>{{ retailMyDealsText }}</p>
+        </div>
 
-    <div class="row">
-        <div class="well">
-            <h2>{{ translate('My deals') }}</h2>
-            {{ self.displayDeals(myDeals, 'myDeals') }}
+        <div class="row">
+            <div class="well">
+                <h2>{{ translate('My deals') }}</h2>
+                {{ self.displayDeals(myDeals, 'myDeals') }}
+            </div>
         </div>
     </div>
 {% endblock %}

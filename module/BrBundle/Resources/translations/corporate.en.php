@@ -60,4 +60,5 @@ return array(
     'Log In'                                                                                                                                                                               => 'Log In',
     'More Information'                                                                                                                                                                     => 'More Information',
     'Corporate Relations'                                                                                                                                                                  => 'Corporate Relations',
+    'What can you expect?'                                                                                                                                                                 => 'What can you expect?',
 );

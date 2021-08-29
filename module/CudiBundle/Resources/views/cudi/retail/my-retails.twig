@@ -1,90 +1,94 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-    <div class="flashmessage alert alert-success fade" id="retail_success">
-        <div class="content">
-            {{ translate('You successfully deleted the retail!') }}
+    <div class="container">
+        <div class="flashmessage alert alert-success fade" id="retail_success">
+            <a class="close" data-dismiss="alert">&times;</a>
+            <div class="content">
+                {{ translate('You successfully deleted the retail!') }}
+            </div>
         </div>
-    </div>
-    <div class="flashmessage alert alert-danger fade" id="error">
-        <div class="content">
-            {{ translate('An error occurred while processing your request!') }}
+        <div class="flashmessage alert alert-danger fade" id="error">
+            <a class="close" data-dismiss="alert">&times;</a>
+            <div class="content">
+                {{ translate('An error occurred while processing your request!') }}
+            </div>
         </div>
-    </div>
 
-    <div class="page-header">
-        <h1>{{ translate('Second-Hand Book Sales') }}</h1>
-    </div>
+        <div class="page-header">
+            <h1>{{ translate('Second-Hand Book Sales') }}</h1>
+        </div>
 
-    <div id="modalAddRetail" class="modal fade">
-        <div class="modal-dialog" style="width:30%;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <a class="close" data-dismiss="modal">&times;</a>
-                    <h4>{{ translate('Add new retail') }}</h4>
-                </div>
-                <div class="modal-body">
-                    {% import 'site/partials/form.twig' as forms %}
-                    {{ forms.renderForm(addForm) }}
+        <div id="modalAddRetail" class="modal fade">
+            <div class="modal-dialog" style="width:30%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a class="close" data-dismiss="modal">&times;</a>
+                        <h4>{{ translate('Add new retail') }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        {% import 'site/partials/form.twig' as forms %}
+                        {{ forms.renderForm(addForm) }}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div id="modalEditRetail" class="modal fade">
-        <div class="modal-dialog" style="width:30%;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <a class="close" data-dismiss="modal">&times;</a>
-                    <h4>{{ translate('Edit retail') }}</h4>
-                </div>
-                <div class="modal-body">
-                    {% import 'site/partials/form.twig' as forms %}
-                    {{ forms.renderForm(editForm) }}
+        <div id="modalEditRetail" class="modal fade">
+            <div class="modal-dialog" style="width:30%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a class="close" data-dismiss="modal">&times;</a>
+                        <h4>{{ translate('Edit retail') }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        {% import 'site/partials/form.twig' as forms %}
+                        {{ forms.renderForm(editForm) }}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div id="modalDeleteRetail" class="modal fade">
-        <div class="modal-dialog" style="width:30%;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <a class="close" data-dismiss="modal">&times;</a>
-                    <h4>{{ translate('Delete retail') }}</h4>
-                </div>
-                <div class="modal-body">
-                    <p>
-                        {{ translate('') }}
-                    </p>
-                    <p>
-                        {{ translate('Do you want to continue?') }}
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary confirm">{{ translate('Yes') }}</button>
-                    <button class="btn btn-default deny">{{ translate('No') }}</button>
+        <div id="modalDeleteRetail" class="modal fade">
+            <div class="modal-dialog" style="width:30%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a class="close" data-dismiss="modal">&times;</a>
+                        <h4>{{ translate('Delete retail') }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            {{ translate('') }}
+                        </p>
+                        <p>
+                            {{ translate('Do you want to continue?') }}
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary confirm">{{ translate('Yes') }}</button>
+                        <button class="btn btn-default deny">{{ translate('No') }}</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    {% include 'cudi/retail/partials/navigation.twig' %}
-    {% import _self as self %}
+        {% include 'cudi/retail/partials/navigation.twig' %}
+        {% import _self as self %}
 
-    <div>
+        <div>
+            <div class="row">
+                <p>{{ retailMyRetailsText }}</p>
+                <button class="btn btn-primary btn-md add-retail" type="button">
+                    {{ translate('Add new retail') }}
+                </button>
+            </div>
+        </div>
+
         <div class="row">
-            <p>{{ retailMyRetailsText }}</p>
-            <button class="btn btn-primary btn-md add-retail" type="button">
-                {{ translate('Add new retail') }}
-            </button>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="well">
-            <h2>{{ translate('My retails') }}</h2>
-            {{ self.displayRetails(retails, 'retails') }}
+            <div class="well">
+                <h2>{{ translate('My retails') }}</h2>
+                {{ self.displayRetails(retails, 'retails') }}
+            </div>
         </div>
     </div>
 
@@ -233,6 +237,7 @@
             </div>
         {% else %}
             <div class="alert alert-warning">
+                <a class="close" data-dismiss="alert">&times;</a>
                 {{ translate('You currently have no personal retails!') }}
             </div>
         {% endfor %}
