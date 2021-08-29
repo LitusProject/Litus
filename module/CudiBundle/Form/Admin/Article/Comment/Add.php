@@ -46,7 +46,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     <li><b>External:</b> These comments will only be visible in \'Prof App\' and in the admin</li>
                     <li><b>Site:</b> These comments will also be visible on the website</li>
                 </ul>',
-                    'options' => Comment::$possibleTypes,
+                    'options'   => Comment::$possibleTypes,
                 ),
             )
         );

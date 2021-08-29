@@ -22,7 +22,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'size' => 70,
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array('name' => 'TypeaheadPerson'),

@@ -99,7 +99,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'id'      => 'first_bus',
                     'options' => $this->getFirstBusses(),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array(
@@ -121,7 +121,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'id'      => 'second_bus',
                     'options' => $this->getSecondBusses(),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array(

@@ -80,8 +80,8 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 
         return new ViewModel(
             array(
-                'bookSearchForm'   => $bookSearchForm,
-                'searchResults'    => $retails,
+                'bookSearchForm'     => $bookSearchForm,
+                'searchResults'      => $retails,
                 'retailOverviewText' => $retailOverviewText,
             )
         );
@@ -127,8 +127,8 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 
         return new ViewModel(
             array(
-                'bookSearchForm'   => $bookSearchForm,
-                'searchResults'    => $retails,
+                'bookSearchForm'     => $bookSearchForm,
+                'searchResults'      => $retails,
                 'retailOverviewText' => $retailOverviewText,
             )
         );
@@ -227,7 +227,7 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 
         return new ViewModel(
             array(
-                'myDeals'          => $myDeals,
+                'myDeals'           => $myDeals,
                 'retailMyDealsText' => $retailMyDealsText
 
             )
@@ -325,9 +325,9 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 
         return new ViewModel(
             array(
-                'retails' => $retails,
-                'addForm' => $addForm,
-                'editForm' => $editForm,
+                'retails'             => $retails,
+                'addForm'             => $addForm,
+                'editForm'            => $editForm,
                 'retailMyRetailsText' => $retailMyRetailsText
             )
         );

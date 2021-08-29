@@ -28,7 +28,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'id' => 'article_form',
                 ),
-                'elements' => array(
+                'elements'   => array(
                     array(
                         'type'     => 'text',
                         'name'     => 'title',
@@ -158,7 +158,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'id' => 'internal_form',
                 ),
-                'elements' => array(
+                'elements'   => array(
                     array(
                         'type'       => 'select',
                         'name'       => 'binding',
@@ -195,7 +195,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'id' => 'subject_form',
                 ),
-                'elements' => array(
+                'elements'   => array(
                     array(
                         'type'       => 'typeahead',
                         'name'       => 'subject',
@@ -204,7 +204,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'id' => 'subjectSearch',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'validators' => array(
                                     array('name' => 'TypeaheadSubject'),

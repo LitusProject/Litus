@@ -27,7 +27,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'data-help' => 'The host from which the API can be accessed with the key.',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

@@ -1,15 +1,15 @@
 <?php
 
 return array(
-    'Registration'                                                 => 'Inschrijving',
-    'There already is a user with your university identification!' => 'Er is reeds een gebruiker met je universiteits identificatie!',
+    'Registration'                                                                                            => 'Inschrijving',
+    'There already is a user with your university identification!'                                            => 'Er is reeds een gebruiker met je universiteits identificatie!',
 
-    'Start'    => 'Start',
-    'Studies'  => 'Studierichtingen',
-    'Subjects' => 'Vakken',
-    'Complete' => 'Voltooi',
+    'Start'                                                                                                   => 'Start',
+    'Studies'                                                                                                 => 'Studierichtingen',
+    'Subjects'                                                                                                => 'Vakken',
+    'Complete'                                                                                                => 'Voltooi',
 
-    'Choose your study:' => 'Kies je studierichting:',
+    'Choose your study:'                                                                                      => 'Kies je studierichting:',
 
     'To register, please login first with your KU Leuven account.'                                            => 'Meld je eerst aan met je KU Leuven account om je te registreren.',
     'Personal'                                                                                                => 'Persoonlijk',
@@ -51,22 +51,23 @@ return array(
     'Close'                                                                                                   => 'Sluit',
     'Read Them'                                                                                               => 'Lees Ze',
 
-    'Choose a Study'                              => 'Kies een Studierichting',
-    'Choose Your Subjects'                        => 'Kies Je Vakken',
-    'Phase'                                       => 'Fase',
-    'Enroll'                                      => 'Schrijf In',
-    'Your studies were successfully saved!'       => 'Je studierichtingen zijn succesvol opgeslagen!',
-    'An error occurred while saving your studies' => 'Er is een fout ogetreden tijdens het opslagen van je studierichtingen',
+    'Choose a Study'                                                                                          => 'Kies een Studierichting',
+    'Choose Your Subjects'                                                                                    => 'Kies Je Vakken',
+    'Phase'                                                                                                   => 'Fase',
+    'Enroll'                                                                                                  => 'Schrijf In',
+    'Your studies were successfully saved!'                                                                   => 'Je studierichtingen zijn succesvol opgeslagen!',
+    'An error occurred while saving your studies'                                                             => 'Er is een fout ogetreden tijdens het opslagen van je studierichtingen',
 
-    'Complete Your Registration'                    => 'Voltooi Je Inschrijving',
-    'Your subjects were successfully saved!'        => 'Je vakken zijn succesvol opgeslagen!',
-    'An error occurred while saving your subjects!' => 'Er is een fout opgetreden tijdens het opslagen van je vakken!',
+    'Complete Your Registration'                                                                              => 'Voltooi Je Inschrijving',
+    'Your subjects were successfully saved!'                                                                  => 'Je vakken zijn succesvol opgeslagen!',
+    'An error occurred while saving your subjects!'                                                           => 'Er is een fout opgetreden tijdens het opslagen van je vakken!',
 
-    'Addresses'      => 'Adressen',
-    'Organization'   => 'Organisatie',
-    'Membership'     => 'Lidmaatschap',
-    'Book Textbooks' => 'Cursussen Reserveren',
+    'Addresses'                                                                                               => 'Adressen',
+    'Organization'                                                                                            => 'Organisatie',
+    'Membership'                                                                                              => 'Lidmaatschap',
+    'Book Textbooks'                                                                                          => 'Cursussen Reserveren',
 
+<<<<<<< HEAD
     'S - Male'    => 'S - Man',
     'M - Male'    => 'M - Man',
     'L - Male'    => 'L - Man',
@@ -81,7 +82,14 @@ return array(
     'Add Other Subjects'                         => 'Andere Vakken Toevoegen',
     'Add Other Subject'                          => 'Ander Vak Toevoegen',
     'The subject was succesfully added!'         => 'Het vak is succesvol toegevoegd!',
+=======
+    'Other Subjects'                                                                                          => 'Andere Vakken',
+    'You have not yet added any other subjects.'                                                              => 'Je hebt nog geen andere vakken toegevoegd.',
+    'Add Other Subjects'                                                                                      => 'Andere Vakken Toevoegen',
+    'Add Other Subject'                                                                                       => 'Ander Vak Toevoegen',
+    'The subject was succesfully added!'                                                                      => 'Het vak is succesvol toegevoegd!',
+>>>>>>> master
 
-    'Reservation'                                => 'Reservatie',
-    'Order sandwiches and snacks.'               => 'Bestel broodjes en tussendoortjes.',
+    'Reservation'                                                                                             => 'Reservatie',
+    'Order sandwiches and snacks.'                                                                            => 'Bestel broodjes en tussendoortjes.',
 );

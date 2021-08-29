@@ -57,7 +57,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'class'      => 'count',
                             'data-count' => 100,
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -177,7 +177,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'data-count' => 100,
                             'style'      => 'resize: none;',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -212,7 +212,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'class'      => 'count',
                             'data-count' => 50,
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -237,7 +237,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'class'      => 'count',
                             'data-count' => 50,
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -260,10 +260,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->add(
             array(
-                'type'    => 'collection',
-                'name'    => 'languages',
-                'label'   => 'Languages (max. 4)',
-                'options' => array(
+                'type'     => 'collection',
+                'name'     => 'languages',
+                'label'    => 'Languages (max. 4)',
+                'options'  => array(
                     'count'                  => 0,
                     'should_create_template' => true,
                     'allow_add'              => true,
@@ -279,9 +279,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->add(
             array(
-                'type'    => 'fieldset',
-                'name'    => 'languages_extra',
-                'label'   => 'Languages Extra Info',
+                'type'     => 'fieldset',
+                'name'     => 'languages_extra',
+                'label'    => 'Languages Extra Info',
                 'elements' => array(
                     array(
                         'type'       => 'textarea',
@@ -293,7 +293,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'data-count' => 100,
                             'style'      => 'resize: none;',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -331,7 +331,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'data-count' => 250,
                             'style'      => 'resize: none;',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -382,7 +382,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'data-count' => 250,
                             'style'      => 'resize: none;',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -418,7 +418,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'class'      => 'count',
                             'data-count' => 50,
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -466,7 +466,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'data-count' => 200,
                             'style'      => 'resize: none;',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -504,7 +504,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'data-count' => 100,
                             'style'      => 'resize: none;',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -532,7 +532,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'data-count' => 200,
                             'style'      => 'resize: none;',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),

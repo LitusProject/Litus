@@ -40,7 +40,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
         }
         return new ViewModel(
             array(
-                'orders' => $orders,
+                'orders'   => $orders,
                 'requests' => $requests,
             )
         );
@@ -85,8 +85,8 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
 
         foreach ($articles as $art) {
             $articleInfo = array(
-                'article'   => $art,
-                'mapped'    => $mapped[$art->getId()] ?? 0,
+                'article' => $art,
+                'mapped'  => $mapped[$art->getId()] ?? 0,
             );
 
             $allArticles[] = $articleInfo;
@@ -147,7 +147,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
                     'logistics_catalog',
                     array(
                         'action' => 'view',
-                        'order' => $newOrder->getId()
+                        'order'  => $newOrder->getId()
                     )
                 );
 
@@ -157,11 +157,11 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'articles' => $allArticles,
-                'categories'    => Article::$POSSIBLE_CATEGORIES,
-                'form'              => $form,
-                'searchForm'        => $searchForm,
-                'order'             => $order,
+                'articles'   => $allArticles,
+                'categories' => Article::$POSSIBLE_CATEGORIES,
+                'form'       => $form,
+                'searchForm' => $searchForm,
+                'order'      => $order,
             )
         );
     }
@@ -292,7 +292,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'  => $form,
                 'order' => $order,
             )
         );
@@ -323,7 +323,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'order'   => $order,
+                'order'    => $order,
                 'articles' => $articles,
             )
         );

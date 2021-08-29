@@ -25,7 +25,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'id'    => 'person',
                     'style' => 'width: 400px;',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array('name' => 'TypeaheadPerson'),
@@ -45,7 +45,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'id'    => 'article',
                     'style' => 'width: 400px;',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array('name' => 'TypeaheadSaleArticle'),
@@ -64,7 +64,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'autocomplete' => 'off',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

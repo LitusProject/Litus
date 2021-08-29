@@ -22,7 +22,7 @@ class ReturnArticle extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'placeholder' => 'Student',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array('name' => 'TypeaheadPerson'),
@@ -41,7 +41,7 @@ class ReturnArticle extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'placeholder' => 'Article',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array('name' => 'TypeaheadSaleArticle'),

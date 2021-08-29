@@ -30,9 +30,12 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->findAllOpenByPerson($academic);
         $bookings = array();
         $futureBookings = array();
-        foreach ($allBookings as $booking){
-            if ($booking->getStatus() == 'assigned') array_push($bookings, $booking);
-            else array_push($futureBookings, $booking);
+        foreach ($allBookings as $booking) {
+            if ($booking->getStatus() == 'assigned') {
+                array_push($bookings, $booking);
+            } else {
+                array_push($futureBookings, $booking);
+            }
         }
 
         $total = 0;
@@ -57,16 +60,16 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
         return new ViewModel(
             array(
-                'academicYear' => $this->getCurrentAcademicYear(),
+                'academicYear'     => $this->getCurrentAcademicYear(),
                 'entityManager'    => $this->getEntityManager(),
                 'organizationYear' => $this->getCurrentAcademicYear(true),
-                'bookings' => $bookings,
-                'futureBookings' => $futureBookings,
-                'total'    => $total,
-                'shifts'   => $myShifts,
-                'timeslots'   => $mySlots,
-                'reservations' => $reservations,
-                'shopName'     => $this->getShopName(),
+                'bookings'         => $bookings,
+                'futureBookings'   => $futureBookings,
+                'total'            => $total,
+                'shifts'           => $myShifts,
+                'timeslots'        => $mySlots,
+                'reservations'     => $reservations,
+                'shopName'         => $this->getShopName(),
             )
         );
     }
@@ -96,7 +99,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 ->findAllByStudy($study->getStudy());
             $allStudies[] = $study->getStudy();
             foreach ($subjects as $subject) {
-                if (!in_array($subject->getSubject()->getId(), $subjectIds)){
+                if (!in_array($subject->getSubject()->getId(), $subjectIds)) {
                     $subjectIds[] = $subject->getSubject()->getId();
                     $allSubjects[] = $subject->getSubject();
                 }
@@ -109,7 +112,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
         foreach ($subjects as $subject) {
-            if (!in_array($subject->getSubject()->getId(), $subjectIds)){
+            if (!in_array($subject->getSubject()->getId(), $subjectIds)) {
                 $subjectIds[] = $subject->getSubject()->getId();
                 $allSubjects[] = $subject->getSubject();
             }
@@ -132,16 +135,16 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
         return new ViewModel(
             array(
-                'academicYear' => $this->getCurrentAcademicYear(),
+                'academicYear'     => $this->getCurrentAcademicYear(),
                 'organizationYear' => $this->getCurrentAcademicYear(true),
                 'signatureEnabled' => $signatureEnabled,
-                'metaData' => $metaData,
-                'studies' => $allStudies,
-                'subjects' => $allSubjects,
-                'profilePath' => $this->getEntityManager()
+                'metaData'         => $metaData,
+                'studies'          => $allStudies,
+                'subjects'         => $allSubjects,
+                'profilePath'      => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
-                'profileForm' => $profileForm,
+                'profileForm'      => $profileForm,
             )
         );
     }
@@ -356,8 +359,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     $this->redirect()->toRoute(
                         'cudi_isic',
                         array(
-                            'action' => 'form',
-                            'redirect' => $this->getParam('return') ? $this->getParam('return') : 'common_account',
+                            'action'       => 'form',
+                            'redirect'     => $this->getParam('return') ? $this->getParam('return') : 'common_account',
                             'organization' => $selectedOrganization->getId(),
                             'size'         => $organizationData['tshirt_size'],
                         )
@@ -377,12 +380,12 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
         return new ViewModel(
             array(
-                'form' => $form,
-                'metaData' => $metaData,
+                'form'               => $form,
+                'metaData'           => $metaData,
                 'membershipArticles' => $membershipArticles,
                 'termsAndConditions' => $termsAndConditions,
-                'studentDomain' => $studentDomain,
-                'academicYear' => $this->getCurrentAcademicYear(),
+                'studentDomain'      => $studentDomain,
+                'academicYear'       => $this->getCurrentAcademicYear(),
             )
         );
     }
@@ -556,7 +559,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 return new ViewModel(
                     array(
                         'result' => array(
-                            'status' => 'success',
+                            'status'  => 'success',
                             'profile' => $this->getEntityManager()
                                 ->getRepository('CommonBundle\Entity\General\Config')
                                 ->getConfigValue('common.profile_path') . '/' . $newFileName,
@@ -568,7 +571,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     array(
                         'result' => array(
                             'status' => 'error',
-                            'form' => array(
+                            'form'   => array(
                                 'errors' => $form->getMessages(),
                             ),
                         ),

@@ -2,8 +2,8 @@
 
 return array(
     array(
-        'key'   => 'prom.confirmation_mail',
-        'value' => serialize(
+        'key'         => 'prom.confirmation_mail',
+        'value'       => serialize(
             array(
                 'from'    => 'galabal@vtk.be',
                 'subject' => 'VTK Galabal Busreservatie - VTK Prom Bus Reservation ',
@@ -36,8 +36,8 @@ See you then!
         'description' => 'Enable busreservations',
     ),
     array(
-        'key'   => 'prom.remove_mail',
-        'value' => serialize(
+        'key'         => 'prom.remove_mail',
+        'value'       => serialize(
             array(
                 'from'    => 'galabal@vtk.be',
                 'subject' => 'VTK Galabal Busreservatie - VTK Prom Bus Reservation ',
@@ -69,8 +69,8 @@ See you then!
         'description' => 'The prom bus confirmation mail ',
     ),
     array(
-        'key'   => 'prom.reservation_mail',
-        'value' => serialize(
+        'key'         => 'prom.reservation_mail',
+        'value'       => serialize(
             array(
                 'from'    => 'buscodes@vtk.be',
                 'subject' => 'VTK Galabal Unieke code Busreservatie - VTK Prom Unique Bus Reservation Code',
@@ -102,8 +102,8 @@ See you then!
         'description' => 'The prom reservation code mail.',
     ),
     array(
-        'key'   => 'prom.reservation_opening_warning',
-        'value' => serialize(
+        'key'         => 'prom.reservation_opening_warning',
+        'value'       => serialize(
             array(
                 'from'    => 'buscodes@vtk.be',
                 'subject' => 'Busreservaties VTK Galabal geopend - VTK Prom Bus reservations have opened!',

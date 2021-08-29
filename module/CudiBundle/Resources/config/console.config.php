@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    'install_cudi' => 'CudiBundle\Command\Install',
+    'install_cudi'                       => 'CudiBundle\Command\Install',
 
     'cudi_expire_warning'                => 'CudiBundle\Command\ExpireWarning',
     'cudi_catalog_update'                => 'CudiBundle\Command\CatalogUpdate',
@@ -9,5 +9,5 @@ return array(
     'cudi_recalculate_stock'             => 'CudiBundle\Command\RecalculateStock',
     'cudi_disable_bookings_out_of_stock' => 'CudiBundle\Command\DisableBookingsOutOfStock',
 
-    'cudi_socket_sale' => 'CudiBundle\Command\Socket\Sale',
+    'cudi_socket_sale'                   => 'CudiBundle\Command\Socket\Sale',
 );

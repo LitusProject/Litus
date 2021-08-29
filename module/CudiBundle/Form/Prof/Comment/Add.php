@@ -23,7 +23,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'rows' => 5,
                     'id'   => 'text',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

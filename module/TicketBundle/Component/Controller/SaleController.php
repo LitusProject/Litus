@@ -58,8 +58,8 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
     public function getAuthenticationHandler()
     {
         return array(
-            'action'     => 'index',
-            'controller' => 'common_index',
+            'action'         => 'index',
+            'controller'     => 'common_index',
 
             'auth_route'     => 'ticket_sale_index',
             'redirect_route' => 'ticket_sale_index',

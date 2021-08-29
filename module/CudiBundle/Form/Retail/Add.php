@@ -23,7 +23,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'id'    => 'article',
                     'style' => 'width: 400px;',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array('name' => 'TypeaheadRetail'),
@@ -42,7 +42,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'style' => 'width: 75px;',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -69,10 +69,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->add(
             array(
-                'type'     => 'textarea',
-                'name'     => 'comment',
-                'label'    => 'Comment',
-                'options'  => array(
+                'type'    => 'textarea',
+                'name'    => 'comment',
+                'label'   => 'Comment',
+                'options' => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

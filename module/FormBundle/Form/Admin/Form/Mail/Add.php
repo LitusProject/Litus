@@ -74,7 +74,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Fieldset\Tabbable
                 'attributes' => array(
                     'row' => 20,
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

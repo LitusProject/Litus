@@ -30,7 +30,7 @@ class Enrollment extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'autocomplete' => 'off',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

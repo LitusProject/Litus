@@ -22,7 +22,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'id' => 'prof',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array('name' => 'TypeaheadPerson'),

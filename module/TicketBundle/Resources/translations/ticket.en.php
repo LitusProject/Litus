@@ -23,8 +23,8 @@ return array(
     'Number Member'                                => 'Number Member',
     'Number Non Member'                            => 'Number Non Member',
 
-    'The tickets were succesfully booked'     => 'The tickets were succesfully booked',
-    'There were not enough tickets available' => 'There were not enough tickets available',
+    'The tickets were succesfully booked'          => 'The tickets were succesfully booked',
+    'There were not enough tickets available'      => 'There were not enough tickets available',
 
-    'The event isn\'t active anymore.' => 'The event isn\'t active anymore.',
+    'The event isn\'t active anymore.'             => 'The event isn\'t active anymore.',
 );

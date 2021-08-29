@@ -59,7 +59,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         'id'      => 'company_contact_' . $company->getId(),
                         'options' => $this->getContactArray($company),
                     ),
-                    'options' => array(
+                    'options'    => array(
                         'input' => array(
                             'required' => false,
                         ),

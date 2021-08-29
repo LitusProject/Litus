@@ -14,7 +14,7 @@ return array(
                     'field'        => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'string'       => '[%a-zA-Z0-9:.,_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'secretary_admin_registration',
                     'action'     => 'manage',
                 ),
@@ -30,7 +30,7 @@ return array(
                     'organization' => '[0-9]*',
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'secretary_admin_export',
                     'action'     => 'manage',
                 ),
@@ -43,7 +43,7 @@ return array(
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'secretary_admin_photos',
                     'action'     => 'photos',
                 ),
@@ -61,7 +61,7 @@ return array(
                     'field'        => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'string'       => '[%a-zA-Z0-9:.,_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'secretary_admin_promotion',
                     'action'     => 'manage',
                 ),
@@ -77,7 +77,7 @@ return array(
                     'identification' => '[mrsu][0-9]{7}',
                     'hash'           => '[a-zA-Z0-9_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'secretary_registration',
                     'action'     => 'add',
                 ),
@@ -94,7 +94,7 @@ return array(
                     'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'secretary_admin_working_group',
                     'action'     => 'manage',
                 ),

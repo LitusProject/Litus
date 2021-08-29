@@ -23,7 +23,7 @@ class Article extends \CommonBundle\Component\Form\Admin\Form
                     'id'    => 'article_search',
                     'style' => 'width: 400px;',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array('name' => 'TypeaheadSaleArticle'),

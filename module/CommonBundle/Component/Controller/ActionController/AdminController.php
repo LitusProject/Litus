@@ -111,8 +111,8 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
     public function getAuthenticationHandler()
     {
         return array(
-            'action'     => 'login',
-            'controller' => 'common_auth',
+            'action'         => 'login',
+            'controller'     => 'common_auth',
 
             'auth_route'     => 'common_admin_auth',
             'redirect_route' => 'common_admin_index',

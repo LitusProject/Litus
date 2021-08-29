@@ -81,7 +81,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                     'class'     => 'form_element',
                     'data-help' => 'The maximum number of form submittions possible.',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -216,7 +216,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 'attributes' => array(
                     'width' => '400px',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -236,7 +236,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                     'class' => 'md',
                     'row'   => 20,
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

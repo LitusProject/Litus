@@ -9,8 +9,8 @@ return array(
             'adapter' => array(
                 'name'    => 'redis',
                 'options' => array(
-                    'ttl'       => 0,
-                    'namespace' => 'cache:litus',
+                    'ttl'           => 0,
+                    'namespace'     => 'cache:litus',
 
                     'database'      => $redisConfig['database'],
                     'lib_options'   => $redisConfig['lib_options'],

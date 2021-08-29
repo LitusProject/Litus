@@ -93,7 +93,6 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
 //            }
             $isEU = $this->invoice->isEU() ? 'eu' : 'non-eu';
             $vatTypeExplanation = unserialize($configs->getConfigValue('br.invoice_vat_explanation'))[$isEU] . ' ' . $this->invoice->getVatContext();
-
         }
         $isEU = $this->invoice->isEU() ? 'eu' : 'non-eu';
         $vatTypeExplanation = unserialize($configs->getConfigValue('br.invoice_vat_explanation'))[$isEU] . ' ' . $this->invoice->getVatContext();

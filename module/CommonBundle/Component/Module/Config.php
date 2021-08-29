@@ -244,26 +244,26 @@ class Config
 
         return array_merge_recursive(
             array(
-                'router' => array(
+                'router'                => array(
                     'routes' => array_key_exists('routes', $routerConfig) ? $routerConfig['routes'] : array(),
                 ),
-                'controllers' => array(
+                'controllers'           => array(
                     'invokables' => array_key_exists('controllers', $routerConfig) ? $routerConfig['controllers'] : array(),
                 ),
 
-                'translator' => array(
+                'translator'            => array(
                     'translation_file_patterns' => self::createTranslationConfig($settings),
                 ),
 
-                'doctrine' => array(
+                'doctrine'              => array(
                     'driver' => self::createDoctrineConfig($settings),
                 ),
 
                 'assetic_configuration' => self::createAsseticConfig($settings),
 
-                'view_manager' => self::createViewManagerConfig($settings),
+                'view_manager'          => self::createViewManagerConfig($settings),
 
-                'litus' => array(
+                'litus'                 => array(
                     'admin'   => self::load($directory, 'admin.config.php'),
                     'install' => self::createInstallConfig($settings),
                     'console' => self::load($directory, 'console.config.php'),

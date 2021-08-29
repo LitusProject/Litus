@@ -125,7 +125,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
                 'profilePath'  => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
-                'onlyArchive' => $onlyArchive,
+                'onlyArchive'  => $onlyArchive,
             )
         );
     }

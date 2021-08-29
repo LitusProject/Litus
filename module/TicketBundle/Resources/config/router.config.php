@@ -11,7 +11,7 @@ return array(
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'ticket_admin_event',
                     'action'     => 'manage',
                 ),
@@ -28,7 +28,7 @@ return array(
                     'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'ticket_admin_ticket',
                     'action'     => 'manage',
                 ),
@@ -42,7 +42,7 @@ return array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'ticket_sale_index',
                     'action'     => 'sale',
                 ),
@@ -58,7 +58,7 @@ return array(
                     'ticket' => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'ticket_sale_ticket',
                     'action'     => 'overview',
                 ),
@@ -71,7 +71,7 @@ return array(
                 'constraints' => array(
                     'string' => '[%a-zA-Z0-9:.,_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'ticket_sale_person',
                     'action'     => 'typeahead',
                 ),
@@ -86,7 +86,7 @@ return array(
                     'id'       => '[0-9]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'ticket',
                     'action'     => 'event',
                 ),
@@ -98,10 +98,10 @@ return array(
         'ticket_admin_event'  => 'TicketBundle\Controller\Admin\EventController',
         'ticket_admin_ticket' => 'TicketBundle\Controller\Admin\TicketController',
 
-        'ticket_sale_index'  => 'TicketBundle\Controller\Sale\IndexController',
-        'ticket_sale_ticket' => 'TicketBundle\Controller\Sale\TicketController',
-        'ticket_sale_person' => 'TicketBundle\Controller\Sale\PersonController',
+        'ticket_sale_index'   => 'TicketBundle\Controller\Sale\IndexController',
+        'ticket_sale_ticket'  => 'TicketBundle\Controller\Sale\TicketController',
+        'ticket_sale_person'  => 'TicketBundle\Controller\Sale\PersonController',
 
-        'ticket' => 'TicketBundle\Controller\TicketController',
+        'ticket'              => 'TicketBundle\Controller\TicketController',
     ),
 );

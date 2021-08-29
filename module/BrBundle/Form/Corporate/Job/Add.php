@@ -122,7 +122,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'name'       => 'master',
                 'label'      => 'Master',
                 'attributes' => array(
-                    'options' => Company::POSSIBLE_MASTERS,
+                    'options'  => Company::POSSIBLE_MASTERS,
                     'multiple' => true,
                 ),
             )

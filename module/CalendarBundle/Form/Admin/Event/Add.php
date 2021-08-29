@@ -33,7 +33,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 'attributes' => array(
                     'placeholder' => 'dd/mm/yyyy hh:mm',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -52,7 +52,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 'attributes' => array(
                     'placeholder' => 'dd/mm/yyyy hh:mm',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

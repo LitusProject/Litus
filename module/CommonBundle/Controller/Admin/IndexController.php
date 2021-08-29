@@ -111,8 +111,8 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         $registationGraphData = array(
             'expirationTime' => $now->add(new DateInterval('PT1H')),
 
-            'labels'  => array(),
-            'dataset' => array(),
+            'labels'         => array(),
+            'dataset'        => array(),
         );
 
         $data = array();

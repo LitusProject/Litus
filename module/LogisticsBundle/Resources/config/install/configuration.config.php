@@ -27,8 +27,8 @@ return array(
         'description' => 'Maximum days a reservation is possible in advance',
     ),
     array(
-        'key'   => 'logistics.piano_time_slots',
-        'value' => serialize(
+        'key'         => 'logistics.piano_time_slots',
+        'value'       => serialize(
             array(
                 '1' => array(
                     array('start' => '19:00', 'end' => '22:00'),
@@ -53,8 +53,8 @@ return array(
         'description' => 'The mail address piano reservation mails are send to',
     ),
     array(
-        'key'   => 'logistics.piano_new_reservation',
-        'value' => serialize(
+        'key'         => 'logistics.piano_new_reservation',
+        'value'       => serialize(
             array(
                 'en' => array(
                     'subject' => 'New Piano Reservation',
@@ -87,8 +87,8 @@ VTK
         'description' => 'The mail sent when a new piano reservation is created',
     ),
     array(
-        'key'   => 'logistics.piano_new_reservation_confirmed',
-        'value' => serialize(
+        'key'         => 'logistics.piano_new_reservation_confirmed',
+        'value'       => serialize(
             array(
                 'en' => array(
                     'subject' => 'New Piano Reservation',
@@ -131,8 +131,8 @@ VTK
         'description' => 'Whether or not to show the text above the reservations.',
     ),
     array(
-        'key'   => 'logistics.extra_text_reservation_page',
-        'value' => serialize(
+        'key'         => 'logistics.extra_text_reservation_page',
+        'value'       => serialize(
             array(
                 'en' => 'This is a placeholder text, please change me',
                 'nl' => 'Deze tekst moet nog aanepast worden',
@@ -166,8 +166,8 @@ VTK
         'description' => 'The path for article photo\'s',
     ),
     array(
-        'key'   => 'logistics.order_request',
-        'value' => serialize(
+        'key'         => 'logistics.order_request',
+        'value'       => serialize(
             array(
                 'subject' => 'Nieuwe Order Request {{ name }}',
                 'content' => 'Beste,
@@ -185,8 +185,8 @@ Student IT
         'description' => 'The mail sent when a new order request is created',
     ),
     array(
-        'key'   => 'logistics.order_request_confirmed',
-        'value' => serialize(
+        'key'         => 'logistics.order_request_confirmed',
+        'value'       => serialize(
             array(
                 'en' => array(
                     'subject' => 'Order Request Approved {{ name }}',
@@ -217,8 +217,8 @@ Student IT
         'description' => 'The mail sent when an order request is confirmed',
     ),
     array(
-        'key'   => 'logistics.order_request_rejected',
-        'value' => serialize(
+        'key'         => 'logistics.order_request_rejected',
+        'value'       => serialize(
             array(
                 'en' => array(
                     'subject' => 'Order Request Rejected  {{ name }}',
@@ -253,8 +253,8 @@ Student IT
         'description' => 'The mail sent when an order request is rejected',
     ),
     array(
-        'key'   => 'logistics.order_alert_mail',
-        'value' => serialize(
+        'key'         => 'logistics.order_alert_mail',
+        'value'       => serialize(
             array(
                 'subject' => 'Nieuwe Order Request {{ name }} voor {{ article }}',
                 'content' => 'Beste,

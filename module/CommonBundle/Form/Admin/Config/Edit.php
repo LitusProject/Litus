@@ -48,7 +48,7 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'id' => 'config_value',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

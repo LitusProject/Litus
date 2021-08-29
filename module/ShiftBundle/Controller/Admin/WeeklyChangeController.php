@@ -78,10 +78,10 @@ class WeeklyChangeController extends \CommonBundle\Component\Controller\ActionCo
                                 ->findOneById($volunteer['id']);
 
                             $ranking[$rankingCriteria[$i]['name']][] = array(
-                                'person' => $person,
-                                'resultCount' => $volunteer['resultCount'],
-                                'rank' => $rankingCriteria[$i]['name'],
-                                'rankThen' => $previous_i === null ? 'none' : $rankingCriteria[$previous_i + 1]['name'],
+                                'person'          => $person,
+                                'resultCount'     => $volunteer['resultCount'],
+                                'rank'            => $rankingCriteria[$i]['name'],
+                                'rankThen'        => $previous_i === null ? 'none' : $rankingCriteria[$previous_i + 1]['name'],
                                 'resultCountThen' => $volunteerThen['resultCount'],
                             );
                         }
@@ -95,10 +95,10 @@ class WeeklyChangeController extends \CommonBundle\Component\Controller\ActionCo
                             ->findOneById($volunteer['id']);
 
                         $ranking[$rankingCriteria[$i]['name']][] = array(
-                            'person' => $person,
-                            'resultCount' => $volunteer['resultCount'],
-                            'rank' => $rankingCriteria[$i]['name'],
-                            'rankThen' => 'none',
+                            'person'          => $person,
+                            'resultCount'     => $volunteer['resultCount'],
+                            'rank'            => $rankingCriteria[$i]['name'],
+                            'rankThen'        => 'none',
                             'resultCountThen' => 0,
                         );
                     }
@@ -115,12 +115,12 @@ class WeeklyChangeController extends \CommonBundle\Component\Controller\ActionCo
 
         return new ViewModel(
             array(
-                'activeAcademicYear' => $academicYear,
-                'academicYears'      => $academicYears,
-                'ranking'            => $ranking,
-                'hoursPerBlock'      => $hoursPerBlock,
-                'rewards_enabled'    => $rewards_enabled,
-                'points_enabled'     => $points_enabled,
+                'activeAcademicYear'   => $academicYear,
+                'academicYears'        => $academicYears,
+                'ranking'              => $ranking,
+                'hoursPerBlock'        => $hoursPerBlock,
+                'rewards_enabled'      => $rewards_enabled,
+                'points_enabled'       => $points_enabled,
                 'weeklyChangeInterval' => $changeInterval->format('%d days'),
             )
         );

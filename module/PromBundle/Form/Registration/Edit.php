@@ -108,7 +108,7 @@ class Edit extends \PromBundle\Form\Registration\Add
                     'id'      => 'first_bus',
                     'options' => $this->getFirstBusses(),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array(
@@ -137,7 +137,7 @@ class Edit extends \PromBundle\Form\Registration\Add
                     'id'      => 'second_bus',
                     'options' => $this->getSecondBusses(),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array(

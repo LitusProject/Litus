@@ -18,7 +18,7 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
                 'socketUrl'   => $this->getSocketUrl(),
                 'authSession' => $this->getAuthentication()
                     ->getSessionObject(),
-                'key' => $this->getEntityManager()
+                'key'         => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.queue_socket_key'),
             )
@@ -48,18 +48,18 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
 
         return new ViewModel(
             array(
-                'socketUrl'   => $this->getSocketUrl(),
-                'authSession' => $this->getAuthentication()
+                'socketUrl'        => $this->getSocketUrl(),
+                'authSession'      => $this->getAuthentication()
                     ->getSessionObject(),
-                'key' => $this->getEntityManager()
+                'key'              => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.queue_socket_key'),
                 'payDesks'         => $payDesks,
                 'enableCollecting' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.enable_collect_scanning'),
-                'logos'    => $logos,
-                'logoPath' => $logoPath,
+                'logos'            => $logos,
+                'logoPath'         => $logoPath,
             )
         );
     }
@@ -74,7 +74,7 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
                 'socketUrl'   => $this->getSocketUrl(),
                 'authSession' => $this->getAuthentication()
                     ->getSessionObject(),
-                'key' => $this->getEntityManager()
+                'key'         => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.queue_socket_key'),
             )

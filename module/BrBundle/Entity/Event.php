@@ -2,7 +2,6 @@
 
 namespace BrBundle\Entity;
 
-use CommonBundle\Entity\General\Language;
 use CommonBundle\Entity\User\Person;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
@@ -228,7 +227,7 @@ class Event
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getNbCompanies()
     {
@@ -236,7 +235,7 @@ class Event
     }
 
     /**
-     * @param int $nbCompanies
+     * @param integer $nbCompanies
      */
     public function setNbCompanies(int $nbCompanies)
     {
@@ -244,7 +243,7 @@ class Event
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getNbStudents()
     {
@@ -252,7 +251,7 @@ class Event
     }
 
     /**
-     * @param int $nbStudents
+     * @param integer $nbStudents
      */
     public function setNbStudents(int $nbStudents)
     {
@@ -260,7 +259,7 @@ class Event
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isVisibleForCompanies()
     {
@@ -268,7 +267,7 @@ class Event
     }
 
     /**
-     * @param bool $visibleForCompanies
+     * @param boolean $visibleForCompanies
      */
     public function setVisibleForCompanies(bool $visibleForCompanies)
     {
@@ -276,7 +275,7 @@ class Event
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isVisibleForStudents()
     {
@@ -284,7 +283,7 @@ class Event
     }
 
     /**
-     * @param bool $visibleForStudents
+     * @param boolean $visibleForStudents
      */
     public function setVisibleForStudents(bool $visibleForStudents)
     {

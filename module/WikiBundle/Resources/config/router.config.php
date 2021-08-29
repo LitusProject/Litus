@@ -11,7 +11,7 @@ return array(
                     'identification' => '[mrsu][0-9]{7}',
                     'hash'           => '[a-zA-Z0-9_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'wiki_auth',
                     'action'     => 'login',
                 ),

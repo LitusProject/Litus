@@ -3,8 +3,8 @@
 return array(
     'submenus' => array(
         'Syllabus' => array(
-            'subtitle' => array('Groups', 'Studies', 'Subjects'),
-            'items'    => array(
+            'subtitle'    => array('Groups', 'Studies', 'Subjects'),
+            'items'       => array(
                 'syllabus_admin_academic' => array(
                     'action' => 'manage',
                     'title'  => 'Academics',

@@ -31,10 +31,10 @@ class Date extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'placeholder' => 'dd/mm/yyyy',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
-                        'required' => true,
-                        'filters'  => array(
+                        'required'   => true,
+                        'filters'    => array(
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(

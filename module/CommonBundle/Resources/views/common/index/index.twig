@@ -56,7 +56,9 @@
                     {% for event in day.events | slice(0, 1)%}
                         <div style="position: relative" class="calendar-item">
                             {# TO DO vervangen door echte calendar images #}
-                            <div class="DELETE-BGIMAGE"></div>
+                            <div class="DELETE-BGIMAGE" style="background-image:url({{ url('calendar',{'action':'poster', 'name': event.getPoster()}) }})"></div>
+{#                            <div class="DELETE-BGIMAGE"></div>#}
+{#                            <div class="DELETE-BGIMAGE" style="background-image: url({{ event.getPoster() }})"></div>#}
                             <div class="calendar-item-tekst">
                                 <h4>{{event.getTitle(language)}} | {{ dateLocalized(day.date, 'LLL')|capitalize }} {{ dateLocalized(day.date, 'd') }} </h4>
                                 <p class="calendar-emptyfill">{{event.getSummary(150, language)}}</p>

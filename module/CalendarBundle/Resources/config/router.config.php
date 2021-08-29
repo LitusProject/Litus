@@ -11,7 +11,7 @@ return array(
                     'id'     => '[a-zA-Z0-9_-]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'calendar_admin_calendar',
                     'action'     => 'manage',
                 ),
@@ -24,7 +24,7 @@ return array(
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'calendar_admin_calendar_registration',
                     'action'     => 'manage',
                 ),
@@ -39,7 +39,7 @@ return array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'name'     => '[a-zA-Z0-9\-_]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'calendar',
                     'action'     => 'overview',
                 ),
@@ -52,7 +52,7 @@ return array(
                 'constraints' => array(
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'calendar',
                     'action'     => 'export',
                 ),
@@ -64,6 +64,6 @@ return array(
         'calendar_admin_calendar'              => 'CalendarBundle\Controller\Admin\CalendarController',
         'calendar_admin_calendar_registration' => 'CalendarBundle\Controller\Admin\RegistrationController',
 
-        'calendar' => 'CalendarBundle\Controller\CalendarController',
+        'calendar'                             => 'CalendarBundle\Controller\CalendarController',
     ),
 );

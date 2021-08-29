@@ -11,7 +11,7 @@ return array(
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'notification_admin_notification',
                     'action'     => 'manage',
                 ),

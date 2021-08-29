@@ -35,26 +35,26 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
             'totalTheoreticalRevenue' => $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Session')
                 ->getTheoreticalRevenueByAcademicYear($academicYear),
-            'totalActualRevenue'   => 0,
-            'totalPurchasedAmount' => $this->getEntityManager()
+            'totalActualRevenue'      => 0,
+            'totalPurchasedAmount'    => $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Session')
                 ->getPurchasedAmountByAcademicYear($academicYear),
-            'totalNumberSold' => $this->getEntityManager()
+            'totalNumberSold'         => $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\SaleItem')
                 ->findNumberByAcademicYear($academicYear),
-            'uniqueClients' => $this->getEntityManager()
+            'uniqueClients'           => $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\SaleItem')
                 ->findUniqueClientsByAcademicYear($academicYear),
-            'totalOrderedPrice' => $this->getEntityManager()
+            'totalOrderedPrice'       => $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Order\Item')
                 ->getOrderedAmountByAcademicYear($academicYear),
-            'totalNumberOrdered' => $this->getEntityManager()
+            'totalNumberOrdered'      => $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Order\Item')
                 ->getNumberByAcademicYear($academicYear),
-            'totalDeliveredPrice' => $this->getEntityManager()
+            'totalDeliveredPrice'     => $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Delivery')
                 ->getDeliveredAmountByAcademicYear($academicYear),
-            'totalNumberDelivered' => $this->getEntityManager()
+            'totalNumberDelivered'    => $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Delivery')
                 ->getNumberByAcademicYear($academicYear),
         );
@@ -127,26 +127,26 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
                     'totalTheoreticalRevenue' => $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Sale\Session')
                         ->getTheoreticalRevenueBetween($startDate, $endDate),
-                    'totalActualRevenue'   => 0,
-                    'totalPurchasedAmount' => $this->getEntityManager()
+                    'totalActualRevenue'      => 0,
+                    'totalPurchasedAmount'    => $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Sale\Session')
                         ->getPurchasedAmountBetween($startDate, $endDate),
-                    'totalNumberSold' => $this->getEntityManager()
+                    'totalNumberSold'         => $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Sale\SaleItem')
                         ->findNumberBetween($startDate, $endDate),
-                    'uniqueClients' => $this->getEntityManager()
+                    'uniqueClients'           => $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Sale\SaleItem')
                         ->findUniqueClientsBetween($startDate, $endDate),
-                    'totalOrderedPrice' => $this->getEntityManager()
+                    'totalOrderedPrice'       => $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Stock\Order\Item')
                         ->getOrderedAmountBetween($startDate, $endDate),
-                    'totalNumberOrdered' => $this->getEntityManager()
+                    'totalNumberOrdered'      => $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Stock\Order\Item')
                         ->getNumberBetween($startDate, $endDate),
-                    'totalDeliveredPrice' => $this->getEntityManager()
+                    'totalDeliveredPrice'     => $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Stock\Delivery')
                         ->getDeliveredAmountBetween($startDate, $endDate),
-                    'totalNumberDelivered' => $this->getEntityManager()
+                    'totalNumberDelivered'    => $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Stock\Delivery')
                         ->getNumberBetween($startDate, $endDate),
                 );

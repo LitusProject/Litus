@@ -24,7 +24,7 @@ class UpdateController extends \CommonBundle\Component\Controller\ActionControll
                 'socketUrl'    => $this->getSocketUrl(),
                 'authSession'  => $this->getAuthentication()
                     ->getSessionObject(),
-                'key' => $this->getEntityManager()
+                'key'          => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('syllabus.update_socket_key'),
             )

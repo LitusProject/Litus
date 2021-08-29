@@ -54,7 +54,7 @@ class EditProduct extends \BrBundle\Form\Admin\Order\AddProduct
                 'attributes' => array(
                     'value' => $this->entry->getQuantity(),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

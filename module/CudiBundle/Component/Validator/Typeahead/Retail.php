@@ -11,7 +11,7 @@ class Retail extends \CommonBundle\Component\Validator\Typeahead
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'This article does not exits',
+        self::NOT_VALID   => 'This article does not exits',
         self::NOT_ALLOWED => 'This article is not allowed for retail',
     );
 

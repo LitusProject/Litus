@@ -3,7 +3,6 @@
 namespace BrBundle\Component\Controller;
 
 use BrBundle\Entity\User\Person\Corporate;
-use CommonBundle\Component\Controller\Exception\HasNoAccessException;
 use CommonBundle\Component\Util\AcademicYear;
 use Laminas\Mvc\MvcEvent;
 
@@ -65,10 +64,10 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
         }
 
         $this->redirect()->toRoute(
-                    'br_corporate_index',
-                    array(
-                        'action' => 'index',
-                    )
+            'br_corporate_index',
+            array(
+                'action' => 'index',
+            )
         );
     }
 
@@ -96,8 +95,8 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
     public function getAuthenticationHandler()
     {
         return array(
-            'action'     => 'index',
-            'controller' => 'common_index',
+            'action'         => 'index',
+            'controller'     => 'common_index',
 
             'auth_route'     => 'br_corporate_index',
             'redirect_route' => 'br_corporate_index',

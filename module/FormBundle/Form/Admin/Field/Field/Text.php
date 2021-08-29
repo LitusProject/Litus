@@ -32,14 +32,14 @@ class Text extends \CommonBundle\Component\Form\Fieldset
                 'attributes' => array(
                     'data-help' => 'The maximum numbers of characters on one line. Zero is infinite.',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'allow_empty'       => false,
                         'continue_if_empty' => true,
                         'filters'           => array(
                             array('name' => 'StringTrim'),
                         ),
-                        'validators' => array(
+                        'validators'        => array(
                             array(
                                 'name'    => 'NotEmpty',
                                 'options' => array(
@@ -60,7 +60,7 @@ class Text extends \CommonBundle\Component\Form\Fieldset
                 'attributes' => array(
                     'data-help' => 'The maximum numbers of lines. Zero is infinite.',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

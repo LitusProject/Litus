@@ -23,7 +23,7 @@ class ModuleGroup extends \CommonBundle\Component\Form\Fieldset
                 'attributes' => array(
                     'style' => 'width: 400px;',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

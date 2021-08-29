@@ -31,8 +31,8 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'paginator'           => $paginator,
-                'paginationControl'   => $this->paginator()->createControl(true),
+                'paginator'         => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
@@ -116,8 +116,8 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'form' => $form,
-                'article' => $article,
+                'form'        => $form,
+                'article'     => $article,
                 'picturePath' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('logistics.article_picture_path'),
@@ -161,8 +161,8 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'orders'               => $mappings,
-                'article'             => $article,
+                'orders'  => $mappings,
+                'article' => $article,
             )
         );
     }
@@ -316,7 +316,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                 return new ViewModel(
                     array(
                         'result' => array(
-                            'status' => 'success',
+                            'status'  => 'success',
                             'picture' => $this->getEntityManager()
                                 ->getRepository('CommonBundle\Entity\General\Config')
                                 ->getConfigValue('logistics.article_picture_path') . '/' . $newFileName,
@@ -328,7 +328,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                     array(
                         'result' => array(
                             'status' => 'error',
-                            'form' => array(
+                            'form'   => array(
                                 'errors' => $form->getMessages(),
                             ),
                         ),

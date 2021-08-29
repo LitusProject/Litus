@@ -38,10 +38,10 @@ class CacheController extends \CommonBundle\Component\Controller\ActionControlle
             $info = array_merge(
                 $info,
                 array(
-                    'Keyspace Hits' => $redisInfo['keyspace_hits'],
-                    'Keyspace Misses' => $redisInfo['keyspace_misses'],
+                    'Keyspace Hits'     => $redisInfo['keyspace_hits'],
+                    'Keyspace Misses'   => $redisInfo['keyspace_misses'],
                     'Total Connections' => $redisInfo['total_connections_received'],
-                    'Total Commands' => $redisInfo['total_commands_processed'],
+                    'Total Commands'    => $redisInfo['total_commands_processed'],
                 )
             );
 

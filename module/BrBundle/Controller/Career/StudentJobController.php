@@ -55,9 +55,9 @@ class StudentJobController extends \BrBundle\Component\Controller\CareerControll
 
         return new ViewModel(
             array(
-                'paginator'         => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
-                'logoPath'          => $logoPath,
+                'paginator'            => $paginator,
+                'paginationControl'    => $this->paginator()->createControl(true),
+                'logoPath'             => $logoPath,
                 'studentJobSearchForm' => $studentJobSearchForm,
             )
         );
@@ -76,8 +76,8 @@ class StudentJobController extends \BrBundle\Component\Controller\CareerControll
 
         return new ViewModel(
             array(
-                'studentJob'  => $studentJob,
-                'logoPath' => $logoPath,
+                'studentJob' => $studentJob,
+                'logoPath'   => $logoPath,
             )
         );
     }

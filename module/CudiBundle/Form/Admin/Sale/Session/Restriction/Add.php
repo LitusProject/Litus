@@ -40,14 +40,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         <li><b>Year:</b> restrict study year</li>
                         <li><b>Study:</b> restrict by study</li>
                     </ul>',
-                    'id'      => 'restriction_type',
-                    'options' => array(
+                    'id'        => 'restriction_type',
+                    'options'   => array(
                         'name'  => 'Name',
                         'year'  => 'Year',
                         'study' => 'Study',
                     ),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -74,7 +74,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'class' => 'restriction_value restriction_value_name',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -93,7 +93,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'class' => 'restriction_value restriction_value_name',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -134,7 +134,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'class'   => 'restriction_value restriction_value_year',
                     'options' => YearRestriction::$possibleYears,
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

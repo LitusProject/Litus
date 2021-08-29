@@ -35,7 +35,7 @@ class Update extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'autocomplete' => 'off',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

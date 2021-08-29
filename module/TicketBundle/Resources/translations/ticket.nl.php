@@ -23,8 +23,8 @@ return array(
     'Number Member'                                => 'Aantal Lid',
     'Number Non Member'                            => 'Aantal Geen Lid',
 
-    'The tickets were succesfully booked'     => 'De tickets zijn succesvol gereserveerd',
-    'There were not enough tickets available' => 'Er waren onvoldoende tickets beschikbaar',
+    'The tickets were succesfully booked'          => 'De tickets zijn succesvol gereserveerd',
+    'There were not enough tickets available'      => 'Er waren onvoldoende tickets beschikbaar',
 
-    'The event isn\'t active anymore.' => 'Het evenement is niet meer actief.',
+    'The event isn\'t active anymore.'             => 'Het evenement is niet meer actief.',
 );

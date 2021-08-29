@@ -3,8 +3,8 @@
 return array(
     'submenus' => array(
         'Shifts' => array(
-            'subtitle' => array('Counter', 'Rankings', 'Shifts', 'Registration Shifts'),
-            'items'    => array(
+            'subtitle'    => array('Counter', 'Rankings', 'Shifts', 'Registration Shifts'),
+            'items'       => array(
                 'shift_admin_shift_counter' => array(
                     'action' => 'index',
                     'title'  => 'Counter',

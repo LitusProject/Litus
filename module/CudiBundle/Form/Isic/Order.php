@@ -30,7 +30,7 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'id' => 'first_name',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -46,7 +46,7 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'id' => 'last_name',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -63,7 +63,7 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
                             'data-help'   => 'The birthday of the user.',
                             'placeholder' => 'dd/mm/yyyy',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -148,7 +148,7 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'placeholder' => '+CCAAANNNNNN',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -241,7 +241,7 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'data-help' => 'The image for the photo on your card. The maximum file size is ' . self::ISIC_PHOTO_FILE_SIZE . '. This must be a valid image (jpg, png, ...). The image must have a width of  ' . self::ISIC_PHOTO_WIDTH . 'px and a height of ' . self::ISIC_PHOTO_HEIGHT . 'px.',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'validators' => array(
                                     array(

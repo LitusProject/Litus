@@ -40,9 +40,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'       => 'textarea',
-                'name'       => 'description_for_students',
-                'label'      => 'Description For Students',
+                'type'    => 'textarea',
+                'name'    => 'description_for_students',
+                'label'   => 'Description For Students',
                 'options' => array(
                     'input' => array(
                         'filters' => array(
@@ -55,9 +55,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'       => 'textarea',
-                'name'       => 'description_for_companies',
-                'label'      => 'Description For Companies',
+                'type'    => 'textarea',
+                'name'    => 'description_for_companies',
+                'label'   => 'Description For Companies',
                 'options' => array(
                     'input' => array(
                         'filters' => array(
@@ -113,10 +113,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'text',
-                'name'     => 'nb_companies',
-                'label'    => 'Amount of Companies',
-                'options'  => array(
+                'type'    => 'text',
+                'name'    => 'nb_companies',
+                'label'   => 'Amount of Companies',
+                'options' => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -131,10 +131,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'text',
-                'name'     => 'nb_students',
-                'label'    => 'Amount of Students',
-                'options'  => array(
+                'type'    => 'text',
+                'name'    => 'nb_students',
+                'label'   => 'Amount of Students',
+                'options' => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -149,9 +149,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'       => 'textarea',
-                'name'       => 'audience',
-                'label'      => 'Audience',
+                'type'    => 'textarea',
+                'name'    => 'audience',
+                'label'   => 'Audience',
                 'options' => array(
                     'input' => array(
                         'filters' => array(
@@ -164,9 +164,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'       => 'textarea',
-                'name'       => 'location',
-                'label'      => 'Location',
+                'type'    => 'textarea',
+                'name'    => 'location',
+                'label'   => 'Location',
                 'options' => array(
                     'input' => array(
                         'filters' => array(

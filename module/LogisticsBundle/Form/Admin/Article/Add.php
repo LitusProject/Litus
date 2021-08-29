@@ -23,37 +23,37 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'name'     => 'name',
                 'label'    => 'Name',
                 'required' => true,
-                'options' => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
-                ),
-            )
-        );
-
-        $this->add(
-            array(
-                'type'     => 'textarea',
-                'name'     => 'additional_info',
-                'label'    => 'Additional Info',
-                'options' => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
-                ),
-            )
-        );
-
-        $this->add(
-            array(
-                'type'     => 'text',
-                'name'     => 'alertMail',
-                'label'    => 'Alert Mail',
                 'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'    => 'textarea',
+                'name'    => 'additional_info',
+                'label'   => 'Additional Info',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'    => 'text',
+                'name'    => 'alertMail',
+                'label'   => 'Alert Mail',
+                'options' => array(
                     'input' => array(
                         'filter' => array(
                             array('name' => 'StringTrim'),
@@ -68,9 +68,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'textarea',
-                'name'     => 'internal_comment',
-                'label'    => 'Internal Comment',
+                'type'    => 'textarea',
+                'name'    => 'internal_comment',
+                'label'   => 'Internal Comment',
                 'options' => array(
                     'input' => array(
                         'filters' => array(
@@ -83,10 +83,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'       => 'text',
-                'name'       => 'amount_owned',
-                'label'      => 'Amount Owned',
-                'options'  => array(
+                'type'    => 'text',
+                'name'    => 'amount_owned',
+                'label'   => 'Amount Owned',
+                'options' => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -101,10 +101,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'       => 'text',
-                'name'       => 'amount_available',
-                'label'      => 'Amount Available',
-                'options'  => array(
+                'type'    => 'text',
+                'name'    => 'amount_available',
+                'label'   => 'Amount Available',
+                'options' => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -167,9 +167,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'text',
-                'name'     => 'spot',
-                'label'    => 'Spot',
+                'type'    => 'text',
+                'name'    => 'spot',
+                'label'   => 'Spot',
                 'options' => array(
                     'input' => array(
                         'filters' => array(
@@ -182,9 +182,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'text',
-                'name'     => 'warranty',
-                'label'    => 'External Warranty',
+                'type'    => 'text',
+                'name'    => 'warranty',
+                'label'   => 'External Warranty',
                 'options' => array(
                     'input' => array(
                         'filters' => array(
@@ -200,9 +200,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'text',
-                'name'     => 'rent',
-                'label'    => 'External Rent',
+                'type'    => 'text',
+                'name'    => 'rent',
+                'label'   => 'External Rent',
                 'options' => array(
                     'input' => array(
                         'filters' => array(

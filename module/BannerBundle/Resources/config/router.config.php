@@ -11,7 +11,7 @@ return array(
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'banner_admin_banner',
                     'action'     => 'manage',
                 ),
@@ -25,7 +25,7 @@ return array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'image'  => '[a-zA-Z0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'banner',
                     'action'     => 'view',
                 ),
@@ -36,6 +36,6 @@ return array(
     'controllers' => array(
         'banner_admin_banner' => 'BannerBundle\Controller\Admin\BannerController',
 
-        'banner' => 'BannerBundle\Controller\BannerController',
+        'banner'              => 'BannerBundle\Controller\BannerController',
     ),
 );

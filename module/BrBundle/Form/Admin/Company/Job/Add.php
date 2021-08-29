@@ -80,7 +80,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'label'      => 'Sector',
                 'required'   => true,
                 'attributes' => array(
-                    'options' => Company::POSSIBLE_SECTORS,
+                    'options'  => Company::POSSIBLE_SECTORS,
                     'multiple' => true,
                 ),
             )
@@ -197,7 +197,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'name'       => 'master',
                 'label'      => 'Master',
                 'attributes' => array(
-                    'options' => Company::POSSIBLE_MASTERS,
+                    'options'  => Company::POSSIBLE_MASTERS,
                     'multiple' => true,
                 ),
             )

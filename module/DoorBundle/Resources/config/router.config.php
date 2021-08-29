@@ -11,7 +11,7 @@ return array(
                     'id'     => '[a-z0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'door_admin_rule',
                     'action'     => 'manage',
                 ),

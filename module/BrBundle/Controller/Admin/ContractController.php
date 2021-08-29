@@ -143,8 +143,8 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         return new ViewModel(
             array(
                 'contract' => $contract,
-                'lang' => $lang,
-                'notLang'   => $notLang
+                'lang'     => $lang,
+                'notLang'  => $notLang
             )
         );
     }
@@ -257,7 +257,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
                 'contract' => $contract,
                 'form'     => $form,
                 'notLang'  => $notLang,
-                'lang'  => $lang,
+                'lang'     => $lang,
             )
         );
     }

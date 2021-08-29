@@ -30,7 +30,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 'attributes' => array(
                     'id' => 'category',
                 ),
-                'options' => array(
+                'options'    => array(
                     'options' => $this->createCategoriesArray(),
                 ),
             )
@@ -50,7 +50,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                         'id'    => 'parent_' . $category->getId(),
                         'class' => 'parent',
                     ),
-                    'options' => array(
+                    'options'    => array(
                         'options' => $this->createPagesArray($category),
                     ),
                 )
@@ -59,11 +59,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $this->add(
             array(
-                'type'       => 'select',
-                'name'       => 'forced_language',
-                'label'      => 'Force Language',
-                'required'   => true,
-                'options' => array(
+                'type'     => 'select',
+                'name'     => 'forced_language',
+                'label'    => 'Force Language',
+                'required' => true,
+                'options'  => array(
                     'options' => $this->createForcedLanguagesArray(),
                 ),
             )
@@ -80,10 +80,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $this->add(
             array(
-                'type'     => 'text',
-                'name'     => 'order_number',
-                'label'    => 'Ordering Number',
-                'options'  => array(
+                'type'    => 'text',
+                'name'    => 'order_number',
+                'label'   => 'Ordering Number',
+                'options' => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

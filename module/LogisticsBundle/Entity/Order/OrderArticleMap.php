@@ -58,14 +58,14 @@ class OrderArticleMap
     public static $POSSIBLE_STATUSES = array(
         'aangevraagd' => 'Aangevraagd',
         'goedgekeurd' => 'Goedgekeurd',
-        'op locatie' => 'Op Locatie',
-        'vermist' => 'Vermist',
-        'terug' => 'Terug',
-        'klaar' => 'Klaar',
-        'weggezet' => 'Weggezet',
-        'none' => 'None',
-        'vuil' => 'Vuil',
-        'kapot' => 'Kapot'
+        'op locatie'  => 'Op Locatie',
+        'vermist'     => 'Vermist',
+        'terug'       => 'Terug',
+        'klaar'       => 'Klaar',
+        'weggezet'    => 'Weggezet',
+        'none'        => 'None',
+        'vuil'        => 'Vuil',
+        'kapot'       => 'Kapot'
     );
 
     /**

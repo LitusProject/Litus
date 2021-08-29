@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    'Shop' => 'Winkel',
+    'Shop'                                                                         => 'Winkel',
     'You can reserve some items from the shop. Be aware that you might lose the permission to reserve items if you don\'t come and buy your reserved items on the right date.'
         => 'U kunt items reserveren. Let op! U kunt dit privilege verliezen als u de items niet op het aangeduide ogenblik komt ophalen en betalen.',
     'You cannot reserve items from the shop. Make sure you\'re logged in. This privilege might require you to do some shifts in the shop as well.'

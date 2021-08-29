@@ -26,10 +26,10 @@ class Edit extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->add(
             array(
-                'type'       => 'text',
-                'name'       => 'amount',
-                'label'      => 'Amount',
-                'required'  => true,
+                'type'     => 'text',
+                'name'     => 'amount',
+                'label'    => 'Amount',
+                'required' => true,
                 'options'  => array(
                     'input' => array(
                         'filters' => array(

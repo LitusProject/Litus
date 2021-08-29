@@ -28,8 +28,8 @@ class RetailPrice extends \CommonBundle\Component\Validator\AbstractValidator im
      */
     protected $messageTemplates = array(
         self::NOT_VALID => 'The price is not valid',
-        self::NO_SALE => 'There is no sale article for this article',
-        self::TOO_HIGH => 'The price is too high',
+        self::NO_SALE   => 'There is no sale article for this article',
+        self::TOO_HIGH  => 'The price is too high',
     );
 
     /**

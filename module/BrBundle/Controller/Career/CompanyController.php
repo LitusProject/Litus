@@ -2,7 +2,6 @@
 
 namespace BrBundle\Controller\Career;
 
-use BrBundle\Entity\Company;
 use BrBundle\Entity\Company\Page;
 use DateTime;
 use Laminas\Http\Headers;
@@ -31,12 +30,18 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
             $item = (object) array();
             $company = $page->getCompany();
 
-            $vacancies = count($this->getEntityManager()->getRepository('BrBundle\Entity\Company\Job')
-                ->findAllActiveByCompanyAndTypeQuery($company, 'vacancy')->getResult());
-            $internships = count($this->getEntityManager()->getRepository('BrBundle\Entity\Company\Job')
-                ->findAllActiveByCompanyAndTypeQuery($company, 'internship')->getResult());
-            $studentJobs = count($this->getEntityManager()->getRepository('BrBundle\Entity\Company\Job')
-                ->findAllActiveByCompanyAndTypeQuery($company, 'student job')->getResult());
+            $vacancies = count(
+                $this->getEntityManager()->getRepository('BrBundle\Entity\Company\Job')
+                    ->findAllActiveByCompanyAndTypeQuery($company, 'vacancy')->getResult()
+            );
+            $internships = count(
+                $this->getEntityManager()->getRepository('BrBundle\Entity\Company\Job')
+                    ->findAllActiveByCompanyAndTypeQuery($company, 'internship')->getResult()
+            );
+            $studentJobs = count(
+                $this->getEntityManager()->getRepository('BrBundle\Entity\Company\Job')
+                    ->findAllActiveByCompanyAndTypeQuery($company, 'student job')->getResult()
+            );
 
             $item->name = $company->getName();
             $item->logo = $company->getLogo();
@@ -57,29 +62,35 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
         shuffle($largeComps);
         $allComps = array();
 
-        while (count($smallComps) > 0 || count($largeComps) >0){
-            if (count($largeComps) > 0) {
+        $nbLargeComps = count($largeComps);
+        $nbSmallComps = count($smallComps);
+        while ($nbLargeComps > 0 || $nbSmallComps > 0) {
+            if ($nbLargeComps > 0) {
                 $comp = array_pop($largeComps);
                 array_push($allComps, $comp);
+
+                $nbLargeComps--;
             }
-            if (count($smallComps) >= 4) {
-                $comp = array_splice($smallComps,0,4);
+            if ($nbSmallComps >= 4) {
+                $comp = array_splice($smallComps, 0, 4);
                 array_push($allComps, $comp);
+
+                $nbSmallComps = count($smallComps);
             } else {
                 array_push($allComps, $smallComps);
+
                 $smallComps = array();
+                $nbSmallComps = 0;
             }
         }
 
-        error_log(print_r($allComps[0],true));
-
         return new ViewModel(
             array(
-                'logoPath'         => $logoPath,
-                'smallCompanies'   => $smallComps,
-                'largeCompanies'   => $largeComps,
-                'allCompanies'     => $allComps
-//                'possible_sectors' => array('all' => 'All') + Company::POSSIBLE_SECTORS,
+                'logoPath'       => $logoPath,
+                'smallCompanies' => $smallComps,
+                'largeCompanies' => $largeComps,
+                'allCompanies'   => $allComps
+                // 'possible_sectors' => array('all' => 'All') + Company::POSSIBLE_SECTORS,
             )
         );
     }

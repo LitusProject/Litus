@@ -79,7 +79,7 @@ class Option extends \CommonBundle\Component\Form\Fieldset implements InputFilte
                 'attributes' => array(
                     'class' => 'price_non_members',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

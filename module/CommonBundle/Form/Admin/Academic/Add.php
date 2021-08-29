@@ -64,7 +64,7 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
                             'class'     => 'disableEnter',
                             'data-help' => 'A barcode that can be used to identify the user.',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -126,7 +126,7 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
                         'attributes' => array(
                             'data-help' => 'The identification used by the university for the student.',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -145,7 +145,7 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
                             'id'        => 'university_email',
                             'data-help' => 'The univeristy email, without @ sign.',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),

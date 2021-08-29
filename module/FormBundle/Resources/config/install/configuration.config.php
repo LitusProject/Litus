@@ -7,8 +7,8 @@ return array(
         'description' => 'The path to the uploaded form files',
     ),
     array(
-        'key'   => 'form.mail_confirmation',
-        'value' => serialize(
+        'key'         => 'form.mail_confirmation',
+        'value'       => serialize(
             array(
                 'en' => array(
                     'content' => 'Dear %first_name% %last_name%,
@@ -39,8 +39,8 @@ VTK',
         'description' => 'The mail template for confirmation mails',
     ),
     array(
-        'key'   => 'form.mail_reminder',
-        'value' => serialize(
+        'key'         => 'form.mail_reminder',
+        'value'       => serialize(
             array(
                 'en' => array(
                     'content' => 'Dear %first_name% %last_name%,

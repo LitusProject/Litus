@@ -72,7 +72,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'id' => 'first_name',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -89,7 +89,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'id' => 'last_name',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -105,7 +105,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'placeholder' => 'dd/mm/yyyy',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -139,7 +139,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'placeholder' => '+CCAAANNNNNN',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -177,7 +177,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'attributes' => array(
                                     'id' => 'university_email',
                                 ),
-                                'options' => array(
+                                'options'    => array(
                                     'input' => array(
                                         'filters' => array(
                                             array('name' => 'StringTrim'),
@@ -256,7 +256,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'id' => 'organization_info',
                 ),
-                'elements' => array(
+                'elements'   => array(
                     array(
                         'type'       => 'select',
                         'name'       => 'organization',
@@ -265,7 +265,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'id'      => 'organization',
                             'options' => $this->getOrganizations(),
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'required' => count($this->getOrganizations()) > 1,
                                 'filters'  => array(
@@ -291,7 +291,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'id' => 'conditions',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'validators' => array(
                                     array(

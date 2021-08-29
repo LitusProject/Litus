@@ -65,9 +65,9 @@ class RegistrationSubscriptionController extends \CommonBundle\Component\Control
 
         return new ViewModel(
             array(
-                'form'         => $form,
-                'shift'        => $shift,
-                'registered'   => $registered,
+                'form'       => $form,
+                'shift'      => $shift,
+                'registered' => $registered,
             )
         );
     }
@@ -153,7 +153,7 @@ class RegistrationSubscriptionController extends \CommonBundle\Component\Control
                 'shift_admin_registration_shift',
                 array(
                     'action' => 'manage',
-                    'shift' => $this->getEntityById('ShiftBundle\Entity\RegistrationShift', 'shift'),
+                    'shift'  => $this->getEntityById('ShiftBundle\Entity\RegistrationShift', 'shift'),
                 )
             );
 
