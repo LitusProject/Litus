@@ -134,8 +134,8 @@
                         <a class="btn btn-default pull-left" href="{{ url('cudi_booking', {'action' : 'view'}) }}">{{ translate('Back') }}</a>
                         <button id="bookSearchArticles" class="btn btn-primary pull-right" style="display: none">{{ translate('Book') }}</button>
                     </div>
-                {% endif %}
-            {% endif %} #}
+                {% endif %} #}
+{#            {% endif %}#}
 
             <div id="viewArticlesPage">
                 {% if form is defined %}
@@ -271,8 +271,6 @@
                     </tbody>
                 </table> #}
             </div>
-        {% endif %}
-
     </div>
     {% endif %}
 {% endblock %}

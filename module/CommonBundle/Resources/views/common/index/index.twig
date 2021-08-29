@@ -4,6 +4,7 @@
 
     {% if sportInfo is not null %}
         <div class="alert alert-info">
+            <a class="close" data-dismiss="alert">&times;</a>
             <h4>{{ translate('24h Run') }}</h4>
             {% if sportInfo.behind == 0 %}
                 {{ translate('We have run already %laps% laps and we are the first team.')|replace({'%laps%': sportInfo.nbLaps}) }}
@@ -34,6 +35,7 @@
 
     {% for notification in notifications %}
         <div class="alert alert-info notification">
+            <a class="close" data-dismiss="alert">&times;</a>
             {{ markdown(notification.getContent(language)) }}
         </div>
     {% endfor %}
@@ -62,7 +64,7 @@
                             <div class="calendar-item-tekst">
                                 <h4>{{event.getTitle(language)}} | {{ dateLocalized(day.date, 'LLL')|capitalize }} {{ dateLocalized(day.date, 'd') }} </h4>
                                 <p class="calendar-emptyfill">{{event.getSummary(150, language)}}</p>
-                                <a style="position: absolute; bottom: -10px" class="myVtkButton" href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">Lees Meer</a>
+                                <a style="position: absolute; bottom: -10px" class="myVtkButton" href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Read More') }}</a>
                             </div>
                         </div>
                     {% endfor %}
@@ -152,8 +154,8 @@
             <p style="max-width: 400px; color:white"></p>
             <div class="spacer10"></div>
             <div>
-                <a class="button white unfilled" href="{{ url("br_career_index", {"language": language.getAbbrev()}) }}">Studenten</a>
-                <a class="button white unfilled" href="{{ url("br_corporate_index", {"language": language.getAbbrev()}) }}">Bedrijven</a>
+                <a class="button white unfilled" href="{{ url("br_career_index", {"language": language.getAbbrev()}) }}">{{ translate('Students') }}</a>
+                <a class="button white unfilled" href="{{ url("br_corporate_index", {"language": language.getAbbrev()}) }}">{{ translate('Companies') }}</a>
             </div>
         </div>
     </div>

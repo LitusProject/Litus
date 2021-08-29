@@ -59,4 +59,5 @@ return array(
     'Log In'                                                                                                                                                                               => 'Log In',
     'More Information'                                                                                                                                                                     => 'Meer weten',
     'Corporate Relations'                                                                                                                                                                  => 'Bedrijvenrelaties',
+    'What can you expect?'                                                                                                                                                                 => 'Wat kan je verwachten?',
 );

@@ -25,9 +25,9 @@
         {% endif %}
         {% if stepsToNextRanking %}
             {% if points_enabled %}
-                {{ translate('You need to collect <span class="label label-success">%pointsToNextRanking%</span> more point(s) to get the next ranking.')|replace({'%pointsToNextRanking%': stepsToNextRanking})|raw }}
+                {{ translate('You need to collect <span class="label label-success" style="background-color:#1a1f4a>%pointsToNextRanking%</span> more point(s) to get the next ranking.')|replace({'%pointsToNextRanking%': stepsToNextRanking})|raw }}
             {% else %}
-                {{ translate('You need to do <span class="label label-success">%shiftsToNextRanking%</span> more shift(s) to get the next ranking.')|replace({'%shiftsToNextRanking%': stepsToNextRanking})|raw }}
+                {{ translate('You need to do <span class="label label-success" style="background-color:#1a1f4a;">%shiftsToNextRanking%</span> more shift(s) to get the next ranking.')|replace({'%shiftsToNextRanking%': stepsToNextRanking})|raw }}
             {% endif %}
             <br>
         {% endif %}

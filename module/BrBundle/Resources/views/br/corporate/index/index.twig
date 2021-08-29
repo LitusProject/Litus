@@ -17,7 +17,6 @@
                 <h3 style="color:white; font-weight: 500">{{ texts['br_corporate_launch']['sub'] }}</h3>
                 <div style="height: 20px"></div>
                 {# TO DO buttons invullen & doen werken #}
-                <a class="button white unfilled">{{ translate('More Information') }}</a>
                 <a class="button white unfilled" href="{{ url("br_corporate_index", {"action": "login"}) }}">{{ translate('Log In') }}</a>
             </div>
         </div>
@@ -83,7 +82,7 @@
             {# Gallerij #}
             <div>
                 <div style="position:relative">
-                    <h3 style="position: relative; z-index: 1">BR impressie - VTKatjes</h3>
+                    <h3 style="position: relative; z-index: 1">{{ translate('What can you expect?') }}</h3>
                     <div class="br-titledecoration"></div>
                 </div>
 
@@ -91,11 +90,11 @@
 
                 <div class="lightboxParent">
                     <!-- Images used to open the lightbox -->
-                    <div class="lightboxImage lightbox1" style="background-image: url('https://images.pexels.com/photos/8985189/pexels-photo-8985189.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')" onclick="openModal();currentSlide(1)" ></div>
-                    <div class="lightboxImage" style="background-image: url('https://images.pexels.com/photos/2361952/pexels-photo-2361952.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')" onclick="openModal();currentSlide(2)" ></div>
-                    <div class="lightboxImage" style="background-image: url('https://images.pexels.com/photos/3257811/pexels-photo-3257811.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')" onclick="openModal();currentSlide(3)"></div>
-                    <div class="lightboxImage" style="background-image: url('https://images.pexels.com/photos/6869635/pexels-photo-6869635.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')" onclick="openModal();currentSlide(4)"></div>
-                    <div class="lightboxImage" style="background-image: url('https://images.pexels.com/photos/6853513/pexels-photo-6853513.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')" onclick="openModal();currentSlide(5)"></div>
+                    <div class="lightboxImage lightbox1" style="background-image: url(/_br/img/impression-01.jpg)" onclick="openModal();currentSlide(1)" ></div>
+                    <div class="lightboxImage" style="background-image: url(/_br/img/impression-02.jpg)" onclick="openModal();currentSlide(2)" ></div>
+                    <div class="lightboxImage" style="background-image: url(/_br/img/impression-03.jpg)" onclick="openModal();currentSlide(3)"></div>
+                    <div class="lightboxImage" style="background-image: url(/_br/img/impression-04.jpg)" onclick="openModal();currentSlide(4)"></div>
+                    <div class="lightboxImage" style="background-image: url(/_br/img/impression-05.jpg)" onclick="openModal();currentSlide(5)"></div>
                 </div>
 
                 <!-- The Modal/Lightbox -->
@@ -112,23 +111,23 @@
                             <div style="height: 100%; flex-grow: 1">
 
                                 <div class="mySlides">
-                                    <img class="lightboxZoomedImage" src="https://images.pexels.com/photos/8985189/pexels-photo-8985189.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=920"></img>
+                                    <img class="lightboxZoomedImage" src="url(/_br/img/impression-01.jpg)"></img>
                                 </div>
 
                                 <div class="mySlides">
-                                    <img class="lightboxZoomedImage" src="https://images.pexels.com/photos/2361952/pexels-photo-2361952.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=940"></img>
+                                    <img class="lightboxZoomedImage" src="url(/_br/img/impression-02.jpg)"></img>
                                 </div>
 
                                 <div class="mySlides">
-                                    <img class="lightboxZoomedImage" src="https://images.pexels.com/photos/3257811/pexels-photo-3257811.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=940"></img>
+                                    <img class="lightboxZoomedImage" src="url(/_br/img/impression-03.jpg)"></img>
                                 </div>
 
                                 <div class="mySlides">
-                                    <img class="lightboxZoomedImage" src="https://images.pexels.com/photos/6869635/pexels-photo-6869635.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=940"></img>
+                                    <img class="lightboxZoomedImage" src="url(/_br/img/impression-04.jpg)"></img>
                                 </div>
 
                                 <div class="mySlides">
-                                    <img class="lightboxZoomedImage" src="https://images.pexels.com/photos/6853513/pexels-photo-6853513.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=940"></img>
+                                    <img class="lightboxZoomedImage" src="url(/_br/img/impression-05.jpg)"></img>
                                 </div>
 
                             </div>
