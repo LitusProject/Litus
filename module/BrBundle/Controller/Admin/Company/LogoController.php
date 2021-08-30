@@ -50,42 +50,37 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
             ->getConfigValue('br.public_logo_path') . '/';
 
         $image = new Imagick($file['tmp_name']);
+        $image->scaleImage(320, 240, true);
+
+//        $original = clone $image;
+//
+//        $image->modulateImage(100, 0, 100);
+//
+//        $color = 0;
+//        $iterator = $image->getPixelIterator();
+//        $nbPixels = 0;
+//        foreach ($iterator as $pixels) {
+//            foreach ($pixels as $pixel) {
+//                if ($pixel->getColor()['a'] == 1) {
+//                    continue;
+//                }
+//
+//                $pixel_color = $pixel->getColor(true);
+//                $nbPixels++;
+//                $color += ($pixel_color['r'] + $pixel_color['g'] + $pixel_color['b']) / 3;
+//            }
+//        }
+//        if ($nbPixels != 0 && $color / $nbPixels < 0.5) {
+//            $original->evaluateImage(Imagick::EVALUATE_ADD, 800 / ($color / $nbPixels));
+//        }
+
+
         $image->setImageFormat('png');
-        $image->scaleImage(1000, 100, true);
-
-        $original = clone $image;
-
-        $image->modulateImage(100, 0, 100);
-
-        $color = 0;
-        $iterator = $image->getPixelIterator();
-        $nbPixels = 0;
-        foreach ($iterator as $pixels) {
-            foreach ($pixels as $pixel) {
-                if ($pixel->getColor()['a'] == 1) {
-                    continue;
-                }
-
-                $pixel_color = $pixel->getColor(true);
-                $nbPixels++;
-                $color += ($pixel_color['r'] + $pixel_color['g'] + $pixel_color['b']) / 3;
-            }
-        }
-        if ($nbPixels != 0 && $color / $nbPixels < 0.5) {
-            $original->evaluateImage(Imagick::EVALUATE_ADD, 800 / ($color / $nbPixels));
-        }
-
-        $all = new Imagick();
-        $all->addImage($original);
-        $all->addImage($image);
-        $all->resetIterator();
-        $combined = $all->appendImages(true);
-        $combined->setImageFormat('png');
 
         do {
             $fileName = sha1(uniqid());
         } while (file_exists($filePath . $fileName));
-        $combined->writeImage($filePath . $fileName);
+        $image->writeImage($filePath . $fileName);
 
         $logo->setPath($fileName)
             ->setWidth($image->getImageWidth())
