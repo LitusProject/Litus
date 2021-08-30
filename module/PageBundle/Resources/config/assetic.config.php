@@ -16,6 +16,7 @@ return array(
             '@gollum_css',
             '@gollum_js',
             '@common_remote_typeahead',
+            '@common_permanent_modal',
         ),
         'page_admin_category' => array(
             '@common_jquery',

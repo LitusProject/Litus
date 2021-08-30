@@ -3,6 +3,7 @@
 namespace PageBundle\Controller\Admin;
 
 use CommonBundle\Entity\General\Node\FAQ\FAQPageMap;
+use Imagick;
 use Laminas\Filter\File\RenameUpload as RenameUploadFilter;
 use Laminas\Validator\File\IsImage as IsImageValidator;
 use Laminas\Validator\File\UploadFile as UploadFileValidator;
@@ -257,6 +258,142 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel();
     }
 
+    public function editPosterAction()
+    {
+        $page = $this->getPageEntity();
+        if ($page === null) {
+            return new ViewModel();
+        }
+
+        $form = $this->getForm('page_page_poster');
+        $form->setAttribute(
+            'action',
+            $this->url()->fromRoute(
+                'page_admin_page',
+                array(
+                    'action' => 'uploadPoster',
+                    'id'     => $page->getId(),
+                )
+            )
+        );
+
+        return new ViewModel(
+            array(
+                'page' => $page,
+                'form' => $form,
+            )
+        );
+    }
+
+    private function receive($file, Page $page)
+    {
+        $filePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('page.poster_path');
+
+        $image = new Imagick($file['tmp_name']);
+
+        if ($page->getPoster() != '' || $page->getPoster() !== null) {
+            $fileName = '/' . $page->getPoster();
+        } else {
+            do {
+                $fileName = '/' . sha1(uniqid());
+            } while (file_exists($filePath . $fileName));
+        }
+
+        $image->writeImage($filePath . $fileName);
+
+        $page->setPoster($fileName);
+    }
+
+    public function uploadPosterAction()
+    {
+        $page = $this->getPageEntity();
+        if ($page === null) {
+            return new ViewModel();
+        }
+
+        $form = $this->getForm('page_page_poster');
+
+        if ($this->getRequest()->isPost()) {
+            $form->setData(
+                array_merge_recursive(
+                    $this->getRequest()->getPost()->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
+
+            if ($form->isValid()) {
+                $formData = $form->getData();
+
+                $this->receive($formData['poster'], $page);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The page\'s poster has successfully been updated!'
+                );
+
+                return new ViewModel(
+                    array(
+                        'status' => 'success',
+                        'info'   => array(
+                            'info' => array(
+                                'name' => $page->getPoster(),
+                            ),
+                        ),
+                    )
+                );
+            } else {
+                return new ViewModel(
+                    array(
+                        'status' => 'error',
+                        'form'   => array(
+                            'errors' => $form->getMessages(),
+                        ),
+                    )
+                );
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'status' => 'error',
+            )
+        );
+    }
+
+    public function posterAction()
+    {
+        $page = $this->getPageEntityByPoster();
+        if ($page === null) {
+            return new ViewModel();
+        }
+
+        $filePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('page.poster_path') . '/';
+
+        $headers = new Headers();
+        $headers->addHeaders(
+            array(
+                'Content-Type' => mime_content_type($filePath . $page->getPoster()),
+            )
+        );
+        $this->getResponse()->setHeaders($headers);
+
+        $handle = fopen($filePath . $page->getPoster(), 'r');
+        $data = fread($handle, filesize($filePath . $page->getPoster()));
+        fclose($handle);
+
+        return new ViewModel(
+            array(
+                'data' => $data,
+            )
+        );
+    }
+
     public function searchAction()
     {
         $this->initAjax();
@@ -343,6 +480,32 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         $page = $this->getEntityById('PageBundle\Entity\Node\Page');
 
         if (!($page instanceof Page) || !$page->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No page was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'page_admin_page',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return;
+        }
+
+        return $page;
+    }
+
+    /**
+     * @return Page|null
+     */
+    private function getPageEntityByPoster()
+    {
+        $page = $this->getEntityById('PageBundle\Entity\Node\Page', 'id', 'poster');
+
+        if (!($page instanceof Page)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No page was found!'
