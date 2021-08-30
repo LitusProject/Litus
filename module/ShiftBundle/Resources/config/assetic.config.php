@@ -1,5 +1,7 @@
 <?php
 
+use CommonBundle\Component\Assetic\Filter\Less as LessFilter;
+
 return array(
     'controllers' => array(
         'shift_admin_shift' => array(
