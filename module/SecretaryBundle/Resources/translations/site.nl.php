@@ -67,7 +67,6 @@ return array(
     'Membership'                                                                                              => 'Lidmaatschap',
     'Book Textbooks'                                                                                          => 'Cursussen Reserveren',
 
-<<<<<<< HEAD
     'S - Male'    => 'S - Man',
     'M - Male'    => 'M - Man',
     'L - Male'    => 'L - Man',
@@ -82,13 +81,6 @@ return array(
     'Add Other Subjects'                         => 'Andere Vakken Toevoegen',
     'Add Other Subject'                          => 'Ander Vak Toevoegen',
     'The subject was succesfully added!'         => 'Het vak is succesvol toegevoegd!',
-=======
-    'Other Subjects'                                                                                          => 'Andere Vakken',
-    'You have not yet added any other subjects.'                                                              => 'Je hebt nog geen andere vakken toegevoegd.',
-    'Add Other Subjects'                                                                                      => 'Andere Vakken Toevoegen',
-    'Add Other Subject'                                                                                       => 'Ander Vak Toevoegen',
-    'The subject was succesfully added!'                                                                      => 'Het vak is succesvol toegevoegd!',
->>>>>>> master
 
     'Reservation'                                                                                             => 'Reservatie',
     'Order sandwiches and snacks.'                                                                            => 'Bestel broodjes en tussendoortjes.',

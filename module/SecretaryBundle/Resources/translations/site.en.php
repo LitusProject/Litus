@@ -67,7 +67,6 @@ return array(
     'Membership'                                                                                              => 'Membership',
     'Book Textbooks'                                                                                          => 'Book Textbooks',
 
-<<<<<<< HEAD
     'S - Male'    => 'S - Male',
     'M - Male'    => 'M - Male',
     'L - Male'    => 'L - Male',
@@ -82,13 +81,6 @@ return array(
     'Add Other Subjects'                         => 'Add Other Subjects',
     'Add Other Subject'                          => 'Add Other Subject',
     'The subject was succesfully added!'         => 'The subject was succesfully added!',
-=======
-    'Other Subjects'                                                                                          => 'Other Subjects',
-    'You have not yet added any other subjects.'                                                              => 'You have not yet added any other subjects.',
-    'Add Other Subjects'                                                                                      => 'Add Other Subjects',
-    'Add Other Subject'                                                                                       => 'Add Other Subject',
-    'The subject was succesfully added!'                                                                      => 'The subject was succesfully added!',
->>>>>>> master
 
     'Reservation'                                                                                             => 'Reservation',
     'Order sandwiches and snacks.'                                                                            => 'Order sandwiches and snacks.',
