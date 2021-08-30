@@ -99,6 +99,13 @@ class Page extends \CommonBundle\Entity\Node
     private $active;
 
     /**
+     * @var string The poster of this page
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $poster;
+
+    /**
      * @param Person $person
      */
     public function __construct(Person $person)
@@ -375,6 +382,26 @@ class Page extends \CommonBundle\Entity\Node
     public function setActive(bool $active)
     {
         $this->active = $active;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPoster()
+    {
+        return $this->poster;
+    }
+
+    /**
+     * @param string $poster
+     *
+     * @return self
+     */
+    public function setPoster($poster)
+    {
+        $this->poster = trim($poster, '/');
+
         return $this;
     }
 }
