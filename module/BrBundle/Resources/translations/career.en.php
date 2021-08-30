@@ -9,6 +9,7 @@ return array(
     'Benefits'                                                                                                                                                                         => 'Benefits',
     'Wanted Profile'                                                                                                                                                                   => 'Wanted Profile',
     'Contact Information'                                                                                                                                                              => 'Contact Information',
+    'Required Knowledge'                                                                                                                                                               => 'Required Knowledge',
     'Sector'                                                                                                                                                                           => 'Sector',
     'Location'                                                                                                                                                                         => 'Location',
     'Arrange by'                                                                                                                                                                       => 'Arrange by',

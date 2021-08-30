@@ -1,5 +1,7 @@
 <?php
 
+use CommonBundle\Component\Assetic\Filter\Less as LessFilter;
+
 return array(
     'controllers' => array(
         'page_admin_page' => array(

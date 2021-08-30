@@ -89,7 +89,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         $studies = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
             ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
-//
+
 //        $allStudies = array();
 //        $allSubjects = array();
 //        $subjectIds = array();  // To avoid duplicates
