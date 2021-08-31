@@ -85,7 +85,8 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
 
         $object->getPage()->setYears($years)
             ->setDescription($data['page']['description'])
-            ->setShortDescription($data['page']['shortDescription']);
+            ->setShortDescription($data['page']['short_description'])
+            ->setYoutubeURL($data['page']['youtube_url']);
         if (isset($data['page']['atEvent'])) {
             $object->getPage()->setAtEvent($data['page']['atEvent']);
         }
@@ -131,7 +132,8 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
                 $data['page']['years'][] = $year->getId();
             }
             $data['page']['description'] = $page->getDescription();
-            $data['page']['shortDescription'] = $page->getShortDescription();
+            $data['page']['short_description'] = $page->getShortDescription();
+            $data['page']['youtube_url'] = $page->getYoutubeURL();
         }
 
         return $data;

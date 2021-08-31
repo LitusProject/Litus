@@ -31,9 +31,11 @@
             <a class="button blue unfilled" href="{{ page.getCompany().getFullWebsite() }}" target="_blank">{{ translate('View Site') }}</a>
             <div style="height: 20px"></div>
         </div>
-        <div style="min-width: 60%" class="temporaryImage">
-            <iframe width="680px" height="340px" src="https://www.youtube.com/embed/A6tn0AnNEj8"></iframe>
-        </div>
+        {% if page.getYoutubeURL() %}
+            <div style="min-width: 60%">
+                <iframe width="680px" height="340px" src="https://www.youtube.com/embed/{{ page.getYoutubeURL() }}"></iframe>
+            </div>
+        {% endif %}
     </div>
 
     <div style="height: 80px"></div>
