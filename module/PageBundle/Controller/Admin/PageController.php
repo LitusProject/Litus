@@ -5,6 +5,7 @@ namespace PageBundle\Controller\Admin;
 use CommonBundle\Entity\General\Node\FAQ\FAQPageMap;
 use Imagick;
 use Laminas\Filter\File\RenameUpload as RenameUploadFilter;
+use Laminas\Http\Headers;
 use Laminas\Validator\File\IsImage as IsImageValidator;
 use Laminas\Validator\File\UploadFile as UploadFileValidator;
 use Laminas\Validator\ValidatorChain;
