@@ -237,6 +237,26 @@ class Edit extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                         ),
                     ),
+                    array(
+                        'type'     => 'text',
+                        'name'     => 'youtube_url',
+                        'label'    => 'YouTube video URL',
+                        'required' => false,
+                        'attributes' => array(
+                            'id' => 'youtubeURL',
+                            'placeholder' => 'https://www.youtube.com/watch?v=AVJHzfv-Yis',
+                        ),
+                        'options'  => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array('name' => 'Uri'),
+                                ),
+                            ),
+                        ),
+                    ),
                 ),
             )
         );

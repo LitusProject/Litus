@@ -236,7 +236,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     array(
                         'type'       => 'textarea',
-                        'name'       => 'shortDescription',
+                        'name'       => 'short_description',
                         'label'      => 'Short Description',
                         'attributes' => array(
                             'id' => 'shortDescription',
@@ -253,6 +253,26 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                             'max_length' => 350,
                                         ),
                                     ),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'     => 'text',
+                        'name'     => 'youtube_url',
+                        'label'    => 'YouTube video URL code (https://www.youtube.com/watch?v=XXXXXXXXXXX)',
+                        'required' => false,
+                        'attributes' => array(
+                            'id' => 'youtubeURL',
+                            'placeholder' => 'AVJHzfv-Yis',
+                        ),
+                        'options'  => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array('name' => 'Uri'),
                                 ),
                             ),
                         ),

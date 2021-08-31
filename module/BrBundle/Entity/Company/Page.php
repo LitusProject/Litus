@@ -39,6 +39,13 @@ class Page
     private $shortDescription;
 
     /**
+     * @var string Optional URL for youtube video
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $youtubeURL;
+
+    /**
      * @var Company
      *
      * @ORM\OneToOne(targetEntity="BrBundle\Entity\Company", inversedBy="page")
@@ -133,6 +140,24 @@ class Page
     public function getShortDescription()
     {
         return $this->shortDescription;
+    }
+
+    /**
+     * @param string $youtubeURL
+     * @return Page
+     */
+    public function setYoutubeURL($youtubeURL)
+    {
+        $this->youtubeURL = $youtubeURL;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getYoutubeURL()
+    {
+        return $this->youtubeURL;
     }
 
     public function hasYear(AcademicYear $academicYear)
