@@ -9,7 +9,7 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Component\Validator\FormAwareInterface;
-use Laminas\Form\FieldsetInterface as ZendFieldsetInterface;
+use Laminas\Form\FieldsetInterface as LaminasFieldsetInterface;
 use Laminas\Form\FormInterface;
 use Laminas\Hydrator\ClassMethods as ClassMethodsHydrator;
 use Laminas\InputFilter\InputFilterAwareInterface;
@@ -18,13 +18,13 @@ use Laminas\InputFilter\InputInterface;
 use RuntimeException;
 
 /**
- * Extending Zend's form component, so that our forms look the way we want
+ * Extending Laminas's form component, so that our forms look the way we want
  * them to.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-abstract class Form extends \Laminas\Form\Form implements InputFilterAwareInterface, ServiceLocatorAwareInterface, ZendFieldsetInterface
+abstract class Form extends \Laminas\Form\Form implements InputFilterAwareInterface, ServiceLocatorAwareInterface, LaminasFieldsetInterface
 {
     use ElementTrait {
         ElementTrait::setRequired as setElementRequired;

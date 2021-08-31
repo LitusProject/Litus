@@ -14,8 +14,8 @@ use Locale;
 use RuntimeException;
 
 /**
- * Extending Zend's fieldset component, so that our forms look the way we want
- * them to.
+ * Extending Laminas's fieldset component, so that our forms look the way we
+ * want them to.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>

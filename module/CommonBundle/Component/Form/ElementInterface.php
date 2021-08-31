@@ -5,8 +5,8 @@ namespace CommonBundle\Component\Form;
 use Laminas\Form\FormInterface;
 
 /**
- * Extending Zend's form element component, so that our forms look the way we want
- * them to.
+ * Extending Laminas's form element component, so that our forms look the way we
+ * want them to.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
