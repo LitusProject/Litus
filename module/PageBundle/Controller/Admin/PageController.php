@@ -1,11 +1,27 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
 namespace PageBundle\Controller\Admin;
 
 use CommonBundle\Entity\General\Node\FAQ\FAQPageMap;
-use Imagick;
 use Laminas\Filter\File\RenameUpload as RenameUploadFilter;
-use Laminas\Http\Headers;
 use Laminas\Validator\File\IsImage as IsImageValidator;
 use Laminas\Validator\File\UploadFile as UploadFileValidator;
 use Laminas\Validator\ValidatorChain;
@@ -128,8 +144,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
             $faqForm->setData($formData);
 
-            if (isset($formData['page_edit']) && $faqForm->isValid()) {
-                error_log('hereeeeeeeeeeeee!');
+            if (isset($formData['faq_add']) && $faqForm->isValid()) {
                 $faq = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Node\FAQ\FAQ')
                     ->findOneById(intval($formData['faq_typeahead']['id']));
@@ -147,11 +162,11 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                     'page_admin_page',
                     array(
                         'action' => 'edit',
-                        'id'     => $page->getId(),
+                        'id'   => $page->getId(),
                     )
                 );
                 return new ViewModel();
-            } elseif (isset($formData['page_edit']) && $form->isValid()) {
+            } elseif (isset($formData['submit']) && $form->isValid()) {
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -172,10 +187,10 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'form'    => $form,
+                'form' => $form,
                 'faqForm' => $faqForm,
-                'maps'    => $maps,
-                'page'    => $page,
+                'maps' => $maps,
+                'page' => $page,
             )
         );
     }
@@ -257,142 +272,6 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         }
 
         return new ViewModel();
-    }
-
-    public function editPosterAction()
-    {
-        $page = $this->getPageEntity();
-        if ($page === null) {
-            return new ViewModel();
-        }
-
-        $form = $this->getForm('page_page_poster');
-        $form->setAttribute(
-            'action',
-            $this->url()->fromRoute(
-                'page_admin_page',
-                array(
-                    'action' => 'uploadPoster',
-                    'id'     => $page->getId(),
-                )
-            )
-        );
-
-        return new ViewModel(
-            array(
-                'page' => $page,
-                'form' => $form,
-            )
-        );
-    }
-
-    private function receive($file, Page $page)
-    {
-        $filePath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('page.poster_path');
-
-        $image = new Imagick($file['tmp_name']);
-
-        if ($page->getPoster() != '' || $page->getPoster() !== null) {
-            $fileName = '/' . $page->getPoster();
-        } else {
-            do {
-                $fileName = '/' . sha1(uniqid());
-            } while (file_exists($filePath . $fileName));
-        }
-
-        $image->writeImage($filePath . $fileName);
-
-        $page->setPoster($fileName);
-    }
-
-    public function uploadPosterAction()
-    {
-        $page = $this->getPageEntity();
-        if ($page === null) {
-            return new ViewModel();
-        }
-
-        $form = $this->getForm('page_page_poster');
-
-        if ($this->getRequest()->isPost()) {
-            $form->setData(
-                array_merge_recursive(
-                    $this->getRequest()->getPost()->toArray(),
-                    $this->getRequest()->getFiles()->toArray()
-                )
-            );
-
-            if ($form->isValid()) {
-                $formData = $form->getData();
-
-                $this->receive($formData['poster'], $page);
-
-                $this->getEntityManager()->flush();
-
-                $this->flashMessenger()->success(
-                    'Success',
-                    'The page\'s poster has successfully been updated!'
-                );
-
-                return new ViewModel(
-                    array(
-                        'status' => 'success',
-                        'info'   => array(
-                            'info' => array(
-                                'name' => $page->getPoster(),
-                            ),
-                        ),
-                    )
-                );
-            } else {
-                return new ViewModel(
-                    array(
-                        'status' => 'error',
-                        'form'   => array(
-                            'errors' => $form->getMessages(),
-                        ),
-                    )
-                );
-            }
-        }
-
-        return new ViewModel(
-            array(
-                'status' => 'error',
-            )
-        );
-    }
-
-    public function posterAction()
-    {
-        $page = $this->getPageEntityByPoster();
-        if ($page === null) {
-            return new ViewModel();
-        }
-
-        $filePath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('page.poster_path') . '/';
-
-        $headers = new Headers();
-        $headers->addHeaders(
-            array(
-                'Content-Type' => mime_content_type($filePath . $page->getPoster()),
-            )
-        );
-        $this->getResponse()->setHeaders($headers);
-
-        $handle = fopen($filePath . $page->getPoster(), 'r');
-        $data = fread($handle, filesize($filePath . $page->getPoster()));
-        fclose($handle);
-
-        return new ViewModel(
-            array(
-                'data' => $data,
-            )
-        );
     }
 
     public function searchAction()
@@ -481,32 +360,6 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         $page = $this->getEntityById('PageBundle\Entity\Node\Page');
 
         if (!($page instanceof Page) || !$page->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No page was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'page_admin_page',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $page;
-    }
-
-    /**
-     * @return Page|null
-     */
-    private function getPageEntityByPoster()
-    {
-        $page = $this->getEntityById('PageBundle\Entity\Node\Page', 'id', 'poster');
-
-        if (!($page instanceof Page)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No page was found!'
