@@ -124,10 +124,39 @@ class Event
      */
     private $tickets;
 
+    /**
+     * @var string the base string for Invoice Id's
+     *
+     * @ORM\Column(name="invoice_id_base", type="string", length=16, nullable=true)
+     */
+    private $invoiceIdBase;
+
+    /**
+     * @var string the base string for Order Id's
+     *
+     * @ORM\Column(name="order_id_base", type="string", length=7, nullable=true)
+     */
+    private $orderIdBase;
+
+    /**
+     * @var string The next invoice Id number.
+     *
+     * @ORM\Column(name="next_invoice_nb", type="string", length=4, options={"default" : "0000"})
+     */
+    private $nextInvoiceNb;
+
+    /**
+     * @var boolean Flag whether users can pay for their ticket online
+     *
+     * @ORM\Column(name="online_payment", type="boolean", options={"default" : false})
+     */
+    private $onlinePayment;
+
     public function __construct()
     {
         $this->options = new ArrayCollection();
         $this->tickets = new ArrayCollection();
+        $this->nextInvoiceNb = "0000";
     }
 
     /**
@@ -400,6 +429,79 @@ class Event
     public function getOptions()
     {
         return $this->options;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getInvoiceIdBase()
+    {
+        return $this->invoiceIdBase;
+    }
+
+    /**
+     * @param string $invoiceIdBase
+     * @return self
+     */
+    public function setInvoiceIdBase(string $invoiceIdBase)
+    {
+        $this->invoiceIdBase = $invoiceIdBase;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getOrderIdBase()
+    {
+        return $this->orderIdBase;
+    }
+
+    /**
+     * @param string $orderIdBase
+     * @return self
+     */
+    public function setOrderIdBase(string $orderIdBase)
+    {
+        $this->orderIdBase = $orderIdBase;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getNextInvoiceNb()
+    {
+        $int = intval($this->nextInvoiceNb) + 1;
+        $this->nextInvoiceNb = str_pad(strval($int), 4 , '0', STR_PAD_LEFT);
+        return $this->nextInvoiceNb;
+    }
+
+    /**
+     * @param int $nextInvoiceNb
+     */
+    public function setNextInvoiceNb(int $nextInvoiceNb)
+    {
+        $this->nextInvoiceNb = $nextInvoiceNb;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isOnlinePayment()
+    {
+        return $this->onlinePayment;
+    }
+
+    /**
+     * @param boolean $onlinePayment
+     * @return self
+     */
+    public function setOnlinePayment($onlinePayment)
+    {
+        $this->onlinePayment = $onlinePayment;
+
+        return $this;
     }
 
     /**

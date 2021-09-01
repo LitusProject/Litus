@@ -17,6 +17,7 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
     const EXCEEDS_MAX = 'exceedsMax';
 
     protected $options = array(
+        'maximum' => '',
         'event'  => null,
         'person' => null,
     );
@@ -33,8 +34,15 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
      */
     protected $messageTemplates = array(
         self::NOT_VALID          => 'The number of tickets is not valid',
-        self::EXCEEDS_MAX_PERSON => 'The number of tickets exceeds the maximum per person',
+        self::EXCEEDS_MAX_PERSON => 'The number of tickets exceeds the maximum per person (%maximum%)',
         self::EXCEEDS_MAX        => 'The number of tickets exceeds the maximum',
+    );
+
+    /**
+     * @var array The message variables
+     */
+    protected $messageVariables = array(
+        'maximum' => array('options' => 'maximum'),
     );
 
     /**
@@ -49,6 +57,7 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
             $options = array();
             $options['event'] = array_shift($args);
             $options['person'] = array_shift($args);
+            $options['maximum'] = array_shift($args);
         }
 
         parent::__construct($options);
@@ -89,7 +98,7 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
             return false;
         }
 
-        $personFieldset = $this->form->get('person_form');
+        $personFieldset = $this->form->has('person_form') ? $this->form->get('person_form') : $this->form;
         if ($this->options['person'] == null && is_numeric($personFieldset->get('person')->getValue())) {
             $person = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person')

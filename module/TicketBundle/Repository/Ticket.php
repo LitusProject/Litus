@@ -25,7 +25,7 @@ class Ticket extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                     $query->expr()->eq('t.number', ':number')
                 )
             )
-            ->setParameter('event', $event)
+            ->setParameter('event', $event->getId())
             ->setParameter('number', $number)
             ->setMaxResults(1)
             ->getQuery()
