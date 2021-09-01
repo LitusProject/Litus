@@ -46,7 +46,7 @@ class Version20210823161447 extends \Doctrine\Migrations\AbstractMigration
         $this->addSql('DROP SEQUENCE faq_page_map_id_seq CASCADE');
         // $this->addSql('DROP SEQUENCE tickets_orders_id_seq CASCADE');
         $this->addSql('CREATE SEQUENCE tickets.orders_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE SEQUENCE ticket_guests_info_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        // $this->addSql('CREATE SEQUENCE ticket_guests_info_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE TABLE tickets.orders (id BIGINT NOT NULL, event BIGINT DEFAULT NULL, booker BIGINT DEFAULT NULL, book_date TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_F416EFB93BAE0AA7 ON tickets.orders (event)');
         $this->addSql('CREATE INDEX IDX_F416EFB96EDAA308 ON tickets.orders (booker)');
