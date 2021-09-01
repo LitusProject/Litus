@@ -12,7 +12,8 @@ use TicketBundle\Entity\Event\Option;
  * @ORM\Entity(repositoryClass="TicketBundle\Repository\Ticket")
  * @ORM\Table(
  *     name="ticket_tickets",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="ticket_tickets_event_number", columns={"event", "number"})}
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="ticket_tickets_event_number", columns={"event", "number"}),
+ *     @ORM\UniqueConstraint(name="ticket_tickets_invoice_id", columns={"invoice_id"})}
  * )
  */
 class Ticket
@@ -103,6 +104,20 @@ class Ticket
     private $member;
 
     /**
+     * @var integer|null The number of the ticket (unique for an event)
+     *
+     * @ORM\Column(name="invoice_id", type="string", nullable=true, length=20)
+     */
+    private $invoiceId;
+
+    /**
+     * @var integer|null The number of the ticket (unique for an event)
+     *
+     * @ORM\Column(name="order_id", type="string", nullable=true, length=10)
+     */
+    private $orderId;
+
+    /**
      * @param  Event          $event
      * @param  string         $status
      * @param  Person|null    $person
@@ -119,6 +134,11 @@ class Ticket
         }
 
         $this->event = $event;
+        if ($event->isOnlinePayment()) {
+            $nb = $event->getNextInvoiceNb();
+            $this->invoiceId = $event->getInvoiceIdBase() . $nb;
+            $this->orderId = $event->getOrderIdBase() . $nb;
+        }
         $this->status = $status;
         $this->person = $person;
         $this->guestInfo = $guestInfo;
@@ -346,5 +366,37 @@ class Ticket
         $this->member = $member;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getInvoiceId()
+    {
+        return $this->invoiceId;
+    }
+
+    /**
+     * @param string $invoiceId
+     */
+    public function setInvoiceId(string $invoiceId)
+    {
+        $this->invoiceId = $invoiceId;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getOrderId()
+    {
+        return $this->orderId;
+    }
+
+    /**
+     * @param string $orderId
+     */
+    public function setOrderId(string $orderId)
+    {
+        $this->orderId = $orderId;
     }
 }

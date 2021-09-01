@@ -68,7 +68,11 @@
                 <tr class="item" id="item-{{ ticket.getId() }}">
                     <td class="person">{% if ticket.getFullName() %}{{ ticket.getFullName() }}{% else %}(none){% endif %}</td>
                     <td class="status">{{ ticket.getStatus() }}</td>
-                    <td class="status">{{ ticket.getOption().getName() }} ({% if ticket.isMember() %}Member{% else %}Non Member{% endif %})</td>
+                    {% if ticket.getOption() != null %}
+                        <td class="status">{{ ticket.getOption().getName() }}</td>
+                    {% else %}
+                        <td class="status">{{ ticket.isMember()==true?"member":"non-mmber"  }}</td>
+                    {% endif %}
                     <td>{{ "%010d"|format(ticket.getNumber()) }}</td>
                     <td class="bookDate">{{ dateLocalized(ticket.getBookDate(), 'd/MM/YYYY HH:mm') }}</td>
                     <td class="soldDate">{{ dateLocalized(ticket.getSoldDate(), 'd/MM/YYYY HH:mm') }}</td>

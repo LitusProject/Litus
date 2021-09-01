@@ -61,7 +61,7 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
             return new ViewModel();
         }
 
-        if (!$ticket->getEvent()->areTicketsGenerated()) {
+        if ($ticket->getEvent()->areTicketsGenerated()) {
             return new ViewModel();
         }
 
@@ -83,7 +83,6 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
         if ($ticket === null) {
             return new ViewModel();
         }
-
         $ticket->setStatus('sold');
         $this->getEntityManager()->flush();
 
@@ -118,7 +117,7 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
      */
     private function getTicketEntity()
     {
-        $ticket = $this->getEntityById('TicketBundle\Entity\Ticket');
+        $ticket = $this->getEntityById('TicketBundle\Entity\Ticket', 'ticket');
 
         if (!($ticket instanceof Ticket)) {
             $this->flashMessenger()->error(
