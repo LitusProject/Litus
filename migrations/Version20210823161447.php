@@ -41,10 +41,10 @@ class Version20210823161447 extends \Doctrine\Migrations\AbstractMigration
         $this->addSql('ALTER TABLE nodes_faq_translation DROP CONSTRAINT fk_d5444e5fe8ff75cc');
         $this->addSql('ALTER TABLE faq_page_map DROP CONSTRAINT fk_a3b05b3d4a61d01');
         $this->addSql('ALTER TABLE faq_roles_map DROP CONSTRAINT fk_e76724eee8ff75cc');
-        $this->addSql('ALTER TABLE ticket_tickets DROP CONSTRAINT fk_588ac4a622d93f');
+        // $this->addSql('ALTER TABLE ticket_tickets DROP CONSTRAINT fk_588ac4a622d93f');
         $this->addSql('DROP SEQUENCE nodes_faq_translation_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE faq_page_map_id_seq CASCADE');
-        $this->addSql('DROP SEQUENCE tickets_orders_id_seq CASCADE');
+        // $this->addSql('DROP SEQUENCE tickets_orders_id_seq CASCADE');
         $this->addSql('CREATE SEQUENCE tickets.orders_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE ticket_guests_info_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE TABLE tickets.orders (id BIGINT NOT NULL, event BIGINT DEFAULT NULL, booker BIGINT DEFAULT NULL, book_date TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
