@@ -48,7 +48,7 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
             foreach ($units as $unit){
                 $members[] =$this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
-                        ->findAllByAcademicYear($unit, $year);
+                        ->findAllByUnitAndAcademicYear($unit, $year);
             }
             if (count($members) <= 0) array_push($allAcademicYears, $year);
         }
