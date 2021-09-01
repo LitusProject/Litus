@@ -326,7 +326,8 @@ class Page extends \CommonBundle\Entity\Node
      */
     public function setOrderNumber($orderNumber)
     {
-        if ($orderNumber === null || gettype($orderNumber) !== 'integer') {
+        $orderNumber = intval($orderNumber);
+        if ($orderNumber === null || $orderNumber === 0) {
             $this->orderNumber = null;
         } else {
             $this->orderNumber = $orderNumber;
