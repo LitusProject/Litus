@@ -24,6 +24,7 @@ use CommonBundle\Entity\User\Person;
 use LogicException;
 use RuntimeException;
 use TicketBundle\Entity\Event;
+use Zend\Validator\Identical;
 
 /**
  * Book Tickets
@@ -41,6 +42,11 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
      * @var Person
      */
     private $person;
+
+    /**
+     * @var boolean Are the conditions already checked or not
+     */
+    protected $conditionsChecked = false;
 
     public function init()
     {
@@ -167,6 +173,31 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
             }
         }
 
+        array(
+            'type'       => 'checkbox',
+            'name'       => 'conditions',
+            'label'      => 'I have read and accept the GDPR terms and condition specified above',
+            'attributes' => array(
+                'id' => 'conditions',
+            ),
+            'options' => array(
+                'input' => array(
+                    'validators' => array(
+                        array(
+                            'name'    => 'identical',
+                            'options' => array(
+                                'token'    => true,
+                                'strict'   => false,
+                                'messages' => array(
+                                    Identical::NOT_SAME => 'You must agree to the terms and conditions.',
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        );
+
         $this->addSubmit('Book', 'book_tickets');
     }
 
@@ -200,6 +231,17 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
     public function setPerson(Person $person)
     {
         $this->person = $person;
+
+        return $this;
+    }
+
+    /**
+     * @param  boolean $conditionsChecked
+     * @return self
+     */
+    public function setConditionsChecked($conditionsChecked = true)
+    {
+        $this->conditionsChecked = !!$conditionsChecked;
 
         return $this;
     }

@@ -61,15 +61,24 @@ class GuestInfo
     private $email;
 
     /**
+     * @var string The name of the organization for this guest
+     *
+     * @ORM\Column(name="organization", type="string")
+     */
+    private $organization;
+
+    /**
      * @param string $firstName
      * @param string $lastName
      * @param string $email
+     * @param $organization
      */
-    public function __construct($firstName, $lastName, $email)
+    public function __construct($firstName, $lastName, $email, $organization)
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->email = $email;
+        $this->organization = $organization;
     }
 
     /**
@@ -110,5 +119,13 @@ class GuestInfo
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * @return string organization
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
     }
 }

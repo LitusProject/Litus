@@ -76,6 +76,7 @@
                 <div>
                     {% if canBook == true and (event.isStillBookable() or (event.isStillBookablePraesidium() and isPraesidium)) %}
                         <div class="page-header">
+                            <p>{{ upperText }}</p>
                             <h2>{{ translate('Book Tickets') }}</h2>
                             <h5>{{ translate('Maximum of ') ~ maximumAmount}}
                                 {% if maximumAmount > 1 %}

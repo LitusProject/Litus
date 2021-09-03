@@ -62,6 +62,19 @@ class Ticket extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery();
     }
 
+    public function findAllByOption(EventEntity\Option $option)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('t')
+            ->from('TicketBundle\Entity\Ticket', 't')
+            ->where(
+                $query->expr()->eq('t.option', ':option')
+            )
+            ->setParameter('option', $option)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findAllByEventAndPersonQuery(EventEntity $event, Person $person)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

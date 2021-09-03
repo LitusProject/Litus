@@ -69,6 +69,14 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 foreach ($event->getOptions() as $option) {
                     $numbers['option_' . $option->getId() . '_number_member'] = $formData['option_' . $option->getId() . '_number_member'];
                     $numbers['option_' . $option->getId() . '_number_non_member'] = $formData['option_' . $option->getId() . '_number_non_member'];
+                    $currentAmount = $this->getEntityManager()->getRepository('TicketBundle\Entity\Ticket')->findAllByOption($option);
+                    if ($currentAmount >= $option->getMaximum()){
+                        $this->flashMessenger()->error(
+                            'Error',
+                            'The tickets could not be booked, option ' . $option->getName() . 'has reached the maximum amount of tickets!'
+                        );
+
+                    }
                 }
 
                 TicketBook::book(
@@ -108,6 +116,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 'isPraesidium'          => $organizationStatus ? $organizationStatus->getStatus() == 'praesidium' : false,
                 'canBook'               => $canBook,
                 'maximumAmount'         => $event->getLimitPerPerson(),
+                'upperText'             => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('ticket.upper_text'),
             )
         );
     }

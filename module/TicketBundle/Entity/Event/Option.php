@@ -68,15 +68,24 @@ class Option
     private $priceNonMembers;
 
     /**
-     * @param Event   $event
-     * @param string  $name
+     * @var integer The maximum tickets for this option
+     *
+     * @ORM\Column(name="maximum", type="integer", nullable=true)
+     */
+    private $maximum;
+
+    /**
+     * @param Event $event
+     * @param string $name
      * @param integer $priceMembers
      * @param integer $priceNonMembers
+     * @param integer|null $maximum
      */
-    public function __construct(Event $event, $name, $priceMembers, $priceNonMembers)
+    public function __construct(Event $event, $name, $priceMembers, $priceNonMembers, $maximum)
     {
         $this->event = $event;
         $this->name = $name;
+        $this->maximum = $maximum;
 
         $this->setPriceMembers($priceMembers)
             ->setPriceNonMembers($priceNonMembers);
@@ -153,5 +162,24 @@ class Option
         $this->priceNonMembers = $priceNonMembers * 100;
 
         return $this;
+    }
+
+    /**
+     * @param  integer $max
+     * @return self
+     */
+    public function setMaximum($max)
+    {
+        $this->maximum = $max;
+
+        return $this;
+    }
+
+    /**
+-     * @return integer
+     */
+    public function getMaximum()
+    {
+        return $this->maximum;
     }
 }
