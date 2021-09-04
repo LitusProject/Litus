@@ -47,7 +47,7 @@ class Date extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -79,7 +79,7 @@ class Date extends \CommonBundle\Component\Validator\AbstractValidator
             ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findOneById($context['event']);
 
-        if (null === $activity || $activity->getStartDate() >= DateTime::createFromFormat($this->options['format'], $value)) {
+        if ($activity === null || $activity->getStartDate() >= DateTime::createFromFormat($this->options['format'], $value)) {
             return true;
         }
 

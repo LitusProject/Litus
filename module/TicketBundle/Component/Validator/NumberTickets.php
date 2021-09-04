@@ -18,8 +18,8 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
 
     protected $options = array(
         'maximum' => '',
-        'event'  => null,
-        'person' => null,
+        'event'   => null,
+        'person'  => null,
     );
 
     /**

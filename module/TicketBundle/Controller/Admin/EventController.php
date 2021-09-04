@@ -116,8 +116,8 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'form'              => $form,
-                'event'             => $event,
+                'form'  => $form,
+                'event' => $event,
                 'em'    => $this->getEntityManager(),
             )
         );

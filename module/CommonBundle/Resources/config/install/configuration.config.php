@@ -458,11 +458,11 @@ You can remove any installed cookies from your computer or mobile device at any 
         'description' => 'DatePeriod which determines the standard slug expiry date',
     ),
     array(
-        'key'   => 'common.kbc_secret_info',
-        'value' => serialize(
+        'key'         => 'common.kbc_secret_info',
+        'value'       => serialize(
             array(
-                'shaIn' => '',
-                'shaOut' => '',
+                'shaIn'     => '',
+                'shaOut'    => '',
                 'urlPrefix' => '',
             )
         ),

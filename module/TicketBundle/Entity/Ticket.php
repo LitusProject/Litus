@@ -119,14 +119,14 @@ class Ticket
     private $orderId;
 
     /**
-     * @param EntityManager $em
-     * @param Event $event
-     * @param string $status
-     * @param Person|null $person
+     * @param EntityManager  $em
+     * @param Event          $event
+     * @param string         $status
+     * @param Person|null    $person
      * @param GuestInfo|null $guestInfo
-     * @param DateTime|null $bookDate
-     * @param DateTime|null $soldDate
-     * @param integer|null $number
+     * @param DateTime|null  $bookDate
+     * @param DateTime|null  $soldDate
+     * @param integer|null   $number
      */
     public function __construct(EntityManager $em, Event $event, $status, Person $person = null, GuestInfo $guestInfo = null, DateTime $bookDate = null, DateTime $soldDate = null, $number = null)
     {

@@ -20,10 +20,10 @@
 
 namespace TicketBundle\Entity;
 
-use CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Person;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="TicketBundle\Repository\OrderEntity")
@@ -72,7 +72,7 @@ class OrderEntity
     private $tickets;
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -80,7 +80,7 @@ class OrderEntity
     }
 
     /**
-     * @param int $id
+     * @param integer $id
      */
     public function setId($id)
     {
@@ -158,7 +158,4 @@ class OrderEntity
     {
         $this->tickets[] = $ticket;
     }
-
-
-
 }

@@ -43,7 +43,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $person = $this->getPersonEntity();
         if ($person === null) {
             $canBook = true;
-            if (count($tickets) >= $event->getLimitPerPerson() || $event->getNumberFree() <= 0){
+            if (count($tickets) >= $event->getLimitPerPerson() || $event->getNumberFree() <= 0) {
                 $canBook = false;
             }
             $form = $this->getForm('ticket_ticket_book', array('event' => $event, 'person' => $person));
@@ -55,7 +55,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                     $formData = $form->getData();
 
                     $numbers = array(
-                        'member' => $formData['number_member'] ?? 0,
+                        'member'     => $formData['number_member'] ?? 0,
                         'non_member' => $formData['number_non_member'] ?? 0,
                     );
 
@@ -65,7 +65,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                         $currentAmount = count($this->getEntityManager()->getRepository('TicketBundle\Entity\Ticket')->findAllByOption($option));
                         $currentAmount += $numbers['option_' . $option->getId() . '_number_member'];
                         $currentAmount += $numbers['option_' . $option->getId() . '_number_non_member'];
-                        if ($currentAmount > $option->getMaximum()){
+                        if ($currentAmount > $option->getMaximum()) {
                             $this->flashMessenger()->error(
                                 'Error',
                                 'The tickets could not be booked, option "' . $option->getName() . '" has reached the maximum amount of ' . $option->getMaximum() . ' tickets!'
@@ -74,7 +74,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                                 'ticket',
                                 array(
                                     'action' => 'event',
-                                    'id' => $event->getId(),
+                                    'id'     => $event->getId(),
                                 )
                             );
                             return new ViewModel();
@@ -106,7 +106,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                         'ticket',
                         array(
                             'action' => 'event',
-                            'id' => $event->getId(),
+                            'id'     => $event->getId(),
                         )
                     );
                 }
@@ -126,7 +126,6 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 )
             );
         } else {
-
             $tickets = $this->getEntityManager()
                 ->getRepository('TicketBundle\Entity\Ticket')
                 ->findAllByEventAndPerson($event, $person);
@@ -144,7 +143,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                     $formData = $form->getData();
 
                     $numbers = array(
-                        'member' => $formData['number_member'] ?? 0,
+                        'member'     => $formData['number_member'] ?? 0,
                         'non_member' => $formData['number_non_member'] ?? 0,
                     );
 
@@ -163,7 +162,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                                 'ticket',
                                 array(
                                     'action' => 'event',
-                                    'id' => $event->getId(),
+                                    'id'     => $event->getId(),
                                 )
                             );
                             return new ViewModel();
@@ -190,7 +189,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                         'ticket',
                         array(
                             'action' => 'event',
-                            'id' => $event->getId(),
+                            'id'     => $event->getId(),
                         )
                     );
                 }
@@ -254,38 +253,39 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             return $this->notFoundAction();
         }
 
-        $secretInfo = unserialize($this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.kbc_secret_info'));
+        $secretInfo = unserialize(
+            $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('common.kbc_secret_info')
+        );
 
         $shaOut = $secretInfo['shaOut']; #Hash for params from the paypage to accepturl
         $urlPrefix = $secretInfo['urlPrefix'];   #Change prod to test for testenvironment
 
 
         $url = "$_SERVER[REQUEST_URI]";
-        $allParams = substr($url, strpos($url, "?") + 1);
+        $allParams = substr($url, strpos($url, '?') + 1);
         $data = array();
         $paymentParams = array();
         $shasign = '';
 
-        $params = explode("&",$allParams );
-        foreach ($params as $param){
-            $keyAndVal = explode("=", $param);
-            if ($keyAndVal[0] !== 'SHASIGN'){
+        $params = explode('&', $allParams);
+        foreach ($params as $param) {
+            $keyAndVal = explode('=', $param);
+            if ($keyAndVal[0] !== 'SHASIGN') {
                 $paymentParams[strtoupper($keyAndVal[0])] = $keyAndVal[1];
-            }
-            else {
+            } else {
                 $shasign = $keyAndVal[1];
             }
         }
 
         ksort($paymentParams);
-        foreach (array_keys($paymentParams) as $paymentKey){
+        foreach (array_keys($paymentParams) as $paymentKey) {
             $data[] = new PaymentParam($paymentKey, $paymentParams[$paymentKey]);
         }
         $paymentUrl = PaymentParam::getUrl($data, $shaOut, $urlPrefix);
-        $generatedHash = substr($paymentUrl, strpos($paymentUrl, "SHASIGN=") + strlen("SHASIGN="));
+        $generatedHash = substr($paymentUrl, strpos($paymentUrl, 'SHASIGN=') + strlen('SHASIGN='));
 
-        if (strtoupper($generatedHash) !== $shasign){
+        if (strtoupper($generatedHash) !== $shasign) {
             $this->flashMessenger()->error(
                 'Error',
                 'The transaction could not be verified!'
@@ -295,7 +295,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 'ticket',
                 array(
                     'action' => 'event',
-                    'id' => $ticket->getEvent()->getId(),
+                    'id'     => $ticket->getEvent()->getId(),
                 )
             );
         } else {
@@ -312,7 +312,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 'ticket',
                 array(
                     'action' => 'event',
-                    'id' => $ticket->getEvent()->getId(),
+                    'id'     => $ticket->getEvent()->getId(),
                 )
             );
         }
@@ -326,7 +326,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             return $this->notFoundAction();
         }
 
-        if ($ticket->getEvent()->isOnlinePayment() === false){
+        if ($ticket->getEvent()->isOnlinePayment() === false) {
             return $this->notFoundAction();
         }
 
@@ -386,24 +386,27 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
      * @param Ticket $ticket
      * @return string
      */
-    private function generatePayLink(Ticket $ticket){
-        $secretInfo = unserialize($this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.kbc_secret_info'));
+    private function generatePayLink(Ticket $ticket)
+    {
+        $secretInfo = unserialize(
+            $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('common.kbc_secret_info')
+        );
 
         $shaIn = $secretInfo['shaIn']; #Hash for params to the paypage
         $urlPrefix = $secretInfo['urlPrefix'];   #Change prod to test for testenvironment
 
-        $url = "https://vtk.be" . $this->url()->fromRoute(
-                'ticket',
-                array(
-                    'action' => 'payed',
-                    'id' => $ticket->getId(),
-                )
-            );
+        $url = 'https://vtk.be' . $this->url()->fromRoute(
+            'ticket',
+            array(
+                'action' => 'payed',
+                'id'     => $ticket->getId(),
+            )
+        );
 
-        $priceHolder = $ticket->getOption()??$ticket->getEvent();
+        $priceHolder = $ticket->getOption() ?? $ticket->getEvent();
         $price = $priceHolder->getPriceNonMembers();
-        if ($ticket->isMember() === true){
+        if ($ticket->isMember() === true) {
             $price = $priceHolder->getPriceMembers();
         }
         $mail = $ticket->getPerson()->getEmail();
@@ -414,28 +417,28 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $com = $ticket->getInvoiceId();
         $orderId = $ticket->getOrderId();
 
-        $comment = $ticket->getOption()?$ticket->getOption()->getName() : $ticket->isMember()? "member" : "non-member";
+        $comment = $ticket->getOption() ? $ticket->getOption()->getName() : $ticket->isMember() ? 'member' : 'non-member';
 
         // TODO: AcceptUrl and shaOut!!
-        $data = [   #These are in alphabetical order as that is required for the hash
-            new PaymentParam("ACCEPTURL", $url), #URL where user is redirected to when payment is accepted, the same parameters that were sent to paypage will be returned, and hashed (sha-512) to check for validity. (https://support-paypage.ecom-psp.com/en/integration-solutions/integrations/hosted-payment-page#e_commerce_integration_guides_transaction_feedback)
-            new PaymentParam("AMOUNT", $price ), #Required, in cents
-            new PaymentParam("CN", $ticket->getFullName() ),
-            new PaymentParam("COM", $com ),  #Required for beheer: char 0-15 given by beheer, last 4 should increment with each payment
-            new PaymentParam("COMPLUS", $comment ),  #Comment
-            new PaymentParam("CURRENCY", "EUR" ),  #Required
-            new PaymentParam("EMAIL", $mail ),
-            new PaymentParam("LANGUAGE", "nl_NL" ),
-            new PaymentParam("LOGO", "logo.png" ), #Required
-            new PaymentParam("ORDERID", $orderId ), #Required, char 0-6 given by beheer, last 4 should increment with each payment
-            new PaymentParam("PMLISTTYPE", "2" ), #Required
-            new PaymentParam("PSPID", "vtkprod" ), #Required
-            new PaymentParam("TP", "ingenicoResponsivePaymentPageTemplate_index.html" ), #Required
-        ];
+        $data = array(   #These are in alphabetical order as that is required for the hash
+            new PaymentParam('ACCEPTURL', $url), #URL where user is redirected to when payment is accepted, the same parameters that were sent to paypage will be returned, and hashed (sha-512) to check for validity. (https://support-paypage.ecom-psp.com/en/integration-solutions/integrations/hosted-payment-page#e_commerce_integration_guides_transaction_feedback)
+            new PaymentParam('AMOUNT', $price), #Required, in cents
+            new PaymentParam('CN', $ticket->getFullName()),
+            new PaymentParam('COM', $com),  #Required for beheer: char 0-15 given by beheer, last 4 should increment with each payment
+            new PaymentParam('COMPLUS', $comment),  #Comment
+            new PaymentParam('CURRENCY', 'EUR'),  #Required
+            new PaymentParam('EMAIL', $mail),
+            new PaymentParam('LANGUAGE', 'nl_NL'),
+            new PaymentParam('LOGO', 'logo.png'), #Required
+            new PaymentParam('ORDERID', $orderId), #Required, char 0-6 given by beheer, last 4 should increment with each payment
+            new PaymentParam('PMLISTTYPE', '2'), #Required
+            new PaymentParam('PSPID', 'vtkprod'), #Required
+            new PaymentParam('TP', 'ingenicoResponsivePaymentPageTemplate_index.html'), #Required
+        );
 
         $newData = array();
-        foreach ($data as $param){
-            if (!$param->isEmpty()){
+        foreach ($data as $param) {
+            if (!$param->isEmpty()) {
                 array_push($newData, $param);
             }
         }

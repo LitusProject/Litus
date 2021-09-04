@@ -43,12 +43,12 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
 
         $allAcademicYears = array();
 
-        foreach ($academicYears as $year){
+        foreach ($academicYears as $year) {
             $members = array();
-            foreach ($units as $unit){
+            foreach ($units as $unit) {
                 $members = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
-                        ->findAllByUnitAndAcademicYear($unit, $year);
+                    ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
+                    ->findAllByUnitAndAcademicYear($unit, $year);
             }
             if (count($members) > 0) {
                 array_push($allAcademicYears, $year);

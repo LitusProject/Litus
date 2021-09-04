@@ -162,7 +162,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                     'page_admin_page',
                     array(
                         'action' => 'edit',
-                        'id'   => $page->getId(),
+                        'id'     => $page->getId(),
                     )
                 );
                 return new ViewModel();
@@ -187,10 +187,10 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'    => $form,
                 'faqForm' => $faqForm,
-                'maps' => $maps,
-                'page' => $page,
+                'maps'    => $maps,
+                'page'    => $page,
             )
         );
     }
