@@ -8,6 +8,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
+use Nette\Neon\Entity;
 use TicketBundle\Entity\Event\Option;
 
 /**
@@ -468,12 +469,31 @@ class Event
     }
 
     /**
+     * @param EntityManager $em
+     * @return string|null
+     */
+    public function findNextInvoiceNb(EntityManager $em)
+    {
+        $ticketInvoiceIds = $em->getRepository('TicketBundle\Entity\Ticket')->findAllInvoiceIdsByEvent($this);
+        $ticketIds = array();
+        foreach ($ticketInvoiceIds as $id){
+            array_push($ticketIds, substr($id['invoiceId'], -4));
+        }
+        for ($i = 0; $i<=9999; $i++){
+            if (!in_array($i, $ticketIds)) {
+                $this->nextInvoiceNb = str_pad(strval($i), 4 , '0', STR_PAD_LEFT);
+                return $this->nextInvoiceNb;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * @return string|null
      */
     public function getNextInvoiceNb()
     {
-        $int = intval($this->nextInvoiceNb) + 1;
-        $this->nextInvoiceNb = str_pad(strval($int), 4 , '0', STR_PAD_LEFT);
         return $this->nextInvoiceNb;
     }
 

@@ -52,7 +52,7 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
         $category_map = $this->getCategoryMap();
 
         // Booker's ticket
-        $booker_ticket = new TicketEntity($this->event, 'booked');
+        $booker_ticket = new TicketEntity($this->getEntityManager(), $this->event, 'booked');
         $booker_ticket->setOrderEntity($object);
         $booker_ticket->setPerson($this->person);
         $booker_ticket->setBookDate($currentDateTime);
@@ -80,7 +80,7 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
                 return null;
             }
 
-            $guest_ticket = new TicketEntity($this->event, 'booked');
+            $guest_ticket = new TicketEntity($this->getEntityManager(), $this->event, 'booked');
             $guest_ticket->setOrderEntity($object);
             $guest_ticket->setPerson($person);
             $guest_ticket->setBookDate($currentDateTime);

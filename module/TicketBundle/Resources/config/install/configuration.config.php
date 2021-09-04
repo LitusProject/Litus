@@ -11,4 +11,9 @@ return array(
         'value'       => 'data/ticket/pdf_generator',
         'description' => 'The path to the PDF generator files',
     ),
+    array(
+        'key'         => 'ticket.upper_text',
+        'value'       => 'I agree that this data will be used, following GDPR guidelines.',
+        'description' => 'The text on the book tickets page',
+    ),
 );

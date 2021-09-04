@@ -184,6 +184,7 @@ class Ticket
     private static function createTicket(Event $event, $member, $payed, EntityManager $entityManager, Person $person = null, GuestInfo $guestInfo = null, Option $option = null)
     {
         $ticket = new TicketEntity(
+            $entityManager,
             $event,
             'empty',
             $person,

@@ -91,6 +91,26 @@ class Option extends \CommonBundle\Component\Form\Fieldset implements InputFilte
                 ),
             )
         );
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'maximum',
+                'label'      => 'Maximum amount of tickets',
+                'attributes' => array(
+                    'class' => 'maximum',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
+                        ),
+                    ),
+                ),
+            )
+        );
     }
 
     public function getInputFilterSpecification()

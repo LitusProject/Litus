@@ -54,9 +54,11 @@
         <thead>
             <tr>
                 <th>{{ translate('Person') }}</th>
+                <th>{{ translate('Organization') }}</th>
                 <th width="60px">{{ translate('Status') }}</th>
                 <th width="140px">{{ translate('Option') }}</th>
                 <th width="90px">{{ translate('Number') }}</th>
+                <th width="90px">{{ translate('Invoice ID') }}</th>
                 <th width="130px">{{ translate('Book Date') }}</th>
                 <th width="130px">{{ translate('Sold Date') }}</th>
                 <th width="190px">{{ translate('Action') }}</th>
@@ -67,6 +69,11 @@
             {% for ticket in paginator %}
                 <tr class="item" id="item-{{ ticket.getId() }}">
                     <td class="person">{% if ticket.getFullName() %}{{ ticket.getFullName() }}{% else %}(none){% endif %}</td>
+                    <td class="status">{% if ticket.getGuestInfo() %}
+                            {{ ticket.getGuestInfo().getOrganization() }}
+                        {% else %}
+                            {{ ticket.getPerson().getOrganization(academicYear).getName() }}
+                        {% endif %}</td>
                     <td class="status">{{ ticket.getStatus() }}</td>
                     {% if ticket.getOption() != null %}
                         <td class="status">{{ ticket.getOption().getName() }}</td>
@@ -74,6 +81,7 @@
                         <td class="status">{{ ticket.isMember()==true?"member":"non-mmber"  }}</td>
                     {% endif %}
                     <td>{{ "%010d"|format(ticket.getNumber()) }}</td>
+                    <td>{{ ticket.getOrderId() }}</td>
                     <td class="bookDate">{{ dateLocalized(ticket.getBookDate(), 'd/MM/YYYY HH:mm') }}</td>
                     <td class="soldDate">{{ dateLocalized(ticket.getSoldDate(), 'd/MM/YYYY HH:mm') }}</td>
                     <td class="actions">
