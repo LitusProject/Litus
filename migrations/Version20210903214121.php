@@ -42,7 +42,6 @@ class Version20210903214121 extends \Doctrine\Migrations\AbstractMigration
         $this->addSql('ALTER TABLE ticket_tickets ALTER order_id TYPE VARCHAR(11)');
         $this->addSql('ALTER TABLE ticket_tickets ALTER invoice_id TYPE VARCHAR(255)');
         $this->addSql('ALTER TABLE ticket_guests_info ADD university_id VARCHAR(255) DEFAULT NULL');
-
     }
 
     /**

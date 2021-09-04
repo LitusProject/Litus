@@ -10,6 +10,7 @@ namespace TicketBundle\Entity;
 
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="TicketBundle\Repository\Category")
