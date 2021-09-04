@@ -79,7 +79,7 @@ class Option
      * @param string $name
      * @param integer $priceMembers
      * @param integer $priceNonMembers
-     * @param integer|null $maximum
+     * @param integer|null|string $maximum
      */
     public function __construct(Event $event, $name, $priceMembers, $priceNonMembers, $maximum)
     {

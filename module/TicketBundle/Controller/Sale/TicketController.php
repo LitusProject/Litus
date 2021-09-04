@@ -47,6 +47,7 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
             array(
                 'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
+                'academicYear'      => $this->getCurrentAcademicYear(),
             )
         );
     }

@@ -114,7 +114,6 @@ class Option extends \CommonBundle\Component\Form\Fieldset implements InputFilte
                 'type'       => 'text',
                 'name'       => 'maximum',
                 'label'      => 'Maximum amount of tickets',
-                'required'   => true,
                 'attributes' => array(
                     'class' => 'maximum',
                 ),
@@ -125,7 +124,6 @@ class Option extends \CommonBundle\Component\Form\Fieldset implements InputFilte
                         ),
                         'validators' => array(
                             array('name' => 'Int'),
-                            array('name' => 'PositiveNumber'),
                         ),
                     ),
                 ),
