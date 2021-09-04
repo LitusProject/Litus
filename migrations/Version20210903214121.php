@@ -38,7 +38,7 @@ class Version20210903214121 extends \Doctrine\Migrations\AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
         $this->addSql('ALTER TABLE ticket_events_options ADD maximum INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE ticket_guests_info ADD organization VARCHAR(255) NOT NULL');
+        $this->addSql('ALTER TABLE ticket_guests_info ADD organization VARCHAR(255)');
         $this->addSql('ALTER TABLE ticket_tickets ALTER order_id TYPE VARCHAR(11)');
         $this->addSql('ALTER TABLE ticket_tickets ALTER invoice_id TYPE VARCHAR(255)');
 

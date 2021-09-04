@@ -45,7 +45,7 @@ class GuestInfo
     /**
      * @var string The name of the organization for this guest
      *
-     * @ORM\Column(name="organization", type="string")
+     * @ORM\Column(name="organization", type="string", nullable=true)
      */
     private $organization;
 
