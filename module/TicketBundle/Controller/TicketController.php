@@ -1,4 +1,22 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
 namespace TicketBundle\Controller;
 
@@ -24,7 +42,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
         $person = $this->getPersonEntity();
         if ($person === null) {
-            return $this->notFoundAction();
+            $this->redirect()->toRoute('common_auth');
         }
 
         $tickets = $this->getEntityManager()
@@ -51,6 +69,23 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 foreach ($event->getOptions() as $option) {
                     $numbers['option_' . $option->getId() . '_number_member'] = $formData['option_' . $option->getId() . '_number_member'];
                     $numbers['option_' . $option->getId() . '_number_non_member'] = $formData['option_' . $option->getId() . '_number_non_member'];
+                    $currentAmount = count($this->getEntityManager()->getRepository('TicketBundle\Entity\Ticket')->findAllByOption($option));
+                    $currentAmount += $numbers['option_' . $option->getId() . '_number_member'];
+                    $currentAmount += $numbers['option_' . $option->getId() . '_number_non_member'];
+                    if ($currentAmount > $option->getMaximum()){
+                        $this->flashMessenger()->error(
+                            'Error',
+                            'The tickets could not be booked, option "' . $option->getName() . '" has reached the maximum amount of ' . $option->getMaximum() . ' tickets!'
+                        );
+                        $this->redirect()->toRoute(
+                            'ticket',
+                            array(
+                                'action' => 'event',
+                                'id' => $event->getId(),
+                            )
+                        );
+                        return new ViewModel();
+                    }
                 }
 
                 TicketBook::book(
@@ -90,6 +125,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 'isPraesidium'          => $organizationStatus ? $organizationStatus->getStatus() == 'praesidium' : false,
                 'canBook'               => $canBook,
                 'maximumAmount'         => $event->getLimitPerPerson(),
+                'upperText'             => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('ticket.upper_text'),
             )
         );
     }
@@ -105,8 +143,14 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
         if ($ticket->getEvent()->areTicketsGenerated()) {
             $ticket->setStatus('empty');
-        } else {
+        } elseif ($ticket->getStatusCode() !== 'sold') {
             $this->getEntityManager()->remove($ticket);
+        } else {
+            return new ViewModel(
+                array(
+                    'result' => (object) array('status' => 'error'),
+                )
+            );
         }
 
         $this->getEntityManager()->flush();
@@ -133,7 +177,6 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $shaOut = $secretInfo['shaOut']; #Hash for params from the paypage to accepturl
         $urlPrefix = $secretInfo['urlPrefix'];   #Change prod to test for testenvironment
 
-//         https://vtk.be/en/ticket/payed/420/?orderID=20220020052&STATUS=9&PAYID=6132815586&NCERROR=0&SHASIGN=07FE512C732A050409519E866F997C6FA1FAFC0227A8DA7DE5890770695205FF6B8BBCA45EFA9A26135F3B58E953DE132EF920F3C7BB83AC706F8465DF4C65E6
 
         $url = "$_SERVER[REQUEST_URI]";
         $allParams = substr($url, strpos($url, "?") + 1);

@@ -4,6 +4,7 @@ namespace TicketBundle\Entity;
 
 use CommonBundle\Entity\User\Person;
 use DateTime;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use TicketBundle\Entity\Event\Option;
@@ -106,28 +107,28 @@ class Ticket
     /**
      * @var integer|null The number of the ticket (unique for an event)
      *
-     * @ORM\Column(name="invoice_id", type="string", nullable=true, length=20)
+     * @ORM\Column(name="invoice_id", type="string", nullable=true)
      */
     private $invoiceId;
 
     /**
      * @var integer|null The number of the ticket (unique for an event)
      *
-     * @ORM\Column(name="order_id", type="string", nullable=true, length=10)
+     * @ORM\Column(name="order_id", type="string", nullable=true, length=11)
      */
     private $orderId;
 
     /**
-     * @param  Event          $event
-     * @param  string         $status
-     * @param  Person|null    $person
-     * @param  GuestInfo|null $guestInfo
-     * @param  DateTime|null  $bookDate
-     * @param  DateTime|null  $soldDate
-     * @param  integer|null   $number
-     * @throws InvalidArgumentException
+     * @param EntityManager $em
+     * @param Event $event
+     * @param string $status
+     * @param Person|null $person
+     * @param GuestInfo|null $guestInfo
+     * @param DateTime|null $bookDate
+     * @param DateTime|null $soldDate
+     * @param integer|null $number
      */
-    public function __construct(Event $event, $status, Person $person = null, GuestInfo $guestInfo = null, DateTime $bookDate = null, DateTime $soldDate = null, $number = null)
+    public function __construct(EntityManager $em, Event $event, $status, Person $person = null, GuestInfo $guestInfo = null, DateTime $bookDate = null, DateTime $soldDate = null, $number = null)
     {
         if (!self::isValidTicketStatus($status)) {
             throw new InvalidArgumentException('The TicketStatus is not valid.');
@@ -135,7 +136,7 @@ class Ticket
 
         $this->event = $event;
         if ($event->isOnlinePayment()) {
-            $nb = $event->getNextInvoiceNb();
+            $nb = $event->findNextInvoiceNb($em);
             $this->invoiceId = $event->getInvoiceIdBase() . $nb;
             $this->orderId = $event->getOrderIdBase() . $nb;
         }

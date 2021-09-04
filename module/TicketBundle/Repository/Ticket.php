@@ -44,6 +44,32 @@ class Ticket extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery();
     }
 
+    public function findAllInvoiceIdsByEvent(EventEntity $event)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('t.invoiceId')
+            ->from('TicketBundle\Entity\Ticket', 't')
+            ->where(
+                $query->expr()->eq('t.event', ':event')
+            )
+            ->setParameter('event', $event)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByOption(EventEntity\Option $option)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('t')
+            ->from('TicketBundle\Entity\Ticket', 't')
+            ->where(
+                $query->expr()->eq('t.option', ':option')
+            )
+            ->setParameter('option', $option)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findAllByEventAndPersonQuery(EventEntity $event, Person $person)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

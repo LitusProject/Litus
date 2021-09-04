@@ -128,6 +128,22 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                         ),
                     ),
+                    array(
+                        'type'       => 'text',
+                        'name'       => 'guest_organization',
+                        'label'      => 'Organization',
+                        'required'   => true,
+                        'attributes' => array(
+                            'id' => 'guest_organization',
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                            ),
+                        ),
+                    ),
                 ),
             )
         );

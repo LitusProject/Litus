@@ -46,13 +46,15 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
 
                     $option->setName($optionData['option'])
                         ->setPriceMembers($optionData['price_members'])
-                        ->setPriceNonMembers($optionData['price_non_members']);
+                        ->setPriceNonMembers($optionData['price_non_members'])
+                        ->setMaximum(intval($optionData['maximum']));
                 } else {
                     $option = new OptionEntity(
                         $object,
                         $optionData['option'],
                         $optionData['price_members'],
-                        $optionData['price_non_members']
+                        $optionData['price_non_members'],
+                        intval($optionData['maximum'])
                     );
                     $this->getEntityManager()->persist($option);
                 }
@@ -74,6 +76,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                     for ($i = $object->getNumberOfTickets(); $i < $data['number_of_tickets']; $i++) {
                         $this->getEntityManager()->persist(
                             new TicketEntity(
+                                $this->getEntityManager(),
                                 $object,
                                 'empty',
                                 null,
@@ -105,6 +108,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                 for ($i = 0; $i < $data['number_of_tickets']; $i++) {
                     $this->getEntityManager()->persist(
                         new TicketEntity(
+                            $this->getEntityManager(),
                             $object,
                             'empty',
                             null,
@@ -166,6 +170,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                 $data['options'][] = array(
                     'option_id'         => $option->getId(),
                     'option'            => $option->getName(),
+                    'maximum'            => $option->getMaximum(),
                     'price_members'     => number_format($option->getPriceMembers() / 100, 2),
                     'price_non_members' => $object->isOnlyMembers() ? '' : number_format($option->getPriceNonMembers() / 100, 2),
                 );
