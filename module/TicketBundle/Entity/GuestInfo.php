@@ -50,17 +50,26 @@ class GuestInfo
     private $organization;
 
     /**
+     * @var string The name of the organization for this guest
+     *
+     * @ORM\Column(name="university_id", type="string", nullable=true)
+     */
+    private $universityIdentification;
+
+    /**
      * @param string $firstName
      * @param string $lastName
      * @param string $email
-     * @param $organization
+     * @param string $organization
+     * @param string $universityIdentification
      */
-    public function __construct($firstName, $lastName, $email, $organization)
+    public function __construct($firstName, $lastName, $email, $organization, $universityIdentification)
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->email = $email;
         $this->organization = $organization;
+        $this->universityIdentification = $universityIdentification;
     }
 
     /**
@@ -109,5 +118,13 @@ class GuestInfo
     public function getOrganization()
     {
         return $this->organization;
+    }
+
+    /**
+     * @return string getUniversityIdentification (r-number)
+     */
+    public function getUniversityIdentification()
+    {
+        return $this->universityIdentification;
     }
 }
