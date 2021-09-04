@@ -158,7 +158,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         $data['invoice_base_id'] = $object->getInvoiceIdBase();
         $data['order_base_id'] = $object->getOrderIdBase();
         $data['online_payment'] = $object->isOnlinePayment();
-        error_log($object->isOnlinePayment() );
+        error_log($object->isOnlinePayment());
         if (count($object->getOptions()) == 0) {
             $data['prices']['price_members'] = number_format($object->getPriceMembers() / 100, 2);
             $data['prices']['price_non_members'] = $object->isOnlyMembers() ? '' : number_format($object->getPriceNonMembers() / 100, 2);
@@ -170,7 +170,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                 $data['options'][] = array(
                     'option_id'         => $option->getId(),
                     'option'            => $option->getName(),
-                    'maximum'            => $option->getMaximum(),
+                    'maximum'           => $option->getMaximum(),
                     'price_members'     => number_format($option->getPriceMembers() / 100, 2),
                     'price_non_members' => $object->isOnlyMembers() ? '' : number_format($option->getPriceNonMembers() / 100, 2),
                 );

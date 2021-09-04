@@ -187,10 +187,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'text',
-                'name'     => 'invoice_base_id',
-                'label'    => 'Invoice Base ID',
-                'options'  => array(
+                'type'    => 'text',
+                'name'    => 'invoice_base_id',
+                'label'   => 'Invoice Base ID',
+                'options' => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -205,10 +205,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'text',
-                'name'     => 'order_base_id',
-                'label'    => 'Order Base ID',
-                'options'  => array(
+                'type'    => 'text',
+                'name'    => 'order_base_id',
+                'label'   => 'Order Base ID',
+                'options' => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

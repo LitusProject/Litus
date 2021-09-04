@@ -20,8 +20,6 @@
 
 namespace TicketBundle\Component\Validator;
 
-use DateTime;
-
 /**
  * Check the booking close date is not after the event's date
  *
@@ -43,7 +41,7 @@ class InvoiceId extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -69,7 +67,9 @@ class InvoiceId extends \CommonBundle\Component\Validator\AbstractValidator
 
         $regex = '^\d{6} \d{4}-\d{3}-^';
 
-        if (preg_match($regex, $value)) return true;
+        if (preg_match($regex, $value)) {
+            return true;
+        }
 
         $this->error(self::NOT_VALID);
 

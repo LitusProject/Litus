@@ -258,15 +258,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         ),
                     ),
                     array(
-                        'type'     => 'text',
-                        'name'     => 'youtube_url',
-                        'label'    => 'YouTube video URL code (https://www.youtube.com/watch?v=XXXXXXXXXXX)',
-                        'required' => false,
+                        'type'       => 'text',
+                        'name'       => 'youtube_url',
+                        'label'      => 'YouTube video URL code (https://www.youtube.com/watch?v=XXXXXXXXXXX)',
+                        'required'   => false,
                         'attributes' => array(
-                            'id' => 'youtubeURL',
+                            'id'          => 'youtubeURL',
                             'placeholder' => 'AVJHzfv-Yis',
                         ),
-                        'options'  => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),

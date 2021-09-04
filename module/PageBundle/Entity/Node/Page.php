@@ -385,6 +385,7 @@ class Page extends \CommonBundle\Entity\Node
         $this->active = $active;
         return $this;
     }
+
     /**
      * @return string
      */
@@ -404,5 +405,4 @@ class Page extends \CommonBundle\Entity\Node
 
         return $this;
     }
-
 }

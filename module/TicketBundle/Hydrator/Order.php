@@ -20,10 +20,9 @@
 
 namespace TicketBundle\Hydrator;
 
-use http\Exception\RuntimeException;
-use TicketBundle\Entity\OrderEntity as OrderEntity;
-use TicketBundle\Entity\Ticket as TicketEntity;
 use DateTime;
+use TicketBundle\Entity\OrderEntity;
+use TicketBundle\Entity\Ticket as TicketEntity;
 
 class Order extends \CommonBundle\Component\Hydrator\Hydrator
 {
@@ -38,7 +37,7 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
     //TODO: Change for editing
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object || !($object instanceof OrderEntity)) {
+        if ($object === null || !($object instanceof OrderEntity)) {
             $object = new OrderEntity();
         }
         $currentDateTime = new DateTime();
@@ -68,13 +67,15 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
 
 
         // Guest tickets
-        $academic_repo = $this->getEntityManager()->getRepository("CommonBundle\Entity\User\Person\Academic");
+        $academic_repo = $this->getEntityManager()->getRepository('CommonBundle\Entity\User\Person\Academic');
 
         $guest_form = $data['guest_form'];
         for ($i = 0; $i < count($guest_form); ++$i) {
             $guest_info = $guest_form['guest_form_' . $i];
             $r_number = $guest_info['r-number'];
-            if ($r_number == "") continue;
+            if ($r_number == '') {
+                continue;
+            }
 
             if (!($person = $academic_repo->findAllByUniversityIdentificationQuery($r_number)->getOneOrNullResult())) {
                 return null;
@@ -102,19 +103,23 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
         return array();
     }
 
-    public function setEvent($event) {
+    public function setEvent($event)
+    {
         $this->event = $event;
     }
 
-    public function setPerson($person) {
+    public function setPerson($person)
+    {
         $this->person = $person;
     }
 
-    public function setCurrentYear($currentYear) {
+    public function setCurrentYear($currentYear)
+    {
         $this->currentYear = $currentYear;
     }
 
-    public function getCategoryMap() {
+    public function getCategoryMap()
+    {
         $categories = array();
         foreach ($this->event->getBookingCategories() as $category) {
             $categories[$category->getCategory()] = $category;

@@ -99,7 +99,7 @@ class Option extends \CommonBundle\Component\Form\Fieldset implements InputFilte
                 'attributes' => array(
                     'class' => 'maximum',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

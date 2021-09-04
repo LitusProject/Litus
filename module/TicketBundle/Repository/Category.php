@@ -10,7 +10,6 @@ namespace TicketBundle\Repository;
 
 use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
-
 class Category extends EntityRepository
 {
 

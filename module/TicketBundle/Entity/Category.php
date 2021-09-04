@@ -6,18 +6,18 @@
  * Time: 1:26 PM
  */
 
-
 namespace TicketBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection,
-    DateTime,
-    Doctrine\ORM\Mapping as ORM;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="TicketBundle\Repository\Category")
  * @ORM\Table(name="tickets_events_categories")
  */
-class Category {
+class Category
+{
 
     /**
      * @var integer The ID of the category
@@ -79,7 +79,7 @@ class Category {
     private $options;
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -87,7 +87,7 @@ class Category {
     }
 
     /**
-     * @param int $id
+     * @param integer $id
      */
     public function setId($id)
     {
@@ -159,7 +159,7 @@ class Category {
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getMaxNumberTickets()
     {
@@ -167,7 +167,7 @@ class Category {
     }
 
     /**
-     * @param int $maxNumberTickets
+     * @param integer $maxNumberTickets
      */
     public function setMaxNumberTickets($maxNumberTickets)
     {
@@ -175,7 +175,7 @@ class Category {
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getMaxAmountGuests()
     {
@@ -183,7 +183,7 @@ class Category {
     }
 
     /**
-     * @param int $maxAmountGuests
+     * @param integer $maxAmountGuests
      */
     public function setMaxAmountGuests($maxAmountGuests)
     {
@@ -206,9 +206,8 @@ class Category {
         $this->options = $options;
     }
 
-    public function addOption($option) {
+    public function addOption($option)
+    {
         $this->options[] = $option;
     }
-
-
 }

@@ -21,9 +21,9 @@ class PersonController extends \CommonBundle\Component\Controller\ActionControll
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findAllByUniversityIdentification($this->getParam('string'), $academicYear),
-//            $this->getEntityManager()
-//                ->getRepository('CommonBundle\Entity\User\Person\Academic')
-//                ->findAllByBarcode($this->getParam('string'))
+            //            $this->getEntityManager()
+            //                ->getRepository('CommonBundle\Entity\User\Person\Academic')
+            //                ->findAllByBarcode($this->getParam('string'))
         );
 
         $result = array();
