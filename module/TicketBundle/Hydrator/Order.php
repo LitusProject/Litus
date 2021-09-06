@@ -70,14 +70,16 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
         $academic_repo = $this->getEntityManager()->getRepository('CommonBundle\Entity\User\Person\Academic');
 
         $guest_form = $data['guest_form'];
-        for ($i = 0; $i < count($guest_form); ++$i) {
+        $guest_form_size = count($guest_form);
+        for ($i = 0; $i < $guest_form_size; ++$i) {
             $guest_info = $guest_form['guest_form_' . $i];
             $r_number = $guest_info['r-number'];
             if ($r_number == '') {
                 continue;
             }
 
-            if (!($person = $academic_repo->findAllByUniversityIdentificationQuery($r_number)->getOneOrNullResult())) {
+            $person = $academic_repo->findAllByUniversityIdentificationQuery($r_number)->getOneOrNullResult();
+            if (!$person) {
                 return null;
             }
 

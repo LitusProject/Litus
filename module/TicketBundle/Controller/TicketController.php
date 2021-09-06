@@ -288,7 +288,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $urlPrefix = $secretInfo['urlPrefix'];   #Change prod to test for testenvironment
 
 
-        $url = "$_SERVER[REQUEST_URI]";
+        $url = $this->getRequest()->getServer()->get('REQUEST_URI');
         $allParams = substr($url, strpos($url, '?') + 1);
         $data = array();
         $paymentParams = array();
