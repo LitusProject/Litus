@@ -116,7 +116,7 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
         if ($person !== null) {
             $tickets = $this->getEntityManager()
                 ->getRepository('TicketBundle\Entity\Ticket')
-                ->findAllByEventAndPerson($this->options['event'], $person);
+                ->findAllByEventAndPersonQuery($this->options['event'], $person);
 
             if ($number + count($tickets) > $this->options['event']->getLimitPerPerson() && $this->options['event']->getLimitPerPerson() != 0) {
                 $this->error(self::EXCEEDS_MAX_PERSON);

@@ -35,7 +35,7 @@ class InvoiceId extends \CommonBundle\Component\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The Invoice Id Base is not in the right format (example: "700100 2022-001-").',
+        self::NOT_VALID => 'The Invoice Id Base is not in the right format. 8 up to 32 digits, letters, spaces, or dashes(-) are required.',
     );
 
     /**
@@ -65,7 +65,7 @@ class InvoiceId extends \CommonBundle\Component\Validator\AbstractValidator
 
         error_log($value);
 
-        $regex = '^\d{6} \d{4}-\d{3}-^';
+        $regex = '~^[a-zA-Z0-9- ]{8,32}$~';
 
         if (preg_match($regex, $value)) {
             return true;

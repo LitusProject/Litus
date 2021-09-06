@@ -127,7 +127,7 @@ class Event
     /**
      * @var string the base string for Invoice Id's
      *
-     * @ORM\Column(name="invoice_id_base", type="string", length=16, nullable=true)
+     * @ORM\Column(name="invoice_id_base", type="string", length=32, nullable=true)
      */
     private $invoiceIdBase;
 
