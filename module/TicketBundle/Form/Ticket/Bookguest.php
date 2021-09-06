@@ -2,18 +2,12 @@
 
 namespace TicketBundle\Form\Ticket;
 
-use CommonBundle\Entity\User\Person;
 use LogicException;
-use RuntimeException;
 use TicketBundle\Entity\Event;
+use TicketBundle\Entity\GuestInfo;
 use Zend\Validator\Identical;
 
-/**
- * Book Tickets
- *
- * @author Kristof Mariën <kristof.marien@litus.cc>
- */
-class Book extends \CommonBundle\Component\Form\Bootstrap\Form
+class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
      * @var Event
@@ -21,9 +15,9 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
     private $event;
 
     /**
-     * @var Person
+     * @var GuestInfo
      */
-    private $person;
+    private $guestInfo;
 
     /**
      * @var boolean Are the conditions already checked or not
@@ -32,16 +26,101 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
 
     public function init()
     {
-        if ($this->event === null) {
+        if ($this->event == null) {
             throw new LogicException('Cannot book ticket for null form.');
-        }
-        if ($this->person === null) {
-            throw new RuntimeException('You have to be logged in to book tickets.');
         }
 
         parent::init();
 
         $this->setAttribute('id', 'ticket_sale_form');
+
+        $this->add(
+            array(
+                'type'     => 'fieldset',
+                'name'     => 'guest_form',
+                'label'    => 'Contact Details',
+                'elements' => array(
+                    array(
+                        'type'       => 'text',
+                        'name'       => 'guest_first_name',
+                        'label'      => 'First Name',
+                        'required'   => true,
+                        'attributes' => array(
+                            'id' => 'guest_first_name',
+                        ),
+                        'options'    => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'       => 'text',
+                        'name'       => 'guest_last_name',
+                        'label'      => 'Last Name',
+                        'required'   => true,
+                        'attributes' => array(
+                            'id' => 'guest_last_name',
+                        ),
+                        'options'    => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'       => 'text',
+                        'name'       => 'guest_email',
+                        'label'      => 'Email',
+                        'required'   => true,
+                        'attributes' => array(
+                            'id' => 'guest_email',
+                        ),
+                        'options'    => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array('name' => 'EmailAddress'),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'       => 'text',
+                        'name'       => 'guest_organization',
+                        'label'      => 'Organization',
+                        'required'   => false,
+                        'attributes' => array(
+                            'id' => 'guest_organization',
+                        ),
+                        'options'    => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'fieldset',
+                'name'     => 'spacer',
+                'label'    => 'Tickets',
+                'elements' => array(
+                    // intentionally empty
+                ),
+            )
+        );
 
         if ($this->event->getOptions()->isEmpty()) {
             $this->add(
@@ -54,17 +133,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                     'options'    => array(
                         'input' => array(
-                            'required'   => true,
-                            'validators' => array(
-                                array(
-                                    'name'    => 'NumberTickets',
-                                    'options' => array(
-                                        'event'   => $this->event,
-                                        'person'  => $this->person,
-                                        'maximum' => $this->event->getLimitPerPerson(),
-                                    ),
-                                ),
-                            ),
+                            'required' => true,
                         ),
                     ),
                 )
@@ -81,17 +150,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                         ),
                         'options'    => array(
                             'input' => array(
-                                'required'   => true,
-                                'validators' => array(
-                                    array(
-                                        'name'    => 'NumberTickets',
-                                        'options' => array(
-                                            'event'   => $this->event,
-                                            'person'  => $this->person,
-                                            'maximum' => $this->event->getLimitPerPerson(),
-                                        ),
-                                    ),
-                                ),
+                                'required' => true,
                             ),
                         ),
                     )
@@ -109,17 +168,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                         ),
                         'options'    => array(
                             'input' => array(
-                                'required'   => true,
-                                'validators' => array(
-                                    array(
-                                        'name'    => 'NumberTickets',
-                                        'options' => array(
-                                            'event'   => $this->event,
-                                            'person'  => $this->person,
-                                            'maximum' => $this->event->getLimitPerPerson(),
-                                        ),
-                                    ),
-                                ),
+                                'required' => true,
                             ),
                         ),
                     )
@@ -136,17 +185,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                             'options'    => array(
                                 'input' => array(
-                                    'required'   => true,
-                                    'validators' => array(
-                                        array(
-                                            'name'    => 'NumberTickets',
-                                            'options' => array(
-                                                'event'   => $this->event,
-                                                'person'  => $this->person,
-                                                'maximum' => $this->event->getLimitPerPerson(),
-                                            ),
-                                        ),
-                                    ),
+                                    'required' => true,
                                 ),
                             ),
                         )
@@ -204,17 +243,6 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
     public function setEvent(Event $event)
     {
         $this->event = $event;
-
-        return $this;
-    }
-
-    /**
-     * @param Person $person
-     * @return self
-     */
-    public function setPerson($person)
-    {
-        $this->person = $person;
 
         return $this;
     }

@@ -20,10 +20,13 @@
 
 namespace TicketBundle\Controller;
 
+use CommonBundle\Component\Controller\Exception\RuntimeException;
+use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
 use TicketBundle\Component\Payment\PaymentParam;
 use TicketBundle\Component\Ticket\Ticket as TicketBook;
 use TicketBundle\Entity\Event;
+use TicketBundle\Entity\GuestInfo;
 use TicketBundle\Entity\Ticket;
 
 /**
@@ -43,10 +46,10 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $person = $this->getPersonEntity();
         if ($person === null) {
             $canBook = true;
-            if (count($tickets) >= $event->getLimitPerPerson() || $event->getNumberFree() <= 0) {
+            if ($event->getNumberFree() <= 0) {
                 $canBook = false;
             }
-            $form = $this->getForm('ticket_ticket_book', array('event' => $event, 'person' => $person));
+            $form = $this->getForm('ticket_ticket_bookguest', array('event' => $event));
 
             if ($this->getRequest()->isPost()) {
                 $form->setData($this->getRequest()->getPost());
@@ -81,13 +84,24 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                         }
                     }
 
-                    TicketBook::book(
+                    $guestInfo = new GuestInfo(
+                        $formData['guest_form']['guest_first_name'],
+                        $formData['guest_form']['guest_last_name'],
+                        $formData['guest_form']['guest_email'],
+                        $formData['guest_form']['guest_organisation'],
+                        null
+                    );
+
+                    $this->getEntityManager()->persist($guestInfo);
+                    $this->getEntityManager()->flush();
+
+                    $booked_tickets = TicketBook::book(
                         $event,
                         $numbers,
                         false,
                         $this->getEntityManager(),
-                        $person,
-                        null
+                        null,
+                        $guestInfo
                     );
 
                     // if guestinfo (idk of deze nodig is)
@@ -96,6 +110,14 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                     //      Met de generatePayUrl($ticket) en mss een kleine uitleg
 
                     $this->getEntityManager()->flush();
+
+                    if ($guestInfo === null) {
+                        throw new RuntimeException('Guestinfo is null');
+                    }
+
+                    foreach ($booked_tickets as $ticket) {
+                        $this->sendMail($ticket);
+                    }
 
                     $this->flashMessenger()->success(
                         'Success',
@@ -114,7 +136,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             return new ViewModel(
                 array(
                     'event'                 => $event,
-                    'tickets'               => $tickets,
+                    'tickets'               => array(),
                     'form'                  => $form,
                     'canRemoveReservations' => $event->canRemoveReservation($this->getEntityManager()),
                     'isPraesidium'          => false,
@@ -169,7 +191,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                         }
                     }
 
-                    TicketBook::book(
+                    $booked_tickets = TicketBook::book(
                         $event,
                         $numbers,
                         false,
@@ -179,6 +201,10 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                     );
 
                     $this->getEntityManager()->flush();
+
+                    foreach ($booked_tickets as $ticket) {
+                        $this->sendMail($ticket);
+                    }
 
                     $this->flashMessenger()->success(
                         'Success',
@@ -409,15 +435,19 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         if ($ticket->isMember() === true) {
             $price = $priceHolder->getPriceMembers();
         }
-        $mail = $ticket->getPerson()->getEmail();
-        if ($ticket->getGuestInfo() !== null) {
+
+        if ($ticket->getPerson()) {
+            $mail = $ticket->getPerson()->getEmail();
+        } elseif ($ticket->getGuestInfo()) {
             $mail = $ticket->getGuestInfo()->getEmail();
+        } else {
+            throw new RuntimeException('attempting to generate ticket without email address, email is required');
         }
 
         $com = $ticket->getInvoiceId();
         $orderId = $ticket->getOrderId();
 
-        $comment = $ticket->getOption() ? $ticket->getOption()->getName() : $ticket->isMember() ? 'member' : 'non-member';
+        $comment = $ticket->getOption() ? $ticket->getOption()->getName() : ($ticket->isMember() ? 'member' : 'non-member');
 
         // TODO: AcceptUrl and shaOut!!
         $data = array(   #These are in alphabetical order as that is required for the hash
@@ -443,5 +473,60 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             }
         }
         return PaymentParam::getUrl($newData, $shaIn, $urlPrefix);
+    }
+
+    private function sendMail(Ticket $ticket)
+    {
+        $mail = new Message();
+
+        $mailData = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('ticket.confirmation_email_body')
+        );
+
+        $eventName = $ticket->getEvent()->getActivity()->getName();
+        $payLink = $this->generatePayLink($ticket);
+
+        $mailBody = $mailData['content'];
+        $mailSubject = $mailData['subject'];
+
+        $mailFrom = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('ticket.confirmation_email_from');
+
+        if ($ticket->getPerson()) {
+            $person = $ticket->getPerson();
+            $fullName = $person->getFullName();
+            $mailTo = $person->getEmail();
+        } elseif ($ticket->getGuestInfo()) {
+            $guest = $ticket->getGuestInfo();
+            $fullName = $guest->getFullName();
+            $mailTo = $guest->getEmail();
+        } else {
+            throw new RuntimeException('attempted to send email for ticket without Person or GuestInfo');
+        }
+
+        $optionString = 'Standaardticket';
+        if ($ticket->getOption()) {
+            $option = $ticket->getOption();
+            $optionName = $option->getName();
+            if ($ticket->isMember()) {
+                $optionString = $optionName . ' - lid';
+            } else {
+                $optionString = $optionName . ' - niet-lid';
+            }
+        }
+
+        $mail->setEncoding('UTF-8')
+            ->setBody(str_replace(array('{{ fullname }}, {{ event }}', '{{ option }}', '{{ paylink }}'), array($fullName, $eventName, $optionString, $payLink), $mailBody))
+            ->setFrom($mailFrom)
+            ->addTo($mailTo)
+            ->addBcc($mailFrom)
+            ->setSubject(str_replace('{{ event }}', $eventName, $mailSubject));
+
+        if (getenv('APPLICATION_ENV') != 'development') {
+            $this->getMailTransport()->send($mail);
+        }
     }
 }
