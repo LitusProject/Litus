@@ -63,4 +63,9 @@ VTK'
         ),
         'description' => 'Email sent for confirmation of ticket reservation'
     ),
+    array(
+        'key'         => 'ticket.pay_link_domain',
+        'value'       => 'vtk.be',
+        'description' => 'The domain for the paylink used in generated emails',
+    ),
 );
