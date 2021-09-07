@@ -284,4 +284,22 @@ class Ticket extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 
         return $tickets;
     }
+
+    /**
+     * @param  integer $id
+     * @return \TicketBundle\Entity\Ticket|null
+     */
+    public function findOneById($id)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('p')
+            ->from('TicketBundle\Entity\Ticket', 'p')
+            ->where(
+                $query->expr()->eq('p.id', ':id')
+            )
+            ->setParameter('id', $id)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }
