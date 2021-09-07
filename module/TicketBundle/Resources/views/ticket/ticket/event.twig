@@ -88,6 +88,10 @@
                                         {% endif %}</h5>
                                 {% endif %}
                             </div>
+                            {% if isGuest %}
+                                <p>{{ translate('We recommend logging in or creating an account on the site before ordering tickets if you can. With an account you can manage your tickets through our site, without account you will only receive an email with the ticket details.') }}</p>
+                            {% endif %}
+
                             {% import 'site/partials/form.twig' as forms %}
                             {{ forms.renderForm(form) }}
                         {% else %}

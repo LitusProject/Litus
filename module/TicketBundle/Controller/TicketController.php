@@ -88,8 +88,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                         $formData['guest_form']['guest_first_name'],
                         $formData['guest_form']['guest_last_name'],
                         $formData['guest_form']['guest_email'],
-                        $formData['guest_form']['guest_organisation'],
-                        null
+                        $formData['guest_form']['guest_organization'],
+                        $formData['guest_form']['guest_identification'],
                     );
 
                     $this->getEntityManager()->persist($guestInfo);
@@ -145,6 +145,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                     'upperText'             => $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('ticket.upper_text'),
+                    'isGuest'               => true,
                 )
             );
         } else {
@@ -236,6 +237,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 'upperText'             => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('ticket.upper_text'),
+                'isGuest'               => false,
             )
         );
     }
@@ -520,7 +522,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $payLinkDomain = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('ticket.pay_link_domain');
-        $payLink = $payLinkDomain . '/en/ticket/pay/' . $ticket->getId() . "/";
+        $payLink = $payLinkDomain . '/en/ticket/pay/' . $ticket->getId() . '/';
 
         $mail->setEncoding('UTF-8')
             ->setBody(str_replace(array('{{ fullname }}', '{{ event }}', '{{ option }}', '{{ paylink }}'), array($fullName, $eventName, $optionString, $payLink), $mailBody))
