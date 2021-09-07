@@ -485,7 +485,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 ->getConfigValue('ticket.confirmation_email_body')
         );
 
-        $eventName = $ticket->getEvent()->getActivity()->getName();
+        $eventName = $ticket->getEvent()->getActivity()->getTitle();
         $payLink = $this->generatePayLink($ticket);
 
         $mailBody = $mailData['content'];
@@ -519,7 +519,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         }
 
         $mail->setEncoding('UTF-8')
-            ->setBody(str_replace(array('{{ fullname }}, {{ event }}', '{{ option }}', '{{ paylink }}'), array($fullName, $eventName, $optionString, $payLink), $mailBody))
+            ->setBody(str_replace(array('{{ fullname }}', '{{ event }}', '{{ option }}', '{{ paylink }}'), array($fullName, $eventName, $optionString, $payLink), $mailBody))
             ->setFrom($mailFrom)
             ->addTo($mailTo)
             ->addBcc($mailFrom)
