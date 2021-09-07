@@ -79,12 +79,14 @@
                             <div class="page-header">
                                 <p>{{ upperText }}</p>
                                 <h2>{{ translate('Book Tickets') }}</h2>
-                                <h5>{{ translate('Maximum of ') ~ maximumAmount}}
-                                    {% if maximumAmount > 1 %}
-                                        {{ translate('tickets') ~ "." }}
-                                    {% else %}
-                                        {{ translate('ticket') ~ "." }}
-                                    {% endif %}</h5>
+                                {% if maximumAmount != 0 %}
+                                    <h5>{{ translate('Maximum of ') ~ maximumAmount}}
+                                        {% if maximumAmount > 1 %}
+                                            {{ translate('tickets') ~ "." }}
+                                        {% else %}
+                                            {{ translate('ticket') ~ "." }}
+                                        {% endif %}</h5>
+                                {% endif %}
                             </div>
                             {% import 'site/partials/form.twig' as forms %}
                             {{ forms.renderForm(form) }}
@@ -94,6 +96,8 @@
                             </div>
                         {% endif %}
                     </div>
+
+                    {% if tickets|length != 0 %}
                     <div>
                         <div class="page-header">
                             <h2>{{ translate('Your Tickets') }}</h2>
@@ -131,6 +135,7 @@
                             </tbody>
                         </table>
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

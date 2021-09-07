@@ -46,7 +46,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $person = $this->getPersonEntity();
         if ($person === null) {
             $canBook = true;
-            if ($event->getNumberFree() <= 0) {
+            if ($event->getNumberOfTickets() != 0 && $event->getNumberFree() <= 0) {
                 $canBook = false;
             }
             $form = $this->getForm('ticket_ticket_bookguest', array('event' => $event));
@@ -68,7 +68,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                         $currentAmount = count($this->getEntityManager()->getRepository('TicketBundle\Entity\Ticket')->findAllByOption($option));
                         $currentAmount += $numbers['option_' . $option->getId() . '_number_member'];
                         $currentAmount += $numbers['option_' . $option->getId() . '_number_non_member'];
-                        if ($currentAmount > $option->getMaximum()) {
+                        if ($option->getMaximum() != 0 && $currentAmount > $option->getMaximum()) {
                             $this->flashMessenger()->error(
                                 'Error',
                                 'The tickets could not be booked, option "' . $option->getName() . '" has reached the maximum amount of ' . $option->getMaximum() . ' tickets!'
@@ -153,7 +153,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 ->findAllByEventAndPerson($event, $person);
 
             $canBook = true;
-            if (count($tickets) >= $event->getLimitPerPerson() || $event->getNumberFree() <= 0) {
+            if ((count($tickets) >= $event->getLimitPerPerson() && $event->getLimitPerPerson() != 0) || ($event->getNumberFree() <= 0 && $event->getNumberOfTickets() != 0)) {
                 $canBook = false;
             }
             $form = $this->getForm('ticket_ticket_book', array('event' => $event, 'person' => $person));
@@ -175,7 +175,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                         $currentAmount = count($this->getEntityManager()->getRepository('TicketBundle\Entity\Ticket')->findAllByOption($option));
                         $currentAmount += $numbers['option_' . $option->getId() . '_number_member'];
                         $currentAmount += $numbers['option_' . $option->getId() . '_number_non_member'];
-                        if ($currentAmount > $option->getMaximum()) {
+                        if ($option->getMaximum() != 0 && $currentAmount > $option->getMaximum()) {
                             $this->flashMessenger()->error(
                                 'Error',
                                 'The tickets could not be booked, option "' . $option->getName() . '" has reached the maximum amount of ' . $option->getMaximum() . ' tickets!'
