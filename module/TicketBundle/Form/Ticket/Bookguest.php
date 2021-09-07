@@ -93,8 +93,27 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                     array(
                         'type'       => 'text',
+                        'name'       => 'guest_identification',
+                        'label'      => 'R-Number (optional)',
+                        'required'   => false,
+                        'attributes' => array(
+                            'id' => 'guest_identification',
+                        ),
+                        'options'    => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array('name' => 'UniversityIdentification'),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'       => 'text',
                         'name'       => 'guest_organization',
-                        'label'      => 'Organization',
+                        'label'      => 'Organization (optional)',
                         'required'   => false,
                         'attributes' => array(
                             'id' => 'guest_organization',
