@@ -349,7 +349,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
     public function payAction()
     {
-        $ticket = $this->getTicketEntity();
+        $ticket = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Ticket')
+            ->findOneById($this->getParam('id'));
         if ($ticket === null) {
             return $this->notFoundAction();
         }
