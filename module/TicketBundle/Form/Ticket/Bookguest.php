@@ -113,7 +113,7 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
                     array(
                         'type'       => 'text',
                         'name'       => 'guest_organization',
-                        'label'      => 'Organization (optional)',
+                        'label'      => 'Kring (optional)',
                         'required'   => false,
                         'attributes' => array(
                             'id' => 'guest_organization',
