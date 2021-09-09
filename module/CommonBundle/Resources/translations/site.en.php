@@ -139,6 +139,6 @@ return array(
     'Account Details'                                                                                                                                                                                                                                                                   => 'Account Details',
     'Edit Account Details'                                                                                                                                                                                                                                                              => 'Edit Account Details',
     'Edit Profile Image'                                                                                                                                                                                                                                                                => 'Edit Profile Image',
-
+    'Second Hand'                                                                                                                                                                                                                                                                       => 'Second Hand Books',
 
 );
