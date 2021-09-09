@@ -145,6 +145,7 @@ return array(
     'Account Details'                                                                                                                                                                                                                                                                   => 'Accountgegevens',
     'Edit Account Details'                                                                                                                                                                                                                                                              => 'Accountgegevens aanpassen',
     'Edit Profile Image'                                                                                                                                                                                                                                                                => 'Profielfoto aanpassen',
+    'Second Hand'                                                                                                                                                                                                                                                                       => 'Tweedehands Boeken',
 
 
 );
