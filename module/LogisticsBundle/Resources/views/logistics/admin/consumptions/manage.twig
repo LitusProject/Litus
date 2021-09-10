@@ -27,14 +27,14 @@
             </tr>
             {% for consumptions in paginator %}
                 <tr class="item item-{{ consumptions.getId() }}">
-                    <td>{{ consumptions.getAcademic() }}</td>
+                    <td>{{ consumptions.getAcademic().getUniversityIdentification() }}</td>
                     <td>{{ consumptions.getConsumptions() }}</td>
                     <td class="actions">
                         {% if hasAccess('logistics_admin_consumptions', 'edit') %}
                             <a href="{{ url('logistics_admin_consumptions', {"action": "edit", "id": consumptions.getId()}) }}" class="edit">Edit</a>
                         {% endif %}
                         {% if hasAccess('logistics_admin_consumptions', 'delete') %}
-                            <a href="#" class="delete" data-id="{{ consumptions.getId() }}" data-academic="{{ consumptions.getConsumptions() }}">Delete</a>
+                            <a href="#" class="delete" data-id="{{ consumptions.getId() }}" data-academic="{{ consumptions.getAcademic().getUniversityIdentification() }}">Delete</a>
                         {% endif %}
 {#                        {% if hasAccess('logistics_admin_consumptions', 'orders') %}#}
 {#                            <a href="{{ url('logistics_admin_consumptions', {"action": "orders", "id": article.getId()}) }}" class="order">Orders</a>#}
@@ -90,7 +90,7 @@
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.consumptions_removed_success').removeClass('hide');
-                        $('.item-' + id).remove();
+                        $('.consumptions-' + id).remove();
                         removeConsumptions.modal('hide');
                     } else {
                         errorRemove();

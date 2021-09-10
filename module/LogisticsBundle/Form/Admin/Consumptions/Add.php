@@ -21,7 +21,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(
             array(
                 'type'     => 'typeahead',
-                'name'     => 'academic',
+                'name'     => 'person',
                 'label'    => 'Name',
                 'required' => true,
                 'options'  => array(
@@ -43,7 +43,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(
             array(
                 'type' => 'text',
-                'name' => 'numberOfConsumptions',
+                'name' => 'number_of_consumptions',
                 'label' => 'Number of Consumptions',
                 'value' => 0,
                 'required' => true,

@@ -90,7 +90,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
         if (!($consumptions instanceof Consumptions)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No communication was found!'
+                'No consumptions were found!'
             );
 
             $this->redirect()->toRoute(

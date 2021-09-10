@@ -33,9 +33,9 @@ class Consumptions
     /**
      * @var integer the amount of consumptions for the academic
      *
-     * @ORM\Column(name="numberOfConsumptions", type="integer")
+     * @ORM\Column(name="number_of_consumptions", type="integer", nullable=true)
      */
-    private $numberOfConsumptions;
+    private $number_of_consumptions;
 
     /**
      * Consumptions constructor.
@@ -66,7 +66,7 @@ class Consumptions
      */
     public function getConsumptions()
     {
-        return $this->numberOfConsumptions;
+        return $this->number_of_consumptions;
     }
 
     /**
@@ -86,7 +86,7 @@ class Consumptions
      */
     public function setConsumptions(int $nbOfConsumptions)
     {
-        $this->numberOfConsumptions = $nbOfConsumptions;
+        $this->number_of_consumptions = $nbOfConsumptions;
 
         return $this;
     }
