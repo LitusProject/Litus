@@ -1,0 +1,110 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'logistics/admin/consumptions/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div class="flashmessage success_message full_width consumptions_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The consumptions were successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width communication_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete consumptions.</p>
+        </div>
+    </div>
+
+    <div id="controller_action">
+        <table class="full_width manage">
+            <tr>
+                <th>Academic</th>
+                <th>Consumptions</th>
+                <th width="70px">Action</th>
+            </tr>
+            {% for consumptions in paginator %}
+                <tr class="item item-{{ consumptions.getId() }}">
+                    <td>{{ consumptions.getAcademic() }}</td>
+                    <td>{{ consumptions.getConsumptions() }}</td>
+                    <td class="actions">
+                        {% if hasAccess('logistics_admin_consumptions', 'edit') %}
+                            <a href="{{ url('logistics_admin_consumptions', {"action": "edit", "id": consumptions.getId()}) }}" class="edit">Edit</a>
+                        {% endif %}
+                        {% if hasAccess('logistics_admin_consumptions', 'delete') %}
+                            <a href="#" class="delete" data-id="{{ consumptions.getId() }}" data-academic="{{ consumptions.getConsumptions() }}">Delete</a>
+                        {% endif %}
+{#                        {% if hasAccess('logistics_admin_consumptions', 'orders') %}#}
+{#                            <a href="{{ url('logistics_admin_consumptions', {"action": "orders", "id": article.getId()}) }}" class="order">Orders</a>#}
+{#                        {% endif %}#}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+    <div class="modal fade" id="removeConsumptions" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Consumptions
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following consumptions: <b class="consumptionsAcademic"></b>
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .delete').click(openModal);
+        });
+
+        function openModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeConsumptions = $('#removeConsumptions');
+            removeConsumptions.find('.consumptionsAcademic').html($(this).data('academic'));
+            var id = $this.data('id');
+            removeConsumptions.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('logistics_admin_consumptions', {"action": "delete"}) }}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.consumptions_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeConsumptions.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeConsumptions.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.consumptions_removed_error').removeClass('hide');
+            $('#removeConsumptions').modal('hide');
+        }
+
+    </script>
+{% endblock %}

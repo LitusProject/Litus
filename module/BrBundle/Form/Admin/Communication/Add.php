@@ -6,8 +6,6 @@ use BrBundle\Entity\Communication;
 
 /**
  * Add a communication.
- *
- * @author Stan Cardinaels <stan.cardinaels@vtk.be>
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {

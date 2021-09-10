@@ -14,5 +14,11 @@ return array(
                 'logistics_admin_request'           => array('title' => 'Requests'),
             ),
         ),
+        'Apps' => array(
+            'subtitle' => array('Consumptions'),
+            'items'    => array(
+                'logistics_admin_consumptions' => array('title' => 'Consumptions'),
+            ),
+        ),
     ),
 );
