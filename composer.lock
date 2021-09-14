@@ -3893,24 +3893,23 @@
         },
         {
             "name": "laminas/laminas-i18n-resources",
-            "version": "2.7.0",
+            "version": "2.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-i18n-resources.git",
-                "reference": "fc0211052aa7576bc960b30194c87f6f60a0089c"
+                "reference": "7d7062849064bb89e7cdd7193c43ef95e95fbe4b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-i18n-resources/zipball/fc0211052aa7576bc960b30194c87f6f60a0089c",
-                "reference": "fc0211052aa7576bc960b30194c87f6f60a0089c",
+                "url": "https://api.github.com/repos/laminas/laminas-i18n-resources/zipball/7d7062849064bb89e7cdd7193c43ef95e95fbe4b",
+                "reference": "7d7062849064bb89e7cdd7193c43ef95e95fbe4b",
                 "shasum": ""
             },
             "require": {
-                "laminas/laminas-zendframework-bridge": "^1.0",
-                "php": "^7.3 || ~8.0.0"
+                "php": "^7.3 || ~8.0.0 || ~8.1.0"
             },
-            "replace": {
-                "zendframework/zend-i18n-resources": "^2.6.1"
+            "conflict": {
+                "zendframework/zend-i18n-resources": "*"
             },
             "require-dev": {
                 "laminas/laminas-coding-standard": "~1.0.0",
@@ -3947,7 +3946,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2021-04-15T13:39:19+00:00"
+            "time": "2021-09-14T04:16:52+00:00"
         },
         {
             "name": "laminas/laminas-inputfilter",
