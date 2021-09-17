@@ -1,14 +1,14 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-    <div class="page-header">
+    <div class="page-header container">
         <h1>{{ translate('Registration') }}</h1>
     </div>
 
     {% include 'secretary/registration/partials/navigation.twig' %}
 
-    <h3>{{ translate('Personal') }}</h3>
-    <dl class="dl-horizontal wide">
+    <h3 class="container">{{ translate('Personal') }}</h3>
+    <dl class="dl-horizontal wide container">
         <dt>{{ translate('Name') }}</dt>
         <dd>{{ academic.getFullName() }}&nbsp;</dd>
         <dt>{{ translate('Birthday') }}</dt>
@@ -25,18 +25,18 @@
         <dd>{{ academic.getPersonalEmail() }}&nbsp;</dd>
     </dl>
 
-    <h3>{{ translate('Addresses') }}</h3>
-    <div class="row">
-        <div class="col-md-6">
-            <address>
-                <strong>{{ translate('Primary Address&mdash;Student Room or Home') }}</strong><br />
+    <h3 class="container">{{ translate('Addresses') }}</h3>
+    <div class="row container" style="position: relative; left: 18.5%">
+        <div class="col-md-6 container">
+            <address class="container">
+                <strong class="">{{ translate('Primary Address&mdash;Student Room or Home') }}</strong><br />
                 {{ authenticatedPerson.getPrimaryAddress().getStreet() }} {{ authenticatedPerson.getPrimaryAddress().getNumber() }}{% if '' != authenticatedPerson.getPrimaryAddress().getMailbox() %}/{{ authenticatedPerson.getPrimaryAddress().getMailbox() }}{% endif %}<br />
                 {{ academic.getPrimaryAddress().getPostal() }} {{ academic.getPrimaryAddress().getCity() }}<br />
                 {{ academic.getPrimaryAddress().getCountry() }}
             </address>
         </div>
-        <div class="col-md-6">
-            <address>
+        <div class="col-md-6 container">
+            <address class="container">
                 <strong>{{ translate('Secondary Address&mdash;Home') }}</strong><br />
                 {{ authenticatedPerson.getSecondaryAddress().getStreet() }} {{ authenticatedPerson.getSecondaryAddress().getNumber() }}{% if '' != authenticatedPerson.getSecondaryAddress().getMailbox() %}/{{ authenticatedPerson.getSecondaryAddress().getMailbox() }}{% endif %}<br />
                 {{ academic.getSecondaryAddress().getPostal() }} {{ academic.getSecondaryAddress().getCity() }}<br />
@@ -45,17 +45,17 @@
         </div>
     </div>
 
-    <h3>{{ translate('Student Organization') }}</h3>
-    <dl class="dl-horizontal wide">
+    <h3 class="container">{{ translate('Student Organization') }}</h3>
+    <dl class="dl-horizontal wide container">
         <dt>{{ translate('Student Organization') }}</dt>
         <dd>{{ academic.getOrganization(currentAcademicYear).getName() }}&nbsp;</dd>
         <dt>{{ translate('Membership') }}</dt>
         <dd>{% if authenticatedPerson.isMember(currentAcademicYear) or metaData.becomeMember() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}</dd>
     </dl>
 
-    <h3>{{ translate('Studies') }}</h3>
+    <h3 class="container">{{ translate('Studies') }}</h3>
     {% for study in studies %}
-        <h4>{{ study.enrollment.getStudy().getTitle() }}<small>&mdash;{{ translate('Phase') }} {{ study.enrollment.getStudy().getPhase() }}</small></h4>
+        <h4 class="container">{{ study.enrollment.getStudy().getTitle() }}<small>&mdash;{{ translate('Phase') }} {{ study.enrollment.getStudy().getPhase() }}</small></h4>
         {% for subject in study.subjects %}
             <ul>
                 {% if subject.getSubject().getId() in subjects %}
