@@ -3,7 +3,7 @@
 {% block content %}
     {% import _self as self %}
 
-    <div class="page-alert">
+    <div class="page-alert container">
         <div class="flashmessage alert alert-success alert-fixed-top fade" id="studies_saved_success">
             <button type="button" class="close">&times;</button>
             <div class="content">
@@ -18,19 +18,26 @@
         </div>
     </div>
 
-    <div class="page-header">
+    <div class="page-header container">
         <h1>{{ translate('Registration') }}</h1>
     </div>
 
     {% include 'secretary/registration/partials/navigation.twig' %}
 
+<<<<<<< HEAD
     <h2>
+=======
+    <div class="pull-right">
+        <a href="{{ url('secretary_registration', {'action': 'subjects'}) }}" class="btn btn-primary">{{ translate('Choose Your Subjects') }}</a>
+    </div>
+    <h2 class="container">
+>>>>>>> master
         {{ translate('Choose a Study') }}
         <div class="pull-right">
             <a href="{{ url('secretary_registration', {'action': 'subjects'}) }}" class="btn btn-primary">{{ translate('Choose Your Subjects') }}</a>
         </div>
     </h2>
-    <div id="studies">
+    <div id="studies" class="container">
         {{ self.displayStudies(studies, enrollments) }}
     </div>
     <div style="text-align: center;">
