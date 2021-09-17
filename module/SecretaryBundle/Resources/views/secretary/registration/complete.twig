@@ -63,7 +63,7 @@
     {% for study in studies %}
         <h4 class="container">{{ study.enrollment.getStudy().getTitle() }}<small>&mdash;{{ translate('Phase') }} {{ study.enrollment.getStudy().getPhase() }}</small></h4>
         {% for subject in study.subjects %}
-            <ul>
+            <ul class="container">
                 {% if subject.getSubject().getId() in subjects %}
                     <li>{{ subject.getSubject().getName() }}</li>
                 {% endif %}
