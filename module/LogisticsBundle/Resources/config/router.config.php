@@ -128,12 +128,11 @@ return array(
         'logistics_admin_consumptions' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/logistics/consumptions[/:action[/:id]][/]',
+                'route'       => '/admin/logistics/consumptions[/:action[/:id]][/page/:page][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'       => '[0-9]*',
-//                    'option'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-//                    'option' => '[0-9]*',
+                    'page'   => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'logistics_admin_consumptions',
