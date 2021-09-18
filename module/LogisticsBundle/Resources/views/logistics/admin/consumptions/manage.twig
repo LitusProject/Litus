@@ -84,10 +84,8 @@
             var removeConsumptions = $('#removeConsumptions');
             removeConsumptions.find('.consumptionsPerson').html($(this).data('person'));
             var id = $this.data('id');
-            console.log(id);
             removeConsumptions.find('.delete').unbind('click').click(function () {
                 $.post('{{ url('logistics_admin_consumptions', {"action": "delete"}) }}' + id, function (data) {
-                    console.log(data);
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.consumptions_removed_success').removeClass('hide');
