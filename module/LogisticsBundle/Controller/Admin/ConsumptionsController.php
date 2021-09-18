@@ -39,11 +39,50 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
                 $this->getEntityManager()->persist(
                     $form->hydrateObject()
                 );
+//                $this->getEntityManager()->persist($form);
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
                     'Success',
                     'The consumptions were succesfully created!'
+                );
+
+                $this->redirect()->toRoute(
+                    'logistics_admin_consumptions',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
+
+    public function editAction()
+    {
+        $consumptions = $this->getConsumptionsEntity();
+        if ($consumptions === null) {
+            return new ViewModel();
+        }
+
+        $form = $this->getForm('logistics_consumptions_edit', array('consumptions' => $consumptions));
+
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->getRequest()->getPost());
+
+            if ($form->isValid()) {
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The consumptions were succesfully updated!'
                 );
 
                 $this->redirect()->toRoute(

@@ -29,11 +29,11 @@ class Consumptions extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$stdKeys);
+        $data = $this->stdExtract($object);
 
         $data['academic'] = $object->getAcademic() !== null ? $object->getAcademic() : -1;
 
-//        $data['numberOfConsumptions'] = $object->getConsumptions();
+        $data['numberOfConsumptions'] = $object->getConsumptions();
 
         return $data;
     }
