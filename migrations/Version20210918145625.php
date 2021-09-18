@@ -6,9 +6,9 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
- * Version 20210910151100
+ * Version 20210918145625
  */
-class Version20210910151100 extends \Doctrine\Migrations\AbstractMigration
+class Version20210918145625 extends \Doctrine\Migrations\AbstractMigration
 {
     /**
      * @param  \Doctrine\DBAL\Schema\Schema $schema
@@ -18,9 +18,9 @@ class Version20210910151100 extends \Doctrine\Migrations\AbstractMigration
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('CREATE TABLE logistics_consumptions (id BIGINT NOT NULL, academic BIGINT DEFAULT NULL, number_of_consumptions INT DEFAULT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE INDEX IDX_C4E0C7F240549B08 ON logistics_consumptions (academic)');
-        $this->addSql('ALTER TABLE logistics_consumptions ADD CONSTRAINT FK_C4E0C7F240549B08 FOREIGN KEY (academic) REFERENCES users_people_academic (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('CREATE TABLE logistics_consumptions (id BIGINT NOT NULL, person BIGINT DEFAULT NULL, number_of_consumptions INT DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE INDEX IDX_C4E0C7F234DCD176 ON logistics_consumptions (person)');
+        $this->addSql('ALTER TABLE logistics_consumptions ADD CONSTRAINT FK_C4E0C7F234DCD176 FOREIGN KEY (person) REFERENCES users_people (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
 
     /**

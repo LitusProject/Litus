@@ -21,24 +21,23 @@
     <div id="controller_action">
         <table class="full_width manage">
             <tr>
-                <th>Academic</th>
+                <th>Name</th>
+                <th>Username</th>
                 <th>Consumptions</th>
                 <th width="70px">Action</th>
             </tr>
             {% for consumptions in paginator %}
                 <tr class="item item-{{ consumptions.getId() }}">
-                    <td>{{ consumptions.getAcademic().getUniversityIdentification() }}</td>
+                    <td>{{ consumptions.getAcademic().getFullName() }}</td>
+                    <td>{{ consumptions.getAcademic().getUserName() }}</td>
                     <td>{{ consumptions.getConsumptions() }}</td>
                     <td class="actions">
                         {% if hasAccess('logistics_admin_consumptions', 'edit') %}
                             <a href="{{ url('logistics_admin_consumptions', {"action": "edit", "id": consumptions.getId()}) }}" class="edit">Edit</a>
                         {% endif %}
                         {% if hasAccess('logistics_admin_consumptions', 'delete') %}
-                            <a href="#" class="delete" data-id="{{ consumptions.getId() }}" data-academic="{{ consumptions.getAcademic().getUniversityIdentification() }}">Delete</a>
+                            <a href="#" class="delete" data-id="{{ consumptions.getId() }}" data-person="{{ consumptions.getAcademic().getFullName() }}">Delete</a>
                         {% endif %}
-{#                        {% if hasAccess('logistics_admin_consumptions', 'orders') %}#}
-{#                            <a href="{{ url('logistics_admin_consumptions', {"action": "orders", "id": article.getId()}) }}" class="order">Orders</a>#}
-{#                        {% endif %}#}
                     </td>
                 </tr>
             {% endfor %}
@@ -56,7 +55,7 @@
                 </div>
                 <div class="modal-body">
                     <p>
-                        You are about to delete the following consumptions: <b class="consumptionsAcademic"></b>
+                        You are about to delete the following consumptions: <b class="consumptionsPerson"></b>
                         Please note that this operation cannot be undone!
                     </p>
                     <p>
@@ -83,10 +82,12 @@
 
             e.preventDefault();
             var removeConsumptions = $('#removeConsumptions');
-            removeConsumptions.find('.consumptionsAcademic').html($(this).data('academic'));
+            removeConsumptions.find('.consumptionsPerson').html($(this).data('person'));
             var id = $this.data('id');
+            console.log(id);
             removeConsumptions.find('.delete').unbind('click').click(function () {
                 $.post('{{ url('logistics_admin_consumptions', {"action": "delete"}) }}' + id, function (data) {
+                    console.log(data);
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.consumptions_removed_success').removeClass('hide');

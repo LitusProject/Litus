@@ -2,7 +2,7 @@
 
 namespace LogisticsBundle\Entity;
 
-use CommonBundle\Entity\User\Person\Academic;
+use CommonBundle\Entity\User\Person;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -23,12 +23,12 @@ class Consumptions
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\User\Person\Academic The academic to whom the consumptions belong
+     * @var \CommonBundle\Entity\User\Person The person to whom the consumptions belong
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic", cascade={"persist"})
-     * @ORM\JoinColumn(name="academic", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person", cascade={"persist"})
+     * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
-    private $academic;
+    private $person;
 
     /**
      * @var integer the amount of consumptions for the academic
@@ -58,7 +58,7 @@ class Consumptions
      */
     public function getAcademic()
     {
-        return $this->academic;
+        return $this->person;
     }
 
     /**
@@ -70,12 +70,12 @@ class Consumptions
     }
 
     /**
-     * @param Academic|null $academic
+     * @param Academic|null $person
      * @return Consumptions
      */
-    public function setAcademic(Academic $academic = null)
+    public function setAcademic(Person $person = null)
     {
-        $this->academic = $academic;
+        $this->person = $person;
 
         return $this;
     }

@@ -2,9 +2,9 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
-use LogistiscBundle\Entity\Consumptions;
 use CommonBundle\Entity\User\Person\Academic;
 use Laminas\View\Model\ViewModel;
+use LogistiscBundle\Entity\Consumptions as Consumptions;
 
 /**
  * ConsumptionsController
@@ -69,7 +69,10 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
         $this->initAjax();
 
         $consumptions = $this->getConsumptionsEntity();
-        if ( $consumptions == null) {
+
+        if ( $consumptions === null) {
+            echo json_encode("test");
+            die();
             return new ViewModel();
         }
 
@@ -86,8 +89,11 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
     private function getConsumptionsEntity()
     {
         $consumptions = $this->getEntityById('LogisticsBundle\Entity\Consumptions');
-
+//        echo json_encode($consumptions->getClass());
+//        die();
         if (!($consumptions instanceof Consumptions)) {
+//            echo json_encode("1");
+//            die();
             $this->flashMessenger()->error(
                 'Error',
                 'No consumptions were found!'
