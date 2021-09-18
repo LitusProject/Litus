@@ -593,7 +593,7 @@
                                 </dl>
                             </div>
                             <div class="row">
-                                <div class="col-sm-4">
+                                {# <div class="col-sm-4">
                                     <dl>
                                         <dt>{{ translate('Name') }}</dt>
                                         <dd>{{ shift.getName() }}</dd>
@@ -614,8 +614,8 @@
                                         <dt>{{ translate('End') }}</dt>
                                         <dd>{{ dateLocalized(shift.getEndDate(), 'd/M/y HH:mm') }}</dd>
                                     </dl>
-                                </div>
-                                <div class="col-sm-4">
+                                </div> #}
+                                {# <div class="col-sm-4">
                                     <dl>
                                         <dt>{{ translate('Manager') }}</dt>
                                         <dd>{{ shift.getManager().getFullName() }}</dd>
@@ -628,7 +628,7 @@
                                         <dt>{{ translate('Unit') }}</dt>
                                         <dd>{{ shift.getUnit().getName() }}</dd>
                                     </dl>
-                                </div>
+                                </div> #}
                                 <div class="col-sm-4">
                                     {% if 0 != shift.getNbResponsibles() %}
                                         <dl>
@@ -651,7 +651,7 @@
                                     {% endif %}
                                 </div>
                             </div>
-                            <dl>
+                            {# <dl>
                                 <dt>{{ translate('Description') }}</dt>
                                 <dd style="text-align: justify;">{{ shift.getDescription() }}</dd>
 
@@ -662,7 +662,7 @@
                                 <dd style="margin-top: 5px;">
                                     <img class="img-rounded" src="{{ staticMap(shift.getLocation(), '367x125', '7a43b6') }}" />
                                 </dd>
-                            </dl>
+                            </dl> #}
                         </div>
                             <dl>
                                 <dt>{{ translate('Description') }}</dt>
