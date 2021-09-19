@@ -3,6 +3,7 @@
 namespace LogisticsBundle\Controller\Admin;
 
 use CommonBundle\Entity\User\Person\Academic;
+use CudiBundle\Form\Admin\Sale\Article\View;
 use Laminas\View\Model\ViewModel;
 use LogisticsBundle\Entity\Consumptions as Consumptions;
 
@@ -146,5 +147,48 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
         }
 
         return $consumptions;
+    }
+
+    public function searchAction()
+    {
+        $this->initAjax();
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\General\Config')
+            ->getConfigValue('logistics.consumptions_search_max_results');
+
+        $consumptions = $this->search()
+            ->setMaxResults($numResults)
+            ->getResults();
+
+        $result = array();
+        foreach ($consumptions as $consumption) {
+            $item = (object) array();
+            $item->id = $consumption->getId();
+            $item->username = $consumption->getUsername();
+            $item->fullName = $consumption->getFullName();
+
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+    private function search()
+    {
+        switch ($this->getParam('field')) {
+            case 'username':
+                return $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\User\Person')
+                    ->findAllByUsernameQuery($this->getParam('string'));
+            case 'name':
+                return $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\User\Person')
+                    ->findAllByNameQuery($this->getParam('string'));
+        }
     }
 }

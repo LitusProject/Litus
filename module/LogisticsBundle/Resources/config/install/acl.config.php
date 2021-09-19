@@ -23,6 +23,9 @@ return array(
         'logistics_admin_lease' => array(
             'add', 'delete', 'edit', 'manage',
         ),
+        'logistics_admin_consumptions' => array(
+            'add', 'delete', 'edit', 'manage', 'search',
+        ),
         'logistics_index' => array(
             'add', 'delete', 'edit', 'export', 'fetch', 'index', 'move',
         ),

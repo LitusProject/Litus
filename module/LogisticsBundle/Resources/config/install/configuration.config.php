@@ -161,6 +161,11 @@ Student IT
         'description' => '',
     ),
     array(
+        'key'         => 'logistics.consumptions_search_max_results',
+        'value'       => '30',
+        'description' => 'The maximum number of search results shown',
+    ),
+    array(
         'key'         => 'logistics.article_picture_path',
         'value'       => '/_logistics/article',
         'description' => 'The path for article photo\'s',
