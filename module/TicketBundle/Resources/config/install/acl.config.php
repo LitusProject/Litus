@@ -3,7 +3,7 @@
 return array(
     'ticketbundle' => array(
         'ticket_admin_event' => array(
-            'add', 'delete', 'edit', 'manage', 'old',
+            'add', 'delete', 'edit', 'manage', 'old', 'clean'
         ),
         'ticket_admin_ticket' => array(
             'export', 'manage', 'print', 'search',
