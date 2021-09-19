@@ -142,6 +142,30 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function cleanAction()
+    {
+        $event = $this->getEventEntity();
+
+        $bookedNotSold = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Ticket')
+            ->findAllByStatusAndEvent('booked', $event);
+
+        foreach ($bookedNotSold as $expired) {
+            $this->getEntityManager()->remove($expired);
+        }
+        $this->getEntityManager()->flush();
+
+        $this->redirect()->toRoute(
+            'ticket_admin_event',
+            array(
+                'action' => 'edit',
+                'id'     => $event->getId(),
+            )
+        );
+
+        return new ViewModel();
+    }
+
     /**
      * @return Event|null
      */

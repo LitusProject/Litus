@@ -8,6 +8,7 @@ use CommonBundle\Entity\General\Language;
 use CommonBundle\Entity\User\Person;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 use Locale;
 
@@ -272,5 +273,15 @@ class Event extends \CommonBundle\Entity\Node
         $this->isHistory = $isHistory;
 
         return $this;
+    }
+
+    /**
+     * @param EntityManager $em
+     * @return \TicketBundle\Entity\Event
+     */
+    public function getTicket(EntityManager $em)
+    {
+        return $em->getRepository('TicketBundle\Entity\Event')
+            ->findOneByEvent($this);
     }
 }

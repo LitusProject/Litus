@@ -61,7 +61,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $document->generateDocument($file);
 
         $now = new DateTime();
-        $filename = 'tickets_' . $now->format('Y_m_d') . '.pdf';
+        $filename = 'tickets_' . $now->format('Y_m_d') . '.csv';
 
         $headers = new Headers();
         $headers->addHeaders(
@@ -132,6 +132,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             $item->id = $ticket->getId();
             $item->person = $ticket->getFullName() ? $ticket->getFullName() : '(none)';
             $item->status = $ticket->getStatus();
+            $item->email = $ticket->getEmail();
+            $item->organization = $ticket->getOrganization();
             $item->option = ($ticket->getOption() ? $ticket->getOption()->getName() : '') . ' ' . ($ticket->isMember() ? 'Member' : 'Non Member');
             $item->number = $ticket->getNumber();
             $item->bookDate = $ticket->getBookDate() ? $ticket->getBookDate()->format('d/m/Y H:i') : '';

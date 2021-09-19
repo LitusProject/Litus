@@ -70,6 +70,23 @@ class Ticket extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getResult();
     }
 
+    public function findAllByStatusAndEvent($status, EventEntity $event)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('t')
+            ->from('TicketBundle\Entity\Ticket', 't')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('t.event', ':event'),
+                    $query->expr()->eq('t.status', ':status')
+                )
+            )
+            ->setParameter('event', $event)
+            ->setParameter('status', $status)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findAllByEventAndPersonQuery(EventEntity $event, Person $person)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

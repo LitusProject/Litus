@@ -64,7 +64,10 @@
                             <div class="calendar-item-tekst">
                                 <h4>{{event.getTitle(language)}} | {{ dateLocalized(day.date, 'LLL')|capitalize }} {{ dateLocalized(day.date, 'd') }} </h4>
                                 <p class="calendar-emptyfill">{{event.getSummary(150, language)}}</p>
-                                <a style="position: absolute; bottom: -10px" class="myVtkButton" href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Read More') }}</a>
+                                <div class="vtk-flex-horizontal" style="position: absolute; bottom: -10px">
+                                    <a class="myVtkButton" href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Read More') }}</a>
+                                    <a class="myVtkButton" href="{{ url('ticket', {'id': event.getTicket(entityManager).getId()}) }}">{{ translate('Buy Tickets') }}</a>
+                                </div>
                             </div>
                         </div>
                     {% endfor %}
