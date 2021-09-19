@@ -2,6 +2,7 @@
 
 namespace TicketBundle\Entity;
 
+use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person;
 use DateTime;
 use Doctrine\ORM\EntityManager;
@@ -269,6 +270,54 @@ class Ticket
 
         if ($this->guestInfo !== null) {
             return $this->guestInfo->getfullName();
+        }
+
+        return '';
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        if ($this->person !== null) {
+            return $this->person->getEmail();
+        }
+
+        if ($this->guestInfo !== null) {
+            return $this->guestInfo->getEmail();
+        }
+
+        return '';
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrganization()
+    {
+        if ($this->person !== null) {
+            return 'ACCOUNT';
+        }
+
+        if ($this->guestInfo !== null) {
+            return $this->guestInfo->getOrganization();
+        }
+
+        return '';
+    }
+
+    /**
+     * @return string
+     */
+    public function getUniversityIdentification()
+    {
+        if ($this->person !== null) {
+            return $this->person->getUniversityIdentification();
+        }
+
+        if ($this->guestInfo !== null) {
+            return $this->guestInfo->getUniversityIdentification();
         }
 
         return '';

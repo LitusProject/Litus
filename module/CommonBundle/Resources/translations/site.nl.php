@@ -141,6 +141,6 @@ return array(
     'Edit Account Details'                                                                                                                                                                                                                                                              => 'Accountgegevens aanpassen',
     'Edit Profile Image'                                                                                                                                                                                                                                                                => 'Profielfoto aanpassen',
     'Second Hand'                                                                                                                                                                                                                                                                       => 'Tweedehands Boeken',
-
+    'Buy Tickets'                                                                                                                                                                                                                                                                       => 'Tickets Kopen',
 
 );

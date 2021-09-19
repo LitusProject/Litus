@@ -140,5 +140,5 @@ return array(
     'Edit Account Details'                                                                                                                                                                                                                                                              => 'Edit Account Details',
     'Edit Profile Image'                                                                                                                                                                                                                                                                => 'Edit Profile Image',
     'Second Hand'                                                                                                                                                                                                                                                                       => 'Second Hand Books',
-
+    'Buy Tickets'                                                                                                                                                                                                                                                                       => 'Buy Tickets',
 );

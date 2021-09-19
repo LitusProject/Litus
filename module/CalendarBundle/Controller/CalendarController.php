@@ -48,10 +48,10 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
         return new ViewModel(
             array(
-                'event'                 => $event,
-                'hasShifts'             => count($shifts) > 0,
-                'hasRegistrationShifts' => count($timeslots) > 0,
-                'ticketEvent'           => $ticketEvent,
+                'event'       => $event,
+                'hasShifts'   => count($shifts) > 0,
+                'hasRegistrationShifts'   => count($timeslots) > 0,
+                'ticketEvent' => $ticketEvent,
             )
         );
     }
@@ -164,13 +164,6 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                     array(
                         'action' => 'view',
                         'name'   => $event->getName(),
-                    )
-                ),
-                'poster'    => $this->url()->fromRoute(
-                    'calendar',
-                    array(
-                        'action' => 'poster',
-                        'name'   => $event->getPoster(),
                     )
                 ),
             );
