@@ -4143,16 +4143,16 @@
         },
         {
             "name": "laminas/laminas-mail",
-            "version": "2.14.2",
+            "version": "2.14.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-mail.git",
-                "reference": "79d5aeca845254f9d348b62fa601eaf9b49397cd"
+                "reference": "a496ab1c708b91809de211522057a6d6781bd0aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-mail/zipball/79d5aeca845254f9d348b62fa601eaf9b49397cd",
-                "reference": "79d5aeca845254f9d348b62fa601eaf9b49397cd",
+                "url": "https://api.github.com/repos/laminas/laminas-mail/zipball/a496ab1c708b91809de211522057a6d6781bd0aa",
+                "reference": "a496ab1c708b91809de211522057a6d6781bd0aa",
                 "shasum": ""
             },
             "require": {
@@ -4177,6 +4177,7 @@
                 "laminas/laminas-servicemanager": "^3.2.1",
                 "phpunit/phpunit": "^9.3",
                 "psalm/plugin-phpunit": "^0.15.1",
+                "symfony/process": "^5.3",
                 "vimeo/psalm": "^4.7"
             },
             "suggest": {
@@ -4219,7 +4220,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2021-09-20T19:53:08+00:00"
+            "time": "2021-09-23T07:17:22+00:00"
         },
         {
             "name": "laminas/laminas-math",
