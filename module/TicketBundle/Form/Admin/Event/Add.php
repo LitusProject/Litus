@@ -24,7 +24,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'label'      => 'Event',
                 'required'   => true,
                 'attributes' => array(
-                    'options' => $this->createEventsArray(),
+                    'options' => $this->createEventsArray(30),
                 ),
                 'options'    => array(
                     'input' => array(
