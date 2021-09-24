@@ -46,6 +46,7 @@ rm -rf public/_assetic/*
 # doctrine
 header "Doctrine" true
 
+php bin/doctrine.php orm:clear-cache:metadata
 php bin/doctrine.php migrations:migrate --no-interaction
 php bin/doctrine.php orm:generate-proxies data/proxies/
 
