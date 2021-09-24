@@ -104,7 +104,7 @@ class Internship extends \BrBundle\Entity\Company\Request
      */
     public function getEditJob()
     {
-        return $this->editJob;
+        return $this->editJob ?? $this->job;
     }
 
     /**
