@@ -24,7 +24,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'label'      => 'Event',
                 'required'   => true,
                 'attributes' => array(
-                    'options' => $this->createEventsArray(30),
+                    'options' => $this->createEventsArray(),
                 ),
                 'options'    => array(
                     'input' => array(
@@ -309,7 +309,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         $events = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
-            ->findAllActive();
+            ->findAllActive(30);
 
         $eventsArray = array(
             '' => '',
