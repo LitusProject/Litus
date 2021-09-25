@@ -15,6 +15,14 @@
         </li>
     {% endif %}
 
+    {% if hasAccess('common_account', 'index') %}
+        <li>
+            <a class="tab" href="{{ url('common_account', {'action': 'index'}) }}">
+                {{ translate('My Shifts') }}
+            </a>
+        </li>
+    {% endif %}
+
     {% if insuranceEnabled %}
         <li>
             <a {% if getParam('action') == 'insurance' %}class="activeTab" {% else %} class="tab" {% endif %} href="{{ url('shift', {'action': 'insurance'}) }}">
