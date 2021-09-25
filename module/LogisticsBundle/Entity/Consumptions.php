@@ -38,6 +38,20 @@ class Consumptions
     private $number_of_consumptions;
 
     /**
+     * @var string The consumptions owner username
+     *
+     * @ORM\Column(name="username", type="string", length=50)
+     */
+    private $username;
+
+    /**
+     * @var string The consumptions owner full name
+     *
+     * @ORM\Column(name="name", type="string", length=50)
+     */
+    private $name;
+
+    /**
      * Consumptions constructor.
      */
     public function __construct()
@@ -70,6 +84,22 @@ class Consumptions
     }
 
     /**
+     * @return string
+     */
+    public function getUserName()
+    {
+        return $this->username;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullName()
+    {
+        return $this->name;
+    }
+
+    /**
      * @param Academic|null $person
      * @return Consumptions
      */
@@ -98,6 +128,28 @@ class Consumptions
     public function addConsumptions(int $nbOfConsumptions)
     {
         $this->numberOfConsumptions += $nbOfConsumptions;
+
+        return $this;
+    }
+
+    /**
+     * @param string|null $userName
+     * @return Consumptions
+     */
+    public function setUserName($userName = null)
+    {
+        $this->username = $userName;
+
+        return $this;
+    }
+
+    /**
+     * @param string|null $name
+     * @return Consumptions
+     */
+    public function setFullName($name = null)
+    {
+        $this->name = $name;
 
         return $this;
     }

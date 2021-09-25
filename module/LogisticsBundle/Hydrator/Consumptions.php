@@ -13,12 +13,14 @@ class Consumptions extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
        $academic = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\User\Person\Academic')
+            ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneById($array['person']['id']);
         $object->setAcademic($academic);
 
         $numberOfConsumptions = $array['number_of_consumptions'];
         $object->setConsumptions($numberOfConsumptions);
+        $object->setUserName($academic->getUserName());
+        $object->setFullName($academic->getFullName());
 
         return $this->stdHydrate($array, $object);
     }
@@ -32,7 +34,6 @@ class Consumptions extends \CommonBundle\Component\Hydrator\Hydrator
         $data = $this->stdExtract($object);
 
         $data['academic'] = $object->getAcademic() !== null ? $object->getAcademic() : -1;
-
         $data['numberOfConsumptions'] = $object->getConsumptions();
 
         return $data;

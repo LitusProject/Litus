@@ -23,8 +23,8 @@
             <div style="padding: 4px; text-align: right">
                 Search:
                 <select id="searchField">
-                    <option value="username">Username</option>
-                    <option value="name">Name</option>
+                    <option value="username">username</option>
+                    <option value="name">name</option>
                 </select>
                 is
                 <input type="text" id="searchString" size="30"/>
@@ -39,31 +39,38 @@
                 </tr>
             </table>
         </div>
-        <table class="full_width manage">
-            <tr>
-                <th>Name</th>
-                <th>Username</th>
-                <th>Consumptions</th>
-                <th width="70px">Action</th>
-            </tr>
-            {% for consumptions in paginator %}
-                <tr class="item item-{{ consumptions.getId() }}">
-                    <td>{{ consumptions.getAcademic().getFullName() }}</td>
-                    <td>{{ consumptions.getAcademic().getUserName() }}</td>
-                    <td>{{ consumptions.getConsumptions() }}</td>
-                    <td class="actions">
-                        {% if hasAccess('logistics_admin_consumptions', 'edit') %}
-                            <a href="{{ url('logistics_admin_consumptions', {"action": "edit", "id": consumptions.getId()}) }}" class="edit">Edit</a>
-                        {% endif %}
-                        {% if hasAccess('logistics_admin_consumptions', 'delete') %}
-                            <a href="#" class="delete" data-id="{{ consumptions.getId() }}" data-person="{{ consumptions.getAcademic().getFullName() }}">Delete</a>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
+        <div id="default_page">
+            <table class="full_width manage">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Username</th>
+                        <th>Consumptions</th>
+                        <th width="70px">Action</th>
+                    </tr>
+                </thead>
 
-        {% include 'admin/partials/paginationControl.twig' %}
+                <tbody>
+                    {% for consumptions in paginator %}
+                        <tr class="item item-{{ consumptions.getId() }}">
+                            <td>{{ consumptions.getFullName() }}</td>
+                            <td>{{ consumptions.getUserName() }}</td>
+                            <td>{{ consumptions.getConsumptions() }}</td>
+                            <td class="actions">
+                                {% if hasAccess('logistics_admin_consumptions', 'edit') %}
+                                    <a href="{{ url('logistics_admin_consumptions', {"action": "edit", "id": consumptions.getId()}) }}" class="edit">Edit</a>
+                                {% endif %}
+                                {% if hasAccess('logistics_admin_consumptions', 'delete') %}
+                                    <a href="#" class="delete" data-id="{{ consumptions.getId() }}" data-person="{{ consumptions.getFullName() }}">Delete</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
     </div>
 
     <div class="modal fade" id="removeConsumptions" tabindex="-1">
@@ -94,20 +101,21 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            {% if hasAcces('logistics_admin_consumptions', 'search') %}
+            {% if hasAccess('logistics_admin_consumptions', 'search') %}
+            console.log("test");
             $.searchDatabase({
                 defaultPage: $('#default_page'),
                 searchDiv: $('#consumptions_search'),
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
                 searchPage: '{{ url('logistics_admin_consumptions', {'action': 'manage'}) }}manage/',
-                url: '{{ url('logistics_admin_search', {'action': 'search'}) }}',
+                url: '{{ url('logistics_admin_consumptions', {'action': 'search'}) }}',
                 display: function (data) {
                     $('#consumptions_search table').find('tr.item').remove();
                     $(data).each(function () {
                         $('#consumptions_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
                         row.append('<td>' + this.username + '</td>')
-                            .append('<td>' + this.fullName + '</td>')
+                            .append('<td>' + this.name + '</td>')
                             .append('<td>' + this.consumptions + '<td>')
                             .append(
                                 $('<td>', {'class': 'actions'})
@@ -131,6 +139,7 @@
         });
 
         function openModal(e) {
+            console.log('hier');
             var $this = $(this);
 
             e.preventDefault();
@@ -139,10 +148,11 @@
             var id = $this.data('id');
             removeConsumptions.find('.delete').unbind('click').click(function () {
                 $.post('{{ url('logistics_admin_consumptions', {"action": "delete"}) }}' + id, function (data) {
+                    // console.log($('.item-' + id));
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.consumptions_removed_success').removeClass('hide');
-                        $('.consumptions-' + id).remove();
+                        $('.item-' + id).remove();
                         removeConsumptions.modal('hide');
                     } else {
                         errorRemove();

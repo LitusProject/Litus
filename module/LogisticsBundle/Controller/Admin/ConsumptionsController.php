@@ -2,6 +2,7 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
+use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Entity\User\Person\Academic;
 use CudiBundle\Form\Admin\Sale\Article\View;
 use Laminas\View\Model\ViewModel;
@@ -153,20 +154,26 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
     {
         $this->initAjax();
 
+        echo json_encode('1');
+        die();
         $numResults = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\General\Config')
-            ->getConfigValue('logistics.consumptions_search_max_results');
+            ->getConfigValue('search_max_results');
 
         $consumptions = $this->search()
             ->setMaxResults($numResults)
             ->getResults();
 
+//        echo json_encode($consumptions);
+//        die();
+
         $result = array();
         foreach ($consumptions as $consumption) {
             $item = (object) array();
             $item->id = $consumption->getId();
-            $item->username = $consumption->getUsername();
-            $item->fullName = $consumption->getFullName();
+            $item->name = $consumption->getFullName();
+            $item->username = $consumption->getUserName();
+            $item->consumptions = $consumption->getConsumptions();
 
             $result[] = $item;
         }
@@ -182,12 +189,14 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
     {
         switch ($this->getParam('field')) {
             case 'username':
+                echo json_encode($this->getParam('string'));
+                die();
                 return $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\User\Person')
+                    ->getRepository('LogisticsBundle\Entity\Consumptions')
                     ->findAllByUsernameQuery($this->getParam('string'));
             case 'name':
                 return $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\User\Person')
+                    ->getRepository('LogisticsBundle\Entity\Consumptions')
                     ->findAllByNameQuery($this->getParam('string'));
         }
     }
