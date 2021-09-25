@@ -6,4 +6,12 @@
             </a>
         </li>
     {% endif %}
+
+    {% if hasAccess('common_account', 'index') %}
+        <li>
+            <a class="tab" href="{{ url('common_account', {'action': 'index'}) }}">
+                {{ translate('My Registration Shifts') }}
+            </a>
+        </li>
+    {% endif %}
 </ul>

@@ -294,6 +294,23 @@
 
             <div>
 
+                {# MY CURRENT SHIFTS #}
+                <div class="contentBlock">
+                    <div class="headingHolder">
+                        <h3 style="margin-bottom: 0px">{{ translate('My Shifts') }}</h3>
+                    </div>
+
+                    {{ self.displayShifts(entityManager, authenticatedPerson, myShifts, 'myShifts') }}
+
+                    {% if authenticatedPerson != null and hasAccess('shift', 'export') %}
+                        <div class="buttonHolder">
+                            <a class="myVtkButton" href="{{ url('shift', {"action": "index"}) }}">Downloaden</a>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="spacer50"></div>
+
 
                 {# SHIFTS FROM SEARCH #}
                 <div class="contentBlock">
@@ -309,25 +326,7 @@
                             {{ translate('There are no shifts to be shown yet; please use the search functions on the left.') }}
                         </div>
                     {% endif %}
-
                 </div>  
-            
-                <div class="spacer50"></div>
-
-                {# MY CURRENT SHIFTS #}  
-                <div class="contentBlock">
-                    <div class="headingHolder">
-                        <h3 style="margin-bottom: 0px">{{ translate('My Shifts') }}</h3>
-                    </div>
-
-                    {{ self.displayShifts(entityManager, authenticatedPerson, myShifts, 'myShifts') }}
-
-                    {% if authenticatedPerson != null and hasAccess('shift', 'export') %}
-                        <div class="buttonHolder">
-                            <a class="myVtkButton" href="{{ url('shift', {"action": "index"}) }}">Downloaden</a>
-                        </div>                    
-                    {% endif %}
-                </div>            
 
                 <div style="height: 50px"></div>
 
@@ -529,105 +528,71 @@
     {% endblock %}
 
 
-    {# DISPLAYING ACTUAL SEARCH SHIFTS #}
-    {% macro displayShifts(entityManager, authenticatedPerson, shifts, accordionName) %}
-        {% import _self as self %}
-        {% set previousShift = null %}
-        <div class="panel-group" id="shifts-{{ accordionName }}">
-            {% for shift in shifts %}
-                {% if previousShift.getStartDate().format('Ymd') < shift.getStartDate().format('Ymd') %}
-                    <h4 style="margin-top: 15px">{#{{translate('Shifts on')}}#} {{ translate(shift.getStartDate().format('l')) }}  {{ dateLocalized(shift.getStartDate(), 'd/M/y') }}</h4>
-                {% endif %}
+        {# DISPLAYING ACTUAL SEARCH SHIFTS #}
+        {% macro displayShifts(entityManager, authenticatedPerson, shifts, accordionName) %}
+            {% import _self as self %}
+            {% set previousShift = null %}
+            <div class="panel-group" id="shifts-{{ accordionName }}">
+                {% for shift in shifts %}
+                    {% if previousShift.getStartDate().format('Ymd') < shift.getStartDate().format('Ymd') %}
+                        <h4 style="margin-top: 15px">{#{{translate('Shifts on')}}#} {{ translate(shift.getStartDate().format('l')) }}  {{ dateLocalized(shift.getStartDate(), 'd/M/y') }}</h4>
+                    {% endif %}
 
-                {% set previousShift = shift %}
+                    {% set previousShift = shift %}
 
-                <div class="shiftHolder">
-                    <div class="shiftHeader">
-                        <div class="shiftFlexCenter"> 
-                            <h5 style="margin-bottom: 0px">{{ shift.getName() }}</h5>
-                            <p style="font-size: 14px; margin-bottom: 0px">{{dateLocalized(shift.getStartDate(), 'd/M/y')}} | {{ dateLocalized(shift.getStartDate(), 'HH:mm') }}-{{ dateLocalized(shift.getEndDate(), 'HH:mm') }}</p> 
-                        </div>
-                        <div class="flexStretch">
-                        </div>
-                        <div class="buttons" style="text-align: right">
-                            {{ self.buttons(entityManager, authenticatedPerson, shift, accordionName) }}
-                        </div>
-                    </div>
-                    <div class="shiftDetails">
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <dl>
-                                    <dt>{{ translate('Name') }}</dt>
-                                    <dd>{{ shift.getName() }}</dd>
-                                    {% if shift.getReward() > 0 %}
-                                        <dt>{{ translate('Reward') }}</dt>
-                                        <dd>{{ shift.getReward() }} {{ translate('Coins') }}
-                                            {% if shift.getHandledOnEvent() %}
-                                                {{ translate('on the event')}}
-                                            {% endif %}
-                                        </dd>
-                                    {% endif %}
-                                    {% if shift.getPoints() > 0 %}
-                                        <dt>{{ translate('Points') }}</dt>
-                                        <dd>{{ shift.getPoints() }} {{ translate('Points') }}</dd>
-                                    {% endif %}
-                                    <dt>{{ translate('Start') }}</dt>
-                                    <dd>{{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }}</dd>
-                                    <dt>{{ translate('End') }}</dt>
-                                    <dd>{{ dateLocalized(shift.getEndDate(), 'd/M/y HH:mm') }}</dd>
-                                </dl>
+                    <div class="shiftHolder">
+                        <div class="shiftHeader">
+                            <div class="shiftFlexCenter">
+                                <h5 style="margin-bottom: 0px">{{ shift.getName() }}</h5>
+                                <p style="font-size: 14px; margin-bottom: 0px">{{ dateLocalized(shift.getStartDate(), 'd/M/y') }}
+                                    | {{ dateLocalized(shift.getStartDate(), 'HH:mm') }}
+                                    -{{ dateLocalized(shift.getEndDate(), 'HH:mm') }}</p>
                             </div>
-                            <div class="col-sm-4">
-                                <dl>
-                                    <dt>{{ translate('Manager') }}</dt>
-                                    <dd>{{ shift.getManager().getFullName() }}</dd>
-
-                                    {% if shift.getEvent() is not null %}
-                                        <dt>{{ translate('Event') }}</dt>
-                                        <dd>{{ shift.getEvent().getTitle(language) }}</dd>
-                                    {% endif %}
-
-                                    <dt>{{ translate('Unit') }}</dt>
-                                    <dd>{{ shift.getUnit().getName() }}</dd>
-                                </dl>
+                            <div class="flexStretch">
                             </div>
-{#                                <div class="col-sm-4">#}
-{#                                    <dl>#}
-{#                                        <dt>{{ translate('Name') }}</dt>#}
-{#                                        <dd>{{ shift.getName() }}</dd>#}
-{#                                        {% if shift.getReward() > 0 %}#}
-{#                                            <dt>{{ translate('Reward') }}</dt>#}
-{#                                            <dd>{{ shift.getReward() }} {{ translate('Coins') }}#}
-{#                                                {% if shift.getHandledOnEvent() %}#}
-{#                                                    {{ translate('on the event')}}#}
-{#                                                {% endif %}#}
-{#                                            </dd>#}
-{#                                        {% endif %}#}
-{#                                        {% if shift.getPoints() > 0 %}#}
-{#                                            <dt>{{ translate('Points') }}</dt>#}
-{#                                            <dd>{{ shift.getPoints() }} {{ translate('Points') }}</dd>#}
-{#                                        {% endif %}#}
-{#                                        <dt>{{ translate('Start') }}</dt>#}
-{#                                        <dd>{{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }}</dd>#}
-{#                                        <dt>{{ translate('End') }}</dt>#}
-{#                                        <dd>{{ dateLocalized(shift.getEndDate(), 'd/M/y HH:mm') }}</dd>#}
-{#                                    </dl>#}
-{#                                </div>#}
-{#                                <div class="col-sm-4">#}
-{#                                    <dl>#}
-{#                                        <dt>{{ translate('Manager') }}</dt>#}
-{#                                        <dd>{{ shift.getManager().getFullName() }}</dd>#}
+                            <div class="buttons" style="text-align: right;padding-top: 5px">
+                                {{ self.buttons(entityManager, authenticatedPerson, shift, accordionName) }}
+                            </div>
+                        </div>
+                        <div class="shiftDetails">
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <dl>
+                                        <dt>{{ translate('Name') }}</dt>
+                                        <dd>{{ shift.getName() }}</dd>
+                                        {% if shift.getReward() > 0 %}
+                                            <dt>{{ translate('Reward') }}</dt>
+                                            <dd>{{ shift.getReward() }} {{ translate('Coins') }}
+                                                {% if shift.getHandledOnEvent() %}
+                                                    {{ translate('on the event') }}
+                                                {% endif %}
+                                            </dd>
+                                        {% endif %}
+                                        {% if shift.getPoints() > 0 %}
+                                            <dt>{{ translate('Points') }}</dt>
+                                            <dd>{{ shift.getPoints() }} {{ translate('Points') }}</dd>
+                                        {% endif %}
+                                        <dt>{{ translate('Start') }}</dt>
+                                        <dd>{{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }}</dd>
+                                        <dt>{{ translate('End') }}</dt>
+                                        <dd>{{ dateLocalized(shift.getEndDate(), 'd/M/y HH:mm') }}</dd>
+                                    </dl>
+                                </div>
+                                <div class="col-sm-4">
+                                    <dl>
+                                        <dt>{{ translate('Manager') }}</dt>
+                                        <dd>{{ shift.getManager().getFullName() }}</dd>
 
-{#                                        {% if shift.getEvent() is not null %}#}
-{#                                            <dt>{{ translate('Event') }}</dt>#}
-{#                                            <dd>{{ shift.getEvent().getTitle(language) }}</dd>#}
-{#                                        {% endif %}#}
+                                        {% if shift.getEvent() is not null %}
+                                            <dt>{{ translate('Event') }}</dt>
+                                            <dd>{{ shift.getEvent().getTitle(language) }}</dd>
+                                        {% endif %}
 
-{#                                        <dt>{{ translate('Unit') }}</dt>#}
-{#                                        <dd>{{ shift.getUnit().getName() }}</dd>#}
-{#                                    </dl>#}
-{#                                </div>#}
+                                        <dt>{{ translate('Unit') }}</dt>
+                                        <dd>{{ shift.getUnit().getName() }}</dd>
+                                    </dl>
+                                </div>
                                 <div class="col-sm-4">
                                     {% if 0 != shift.getNbResponsibles() %}
                                         <dl>
@@ -649,62 +614,38 @@
                                         </dl>
                                     {% endif %}
                                 </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <dl>
+                                        <dt>{{ translate('Description') }}</dt>
+                                        <dd style="text-align: justify;">{{ shift.getDescription() }}</dd>
+
+                                        <dt>{{ translate('Location') }}</dt>
+                                        <dd>
+                                            {{ shift.getLocation().getName() }}
+                                        </dd>
+                                        <dd style="margin-top: 5px;">
+                                            <img class="img-rounded"
+                                                 src="{{ staticMap(shift.getLocation(), '367x125', '7a43b6') }}"/>
+                                        </dd>
+                                    </dl>
+                                </div>
                             </div>
-
-                            {# <dl>
-                                <dt>{{ translate('Description') }}</dt>
-                                <dd style="text-align: justify;">{{ shift.getDescription() }}</dd>
-
-                                <dt>{{ translate('Location') }}</dt>
-                                <dd>
-                                    {{ shift.getLocation().getName() }}
-                                </dd>
-                                <dd style="margin-top: 5px;">
-                                    <img class="img-rounded" src="{{ staticMap(shift.getLocation(), '367x125', '7a43b6') }}" />
-                                </dd>
-                            </dl> #}
-
-{#                            <dl>#}
-{#                                <dt>{{ translate('Description') }}</dt>#}
-{#                                <dd style="text-align: justify;">{{ shift.getDescription() }}</dd>#}
-
-{#                                <dt>{{ translate('Location') }}</dt>#}
-{#                                <dd>#}
-{#                                    {{ shift.getLocation().getName() }}#}
-{#                                </dd>#}
-{#                                <dd style="margin-top: 5px;">#}
-{#                                    <img class="img-rounded" src="{{ staticMap(shift.getLocation(), '367x125', '7a43b6') }}" />#}
-{#                                </dd>#}
-{#                            </dl>#}
-
-                        </div>
-                            <dl>
-                                <dt>{{ translate('Description') }}</dt>
-                                <dd style="text-align: justify;">{{ shift.getDescription() }}</dd>
-
-                                <dt>{{ translate('Location') }}</dt>
-                                <dd>
-                                    {{ shift.getLocation().getName() }}
-                                </dd>
-                                <dd style="margin-top: 5px;">
-                                    <img class="img-rounded" src="{{ staticMap(shift.getLocation(), '367x125', '7a43b6') }}" />
-                                </dd>
-                            </dl>
                         </div>
                     </div>
-                
-            {% else %}
-                {# Iets ander bedenken voor deze stuff anders alert alert-warning class #}
-                <div>
-                    {% if 'search' == accordionName %}
-                        {{ translate('No shifts were found that match the given query.') }}
-                    {% else %}
-                        {{ translate('You have not yet signed up for any shifts. You can use the search functions on the left to look for some!') }}
-                    {% endif %}
-                </div>
-            {% endfor %}
-        </div>
-    {% endmacro %}
+
+                {% else %}
+                    {# Iets ander bedenken voor deze stuff anders alert alert-warning class #}
+                    <div>
+                        {% if 'search' == accordionName %}
+                            {{ translate('No shifts were found that match the given query.') }}
+                        {% else %}
+                            {{ translate('You have not yet signed up for any shifts. You can use the search functions on the left to look for some!') }}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endmacro %}
 
     {% macro buttonStyle(shift, type) %}
         {% if 'responsibles' == type %}
@@ -727,23 +668,23 @@
         {% import _self as self %}
 
         {% if 'search' == accordionName %}
-            {% if (shift.canHaveAsResponsible(entityManager, authenticatedPerson) and 0 != shift.getNbResponsibles()) or (shift.canHaveAsVolunteer(entityManager, authenticatedPerson) and 0 != shift.getNbVolunteers()) %}
-                <i>{{ translate('Sign In') }}:</i>
-            {% endif %}
+{#            {% if (shift.canHaveAsResponsible(entityManager, authenticatedPerson) and 0 != shift.getNbResponsibles()) or (shift.canHaveAsVolunteer(entityManager, authenticatedPerson) and 0 != shift.getNbVolunteers()) %}#}
+{#                <i>{{ translate('Sign In') }}:</i>#}
+{#            {% endif %}#}
 
             {% if shift.canHaveAsResponsible(entityManager, authenticatedPerson) and 0 != shift.getNbResponsibles() %}
-                <div onclick="event.stopPropagation()" class="button blue unfilled {{ self.buttonStyle(shift, 'responsibles') }} responsible" data-id="{{ shift.getId() }}" data-count="{{ shift.countResponsibles() }}" data-max="{{ shift.getNbResponsibles() }}">
+                <div onclick="event.stopPropagation()" style="padding: 4px 8px; display: inline-block" class="button blue unfilled {{ self.buttonStyle(shift, 'responsibles') }} responsible" data-id="{{ shift.getId() }}" data-count="{{ shift.countResponsibles() }}" data-max="{{ shift.getNbResponsibles() }}" data-ticket="{{ shift.getTicketNeeded() }}">
                     <a>{{ translate('Responsible') }} (<span class="count">{{ shift.countResponsibles() }}</span>/{{ shift.getNbResponsibles() }})</a>
-                </div>                  
+                </div>
             {% endif %}
             {% if shift.canHaveAsVolunteer(entityManager, authenticatedPerson) and 0 != shift.getNbVolunteers() %}
-                <div onclick="event.stopPropagation()" style="padding: 4px 8px" class="button blue unfilled {{ self.buttonStyle(shift, 'volunteers') }} volunteer" data-id="{{ shift.getId() }}" data-count="{{ shift.countVolunteers() }}" data-max="{{ shift.getNbVolunteers() }}" data-ticket="{{ shift.getTicketNeeded() }}">
+                <div onclick="event.stopPropagation()" style="padding: 4px 8px; margin-left: 10px; display: inline-block" class="button blue unfilled {{ self.buttonStyle(shift, 'volunteers') }} volunteer" data-id="{{ shift.getId() }}" data-count="{{ shift.countVolunteers() }}" data-max="{{ shift.getNbVolunteers() }}" data-ticket="{{ shift.getTicketNeeded() }}">
                     <a>{{ translate('Volunteer') }} (<span class="count">{{ shift.countVolunteers() }}</span>/{{ shift.getNbVolunteers() }})</a>
-                </div>  
+                </div>
             {% endif %}
         {% else %}
             {% if shift.canSignOut(entityManager) %}
-                <div onclick="event.stopPropagation()" class="button blue unfilled signOut" data-id="{{ shift.getId() }}">
+                <div onclick="event.stopPropagation()" style="padding: 4px 8px" class="button blue unfilled signOut" data-id="{{ shift.getId() }}">
                     <a>{{ translate('Sign Out') }}</a>
                 </div>
             {% endif %}
