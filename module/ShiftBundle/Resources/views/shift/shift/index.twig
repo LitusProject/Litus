@@ -5,333 +5,320 @@
     {# Script for collapsing shift items #}
     {{ inlineScript() }}
 
-    <script type="text/javascript">
-        $(document).ready(function() {
-            var faqItems = document.getElementsByClassName('shiftHolder'); 
-            for(var i = 0; i < faqItems.length; i++) {
-                var currentFAQ = faqItems[i]; 
-                var currentContent = currentFAQ.querySelector('.shiftDetails'); 
-                currentContent.setAttribute("style", "height: 0px;"); 
-                currentFAQ.addEventListener("click", func, false);
-                function func() {
-                    var currentContent = this.querySelector('.shiftDetails'); 
-                    if (currentContent.style.height === "0px") {
-                        currentContent.setAttribute("style", "height: auto");
-                    } else {
-                        currentContent.setAttribute("style", "height: 0px");
-                    }
+<script type="text/javascript">
+    $(document).ready(function() {
+        var faqItems = document.getElementsByClassName('shiftHolder');
+        for(var i = 0; i < faqItems.length; i++) {
+            var currentFAQ = faqItems[i];
+            var currentContent = currentFAQ.querySelector('.shiftDetails');
+            currentContent.setAttribute("style", "height: 0px;");
+            currentFAQ.addEventListener("click", func, false);
+            function func() {
+                var currentContent = this.querySelector('.shiftDetails');
+                if (currentContent.style.height === "0px") {
+                    currentContent.setAttribute("style", "height: auto");
+                } else {
+                    currentContent.setAttribute("style", "height: 0px");
                 }
             }
-        })
-    </script>  
+        }
+    })
+</script>
 
-    {% import _self as self %}
+{% import _self as self %}
 
-    <div class="flashmessage alert alert-success fade" id="responsible_success">
-        <div class="content">
-            <a class="close" data-dismiss="alert">&times;</a>
-            {{ translate('You were signed in as a responsible for the selected shift!') }}
-        </div>
+<div class="flashmessage alert alert-success fade" id="responsible_success">
+    <div class="content">
+        <a class="close" data-dismiss="alert">&times;</a>
+        {{ translate('You were signed in as a responsible for the selected shift!') }}
     </div>
-    <div class="flashmessage alert alert-success fade" id="responsible_success">
-        <div class="content">
-            <a class="close" data-dismiss="alert">&times;</a>
-            {{ translate('You were signed in as a volunteer for the selected shift!') }}
-        </div>
+</div>
+<div class="flashmessage alert alert-success fade" id="responsible_success">
+    <div class="content">
+        <a class="close" data-dismiss="alert">&times;</a>
+        {{ translate('You were signed in as a volunteer for the selected shift!') }}
     </div>
-    <div class="flashmessage alert alert-success fade" id="sign_out">
-        <div class="content">
-            <a class="close" data-dismiss="alert">&times;</a>
-            {{ translate('You were signed out from the selected shift!') }}
-        </div>
+</div>
+<div class="flashmessage alert alert-success fade" id="sign_out">
+    <div class="content">
+        <a class="close" data-dismiss="alert">&times;</a>
+        {{ translate('You were signed out from the selected shift!') }}
     </div>
-    <div class="flashmessage alert alert-danger fade" id="error">
-        <div class="content">
-            <a class="close" data-dismiss="alert">&times;</a>
-            {{ translate('An error occurred while processing your request!') }}
-        </div>
+</div>
+<div class="flashmessage alert alert-danger fade" id="error">
+    <div class="content">
+        <a class="close" data-dismiss="alert">&times;</a>
+        {{ translate('An error occurred while processing your request!') }}
     </div>
+</div>
 
-    <div id="modalSignInWarning" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <a class="close" data-dismiss="modal">&times;</a>
-                    <h4>{{ translate('Sign In') }}</h4>
-                </div>
-                <div class="modal-body">
-                    <p>
-                        {{ translate('You are about to sign yourself in for a shift. Do you want to continue?') }}
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary confirm">{{ translate('Yes') }}</button>
-                    <button class="btn btn-default deny">{{ translate('No') }}</button>
-                </div>
+<div id="modalSignInWarning" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal">&times;</a>
+                <h4>{{ translate('Sign In') }}</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    {{ translate('You are about to sign yourself in for a shift. Do you want to continue?') }}
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary confirm">{{ translate('Yes') }}</button>
+                <button class="btn btn-default deny">{{ translate('No') }}</button>
             </div>
         </div>
     </div>
+</div>
 
-    <div id="modalSignInWarningWithTicket" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <a class="close" data-dismiss="modal">&times;</a>
-                    <h4>{{ translate('Sign In') }}</h4>
-                </div>
-                <div class="modal-body">
-                    <p>
-                        {{ translate('You are about to sign yourself in for a shift. To do this shift you need to have a ticket for this activity. Do you want to continue?') }}
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary confirm">{{ translate('Yes') }}</button>
-                    <button class="btn btn-default deny">{{ translate('No') }}</button>
-                </div>
+<div id="modalSignInWarningWithTicket" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal">&times;</a>
+                <h4>{{ translate('Sign In') }}</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    {{ translate('You are about to sign yourself in for a shift. To do this shift you need to have a ticket for this activity. Do you want to continue?') }}
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary confirm">{{ translate('Yes') }}</button>
+                <button class="btn btn-default deny">{{ translate('No') }}</button>
             </div>
         </div>
     </div>
+</div>
 
-    <div id="modalInsurance" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <a class="close" data-dismiss="modal">&times;</a>
-                    <h4>{{ translate('Insurance') }}</h4>
-                </div>
-                <div class="modal-body">
-                    <p>
-                        {{ insuranceText }}
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary confirm">{{ translate('I have read this') }}</button>
-                    <button class="btn btn-default deny">{{ translate('I do not agree') }}</button>
-                </div>
+<div id="modalInsurance" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal">&times;</a>
+                <h4>{{ translate('Insurance') }}</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    {{ insuranceText }}
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary confirm">{{ translate('I have read this') }}</button>
+                <button class="btn btn-default deny">{{ translate('I do not agree') }}</button>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="container">
-        {# <div class="spacer40"></div>
-        <h1>Mijn VTK</h1>
-        <div class="spacer40"></div>
-        {% include 'common/account/partials/navigation.twig' %} #}
+<div class="container">
+    {# <div class="spacer40"></div>
+    <h1>Mijn VTK</h1>
+    <div class="spacer40"></div>
+    {% include 'common/account/partials/navigation.twig' %} #}
 
-        <div class="spacer50"></div>
-        <h2>{{ translate('Shifts') }} Reserveren</h2> 
-        {# TO DO translations aanpassen, onderaan bij filters ook wat gemengd #}
+    <div class="spacer50"></div>
+    <h2>{{ translate('Shifts') }} Reserveren</h2>
+    {# TO DO translations aanpassen, onderaan bij filters ook wat gemengd #}
 
-{#        {% include 'shift/shift/partials/navigation.twig' %}#}
+    {#        {% include 'shift/shift/partials/navigation.twig' %}#}
 
-        {# <div style="text-align: justify;">
-            {{ translate('If you would like to help Student IT from time to time, you can just sign up for a shift. In the left-hand column, you can choose shift according to date, event or category (like Cursusdienst or Theokot), but you don\'t have to. To the right, you find a list of all the shift to which you can enroll. If you click on a shift, all the useful information appears. Just click \'Sign In\' and you\'re done! Attention: you can only unsubscribe yourself up to 24 hours beforehand! If a shift is already completely full, you can probably still sign up by kicking off somebody from Student IT itself. By doing so, you relieve that person\'s working load for which this person will be grateful the rest of his/her life :).') }}
-        </div> #}
+    {# <div style="text-align: justify;">
+        {{ translate('If you would like to help Student IT from time to time, you can just sign up for a shift. In the left-hand column, you can choose shift according to date, event or category (like Cursusdienst or Theokot), but you don\'t have to. To the right, you find a list of all the shift to which you can enroll. If you click on a shift, all the useful information appears. Just click \'Sign In\' and you\'re done! Attention: you can only unsubscribe yourself up to 24 hours beforehand! If a shift is already completely full, you can probably still sign up by kicking off somebody from Student IT itself. By doing so, you relieve that person\'s working load for which this person will be grateful the rest of his/her life :).') }}
+    </div> #}
 
-        {# BEGIN VAN TWEE KOLOMMEN VR SHIFTEN #}
+    {# BEGIN VAN TWEE KOLOMMEN VR SHIFTEN #}
 
-        {# <div class="spacer40"></div> #}
-        <div style="height: 20px"></div>
-        {% include 'shift/shift/partials/navigation.twig' %}
-        <div style="height: 20px"></div>
+    {# <div class="spacer40"></div> #}
+    <div style="height: 20px"></div>
+    {% include 'shift/shift/partials/navigation.twig' %}
+    <div style="height: 20px"></div>
 
-        <div>
-            {# <p>Filters</p> #}
-            <div class="filterGrid">
+    <div>
+        {# <p>Filters</p> #}
+        <div class="filterGrid">
 
-                <div >
-                    <h6>Filter {{ translate('By Date') }}</h6>
+            <div >
+                <h6>Filter {{ translate('By Date') }}</h6>
 
-                    {% if dateSearchForm is defined %}
-                        {% do dateSearchForm.prepare() %}
-                        {% autoescape false %}
-                            {{ form().openTag(dateSearchForm) }}
+                {% if dateSearchForm is defined %}
+                    {% do dateSearchForm.prepare() %}
+                    {% autoescape false %}
+                        {{ form().openTag(dateSearchForm) }}
 
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div style="margin-right: 10px">
-                                        {{ formElement(dateSearchForm.get('date')) }}
-                                    </div>
-                                    <div class="input-group-btn">
-                                        <button class="btn button blue unfilled" type="submit">{{ translate('Search') }}</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {{ form().closeTag() }}
-                        {% endautoescape %}
-                    {% endif %}
-                </div>
-                <div>
-                    <h6>Filter {{ translate('By Event') }}</h6>
-
-                    {% if eventSearchForm is defined %}
-                        {% do eventSearchForm.prepare() %}
-                        {% autoescape false %}
-                            {{ form().openTag(eventSearchForm) }}
-
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div style="margin-right: 10px">
-                                    {{ formElement(eventSearchForm.get('event')) }}
-                                    </div>
-                                    <div class="input-group-btn">
-                                        <button class="btn button blue unfilled" type="submit">{{ translate('Search') }}</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {{ form().closeTag() }}
-                        {% endautoescape %}
-                    {% endif %}
-                </div>
-
-                <div>
-                    <h6>Filter {{ translate('By Unit') }}</h6>
-
-                    {% if unitSearchForm is defined %}
-                        {% do unitSearchForm.prepare() %}
-                        {% autoescape false %}
-                            {{ form().openTag(unitSearchForm) }}
-
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div style="margin-right: 15px">
-                                        {{ formElement(unitSearchForm.get('unit')) }}
-                                    </div>
-                                    <div class="input-group-btn">
-                                        <button class="btn button blue unfilled" type="submit">{{ translate('Search') }}</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {{ form().closeTag() }}
-                        {% endautoescape %}
-                    {% endif %}
-                </div>
-
-            </div> 
-        </div>
-
-        <div style="height: 60px"></div>
-
-        {# <div class="spacer40"></div> #}
-
-        {# <div class="row"> #}
-            {# <div class="col-md-4 shiftSearchForms">
-                <h2>{{ translate('Search') }}</h2>
-
-                <div class="well">
-                    <h4>{{ translate('By Date') }}</h4>
-
-                    {% if dateSearchForm is defined %}
-                        {% do dateSearchForm.prepare() %}
-                        {% autoescape false %}
-                            {{ form().openTag(dateSearchForm) }}
-
-                            <div class="form-group">
-                                <div class="input-group">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div style="margin-right: 10px">
                                     {{ formElement(dateSearchForm.get('date')) }}
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
-                                    </div>
+                                </div>
+                                <div class="input-group-btn">
+                                    <button class="btn button blue unfilled" type="submit">{{ translate('Search') }}</button>
                                 </div>
                             </div>
+                        </div>
 
-                            {{ form().closeTag() }}
-                        {% endautoescape %}
-                    {% endif %}
-                </div>
+                        {{ form().closeTag() }}
+                    {% endautoescape %}
+                {% endif %}
+            </div>
+            <div>
+                <h6>Filter {{ translate('By Event') }}</h6>
 
-                <div class="well">
-                    <h4>{{ translate('By Event') }}</h4>
+                {% if eventSearchForm is defined %}
+                    {% do eventSearchForm.prepare() %}
+                    {% autoescape false %}
+                        {{ form().openTag(eventSearchForm) }}
 
-                    {% if eventSearchForm is defined %}
-                        {% do eventSearchForm.prepare() %}
-                        {% autoescape false %}
-                            {{ form().openTag(eventSearchForm) }}
-
-                            <div class="form-group">
-                                <div class="input-group">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div style="margin-right: 10px">
                                     {{ formElement(eventSearchForm.get('event')) }}
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
-                                    </div>
+                                </div>
+                                <div class="input-group-btn">
+                                    <button class="btn button blue unfilled" type="submit">{{ translate('Search') }}</button>
                                 </div>
                             </div>
+                        </div>
 
-                            {{ form().closeTag() }}
-                        {% endautoescape %}
-                    {% endif %}
-                </div>
-
-                <div class="well">
-                    <h4>{{ translate('By Unit') }}</h4>
-
-                    {% if unitSearchForm is defined %}
-                        {% do unitSearchForm.prepare() %}
-                        {% autoescape false %}
-                            {{ form().openTag(unitSearchForm) }}
-
-                            <div class="form-group">
-                                <div class="input-group">
-                                    {{ formElement(unitSearchForm.get('unit')) }}
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {{ form().closeTag() }}
-                        {% endautoescape %}
-                    {% endif %}
-                </div> #}
-
-            {# </div> #}
-            {# <div class="col-md-8"> #}
+                        {{ form().closeTag() }}
+                    {% endautoescape %}
+                {% endif %}
+            </div>
 
             <div>
+                <h6>Filter {{ translate('By Unit') }}</h6>
 
+                {% if unitSearchForm is defined %}
+                    {% do unitSearchForm.prepare() %}
+                    {% autoescape false %}
+                        {{ form().openTag(unitSearchForm) }}
 
-                {# SHIFTS FROM SEARCH #}
-                <div class="contentBlock">
-                    <div class="headingHolder">
-                        <h3 style="margin-bottom: 0px" class="smallerHeadingHack">{{ resultString }}</h3>
-                    </div>
-
-                    {% if searchResults is not null %}
-                        {{ self.displayShifts(entityManager, authenticatedPerson, searchResults, 'search') }}
-                    {% else %}
-                        <div class="alert alert-warning">
-                            <a class="close" data-dismiss="alert">&times;</a>
-                            {{ translate('There are no shifts to be shown yet; please use the search functions on the left.') }}
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div style="margin-right: 15px">
+                                    {{ formElement(unitSearchForm.get('unit')) }}
+                                </div>
+                                <div class="input-group-btn">
+                                    <button class="btn button blue unfilled" type="submit">{{ translate('Search') }}</button>
+                                </div>
+                            </div>
                         </div>
-                    {% endif %}
 
-                </div>  
-            
-                <div class="spacer50"></div>
-
-                {# MY CURRENT SHIFTS #}  
-                <div class="contentBlock">
-                    <div class="headingHolder">
-                        <h3 style="margin-bottom: 0px">{{ translate('My Shifts') }}</h3>
-                    </div>
-
-                    {{ self.displayShifts(entityManager, authenticatedPerson, myShifts, 'myShifts') }}
-
-                    {% if authenticatedPerson != null and hasAccess('shift', 'export') %}
-                        <div class="buttonHolder">
-                            <a class="myVtkButton" href="{{ url('shift', {"action": "index"}) }}">Downloaden</a>
-                        </div>                    
-                    {% endif %}
-                </div>            
-
-                <div style="height: 50px"></div>
-
+                        {{ form().closeTag() }}
+                    {% endautoescape %}
+                {% endif %}
             </div>
-            {# </div> #}
-        {# </div> #}
+
+        </div>
+    </div>
+
+    <div style="height: 60px"></div>
+
+    {# <div class="spacer40"></div> #}
+
+    {# <div class="row"> #}
+    {# <div class="col-md-4 shiftSearchForms">
+        <h2>{{ translate('Search') }}</h2>
+        <div class="well">
+            <h4>{{ translate('By Date') }}</h4>
+            {% if dateSearchForm is defined %}
+                {% do dateSearchForm.prepare() %}
+                {% autoescape false %}
+                    {{ form().openTag(dateSearchForm) }}
+                    <div class="form-group">
+                        <div class="input-group">
+                            {{ formElement(dateSearchForm.get('date')) }}
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                            </div>
+                        </div>
+                    </div>
+                    {{ form().closeTag() }}
+                {% endautoescape %}
+            {% endif %}
+        </div>
+        <div class="well">
+            <h4>{{ translate('By Event') }}</h4>
+            {% if eventSearchForm is defined %}
+                {% do eventSearchForm.prepare() %}
+                {% autoescape false %}
+                    {{ form().openTag(eventSearchForm) }}
+                    <div class="form-group">
+                        <div class="input-group">
+                            {{ formElement(eventSearchForm.get('event')) }}
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                            </div>
+                        </div>
+                    </div>
+                    {{ form().closeTag() }}
+                {% endautoescape %}
+            {% endif %}
+        </div>
+        <div class="well">
+            <h4>{{ translate('By Unit') }}</h4>
+            {% if unitSearchForm is defined %}
+                {% do unitSearchForm.prepare() %}
+                {% autoescape false %}
+                    {{ form().openTag(unitSearchForm) }}
+                    <div class="form-group">
+                        <div class="input-group">
+                            {{ formElement(unitSearchForm.get('unit')) }}
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                            </div>
+                        </div>
+                    </div>
+                    {{ form().closeTag() }}
+                {% endautoescape %}
+            {% endif %}
+        </div> #}
+
+    {# </div> #}
+    {# <div class="col-md-8"> #}
+
+    <div>
+
+        {# MY CURRENT SHIFTS #}
+        <div class="contentBlock">
+            <div class="headingHolder">
+                <h3 style="margin-bottom: 0px">{{ translate('My Shifts') }}</h3>
+            </div>
+
+            {{ self.displayShifts(entityManager, authenticatedPerson, myShifts, 'myShifts') }}
+
+            {% if authenticatedPerson != null and hasAccess('shift', 'export') %}
+                <div class="buttonHolder">
+                    <a class="myVtkButton" href="{{ url('shift', {"action": "index"}) }}">Downloaden</a>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="spacer50"></div>
+
+
+        {# SHIFTS FROM SEARCH #}
+        <div class="contentBlock">
+            <div class="headingHolder">
+                <h3 style="margin-bottom: 0px" class="smallerHeadingHack">{{ resultString }}</h3>
+            </div>
+
+            {% if searchResults is not null %}
+                {{ self.displayShifts(entityManager, authenticatedPerson, searchResults, 'search') }}
+            {% else %}
+                <div class="alert alert-warning">
+                    <a class="close" data-dismiss="alert">&times;</a>
+                    {{ translate('There are no shifts to be shown yet; please use the search functions on the left.') }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div style="height: 50px"></div>
+
+    </div>
+    {# </div> #}
+    {# </div> #}
     {% endblock %}
 
     {% block content_script %}
@@ -357,32 +344,25 @@
                             }
                         });
                     }
-
                     button.parent().find('button').each(function(i) {
                         $(this).addClass('active disabled');
                     });
-
                     $('#modalSignInWarning .deny').one('click', function () {
                         $('#modalSignInWarning').modal('hide');
-
                         button.parent().find('button').each(function(i) {
                             $(this).removeClass('disabled');
                         });
                     });
-
                     $('#modalInsurance .deny').one('click', function () {
                         $('#modalInsurance').modal('hide');
-
                         button.parent().find('button').each(function(i) {
                             $(this).removeClass('disabled');
                         });
                     });
                 });
-
                 $('.volunteer').click(function () {
                     var button = $(this);
                     var count = parseInt($(this).data('count'));
-
                     if (!button.hasClass('disabled')) {
                         var id;
                         if(button.data('ticket')){
@@ -393,7 +373,6 @@
                         $(id).modal();
                         $(id +' .confirm').one('click', function (){
                             $(id).modal('hide');
-
                             if(!{{ hasReadInsurance }}) {
                                 $(id).modal();
                                 $(id +' .confirm').one('click', function () {
@@ -405,32 +384,25 @@
                             }
                         });
                     }
-
                     button.parent().find('button').each(function(i) {
                         $(this).addClass('disabled');
                     });
-
                     $(id +' .deny').one('click', function () {
                         $(id).modal('hide');
-
                         button.parent().find('button').each(function(i) {
                             $(this).removeClass('disabled');
                         });
                     });
-
                     $('#modalInsurance .deny').one('click', function () {
                         $('#modalInsurance').modal('hide');
-
                         button.parent().find('button').each(function(i) {
                             $(this).removeClass('disabled');
                         });
                     });
                 });
-
                 $('.signOut').click(function () {
                     var button = $(this);
                     button.addClass('disabled');
-
                     $.post(
                         '{{ url('shift', {"action": "signOut"}) }}',
                         {"id": $(this).data('id')},
@@ -438,10 +410,8 @@
                             if (data && 'success' == data.status) {
                                 $('.flashmessage').removeClass('in');
                                 $('#sign_out').addClass('in');
-
                                 var panel = $(button.data('panel')).clone();
                                 panel.find('.buttons').html('').css('display', 'none');
-
                                 $('#shifts-search .alert').remove();
                                 $('#shifts-search').prepend(panel);
                                 panel.fadeIn();
@@ -454,10 +424,8 @@
                     ).error(errorSave);
                 });
             });
-
             function updateButton(button, ratio, count) {
                 button.removeClass('btn-success btn-warning btn-danger');
-
                 if (ratio < 0.5) {
                     button.addClass('btn-success');
                 } else if (ratio < 0.75) {
@@ -465,15 +433,12 @@
                 } else if (ratio == 1) {
                     button.addClass('btn-danger');
                 }
-
                 button.find('.count').text(ratio == 1 ? button.data('max') : ++count);
             }
-
             function errorSave() {
                 $('.flashmessage').removeClass('in');
                 $('#error').addClass('in');
             }
-
             function volunteerSignIn(button, count) {
                 $.post(
                     '{{ url('shift', {"action": "volunteer"}) }}',
@@ -482,11 +447,9 @@
                         if (data && 'success' == data.status) {
                             $('.flashmessage').removeClass('in');
                             $('#volunteer_success').addClass('in');
-
                             updateButton(button, parseInt(data.ratio, 10), count);
                             var panel = $(button.data('panel')).clone();
                             panel.find('.buttons').html('').css('display', 'none');
-
                             $('#shifts-myShifts .alert').remove();
                             $('#shifts-myShifts').prepend(panel);
                             panel.fadeIn();
@@ -498,7 +461,6 @@
                     'json'
                 ).error(errorSave);
             }
-
             function responsibleSignIn(button, count) {
                 $.post(
                     '{{ url('shift', {"action": "responsible"}) }}',
@@ -507,11 +469,9 @@
                         if (data && 'success' == data.status) {
                             $('.flashmessage').removeClass('in');
                             $('#responsible_success').addClass('in');
-
                             updateButton(button, parseInt(data.ratio, 10), count);
                             var panel = $(button.data('panel')).clone();
                             panel.find('.buttons').html('').css('display', 'none');
-
                             $('#shifts-myShifts .alert').remove();
                             $('#shifts-myShifts').prepend(panel);
                             panel.fadeIn();
@@ -541,13 +501,15 @@
 
                 <div class="shiftHolder" {% if shift.canHaveAsResponsible(entityManager, authenticatedPerson) and 0 != shift.getNbResponsibles() %}style="border:solid #202348;"{% endif %}>
                     <div class="shiftHeader">
-                        <div class="shiftFlexCenter"> 
+                        <div class="shiftFlexCenter">
                             <h5 style="margin-bottom: 0px">{{ shift.getName() }}</h5>
-                            <p style="font-size: 14px; margin-bottom: 0px">{{dateLocalized(shift.getStartDate(), 'd/M/y')}} | {{ dateLocalized(shift.getStartDate(), 'HH:mm') }}-{{ dateLocalized(shift.getEndDate(), 'HH:mm') }}</p> 
+                            <p style="font-size: 14px; margin-bottom: 0px">{{ dateLocalized(shift.getStartDate(), 'd/M/y') }}
+                                | {{ dateLocalized(shift.getStartDate(), 'HH:mm') }}
+                                -{{ dateLocalized(shift.getEndDate(), 'HH:mm') }}</p>
                         </div>
                         <div class="flexStretch">
                         </div>
-                        <div class="buttons" style="text-align: right">
+                        <div class="buttons" style="text-align: right;padding-top: 5px">
                             {{ self.buttons(entityManager, authenticatedPerson, shift, accordionName) }}
                         </div>
                     </div>
@@ -562,7 +524,7 @@
                                         <dt>{{ translate('Reward') }}</dt>
                                         <dd>{{ shift.getReward() }} {{ translate('Coins') }}
                                             {% if shift.getHandledOnEvent() %}
-                                                {{ translate('on the event')}}
+                                                {{ translate('on the event') }}
                                             {% endif %}
                                         </dd>
                                     {% endif %}
@@ -590,93 +552,48 @@
                                     <dd>{{ shift.getUnit().getName() }}</dd>
                                 </dl>
                             </div>
-                            <div class="row">
-{#                                <div class="col-sm-4">#}
-{#                                    <dl>#}
-{#                                        <dt>{{ translate('Name') }}</dt>#}
-{#                                        <dd>{{ shift.getName() }}</dd>#}
-{#                                        {% if shift.getReward() > 0 %}#}
-{#                                            <dt>{{ translate('Reward') }}</dt>#}
-{#                                            <dd>{{ shift.getReward() }} {{ translate('Coins') }}#}
-{#                                                {% if shift.getHandledOnEvent() %}#}
-{#                                                    {{ translate('on the event')}}#}
-{#                                                {% endif %}#}
-{#                                            </dd>#}
-{#                                        {% endif %}#}
-{#                                        {% if shift.getPoints() > 0 %}#}
-{#                                            <dt>{{ translate('Points') }}</dt>#}
-{#                                            <dd>{{ shift.getPoints() }} {{ translate('Points') }}</dd>#}
-{#                                        {% endif %}#}
-{#                                        <dt>{{ translate('Start') }}</dt>#}
-{#                                        <dd>{{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }}</dd>#}
-{#                                        <dt>{{ translate('End') }}</dt>#}
-{#                                        <dd>{{ dateLocalized(shift.getEndDate(), 'd/M/y HH:mm') }}</dd>#}
-{#                                    </dl>#}
-{#                                </div>#}
-{#                                <div class="col-sm-4">#}
-{#                                    <dl>#}
-{#                                        <dt>{{ translate('Manager') }}</dt>#}
-{#                                        <dd>{{ shift.getManager().getFullName() }}</dd>#}
+                            <div class="col-sm-4">
+                                {% if 0 != shift.getNbResponsibles() %}
+                                    <dl>
+                                        <dt>{{ translate('Responsibles') }}</dt>
 
-{#                                        {% if shift.getEvent() is not null %}#}
-{#                                            <dt>{{ translate('Event') }}</dt>#}
-{#                                            <dd>{{ shift.getEvent().getTitle(language) }}</dd>#}
-{#                                        {% endif %}#}
+                                        {% for responsible in shift.getResponsibles() %}
+                                            <dd>{{ responsible.getPerson().getFullName() }}</dd>
+                                        {% endfor %}
+                                    </dl>
+                                {% endif %}
 
-{#                                        <dt>{{ translate('Unit') }}</dt>#}
-{#                                        <dd>{{ shift.getUnit().getName() }}</dd>#}
-{#                                    </dl>#}
-{#                                </div>#}
-                                <div class="col-sm-4">
-                                    {% if 0 != shift.getNbResponsibles() %}
-                                        <dl>
-                                            <dt>{{ translate('Responsibles') }}</dt>
+                                {% if 0 != shift.getNbVolunteers() %}
+                                    <dl>
+                                        <dt>{{ translate('Volunteers') }}</dt>
 
-                                            {% for responsible in shift.getResponsibles() %}
-                                                <dd>{{ responsible.getPerson().getFullName() }}</dd>
-                                            {% endfor %}
-                                        </dl>
-                                    {% endif %}
-
-                                    {% if 0 != shift.getNbVolunteers() %}
-                                        <dl>
-                                            <dt>{{ translate('Volunteers') }}</dt>
-
-                                            {% for volunteer in shift.getVolunteers() %}
-                                                <dd>{{ volunteer.getPerson().getFullName() }}</dd>
-                                            {% endfor %}
-                                        </dl>
-                                    {% endif %}
-                                </div>
+                                        {% for volunteer in shift.getVolunteers() %}
+                                            <dd>{{ volunteer.getPerson().getFullName() }}</dd>
+                                        {% endfor %}
+                                    </dl>
+                                {% endif %}
                             </div>
-{#                            <dl>#}
-{#                                <dt>{{ translate('Description') }}</dt>#}
-{#                                <dd style="text-align: justify;">{{ shift.getDescription() }}</dd>#}
-
-{#                                <dt>{{ translate('Location') }}</dt>#}
-{#                                <dd>#}
-{#                                    {{ shift.getLocation().getName() }}#}
-{#                                </dd>#}
-{#                                <dd style="margin-top: 5px;">#}
-{#                                    <img class="img-rounded" src="{{ staticMap(shift.getLocation(), '367x125', '7a43b6') }}" />#}
-{#                                </dd>#}
-{#                            </dl>#}
                         </div>
-                            <dl>
-                                <dt>{{ translate('Description') }}</dt>
-                                <dd style="text-align: justify;">{{ shift.getDescription() }}</dd>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <dl>
+                                    <dt>{{ translate('Description') }}</dt>
+                                    <dd style="text-align: justify;">{{ shift.getDescription() }}</dd>
 
-                                <dt>{{ translate('Location') }}</dt>
-                                <dd>
-                                    {{ shift.getLocation().getName() }}
-                                </dd>
-                                <dd style="margin-top: 5px;">
-                                    <img class="img-rounded" src="{{ staticMap(shift.getLocation(), '367x125', '7a43b6') }}" />
-                                </dd>
-                            </dl>
+                                    <dt>{{ translate('Location') }}</dt>
+                                    <dd>
+                                        {{ shift.getLocation().getName() }}
+                                    </dd>
+                                    <dd style="margin-top: 5px;">
+                                        <img class="img-rounded"
+                                             src="{{ staticMap(shift.getLocation(), '367x125', '7a43b6') }}"/>
+                                    </dd>
+                                </dl>
+                            </div>
                         </div>
                     </div>
-                
+                </div>
+
             {% else %}
                 {# Iets ander bedenken voor deze stuff anders alert alert-warning class #}
                 <div>
@@ -711,25 +628,25 @@
         {% import _self as self %}
 
         {% if 'search' == accordionName %}
-            {% if (shift.canHaveAsResponsible(entityManager, authenticatedPerson) and 0 != shift.getNbResponsibles()) or (shift.canHaveAsVolunteer(entityManager, authenticatedPerson) and 0 != shift.getNbVolunteers()) %}
-                <i>{{ translate('Sign In') }}:</i>
-            {% endif %}
+            {#            {% if (shift.canHaveAsResponsible(entityManager, authenticatedPerson) and 0 != shift.getNbResponsibles()) or (shift.canHaveAsVolunteer(entityManager, authenticatedPerson) and 0 != shift.getNbVolunteers()) %}#}
+            {#                <i>{{ translate('Sign In') }}:</i>#}
+            {#            {% endif %}#}
 
             {% if shift.canHaveAsResponsible(entityManager, authenticatedPerson) and 0 != shift.getNbResponsibles() %}
-                <div onclick="event.stopPropagation()" class="button blue unfilled {{ self.buttonStyle(shift, 'responsibles') }} responsible" data-id="{{ shift.getId() }}" data-count="{{ shift.countResponsibles() }}" data-max="{{ shift.getNbResponsibles() }}">
+                <div onclick="event.stopPropagation()" style="padding: 4px 8px; display: inline-block" class="button blue unfilled {{ self.buttonStyle(shift, 'responsibles') }} responsible" data-id="{{ shift.getId() }}" data-count="{{ shift.countResponsibles() }}" data-max="{{ shift.getNbResponsibles() }}" data-ticket="{{ shift.getTicketNeeded() }}">
                     <a>{{ translate('Responsible') }} (<span class="count">{{ shift.countResponsibles() }}</span>/{{ shift.getNbResponsibles() }})</a>
-                </div>                  
+                </div>
             {% endif %}
             {% if shift.canHaveAsVolunteer(entityManager, authenticatedPerson) and 0 != shift.getNbVolunteers() %}
-                <div onclick="event.stopPropagation()" style="padding: 4px 8px" class="button blue unfilled {{ self.buttonStyle(shift, 'volunteers') }} volunteer" data-id="{{ shift.getId() }}" data-count="{{ shift.countVolunteers() }}" data-max="{{ shift.getNbVolunteers() }}" data-ticket="{{ shift.getTicketNeeded() }}">
+                <div onclick="event.stopPropagation()" style="padding: 4px 8px; margin-left: 10px; display: inline-block" class="button blue unfilled {{ self.buttonStyle(shift, 'volunteers') }} volunteer" data-id="{{ shift.getId() }}" data-count="{{ shift.countVolunteers() }}" data-max="{{ shift.getNbVolunteers() }}" data-ticket="{{ shift.getTicketNeeded() }}">
                     <a>{{ translate('Volunteer') }} (<span class="count">{{ shift.countVolunteers() }}</span>/{{ shift.getNbVolunteers() }})</a>
-                </div>  
+                </div>
             {% endif %}
         {% else %}
             {% if shift.canSignOut(entityManager) %}
-                <div onclick="event.stopPropagation()" class="button blue unfilled signOut" data-id="{{ shift.getId() }}">
+                <div onclick="event.stopPropagation()" style="padding: 4px 8px" class="button blue unfilled signOut" data-id="{{ shift.getId() }}">
                     <a>{{ translate('Sign Out') }}</a>
                 </div>
             {% endif %}
         {% endif %}
-{% endmacro %}
+    {% endmacro %}
