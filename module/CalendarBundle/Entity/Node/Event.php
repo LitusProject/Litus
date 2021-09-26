@@ -284,4 +284,14 @@ class Event extends \CommonBundle\Entity\Node
         return $em->getRepository('TicketBundle\Entity\Event')
             ->findOneByEvent($this);
     }
+
+    /**
+     * @param EntityManager $em
+     * @return boolean
+     */
+    public function hasTicket(EntityManager $em)
+    {
+        return count($em->getRepository('TicketBundle\Entity\Event')
+            ->findOneByEvent($this)) !== null;
+    }
 }

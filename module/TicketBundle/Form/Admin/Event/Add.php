@@ -240,6 +240,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'    => 'textarea',
+                'name'    => 'description',
+                'label'   => 'Description',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
                 'type'       => 'fieldset',
                 'name'       => 'prices',
                 'label'      => 'Prices',
