@@ -152,6 +152,13 @@ class Event
      */
     private $onlinePayment;
 
+    /**
+     * @var string The text for this event
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
     public function __construct()
     {
         $this->options = new ArrayCollection();
@@ -654,5 +661,24 @@ class Event
         }
 
         return $number;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description == null ? '' : $this->description;
+    }
+
+    /**
+     * @param  string $description The description
+     * @return self
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
     }
 }
