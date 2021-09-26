@@ -352,11 +352,12 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $ticket = $this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Ticket')
             ->findOneById($this->getParam('id'));
+
         if ($ticket === null) {
             return $this->notFoundAction();
         }
 
-        if ($ticket->getEvent()->isOnlinePayment() === false) {
+        if ($ticket->getEvent()->isOnlinePayment() === false || $ticket->getEvent()->isActive() === false) {
             return $this->notFoundAction();
         }
 
