@@ -332,6 +332,13 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
                 $result[$unit->getId()][$person->getId()]['volunteer'] = sizeof($this->getEntityManager()
                     ->getRepository('ShiftBundle\Entity\Shift')
                     ->findAllByPersonAsVolunteer($person, $this->getAcademicYear()));
+
+                $result[$unit->getId()][$person->getId()]['future'] = sizeof($this->getEntityManager()
+                    ->getRepository('ShiftBundle\Entity\Shift')
+                    ->findAllFutureByPersonAsVolunteer($person, $this->getAcademicYear()))
+                + sizeof($this->getEntityManager()
+                        ->getRepository('ShiftBundle\Entity\Shift')
+                        ->findAllFutureByPersonAsResponsible($person, $this->getAcademicYear()));
             }
         }
 
