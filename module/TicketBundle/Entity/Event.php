@@ -412,7 +412,7 @@ class Event
     }
 
     /**
-     * @param  integer $priceNonMembers
+     * @param  integer|null $priceNonMembers
      * @return self
      */
     public function setPriceNonMembers($priceNonMembers)

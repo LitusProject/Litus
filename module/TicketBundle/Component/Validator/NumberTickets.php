@@ -86,7 +86,7 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
             $options = $this->options['event']->getOptions();
             foreach ($options as $option) {
                 $number += $optionsForm->get('option_' . $option->getId() . '_number_member')->getValue();
-                if (!$this->options['event']->isOnlyMembers()) {
+                if (!$this->options['event']->isOnlyMembers() && $option->getPriceNonMembers() != 0) {
                     $number += $optionsForm->get('option_' . $option->getId() . '_number_non_member')->getValue();
                 }
             }
@@ -116,7 +116,7 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
         if ($person !== null) {
             $tickets = $this->getEntityManager()
                 ->getRepository('TicketBundle\Entity\Ticket')
-                ->findAllByEventAndPersonQuery($this->options['event'], $person);
+                ->findAllByEventAndPersonQuery($this->options['event'], $person)->getResult();
 
             if ($number + count($tickets) > $this->options['event']->getLimitPerPerson() && $this->options['event']->getLimitPerPerson() != 0) {
                 $this->error(self::EXCEEDS_MAX_PERSON);

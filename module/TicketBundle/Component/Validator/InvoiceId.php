@@ -63,8 +63,6 @@ class InvoiceId extends \CommonBundle\Component\Validator\AbstractValidator
             return false;
         }
 
-        error_log($value);
-
         $regex = '~^[a-zA-Z0-9- ]{8,32}$~';
 
         if (preg_match($regex, $value)) {

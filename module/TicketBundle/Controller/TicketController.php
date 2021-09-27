@@ -281,6 +281,10 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             return $this->notFoundAction();
         }
 
+        if ($ticket->getNumber() !== $this->getParam('code')){
+            return new \ErrorException('This paylink contains the wrong ticket code...');
+        }
+        
         $secretInfo = unserialize(
             $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('common.kbc_secret_info')
@@ -361,6 +365,10 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             return $this->notFoundAction();
         }
 
+        if ($ticket->getNumber() !== $this->getParam('code')){
+            return new \ErrorException('This paylink contains the wrong ticket code...');
+        }
+
         $link = $this->generatePayLink($ticket);
 
         $this->redirect()->toUrl($link);
@@ -432,6 +440,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             array(
                 'action' => 'payed',
                 'id'     => $ticket->getId(),
+                'code'     => $ticket->getNumber(),
             )
         );
 
@@ -525,7 +534,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $payLinkDomain = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('ticket.pay_link_domain');
-        $payLink = $payLinkDomain . '/en/ticket/pay/' . $ticket->getId() . '/';
+        $payLink = $payLinkDomain . '/en/ticket/pay/' . $ticket->getId() . '/code/' . $ticket->getNumber();
 
         $mail->setEncoding('UTF-8')
             ->setBody(str_replace(array('{{ fullname }}', '{{ event }}', '{{ option }}', '{{ paylink }}'), array($fullName, $eventName, $optionString, $payLink), $mailBody))

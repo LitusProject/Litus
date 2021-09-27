@@ -103,7 +103,8 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                     array(
                         'type'       => 'select',
                         'name'       => 'option_' . $option->getId() . '_number_member',
-                        'label'      => ucfirst($option->getName()) . ' (Member)',
+                        'label'      => $option->getPriceNonMembers() != 0 ?
+                            ucfirst($option->getName()) . ' (Member)' : ucfirst($option->getName()),
                         'attributes' => array(
                             'options' => $this->getNumberOptions(),
                         ),
@@ -125,7 +126,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                     )
                 );
 
-                if (!$this->event->isOnlyMembers()) {
+                if (!$this->event->isOnlyMembers() && $option->getPriceNonMembers() != 0) {
                     $this->add(
                         array(
                             'type'       => 'select',
