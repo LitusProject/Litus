@@ -282,7 +282,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         'type'       => 'text',
                         'name'       => 'price_non_members',
                         'label'      => 'Price Non Members',
-                        'required'   => true,
                         'attributes' => array(
                             'class' => 'price_non_members',
                         ),
@@ -350,7 +349,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         if ((isset($this->data['enable_options']) && $this->data['enable_options']) || (isset($this->data['enable_options_hidden']) && $this->data['enable_options_hidden']) == '1') {
             unset($specs['prices']);
         } else {
-            $specs['prices']['price_non_members']['required'] = !(isset($this->data['only_members']) && $this->data['only_members']);
+//            $specs['prices']['price_non_members']['required'] = !(isset($this->data['only_members']) && $this->data['only_members']);
         }
 
         return $specs;

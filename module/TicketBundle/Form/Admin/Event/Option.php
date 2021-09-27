@@ -75,7 +75,6 @@ class Option extends \CommonBundle\Component\Form\Fieldset implements InputFilte
                 'type'       => 'text',
                 'name'       => 'price_non_members',
                 'label'      => 'Price Non Members',
-                'required'   => true,
                 'attributes' => array(
                     'class' => 'price_non_members',
                 ),
@@ -88,6 +87,16 @@ class Option extends \CommonBundle\Component\Form\Fieldset implements InputFilte
                             array('name' => 'Price'),
                         ),
                     ),
+                ),
+            )
+        );
+        $this->add(
+            array(
+                'type'       => 'checkbox',
+                'name'       => 'membershipDiscount',
+                'label'      => 'Member vs non-Member',
+                'attributes' => array(
+                    'data-help' => 'Enabling this will cause the option to have a member price and a non-member price.',
                 ),
             )
         );
@@ -121,7 +130,7 @@ class Option extends \CommonBundle\Component\Form\Fieldset implements InputFilte
 
         $specs['option']['required'] = $required;
         $specs['price_members']['required'] = $required;
-        $specs['price_non_members']['required'] = isset($_POST['only_members']) && $_POST['only_members'] ? false : $required;
+//        $specs['price_non_members']['required'] = isset($_POST['only_members']) && $_POST['only_members'] ? false : $required;
 
         return $specs;
     }

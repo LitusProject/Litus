@@ -58,6 +58,7 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
 
         $booker_status = $this->person->getOrganizationStatus($this->currentYear)->getStatus();
         $booker_category = $category_map[$booker_status];
+        error_log(json_encode($data['bookers_form']));die();
         $option_nb = $data['bookers_form']['options_select'];
         $booker_option = $booker_category->getOptions()[$option_nb];
         $booker_ticket->setOption($booker_option);
