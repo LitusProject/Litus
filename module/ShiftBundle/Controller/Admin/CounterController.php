@@ -77,7 +77,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
 
             foreach ($shift->getResponsibles() as $responsible) {
                 if (!isset($result[$shift->getUnit()->getId()][$responsible->getPerson()->getId()])) {
-                    $result[$shift->getUnit()->getId()][$responsible->getPerson()->getId()] = array(
+                    $result[$shift->getUnit()->getName()][$responsible->getPerson()->getFullName()] = array(
                         'name'  => $responsible->getPerson()->getFullName(),
                         'count' => 1,
                     );
@@ -292,6 +292,55 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'result' => $result,
+            )
+        );
+    }
+
+    public function praesidiumAction()
+    {
+        $academicYear = $this->getAcademicYear();
+
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        $shifts = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findByAcademicYear($this->getAcademicYear());
+
+        $units = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+            ->findAllActive();
+
+        $unitsArray = array();
+        $now = new DateTime();
+        $result = array();
+        foreach ($units as $unit) {
+            $unitsArray[$unit->getId()] = $unit->getName();
+            $members = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
+                ->findAllByUnitAndAcademicYear($unit, $academicYear);
+
+            foreach ($members as $person){
+                $person = $person->getAcademic();
+                $result[$unit->getId()][$person->getId()]['id'] = $person->getId();
+                $result[$unit->getId()][$person->getId()]['name'] = $person->getFullName();
+                $result[$unit->getId()][$person->getId()]['responsible'] = sizeof($this->getEntityManager()
+                    ->getRepository('ShiftBundle\Entity\Shift')
+                    ->findAllByPersonAsReponsible($person, $this->getAcademicYear()));
+
+                $result[$unit->getId()][$person->getId()]['volunteer'] = sizeof($this->getEntityManager()
+                    ->getRepository('ShiftBundle\Entity\Shift')
+                    ->findAllByPersonAsVolunteer($person, $this->getAcademicYear()));
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'activeAcademicYear' => $academicYear,
+                'academicYears'      => $academicYears,
+                'result'             => $result,
+                'units'              => $unitsArray,
             )
         );
     }
