@@ -123,6 +123,13 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findAllByPersonAsVolunteer($person, $this->getAcademicYear());
 
+        $futureShifts = array_merge($this->getEntityManager()
+                ->getRepository('ShiftBundle\Entity\Shift')
+                ->findAllFutureByPersonAsVolunteer($person, $this->getAcademicYear()),
+        $this->getEntityManager()
+                ->getRepository('ShiftBundle\Entity\Shift')
+                ->findAllFutureByPersonAsResponsible($person, $this->getAcademicYear()));
+
         $rewards_enabled = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shift.rewards_enabled');
@@ -147,6 +154,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
                 'payed'           => $payed,
                 'rewards_enabled' => $rewards_enabled,
                 'points_enabled'  => $points_enabled,
+                'futureShifts'    => $futureShifts,
             )
         );
     }
@@ -303,10 +311,6 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
-
-        $shifts = $this->getEntityManager()
-            ->getRepository('ShiftBundle\Entity\Shift')
-            ->findByAcademicYear($this->getAcademicYear());
 
         $units = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization\Unit')
