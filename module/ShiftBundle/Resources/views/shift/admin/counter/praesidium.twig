@@ -24,6 +24,7 @@
                     <th>Name</th>
                     <th width="120px"># Responsible</th>
                     <th width="120px"># Volunteer</th>
+                    <th width="120px"># Future</th>
                     <th width="120px">Action</th>
                 </tr>
 
@@ -32,6 +33,7 @@
                         <td>{{ result['name'] }}</td>
                         <td>{{ result['responsible'] }}</td>
                         <td>{{ result['volunteer'] }}</td>
+                        <td>{{ result['future'] }}</td>
                         {% if hasAccess('shift_admin_shift_counter', 'view') %}
                             <td>
                                 <a href="{{ url('shift_admin_shift_counter', {"action": "view", "id": result['id']}) }}" class="view">View</a>
