@@ -9,7 +9,7 @@ return array(
             'add', 'delete', 'edit', 'manage', 'old', 'search', 'csv',
         ),
         'shift_admin_shift_counter' => array(
-            'delete', 'export', 'index', 'payed', 'payout', 'search', 'units', 'view',
+            'delete', 'export', 'index', 'payed', 'payout', 'search', 'units', 'view', 'praesidium',
         ),
         'shift_admin_shift_ranking' => array(
             'index',
