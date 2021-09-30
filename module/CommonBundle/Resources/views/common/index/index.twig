@@ -66,7 +66,7 @@
                                 <p class="calendar-emptyfill">{{event.getSummary(150, language)}}</p>
                                 <div class="vtk-flex-horizontal" style="position: absolute; bottom: -10px">
                                     <a class="myVtkButton" href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Read More') }}</a>
-                                    {% if event.hasTicket(entityManager) %}
+                                    {% if event.hasTicket(entityManager) == true%}
                                         <a class="myVtkButton" href="{{ url('ticket', {'id': event.getTicket(entityManager).getId()}) }}">{{ translate('Buy Tickets') }}</a>
                                     {% endif %}
                                 </div>
