@@ -291,7 +291,8 @@ class Event extends \CommonBundle\Entity\Node
      */
     public function hasTicket(EntityManager $em)
     {
-        return count($em->getRepository('TicketBundle\Entity\Event')
-            ->findOneByEvent($this)) > 0;
+        $tickets =  $em->getRepository('TicketBundle\Entity\Event')
+            ->findOneByEvent($this);
+        return (count($tickets) > 0 ) && $tickets->isStillBookable();
     }
 }
