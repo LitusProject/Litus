@@ -68,7 +68,12 @@ return array(
     ),
     array(
         'key'         => 'shop.main_page_text',
-        'value'       => 'The shop is open all day, all week!',
+        'value'       => serialize(
+            array(
+                'nl' => 'nederlandse tekst',
+                'en' => 'engelse tekst',
+            )
+        ),
         'description' => 'The text for the shop',
     ),
 );
