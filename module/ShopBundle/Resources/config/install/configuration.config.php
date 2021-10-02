@@ -66,4 +66,9 @@ return array(
         'value'       => 'https://www.vtk.be/shop',
         'description' => 'The URL of the shop',
     ),
+    array(
+        'key'         => 'shop.main_page_text',
+        'value'       => 'The shop is open all day, all week!',
+        'description' => 'The text for the shop',
+    ),
 );
