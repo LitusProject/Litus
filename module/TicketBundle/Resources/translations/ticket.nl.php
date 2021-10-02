@@ -28,4 +28,6 @@ return array(
 
     'The event isn\'t active anymore.'                                                                                                                                                                                                     => 'Het evenement is niet meer actief.',
     'We recommend logging in or creating an account on the site before ordering tickets if you can. With an account you can manage your tickets through our site, without account you will only receive an email with the ticket details.' => 'We raden aan om in te loggen of een account aan te maken voor je tickets besteld indien mogelijk. Met een account kan je je tickets managen via onze site, zonder account krijg je enkel een email met je ticket details.',
+    'Maximum of '                                                                                                                                                                                                                          => 'Maximaal ',
+    'I have read and accept the GDPR terms and condition specified above'                                                                                                                                                                  => 'Ik heb de bovenstaande privacy policy gelezen en ga er mee akkoord',
 );

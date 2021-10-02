@@ -142,9 +142,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                     'isPraesidium'          => false,
                     'canBook'               => $canBook,
                     'maximumAmount'         => $event->getLimitPerPerson(),
-                    'upperText'             => $this->getEntityManager()
+                    'upperText'             => unserialize($this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('ticket.upper_text'),
+                        ->getConfigValue('ticket.upper_text'))[$this->getLanguage()->getAbbrev()],
                     'isGuest'               => true,
                 )
             );
@@ -234,9 +234,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 'isPraesidium'          => $organizationStatus ? $organizationStatus->getStatus() == 'praesidium' : false,
                 'canBook'               => $canBook,
                 'maximumAmount'         => $event->getLimitPerPerson(),
-                'upperText'             => $this->getEntityManager()
+                'upperText'             => unserialize($this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('ticket.upper_text'),
+                    ->getConfigValue('ticket.upper_text'))[$this->getLanguage()->getAbbrev()],
                 'isGuest'               => false,
             )
         );

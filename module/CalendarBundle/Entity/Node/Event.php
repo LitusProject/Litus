@@ -292,6 +292,6 @@ class Event extends \CommonBundle\Entity\Node
     public function hasTicket(EntityManager $em)
     {
         return count($em->getRepository('TicketBundle\Entity\Event')
-            ->findOneByEvent($this)) !== null;
+            ->findOneByEvent($this)) > 0;
     }
 }

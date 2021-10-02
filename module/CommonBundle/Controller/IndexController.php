@@ -275,6 +275,9 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             'url' => $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('shop.url_reservations'),
+            'openingHours' => $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shop.main_page_text'),
         );
     }
 
