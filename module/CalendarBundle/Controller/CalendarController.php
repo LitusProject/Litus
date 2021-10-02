@@ -166,6 +166,13 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                         'name'   => $event->getName(),
                     )
                 ),
+                'poster'    => $this->url()->fromRoute(
+                    'calendar',
+                    array(
+                        'action' => 'poster',
+                        'name'   => $event->getPoster(),
+                    )
+                ),
             );
         }
 
