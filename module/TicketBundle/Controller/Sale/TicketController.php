@@ -3,6 +3,7 @@
 namespace TicketBundle\Controller\Sale;
 
 use Laminas\View\Model\ViewModel;
+use TicketBundle\Entity\Event;
 use TicketBundle\Entity\Ticket;
 
 /**
@@ -113,6 +114,46 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
         );
     }
 
+    public function searchAction()
+    {
+        $this->initAjax();
+
+        $event = $this->getEventEntity();
+        if ($event === null) {
+            return new ViewModel();
+        }
+
+        $tickets = $this->search($event);
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        array_splice($tickets, $numResults);
+
+        $result = array();
+        foreach ($tickets as $ticket) {
+            $item = (object) array();
+            $item->id = $ticket->getId();
+            $item->person = $ticket->getFullName() ? $ticket->getFullName() : '(none)';
+            $item->status = $ticket->getStatus();
+            $item->email = $ticket->getEmail();
+            $item->organization = $ticket->getOrganization();
+            $item->option = ($ticket->getOption() ? $ticket->getOption()->getName() : '') . ' ' . ($ticket->isMember() ? 'Member' : 'Non Member');
+            $item->number = $ticket->getNumber();
+            $item->bookDate = $ticket->getBookDate() ? $ticket->getBookDate()->format('d/m/Y H:i') : '';
+            $item->soldDate = $ticket->getSoldDate() ? $ticket->getSoldDate()->format('d/m/Y H:i') : '';
+            $item->isMember = $ticket->isMember();
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
     /**
      * @return Ticket|null
      */
@@ -134,5 +175,53 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
         }
 
         return $ticket;
+    }
+
+    /**
+     * @param  Event $event
+     * @return array|null
+     */
+    private function search(Event $event)
+    {
+        switch ($this->getParam('field')) {
+            case 'person':
+                return $this->getEntityManager()
+                    ->getRepository('TicketBundle\Entity\Ticket')
+                    ->findAllByEventAndPersonName($event, $this->getParam('string'));
+            case 'option':
+                return $this->getEntityManager()
+                    ->getRepository('TicketBundle\Entity\Ticket')
+                    ->findAllByEventAndOption($event, $this->getParam('string'));
+            case 'organization':
+                return $this->getEntityManager()
+                    ->getRepository('TicketBundle\Entity\Ticket')
+                    ->findAllByEventAndOrganization($event, $this->getParam('string'), $this->getCurrentAcademicYear());
+        }
+    }
+
+    /**
+     * @return Event|null
+     */
+    private function getEventEntity()
+    {
+        $event = $this->getEntityById('TicketBundle\Entity\Event');
+
+        if (!($event instanceof Event)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No event was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'ticket_admin_event',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return;
+        }
+
+        return $event;
     }
 }

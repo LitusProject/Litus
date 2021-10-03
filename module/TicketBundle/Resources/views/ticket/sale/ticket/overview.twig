@@ -50,66 +50,96 @@
         </div>
     </div>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>{{ translate('Person') }}</th>
-                <th>{{ translate('Organization') }}</th>
-                <th width="60px">{{ translate('R-number') }}</th>
-                <th width="60px">{{ translate('Status') }}</th>
-                <th width="140px">{{ translate('Option') }}</th>
-                <th width="90px">{{ translate('Number') }}</th>
-                <th width="90px">{{ translate('Invoice ID') }}</th>
-                <th width="130px">{{ translate('Book Date') }}</th>
-                <th width="130px">{{ translate('Sold Date') }}</th>
-                <th width="190px">{{ translate('Action') }}</th>
-            </tr>
-        </thead>
+    <div id="controller_action">
+        <div id="ticket_search">
+            <div style="padding:4px;text-align:right">
+                Search:
+                <select id="searchField">
+                    <option value="person">Person</option>
+                    <option value="option">Option</option>
+                    <option value="organization">Organization</option>
+                </select>
+                is
+                <input type="text" id="searchString" size="30" />
+            </div>
 
-        <tbody>
-            {% for ticket in paginator %}
-                <tr class="item" id="item-{{ ticket.getId() }}">
-                    <td class="person">{% if ticket.getFullName() %}{{ ticket.getFullName() }}{% else %}(none){% endif %}</td>
-                    <td class="organization">{% if ticket.getGuestInfo() %}
-                            {{ ticket.getGuestInfo().getOrganization() }}
-                        {% else %}
-                            {{ ticket.getPerson().getOrganization(academicYear).getName() }}
-                        {% endif %}</td>
-                    <td class="universityIdentification">{% if ticket.getGuestInfo() %}
-                            {{ ticket.getGuestInfo().getUniversityIdentification() }}
-                        {% else %}
-                            {{ ticket.getPerson().getUniversityIdentification() }}
-                        {% endif %}</td>
-                    <td class="status">{{ ticket.getStatus() }}</td>
-                    {% if ticket.getOption() != null %}
-                        <td class="status">{{ ticket.getOption().getName() }}</td>
-                    {% else %}
-                        <td class="status">{{ ticket.isMember()==true?"member":"non-mmber"  }}</td>
-                    {% endif %}
-                    <td>{{ "%010d"|format(ticket.getNumber()) }}</td>
-                    <td>{{ ticket.getOrderId() }}</td>
-                    <td class="bookDate">{{ dateLocalized(ticket.getBookDate(), 'd/MM/YYYY HH:mm') }}</td>
-                    <td class="soldDate">{{ dateLocalized(ticket.getSoldDate(), 'd/MM/YYYY HH:mm') }}</td>
-                    <td class="actions">
-                        {% if hasAccess('ticket_sale_ticket', 'unassign') and event.areTicketsGenerated() and ticket.getFullName() %}
-                            <a href="#" data-id="{{ ticket.getId() }}" data-person="{{ ticket.getFullName() }}" class="btn btn-danger btn-sm unassignTicket">{{ translate('Unassign') }}</a>
-                        {% endif %}
-                        {% if hasAccess('ticket_sale_ticket', 'delete') and not event.areTicketsGenerated() %}
-                            <a href="#" data-id="{{ ticket.getId() }}" data-person="{{ ticket.getFullName() }}" class="btn btn-danger btn-sm deleteTicket">{{ translate('Delete') }}</a>
-                        {% endif %}
-                        {% if hasAccess('ticket_sale_ticket', 'sale') %}
-                            <a href="#" data-id="{{ ticket.getId() }}" data-person="{{ ticket.getFullName() }}" class="btn btn-success btn-sm saleTicket" {% if ticket.getStatusCode() != 'booked' %}style="display: none"{% endif %}>{{ translate('Sale') }}</a>
-                        {% endif %}
-                        {% if hasAccess('ticket_sale_ticket', 'unsale') %}
-                            <a href="#" data-id="{{ ticket.getId() }}" data-person="{{ ticket.getFullName() }}" class="btn btn-info btn-sm undoSaleTicket" {% if ticket.getStatusCode() != 'sold' %}style="display: none"{% endif %}>{{ translate('Undo Sale') }}</a>
-                        {% endif %}
-                    </td>
+            <table class="full_width manage tickets">
+                <tr>
+                    <th>Person</th>
+                    <th width="90px">Kring</th>
+                    <th width="100px">Email</th>
+                    <th width="90px">Status</th>
+                    <th width="150px">Option</th>
+                    <th width="110px">Book Date</th>
+                    <th width="110px">Sold Date</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </table>
+        </div>
 
-    {% include 'site/partials/paginationControl.twig' %}
+        <div id="default_page">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>{{ translate('Person') }}</th>
+                    <th>{{ translate('Organization') }}</th>
+                    <th width="60px">{{ translate('R-number') }}</th>
+                    <th width="60px">{{ translate('Status') }}</th>
+                    <th width="140px">{{ translate('Option') }}</th>
+                    <th width="90px">{{ translate('Number') }}</th>
+                    <th width="90px">{{ translate('Invoice ID') }}</th>
+                    <th width="130px">{{ translate('Book Date') }}</th>
+                    <th width="130px">{{ translate('Sold Date') }}</th>
+                    <th width="190px">{{ translate('Action') }}</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for ticket in paginator %}
+                    <tr class="item" id="item-{{ ticket.getId() }}">
+                        <td class="person">{% if ticket.getFullName() %}{{ ticket.getFullName() }}{% else %}(none){% endif %}</td>
+                        <td class="organization">{% if ticket.getGuestInfo() %}
+                                {{ ticket.getGuestInfo().getOrganization() }}
+                            {% else %}
+                                {{ ticket.getPerson().getOrganization(academicYear).getName() }}
+                            {% endif %}</td>
+                        <td class="universityIdentification">{% if ticket.getGuestInfo() %}
+                                {{ ticket.getGuestInfo().getUniversityIdentification() }}
+                            {% else %}
+                                {{ ticket.getPerson().getUniversityIdentification() }}
+                            {% endif %}</td>
+                        <td class="status">{{ ticket.getStatus() }}</td>
+                        {% if ticket.getOption() != null %}
+                            <td class="status">{{ ticket.getOption().getName() }}</td>
+                        {% else %}
+                            <td class="status">{{ ticket.isMember()==true?"member":"non-mmber"  }}</td>
+                        {% endif %}
+                        <td>{{ "%010d"|format(ticket.getNumber()) }}</td>
+                        <td>{{ ticket.getOrderId() }}</td>
+                        <td class="bookDate">{{ dateLocalized(ticket.getBookDate(), 'd/MM/YYYY HH:mm') }}</td>
+                        <td class="soldDate">{{ dateLocalized(ticket.getSoldDate(), 'd/MM/YYYY HH:mm') }}</td>
+                        <td class="actions">
+                            {% if hasAccess('ticket_sale_ticket', 'unassign') and event.areTicketsGenerated() and ticket.getFullName() %}
+                                <a href="#" data-id="{{ ticket.getId() }}" data-person="{{ ticket.getFullName() }}" class="btn btn-danger btn-sm unassignTicket">{{ translate('Unassign') }}</a>
+                            {% endif %}
+                            {% if hasAccess('ticket_sale_ticket', 'delete') and not event.areTicketsGenerated() %}
+                                <a href="#" data-id="{{ ticket.getId() }}" data-person="{{ ticket.getFullName() }}" class="btn btn-danger btn-sm deleteTicket">{{ translate('Delete') }}</a>
+                            {% endif %}
+                            {% if hasAccess('ticket_sale_ticket', 'sale') %}
+                                <a href="#" data-id="{{ ticket.getId() }}" data-person="{{ ticket.getFullName() }}" class="btn btn-success btn-sm saleTicket" {% if ticket.getStatusCode() != 'booked' %}style="display: none"{% endif %}>{{ translate('Sale') }}</a>
+                            {% endif %}
+                            {% if hasAccess('ticket_sale_ticket', 'unsale') %}
+                                <a href="#" data-id="{{ ticket.getId() }}" data-person="{{ ticket.getFullName() }}" class="btn btn-info btn-sm undoSaleTicket" {% if ticket.getStatusCode() != 'sold' %}style="display: none"{% endif %}>{{ translate('Undo Sale') }}</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            {% include 'site/partials/paginationControl.twig' %}
+        </div>
+    </div>
+
 
     <div id="modalUnassign" class="modal fade">
         <div class="modal-dialog">
@@ -189,6 +219,41 @@
         $(document).ready(function () {
             $('.flashmessage .close').click(function () {
                 $(this).closest('.flashmessage').removeClass('in');
+            });
+
+            $.searchDatabase({
+                defaultPage: $('#default_page'),
+                searchDiv: $('#ticket_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                searchPage: '{{ url('ticket_sale_ticket', {'action': 'overview', 'id': event.getId()}) }}',
+                url: '{{ url('ticket_sale_ticket', {'action': 'search', 'id': event.getId()}) }}',
+                display: function (data) {
+                    $('#ticket_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#ticket_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
+                        row.append('<td>' + this.person + '</td>')
+                            .append('<td>' + this.organization + '</td>')
+                            .append('<td>' + this.email + '</td>')
+                            .append('<td>' + this.status + '</td>')
+                            .append('<td>' + this.option + '</td>')
+                            .append('<td>' + this.bookDate + '</td>')
+                            .append('<td>' + this.soldDate + '</td>')
+                            .append('<td>' +
+                                        '<a href="#" data-id=' + this.id + ' data-person=' + this.person + ' class="btn btn-danger btn-sm deleteTicket">Delete</a>' +
+                                        '<a href="#" data-id=' + this.id + ' data-person=' + this.person + ' class="btn btn-success btn-sm saleTicket"' + (this.status != 'Booked' ? 'style="display: none"' : '') + '>Sale</a>' +
+                                        '<a href="#" data-id=' + this.id + ' data-person=' + this.person + ' class="btn btn-info btn-sm undoSaleTicket"' + (this.status != 'Sold' ? 'style="display:none"' : '') + '>Undo Sale</a>' +
+                                    '</td>');
+                    });
+                    $('#ticket_search table').change();
+                    $('.unassignTicket').click(openUnassignModal);
+                    $('.deleteTicket').click(openDeleteModal);
+                    $('.saleTicket').click(openSaleModal);
+                    $('.undoSaleTicket').click(openUndoSaleModal);
+                },
+                clear: function () {
+                    $('#ticket_search table').find('tr.item').remove();
+                }
             });
 
             $('.unassignTicket').click(openUnassignModal);
