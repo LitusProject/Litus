@@ -76,4 +76,9 @@ return array(
         ),
         'description' => 'The text for the shop',
     ),
+    array(
+        'key'         => 'shop.enable_winner',
+        'value'       => 1,
+        'description' => 'Enable the winner column when exporting a sales session to csv',
+    ),
 );
