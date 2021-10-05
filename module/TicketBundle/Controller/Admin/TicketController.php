@@ -129,7 +129,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $result = array();
         foreach ($tickets as $ticket) {
             $item = (object) array();
-            $item->id = $ticket->getId();
+            $item->rNumber = $ticket->getUniversityIdentification();
             $item->person = $ticket->getFullName() ? $ticket->getFullName() : '(none)';
             $item->status = $ticket->getStatus();
             $item->email = $ticket->getEmail();
