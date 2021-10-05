@@ -123,11 +123,11 @@
                     $(data).each(function () {
                         $('#ticket_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
                         row.append('<td>' + this.person + '</td>')
-                            .append('<td>' + this.id + '</td>')
+                            .append('<td>' + this.rNumber + '</td>')
                             .append('<td>' + this.organization + '</td>')
-                            .append('<td>' + this.email + '</td>')
                             .append('<td>' + this.status + '</td>')
-                                .append('<td>' + this.option + '</td>')
+                            .append('<td>' + this.email + '</td>')
+                            .append('<td>' + this.option + '</td>')
                             .append('<td>' + this.number + '</td>')
                             .append('<td>' + this.bookDate + '</td>')
                             .append('<td>' + this.soldDate + '</td>')

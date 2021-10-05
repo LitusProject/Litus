@@ -141,6 +141,8 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
                 $item->getProduct()->getName(),
                 (string) $item->getAmount(),
                 (string) $item->getAmount() * $item->getProduct()->getSellPrice(),
+                '',
+                ''
             );
         }
 
