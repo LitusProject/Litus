@@ -116,12 +116,19 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
 
     public function searchAction()
     {
+        error_log('Reached searchAction.\n', 3, '/var/log/tickets-page.log');
+        error_log('    Field:  ' . $this->getParam('field') . '\n', 3, '/var/log/tickets-page.log');
+        error_log('    String: ' . $this->getParam('string') . '\n', 3, '/var/log/tickets-page.log');
+
+
         $this->initAjax();
 
         $event = $this->getEventEntity();
         if ($event === null) {
             return new ViewModel();
         }
+
+        error_log('Searching Tickets.\n', 3, '/var/log/tickets-page.log');
 
         $tickets = $this->search($event);
 
@@ -130,6 +137,8 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
             ->getConfigValue('search_max_results');
 
         array_splice($tickets, $numResults);
+
+        error_log('Adding tickets to JS object.\n', 3, '/var/log/tickets-page.log');
 
         $result = array();
         foreach ($tickets as $ticket) {
@@ -146,6 +155,8 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
             $item->isMember = $ticket->isMember();
             $result[] = $item;
         }
+
+        error_log('Returning ViewModel.\n', 3, '/var/log/tickets-page.log');
 
         return new ViewModel(
             array(

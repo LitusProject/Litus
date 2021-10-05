@@ -230,6 +230,7 @@
                 url: '{{ url('ticket_sale_ticket', {'action': 'search', 'id': event.getId()}) }}',
                 display: function (data) {
                     $('#ticket_search table').find('tr.item').remove();
+                    console.log('Received search data.');
                     $(data).each(function () {
                         $('#ticket_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
                         row.append('<td>' + this.person + '</td>')
@@ -246,6 +247,7 @@
                                     '</td>');
                     });
                     $('#ticket_search table').change();
+                    console.log('Displayed search');
                     $('.unassignTicket').click(openUnassignModal);
                     $('.deleteTicket').click(openDeleteModal);
                     $('.saleTicket').click(openSaleModal);
