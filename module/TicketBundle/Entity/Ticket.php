@@ -449,4 +449,18 @@ class Ticket
     {
         $this->orderId = $orderId;
     }
+
+    /**
+     * @return int
+     */
+    public function getPrice()
+    {
+        if ($this->isMember() === True) {
+            $price = $this->getOption()->getPriceMembers();
+        } else {
+            $price = $this->getOption()->getPriceNonMembers();
+        }
+
+        return number_format($price / 100, 2);
+    }
 }

@@ -63,21 +63,29 @@
                 <input type="text" id="searchString" size="30" />
             </div>
 
-            <table class="full_width manage tickets">
+            <table class="table table-striped tickets">
+                <thead>
                 <tr>
-                    <th>Person</th>
-                    <th width="90px">Kring</th>
-                    <th width="100px">Email</th>
+                    <th width="100px">Person</th>
+                    <th width="100px">R-Number</th>
+                    <th width="100px">Organisation</th>
+                    <th width="180px">Email</th>
                     <th width="90px">Status</th>
                     <th width="150px">Option</th>
+                    <th width="40px">Price</th>
                     <th width="110px">Book Date</th>
                     <th width="110px">Sold Date</th>
                 </tr>
+                </thead>
             </table>
+
+            <tbody>
+
+            </tbody>
         </div>
 
         <div id="default_page">
-            <table class="table table-striped">
+            <table class="table table-striped tickets">
                 <thead>
                 <tr>
                     <th>{{ translate('Person') }}</th>
@@ -230,14 +238,15 @@
                 url: '{{ url('ticket_sale_ticket', {'action': 'search', 'id': event.getId()}) }}',
                 display: function (data) {
                     $('#ticket_search table').find('tr.item').remove();
-                    console.log('Received search data.');
                     $(data).each(function () {
                         $('#ticket_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
                         row.append('<td>' + this.person + '</td>')
+                            .append('<td>' + this.rNumber + '</td>')
                             .append('<td>' + this.organization + '</td>')
                             .append('<td>' + this.email + '</td>')
                             .append('<td>' + this.status + '</td>')
                             .append('<td>' + this.option + '</td>')
+                            .append('<td>' + '€' + this.price + '</td>')
                             .append('<td>' + this.bookDate + '</td>')
                             .append('<td>' + this.soldDate + '</td>')
                             .append('<td>' +
@@ -247,11 +256,12 @@
                                     '</td>');
                     });
                     $('#ticket_search table').change();
-                    console.log('Displayed search');
                     $('.unassignTicket').click(openUnassignModal);
                     $('.deleteTicket').click(openDeleteModal);
                     $('.saleTicket').click(openSaleModal);
                     $('.undoSaleTicket').click(openUndoSaleModal);
+
+                    $('#default_page').remove();
                 },
                 clear: function () {
                     $('#ticket_search table').find('tr.item').remove();
