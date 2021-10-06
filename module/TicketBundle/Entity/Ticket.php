@@ -2,7 +2,6 @@
 
 namespace TicketBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person;
 use DateTime;
 use Doctrine\ORM\EntityManager;
@@ -448,5 +447,19 @@ class Ticket
     public function setOrderId(string $orderId)
     {
         $this->orderId = $orderId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPrice()
+    {
+        if ($this->isMember() === True) {
+            $price = $this->getOption()->getPriceMembers();
+        } else {
+            $price = $this->getOption()->getPriceNonMembers();
+        }
+
+        return number_format($price / 100, 2);
     }
 }

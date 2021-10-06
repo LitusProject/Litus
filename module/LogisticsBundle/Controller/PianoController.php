@@ -43,7 +43,8 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
             if ($person === null) {
                 $this->flashMessenger()->error(
                     'Error',
-                    'You must be logged in to make a reservation!');
+                    'You must be logged in to make a reservation!'
+                );
 
                 $this->redirect()->toRoute(
                     'logistics_piano',

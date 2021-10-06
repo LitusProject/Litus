@@ -29,8 +29,8 @@ use Laminas\View\Model\ViewModel;
 use Locale;
 
 /**
- * We extend the basic Zend controller to simplify database access, authentication
- * and some other common functionality.
+ * We extend the basic Laminas controller to simplify database access,
+ * authentication and some other common functionality.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  *

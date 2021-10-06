@@ -6,7 +6,7 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\Validator\AbstractValidator;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
-use Laminas\Validator\AbstractValidator as ZendAbstractValidator;
+use Laminas\Validator\AbstractValidator as LaminasAbstractValidator;
 
 /**
  * Abstract factory instantiating an installer.
@@ -27,7 +27,7 @@ class AbstractValidatorFactory implements AbstractFactoryInterface
                 return true;
             }
 
-            return in_array(ZendAbstractValidator::class, class_parents($requestedName), true);
+            return in_array(LaminasAbstractValidator::class, class_parents($requestedName), true);
         }
 
         return false;

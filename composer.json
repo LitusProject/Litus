@@ -9,7 +9,6 @@
         "laminas/laminas-file": "^2.8",
         "laminas/laminas-filter": "^2.8",
         "laminas/laminas-form": "^2.12",
-        "laminas/laminas-zendframework-bridge": "^1.1",
         "laminas/laminas-http": "^2.8",
         "laminas/laminas-i18n": "^2.9",
         "laminas/laminas-i18n-resources": "^2.6",

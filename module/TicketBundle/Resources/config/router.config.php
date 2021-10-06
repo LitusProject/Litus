@@ -84,7 +84,7 @@ return array(
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'       => '[0-9]*',
-                    'code'       => '[0-9]*',
+                    'code'     => '[0-9]*',
                     'language' => '(en|nl)',
                 ),
                 'defaults'    => array(

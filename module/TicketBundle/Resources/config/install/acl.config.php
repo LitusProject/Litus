@@ -12,7 +12,7 @@ return array(
             'sale', 'validate',
         ),
         'ticket_sale_ticket' => array(
-            'delete', 'overview', 'sale', 'unassign', 'undoSale',
+            'delete', 'overview', 'sale', 'unassign', 'undoSale', 'search',
         ),
         'ticket_sale_person' => array(
             'typeahead',

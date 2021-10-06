@@ -294,7 +294,6 @@ class Shift extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         return $query->getQuery()->getResult();
     }
 
-
     /**
      * @param  Person            $person
      * @param  AcademicYear|null $academicYear

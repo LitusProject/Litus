@@ -65,7 +65,7 @@ abstract class Doctrine implements \Laminas\Authentication\Adapter\AdapterInterf
     {
         $this->entityManager = $entityManager;
 
-        // A bit of a dirty hack to get Zend's DI to play nice
+        // A bit of a dirty hack to get Laminas's DI to play nice
         $entityName = str_replace('"', '', $entityName);
 
         if (substr($entityName, 0, 1) == '\\') {
