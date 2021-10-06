@@ -2,7 +2,6 @@
 
 namespace TicketBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person;
 use DateTime;
 use Doctrine\ORM\EntityManager;

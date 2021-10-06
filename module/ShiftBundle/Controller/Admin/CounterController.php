@@ -123,12 +123,14 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findAllByPersonAsVolunteer($person, $this->getAcademicYear());
 
-        $futureShifts = array_merge($this->getEntityManager()
+        $futureShifts = array_merge(
+            $this->getEntityManager()
                 ->getRepository('ShiftBundle\Entity\Shift')
                 ->findAllFutureByPersonAsVolunteer($person, $this->getAcademicYear()),
-        $this->getEntityManager()
+            $this->getEntityManager()
                 ->getRepository('ShiftBundle\Entity\Shift')
-                ->findAllFutureByPersonAsResponsible($person, $this->getAcademicYear()));
+                ->findAllFutureByPersonAsResponsible($person, $this->getAcademicYear())
+        );
 
         $rewards_enabled = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -317,7 +319,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->findAllActive();
 
         $unitsArray = array();
-        $now = new DateTime();
+
         $result = array();
         foreach ($units as $unit) {
             $unitsArray[$unit->getId()] = $unit->getName();
@@ -325,24 +327,31 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
                 ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
                 ->findAllByUnitAndAcademicYear($unit, $academicYear);
 
-            foreach ($members as $person){
+            foreach ($members as $person) {
                 $person = $person->getAcademic();
                 $result[$unit->getId()][$person->getId()]['id'] = $person->getId();
                 $result[$unit->getId()][$person->getId()]['name'] = $person->getFullName();
-                $result[$unit->getId()][$person->getId()]['responsible'] = sizeof($this->getEntityManager()
-                    ->getRepository('ShiftBundle\Entity\Shift')
-                    ->findAllByPersonAsReponsible($person, $this->getAcademicYear()));
-
-                $result[$unit->getId()][$person->getId()]['volunteer'] = sizeof($this->getEntityManager()
-                    ->getRepository('ShiftBundle\Entity\Shift')
-                    ->findAllByPersonAsVolunteer($person, $this->getAcademicYear()));
-
-                $result[$unit->getId()][$person->getId()]['future'] = sizeof($this->getEntityManager()
-                    ->getRepository('ShiftBundle\Entity\Shift')
-                    ->findAllFutureByPersonAsVolunteer($person, $this->getAcademicYear()))
-                + sizeof($this->getEntityManager()
+                $result[$unit->getId()][$person->getId()]['responsible'] = count(
+                    $this->getEntityManager()
                         ->getRepository('ShiftBundle\Entity\Shift')
-                        ->findAllFutureByPersonAsResponsible($person, $this->getAcademicYear()));
+                        ->findAllByPersonAsReponsible($person, $this->getAcademicYear())
+                );
+
+                $result[$unit->getId()][$person->getId()]['volunteer'] = count(
+                    $this->getEntityManager()
+                        ->getRepository('ShiftBundle\Entity\Shift')
+                        ->findAllByPersonAsVolunteer($person, $this->getAcademicYear())
+                );
+
+                $result[$unit->getId()][$person->getId()]['future'] = count(
+                    $this->getEntityManager()
+                        ->getRepository('ShiftBundle\Entity\Shift')
+                        ->findAllFutureByPersonAsVolunteer($person, $this->getAcademicYear())
+                ) + count(
+                    $this->getEntityManager()
+                        ->getRepository('ShiftBundle\Entity\Shift')
+                        ->findAllFutureByPersonAsResponsible($person, $this->getAcademicYear())
+                );
             }
         }
 

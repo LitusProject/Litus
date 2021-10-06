@@ -132,7 +132,7 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shop.enable_winner');
 
-        $heading = array('Person', 'r-Number', 'Product', 'Amount','Total Price', 'Picked Up', $winnerEnabled ? 'Winner': null);
+        $heading = array('Person', 'r-Number', 'Product', 'Amount','Total Price', 'Picked Up', $winnerEnabled ? 'Winner' : null);
         $results = array();
         foreach ($items as $item) {
             $results[] = array(
