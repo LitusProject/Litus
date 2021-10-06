@@ -4,7 +4,7 @@ namespace CommonBundle\Component\Cache\ServiceManager;
 
 use Interop\Container\ContainerInterface;
 use Laminas\Cache\Storage\StorageInterface;
-use Laminas\Cache\StorageFactory as ZendStorageFactory;
+use Laminas\Cache\StorageFactory as LaminasStorageFactory;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 
@@ -25,7 +25,7 @@ class StorageFactory implements FactoryInterface
     {
         $config = $container->get('config');
 
-        return ZendStorageFactory::factory($config['cache']['storage']);
+        return LaminasStorageFactory::factory($config['cache']['storage']);
     }
 
     /**

@@ -5,7 +5,7 @@ namespace CommonBundle\Component\Form\Bootstrap;
 use Laminas\Form\Element\Csrf;
 
 /**
- * Extending Zend's form component, so that our forms look the way we want
+ * Extending Laminas's form component, so that our forms look the way we want
  * them to.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>

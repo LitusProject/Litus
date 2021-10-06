@@ -49,7 +49,6 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                         ->setMaximum(intval($optionData['maximum']));
                     $price_non_members = $optionData['membershipDiscount'] == 1 ? $optionData['price_non_members'] : null;
                     $option->setPriceNonMembers($price_non_members);
-
                 } else {
                     $price_non_members = $optionData['membershipDiscount'] == 1 ? $optionData['price_non_members'] : null;
                     $option = new OptionEntity(

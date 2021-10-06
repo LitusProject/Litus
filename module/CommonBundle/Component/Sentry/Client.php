@@ -87,7 +87,7 @@ class Client
     }
 
     /**
-     * Handler that can be attached to Zend's EventManager and extracts the
+     * Handler that can be attached to Laminas's EventManager and extracts the
      * exception from an MvcEvent.
      *
      * @param  MvcEvent $event The MvcEvent passed by the EventManager

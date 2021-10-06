@@ -181,8 +181,7 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
                     array(
                         'type'       => 'select',
                         'name'       => 'option_' . $option->getId() . '_number_member',
-                        'label'      => $option->getPriceNonMembers() != 0 ?
-                            ucfirst($option->getName()) . ' (Member)': ucfirst($option->getName()),
+                        'label'      => $option->getPriceNonMembers() != 0 ? ucfirst($option->getName()) . ' (Member)' : ucfirst($option->getName()),
                         'attributes' => array(
                             'options' => $this->getNumberOptions(),
                         ),

@@ -527,7 +527,7 @@ return array(
             ),
         ),
         'br_career_internshipfair' => array(
-            'type'    => 'Zend\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/career/internshipfair[/:action[/:company][/id/:id]][/]',
                 'constraints' => array(

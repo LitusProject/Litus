@@ -142,9 +142,11 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                     'isPraesidium'          => false,
                     'canBook'               => $canBook,
                     'maximumAmount'         => $event->getLimitPerPerson(),
-                    'upperText'             => unserialize($this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('ticket.upper_text'))[$this->getLanguage()->getAbbrev()],
+                    'upperText'             => unserialize(
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('ticket.upper_text')
+                    )[$this->getLanguage()->getAbbrev()],
                     'isGuest'               => true,
                 )
             );
@@ -234,9 +236,11 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 'isPraesidium'          => $organizationStatus ? $organizationStatus->getStatus() == 'praesidium' : false,
                 'canBook'               => $canBook,
                 'maximumAmount'         => $event->getLimitPerPerson(),
-                'upperText'             => unserialize($this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('ticket.upper_text'))[$this->getLanguage()->getAbbrev()],
+                'upperText'             => unserialize(
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('ticket.upper_text')
+                )[$this->getLanguage()->getAbbrev()],
                 'isGuest'               => false,
             )
         );
@@ -281,7 +285,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             return $this->notFoundAction();
         }
 
-        if ($ticket->getNumber() !== $this->getParam('code')){
+        if ($ticket->getNumber() !== $this->getParam('code')) {
             return new \ErrorException('This paylink contains the wrong ticket code...');
         }
         
@@ -365,7 +369,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             return $this->notFoundAction();
         }
 
-        if ($ticket->getNumber() !== $this->getParam('code')){
+        if ($ticket->getNumber() !== $this->getParam('code')) {
             return new \ErrorException('This paylink contains the wrong ticket code...');
         }
 
@@ -440,7 +444,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             array(
                 'action' => 'payed',
                 'id'     => $ticket->getId(),
-                'code'     => $ticket->getNumber(),
+                'code'   => $ticket->getNumber(),
             )
         );
 
