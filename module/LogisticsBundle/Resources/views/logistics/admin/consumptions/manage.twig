@@ -114,8 +114,8 @@
                     $('#consumptions_search table').find('tr.item').remove();
                     $(data).each(function () {
                         $('#consumptions_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
-                        row.append('<td>' + this.username + '</td>')
-                            .append('<td>' + this.name + '</td>')
+                        row.append('<td>' + this.name + '</td>')
+                            .append('<td>' + this.username + '</td>')
                             .append('<td>' + this.consumptions + '<td>')
                             .append(
                                 $('<td>', {'class': 'actions'})

@@ -35,6 +35,13 @@ class Consumptions extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 
     public function findAllByNameQuery($name)
     {
-        
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('p')
+            ->from('LogisticsBundle\Entity\Consumptions', 'p')
+            ->where(
+                $query->expr()->like($query->expr()->lower('p.name'), ':name')
+            )
+            ->setParameter('name', '%' . strtolower($name) . '%')
+            ->getQuery();
     }
 }
