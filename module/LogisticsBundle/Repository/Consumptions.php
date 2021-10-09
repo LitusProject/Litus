@@ -21,15 +21,20 @@ class Consumptions extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery();
     }
 
-    public function findAllByUsernameQuery($username)
+    public function findAllByUserNameQuery($username)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('p')
             ->from('LogisticsBundle\Entity\Consumptions', 'p')
             ->where(
-                $query->expr()->like('p.userName', ':username')
+                $query->expr()->like($query->expr()->lower('p.username'), ':username')
             )
             ->setParameter('username', '%' . strtolower($username) . '%')
             ->getQuery();
+    }
+
+    public function findAllByNameQuery($name)
+    {
+        
     }
 }

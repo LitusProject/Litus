@@ -153,19 +153,13 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
     public function searchAction()
     {
         $this->initAjax();
-
-        echo json_encode('1');
-        die();
         $numResults = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\General\Config')
+            ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
         $consumptions = $this->search()
             ->setMaxResults($numResults)
-            ->getResults();
-
-//        echo json_encode($consumptions);
-//        die();
+            ->getResult();
 
         $result = array();
         foreach ($consumptions as $consumption) {
@@ -187,13 +181,12 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
 
     private function search()
     {
+//        error_log($this->getParam('field'));
         switch ($this->getParam('field')) {
             case 'username':
-                echo json_encode($this->getParam('string'));
-                die();
                 return $this->getEntityManager()
                     ->getRepository('LogisticsBundle\Entity\Consumptions')
-                    ->findAllByUsernameQuery($this->getParam('string'));
+                    ->findAllByUserNameQuery($this->getParam('string'));
             case 'name':
                 return $this->getEntityManager()
                     ->getRepository('LogisticsBundle\Entity\Consumptions')
