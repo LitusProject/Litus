@@ -124,6 +124,7 @@
                                 $('<td>', {'class': 'actions'})
                                     .append('<a href="{{ url('logistics_admin_consumptions', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
                                     .append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
+                                    .append('<a href="{{ url('logistics_admin_consumptions', {"action": "consume"}) }}' + this.id + '" class="edit">Consume</a>')
                             );
                         deleteButton.data({
                             id: this.id,

@@ -39,8 +39,37 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
 
             if ($form->isValid()) {
                 $data = $form->getData()['consume'];
-                
+
                 $entity = $this->getConsumptionsEntity();
+
+                if ($entity->getConsumptions() - $data < 0) {
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'Not enough consumptions left!'
+                    );
+
+                    $this->redirect()->toRoute(
+                        'logistics_admin_consumptions',
+                        array(
+                            'action' => 'manage',
+                        )
+                    );
+                    return new ViewModel();
+                }
+
+                if ($entity->getConsumptions() - $data === 0) {
+                    $entity->removeConsumptions($data);
+                    $this->getEntityManager()->remove($entity);
+                    $this->getEntityManager()->flush();
+
+                    $this->redirect()->toRoute(
+                        'logistics_admin_consumptions',
+                        array(
+                            'action' => 'manage',
+                        )
+                    );
+                    return new ViewModel();
+                }
 
                 $entity->removeConsumptions($data);
 
@@ -153,7 +182,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
 
         $this->getEntityManager()->remove($consumptions);
         $this->getEntityManager()->flush();
-
+        
         return new ViewModel(
             array(
                 'result' => (object) array('status' => 'succes'),

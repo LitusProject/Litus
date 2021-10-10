@@ -45,7 +45,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type' => 'text',
                 'name' => 'number_of_consumptions',
                 'label' => 'Number of Consumptions',
-                'value' => 0,
+//                'value' => 0,
                 'required' => true,
                 'options' => array(
                     'input' => array(
