@@ -15,14 +15,15 @@ class Consumptions extends \CommonBundle\Component\Hydrator\Hydrator
        $academic = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneById($array['person']['id']);
-        $object->setAcademic($academic);
+        $object->setPerson($academic);
 
         $numberOfConsumptions = $array['number_of_consumptions'];
         $object->setConsumptions($numberOfConsumptions);
         $object->setUserName($academic->getUserName());
         $object->setFullName($academic->getFullName());
 
-        return $this->stdHydrate($array, $object);
+//        return $this->stdHydrate($array, $object);
+        return $object;
     }
 
     protected function doExtract($object = null)
@@ -30,12 +31,12 @@ class Consumptions extends \CommonBundle\Component\Hydrator\Hydrator
         if ($object === null) {
             return array();
         }
+//        error_log(json_encode())
+        $data['person']['id'] = $object->getPerson() !== null ? $object->getPerson()->getId() : -1;
+        $data['person']['value'] = $object->getPerson() !== null ? $object->getFullName() . " - " . $object->getUserName() : -1;
+        $data['number_of_consumptions'] = $object->getConsumptions();
 
-        $data = $this->stdExtract($object);
-
-        $data['academic'] = $object->getAcademic() !== null ? $object->getAcademic() : -1;
-        $data['numberOfConsumptions'] = $object->getConsumptions();
-
+//        $data = $this->stdExtract($object);
         return $data;
     }
 }

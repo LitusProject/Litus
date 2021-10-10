@@ -119,7 +119,7 @@
                         $('#consumptions_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
                         row.append('<td>' + this.name + '</td>')
                             .append('<td>' + this.username + '</td>')
-                            .append('<td>' + this.consumptions + '<td>')
+                            .append('<td>' + this.consumptions + '</td>')
                             .append(
                                 $('<td>', {'class': 'actions'})
                                     .append('<a href="{{ url('logistics_admin_consumptions', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')

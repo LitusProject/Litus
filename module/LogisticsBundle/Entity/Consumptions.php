@@ -68,9 +68,9 @@ class Consumptions
     }
 
     /**
-     * @return Academic
+     * @return Person
      */
-    public function getAcademic()
+    public function getPerson()
     {
         return $this->person;
     }
@@ -100,12 +100,13 @@ class Consumptions
     }
 
     /**
-     * @param Academic|null $person
+     * @param Person|null $person
      * @return Consumptions
      */
-    public function setAcademic(Person $person = null)
+    public function setPerson(Person $person = null)
     {
         $this->person = $person;
+        $this->name = $person->getFullName();
 
         return $this;
     }

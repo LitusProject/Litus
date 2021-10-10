@@ -115,7 +115,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
                 $this->redirect()->toRoute(
                     'logistics_admin_consumptions',
                     array(
-                        'action' => 'manage',
+                        'action' => 'add',
                     )
                 );
 
@@ -140,6 +140,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
         $form = $this->getForm('logistics_consumptions_edit', array('consumptions' => $consumptions));
 
         if ($this->getRequest()->isPost()) {
+            error_log(json_encode($this->getRequest()->getPost()));
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
@@ -182,7 +183,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
 
         $this->getEntityManager()->remove($consumptions);
         $this->getEntityManager()->flush();
-        
+
         return new ViewModel(
             array(
                 'result' => (object) array('status' => 'succes'),
