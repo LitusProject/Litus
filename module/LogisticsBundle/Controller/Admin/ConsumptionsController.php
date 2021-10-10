@@ -30,6 +30,40 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
+    public function consumeAction()
+    {
+        $form = $this->getForm('logistics_consumptions_consume');
+
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->getRequest()->getPost());
+
+            if ($form->isValid()) {
+                $data = $form->getData()['consume'];
+                
+                $entity = $this->getConsumptionsEntity();
+
+                $entity->removeConsumptions($data);
+
+                $this->getEntityManager()->flush();
+
+                $this->redirect()->toRoute(
+                    'logistics_admin_consumptions',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
+
     public function addAction()
     {
         $form = $this->getForm('logistics_consumptions_add');

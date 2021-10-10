@@ -125,9 +125,9 @@ class Consumptions
      * @param integer $nbOfConsumptions
      * @return Consumptions
      */
-    public function addConsumptions(int $nbOfConsumptions)
+    public function removeConsumptions(int $nbOfConsumptions)
     {
-        $this->numberOfConsumptions += $nbOfConsumptions;
+        $this->number_of_consumptions -= $nbOfConsumptions;
 
         return $this;
     }

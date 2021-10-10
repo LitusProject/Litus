@@ -63,6 +63,9 @@
                                 {% if hasAccess('logistics_admin_consumptions', 'delete') %}
                                     <a href="#" class="delete" data-id="{{ consumptions.getId() }}" data-person="{{ consumptions.getFullName() }}">Delete</a>
                                 {% endif %}
+                                {% if hasAccess('logistics_admin_consumptions', 'consume') %}
+                                    <a href="{{ url('logistics_admin_consumptions', {"action": "consume", "id": consumptions.getId()}) }}" class="edit">Consume</a>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}

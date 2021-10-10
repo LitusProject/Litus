@@ -2,7 +2,7 @@
 
 namespace LogisticsBundle\Form\Admin\Consumptions;
 
-use CommonBundle\Entity\User\Person\Academic;
+use CommonBundle\Entity\User\Person;
 use LogisticsBundle\Entity\Consumptions;
 
 /**
