@@ -3,12 +3,11 @@
 {% block content %}
     <div class="container">
         <div class="standardPageTitleHolder">
-            {# TO DO is this needed? #}
-            {# {% if hasAccess('calendar', 'export') %}
-                <a class="pull-right calendarButton" href="{{ url('calendar_export') }}">
-                    <span class="glyphicon glyphicon-arrow-down"></span> {{ translate('Download') }}
-                </a>
-            {% endif %} #}
+            {% if hasAccess('calendar', 'export') %}
+            <a class="pull-right calendarButton" href="{{ url('calendar_export') }}">
+                <span class="glyphicon glyphicon-arrow-down"></span> {{ translate('Download') }}
+            </a>
+            {% endif %}
             <h1>{{ translate('Calendar') }}</h1>
             <div class="pageTitleDeco"></div>
         </div>

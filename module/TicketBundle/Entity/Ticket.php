@@ -2,6 +2,7 @@
 
 namespace TicketBundle\Entity;
 
+use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person;
 use DateTime;
 use Doctrine\ORM\EntityManager;
@@ -454,7 +455,7 @@ class Ticket
      */
     public function getPrice()
     {
-        if ($this->isMember() === True) {
+        if ($this->isMember() === true) {
             $price = $this->getOption()->getPriceMembers();
         } else {
             $price = $this->getOption()->getPriceNonMembers();
