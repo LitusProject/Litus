@@ -7,6 +7,7 @@ use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\General\Organization\Unit as UnitEntity;
 use CommonBundle\Entity\User\Person;
 use DateTime;
+use ShiftBundle\Form\Shift\Search\Date;
 
 /**
  * Shift
@@ -324,6 +325,90 @@ class Shift extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->orderBy('s.startDate', 'ASC')
             ->setParameter('now', new DateTime())
             ->setParameter('person', $person);
+
+        if ($academicYear !== null) {
+            $query->setParameter('academicYear', $academicYear);
+        }
+
+        return $query->getQuery()->getResult();
+    }
+
+    /**
+     * @param Person $person
+     * @param DateTime $start
+     * @param DateTime $end
+     * @param AcademicYear|null $academicYear
+     * @return \Doctrine\ORM\Query
+     */
+    public function findFutureByPersonAsResponsibleAndStartAndEnd(Person $person, DateTime $start, DateTime $end, AcademicYear $academicYear = null)
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $query = $queryBuilder->select('s')
+            ->from('ShiftBundle\Entity\Shift', 's')
+            ->innerJoin('s.responsibles', 'r');
+
+        if ($academicYear === null) {
+            $where = $query->expr()->eq('r.person', ':person');
+        } else {
+            $where = $query->expr()->andX(
+                $query->expr()->eq('s.academicYear', ':academicYear'),
+                $query->expr()->eq('r.person', ':person')
+            );
+        }
+
+        $query->where(
+            $query->expr()->andX(
+                $query->expr()->gt('s.startDate', ':start'),
+                $query->expr()->lt('s.startDate', ':end'),
+                $where
+            )
+        )
+            ->orderBy('s.startDate', 'ASC')
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
+            ->setParameter('person', $person);
+
+        if ($academicYear !== null) {
+            $query->setParameter('academicYear', $academicYear);
+        }
+
+        return $query->getQuery()->getResult();
+    }
+
+    /**
+     * @param Person $person
+     * @param DateTime $start
+     * @param DateTime $end
+     * @param AcademicYear|null $academicYear
+     * @return \Doctrine\ORM\Query
+     */
+    public function findFutureByPersonAsVolunteerAndStartAndEnd(Person $person, DateTime $start, DateTime $end, AcademicYear $academicYear = null)
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $query = $queryBuilder->select('s')
+            ->from('ShiftBundle\Entity\Shift', 's')
+            ->innerJoin('s.volunteers', 'r');
+
+        if ($academicYear === null) {
+            $where = $query->expr()->eq('r.person', ':person');
+        } else {
+            $where = $query->expr()->andX(
+                $query->expr()->eq('s.academicYear', ':academicYear'),
+                $query->expr()->eq('r.person', ':person')
+            );
+        }
+
+        $query->where(
+            $query->expr()->andX(
+                $query->expr()->gt('s.startDate', ':start'),
+                $query->expr()->lt('s.startDate', ':end'),
+                $where
+            )
+        )
+        ->orderBy('s.startDate', 'ASC')
+        ->setParameter('start', $start)
+        ->setParameter('end', $end)
+        ->setParameter('person', $person);
 
         if ($academicYear !== null) {
             $query->setParameter('academicYear', $academicYear);

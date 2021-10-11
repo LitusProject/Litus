@@ -5,6 +5,7 @@ namespace ShiftBundle\Controller\Admin;
 use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use CommonBundle\Entity\User\Person;
+use DateInterval;
 use DateTime;
 use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
@@ -318,9 +319,31 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\Organization\Unit')
             ->findAllActive();
 
+        $start = new DateTime(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shift.praesidium_counter_start_day')
+        );
+
+        $interval = new DateInterval(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shift.praesidium_counter_interval')
+        );
+
+
+        $end = clone $start;
+        $end->add($interval);
+        $now =  new DateTime();
+        if ($end->format('d/m/y') === $now->format('d/m/y')){
+            $start->add($interval);
+            $end->add($interval);
+        }
+
         $unitsArray = array();
 
         $result = array();
+
         foreach ($units as $unit) {
             $unitsArray[$unit->getId()] = $unit->getName();
             $members = $this->getEntityManager()
@@ -346,11 +369,11 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
                 $result[$unit->getId()][$person->getId()]['future'] = count(
                     $this->getEntityManager()
                         ->getRepository('ShiftBundle\Entity\Shift')
-                        ->findAllFutureByPersonAsVolunteer($person, $this->getAcademicYear())
+                        ->findFutureByPersonAsVolunteerAndStartAndEnd($person, $start, $end, $this->getAcademicYear())
                 ) + count(
                     $this->getEntityManager()
                         ->getRepository('ShiftBundle\Entity\Shift')
-                        ->findAllFutureByPersonAsResponsible($person, $this->getAcademicYear())
+                        ->findFutureByPersonAsResponsibleAndStartAndEnd($person, $start, $end, $this->getAcademicYear())
                 );
             }
         }
@@ -361,6 +384,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
                 'academicYears'      => $academicYears,
                 'result'             => $result,
                 'units'              => $unitsArray,
+                'period'             => $interval->format('%d days'),
             )
         );
     }
