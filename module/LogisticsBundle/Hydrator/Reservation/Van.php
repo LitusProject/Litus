@@ -6,7 +6,7 @@ use LogisticsBundle\Entity\Reservation\Van as VanReservationEntity;
 
 class Van extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $stdKeys = array('reason', 'load', 'additional_info', 'car');
+    private static $stdKeys = array('reason', 'load', 'additional_info', 'car', 'bike');
 
     protected function doExtract($object = null)
     {

@@ -68,12 +68,12 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     private function getVersions()
     {
         preg_match('/(\d.\d.\d)/', phpversion(), $phpVersion);
-        preg_match('/(\d.\d.\d)/', Versions::getVersion('laminas/laminas-mvc'), $zfVersion);
+        preg_match('/(\d.\d.\d)/', Versions::getVersion('laminas/laminas-mvc'), $laminasVersion);
 
         return array(
-            'php'   => $phpVersion[0],
-            'zf'    => $zfVersion[0],
-            'litus' => Version::getShortCommitHash(),
+            'php'     => $phpVersion[0],
+            'laminas' => $laminasVersion[0],
+            'litus'   => Version::getShortCommitHash(),
         );
     }
 

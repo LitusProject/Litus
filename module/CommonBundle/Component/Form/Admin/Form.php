@@ -5,7 +5,7 @@ namespace CommonBundle\Component\Form\Admin;
 use CommonBundle\Component\Form\Admin\Element\Csrf;
 
 /**
- * Extending Zend's form component, so that our forms look the way we want
+ * Extending Laminas's form component, so that our forms look the way we want
  * them to.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>

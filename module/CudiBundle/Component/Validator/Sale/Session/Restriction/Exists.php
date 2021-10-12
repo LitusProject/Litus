@@ -2,6 +2,7 @@
 
 namespace CudiBundle\Component\Validator\Sale\Session\Restriction;
 
+use CudiBundle\Entity\Sale\Session;
 /**
  * Check Restriction already exists.
  *

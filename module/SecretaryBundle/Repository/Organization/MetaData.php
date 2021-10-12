@@ -30,4 +30,21 @@ class MetaData extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function findAllBakskeByAcademicYearQuery(AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('m')
+            ->from('SecretaryBundle\Entity\Organization\MetaData', 'm')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('m.bakskeByMail', 'true'),
+                    $query->expr()->eq('m.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->getQuery();
+
+        return $resultSet;
+    }
 }

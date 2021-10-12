@@ -13,7 +13,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
      */
     private static $stdKeys = array(
         'active', 'bookable_praesidium', 'bookable', 'number_of_tickets',
-        'limit_per_person', 'only_members'
+        'limit_per_person', 'only_members', 'description'
     );
 
     protected function doHydrate(array $data, $object = null)
@@ -46,14 +46,16 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
 
                     $option->setName($optionData['option'])
                         ->setPriceMembers($optionData['price_members'])
-                        ->setPriceNonMembers($optionData['price_non_members'])
                         ->setMaximum(intval($optionData['maximum']));
+                    $price_non_members = $optionData['membershipDiscount'] == 1 ? $optionData['price_non_members'] : null;
+                    $option->setPriceNonMembers($price_non_members);
                 } else {
+                    $price_non_members = $optionData['membershipDiscount'] == 1 ? $optionData['price_non_members'] : null;
                     $option = new OptionEntity(
                         $object,
                         $optionData['option'],
                         $optionData['price_members'],
-                        $optionData['price_non_members'],
+                        $price_non_members,
                         intval($optionData['maximum'])
                     );
                     $this->getEntityManager()->persist($option);
@@ -158,7 +160,6 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         $data['invoice_base_id'] = $object->getInvoiceIdBase();
         $data['order_base_id'] = $object->getOrderIdBase();
         $data['online_payment'] = $object->isOnlinePayment();
-        error_log($object->isOnlinePayment());
         if (count($object->getOptions()) == 0) {
             $data['prices']['price_members'] = number_format($object->getPriceMembers() / 100, 2);
             $data['prices']['price_non_members'] = $object->isOnlyMembers() ? '' : number_format($object->getPriceNonMembers() / 100, 2);

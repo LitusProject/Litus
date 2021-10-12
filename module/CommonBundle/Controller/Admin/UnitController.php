@@ -250,7 +250,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
                 $image->writeImage('public/' . $filePath . '/' . $fileName);
 
-                $member = new UnitMapExternal($formData['first_name'], $formData['last_name'], '/' . $fileName, $academicYear, $unit, $formData['coordinator'], $formData['description']);
+                $member = new UnitMapExternal($formData['first_name'], $formData['last_name'], '/' . $fileName , $academicYear, $unit, $formData['coordinator'], $formData['description']);
 
                 $this->getEntityManager()->persist($member);
                 $this->getEntityManager()->flush();

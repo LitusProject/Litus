@@ -88,15 +88,9 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
 
         $vatTypeExplanation = '';
         if ($this->invoice->getTaxFree() === true) {
-//            if ($this->invoice->isEU() === null) {
-//                throw new \ErrorException('This company has not defined if it is EU or not');
-//            }
             $isEU = $this->invoice->isEU() ? 'eu' : 'non-eu';
             $vatTypeExplanation = unserialize($configs->getConfigValue('br.invoice_vat_explanation'))[$isEU] . ' ' . $this->invoice->getVatContext();
         }
-        $isEU = $this->invoice->isEU() ? 'eu' : 'non-eu';
-        $vatTypeExplanation = unserialize($configs->getConfigValue('br.invoice_vat_explanation'))[$isEU] . ' ' . $this->invoice->getVatContext();
-
 
         $subEntries = unserialize($configs->getConfigValue('br.invoice_below_entries'))[$this->lang];
 

@@ -14,7 +14,12 @@ return array(
     array(
         'key'         => 'ticket.upper_text',
         'value'       => 'I agree that this data will be used, following GDPR guidelines.',
-        'description' => 'The text on the book tickets page',
+        'description' => serialize(
+            array(
+                'en' => 'The text on the book tickets page',
+                'nl' => 'The extra tekst op de tickets page'
+            )
+        )
     ),
     array(
         'key'         => 'ticket.confirmation_email_from',

@@ -381,7 +381,9 @@ class Study
                     ->setUniversityEmail($info['email']);
             }
 
-            $this->profCache[$identification] = $prof;
+            if (!isset($this->profCache[$identification])) {
+                $this->profCache[$identification] = $prof;
+            }
 
             if ($prof->canHaveUniversityStatus($this->academicYear)) {
                 $prof->addUniversityStatus(

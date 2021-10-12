@@ -314,7 +314,7 @@ class ApiController extends \Laminas\Mvc\Controller\AbstractActionController imp
      */
     private function initUriScheme()
     {
-        UriFactory::registerScheme('litus', 'ApiBundle\Component\Uri\Litus');
+        UriFactory::registerScheme('vtk', 'ApiBundle\Component\Uri\Litus');
     }
 
     /**

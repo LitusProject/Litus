@@ -128,7 +128,11 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             ->getResult();
         $file = new CsvFile();
 
-        $heading = array('Person', 'r-Number', 'Product', 'Amount','Total Price', 'Picked Up');
+        $winnerEnabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shop.enable_winner');
+
+        $heading = array('Person', 'r-Number', 'Product', 'Amount','Total Price', 'Picked Up', $winnerEnabled ? 'Winner' : null);
         $results = array();
         foreach ($items as $item) {
             $results[] = array(
@@ -137,7 +141,8 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
                 $item->getProduct()->getName(),
                 (string) $item->getAmount(),
                 (string) $item->getAmount() * $item->getProduct()->getSellPrice(),
-                ' ',
+                '',
+                ''
             );
         }
 

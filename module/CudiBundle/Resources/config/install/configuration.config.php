@@ -33,7 +33,7 @@ return array(
     ),
     array(
         'key'         => 'cudi.mail_name',
-        'value'       => 'Student IT Cursusdienst',
+        'value'       => 'VTK Cursusdienst',
         'description' => 'The name of the mail sender',
     ),
     array(
@@ -48,7 +48,7 @@ return array(
     ),
     array(
         'key'         => 'cudi.delivery_address_name',
-        'value'       => 'Student IT Cursusdienst',
+        'value'       => 'VTK Cursusdienst',
         'description' => 'The name of the delivery address of the cudi',
     ),
     array(
@@ -58,7 +58,7 @@ return array(
     ),
     array(
         'key'         => 'cudi.billing_address_name',
-        'value'       => 'Student IT vzw',
+        'value'       => 'VTK vzw',
         'description' => 'The name of the billing organization of the cudi',
     ),
     array(
@@ -94,7 +94,7 @@ Please cancel a reservation if you don\'t need the article, this way we can help
 The opening hours of Cudi are:
 {{ openingHours }}#no_opening_hours#No opening hours known.#no_opening_hours#
 
-Student IT Cudi
+VTK Cudi
 
 -- This is an automatically generated email, please do not reply --',
                 ),
@@ -112,7 +112,7 @@ Gelieve een reservatie te annuleren als je het artikel niet meer nodig hebt, op 
 De openingsuren van cudi zijn:
 {{ openingHours }}#no_opening_hours#Geen openingsuren gekend.#no_opening_hours#
 
-Student IT Cudi
+VTK Cudi
 
 -- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
                 ),
@@ -138,7 +138,7 @@ Please cancel a reservation if you don\'t need the article, this way we can help
 The opening hours of Cudi are:
 {{ openingHours }}#no_opening_hours#No opening hours known.#no_opening_hours#
 
-Student IT Cudi
+VTK Cudi
 
 -- This is an automatically generated email, please do not reply --',
                 ),
@@ -156,7 +156,7 @@ Gelieve een reservatie te annuleren als je het artikel niet meer nodig hebt, op 
 De openingsuren van cudi zijn:
 {{ openingHours }}#no_opening_hours#Geen openingsuren gekend.#no_opening_hours#
 
-Student IT Cudi
+VTK Cudi
 
 -- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
                 ),
@@ -175,7 +175,7 @@ Student IT Cudi
 The following bookings have expired:
 {{ bookings }}#expires#expired on#expires#
 
-Student IT Cudi
+VTK Cudi
 
 -- This is an automatically generated email, please do not reply --',
                 ),
@@ -186,7 +186,7 @@ Student IT Cudi
 De volgende reservaties zijn vervallen:
 {{ bookings }}#expires#verviel op#expires#
 
-Student IT Cudi
+VTK Cudi
 
 -- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
                 ),
@@ -253,7 +253,7 @@ Student IT Cudi
     ),
     array(
         'key'         => 'cudi.front_address_name',
-        'value'       => 'Cudi Student IT vzw',
+        'value'       => 'CuDi VTK vzw',
         'description' => 'The name of the address on the front of an article',
     ),
     array(
@@ -379,7 +379,7 @@ Student IT Cudi
 The catalog of our cudi has been updated:
 {{ updates }}#bookable#is now bookable#bookable# #unbookable#is not bookable anymore#unbookable# #added#is added to the catalog#added# #removed#is removed from the catalog#removed#
 
-Student IT Cudi
+VTK Cudi
 
 -- This is an automatically generated email, please do not reply --',
                 ),
@@ -390,7 +390,7 @@ Student IT Cudi
 De catalogus van onze cudi is aangepast:
 {{ updates }}#bookable#is nu reserveerbaar#bookable# #unbookable#is niet meer reserveerbaar#unbookable# #added#is toegevoegd aan de catalogus#added# #removed#is verwijderd van de catalogus#removed#
 
-Student IT Cudi
+VTK Cudi
 
 -- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
                 ),
@@ -412,11 +412,6 @@ Student IT Cudi
         'key'         => 'cudi.order_job_id',
         'value'       => '{{ date }}-VTK-{{ code }}',
         'description' => 'The job id for a XML exported order',
-    ),
-    array(
-        'key'         => 'cudi.booking_mails_to_sysadmin',
-        'value'       => '1',
-        'description' => 'Send the cudi booking mails (assigned, expired, warning) to the system administrator address',
     ),
     array(
         'key'         => 'cudi.booking_mails_to_cudi',
@@ -664,5 +659,10 @@ Gelieve contact op te nemen met {{ name }} via {{ email }}.
         'key'         => 'cudi.retail_enabled',
         'value'       => '0',
         'description' => 'boolean for retail pages/buttons',
+    ),
+    array(
+        'key'         => 'cudi.queue_force_registration_shift',
+        'value'       => '0',
+        'description' => 'boolean for forcing registration shifts',
     ),
 );

@@ -6,7 +6,7 @@ return array(
         'value'       => serialize(
             array(
                 'from'    => 'galabal@vtk.be',
-                'subject' => 'Student IT Galabal Busreservatie - Student IT Prom Bus Reservation ',
+                'subject' => 'VTK Galabal Busreservatie - VTK Prom Bus Reservation ',
                 'body'    => 'Beste,
 [English below]
 
@@ -40,7 +40,7 @@ See you then!
         'value'       => serialize(
             array(
                 'from'    => 'galabal@vtk.be',
-                'subject' => 'Student IT Galabal Busreservatie - Student IT Prom Bus Reservation ',
+                'subject' => 'VTK Galabal Busreservatie - VTK Prom Bus Reservation ',
                 'body'    => 'Beste,
 [English below]
 
@@ -73,13 +73,13 @@ See you then!
         'value'       => serialize(
             array(
                 'from'    => 'buscodes@vtk.be',
-                'subject' => 'Student IT Galabal Unieke code Busreservatie - Student IT Prom Unique Bus Reservation Code',
+                'subject' => 'VTK Galabal Unieke code Busreservatie - VTK Prom Unique Bus Reservation Code',
                 'body'    => 'Beste,
     [English below]
 
-    Bedankt voor uw inschrijving voor het Student IT Galabal.
+    Bedankt voor uw inschrijving voor het VTK Galabal.
     Gelieve uw onderstaande unieke code goed bij te houden, u zal ze nodig hebben om een plaats op de bussen te reserveren via vtk.be/prom/registration.
-    De opening van de registraties zal bekend gemaakt worden op de Facebook-pagina van Student IT.
+    De opening van de registraties zal bekend gemaakt worden op de Facebook-pagina van VTK.
 
     {{ reservationCode }} .
 
@@ -87,9 +87,9 @@ See you then!
 
     - - - - - - - - - - - -
 
-    Thank you for signing up for the Student IT prom.
+    Thank you for signing up for the VTK prom.
     Please do not lose your unique code below, as you will need it to book a spot on the buses through www.vtk.be/prom/registration.
-    The exact date and time for this will be announced later on the Student IT Facebook page.
+    The exact date and time for this will be announced later on the VTK Facebook page.
 
     {{ reservationCode }}
 

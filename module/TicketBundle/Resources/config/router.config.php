@@ -82,7 +82,7 @@ return array(
         'ticket_sale_ticket' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/ticket/sale/ticket[/:action[/:id[/:ticket]][/page/:page]][/]',
+                'route'       => '/ticket/sale/ticket[/:action[/:id[/:ticket][/:field/:string]][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
@@ -111,10 +111,11 @@ return array(
         'ticket' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '[/:language]/ticket[/:action[/:id]][/]',
+                'route'       => '[/:language]/ticket[/:action[/:id[/code/:code]]][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'       => '[0-9]*',
+                    'code'     => '[0-9]*',
                     'language' => '(en|nl)',
                 ),
                 'defaults'    => array(

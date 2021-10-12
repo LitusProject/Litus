@@ -19,6 +19,17 @@
             </div>
         </div>
     </div>
+    {% if isic.enable %}
+        <div class="alert alert-info">
+            <p>
+                <b>{{ translate('VTK provides you with ISIC cards.') }} <a href="https://vtk.be/page/name/isic/">{{ translate('click here') }}</a> </b>
+            </p>
+        </div>
+    {% endif %}
+
+    {% if authenticatedPerson is null %}
+        {{ translate('Please login to book textbooks.') }}
+    {% else %}
 
     {# Content #}
     <div class="container"> 
@@ -273,6 +284,7 @@
             </div>
         {% endif %}
     </div>
+    {% endif %}
 {% endblock %}
 
 {% block content_script %}

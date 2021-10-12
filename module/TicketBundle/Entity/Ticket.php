@@ -275,6 +275,54 @@ class Ticket
     }
 
     /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        if ($this->person !== null) {
+            return $this->person->getEmail();
+        }
+
+        if ($this->guestInfo !== null) {
+            return $this->guestInfo->getEmail();
+        }
+
+        return '';
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrganization()
+    {
+        if ($this->person !== null) {
+            return 'ACCOUNT';
+        }
+
+        if ($this->guestInfo !== null) {
+            return $this->guestInfo->getOrganization();
+        }
+
+        return '';
+    }
+
+    /**
+     * @return string
+     */
+    public function getUniversityIdentification()
+    {
+        if ($this->person !== null) {
+            return $this->person->getUniversityIdentification();
+        }
+
+        if ($this->guestInfo !== null) {
+            return $this->guestInfo->getUniversityIdentification();
+        }
+
+        return '';
+    }
+
+    /**
      * @return DateTime|null
      */
     public function getBookDate()
@@ -399,5 +447,19 @@ class Ticket
     public function setOrderId(string $orderId)
     {
         $this->orderId = $orderId;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getPrice()
+    {
+        if ($this->isMember() === true) {
+            $price = $this->getOption()->getPriceMembers();
+        } else {
+            $price = $this->getOption()->getPriceNonMembers();
+        }
+
+        return number_format($price / 100, 2);
     }
 }

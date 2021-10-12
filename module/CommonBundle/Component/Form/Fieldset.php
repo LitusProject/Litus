@@ -10,8 +10,8 @@ use Laminas\Form\FormInterface;
 use Laminas\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 /**
- * Extending Zend's fieldset component, so that our forms look the way we want
- * them to.
+ * Extending Laminas's fieldset component, so that our forms look the way we
+ * want them to.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */

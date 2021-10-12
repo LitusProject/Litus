@@ -1,0 +1,47 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    {% include 'shift/admin/counter/partials/navigation.twig' %}
+
+    <header class="controller_sub_header">
+        <nav class="controller_sub_nav">
+            <ul>
+                {% for academicYear in academicYears %}
+                    <li><a {% if academicYear.getCode() == activeAcademicYear.getCode() %} class="active" {% endif %}href="{{ url("shift_admin_shift_counter", {"action": "units", "academicyear": academicYear.getCode()}) }}">{{ academicYear.getCode() }}</a></li>
+                {% endfor %}
+            </ul>
+        </nav>
+    </header>
+
+    <div id="controller_action">
+        {% for unit, results in result %}
+            <h1>{{ units[unit] }}</h1>
+
+            <table class="full_width manage">
+                <tr>
+                    <th>Name</th>
+                    <th width="180px"># Responsible</th>
+                    <th width="180px"># Volunteer</th>
+                    <th width="180px"># This week ({{ period }})</th>
+                    <th width="120px">Action</th>
+                </tr>
+
+                {% for test, result in results %}
+                    <tr>
+                        <td>{{ result['name'] }}</td>
+                        <td>{{ result['responsible'] }}</td>
+                        <td>{{ result['volunteer'] }}</td>
+                        <td>{{ result['future'] }}</td>
+                        {% if hasAccess('shift_admin_shift_counter', 'view') %}
+                            <td>
+                                <a href="{{ url('shift_admin_shift_counter', {"action": "view", "id": result['id']}) }}" class="view">View</a>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endfor %}
+    </div>
+{% endblock %}

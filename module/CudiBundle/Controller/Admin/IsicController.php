@@ -21,7 +21,7 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
 
         $cards = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\IsicCard')
-            ->findByYearQuery($academicYear);
+            ->findAllQuery();
 
         $paginator = $this->paginator()->createFromQuery(
             $cards,
@@ -84,7 +84,6 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
             )
         );
     }
-
     public function printAction()
     {
         $this->initAjax();

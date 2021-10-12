@@ -29,8 +29,8 @@ use Laminas\View\Model\ViewModel;
 use Locale;
 
 /**
- * We extend the basic Zend controller to simplify database access, authentication
- * and some other common functionality.
+ * We extend the basic Laminas controller to simplify database access,
+ * authentication and some other common functionality.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  *
@@ -430,6 +430,17 @@ class ActionController extends \Laminas\Mvc\Controller\AbstractActionController 
         $this->language = $language;
 
         return $language;
+    }
+
+    /**
+     * We want an easy method to retrieve the Mail Transport from
+     * the DI container.
+     *
+     * @return \Zend\Mail\Transport\TransportInterface
+     */
+    public function getMailTransport()
+    {
+        return $this->getServiceLocator()->get('mail_transport');
     }
 
     /**

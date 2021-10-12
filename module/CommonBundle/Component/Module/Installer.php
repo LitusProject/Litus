@@ -90,7 +90,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
         }
 
         $organizations = array(
-            'Student IT',
+            'VTK',
         );
 
         foreach ($organizations as $name) {

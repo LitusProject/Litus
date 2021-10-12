@@ -28,6 +28,8 @@ class Version20200830183734 extends \Doctrine\Migrations\AbstractMigration
         $this->addSql('ALTER TABLE shift_registration_shifts_registered ADD person BIGINT DEFAULT NULL');
         $this->addSql('ALTER TABLE shift_registration_shifts_registered ADD CONSTRAINT FK_C68EE20C34DCD176 FOREIGN KEY (person) REFERENCES users_people (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('CREATE INDEX IDX_C68EE20C34DCD176 ON shift_registration_shifts_registered (person)');
+        $this->addSql('ALTER TABLE shift_registration_shifts ADD members_visible BOOLEAN DEFAULT \'false\' NOT NULL');
+
     }
 
     /**

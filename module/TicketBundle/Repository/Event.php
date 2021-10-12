@@ -25,6 +25,19 @@ class Event extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery();
     }
 
+    public function findOneByEvent(\CalendarBundle\Entity\Node\Event $event)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('e')
+            ->from('TicketBundle\Entity\Event', 'e')
+            ->where(
+                $query->expr()->eq('e.activity', ':event')
+            )
+            ->setParameter('event', $event)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     public function findOldQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();

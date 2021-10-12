@@ -45,7 +45,7 @@ class Option
     /**
      * @var integer The price for non members
      *
-     * @ORM\Column(name="price_non_members", type="smallint")
+     * @ORM\Column(name="price_non_members", type="smallint", nullable=true)
      */
     private $priceNonMembers;
 
@@ -60,7 +60,7 @@ class Option
      * @param Event               $event
      * @param string              $name
      * @param integer             $priceMembers
-     * @param integer             $priceNonMembers
+     * @param integer|null        $priceNonMembers
      * @param integer|string|null $maximum
      */
     public function __construct(Event $event, $name, $priceMembers, $priceNonMembers, $maximum)

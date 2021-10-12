@@ -177,6 +177,13 @@ class RegistrationShift
     private $membersVisible;
 
     /**
+     * @var boolean If this timeslot is a cudi timeslot
+     *
+     * @ORM\Column(name="is_cudi_timeslot",type="boolean",options={"default" = false})
+     */
+    private $cudiTimeslot;
+
+    /**
      * @param Person       $creationPerson
      * @param AcademicYear $academicYear
      */
@@ -621,6 +628,22 @@ class RegistrationShift
         return $this->membersOnly;
     }
 
+    /**
+     * @param  boolean cudiTimeSlot
+     * @return self
+     */
+    public function setCudiTimeslot($cudiTimeslot)
+    {
+        $this->cudiTimeslot = $cudiTimeslot;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isCudiTimeslot()
+    {
+        return $this->cudiTimeslot;
+    }
     /**
      * @return boolean
      */

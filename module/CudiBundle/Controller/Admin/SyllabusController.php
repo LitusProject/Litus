@@ -10,7 +10,7 @@ use Laminas\View\Model\ViewModel;
 use SyllabusBundle\Entity\Study;
 
 /**
- * SyllabusController
+ * ArticleController
  *
  * @author Floris Kint <floris.kint@litus.cc>
  */
@@ -217,7 +217,7 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
      * @param  AcademicYearEntity $academicYear
      * @return \Doctrine\ORM\Query|null
      */
-    private function searchStudies(AcademicYear $academicYear)
+    private function searchStudies(AcademicYearEntity $academicYear)
     {
         switch ($this->getParam('field')) {
             case 'name':

@@ -5,8 +5,8 @@ namespace CommonBundle\Component\Form;
 use CommonBundle\Component\InputFilter\Factory as InputFilterFactory;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
-use Laminas\Form\ElementInterface as ZendElementInterface;
-use Laminas\Form\FieldsetInterface as ZendFieldsetInterface;
+use Laminas\Form\ElementInterface as LaminasElementInterface;
+use Laminas\Form\FieldsetInterface as LaminasFieldsetInterface;
 
 /**
  * @author Bram Gotink <bram.gotink@litus.cc>
@@ -60,7 +60,7 @@ class Factory extends \Laminas\Form\Factory implements ServiceLocatorAwareInterf
         }
     }
 
-    public function configureElement(ZendElementInterface $element, $spec)
+    public function configureElement(LaminasElementInterface $element, $spec)
     {
         parent::configureElement($element, $spec);
 
@@ -81,11 +81,11 @@ class Factory extends \Laminas\Form\Factory implements ServiceLocatorAwareInterf
         return $element;
     }
 
-    protected function prepareAndInjectElements($elements, ZendFieldsetInterface $fieldset, $method)
+    protected function prepareAndInjectElements($elements, LaminasFieldsetInterface $fieldset, $method)
     {
         if (is_array($elements)) {
             foreach ($elements as $k => $v) {
-                if ($v instanceof ZendElementInterface) {
+                if ($v instanceof LaminasElementInterface) {
                     $elements[$k] = array(
                         'spec' => array(
                             'instance' => $v,

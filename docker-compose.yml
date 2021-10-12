@@ -10,6 +10,7 @@ volumes:
 services:
   litus:
     image: litusproject/litus:latest
+    container_name: litus-litus-1
     build:
       context: .
     depends_on:
@@ -22,6 +23,7 @@ services:
 
   pgweb:
     image: sosedoff/pgweb:latest
+    container_name: litus-pgweb-1
     depends_on:
       - postgres
     environment:
@@ -48,6 +50,7 @@ services:
 
   php-fpm:
     image: litusproject/litus:php-fpm-latest
+    container_name: litus-php-fpm-1
     build:
       context: .
       target: php-fpm
@@ -67,6 +70,7 @@ services:
 
   postgres:
     image: postgres:latest
+    container_name: litus-postgres-1
     environment:
       POSTGRES_USER: litus
       POSTGRES_PASSWORD: huQeyU8te3aXusaz
@@ -75,4 +79,5 @@ services:
 
   redis:
     image: redis:latest
+    container_name: litus-redis-1
     restart: unless-stopped

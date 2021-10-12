@@ -46,6 +46,15 @@ class Edit extends \SecretaryBundle\Form\Admin\Registration\Add
 
         $this->get('payed')->setValue($this->getRegistration()->hasPayed());
 
+        if (null !== $metaData) {
+            $this->get('irreeel')
+                ->setValue($metaData->receiveIrReeelAtCudi());
+            $this->get('bakske')
+                ->setValue($metaData->bakskeByMail());
+            $this->get('tshirt_size')
+                ->setValue($metaData->getTshirtSize());
+        }
+
         $organization = $this->getRegistration()->getAcademic()->getOrganization($this->getRegistration()->getAcademicYear());
         $this->get('organization')->setValue($organization ? $organization->getId() : 0);
     }

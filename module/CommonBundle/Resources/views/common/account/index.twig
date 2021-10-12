@@ -105,7 +105,6 @@
             <div class="buttonHolder">
                 <a class="myVtkButton" href="{{ url('shop', {"action": "reserve"}) }}">{{ translate('Order sandwiches') }}</a>
             </div>
-
         </div>
 
         <div style="height: 100px"></div>        
@@ -240,19 +239,6 @@
 
             <div style="height: 20px"></div>
 
-{#            {% if shifts|length == 0 %}#}
-{#                <p>Je hebt geen shiften momenteel</p>#}
-{#                <div style="height: 20px"></div>#}
-{#            {% else %}#}
-{#                {% for shift in shifts %}#}
-{#                    <div class="itemHolder">#}
-{#                        <p>{{ shift.getName() }}</p>#}
-{#                        <div class="flexStretch"></div>#}
-{#                        <p style="opacity: 50%">{{dateLocalized(shift.getStartDate(), 'd/M/y')}} | {{ dateLocalized(shift.getStartDate(), 'HH:mm') }}-{{ dateLocalized(shift.getEndDate(), 'HH:mm') }}</p>#}
-{#                    </div>#}
-{#                {% endfor %}#}
-{#            {% endif %}#}
-
             {{ self.displayShifts(entityManager, authenticatedPerson, shifts, 'myShifts') }}
 
             <div class="buttonHolder">
@@ -270,7 +256,7 @@
 
             <div style="height: 20px"></div>
 
-            {{ self.displayShifts(entityManager, authenticatedPerson, timeslots, 'myTimeSlots') }}
+            {{ self.displayShifts(entityManager, authenticatedPerson, timeslots, 'myTimeSlots', true) }}
 
             <div class="buttonHolder">
                 <a class="myVtkButton" href="{{ url('registration_shift', {"action": "index"}) }}">{{ translate('Reserve Timeslots') }}</a>
@@ -286,7 +272,62 @@
         $(document).ready(function () {
             $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true, 'container': 'body'});
             $('.cancel').click(openModal);
+
+            $('.shiftSignOut').click(function () {
+                var button = $(this);
+                button.addClass('disabled');
+
+                $.post(
+                    '{{ url('shift', {"action": "signOut"}) }}',
+                    {"id": $(this).data('id')},
+                    function (data) {
+                        if (data && 'success' == data.status) {
+                            $('.flashmessage').removeClass('in');
+                            $('#sign_out').addClass('in');
+
+                            var panel = $(button.data('panel')).clone();
+                            panel.find('.buttons').html('').css('display', 'none');
+
+                            $('#shifts-myShifts ' + button.data('panel')).fadeOut(function () {$(this).remove()});
+                        } else {
+                            errorSave();
+                        }
+                    },
+                    'json'
+                ).error(errorSave);
+            });
+
+            $('.registrationShiftSignOut').click(function () {
+                var button = $(this);
+                button.addClass('disabled');
+
+                $.post(
+                    '{{ url('registration_shift', {"action": "signOut"}) }}',
+                    {"id": $(this).data('id')},
+                    function (data) {
+                        if (data && 'success' === data.status) {
+                            $('.flashmessage').removeClass('in');
+                            $('#sign_out').addClass('in');
+
+                            var panel = $(button.data('panel')).clone();
+                            panel.find('.buttons').html('').css('display', 'none');
+
+                            $('#shifts-myTimeslots ' + button.data('panel')).fadeOut(function () {$(this).remove()});
+                        } else {
+                            errorSave();
+                        }
+                    },
+                    'json'
+                ).error(errorSave);
+            });
         });
+
+
+        function errorSave() {
+                $('.flashmessage').removeClass('in');
+                $('#error').addClass('in');
+            }
+
 
         function openModal(e) {
             var $this = $(this);
@@ -327,7 +368,7 @@
     <div class="panel-group" id="shifts-{{ accordionName }}">
         {% for shift in shifts %}
             {% if previousShift.getStartDate().format('Ymd') < shift.getStartDate().format('Ymd') %}
-                <h4 style="margin-top: 15px">{#{{translate('Shifts on')}}#} {{ translate(shift.getStartDate().format('l')) }}  {{ dateLocalized(shift.getStartDate(), 'd/M/y') }}</h4>
+                <h4 style="margin-top: 15px">{{ translate(shift.getStartDate().format('l')) }}  {{ dateLocalized(shift.getStartDate(), 'd/M/y') }}</h4>
             {% endif %}
 
             {% set previousShift = shift %}
@@ -341,8 +382,8 @@
                     <div class="flexStretch">
                         <div class="buttons" style="text-align: right">
                             {% if shift.canSignOut(entityManager) %}
-                                <div onclick="event.stopPropagation()" class="button blue unfilled signOut" data-id="{{ shift.getId() }}">
-                                    <a>{{ translate('Sign Out') }}</a>
+                                <div>
+                                    <a class="button blue unfilled {% if timeslots == false %}shiftSignOut{% else %}registrationShiftSignOut{% endif %}" onclick="event.stopPropagation()" data-id="{{ shift.getId() }}">{{ translate('Sign Out') }}</a>
                                 </div>
                             {% endif %}
                         </div>

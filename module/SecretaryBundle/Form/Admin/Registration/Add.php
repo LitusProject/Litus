@@ -2,6 +2,9 @@
 
 namespace SecretaryBundle\Form\Admin\Registration;
 
+use SecretaryBundle\Entity\Organization\MetaData;
+
+
 /**
  * Add Registration
  *
@@ -38,17 +41,39 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        $this->add(
-            array(
-                'type'       => 'select',
-                'name'       => 'organization',
-                'label'      => 'Organization',
-                'required'   => true,
-                'attributes' => array(
-                    'options' => $this->getOrganizations(),
-                ),
-            )
-        );
+        $this->add(array(
+            'type'     => 'checkbox',
+            'name'     => 'irreeel',
+            'label'    => 'Ir.Reëel at CuDi',
+            'required' => true,
+        ));
+
+        $this->add(array(
+            'type'     => 'checkbox',
+            'name'     => 'bakske',
+            'label'    => 'Bakske by E-mail',
+            'required' => true,
+        ));
+
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'tshirt_size',
+            'label'      => 'T-shirt Size',
+            'required'   => true,
+            'attributes' => array(
+                'options' => MetaData::$possibleSizes,
+            ),
+        ));
+
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'organization',
+            'label'      => 'Organization',
+            'required'   => true,
+            'attributes' => array(
+                'options' => $this->getOrganizations(),
+            ),
+        ));
 
         $this->addSubmit('Save', 'secretary_edit');
     }

@@ -43,7 +43,7 @@ class IsicCard
     /**
      * @var boolean If a card number has already been paid
      *
-     * @ORM\Column(type="boolean",options={"default":true})
+     * @ORM\Column(type="boolean",options={"default":false})
      */
     private $hasPaid;
 

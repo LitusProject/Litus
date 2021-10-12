@@ -58,5 +58,6 @@ class Zip
                 $zip->close();
             }
         }
+        $zip->close();
     }
 }

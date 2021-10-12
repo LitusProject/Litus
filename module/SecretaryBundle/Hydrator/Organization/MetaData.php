@@ -8,7 +8,9 @@ use SecretaryBundle\Entity\Organization\MetaData as MetaDataEntity;
 
 class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $stdKeys = array();
+    private static $stdKeys = array(
+        'tshirt_size',
+    );
 
     protected function doExtract($object = null)
     {
@@ -23,7 +25,9 @@ class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
             'organization_info' => $this->stdExtract($object, self::$stdKeys),
         );
 
+        $data['organization_info']['receive_irreeel_at_cudi'] = $object->receiveIrreeelAtCudi();
         $data['organization_info']['become_member'] = $object->becomeMember();
+        $data['organization_info']['bakske_by_mail'] = $object->bakskeByMail();
 
         // Sure thing, if we're here, the user already checked the conditions
         $data['organization_info']['conditions'] = true;
@@ -79,7 +83,11 @@ class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
             );
         }
 
-        $this->stdHydrate($data, $object, array('become_member'));
+        if ($data['become_member']) {
+            $this->stdHydrate($data, $object, array('become_member', 'tshirt_size', 'receive_irreeel_at_cudi', 'bakske_by_mail'));
+        } else {
+            $this->stdHydrate($data, $object, array('become_member', 'bakske_by_mail', 'receive_irreeel_at_cudi'));
+        }
 
         return $this->stdHydrate($data, $object, self::$stdKeys);
     }

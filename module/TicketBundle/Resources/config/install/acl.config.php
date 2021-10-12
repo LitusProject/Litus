@@ -3,7 +3,7 @@
 return array(
     'ticketbundle' => array(
         'ticket_admin_event' => array(
-            'add', 'delete', 'edit', 'manage', 'old',
+            'add', 'delete', 'edit', 'manage', 'old', 'clean'
         ),
         'ticket_admin_ticket' => array(
             'export', 'manage', 'print', 'search',
@@ -15,7 +15,7 @@ return array(
             'sale', 'validate',
         ),
         'ticket_sale_ticket' => array(
-            'delete', 'overview', 'sale', 'unassign', 'undoSale',
+            'delete', 'overview', 'sale', 'unassign', 'undoSale', 'search',
         ),
         'ticket_sale_person' => array(
             'typeahead',

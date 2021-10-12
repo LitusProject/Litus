@@ -19,7 +19,7 @@ return array(
     ),
     array(
         'key'         => 'shift.mail_name',
-        'value'       => 'Student IT',
+        'value'       => 'VTK IT',
         'description' => 'The name of the mail address from which shift notifications are sent',
     ),
     array(
@@ -175,5 +175,15 @@ U bent verwijderd van de volgende shift door een administrator:
         'key'         => 'shift.weekly_change_interval',
         'value'       => 'P1W',
         'description' => 'Set how far the weekly change goes back',
+    ),
+    array(
+        'key'         => 'shift.praesidium_counter_interval',
+        'value'       => 'P1W',
+        'description' => 'Set how far the praesidium future counter goes forward',
+    ),
+    array(
+        'key'         => 'shift.praesidium_counter_start_day',
+        'value'       => 'Monday this week',
+        'description' => 'Set the starting day for the praesidium counter',
     )
 );

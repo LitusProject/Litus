@@ -8,8 +8,8 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 
 /**
- * Extending Zend's ACL implementation to support our own structure,
- * as well as Doctrine.
+ * Extending Laminas's ACL implementation to support our own structure, as well
+ * as Doctrine.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>

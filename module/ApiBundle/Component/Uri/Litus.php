@@ -9,7 +9,7 @@ namespace ApiBundle\Component\Uri;
  */
 class Litus extends \Laminas\Uri\Uri
 {
-    protected static $validSchemes = array('litus');
+    protected static $validSchemes = array('vtk');
 
     /**
      * User Info part is not used in Litus URIs.

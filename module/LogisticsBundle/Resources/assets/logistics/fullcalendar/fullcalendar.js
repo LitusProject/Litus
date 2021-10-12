@@ -1976,12 +1976,27 @@ function getSkinCss(event, opt) {
         statements.push('color:' + textColor);
     }
 
-    if (event.car==true) {
+    if (event.car==true){
+        if (event.bike==true) {
+            if (backgroundColor) {
+                statements.push('background: repeating-linear-gradient(90deg,#000000,'+backgroundColor+' 10px,'+backgroundColor+' 10px,'+backgroundColor+' 20px');
+            }
+            else {
+                statements.push('background: repeating-linear-gradient(90deg,#000000,#444444 10px,#444444 10px,#444444 20px');
+            }
+        } else {
+    		    if (backgroundColor){
+    		         statements.push('background: repeating-linear-gradient(45deg,#000000,'+backgroundColor+' 10px,'+backgroundColor+' 10px,'+backgroundColor+' 20px');
+    		    } else {
+    		        statements.push('background: repeating-linear-gradient(45deg,#000000,#444444 10px,#444444 10px,#444444 20px');
+    		    }
+        }
+    }else if (event.bike==true) {
         if (backgroundColor) {
-            statements.push('background: repeating-linear-gradient(45deg,#000000,'+backgroundColor+' 10px,'+backgroundColor+' 10px,'+backgroundColor+' 20px');
+            statements.push('background: repeating-linear-gradient(90deg,#000000,'+backgroundColor+' 10px,'+backgroundColor+' 10px,'+backgroundColor+' 20px');
         }
         else {
-        statements.push('background: repeating-linear-gradient(45deg,#000000,#444444 10px,#444444 10px,#444444 20px');
+            statements.push('background: repeating-linear-gradient(90deg,#000000,#444444 10px,#444444 10px,#444444 20px');
         }
     }
     return statements.join(';');

@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    'dsn'     => 'https://61238ecf9b0d318bd431673db627592b:1fe5b3bd982d40fbb3c93a99f2d5192f@localhost/1',
+    'dsn'     => 'https://ce2f6669047d456d96b2e0f4ae21688a@o918793.ingest.sentry.io/5862403',
     'options' => array(
         'name'     => gethostname(),
         'app_path' => '',

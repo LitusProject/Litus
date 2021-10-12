@@ -29,6 +29,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'wiki'               => $this->getWiki(),
                 'cudi'               => $this->getCudiInfo(),
                 'shop'               => $this->getShopInfo(),
+                'entityManager'      => $this->getEntityManager(),
                 'newsItems'          => $this->getNewsItems(),
                 'registrationShifts' => $this->getRegistrationShiftsInfo(),
                 'notifications'      => $notifications,
@@ -186,7 +187,6 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             }
             $calendarItems[$date]->events[] = $event;
         }
-
         return $calendarItems;
     }
 
@@ -275,6 +275,11 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             'url' => $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('shop.url_reservations'),
+            'openingHours' => unserialize(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('shop.main_page_text')
+            )[$this->getLanguage()->getAbbrev()],
         );
     }
 
