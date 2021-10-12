@@ -18,10 +18,20 @@ class ConsumeController extends \TicketBundle\Component\Controller\SaleControlle
                 $entity = $this->getEntityManager()
                     ->getRepository('TicketBundle\Entity\Consumptions')
                     ->findAllByUserNameQuery($username)->getResult()[0];
+                if($entity === null) {
+                    return new ViewModel(
+                        array(
+                            'noEntity' => 'No consumptions were found',
+                            'form' => $this->getForm('ticket_sale_consume'),
+                        )
+                    );
+                }
+
                 if ($entity->getConsumptions() - $amount < 0) {
 
                     return new ViewModel(
                         array(
+                            'amount' => $entity->getConsumptions(),
                             'msg' => 'error',
                             'name' => $entity->getFullName(),
                             'form' => $form,
@@ -32,32 +42,16 @@ class ConsumeController extends \TicketBundle\Component\Controller\SaleControlle
                     $this->getEntityManager()->remove($entity);
                     $this->getEntityManager()->flush();
 
-//                    $this->redirect()->toRoute(
-//                        'ticket_sale_consume',
-//                        array(
-//                            'action' => 'consume',
-//                        )
-//                    );
-
                     return new ViewModel(
                         array(
                             'empty' => "All consumptions used",
                             'name' => $entity->getFullName(),
-                            'form' => $form,
+                            'form' => $this->getForm('ticket_sale_consume'),
                         )
                     );
                 }
                 $entity->removeConsumptions($amount);
                 $this->getEntityManager()->flush();
-
-                error_log(json_encode($entity->getConsumptions()));
-
-//                $this->redirect()->toRoute(
-//                    'ticket_sale_consume',
-//                    array(
-//                        'action' => 'consume',
-//                    )
-//                );
 
                 return new ViewModel(
                     array(

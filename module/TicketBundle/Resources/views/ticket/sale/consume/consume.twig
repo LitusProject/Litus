@@ -4,11 +4,20 @@
     <div class="container modal-body">
         {% import 'site/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
+        {% if noEntity != null %}
+            <div class="flashmessage alert alert-danger " id="ticket_sale_consume_error" >
+                <a class="close" data-dismiss="alert">&times;</a>
+                <div class="content">
+                    <h2>Geen bonnen gevonden voor deze persoon!</h2>
+                </div>
+            </div>
+        {% endif %}
         {% if msg != null %}
             <div class="flashmessage alert alert-danger " id="ticket_sale_consume_error" >
                 <a class="close" data-dismiss="alert">&times;</a>
                 <div class="content">
-                    <h2>Niet genoeg bonnen over voor {{ name }}!</h2>
+                    <h1>Niet genoeg bonnen over voor {{ name }}!</h1>
+                    <h2>Bonnen over: {{ amount }}</h2>
                 </div>
             </div>
         {% endif %}
@@ -37,8 +46,6 @@
     $(document).ready(function (){
         document.getElementById('username').focus();
         $('#username').keydown( function(e) {
-            // e.preventDefault();
-            // console.log(e.key);
             if (e.key === 'Enter') {
                 e.preventDefault()
                 document.getElementById('amount').focus();
