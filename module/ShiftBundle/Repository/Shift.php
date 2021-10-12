@@ -7,7 +7,6 @@ use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\General\Organization\Unit as UnitEntity;
 use CommonBundle\Entity\User\Person;
 use DateTime;
-use ShiftBundle\Form\Shift\Search\Date;
 
 /**
  * Shift
@@ -334,9 +333,9 @@ class Shift extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     }
 
     /**
-     * @param Person $person
-     * @param DateTime $start
-     * @param DateTime $end
+     * @param Person            $person
+     * @param DateTime          $start
+     * @param DateTime          $end
      * @param AcademicYear|null $academicYear
      * @return \Doctrine\ORM\Query
      */
@@ -376,9 +375,9 @@ class Shift extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     }
 
     /**
-     * @param Person $person
-     * @param DateTime $start
-     * @param DateTime $end
+     * @param Person            $person
+     * @param DateTime          $start
+     * @param DateTime          $end
      * @param AcademicYear|null $academicYear
      * @return \Doctrine\ORM\Query
      */
@@ -405,10 +404,10 @@ class Shift extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 $where
             )
         )
-        ->orderBy('s.startDate', 'ASC')
-        ->setParameter('start', $start)
-        ->setParameter('end', $end)
-        ->setParameter('person', $person);
+            ->orderBy('s.startDate', 'ASC')
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
+            ->setParameter('person', $person);
 
         if ($academicYear !== null) {
             $query->setParameter('academicYear', $academicYear);
