@@ -10,7 +10,6 @@ use Laminas\View\Model\ViewModel;
 
 /**
  * CommunicationController
- * @author Stan Cardinaels <stan.cardinaels@vtk.be>
  */
 class CommunicationController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
