@@ -2,7 +2,6 @@
 
 namespace TicketBundle\Controller\Sale;
 
-use Doctrine\DBAL\Driver\PDO\Exception;
 use Laminas\View\Model\ViewModel;
 use TicketBundle\Entity\Event;
 use TicketBundle\Entity\Ticket;

@@ -334,8 +334,8 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
 
         $end = clone $start;
         $end->add($interval);
-        $now =  new DateTime();
-        if ($end->format('d/m/y') === $now->format('d/m/y')){
+        $now = new DateTime();
+        if ($end->format('d/m/y') === $now->format('d/m/y')) {
             $start->add($interval);
             $end->add($interval);
         }
