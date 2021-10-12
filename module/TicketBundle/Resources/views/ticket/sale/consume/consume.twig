@@ -1,0 +1,51 @@
+{% extends 'ticket/base-consume.twig' %}
+
+{% block content %}
+    <div class="container modal-body">
+        {% import 'site/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+        {% if msg != null %}
+            <div class="flashmessage alert alert-danger " id="ticket_sale_consume_error" >
+                <a class="close" data-dismiss="alert">&times;</a>
+                <div class="content">
+                    <h2>Niet genoeg bonnen over voor {{ name }}!</h2>
+                </div>
+            </div>
+        {% endif %}
+        {% if amount_left != null  %}
+            <div class="flashmessage alert alert-success " id="ticket_sale_consume_success" >
+                <a class="close" data-dismiss="alert">&times;</a>
+                <div class="content">
+                    <h2>Bonnen over voor {{ name }}: {{ amount_left }}</h2>
+                </div>
+            </div>
+        {% endif %}
+        {% if empty != null %}
+            <div class="flashmessage alert alert-success " id="ticket_sale_consume_success" >
+                <a class="close" data-dismiss="alert">&times;</a>
+                <div class="content">
+                    <h2>{{ name}} heeft nu alle bonnen opgebruikt!</h2>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}
+
+{% block content_script %}
+<script type="text/javascript">
+    $(document).ready(function (){
+        document.getElementById('username').focus();
+        $('#username').keydown( function(e) {
+            // e.preventDefault();
+            // console.log(e.key);
+            if (e.key === 'Enter') {
+                e.preventDefault()
+                document.getElementById('amount').focus();
+            }
+        });
+    });
+</script>
+{% endblock %}
+
+
