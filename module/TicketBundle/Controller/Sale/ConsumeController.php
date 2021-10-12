@@ -34,7 +34,7 @@ class ConsumeController extends \TicketBundle\Component\Controller\SaleControlle
                             'amount' => $entity->getConsumptions(),
                             'msg' => 'error',
                             'name' => $entity->getFullName(),
-                            'form' => $form,
+                            'form' => $this->getForm('ticket_sale_consume'),
                         )
                     );
                 }
