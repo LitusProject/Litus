@@ -19,20 +19,37 @@ class ConsumeController extends \TicketBundle\Component\Controller\SaleControlle
                     ->getRepository('TicketBundle\Entity\Consumptions')
                     ->findAllByUserNameQuery($username)->getResult()[0];
                 if ($entity->getConsumptions() - $amount < 0) {
-//                    $this->flashMessenger()->error(
-//                        'Error',
-//                        'Not enough consumptions left!'
-//                    );
+
                     return new ViewModel(
                         array(
-                            'message' => "test",
                             'form' => $form,
                         )
                     );
                 }
+                if ($entity->getConsumptions() - $amount === 0) {
+                    $this->getEntityManager()->remove($entity);
+                    $this->getEntityManager()->flush();
+
+                    $this->redirect()->toRoute(
+                        'ticket_sale_consume',
+                        array(
+                            'action' => 'consume',
+                        )
+                    );
+
+                    return new ViewModel();
+                }
                 $entity->removeConsumptions($amount);
                 $this->getEntityManager()->flush();
 
+                $this->redirect()->toRoute(
+                    'ticket_sale_consume',
+                    array(
+                        'action' => 'consume',
+                    )
+                );
+
+                return new ViewModel();
             }
         }
 

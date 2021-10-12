@@ -5,7 +5,7 @@
         {% import 'site/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
         {% if message %}
-            <div class="flashmessage alert alert-success fade" id="ticket_sale_consume_error">
+            <div class="flashmessage alert alert-danger fade" id="ticket_sale_consume_error">
                 <a class="close">&times;</a>
                 <div class="content">
                     <h2>Not enough consumptions left</h2>
