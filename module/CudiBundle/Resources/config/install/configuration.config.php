@@ -661,7 +661,7 @@ Gelieve contact op te nemen met {{ name }} via {{ email }}.
         'description' => 'boolean for retail pages/buttons',
     ),
     array(
-        'key'         => 'cudi.cudi.queue_force_registration_shift',
+        'key'         => 'cudi.queue_force_registration_shift',
         'value'       => '0',
         'description' => 'boolean for forcing registration shifts',
     ),
