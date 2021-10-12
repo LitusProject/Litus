@@ -632,9 +632,9 @@ class RegistrationShift
      * @param  boolean cudiTimeSlot
      * @return self
      */
-    public function setCudiTimeslot(cudiTimeslot)
+    public function setCudiTimeslot($cudiTimeslot)
     {
-        $this->cudiTimeslot = cudiTimeslot;
+        $this->cudiTimeslot = $cudiTimeslot;
     }
 
     /**
