@@ -28,6 +28,9 @@ class Consume extends \CommonBundle\Component\Form\Bootstrap\Form
                 'name' => 'amount',
                 'label' => 'The amount to consume',
                 'required' => true,
+                'attributes' => array(
+                    'id' => 'amount',
+                ),
                 'options' => array(
                     'input' => array(
                         'filters' => array(

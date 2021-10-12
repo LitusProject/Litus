@@ -18,7 +18,6 @@ class Version20211012124617 extends \Doctrine\Migrations\AbstractMigration
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('DROP SEQUENCE logistics_consumptions_id_seq CASCADE');
         $this->addSql('CREATE SEQUENCE ticket_consumptions_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE TABLE ticket_consumptions (id BIGINT NOT NULL, person BIGINT DEFAULT NULL, number_of_consumptions INT DEFAULT NULL, username VARCHAR(50) NOT NULL, name VARCHAR(50) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_1F95863534DCD176 ON ticket_consumptions (person)');

@@ -137,7 +137,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
         $form = $this->getForm('ticket_consumptions_edit', array('consumptions' => $consumptions));
 
         if ($this->getRequest()->isPost()) {
-            error_log(json_encode($this->getRequest()->getPost()));
+//            error_log(json_encode($this->getRequest()->getPost()));
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {

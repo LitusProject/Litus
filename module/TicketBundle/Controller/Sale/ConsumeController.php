@@ -22,7 +22,8 @@ class ConsumeController extends \TicketBundle\Component\Controller\SaleControlle
 
                     return new ViewModel(
                         array(
-                            'bericht' => 'error',
+                            'msg' => 'error',
+                            'name' => $entity->getFullName(),
                             'form' => $form,
                         )
                     );
@@ -31,26 +32,40 @@ class ConsumeController extends \TicketBundle\Component\Controller\SaleControlle
                     $this->getEntityManager()->remove($entity);
                     $this->getEntityManager()->flush();
 
-                    $this->redirect()->toRoute(
-                        'ticket_sale_consume',
+//                    $this->redirect()->toRoute(
+//                        'ticket_sale_consume',
+//                        array(
+//                            'action' => 'consume',
+//                        )
+//                    );
+
+                    return new ViewModel(
                         array(
-                            'action' => 'consume',
+                            'empty' => "All consumptions used",
+                            'name' => $entity->getFullName(),
+                            'form' => $form,
                         )
                     );
-
-                    return new ViewModel();
                 }
                 $entity->removeConsumptions($amount);
                 $this->getEntityManager()->flush();
 
-                $this->redirect()->toRoute(
-                    'ticket_sale_consume',
+                error_log(json_encode($entity->getConsumptions()));
+
+//                $this->redirect()->toRoute(
+//                    'ticket_sale_consume',
+//                    array(
+//                        'action' => 'consume',
+//                    )
+//                );
+
+                return new ViewModel(
                     array(
-                        'action' => 'consume',
+                        'amount_left' => $entity->getConsumptions(),
+                        'name' => $entity->getFullName(),
+                        'form' => $this->getForm('ticket_sale_consume'),
                     )
                 );
-
-                return new ViewModel();
             }
         }
 
