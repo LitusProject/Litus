@@ -22,6 +22,7 @@ class ConsumeController extends \TicketBundle\Component\Controller\SaleControlle
 
                     return new ViewModel(
                         array(
+                            'bericht' => 'error',
                             'form' => $form,
                         )
                     );
