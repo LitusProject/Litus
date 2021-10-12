@@ -288,4 +288,40 @@ class RegistrationShift extends \CommonBundle\Component\Doctrine\ORM\EntityRepos
 
         return array_values($shifts);
     }
+    /**
+     * @param  Person $person
+     * @return array
+     */
+    public function findAllCurrentAndCudiTimeslotByPerson(Person $person)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $responsibleResultSet = $query->select('s')
+            ->from('ShiftBundle\Entity\RegistrationShift', 's')
+            ->innerJoin('s.registered', 'r')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->andX(
+                        $query->expr()->lt('s.startDate', ':now'),
+                        $query->expr()->gt('s.endDate', ':now'),
+                        $query->expr()->lt('s.cudiTimeslot', 'true'),
+                    ),
+                    $query->expr()->eq('r.person', ':person')
+                )
+            )
+            ->orderBy('s.startDate', 'ASC')
+            ->setParameter('now', new DateTime())
+            ->setParameter('person', $person->getId())
+            ->getQuery()
+            ->getResult();
+
+        $shifts = array();
+        foreach ($responsibleResultSet as $result) {
+            $shifts[$result->getStartDate()->format('YmdHi') . $result->getId()] = $result;
+        }
+
+        ksort($shifts);
+
+        return array_values($shifts);
+    }
+
 }
