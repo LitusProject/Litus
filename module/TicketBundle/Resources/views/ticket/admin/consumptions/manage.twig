@@ -19,7 +19,7 @@
     </div>
 
     <aside>
-        {% if hasAccess('ticket_sale_index', 'sale') %}
+        {% if hasAccess('ticket_sale_consume', 'consume') %}
             <div class="sidebox">
                 <div class="title">Consume</div>
                 <div class="content">
@@ -27,7 +27,7 @@
                         <i>Please hit the link below to consume!</i>
                     </p>
                     <p>
-                        <a href="{{ url('ticket_sale_index', {'action': 'consume'}) }}">&rarr; Consume</a>
+                        <a href="{{ url('ticket_sale_consume') }}">&rarr; Consume</a>
                     </p>
                 </div>
             </div>

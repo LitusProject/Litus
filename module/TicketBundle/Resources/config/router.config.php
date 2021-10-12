@@ -54,13 +54,14 @@ return array(
         'ticket_sale_consume' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/ticket/sale[/:action][/]',
+                'route'       => '/consume[/:action][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
                 ),
                 'defaults'    => array(
                     'controller' => 'ticket_sale_consume',
-                    'action'     => 'sale',
+                    'action'     => 'consume',
                 ),
             ),
         ),
@@ -133,6 +134,7 @@ return array(
         'ticket_sale_ticket'  => 'TicketBundle\Controller\Sale\TicketController',
         'ticket_sale_person'  => 'TicketBundle\Controller\Sale\PersonController',
 
+        'ticket_sale_consume'             => 'TicketBundle\Controller\Sale\ConsumeController',
         'ticket'              => 'TicketBundle\Controller\TicketController',
     ),
 );

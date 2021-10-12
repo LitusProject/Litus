@@ -1,2 +1,19 @@
-{% extends 'ticket/base.twig' %}
+{% extends 'ticket/base-consume.twig' %}
+
+{% block content %}
+    <div class="container modal-body">
+        {% import 'site/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+        {% if message %}
+            <div class="flashmessage alert alert-success fade" id="ticket_sale_consume_error">
+                <a class="close">&times;</a>
+                <div class="content">
+                    <h2>Not enough consumptions left</h2>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}
+
 

@@ -33,11 +33,6 @@
                                 <a href="{{ url("ticket_sale_ticket", {"action": "overview", "id": event.getId()}) }}">Tickets</a>
                             </li>
                         {% endif %}
-                        {% if hasAccess('ticket_sale_consume', 'consume') %}
-                            <li {% if 'consume' == getParam('action') and 'ticket_sale_consume' == getParam('controller') %} class="active" {% endif %}>
-                                <a href="{{ url("ticket_sale_consume", {"action": "consume"}) }}">Consume</a>
-                            </li>
-                        {% endif %}
 
                     </ul>
                 </div>
