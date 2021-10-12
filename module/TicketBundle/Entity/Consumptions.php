@@ -1,6 +1,6 @@
 <?php
 
-namespace LogisticsBundle\Entity;
+namespace TicketBundle\Entity;
 
 use CommonBundle\Entity\User\Person;
 use Doctrine\ORM\Mapping as ORM;
@@ -8,8 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * This is the entity for the consumptions
  *
- * @ORM\Entity(repositoryClass="LogisticsBundle\Repository\Consumptions")
- * @ORM\Table(name="logistics_consumptions")
+ * @ORM\Entity(repositoryClass="TicketBundle\Repository\Consumptions")
+ * @ORM\Table(name="ticket_consumptions")
  */
 class Consumptions
 {

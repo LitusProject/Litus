@@ -1,6 +1,6 @@
 <?php
 
-namespace LogisticsBundle\Repository;
+namespace TicketBundle\Repository;
 
 use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person\Academic;
@@ -12,7 +12,7 @@ class Consumptions extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('r')
-            ->from('LogisticsBundle\Entity\Consumptions', 'r')
+            ->from('TicketBundle\Entity\Consumptions', 'r')
             ->where(
                 $query->expr()->gte('r.getAcademic()', ':start')
             )
@@ -25,7 +25,7 @@ class Consumptions extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('p')
-            ->from('LogisticsBundle\Entity\Consumptions', 'p')
+            ->from('TicketBundle\Entity\Consumptions', 'p')
             ->where(
                 $query->expr()->like($query->expr()->lower('p.username'), ':username')
             )
@@ -37,7 +37,7 @@ class Consumptions extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('p')
-            ->from('LogisticsBundle\Entity\Consumptions', 'p')
+            ->from('TicketBundle\Entity\Consumptions', 'p')
             ->where(
                 $query->expr()->like($query->expr()->lower('p.name'), ':name')
             )

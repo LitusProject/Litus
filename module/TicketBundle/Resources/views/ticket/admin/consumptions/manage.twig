@@ -1,7 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-    {% include 'logistics/admin/consumptions/partials/navigation.twig' %}
+    {% include 'ticket/admin/consumptions/partials/navigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
@@ -17,6 +17,22 @@
             <p>An error occurred while trying to delete consumptions.</p>
         </div>
     </div>
+
+    <aside>
+        {% if hasAccess('ticket_sale_index', 'sale') %}
+            <div class="sidebox">
+                <div class="title">Consume</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to consume!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('ticket_sale_index', {'action': 'consume'}) }}">&rarr; Consume</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
 
     <div id="controller_action">
         <div id="consumptions_search" style="display: none;">
@@ -57,14 +73,14 @@
                             <td>{{ consumptions.getUserName() }}</td>
                             <td>{{ consumptions.getConsumptions() }}</td>
                             <td class="actions">
-                                {% if hasAccess('logistics_admin_consumptions', 'edit') %}
-                                    <a href="{{ url('logistics_admin_consumptions', {"action": "edit", "id": consumptions.getId()}) }}" class="edit">Edit</a>
+                                {% if hasAccess('ticket_admin_consumptions', 'edit') %}
+                                    <a href="{{ url('ticket_admin_consumptions', {"action": "edit", "id": consumptions.getId()}) }}" class="edit">Edit</a>
                                 {% endif %}
-                                {% if hasAccess('logistics_admin_consumptions', 'delete') %}
+                                {% if hasAccess('ticket_admin_consumptions', 'delete') %}
                                     <a href="#" class="delete" data-id="{{ consumptions.getId() }}" data-person="{{ consumptions.getFullName() }}">Delete</a>
                                 {% endif %}
-                                {% if hasAccess('logistics_admin_consumptions', 'consume') %}
-                                    <a href="{{ url('logistics_admin_consumptions', {"action": "consume", "id": consumptions.getId()}) }}" class="edit">Consume</a>
+                                {% if hasAccess('ticket_admin_consumptions', 'consume') %}
+                                    <a href="{{ url('ticket_admin_consumptions', {"action": "consume", "id": consumptions.getId()}) }}" class="edit">Consume</a>
                                 {% endif %}
                             </td>
                         </tr>
@@ -104,15 +120,15 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            {% if hasAccess('logistics_admin_consumptions', 'search') %}
+            {% if hasAccess('ticket_admin_consumptions', 'search') %}
             // console.log("test");
             $.searchDatabase({
                 defaultPage: $('#default_page'),
                 searchDiv: $('#consumptions_search'),
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                searchPage: '{{ url('logistics_admin_consumptions', {'action': 'manage'}) }}manage/',
-                url: '{{ url('logistics_admin_consumptions', {'action': 'search'}) }}',
+                searchPage: '{{ url('ticket_admin_consumptions', {'action': 'manage'}) }}manage/',
+                url: '{{ url('ticket_admin_consumptions', {'action': 'search'}) }}',
                 display: function (data) {
                     $('#consumptions_search table').find('tr.item').remove();
                     $(data).each(function () {
@@ -122,9 +138,9 @@
                             .append('<td>' + this.consumptions + '</td>')
                             .append(
                                 $('<td>', {'class': 'actions'})
-                                    .append('<a href="{{ url('logistics_admin_consumptions', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
+                                    .append('<a href="{{ url('ticket_admin_consumptions', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
                                     .append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
-                                    .append('<a href="{{ url('logistics_admin_consumptions', {"action": "consume"}) }}' + this.id + '" class="edit">Consume</a>')
+                                    .append('<a href="{{ url('ticket_admin_consumptions', {"action": "consume"}) }}' + this.id + '" class="edit">Consume</a>')
                             );
                         deleteButton.data({
                             id: this.id,
@@ -151,7 +167,7 @@
             removeConsumptions.find('.consumptionsPerson').html($(this).data('person'));
             var id = $this.data('id');
             removeConsumptions.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('logistics_admin_consumptions', {"action": "delete"}) }}' + id, function (data) {
+                $.post('{{ url('ticket_admin_consumptions', {"action": "delete"}) }}' + id, function (data) {
                     // console.log($('.item-' + id));
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');

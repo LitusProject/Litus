@@ -1,8 +1,8 @@
 <?php
 
-namespace LogisticsBundle\Form\Admin\Consumptions;
+namespace TicketBundle\Form\Admin\Consumptions;
 
-class Edit extends \LogisticsBundle\Form\Admin\Consumptions\Add
+class Edit extends \TicketBundle\Form\Admin\Consumptions\Add
 {
     public function init()
     {

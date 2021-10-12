@@ -1,8 +1,8 @@
 <?php
 
-namespace LogisticsBundle\Form\Admin\Consumptions;
+namespace TicketBundle\Form\Admin\Consumptions;
 
-use LogisticsBundle\Entity\Consumptions;
+use TicketBundle\Entity\Consumptions;
 
 class Consume extends \CommonBundle\Component\Form\Admin\Form
 {

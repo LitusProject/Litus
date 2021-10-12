@@ -1,16 +1,16 @@
 <?php
 
-namespace LogisticsBundle\Form\Admin\Consumptions;
+namespace TicketBundle\Form\Admin\Consumptions;
 
 use CommonBundle\Entity\User\Person;
-use LogisticsBundle\Entity\Consumptions;
+use TicketBundle\Entity\Consumptions;
 
 /**
  * Add first Consumptions
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    protected $hydrator = 'LogisticsBundle\Hydrator\Consumptions';
+    protected $hydrator = 'TicketBundle\Hydrator\Consumptions';
 
     protected $consumptions;
 

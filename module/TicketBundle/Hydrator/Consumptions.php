@@ -1,8 +1,8 @@
 <?php
 
-namespace LogisticsBundle\Hydrator;
+namespace TicketBundle\Hydrator;
 
-use LogisticsBundle\Entity\Consumptions as ConsumptionsEntity;
+use TicketBundle\Entity\Consumptions as ConsumptionsEntity;
 
 class Consumptions extends \CommonBundle\Component\Hydrator\Hydrator
 {

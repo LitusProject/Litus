@@ -3,15 +3,15 @@
 
     <nav id="controller_nav">
         <ul>
-            {%  if hasAccess('logistics_admin_consumptions', 'add') %}
-                <li><a {% if 'add' == getParam('action') %} class = 'active' {%  endif %} href="{{ url('logistics_admin_consumptions', {"action": "add"}) }}"> Add </a></li>
+            {%  if hasAccess('ticket_admin_consumptions', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class = 'active' {%  endif %} href="{{ url('ticket_admin_consumptions', {"action": "add"}) }}"> Add </a></li>
             {%  endif %}
 {#                        {%  if hasAccess('br_admin_communication', 'old') %}#}
 {#                            <li><a {% if 'old' == getParam('action') %} class = 'active' {%  endif %} href="{{ url('br_admin_communication', {"action": "old"}) }}"> Old </a></li>#}
 {#                        {%  endif %}#}
-            {% if hasAccess('logistics_admin_consumptions', 'manage') %}
+            {% if hasAccess('ticket_admin_consumptions', 'manage') %}
                 <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') or 'delete' == getParam('action') %} class="active" {% endif %}
-                            href="{{ url('logistics_admin_consumptions', {"action": "manage"}) }}">Manage</a></li>
+                            href="{{ url('ticket_admin_consumptions', {"action": "manage"}) }}">Manage</a></li>
             {% endif %}
         </ul>
     </nav>

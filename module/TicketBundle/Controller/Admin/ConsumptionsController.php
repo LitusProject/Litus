@@ -1,12 +1,9 @@
 <?php
 
-namespace LogisticsBundle\Controller\Admin;
+namespace TicketBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\AcademicYear;
-use CommonBundle\Entity\User\Person\Academic;
-use CudiBundle\Form\Admin\Sale\Article\View;
 use Laminas\View\Model\ViewModel;
-use LogisticsBundle\Entity\Consumptions as Consumptions;
+use TicketBundle\Entity\Consumptions as Consumptions;
 
 /**
  * ConsumptionsController
@@ -17,7 +14,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
     {
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Consumptions')
+                ->getRepository('TicketBundle\Entity\Consumptions')
                 ->findAll(),
             $this->getParam('page')
         );
@@ -32,7 +29,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
 
     public function consumeAction()
     {
-        $form = $this->getForm('logistics_consumptions_consume');
+        $form = $this->getForm('ticket_consumptions_consume');
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -49,7 +46,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
                     );
 
                     $this->redirect()->toRoute(
-                        'logistics_admin_consumptions',
+                        'ticket_admin_consumptions',
                         array(
                             'action' => 'manage',
                         )
@@ -63,7 +60,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
                     $this->getEntityManager()->flush();
 
                     $this->redirect()->toRoute(
-                        'logistics_admin_consumptions',
+                        'ticket_admin_consumptions',
                         array(
                             'action' => 'manage',
                         )
@@ -76,7 +73,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
                 $this->getEntityManager()->flush();
 
                 $this->redirect()->toRoute(
-                    'logistics_admin_consumptions',
+                    'ticket_admin_consumptions',
                     array(
                         'action' => 'manage',
                     )
@@ -95,7 +92,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
 
     public function addAction()
     {
-        $form = $this->getForm('logistics_consumptions_add');
+        $form = $this->getForm('ticket_consumptions_add');
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -113,7 +110,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
                 );
 
                 $this->redirect()->toRoute(
-                    'logistics_admin_consumptions',
+                    'ticket_admin_consumptions',
                     array(
                         'action' => 'add',
                     )
@@ -137,7 +134,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
             return new ViewModel();
         }
 
-        $form = $this->getForm('logistics_consumptions_edit', array('consumptions' => $consumptions));
+        $form = $this->getForm('ticket_consumptions_edit', array('consumptions' => $consumptions));
 
         if ($this->getRequest()->isPost()) {
             error_log(json_encode($this->getRequest()->getPost()));
@@ -152,7 +149,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
                 );
 
                 $this->redirect()->toRoute(
-                    'logistics_admin_consumptions',
+                    'ticket_admin_consumptions',
                     array(
                         'action' => 'manage',
                     )
@@ -193,7 +190,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
 
     private function getConsumptionsEntity()
     {
-        $consumptions = $this->getEntityById('LogisticsBundle\Entity\Consumptions');
+        $consumptions = $this->getEntityById('TicketBundle\Entity\Consumptions');
 
         if (!($consumptions instanceof Consumptions)) {
             $this->flashMessenger()->error(
@@ -202,7 +199,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
             );
 
             $this->redirect()->toRoute(
-                'logistics_admin_consumptions',
+                'ticket_admin_consumptions',
                 array(
                     'action' => 'manage',
                 )
@@ -249,11 +246,11 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
         switch ($this->getParam('field')) {
             case 'username':
                 return $this->getEntityManager()
-                    ->getRepository('LogisticsBundle\Entity\Consumptions')
+                    ->getRepository('TicketBundle\Entity\Consumptions')
                     ->findAllByUserNameQuery($this->getParam('string'));
             case 'name':
                 return $this->getEntityManager()
-                    ->getRepository('LogisticsBundle\Entity\Consumptions')
+                    ->getRepository('TicketBundle\Entity\Consumptions')
                     ->findAllByNameQuery($this->getParam('string'));
         }
     }

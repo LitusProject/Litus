@@ -8,6 +8,9 @@ return array(
         'ticket_admin_ticket' => array(
             'export', 'manage', 'print', 'search',
         ),
+        'ticket_admin_consumptions' => array(
+            'add', 'delete', 'edit', 'manage', 'search', 'consume',
+        ),
         'ticket_sale_index' => array(
             'sale', 'validate',
         ),
@@ -16,6 +19,9 @@ return array(
         ),
         'ticket_sale_person' => array(
             'typeahead',
+        ),
+        'ticket_sale_consume' => array(
+            'consume',
         ),
         'ticket' => array(
             'delete', 'event', 'pay', 'payed'
