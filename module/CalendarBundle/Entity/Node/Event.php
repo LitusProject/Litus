@@ -293,6 +293,7 @@ class Event extends \CommonBundle\Entity\Node
     {
         $tickets = $em->getRepository('TicketBundle\Entity\Event')
             ->findOneByEvent($this);
+        if(is_null($tickets)) return True;
         return (count($tickets) > 0) && $tickets->isStillBookable();
     }
 }
