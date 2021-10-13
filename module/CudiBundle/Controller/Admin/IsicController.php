@@ -84,6 +84,7 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
             )
         );
     }
+
     public function printAction()
     {
         $this->initAjax();

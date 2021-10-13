@@ -53,8 +53,6 @@ class WeeklyChangeController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('ShiftBundle\Entity\Shift\Volunteer')
             ->findAllCountsAtTimeByAcademicYear($academicYear, $hoursPerBlock, $points_enabled, date_sub(new DateTime(), $changeInterval));
 
-//        print_r($volunteersThen); print_r($volunteersNow); die();
-
         $oldVolunteers = array();
         for ($i = 0; isset($rankingCriteria[$i]); $i++) {
             foreach ($volunteersNow as $volunteer) {

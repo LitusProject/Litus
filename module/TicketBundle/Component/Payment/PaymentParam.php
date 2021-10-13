@@ -43,7 +43,6 @@ class PaymentParam #Class to create parameters to send in a payment, hash these 
         $hashstring = PaymentParam::implodeHash($arr, $shapass);
         $hash = hash('sha512', $hashstring);
 
-        error_log(gettype($arr));
         $url = $urlPrefix;
         foreach ($arr as $value) {
             $url .= $value->name . '=' .$value->value . '&';

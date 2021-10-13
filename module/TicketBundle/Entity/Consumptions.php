@@ -56,7 +56,6 @@ class Consumptions
      */
     public function __construct()
     {
-
     }
 
     /**

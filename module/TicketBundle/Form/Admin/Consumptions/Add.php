@@ -2,7 +2,6 @@
 
 namespace TicketBundle\Form\Admin\Consumptions;
 
-use CommonBundle\Entity\User\Person;
 use TicketBundle\Entity\Consumptions;
 
 /**
@@ -27,12 +26,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'options'  => array(
                     'input' => array(
                         'validators' => array(
-//                            array(
-//                                'name'    => 'EntryAcademic',
-//                                'options' => array(
-//                                    'list' => $this->getList(),
-//                                ),
-//                            ),
+            //                            array(
+            //                                'name'    => 'EntryAcademic',
+            //                                'options' => array(
+            //                                    'list' => $this->getList(),
+            //                                ),
+            //                            ),
                             array('name' => 'TypeaheadPerson'),
                         ),
                     ),
@@ -42,12 +41,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type' => 'text',
-                'name' => 'number_of_consumptions',
-                'label' => 'Number of Consumptions',
-//                'value' => 0,
+                'type'     => 'text',
+                'name'     => 'number_of_consumptions',
+                'label'    => 'Number of Consumptions',
+            //                'value' => 0,
                 'required' => true,
-                'options' => array(
+                'options'  => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -55,7 +54,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         'validators' => array(
                             array('name' => 'int'),
                             array(
-                                'name' => 'greaterthan',
+                                'name'    => 'greaterthan',
                                 'options' => array(
                                     'min' => 0,
                                 ),

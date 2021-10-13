@@ -3,11 +3,12 @@
 namespace TicketBundle\Controller\Sale;
 
 use Laminas\View\Model\ViewModel;
-use TicketBundle\Entity\Consumptions as Consumptions;
+use TicketBundle\Entity\Consumptions;
 
-
-class ConsumeController extends \TicketBundle\Component\Controller\SaleController{
-    public function consumeAction() {
+class ConsumeController extends \TicketBundle\Component\Controller\SaleController
+{
+    public function consumeAction()
+    {
         $form = $this->getForm('ticket_sale_consume');
 
         if ($this->getRequest()->isPost()) {
@@ -18,23 +19,22 @@ class ConsumeController extends \TicketBundle\Component\Controller\SaleControlle
                 $entity = $this->getEntityManager()
                     ->getRepository('TicketBundle\Entity\Consumptions')
                     ->findAllByUserNameQuery($username)->getResult()[0];
-                if($entity === null) {
+                if ($entity === null) {
                     return new ViewModel(
                         array(
                             'noEntity' => 'No consumptions were found',
-                            'form' => $this->getForm('ticket_sale_consume'),
+                            'form'     => $this->getForm('ticket_sale_consume'),
                         )
                     );
                 }
 
                 if ($entity->getConsumptions() - $amount < 0) {
-
                     return new ViewModel(
                         array(
                             'amount' => $entity->getConsumptions(),
-                            'msg' => 'error',
-                            'name' => $entity->getFullName(),
-                            'form' => $this->getForm('ticket_sale_consume'),
+                            'msg'    => 'error',
+                            'name'   => $entity->getFullName(),
+                            'form'   => $this->getForm('ticket_sale_consume'),
                         )
                     );
                 }
@@ -44,9 +44,9 @@ class ConsumeController extends \TicketBundle\Component\Controller\SaleControlle
 
                     return new ViewModel(
                         array(
-                            'empty' => "All consumptions used",
-                            'name' => $entity->getFullName(),
-                            'form' => $this->getForm('ticket_sale_consume'),
+                            'empty' => 'All consumptions used',
+                            'name'  => $entity->getFullName(),
+                            'form'  => $this->getForm('ticket_sale_consume'),
                         )
                     );
                 }
@@ -56,8 +56,8 @@ class ConsumeController extends \TicketBundle\Component\Controller\SaleControlle
                 return new ViewModel(
                     array(
                         'amount_left' => $entity->getConsumptions(),
-                        'name' => $entity->getFullName(),
-                        'form' => $this->getForm('ticket_sale_consume'),
+                        'name'        => $entity->getFullName(),
+                        'form'        => $this->getForm('ticket_sale_consume'),
                     )
                 );
             }

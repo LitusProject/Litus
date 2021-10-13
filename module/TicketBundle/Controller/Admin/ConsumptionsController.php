@@ -3,7 +3,7 @@
 namespace TicketBundle\Controller\Admin;
 
 use Laminas\View\Model\ViewModel;
-use TicketBundle\Entity\Consumptions as Consumptions;
+use TicketBundle\Entity\Consumptions;
 
 /**
  * ConsumptionsController
@@ -21,7 +21,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -137,7 +137,6 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
         $form = $this->getForm('ticket_consumptions_edit', array('consumptions' => $consumptions));
 
         if ($this->getRequest()->isPost()) {
-//            error_log(json_encode($this->getRequest()->getPost()));
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
@@ -172,9 +171,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
 
         $consumptions = $this->getConsumptionsEntity();
 
-        if ( $consumptions === null) {
-//            echo json_encode("test");
-//            die();
+        if ($consumptions === null) {
             return new ViewModel();
         }
 
@@ -242,7 +239,6 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
 
     private function search()
     {
-//        error_log($this->getParam('field'));
         switch ($this->getParam('field')) {
             case 'username':
                 return $this->getEntityManager()

@@ -381,10 +381,6 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         }
         $language = $this->getParam('language');
 
-//        foreach ($contract->getEntries() as $entry){
-//            print($entry->getContractText());
-//        }
-//        die();
         $generator = new ContractGenerator($this->getEntityManager(), $contract, $this->getTranslator()->getTranslator(), $language);
         $generator->generate();
 

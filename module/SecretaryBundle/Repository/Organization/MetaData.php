@@ -34,7 +34,7 @@ class MetaData extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     public function findAllBakskeByAcademicYearQuery(AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('m')
+        return $query->select('m')
             ->from('SecretaryBundle\Entity\Organization\MetaData', 'm')
             ->where(
                 $query->expr()->andX(
@@ -44,7 +44,5 @@ class MetaData extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             )
             ->setParameter('academicYear', $academicYear)
             ->getQuery();
-
-        return $resultSet;
     }
 }

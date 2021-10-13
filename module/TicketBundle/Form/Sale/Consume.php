@@ -10,10 +10,10 @@ class Consume extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->add(
             array(
-                'type' => 'text',
-                'name' => 'username',
-                'label' => 'Student Number',
-                'required' => true,
+                'type'       => 'text',
+                'name'       => 'username',
+                'label'      => 'Student Number',
+                'required'   => true,
                 'attributes' => array(
                     'autocomplete' => 'off',
                     'id'           => 'username',
@@ -24,14 +24,14 @@ class Consume extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->add(
             array(
-                'type' => 'text',
-                'name' => 'amount',
-                'label' => 'The amount to consume',
-                'required' => true,
+                'type'       => 'text',
+                'name'       => 'amount',
+                'label'      => 'The amount to consume',
+                'required'   => true,
                 'attributes' => array(
                     'id' => 'amount',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -39,7 +39,7 @@ class Consume extends \CommonBundle\Component\Form\Bootstrap\Form
                         'validators' => array(
                             array('name' => 'int'),
                             array(
-                                'name' => 'greaterthan',
+                                'name'    => 'greaterthan',
                                 'options' => array(
                                     'min' => 0,
                                 ),
@@ -60,7 +60,6 @@ class Consume extends \CommonBundle\Component\Form\Bootstrap\Form
 //                ),
 //            )
 //        );
-      $this->addSubmit('Consume', 'sale_consume', 'consume', array('id' => 'sale_consume'));
-
+        $this->addSubmit('Consume', 'sale_consume', 'consume', array('id' => 'sale_consume'));
     }
 }

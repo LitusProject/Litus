@@ -67,19 +67,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         ),
          */
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'reason',
-            'label'    => 'Reason',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'reason',
+                'label'    => 'Reason',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
-                ),
+                )
             )
-        ));
+        );
 
         $this->add(
             array(
