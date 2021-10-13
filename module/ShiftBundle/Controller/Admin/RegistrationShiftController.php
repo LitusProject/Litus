@@ -65,6 +65,7 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
                 $endDate = self::loadDate($formData['end_date']);
 
                 $formData = $form->getData();
+                // print(json_encode($formData));die();
                 $interval = $startDate->diff($endDate);
 
                 for ($i = 0; $i < $formData['duplicate_days']; $i++) {
