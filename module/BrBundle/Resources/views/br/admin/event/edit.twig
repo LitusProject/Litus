@@ -24,19 +24,22 @@
         {{ forms.renderForm(propertiesForm) }}
         <h1>Participants</h1>
         {{ forms.renderForm(companyMapForm) }}
-
+        <br>
+        <h2>Total: {{ eventCompanyMaps|length }}</h2>
          <table class="manage">
             <tr>
                 <th>Name</th>
+                <th>Status</th>
                 <th width="90px">Actions</th>
             </tr>
             {% for eventCompanyMap in eventCompanyMaps %}
                 {% if '' != eventCompanyMap.getCompany().getName() %}
                     <tr class="item item-{{ eventCompanyMap.getId() }}">
                         <td>{{ eventCompanyMap.getCompany().getName() }}</td>
+                        <td>{{ eventCompanyMap.getStatus() }}</td>
                         <td>
                             {% if hasAccess('br_admin_event', 'deleteAttendee') %}
-                                <a href="#" data-id="{{ eventCompanyMap.getCompany().getId() }}" data-name="{{ eventCompanyMap.getCompany().getName() }}" class="delete">Delete</a>
+                                <a href="#" data-id="{{ event.getId() }}" data-map="{{ eventCompanyMap.getId() }}" data-name="{{ eventCompanyMap.getCompany().getName() }}" class="delete">Delete</a>
                             {% endif %}
                         </td>
                     </tr>
@@ -82,12 +85,13 @@
             var removeAttendee = $('#removeAttendee');
             removeAttendee.find('.attendeeName').html($(this).data('name'));
             var id = $this.data('id');
+            var map = $this.data('map');
             removeAttendee.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('br_admin_event', {"action": "deleteAttendee"})}}' + id, function (data) {
+                $.post('{{ url('br_admin_event', {"action": "deleteAttendee"})}}' + id + '/map/'+ map, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.attendee_removed_success').removeClass('hide');
-                        $('.item-' + id).remove();
+                        $('.item-' + map).remove();
                         removeAttendee.modal('hide');
                     } else {
                         errorRemove();

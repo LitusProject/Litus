@@ -1,25 +1,8 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace OnBundle\Form\Admin\Slug;
 
+use DateTime;
 use OnBundle\Entity\Slug as SlugEntity;
 
 /**
@@ -34,7 +17,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @var SlugEntity|null
      */
-    private $slug;
+    protected $slug;
 
     public function init()
     {
@@ -80,6 +63,30 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         ),
                     ),
                 ),
+            )
+        );
+
+        $expirationInterval = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.slugExpirationInterval');
+
+        $this->add(
+            array(
+                'type'     => 'date',
+                'name'     => 'expiration_date',
+                'label'    => 'Expiration Date',
+                'value'    => date_add(new DateTime(), new \DateInterval($expirationInterval))->format('d/m/Y'),
+                'required' => true,
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'checkbox',
+                'name'     => 'active',
+                'label'    => 'Active',
+                'value'    => true,
+                'required' => true,
             )
         );
 

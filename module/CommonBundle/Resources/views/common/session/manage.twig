@@ -1,50 +1,51 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-    <div class="page-header">
-        <h1>{{ translate('Account') }}</h1>
-    </div>
-
-    {% include 'common/account/partials/navigation.twig' %}
-
-    <div class="flashmessage alert alert-success fade" id="session_removed_success">
-        <a class="close">&times;</a>
-        <div class="content">
-            {{ translate('The session was successfully expired!') }}
+    <div class="container">
+        <div style="height: 40px"></div>
+        <div>
+            <h1>{{ translate('Sessions') }}</h1>
         </div>
-    </div>
 
-    <div class="flashmessage alert alert-danger fade" id="session_removed_error">
-        <a class="close">&times;</a>
-        <div class="content">
-            {{ translate('An error occurred while trying to expire the session.') }}
+        <div style="height: 20px"></div>
+
+        <div class="flashmessage alert alert-success fade" id="session_removed_success">
+            <a class="close">&times;</a>
+            <div class="content">
+                {{ translate('The session was successfully expired!') }}
+            </div>
         </div>
-    </div>
 
-    <h3>{{ translate('Sessions') }}</h3>
+        <div class="flashmessage alert alert-danger fade" id="session_removed_error">
+            <a class="close">&times;</a>
+            <div class="content">
+                {{ translate('An error occurred while trying to expire the session.') }}
+            </div>
+        </div>
 
-    <table class="table">
-        <tr>
-            <th>IP</th>
-            <th class="hidden-xs" width="200px">Start Time</th>
-            <th width="200px">Expiration Time</th>
-            <th class="hidden-xs" width="90px">Shibboleth</th>
-            <th width="100px">Action</th>
-        </tr>
-        {% for session in activeSessions %}
-            <tr class="item item-{{ session.getId() }}">
-                <td>{{ session.getIp() }}</td>
-                <td class="hidden-xs">{{ dateLocalized(session.getStartTime(), 'd/M/y HH:mm') }}</td>
-                <td>{{ dateLocalized(session.getExpirationTime(),'d/M/y HH:mm') }}</td>
-                <td class="hidden-xs">{% if session.isShibboleth() %}&times;{% endif %}</td>
-                <td class="actions">
-                    {% if hasAccess('common_session', 'expire') and session.getId() != currentSession.getId() %}
-                        <a href="#" class="btn btn-sm btn-danger expireSession" data-id="{{ session.getId() }}">{{ translate('Expire') }}</a></li>
-                    {% endif %}
-                </td>
+        <table class="table">
+            <tr>
+                <th>IP</th>
+                <th class="hidden-xs" width="200px">Start Time</th>
+                <th width="200px">Expiration Time</th>
+                <th class="hidden-xs" width="90px">Shibboleth</th>
+                <th width="100px">Action</th>
             </tr>
-        {% endfor %}
-    </table>
+            {% for session in activeSessions %}
+                <tr class="item item-{{ session.getId() }}">
+                    <td>{{ session.getIp() }}</td>
+                    <td class="hidden-xs">{{ dateLocalized(session.getStartTime(), 'd/M/y HH:mm') }}</td>
+                    <td>{{ dateLocalized(session.getExpirationTime(),'d/M/y HH:mm') }}</td>
+                    <td class="hidden-xs">{% if session.isShibboleth() %}&times;{% endif %}</td>
+                    <td class="actions">
+                        {% if hasAccess('common_session', 'expire') and session.getId() != currentSession.getId() %}
+                            <a href="#" class="btn btn-sm btn-danger expireSession" data-id="{{ session.getId() }}">{{ translate('Expire') }}</a></li>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 {% endblock %}
 
 {% block content_script %}

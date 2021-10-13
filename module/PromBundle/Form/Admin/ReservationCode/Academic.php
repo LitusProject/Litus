@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace PromBundle\Form\Admin\ReservationCode;
 
@@ -35,18 +17,18 @@ class Academic extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'typeahead',
-                'name'     => 'person',
-                'label'    => 'Name',
-                'required' => true,
+                'type'       => 'typeahead',
+                'name'       => 'person',
+                'label'      => 'Name',
+                'required'   => true,
                 'attributes' => array(
                     'autofocus' => 'true',
                 ),
-                'options'  => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array(
-                                'name'    => 'EntryAcademic'
+                                'name' => 'EntryAcademic'
                             ),
                             array('name' => 'TypeaheadPerson'),
                         ),
@@ -57,14 +39,14 @@ class Academic extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'select',
-                'name'     => 'number_tickets',
-                'label'    => 'Number of tickets',
-                'required' => true,
+                'type'       => 'select',
+                'name'       => 'number_tickets',
+                'label'      => 'Number of tickets',
+                'required'   => true,
                 'attributes' => array(
                     'options' => $this->getNumberOptions(),
                 ),
-                'options'  => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array('name' => 'Int')

@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace ApiBundle\Controller;
 
@@ -55,7 +37,7 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
         $result = array();
         foreach ($shifts as $shift) {
             $result[] = array(
-                'id' => $shift->getId(),
+                'id'                    => $shift->getId(),
 
                 'canHaveAsResponsible'  => $shift->canHaveAsResponsible($this->getEntityManager(), $person),
                 'canHaveAsVolunteer'    => $shift->canHaveAsVolunteer($this->getEntityManager(), $person),
@@ -70,13 +52,13 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
                 'nbVolunteers'          => $shift->getNbVolunteers(),
                 'startDate'             => $shift->getStartDate()->format('c'),
 
-                'location' => array(
+                'location'              => array(
                     'id'        => $shift->getLocation()->getId(),
                     'latitude'  => $shift->getLocation()->getLatitude(),
                     'longitude' => $shift->getLocation()->getLongitude(),
                     'name'      => $shift->getLocation()->getName(),
                 ),
-                'unit' => array(
+                'unit'                  => array(
                     'id'   => $shift->getUnit()->getId(),
                     'name' => $shift->getUnit()->getName(),
                 ),

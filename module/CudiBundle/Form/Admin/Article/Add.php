@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace CudiBundle\Form\Admin\Article;
 
@@ -48,7 +30,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'id' => 'article_form',
                 ),
-                'elements' => array(
+                'elements'   => array(
                     array(
                         'type'       => 'text',
                         'name'       => 'title',
@@ -57,7 +39,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         'attributes' => array(
                             'size' => 70,
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -73,7 +55,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         'attributes' => array(
                             'size' => 60,
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -89,7 +71,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         'attributes' => array(
                             'size' => 40,
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -181,8 +163,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             <li><b>Textbook:</b> a textbook of the course</li>
                             <li><b>Other:</b> any other type</li>
                         </ul>',
-                            'options' => Article::$possibleTypes,
-                            'id'      => 'type',
+                            'options'   => Article::$possibleTypes,
+                            'id'        => 'type',
                         ),
                     ),
                     array(
@@ -206,7 +188,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'id' => 'internal_form',
                 ),
-                'elements' => array(
+                'elements'   => array(
                     array(
                         'type'     => 'text',
                         'name'     => 'nb_black_and_white',
@@ -294,7 +276,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'id' => 'subject_form',
                 ),
-                'elements' => array(
+                'elements'   => array(
                     array(
                         'type'       => 'typeahead',
                         'name'       => 'subject',
@@ -304,7 +286,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             'id'   => 'subject',
                             'size' => 70,
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'validators' => array(
                                     array('name' => 'TypeaheadSubject'),

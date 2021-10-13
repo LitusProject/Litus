@@ -1,28 +1,11 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace ShiftBundle\Controller\Admin;
 
 use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use CommonBundle\Entity\User\Person;
+use DateInterval;
 use DateTime;
 use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
@@ -55,8 +38,8 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 'activeAcademicYear' => $academicYear,
                 'academicYears'      => $academicYears,
-                'rewards_enabled'   => $rewards_enabled,
-                'points_enabled'   => $points_enabled,
+                'rewards_enabled'    => $rewards_enabled,
+                'points_enabled'     => $points_enabled,
             )
         );
     }
@@ -95,7 +78,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
 
             foreach ($shift->getResponsibles() as $responsible) {
                 if (!isset($result[$shift->getUnit()->getId()][$responsible->getPerson()->getId()])) {
-                    $result[$shift->getUnit()->getId()][$responsible->getPerson()->getId()] = array(
+                    $result[$shift->getUnit()->getName()][$responsible->getPerson()->getFullName()] = array(
                         'name'  => $responsible->getPerson()->getFullName(),
                         'count' => 1,
                     );
@@ -141,6 +124,15 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findAllByPersonAsVolunteer($person, $this->getAcademicYear());
 
+        $futureShifts = array_merge(
+            $this->getEntityManager()
+                ->getRepository('ShiftBundle\Entity\Shift')
+                ->findAllFutureByPersonAsVolunteer($person, $this->getAcademicYear()),
+            $this->getEntityManager()
+                ->getRepository('ShiftBundle\Entity\Shift')
+                ->findAllFutureByPersonAsResponsible($person, $this->getAcademicYear())
+        );
+
         $rewards_enabled = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shift.rewards_enabled');
@@ -159,12 +151,13 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'person'            => $person->getId(),
-                'asResponsible'     => $asResponsible,
-                'asVolunteer'       => $asVolunteer,
-                'payed'             => $payed,
-                'rewards_enabled'   => $rewards_enabled,
-                'points_enabled'    => $points_enabled,
+                'person'          => $person->getId(),
+                'asResponsible'   => $asResponsible,
+                'asVolunteer'     => $asVolunteer,
+                'payed'           => $payed,
+                'rewards_enabled' => $rewards_enabled,
+                'points_enabled'  => $points_enabled,
+                'futureShifts'    => $futureShifts,
             )
         );
     }
@@ -310,6 +303,88 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'result' => $result,
+            )
+        );
+    }
+
+    public function praesidiumAction()
+    {
+        $academicYear = $this->getAcademicYear();
+
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        $units = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+            ->findAllActive();
+
+        $start = new DateTime(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shift.praesidium_counter_start_day')
+        );
+
+        $interval = new DateInterval(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shift.praesidium_counter_interval')
+        );
+
+
+        $end = clone $start;
+        $end->add($interval);
+        $now = new DateTime();
+        if ($end->format('d/m/y') === $now->format('d/m/y')) {
+            $start->add($interval);
+            $end->add($interval);
+        }
+
+        $unitsArray = array();
+
+        $result = array();
+
+        foreach ($units as $unit) {
+            $unitsArray[$unit->getId()] = $unit->getName();
+            $members = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
+                ->findAllByUnitAndAcademicYear($unit, $academicYear);
+
+            foreach ($members as $person) {
+                $person = $person->getAcademic();
+                $result[$unit->getId()][$person->getId()]['id'] = $person->getId();
+                $result[$unit->getId()][$person->getId()]['name'] = $person->getFullName();
+                $result[$unit->getId()][$person->getId()]['responsible'] = count(
+                    $this->getEntityManager()
+                        ->getRepository('ShiftBundle\Entity\Shift')
+                        ->findAllByPersonAsReponsible($person, $this->getAcademicYear())
+                );
+
+                $result[$unit->getId()][$person->getId()]['volunteer'] = count(
+                    $this->getEntityManager()
+                        ->getRepository('ShiftBundle\Entity\Shift')
+                        ->findAllByPersonAsVolunteer($person, $this->getAcademicYear())
+                );
+
+                $result[$unit->getId()][$person->getId()]['future'] = count(
+                    $this->getEntityManager()
+                        ->getRepository('ShiftBundle\Entity\Shift')
+                        ->findFutureByPersonAsVolunteerAndStartAndEnd($person, $start, $end, $this->getAcademicYear())
+                ) + count(
+                    $this->getEntityManager()
+                        ->getRepository('ShiftBundle\Entity\Shift')
+                        ->findFutureByPersonAsResponsibleAndStartAndEnd($person, $start, $end, $this->getAcademicYear())
+                );
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'activeAcademicYear' => $academicYear,
+                'academicYears'      => $academicYears,
+                'result'             => $result,
+                'units'              => $unitsArray,
+                'period'             => $interval->format('%d days'),
             )
         );
     }

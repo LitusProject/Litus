@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace TicketBundle\Entity\Event;
 
@@ -24,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use TicketBundle\Entity\Event;
 
 /**
- * @ORM\Entity(repositoryClass="TicketBundle\Repository\Option")
+ * @ORM\Entity(repositoryClass="TicketBundle\Repository\Event\Option")
  * @ORM\Table(name="ticket_events_options")
  */
 class Option
@@ -63,20 +45,29 @@ class Option
     /**
      * @var integer The price for non members
      *
-     * @ORM\Column(name="price_non_members", type="smallint")
+     * @ORM\Column(name="price_non_members", type="smallint", nullable=true)
      */
     private $priceNonMembers;
 
     /**
-     * @param Event   $event
-     * @param string  $name
-     * @param integer $priceMembers
-     * @param integer $priceNonMembers
+     * @var integer The maximum tickets for this option
+     *
+     * @ORM\Column(name="maximum", type="integer", nullable=true)
      */
-    public function __construct(Event $event, $name, $priceMembers, $priceNonMembers)
+    private $maximum;
+
+    /**
+     * @param Event               $event
+     * @param string              $name
+     * @param integer             $priceMembers
+     * @param integer|null        $priceNonMembers
+     * @param integer|string|null $maximum
+     */
+    public function __construct(Event $event, $name, $priceMembers, $priceNonMembers, $maximum)
     {
         $this->event = $event;
         $this->name = $name;
+        $this->maximum = $maximum;
 
         $this->setPriceMembers($priceMembers)
             ->setPriceNonMembers($priceNonMembers);
@@ -153,5 +144,24 @@ class Option
         $this->priceNonMembers = $priceNonMembers * 100;
 
         return $this;
+    }
+
+    /**
+     * @param  integer $max
+     * @return self
+     */
+    public function setMaximum($max)
+    {
+        $this->maximum = $max;
+
+        return $this;
+    }
+
+    /**
+-     * @return integer
+     */
+    public function getMaximum()
+    {
+        return $this->maximum;
     }
 }

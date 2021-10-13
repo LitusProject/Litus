@@ -31,6 +31,7 @@
             <table class="full_width manage">
                 <tr>
                     <th>Name</th>
+                    <th width="150px">Expiration Date</th>
                     <th width="500px">URL</th>
                     <th width="70px">Hits</th>
                     <th width="70px">Actions</th>
@@ -43,6 +44,7 @@
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th width="150px">Expiration Date</th>
                         <th width="500px">URL</th>
                         <th width="70px">Hits</th>
                         <th width="70px">Actions</th>
@@ -53,6 +55,7 @@
                     {% for slug in paginator %}
                         <tr class="item item-{{ slug.getId() }}">
                             <td>{{ slug.getName() }}</td>
+                            <td>{{ slug.getExpirationDate().format('d/m/Y') }}</td>
                             <td>{{ slug.getUrl() }}</td>
                             <td>{{ slug.getHits() }}</td>
                             <td class="actions">
@@ -95,6 +98,7 @@
             </div>
         </div>
     </div>
+
 {% endblock %}
 
 {% block content_script %}
@@ -112,6 +116,7 @@
                     $(data).each(function () {
                         $('#slug_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
                         row.append('<td>' + this.name + '</td>')
+                            .append('<td>' + this.expirationDate + '</td>')
                             .append('<td>' + this.url + '</td>')
                             .append('<td>' + this.hits + '</td>')
                             .append(
@@ -133,6 +138,7 @@
             });
 
             $('.item .delete').click(openModal);
+
         });
 
         function openModal(e) {

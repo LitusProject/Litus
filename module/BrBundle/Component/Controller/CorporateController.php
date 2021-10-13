@@ -1,27 +1,8 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace BrBundle\Component\Controller;
 
 use BrBundle\Entity\User\Person\Corporate;
-use CommonBundle\Component\Controller\Exception\HasNoAccessException;
 use CommonBundle\Component\Util\AcademicYear;
 use Laminas\Mvc\MvcEvent;
 
@@ -70,7 +51,7 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
     }
 
     /**
-     * @return Corporate
+     * @return Corporate|void
      */
     protected function getCorporateEntity()
     {
@@ -82,7 +63,12 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
             }
         }
 
-        throw new HasNoAccessException('You do not have sufficient permissions to access this resource');
+        $this->redirect()->toRoute(
+            'br_corporate_index',
+            array(
+                'action' => 'index',
+            )
+        );
     }
 
     /**
@@ -109,8 +95,8 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
     public function getAuthenticationHandler()
     {
         return array(
-            'action'     => 'index',
-            'controller' => 'common_index',
+            'action'         => 'index',
+            'controller'     => 'common_index',
 
             'auth_route'     => 'br_corporate_index',
             'redirect_route' => 'br_corporate_index',

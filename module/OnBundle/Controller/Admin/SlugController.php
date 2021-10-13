@@ -1,25 +1,8 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace OnBundle\Controller\Admin;
 
+use DateTime;
 use Laminas\View\Model\ViewModel;
 use OnBundle\Entity\Slug;
 
@@ -35,7 +18,30 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
         $paginator = $this->paginator()->createFromEntity(
             'OnBundle\Entity\Slug',
             $this->getParam('page'),
-            array(),
+            array(
+                'active' => true,
+            ),
+            array(
+                'name' => 'ASC',
+            )
+        );
+
+        return new ViewModel(
+            array(
+                'paginator'         => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+
+    public function oldAction()
+    {
+        $paginator = $this->paginator()->createFromEntity(
+            'OnBundle\Entity\Slug',
+            $this->getParam('page'),
+            array(
+                'active' => false,
+            ),
             array(
                 'name' => 'ASC',
             )
@@ -121,6 +127,7 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'form' => $form,
+                'slug' => $slug
             )
         );
     }
@@ -141,6 +148,50 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+    public function cleanAction()
+    {
+        $slugs = $this->getEntityManager()
+            ->getRepository('OnBundle\Entity\Slug')
+            ->findAllActive();
+
+        $now = new DateTime();
+        foreach ($slugs as $slug) {
+            if ($slug->getExpirationDate() < $now && $slug->getExpirationDate() !== null) {
+                $slug->setActive(false);
+            }
+        }
+        $this->getEntityManager()->flush();
+
+        $this->redirect()->toRoute(
+            'on_admin_slug',
+            array(
+                'action' => 'manage',
+            )
+        );
+    }
+
+    public function clearOldAction()
+    {
+        $slugs = $this->getEntityManager()
+            ->getRepository('OnBundle\Entity\Slug')
+            ->findAllOld();
+
+        $now = new DateTime();
+        foreach ($slugs as $slug) {
+            if ($slug->getExpirationDate() < $now && $slug->getExpirationDate() !== null) {
+                $this->getEntityManager()->remove($slug);
+            }
+        }
+        $this->getEntityManager()->flush();
+
+        $this->redirect()->toRoute(
+            'on_admin_slug',
+            array(
+                'action' => 'old',
             )
         );
     }

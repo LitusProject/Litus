@@ -37,11 +37,26 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        $academicYear = $this->getAcademicYear();
-
         $units = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization\Unit')
             ->findAllActiveAndDisplayed();
+
+        $allAcademicYears = array();
+
+        foreach ($academicYears as $year) {
+            $members = array();
+            foreach ($units as $unit) {
+                $members = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
+                    ->findAllByUnitAndAcademicYear($unit, $year);
+            }
+            if (count($members) > 0) {
+                array_push($allAcademicYears, $year);
+            }
+        }
+
+
+        $academicYear = $this->getAcademicYear();
 
         $list = array();
         foreach ($units as $unit) {
@@ -79,7 +94,7 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
             array(
                 'units'               => $list,
                 'extraUnits'          => $extra,
-                'academicYears'       => $academicYears,
+                'academicYears'       => $allAcademicYears,
                 'activeAcademicYear'  => $academicYear,
                 'currentAcademicYear' => $this->getCurrentAcademicYear(),
                 'profilePath'         => $this->getEntityManager()

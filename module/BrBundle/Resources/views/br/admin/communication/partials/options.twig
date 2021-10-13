@@ -1,0 +1,14 @@
+<header class="controller_sub_header">
+    <nav class="controller_sub_nav">
+        <ul>
+            {% if hasAccess('br_admin_communication', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') and getParam('option') == none %} class="active" {% endif %}
+                            href="{{ url('br_admin_communication', {"action": "manage"}) }}">All</a></li>
+                {% for key, option in options %}
+                    <li><a {% if key == getParam('option') and getParam('option') != none %} class="active" {% endif %}
+                                href="{{ url('br_admin_communication', {"action": "manage", "option":key}) }}">{{ option }}</a></li>
+                {% endfor %}
+            {% endif %}
+        </ul>
+    </nav>
+</header>

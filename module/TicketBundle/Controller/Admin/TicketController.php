@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace TicketBundle\Controller\Admin;
 
@@ -79,7 +61,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $document->generateDocument($file);
 
         $now = new DateTime();
-        $filename = 'tickets_' . $now->format('Y_m_d') . '.pdf';
+        $filename = 'tickets_' . $now->format('Y_m_d') . '.csv';
 
         $headers = new Headers();
         $headers->addHeaders(
@@ -147,9 +129,11 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $result = array();
         foreach ($tickets as $ticket) {
             $item = (object) array();
-            $item->id = $ticket->getId();
+            $item->rNumber = $ticket->getUniversityIdentification();
             $item->person = $ticket->getFullName() ? $ticket->getFullName() : '(none)';
             $item->status = $ticket->getStatus();
+            $item->email = $ticket->getEmail();
+            $item->organization = $ticket->getOrganization();
             $item->option = ($ticket->getOption() ? $ticket->getOption()->getName() : '') . ' ' . ($ticket->isMember() ? 'Member' : 'Non Member');
             $item->number = $ticket->getNumber();
             $item->bookDate = $ticket->getBookDate() ? $ticket->getBookDate()->format('d/m/Y H:i') : '';

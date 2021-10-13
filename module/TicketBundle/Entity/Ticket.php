@@ -1,27 +1,10 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace TicketBundle\Entity;
 
 use CommonBundle\Entity\User\Person;
 use DateTime;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use TicketBundle\Entity\Event\Option;
@@ -30,7 +13,8 @@ use TicketBundle\Entity\Event\Option;
  * @ORM\Entity(repositoryClass="TicketBundle\Repository\Ticket")
  * @ORM\Table(
  *     name="ticket_tickets",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="ticket_tickets_event_number", columns={"event", "number"})}
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="ticket_tickets_event_number", columns={"event", "number"}),
+ *     @ORM\UniqueConstraint(name="ticket_tickets_invoice_id", columns={"invoice_id"})}
  * )
  */
 class Ticket
@@ -121,22 +105,41 @@ class Ticket
     private $member;
 
     /**
-     * @param  Event          $event
-     * @param  string         $status
-     * @param  Person|null    $person
-     * @param  GuestInfo|null $guestInfo
-     * @param  DateTime|null  $bookDate
-     * @param  DateTime|null  $soldDate
-     * @param  integer|null   $number
-     * @throws InvalidArgumentException
+     * @var integer|null The number of the ticket (unique for an event)
+     *
+     * @ORM\Column(name="invoice_id", type="string", nullable=true)
      */
-    public function __construct(Event $event, $status, Person $person = null, GuestInfo $guestInfo = null, DateTime $bookDate = null, DateTime $soldDate = null, $number = null)
+    private $invoiceId;
+
+    /**
+     * @var integer|null The number of the ticket (unique for an event)
+     *
+     * @ORM\Column(name="order_id", type="string", nullable=true, length=11)
+     */
+    private $orderId;
+
+    /**
+     * @param EntityManager  $em
+     * @param Event          $event
+     * @param string         $status
+     * @param Person|null    $person
+     * @param GuestInfo|null $guestInfo
+     * @param DateTime|null  $bookDate
+     * @param DateTime|null  $soldDate
+     * @param integer|null   $number
+     */
+    public function __construct(EntityManager $em, Event $event, $status, Person $person = null, GuestInfo $guestInfo = null, DateTime $bookDate = null, DateTime $soldDate = null, $number = null)
     {
         if (!self::isValidTicketStatus($status)) {
             throw new InvalidArgumentException('The TicketStatus is not valid.');
         }
 
         $this->event = $event;
+        if ($event->isOnlinePayment()) {
+            $nb = $event->findNextInvoiceNb($em);
+            $this->invoiceId = $event->getInvoiceIdBase() . $nb;
+            $this->orderId = $event->getOrderIdBase() . $nb;
+        }
         $this->status = $status;
         $this->person = $person;
         $this->guestInfo = $guestInfo;
@@ -272,6 +275,54 @@ class Ticket
     }
 
     /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        if ($this->person !== null) {
+            return $this->person->getEmail();
+        }
+
+        if ($this->guestInfo !== null) {
+            return $this->guestInfo->getEmail();
+        }
+
+        return '';
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrganization()
+    {
+        if ($this->person !== null) {
+            return 'ACCOUNT';
+        }
+
+        if ($this->guestInfo !== null) {
+            return $this->guestInfo->getOrganization();
+        }
+
+        return '';
+    }
+
+    /**
+     * @return string
+     */
+    public function getUniversityIdentification()
+    {
+        if ($this->person !== null) {
+            return $this->person->getUniversityIdentification();
+        }
+
+        if ($this->guestInfo !== null) {
+            return $this->guestInfo->getUniversityIdentification();
+        }
+
+        return '';
+    }
+
+    /**
      * @return DateTime|null
      */
     public function getBookDate()
@@ -364,5 +415,51 @@ class Ticket
         $this->member = $member;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getInvoiceId()
+    {
+        return $this->invoiceId;
+    }
+
+    /**
+     * @param string $invoiceId
+     */
+    public function setInvoiceId(string $invoiceId)
+    {
+        $this->invoiceId = $invoiceId;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getOrderId()
+    {
+        return $this->orderId;
+    }
+
+    /**
+     * @param string $orderId
+     */
+    public function setOrderId(string $orderId)
+    {
+        $this->orderId = $orderId;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getPrice()
+    {
+        if ($this->isMember() === true) {
+            $price = $this->getOption()->getPriceMembers();
+        } else {
+            $price = $this->getOption()->getPriceNonMembers();
+        }
+
+        return number_format($price / 100, 2);
     }
 }

@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 return array(
     array(
@@ -28,5 +10,67 @@ return array(
         'key'         => 'ticket.pdf_generator_path',
         'value'       => 'data/ticket/pdf_generator',
         'description' => 'The path to the PDF generator files',
+    ),
+    array(
+        'key'         => 'ticket.upper_text',
+        'value'       => 'I agree that this data will be used, following GDPR guidelines.',
+        'description' => serialize(
+            array(
+                'en' => 'The text on the book tickets page',
+                'nl' => 'The extra tekst op de tickets page'
+            )
+        )
+    ),
+    array(
+        'key'         => 'ticket.confirmation_email_from',
+        'value'       => 'tickets@vtk.be',
+        'description' => 'Email address used for sending confirmation emails, also receives sent confirmation emails',
+    ),
+    array(
+        'key'         => 'ticket.confirmation_email_body',
+        'value'       => serialize(
+            array(
+                'subject' => 'VTK Tickets {{ event }}',
+                'content' => 'Beste {{ fullname }},
+
+
+U hebt tickets besteld voor {{ event }}.
+Het gekozen ticket is:
+
+{{ option }}
+
+Indien u nog niet betaald hebt kan dit via volgende link: {{ paylink }}
+
+
+Met Vriendelijke Groeten,
+
+VTK
+
+
+
+--- English ---
+
+Dear {{ fullname }},
+
+
+You ordered tickets for {{ event }}.
+The chosen ticket is:
+
+{{ option }}
+
+Payment can be done through the following link should you not have paid yet: {{ paylink }}
+
+
+Kind regards,
+
+VTK'
+            ),
+        ),
+        'description' => 'Email sent for confirmation of ticket reservation'
+    ),
+    array(
+        'key'         => 'ticket.pay_link_domain',
+        'value'       => 'vtk.be',
+        'description' => 'The domain for the paylink used in generated emails',
     ),
 );

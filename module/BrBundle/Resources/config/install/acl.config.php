@@ -1,43 +1,12 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
-
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @license http://litus.cc/LICENSE
- */
 
 return array(
     'brbundle' => array(
         'br_admin_collaborator' => array(
             'add', 'retire', 'edit', 'manage', 'rehire',
+        ),
+        'br_admin_event' => array(
+            'add', 'delete', 'edit', 'manage', 'old', 'deleteAttendee'
         ),
         'br_admin_company' => array(
             'add', 'delete', 'editLogo', 'edit', 'manage', 'search', 'upload', 'csv', 'pdf',
@@ -61,7 +30,7 @@ return array(
             'manage', 'delete', 'export', 'exportAcademics', 'exportCvCsv'
         ),
         'br_admin_invoice' => array(
-            'history', 'view', 'edit', 'manage', 'download', 'payed', 'pay', 'manualAdd', 'csv', 'payedList',
+            'history', 'view', 'edit', 'manage', 'download', 'payed', 'pay', 'manualAdd', 'csv', 'payedList', 'downloadAll'
         ),
         'br_admin_order' => array(
             'product', 'edit', 'delete', 'deleteProduct', 'editProduct', 'view', 'add', 'old', 'manage', 'signed', 'generate',
@@ -74,6 +43,9 @@ return array(
         ),
         'br_admin_request' => array(
             'reject', 'approve', 'manage', 'view',
+        ),
+        'br_admin_communication' => array(
+            'add', 'manage', 'delete', 'view',
         ),
         'br_career_index' => array(
             'index',
@@ -103,7 +75,7 @@ return array(
             'login', 'logout',
         ),
         'br_corporate_index' => array(
-            'index',
+            'index', 'events', 'login'
         ),
         'br_corporate_jobfair' => array(
             'overview',

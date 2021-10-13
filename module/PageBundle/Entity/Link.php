@@ -210,9 +210,8 @@ class Link
      */
     public function setOrderNumber($orderNumber)
     {
-        // phpcs:disable SlevomatCodingStandard.Classes.ModernClassNameReference.ClassNameReferencedViaFunctionCall
-        if (get_class($orderNumber) !== 'int') {
-        // phpcs:enable
+        $orderNumber = intval($orderNumber);
+        if ($orderNumber === null || $orderNumber === 0) {
             $this->orderNumber = null;
         } else {
             $this->orderNumber = $orderNumber;

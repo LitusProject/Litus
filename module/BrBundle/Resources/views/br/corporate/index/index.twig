@@ -1,41 +1,251 @@
 {% extends 'corporate/base.twig' %}
 
 {% block content %}
-    {% if authenticatedPerson is not null %}
-        <h2>{% autoescape false %}{{ translate('Welcome <i>%name%</i> of <i>%company%</i>')|replace({'%name%': authenticatedPerson.getFullName(), '%company%': authenticatedPerson.getCompany().getName()}) }}{% endautoescape %}</h2>
-    {% else %}
-        <div style="text-align: center;">
-            <img src="/img/litus.png" alt="Litus" />
-            <h3>{{ translate('Please login to get access to these pages.') }}</h3>
+
+        {# <h1>BR</h1>
+        <div style="height: 30px"></div>
+        {% for member in members %}
+            {{ member.getFullName() }}<br>
+        {% endfor %}
+        <h2>{% autoescape false %}{{ translate('Welcome <i>%name%</i> of <i>%company%</i>')|replace({'%name%': authenticatedPerson.getFullName(), '%company%': authenticatedPerson.getCompany().getName()}) }}{% endautoescape %}</h2> #}
+
+        {# TO DO favicon bedrijvenrelaties in orde brengen #}
+        {# TO DO translations overal op deze pagina #}
+        <div class="br-corporateLaunchBg">
+            <div class="container">
+                <h1 class="br-corporate-heading">{{ texts['br_corporate_launch']['main'] }}</h1>
+                <h3 style="color:white; font-weight: 500">{{ texts['br_corporate_launch']['sub'] }}</h3>
+                <div style="height: 20px"></div>
+                {# TO DO buttons invullen & doen werken #}
+                <a class="button white unfilled" href="{{ url("br_corporate_index", {"action": "login"}) }}">{{ translate('Log In') }}</a>
+            </div>
         </div>
-        {% if loginForm is defined %}
-            {% do loginForm.prepare() %}
-            {% autoescape false %}
-                {{ form().openTag(loginForm) }}
-                {% for element in loginForm.getElements() %}
-                    {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset'or element.getAttribute('type') == 'hidden' %}
-                        {{ formElement(element) }}
-                    {% elseif element.getAttribute('type') == 'checkbox' %}
-                        <div class="remember_me">
-                            <label>
-                                {{ formElement(element) }}
-                                {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
-                            </label>
-                        </div>
-                    {% else %}
-                        <div class="form-group {% if element.getMessages()|length > 0 %}has-error{% endif %}">
-                            <label class="control-label">{% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}</label>
-                            <div>{{ formElement(element) }}</div>
-                            {% if element.getMessages()|length > 0 %}
-                                <div class="help-block">
-                                    {{ formElementErrors(element) }}
-                                </div>
+
+        <div style="height: 100px"></div>
+
+        <div class="container">
+
+            {# Inleidend blok #}
+            <div>
+                <div style="position:relative">
+                    <h3 style="position: relative; z-index: 1">{{ texts['br_corporate_intro']['main'] }}</h3>
+                    <div class="br-titledecoration"></div>
+                </div>
+                <div style="height: 30px"></div>
+                <div class="br-infoHolder">
+                    <div class="br-markdown" style="margin-right: 40px; text-align: justify; line-height: 25px">
+                        {{ texts['br_corporate_intro']['sub'] }}
+                        <div style="height: 20px"></div>
+                    </div>
+                    <div class="temporaryImage" style="min-width: 60%" class="temporaryImage">
+                        <iframe class="videoIframe" width="680px" height="340px" src="https://www.youtube.com/embed/lA0DMPXDlWU"></iframe>
+                    </div>
+                </div>
+            </div>
+
+            <div style="height: 50px"></div>
+
+            {# Praesidium voorstelling #}
+            <div>
+                <div style="position:relative">
+                    <h3 style="position: relative; z-index: 1">{{ translate('Corporate Relations') }}</h3>
+                    <div class="br-titledecoration"></div>
+                </div>
+
+                <div class="memberHolder">
+                    {% for member in members %}
+                        <div class="member">
+                            {# TO DO profilePath werkt niet #}
+                            {% if member.getPhotoPath() %}
+                                <div class="memberPhoto" style="background-image: url({{ profilePath }}/{{ member.getPhotoPath() }})"></div>
+                            {% else %}
+                            {# TO DO fallback image werkt niet #}
+                                <img data-src="holder.js/180x135/auto/text:Image" alt="">
                             {% endif %}
+                            <h4 style="margin-bottom: 0px">{{ member.getFullName() }}</h4>
+                            {% if member.isCoordinator() %}
+                                <p style="text-align: center;">{{ translate('Groupcoordinator') }}</p>
+                            {% endif %}
+                            {% if not member.getDescription() == '' %}
+                                <p style="text-align: center;">{{ member.getDescription() }}</p>
+                            {% endif %}
+                            {% for extraUnit in extraUnits[member.getId()] %}
+                                <p style="text-align: center;">{{ hideEmail('<a href="mailto:' ~ extraUnit.getMail() ~ '">' ~ extraUnit.getName() ~ '</a>') }}</p>
+                            {% endfor %}
                         </div>
-                    {% endif %}
-                {% endfor %}
-                {{ form().closeTag() }}
-            {% endautoescape %}
-        {% endif %}
-    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div style="height: 50px"></div>
+
+            {# Gallerij #}
+            <div>
+                <div style="position:relative">
+                    <h3 style="position: relative; z-index: 1">{{ translate('What can you expect?') }}</h3>
+                    <div class="br-titledecoration"></div>
+                </div>
+
+                <div style="height: 30px"></div>
+
+                <div class="lightboxParent">
+                    <!-- Images used to open the lightbox -->
+                    <div class="lightboxImage lightbox1" style="background-image: url(/_br/img/impression-01.jpg)" onclick="openModal();currentSlide(1)" ></div>
+                    <div class="lightboxImage" style="background-image: url(/_br/img/impression-02.jpg)" onclick="openModal();currentSlide(2)" ></div>
+                    <div class="lightboxImage" style="background-image: url(/_br/img/impression-03.jpg)" onclick="openModal();currentSlide(3)"></div>
+                    <div class="lightboxImage" style="background-image: url(/_br/img/impression-04.jpg)" onclick="openModal();currentSlide(4)"></div>
+                    <div class="lightboxImage" style="background-image: url(/_br/img/impression-05.jpg)" onclick="openModal();currentSlide(5)"></div>
+                </div>
+
+                <!-- The Modal/Lightbox -->
+                <div id="myModal" class="modal">
+
+                    <span class="closeModal cursor" onclick="closeModal()">&times;</span>
+
+                    <div class="lightboxParentmodal-content">
+
+                        <div class="br-lightboxContainer">
+
+                            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+
+                            <div style="height: 100%; flex-grow: 1">
+
+                                <div class="mySlides">
+                                    <img class="lightboxZoomedImage" src="url(/_br/img/impression-01.jpg)"></img>
+                                </div>
+
+                                <div class="mySlides">
+                                    <img class="lightboxZoomedImage" src="url(/_br/img/impression-02.jpg)"></img>
+                                </div>
+
+                                <div class="mySlides">
+                                    <img class="lightboxZoomedImage" src="url(/_br/img/impression-03.jpg)"></img>
+                                </div>
+
+                                <div class="mySlides">
+                                    <img class="lightboxZoomedImage" src="url(/_br/img/impression-04.jpg)"></img>
+                                </div>
+
+                                <div class="mySlides">
+                                    <img class="lightboxZoomedImage" src="url(/_br/img/impression-05.jpg)"></img>
+                                </div>
+
+                            </div>
+                            <!-- Next/previous controls -->
+                            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+                            {# <!-- Caption text -->
+                            <div class="caption-container">
+                                <p id="caption"></p>
+                            </div>
+
+                            <!-- Thumbnail image controls -->
+                            <div class="lightbox1">
+                                <img class="demo" src="img1.jpg" onclick="currentSlide(1)" alt="Nature">
+                            </div>
+
+                            <div class="lightbox1">
+                                <img class="demo" src="img2.jpg" onclick="currentSlide(2)" alt="Snow">
+                            </div>
+
+                            <div class="lightbox1">
+                                <img class="demo" src="img3.jpg" onclick="currentSlide(3)" alt="Mountains">
+                            </div>
+
+                            <div class="lightbox1">
+                                <img class="demo" src="img4.jpg" onclick="currentSlide(4)" alt="Lights">
+                            </div> #}
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <div style="height: 100px"></div>
+
+        {# Doorklikknop vacatures/stages/studentenjobs #}
+        <div class="br-blueBanner">
+            <div class="container">
+                <h2 style="color:white">{{ texts['br_corporate_events']['main'] }}</h2>
+                {# TO DO links toevoegen #}
+                <a class="button yellow unfilled">{{ texts['br_corporate_events']['sub'] }}</a>
+            </div>
+        </div>
+
+        <div style="height: 80px"></div>
+
+        <div class="container">
+            <div style="position:relative">
+                <h3 style="position: relative; z-index: 1">{{ texts['br_corporate_services']['title'] }}</h3>
+                <div class="br-titledecoration"></div>
+            </div>
+            <div style="height: 50px"></div>
+            <div class="servicesGrid">
+                <div class="servicesHolder">
+                    <h4 class="servicesTitle">Service 1</h4>
+                    <p style="text-align: justify">{{ texts['br_corporate_services']['one'] }}</p>
+                </div>
+                <div class="servicesHolder">
+                    <h4 class="servicesTitle">Service 2</h4>
+                    <p style="text-align: justify">{{ texts['br_corporate_services']['two'] }}</p>
+                </div>
+                <div class="servicesHolder">
+                    <h4 class="servicesTitle">Service 3</h4>
+                    <p style="text-align: justify">{{ texts['br_corporate_services']['three'] }}</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div style="height: 50px"></div>
+
+
+    {{ inlineScript () }}
+
+        <script>
+        // Open the Modal
+        function openModal() {
+            console.log("JUUU"); 
+        document.getElementById("myModal").style.display = "block";
+        }
+
+        // Close the Modal
+        function closeModal() {
+        document.getElementById("myModal").style.display = "none";
+        }
+
+        var slideIndex = 1;
+        showSlides(slideIndex);
+
+        // Next/previous controls
+        function plusSlides(n) {
+        showSlides(slideIndex += n);
+        }
+
+        // Thumbnail image controls
+        function currentSlide(n) {
+        showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+        var i;
+        var slides = document.getElementsByClassName("mySlides");
+        var dots = document.getElementsByClassName("demo");
+        var captionText = document.getElementById("caption");
+        if (n > slides.length) {slideIndex = 1}
+        if (n < 1) {slideIndex = slides.length}
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex-1].style.display = "flex";
+        dots[slideIndex-1].className += " active";
+        captionText.innerHTML = dots[slideIndex-1].alt;
+        }
+    </script>
 {% endblock %}

@@ -63,6 +63,9 @@
                                     {% if hasAccess('page_admin_page', 'edit') %}
                                         <a href="{{ url('page_admin_page', {"action": "edit", "id": page.getId()}) }}" class="edit">Edit</a>
                                     {% endif %}
+                                    {% if hasAccess('page_admin_page', 'poster') %}
+                                        <a href="{{ url('page_admin_page', {"action": "editPoster", "id": page.getId()}) }}" class="image_edit">Poster</a>
+                                    {% endif %}
                                     {% if hasAccess('page_admin_page', 'delete') %}
                                         <a href="#" data-id="{{ page.getId() }}" data-title="{{ page.getTitle(language) }}" class="delete">Delete</a>
                                     {% endif %}

@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 return array(
     array(
@@ -30,14 +12,14 @@ return array(
         'description' => 'The mail address name from which Het Bakske is sent',
     ),
     array(
-        'key'   => 'mail.start_cudi_mail',
-        'value' => serialize(
+        'key'         => 'mail.start_cudi_mail',
+        'value'       => serialize(
             array(
-                'subject' => '[Student IT Cursusdienst] Cursussen {{ semester }} Semester Academiejaar {{ academicYear }}',
+                'subject' => '[VTK Cursusdienst] Cursussen {{ semester }} Semester Academiejaar {{ academicYear }}',
                 'message' => 'Geachte professor,
 Geachte docent,
 
-Net zoals elk jaar verdeelt Student IT (studentenkring burgerlijk ingenieur(-architect)) studiemateriaal onder alle studenten aan de faculteit ingenieurswetenschappen. Meer informatie over onze werking kan u vinden op: http://praesidium.vtk.be/~tvandervoorde/brochure.pdf.
+Net zoals elk jaar verdeelt VTK (studentenkring burgerlijk ingenieur(-architect)) studiemateriaal onder alle studenten aan de faculteit ingenieurswetenschappen. Meer informatie over onze werking kan u vinden op: http://praesidium.vtk.be/~tvandervoorde/brochure.pdf.
 U ontvangt deze mail omdat het belangrijk is dat we tijdig over de juiste informatie beschikken, zo kunnen we de studenten in het begin van het academiejaar zo snel mogelijk verder helpen. Ook indien wij uw cursus ongewijzigd mogen heruitgeven, wachten wij hiervoor op uw bericht.
 Het gaat om volgende vakken:
 

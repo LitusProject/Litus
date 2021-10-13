@@ -2,51 +2,58 @@
 
 {% block content %}
     {% import 'admin/partials/form.twig' as forms %}
+    <div class="container">
 
-    <div class="page-header">
-        <h1>{{ shopName }} - {{ translate('Reserve') }}</h1>
-    </div>
-
-    {% include 'shop/shop/partials/navigation.twig' %}
-
-    <div class="flashmessage alert alert-success fade" id="success">
-        <div class="content">
-            {{ translate('Your reservation was successful!') }}
+        <div class="standardPageTitleHolder">
+            <h1>{{ shopName }} - {{ translate('Reserve') }}</h1>
+            <div class="pageTitleDeco"></div>
         </div>
-    </div>
-    <div class="flashmessage alert alert-danger fade" id="error">
-        <div class="content">
-            {{ translate('An error occurred while processing your reservation!') }}
-        </div>
-    </div>
 
-    <div style="text-align: justify;">
-        {% if canReserve %}
-            {{ translate("You can reserve some items from the shop. Be aware that you might lose the permission to reserve items if you don't come and buy your reserved items on the right date.") }}
-            <div>
-                {% if salesSessionsAvailable %}
-                    {% if form is defined %}
-                        {% do form.prepare() %}
-                        {% autoescape false %}
-                            {{ form().openTag(form) }}
-                            {{ formElement(form.get('csrf')) }}
+        <div style="height: 40px"></div>
 
-                            {{ formElement(form.get('salesSession')) }}
+        {# {% include 'shop/shop/partials/navigation.twig' %} #}
 
-                            {% if form.get('submit') %}
-                                {{ formElement(form.get('submit')) }}
-                            {% endif %}
-
-                            {{ form().closeTag() }}
-                        {% endautoescape %}
-                    {% endif %}
-                {% else %}
-                    {{ translate("However, there are no future sales sessions open for reservations yet.") }}
-                {% endif %}
+        <div class="flashmessage alert alert-success fade" id="success">
+            <div class="content">
+                {{ translate('Your reservation was successful!') }}
             </div>
-        {% else %}
-            {{ translate("You cannot reserve items from the shop. Make sure you're logged in. This privilege might require you to do some shifts in the shop as well.") }}
-        {% endif %}
+        </div>
+        <div class="flashmessage alert alert-danger fade" id="error">
+            <div class="content">
+                {{ translate('An error occurred while processing your reservation!') }}
+            </div>
+        </div>
+
+        <div style="text-align: justify;">
+            {% if canReserve %}
+                <div style="height: 20px"></div>
+                {{ translate("You can reserve some items from the shop. Be aware that you might lose the permission to reserve items if you don't come and buy your reserved items on the right date.") }}
+                <div style="height: 30px"></div>
+                <div>
+                    {% if salesSessionsAvailable %}
+                        {% if form is defined %}
+                            {% do form.prepare() %}
+                            {% autoescape false %}
+                                {{ form().openTag(form) }}
+                                {{ formElement(form.get('csrf')) }}
+
+                                {{ formElement(form.get('salesSession')) }}
+
+                                {% if form.get('submit') %}
+                                    {{ formElement(form.get('submit')) }}
+                                {% endif %}
+
+                                {{ form().closeTag() }}
+                            {% endautoescape %}
+                        {% endif %}
+                    {% else %}
+                        {{ translate("However, there are no future sales sessions open for reservations yet.") }}
+                    {% endif %}
+                </div>
+            {% else %}
+                {{ translate("You cannot reserve items from the shop. Make sure you're logged in. This privilege might require you to do some shifts in the shop as well.") }}
+            {% endif %}
+        </div>
     </div>
 
 {% endblock %}

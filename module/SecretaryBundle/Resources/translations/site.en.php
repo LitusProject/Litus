@@ -1,33 +1,15 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 return array(
-    'Registration'                                                 => 'Registration',
-    'There already is a user with your university identification!' => 'There already is a user with your university identification!',
+    'Registration'                                                                                            => 'Registration',
+    'There already is a user with your university identification!'                                            => 'There already is a user with your university identification!',
 
-    'Start'    => 'Start',
-    'Studies'  => 'Studies',
-    'Subjects' => 'Subjects',
-    'Complete' => 'Complete',
+    'Start'                                                                                                   => 'Start',
+    'Studies'                                                                                                 => 'Studies',
+    'Subjects'                                                                                                => 'Subjects',
+    'Complete'                                                                                                => 'Complete',
 
-    'Choose your study:' => 'Choose your study:',
+    'Choose your study:'                                                                                      => 'Choose your study:',
 
     'To register, please login first with your KU Leuven account.'                                            => 'To register, please login first with your KU Leuven account.',
     'Personal'                                                                                                => 'Personal',
@@ -54,6 +36,9 @@ return array(
     'Student Organization'                                                                                    => 'Student Organization',
     'I want to become a member of the student association in academic year { year } (&euro; { price })'       => 'I want to become a member of the student association in academic year { year } (&euro; { price })',
     'I have read and agree with the terms and conditions'                                                     => 'I have read and agree with the terms and conditions',
+    'I want to receive my Ir.Reëel at CuDi'                                                                   => 'I want to receive my Ir.Reëel at CuDi',
+    'I want to receive \'t Bakske by e-mail'                                                                  => 'I want to receive \'t Bakske by e-mail',
+    'T-shirt Size'                                                                                            => 'T-shirt Size',
     'Register'                                                                                                => 'Register',
     'Become a Member'                                                                                         => 'Become a Member',
     'You haven\'t checked the option to become a member. Being a member has many advantages.'                 => 'You haven\'t checked the option to become a member. Being a member has many advantages.',
@@ -66,28 +51,37 @@ return array(
     'Close'                                                                                                   => 'Close',
     'Read Them'                                                                                               => 'Read Them',
 
-    'Choose a Study'                               => 'Choose a Study',
-    'Choose Your Subjects'                         => 'Choose Your Subjects',
-    'Phase'                                        => 'Phase',
-    'Enroll'                                       => 'Enroll',
-    'Your studies were successfully saved!'        => 'Your studies were successfully saved!',
-    'An error occurred while saving your studies!' => 'An error occurred while saving your studies!',
+    'Choose a Study'                                                                                          => 'Choose a Study',
+    'Choose Your Subjects'                                                                                    => 'Choose Your Subjects',
+    'Phase'                                                                                                   => 'Phase',
+    'Enroll'                                                                                                  => 'Enroll',
+    'Your studies were successfully saved!'                                                                   => 'Your studies were successfully saved!',
+    'An error occurred while saving your studies!'                                                            => 'An error occurred while saving your studies!',
 
-    'Complete Your Registration'                   => 'Complete Your Registration',
-    'Your subjects were successfully saved!'       => 'Your subjects were successfully saved!',
-    'An error occurred while saving your subjects' => 'An error occurred while saving your subjects',
+    'Complete Your Registration'                                                                              => 'Complete Your Registration',
+    'Your subjects were successfully saved!'                                                                  => 'Your subjects were successfully saved!',
+    'An error occurred while saving your subjects'                                                            => 'An error occurred while saving your subjects',
 
-    'Addresses'      => 'Addresses',
-    'Organization'   => 'Organization',
-    'Membership'     => 'Membership',
-    'Book Textbooks' => 'Book Textbooks',
+    'Addresses'                                                                                               => 'Addresses',
+    'Organization'                                                                                            => 'Organization',
+    'Membership'                                                                                              => 'Membership',
+    'Book Textbooks'                                                                                          => 'Book Textbooks',
 
-    'Other Subjects'                             => 'Other Subjects',
-    'You have not yet added any other subjects.' => 'You have not yet added any other subjects.',
-    'Add Other Subjects'                         => 'Add Other Subjects',
-    'Add Other Subject'                          => 'Add Other Subject',
-    'The subject was succesfully added!'         => 'The subject was succesfully added!',
-    
-    'Reservation'                                => 'Reservation',
-    'Order sandwiches and snacks.'               => 'Order sandwiches and snacks.',
+    'S - Male'                                                                                                => 'S - Male',
+    'M - Male'                                                                                                => 'M - Male',
+    'L - Male'                                                                                                => 'L - Male',
+    'XL - Male'                                                                                               => 'XL - Male',
+    'S - Female'                                                                                              => 'S - Female',
+    'M - Female'                                                                                              => 'M - Female',
+    'L - Female'                                                                                              => 'L - Female',
+    'XL - Female'                                                                                             => 'XL - Female',
+
+    'Other Subjects'                                                                                          => 'Other Subjects',
+    'You have not yet added any other subjects.'                                                              => 'You have not yet added any other subjects.',
+    'Add Other Subjects'                                                                                      => 'Add Other Subjects',
+    'Add Other Subject'                                                                                       => 'Add Other Subject',
+    'The subject was succesfully added!'                                                                      => 'The subject was succesfully added!',
+
+    'Reservation'                                                                                             => 'Reservation',
+    'Order sandwiches and snacks.'                                                                            => 'Order sandwiches and snacks.',
 );

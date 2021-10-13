@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace CommonBundle\Component\Module;
 
@@ -262,26 +244,26 @@ class Config
 
         return array_merge_recursive(
             array(
-                'router' => array(
+                'router'                => array(
                     'routes' => array_key_exists('routes', $routerConfig) ? $routerConfig['routes'] : array(),
                 ),
-                'controllers' => array(
+                'controllers'           => array(
                     'invokables' => array_key_exists('controllers', $routerConfig) ? $routerConfig['controllers'] : array(),
                 ),
 
-                'translator' => array(
+                'translator'            => array(
                     'translation_file_patterns' => self::createTranslationConfig($settings),
                 ),
 
-                'doctrine' => array(
+                'doctrine'              => array(
                     'driver' => self::createDoctrineConfig($settings),
                 ),
 
                 'assetic_configuration' => self::createAsseticConfig($settings),
 
-                'view_manager' => self::createViewManagerConfig($settings),
+                'view_manager'          => self::createViewManagerConfig($settings),
 
-                'litus' => array(
+                'litus'                 => array(
                     'admin'   => self::load($directory, 'admin.config.php'),
                     'install' => self::createInstallConfig($settings),
                     'console' => self::load($directory, 'console.config.php'),
