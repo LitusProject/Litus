@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 return array(
     array(
@@ -51,7 +33,7 @@ return array(
     ),
     array(
         'key'         => 'cudi.mail_name',
-        'value'       => 'Student IT Cursusdienst',
+        'value'       => 'VTK Cursusdienst',
         'description' => 'The name of the mail sender',
     ),
     array(
@@ -66,7 +48,7 @@ return array(
     ),
     array(
         'key'         => 'cudi.delivery_address_name',
-        'value'       => 'Student IT Cursusdienst',
+        'value'       => 'VTK Cursusdienst',
         'description' => 'The name of the delivery address of the cudi',
     ),
     array(
@@ -76,7 +58,7 @@ return array(
     ),
     array(
         'key'         => 'cudi.billing_address_name',
-        'value'       => 'Student IT vzw',
+        'value'       => 'VTK vzw',
         'description' => 'The name of the billing organization of the cudi',
     ),
     array(
@@ -95,8 +77,8 @@ return array(
         'description' => 'The time a reservation can be extended',
     ),
     array(
-        'key'   => 'cudi.booking_assigned_mail',
-        'value' => serialize(
+        'key'         => 'cudi.booking_assigned_mail',
+        'value'       => serialize(
             array(
                 'en' => array(
                     'subject' => 'New Assignments',
@@ -112,7 +94,7 @@ Please cancel a reservation if you don\'t need the article, this way we can help
 The opening hours of Cudi are:
 {{ openingHours }}#no_opening_hours#No opening hours known.#no_opening_hours#
 
-Student IT Cudi
+VTK Cudi
 
 -- This is an automatically generated email, please do not reply --',
                 ),
@@ -130,7 +112,7 @@ Gelieve een reservatie te annuleren als je het artikel niet meer nodig hebt, op 
 De openingsuren van cudi zijn:
 {{ openingHours }}#no_opening_hours#Geen openingsuren gekend.#no_opening_hours#
 
-Student IT Cudi
+VTK Cudi
 
 -- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
                 ),
@@ -139,8 +121,8 @@ Student IT Cudi
         'description' => 'The mail sent when a booking is assigned',
     ),
     array(
-        'key'   => 'cudi.booking_expire_warning_mail',
-        'value' => serialize(
+        'key'         => 'cudi.booking_expire_warning_mail',
+        'value'       => serialize(
             array(
                 'en' => array(
                     'subject' => 'Assignment Expiration Warning',
@@ -156,7 +138,7 @@ Please cancel a reservation if you don\'t need the article, this way we can help
 The opening hours of Cudi are:
 {{ openingHours }}#no_opening_hours#No opening hours known.#no_opening_hours#
 
-Student IT Cudi
+VTK Cudi
 
 -- This is an automatically generated email, please do not reply --',
                 ),
@@ -174,7 +156,7 @@ Gelieve een reservatie te annuleren als je het artikel niet meer nodig hebt, op 
 De openingsuren van cudi zijn:
 {{ openingHours }}#no_opening_hours#Geen openingsuren gekend.#no_opening_hours#
 
-Student IT Cudi
+VTK Cudi
 
 -- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
                 ),
@@ -183,8 +165,8 @@ Student IT Cudi
         'description' => 'The mail sent when a booking is about to expire',
     ),
     array(
-        'key'   => 'cudi.booking_expire_mail',
-        'value' => serialize(
+        'key'         => 'cudi.booking_expire_mail',
+        'value'       => serialize(
             array(
                 'en' => array(
                     'subject' => 'Assignment Expiration',
@@ -193,7 +175,7 @@ Student IT Cudi
 The following bookings have expired:
 {{ bookings }}#expires#expired on#expires#
 
-Student IT Cudi
+VTK Cudi
 
 -- This is an automatically generated email, please do not reply --',
                 ),
@@ -204,7 +186,7 @@ Student IT Cudi
 De volgende reservaties zijn vervallen:
 {{ bookings }}#expires#verviel op#expires#
 
-Student IT Cudi
+VTK Cudi
 
 -- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
                 ),
@@ -238,8 +220,8 @@ Student IT Cudi
         'description' => 'Whether the cudi queue socket is enabled',
     ),
     array(
-        'key'   => 'cudi.purchase_prices',
-        'value' => serialize(
+        'key'         => 'cudi.purchase_prices',
+        'value'       => serialize(
             array(
                 'binding_glued'     => 81620,
                 'binding_stapled'   => 6360,
@@ -254,8 +236,8 @@ Student IT Cudi
         'description' => 'The purchase prices of an internal article (multiplied by 100 000)',
     ),
     array(
-        'key'   => 'cudi.sell_prices',
-        'value' => serialize(
+        'key'         => 'cudi.sell_prices',
+        'value'       => serialize(
             array(
                 'binding_glued'     => 83000,
                 'binding_stapled'   => 7000,
@@ -271,7 +253,7 @@ Student IT Cudi
     ),
     array(
         'key'         => 'cudi.front_address_name',
-        'value'       => 'Cudi Student IT vzw',
+        'value'       => 'CuDi VTK vzw',
         'description' => 'The name of the address on the front of an article',
     ),
     array(
@@ -325,8 +307,8 @@ Student IT Cudi
         'description' => 'The title printed on a ticket',
     ),
     array(
-        'key'   => 'cudi.printers',
-        'value' => serialize(
+        'key'         => 'cudi.printers',
+        'value'       => serialize(
             array(
                 'signin'    => 'LITUS-SignIn',
                 'card'      => 'LITUS-Card',
@@ -341,8 +323,8 @@ Student IT Cudi
         'description' => 'The names of the printers',
     ),
     array(
-        'key'   => 'cudi.tshirt_article',
-        'value' => serialize(
+        'key'         => 'cudi.tshirt_article',
+        'value'       => serialize(
             array(
                 'F_S'  => 232,
                 'F_M'  => 233,
@@ -358,15 +340,15 @@ Student IT Cudi
         'description' => 'The T-shirt articles',
     ),
     array(
-        'key'   => 'cudi.registration_articles',
-        'value' => serialize(
+        'key'         => 'cudi.registration_articles',
+        'value'       => serialize(
             array()
         ),
         'description' => 'The articles assigned at registration',
     ),
     array(
-        'key'   => 'cudi.bookings_closed_exceptions',
-        'value' => serialize(
+        'key'         => 'cudi.bookings_closed_exceptions',
+        'value'       => serialize(
             array()
         ),
         'description' => 'The articles assigned at registration',
@@ -387,8 +369,8 @@ Student IT Cudi
         'description' => 'The interval for sending a warning mail before expiring a booking',
     ),
     array(
-        'key'   => 'cudi.catalog_update_mail',
-        'value' => serialize(
+        'key'         => 'cudi.catalog_update_mail',
+        'value'       => serialize(
             array(
                 'en' => array(
                     'subject' => 'Catalog Updates',
@@ -397,7 +379,7 @@ Student IT Cudi
 The catalog of our cudi has been updated:
 {{ updates }}#bookable#is now bookable#bookable# #unbookable#is not bookable anymore#unbookable# #added#is added to the catalog#added# #removed#is removed from the catalog#removed#
 
-Student IT Cudi
+VTK Cudi
 
 -- This is an automatically generated email, please do not reply --',
                 ),
@@ -408,7 +390,7 @@ Student IT Cudi
 De catalogus van onze cudi is aangepast:
 {{ updates }}#bookable#is nu reserveerbaar#bookable# #unbookable#is niet meer reserveerbaar#unbookable# #added#is toegevoegd aan de catalogus#added# #removed#is verwijderd van de catalogus#removed#
 
-Student IT Cudi
+VTK Cudi
 
 -- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
                 ),
@@ -432,18 +414,13 @@ Student IT Cudi
         'description' => 'The job id for a XML exported order',
     ),
     array(
-        'key'         => 'cudi.booking_mails_to_sysadmin',
-        'value'       => '1',
-        'description' => 'Send the cudi booking mails (assigned, expired, warning) to the system administrator address',
-    ),
-    array(
         'key'         => 'cudi.booking_mails_to_cudi',
         'value'       => '1',
         'description' => 'Send the cudi booking mails (assigned, expired, warning) to the cudi address',
     ),
     array(
-        'key'   => 'cudi.location',
-        'value' => serialize(
+        'key'         => 'cudi.location',
+        'value'       => serialize(
             array(
                 'latitude'  => 50.8612181,
                 'longitude' => 4.6837506,
@@ -524,8 +501,8 @@ Student IT Cudi
         'description' => 'The client ID for the ISIC SOAP API.',
     ),
     array(
-        'key'   => 'cudi.isic_student_cities',
-        'value' => serialize(
+        'key'         => 'cudi.isic_student_cities',
+        'value'       => serialize(
             array(
                 'Leuven' => 'Leuven',
             )
@@ -533,8 +510,8 @@ Student IT Cudi
         'description' => 'The student city for the ISIC SOAP API.',
     ),
     array(
-        'key'   => 'cudi.isic_schools',
-        'value' => serialize(
+        'key'         => 'cudi.isic_schools',
+        'value'       => serialize(
             array(
                 'KU Leuven' => 'KU Leuven',
             )
@@ -542,8 +519,8 @@ Student IT Cudi
         'description' => 'The school for the ISIC SOAP API.',
     ),
     array(
-        'key'   => 'cudi.isic_studies',
-        'value' => serialize(
+        'key'         => 'cudi.isic_studies',
+        'value'       => serialize(
             array(
                 'Ingenieursstudies' => 'Engineering studies',
             )
@@ -571,8 +548,8 @@ Student IT Cudi
         'description' => 'Whether or not to delay an ISIC order until it has been paid for.',
     ),
     array(
-        'key'   => 'cudi.isic_Guido_conditions',
-        'value' => serialize(
+        'key'         => 'cudi.isic_Guido_conditions',
+        'value'       => serialize(
             array(
                 'en' => '<b>By selecting \'Receive information Guido NV\' I herby consent</b> with the storage of above data by GUIDO NV, Bruiloftstraat 127, 9050 Gentbrugge.<br>
 This allows GUIDO to keep you updated in the future about their hints, tricks, news, activities, games etc...<br>
@@ -599,8 +576,8 @@ Dit is de rechtstreekse link naar onze online-privacy pagina: <a href="https://w
         'description' => 'Whether or not to show the text above the reservations.',
     ),
     array(
-        'key'   => 'cudi.extra_text_reservation_page',
-        'value' => serialize(
+        'key'         => 'cudi.extra_text_reservation_page',
+        'value'       => serialize(
             array(
                 'en' => 'This is a placeholder text, please change me',
                 'nl' => 'Deze tekst moet nog aanepast worden',
@@ -614,8 +591,8 @@ Dit is de rechtstreekse link naar onze online-privacy pagina: <a href="https://w
         'description' => 'The maximal relative price to the sell price.',
     ),
     array(
-        'key'   => 'cudi.retail_enquired_mail',
-        'value' => serialize(
+        'key'         => 'cudi.retail_enquired_mail',
+        'value'       => serialize(
             array(
                 'en' => array(
                     'subject' => 'Enquiry for your retail: {{ book }}',
@@ -661,8 +638,8 @@ Gelieve contact op te nemen met {{ name }} via {{ email }}.
         'description' => 'The text on the overview page in cudi - retail',
     ),
     array(
-        'key'         => 'cudi.retail_my_deals_text',
-        'value'       => serialize(
+        'key'                   => 'cudi.retail_my_deals_text',
+        'value'                 => serialize(
             array(
                 'en' => 'Here you can see your deals.',
                 'nl' => 'Hier zie je je huidige aanvragen.',
@@ -670,8 +647,8 @@ Gelieve contact op te nemen met {{ name }} via {{ email }}.
         ),        'description' => 'The text on the my_deals page in cudi - retail',
     ),
     array(
-        'key'         => 'cudi.retail_my_retails_text',
-        'value'       => serialize(
+        'key'                   => 'cudi.retail_my_retails_text',
+        'value'                 => serialize(
             array(
                 'en' => 'Here you can see your personal retails, edit them or add new ones.',
                 'nl' => 'Hier zie je je huidige aanbiedingen en kan je er nieuwe aanmaken.',
@@ -682,5 +659,10 @@ Gelieve contact op te nemen met {{ name }} via {{ email }}.
         'key'         => 'cudi.retail_enabled',
         'value'       => '0',
         'description' => 'boolean for retail pages/buttons',
+    ),
+    array(
+        'key'         => 'cudi.queue_force_registration_shift',
+        'value'       => '0',
+        'description' => 'boolean for forcing registration shifts',
     ),
 );

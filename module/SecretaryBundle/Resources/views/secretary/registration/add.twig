@@ -1,14 +1,14 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-    <div class="page-header">
+    <div class="page-header container">
         <h1>{{ translate('Registration') }}</h1>
     </div>
 
     {% include 'secretary/registration/partials/navigation.twig' %}
 
     {% if registerShibbolethUrl is not null %}
-        <div style="text-align: center;">
+        <div class="container" style="text-align: center;">
             <p style="text-align: center;">
                 {% autoescape false %}
                     {{ translate('To register, please login first with your KU Leuven account.') }}
@@ -18,7 +18,7 @@
         </div>
     {% else %}
         {% if (organizations|length > 1 or enableOtherOrganization) and not isPost %}
-            <div id="organizationSelector">
+            <div class="container" id="organizationSelector">
                 <p style="text-align: center;">{{ translate('Choose your study:') }}</p>
                 <ul style="list-style: none; width: 300px; margin: 0 auto;">
                     {% if enableOtherOrganization %}
@@ -39,12 +39,12 @@
             </div>
         {% endif %}
 
-        <div id="registerForm"{% if (organizations|length > 1 or enableOtherOrganization) and not isPost %} style="display: none;"{% endif %}>
+        <div class="container" id="registerForm"{% if (organizations|length > 1 or enableOtherOrganization) and not isPost %} style="display: none;"{% endif %}>
             {% import 'site/partials/form.twig' as forms %}
             {{ forms.renderForm(form) }}
         </div>
 
-        <div id="modalMemberWarning" class="modal fade">
+        <div id="modalMemberWarning" class="modal fade container">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -67,7 +67,7 @@
             </div>
         </div>
 
-        <div id="modalTermsAndCoditions" class="modal fade">
+        <div id="modalTermsAndCoditions" class="modal fade container">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -246,7 +246,7 @@
                     .closest('.form-group')
                         .toggle($('#register_form').find('#organization').val() !== '0');
 
-                $form.find('#conditions')
+                $form.find('#conditions, #bakske')
                     .closest('.form-group')
                         .show();
                 $form.find('#organization')

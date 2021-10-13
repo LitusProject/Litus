@@ -1,14 +1,15 @@
 .vtk-navbar {
   position: sticky;
-  top: 0;
+  top: -2px;
   width: 100vw;
   max-width: 100%;
   background-color: white;
   height: 90px;
-  -webkit-box-shadow: 0 3px 12px rgba(0, 0, 0, 0.13);
-  box-shadow: 0 3px 12px rgba(82, 71, 71, 0.13);
+  // -webkit-box-shadow: 0 3px 12px rgba(0, 0, 0, 0.13);
+  // box-shadow: 0 3px 12px rgba(82, 71, 71, 0.13);
   z-index: 1000;
   margin-top: -1px;
+  border-bottom: 1px solid whitesmoke;
 }
 
 .vtk-flex-stretch {
@@ -61,11 +62,15 @@
 
 .vtk-menuitem-holder:hover {
   cursor: default;
+  background-color: whitesmoke;
 }
 
 .vtk-menuitem {
   color: #1a1f4a;
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-family: "Open Sans";
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 12px;
 }
 
 .vtk-menuitem:hover {
@@ -98,18 +103,18 @@
 .vtk-dropdownitem-holder {
   position: absolute;
   top: 38px;
-  border-radius: 5px;
   z-index: 1100;
   width: auto;
   margin: 2px 0 0;
   list-style: none;
   font-size: 15px;
   background-color: #ffffff;
-  -webkit-box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.13);
-  box-shadow: 0 -3px 12px rgba(82, 71, 71, 0.13);
+  -webkit-box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 -3px 12px rgba(82, 71, 71, 0.08);
   background-clip: padding-box;
   visibility: hidden;
   padding: 20px;
+  margin-left: -10px;
 }
 
 .vtk-dropdownitem-holder.right {
@@ -128,14 +133,14 @@
 
 .vtk-dropdownitem-link {
   color: #1a1f4a;
-  font-size: 14px;
+  font-size: 13px;
   display: inline-block;
-  width: 100%;
   height: 100%;
   text-decoration: none !important;
   color: #1a1f4a !important;
   border-bottom: 1px solid transparent;
   white-space: nowrap;
+  transition: border 100ms ease;
 }
 
 .vtk-dropdownitem-link:hover {
@@ -162,20 +167,21 @@
 }
 
 .vtk-primary-navbar {
-  background-color: #1a1f4a;
-  padding: 3px 0px;
+  background-color: whitesmoke;
+  padding: 8px 0px;
+  border-bottom: 3px solid whitesmoke;
 }
 
 .vtk-primary-menuitem {
-  color: white;
+  color: grey;
   padding: 0px 5px;
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-family: "Open Sans";
   //font-family: "Raleway";
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .vtk-primary-menuitem:hover {
-  color: white;
+  color: grey;
   cursor: pointer;
   text-decoration: underline;
   text-decoration-color: #ffd400;
@@ -188,6 +194,30 @@
   color: #1a1f4a;
   margin-bottom: 5px;
   cursor: pointer;
+}
+
+.footerLogoHolder {
+  border-radius: 5px;
+  width: 130px;
+  height: 110px;
+  margin-right: 10px;
+  background-color: white;
+  padding: 10px;
+  display: inline-block;
+  transition-duration: 200ms;
+}
+
+.footerLogoHolder:hover {
+  -webkit-box-shadow: 0px 0px 7px 1px rgba(150, 150, 150, 0.17);
+  box-shadow: 0px 0px 7px 1px rgba(150, 150, 150, 0.17);
+}
+
+.footerLogo {
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .vtk-footerheading {
@@ -255,7 +285,7 @@
   width: 30px;
   height: 25px;
   margin-top: 27px;
-  cursor: pointer; 
+  cursor: pointer;
 }
 
 .vtk-menu-bar {
@@ -297,11 +327,33 @@
   margin-bottom: 20px;
 }
 
+.vtk-mobile-primary-menuitem {
+  color: white;
+  font-size: 15px;
+  margin-right: 10px;
+  transition-duration: 200ms;
+  padding: 5px 10px;
+  border: 1px solid white;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+
+.vtk-mobile-primary-menuitem:hover {
+  color: @color-blue;
+  background-color: @color-yellow;
+  border: 1px solid @color-yellow;
+}
+
 @media (max-width: 575.98px) {
   .vtk-mobile-container {
     column-count: 1;
     column-gap: 0;
     padding: 10px;
+  }
+
+  .footerLogoHolder {
+    width: 48%;
+    margin-right: 1%;
   }
 }
 
@@ -309,17 +361,60 @@
   font-family: "Montserrat";
   font-size: 12px;
   color: white;
-  margin-left: 10px;
-  padding: 8px 8px; 
-  margin-bottom: 3px; 
-  margin-right: 6px; 
-  background-color: #242954; 
-  display: block; 
-  transition-duration: 200ms; 
+  padding: 8px 8px;
+  margin-bottom: 3px;
+  margin-right: 6px;
+  background-color: #242954;
+  display: block;
+  transition-duration: 200ms;
 }
 
 .vtk-mobilelink:hover {
   color: #1a1f4a;
-  background-color: #ffd400; 
-  text-decoration: none; 
+  background-color: #ffd400;
+  text-decoration: none;
+}
+
+// This CSS makes sure the footer sticks to the bottom of the page on short pages
+
+.contentHolder {
+  min-height: 100vh;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-content: stretch;
+  -ms-flex-line-pack: stretch;
+  align-content: stretch;
+  -webkit-align-items: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+}
+
+.contentStretch {
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+
+.brTag {
+  padding: 5px 10px;
+  background-color: white;
+  color: #1a1f4a;
+  -webkit-box-shadow: 0px 0px 7px 1px rgba(150, 150, 150, 0.17);
+  box-shadow: 0px 0px 7px 1px rgba(150, 150, 150, 0.17);
+  display: inline-block;
+  position: absolute;
+  bottom: -30px;
+  font-family: "Open Sans";
+  font-size: 11px;
+  border-radius: 3px;
 }

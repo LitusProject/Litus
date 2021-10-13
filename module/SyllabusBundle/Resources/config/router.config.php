@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 return array(
     'routes' => array(
@@ -28,7 +10,7 @@ return array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'syllabus_admin_update',
                     'action'     => 'index',
                 ),
@@ -46,7 +28,7 @@ return array(
                     'field'        => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'string'       => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'syllabus_admin_academic',
                     'action'     => 'manage',
                 ),
@@ -62,7 +44,7 @@ return array(
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
                     'page'         => '[0-9]+',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'syllabus_admin_group',
                     'action'     => 'manage',
                 ),
@@ -78,7 +60,7 @@ return array(
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
                     'page'         => '[0-9]+',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'syllabus_admin_poc',
                     'action'     => 'manage',
                 ),
@@ -97,7 +79,7 @@ return array(
                     'string'       => '[a-zA-Z][%a-zA-Z0-9:.,_\-\(\)]*',
                     'page'         => '[0-9]+',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'syllabus_admin_study',
                     'action'     => 'manage',
                 ),
@@ -111,7 +93,7 @@ return array(
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
                     'string'       => '[%a-zA-Z0-9:.,_\-\(\)]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'syllabus_admin_study',
                     'action'     => 'typeahead',
                 ),
@@ -129,7 +111,7 @@ return array(
                     'string'       => '[a-zA-Z][%a-zA-Z0-9:.,_\-\(\)]*',
                     'page'         => '[0-9]+',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'syllabus_admin_study_module_group',
                     'action'     => 'manage',
                 ),
@@ -142,7 +124,7 @@ return array(
                 'constraints' => array(
                     'string' => '[%a-zA-Z0-9:.,_\-\(\)]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'syllabus_admin_study_module_group',
                     'action'     => 'typeahead',
                 ),
@@ -160,7 +142,7 @@ return array(
                     'string'       => '[a-zA-Z][%a-zA-Z0-9:.,_\-\(\)]*',
                     'page'         => '[0-9]+',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'syllabus_admin_subject',
                     'action'     => 'manage',
                 ),
@@ -175,7 +157,7 @@ return array(
                     'id'           => '[0-9]*',
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'syllabus_admin_subject_module_group',
                 ),
             ),
@@ -190,7 +172,7 @@ return array(
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
                     'page'         => '[0-9]+',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'syllabus_admin_subject_comment',
                     'action'     => 'manage',
                 ),
@@ -204,7 +186,7 @@ return array(
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
                     'string'       => '[%a-zA-Z0-9:.,_\-\(\)]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'syllabus_admin_subject',
                     'action'     => 'typeahead',
                 ),
@@ -219,7 +201,7 @@ return array(
                     'id'           => '[0-9]*',
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'syllabus_admin_subject_prof',
                     'action'     => 'manage',
                 ),
@@ -232,7 +214,7 @@ return array(
                 'constraints' => array(
                     'string' => '[%a-zA-Z0-9:.,_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'syllabus_admin_subject_prof',
                     'action'     => 'typeahead',
                 ),
@@ -246,7 +228,7 @@ return array(
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
                     'string'       => '[%a-zA-Z0-9:.,_\-\(\)]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'syllabus_subject',
                     'action'     => 'typeahead',
                 ),

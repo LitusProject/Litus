@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace LogisticsBundle\Controller\Admin;
 
@@ -38,7 +20,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'requests'    => $requests,
+                'requests' => $requests,
             )
         );
     }
@@ -70,9 +52,9 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
             foreach ($oldMaps as $map) {
                 $id = $map->getArticle()->getId();
                 $mappings[$id] = array(
-                    'name'  => $map->getArticle()->getName(),
-                    'old'   => $map->getAmount(),
-                    'new'   => 0,
+                    'name' => $map->getArticle()->getName(),
+                    'old'  => $map->getAmount(),
+                    'new'  => 0,
                 );
             }
         }
@@ -83,20 +65,20 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
                 $mappings[$id]['new'] = $map->getAmount();
             } else {
                 $mappings[$id] = array(
-                    'name'  => $map->getArticle()->getName(),
-                    'new'   => $map->getAmount(),
-                    'old'   => 0,
+                    'name' => $map->getArticle()->getName(),
+                    'new'  => $map->getAmount(),
+                    'old'  => 0,
                 );
             }
         }
 
         $diffs = array(
-            'Name' => array($oldOrder->getName()),
-            'Location' => array($oldOrder->getLocation()->getName()),
-            'Creator' => array($oldOrder->getCreator()->getFullName()),
-            'Contact' => array($oldOrder->getContact()),
-            'Start Date' => array($oldOrder->getStartDate()->format('d/m/Y H:i')),
-            'End Date' => array($oldOrder->getEndDate()->format('d/m/Y H:i')),
+            'Name'        => array($oldOrder->getName()),
+            'Location'    => array($oldOrder->getLocation()->getName()),
+            'Creator'     => array($oldOrder->getCreator()->getFullName()),
+            'Contact'     => array($oldOrder->getContact()),
+            'Start Date'  => array($oldOrder->getStartDate()->format('d/m/Y H:i')),
+            'End Date'    => array($oldOrder->getEndDate()->format('d/m/Y H:i')),
             'Description' => array($oldOrder->getDescription()),
         );
         if ($newOrder !== null) {
@@ -111,11 +93,11 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'request'    => $request,
-                'newOrder'   => $newOrder,
-                'oldOrder'   => $oldOrder,
-                'diffs'      => $diffs,
-                'mappings'   => $mappings,
+                'request'  => $request,
+                'newOrder' => $newOrder,
+                'oldOrder' => $oldOrder,
+                'diffs'    => $diffs,
+                'mappings' => $mappings,
             )
         );
     }
@@ -244,17 +226,31 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
         $subject = $mailData[$language->getAbbrev()]['subject'];
 
         $mail = new Message();
-        $mail->setEncoding('UTF-8')
-            ->setBody(
-                str_replace(
-                    array('{{ name }}', '{{ type }}', '{{ end }}', '{{ start }}'),
-                    array($order->getName(), $request->getRequestType(), $order->getEndDate()->format('d/m/Y H:m'), $order->getStartDate()->format('d/m/Y H:m')),
-                    $message
+        if ($rejected === true) {
+            $mail->setEncoding('UTF-8')
+                ->setBody(
+                    str_replace(
+                        array('{{ name }}', '{{ type }}', '{{ end }}', '{{ start }}', '{{ reason }}'),
+                        array($order->getName(), $request->getRequestType(), $order->getEndDate()->format('d/m/Y H:m'), $order->getStartDate()->format('d/m/Y H:m'), $request->getRejectMessage()),
+                        $message
+                    )
                 )
-            )
-            ->setFrom($mailAddress, $mailName)
-            ->addTo($request->getContact()->getPersonalEmail(), $request->getContact()->getFullName())
-            ->setSubject(str_replace('{{ name }}', $order->getName(), $subject));
+                ->setFrom($mailAddress, $mailName)
+                ->addTo($request->getContact()->getPersonalEmail(), $request->getContact()->getFullName())
+                ->setSubject(str_replace('{{ name }}', $order->getName(), $subject));
+        } else {
+            $mail->setEncoding('UTF-8')
+                ->setBody(
+                    str_replace(
+                        array('{{ name }}', '{{ type }}', '{{ end }}', '{{ start }}'),
+                        array($order->getName(), $request->getRequestType(), $order->getEndDate()->format('d/m/Y H:m'), $order->getStartDate()->format('d/m/Y H:m')),
+                        $message
+                    )
+                )
+                ->setFrom($mailAddress, $mailName)
+                ->addTo($request->getContact()->getPersonalEmail(), $request->getContact()->getFullName())
+                ->setSubject(str_replace('{{ name }}', $order->getName(), $subject));
+        }
 
         if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);

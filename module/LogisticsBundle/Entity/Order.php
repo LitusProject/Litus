@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace LogisticsBundle\Entity;
 
@@ -57,6 +39,20 @@ class Order
      * @ORM\Column(type="text")
      */
     private $description;
+
+    /**
+     * @var string Internal Comment
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $internalComment;
+
+    /**
+     * @var string External Comment
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $externalComment;
 
     /**
      * @var string The mail-address for the contact for this order
@@ -184,11 +180,9 @@ class Order
         }
         if ($status == 'rejected') {
             $this->reject();
-        }
-        elseif ($status == 'approved') {
+        } elseif ($status == 'approved') {
             $this->approve();
-        }
-        elseif ($status == 'pending') {
+        } elseif ($status == 'pending') {
             $this->pending();
         }
         return $this;
@@ -331,6 +325,44 @@ class Order
     }
 
     /**
+     * @param  string $internalComment
+     * @return Order
+     */
+    public function setInternalComment($internalComment)
+    {
+        $this->internalComment = $internalComment;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInternalComment()
+    {
+        return $this->internalComment;
+    }
+
+    /**
+     * @param  string $externalComment
+     * @return Order
+     */
+    public function setExternalComment($externalComment)
+    {
+        $this->externalComment = $externalComment;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExternalComment()
+    {
+        return $this->externalComment;
+    }
+
+    /**
      * @param  string $email
      * @return Order
      */
@@ -358,7 +390,7 @@ class Order
     }
 
     /**
-     * @param bool $b
+     * @param boolean $b
      * @return boolean
      */
     public function setNeedsRide(bool $b)

@@ -44,7 +44,6 @@
                 <div class="day">{{ dateLocalized(event.getStartDate(), 'd') }}</div>
             </div>
 
-
             <div class="dayItem">
                 <p>
                     <span class="glyphicon glyphicon-time time"></span>
@@ -135,41 +134,42 @@
         <div class="spacer40"></div>
 
         <div class="flexHorizontal">
-            <div>
-                {% if hasAccess('ticket', 'event') and ticketEvent is not null and ticketEvent.isActive() %}
-                    <div style="margin-right: 20px">
-                        <div style="white-space: nowrap" class="button">    
-                            <a href="{{ url('ticket', {'id': ticketEvent.getId()}) }}" class="btn btn-default">
-                                <span class="glyphicon glyphicon-tags"></span>
-                                {{ translate('Tickets') }}
-                            </a>
-                        </div>
+            {% if hasAccess('ticket', 'event') and ticketEvent is not null and ticketEvent.isActive() %}
+                <div class="flexChild">
+                     <a href="{{ url('ticket', {'id': ticketEvent.getId()}) }}" class="button btn-default">
+                            <span class="glyphicon glyphicon-tags"></span>
+                            {{ translate('Tickets') }}
+                        </a>
                     </div>
-                {% endif %}
-                {% if hasAccess('shift', 'index') and hasShifts %}
-                    <div style="margin-right: 20px">
-                        <form action="{{ url('shift') }}" method="post">
-                            <input type="hidden" name="event" value="{{ event.getId() }}">
-                            <button style="white-space: nowrap" type="submit">
-                                <span class="glyphicon glyphicon-tasks"></span>
-                                {{ translate('Shifts') }}
-                            </button>
-                        </form>
-                    </div>
-                {% endif %}
-                {# {% if hasAccess('registration_shift', 'index') and hasRegistrationShifts %} #}
-                {% if hasRegistrationShifts %}
-                    <div style="margin-right: 20px">
-                        <form action="{{ url('registration_shift') }}" method="post">
-                            <input type="hidden" name="event" value="{{ event.getId() }}">
-                            <button style="white-space: nowrap" type="submit">
-                                <span class="glyphicon glyphicon-tasks"></span>
-                                {{ translate('Timeslots') }}
-                            </button>
-                        </form>
-                    </div>
-                {% endif %}
-            </div>
+            {% endif %}
+            {% if hasAccess('shift', 'index') and hasShifts %}
+                <div style="margin-right: 20px">
+                    <form action="{{ url('shift') }}" method="post">
+                        <input type="hidden" name="event" value="{{ event.getId() }}">
+                        <button style="white-space: nowrap" type="submit">
+                            <span class="glyphicon glyphicon-tasks"></span>
+                            {{ translate('Shifts') }}
+                        </button>
+                    </form>
+                </div>
+            {% endif %}
+            {# {% if hasAccess('registration_shift', 'index') and hasRegistrationShifts %} #}
+            {% if hasRegistrationShifts %}
+                <div style="margin-right: 20px">
+                    <form action="{{ url('registration_shift') }}" method="post">
+                        <input type="hidden" name="event" value="{{ event.getId() }}">
+                        <button style="white-space: nowrap" type="submit">
+                            <span class="glyphicon glyphicon-tasks"></span>
+                            {{ translate('Timeslots') }}
+                        </button>
+                    </form>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="spacer40"></div>
+
+        <div class="flexHorizontal">
             <div class="flexChild">
                 {% if event.getPoster() %}
                     <div class="row">

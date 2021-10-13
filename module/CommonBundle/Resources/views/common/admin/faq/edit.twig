@@ -1,0 +1,125 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'common/admin/faq/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div class="flashmessage success_message full_width entry_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The entry was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width entry_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the entry.</p>
+        </div>
+    </div>
+
+    <div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+
+        <br style="clear:both">
+
+        <h2>Add Page</h2>
+        {{ forms.renderForm(pageForm) }}
+
+        <table class="manage">
+            <tr>
+                <th>Name</th>
+                <th width="120px">Actions</th>
+            </tr>
+            {% for entry in maps %}
+                {% if '' != entry.getPage().getName() %}
+                    <tr class="item item-{{ entry.getId() }}">
+                        <td>{{ entry.getPage().getName() }}</td>
+                        <td>
+                            {% if hasAccess('common_admin_faq', 'deletePageMap') %}
+                                <a href="#" data-id="{{ entry.getId() }}" data-name="{{ entry.getPage().getName() }}" class="delete">Delete</a>
+                            {% endif %}
+                            {% if hasAccess('page_admin_page', 'edit') %}
+                                <a href="{{ url('page_admin_page', {'action': 'edit', 'id': entry.getPage().getId()}) }}" class="edit">Edit</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="modal fade" id="removeEntry" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Entry
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following entry: <b class="entryName"></b>!
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#languages a:first').click();
+            $('#page_typeahead').typeaheadRemote(
+                {
+                    source: '{{ url('page_admin_page_typeahead', {})}}',
+                    items: 20,
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('[name="page_typeahead[id]"]').val($(this).data('value').id);
+                } else {
+                    $('[name="page_typeahead[id]"]').val('');
+                }
+            });
+            $('.item .delete').click(openModal);
+        });
+        function openModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeEntry = $('#removeEntry');
+            removeEntry.find('.entryName').html($(this).data('name'));
+            var id = $this.data('id');
+            removeEntry.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('common_admin_faq', {"action": "deletePageMap", "id": faq.getId(), "map": "&map&"})}}'.replace('&map&', id), function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.entry_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeEntry.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeEntry.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.entry_removed_error').removeClass('hide');
+            $('#removeEntry').modal('hide');
+        }
+    </script>
+{% endblock %}

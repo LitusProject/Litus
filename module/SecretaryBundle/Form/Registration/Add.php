@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace SecretaryBundle\Form\Registration;
 
@@ -90,7 +72,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'id' => 'first_name',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -107,7 +89,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'id' => 'last_name',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -123,7 +105,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'placeholder' => 'dd/mm/yyyy',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -157,7 +139,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'placeholder' => '+CCAAANNNNNN',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -195,7 +177,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'attributes' => array(
                                     'id' => 'university_email',
                                 ),
-                                'options' => array(
+                                'options'    => array(
                                     'input' => array(
                                         'filters' => array(
                                             array('name' => 'StringTrim'),
@@ -274,7 +256,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'id' => 'organization_info',
                 ),
-                'elements' => array(
+                'elements'   => array(
                     array(
                         'type'       => 'select',
                         'name'       => 'organization',
@@ -283,7 +265,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'id'      => 'organization',
                             'options' => $this->getOrganizations(),
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'required' => count($this->getOrganizations()) > 1,
                                 'filters'  => array(
@@ -309,7 +291,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'id' => 'conditions',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'validators' => array(
                                     array(
@@ -324,6 +306,32 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                     ),
                                 ),
                             ),
+                        ),
+                    ),
+                    array(
+                        'type'       => 'checkbox',
+                        'name'       => 'receive_irreeel_at_cudi',
+                        'label'      => 'I want to receive my Ir.Reëel at CuDi',
+                        'value'      => true,
+                        'attributes' => array(
+                            'id' => 'irreeel',
+                        ),
+                    ),
+                    array(
+                        'type'       => 'checkbox',
+                        'name'       => 'bakske_by_mail',
+                        'label'      => 'I want to receive \'t Bakske by e-mail',
+                        'value'      => true,
+                        'attributes' => array(
+                            'id' => 'bakske',
+                        ),
+                    ),
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'tshirt_size',
+                        'label'      => 'T-shirt Size',
+                        'attributes' => array(
+                            'options' => MetaData::$possibleSizes,
                         ),
                     ),
                 ),

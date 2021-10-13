@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <ruleset name="Litus">
-    <config name="installed_paths" value="../../slevomat/coding-standard"/>
+    <config name="installed_paths" value="../../slevomat/coding-standard,../../wp-coding-standards/wpcs"/>
 
     <file>bin/</file>
     <file>config/</file>
@@ -34,7 +34,6 @@
     <rule ref="SlevomatCodingStandard.Arrays.DisallowImplicitArrayCreation"/>
     <rule ref="SlevomatCodingStandard.Classes.ModernClassNameReference"/>
     <rule ref="SlevomatCodingStandard.Classes.TraitUseDeclaration"/>
-    <rule ref="SlevomatCodingStandard.Classes.UnusedPrivateElements"/>
     <rule ref="SlevomatCodingStandard.Commenting.EmptyComment"/>
     <rule ref="SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration"/>
     <rule ref="SlevomatCodingStandard.Commenting.UselessInheritDocComment"/>
@@ -51,13 +50,6 @@
     <rule ref="SlevomatCodingStandard.Functions.UselessParameterDefaultValue"/>
     <rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses"/>
     <rule ref="SlevomatCodingStandard.Namespaces.DisallowGroupUse"/>
-    <rule ref="SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameAfterKeyword">
-        <properties>
-            <property name="keywordsToCheck" type="array">
-                <element value="T_EXTENDS"/>
-            </property>
-        </properties>
-    </rule>
     <rule ref="SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameInAnnotation" phpcs-only="true">
         <type>warning</type>
     </rule>
@@ -113,5 +105,10 @@
     <rule ref="Squiz.WhiteSpace.ControlStructureSpacing"/>
     <rule ref="Squiz.WhiteSpace.OperatorSpacing"/>
     <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace"/>
-</ruleset>
 
+    <rule ref="WordPress.Arrays.MultipleStatementAlignment">
+        <properties>
+            <property name="alignMultilineItems" value="!=100"/>
+        </properties>
+    </rule>
+</ruleset>

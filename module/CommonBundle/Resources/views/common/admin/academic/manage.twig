@@ -154,7 +154,6 @@
             var id = $this.data('id');
             removeAcademic.find('.delete').unbind('click').click(function () {
                 $.post('{{ url('common_admin_academic', {"action": "delete"})}}' + id, function (data) {
-                    console.log(data);
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.academic_removed_success').removeClass('hide');

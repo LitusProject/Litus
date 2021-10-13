@@ -2,6 +2,20 @@
 
 {% block content %}
 
+    {% if sportInfo is not null %}
+        <div class="alert alert-info">
+            <a class="close" data-dismiss="alert">&times;</a>
+            <h4>{{ translate('24h Run') }}</h4>
+            {% if sportInfo.behind == 0 %}
+                {{ translate('We have run already %laps% laps and we are the first team.')|replace({'%laps%': sportInfo.nbLaps}) }}
+            {% else %}
+                {{ translate('We have run already %laps% laps and we are %behind% laps behind the first team.')|replace({'%laps%': sportInfo.nbLaps, '%behind%': sportInfo.behind}) }}
+            {% endif %}
+            <span class="pull-right">{{ translate('Current Runner:') }} <b>{{ sportInfo.currentLap.getRunner().getFullName() }}</b></span>
+        </div>
+    {% endif %}
+
+
     {#Still needs verification#}
     {# WOULD DITCH THIS #}
     {# {% if bookings is not null %}
@@ -21,91 +35,140 @@
 
     {% for notification in notifications %}
         <div class="alert alert-info notification">
+            <a class="close" data-dismiss="alert">&times;</a>
             {{ markdown(notification.getContent(language)) }}
         </div>
     {% endfor %}
 
     <div class="vtk-home-header">
-        <div style="height:175px"></div>
-        <div class="container">
-            <h1 class="vtk-hometitle">Welkom bij <span class="vtk-textspan">vtk</span></h1>
-            <h3>Vlaamse Technische Kring - partner in crime since 1920</h3>
+        <div class="vtk-home-image">
+            <div class="container" style="text-align: center">
+                <h1 class="vtk-hometitle">{{ translate('welcome to')}} VTK</h1>
+                <div class="vtk-home-titleDecoration"></div>
+                <h2 class="vtk-home-subtitle" style="color: white; font-weight: 500">Vlaamse Technische Kring - partner in crime since 1920</h2>
+                <div style="height: 100px"></div>
+            </div>
         </div>
     </div>
 
-    <div style="margin-top: -100px; position: relative; padding: 20px 15px" class="container">
-        <h2>Kalender</h2>
-        <div style="margin-top: 50px; margin-bottom: 120px">
+    {% if calendarItems|length != 0 %} 
+    <div class="container calendarHolder">
             <div class="calendar-grid" style="margin-bottom: 40px" >
                 {% for day in calendarItems | slice(0, 3)%}
                     {% for event in day.events | slice(0, 1)%}
-                        <div class="calendar-item">
-                            <h4>{{event.getTitle(language)}} | {{ dateLocalized(day.date, 'LLL')|capitalize }} {{ dateLocalized(day.date, 'd') }} </h4>
-                            <p class="calendar-emptyfill">{{event.getSummary(100, language)}}</p>
-                            <div class="button" style="margin-bottom: 30px; margin-top: 20px">
-                                <a href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">Lees Meer</a>
-                            </div>
-                            <div class="DELETE-BGIMAGE"></div>
-                        </div>
-                    {% endfor %}
-                {% endfor %}
-
-                {# ?? Is kalender ooit leeg 
-                
-                {% else %}
-                    <div class="heading-spacer"></div>
-                    <div class="alert alert-warning">
-                        {{ translate('No upcoming events are available.') }}
-                    </div> 
-                {% endfor %} #}
-            </div>
-            <a class="calendar-button" href="{{ url('calendar') }}">Bekijk de hele kalender →</a>
-        </div>
-    </div>
-    
-
-    <div class="vtk-home-technical">
-        <div style="padding: 50px 15px" class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h2>Laatste nieuws</h2>
-                    {% for item in newsItems %}
-                        <div class="item" style="margin-bottom: 20px">
-                            <h4>{{ item.getTitle(language) }} <small>&mdash; {{ dateLocalized(item.getCreationTime(), 'd MMMM') }}</small></h4>
-
-                            <div>
-                                <p>{{ hideEmail(item.getSummary(300, language)) | replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}</p>
-                                <div class="spacer20"></div>
-                                <div class="button">
-                                    <a href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('Read More') }}</a>
+                        <div style="position: relative" class="calendar-item">
+                            {# TO DO vervangen door echte calendar images #}
+                            <div class="DELETE-BGIMAGE" style="background-image:url({{ url('calendar',{'action':'poster', 'name': event.getPoster()}) }})"></div>
+{#                            <div class="DELETE-BGIMAGE"></div>#}
+{#                            <div class="DELETE-BGIMAGE" style="background-image: url({{ event.getPoster() }})"></div>#}
+                            <div class="calendar-item-tekst">
+                                <h4>{{event.getTitle(language)}} | {{ dateLocalized(day.date, 'LLL')|capitalize }} {{ dateLocalized(day.date, 'd') }} </h4>
+                                <p class="calendar-emptyfill">{{event.getSummary(150, language)}}</p>
+                                <div class="vtk-flex-horizontal" style="position: absolute; bottom: -10px">
+                                    <a class="myVtkButton" href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Read More') }}</a>
+                                    {% if event.hasTicket(entityManager) == true %}
+                                        <a class="myVtkButton" href="{{ url('ticket', {'id': event.getTicket(entityManager).getId()}) }}">{{ translate('Buy Tickets') }}</a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
-                    {% else %}
-                        <div class="alert alert-warning">
-                            {{ translate('No news items were posted recently.') }}
-                        </div>
                     {% endfor %}
-                </div>
-                <div class="col-md-6"><h2>Openingsuren Cudi</h2>
-                    <div><p style="display:inline-block">Maandag</p><p style="float:right">10.00-12.00</p></div>
-                    <div><p style="display:inline-block">Dinsdag</p><p style="float:right">10.00-12.00</p></div>
-                    <div><p style="display:inline-block">Woensdag</p><p style="float:right">10.00-12.00</p></div>
-                    <div><p style="display:inline-block">Donderdag</p><p style="float:right">10.00-12.00</p></div>
-                    <div><p style="display:inline-block">Vrijdag</p><p style="float:right">10.00-12.00</p></div>
+                {% endfor %}
+            </div>
+            <a class="button blue unfilled" href="{{ url('calendar') }}">{{ translate('View the whole Calendar Here') }} →</a>
+        </div>
+    </div>
+    {% endif %}
+    
+    {% if newsItems|length > 0 or cudi.openingHours|length > 0 %}
+    <div class="vtk-home-technical">
+        <div style="padding: 50px 15px" class="container">
+            <div class="row">
+                {% if newsItems|length > 0 %}
+                    <div class="col-md-6">
+                        <h2>{{ translate('Latest news') }}</h2>
+                        {% for item in newsItems %}
+                            <div style="background-color: white; padding: 20px; margin-bottom: 20px">
+                                <h4>{{ item.getTitle(language) }} <small>&mdash; {{ dateLocalized(item.getCreationTime(), 'd MMMM') }}</small></h4>
+
+                                <div>
+                                    <p>{{ hideEmail(item.getSummary(300, language)) | replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}</p>
+                                    <div style="height: 10px"></div>
+                                    <a class="button blue unfilled" href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('Read More') }}</a>
+                                </div>
+                            </div>
+                        {# {% else %}
+                            <div class="alert alert-warning">
+                                {{ translate('No news items were posted recently.') }}
+                            </div> #}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {# TO DO CUDI STUFF GOED ZETTEN #}
+                {# {% if cudi.currentOpeningHour %}
+                    <h3>{{ translate('Open Session') }}</h3>
+                    {% autoescape false %}
+                        <p>
+                            {{ translate('Cudi is open until <span class="label label-warning">%time%</span>.')|replace({'%time%': dateLocalized(cudi.currentOpeningHour.getEnd(), 'H:mm')}) }}
+                            {% if cudi.currentOpeningHour.getComment(language)|length > 0 %}
+                                <br><small style="margin-left: 20px;">{{ cudi.currentOpeningHour.getComment(language) }}</small>
+                            {% endif %}
+                        </p>
+                    {% endautoescape %}
+
+                    {% if cudi.currentSession %}
+                            {% autoescape false %}
+                                <p>
+                                    {% if cudi.currentStudents == 1 %}
+                                        {{ translate('Currently there is <span class="label label-info">%number%</span> student in the queue at Cudi.')|replace({'%number%': cudi.currentStudents}) }}
+                                    {% else %}
+                                        {{ translate('Currently there are <span class="label label-info">%number%</span> students in the queue at Cudi.')|replace({'%number%': cudi.currentStudents}) }}
+                                    {% endif %}
+                                </p>
+                            {% endautoescape %}
+                    {% endif %}
+                {% else %}
+                    <div class="alert alert-info" style="margin-bottom: 20px;">
+                        {{ translate('Cudi is currently closed.') }}
+                    </div>
+                {% endif %}
+
+                {% if hasAccess('cudi_booking', 'view') %}
+                    <p style="text-align: left;">
+                        {{ translate('Reserve textbooks and other study material.') }}
+                    </p>
+                    <p>
+                        <a href="{{ url('cudi_booking') }}" class="btn btn-sm btn-primary">{{ translate('Reservations') }}</a>
+                    </p>
+                {% endif %} #}
+                {% if cudi.openingHours|length > 0 %}
+                    <div class="col-md-6"><h2>{{ translate('Cudi - Opening Hours') }}</h2>
+                        {% for opening in cudi.openingHours %}
+                            <div><p style="display:inline-block">{{ dateLocalized(opening.getStart(), 'EEEE (d/M)')|capitalize }}</p><p style="float:right">{{ opening.getStart().format('H:i') }}-{{ opening.getEnd().format('H:i') }}</p></div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div style="height: 20px;"></div>
+            <div class="row">
+                <div class="col-md-6"><h2>{{ translate('Theokot - Opening Hours') }}</h2>
+                    <div>
+                        <p style="display:inline-block">{{ shop.openingHours }}</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    {% endif %}
 
     <div class="vtk-home-br">
         <div class="container">
-            <h1 style="color:white">Never to early to build your <span class="vtk-textspan">career</span></h1>
-            <p style="max-width: 400px; color:white">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porta velit quis mauris fermentum maximus. Praesent arcu ante, finibus vel volutpat a, cursus sed tortor. Maecenas convallis magna ut eros volutpat, </p>
+            <h1 style="color:white">Never too early to build your <span class="vtk-textspan">career</span></h1>
+            <p style="max-width: 400px; color:white"></p>
             <div class="spacer10"></div>
             <div>
-                <div class="button white unfilled"><a>Studenten</a></div>
-                <div class="button white unfilled"><a>Bedrijven</a></div>
+                <a class="button white unfilled" href="{{ url("br_career_index", {"language": language.getAbbrev()}) }}">{{ translate('Students') }}</a>
+                <a class="button white unfilled" href="{{ url("br_corporate_index", {"language": language.getAbbrev()}) }}">{{ translate('Companies') }}</a>
             </div>
         </div>
     </div>
@@ -114,8 +177,8 @@
 
         {% for item in menu %}
             {% if 'category' == item.type %}
-                <div style="margin-right: 40px; margin-bottom: 50px">
-                    <h3 class="vtk-menuitem" style="margin-bottom: 22px" href="#">
+                <div class="home-menu-category">
+                    <h3 style="margin-bottom: 22px" href="#">
                         {{ item.name }} 
                     </h3>
                     {% for categoryItem in item.items | slice(0, 5) %}

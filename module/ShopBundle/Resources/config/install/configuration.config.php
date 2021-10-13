@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 return array(
     array(
@@ -83,5 +65,20 @@ return array(
         'key'         => 'shop.url_reservations',
         'value'       => 'https://www.vtk.be/shop',
         'description' => 'The URL of the shop',
+    ),
+    array(
+        'key'         => 'shop.main_page_text',
+        'value'       => serialize(
+            array(
+                'nl' => 'nederlandse tekst',
+                'en' => 'engelse tekst',
+            )
+        ),
+        'description' => 'The text for the shop',
+    ),
+    array(
+        'key'         => 'shop.enable_winner',
+        'value'       => 1,
+        'description' => 'Enable the winner column when exporting a sales session to csv',
     ),
 );

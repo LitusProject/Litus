@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 return array(
     'routes' => array(
@@ -29,7 +11,7 @@ return array(
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'api_admin_key',
                     'action'     => 'manage',
                 ),
@@ -43,7 +25,7 @@ return array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'api_auth',
                 ),
             ),
@@ -56,7 +38,7 @@ return array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'api_calendar',
                 ),
             ),
@@ -69,7 +51,7 @@ return array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'api_config',
                 ),
             ),
@@ -82,7 +64,7 @@ return array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'api_cudi',
                 ),
             ),
@@ -95,7 +77,7 @@ return array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'api_door',
                 ),
             ),
@@ -109,7 +91,7 @@ return array(
                     'language' => '(en|nl)',
                     'type'     => '(tar|zip)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'api_mail',
                 ),
             ),
@@ -122,7 +104,7 @@ return array(
                     'language' => '(en|nl)',
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'api_member',
                     'action'     => 'all',
                 ),
@@ -136,7 +118,7 @@ return array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'api_news',
                 ),
             ),
@@ -151,7 +133,7 @@ return array(
                     'hash'           => '[a-zA-Z0-9_-]*',
                     'language'       => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'api_oauth',
                     'action'     => 'authorize',
                 ),
@@ -165,7 +147,7 @@ return array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'api_shift',
                 ),
             ),
@@ -175,15 +157,15 @@ return array(
     'controllers' => array(
         'api_admin_key' => 'ApiBundle\Controller\Admin\KeyController',
 
-        'api_auth'     => 'ApiBundle\Controller\AuthController',
-        'api_calendar' => 'ApiBundle\Controller\CalendarController',
-        'api_config'   => 'ApiBundle\Controller\ConfigController',
-        'api_cudi'     => 'ApiBundle\Controller\CudiController',
-        'api_door'     => 'ApiBundle\Controller\DoorController',
-        'api_mail'     => 'ApiBundle\Controller\MailController',
-        'api_member'   => 'ApiBundle\Controller\MemberController',
-        'api_news'     => 'ApiBundle\Controller\NewsController',
-        'api_oauth'    => 'ApiBundle\Controller\OAuthController',
-        'api_shift'    => 'ApiBundle\Controller\ShiftController',
+        'api_auth'      => 'ApiBundle\Controller\AuthController',
+        'api_calendar'  => 'ApiBundle\Controller\CalendarController',
+        'api_config'    => 'ApiBundle\Controller\ConfigController',
+        'api_cudi'      => 'ApiBundle\Controller\CudiController',
+        'api_door'      => 'ApiBundle\Controller\DoorController',
+        'api_mail'      => 'ApiBundle\Controller\MailController',
+        'api_member'    => 'ApiBundle\Controller\MemberController',
+        'api_news'      => 'ApiBundle\Controller\NewsController',
+        'api_oauth'     => 'ApiBundle\Controller\OAuthController',
+        'api_shift'     => 'ApiBundle\Controller\ShiftController',
     ),
 );

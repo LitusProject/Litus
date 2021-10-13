@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace CommonBundle\Form\Admin\Academic;
 
@@ -49,8 +31,8 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
 
         $this->add(
             array(
-                'type'      => 'hidden',
-                'name'      => 'primary_email'
+                'type' => 'hidden',
+                'name' => 'primary_email'
             )
         );
 
@@ -63,7 +45,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                     'data-help'   => 'The birthday of the user.',
                     'placeholder' => 'dd/mm/yyyy',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -131,7 +113,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                             'class'     => 'disableEnter',
                             'data-help' => 'A barcode that can be used to identify the user.',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -197,7 +179,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                         'attributes' => array(
                             'data-help' => 'The identification used by the university for the student.',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -215,7 +197,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                         'attributes' => array(
                             'data-help' => 'The e-mail address given to the user by the university.',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),

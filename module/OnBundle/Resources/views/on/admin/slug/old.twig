@@ -1,0 +1,174 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'on/admin/slug/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+    <div class="flashmessage success_message full_width slug_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The slug was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width slug_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the slug.</p>
+        </div>
+    </div>
+
+    <div id="controller_action">
+        <div id="slug_search" style="display: none;">
+            <div style="padding: 4px; text-align: right">
+                Search:
+                <select id="searchField">
+                    <option value="name">Name</option>
+                </select>
+                is
+                <input type="text" id="searchString" size="30" />
+            </div>
+
+            <table class="full_width manage">
+                <tr>
+                    <th>Name</th>
+                    <th width="150px">Expiration Date</th>
+                    <th width="500px">URL</th>
+                    <th width="70px">Hits</th>
+                    <th width="70px">Actions</th>
+                </tr>
+            </table>
+        </div>
+
+        <div id="normal_page">
+            <table class="full_width manage">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th width="150px">Expiration Date</th>
+                        <th width="500px">URL</th>
+                        <th width="70px">Hits</th>
+                        <th width="70px">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for slug in paginator %}
+                        <tr class="item item-{{ slug.getId() }}">
+                            <td>{{ slug.getName() }}</td>
+                            <td>{{ slug.getExpirationDate().format('d/m/Y') }}</td>
+                            <td>{{ slug.getUrl() }}</td>
+                            <td>{{ slug.getHits() }}</td>
+                            <td class="actions">
+                                {% if hasAccess('on_admin_slug', 'edit') %}
+                                    <a href="{{ url('on_admin_slug', {"action": "edit", "id": slug.getId()}) }}" class="edit">Edit</a>
+                                {% endif %}
+                                {% if hasAccess('on_admin_slug', 'delete') %}
+                                    <a href="#" data-id="{{ slug.getId() }}" data-url="{{ slug.getUrl() }}" class="delete">Delete</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+    </div>
+
+    <div class="modal fade" id="removeSlug" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Slug
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the slug shortening the following URL: <b class="url"></b>?
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.searchDatabase({
+                defaultPage: $('#normal_page'),
+                searchDiv: $('#slug_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                searchPage: '{{ url('on_admin_slug', {'action': 'old'}) }}manage/',
+                url: '{{ url('on_admin_slug', {'action': 'search'}) }}',
+                display: function (data) {
+                    $('#slug_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#slug_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
+                        row.append('<td>' + this.name + '</td>')
+                            .append('<td>' + this.expirationDate + '</td>')
+                            .append('<td>' + this.url + '</td>')
+                            .append('<td>' + this.hits + '</td>')
+                            .append(
+                                $('<td>', {'class': 'actions'})
+                                    .append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
+                                );
+                            deleteButton.data({
+                                id: this.id,
+                                slugName: this.slugName
+                            });
+                    });
+
+                    $('#slug_search .delete').click(openModal);
+                    $('#slug_search table').change();
+                },
+                clear: function () {
+                    $('#slug_search table').find('tr.item').remove();
+                }
+            });
+
+            $('.item .delete').click(openModal);
+
+        });
+
+        function openModal(e) {
+            var $this = $(this);
+            e.preventDefault();
+            var removeSlug = $('#removeSlug');
+            removeSlug.find('.url').html($(this).data('url'));
+            removeSlug.find('.cancel').one('click', function () {
+                removeSlug.modal('hide');
+            });
+            var id = $this.data('id');
+            removeSlug.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('on_admin_slug', {"action": "delete"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.slug_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeSlug.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeSlug.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.slug_removed_error').removeClass('hide');
+            $('#removeSlug').modal('hide');
+        }
+    </script>
+{% endblock %}

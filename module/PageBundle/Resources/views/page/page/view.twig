@@ -2,19 +2,19 @@
 
 {% block content %}
 
-{# Script for dropdown functionality  #}
+    {# Script for dropdown functionality  #}
     {{ inlineScript() }}
 
     <script type="text/javascript">
         $(document).ready(function() {
-            var faqItems = document.getElementsByClassName('FAQHolder'); 
+            var faqItems = document.getElementsByClassName('FAQHolder');
             for(var i = 0; i < faqItems.length; i++) {
-                var currentFAQ = faqItems[i]; 
-                var currentContent = currentFAQ.querySelector('.FAQcontent'); 
-                currentContent.setAttribute("style", "height: 0px;"); 
+                var currentFAQ = faqItems[i];
+                var currentContent = currentFAQ.querySelector('.FAQcontent');
+                currentContent.setAttribute("style", "height: 0px;");
                 currentFAQ.addEventListener("click", func, false);
                 function func() {
-                    var currentContent = this.querySelector('.FAQcontent'); 
+                    var currentContent = this.querySelector('.FAQcontent');
                     if (currentContent.style.height === "0px") {
                         currentContent.setAttribute("style", "height: auto");
                     } else {
@@ -23,16 +23,17 @@
                 }
             }
         })
-    </script>  
+    </script>
 
-    <div class="pageBanner"></div>
+    <div class="pageBanner" style="background-image: url(
+    {% if page.getPoster() %}
+        {{ "../../../../_page/posters/" ~ page.getPoster() }}
+{# TODO: this is extremely ugly... #}
+    {% else %}
+        https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80
+    {% endif %});"></div>
 
     <div class="container">
-
-        {# Should be deleted !!! #}
-        {# {% if submenu is not empty %}
-            {% include 'page/page/partials/submenu.twig' %}
-        {% endif %} #}
 
         <div class="pageTitleHolder">
             <h1>{{ page.getTitle(language) }}</h1>
@@ -46,45 +47,25 @@
 
         <div style="height: 100px"></div>
 
-        {# IF FAQ's #}
-        <div>
-            <h2>Veelgestelde vragen</h2>
-            <div class="spacer20"></div>
-            {# For loop door FAQ's #}
-            <div class="FAQHolder" id="1">
-                <div>
-                    <h3 style="margin-bottom: 0px">Dit is FAQ #1</h3>
-                </div>
-                <div class="FAQcontent">
-                    <div class="spacer20"></div>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus quis rutrum felis. Proin dignissim sollicitudin tortor vitae ornare. Aliquam erat volutpat. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean et dui cursus nulla cursus lobortis id quis quam. Proin pellentesque aliquet lectus ut mollis. Vivamus bibendum tristique hendrerit. Sed eu cursus tellus, eu scelerisque velit. Aliquam hendrerit commodo arcu, id efficitur ipsum euismod vitae. Phasellus rutrum tortor sit amet blandit rhoncus. Integer eget magna facilisis, tempor elit id, condimentum mi. Proin sodales magna id semper pharetra. Cras urna eros, faucibus eget tristique vel, pulvinar nec neque. Phasellus tempor, dolor eget eleifend semper, dui sem tempus magna, molestie accumsan massa felis non orci.  
-                    </p>
-                </div>
+        {% if faqs %}
+            <div>
+                <h2>{{ translate('Frequently Asked Questions') }}</h2>
+                <div class="spacer20"></div>
+                {% for faq in faqs %}
+                    <div class="FAQHolder" id="{{ faq['id'] }}">
+                        <div>
+                            <h3 style="margin-bottom: 0px">{{ faq['title'] }}</h3>
+                        </div>
+                        <div class="FAQcontent">
+                            <div class="spacer20"></div>
+                            <p>
+                                {{ faq['content'] }}
+                            </p>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
-            <div class="FAQHolder" id="2">
-                <div>
-                    <h3 style="margin-bottom: 0px">Dit is FAQ #1</h3>
-                </div>
-                <div class="FAQcontent">
-                    <div class="spacer20"></div>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus quis rutrum felis. Proin dignissim sollicitudin tortor vitae ornare. Aliquam erat volutpat. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean et dui cursus nulla cursus lobortis id quis quam. Proin pellentesque aliquet lectus ut mollis. Vivamus bibendum tristique hendrerit. Sed eu cursus tellus, eu scelerisque velit. Aliquam hendrerit commodo arcu, id efficitur ipsum euismod vitae. Phasellus rutrum tortor sit amet blandit rhoncus. Integer eget magna facilisis, tempor elit id, condimentum mi. Proin sodales magna id semper pharetra. Cras urna eros, faucibus eget tristique vel, pulvinar nec neque. Phasellus tempor, dolor eget eleifend semper, dui sem tempus magna, molestie accumsan massa felis non orci.  
-                    </p>
-                </div>
-            </div>
-            <div class="FAQHolder" id="3">
-                <div>
-                    <h3 style="margin-bottom: 0px">Dit is FAQ #1</h3>
-                </div>
-                <div class="FAQcontent">
-                    <div class="spacer20"></div>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus quis rutrum felis. Proin dignissim sollicitudin tortor vitae ornare. Aliquam erat volutpat. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean et dui cursus nulla cursus lobortis id quis quam. Proin pellentesque aliquet lectus ut mollis. Vivamus bibendum tristique hendrerit. Sed eu cursus tellus, eu scelerisque velit. Aliquam hendrerit commodo arcu, id efficitur ipsum euismod vitae. Phasellus rutrum tortor sit amet blandit rhoncus. Integer eget magna facilisis, tempor elit id, condimentum mi. Proin sodales magna id semper pharetra. Cras urna eros, faucibus eget tristique vel, pulvinar nec neque. Phasellus tempor, dolor eget eleifend semper, dui sem tempus magna, molestie accumsan massa felis non orci.  
-                    </p>
-                </div>
-            </div>
-        </div>
+        {% endif %}
 
     </div>
 {% endblock %}

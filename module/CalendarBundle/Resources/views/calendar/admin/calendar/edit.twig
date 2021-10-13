@@ -24,6 +24,22 @@
                 </div>
             </div>
         {% endif %}
+        {% if hasAccess('shift_admin_shift', 'event') and event.hasActiveShifts(em) %}
+            <aside>
+                <div class="sidebox">
+                    <div class="title">Go to Shifts</div>
+                    <div class="content">
+                        <p>
+                            <i>Please hit the link below to go to this event's shifts!</i>
+                        </p>
+                        <p>
+                            <a href="{{ url('shift_admin_shift', {"action": "event", "id": event.getId()}) }}">&rarr;
+                                Search Shifts by Event</a>
+                        </p>
+                    </div>
+                </div>
+            </aside>
+        {% endif %}
     </aside>
 {% endblock %}
 

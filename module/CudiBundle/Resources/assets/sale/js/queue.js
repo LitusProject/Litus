@@ -144,9 +144,9 @@
                             $('<i>', {'class': 'glyphicon glyphicon-shopping-cart'}),
                             settings.tSellNext + ' - F5'
                         ),
-                        undoLastSale = $('<button>', {'class': 'btn btn-danger undoLastSale', 'data-key': '117'}).append(
+                        undoLastSale = $('<button>', {'class': 'btn btn-danger undoLastSale'}).append(
                             $('<i>', {'class': 'glyphicon glyphicon-arrow-left'}),
-                            settings.tUndoLastSale + ' - F6'
+                            settings.tUndoLastSale
                         ).hide(),
                         printNext = $('<button>', {'class': 'btn btn-success', 'data-key': '118'}).append(
                             $('<i>', {'class': 'glyphicon glyphicon-print'}),
@@ -257,9 +257,9 @@
                         )
                     ),
                     $('<div>', {'class': 'modal-footer'}).append(
-                        undoLastSale = $('<button>', {'class': 'btn btn-danger undoLastSale', 'data-key': '117'}).append(
+                        undoLastSale = $('<button>', {'class': 'btn btn-danger undoLastSale'}).append(
                             $('<i>', {'class': 'glyphicon glyphicon-arrow-left'}),
-                            settings.tUndoLastSale + ' - F6'
+                            settings.tUndoLastSale
                         ).hide(),
                         startSale = $('<button>', {'class': 'btn btn-success disabled startSale', 'data-key': '118'}).append(
                             $('<i>', {'class': 'glyphicon glyphicon-print'}),

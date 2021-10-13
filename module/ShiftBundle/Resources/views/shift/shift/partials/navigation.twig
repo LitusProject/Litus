@@ -1,23 +1,31 @@
 <ul class="nav nav-tabs hidden-xs">
     {% if hasAccess('shift', 'index') %}
-        <li {% if getParam('action') == 'index' %}class="active"{% endif %}>
-            <a href="{{ url('shift', {'action': 'index'}) }}">
+        <li>
+            <a {% if getParam('action') == 'index' %}class="activeTab" {% else %} class="tab" {% endif %} style="margin-left: 10px" href="{{ url('shift', {'action': 'index'}) }}">
                 {{ translate('Shifts') }}
             </a>
         </li>
     {% endif %}
 
     {% if hasAccess('shift', 'history') %}
-        <li {% if getParam('action') == 'history' %}class="active"{% endif %}>
-            <a href="{{ url('shift', {'action': 'history'}) }}">
+        <li>
+            <a {% if getParam('action') == 'history' %}class="activeTab" {% else %} class="tab" {% endif %} href="{{ url('shift', {'action': 'history'}) }}">
                 {{ translate('History') }}
             </a>
         </li>
     {% endif %}
 
+    {% if hasAccess('common_account', 'index') %}
+        <li>
+            <a class="tab" href="{{ url('common_account', {'action': 'index'}) }}">
+                {{ translate('My Shifts') }}
+            </a>
+        </li>
+    {% endif %}
+
     {% if insuranceEnabled %}
-        <li {% if getParam('action') == 'insurance' %}class="active"{% endif %}>
-            <a href="{{ url('shift', {'action': 'insurance'}) }}">
+        <li>
+            <a {% if getParam('action') == 'insurance' %}class="activeTab" {% else %} class="tab" {% endif %} href="{{ url('shift', {'action': 'insurance'}) }}">
                 {{ translate('Insurance') }}
             </a>
         </li>

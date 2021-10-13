@@ -7,6 +7,11 @@
 
     <div id="controller_action">
 
+        <div style="border-bottom: 1px solid grey; padding-bottom: 10px; padding-bottom: 10px;">
+            <h1><b>Language:</b> {{ lang }}</h1>
+            <h4>Switch the language by pressing the button on the right side!</h4>
+        </div>
+
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
 
@@ -63,6 +68,18 @@
                     <b>&lt;b&gt;Bold:&lt;/b&gt;</b> <br />
                     <i>&lt;i&gt;Italic:&lt;/i&gt;</i> <br />
                     <u>&lt;u&gt;Underline:&lt;/u&gt;</u>
+                </p>
+            </div>
+        </div>
+        <div class="sidebox">
+            <div class="title">Switch Language</div>
+            <div class="content">
+                <p>
+                    <i>Please hit the link below to switch language!</i>
+                </p>
+                <p>
+                    <a href="{{ url('br_admin_contract', {"action": "edit", "id": contract.getId(), "language": notLang}) }}">&rarr;
+                        Change Language</a>
                 </p>
             </div>
         </div>

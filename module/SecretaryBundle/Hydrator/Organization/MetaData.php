@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace SecretaryBundle\Hydrator\Organization;
 
@@ -26,7 +8,9 @@ use SecretaryBundle\Entity\Organization\MetaData as MetaDataEntity;
 
 class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $stdKeys = array();
+    private static $stdKeys = array(
+        'tshirt_size',
+    );
 
     protected function doExtract($object = null)
     {
@@ -41,7 +25,9 @@ class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
             'organization_info' => $this->stdExtract($object, self::$stdKeys),
         );
 
+        $data['organization_info']['receive_irreeel_at_cudi'] = $object->getIrreeelAtCudi();
         $data['organization_info']['become_member'] = $object->becomeMember();
+        $data['organization_info']['bakske_by_mail'] = $object->getBakskeByMail();
 
         // Sure thing, if we're here, the user already checked the conditions
         $data['organization_info']['conditions'] = true;
@@ -97,7 +83,11 @@ class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
             );
         }
 
-        $this->stdHydrate($data, $object, array('become_member'));
+        if ($data['become_member']) {
+            $this->stdHydrate($data, $object, array('become_member', 'tshirt_size', 'receive_irreeel_at_cudi', 'bakske_by_mail'));
+        } else {
+            $this->stdHydrate($data, $object, array('become_member', 'bakske_by_mail', 'receive_irreeel_at_cudi'));
+        }
 
         return $this->stdHydrate($data, $object, self::$stdKeys);
     }

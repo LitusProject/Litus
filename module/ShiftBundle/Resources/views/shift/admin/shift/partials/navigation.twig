@@ -6,11 +6,17 @@
             {% if hasAccess('shift_admin_shift', 'export') %}
                 <li><a {% if 'export' == getParam('action') %} class="active" {% endif %} href="{{ url("shift_admin_shift", {"action": "export"}) }}">Export</a></li>
             {% endif %}
-            {% if hasAccess('shift_admin_shift', 'add') %}
-                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url("shift_admin_shift", {"action": "add"}) }}">Add</a></li>
-            {% endif %}
             {% if hasAccess('shift_admin_shift', 'old') %}
                 <li><a {% if 'old' == getParam('action') %} class="active" {% endif %} href="{{ url("shift_admin_shift", {"action": "old"}) }}">Old</a></li>
+            {% endif %}
+            {% if hasAccess('shift_admin_shift', 'csv') %}
+                <li><a {% if 'csv' == getParam('action') %} class="active" {% endif %} href="{{ url("shift_admin_shift", {"action": "csv"}) }}">Add from Csv</a></li>
+            {% endif %}
+            {% if hasAccess('shift_admin_shift', 'template') %}
+                <li><a {% if 'template' == getParam('action') %} class="active" {% endif %} href="{{ url("shift_admin_shift", {"action": "template"}) }}">Csv template</a></li>
+            {% endif %}
+            {% if hasAccess('shift_admin_shift', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url("shift_admin_shift", {"action": "add"}) }}">Add</a></li>
             {% endif %}
             {% if hasAccess('shift_admin_shift', 'manage') %}
                 <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url("shift_admin_shift", {"action": "manage"}) }}">Manage</a></li>

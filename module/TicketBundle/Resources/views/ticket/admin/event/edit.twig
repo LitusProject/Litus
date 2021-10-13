@@ -6,6 +6,7 @@
     {% include 'admin/partials/flashMessenger.twig' %}
 
     <div id="controller_action">
+        <p>Last Invoice Nb: {{ event.getNextinvoiceNb() }}</p>
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
     </div>
@@ -59,6 +60,19 @@
                     </p>
                     <p>
                         <a href="{{ url('ticket_sale_index', {'action': 'sale', 'id': event.getId()}) }}">&rarr; Sale Tickets</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasAccess('ticket_admin_event', 'clean') %}
+            <div class="sidebox">
+                <div class="title">Clean Booked Tickets</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to clean all Booked, but not Sold tickets!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('ticket_admin_event', {'action': 'clean', 'id': event.getId()}) }}">&rarr; Clean Tickets</a>
                     </p>
                 </div>
             </div>

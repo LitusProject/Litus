@@ -1,26 +1,7 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace LogisticsBundle\Controller\Admin;
 
-use DateTime;
 use Imagick;
 use Laminas\View\Model\ViewModel;
 use LogisticsBundle\Entity\Article;
@@ -50,8 +31,8 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'paginator'           => $paginator,
-                'paginationControl'   => $this->paginator()->createControl(true),
+                'paginator'         => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
@@ -135,8 +116,8 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'form' => $form,
-                'article' => $article,
+                'form'        => $form,
+                'article'     => $article,
                 'picturePath' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('logistics.article_picture_path'),
@@ -177,11 +158,11 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
         $mappings = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
             ->findAllActiveByArticleQuery($article)->getResult();
-        
+
         return new ViewModel(
             array(
-                'orders'               => $mappings,
-                'article'             => $article,
+                'orders'  => $mappings,
+                'article' => $article,
             )
         );
     }
@@ -206,7 +187,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
             $item->amountOwned = $article->getAmountOwned();
             $item->amountAvailable = $article->getAmountAvailable();
             $item->category = $article->getCategory();
-            $item->location = $article->getLocation()->getName();
+            $item->location = $article->getLocation();
             $item->spot = $article->getSpot();
             $item->status = $article->getStatus();
             $item->visibility = $article->getVisibility();
@@ -290,8 +271,8 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
             );
 
             $filePath = 'public' . $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('logistics.article_picture_path');
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('logistics.article_picture_path');
 
             if ($form->isValid()) {
                 $formData = $form->getData();
@@ -335,10 +316,10 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                 return new ViewModel(
                     array(
                         'result' => array(
-                            'status' => 'success',
+                            'status'  => 'success',
                             'picture' => $this->getEntityManager()
-                                    ->getRepository('CommonBundle\Entity\General\Config')
-                                    ->getConfigValue('logistics.article_picture_path') . '/' . $newFileName,
+                                ->getRepository('CommonBundle\Entity\General\Config')
+                                ->getConfigValue('logistics.article_picture_path') . '/' . $newFileName,
                         ),
                     )
                 );
@@ -347,7 +328,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                     array(
                         'result' => array(
                             'status' => 'error',
-                            'form' => array(
+                            'form'   => array(
                                 'errors' => $form->getMessages(),
                             ),
                         ),

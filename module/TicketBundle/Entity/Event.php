@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace TicketBundle\Entity;
 
@@ -142,10 +124,46 @@ class Event
      */
     private $tickets;
 
+    /**
+     * @var string the base string for Invoice Id's
+     *
+     * @ORM\Column(name="invoice_id_base", type="string", length=32, nullable=true)
+     */
+    private $invoiceIdBase;
+
+    /**
+     * @var string the base string for Order Id's
+     *
+     * @ORM\Column(name="order_id_base", type="string", length=7, nullable=true)
+     */
+    private $orderIdBase;
+
+    /**
+     * @var string The next invoice Id number.
+     *
+     * @ORM\Column(name="next_invoice_nb", type="string", length=4, options={"default" : "0000"})
+     */
+    private $nextInvoiceNb;
+
+    /**
+     * @var boolean Flag whether users can pay for their ticket online
+     *
+     * @ORM\Column(name="online_payment", type="boolean", options={"default" : false})
+     */
+    private $onlinePayment;
+
+    /**
+     * @var string The text for this event
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
     public function __construct()
     {
         $this->options = new ArrayCollection();
         $this->tickets = new ArrayCollection();
+        $this->nextInvoiceNb = '0000';
     }
 
     /**
@@ -394,7 +412,7 @@ class Event
     }
 
     /**
-     * @param  integer $priceNonMembers
+     * @param  integer|null $priceNonMembers
      * @return self
      */
     public function setPriceNonMembers($priceNonMembers)
@@ -418,6 +436,98 @@ class Event
     public function getOptions()
     {
         return $this->options;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getInvoiceIdBase()
+    {
+        return $this->invoiceIdBase;
+    }
+
+    /**
+     * @param string $invoiceIdBase
+     * @return self
+     */
+    public function setInvoiceIdBase(string $invoiceIdBase)
+    {
+        $this->invoiceIdBase = $invoiceIdBase;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getOrderIdBase()
+    {
+        return $this->orderIdBase;
+    }
+
+    /**
+     * @param string $orderIdBase
+     * @return self
+     */
+    public function setOrderIdBase(string $orderIdBase)
+    {
+        $this->orderIdBase = $orderIdBase;
+        return $this;
+    }
+
+    /**
+     * @param EntityManager $em
+     * @return string|null
+     */
+    public function findNextInvoiceNb(EntityManager $em)
+    {
+        $ticketInvoiceIds = $em->getRepository('TicketBundle\Entity\Ticket')->findAllInvoiceIdsByEvent($this);
+        $ticketIds = array();
+        foreach ($ticketInvoiceIds as $id) {
+            array_push($ticketIds, substr($id['invoiceId'], -4));
+        }
+        for ($i = 0; $i <= 9999; $i++) {
+            if (!in_array($i, $ticketIds)) {
+                $this->nextInvoiceNb = str_pad(strval($i), 4, '0', STR_PAD_LEFT);
+                return $this->nextInvoiceNb;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getNextInvoiceNb()
+    {
+        return $this->nextInvoiceNb;
+    }
+
+    /**
+     * @param integer $nextInvoiceNb
+     */
+    public function setNextInvoiceNb(int $nextInvoiceNb)
+    {
+        $this->nextInvoiceNb = $nextInvoiceNb;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isOnlinePayment()
+    {
+        return $this->onlinePayment;
+    }
+
+    /**
+     * @param boolean $onlinePayment
+     * @return self
+     */
+    public function setOnlinePayment($onlinePayment)
+    {
+        $this->onlinePayment = $onlinePayment;
+
+        return $this;
     }
 
     /**
@@ -551,5 +661,24 @@ class Event
         }
 
         return $number;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description == null ? '' : $this->description;
+    }
+
+    /**
+     * @param  string $description The description
+     * @return self
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
     }
 }

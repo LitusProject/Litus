@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace LogisticsBundle\Controller\Admin;
 
@@ -98,7 +80,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'form'    => $form,
+                'form' => $form,
             )
         );
     }
@@ -109,6 +91,10 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         if ($order === null) {
             return new ViewModel();
         }
+
+        $articles = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+            ->findAllByOrderQuery($order)->getResult();
 
         $form = $this->getForm('logistics_admin_order_edit', $order);
 
@@ -137,27 +123,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'form'    => $form,
-                'order'   => $order,
-            )
-        );
-    }
-
-    public function viewAction()
-    {
-        $order = $this->getOrderEntity();
-        if ($order === null) {
-            return new ViewModel();
-        }
-
-        $articles = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
-            ->findAllByOrderQuery($order)->getResult();
-
-
-        return new ViewModel(
-            array(
-                'order'   => $order,
+                'form'     => $form,
+                'order'    => $order,
                 'articles' => $articles,
             )
         );
@@ -217,8 +184,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 $this->redirect()->toRoute(
                     'logistics_admin_order',
                     array(
-                        'action'       => 'articles',
-                        'id'           => $order->getId(),
+                        'action' => 'articles',
+                        'id'     => $order->getId(),
                     )
                 );
 
@@ -234,9 +201,9 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'form'                => $form,
-                'order'               => $order,
-                'articles'             => $articles,
+                'form'     => $form,
+                'order'    => $order,
+                'articles' => $articles,
             )
         );
     }
@@ -271,7 +238,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     'logistics_admin_order',
                     array(
                         'action' => 'articles',
-                        'id'  => $order->getId(),
+                        'id'     => $order->getId(),
                     )
                 );
 
@@ -281,8 +248,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'form'    => $form,
-                'orderArticleMap'   => $orderArticleMap,
+                'form'            => $form,
+                'orderArticleMap' => $orderArticleMap,
             )
         );
     }
@@ -295,40 +262,41 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         $conflicts = array();
 
-        foreach ($articles as $article){
-            $mappings =array();
+        foreach ($articles as $article) {
+            $mappings = array();
             $allmaps = $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
                 ->findAllActiveByArticleQuery($article)->getResult();
 
-            foreach($allmaps as $map){
-                if ($map->getOrder()->getEndDate() > new DateTime() && !$map->getOrder()->isRemoved()){
+            foreach ($allmaps as $map) {
+                if ($map->getOrder()->getEndDate() > new DateTime() && !$map->getOrder()->isRemoved()) {
                     array_push($mappings, $map);
-                }}
+                }
+            }
 
             $max = $article->getAmountAvailable();
             $allOverlap = array();
 
-            foreach ($mappings as $map){
+            foreach ($mappings as $map) {
                 $overlapping_maps = $this->findOverlapping($mappings, $map);
 
                 foreach ($overlapping_maps as $overlap) {
-                    if (!in_array($overlap, $allOverlap)){
+                    if (!in_array($overlap, $allOverlap)) {
                         array_push($allOverlap, $overlap);
                     }
                 }
             }
 
             $total = 0;
-            foreach ($allOverlap as $overlap){
+            foreach ($allOverlap as $overlap) {
                 $total += $overlap->getAmount();
             }
-            if ($total>$max) {
+            if ($total > $max) {
                 $conflict = array(
-                    'article' => $article,
+                    'article'  => $article,
                     'mappings' => $allOverlap,
-                    'total' => $total
-                    );
+                    'total'    => $total
+                );
                 array_push($conflicts, $conflict);
             }
         }
@@ -372,7 +340,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         if ($mapping === null) {
             return new ViewModel();
         }
-        $mapping->setStatus('approved');
+        $mapping->setStatus('goedgekeurd');
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -454,14 +422,15 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         return $map;
     }
 
-    private function findOverlapping(array $array, OrderArticleMap $mapping){
+    private function findOverlapping(array $array, OrderArticleMap $mapping)
+    {
         $start = $mapping->getOrder()->getStartDate();
         $end = $mapping->getOrder()->getEndDate();
         $overlapping = array();
-        foreach ($array as $map){
+        foreach ($array as $map) {
             if ($map->getOrder() !== $mapping->getOrder()
-                && !($map->getOrder()->getStartDate() > $end || $map->getOrder()->getEndDate()<= $start)
-            ){
+                && !($map->getOrder()->getStartDate() > $end || $map->getOrder()->getEndDate() <= $start)
+            ) {
                 array_push($overlapping, $map);
             }
         }

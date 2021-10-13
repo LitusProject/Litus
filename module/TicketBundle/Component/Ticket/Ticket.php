@@ -156,6 +156,7 @@ class Ticket
             for ($i = 0; $i < $numbers['member']; $i++) {
                 $ticket = self::createTicket($event, true, $payed, $entityManager, $person, $guestInfo, null);
                 $entityManager->persist($ticket);
+                $entityManager->flush();
                 $createdTickets[] = $ticket;
             }
 
@@ -163,6 +164,7 @@ class Ticket
                 for ($i = 0; $i < $numbers['non_member']; $i++) {
                     $ticket = self::createTicket($event, false, $payed, $entityManager, $person, $guestInfo, null);
                     $entityManager->persist($ticket);
+                    $entityManager->flush();
                     $createdTickets[] = $ticket;
                 }
             }
@@ -172,6 +174,7 @@ class Ticket
                 for ($i = 0; $i < $count; $i++) {
                     $ticket = self::createTicket($event, true, $payed, $entityManager, $person, $guestInfo, $option);
                     $entityManager->persist($ticket);
+                    $entityManager->flush();
                     $createdTickets[] = $ticket;
                 }
 
@@ -180,6 +183,7 @@ class Ticket
                     for ($i = 0; $i < $count; $i++) {
                         $ticket = self::createTicket($event, false, $payed, $entityManager, $person, $guestInfo, $option);
                         $entityManager->persist($ticket);
+                        $entityManager->flush();
                         $createdTickets[] = $ticket;
                     }
                 }
@@ -202,6 +206,7 @@ class Ticket
     private static function createTicket(Event $event, $member, $payed, EntityManager $entityManager, Person $person = null, GuestInfo $guestInfo = null, Option $option = null)
     {
         $ticket = new TicketEntity(
+            $entityManager,
             $event,
             'empty',
             $person,

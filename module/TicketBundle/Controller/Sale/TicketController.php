@@ -1,26 +1,9 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace TicketBundle\Controller\Sale;
 
 use Laminas\View\Model\ViewModel;
+use TicketBundle\Entity\Event;
 use TicketBundle\Entity\Ticket;
 
 /**
@@ -47,6 +30,7 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
             array(
                 'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
+                'academicYear'      => $this->getCurrentAcademicYear(),
             )
         );
     }
@@ -79,7 +63,7 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
             return new ViewModel();
         }
 
-        if (!$ticket->getEvent()->areTicketsGenerated()) {
+        if ($ticket->getEvent()->areTicketsGenerated()) {
             return new ViewModel();
         }
 
@@ -101,7 +85,6 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
         if ($ticket === null) {
             return new ViewModel();
         }
-
         $ticket->setStatus('sold');
         $this->getEntityManager()->flush();
 
@@ -131,12 +114,54 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
         );
     }
 
+    public function searchAction()
+    {
+        $this->initAjax();
+
+        $event = $this->getEventEntity();
+        if ($event === null) {
+            return new ViewModel();
+        }
+
+        $tickets = $this->search($event);
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        array_splice($tickets, $numResults);
+
+        $result = array();
+        foreach ($tickets as $ticket) {
+            $item = (object) array();
+            $item->id = $ticket->getId();
+            $item->person = $ticket->getFullName() ? $ticket->getFullName() : '(none)';
+            $item->status = $ticket->getStatus();
+            $item->email = $ticket->getEmail();
+            $item->organization = $ticket->getOrganization();
+            $item->option = ($ticket->getOption() ? $ticket->getOption()->getName() : '') . ' ' . ($ticket->isMember() ? 'Member' : 'Non Member');
+            $item->number = $ticket->getNumber();
+            $item->bookDate = $ticket->getBookDate() ? $ticket->getBookDate()->format('d/m/Y H:i') : '';
+            $item->soldDate = $ticket->getSoldDate() ? $ticket->getSoldDate()->format('d/m/Y H:i') : '';
+            $item->isMember = $ticket->isMember();
+            $item->rNumber = $ticket->getUniversityIdentification();
+            $item->price = $ticket->getPrice();
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
     /**
      * @return Ticket|null
      */
     private function getTicketEntity()
     {
-        $ticket = $this->getEntityById('TicketBundle\Entity\Ticket');
+        $ticket = $this->getEntityById('TicketBundle\Entity\Ticket', 'ticket');
 
         if (!($ticket instanceof Ticket)) {
             $this->flashMessenger()->error(
@@ -152,5 +177,53 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
         }
 
         return $ticket;
+    }
+
+    /**
+     * @param  Event $event
+     * @return array|null
+     */
+    private function search(Event $event)
+    {
+        switch ($this->getParam('field')) {
+            case 'person':
+                return $this->getEntityManager()
+                    ->getRepository('TicketBundle\Entity\Ticket')
+                    ->findAllByEventAndPersonName($event, $this->getParam('string'));
+            case 'option':
+                return $this->getEntityManager()
+                    ->getRepository('TicketBundle\Entity\Ticket')
+                    ->findAllByEventAndOption($event, $this->getParam('string'));
+            case 'organization':
+                return $this->getEntityManager()
+                    ->getRepository('TicketBundle\Entity\Ticket')
+                    ->findAllByEventAndOrganization($event, $this->getParam('string'), $this->getCurrentAcademicYear());
+        }
+    }
+
+    /**
+     * @return Event|null
+     */
+    private function getEventEntity()
+    {
+        $event = $this->getEntityById('TicketBundle\Entity\Event');
+
+        if (!($event instanceof Event)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No event was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'ticket_admin_event',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return;
+        }
+
+        return $event;
     }
 }

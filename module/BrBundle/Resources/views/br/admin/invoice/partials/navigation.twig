@@ -3,6 +3,9 @@
 
     <nav id="controller_nav">
         <ul>
+            {% if hasAccess('br_admin_invoice', 'downloadAll') %}
+                <li><a href="{{ url('br_admin_invoice', {'action': 'downloadAll'}) }}">Download All</a></li>
+            {% endif %}
             {% if hasAccess('br_admin_invoice', 'csv') %}
                 <li><a {% if 'csv' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_invoice', {"action": "csv"}) }}">CSV</a></li>
             {% endif %}

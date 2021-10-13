@@ -20,7 +20,6 @@
             </div>
         </div>
 
-
         <div style="height: 75px"></div>
 
 
@@ -32,7 +31,6 @@
             <div class="memberHolder">
                 {% for member in unit['members'] %}
                     <div class="member">
-
                         {% if member.getPhotoPath() %}
                             <div class="memberPhoto" style="background-image: url({{ profilePath }}/{{ member.getPhotoPath() }})"></div>
                         {% else %}

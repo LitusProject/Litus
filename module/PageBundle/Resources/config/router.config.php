@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 return array(
     'routes' => array(
@@ -31,7 +13,7 @@ return array(
                     'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'page_admin_page',
                     'action'     => 'manage',
                 ),
@@ -46,7 +28,7 @@ return array(
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'page_admin_category',
                     'action'     => 'manage',
                 ),
@@ -61,13 +43,25 @@ return array(
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'page_admin_link',
                     'action'     => 'manage',
                 ),
             ),
         ),
-
+        'page_admin_page_typeahead' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/site/page/typeahead[/:string][/]',
+                'constraints' => array(
+                    'string' => '[%a-zA-Z0-9:.,_-]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'page_admin_page',
+                    'action'     => 'typeahead',
+                ),
+            ),
+        ),
         'page_link' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -76,7 +70,7 @@ return array(
                     'id'       => '[0-9]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'page_link',
                     'action'     => 'view',
                 ),
@@ -91,7 +85,7 @@ return array(
                     'name'     => '[a-zA-Z0-9_-]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'page',
                     'action'     => 'view',
                 ),
@@ -104,7 +98,7 @@ return array(
                 'constraints' => array(
                     'name' => '[a-zA-Z0-9_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'page',
                     'action'     => 'file',
                 ),
@@ -117,7 +111,7 @@ return array(
         'page_admin_category' => 'PageBundle\Controller\Admin\CategoryController',
         'page_admin_link'     => 'PageBundle\Controller\Admin\LinkController',
 
-        'page_link' => 'PageBundle\Controller\LinkController',
-        'page'      => 'PageBundle\Controller\PageController',
+        'page_link'           => 'PageBundle\Controller\LinkController',
+        'page'                => 'PageBundle\Controller\PageController',
     ),
 );

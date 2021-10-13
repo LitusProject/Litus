@@ -1,28 +1,8 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace LogisticsBundle\Entity;
 
-use CommonBundle\Entity\General\Location;
 use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -92,10 +72,9 @@ class Article
     private $status;
 
     /**
-     * @var Location the location of the article
+     * @var string The location of storage of this article
      *
-     * @ORM\ManyToOne(targetEntity="\CommonBundle\Entity\General\Location")
-     * @ORM\JoinColumn(name="location", referencedColumnName="id")
+     * @ORM\Column(name="location", type="text")
      */
     private $location;
 
@@ -141,42 +120,48 @@ class Article
      */
     private $photoPath;
 
+    /**
+     * @var string The mailing address to alert when this article gets booked
+     *
+     * @ORM\Column(name="alertMail", type="text", nullable=true)
+     */
+    private $alertMail;
 
     /**
      * @static
      * @var array All the possible categories allowed
      */
     public static $POSSIBLE_CATEGORIES = array(
-        'geluid' => 'Geluid',
-        'kabels' => 'Kabels',
+        'geluid'                 => 'Geluid',
+        'kabels'                 => 'Kabels',
         'elektrisch gereedschap' => 'Elektrisch Gereedschap & toebehoren',
-        'hand' => 'Handgereedschap',
-        'kledij' => 'Werkkledij',
-        'materiaal' => 'Material (eindig)',
-        'sanitair' => 'Sanitair',
-        'electronica' => 'Electronica',
-        'vastmaken' => 'Vastmaken & CO',
-        'bouwen' => 'Bouwen',
-        'lijm en silicoon' => 'Lijmen & Siliconen',
-        'verf' => 'Verven & CO',
-        'stof' => 'Stof',
-        'br' => 'BR',
-        'verkleed' => 'Verkleedkledij',
-        'sport' => 'Sport',
-        'fak' => 'Fak',
-        'varia' => 'Varia',
-        'logistiek' => 'Logistiek',
-        'cultuur' => 'Cultuur',
-        'huis' => 'Huishoudelijk',
-        'acti' => 'Activiteiten',
-        'bier' => 'Bierpotten',
-        'glazen' => 'Glazen',
-        'elektriciteitskabels' => 'Elektriciteitskabels',
-        'kook' => 'Kookgerief',
-        'corona' => 'Coronaproofing',
-        'it' => 'IT',
-        'theokot' => 'Theokot',
-        'secri' => 'Secri'
+        'hand'                   => 'Handgereedschap',
+        'kledij'                 => 'Werkkledij',
+        'materiaal'              => 'Material (eindig)',
+        'sanitair'               => 'Sanitair',
+        'electronica'            => 'Electronica',
+        'vastmaken'              => 'Vastmaken & CO',
+        'bouwen'                 => 'Bouwen',
+        'lijm en silicoon'       => 'Lijmen & Siliconen',
+        'verf'                   => 'Verven & CO',
+        'stof'                   => 'Stof',
+        'br'                     => 'BR',
+        'verkleed'               => 'Verkleedkledij',
+        'sport'                  => 'Sport',
+        'fak'                    => 'Fak',
+        'varia'                  => 'Varia',
+        'logistiek'              => 'Logistiek',
+        'cultuur'                => 'Cultuur',
+        'huis'                   => 'Huishoudelijk',
+        'acti'                   => 'Activiteiten',
+        'bier'                   => 'Bierpotten',
+        'glazen'                 => 'Glazen',
+        'elektriciteitskabels'   => 'Elektriciteitskabels',
+        'kook'                   => 'Kookgerief',
+        'corona'                 => 'Coronaproofing',
+        'it'                     => 'IT',
+        'theokot'                => 'Theokot',
+        'secri'                  => 'Secri'
     );
 
     /**
@@ -186,7 +171,7 @@ class Article
     public static $POSSIBLE_VISIBILITIES = array(
         'internal' => 'Internal',
         'external' => 'External',
-        'private' => 'Private',
+        'private'  => 'Private',
     );
 
     /**
@@ -194,11 +179,11 @@ class Article
      * @var array All the possible statuses allowed
      */
     public static $POSSIBLE_STATUSES = array(
-        'ok' => 'In Orde',
-        'vermist' => 'Vermist',
-        'weg' => 'Weg',
-        'kapot' => 'Kapot',
-        'vuil' => 'Vuil',
+        'ok'       => 'In Orde',
+        'vermist'  => 'Vermist',
+        'weg'      => 'Weg',
+        'kapot'    => 'Kapot',
+        'vuil'     => 'Vuil',
         'aankopen' => 'Aankopen',
         'nakijken' => 'Nakijken',
     );
@@ -230,6 +215,22 @@ class Article
     public function setSpot($spot)
     {
         $this->spot = $spot;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAlertMail()
+    {
+        return $this->alertMail;
+    }
+
+    /**
+     * @param string $alertMail
+     */
+    public function setAlertMail($alertMail)
+    {
+        $this->alertMail = $alertMail;
     }
 
     /**

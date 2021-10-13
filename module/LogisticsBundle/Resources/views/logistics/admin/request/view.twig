@@ -71,25 +71,25 @@
         {% if hasAccess('logistics_admin_order', 'view') %}
 
             <div class="sidebox">
-                <div class="title">View old order</div>
+                <div class="title">Edit old order</div>
                 <div class="content">
                     <p>
-                        <i>Please hit the link below to view the old order!</i>
+                        <i>Please hit the link below to edit the old order!</i>
                     </p>
                     <p>
-                        <a href="{{ url('logistics_admin_order', {'action': 'view', 'id': oldOrder.getId()}) }}">&rarr; View Old</a>
+                        <a href="{{ url('logistics_admin_order', {'action': 'edit', 'id': oldOrder.getId()}) }}">&rarr; Edit Old</a>
                     </p>
                 </div>
             </div>
 
             <div class="sidebox">
-                <div class="title">View new order</div>
+                <div class="title">Edit new order</div>
                 <div class="content">
                     <p>
-                        <i>Please hit the link below to view the new order!</i>
+                        <i>Please hit the link below to edit the new order!</i>
                     </p>
                     <p>
-                        <a href="{{ url('logistics_admin_order', {'action': 'view', 'id': newOrder.getId()}) }}">&rarr; View New</a>
+                        <a href="{{ url('logistics_admin_order', {'action': 'edit', 'id': newOrder.getId()}) }}">&rarr; Edit New</a>
                     </p>
                 </div>
             </div>
