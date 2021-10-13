@@ -44,7 +44,10 @@ class Event extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->lt('e.startDate', ':now'),
-                    $query->expr()->eq('e.isHistory', 'false')
+                    $query->expr()->orX(
+                        $query->expr()->eq('e.isHistory', 'false'),
+                        $query->expr()->isNull('e.isHistory')
+                    )
                 )
             )
             ->orderBy('e.startDate', 'DESC')
@@ -70,6 +73,29 @@ class Event extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery();
     }
 
+    public function findAllBetweenAndNotHidden(DateTime $first, DateTime $last)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('e')
+            ->from('CalendarBundle\Entity\Node\Event', 'e')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gte('e.startDate', ':first'),
+                    $query->expr()->lt('e.startDate', ':last'),
+                    $query->expr()->eq('e.isHistory', 'false'),
+                    $query->expr()->orX(
+                        $query->expr()->eq('e.isHidden', 'false'),
+                        $query->expr()->isNull('e.isHidden')
+                    )
+                )
+            )
+            ->orderBy('e.startDate', 'ASC')
+            ->setParameter('first', $first)
+            ->setParameter('last', $last)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findAllActiveAndNotHidden($nbResults = 15)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -82,7 +108,10 @@ class Event extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                         $query->expr()->gt('e.startDate', ':now')
                     ),
                     $query->expr()->eq('e.isHistory', 'false'),
-                    $query->expr()->eq('e.isHidden', 'false')
+                    $query->expr()->orX(
+                        $query->expr()->eq('e.isHidden', 'false'),
+                        $query->expr()->isNull('e.isHidden')
+                    )
                 )
             )
             ->orderBy('e.startDate', 'ASC')
@@ -92,6 +121,6 @@ class Event extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             $query->setMaxResults($nbResults);
         }
 
-        return $query->getQuery();
+        return $query->getQuery()->getResult();
     }
 }
