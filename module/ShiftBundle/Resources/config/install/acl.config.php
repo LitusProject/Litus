@@ -3,7 +3,7 @@
 return array(
     'shiftbundle' => array(
         'shift_admin_shift' => array(
-            'add', 'delete', 'edit', 'export', 'manage', 'old', 'pdf', 'search',
+            'add', 'delete', 'edit', 'export', 'manage', 'old', 'pdf', 'search', 'template', 'csv', 'event'
         ),
         'shift_admin_registration_shift' => array(
             'add', 'delete', 'edit', 'manage', 'old', 'search', 'csv',

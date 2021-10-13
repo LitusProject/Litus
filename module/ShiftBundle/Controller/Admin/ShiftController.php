@@ -26,13 +26,45 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $this->getEntityManager()
                 ->getRepository('ShiftBundle\Entity\Shift')
                 ->findAllActiveQuery(),
-            $this->getParam('page')
+            $this->getParam('id')
         );
 
         return new ViewModel(
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+
+    public function eventAction()
+    {
+        $event = $this->getEventEntity();
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('ShiftBundle\Entity\Shift')
+                ->findAllActiveByEventQuery($event),
+            $this->getParam('page')
+        );
+
+        $shifts = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findAllActiveByEventQuery($event)->getResult();
+
+        $shifters = array();
+        foreach ($shifts as $shift){
+            $shifters['Volunteers'] += $shift->countVolunteers();
+            $shifters['Responsibles'] += $shift->countResponsibles();
+            $shifters['NbVolunteers'] += $shift->getNbVolunteers();
+            $shifters['NbResponsibles'] += $shift->getNbResponsibles();
+        }
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+                'event'     => $event,
+                'shifters'  => $shifters,
             )
         );
     }
@@ -206,8 +238,15 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    public function csvtemplateAction()
+    public function templateAction()
     {
+        $rewards_enabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shift.rewards_enabled');
+        $points_enabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shift.points_enabled');
+
         $file = new CsvFile();
         $heading = array(
             'start_date',
@@ -342,7 +381,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
+                'event' => $shift->getEvent() ?? null,
                 'form' => $form,
+                'em' => $this->getEntityManager(),
             )
         );
     }

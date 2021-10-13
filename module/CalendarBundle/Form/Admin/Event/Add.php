@@ -71,6 +71,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             )
         );
 
+        $this->add(
+            array(
+                'type'  => 'checkbox',
+                'name'  => 'is_hidden',
+                'label' => 'Is Hidden',
+            )
+        );
+
         $this->addSubmit('Add', 'calendar_add');
 
         if ($this->getEvent() !== null) {
