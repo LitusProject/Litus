@@ -25,9 +25,9 @@ class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
             'organization_info' => $this->stdExtract($object, self::$stdKeys),
         );
 
-        $data['organization_info']['receive_irreeel_at_cudi'] = $object->receiveIrreeelAtCudi();
+        $data['organization_info']['receive_irreeel_at_cudi'] = $object->getIrreeelAtCudi();
         $data['organization_info']['become_member'] = $object->becomeMember();
-        $data['organization_info']['bakske_by_mail'] = $object->bakskeByMail();
+        $data['organization_info']['bakske_by_mail'] = $object->getBakskeByMail();
 
         // Sure thing, if we're here, the user already checked the conditions
         $data['organization_info']['conditions'] = true;

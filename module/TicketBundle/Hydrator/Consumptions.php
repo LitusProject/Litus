@@ -22,7 +22,7 @@ class Consumptions extends \CommonBundle\Component\Hydrator\Hydrator
         $object->setUserName($academic->getUserName());
         $object->setFullName($academic->getFullName());
 
-//        return $this->stdHydrate($array, $object);
+        // return $this->stdHydrate($array, $object);
         return $object;
     }
 
@@ -32,11 +32,12 @@ class Consumptions extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
+        $data = array();
         $data['person']['id'] = $object->getPerson() !== null ? $object->getPerson()->getId() : -1;
         $data['person']['value'] = $object->getPerson() !== null ? $object->getFullName() . ' - ' . $object->getUserName() : -1;
         $data['number_of_consumptions'] = $object->getConsumptions();
 
-//        $data = $this->stdExtract($object);
+        // $data = $this->stdExtract($object);
         return $data;
     }
 }

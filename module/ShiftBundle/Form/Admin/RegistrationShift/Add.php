@@ -229,6 +229,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(
             array(
                 'type'  => 'checkbox',
+                'name'  => 'is_cudi_timeslot',
+                'label' => 'Is Cudi Timeslot',
+            )
+        );
+
+        $this->add(
+            array(
+                'type'  => 'checkbox',
                 'name'  => 'ticket_needed',
                 'label' => 'Ticket needed',
             )

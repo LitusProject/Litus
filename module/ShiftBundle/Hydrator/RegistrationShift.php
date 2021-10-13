@@ -33,6 +33,7 @@ class RegistrationShift extends \CommonBundle\Component\Hydrator\Hydrator
         $data['event'] = $object->getEvent() === null ? '' : $object->getEvent()->getId();
         $data['location'] = $object->getLocation()->getId();
         $data['edit_roles'] = $this->createRolesPopulationArray($object->getEditRoles());
+        $data['is_cudi_timeslot'] = $object->isCudiTimeslot();
 
         return $data;
     }
@@ -100,6 +101,8 @@ class RegistrationShift extends \CommonBundle\Component\Hydrator\Hydrator
         } else {
             $object->setEvent(null);
         }
+
+        $object->setCudiTimeslot($data['is_cudi_timeslot']);
 
         return $this->stdHydrate($data, $object, self::$stdKeys);
     }

@@ -635,6 +635,8 @@ class RegistrationShift
     public function setCudiTimeslot($cudiTimeslot)
     {
         $this->cudiTimeslot = $cudiTimeslot;
+
+        return $this;
     }
 
     /**

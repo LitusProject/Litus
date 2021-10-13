@@ -200,7 +200,7 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
     }
 
     /**
-     * @param  AcademicYearEntity $academicYear
+     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
      * @return \Doctrine\ORM\Query|null
      */
     private function search(AcademicYear $academicYear)
@@ -214,10 +214,10 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
     }
 
     /**
-     * @param  AcademicYearEntity $academicYear
+     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
      * @return \Doctrine\ORM\Query|null
      */
-    private function searchStudies(AcademicYearEntity $academicYear)
+    private function searchStudies(AcademicYear $academicYear)
     {
         switch ($this->getParam('field')) {
             case 'name':
