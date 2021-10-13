@@ -235,10 +235,11 @@ return array(
         'br_admin_communication' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/br/communication[/:action[/option/:option][/:id]][/]',
+                'route'       => '/admin/br/communication[/:action[/option/:option][/:id][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
                     // 'option'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'option' => '[0-9]*',
                 ),
