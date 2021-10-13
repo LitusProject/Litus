@@ -2,10 +2,6 @@
 
 namespace TicketBundle\Repository;
 
-use CommonBundle\Entity\General\AcademicYear;
-use CommonBundle\Entity\User\Person\Academic;
-use CommonBundle\Repository\User\Person;
-
 class Consumptions extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
     public function findAllByUserNameQuery($username)
