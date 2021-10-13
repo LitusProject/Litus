@@ -106,7 +106,7 @@ class Ics
         $result = '';
         $events = $this->entityManager
             ->getRepository('CalendarBundle\Entity\Node\Event')
-            ->findAllActive(0);
+            ->findAllActiveAndNotHidden(0);
 
         foreach ($events as $event) {
             $result .= $this->getEvent($event);
