@@ -3,7 +3,8 @@
 namespace ShiftBundle\Controller\Admin;
 
 use CalendarBundle\Entity\Node\Event;
-use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use DateInterval;
 use DateTime;
 use Laminas\Http\Headers;
@@ -25,13 +26,45 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $this->getEntityManager()
                 ->getRepository('ShiftBundle\Entity\Shift')
                 ->findAllActiveQuery(),
-            $this->getParam('page')
+            $this->getParam('id')
         );
 
         return new ViewModel(
             array(
-                'paginator'         => $paginator,
+                'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+
+    public function eventAction()
+    {
+        $event = $this->getEventEntity();
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('ShiftBundle\Entity\Shift')
+                ->findAllActiveByEventQuery($event),
+            $this->getParam('page')
+        );
+
+        $shifts = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findAllActiveByEventQuery($event)->getResult();
+
+        $shifters = array();
+        foreach ($shifts as $shift){
+            $shifters['Volunteers'] += $shift->countVolunteers();
+            $shifters['Responsibles'] += $shift->countResponsibles();
+            $shifters['NbVolunteers'] += $shift->getNbVolunteers();
+            $shifters['NbResponsibles'] += $shift->getNbResponsibles();
+        }
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+                'event'     => $event,
+                'shifters'  => $shifters,
             )
         );
     }
@@ -47,7 +80,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'paginator'         => $paginator,
+                'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -106,6 +139,155 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'form' => $form,
+            )
+        );
+    }
+
+    public function csvAction()
+    {
+        $form = $this->getForm('shift_shift_csv');
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $fileData = $this->getRequest()->getFiles();
+
+            $fileName = $fileData['file']['tmp_name'];
+
+            $open = fopen($fileName, 'r');
+            if ($open !== false) {
+                $data = fgetcsv($open, 1000, ',');
+                while ($data !== false) {
+                    $shiftArray[] = $data;
+                    $data = fgetcsv($open, 1000, ',');
+                }
+                fclose($open);
+            }
+
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $creator = $this->getAuthentication()->getPersonObject();
+                $academicYear = $this->getCurrentAcademicYear(true);
+
+                $manager = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                    ->findOneById($formData['manager']['id']);
+
+                $editRoles = array();
+                if (isset($formData['edit_roles'])) {
+                    $roleRepository = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\Acl\Role');
+
+                    foreach ($formData['edit_roles'] as $editRole) {
+                        $editRoles[] = $roleRepository->findOneByName($editRole);
+                    }
+                }
+                $unit = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+                    ->findOneById($formData['unit']);
+                $location = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Location')
+                    ->findOneById($formData['location']);
+                $event = $formData['event'] == '' ? null : $this->getEntityManager()
+                    ->getRepository('CalendarBundle\Entity\Node\Event')
+                    ->findOneById($formData['event']);
+                $handled = $formData['handled_on_event'];
+                $ticket = $formData['ticket_needed'];
+
+                $count = 0;
+                foreach ($shiftArray as $key => $data) {
+                    if ($key == '0') {
+                        continue;
+                    }
+                    //Create each shift with standard variables
+                    $shift = new Shift($creator, $academicYear);
+                    $shift->setManager($manager)->setUnit($unit)->setLocation($location)->setEditRoles($editRoles)
+                        ->setEvent($event)->setHandledOnEvent($handled)->setTicketNeeded($ticket);
+
+                    //Add the custom variables for this particular shift
+                    $shift->setStartDate(self::loadDateTime($data[0]))
+                        ->setEndDate(self::loadDateTime($data[1]))
+                        ->setNbResponsibles($data[2])->setNbVolunteers($data[3])
+                        ->setName($data[4])->setDescription($data[5])->setReward($data[6])
+                        ->setPoints($data[7]);
+
+                    $this->getEntityManager()->persist($shift);
+                    $count += 1;
+                }
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Succes',
+                    $count . ' shifts were successfully created!'
+                );
+
+                $this->redirect()->toRoute(
+                    'shift_admin_shift',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
+
+    public function templateAction()
+    {
+        $rewards_enabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shift.rewards_enabled');
+        $points_enabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shift.points_enabled');
+
+        $file = new CsvFile();
+        $heading = array(
+            'start_date',
+            'end_date',
+            'nb_responsibles',
+            'nb_volunteers',
+            'name',
+            'description',
+            'reward',
+            'points',
+        );
+        $now = new DateTime();
+
+        $results = array();
+        $results[] = array(
+            $now->format('d/m/Y H:i'),
+            date_add($now, new DateInterval('P1D'))->format('d/m/Y H:i'),
+            0,
+            0,
+            'Name',
+            'Description',
+            'Amount of Rewarded Coins (0,1,2,3,4,6,10)',
+            0,
+        );
+
+
+        $document = new CsvGenerator($heading, $results);
+        $document->generateDocument($file);
+
+        $headers = new Headers();
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="shifts_template.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
             )
         );
     }
@@ -199,7 +381,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
+                'event' => $shift->getEvent() ?? null,
                 'form' => $form,
+                'em' => $this->getEntityManager(),
             )
         );
     }
@@ -421,6 +605,16 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
      * @return DateTime|null
      */
     private static function loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
+    }
+
+    /**
+     * Loads the given date and time.
+     * @param  string $date
+     * @return DateTime|null
+     */
+    protected static function loadDateTime($date)
     {
         return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }

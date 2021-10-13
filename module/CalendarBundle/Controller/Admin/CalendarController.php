@@ -121,6 +121,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             array(
                 'form'  => $form,
                 'event' => $event,
+                'em'    => $this->getEntityManager(),
             )
         );
     }

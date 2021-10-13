@@ -63,6 +63,13 @@ class Event extends \CommonBundle\Entity\Node
     private $isHistory;
 
     /**
+     * @var boolean The flag whether the article is displayed on the page
+     *
+     * @ORM\Column(name="is_hidden", type="boolean", nullable=true, options={"default" = false})
+     */
+    private $isHidden;
+
+    /**
      * @param Person $person
      */
     public function __construct(Person $person)
@@ -276,6 +283,26 @@ class Event extends \CommonBundle\Entity\Node
     }
 
     /**
+     * @return boolean
+     */
+    public function isHidden()
+    {
+        return $this->isHidden;
+    }
+
+    /**
+     * @param boolean $isHidden
+     *
+     * @return self
+     */
+    public function setIsHidden($isHidden)
+    {
+        $this->isHidden = $isHidden;
+
+        return $this;
+    }
+
+    /**
      * @param EntityManager $em
      * @return \TicketBundle\Entity\Event
      */
@@ -297,5 +324,19 @@ class Event extends \CommonBundle\Entity\Node
             return true;
         }
         return (count($tickets) > 0) && $tickets->isStillBookable();
+    }
+
+    /**
+     * @param EntityManager $em
+     * @return boolean
+     */
+    public function hasActiveShifts(EntityManager $em)
+    {
+        $shifts = $em->getRepository('ShiftBundle\Entity\Shift')
+            ->findByEvent($this);
+        if (is_null($shifts)) {
+            return true;
+        }
+        return count($shifts) > 0;
     }
 }

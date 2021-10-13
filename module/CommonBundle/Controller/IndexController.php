@@ -174,7 +174,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $events = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
-            ->findAllActive();
+            ->findAllActiveAndNotHidden();
 
         $calendarItems = array();
         foreach ($events as $event) {
