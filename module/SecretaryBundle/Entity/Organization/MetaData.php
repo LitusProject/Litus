@@ -5,6 +5,7 @@ namespace SecretaryBundle\Entity\Organization;
 use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person\Academic;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * This entity stores the node item.
@@ -71,15 +72,16 @@ class MetaData
      * @var array The possible T-shirt sizes
      */
     public static $possibleSizes = array(
-//        'M_S'  => 'S - Male',
-//        'M_M'  => 'M - Male',
-//        'M_L'  => 'L - Male',
-//        'M_XL' => 'XL - Male',
-//
-//        'F_S'  => 'S - Female',
-//        'F_M'  => 'M - Female',
-//        'F_L'  => 'L - Female',
-//        'F_XL' => 'XL - Female',
+        // 'M_S'  => 'S - Male',
+        // 'M_M'  => 'M - Male',
+        // 'M_L'  => 'L - Male',
+        // 'M_XL' => 'XL - Male',
+
+        // 'F_S'  => 'S - Female',
+        // 'F_M'  => 'M - Female',
+        // 'F_L'  => 'L - Female',
+        // 'F_XL' => 'XL - Female',
+
         'S'   => 'S - Unisex',
         'M'   => 'M - Unisex',
         'L'   => 'L - Unisex',
@@ -152,7 +154,7 @@ class MetaData
     /**
      * @return boolean
      */
-    public function receiveIrReeelAtCudi()
+    public function getIrreeelAtCudi()
     {
         return $this->irreeelAtCudi;
     }
@@ -161,7 +163,7 @@ class MetaData
      * @param  boolean $irreeelAtCudi
      * @return self
      */
-    public function setReceiveIrReeelAtCudi($irreeelAtCudi)
+    public function setIrreeelAtCudi($irreeelAtCudi)
     {
         $this->irreeelAtCudi = $irreeelAtCudi;
 
@@ -171,7 +173,7 @@ class MetaData
     /**
      * @return boolean
      */
-    public function bakskeByMail()
+    public function getBakskeByMail()
     {
         return $this->bakskeByMail;
     }

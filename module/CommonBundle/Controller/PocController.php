@@ -19,21 +19,22 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
         $academicYear = $this->getAcademicYear();
-        $currentAcademicYear = $this->getCurrentAcademicYear();
-        //UNCOMMENT THIS IN CASE YOU WANT TO SHOW THE POCERS OF THE LOGGED IN PERSON
-        /**
-        $isLoggedIn = true;
-        if (!($academic = $this->getAcademicEntity())) {
-            $isLoggedIn = false;
-        }
-        $personalPocItem = null;
-        if ($isLoggedIn){
-        $pocersFromAcademic = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Poc')
-            ->findPocersByAcademicAndAcademicYear($academic, $currentAcademicYear);
-        $personalPocItem = $this-> organisePocList($pocersFromAcademic);
-        }
-         */
+
+        // Uncomment in case you want to show the POCers of the authenticated
+        // person.
+
+        // $currentAcademicYear = $this->getCurrentAcademicYear();
+        // $isLoggedIn = true;
+        // if (!($academic = $this->getAcademicEntity())) {
+        //     $isLoggedIn = false;
+        // }
+        // $personalPocItem = null;
+        // if ($isLoggedIn){
+        //     $pocersFromAcademic = $this->getEntityManager()
+        //         ->getRepository('SyllabusBundle\Entity\Poc')
+        //         ->findPocersByAcademicAndAcademicYear($academic, $currentAcademicYear);
+        //     $personalPocItem = $this-> organisePocList($pocersFromAcademic);
+        // }
 
         $pocs = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Poc')

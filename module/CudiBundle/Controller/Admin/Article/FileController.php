@@ -234,7 +234,6 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
         $file = new TmpFile();
         $document = new FrontGenerator($this->getEntityManager(), $article, $file);
         $document->generate();
-        $lastBarcodeDigits = $article->getBarcode() % pow(10, 5);
 
         $headers = new Headers();
         $headers->addHeaders(
