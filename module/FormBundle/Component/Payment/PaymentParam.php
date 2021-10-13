@@ -2,7 +2,7 @@
 
 namespace FormBundle\Component\Payment;
 
-class PaymentParam     #Class to create parameters to send in a payment, hash these according to the rules in documentation and get a url
+class PaymentParam #Class to create parameters to send in a payment, hash these according to the rules in documentation and get a url
 {
     protected $name;
     protected $value;
@@ -15,12 +15,12 @@ class PaymentParam     #Class to create parameters to send in a payment, hash th
 
     public function __toString()
     {
-        return $this->name . "=" . $this->value;
+        return $this->name . '=' . $this->value;
     }
 
     public function isEmpty()
     {
-        return $this->value == "";
+        return $this->value == '';
     }
 
     public static function nonEmptyPaymentParam($value)
@@ -30,9 +30,9 @@ class PaymentParam     #Class to create parameters to send in a payment, hash th
 
     public static function implodeHash($arr, $shapass) #Just stitching all params behind each other
     {
-        $hashstring = "";
+        $hashstring = '';
         foreach ($arr as &$value) {
-            $hashstring .= $value->name . "=" . $value->value . $shapass;
+            $hashstring .= $value->name . '=' . $value->value . $shapass;
         }
         unset($value);
         return $hashstring;
@@ -41,13 +41,13 @@ class PaymentParam     #Class to create parameters to send in a payment, hash th
     public static function getUrl($arr, $shapass, $urlPrefix) #Just stitching all params differently behind each other, appending the hash
     {
         $hashstring = PaymentParam::implodeHash($arr, $shapass);
-        $hash = hash('sha512',$hashstring);
+        $hash = hash('sha512', $hashstring);
 
         $url = $urlPrefix;
         foreach ($arr as &$value) {
-            $url .= $value->name . "=" .$value->value . "&";
+            $url .= $value->name . '=' .$value->value . '&';
         }
-        $url .= "SHASIGN=" . $hash;
+        $url .= 'SHASIGN=' . $hash;
         return $url;
     }
 }

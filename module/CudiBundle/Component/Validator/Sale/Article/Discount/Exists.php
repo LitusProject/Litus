@@ -2,7 +2,6 @@
 
 namespace CudiBundle\Component\Validator\Sale\Article\Discount;
 
-use CudiBundle\Entity\Sale\Article;
 /**
  * Matches the given discount against the database to check whether it already exists or not.
  *

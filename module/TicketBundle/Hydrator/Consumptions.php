@@ -12,7 +12,7 @@ class Consumptions extends \CommonBundle\Component\Hydrator\Hydrator
             $object = new ConsumptionsEntity();
         }
 
-       $academic = $this->getEntityManager()
+        $academic = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneById($array['person']['id']);
         $object->setPerson($academic);
@@ -31,9 +31,9 @@ class Consumptions extends \CommonBundle\Component\Hydrator\Hydrator
         if ($object === null) {
             return array();
         }
-//        error_log(json_encode())
+
         $data['person']['id'] = $object->getPerson() !== null ? $object->getPerson()->getId() : -1;
-        $data['person']['value'] = $object->getPerson() !== null ? $object->getFullName() . " - " . $object->getUserName() : -1;
+        $data['person']['value'] = $object->getPerson() !== null ? $object->getFullName() . ' - ' . $object->getUserName() : -1;
         $data['number_of_consumptions'] = $object->getConsumptions();
 
 //        $data = $this->stdExtract($object);

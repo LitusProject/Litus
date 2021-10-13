@@ -27,7 +27,7 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 
-if (false === getenv('APPLICATION_ENV')) {
+if (getenv('APPLICATION_ENV') === false) {
     putenv('APPLICATION_ENV=development');
 }
 

@@ -407,9 +407,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
         $oldTshirtBooking = null;
         $oldTshirtSize = null;
-        if (null !== $metaData) {
+        if ($metaData !== null) {
             if ($enableRegistration) {
-                if (null !== $metaData->getTshirtSize() && array_key_exists($metaData->getTshirtSize(), $tshirts)) {
+                if ($metaData->getTshirtSize() !== null && array_key_exists($metaData->getTshirtSize(), $tshirts)) {
                     $oldTshirtBooking = $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Sale\Booking')
                         ->findOneAssignedByArticleAndPersonInAcademicYear(
@@ -481,7 +481,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 }
 
                 if ($enableRegistration) {
-                    if (null !== $oldTshirtBooking && $oldTshirtSize != $metaData->getTshirtSize()) {
+                    if ($oldTshirtBooking !== null && $oldTshirtSize != $metaData->getTshirtSize()) {
                         $this->getEntityManager()->remove($oldTshirtBooking);
                     }
 

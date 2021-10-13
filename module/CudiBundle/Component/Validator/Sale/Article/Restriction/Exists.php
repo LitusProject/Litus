@@ -2,7 +2,6 @@
 
 namespace CudiBundle\Component\Validator\Sale\Article\Restriction;
 
-use CudiBundle\Entity\Sale\Article;
 /**
  * Matches the given restriction against the database to check whether it already exists or not.
  *

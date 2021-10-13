@@ -35,7 +35,7 @@ class Version20200925140524 extends \Doctrine\Migrations\AbstractMigration
      */
     public function up(Schema $schema) : void
     {
-	$this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
         $this->addSql('ALTER TABLE cudi_isic_cards ALTER haspaid SET DEFAULT \'false\'');
         $this->addSql('ALTER TABLE users_organizations_metadata ADD irreeel_at_cudi BOOLEAN DEFAULT \'true\' NOT NULL');

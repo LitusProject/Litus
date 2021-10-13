@@ -63,7 +63,6 @@ class MailController extends \ApiBundle\Component\Controller\ActionController\Ap
             if (count($addresses) > 0) {
                 $data[] = array('name' => $list->getName(), 'addresses' => $addressesString);
             }
-
         }
 
         $headers = new Headers();

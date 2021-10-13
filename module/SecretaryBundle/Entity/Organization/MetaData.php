@@ -80,10 +80,10 @@ class MetaData
 //        'F_M'  => 'M - Female',
 //        'F_L'  => 'L - Female',
 //        'F_XL' => 'XL - Female',
-        'S'  => 'S - Unisex',
-        'M'  => 'M - Unisex',
-        'L'  => 'L - Unisex',
-        'XL' => 'XL - Unisex',
+        'S'   => 'S - Unisex',
+        'M'   => 'M - Unisex',
+        'L'   => 'L - Unisex',
+        'XL'  => 'XL - Unisex',
         'XXL' => 'XXL - Unisex',
     );
 
@@ -98,7 +98,7 @@ class MetaData
     }
 
     /**
-     * @param  string  $size
+     * @param  string $size
      * @return boolean
      */
     public static function isValidTshirtSize($size)

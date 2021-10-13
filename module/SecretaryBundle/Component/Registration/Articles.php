@@ -217,7 +217,7 @@ class Articles
                     $academicYear
                 );
 
-            if (null !== $booking) {
+            if ($booking !== null) {
                 $booking->setStatus('canceled', $entityManager);
             }
         }

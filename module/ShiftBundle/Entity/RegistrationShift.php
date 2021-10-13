@@ -644,6 +644,7 @@ class RegistrationShift
     {
         return $this->cudiTimeslot;
     }
+
     /**
      * @return boolean
      */

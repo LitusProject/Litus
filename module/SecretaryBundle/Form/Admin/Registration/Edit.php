@@ -46,7 +46,7 @@ class Edit extends \SecretaryBundle\Form\Admin\Registration\Add
 
         $this->get('payed')->setValue($this->getRegistration()->hasPayed());
 
-        if (null !== $metaData) {
+        if ($metaData !== null) {
             $this->get('irreeel')
                 ->setValue($metaData->receiveIrReeelAtCudi());
             $this->get('bakske')
