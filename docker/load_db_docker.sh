@@ -1,5 +1,7 @@
 #!/bin/bash
 echo "yip yip"
+# Change the working dir to the root of the app
+pushd ..
 # Stop script on error
 set -e
 
@@ -67,5 +69,6 @@ docker exec litus-postgres-1 /bin/sh -c "psql -h 127.0.0.1 -U litus -d litus < /
 
 # Set shibboleth url
 docker exec litus-postgres-1 psql -U litus -c "
-UPDATE general_config SET value='https://faye.vtk.be:8443/Shibboleth.sso/Login?target=https%3A%2F%2Ffaye.vtk.be%3A8443%2Fshibboleth%2F' WHERE key='shibboleth_url';"
+UPDATE general_config SET value='' WHERE key='shibboleth_url';"
 
+popd
