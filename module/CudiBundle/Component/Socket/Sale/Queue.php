@@ -169,7 +169,7 @@ class Queue
 
         $forceRegistrationShift = $this->entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.queue_force_registration_shift') === '1';
+            ->getConfigValue('cudi.queue_force_registration_shift');
 
         $timeslots = $this->entityManager
             ->getRepository('ShiftBundle\Entity\RegistrationShift')
