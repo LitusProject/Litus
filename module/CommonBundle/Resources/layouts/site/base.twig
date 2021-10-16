@@ -222,8 +222,8 @@
                     <a class="vtk-mobile-primary-menuitem" href="{{ url('common_account')}}">Mijn VTK</a>
                 {% endif %}
                     <a class="vtk-mobile-primary-menuitem" href="{{ url("common_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
-                {% if hasAccess('common_admin_auth', 'index') %}
-                    <a class="vtk-mobile-primary-menuitem" href="{{ url('common_admin_auth')}}">Admin</a>
+                {% if hasAccess('common_admin_index', 'index') %}
+                    <a class="vtk-mobile-primary-menuitem" href="{{ url('common_admin_index')}}">Admin</a>
                 {% endif %}
 
     
