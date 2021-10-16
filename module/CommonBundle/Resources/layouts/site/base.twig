@@ -211,7 +211,6 @@
         {# Hardcoded quicklinks #}
         <div class="container">
             <p style="color:white" class="vtk-footerheading" href="#">
-                {# TO DO #}
                 {{translate("Quicklinks")}}
             </p>
             {% if authenticatedPerson is not null %}
@@ -223,11 +222,23 @@
                     <a class="vtk-mobile-primary-menuitem" href="{{ url('common_account')}}">Mijn VTK</a>
                 {% endif %}
                     <a class="vtk-mobile-primary-menuitem" href="{{ url("common_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
+                {% if hasAccess('common_admin_auth', 'index') %}
+                    <a class="vtk-mobile-primary-menuitem" href="{{ url('common_admin_auth')}}">Admin</a>
+                {% endif %}
+
     
             {% else %}
                     <a class="vtk-mobile-primary-menuitem" href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('Login') }}{% endautoescape %}</a>
             {% endif %}
+            <p style="color:white" class="vtk-footerheading" href="#">
+                {{translate("Languages")}}
+            </p>
+            {% for language in languages %}
+                <a class="vtk-mobile-primary-menuitem" href="{{ url(getParam('controller'), {'language': language.getAbbrev(), 'action': getParam('action'), 'parent': getParam('parent'), 'name': getParam('name'), 'id': getParam('id')}) }}">{{ translate(language.getName()) }}</a>
+            {% endfor %}
+
         </div>
+
 
         <div style="height: 20px"></div>
 
