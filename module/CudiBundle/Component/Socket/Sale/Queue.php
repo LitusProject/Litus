@@ -167,22 +167,6 @@ class Queue
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
             ->findOneByUsername($universityIdentification);
 
-        $forceRegistrationShift = $this->entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.queue_force_registration_shift');
-
-        $timeslots = $this->entityManager
-            ->getRepository('ShiftBundle\Entity\RegistrationShift')
-            ->findAllCurrentAndCudiTimeslotByPerson($person);
-
-        if (count($timeslots) !== 1 && $forceRegistrationShift === true) {
-            return json_encode(
-                (object) array(
-                    'error' => 'no_timeslot',
-                )
-            );
-        }
-
         if ($person === null) {
             return json_encode(
                 (object) array(
@@ -209,6 +193,22 @@ class Queue
             return json_encode(
                 (object) array(
                     'error' => 'noBookings',
+                )
+            );
+        }
+
+        $forceRegistrationShift = $this->entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.queue_force_registration_shift');
+
+        $timeslots = $this->entityManager
+            ->getRepository('ShiftBundle\Entity\RegistrationShift')
+            ->findAllCurrentAndCudiTimeslotByPerson($person);
+
+        if ($forceRegistrationShift == true && count($timeslots) !== 1) {
+            return json_encode(
+                (object) array(
+                    'error' => 'no_timeslot',
                 )
             );
         }
