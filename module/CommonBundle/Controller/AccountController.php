@@ -58,6 +58,11 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->getRepository('ShopBundle\Entity\Reservation')
             ->getAllCurrentReservationsByPerson($academic);
 
+        //Consumptions
+        $consumptions = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Consumptions')
+            ->findOneByPerson($academic)->getConsumptions();
+
         return new ViewModel(
             array(
                 'academicYear'     => $this->getCurrentAcademicYear(),
@@ -70,6 +75,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 'timeslots'        => $mySlots,
                 'reservations'     => $reservations,
                 'shopName'         => $this->getShopName(),
+                'consumptions'     => $consumptions,
             )
         );
     }
