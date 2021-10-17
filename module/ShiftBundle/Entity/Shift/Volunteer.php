@@ -2,9 +2,11 @@
 
 namespace ShiftBundle\Entity\Shift;
 
+use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use ShiftBundle\Form\Shift\Search\Date;
 
 /**
  * This entity stores a volunteer for a shift.
@@ -44,6 +46,14 @@ class Volunteer
      * @ORM\Column(type="boolean")
      */
     private $payed;
+
+    /**
+     * @var AcademicYear the academic year this shift was payed
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+     * @ORM\JoinColumn(name="payed_year", referencedColumnName="id", nullable=true)
+     */
+    private $payedYear;
 
     /**
      * @param Person  $person The person that volunteered
@@ -90,13 +100,23 @@ class Volunteer
     }
 
     /**
-     * @param  boolean $payed
+     * @param boolean $payed
+     * @param AcademicYear|null $academicYear
      * @return self
      */
-    public function setPayed($payed)
+    public function setPayed($payed, $academicYear = null)
     {
         $this->payed = $payed;
+        $this->payedYear = $academicYear;
 
         return $this;
+    }
+
+    /**
+     * @return AcademicYear
+     */
+    public function getPayedYear()
+    {
+        return $this->payedYear;
     }
 }

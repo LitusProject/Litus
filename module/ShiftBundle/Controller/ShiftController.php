@@ -177,6 +177,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             }
         }
 
+        $currentAcademicYear = $this->getCurrentAcademicYear();
+
         return new ViewModel(
             array(
                 'resultString'     => $resultString,
@@ -187,6 +189,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 'token'            => $token,
                 'searchResults'    => $searchResults,
                 'entityManager'    => $this->getEntityManager(),
+                'currentAcademicYear'  => $currentAcademicYear,
                 'hasReadInsurance' => $hasReadInsurance,
                 'insuranceText'    => $insuranceText[$this->getLanguage()->getAbbrev()],
                 'insuranceEnabled' => $insuranceEnabled,

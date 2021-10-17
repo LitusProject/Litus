@@ -26,7 +26,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $this->getEntityManager()
                 ->getRepository('ShiftBundle\Entity\Shift')
                 ->findAllActiveQuery(),
-            $this->getParam('id')
+            $this->getParam('page')
         );
 
         return new ViewModel(

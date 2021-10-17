@@ -337,8 +337,8 @@ class ActionController extends \Laminas\Mvc\Controller\AbstractActionController 
     /**
      * Get the current academic year.
      *
-     * @param  boolean $organization
-     * @return AcademicYear
+     * @param boolean $organization
+     * @return \CommonBundle\Entity\General\AcademicYear
      */
     public function getCurrentAcademicYear($organization = false)
     {
