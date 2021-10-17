@@ -192,7 +192,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     $academicYear
                 );
                 $metaData->setBecomeMember(false)
-                    ->setReceiveIrReeelAtCudi($formData['irreeel'])
+                    ->setIrreeelAtCudi($formData['irreeel'])
                     ->setBakskeByMail($formData['bakske'])
                     ->setTshirtSize($formData['tshirt_size']);
                 $this->getEntityManager()->persist($metaData);
@@ -391,12 +391,12 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                         $registration->getAcademicYear()
                     );
                     $metaData->setBecomeMember(false)
-                        ->setReceiveIrReeelAtCudi($formData['irreeel'])
+                        ->setIrreeelAtCudi($formData['irreeel'])
                         ->setBakskeByMail($formData['bakske'])
                         ->setTshirtSize($formData['tshirt_size']);
                     $this->getEntityManager()->persist($metaData);
                 } else {
-                    $metaData->setReceiveIrReeelAtCudi($formData['irreeel'])
+                    $metaData->setIrreeelAtCudi($formData['irreeel'])
                         ->setBakskeByMail($formData['bakske'])
                         ->setTshirtSize($formData['tshirt_size']);
                 }
@@ -670,7 +670,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         if ($metaData !== null) {
             $metaData->setBecomeMember(false)
-                ->setReceiveIrReeelAtCudi(false)
+                ->setIrreeelAtCudi(false)
                 ->setTshirtSize(null);
         }
 
