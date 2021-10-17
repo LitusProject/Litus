@@ -265,6 +265,22 @@
 
         <div style="height: 100px"></div>
 
+        {% if consumptions > 0 %}
+            <div class="contentBlock">
+                <div class="headingHolder">
+                    <h3 style="margin-bottom: 0px">{{ translate('My Consumptions') }}</h3>
+                </div>
+
+                <div style="height: 20px"></div>
+
+                <h4>{{ translate('You have') }} {{ consumptions }} {{ translate('consumptions.') }}</h4>
+
+{#                <div class="buttonHolder">#}
+{#                    <a class="myVtkButton" href="{{ url('registration_shift', {"action": "index"}) }}">{{ translate('Reserve Timeslots') }}</a>#}
+{#                </div>#}
+            </div>
+        {% endif %}
+
 {% endblock %}
 
 {% block content_script %}
