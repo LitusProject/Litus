@@ -36,6 +36,28 @@ class Shift extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     }
 
     /**
+     * @param AcademicYear|null $academicYear
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllPayedByAcademicYear(AcademicYear $academicYear = null)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('s')
+            ->from('ShiftBundle\Entity\Shift', 's')
+            ->innerJoin('s.volunteers', 'v')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('v.payedYear', ':year'),
+                    $query->expr()->eq('v.payed', 'true')
+                )
+            )
+            ->orderBy('s.startDate', 'ASC')
+            ->setParameter('year', $academicYear)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * @param  string $name
      * @return \Doctrine\ORM\Query
      */
