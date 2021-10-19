@@ -59,9 +59,16 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->getAllCurrentReservationsByPerson($academic);
 
         //Consumptions
-        $consumptions = $this->getEntityManager()
+        if ($this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Consumptions')
-            ->findOneByPerson($academic)->getConsumptions() ?? 0;
+            ->findOneByPerson($academic) != null) {
+            $consumptions = $this->getEntityManager()
+                ->getRepository('TicketBundle\Entity\Consumptions')
+                ->findOneByPerson($academic)->getConsumptions();
+        }
+        else {
+            $consumptions = 0;
+        }
 
         return new ViewModel(
             array(
