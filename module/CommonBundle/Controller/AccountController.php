@@ -61,7 +61,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         //Consumptions
         $consumptions = $this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Consumptions')
-            ->findOneByPerson($academic)->getConsumptions();
+            ->findOneByPerson($academic)->getConsumptions() ?? 0;
 
         return new ViewModel(
             array(
