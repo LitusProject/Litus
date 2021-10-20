@@ -50,7 +50,7 @@ class MetaData
     /**
      * @var boolean Whether the academic wants to receive it's Ir.Reëel at Cudi or not
      *
-     * @ORM\Column(name="irreeel_at_cudi", type="boolean", options={"default":true})
+     * @ORM\Column(name="irreeel_at_cudi", type="boolean", options={"default":true}, nullable=true)
      */
     private $irreeelAtCudi;
 
