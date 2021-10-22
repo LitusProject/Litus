@@ -178,14 +178,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
         $calendarItems = array();
         foreach ($events as $event) {
-            $date = $event->getStartDate()->format('d-M');
-            if (!isset($calendarItems[$date])) {
-                $calendarItems[$date] = (object) array(
-                    'date'   => $event->getStartDate(),
-                    'events' => array(),
-                );
-            }
-            $calendarItems[$date]->events[] = $event;
+            $calendarItems[$event->getId()] = $event;
         }
         return $calendarItems;
     }
