@@ -323,7 +323,7 @@ class Event extends \CommonBundle\Entity\Node
         if (is_null($tickets)) {
             return true;
         }
-        return (sizeof($tickets) > 0) && $tickets->isStillBookable();
+        return (count($tickets) > 0) && $tickets->isStillBookable();
     }
 
     /**

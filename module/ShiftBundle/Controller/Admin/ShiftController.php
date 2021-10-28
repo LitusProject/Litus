@@ -4,6 +4,7 @@ namespace ShiftBundle\Controller\Admin;
 
 use CalendarBundle\Entity\Node\Event;
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use DateInterval;
 use DateTime;
@@ -52,7 +53,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             ->findAllActiveByEventQuery($event)->getResult();
 
         $shifters = array();
-        foreach ($shifts as $shift){
+        foreach ($shifts as $shift) {
             $shifters['Volunteers'] += $shift->countVolunteers();
             $shifters['Responsibles'] += $shift->countResponsibles();
             $shifters['NbVolunteers'] += $shift->getNbVolunteers();
@@ -153,6 +154,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
             $fileName = $fileData['file']['tmp_name'];
 
+            $shiftArray = array();
+
             $open = fopen($fileName, 'r');
             if ($open !== false) {
                 $data = fgetcsv($open, 1000, ',');
@@ -240,13 +243,6 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function templateAction()
     {
-        $rewards_enabled = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('shift.rewards_enabled');
-        $points_enabled = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('shift.points_enabled');
-
         $file = new CsvFile();
         $heading = array(
             'start_date',

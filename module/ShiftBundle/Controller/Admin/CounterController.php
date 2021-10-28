@@ -403,10 +403,11 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->findAllPayedByAcademicYear($academicYear);
 
         $total = 0;
-        foreach ($shifts as $shift){
-            foreach ($shift->getVolunteers() as $volunteer){
-                if ($volunteer->isPayed() && $volunteer->getPayedYear() == $academicYear)
+        foreach ($shifts as $shift) {
+            foreach ($shift->getVolunteers() as $volunteer) {
+                if ($volunteer->isPayed() && $volunteer->getPayedYear() == $academicYear) {
                     $total += $shift->getReward();
+                }
             }
         }
 
