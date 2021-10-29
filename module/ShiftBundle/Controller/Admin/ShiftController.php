@@ -43,7 +43,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('ShiftBundle\Entity\Shift')
-                ->findAllActiveByEventQuery($event),
+                ->findAllByEventQuery($event),
             $this->getParam('page')
         );
 
