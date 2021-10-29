@@ -114,6 +114,23 @@ class Shift extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->setParameter('event', $event)
             ->getQuery();
     }
+    
+        /**
+     * @param  Event $event
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllByEventQuery(Event $event)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('s')
+            ->from('ShiftBundle\Entity\Shift', 's')
+            ->where(
+                $query->expr()->eq('s.event', ':event')
+            )
+            ->orderBy('s.startDate', 'ASC')
+            ->setParameter('event', $event)
+            ->getQuery();
+    }
 
     /**
      * @param  UnitEntity $unit
