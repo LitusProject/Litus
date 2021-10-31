@@ -6,7 +6,7 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\Util\StringUtil;
 use Interop\Container\ContainerInterface;
 use Laminas\Form\FormFactoryAwareInterface;
-use Laminas\Hydrator\ClassMethods as ClassMethodsHydrator;
+use Laminas\Hydrator\ClassMethodsHydrator;
 use RuntimeException;
 
 /**

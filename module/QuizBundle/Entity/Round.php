@@ -54,7 +54,7 @@ class Round
     /**
      * @var ArrayCollection The points in this round
      *
-     * @ORM\OneToMany(targetEntity="QuizBundle\Entity\Point", mappedBy="round", cascade="remove")
+     * @ORM\OneToMany(targetEntity="QuizBundle\Entity\Point", mappedBy="round", cascade={"remove"})
      */
     private $points;
 

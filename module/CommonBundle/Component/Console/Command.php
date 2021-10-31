@@ -38,7 +38,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     protected $output;
 
     /**
-     * @return integer|void
+     * @return integer
      */
     protected function execute(Input $input, Output $output)
     {
@@ -53,7 +53,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
 
         $this->setProcessTitle('litus: ' . $this->getName());
 
-        return $this->invoke();
+        return $this->invoke() ?? 0;
     }
 
     /**

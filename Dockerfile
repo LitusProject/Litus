@@ -90,7 +90,10 @@ RUN apk add --no-cache \
   apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.10/main --update-cache \
     nodejs==10.24.1-r0 \
     npm==10.24.1-r0 && \
-  npm install -g less
+  npm install -g \
+    less \
+    uglifycss \
+    uglify-js
 
 RUN mv "${PHP_INI_DIR}/php.ini-production" "${PHP_INI_DIR}/php.ini"
 
@@ -119,7 +122,10 @@ RUN apk add --no-cache \
 RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.10/main --update-cache \
     nodejs==10.24.1-r0 \
     npm==10.24.1-r0 && \
-  npm install -g less
+  npm install -g \
+    less \
+    uglifycss \
+    uglify-js
 
 RUN curl -fsSL -o /tmp/fop-2.6-bin.tar.gz https://downloads.apache.org/xmlgraphics/fop/binaries/fop-2.6-bin.tar.gz && \
   tar --strip-components=1 -C /opt -xzf /tmp/fop-2.6-bin.tar.gz fop-2.6/fop && \

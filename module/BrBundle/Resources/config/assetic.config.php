@@ -2,9 +2,9 @@
 
 namespace BrBundle;
 
-use CommonBundle\Component\Assetic\Filter\Css as CssFilter;
-use CommonBundle\Component\Assetic\Filter\Js as JsFilter;
-use CommonBundle\Component\Assetic\Filter\Less as LessFilter;
+use Assetic\Filter\LessFilter;
+use Assetic\Filter\UglifyCssFilter;
+use Assetic\Filter\UglifyJs3Filter;
 
 return array(
     'controllers' => array(
@@ -390,8 +390,8 @@ return array(
                 'fullcalendar/fullcalendar.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -400,8 +400,8 @@ return array(
                 'fullcalendar/fullcalendar.css',
             ),
             'filters' => array(
-                '?CssFilter' => array(
-                    'name' => CssFilter::class,
+                '?UglifyCssFilter' => array(
+                    'name' => UglifyCssFilter::class,
                 ),
             ),
             'options' => array(

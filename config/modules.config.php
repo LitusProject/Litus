@@ -12,10 +12,9 @@ $modules = array(
     'Laminas\Serializer',
     'Laminas\Session',
     'Laminas\Validator',
-    'Laminas\ZendFrameworkBridge',
 
-    'AsseticBundle',
     'DoctrineModule',
+    'Fabiang\AsseticBundle',
     'DoctrineORMModule',
     'ZendTwig',
 

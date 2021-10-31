@@ -2,9 +2,9 @@
 
 namespace CommonBundle;
 
-use CommonBundle\Component\Assetic\Filter\Css as CssFilter;
-use CommonBundle\Component\Assetic\Filter\Js as JsFilter;
-use CommonBundle\Component\Assetic\Filter\Less as LessFilter;
+use Assetic\Filter\LessFilter;
+use Assetic\Filter\UglifyCssFilter;
+use Assetic\Filter\UglifyJs3Filter;
 
 return array(
     'controllers' => array(
@@ -196,8 +196,8 @@ return array(
                 'common/js/bootstrap-fileinput.min.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -206,8 +206,8 @@ return array(
                 'common/js/jquery-ui.min.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -216,8 +216,8 @@ return array(
                 'common/css/jquery-ui.min.css',
             ),
             'filters' => array(
-                '?CssFilter' => array(
-                    'name' => CssFilter::class,
+                '?UglifyCssFilter' => array(
+                    'name' => UglifyCssFilter::class,
                 ),
             ),
             'options' => array(
@@ -229,8 +229,8 @@ return array(
                 'common/js/jquery-ui-timepicker-addon.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -239,8 +239,8 @@ return array(
                 'common/css/jquery-ui-timepicker-addon.css',
             ),
             'filters' => array(
-                '?CssFilter' => array(
-                    'name' => CssFilter::class,
+                '?UglifyCssFilter' => array(
+                    'name' => UglifyCssFilter::class,
                 ),
             ),
             'options' => array(
@@ -252,8 +252,8 @@ return array(
                 'common/js/jquery.sortable-table.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -262,8 +262,8 @@ return array(
                 'common/js/jquery.form.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -272,8 +272,8 @@ return array(
                 'common/js/formUploadProgress.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -282,8 +282,8 @@ return array(
                 'common/js/permanentModal.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -292,8 +292,8 @@ return array(
                 'common/js/socket.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -302,8 +302,8 @@ return array(
                 'common/js/fieldcount.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -312,8 +312,8 @@ return array(
                 'common/js/typeaheadRemote.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -322,8 +322,8 @@ return array(
                 'common/js/spin.min.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -332,8 +332,8 @@ return array(
                 'common/js/holder.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -342,8 +342,8 @@ return array(
                 'common/js/chart.min.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -353,8 +353,8 @@ return array(
                 'common/js/unserialize.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -377,8 +377,8 @@ return array(
                 'admin/js/*.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -388,8 +388,8 @@ return array(
                 'site/js/displayFormErrors.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -399,8 +399,8 @@ return array(
         //         'site/js/dropdownHover.js',
         //     ),
         //     'filters' => array(
-        //         '?JsFilter' => array(
-        //             'name' => JsFilter::class,
+        //         '?JsMinFilter' => array(
+        //             'name' => JsMinFilter::class,
         //         ),
         //     ),
         // ),
@@ -424,8 +424,8 @@ return array(
                 'common/js/bootstrap-rowlink.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -435,8 +435,8 @@ return array(
                 'gollum/css/editor.css',
             ),
             'filters' => array(
-                '?CssFilter' => array(
-                    'name' => CssFilter::class,
+                '?UglifyCssFilter' => array(
+                    'name' => UglifyCssFilter::class,
                 ),
             ),
             'options' => array(
@@ -449,8 +449,8 @@ return array(
                 'gollum/js/markdown.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -460,8 +460,8 @@ return array(
                 'common/js/jcrop.min.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -470,8 +470,8 @@ return array(
                 'common/css/jcrop.min.css',
             ),
             'filters' => array(
-                '?CssFilter' => array(
-                    'name' => CssFilter::class,
+                '?UglifyCssFilter' => array(
+                    'name' => UglifyCssFilter::class,
                 ),
             ),
             'options' => array(
@@ -484,8 +484,8 @@ return array(
                 'common/js/resizableColumns.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -494,8 +494,8 @@ return array(
                 'common/css/resizableColumns.css',
             ),
             'filters' => array(
-                '?CssFilter' => array(
-                    'name' => CssFilter::class,
+                '?UglifyCssFilter' => array(
+                    'name' => UglifyCssFilter::class,
                 ),
             ),
             'options' => array(

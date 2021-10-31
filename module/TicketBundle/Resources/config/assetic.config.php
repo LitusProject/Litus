@@ -2,7 +2,7 @@
 
 namespace TicketBundle;
 
-use CommonBundle\Component\Assetic\Filter\Less as LessFilter;
+use Assetic\Filter\LessFilter;
 
 return array(
     'controllers' => array(
