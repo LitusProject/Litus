@@ -61,4 +61,7 @@ return array(
     'More Information'                                                                                                                                                                     => 'More Information',
     'Corporate Relations'                                                                                                                                                                  => 'Corporate Relations',
     'What can you expect?'                                                                                                                                                                 => 'What can you expect?',
+    'Visibility'                                                                                                                                                                           => 'Visibility',
+    'Flexibility'                                                                                                                                                                          => 'Flexibility',
+    'Proffesionaliteit'                                                                                                                                                                    => 'Professionalism & Quality',
 );

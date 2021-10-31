@@ -60,4 +60,7 @@ return array(
     'More Information'                                                                                                                                                                     => 'Meer weten',
     'Corporate Relations'                                                                                                                                                                  => 'Bedrijvenrelaties',
     'What can you expect?'                                                                                                                                                                 => 'Wat kan je verwachten?',
+    'Visibility'                                                                                                                                                                           => 'Zichtbaarheid',
+    'Flexibility'                                                                                                                                                                          => 'Flexibiliteit',
+    'Proffesionaliteit'                                                                                                                                                                    => 'Professionaliteit & kwaliteit',
 );
