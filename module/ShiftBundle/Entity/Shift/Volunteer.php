@@ -6,7 +6,6 @@ use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use ShiftBundle\Form\Shift\Search\Date;
 
 /**
  * This entity stores a volunteer for a shift.
