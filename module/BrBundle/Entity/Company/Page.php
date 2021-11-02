@@ -65,7 +65,7 @@ class Page
 
     /**
      * @var boolean Whether or not this is company should be displayed on the event page
-     * (temporary remove after internship fair 20-21)
+     * (temporary remove after internship fair 20-21, or internship fair 21-22...)
      *
      * @ORM\Column(type="boolean", nullable=true)
      */
