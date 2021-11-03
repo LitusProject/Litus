@@ -39,15 +39,14 @@
     </div>
 
     <div style="height: 80px"></div>
-
-    <div style="height: 30px"></div>
-    <div style="position:relative">
-        <h3 style="position: relative; z-index: 1">{{ translate('Events') }}</h3>
-        <div class="br-titledecoration"></div>
-    </div>
-    <div style="height: 20px"></div>
-
+    
     {% if events|length > 0 %}
+        <div style="height: 30px"></div>
+        <div style="position:relative">
+            <h3 style="position: relative; z-index: 1">{{ translate('Events') }}</h3>
+            <div class="br-titledecoration"></div>
+        </div>
+        <div style="height: 20px"></div>
         {% for corporateEvent in events %}
             {% set event = corporateEvent.getEvent() %}
             {{ event.getTitle(language) }}<br>
