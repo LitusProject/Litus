@@ -100,4 +100,16 @@ class ConsumeController extends \TicketBundle\Component\Controller\SaleControlle
 
         return $consumptions;
     }
+
+    /**
+     * @return \CommonBundle\Entity\User\Person|null
+     */
+    private function getPersonEntity()
+    {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            return;
+        }
+
+        return $this->getAuthentication()->getPersonObject();
+    }
 }
