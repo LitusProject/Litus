@@ -4,6 +4,7 @@ namespace TicketBundle\Controller\Sale;
 
 use Laminas\View\Model\ViewModel;
 use TicketBundle\Entity\Consumptions;
+use TicketBundle\Entity\Transactions;
 
 class ConsumeController extends \TicketBundle\Component\Controller\SaleController
 {
@@ -26,6 +27,13 @@ class ConsumeController extends \TicketBundle\Component\Controller\SaleControlle
                             'form'     => $this->getForm('ticket_sale_consume'),
                         )
                     );
+                }
+
+                if ($entity instanceof Consumptions) {
+                    $person = $this->getPersonEntity();
+
+                    $transaction = new Transactions(-$amount, $entity, $person);
+                    $this->getEntityManager()->persist($transaction);
                 }
 
                 if ($entity->getConsumptions() - $amount < 0) {
