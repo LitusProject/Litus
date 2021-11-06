@@ -2,8 +2,10 @@
 
 namespace TicketBundle\Controller\Admin;
 
+use CommonBundle\Component\Form\Admin\Element\DateTime;
 use Laminas\View\Model\ViewModel;
 use TicketBundle\Entity\Consumptions;
+use TicketBundle\Entity\Transactions;
 
 /**
  * ConsumptionsController
@@ -53,6 +55,12 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
                     );
                     return new ViewModel();
                 }
+                if ($entity instanceof Consumptions) {
+                    $person = $this->getPersonEntity();
+
+                    $transaction = new Transactions(-$data, $entity, $person);
+                    $this->getEntityManager()->persist($transaction);
+                }
 
                 if ($entity->getConsumptions() - $data === 0) {
                     $entity->removeConsumptions($data);
@@ -98,10 +106,18 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
+                $consumption = $form->hydrateObject();
                 $this->getEntityManager()->persist(
-                    $form->hydrateObject()
+                    $consumption
                 );
 //                $this->getEntityManager()->persist($form);
+
+                if ($consumption instanceof Consumptions){
+                    $person = $this->getPersonEntity();
+
+                    $transaction = new Transactions($form->getData()['number_of_consumptions'], $consumption, $person);
+                    $this->getEntityManager()->persist($transaction);
+                }
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -133,13 +149,18 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
         if ($consumptions === null) {
             return new ViewModel();
         }
-
+        $old = $consumptions->getConsumptions();
         $form = $this->getForm('ticket_consumptions_edit', array('consumptions' => $consumptions));
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
+                if ($consumptions instanceof Consumptions){
+                    $person = $this->getPersonEntity();
+                    $transaction = new Transactions($form->getData()['number_of_consumptions'] - $old, $consumptions, $person);
+                    $this->getEntityManager()->persist($transaction);
+                }
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -181,6 +202,23 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
         return new ViewModel(
             array(
                 'result' => (object) array('status' => 'succes'),
+            )
+        );
+    }
+
+    public function transactionsAction()
+    {
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('TicketBundle\Entity\Transactions')
+                ->findAll(),
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator'         => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
@@ -249,5 +287,17 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
                     ->getRepository('TicketBundle\Entity\Consumptions')
                     ->findAllByNameQuery($this->getParam('string'));
         }
+    }
+
+    /**
+     * @return \CommonBundle\Entity\User\Person|null
+     */
+    private function getPersonEntity()
+    {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            return;
+        }
+
+        return $this->getAuthentication()->getPersonObject();
     }
 }
