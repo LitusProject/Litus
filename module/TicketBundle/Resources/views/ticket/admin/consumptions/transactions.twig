@@ -1,0 +1,36 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'ticket/admin/consumptions/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <div id="default_page">
+            <table class="full_width manage">
+                <thead>
+                <tr>
+                    <th>Executor</th>
+                    <th>Username</th>
+                    <th>Amount</th>
+                    <th>Timestamp</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for transactions in paginator %}
+                    <tr class="item item-{{ transactions.getId() }}">
+                        <td>{{ transactions.getPerson().getFullName() }}</td>
+                        <td>{{ transactions.getConsumption().getFullName() }}</td>
+                        <td>{{ transactions.getAmount() }}</td>
+                        <td>{{ transactions.getTime().format('H:i:s d-m-Y') }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+    </div>
+
+{% endblock %}
