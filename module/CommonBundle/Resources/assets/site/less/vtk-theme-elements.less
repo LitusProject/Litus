@@ -1,0 +1,272 @@
+// Text elements
+
+@import url("https://fonts.googleapis.com/css?family=Assistant");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans");
+
+body {
+  font-family: "Open Sans";
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  margin-top: 0px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: "Assistant";
+  color: @color-blue;
+  font-weight: 700;
+  margin-top: 0px;
+}
+
+a {
+  font-family: "Open Sans" !important;
+  color: inherit;
+}
+
+a:hover {
+  color: @color-blue;
+  text-decoration: none;
+}
+
+p {
+  margin-bottom: 10px;
+}
+
+.itemHolder > p {
+  margin-bottom: 0px;
+}
+
+// Buttons
+
+button {
+  background-color: @color-blue;
+  border: none;
+  color: white;
+  font-family: "Open Sans";
+  padding: 6px 10px;
+}
+
+// button.yellow {
+//   background-color: @color-yellow;
+//   font-weight: 600;
+// }
+
+// button.yellow.unfilled {
+//   background-color: transparent;
+//   border: 1px solid @color-yellow;
+//   color: @color-blue;
+//   font-weight: 500;
+// }
+
+// button.white.unfilled {
+//   background-color: transparent;
+//   border: 1px solid white;
+// }
+
+// button.white.unfilled:hover {
+//   background-color: white;
+//   color: @color-blue;
+// }
+
+// Alerts
+
+.alert {
+  position: fixed;
+  display: inline-block;
+  top: 140px;
+  right: 10px;
+  z-index: 999;
+  max-width: 45%;
+  font-family: "Open sans";
+  background-color: @color-blue;
+  color: white;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  -webkit-box-shadow: 0px 2px 15px 3px rgba(130, 130, 130, 0.64);
+  box-shadow: 0px 2px 15px 3px rgba(130, 130, 130, 0.64);
+}
+
+.close {
+  color: white;
+  margin-left: 5px;
+  text-shadow: none;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+.close:hover {
+  color: white;
+  opacity: 1;
+}
+
+//Links
+
+input.submit {
+  padding: 10px 25px;
+  -webkit-box-shadow: 0px 0px 8px 1px #f0f0f0;
+  box-shadow: 0px 0px 8px 1px #f0f0f0;
+  z-index: 100;
+  background-color: white;
+  font-size: 13px;
+  font-weight: 500;
+  transition-duration: 200ms;
+  border: none;
+  border-left: 6px solid @color-yellow;
+  color: @color-blue;
+  margin-top: 15px;
+}
+
+input.submit:hover {
+  background-color: @color-blue;
+  color: white;
+  -webkit-box-shadow: 0px 0px 8px 1px #e9e9e9;
+  box-shadow: 0px 0px 8px 1px #e9e9e9;
+  border-left: 6px solid @color-yellow;
+}
+
+button.button,
+a.button,
+input[type="submit"],
+.btn-primary {
+  background-color: @color-blue;
+  margin-bottom: 5px;
+  cursor: pointer;
+  display: inline-block;
+  transition-duration: 200ms;
+  border: none;
+  color: white;
+  font-family: "Open Sans";
+  padding: 8px 20px;
+  display: inline-block;
+  font-size: 13px;
+}
+
+button.button:hover,
+a.button:hover {
+  background-color: @color-blue-light;
+}
+
+a.button.white.unfilled {
+  background-color: transparent;
+  border: 1px solid white;
+}
+
+a.button.white.unfilled:hover {
+  background-color: white;
+  color: @color-blue;
+}
+
+a.button.yellow.unfilled {
+  background-color: transparent;
+  border: 1px solid @color-yellow;
+}
+
+a.button.yellow.unfilled:hover {
+  background-color: @color-yellow;
+  color: @color-blue;
+}
+
+button.button.blue.unfilled,
+a.button.blue.unfilled,
+input[type="submit"],
+.btn-primary {
+  background-color: transparent;
+  border: 1px solid @color-blue;
+  color: @color-blue;
+}
+
+button.button.blue.unfilled:hover,
+a.button.blue.unfilled:hover,
+input[type="submit"]:hover,
+.btn-primary:hover {
+  background-color: @color-blue;
+  color: white;
+}
+
+a.tab {
+  background-color: white !important;
+  border: 1px solid @color-blue !important;
+  color: @color-blue !important;
+  padding: 9px 15px !important;
+  font-size: 12px !important;
+  transition-duration: 200ms !important;
+}
+
+a.tab:hover {
+  background-color: @color-blue !important;
+  color: white !important;
+}
+
+a.activeTab {
+  background-color: white !important;
+  border: 1px solid @color-blue !important;
+  color: @color-blue !important;
+  padding: 9px 15px !important;
+  font-size: 12px !important;
+  transition-duration: 200ms !important;
+  border-bottom: 1px solid transparent !important;
+}
+
+.nav-tabs {
+  border-bottom: 1px solid @color-blue;
+}
+
+// spacers
+
+.spacer10 {
+  height: 10px;
+}
+
+.spacer20 {
+  height: 20px;
+}
+
+.spacer30 {
+  height: 30px;
+}
+
+.spacer40 {
+  height: 40px;
+}
+
+.spacer50 {
+  height: 50px;
+}
+
+// Markdown layouting
+
+div.markdown {
+  h3 {
+    margin-top: 30px;
+  }
+
+  a {
+    font-weight: 800;
+  }
+
+  p {
+    margin-bottom: 12px;
+  }
+}
+
+// Title decoration needed in multiple places
+.pageTitleDeco {
+  width: 100px;
+  height: 4px;
+  background-color: #ffd400;
+  margin-top: -10px;
+}
+
+//Title spacing op standard pages
+.standardPageTitleHolder {
+  margin-top: 40px;
+}

@@ -1,30 +1,12 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 return array(
     array(
-        'key'   => 'prom.confirmation_mail',
-        'value' => serialize(
+        'key'         => 'prom.confirmation_mail',
+        'value'       => serialize(
             array(
                 'from'    => 'galabal@vtk.be',
-                'subject' => 'Student IT Galabal Busreservatie - Student IT Prom Bus Reservation ',
+                'subject' => 'VTK Galabal Busreservatie - VTK Prom Bus Reservation ',
                 'body'    => 'Beste,
 [English below]
 
@@ -54,11 +36,11 @@ See you then!
         'description' => 'Enable busreservations',
     ),
     array(
-        'key'   => 'prom.remove_mail',
-        'value' => serialize(
+        'key'         => 'prom.remove_mail',
+        'value'       => serialize(
             array(
                 'from'    => 'galabal@vtk.be',
-                'subject' => 'Student IT Galabal Busreservatie - Student IT Prom Bus Reservation ',
+                'subject' => 'VTK Galabal Busreservatie - VTK Prom Bus Reservation ',
                 'body'    => 'Beste,
 [English below]
 
@@ -87,17 +69,17 @@ See you then!
         'description' => 'The prom bus confirmation mail ',
     ),
     array(
-        'key'   => 'prom.reservation_mail',
-        'value' => serialize(
+        'key'         => 'prom.reservation_mail',
+        'value'       => serialize(
             array(
                 'from'    => 'buscodes@vtk.be',
-                'subject' => 'Student IT Galabal Unieke code Busreservatie - Student IT Prom Unique Bus Reservation Code',
+                'subject' => 'VTK Galabal Unieke code Busreservatie - VTK Prom Unique Bus Reservation Code',
                 'body'    => 'Beste,
     [English below]
 
-    Bedankt voor uw inschrijving voor het Student IT Galabal.
+    Bedankt voor uw inschrijving voor het VTK Galabal.
     Gelieve uw onderstaande unieke code goed bij te houden, u zal ze nodig hebben om een plaats op de bussen te reserveren via vtk.be/prom/registration.
-    De opening van de registraties zal bekend gemaakt worden op de Facebook-pagina van Student IT.
+    De opening van de registraties zal bekend gemaakt worden op de Facebook-pagina van VTK.
 
     {{ reservationCode }} .
 
@@ -105,9 +87,9 @@ See you then!
 
     - - - - - - - - - - - -
 
-    Thank you for signing up for the Student IT prom.
+    Thank you for signing up for the VTK prom.
     Please do not lose your unique code below, as you will need it to book a spot on the buses through www.vtk.be/prom/registration.
-    The exact date and time for this will be announced later on the Student IT Facebook page.
+    The exact date and time for this will be announced later on the VTK Facebook page.
 
     {{ reservationCode }}
 
@@ -120,8 +102,8 @@ See you then!
         'description' => 'The prom reservation code mail.',
     ),
     array(
-        'key'   => 'prom.reservation_opening_warning',
-        'value' => serialize(
+        'key'         => 'prom.reservation_opening_warning',
+        'value'       => serialize(
             array(
                 'from'    => 'buscodes@vtk.be',
                 'subject' => 'Busreservaties VTK Galabal geopend - VTK Prom Bus reservations have opened!',

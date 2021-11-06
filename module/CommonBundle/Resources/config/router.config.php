@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 return array(
     'routes' => array(
@@ -31,7 +13,7 @@ return array(
                     'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'common_admin_academic',
                     'action'     => 'manage',
                 ),
@@ -44,7 +26,7 @@ return array(
                 'constraints' => array(
                     'string' => '[%a-zA-Z0-9:.,_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'common_admin_academic',
                     'action'     => 'typeahead',
                 ),
@@ -57,7 +39,7 @@ return array(
                 'constraints' => array(
                     'string' => '[%a-zA-Z0-9:.,_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'common_admin_person',
                     'action'     => 'typeahead',
                 ),
@@ -72,7 +54,7 @@ return array(
                     'identification' => '[mrsu][0-9]{7}',
                     'hash'           => '[a-zA-Z0-9_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'common_admin_auth',
                     'action'     => 'login',
                 ),
@@ -86,7 +68,7 @@ return array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'common_admin_cache',
                     'action'     => 'manage',
                 ),
@@ -100,7 +82,7 @@ return array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'key'    => '[a-zA-Z][\.a-zA-Z0-9_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'common_admin_config',
                     'action'     => 'manage',
                 ),
@@ -125,7 +107,7 @@ return array(
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'common_admin_location',
                     'action'     => 'manage',
                 ),
@@ -141,7 +123,7 @@ return array(
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'common_admin_role',
                     'action'     => 'manage',
                 ),
@@ -155,7 +137,7 @@ return array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[a-z0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'common_admin_session',
                     'action'     => 'index',
                 ),
@@ -171,7 +153,7 @@ return array(
                     'page'         => '[0-9]*',
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'common_admin_unit',
                     'action'     => 'manage',
                 ),
@@ -188,9 +170,40 @@ return array(
                     'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'common_admin_visit',
                     'action'     => 'manage',
+                ),
+            ),
+        ),
+        'common_admin_faq' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/faq[/:action[/:id][/page/:page][/map/:map][/:field/:string]][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
+                    'map'    => '[0-9]*',
+                    'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'common_admin_faq',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
+        'common_admin_faq_typeahead' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/faq/typeahead[/:string][/]',
+                'constraints' => array(
+                    'string' => '[%a-zA-Z0-9:.,_-]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'common_admin_faq',
+                    'action'     => 'typeahead',
                 ),
             ),
         ),
@@ -201,7 +214,7 @@ return array(
                 'constraints' => array(
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'common_index',
                     'action'     => 'index',
                 ),
@@ -219,7 +232,7 @@ return array(
                     'image'    => '[a-zA-Z0-9]*',
                     'return'   => '[a-zA-Z0-9_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'common_account',
                     'action'     => 'index',
                 ),
@@ -234,7 +247,7 @@ return array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'       => '[a-zA-Z0-9_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'common_session',
                     'action'     => 'manage',
                 ),
@@ -250,7 +263,7 @@ return array(
                     'hash'           => '[a-zA-Z0-9_-]*',
                     'language'       => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'common_auth',
                     'action'     => 'login',
                 ),
@@ -262,7 +275,7 @@ return array(
                 'route'       => '/robots.txt',
                 'constraints' => array(
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'common_robots',
                     'action'     => 'index',
                 ),
@@ -276,7 +289,7 @@ return array(
                     'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'common_praesidium',
                     'action'     => 'overview',
                 ),
@@ -290,7 +303,7 @@ return array(
                     'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'common_poc',
                     'action'     => 'overview',
                 ),
@@ -303,7 +316,7 @@ return array(
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'common_privacy',
                     'action'     => 'index',
                 ),
@@ -324,14 +337,16 @@ return array(
         'common_admin_session'  => 'CommonBundle\Controller\Admin\SessionController',
         'common_admin_unit'     => 'CommonBundle\Controller\Admin\UnitController',
         'common_admin_visit'    => 'CommonBundle\Controller\Admin\VisitController',
+        'common_admin_faq'      => 'CommonBundle\Controller\Admin\FAQController',
 
-        'common_index'      => 'CommonBundle\Controller\IndexController',
-        'common_account'    => 'CommonBundle\Controller\AccountController',
-        'common_session'    => 'CommonBundle\Controller\SessionController',
-        'common_auth'       => 'CommonBundle\Controller\AuthController',
-        'common_robots'     => 'CommonBundle\Controller\RobotsController',
-        'common_praesidium' => 'CommonBundle\Controller\PraesidiumController',
-        'common_poc'        => 'CommonBundle\Controller\PocController',
-        'common_privacy'    => 'CommonBundle\Controller\PrivacyController',
+
+        'common_index'          => 'CommonBundle\Controller\IndexController',
+        'common_account'        => 'CommonBundle\Controller\AccountController',
+        'common_session'        => 'CommonBundle\Controller\SessionController',
+        'common_auth'           => 'CommonBundle\Controller\AuthController',
+        'common_robots'         => 'CommonBundle\Controller\RobotsController',
+        'common_praesidium'     => 'CommonBundle\Controller\PraesidiumController',
+        'common_poc'            => 'CommonBundle\Controller\PocController',
+        'common_privacy'        => 'CommonBundle\Controller\PrivacyController',
     ),
 );

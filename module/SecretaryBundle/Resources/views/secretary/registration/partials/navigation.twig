@@ -1,4 +1,4 @@
-<ul class="nav nav-tabs">
+<ul class="nav nav-tabs container">
     <li {% if getParam('action') == 'add' or getParam('action') == 'edit' %}class="active"{% endif %}>
         <a href="{{ url('secretary_registration', {'action': 'edit'}) }}">
             {{ translate('Start') }}

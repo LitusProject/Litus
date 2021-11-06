@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace TicketBundle\Component\Validator;
 
@@ -35,8 +17,9 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
     const EXCEEDS_MAX = 'exceedsMax';
 
     protected $options = array(
-        'event'  => null,
-        'person' => null,
+        'maximum' => '',
+        'event'   => null,
+        'person'  => null,
     );
 
     /**
@@ -51,8 +34,15 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
      */
     protected $messageTemplates = array(
         self::NOT_VALID          => 'The number of tickets is not valid',
-        self::EXCEEDS_MAX_PERSON => 'The number of tickets exceeds the maximum per person',
+        self::EXCEEDS_MAX_PERSON => 'The number of tickets exceeds the maximum per person (%maximum%)',
         self::EXCEEDS_MAX        => 'The number of tickets exceeds the maximum',
+    );
+
+    /**
+     * @var array The message variables
+     */
+    protected $messageVariables = array(
+        'maximum' => array('options' => 'maximum'),
     );
 
     /**
@@ -67,6 +57,7 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
             $options = array();
             $options['event'] = array_shift($args);
             $options['person'] = array_shift($args);
+            $options['maximum'] = array_shift($args);
         }
 
         parent::__construct($options);
@@ -95,7 +86,7 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
             $options = $this->options['event']->getOptions();
             foreach ($options as $option) {
                 $number += $optionsForm->get('option_' . $option->getId() . '_number_member')->getValue();
-                if (!$this->options['event']->isOnlyMembers()) {
+                if (!$this->options['event']->isOnlyMembers() && $option->getPriceNonMembers() != 0) {
                     $number += $optionsForm->get('option_' . $option->getId() . '_number_non_member')->getValue();
                 }
             }
@@ -107,7 +98,7 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
             return false;
         }
 
-        $personFieldset = $this->form->get('person_form');
+        $personFieldset = $this->form->has('person_form') ? $this->form->get('person_form') : $this->form;
         if ($this->options['person'] == null && is_numeric($personFieldset->get('person')->getValue())) {
             $person = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person')
@@ -125,7 +116,7 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
         if ($person !== null) {
             $tickets = $this->getEntityManager()
                 ->getRepository('TicketBundle\Entity\Ticket')
-                ->findAllByEventAndPerson($this->options['event'], $person);
+                ->findAllByEventAndPersonQuery($this->options['event'], $person)->getResult();
 
             if ($number + count($tickets) > $this->options['event']->getLimitPerPerson() && $this->options['event']->getLimitPerPerson() != 0) {
                 $this->error(self::EXCEEDS_MAX_PERSON);

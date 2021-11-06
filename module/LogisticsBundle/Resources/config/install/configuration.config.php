@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 return array(
     array(
@@ -45,8 +27,8 @@ return array(
         'description' => 'Maximum days a reservation is possible in advance',
     ),
     array(
-        'key'   => 'logistics.piano_time_slots',
-        'value' => serialize(
+        'key'         => 'logistics.piano_time_slots',
+        'value'       => serialize(
             array(
                 '1' => array(
                     array('start' => '19:00', 'end' => '22:00'),
@@ -71,8 +53,8 @@ return array(
         'description' => 'The mail address piano reservation mails are send to',
     ),
     array(
-        'key'   => 'logistics.piano_new_reservation',
-        'value' => serialize(
+        'key'         => 'logistics.piano_new_reservation',
+        'value'       => serialize(
             array(
                 'en' => array(
                     'subject' => 'New Piano Reservation',
@@ -83,7 +65,7 @@ A new piano reservation was made:
 
 It is important you always have the accompanying letter with you if you are going to play. You can get this in Blok 6 (Studentenwijk Arenberg) from the vice. You should be able to show this letter when security asks for it.
 
-Student IT
+VTK
 
 -- This is an automatically generated email, please do not reply --',
                 ),
@@ -96,7 +78,7 @@ Een nieuwe piano reservatie is aangemaakt:
 
 Het is belangrijk dat je de begeleidende brief steeds bij je hebt als je gaat spelen. Deze kan je gaan afhalen op blok 6 (Studentenwijk Arenberg) bij de vice. De brief moet je steeds kunnen voorleggen wanneer security er om vraagt.
 
-Student IT
+VTK
 
 -- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
                 ),
@@ -105,8 +87,8 @@ Student IT
         'description' => 'The mail sent when a new piano reservation is created',
     ),
     array(
-        'key'   => 'logistics.piano_new_reservation_confirmed',
-        'value' => serialize(
+        'key'         => 'logistics.piano_new_reservation_confirmed',
+        'value'       => serialize(
             array(
                 'en' => array(
                     'subject' => 'New Piano Reservation',
@@ -117,7 +99,7 @@ A new piano reservation was made and confirmed:
 
 It is important you always have the accompanying letter with you if you are going to play. You can get this in Blok 6 (Studentenwijk Arenberg) from the vice. You should be able to show this letter when security asks for it.
 
-Student IT
+VTK
 
 -- This is an automatically generated email, please do not reply --',
                 ),
@@ -130,7 +112,7 @@ Een nieuwe piano reservatie is aangemaakt en bevestigd:
 
 Het is belangrijk dat je de begeleidende brief steeds bij je hebt als je gaat spelen. Deze kan je gaan afhalen op blok 6 (Studentenwijk Arenberg) bij de vice. De brief moet je steeds kunnen voorleggen wanneer security er om vraagt.
 
-Student IT
+VTK
 
 -- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
                 ),
@@ -149,8 +131,8 @@ Student IT
         'description' => 'Whether or not to show the text above the reservations.',
     ),
     array(
-        'key'   => 'logistics.extra_text_reservation_page',
-        'value' => serialize(
+        'key'         => 'logistics.extra_text_reservation_page',
+        'value'       => serialize(
             array(
                 'en' => 'This is a placeholder text, please change me',
                 'nl' => 'Deze tekst moet nog aanepast worden',
@@ -179,13 +161,18 @@ Student IT
         'description' => '',
     ),
     array(
+        'key'         => 'logistics.consumptions_search_max_results',
+        'value'       => '30',
+        'description' => 'The maximum number of search results shown',
+    ),
+    array(
         'key'         => 'logistics.article_picture_path',
         'value'       => '/_logistics/article',
         'description' => 'The path for article photo\'s',
     ),
     array(
-        'key'   => 'logistics.order_request',
-        'value' => serialize(
+        'key'         => 'logistics.order_request',
+        'value'       => serialize(
             array(
                 'subject' => 'Nieuwe Order Request {{ name }}',
                 'content' => 'Beste,
@@ -203,8 +190,8 @@ Student IT
         'description' => 'The mail sent when a new order request is created',
     ),
     array(
-        'key'   => 'logistics.order_request_confirmed',
-        'value' => serialize(
+        'key'         => 'logistics.order_request_confirmed',
+        'value'       => serialize(
             array(
                 'en' => array(
                     'subject' => 'Order Request Approved {{ name }}',
@@ -235,8 +222,8 @@ Student IT
         'description' => 'The mail sent when an order request is confirmed',
     ),
     array(
-        'key'   => 'logistics.order_request_rejected',
-        'value' => serialize(
+        'key'         => 'logistics.order_request_rejected',
+        'value'       => serialize(
             array(
                 'en' => array(
                     'subject' => 'Order Request Rejected  {{ name }}',
@@ -271,8 +258,8 @@ Student IT
         'description' => 'The mail sent when an order request is rejected',
     ),
     array(
-        'key'   => 'logistics.order_alert_mail',
-        'value' => serialize(
+        'key'         => 'logistics.order_alert_mail',
+        'value'       => serialize(
             array(
                 'subject' => 'Nieuwe Order Request {{ name }} voor {{ article }}',
                 'content' => 'Beste,

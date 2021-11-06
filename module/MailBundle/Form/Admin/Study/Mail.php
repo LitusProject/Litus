@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace MailBundle\Form\Admin\Study;
 
@@ -53,7 +35,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                         'style'    => 'max-width: 400px;',
                         'multiple' => true,
                     ),
-                    'options' => array(
+                    'options'    => array(
                         'options' => $studies,
                     ),
                 )
@@ -70,7 +52,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                     'attributes' => array(
                         'multiple' => true,
                     ),
-                    'options' => array(
+                    'options'    => array(
                         'options' => $groups,
                     ),
                 )
@@ -102,7 +84,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'style' => 'width: 400px;',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -123,7 +105,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'style' => 'width: 400px;',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -151,7 +133,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                             'attributes' => array(
                                 'style' => 'max-width: 100%;',
                             ),
-                            'options' => array(
+                            'options'    => array(
                                 'options' => $storedMessages,
                             ),
                         ),
@@ -174,7 +156,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                         'attributes' => array(
                             'style' => 'width: 400px;',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -190,7 +172,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                         'attributes' => array(
                             'style' => 'width: 500px; height: 200px;',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -206,7 +188,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                             'multiple'  => true,
                             'data-help' => 'The maximum file size is ' . self::FILE_SIZE . '.',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'validators' => array(
                                     array(

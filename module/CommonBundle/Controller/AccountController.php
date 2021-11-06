@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace CommonBundle\Controller;
 
@@ -42,32 +24,110 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             return new ViewModel();
         }
 
+        // Cudi (All assigned bookings)
+        $allBookings = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
+            ->findAllOpenByPerson($academic);
+        $bookings = array();
+        $futureBookings = array();
+        foreach ($allBookings as $booking) {
+            if ($booking->getStatus() == 'assigned') {
+                array_push($bookings, $booking);
+            } else {
+                array_push($futureBookings, $booking);
+            }
+        }
+
+        $total = 0;
+        foreach ($bookings as $booking) {
+            $total += $booking->getArticle()->getSellPrice() * $booking->getNumber();
+        }
+
+        // Shifts
+        $myShifts = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findAllActiveByPerson($academic);
+
+        // Timeslots
+        $mySlots = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\RegistrationShift')
+            ->findAllActiveByPerson($academic);
+
+        // Reservations
+        $reservations = $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\Reservation')
+            ->getAllCurrentReservationsByPerson($academic);
+
+        //Consumptions
+        if ($this->getEntityManager()->getRepository('TicketBundle\Entity\Consumptions')->findOneByPerson($academic) != null
+        ) {
+            $consumptions = $this->getEntityManager()
+                ->getRepository('TicketBundle\Entity\Consumptions')
+                ->findOneByPerson($academic)->getConsumptions();
+        } else {
+            $consumptions = 0;
+        }
+
+        return new ViewModel(
+            array(
+                'academicYear'     => $this->getCurrentAcademicYear(),
+                'entityManager'    => $this->getEntityManager(),
+                'organizationYear' => $this->getCurrentAcademicYear(true),
+                'bookings'         => $bookings,
+                'futureBookings'   => $futureBookings,
+                'total'            => $total,
+                'shifts'           => $myShifts,
+                'timeslots'        => $mySlots,
+                'reservations'     => $reservations,
+                'shopName'         => $this->getShopName(),
+                'consumptions'     => $consumptions,
+            )
+        );
+    }
+
+    public function profileAction()
+    {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
+            return new ViewModel();
+        }
+
         $metaData = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
             ->findOneByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
+        // Retrieve the studies and its subjects
         $studies = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
             ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
-        $mappings = array();
-        foreach ($studies as $enrollment) {
-            $mappings[] = array(
-                'enrollment' => $enrollment,
-                'subjects' => $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
-                    ->findAllByStudy($enrollment->getStudy()),
-            );
-        }
+//        $allStudies = array();
+//        $allSubjects = array();
+//        $subjectIds = array();  // To avoid duplicates
+//        foreach ($studies as $study) {
+//            $subjects = $this->getEntityManager()
+//                ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
+//                ->findAllByStudy($study->getStudy());
+//            $allStudies[] = $study->getStudy();
+//            foreach ($subjects as $subject) {
+//                if (!in_array($subject->getSubject()->getId(), $subjectIds)) {
+//                    $subjectIds[] = $subject->getSubject()->getId();
+//                    $allSubjects[] = $subject->getSubject();
+//                }
+//            }
+//        }
 
+        // Retrieve the other subjects
         $subjects = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Subject')
             ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
-        $subjectIds = array();
-        foreach ($subjects as $enrollment) {
-            $subjectIds[] = $enrollment->getSubject()->getId();
-        }
+//        foreach ($subjects as $subject) {
+//            if (!in_array($subject->getSubject()->getId(), $subjectIds)) {
+//                $subjectIds[] = $subject->getSubject()->getId();
+//                $allSubjects[] = $subject->getSubject();
+//            }
+//        }
 
         $profileForm = $this->getForm('common_account_profile');
         $profileForm->setAttribute(
@@ -84,19 +144,18 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('enable_organization_signature');
 
-
         return new ViewModel(
             array(
-                'academicYear' => $this->getCurrentAcademicYear(),
+                'academicYear'     => $this->getCurrentAcademicYear(),
                 'organizationYear' => $this->getCurrentAcademicYear(true),
                 'signatureEnabled' => $signatureEnabled,
-                'metaData' => $metaData,
-                'studies' => $mappings,
-                'subjects' => $subjectIds,
-                'profilePath' => $this->getEntityManager()
+                'metaData'         => $metaData,
+                'studies'          => $studies,
+                'subjects'         => $subjects,
+                'profilePath'      => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
-                'profileForm' => $profileForm,
+                'profileForm'      => $profileForm,
             )
         );
     }
@@ -168,6 +227,31 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 ->findOneById($id);
         }
 
+        $tshirts = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.tshirt_article')
+        );
+
+        $oldTshirtBooking = null;
+        $oldTshirtSize = null;
+        if ($metaData !== null) {
+            if ($enableRegistration) {
+                if ($metaData->getTshirtSize() !== null && array_key_exists($metaData->getTshirtSize(), $tshirts)) {
+                    $oldTshirtBooking = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sale\Booking')
+                        ->findOneAssignedByArticleAndPersonInAcademicYear(
+                            $this->getEntityManager()
+                                ->getRepository('CudiBundle\Entity\Sale\Article')
+                                ->findOneById($tshirts[$metaData->getTshirtSize()]),
+                            $academic,
+                            $this->getCurrentAcademicYear()
+                        );
+                }
+            }
+            $oldTshirtSize = $metaData->getTshirtSize();
+        }
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost()->toArray();
             $formData['academic']['university_identification'] = $academic->getUniversityIdentification();
@@ -224,6 +308,10 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 }
 
                 if ($enableRegistration) {
+                    if ($oldTshirtBooking !== null && $oldTshirtSize != $metaData->getTshirtSize()) {
+                        $this->getEntityManager()->remove($oldTshirtBooking);
+                    }
+
                     $membershipArticles = array();
                     $ids = unserialize(
                         $this->getEntityManager()
@@ -241,7 +329,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                         if ($isicMembership && $isicOrder == null) {
                             $isicRedirect = true;
                         } else {
-                            $this->bookRegistrationArticles($academic, $selectedOrganization, $this->getCurrentAcademicYear());
+                            $this->bookRegistrationArticles($academic, $organizationData['tshirt_size'], $selectedOrganization, $this->getCurrentAcademicYear());
                         }
                     } else {
                         foreach ($membershipArticles as $membershipArticle) {
@@ -282,9 +370,10 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     $this->redirect()->toRoute(
                         'cudi_isic',
                         array(
-                            'action' => 'form',
-                            'redirect' => $this->getParam('return') ? $this->getParam('return') : 'common_account',
+                            'action'       => 'form',
+                            'redirect'     => $this->getParam('return') ? $this->getParam('return') : 'common_account',
                             'organization' => $selectedOrganization->getId(),
+                            'size'         => $organizationData['tshirt_size'],
                         )
                     );
                 } else {
@@ -302,12 +391,12 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
         return new ViewModel(
             array(
-                'form' => $form,
-                'metaData' => $metaData,
+                'form'               => $form,
+                'metaData'           => $metaData,
                 'membershipArticles' => $membershipArticles,
                 'termsAndConditions' => $termsAndConditions,
-                'studentDomain' => $studentDomain,
-                'academicYear' => $this->getCurrentAcademicYear(),
+                'studentDomain'      => $studentDomain,
+                'academicYear'       => $this->getCurrentAcademicYear(),
             )
         );
     }
@@ -481,7 +570,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 return new ViewModel(
                     array(
                         'result' => array(
-                            'status' => 'success',
+                            'status'  => 'success',
                             'profile' => $this->getEntityManager()
                                 ->getRepository('CommonBundle\Entity\General\Config')
                                 ->getConfigValue('common.profile_path') . '/' . $newFileName,
@@ -493,7 +582,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     array(
                         'result' => array(
                             'status' => 'error',
-                            'form' => array(
+                            'form'   => array(
                                 'errors' => $form->getMessages(),
                             ),
                         ),
@@ -578,5 +667,15 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 $this->getParam('return')
             );
         }
+    }
+
+    /**
+     * @return string
+     */
+    private function getShopName()
+    {
+        return $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shop.name');
     }
 }

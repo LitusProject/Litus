@@ -102,30 +102,16 @@
                         </fo:block>
                     </fo:block-container>
 
-                    <fo:block-container position="absolute" top="220mm" left="0mm" width="170mm" height="37mm">
-                        <fo:table table-layout="fixed" width="100%">
-                            <fo:table-column column-number="1" column-width="20mm"/>
-                            <fo:table-column column-number="2" column-width="110mm"/>
-                            <fo:table-column column-number="3" column-width="40mm"/>
-
-                            <fo:table-body>
-                                <fo:table-row>
-                                    <fo:table-cell display-align="after">
-                                        <fo:block text-align="left" padding-bottom="3mm">
-                                            <xsl:apply-templates select="our_union"/>
-                                        </fo:block>
-                                    </fo:table-cell>
-
-                                    <fo:table-cell display-align="after" padding-start="3mm">
+                    <fo:block-container position="absolute" top="246mm" left="39mm" width="60mm" height="37mm">
                                         <fo:block font-family="sans-serif" font-size="10pt">
                                             <fo:block font-weight="bold"><xsl:value-of select="address/name"/></fo:block>
                                             <fo:block><xsl:value-of select="address/street"/></fo:block>
                                             <fo:block><xsl:value-of select="address/city"/></fo:block>
                                             <fo:block><xsl:value-of select="address/site"/></fo:block>
                                         </fo:block>
-                                    </fo:table-cell>
+                    </fo:block-container>
 
-                                    <fo:table-cell display-align="after">
+                    <fo:block-container position="absolute" top="237mm" left="0mm" width="36mm" height="37mm">
                                         <fo:block font-family="sans-serif" font-size="12pt" font-weight="bold" text-align="center" space-after="2mm">
                                             <xsl:value-of select="price"/>&#160;<xsl:call-template name="euro"/>
                                         </fo:block>
@@ -139,10 +125,14 @@
                                                 </xsl:call-template>
                                             </fo:instream-foreign-object>
                                         </fo:block>
-                                    </fo:table-cell>
-                                </fo:table-row>
-                            </fo:table-body>
-                        </fo:table>
+                    </fo:block-container>
+
+                    <fo:block-container position="absolute" top="228mm" left="117mm" width="63mm" height="49mm">
+                        <fo:block>
+                            <fo:external-graphic content-width="63mm" content-height="49mm" scaling="uniform">
+                                <xsl:attribute name="src"><xsl:text>url('file:data/images/logo/hoekje.svg')</xsl:text></xsl:attribute>
+                            </fo:external-graphic>
+                        </fo:block>
                     </fo:block-container>
 
                 </fo:flow>
@@ -150,7 +140,5 @@
             </fo:page-sequence>
 
         </fo:root>
-
     </xsl:template>
-
 </xsl:stylesheet>

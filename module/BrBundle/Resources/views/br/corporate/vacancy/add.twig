@@ -1,8 +1,18 @@
 {% extends 'corporate/partials/vacancy.twig' %}
 
 {% block content %}
-    <h1>{{ translate('Vacancy') }}</h1>
 
-    {% import 'site/partials/form.twig' as forms %}
-    {{ forms.renderForm(form) }}
+    <div class="container">
+
+        <div class="standardPageTitleHolder">
+            <h1>{{ translate('Vacancy') }}</h1>
+            <div class="pageTitleDeco"></div>
+        </div>
+
+        <div style="height: 30px"></div>
+
+        {% import 'site/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+
+    </div>
 {% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+
+    {# TO DO translations over heel deze pagina #}
+    <div class="br-studentLaunchBg">
+        <div class="container">
+            <h1 style="color:white; margin-bottom: 0px; font-size: 70px; font-weight: 800">{{ texts['br_career_student_launch']['main'] }}</h1>
+            <h3 style="color:white; font-weight: 500">{{ texts['br_career_student_launch']['sub'] }}</h3>
+        </div>
+    </div>
+
+    <div style="height: 100px"></div>
+    
+    <div class="container">
+
+        {# Inleidend blok #}
+        <div>
+            <div style="position:relative">
+                <h3 style="position: relative; z-index: 1">{{ texts['br_career_student_container']['main'] }}</h3>
+                <div class="br-titledecoration"></div>
+            </div>
+            <div style="height: 30px"></div>
+            <div class="br-infoHolder">
+                <div class="br-markdown" style="margin-right: 40px; margin-bottom: 20px; text-align: justify; line-height: 25px">
+                    {{ texts['br_career_student_container']['sub'] }}
+                </div>
+                <div class="temporaryImage">
+                    <iframe class="videoIframe" src="https://www.youtube.com/watch?v=lA0DMPXDlWU"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <div style="height: 50px"></div>
+    </div>
+
+    <div style="height: 100px"></div>
+
+    {# Doorklikknop vacatures/stages/studentenjobs #}
+    <div class="br-blueBanner">
+        <div class="container">
+            <h2 style="color:white">{{ texts['br_career_student_search']['search'] }}</h2>
+            {# TO DO links toevoegen #}
+            <a class="button yellow unfilled" href="{{ url('br_career_internship') }}">{{ translate('View Internships') }}</a>
+            <a class="button yellow unfilled" href="{{ url('br_career_vacancy') }}">{{ translate('View Jobs') }}</a>
+            <a class="button yellow unfilled" href="{{ url('br_career_student_job') }}">{{ translate('View Studentjobs') }}</a>
+        </div>
+    </div>
+
+    <div style="height: 80px"></div>
+
+    <div class="container">
+
+        {# Praesidium voorstelling #}
+        <div>
+            <div style="position:relative">
+                <h3 style="position: relative; z-index: 1">{{ translate('Corporate Relations') }}</h3>
+                <div class="br-titledecoration"></div>
+            </div>    
+
+            <div class="memberHolder">
+                {% for member in members %}
+                    <div class="member">
+                        {% if member.getPhotoPath() %}
+                            <div class="memberPhoto" style="background-image: url({{ profilePath }}/{{ member.getPhotoPath() }})"></div>
+                        {% else %}
+                            <img data-src="holder.js/180x135/auto/text:Image" alt="">
+                        {% endif %}
+                        <h4 style="margin-bottom: 0px">{{ member.getFullName() }}</h4>
+                        {% if member.isCoordinator() %}
+                            <p style="text-align: center;">{{ translate('Groupcoordinator') }}</p>
+                        {% endif %}
+                        {% if not member.getDescription() == '' %}
+                            <p style="text-align: center;">{{ member.getDescription() }}</p>
+                        {% endif %}
+                        {% for extraUnit in extraUnits[member.getId()] %}
+                            <p style="text-align: center;">{{ hideEmail('<a href="mailto:' ~ extraUnit.getMail() ~ '">' ~ extraUnit.getName() ~ '</a>') }}</p>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div> 
+
+
+        </div>
+
+    </div>
+
+
+{% endblock %}

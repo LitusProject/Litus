@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace TicketBundle\Form\Ticket;
 
@@ -24,6 +6,7 @@ use CommonBundle\Entity\User\Person;
 use LogicException;
 use RuntimeException;
 use TicketBundle\Entity\Event;
+use Zend\Validator\Identical;
 
 /**
  * Book Tickets
@@ -41,6 +24,11 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
      * @var Person
      */
     private $person;
+
+    /**
+     * @var boolean Are the conditions already checked or not
+     */
+    protected $conditionsChecked = false;
 
     public function init()
     {
@@ -64,15 +52,16 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                     'attributes' => array(
                         'options' => $this->getNumberOptions(),
                     ),
-                    'options' => array(
+                    'options'    => array(
                         'input' => array(
                             'required'   => true,
                             'validators' => array(
                                 array(
                                     'name'    => 'NumberTickets',
                                     'options' => array(
-                                        'event'  => $this->event,
-                                        'person' => $this->person,
+                                        'event'   => $this->event,
+                                        'person'  => $this->person,
+                                        'maximum' => $this->event->getLimitPerPerson(),
                                     ),
                                 ),
                             ),
@@ -90,15 +79,16 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'options' => $this->getNumberOptions(),
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'required'   => true,
                                 'validators' => array(
                                     array(
                                         'name'    => 'NumberTickets',
                                         'options' => array(
-                                            'event'  => $this->event,
-                                            'person' => $this->person,
+                                            'event'   => $this->event,
+                                            'person'  => $this->person,
+                                            'maximum' => $this->event->getLimitPerPerson(),
                                         ),
                                     ),
                                 ),
@@ -113,19 +103,20 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                     array(
                         'type'       => 'select',
                         'name'       => 'option_' . $option->getId() . '_number_member',
-                        'label'      => ucfirst($option->getName()) . ' (Member)',
+                        'label'      => $option->getPriceNonMembers() != 0 ? ucfirst($option->getName()) . ' (Member)' : ucfirst($option->getName()),
                         'attributes' => array(
                             'options' => $this->getNumberOptions(),
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'required'   => true,
                                 'validators' => array(
                                     array(
                                         'name'    => 'NumberTickets',
                                         'options' => array(
-                                            'event'  => $this->event,
-                                            'person' => $this->person,
+                                            'event'   => $this->event,
+                                            'person'  => $this->person,
+                                            'maximum' => $this->event->getLimitPerPerson(),
                                         ),
                                     ),
                                 ),
@@ -134,7 +125,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                     )
                 );
 
-                if (!$this->event->isOnlyMembers()) {
+                if (!$this->event->isOnlyMembers() && $option->getPriceNonMembers() != 0) {
                     $this->add(
                         array(
                             'type'       => 'select',
@@ -143,15 +134,16 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                             'attributes' => array(
                                 'options' => $this->getNumberOptions(),
                             ),
-                            'options' => array(
+                            'options'    => array(
                                 'input' => array(
                                     'required'   => true,
                                     'validators' => array(
                                         array(
                                             'name'    => 'NumberTickets',
                                             'options' => array(
-                                                'event'  => $this->event,
-                                                'person' => $this->person,
+                                                'event'   => $this->event,
+                                                'person'  => $this->person,
+                                                'maximum' => $this->event->getLimitPerPerson(),
                                             ),
                                         ),
                                     ),
@@ -162,6 +154,33 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                 }
             }
         }
+
+        $this->add(
+            array(
+                'type'       => 'checkbox',
+                'name'       => 'conditions',
+                'label'      => 'I have read and accept the GDPR terms and condition specified above',
+                'attributes' => array(
+                    'id' => 'conditions',
+                ),
+                'options'    => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name'    => 'identical',
+                                'options' => array(
+                                    'token'    => true,
+                                    'strict'   => false,
+                                    'messages' => array(
+                                        Identical::NOT_SAME => 'You must agree to the terms and conditions.',
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            )
+        );
 
         $this->addSubmit('Book', 'book_tickets');
     }
@@ -179,7 +198,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-     * @param  Event $event
+     * @param Event $event
      * @return self
      */
     public function setEvent(Event $event)
@@ -190,12 +209,23 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-     * @param  Person $person
+     * @param Person $person
      * @return self
      */
-    public function setPerson(Person $person)
+    public function setPerson($person)
     {
         $this->person = $person;
+
+        return $this;
+    }
+
+    /**
+     * @param boolean $conditionsChecked
+     * @return self
+     */
+    public function setConditionsChecked($conditionsChecked = true)
+    {
+        $this->conditionsChecked = !!$conditionsChecked;
 
         return $this;
     }

@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace TicketBundle\Hydrator;
 
@@ -31,7 +13,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
      */
     private static $stdKeys = array(
         'active', 'bookable_praesidium', 'bookable', 'number_of_tickets',
-        'limit_per_person', 'only_members',
+        'limit_per_person', 'only_members', 'description'
     );
 
     protected function doHydrate(array $data, $object = null)
@@ -64,13 +46,17 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
 
                     $option->setName($optionData['option'])
                         ->setPriceMembers($optionData['price_members'])
-                        ->setPriceNonMembers($optionData['price_non_members']);
+                        ->setMaximum(intval($optionData['maximum']));
+                    $price_non_members = $optionData['membershipDiscount'] == 1 ? $optionData['price_non_members'] : null;
+                    $option->setPriceNonMembers($price_non_members);
                 } else {
+                    $price_non_members = $optionData['membershipDiscount'] == 1 ? $optionData['price_non_members'] : null;
                     $option = new OptionEntity(
                         $object,
                         $optionData['option'],
                         $optionData['price_members'],
-                        $optionData['price_non_members']
+                        $price_non_members,
+                        intval($optionData['maximum'])
                     );
                     $this->getEntityManager()->persist($option);
                 }
@@ -92,8 +78,10 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                     for ($i = $object->getNumberOfTickets(); $i < $data['number_of_tickets']; $i++) {
                         $this->getEntityManager()->persist(
                             new TicketEntity(
+                                $this->getEntityManager(),
                                 $object,
                                 'empty',
+                                null,
                                 null,
                                 null,
                                 null,
@@ -105,7 +93,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                     // net ticket count =< old ticket count
                     $tickets = $this->getEntityManager()
                         ->getRepository('TicketBundle\Entity\Ticket')
-                        ->findAllEmptyByEvent($object);
+                        ->findAllEmptyByEventQuery($object)->getResult();
                     $numberOfTickets = $object->getNumberOfTickets() - $data['number_of_tickets'];
 
                     foreach ($tickets as $ticket) {
@@ -122,8 +110,10 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                 for ($i = 0; $i < $data['number_of_tickets']; $i++) {
                     $this->getEntityManager()->persist(
                         new TicketEntity(
+                            $this->getEntityManager(),
                             $object,
                             'empty',
+                            null,
                             null,
                             null,
                             null,
@@ -136,7 +126,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             // tickets are not generated (anymore)
             $tickets = $this->getEntityManager()
                 ->getRepository('TicketBundle\Entity\Ticket')
-                ->findAllEmptyByEvent($object);
+                ->findAllEmptyByEventQuery($object)->getResult();
             foreach ($tickets as $ticket) {
                 $this->getEntityManager()->remove($ticket);
             }
@@ -147,7 +137,10 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             ->setTicketsGenerated($generateTickets)
             ->setPriceMembers($priceMembers)
             ->setPriceNonMembers($priceNonMembers)
-            ->setAllowRemove($data['allow_remove']);
+            ->setAllowRemove($data['allow_remove'])
+            ->setInvoiceIdBase($data['invoice_base_id'])
+            ->setOnlinePayment($data['online_payment'])
+            ->setOrderIdBase($data['order_base_id']);
 
         return $this->stdHydrate($data, $object, self::$stdKeys);
     }
@@ -164,7 +157,9 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         $data['bookings_close_date'] = $object->getBookingsCloseDate() ? $object->getBookingsCloseDate()->format('d/m/Y H:i') : '';
         $data['generate_tickets'] = $object->areTicketsGenerated();
         $data['allow_remove'] = $object->allowRemove();
-
+        $data['invoice_base_id'] = $object->getInvoiceIdBase();
+        $data['order_base_id'] = $object->getOrderIdBase();
+        $data['online_payment'] = $object->isOnlinePayment();
         if (count($object->getOptions()) == 0) {
             $data['prices']['price_members'] = number_format($object->getPriceMembers() / 100, 2);
             $data['prices']['price_non_members'] = $object->isOnlyMembers() ? '' : number_format($object->getPriceNonMembers() / 100, 2);
@@ -176,6 +171,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                 $data['options'][] = array(
                     'option_id'         => $option->getId(),
                     'option'            => $option->getName(),
+                    'maximum'           => $option->getMaximum(),
                     'price_members'     => number_format($option->getPriceMembers() / 100, 2),
                     'price_non_members' => $object->isOnlyMembers() ? '' : number_format($option->getPriceNonMembers() / 100, 2),
                 );

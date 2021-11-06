@@ -1,27 +1,9 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 return array(
-    'Your subscriptions couldn\'t be saved.' => 'Your subscriptions couldn\'t be saved.',
-    'Subscribe'                              => 'Subscribe',
-    'Unsubscribe'                            => 'Unsubscribe',
+    'Your subscriptions couldn\'t be saved.'                   => 'Your subscriptions couldn\'t be saved.',
+    'Subscribe'                                                => 'Subscribe',
+    'Unsubscribe'                                              => 'Unsubscribe',
 
     'This form is currently closed.'                           => 'This form is currently closed.',
     'This form has reached the maximum number of submissions.' => 'This form has reached the maximum number of submissions.',
@@ -37,23 +19,23 @@ return array(
     'Edit'                                                     => 'Edit',
     'Occupied'                                                 => 'Occupied',
 
-    'Please submit these forms in order.'  => 'Please submit these forms in order.',
-    'This form group is currently closed.' => 'This form group is currently closed.',
-    'Please login to view this group.'     => 'Please login to view this group.',
-    'Completed'                            => 'Completed',
-    'In Progress'                          => 'In Progress',
-    'Editing'                              => 'Editing',
-    'First Submittion'                     => 'First Submittion',
-    'Not Completed'                        => 'Not Completed',
-    'Start'                                => 'Start',
-    'Continue'                             => 'Continue',
+    'Please submit these forms in order.'                      => 'Please submit these forms in order.',
+    'This form group is currently closed.'                     => 'This form group is currently closed.',
+    'Please login to view this group.'                         => 'Please login to view this group.',
+    'Completed'                                                => 'Completed',
+    'In Progress'                                              => 'In Progress',
+    'Editing'                                                  => 'Editing',
+    'First Submittion'                                         => 'First Submittion',
+    'Not Completed'                                            => 'Not Completed',
+    'Start'                                                    => 'Start',
+    'Continue'                                                 => 'Continue',
 
-    'Save as Draft'                         => 'Save as Draft',
-    'Draft'                                 => 'Draft',
-    'You have already a draft of this form' => 'You have already a draft of this form',
-    'Subject'                               => 'Subject',
+    'Save as Draft'                                            => 'Save as Draft',
+    'Draft'                                                    => 'Draft',
+    'You have already a draft of this form'                    => 'You have already a draft of this form',
+    'Subject'                                                  => 'Subject',
 
-    'Yes'     => 'Yes',
-    'No'      => 'No',
-    '(empty)' => '(empty)',
+    'Yes'                                                      => 'Yes',
+    'No'                                                       => 'No',
+    '(empty)'                                                  => '(empty)',
 );

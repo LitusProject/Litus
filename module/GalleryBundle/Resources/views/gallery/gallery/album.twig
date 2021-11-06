@@ -1,20 +1,22 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-    <h1>{{ translate('Pictures') }}</h1>
+    <div class="container">
+        <h1>{{ translate('Pictures') }}</h1>
 
-    <h2>{{ album.getTitle(language) }}</h2>
+        <h2>{{ album.getTitle(language) }}</h2>
 
-    <div id="images">
-        {% for photo in album.getPhotos() %}
-            {% if not photo.isCensored() %}
-                <a href="{{ filePath }}/{{ photo.getAlbum().getId() }}/{{ photo.getFilePath() }}" class="imageGallery" data-id="{{ photo.getId() }}"><img src="{{ filePath }}/{{ photo.getAlbum().getId() }}/{{ photo.getThumbPath() }}"></a>
-            {% elseif photo.isCensored() and allowCensor %}
-                <a href="{{ filePath }}/{{ photo.getAlbum().getId() }}/{{ photo.getFilePath() }}" class="imageGallery censored" data-id="{{ photo.getId() }}"><img src="{{ filePath }}/{{ photo.getAlbum().getId() }}/{{ photo.getThumbPath() }}"></a>
-            {% endif %}
-        {% endfor %}
+        <div id="images">
+            {% for photo in album.getPhotos() %}
+                {% if not photo.isCensored() %}
+                    <a href="{{ filePath }}/{{ photo.getAlbum().getId() }}/{{ photo.getFilePath() }}" class="imageGallery" data-id="{{ photo.getId() }}"><img src="{{ filePath }}/{{ photo.getAlbum().getId() }}/{{ photo.getThumbPath() }}"></a>
+                {% elseif photo.isCensored() and allowCensor %}
+                    <a href="{{ filePath }}/{{ photo.getAlbum().getId() }}/{{ photo.getFilePath() }}" class="imageGallery censored" data-id="{{ photo.getId() }}"><img src="{{ filePath }}/{{ photo.getAlbum().getId() }}/{{ photo.getThumbPath() }}"></a>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <br class="clear" />
     </div>
-    <br class="clear" />
 {% endblock %}
 
 {% block content_script %}

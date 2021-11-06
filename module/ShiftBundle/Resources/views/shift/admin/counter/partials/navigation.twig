@@ -4,8 +4,14 @@
         {% if hasAccess('shift_admin_shift_counter', 'export') %}
             <li><a {% if 'export' == getParam('action') %} class="active" {% endif %} href="{{ url('shift_admin_shift_counter', {"action": "export"}) }}">Export</a></li>
         {% endif %}
+        {% if hasAccess('shift_admin_shift_counter', 'totalPayed') %}
+            <li><a {% if 'totalPayed' == getParam('action') %} class="active" {% endif %} href="{{ url('shift_admin_shift_counter', {"action": "totalPayed"}) }}">Total Payed</a></li>
+        {% endif %}
         {% if hasAccess('shift_admin_shift_counter', 'units') %}
             <li><a {% if 'units' == getParam('action') %} class="active" {% endif %} href="{{ url('shift_admin_shift_counter', {"action": "units"}) }}">Units</a></li>
+        {% endif %}
+        {% if hasAccess('shift_admin_shift_counter', 'praesidium') %}
+            <li><a {% if 'praesidium' == getParam('action') %} class="active" {% endif %} href="{{ url('shift_admin_shift_counter', {"action": "praesidium"}) }}">Praesidium</a></li>
         {% endif %}
         {% if hasAccess('shift_admin_shift_counter', 'index') %}
             <li><a {% if 'index' == getParam('action') %} class="active" {% endif %} href="{{ url('shift_admin_shift_counter', {"action": "index"}) }}">People</a></li>

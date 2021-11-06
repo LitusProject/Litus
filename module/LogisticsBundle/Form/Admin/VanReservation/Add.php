@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace LogisticsBundle\Form\Admin\VanReservation;
 
@@ -71,6 +53,19 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 ),
             )
         );
+        /**
+         * Copy paste this code in the validators above to check for reservation conflicts
+         * Was requested to remove by logistics in 2016-2017.
+         * array(
+                            'name' => 'logistics_reservation_conflict',
+                            'options' => array(
+                                'start_date' => 'start_date',
+                                'format' => 'd/m/Y H:i',
+                                'resource' => VanReservation::VAN_RESOURCE_NAME,
+                                'reservation_id' => null === $this->reservation ? 0 : $this->reservation->getId(),
+                            ),
+                        ),
+         */
 
         $this->add(
             array(
@@ -84,7 +79,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             array('name' => 'StringTrim'),
                         ),
                     ),
-                ),
+                )
             )
         );
 

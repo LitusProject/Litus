@@ -35,14 +35,27 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function indexAction()
     {
-        $person = $this->getPersonEntity();
-        if ($person === null) {
-            return $this->notFoundAction();
-        }
 
         $form = $this->getForm('logistics_piano-reservation_add');
 
         if ($this->getRequest()->isPost()) {
+            $person = $this->getPersonEntity();
+            if ($person === null) {
+                $this->flashMessenger()->error(
+                    'Error',
+                    'You must be logged in to make a reservation!'
+                );
+
+                $this->redirect()->toRoute(
+                    'logistics_piano',
+                    array(
+                        'action' => 'index',
+                    )
+                );
+
+                return;
+            }
+
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 

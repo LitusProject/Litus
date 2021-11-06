@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace CommonBundle\Controller;
 
@@ -47,6 +29,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'wiki'               => $this->getWiki(),
                 'cudi'               => $this->getCudiInfo(),
                 'shop'               => $this->getShopInfo(),
+                'entityManager'      => $this->getEntityManager(),
                 'newsItems'          => $this->getNewsItems(),
                 'registrationShifts' => $this->getRegistrationShiftsInfo(),
                 'notifications'      => $notifications,
@@ -191,20 +174,12 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $events = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
-            ->findAllActive();
+            ->findAllActiveAndNotHidden();
 
         $calendarItems = array();
         foreach ($events as $event) {
-            $date = $event->getStartDate()->format('d-M');
-            if (!isset($calendarItems[$date])) {
-                $calendarItems[$date] = (object) array(
-                    'date'   => $event->getStartDate(),
-                    'events' => array(),
-                );
-            }
-            $calendarItems[$date]->events[] = $event;
+            $calendarItems[$event->getId()] = $event;
         }
-
         return $calendarItems;
     }
 
@@ -293,6 +268,11 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             'url' => $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('shop.url_reservations'),
+            'openingHours' => unserialize(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('shop.main_page_text')
+            )[$this->getLanguage()->getAbbrev()],
         );
     }
 
@@ -319,7 +299,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
             return array(
-                'enable' => $this->getEntityManager()
+                'enable'  => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.poc'),
                 'pocItem' => null,
@@ -344,7 +324,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 $pocItem[] = array(
                     'groupId'      => $lastPocGroup,
                     'pocGroupList' => $pocGroupList,
-                    'pocExample'  => $pocGroupList[0],
+                    'pocExample'   => $pocGroupList[0],
                 );
                 unset($pocGroupList);
                 $pocGroupList = array();
@@ -362,7 +342,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
         return
             array(
-                'enable' => $this->getEntityManager()
+                'enable'  => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.poc'),
                 'pocItem' => $pocItem,

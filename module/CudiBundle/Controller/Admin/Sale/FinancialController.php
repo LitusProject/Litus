@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace CudiBundle\Controller\Admin\Sale;
 
@@ -53,26 +35,26 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
             'totalTheoreticalRevenue' => $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Session')
                 ->getTheoreticalRevenueByAcademicYear($academicYear),
-            'totalActualRevenue'   => 0,
-            'totalPurchasedAmount' => $this->getEntityManager()
+            'totalActualRevenue'      => 0,
+            'totalPurchasedAmount'    => $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Session')
                 ->getPurchasedAmountByAcademicYear($academicYear),
-            'totalNumberSold' => $this->getEntityManager()
+            'totalNumberSold'         => $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\SaleItem')
                 ->findNumberByAcademicYear($academicYear),
-            'uniqueClients' => $this->getEntityManager()
+            'uniqueClients'           => $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\SaleItem')
                 ->findUniqueClientsByAcademicYear($academicYear),
-            'totalOrderedPrice' => $this->getEntityManager()
+            'totalOrderedPrice'       => $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Order\Item')
                 ->getOrderedAmountByAcademicYear($academicYear),
-            'totalNumberOrdered' => $this->getEntityManager()
+            'totalNumberOrdered'      => $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Order\Item')
                 ->getNumberByAcademicYear($academicYear),
-            'totalDeliveredPrice' => $this->getEntityManager()
+            'totalDeliveredPrice'     => $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Delivery')
                 ->getDeliveredAmountByAcademicYear($academicYear),
-            'totalNumberDelivered' => $this->getEntityManager()
+            'totalNumberDelivered'    => $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Delivery')
                 ->getNumberByAcademicYear($academicYear),
         );
@@ -145,26 +127,26 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
                     'totalTheoreticalRevenue' => $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Sale\Session')
                         ->getTheoreticalRevenueBetween($startDate, $endDate),
-                    'totalActualRevenue'   => 0,
-                    'totalPurchasedAmount' => $this->getEntityManager()
+                    'totalActualRevenue'      => 0,
+                    'totalPurchasedAmount'    => $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Sale\Session')
                         ->getPurchasedAmountBetween($startDate, $endDate),
-                    'totalNumberSold' => $this->getEntityManager()
+                    'totalNumberSold'         => $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Sale\SaleItem')
                         ->findNumberBetween($startDate, $endDate),
-                    'uniqueClients' => $this->getEntityManager()
+                    'uniqueClients'           => $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Sale\SaleItem')
                         ->findUniqueClientsBetween($startDate, $endDate),
-                    'totalOrderedPrice' => $this->getEntityManager()
+                    'totalOrderedPrice'       => $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Stock\Order\Item')
                         ->getOrderedAmountBetween($startDate, $endDate),
-                    'totalNumberOrdered' => $this->getEntityManager()
+                    'totalNumberOrdered'      => $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Stock\Order\Item')
                         ->getNumberBetween($startDate, $endDate),
-                    'totalDeliveredPrice' => $this->getEntityManager()
+                    'totalDeliveredPrice'     => $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Stock\Delivery')
                         ->getDeliveredAmountBetween($startDate, $endDate),
-                    'totalNumberDelivered' => $this->getEntityManager()
+                    'totalNumberDelivered'    => $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Stock\Delivery')
                         ->getNumberBetween($startDate, $endDate),
                 );

@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace CommonBundle\Controller\Admin;
 
@@ -86,12 +68,12 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     private function getVersions()
     {
         preg_match('/(\d.\d.\d)/', phpversion(), $phpVersion);
-        preg_match('/(\d.\d.\d)/', Versions::getVersion('laminas/laminas-mvc'), $zfVersion);
+        preg_match('/(\d.\d.\d)/', Versions::getVersion('laminas/laminas-mvc'), $laminasVersion);
 
         return array(
-            'php'   => $phpVersion[0],
-            'zf'    => $zfVersion[0],
-            'litus' => Version::getShortCommitHash(),
+            'php'     => $phpVersion[0],
+            'laminas' => $laminasVersion[0],
+            'litus'   => Version::getShortCommitHash(),
         );
     }
 
@@ -129,8 +111,8 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         $registationGraphData = array(
             'expirationTime' => $now->add(new DateInterval('PT1H')),
 
-            'labels'  => array(),
-            'dataset' => array(),
+            'labels'         => array(),
+            'dataset'        => array(),
         );
 
         $data = array();

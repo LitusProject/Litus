@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace TicketBundle\Form\Admin\Event;
 
@@ -44,7 +26,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'options' => $this->createEventsArray(),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filter' => array(
                             array('name' => 'StringTrim'),
@@ -196,6 +178,48 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'     => 'checkbox',
+                'name'     => 'online_payment',
+                'label'    => 'Online Payment',
+                'required' => false,
+            )
+        );
+
+        $this->add(
+            array(
+                'type'    => 'text',
+                'name'    => 'invoice_base_id',
+                'label'   => 'Invoice Base ID',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'InvoiceBase'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'    => 'text',
+                'name'    => 'order_base_id',
+                'label'   => 'Order Base ID',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
                 'type'     => 'hidden',
                 'name'     => 'enable_options_hidden',
                 'required' => false,
@@ -216,13 +240,28 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'    => 'textarea',
+                'name'    => 'description',
+                'label'   => 'Description',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
                 'type'       => 'fieldset',
                 'name'       => 'prices',
                 'label'      => 'Prices',
                 'attributes' => array(
                     'class' => 'half_width',
                 ),
-                'elements' => array(
+                'elements'   => array(
                     array(
                         'type'     => 'text',
                         'name'     => 'price_members',
@@ -243,11 +282,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         'type'       => 'text',
                         'name'       => 'price_non_members',
                         'label'      => 'Price Non Members',
-                        'required'   => true,
                         'attributes' => array(
                             'class' => 'price_non_members',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -285,7 +323,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         $events = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
-            ->findAllActive();
+            ->findAllActive(30);
 
         $eventsArray = array(
             '' => '',
@@ -300,7 +338,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     public function getInputFilterSpecification()
     {
         $specs = parent::getInputFilterSpecification();
-
         if (!$this->data['generate_tickets']) {
             foreach ($specs['number_of_tickets']['validators'] as $key => $validator) {
                 if ($validator['name'] == 'greaterthan') {
@@ -312,7 +349,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         if ((isset($this->data['enable_options']) && $this->data['enable_options']) || (isset($this->data['enable_options_hidden']) && $this->data['enable_options_hidden']) == '1') {
             unset($specs['prices']);
         } else {
-            $specs['prices']['price_non_members']['required'] = !(isset($this->data['only_members']) && $this->data['only_members']);
+//            $specs['prices']['price_non_members']['required'] = !(isset($this->data['only_members']) && $this->data['only_members']);
         }
 
         return $specs;

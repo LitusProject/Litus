@@ -1,14 +1,14 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-    <div class="page-header">
+    <div class="page-header container">
         <h1>{{ translate('Registration') }}</h1>
     </div>
 
     {% include 'secretary/registration/partials/navigation.twig' %}
 
     {% if (organizations|length > 1 or enableOtherOrganization) and not isPost %}
-        <div id="organizationSelector">
+        <div id="organizationSelector" class="container" >
             <p style="text-align: center;">{{ translate('Choose your study:') }}</p>
             <ul style="list-style: none; width: 300px; margin: 0 auto;">
                 {% if enableOtherOrganization %}
@@ -28,12 +28,12 @@
             </ul>
         </div>
     {% endif %}
-    <div id="registerForm"{% if (organizations|length > 1 or enableOtherOrganization) and not isPost %} style="display: none;"{% endif %}>
+    <div class="container" id="registerForm"{% if (organizations|length > 1 or enableOtherOrganization) and not isPost %} style="display: none;"{% endif %}>
         {% import 'site/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
     </div>
 
-    <div id="modalMemberWarning" class="modal fade">
+    <div id="modalMemberWarning" class="modal fade container">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -56,7 +56,7 @@
         </div>
     </div>
 
-    <div id="modalTermsAndCoditions" class="modal fade">
+    <div id="modalTermsAndCoditions" class="modal fade container">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -230,7 +230,7 @@
                 .closest('.form-group')
                     .toggle($('#registerForm').find('#organization').val() !== '0');
 
-            $form.find('#conditions')
+            $form.find('#conditions, #bakske')
                 .closest('.form-group')
                     .show();
             $form.find('#organization')

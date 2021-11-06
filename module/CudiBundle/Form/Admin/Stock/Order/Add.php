@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace CudiBundle\Form\Admin\Stock\Order;
 
@@ -47,7 +29,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'id'    => 'article',
                     'style' => 'width: 400px;',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array('name' => 'TypeaheadSaleArticle'),
@@ -67,7 +49,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'autocomplete' => 'off',
                     'id'           => 'order_number',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -95,7 +77,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             array(
                 'data-help' => '<p>The article will be added to the order queue. This way a group of articles can be ordered for the same supplier.<p>
                 <p>To finish the order, you have to \'place\' it, this can be done by editing the order.</p>',
-                'id' => 'stock_add',
+                'id'        => 'stock_add',
             )
         );
     }

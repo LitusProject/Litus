@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace LogisticsBundle\Controller;
 
@@ -58,7 +40,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
         }
         return new ViewModel(
             array(
-                'orders' => $orders,
+                'orders'   => $orders,
                 'requests' => $requests,
             )
         );
@@ -103,8 +85,8 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
 
         foreach ($articles as $art) {
             $articleInfo = array(
-                'article'   => $art,
-                'mapped'    => $mapped[$art->getId()] ?? 0,
+                'article' => $art,
+                'mapped'  => $mapped[$art->getId()] ?? 0,
             );
 
             $allArticles[] = $articleInfo;
@@ -165,7 +147,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
                     'logistics_catalog',
                     array(
                         'action' => 'view',
-                        'order' => $newOrder->getId()
+                        'order'  => $newOrder->getId()
                     )
                 );
 
@@ -175,11 +157,11 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'articles' => $allArticles,
-                'categories'    => Article::$POSSIBLE_CATEGORIES,
-                'form'              => $form,
-                'searchForm'        => $searchForm,
-                'order'             => $order,
+                'articles'   => $allArticles,
+                'categories' => Article::$POSSIBLE_CATEGORIES,
+                'form'       => $form,
+                'searchForm' => $searchForm,
+                'order'      => $order,
             )
         );
     }
@@ -310,7 +292,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'  => $form,
                 'order' => $order,
             )
         );
@@ -341,7 +323,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'order'   => $order,
+                'order'    => $order,
                 'articles' => $articles,
             )
         );

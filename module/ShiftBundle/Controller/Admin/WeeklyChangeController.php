@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace ShiftBundle\Controller\Admin;
 
@@ -71,8 +53,6 @@ class WeeklyChangeController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('ShiftBundle\Entity\Shift\Volunteer')
             ->findAllCountsAtTimeByAcademicYear($academicYear, $hoursPerBlock, $points_enabled, date_sub(new DateTime(), $changeInterval));
 
-//        print_r($volunteersThen); print_r($volunteersNow); die();
-
         $oldVolunteers = array();
         for ($i = 0; isset($rankingCriteria[$i]); $i++) {
             foreach ($volunteersNow as $volunteer) {
@@ -96,10 +76,10 @@ class WeeklyChangeController extends \CommonBundle\Component\Controller\ActionCo
                                 ->findOneById($volunteer['id']);
 
                             $ranking[$rankingCriteria[$i]['name']][] = array(
-                                'person' => $person,
-                                'resultCount' => $volunteer['resultCount'],
-                                'rank' => $rankingCriteria[$i]['name'],
-                                'rankThen' => $previous_i === null ? 'none' : $rankingCriteria[$previous_i + 1]['name'],
+                                'person'          => $person,
+                                'resultCount'     => $volunteer['resultCount'],
+                                'rank'            => $rankingCriteria[$i]['name'],
+                                'rankThen'        => $previous_i === null ? 'none' : $rankingCriteria[$previous_i + 1]['name'],
                                 'resultCountThen' => $volunteerThen['resultCount'],
                             );
                         }
@@ -113,10 +93,10 @@ class WeeklyChangeController extends \CommonBundle\Component\Controller\ActionCo
                             ->findOneById($volunteer['id']);
 
                         $ranking[$rankingCriteria[$i]['name']][] = array(
-                            'person' => $person,
-                            'resultCount' => $volunteer['resultCount'],
-                            'rank' => $rankingCriteria[$i]['name'],
-                            'rankThen' => 'none',
+                            'person'          => $person,
+                            'resultCount'     => $volunteer['resultCount'],
+                            'rank'            => $rankingCriteria[$i]['name'],
+                            'rankThen'        => 'none',
                             'resultCountThen' => 0,
                         );
                     }
@@ -133,12 +113,12 @@ class WeeklyChangeController extends \CommonBundle\Component\Controller\ActionCo
 
         return new ViewModel(
             array(
-                'activeAcademicYear' => $academicYear,
-                'academicYears'      => $academicYears,
-                'ranking'            => $ranking,
-                'hoursPerBlock'      => $hoursPerBlock,
-                'rewards_enabled'    => $rewards_enabled,
-                'points_enabled'     => $points_enabled,
+                'activeAcademicYear'   => $academicYear,
+                'academicYears'        => $academicYears,
+                'ranking'              => $ranking,
+                'hoursPerBlock'        => $hoursPerBlock,
+                'rewards_enabled'      => $rewards_enabled,
+                'points_enabled'       => $points_enabled,
                 'weeklyChangeInterval' => $changeInterval->format('%d days'),
             )
         );

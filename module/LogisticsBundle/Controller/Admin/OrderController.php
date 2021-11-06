@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace LogisticsBundle\Controller\Admin;
 
@@ -98,7 +80,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'form'    => $form,
+                'form' => $form,
             )
         );
     }
@@ -141,8 +123,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'form'    => $form,
-                'order'   => $order,
+                'form'     => $form,
+                'order'    => $order,
                 'articles' => $articles,
             )
         );
@@ -202,8 +184,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 $this->redirect()->toRoute(
                     'logistics_admin_order',
                     array(
-                        'action'       => 'articles',
-                        'id'           => $order->getId(),
+                        'action' => 'articles',
+                        'id'     => $order->getId(),
                     )
                 );
 
@@ -219,9 +201,9 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'form'                => $form,
-                'order'               => $order,
-                'articles'             => $articles,
+                'form'     => $form,
+                'order'    => $order,
+                'articles' => $articles,
             )
         );
     }
@@ -256,7 +238,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     'logistics_admin_order',
                     array(
                         'action' => 'articles',
-                        'id'  => $order->getId(),
+                        'id'     => $order->getId(),
                     )
                 );
 
@@ -266,8 +248,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'form'    => $form,
-                'orderArticleMap'   => $orderArticleMap,
+                'form'            => $form,
+                'orderArticleMap' => $orderArticleMap,
             )
         );
     }
@@ -311,9 +293,9 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             }
             if ($total > $max) {
                 $conflict = array(
-                    'article' => $article,
+                    'article'  => $article,
                     'mappings' => $allOverlap,
-                    'total' => $total
+                    'total'    => $total
                 );
                 array_push($conflicts, $conflict);
             }

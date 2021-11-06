@@ -1,7 +1,6 @@
 {% extends 'site/base.twig' %}
-
 {% block content %}
-    <div class="page-alert">
+    <div class="page-alert container">
         <div class="flashmessage alert alert-success alert-fixed-top fade" id="subjects_saved_success">
             <button type="button" class="close">&times;</button>
             <div class="content">
@@ -16,22 +15,22 @@
         </div>
     </div>
 
-    <div class="page-header">
+    <div class="page-header container">
         <h1>{{ translate('Registration') }}</h1>
     </div>
 
     {% include 'secretary/registration/partials/navigation.twig' %}
 
-    <h2>
+    <h2 class="container">
         {{ translate('Choose Your Subjects') }}
         <div class="pull-right">
             <a href="{{ url('secretary_registration', {'action': 'complete'}) }}" class="btn btn-primary">{{ translate('Complete Your Registration') }}</a>
         </div>
     </h2>
     {% for mapping in mappings %}
-        <h3>{{ mapping.enrollment.getStudy().getTitle() }}<small>&mdash;{{ translate('Phase') }} {{ mapping.enrollment.getStudy().getPhase() }}</small></h3>
+        <h3 class="container">{{ mapping.enrollment.getStudy().getTitle() }}<small>&mdash;{{ translate('Phase') }} {{ mapping.enrollment.getStudy().getPhase() }}</small></h3>
         {% for subject in mapping.subjects %}
-            <div class="checkbox">
+            <div class="checkbox container">
                 <label>
                     <input type="checkbox" class="subject_enroll" data-id="{{ subject.getSubject().getId() }}" {% if subject.getSubject().getId() in enrollments %}checked="checked"{% endif %}> {{ subject.getSubject().getName() }}<small>&mdash;{{ subject.getSubject().getCode() }}</small>
                 </label>
@@ -39,18 +38,18 @@
         {% endfor %}
     {% endfor %}
 
-    <h2>{{ translate('Other Subjects') }}</h2>
+    <h2 class="container">{{ translate('Other Subjects') }}</h2>
     {% for subject in otherSubjects %}
-        <div class="checkbox">
+        <div class="checkbox container">
             <label>
                 <input type="checkbox" class="subject_enroll" data-id="{{ subject.getId() }}" checked="checked"> {{ subject.getName() }}<small>&mdash;{{ subject.getCode() }}</small>
             </label>
         </div>
     {% else %}
-        <em>{{ translate('You have not yet added any other subjects.') }}</em>
+        <em class="container" style="position: relative; left: 20%;">{{ translate('You have not yet added any other subjects.') }}</em>
     {% endfor %}
 
-    <h2>{{ translate('Add Other Subjects') }}</h2>
+    <h2 class="container">{{ translate('Add Other Subjects') }}</h2>
 
     {% import 'site/partials/form.twig' as forms %}
     {{ forms.renderForm(form) }}
@@ -86,6 +85,10 @@
                     $('[name="subject[id]"]').val('');
                 }
             });
+
+            $("[name='subject']").addClass("container");
+
+            $("[name='add_subject']").css({'position': 'relative', 'left': '4%'});
         });
 
         function saveChanges() {

@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace CommonBundle\Component\Controller\ActionController;
 
@@ -94,8 +76,8 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
     public function getAuthenticationHandler()
     {
         return array(
-            'action'     => 'login',
-            'controller' => 'common_auth',
+            'action'         => 'login',
+            'controller'     => 'common_auth',
 
             'auth_route'     => 'common_auth',
             'redirect_route' => 'common_index',
@@ -148,10 +130,10 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             foreach ($pages as $page) {
                 if ($page->isLanguageAvailable($this->getLanguage()) && $page->isActive()) {
                     $menu[$i]['items'][] = array(
-                        'type'  => 'page',
-                        'id'    => $page->getId(),
-                        'name'  => $page->getName(),
-                        'title' => $page->getTitle($this->getLanguage()),
+                        'type'        => 'page',
+                        'id'          => $page->getId(),
+                        'name'        => $page->getName(),
+                        'title'       => $page->getTitle($this->getLanguage()),
                         'orderNumber' => $page->getOrderNumber(),
                     );
 
@@ -164,10 +146,10 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             foreach ($links as $link) {
                 if ($link->isLanguageAvailable($this->getLanguage()) && $link->isActive()) {
                     $menu[$i]['items'][] = array(
-                        'type' => 'link',
-                        'id'   => $link->getId(),
-                        'name' => $link->getName($this->getLanguage()),
-                        'url'  => $link->getUrl($this->getLanguage()),
+                        'type'        => 'link',
+                        'id'          => $link->getId(),
+                        'name'        => $link->getName($this->getLanguage()),
+                        'url'         => $link->getUrl($this->getLanguage()),
                         'orderNumber' => $link->getOrderNumber(),
                     );
 
