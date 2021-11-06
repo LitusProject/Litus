@@ -86,6 +86,7 @@
             removeAttendee.find('.attendeeName').html($(this).data('name'));
             var id = $this.data('id');
             var map = $this.data('map');
+            console.log(id);
             removeAttendee.find('.delete').unbind('click').click(function () {
                 $.post('{{ url('br_admin_event', {"action": "deleteAttendee"})}}' + id + '/map/'+ map, function (data) {
                     if (data && 'success' == data.status) {

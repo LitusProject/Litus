@@ -1,4 +1,22 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
 namespace BrBundle\Entity\Company;
 
@@ -32,20 +50,6 @@ class Page
     private $description;
 
     /**
-     * @var string The short description of the company (for large companies only)
-     *
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $shortDescription;
-
-    /**
-     * @var string Optional URL for youtube video
-     *
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $youtubeURL;
-
-    /**
      * @var Company
      *
      * @ORM\OneToOne(targetEntity="BrBundle\Entity\Company", inversedBy="page")
@@ -65,7 +69,7 @@ class Page
 
     /**
      * @var boolean Whether or not this is company should be displayed on the event page
-     * (temporary remove after internship fair 20-21, or internship fair 21-22...)
+     * (temporary remove after internship fair 20-21)
      *
      * @ORM\Column(type="boolean", nullable=true)
      */
@@ -121,43 +125,6 @@ class Page
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * @param  string $description
-     * @return Page
-     */
-    public function setShortDescription($description)
-    {
-        $this->shortDescription = $description;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getShortDescription()
-    {
-        return $this->shortDescription;
-    }
-
-    /**
-     * @param string $youtubeURL
-     * @return Page
-     */
-    public function setYoutubeURL($youtubeURL)
-    {
-        $this->youtubeURL = $youtubeURL;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getYoutubeURL()
-    {
-        return $this->youtubeURL;
     }
 
     public function hasYear(AcademicYear $academicYear)

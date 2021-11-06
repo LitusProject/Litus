@@ -30,8 +30,14 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Match\Profile")
  * @ORM\Table(name="br_match_profile")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
+ * @ORM\DiscriminatorMap({
+ *     "company_profile"="BrBundle\Entity\Match\Profile\CompanyProfile",
+ *     "student_profile"="BrBundle\Entity\Match\Profile\StudentProfile"
+ * })
  */
-class Profile
+abstract class Profile
 {
     /**
      * @var integer The profile's ID
@@ -50,11 +56,11 @@ class Profile
     private $features;
 
     /**
-     * @var array The possible types for a profile
+     * @var array The possible types of a profile
      */
     const POSSIBLE_TYPES = array(
-        'student'         => 'Student Profile',
-        'company'        => 'Company Profile',
+        'student'    => 'Student',
+        'company' => 'Company',
     );
 
     /**
@@ -81,10 +87,18 @@ class Profile
     }
 
     /**
-     * @param ArrayCollection $features
+     * @param array $features
      */
     public function setFeatures($features)
     {
-        $this->features = $features;
+        $this->features = new ArrayCollection($features);
+    }
+
+    /**
+     * @param ProfileFeatureMap $feature
+     */
+    public function addFeature($feature)
+    {
+        $this->features->add($feature);
     }
 }

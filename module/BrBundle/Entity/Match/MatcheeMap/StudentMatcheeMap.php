@@ -53,7 +53,7 @@ class StudentMatcheeMap extends MatcheeMap
      */
     public function __construct(CompanyProfile $companyProfile, StudentProfile $studentProfile, Person $student)
     {
-        MatcheeMap::__construct($companyProfile, $studentProfile);
+        parent::__construct($companyProfile, $studentProfile);
         $this->student = $student;
     }
 

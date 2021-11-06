@@ -1,9 +1,7 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-    <div class="container">
-        <div style="height: 100px"></div>
-    {# <div class="navbar navbar-default" role="navigation">
+    <div class="navbar navbar-default" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".subnav-collapse">
@@ -37,8 +35,7 @@
                 </ul>
             </div>
         </div>
-    </div>  #}
-
-        {% block page_content %} {% endblock %}
     </div>
+
+    {% block page_content %} {% endblock %}
 {% endblock %}

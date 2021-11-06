@@ -17,73 +17,41 @@
     </div>
 
     {% include 'admin/partials/flashMessenger.twig' %}
-      <div id="controller_action" class="full-width">
-          <h1>Contract details</h1>
-          {% if not contract.isSigned() %}
-          <i>Drag and drop your sections in the desired order. All changes will be saved <b>automatically</b>!</i>
-          <div class="sortable">
-              {% endif %}
-              <span id="contractId" style="display: none;">{{ contract.getId() }}</span>
-              <ul id="contractComposition">
-                  {% for entry in contract.getEntries() %}
-                      <li id="contractComposition_{{ entry.getId() }}" class="sections">
-                          <dl class="dl-horizontal">
-                              <dt>{{ entry.getOrderEntry().getProduct().getName() }}</dt>
-                              <dd>{{ entry.getContractText(lang) }}</dd>
-                          </dl>
-                      </li>
-                  {% endfor %}
-              </ul>
 
-              {% if not contract.isSigned() %}
-          </div>
-          {% endif %}
+    <div id="controller_action">
 
-          <br/>
-          <br/>
-          {% if not contract.isSigned() %}
-              <p><i><b>Warning: </b> when a contract is signed, the contract and its order can no longer be
-                      edited!</i></p>
-              <p>&nbsp;</p>
-              <a href="{{ url('br_admin_contract', {"action" : "sign", "id" : contract.getId()}) }}"
-                 class="icon contract_edit">Sign</a>
-          {% endif %}
-          <a href="{{ url('br_admin_contract', {"action" : "download", "id" : contract.getId(), "language": "en"}) }}"
-             class="icon contract">Download EN</a>
-          <a href="{{ url('br_admin_contract', {"action" : "download", "id" : contract.getId(), "language": "nl"}) }}"
-             class="icon contract">Download NL</a>
-          <aside>
-              <div class="sidebox">
-                  <div class="title">Switch Language</div>
-                  <div class="content">
-                      <p>
-                          <i>Please hit the link below to switch language!</i>
-                      </p>
-                      <p>
-                          <a href="{{ url('br_admin_contract', {"action": "view", "id": contract.getId(), "language": notLang}) }}">&rarr;
-                              Change Language</a>
-                      </p>
-                  </div>
-              </div>
-          </aside>
-          <aside>
-              <div class="sidebox">
-                  <div class="title">Edit contract</div>
-                  <div class="content">
-                      <p>
-                          <i>Please hit the link below to edit the contract!</i>
-                      </p>
-                      <p>
-                          <a href="{{ url('br_admin_contract', {"action": "edit", "id": contract.getId(), "language": lang}) }}">&rarr;
-                              Edit Contract</a>
-                      </p>
-                  </div>
-              </div>
-          </aside>
-      </div>
+        <h1>Contract details</h1>
+        {% if not contract.isSigned() %}
+        <i>Drag and drop your sections in the desired order. All changes will be saved <b>automatically</b>!</i>
 
+        <div class="sortable">
+        {% endif %}
+            <span id="contractId" style="display: none;">{{ contract.getId() }}</span>
+            <ul id="contractComposition">
+                {% for entry in contract.getEntries %}
+                    <li id="contractComposition_{{ entry.getId() }}" class="sections">
+                        <dl class="dl-horizontal">
+                            <dt>{{ entry.getOrderEntry().getProduct().getName() }}</dt>
+                            <dd>{{ entry.getContractText() }}</dd>
+                        </dl>
+                    </li>
+                {% endfor %}
+            </ul>
 
+        {% if not contract.isSigned() %}
+        </div>
+        {% endif %}
 
+        <br/>
+        <br/>
+        {% if not contract.isSigned() %}
+            <p><i><b>Warning: </b> when a contract is signed, the contract and its order can no longer be edited!</i></p>
+            <p>&nbsp;</p>
+            <a href="{{ url('br_admin_contract', {"action" : "sign", "id" : contract.getId()})}}" class="icon contract_edit">Sign</a>
+        {% endif %}
+        <a href="{{ url('br_admin_contract', {"action" : "download", "id" : contract.getId(), "language": "en"})}}" class="icon contract">Download EN</a>
+        <a href="{{ url('br_admin_contract', {"action" : "download", "id" : contract.getId(), "language": "nl"})}}" class="icon contract">Download NL</a>
+    </div>
 {% endblock %}
 
 {% block content_script %}

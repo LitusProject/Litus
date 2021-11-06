@@ -1,4 +1,22 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
 namespace BrBundle\Form\Admin\Company;
 
@@ -83,7 +101,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'placeholder' => '+CCAAANNNNNN',
                 ),
-                'options'    => array(
+                'options' => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -131,14 +149,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'  => 'checkbox',
-                'name'  => 'large',
-                'label' => 'company has a Large spot in the company overview',
-            )
-        );
-
-        $this->add(
-            array(
                 'type'     => 'common_address_add',
                 'name'     => 'address',
                 'label'    => 'Address',
@@ -154,7 +164,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'id' => 'invoice_form',
                 ),
-                'elements'   => array(
+                'elements' => array(
                     array(
                         'type'     => 'text',
                         'name'     => 'invoice_name',
@@ -209,7 +219,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'id' => 'page_form',
                 ),
-                'elements'   => array(
+                'elements' => array(
                     array(
                         'type'       => 'select',
                         'name'       => 'years',
@@ -226,7 +236,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         'attributes' => array(
                             'id' => 'description',
                         ),
-                        'options'    => array(
+                        'options' => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -235,57 +245,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         ),
                     ),
                     array(
-                        'type'       => 'textarea',
-                        'name'       => 'short_description',
-                        'label'      => 'Short Description',
-                        'attributes' => array(
-                            'id' => 'shortDescription',
-                        ),
-                        'options'    => array(
-                            'input' => array(
-                                'filters' => array(
-                                    array('name' => 'StringTrim'),
-                                ),
-                                'validators' => array(
-                                    array(
-                                        'name'    => 'FieldLength',
-                                        'options' => array(
-                                            'max_length' => 350,
-                                        ),
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                    array(
-                        'type'       => 'text',
-                        'name'       => 'youtube_url',
-                        'label'      => 'YouTube video URL code (https://www.youtube.com/watch?v=XXXXXXXXXXX)',
-                        'required'   => false,
-                        'attributes' => array(
-                            'id'          => 'youtubeURL',
-                            'placeholder' => 'AVJHzfv-Yis',
-                        ),
-                        'options'    => array(
-                            'input' => array(
-                                'filters' => array(
-                                    array('name' => 'StringTrim'),
-                                ),
-                                'validators' => array(
-                                    array('name' => 'Uri'),
-                                ),
-                            ),
-                        ),
-                    ),
-                    array(
-                        'type'  => 'checkbox',
-                        'name'  => 'atEvent',
-                        'label' => 'company is at internshipfair',
+                        'type'        => 'checkbox',
+                        'name'        => 'atEvent',
+                        'label'       => 'company is at internshipfair',
                     ),
                 ),
             )
         );
-
 
         $this->addSubmit('Add', 'company_add');
 

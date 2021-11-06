@@ -20,10 +20,12 @@
 
 namespace BrBundle\Hydrator\Match;
 
+use BrBundle\Entity\Match\Profile\ProfileCompanyMap;
+use BrBundle\Entity\Match\Profile\ProfileStudentMap;
+use BrBundle\Entity\Match\Profile\StudentProfile as StudentProfileEntity;
 use BrBundle\Entity\Match\Profile as ProfileEntity;
-use BrBundle\Entity\Match\Profile\CompanyProfile;
+use BrBundle\Entity\Match\Profile\CompanyProfile as CompanyProfileEntity;
 use BrBundle\Entity\Match\Profile\ProfileFeatureMap;
-use BrBundle\Entity\Match\Profile\StudentProfile;
 
 /**
  * @author Robin Wroblowski <robin.wroblowski@vtk.be>
@@ -38,6 +40,16 @@ class Profile extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
+        $profileCompanyMap = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Match\Profile\ProfileCompanyMap')
+            ->findOneByProfile($object);
+        $profileStudentMap = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Match\Profile\ProfileStudentMap')
+            ->findOneByProfile($object);
+
+        $data['company'] = $profileCompanyMap->getCompany()->getId();
+        $data['student'] = $profileCompanyMap->getStudent()->getId();
+
         $data = $this->stdExtract($object, self::$stdKeys);
 
         return $data;
@@ -46,7 +58,11 @@ class Profile extends \CommonBundle\Component\Hydrator\Hydrator
     protected function doHydrate(array $data, $object = null)
     {
         if ($object === null) {
-            $object = new ProfileEntity();
+            if ($data['profile_type'] === 'student') {
+                $object = new StudentProfileEntity();
+            } elseif ($data['profile_type'] === 'company') {
+                $object = new CompanyProfileEntity();
+            }
         }
         $object = $this->stdHydrate($data, $object, self::$stdKeys);
 

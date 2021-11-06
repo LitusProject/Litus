@@ -1,4 +1,22 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
 namespace BrBundle\Controller\Admin;
 
@@ -117,27 +135,14 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 $company = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Company')
                     ->findOneById($formData['company']);
+                $objectMap = new CompanyMap($company, $event);
+                $objectMap->setDone();
+                $this->getEntityManager()->persist($objectMap);
 
-                if (count(
-                    $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Event\CompanyMap')
-                        ->findByEventAndCompany($event, $company)
-                ) == 0
-                ) {
-                    $objectMap = new CompanyMap($company, $event);
-                    $objectMap->setDone();
-                    $this->getEntityManager()->persist($objectMap);
-
-                    $this->flashMessenger()->success(
-                        'Success',
-                        'The attendee was successfully added!'
-                    );
-                } else {
-                    $this->flashMessenger()->error(
-                        'Error',
-                        'That company is already attending this event!'
-                    );
-                }
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The attendee was successfully added!'
+                );
 
                 $this->redirect()->toRoute(
                     'br_admin_event',
@@ -151,27 +156,15 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             $this->getEntityManager()->flush();
         }
 
-
-        $allEventCompanyMaps = $this->getEntityManager()
+        $eventCompanyMaps = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Event\CompanyMap')
             ->findAllByEvent($event);
-
-        $maps = array();
-        $comps = array();
-
-        foreach ($allEventCompanyMaps as $map) {
-            $comp = $map->getCompany()->getId();
-            if (!in_array($comp, $comps)) {
-                array_push($comps, $comp);
-                array_push($maps, $map);
-            }
-        }
 
         return new ViewModel(
             array(
                 'propertiesForm'   => $propertiesForm,
                 'companyMapForm'   => $companyMapForm,
-                'eventCompanyMaps' => $maps,
+                'eventCompanyMaps' => $eventCompanyMaps,
                 'event'            => $event,
             )
         );
@@ -253,6 +246,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     private function getCompanyMapEntity()
     {
         $event = $this->getEntityById('BrBundle\Entity\Event\CompanyMap', 'map');
+        error_log($event ? 'y' : 'n');
         if (!($event instanceof CompanyMap)) {
             $this->flashMessenger()->error(
                 'Error',

@@ -74,7 +74,7 @@ class Match
     {
         $this->companyMatchee = $company;
         $this->studentMatchee = $student;
-        $this->matchPercentage = 5000;
+        $this->matchPercentage = ($company->getMatchPercentage() + $student->getMatchPercentage()) / 2;
     }
 
     /**

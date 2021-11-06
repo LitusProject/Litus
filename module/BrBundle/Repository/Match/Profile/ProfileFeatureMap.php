@@ -27,5 +27,4 @@ namespace BrBundle\Repository\Match\Profile;
  */
 class ProfileFeatureMap extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
-
 }

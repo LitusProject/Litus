@@ -1,4 +1,22 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
 namespace BrBundle\Entity\Contract;
 
@@ -48,13 +66,6 @@ class Entry
     private $contractText;
 
     /**
-     * @var string The contract text of this product in English
-     *
-     * @ORM\Column(name="contract_text_en", type="text", nullable=true)
-     */
-    private $contractTextEn;
-
-    /**
      * @var integer The position number of the entry in the contract
      *
      * @ORM\Column(type="integer")
@@ -78,9 +89,7 @@ class Entry
     {
         $this->contract = $contract;
         $this->orderEntry = $orderEntry;
-
-        $this->setContractText($orderEntry->getProduct()->getContractText('nl'), 'nl');
-        $this->setContractText($orderEntry->getProduct()->getContractText('en'), 'en');
+        $this->setContractText($orderEntry->getProduct()->getContractText());
         $this->setPosition($position);
         $this->setVersion($version);
     }
@@ -131,36 +140,9 @@ class Entry
     }
 
     /**
-     * @param boolean $replace
-     * @param string  $language
      * @return string
      */
-    public function getContractText($language, $replace = true)
-    {
-        if ($language == null || $language == 'nl') {
-            return $this->getContractTextNl($replace);
-        }
-        return $this->getContractTextEn($replace);
-    }
-
-    /**
-     * @param string $contractText
-     * @param string $language
-     * @return Entry
-     */
-    public function setContractText($contractText, $language)
-    {
-        if ($language == null || $language == 'nl') {
-            return $this->setContractTextNl($contractText);
-        } else {
-            return $this->setContractTextEn($contractText);
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public function getContractTextNl($replace = true)
+    public function getContractText($replace = true)
     {
         if ($replace === true) {
             return str_replace('<amount />', (String) $this->getOrderEntry()->getQuantity(), $this->contractText);
@@ -173,32 +155,9 @@ class Entry
      * @param  string $contractText
      * @return Entry
      */
-    public function setContractTextNl($contractText)
+    public function setContractText($contractText)
     {
         $this->contractText = $contractText;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getContractTextEn($replace = true)
-    {
-        if ($replace === true) {
-            return str_replace('<amount />', (String) $this->getOrderEntry()->getQuantity(), $this->contractTextEn);
-        }
-
-        return $this->contractTextEn;
-    }
-
-    /**
-     * @param  string $contractText
-     * @return Entry
-     */
-    public function setContractTextEn($contractText)
-    {
-        $this->contractTextEn = $contractText;
 
         return $this;
     }

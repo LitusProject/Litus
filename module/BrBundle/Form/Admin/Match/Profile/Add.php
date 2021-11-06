@@ -45,7 +45,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             array(
                 'type'       => 'select',
                 'name'       => 'type',
-                'label'      => 'Profile Types',
+                'label'      => 'Company or Student',
                 'attributes' => array(
                     'id'      => 'type',
                     'options' => Profile::POSSIBLE_TYPES,
@@ -58,7 +58,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type'       => 'select',
                 'name'       => 'company',
                 'label'      => 'Company',
-                'required'   => true,
                 'attributes' => array(
                     'multiple' => true,
                     'id'      => 'company_select',
@@ -80,7 +79,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'id'      => 'student_typeahead',
                 ),
-                'required' => true,
                 'options'  => array(
                     'input' => array(
                         'validators' => array(
@@ -95,7 +93,19 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(
             array(
                 'type'       => 'select',
-                'name'       => 'features',
+                'name'       => 'profile_type',
+                'label'      => 'Profile Type',
+                'attributes' => array(
+                    'id'      => 'type',
+                    'options' => Profile::POSSIBLE_TYPES,
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'features_ids',
                 'label'      => 'Features',
                 'required'   => true,
                 'attributes' => array(
@@ -122,7 +132,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     private function getFeatureNames()
     {
         $featureNames = array();
-        foreach ($this->features as $feature) {
+        foreach ($this->getEntityManager()->getRepository('BrBundle\Entity\Match\Feature')->findAll() as $feature) {
             $featureNames[$feature->getId()] = $feature->getName();
         }
 

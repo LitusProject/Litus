@@ -28,7 +28,7 @@
             {% for profile in paginator %}
 
                 <tr class="item item-{{ profile.getId() }}">
-                    <td>{{ profile.getUserName() }}</td>
+                    <td>{{ profile.getId() }}</td>
                     <td class="actions">
                         {% if hasAccess('br_admin_match_profile', 'edit') %}
                             <a href="{{ url('br_admin_match_profile', {"action": "edit", "id": profile.getId()}) }}" class="edit">Edit</a>

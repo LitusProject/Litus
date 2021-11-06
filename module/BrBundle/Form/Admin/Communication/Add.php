@@ -1,4 +1,22 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
 namespace BrBundle\Form\Admin\Communication;
 
@@ -6,6 +24,8 @@ use BrBundle\Entity\Communication;
 
 /**
  * Add a communication.
+ *
+ * @author Stan Cardinaels <stan.cardinaels@vtk.be>
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
@@ -19,10 +39,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'       => 'select',
-                'name'       => 'option',
-                'label'      => 'Communication Option',
-                'required'   => true,
+                'type' => 'select',
+                'name' => 'option',
+                'label' => 'Communication Option',
+                'required' => true,
                 'attributes' => array(
                     'options' => unserialize(
                         $this->getEntityManager()
@@ -35,10 +55,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'       => 'select',
-                'name'       => 'companyId',
-                'label'      => 'Company',
-                'required'   => true,
+                'type' => 'select',
+                'name' => 'companyId',
+                'label' => 'Company',
+                'required' => true,
                 'attributes' => array(
                     'options' => $this->getCompanyArray(),
                 ),
@@ -47,20 +67,20 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'date',
-                'nane'     => 'date',
-                'label'    => 'Date',
+                'type' => 'date',
+                'nane' => 'date',
+                'label' => 'Date',
                 'required' => true,
             )
         );
 
         $this->add(
             array(
-                'type'     => 'text',
-                'name'     => 'audience',
-                'label'    => 'Audience',
+                'type' => 'text',
+                'name' => 'audience',
+                'label' => 'Audience',
                 'required' => true,
-                'options'  => array(
+                'options' => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

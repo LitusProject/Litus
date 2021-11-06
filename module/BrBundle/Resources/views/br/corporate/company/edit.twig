@@ -1,10 +1,8 @@
 {% extends 'corporate/partials/company.twig' %}
 
 {% block content %}
-    <div class="container">
-        <h1>{{ translate('Company') }}</h1>
+    <h1>{{ translate('Company') }}</h1>
 
-        {% import 'site/partials/form.twig' as forms %}
-        {{ forms.renderForm(form) }}
-    </div>
+    {% import 'site/partials/form.twig' as forms %}
+    {{ forms.renderForm(form) }}
 {% endblock %}
