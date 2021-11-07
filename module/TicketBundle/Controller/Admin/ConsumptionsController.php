@@ -2,7 +2,7 @@
 
 namespace TicketBundle\Controller\Admin;
 
-use CommonBundle\Component\Form\Admin\Element\DateTime;
+use DateTime;
 use Laminas\View\Model\ViewModel;
 use TicketBundle\Entity\Consumptions;
 use TicketBundle\Entity\Transactions;
@@ -227,6 +227,39 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
             array(
                 'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+
+    public function totalTransactionsAction()
+    {
+        $date = new DateTime('now');
+
+        $newDate = str_replace(
+            '{{ currentDate }}',
+            $date->format('d-m-Y'),
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('ticket.transactions_refresh_date')
+        );
+        $dateToCheck = new DateTime($newDate);
+        $period = new \DateInterval('P1D');
+        if ($date->format("h-m-s") < $dateToCheck->format('h-m-s')) {
+            $dateToCheck->sub($period);
+        }
+
+        $transactions = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Transactions')
+            ->findAllSinceDate($dateToCheck);
+
+        $total = 0;
+        foreach ($transactions as $transaction) {
+            $total += $transaction->getAmount();
+        }
+
+        return new ViewModel(
+            array(
+                'total' => $total,
             )
         );
     }
