@@ -22,13 +22,15 @@
         <table class="full_width manage">
             <tr>
                 <th>Name</th>
-                <th width="70px">Action</th>
+                <th width="180px">Profile Type</th>
+                <th width="180px">Action</th>
             </tr>
 
             {% for profile in paginator %}
 
                 <tr class="item item-{{ profile.getId() }}">
-                    <td>{{ profile.getId() }}</td>
+                    <td>{{ profile.getUserName(em) }}</td>
+                    <td>{{ profile.getProfileType() }}</td>
                     <td class="actions">
                         {% if hasAccess('br_admin_match_profile', 'edit') %}
                             <a href="{{ url('br_admin_match_profile', {"action": "edit", "id": profile.getId()}) }}" class="edit">Edit</a>
@@ -82,8 +84,8 @@
             var $this = $(this);
 
             e.preventDefault();
-            var removeFrofile = $('#removeFrofile');
-            removeFrofile.find('.profileTitle').html($(this).data('title'));
+            var removeProfile = $('#removeProfile');
+            removeProfile.find('.profileTitle').html($(this).data('title'));
             var id = $this.data('id');
             removeProfile.find('.delete').unbind('click').click(function () {
                 $.post('{{ url('br_admin_match_profile', {"action": "delete"})}}' + id, function (data) {

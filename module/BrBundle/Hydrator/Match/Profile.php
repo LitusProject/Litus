@@ -40,18 +40,13 @@ class Profile extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $profileCompanyMap = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Match\Profile\ProfileCompanyMap')
-            ->findOneByProfile($object);
-        $profileStudentMap = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Match\Profile\ProfileStudentMap')
-            ->findOneByProfile($object);
-
-        $data['company'] = $profileCompanyMap->getCompany()->getId();
-        $data['student'] = $profileCompanyMap->getStudent()->getId();
-
         $data = $this->stdExtract($object, self::$stdKeys);
 
+        $featureIds = array();
+        foreach ($object->getFeatures() as $feature){
+            $featureIds[] = $feature->getFeature()->getId();
+        }
+        $data['features_ids'] = $featureIds;
         return $data;
     }
 

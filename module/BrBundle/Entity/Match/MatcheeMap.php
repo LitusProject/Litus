@@ -29,6 +29,12 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Match\MatcheeMap")
  * @ORM\Table(name="br_match_matchee_map")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
+ * @ORM\DiscriminatorMap({
+ *     "student_matchee_map"="BrBundle\Entity\Match\MatcheeMap\StudentMatcheeMap",
+ *     "company_matchee_map"="BrBundle\Entity\Match\MatcheeMap\CompanyMatcheeMap"
+ * })
  */
 abstract class MatcheeMap
 {
@@ -89,26 +95,5 @@ abstract class MatcheeMap
     public function getStudentProfile()
     {
         return $this->studentProfile;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getMatchPercentage()
-    {
-        $studentTraits = $this->studentProfile->getFeatures()->toArray();
-        $companyTraits = $this->companyProfile->getFeatures()->toArray();
-        $positives = 0;
-        $negatives =0;
-        foreach ($studentTraits as $ST){
-            foreach ($companyTraits as $CT){
-                if ($ST == $CT) $positives++;
-//                if ($ST->isOpposite($CT)) $negatives++;
-            }
-        }
-        $percentage = 5000
-            + 5000 * $positives / max(count($studentTraits), count($companyTraits))
-            - 5000 * $negatives / max(count($studentTraits), count($companyTraits));
-        return $percentage;
     }
 }

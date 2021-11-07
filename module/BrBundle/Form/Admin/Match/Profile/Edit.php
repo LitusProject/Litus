@@ -38,13 +38,61 @@ class Edit extends \BrBundle\Form\Admin\Match\Profile\Add
     {
         parent::init();
 
-        $this->remove('submit')
+        $this->remove('submit')->remove('type')->remove('company')
+            ->remove('student')->remove('features')->remove('profile_type');
+
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'features_ids',
+                'label'      => 'Features',
+                'required'   => true,
+                'attributes' => array(
+                    'multiple' => true,
+                    'style'    => 'max-width: 100%;max-height: 600px;',
+                    'options'  => $this->getFeatureNames(),
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this
             ->addSubmit('Save Changes', 'feature_edit');
 
         if ($this->profile !== null) {
             $hydrator = $this->getHydrator();
             $this->populateValues($hydrator->extract($this->profile));
         }
+    }
+
+    /**
+     * @return array
+     */
+    private function getFeatureNames()
+    {
+        $featureNames = array();
+        foreach ($this->getEntityManager()->getRepository('BrBundle\Entity\Match\Feature')->findAll() as $feature) {
+            $featureNames[$feature->getId()] = $feature->getName();
+        }
+
+        return $featureNames;
+    }
+
+    /**
+     * @param  array All possible features
+     * @return self
+     */
+    public function setFeatures(array $features)
+    {
+        $this->features = $features;
+
+        return $this;
     }
 
     public function setProfile(Profile $profile)

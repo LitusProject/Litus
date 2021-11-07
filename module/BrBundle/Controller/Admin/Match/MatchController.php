@@ -59,6 +59,69 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function viewAction()
+    {
+        $match = $this->getMatchEntity();
+        if ($match === null) {
+            return new ViewModel();
+        }
+
+        $student = $match->getStudentMatchee()->getStudent();
+        $company = $match->getCompanyMatchee()->getCompany();
+
+        $studentStudentFeatures = array();
+        $companyStudentFeatures = array();
+        // THE STUDENT FEATURES
+        foreach ($match->getStudentMatchee()->getStudentProfile()->getFeatures() as $feature){
+            $feat = (object) array();
+            $feat->name = $feature->getFeature()->getName();
+            $feat->importance = $feature->getImportance();
+            $studentStudentFeatures[$feature->getFeature()->getId()] = $feat;
+        }
+        foreach ($match->getCompanyMatchee()->getStudentProfile()->getFeatures() as $feature){
+            $feat = (object) array();
+            $feat->name = $feature->getFeature()->getName();
+            $feat->importance = $feature->getImportance();
+            $companyStudentFeatures[$feature->getFeature()->getId()] = $feat;
+        }
+        foreach (array_intersect(array_keys($studentStudentFeatures), array_keys($companyStudentFeatures)) as $shared){
+            $studentStudentFeatures[$shared]->shared = true;
+            $companyStudentFeatures[$shared]->shared = true;
+        }
+
+        $studentCompanyFeatures = array();
+        $companyCompanyFeatures = array();
+        // THE COMPANY FEATURES
+        foreach ($match->getStudentMatchee()->getCompanyProfile()->getFeatures() as $feature){
+            $feat = (object) array();
+            $feat->name = $feature->getFeature()->getName();
+            $feat->importance = $feature->getImportance();
+            $studentCompanyFeatures[$feature->getFeature()->getId()] = $feat;
+        }
+        foreach ($match->getCompanyMatchee()->getCompanyProfile()->getFeatures() as $feature){
+            $feat = (object) array();
+            $feat->name = $feature->getFeature()->getName();
+            $feat->importance = $feature->getImportance();
+            $companyCompanyFeatures[$feature->getFeature()->getId()] = $feat;
+        }
+        foreach (array_intersect(array_keys($studentCompanyFeatures), array_keys($companyCompanyFeatures)) as $shared){
+            $studentCompanyFeatures[$shared]->shared = true;
+            $companyCompanyFeatures[$shared]->shared = true;
+        }
+
+        return new ViewModel(
+            array(
+                'match' => $match,
+                'student'   => $student,
+                'company'   => $company,
+                'studentStudentFeatures' => $studentStudentFeatures,
+                'companyStudentFeatures' => $companyStudentFeatures,
+                'studentCompanyFeatures' => $studentCompanyFeatures,
+                'companyCompanyFeatures' => $companyCompanyFeatures,
+            )
+        );
+    }
+
     public function generateMatchesAction()
     {
         $companyMaps = $this->getEntityManager()
@@ -67,6 +130,7 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
         $studentMaps = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Match\Profile\ProfileStudentMap')
             ->findAll();
+
         $companies = array();
         $allCompanies = array();
         $students = array();
@@ -123,15 +187,15 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
             ->findByCompany($company);
 
         foreach ($studentProfiles as $profile){
-            if (get_class($profile->getProfile()) === Match\Profile\StudentProfile::class)
+            if ($profile->getProfile()->getProfileType() === 'student')
                 $studentStudentProfile = $profile->getProfile();
-            elseif (get_class($profile->getProfile()) === Match\Profile\CompanyProfile::class)
+            elseif ($profile->getProfile()->getProfileType() === 'company')
                 $studentCompanyProfile = $profile->getProfile();
         }
         foreach ($companyProfiles as $profile){
-            if (get_class($profile->getProfile()) === Match\Profile\StudentProfile::class)
+            if ($profile->getProfile()->getProfileType() === 'student')
                 $companyStudentProfile = $profile->getProfile();
-            elseif (get_class($profile->getProfile()) === Match\Profile\CompanyProfile::class)
+            elseif ($profile->getProfile()->getProfileType() === 'company')
                 $companyCompanyProfile = $profile->getProfile();
         }
 
@@ -146,9 +210,32 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
         $this->getEntityManager()->persist($companyMatchee);
         $this->getEntityManager()->persist($studentMatchee);
 
+
         $match = new Match($studentMatchee, $companyMatchee);
 
         return $match;
+    }
+
+    public function deleteAction()
+    {
+        $this->initAjax();
+
+        $match = $this->getMatchEntity();
+        if ($match === null) {
+            return new ViewModel();
+        }
+
+        $this->getEntityManager()->remove($match->getCompanyMatchee());
+        $this->getEntityManager()->remove($match->getStudentMatchee());
+        $this->getEntityManager()->remove($match);
+
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
     }
     
     /**

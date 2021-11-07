@@ -22,6 +22,9 @@ namespace BrBundle\Entity;
 
 use BrBundle\Entity\Match\MatcheeMap\CompanyMatcheeMap;
 use BrBundle\Entity\Match\MatcheeMap\StudentMatcheeMap;
+use BrBundle\Entity\Match\Profile;
+use BrBundle\Entity\Match\Profile\CompanyProfile;
+use BrBundle\Entity\Match\Profile\StudentProfile;
 use CommonBundle\Entity\User\Person;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -74,7 +77,8 @@ class Match
     {
         $this->companyMatchee = $company;
         $this->studentMatchee = $student;
-        $this->matchPercentage = ($company->getMatchPercentage() + $student->getMatchPercentage()) / 2;
+        $this->matchPercentage = ($this->getMatchPercentages($company->getCompanyProfile(), $student->getCompanyProfile()) +
+                $this->getMatchPercentages($company->getStudentProfile(), $student->getStudentProfile())) / 2;
     }
 
     /**
@@ -115,5 +119,37 @@ class Match
     public function setMatchPercentage($matchPercentage)
     {
         $this->matchPercentage = $matchPercentage*100;
+    }
+
+    /**
+     * @param Profile $companyProfile
+     * @param Profile $studentProfile
+     * @return integer
+     */
+    public function getMatchPercentages(Profile $companyProfile, Profile $studentProfile)
+    {
+        $companyTraitMaps = $companyProfile->getFeatures()->toArray();
+        $studentTraitMaps = $studentProfile->getFeatures()->toArray();
+
+        $studentTraits = array();
+        $companyTraits = array();
+        foreach ($studentTraitMaps as $trait)
+            $studentTraits[] = $trait->getFeature()->getId();
+        foreach ($companyTraitMaps as $trait)
+            $companyTraits[] = $trait->getFeature()->getId();
+
+        error_log(count($studentTraits). count($companyTraits));
+
+        $positives = 0;
+        $negatives =0;
+        foreach ($studentTraits as $ST){
+            foreach ($companyTraits as $CT){
+                if ($ST == $CT) $positives++;
+//                if ($ST->isOpposite($CT)) $negatives++;
+            }
+        }
+        return ceil(5000
+            + 5000 * $positives / max(count($studentTraits), count($companyTraits))
+            - 5000 * $negatives / max(count($studentTraits), count($companyTraits)));
     }
 }

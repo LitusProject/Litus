@@ -33,7 +33,10 @@ use Doctrine\ORM\Mapping as ORM;
  * This is a map between a feature and a profile.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Match\Profile\ProfileFeatureMap")
- * @ORM\Table(name="br_match_profile_feature_map")
+ * @ORM\Table(
+ *     name="br_match_profile_feature_map",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="profile_feature_map_feature_profile", columns={"feature", "profile"})}
+ * )
  */
 class ProfileFeatureMap
 {

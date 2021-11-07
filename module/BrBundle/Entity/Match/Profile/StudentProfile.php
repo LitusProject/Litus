@@ -48,4 +48,11 @@ class StudentProfile extends Profile
     {
         Profile::__construct();
     }
+
+    /**
+     *
+     */
+    public function getProfileType(){
+        return "student";
+    }
 }

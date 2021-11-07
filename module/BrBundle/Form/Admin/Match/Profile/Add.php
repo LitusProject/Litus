@@ -34,7 +34,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @var array All possible features
      */
-    private $features;
+    protected $features;
 
     public function init()
     {

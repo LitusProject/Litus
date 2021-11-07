@@ -121,13 +121,46 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel();
         }
 
-        $form = $this->getForm('br_match_profile_edit', array('features' => $profile->getFeatures()->toArray()));
+        $form = $this->getForm('br_match_profile_edit', array('features' => $profile->getFeatures()->toArray(), 'profile' => $profile));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            if ($form->isValid()){
+                // Set the new features and remove the old profileFeatureMaps
+
+                // Get old features
+                $oldFeatures = $profile->getFeatures()->toArray();
+                $oldFeaturesIds = array();
+                foreach ($oldFeatures as $oldFeature) {
+                    $oldFeaturesIds[] = $oldFeature->getFeature()->getId();
+                }
+
+                // Get new features
+                $newFeatureIds = array_values($formData['features_ids']);
+
+                // Add the new profileFeatureMaps to the database
+                foreach ($newFeatureIds as $feature){
+                    if (!in_array($feature, $oldFeaturesIds)){
+                        $map = new ProfileFeatureMap(
+                            $this->getEntityManager()
+                                ->getRepository('BrBundle\Entity\Match\Feature')
+                                ->findOneById($feature),
+                            $profile);
+                        $this->getEntityManager()->persist($map);
+                        $profile->addFeature($map);
+                    }
+                }
+
+                // Remove old profileFeatureMaps from database
+                foreach (array_diff($oldFeaturesIds, $newFeatureIds) as $removableFeatures){
+                    $map = $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Match\Profile\ProfileFeatureMap')
+                        ->findOneByProfile($profile);
+                    $this->getEntityManager()->remove($map);
+                }
+
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -162,7 +195,19 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel();
         }
 
+        foreach ($profile->getFeatures() as $f){
+            $this->getEntityManager()->remove($f);
+        }
+        if ($profile->getProfileType() == 'student'){
+            $this->getEntityManager()->remove($this->getEntityManager()->getRepository('BrBundle\Entity\Match\Profile\ProfileStudentMap')
+                ->findOneByProfile($profile));
+        } elseif ($profile->getProfileType() == 'company'){
+            $this->getEntityManager()->remove($this->getEntityManager()->getRepository('BrBundle\Entity\Match\Profile\ProfileCompanyMap')
+                ->findOneByProfile($profile));
+        }
+
         $this->getEntityManager()->remove($profile);
+
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -171,7 +216,7 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
             )
         );
     }
-    
+
     /**
      * @return Profile|null
      */

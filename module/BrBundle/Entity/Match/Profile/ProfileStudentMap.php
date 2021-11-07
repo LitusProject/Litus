@@ -88,7 +88,7 @@ class ProfileStudentMap
     /**
      * @return string
      */
-    public function getUser()
+    public function getUserName()
     {
         return $this->student->getFullName();
     }

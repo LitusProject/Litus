@@ -21,17 +21,21 @@
     <div id="controller_action">
         <table class="full_width manage">
             <tr>
-                <th>Name</th>
-                <th width="70px">Action</th>
+                <th>Student</th>
+                <th>Company</th>
+                <th width="180px">Match Rating</th>
+                <th width="180px">Action</th>
             </tr>
 
             {% for match in paginator %}
 
                 <tr class="item item-{{ match.getId() }}">
-                    <td>{{ match.getId() }}</td>
+                    <td>{{ match.getStudentMatchee().getStudent().getFullName() }}</td>
+                    <td>{{ match.getCompanyMatchee().getCompany().getName() }}</td>
+                    <td>{{ match.getMatchPercentage() }} %</td>
                     <td class="actions">
                         {% if hasAccess('br_admin_match_match', 'edit') %}
-                            <a href="{{ url('br_admin_match_match', {"action": "edit", "id": match.getId()}) }}" class="edit">Edit</a>
+                            <a href="{{ url('br_admin_match_match', {"action": "view", "id": match.getId()}) }}" class="view">View</a>
                         {% endif %}
                         {% if hasAccess('br_admin_match_match', 'delete') %}
                             <a href="#" class="delete" data-id="{{ match.getId() }}">Delete</a>
@@ -82,8 +86,8 @@
             var $this = $(this);
 
             e.preventDefault();
-            var removeFrofile = $('#removeFrofile');
-            removeFrofile.find('.matchTitle').html($(this).data('title'));
+            var removeMatch = $('#removeMatch');
+            removeMatch.find('.matchTitle').html($(this).data('title'));
             var id = $this.data('id');
             removeMatch.find('.delete').unbind('click').click(function () {
                 $.post('{{ url('br_admin_match_match', {"action": "delete"})}}' + id, function (data) {
