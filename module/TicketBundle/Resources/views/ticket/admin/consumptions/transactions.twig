@@ -21,7 +21,7 @@
                 {% for transactions in paginator %}
                     <tr class="item item-{{ transactions.getId() }}">
                         <td>{{ transactions.getPerson().getFullName() }}</td>
-                        <td>{{ transactions.getConsumption().getFullName() }}</td>
+                        <td>{{ transactions.getOwner().getFullName() }}</td>
                         <td>{{ transactions.getAmount() }}</td>
                         <td>{{ transactions.getTime().format('H:i:s d-m-Y') }}</td>
                     </tr>
