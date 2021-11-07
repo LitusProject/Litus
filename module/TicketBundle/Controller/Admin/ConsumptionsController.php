@@ -198,6 +198,12 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
             return new ViewModel();
         }
 
+        if ($consumptions instanceof Consumptions){
+            $person = $this->getPersonEntity();
+            $transaction = new Transactions(-$consumptions->getConsumptions(), $consumptions->getPerson(), $person);
+            $this->getEntityManager()->persist($transaction);
+        }
+
         $this->getEntityManager()->remove($consumptions);
         $this->getEntityManager()->flush();
 
