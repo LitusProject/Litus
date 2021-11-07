@@ -40,7 +40,7 @@ class StudentMatcheeMap extends MatcheeMap
     /**
      * @var Person The Person that has created the match profiles.
      *
-     * @ORM\OneToOne(targetEntity="\CommonBundle\Entity\User\Person")
+     * @ORM\ManyToOne(targetEntity="\CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $student;

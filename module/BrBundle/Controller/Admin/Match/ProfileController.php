@@ -58,6 +58,44 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function matchesAction()
+    {
+        $profile = $this->getProfileEntity();
+
+        $matches = array();
+        if ($profile->getProfileType() == 'student'){
+            $student = $this->getEntityManager()->getRepository('BrBundle\Entity\Match\Profile\ProfileStudentMap')
+                ->findOneByProfile($profile)->getStudent();
+            $maps = $this->getEntityManager()->getRepository('BrBundle\Entity\Match\MatcheeMap\StudentMatcheeMap')
+                ->findByStudent($student);
+            foreach ($maps as $map)
+                $matches[] = $this->getEntityManager()->getRepository('BrBundle\Entity\Match')
+                    ->findOneByStudentMatchee($map);
+        } elseif ($profile->getProfileType() == 'company'){
+            $company = $this->getEntityManager()->getRepository('BrBundle\Entity\Match\Profile\ProfileCompanyMap')
+                ->findOneByProfile($profile)->getCompany();
+            $maps = $this->getEntityManager()->getRepository('BrBundle\Entity\Match\MatcheeMap\CompanyMatcheeMap')
+                ->findByCompany($company);
+            foreach ($maps as $map)
+                $matches[] = $this->getEntityManager()->getRepository('BrBundle\Entity\Match')
+                    ->findOneByCompanyMatchee($map);
+        }
+
+        $paginator = $this->paginator()->createFromArray(
+            $matches,
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator'         => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+                'student'           => $student??null,
+                'company'           => $company??null,
+            )
+        );
+    }
+
     public function addAction()
     {
         $form = $this->getForm('br_match_profile_add');
@@ -216,6 +254,8 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
             )
         );
     }
+
+
 
     /**
      * @return Profile|null

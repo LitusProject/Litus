@@ -35,6 +35,9 @@
                         {% if hasAccess('br_admin_match_profile', 'edit') %}
                             <a href="{{ url('br_admin_match_profile', {"action": "edit", "id": profile.getId()}) }}" class="edit">Edit</a>
                         {% endif %}
+                        {% if hasAccess('br_admin_match_profile', 'matches') %}
+                            <a href="{{ url('br_admin_match_profile', {"action": "matches", "id": profile.getId()}) }}" class="view">View Matches</a>
+                        {% endif %}
                         {% if hasAccess('br_admin_match_profile', 'delete') %}
                             <a href="#" class="delete" data-id="{{ profile.getId() }}">Delete</a>
                         {% endif %}

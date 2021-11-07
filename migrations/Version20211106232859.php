@@ -26,7 +26,10 @@ class Version20211106232859 extends \Doctrine\Migrations\AbstractMigration
         $this->addSql('ALTER TABLE br_match_matchee_map_company ADD CONSTRAINT FK_94BE8AFFBF396750 FOREIGN KEY (id) REFERENCES br_match_matchee_map (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE br_match_matchee_map_student ADD CONSTRAINT FK_6C222C83BF396750 FOREIGN KEY (id) REFERENCES br_match_matchee_map (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('CREATE UNIQUE INDEX profile_feature_map_feature_profile ON br_match_profile_feature_map (feature, profile)');
-
+        $this->addSql('DROP INDEX uniq_94be8aff4fbf094f');
+        $this->addSql('CREATE INDEX IDX_94BE8AFF4FBF094F ON br_match_matchee_map_company (company)');
+        $this->addSql('DROP INDEX uniq_6c222c8334dcd176');
+        $this->addSql('CREATE INDEX IDX_6C222C8334DCD176 ON br_match_matchee_map_student (person)');
     }
 
     /**

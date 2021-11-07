@@ -78,6 +78,15 @@ return array(
         'br_admin_request' => array(
             'reject', 'approve', 'manage', 'view',
         ),
+        'br_admin_match_feature' => array(
+            'manage', 'add', 'edit', 'delete',
+        ),
+        'br_admin_match_profile' => array(
+            'manage', 'add', 'edit', 'delete', 'matches'
+        ),
+        'br_admin_match_match' => array(
+            'manage', 'view', 'delete', 'generateMatches',
+        ),
         'br_career_index' => array(
             'index',
         ),

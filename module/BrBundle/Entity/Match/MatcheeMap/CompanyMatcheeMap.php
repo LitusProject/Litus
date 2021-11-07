@@ -40,7 +40,7 @@ class CompanyMatcheeMap extends MatcheeMap
     /**
      * @var \BrBundle\Entity\Company The company
      *
-     * @ORM\OneToOne(targetEntity="\BrBundle\Entity\Company")
+     * @ORM\ManyToOne(targetEntity="\BrBundle\Entity\Company")
      * @ORM\JoinColumn(name="company", referencedColumnName="id")
      */
     private $company;
