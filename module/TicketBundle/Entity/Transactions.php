@@ -31,12 +31,12 @@ class Transactions
     private $person;
 
     /**
-     * @var \TicketBundle\Entity\Consumptions The consumptions to which the transaction belongs
+     * @var \CommonBundle\Entity\User\Person The person to whom the consumptions belong
      *
-     * @ORM\ManyToOne(targetEntity="TicketBundle\Entity\Consumptions", cascade={"persist"})
-     * @ORM\JoinColumn(name="consumption", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person", cascade={"persist"})
+     * @ORM\JoinColumn(name="owner", referencedColumnName="id")
      */
-    private $consumption;
+    private $owner;
 
     /**
      * @var integer
@@ -58,10 +58,10 @@ class Transactions
      * @param \TicketBundle\Entity\Consumptions $consumption
      * @param Person $person
      */
-    public function __construct(int $amount, Consumptions $consumption, Person $person = null)
+    public function __construct(int $amount, Person $owner, Person $person = null)
     {
         $this->amount = $amount;
-        $this->consumption = $consumption;
+        $this->owner = $owner;
         $this->person = $person;
         $this->time = new DateTime();
     }
@@ -90,12 +90,9 @@ class Transactions
         return $this->amount;
     }
 
-    /**
-     * @return \TicketBundle\Entity\Consumptions
-     */
-    public function getConsumption()
+    public function getOwner()
     {
-        return $this->consumption;
+        return $this->owner;
     }
 
     /**
@@ -129,12 +126,12 @@ class Transactions
     }
 
     /**
-     * @param \TicketBundle\Entity\Consumptions $consumptions
+     * @param Person $owner
      * @return Transactions
      */
-    public function setConsumption(Consumptions $consumptions)
+    public function setConsumption(Person $owner)
     {
-        $this->consumption = $consumptions;
+        $this->owner = $owner;
 
         return $this;
     }

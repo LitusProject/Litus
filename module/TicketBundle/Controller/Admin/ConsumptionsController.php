@@ -41,6 +41,13 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
 
                 $entity = $this->getConsumptionsEntity();
 
+                if ($entity instanceof Consumptions) {
+                    $person = $this->getPersonEntity();
+
+                    $transaction = new Transactions(-$data, $entity->getPerson(), $person);
+                    $this->getEntityManager()->persist($transaction);
+                }
+
                 if ($entity->getConsumptions() - $data < 0) {
                     $this->flashMessenger()->error(
                         'Error',
@@ -55,15 +62,10 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
                     );
                     return new ViewModel();
                 }
-                if ($entity instanceof Consumptions) {
-                    $person = $this->getPersonEntity();
-
-                    $transaction = new Transactions(-$data, $entity, $person);
-                    $this->getEntityManager()->persist($transaction);
-                }
 
                 if ($entity->getConsumptions() - $data === 0) {
                     $entity->removeConsumptions($data);
+
                     $this->getEntityManager()->remove($entity);
                     $this->getEntityManager()->flush();
 
@@ -115,7 +117,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
                 if ($consumption instanceof Consumptions){
                     $person = $this->getPersonEntity();
 
-                    $transaction = new Transactions($form->getData()['number_of_consumptions'], $consumption, $person);
+                    $transaction = new Transactions($form->getData()['number_of_consumptions'], $consumption->getPerson(), $person);
                     $this->getEntityManager()->persist($transaction);
                 }
                 $this->getEntityManager()->flush();
@@ -158,7 +160,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
             if ($form->isValid()) {
                 if ($consumptions instanceof Consumptions){
                     $person = $this->getPersonEntity();
-                    $transaction = new Transactions($form->getData()['number_of_consumptions'] - $old, $consumptions, $person);
+                    $transaction = new Transactions($form->getData()['number_of_consumptions'] - $old, $consumptions->getPerson(), $person);
                     $this->getEntityManager()->persist($transaction);
                 }
                 $this->getEntityManager()->flush();

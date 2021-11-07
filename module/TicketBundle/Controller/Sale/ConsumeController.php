@@ -32,7 +32,7 @@ class ConsumeController extends \TicketBundle\Component\Controller\SaleControlle
                 if ($entity instanceof Consumptions) {
                     $person = $this->getPersonEntity();
 
-                    $transaction = new Transactions(-$amount, $entity, $person);
+                    $transaction = new Transactions(-$amount, $entity->getPerson(), $person);
                     $this->getEntityManager()->persist($transaction);
                 }
 
