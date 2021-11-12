@@ -127,26 +127,26 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        $this->add(
-            array(
-                'type'       => 'select',
-                'name'       => 'university',
-                'label'      => 'University',
-                'required'   => true,
-                'attributes' => array(
-                    'id'      => 'university',
-                    'options' => ,
-                ),
-                'options' => array(
-                    'input' => array(
-                        'required' => count($this->getUniversities()) > 1,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
-                ),
-            )
-        );
+//        $this->add( TODO: wat was dit?
+//            array(
+//                'type'       => 'select',
+//                'name'       => 'university',
+//                'label'      => 'University',
+//                'required'   => true,
+//                'attributes' => array(
+//                    'id'      => 'university',
+//                    'options' => ,
+//                ),
+//                'options' => array(
+//                    'input' => array(
+//                        'required' => count($this->getUniversities()) > 1,
+//                        'filters'  => array(
+//                            array('name' => 'StringTrim'),
+//                        ),
+//                    ),
+//                ),
+//            )
+//        );
         $this->add(
             array(
                 'type'       => 'text',
