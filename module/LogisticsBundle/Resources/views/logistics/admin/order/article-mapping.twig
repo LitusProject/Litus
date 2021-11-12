@@ -1,0 +1,68 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'logistics/admin/order/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action" style="width: 100%">
+        <aside>
+            {% if hasAccess('logistics_admin_article', 'edit') %}
+
+                <div class="sidebox">
+                    <div class="title">Edit Article</div>
+                    <div class="content">
+                        <p>
+                            <i>Please hit the link below to edit this article!</i>
+                        </p>
+                        <p>
+                            <a href="{{ url('logistics_admin_article', {'action': 'edit', 'id': orderArticleMap.getArticle().getId()}) }}">&rarr; Edit Article</a>
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
+
+        </aside>
+        <aside>
+            {% if hasAccess('logistics_admin_order', 'edit') %}
+
+                <div class="sidebox">
+                    <div class="title">Edit Order</div>
+                    <div class="content">
+                        <p>
+                            <i>Please hit the link below to edit this order!</i>
+                        </p>
+                        <p>
+                            <a href="{{ url('logistics_admin_order', {'action': 'edit', 'id': orderArticleMap.getOrder().getId()}) }}">&rarr; Edit Order</a>
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
+
+        </aside>
+        <h1>Order</h1>
+        <p>Name: <b>{{ orderArticleMap.getOrder().getName() }}</b></p>
+        <p>Location: <b>{{ orderArticleMap.getOrder().getLocation().getName() }}</b></p>
+        <p>Start Date: <b>{{ orderArticleMap.getOrder().getStartDate().format('d/m/Y H:i') }}</b></p>
+        <p>End Date: <b>{{ orderArticleMap.getOrder().getEndDate().format('d/m/Y H:i') }}</b></p>
+        <br>
+        <h1>Article</h1>
+        <p>Name: <b>{{ orderArticleMap.getArticle().getName() }}</b></p>
+        <p>Location: <b>{{ orderArticleMap.getArticle().getLocation() }}</b></p>
+        <p>Owned/Available: <b>{{ orderArticleMap.getArticle().getAmountOwned() }} / {{ orderArticleMap.getArticle().getAmountAvailable() }}</b></p>
+        <p>Amount: <b>{{ orderArticleMap.getAmount() }}</b></p>
+        <p>Status: <b>{{ orderArticleMap.getStatus() }}</b></p>
+
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+        <br>
+
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+
+    </script>
+{% endblock %}

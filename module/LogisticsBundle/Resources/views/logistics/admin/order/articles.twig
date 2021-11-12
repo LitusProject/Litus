@@ -1,0 +1,145 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'logistics/admin/order/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div class="flashmessage success_message full_width mapping_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The mapping was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width mapping_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the mapping.</p>
+        </div>
+    </div>
+
+    <div id="controller_action" style="width:inherit;">
+        <aside>
+            {% if hasAccess('logistics_admin_order', 'edit') %}
+
+                <div class="sidebox">
+                    <div class="title">Edit Order</div>
+                    <div class="content">
+                        <p>
+                            <i>Please hit the link below to edit this order!</i>
+                        </p>
+                        <p>
+                            <a href="{{ url('logistics_admin_order', {'action': 'edit', 'id': order.getId()}) }}">&rarr; Edit Order</a>
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
+
+        </aside>
+
+        <h1>Order</h1>
+        <p>Name: <b>{{ order.getName() }}</b></p>
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+        <br>
+
+        <table class="manage">
+            <tr>
+                <th width="200px">Name</th>
+                <th width="90px">Amount</th>
+                <th width="90px">Status</th>
+                <th width="90px">Actions</th>
+            </tr>
+            {% for mapping in articles %}
+                <tr class="item item-{{ mapping.getId() }}">
+                    <td>{{ mapping.getArticle().getName() }}</td>
+                    <td>{{ mapping.getAmount() }}</td>
+                    <td>{{ mapping.getStatus() }}</td>
+                    <td>
+                        {% if hasAccess('logistics_admin_order', 'articleMapping') %}
+                            <a href="{{ url('logistics_admin_order', {"action": "articleMapping", "id": order.getId(), "map": mapping.getId()}) }}" class="edit">Edit</a>
+                        {% endif %}
+                        {% if hasAccess('logistics_admin_article', 'orders') %}
+                            <a href="{{ url('logistics_admin_article', {"action": "orders", "id": mapping.getArticle().getId()}) }}" class="view">Article</a>
+                        {% endif %}
+                        {% if hasAccess('logistics_admin_order', 'deleteArticle') %}
+                            <a href="#" class="delete" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getArticle().getName() }}">{{ translate('Delete') }}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="modal fade" id="removeMapping" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Article
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following article: <b class="articleName"></b>!
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#articleSearch').typeaheadRemote(
+                {
+                    source: '{{ url('logistics_admin_article_typeahead')}}',
+                    items: 60,
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('#articleId').val($(this).data('value').id);
+                } else {
+                    $('#articleId').val('');
+                }
+            });
+            $('.item .delete').click(openModal);
+        });
+
+        function openModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeArticle = $('#removeMapping');
+            removeArticle.find('.articleName').html($(this).data('article'));
+            removeArticle.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('logistics_admin_order', {"action": "deleteArticle", "id": order.getId()})}}' +  $this.data('id'), function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').removeClass('in');
+                        $('#mapping_removed_success').addClass('in');
+                        $this.parent().parent().remove();
+                        removeArticle.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeArticle.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.mapping_removed_error').removeClass('hide');
+            $('#removeMapping').modal('hide');
+        }
+    </script>
+{% endblock %}

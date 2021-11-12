@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace BrBundle\Controller\Admin;
 
@@ -68,7 +50,7 @@ class CvController extends \BrBundle\Component\Controller\CvController
 
         $translator = $this->getTranslator();
         $locale = $this->getEntityManager()
-            ->getRepository('CommonBUndle\Entity\General\Config')
+            ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.cv_book_language');
         $translator->setLocale($locale);
         $document = new CvBookGenerator($this->getEntityManager(), $year, $file, $translator);
@@ -126,6 +108,134 @@ class CvController extends \BrBundle\Component\Controller\CvController
         $headers->addHeaders(
             array(
                 'Content-Disposition' => 'attachment; filename="academics.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
+    }
+
+    public function exportCvCsvAction()
+    {
+        $translator = $this->getTranslator();
+        $locale = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.cv_book_language');
+        $translator->setLocale($locale);
+
+        $entries = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Cv\Entry')
+            ->findAllByAcademicYear($this->getAcademicYear());
+
+        $file = new CsvFile();
+        $heading = array('First Name', 'Last Name', 'birthday', 'Email', 'Phone', 'img', 'Study', 'street', 'nr', 'postal', 'city', 'country', 'about', 'grade', 'priorGrade', 'SS_start_master', 'SS_end_master', 'SS_percentage_master', 'SS_title_master', 'SS_start_bach', 'SS_end_bach', 'SS_percentage_bach', 'SS_title_bach', 'additional_diplomas', 'SE_location', 'SE_period', 'L_name', 'L_oral', 'L_written', 'L_extra', 'ComputerSkills', 'Experiences', 'EXP_type', 'EXP_function', 'EXP_start', 'EXP_end', 'thesis', 'futureInterest', 'mobilityEU', 'mobilityWorld','careerExpectations', 'hobbies');
+
+        $picturePath = 'public' . $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.profile_path');
+        $monthsEnglish = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' );
+        $monthsDutch = array('Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December' );
+
+
+        $results = array();
+        foreach ($entries as $entry) {
+            $birthday = $entry->getBirthDay()->format('d F Y');
+            $birthday = str_ireplace($monthsEnglish, $monthsDutch, $birthday);
+            $phoneNumber = $entry->getPhoneNumber();
+
+            //Grades may be 0 in the database
+            $masterGrade = (string) ($entry->getGrade() / 100);
+            if ($entry->getGrade() == 0) {
+                $masterGrade = '-';
+            }
+            $bachelorGrade = (string) ($entry->getPriorGrade() / 100);
+            if ($entry->getPriorGrade() == 0) {
+                $bachelorGrade = '-';
+            }
+            $mail = str_replace('vtk.be.test-google-a.com', 'vtk.be', $entry->getEmail());
+
+            //languages
+            $lang = '';
+            $langOral = '';
+            $langWritten = '';
+            foreach ($entry->getLanguages() as $l) {
+                $lang .= $translator->translate($l->getName()) . ';';
+                $langOral .= $translator->translate($l->getOralSkill()) . ';';
+                $langWritten .= $translator->translate($l->getWrittenSkill()) . ';';
+            }
+
+            //experiences
+            $expTypes = '';
+            $expFunctions = '';
+            $expStarts = '';
+            $expEnds = '';
+            foreach ($entry->getExperiences() as $e) {
+                $expTypes .= $translator->translate($e->getType()) . ';';
+                $expFunctions .= $e->getFunction() . ';';
+                $expStarts .= strval($e->getStartYear()) . ';';
+                $expEnds .= strval($e->getEndYear()) . ';';
+            }
+
+            $results[] = array(
+                $entry->getFirstName(),
+                $entry->getLastName(),
+                $birthday,
+                $mail,
+                substr($phoneNumber, 0, 3) . ' (0)' . substr($phoneNumber, 3, 3) . ' ' . substr($phoneNumber, 6, 2) . ' ' . substr($phoneNumber, 8, 2) . ' ' . substr($phoneNumber, 10, 2),
+                $picturePath . '/' . $entry->getAcademic()->getPhotoPath(),
+                $entry->getStudy()->getTitle(),
+                $entry->getAddress()->getStreet(),
+                $entry->getAddress()->getNumber(),
+                $entry->getAddress()->getPostal(),
+                $entry->getAddress()->getCity(),
+                $entry->getAddress()->getCountry(),
+                $entry->getAbout(),
+                $entry->getGrade(),
+                $entry->getPriorGrade(),
+                (string) $entry->getMasterStart(),
+                (string) $entry->getMasterEnd(),
+                $masterGrade,
+                $entry->getStudy()->getTitle(),
+                (string) $entry->getBachelorStart(),
+                (string) $entry->getBachelorEnd(),
+                $bachelorGrade,
+                $entry->getPriorStudy(),
+                $entry->getAdditionalDiplomas(),
+                $entry->getErasmusLocation(),
+                $entry->getErasmusPeriod(),
+                $lang,
+                $langOral,
+                $langWritten,
+                $entry->getLanguageExtra(),
+                $entry->getComputerSkills(),
+                $expTypes,
+                $expFunctions,
+                $expStarts,
+                $expEnds,
+                $entry->getThesisSummary(),
+                $entry->getFutureInterest(),
+                $translator->translate($entry->getMobilityEurope()),
+                $translator->translate($entry->getMobilityWorld()),
+                $entry->getCareerExpectations(),
+                $entry->getHobbies(),
+            );
+            if ($entry->getAddress()->getMailbox() !== null && $entry->getAddress()->getMailbox() !== '') {
+                $results['bus'] = $entry->getAddress()->getMailbox();
+            }
+        }
+
+        $document = new CsvGenerator($heading, $results);
+        $document->generateDocument($file);
+
+        $headers = new Headers();
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="academicsCV.csv"',
                 'Content-Type'        => 'text/csv',
             )
         );

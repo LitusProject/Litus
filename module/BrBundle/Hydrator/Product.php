@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace BrBundle\Hydrator;
 
@@ -34,7 +16,7 @@ class Product extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $stdKeys = array('name', 'description', 'invoice_description', 'contract_text', 'price', 'vat_type', 'refund');
+    private static $stdKeys = array('name', 'description', 'invoice_description', 'contract_text_nl', 'contract_text_en', 'price', 'vat_type', 'refund');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -64,7 +46,7 @@ class Product extends \CommonBundle\Component\Hydrator\Hydrator
         if ($data['event'] != '') {
             $object->setEvent(
                 $this->getEntityManager()
-                    ->getRepository('CalendarBundle\Entity\Node\Event')
+                    ->getRepository('BrBundle\Entity\Event')
                     ->findOneById($data['event'])
             );
         }
@@ -76,14 +58,17 @@ class Product extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
+
         if ($object === null) {
             return array();
         }
 
         $data = $this->stdExtract($object, self::$stdKeys);
-
-        if (isset($data['delivery_date'])) {
+        if ($object->getDeliveryDate() !== null) {
             $data['delivery_date'] = $object->getDeliveryDate()->format('d/m/Y');
+        }
+        if ($object->getEvent() !== null) {
+            $data['event'] = $object->getEvent()->getId() ?? null;
         }
 
         return $data;

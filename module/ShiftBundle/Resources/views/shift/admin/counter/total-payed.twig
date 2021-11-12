@@ -1,0 +1,20 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'shift/admin/counter/partials/navigation.twig' %}
+
+    <header class="controller_sub_header">
+        <nav class="controller_sub_nav">
+            <ul>
+                {% for academicYear in academicYears %}
+                    <li><a {% if academicYear.getCode() == activeAcademicYear.getCode() %} class="active" {% endif %}href="{{ url("shift_admin_shift_counter", {"action": "totalPayed", "academicyear": academicYear.getCode()}) }}">{{ academicYear.getCode() }}</a></li>
+                {% endfor %}
+            </ul>
+        </nav>
+    </header>
+
+    <div style="height: 80px"></div>
+    <div id="controller_action">
+        <h1><b><u>Total: {{ total }}</u></b></h1>
+    </div>
+{% endblock %}

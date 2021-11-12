@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 return array(
     'routes' => array(
@@ -31,7 +13,7 @@ return array(
                     'string' => '[%a-zA-Z0-9:.,_-]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_article',
                     'action'     => 'manage',
                 ),
@@ -46,7 +28,7 @@ return array(
                     'id'           => '[0-9]*',
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_article_subject',
                     'action'     => 'manage',
                 ),
@@ -61,7 +43,7 @@ return array(
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_article_comment',
                     'action'     => 'manage',
                 ),
@@ -76,7 +58,7 @@ return array(
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_article_file',
                     'action'     => 'manage',
                 ),
@@ -95,7 +77,7 @@ return array(
                     'page'         => '[0-9]*',
                     'semester'     => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_sales_article',
                     'action'     => 'manage',
                 ),
@@ -109,7 +91,7 @@ return array(
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
                     'string'       => '[%a-zA-Z0-9:.,_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_sales_article',
                     'action'     => 'typeahead',
                 ),
@@ -123,7 +105,7 @@ return array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_sales_article_sale',
                     'action'     => 'sale',
                 ),
@@ -137,7 +119,7 @@ return array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_sales_article_discount',
                     'action'     => 'manage',
                 ),
@@ -151,7 +133,7 @@ return array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_sales_article_discount_template',
                     'action'     => 'manage',
                 ),
@@ -165,7 +147,7 @@ return array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_sales_article_barcode',
                     'action'     => 'manage',
                 ),
@@ -179,7 +161,7 @@ return array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_sales_article_restriction',
                     'action'     => 'manage',
                 ),
@@ -199,7 +181,7 @@ return array(
                     'page'   => '[0-9]*',
                     'date'   => '[0-9]{1,2}-[0-9]{1,2}-[0-9]{4}',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_sales_booking',
                     'action'     => 'manage',
                 ),
@@ -214,7 +196,7 @@ return array(
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_sales_session',
                     'action'     => 'manage',
                 ),
@@ -228,7 +210,7 @@ return array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_sales_session_restriction',
                     'action'     => 'manage',
                 ),
@@ -243,7 +225,7 @@ return array(
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_sales_session_openinghour',
                     'action'     => 'manage',
                 ),
@@ -258,7 +240,7 @@ return array(
                     'id'           => '[0-9]*',
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_sales_financial',
                     'action'     => 'overview',
                 ),
@@ -276,7 +258,7 @@ return array(
                     'string'       => '[%a-zA-Z0-9:.,_-]*',
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_sales_financial_sold',
                     'action'     => 'individual',
                 ),
@@ -294,7 +276,7 @@ return array(
                     'string'       => '[%a-zA-Z0-9:.,_-]*',
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_sales_financial_returned',
                     'action'     => 'individual',
                 ),
@@ -312,7 +294,7 @@ return array(
                     'string'       => '[%a-zA-Z0-9:.,_-]*',
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_sales_financial_ordered',
                     'action'     => 'individual',
                 ),
@@ -330,7 +312,7 @@ return array(
                     'string'       => '[%a-zA-Z0-9:.,_-]*',
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_sales_financial_delivered',
                     'action'     => 'individual',
                 ),
@@ -345,7 +327,7 @@ return array(
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_supplier',
                     'action'     => 'manage',
                 ),
@@ -360,7 +342,7 @@ return array(
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_supplier_user',
                     'action'     => 'manage',
                 ),
@@ -378,7 +360,7 @@ return array(
                     'page'     => '[0-9]*',
                     'semester' => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_stock',
                     'action'     => 'manage',
                 ),
@@ -395,7 +377,7 @@ return array(
                     'string' => '[%a-zA-Z0-9:.,_-]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_stock_period',
                     'action'     => 'manage',
                 ),
@@ -414,7 +396,7 @@ return array(
                     'date'   => '[0-9]{1,2}-[0-9]{1,2}-[0-9]{4}',
                     'order'  => '[a-zA-Z]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_stock_order',
                     'action'     => 'manage',
                 ),
@@ -429,7 +411,7 @@ return array(
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_stock_delivery',
                     'action'     => 'manage',
                 ),
@@ -443,7 +425,7 @@ return array(
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
                     'string'       => '[%a-zA-Z0-9:.,_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_stock_delivery',
                     'action'     => 'typeahead',
                 ),
@@ -458,7 +440,7 @@ return array(
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_stock_retour',
                     'action'     => 'manage',
                 ),
@@ -475,7 +457,7 @@ return array(
                     'string' => '[a-zA-Z][%a-zA-Z0-9:.,_\-\(\)]*',
                     'page'   => '[0-9]+',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_syllabus',
                     'action'     => 'manage',
                 ),
@@ -489,7 +471,7 @@ return array(
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
                     'string'       => '[%a-zA-Z0-9:.,_\-\(\)]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_syllabus',
                     'action'     => 'typeahead',
                 ),
@@ -504,7 +486,7 @@ return array(
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'   => array(
                     'controller' => 'cudi_admin_prof_action',
                     'action'     => 'manage',
                 ),
@@ -518,7 +500,7 @@ return array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'   => array(
                     'controller' => 'cudi_admin_special_action',
                     'action'     => 'manage',
                 ),
@@ -543,7 +525,7 @@ return array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'session' => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_sale_queue',
                     'action'     => 'signin',
                 ),
@@ -558,7 +540,7 @@ return array(
                     'session' => '[0-9]*',
                     'id'      => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_sale_sale',
                     'action'     => 'sale',
                 ),
@@ -574,7 +556,7 @@ return array(
                     'hash'           => '[a-zA-Z0-9_-]*',
                     'language'       => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_sale_auth',
                     'action'     => 'login',
                 ),
@@ -589,7 +571,7 @@ return array(
                     'session'  => '[0-9]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_supplier_index',
                     'action'     => 'index',
                 ),
@@ -604,7 +586,7 @@ return array(
                     'session'  => '[0-9]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_supplier_auth',
                     'action'     => 'login',
                 ),
@@ -619,7 +601,7 @@ return array(
                     'session'  => '[0-9]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_supplier_article',
                     'action'     => 'manage',
                 ),
@@ -634,7 +616,7 @@ return array(
                     'page'     => '[0-9]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_prof_index',
                     'action'     => 'index',
                 ),
@@ -650,7 +632,7 @@ return array(
                     'hash'           => '[a-zA-Z0-9_-]*',
                     'language'       => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_prof_auth',
                     'action'     => 'login',
                 ),
@@ -665,7 +647,7 @@ return array(
                     'id'       => '[0-9]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_prof_subject',
                     'action'     => 'manage',
                 ),
@@ -679,7 +661,7 @@ return array(
                     'string'   => '[%a-zA-Z0-9:.,_-]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_prof_subject',
                     'action'     => 'typeahead',
                 ),
@@ -694,7 +676,7 @@ return array(
                     'id'       => '[0-9]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_prof_article',
                     'action'     => 'manage',
                 ),
@@ -708,7 +690,7 @@ return array(
                     'string'   => '[%a-zA-Z0-9:.,_-]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_prof_article',
                     'action'     => 'typeahead',
                 ),
@@ -723,7 +705,7 @@ return array(
                     'id'       => '[0-9]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_prof_article_mapping',
                     'action'     => 'manage',
                 ),
@@ -738,7 +720,7 @@ return array(
                     'id'       => '[0-9]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_prof_file',
                     'action'     => 'manage',
                 ),
@@ -753,7 +735,7 @@ return array(
                     'id'       => '[0-9]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_prof_article_comment',
                     'action'     => 'manage',
                 ),
@@ -768,7 +750,7 @@ return array(
                     'id'       => '[0-9]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_prof_subject_comment',
                     'action'     => 'manage',
                 ),
@@ -783,7 +765,7 @@ return array(
                     'id'       => '[0-9]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_prof_prof',
                     'action'     => 'manage',
                 ),
@@ -797,7 +779,7 @@ return array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_prof_help',
                     'action'     => 'index',
                 ),
@@ -811,7 +793,7 @@ return array(
                     'string'   => '[%a-zA-Z0-9:.,_-]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_prof_prof',
                     'action'     => 'typeahead',
                 ),
@@ -826,7 +808,7 @@ return array(
                     'language' => '(en|nl)',
                     'id'       => '[%a-zA-Z0-9:.,_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_booking',
                     'action'     => 'view',
                 ),
@@ -841,13 +823,12 @@ return array(
                     'language' => '(en|nl)',
                     'id'       => '[%a-zA-Z0-9:.,_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_opening_hour',
                     'action'     => 'week',
                 ),
             ),
         ),
-
         'cudi_admin_isic' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -859,7 +840,7 @@ return array(
                     'string' => '[a-zA-Z][%a-zA-Z0-9:.,_\-\(\)]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_admin_isic',
                     'action'     => 'manage',
                 ),
@@ -876,10 +857,69 @@ return array(
                     'redirect'     => '[a-zA-Z0-9_-]*',
                     'rediraction'  => '[a-zA-Z0-9]*',
                     'organization' => '[a-zA-Z0-9]*',
+                    'size'         => '[a-zA-Z_]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'cudi_isic',
                     'action'     => 'form',
+                ),
+            ),
+        ),
+        'cudi_admin_retail' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/cudi/retail[/:action[/:id][/page/:page][/:field/:string]][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'string' => '[%a-zA-Z0-9:.,_-]*',
+                    'page'   => '[0-9]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'cudi_admin_retail',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
+        'cudi_admin_retail_typeahead_article' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/cudi/retail/typeahead/article[/:string][/]',
+                'constraints' => array(
+                    'string' => '[%a-zA-Z0-9:.,_-]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'cudi_admin_retail',
+                    'action'     => 'articleTypeahead',
+                ),
+            ),
+        ),
+        'cudi_retail' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '[/:language]/cudi/retail[/:action[/:id]][/]',
+                'constraints' => array(
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'language' => '(en|nl)',
+                    'id'       => '[0-9]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'cudi_retail',
+                    'action'     => 'overview',
+                ),
+            ),
+        ),
+        'cudi_retail_typeahead_article' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '[/:language]/cudi/retail/typeahead/article[/:string][/]',
+                'constraints' => array(
+                    'string' => '[%a-zA-Z0-9:.,_-]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'cudi_retail',
+                    'action'     => 'articleTypeahead',
                 ),
             ),
         ),
@@ -917,29 +957,33 @@ return array(
         'cudi_admin_syllabus'                        => 'CudiBundle\Controller\Admin\SyllabusController',
         'cudi_admin_mail'                            => 'CudiBundle\Controller\Admin\MailController',
         'cudi_admin_isic'                            => 'CudiBundle\Controller\Admin\IsicController',
+        'cudi_admin_retail'                          => 'CudiBundle\Controller\Admin\RetailController',
 
-        'cudi_sale_sale'  => 'CudiBundle\Controller\Sale\SaleController',
-        'cudi_sale_queue' => 'CudiBundle\Controller\Sale\QueueController',
-        'cudi_sale_auth'  => 'CudiBundle\Controller\Sale\AuthController',
 
-        'cudi_supplier_index'   => 'CudiBundle\Controller\Supplier\IndexController',
-        'cudi_supplier_article' => 'CudiBundle\Controller\Supplier\ArticleController',
-        'cudi_supplier_auth'    => 'CudiBundle\Controller\Supplier\AuthController',
 
-        'cudi_prof_index'           => 'CudiBundle\Controller\Prof\IndexController',
-        'cudi_prof_auth'            => 'CudiBundle\Controller\Prof\AuthController',
-        'cudi_prof_article'         => 'CudiBundle\Controller\Prof\ArticleController',
-        'cudi_prof_article_mapping' => 'CudiBundle\Controller\Prof\Article\MappingController',
-        'cudi_prof_file'            => 'CudiBundle\Controller\Prof\Article\FileController',
-        'cudi_prof_article_comment' => 'CudiBundle\Controller\Prof\Article\CommentController',
-        'cudi_prof_prof'            => 'CudiBundle\Controller\Prof\ProfController',
-        'cudi_prof_subject'         => 'CudiBundle\Controller\Prof\SubjectController',
-        'cudi_prof_subject_comment' => 'CudiBundle\Controller\Prof\Subject\CommentController',
-        'cudi_prof_help'            => 'CudiBundle\Controller\Prof\HelpController',
+        'cudi_sale_sale'                             => 'CudiBundle\Controller\Sale\SaleController',
+        'cudi_sale_queue'                            => 'CudiBundle\Controller\Sale\QueueController',
+        'cudi_sale_auth'                             => 'CudiBundle\Controller\Sale\AuthController',
 
-        'cudi_booking'      => 'CudiBundle\Controller\BookingController',
-        'cudi_opening_hour' => 'CudiBundle\Controller\OpeningHourController',
+        'cudi_supplier_index'                        => 'CudiBundle\Controller\Supplier\IndexController',
+        'cudi_supplier_article'                      => 'CudiBundle\Controller\Supplier\ArticleController',
+        'cudi_supplier_auth'                         => 'CudiBundle\Controller\Supplier\AuthController',
 
-        'cudi_isic' => 'CudiBundle\Controller\IsicController',
+        'cudi_prof_index'                            => 'CudiBundle\Controller\Prof\IndexController',
+        'cudi_prof_auth'                             => 'CudiBundle\Controller\Prof\AuthController',
+        'cudi_prof_article'                          => 'CudiBundle\Controller\Prof\ArticleController',
+        'cudi_prof_article_mapping'                  => 'CudiBundle\Controller\Prof\Article\MappingController',
+        'cudi_prof_file'                             => 'CudiBundle\Controller\Prof\Article\FileController',
+        'cudi_prof_article_comment'                  => 'CudiBundle\Controller\Prof\Article\CommentController',
+        'cudi_prof_prof'                             => 'CudiBundle\Controller\Prof\ProfController',
+        'cudi_prof_subject'                          => 'CudiBundle\Controller\Prof\SubjectController',
+        'cudi_prof_subject_comment'                  => 'CudiBundle\Controller\Prof\Subject\CommentController',
+        'cudi_prof_help'                             => 'CudiBundle\Controller\Prof\HelpController',
+
+        'cudi_booking'                               => 'CudiBundle\Controller\BookingController',
+        'cudi_opening_hour'                          => 'CudiBundle\Controller\OpeningHourController',
+
+        'cudi_isic'                                  => 'CudiBundle\Controller\IsicController',
+        'cudi_retail'                                => 'CudiBundle\Controller\RetailController',
     ),
 );

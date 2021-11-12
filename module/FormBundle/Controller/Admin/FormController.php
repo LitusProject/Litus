@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace FormBundle\Controller\Admin;
 
@@ -242,6 +224,53 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $this->getEntityManager()->remove($form);
+
+//        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success',
+                ),
+            )
+        );
+    }
+
+    public function clearAction()
+    {
+        $this->initAjax();
+
+        $formSpecification = $this->getFormEntity();
+        if ($formSpecification === null) {
+            return new ViewModel();
+        }
+
+        $formSpecification->setEntityManager($this->getEntityManager());
+
+        if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not authorized to delete these entries!'
+            );
+
+            $this->redirect()->toRoute(
+                'form_admin_form',
+                array(
+                    'action' => 'edit',
+                    'id'     => $formSpecification->getId(),
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $entries = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Node\Entry')
+            ->findAllByForm($formSpecification);
+
+        foreach ($entries as $entry) {
+            $this->getEntityManager()->remove($entry);
+        }
 
         $this->getEntityManager()->flush();
 

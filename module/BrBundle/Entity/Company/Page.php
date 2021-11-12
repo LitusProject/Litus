@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace BrBundle\Entity\Company;
 
@@ -50,6 +32,20 @@ class Page
     private $description;
 
     /**
+     * @var string The short description of the company (for large companies only)
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $shortDescription;
+
+    /**
+     * @var string Optional URL for youtube video
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $youtubeURL;
+
+    /**
      * @var Company
      *
      * @ORM\OneToOne(targetEntity="BrBundle\Entity\Company", inversedBy="page")
@@ -66,6 +62,14 @@ class Page
      * )
      */
     private $years;
+
+    /**
+     * @var boolean Whether or not this is company should be displayed on the event page
+     * (temporary remove after internship fair 20-21)
+     *
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $atEvent;
 
     /**
      * @param Company $company The company
@@ -102,7 +106,7 @@ class Page
 
     /**
      * @param  string $description
-     * @return \BrBundle\Entity\Company\Page
+     * @return Page
      */
     public function setDescription($description)
     {
@@ -117,6 +121,43 @@ class Page
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * @param  string $description
+     * @return Page
+     */
+    public function setShortDescription($description)
+    {
+        $this->shortDescription = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShortDescription()
+    {
+        return $this->shortDescription;
+    }
+
+    /**
+     * @param string $youtubeURL
+     * @return Page
+     */
+    public function setYoutubeURL($youtubeURL)
+    {
+        $this->youtubeURL = $youtubeURL;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getYoutubeURL()
+    {
+        return $this->youtubeURL;
     }
 
     public function hasYear(AcademicYear $academicYear)
@@ -136,11 +177,35 @@ class Page
 
     /**
      * @param  array $years Sets the years in which this page existed.
-     * @return \BrBundle\Entity\Company\Page This
+     * @return Page This
      */
     public function setYears(array $years)
     {
         $this->years = new ArrayCollection($years);
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isAtEvent()
+    {
+        if ($this->atEvent === null) {
+            return false;
+        } else {
+            return $this->atEvent;
+        }
+    }
+
+    /**
+     * @param boolean $atEvent Set whether or not this company should be displayed on the event page
+     *
+     * @return Page This
+     */
+    public function setAtEvent($atEvent)
+    {
+        $this->atEvent = $atEvent;
 
         return $this;
     }

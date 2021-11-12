@@ -53,7 +53,7 @@
                         </fo:table-cell>
                         <fo:table-cell>
                             <fo:block text-align="left" padding-top="{$footer-text-top-padding}mm">
-                                CV-Boek
+                                CV-Book
                             </fo:block>
                         </fo:table-cell>
                     </fo:table-row>
@@ -93,7 +93,7 @@
                         </fo:table-cell>
                         <fo:table-cell>
                             <fo:block text-align="left" padding-top="{$footer-text-top-padding}mm">
-                                CV-Boek
+                                CV-Book
                             </fo:block>
                         </fo:table-cell>
                         <fo:table-cell>

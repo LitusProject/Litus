@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 return array(
     array(
@@ -37,12 +19,12 @@ return array(
     ),
     array(
         'key'         => 'shift.mail_name',
-        'value'       => 'Student IT',
+        'value'       => 'VTK IT',
         'description' => 'The name of the mail address from which shift notifications are sent',
     ),
     array(
-        'key'   => 'shift.praesidium_removed_mail',
-        'value' => serialize(
+        'key'         => 'shift.praesidium_removed_mail',
+        'value'       => serialize(
             array(
                 'en' => array(
                     'subject' => 'Shift Signout',
@@ -67,8 +49,8 @@ U bent verwijderd van de volgende shift door een niet-praesidium vrijwilliger:
         'description' => 'The mail sent to a praesidium member when a volunteer removes him from a shift.',
     ),
     array(
-        'key'   => 'shift.shift_deleted_mail',
-        'value' => serialize(
+        'key'         => 'shift.shift_deleted_mail',
+        'value'       => serialize(
             array(
                 'en' => array(
                     'subject' => 'Shift Deleted',
@@ -93,8 +75,8 @@ De volgende shift waar je was op ingeschreven is verwijderd:
         'description' => 'The mail sent to a shift subscriber when the shift is deleted.',
     ),
     array(
-        'key'   => 'shift.subscription_deleted_mail',
-        'value' => serialize(
+        'key'         => 'shift.subscription_deleted_mail',
+        'value'       => serialize(
             array(
                 'en' => array(
                     'subject' => 'Shift Signout',
@@ -124,8 +106,8 @@ U bent verwijderd van de volgende shift door een administrator:
         'description' => 'The path to the PDF generator files',
     ),
     array(
-        'key'   => 'shift.ranking_criteria',
-        'value' => serialize(
+        'key'         => 'shift.ranking_criteria',
+        'value'       => serialize(
             array(
                 array(
                     'name'  => 'silver',
@@ -145,8 +127,8 @@ U bent verwijderd van de volgende shift door een administrator:
         'description' => 'The suffix of an iCalendar shift uid',
     ),
     array(
-        'key'   => 'shift.reward_numbers',
-        'value' => serialize(
+        'key'         => 'shift.reward_numbers',
+        'value'       => serialize(
             array(
                 '2'  => 2,
                 '0'  => 0,
@@ -162,8 +144,8 @@ U bent verwijderd van de volgende shift door een administrator:
         'description' => 'A flag if the insurance reading feature is enabled.',
     ),
     array(
-        'key'   => 'shift.insurance_text',
-        'value' => array(
+        'key'         => 'shift.insurance_text',
+        'value'       => array(
             'nl' => 'Vul deze config in!',
             'en' => 'Fill this config in!',
         ),
@@ -188,5 +170,20 @@ U bent verwijderd van de volgende shift door een administrator:
         'key'         => 'shift.enable_registration_shifts_button_homepage',
         'value'       => '1',
         'description' => 'Enable the registration shifts button on the homepage',
+    ),
+    array(
+        'key'         => 'shift.weekly_change_interval',
+        'value'       => 'P1W',
+        'description' => 'Set how far the weekly change goes back',
+    ),
+    array(
+        'key'         => 'shift.praesidium_counter_interval',
+        'value'       => 'P1W',
+        'description' => 'Set how far the praesidium future counter goes forward',
+    ),
+    array(
+        'key'         => 'shift.praesidium_counter_start_day',
+        'value'       => 'Monday this week',
+        'description' => 'Set the starting day for the praesidium counter',
     )
 );

@@ -46,6 +46,8 @@
                     <th>Event</th>
                     <th>Start</th>
                     <th>End</th>
+                    <th>#Resp</th>
+                    <th>#Vol</th>
                     <th width="70px">Actions</th>
                  </tr>
 
@@ -55,17 +57,22 @@
                         <td>{{ shift.getEvent().getTitle(language) }}</td>
                         <td>{{ shift.getStartDate().format('d/m/Y H:i') }}</td>
                         <td>{{ shift.getEndDate().format('d/m/Y H:i') }}</td>
+                        <td>{{ shift.countResponsibles() }} / {{ shift.getNbResponsibles() }}</td>
+                        <td>{{ shift.countVolunteers() }} / {{ shift.getNbVolunteers() }}</td>
                         <td class="actions">
                             {% if shift.canBeEditedBy(authenticatedPerson) %}
-                                {% if hasAccess('shift_admin_shift', 'edit') %}
-                                    <a href="{{ url('shift_admin_shift', {"action": "edit", "id": shift.getId()}) }}" class="edit">Edit</a>
-                                {% endif %}
                                 {% if hasAccess('shift_admin_shift', 'delete') %}
                                     <a href="#" data-id="{{ shift.getId() }}" data-name="{{ shift.getName() }}" class="delete">Delete</a>
+                                {% endif %}
+                                {% if hasAccess('shift_admin_shift', 'edit') %}
+                                    <a href="{{ url('shift_admin_shift', {"action": "edit", "id": shift.getId()}) }}" class="edit">Edit</a>
                                 {% endif %}
                             {% endif %}
                             {% if (hasAccess('shift_admin_shift_subscription', 'manage')) or (shift.canBeEditedBy(authenticatedPerson)) %}
                                 <a href="{{ url('shift_admin_shift_subscription', {"action": "manage", "id": shift.getId()}) }}" class="view">View</a>
+                            {% endif %}
+                            {% if (hasAccess('shift_admin_shift', 'event')) or (shift.canBeEditedBy(authenticatedPerson)) %}
+                                <a href="{{ url('shift_admin_shift', {"action": "event", "id": shift.getEvent().getId()}) }}" class="event">Event</a>
                             {% endif %}
                         </td>
                     </tr>
@@ -122,9 +129,10 @@
                             .append('<td>' + this.endDate + '</td>')
                             .append(
                                 $('<td>', {'class': 'actions'})
+                                    .append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
                                     .append('<a href="{{ url('shift_admin_shift', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
                                     .append('<a href="{{ url('shift_admin_shift_subscription', {"action": "manage"}) }}manage/'+ this.id + '" class="view">View</a>')
-                                    .append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
+                                    .append('<a href="{{ url('shift_admin_shift', {"action": "event"}) }}event/'+ this.event + '" class="event">Event</a>')
                                 );
                             deleteButton.data({
                                 id: this.id,

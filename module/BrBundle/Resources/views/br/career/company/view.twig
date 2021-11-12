@@ -1,65 +1,124 @@
 {% extends 'career/partials/layout.twig' %}
 
 {% block page_content %}
-    <div class="row">
-        <div class="col-sm-2">
-            <div style="text-align: center">
-                {% if page.getCompany().getLogo() %}
-                    <img src="/{{ logoPath }}/{{ page.getCompany().getLogo() }}" alt="{{ page.getCompany().getName() }}" style="width: 100%; max-width: 120px">
-                    <hr/>
-                {% else %}
-                    <div style="height: 60px">
-                    </div>
-                {% endif %}
-            </div>
+    <div class="br-companyTitleHolder">
 
-            <center>
-                <address><strong>
-                    {{ page.getCompany().getAddress().getStreet() }} {{ page.getCompany().getAddress().getNumber() }}
-                        {% if page.getCompany().getAddress().getMailbox() %}
-                            / {{ page.getCompany().getAddress().getMailbox() }}
-                        {% endif %}<br>
-                    {{ page.getCompany().getAddress().getPostal() }} {{ page.getCompany().getAddress().getCity() }}<br>
-                    {{ page.getCompany().getAddress().getCountry() }}
-                </strong></address>
-            </center>
-
-            <hr/>
-
-            <center>
-                <a style="word-wrap: break-word;" href="{{ page.getCompany().getFullWebsite() }}">{{ page.getCompany().getWebsite() }}</a>
-            </center>
-
+        <div style="display:inline-block; margin-right: 20px; flex-grow: 1">
+            <h1 style="display:inline-block">{{ page.getCompany().getName() }}</h1>
+            <div class="pageTitleDeco"></div>
         </div>
-        <div class="col-sm-10">
-            <h1>{{ page.getCompany().getName() }}</h1>
-            <div class="container">
-                <div class="page-header">
-                    <h2>{{translate('About')}}</h2>      
-                </div>
-                <p>
-                    {% autoescape false %}
-                        {{ markdown(page.getDescription()) }}
-                    {% endautoescape %}
-                </p>
+        <div class="br-companyLogoHolder">
+            <div class="br-companyLogo" style='background-image: url("/{{ logoPath }}/{{ page.getCompany().getLogo() }}")'></div>
+        </div>
+    </div>
+
+    {# <div>
+        {{ page.getCompany().getAddress().getStreet() }} {{ page.getCompany().getAddress().getNumber() }}
+            {% if page.getCompany().getAddress().getMailbox() %}
+                / {{ page.getCompany().getAddress().getMailbox() }}
+            {% endif %}
+        {{ page.getCompany().getAddress().getPostal() }} {{ page.getCompany().getAddress().getCity() }}
+        {{ page.getCompany().getAddress().getCountry() }} |                 <a style="word-wrap: break-word;" href="{{ page.getCompany().getFullWebsite() }}">{{ page.getCompany().getWebsite() }}</a>
+    </div> #}
+
+    <div style="height: 40px"></div>
+
+    <div class="br-infoHolder">
+        <div class="br-markdown noMarginMobile">
+            {{ markdown(page.getDescription()) }}
+            <div style="height: 10px"></div>
+            {# TO DO translation #}
+            <a class="button blue unfilled" href="{{ page.getCompany().getFullWebsite() }}" target="_blank">{{ translate('View Site') }}</a>
+            <div style="height: 20px"></div>
+        </div>
+        {% if page.getYoutubeURL() %}
+            <div style="min-width: 60%">
+                <iframe width="680px" height="340px" src="https://www.youtube.com/embed/{{ page.getYoutubeURL() }}"></iframe>
             </div>
-                <div class="page-header">
-                    <h2 class="header-title">{{translate('About')}}</h2>
+        {% endif %}
+    </div>
+
+    <div style="height: 80px"></div>
+
+    <div style="height: 30px"></div>
+    <div style="position:relative">
+        <h3 style="position: relative; z-index: 1">{{ translate('Events') }}</h3>
+        <div class="br-titledecoration"></div>
+    </div>
+    <div style="height: 20px"></div>
+
+    {% if events|length > 0 %}
+        {% for corporateEvent in events %}
+            {% set event = corporateEvent.getEvent() %}
+            {{ event.getTitle(language) }}<br>
+            {{ event.getSummary(50, language) }}<br>
+            {{ event.getContent(language) }}
+        {% endfor %}
+    {% endif %}
+
+    {% if vacancies|length > 0 %}
+        <div style="height: 30px"></div>
+        <div style="position:relative">
+            <h3 style="position: relative; z-index: 1">{{ translate('Vacancies') }}</h3> 
+            <div class="br-titledecoration"></div>
+        </div>
+        <div style="height: 20px"></div>
+        {% for vacancy in vacancies %}
+            <a class="vacancyHolder br-arrowAnimation" href="{{ url('br_career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}"> 
+                {{ vacancy.getName() }}
+            </a>  
+        {% endfor %}
+        <div style="height: 30px"></div>    
+    {% endif %}
+
+    {% if internships|length > 0 %}
+        <div style="height: 30px"></div>
+        <div style="position:relative">
+            <h3 style="position: relative; z-index: 1">{{ translate('Internships') }}</h3> 
+            <div class="br-titledecoration"></div>
+        </div>
+        <div style="height: 20px"></div>
+        {% for internship in internships %}
+            <a class="vacancyHolder br-arrowAnimation" href="{{ url('br_career_internship', {'action': 'view', 'id': internship.getId() }) }}"> 
+                {{ internship.getName() }}
+            </a>  
+        {% endfor %}
+
+        <div style="height: 30px"></div>    
+    {% endif %}
+
+    {% if studentJobs|length > 0 %}
+        <div style="height: 30px"></div>
+        <div style="position:relative">
+            <h3 style="position: relative; z-index: 1">{{ translate('StudentJobs') }}</h3> 
+            <div class="br-titledecoration"></div>
+        </div>
+        <div style="height: 20px"></div>
+        {% for studentJob in studentJobs %}
+            <a class="vacancyHolder br-arrowAnimation" href="{{ url('br_career_student_job', {'action': 'view', 'id': studentJob.getId() }) }}"> 
+                {{ studentJob.getName() }}
+            </a>  
+        {% endfor %}
+        <div style="height: 30px"></div>    
+    {% endif %}
+
+
+    {# <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#about">
+                        {{ translate('About') }}
+                    </a>
                 </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <a class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#about">
-                            {{ translate('About') }}
-                        </a>
-                    </div>
-                    <div id="about" class="panel-collapse collapse in">
-                        <div class="panel-body">
-                            {% autoescape false %}
-                                {{ markdown(page.getDescription()) }}
-                            {% endautoescape %}
-                        </div>
+                <div id="about" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        {% autoescape false %}
+                            {{ markdown(page.getDescription()) }}
+                        {% endautoescape %}
                     </div>
                 </div>
+            </div>
 
             <div class="panel-group" id="accordion">
                 {% if events|length > 0 %}
@@ -143,5 +202,5 @@
                 {% endif %}
             </div>
         </div>
-    </div>
+    </div> #}
 {% endblock %}

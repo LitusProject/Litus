@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace BrBundle\Entity;
 
@@ -60,11 +42,18 @@ class Event
     private $title;
 
     /**
-     * @var string The description for this event
+     * @var string The description for this event for students
      *
-     * @ORM\Column(name="description", type="text", nullable=true)
+     * @ORM\Column(name="description_for_students", type="text", nullable=true)
      */
-    private $description;
+    private $descriptionForStudents;
+
+    /**
+     * @var string The description for this event for companies
+     *
+     * @ORM\Column(name="description_for_companies", type="text", nullable=true)
+     */
+    private $descriptionForCompanies;
 
     /**
      * @var DateTime The start date and time of this event.
@@ -93,6 +82,50 @@ class Event
      * @ORM\Column(name="mapview_date", type="datetime", nullable=true)
      */
     private $mapviewDate;
+
+    /**
+     * @var integer The number of companies that will attend
+     *
+     * @ORM\Column(name="nb_companies", type="integer", nullable=true)
+     */
+    private $nbCompanies;
+
+    /**
+     * @var integer The number of students that will attend
+     *
+     * @ORM\Column(name="nb_students", type="integer", nullable=true)
+     */
+    private $nbStudents;
+
+    /**
+     * @var boolean The flag whether the Event is visible for Companies
+     *
+     * @ORM\Column(name="visible_for_companies", type="boolean", nullable=true)
+     */
+    private $visibleForCompanies;
+
+    /**
+     * @var boolean The flag whether the Event is visible for Students
+     *
+     * @ORM\Column(name="visible_for_students", type="boolean", nullable=true)
+     */
+    private $visibleForStudents;
+
+    /**
+     * @var string Location of the event
+     *
+     * @ORM\Column(name="location", type="text", nullable=true)
+     *
+     */
+    private $location;
+
+    /**
+     * @var string Audience of the event
+     *
+     * @ORM\Column(name="audience", type="text", nullable=true)
+     *
+     */
+    private $audience;
 
     /**
      * @param Person $creator
@@ -214,22 +247,131 @@ class Event
     }
 
     /**
-     * @param  string $description
-     * @return self
+     * @return string
      */
-    public function setDescription($description)
+    public function getDescriptionForStudents()
     {
-        $this->description = $description;
+        return $this->descriptionForStudents;
+    }
 
-        return $this;
+    /**
+     * @param string $descriptionForStudents
+     */
+    public function setDescriptionForStudents(string $descriptionForStudents)
+    {
+        $this->descriptionForStudents = $descriptionForStudents;
     }
 
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescriptionForCompanies()
     {
-        return $this->description;
+        return $this->descriptionForCompanies;
+    }
+
+    /**
+     * @param string $descriptionForCompanies
+     */
+    public function setDescriptionForCompanies(string $descriptionForCompanies)
+    {
+        $this->descriptionForCompanies = $descriptionForCompanies;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getNbCompanies()
+    {
+        return $this->nbCompanies;
+    }
+
+    /**
+     * @param integer $nbCompanies
+     */
+    public function setNbCompanies(int $nbCompanies)
+    {
+        $this->nbCompanies = $nbCompanies;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getNbStudents()
+    {
+        return $this->nbStudents;
+    }
+
+    /**
+     * @param integer $nbStudents
+     */
+    public function setNbStudents(int $nbStudents)
+    {
+        $this->nbStudents = $nbStudents;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isVisibleForCompanies()
+    {
+        return $this->visibleForCompanies;
+    }
+
+    /**
+     * @param boolean $visibleForCompanies
+     */
+    public function setVisibleForCompanies(bool $visibleForCompanies)
+    {
+        $this->visibleForCompanies = $visibleForCompanies;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isVisibleForStudents()
+    {
+        return $this->visibleForStudents;
+    }
+
+    /**
+     * @param boolean $visibleForStudents
+     */
+    public function setVisibleForStudents(bool $visibleForStudents)
+    {
+        $this->visibleForStudents = $visibleForStudents;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * @param string $location
+     */
+    public function setLocation(string $location)
+    {
+        $this->location = $location;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAudience()
+    {
+        return $this->audience;
+    }
+
+    /**
+     * @param string $audience
+     */
+    public function setAudience(string $audience)
+    {
+        $this->audience = $audience;
     }
 
     /**

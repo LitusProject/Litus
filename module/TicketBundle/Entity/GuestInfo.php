@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace TicketBundle\Entity;
 
@@ -61,15 +43,33 @@ class GuestInfo
     private $email;
 
     /**
+     * @var string The name of the organization for this guest
+     *
+     * @ORM\Column(name="organization", type="string", nullable=true)
+     */
+    private $organization;
+
+    /**
+     * @var string The name of the organization for this guest
+     *
+     * @ORM\Column(name="university_id", type="string", nullable=true)
+     */
+    private $universityIdentification;
+
+    /**
      * @param string $firstName
      * @param string $lastName
      * @param string $email
+     * @param string $organization
+     * @param string $universityIdentification
      */
-    public function __construct($firstName, $lastName, $email)
+    public function __construct($firstName, $lastName, $email, $organization, $universityIdentification)
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->email = $email;
+        $this->organization = $organization;
+        $this->universityIdentification = $universityIdentification;
     }
 
     /**
@@ -110,5 +110,21 @@ class GuestInfo
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * @return string organization
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
+
+    /**
+     * @return string getUniversityIdentification (r-number)
+     */
+    public function getUniversityIdentification()
+    {
+        return $this->universityIdentification;
     }
 }

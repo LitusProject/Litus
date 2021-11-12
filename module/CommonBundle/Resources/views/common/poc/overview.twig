@@ -1,11 +1,11 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-    <div class="page-header">
+    <div class="page-header container">
         <h1>{{ translate('POC') }}</h1>
     </div>
 
-    <div class="navbar navbar-default"  role="navigation">
+    <div class="navbar navbar-default container"  role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#academicYearSubNav">
@@ -27,15 +27,15 @@
 
     {% for pocStuff in pocItem%}
 
-		<h3>{{ pocStuff['groupId'].getName() }}{% if activeAcademicYear.getCode() == currentAcademicYear.getCode() %}<small>&mdash;
+		<h3 class="container">{{ pocStuff['groupId'].getName() }}{% if activeAcademicYear.getCode() == currentAcademicYear.getCode() %}<small>&mdash;
 
 
 		 <a href="mailto:{{ pocStuff['pocExample'].getEmailAdress()}}">{{ pocStuff['pocExample'].getEmailAdress() }}</a>
 
 		</small>{% endif %}</h3>
-		<div class="row">
+		<div class="row container" style="position: relative; left: 19%">
 		 {% for  poc in pocStuff['pocGroupList'] %}
-                <div class="col-xs-4 col-md-2">
+                <div class="col-xs-4 col-md-2 container">
                     <div class="thumbnail" style="height: 110px; text-align: center">
                         {% if poc.getAcademic().getPhotoPath() %}
                             <img class="profileImagePreloaded holderjs" data-url="{{ profilePath }}/{{ poc.getAcademic().getPhotoPath() }}" style="background:url(?holder.js/90x67/auto/text:Image) no-repeat; width: 90px; height: 67px;" alt="">

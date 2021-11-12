@@ -32,9 +32,14 @@
                                 <a href="{{ url("logistics_piano", {"language": language.getAbbrev()}) }}">{{ translate('Piano') }}</a>
                             </li>
                         {% endif %}
-                        {% if hasAccess('logistics_lease', 'index') %}
-                            <li {% if 'logistics_lease' == getParam('controller') %}class="active"{% endif %}>
-                                <a href="{{ url('logistics_lease', {"language": language.getAbbrev()}) }}">{{ translate('Lease') }}</a>
+{#                        {% if hasAccess('logistics_lease', 'index') %}#}
+{#                            <li {% if 'logistics_lease' == getParam('controller') %}class="active"{% endif %}>#}
+{#                                <a href="{{ url('logistics_lease', {"language": language.getAbbrev()}) }}">{{ translate('Lease') }}</a>#}
+{#                            </li>#}
+{#                        {% endif %}#}
+                        {% if hasAccess('logistics_catalog', 'overview') %}
+                            <li {% if 'logistics_catalog' == getParam('controller') %}class="active"{% endif %}>
+                                <a href="{{ url('logistics_catalog', {"language": language.getAbbrev()}) }}">{{ translate('Material') }}</a>
                             </li>
                         {% endif %}
                     </ul>

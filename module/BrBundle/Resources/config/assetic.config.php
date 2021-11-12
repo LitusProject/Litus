@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace BrBundle;
 
@@ -201,6 +183,18 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
+        ),
+        'br_admin_communication' => array(
+            '@common_jquery',
+            '@common_remote_typeahead',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+            '@common_jqueryui',
+            '@common_jqueryui_datepicker',
+            '@common_jqueryui_css',
+            '@common_jqueryui_datepicker_css',
         ),
         'br_corporate_index' => array(
             '@bootstrap_css',
@@ -387,6 +381,21 @@ return array(
             '@jcrop_js',
             '@common_jquery_form',
         ),
+        'br_career_internshipfair' => array(
+            '@common_jquery',
+            '@bootstrap_css',
+            '@site_css',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+            '@bootstrap_js_carousel',
+            '@bootstrap_js_tooltip',
+            '@bootstrap_js_popover',
+            '@bootstrap_js_collapse',
+            '@bootstrap_js_alert',
+            '@bootstrap_js_rowlink',
+            '@common_spin_js',
+        ),
     ),
 
     'collections' => array(
@@ -416,6 +425,7 @@ return array(
                 'output' => 'cv_css.css',
             ),
         ),
+
         'event_js' => array(
             'assets' => array(
                 'event/js/event.js',

@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace CalendarBundle\Repository\Node;
 
@@ -62,7 +44,10 @@ class Event extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->lt('e.startDate', ':now'),
-                    $query->expr()->eq('e.isHistory', 'false')
+                    $query->expr()->orX(
+                        $query->expr()->eq('e.isHistory', 'false'),
+                        $query->expr()->isNull('e.isHistory')
+                    )
                 )
             )
             ->orderBy('e.startDate', 'DESC')
@@ -86,5 +71,56 @@ class Event extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->setParameter('first', $first)
             ->setParameter('last', $last)
             ->getQuery();
+    }
+
+    public function findAllBetweenAndNotHidden(DateTime $first, DateTime $last)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('e')
+            ->from('CalendarBundle\Entity\Node\Event', 'e')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gte('e.startDate', ':first'),
+                    $query->expr()->lt('e.startDate', ':last'),
+                    $query->expr()->eq('e.isHistory', 'false'),
+                    $query->expr()->orX(
+                        $query->expr()->eq('e.isHidden', 'false'),
+                        $query->expr()->isNull('e.isHidden')
+                    )
+                )
+            )
+            ->orderBy('e.startDate', 'ASC')
+            ->setParameter('first', $first)
+            ->setParameter('last', $last)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllActiveAndNotHidden($nbResults = 15)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $query->select('e')
+            ->from('CalendarBundle\Entity\Node\Event', 'e')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->orX(
+                        $query->expr()->gt('e.endDate', ':now'),
+                        $query->expr()->gt('e.startDate', ':now')
+                    ),
+                    $query->expr()->eq('e.isHistory', 'false'),
+                    $query->expr()->orX(
+                        $query->expr()->eq('e.isHidden', 'false'),
+                        $query->expr()->isNull('e.isHidden')
+                    )
+                )
+            )
+            ->orderBy('e.startDate', 'ASC')
+            ->setParameter('now', new DateTime());
+
+        if ($nbResults > 0) {
+            $query->setMaxResults($nbResults);
+        }
+
+        return $query->getQuery()->getResult();
     }
 }

@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace PageBundle\Hydrator\Node;
 
@@ -38,7 +20,6 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
 
         if ($object !== null && $object->getName() !== null) {
             $object->close();
-
             $newPage->setName($object->getName());
 
             $this->getEntityManager()->persist($newPage);
@@ -83,9 +64,16 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
 
         $fallbackLanguage = Locale::getDefault();
 
+        $forcedLanguage = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Language')
+            ->findOneByAbbrev($data['forced_language']);
+
         $newPage->setCategory($category)
             ->setEditRoles($editRoles)
-            ->setName($data['tab_content']['tab_' . $fallbackLanguage]['title']);
+            ->setName($data['tab_content']['tab_' . $fallbackLanguage]['title'])
+            ->setForcedLanguage($forcedLanguage)
+            ->setOrderNumber($data['order_number'])
+            ->setActive($data['active']);
 
         if ($data['parent_' . $category->getId()] != '') {
             $parent = $this->getEntityManager()
@@ -134,6 +122,10 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $data['category'] = $object->getCategory()->getId();
+        $data['forced_language'] = $object->getForcedLanguage() ? $object->getForcedLanguage()->getAbbrev() : '';
+        $data['order_number'] = $object->getOrderNumber();
+        $data['active'] = $object->isActive();
+
 
         $data['edit_roles'] = array();
         foreach ($object->getEditRoles() as $role) {

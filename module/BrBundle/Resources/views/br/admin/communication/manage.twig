@@ -1,0 +1,112 @@
+{% extends 'admin/base.twig' %}
+
+{%  block content %}
+    {% include 'br/admin/communication/partials/navigation.twig' %}
+    {% include 'br/admin/communication/partials/options.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div class="flashmessage success_message full_width communication_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The communication option was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width communication_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete a communication option.</p>
+        </div>
+    </div>
+
+    <div id="controller_action">
+        <table class="full_width manage">
+            <tr>
+                <th>Company</th>
+                <th>Date</th>
+                <th>Audience</th>
+                <th>Contact</th>
+                <th width="70px">Action</th>
+            </tr>
+            {% for communication in paginator %}
+                <tr class="item item-{{ communication.getId() }}">
+                    <td>{{ communication.getCompany().getName() }}</td>
+                    <td>{{ communication.getDate().format('d/m/Y') }}</td>
+                    <td>{{ communication.getAudience() }}</td>
+                    <td>{{ communication.getCreator().getFullName() }}</td>
+                    <td class="actions">
+                        <ul>
+                            {% if hasAccess('br_admin_communication', 'delete') %}
+                                <a href="#" class="delete" data-id="{{ communication.getId() }}" data-company="{{ communication.getCompany().getId() }}">Delete</a>
+                            {% endif %}
+                        </ul>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+    <div class="modal fade" id="removeCommunication" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Communication
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following communication: <b class="communicationCompany"></b>
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{%  endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .delete').click(openModal);
+        });
+
+        function openModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeCommunication = $('#removeCommunication');
+            removeCommunication.find('.communicationCompany').html($(this).data('company'));
+            var id = $this.data('id');
+            removeCommunication.find('.delete').unbind('click').click(function () {
+               $.post('{{ url('br_admin_communication', {"action": "delete"}) }}' + id, function (data) {
+                   if (data && 'success' == data.status) {
+                       $('.flashmessage').addClass('hide');
+                       $('.communication_removed_success').removeClass('hide');
+                       $('.item-' + id).remove();
+                       removeCommunication.modal('hide');
+                   } else {
+                       errorRemove();
+                   }
+               }, 'json').error(errorRemove);
+            });
+            removeCommunication.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.communication_removed_error').removeClass('hide');
+            $('#removeCommunication').modal('hide');
+        }
+
+    </script>
+{% endblock %}

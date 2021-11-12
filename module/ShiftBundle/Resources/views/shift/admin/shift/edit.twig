@@ -1,1 +1,63 @@
-{% extends 'shift/admin/shift/add.twig' %}
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'shift/admin/shift/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+
+    {% if event and hasAccess('calendar_admin_calendar', 'edit') %}
+        <aside>
+            <div class="sidebox">
+                <div class="title">Go to Event</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to go to this shift's event!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('calendar_admin_calendar', {"action": "edit", "id": event.getId()}) }}">&rarr;
+                            Go to Event</a>
+                    </p>
+                </div>
+            </div>
+        </aside>
+    {% endif %}
+    {% if hasAccess('shift_admin_shift', 'event') and event.hasActiveShifts(em) %}
+        <aside>
+            <div class="sidebox">
+                <div class="title">Go to Shifts</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to go to this event's shifts!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('shift_admin_shift', {"action": "event", "id": event.getId()}) }}">&rarr;
+                            Search Shifts by Event</a>
+                    </p>
+                </div>
+            </div>
+        </aside>
+    {% endif %}
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#manager').typeaheadRemote(
+                {
+                    source: '{{ url("common_admin_academic_typeahead")}}',
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('[name="manager[id]"]').val($(this).data('value').id);
+                } else {
+                    $('[name="manager[id]"]').val('');
+                }
+            });
+        });
+    </script>
+{% endblock %}

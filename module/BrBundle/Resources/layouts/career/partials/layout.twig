@@ -1,7 +1,9 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-    <div class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div style="height: 100px"></div>
+    {# <div class="navbar navbar-default" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".subnav-collapse">
@@ -29,10 +31,14 @@
                     <li {% if 'br_career_student_job' == getParam('controller') %}class="active"{% endif %}>
                         <a href="{{ url('br_career_student_job') }}">{{ translate('Student Jobs') }}</a>
                     </li>
+                    <li {% if 'br_career_internshipfair' == getParam('controller') %}class="active"{% endif %}>
+                        <a href="{{ url('br_career_internshipfair') }}">{{ translate('Internship Fair') }}</a>
+                    </li>
                 </ul>
             </div>
         </div>
-    </div>
+    </div>  #}
 
-    {% block page_content %} {% endblock %}
+        {% block page_content %} {% endblock %}
+    </div>
 {% endblock %}

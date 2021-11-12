@@ -1,0 +1,25 @@
+<ul class="nav nav-tabs hidden-xs">
+    {% if hasAccess('cudi_retail', 'overview') %}
+        <li>
+            <a class="{% if getParam('action') == 'overview' %} activeTab {% else %} tab {% endif %}" href="{{ url('cudi_retail', {'action': 'overview'}) }}">
+                {{ translate('Overview') }}
+            </a>
+        </li>
+    {% endif %}
+
+    {% if hasAccess('cudi_retail', 'myDeals') %}
+        <li>
+            <a class="{% if getParam('action') == 'myDeals' %} activeTab {% else %} tab {% endif %}" href="{{ url('cudi_retail', {'action': 'myDeals'}) }}">
+                {{ translate('My deals') }}
+            </a>
+        </li>
+    {% endif %}
+
+    {% if hasAccess('cudi_retail', 'myRetails') %}
+        <li>
+            <a class="{% if getParam('action') == 'myRetails' %} activeTab {% else %} tab {% endif %}" href="{{ url('cudi_retail', {'action': 'myRetails'}) }}">
+                {{ translate('My retails') }}
+            </a>
+        </li>
+    {% endif %}
+</ul>

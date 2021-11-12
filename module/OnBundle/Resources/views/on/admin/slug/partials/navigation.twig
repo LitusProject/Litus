@@ -1,14 +1,26 @@
-<header id="controller_header">
-    <div class="title"><span class="slug">Slugs</span></div>
+{% block content %}
+    <header id="controller_header">
+        <div class="title"><span class="slug">Slugs</span></div>
 
-    <nav id="controller_nav">
-        <ul>
-            {% if hasAccess('on_admin_slug', 'add') %}
-                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url("on_admin_slug", {"action": "add"}) }}">Add</a></li>
-            {% endif %}
-            {% if hasAccess('on_admin_slug', 'manage') %}
-                <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url("on_admin_slug", {"action": "manage"}) }}">Manage</a></li>
-            {% endif %}
-        </ul>
-    </nav>
-</header>
+        <nav id="controller_nav">
+            <ul>
+                {% if hasAccess('on_admin_slug', 'clearOld') %}
+                    <li><a id="clean" href="{{ url("on_admin_slug", {"action": "clearOld"}) }}">Clear Old</a></li>
+                {% endif %}
+                {% if hasAccess('on_admin_slug', 'clean') %}
+                    <li><a id="clean" href="{{ url("on_admin_slug", {"action": "clean"}) }}">Clean Slugs</a></li>
+                {% endif %}
+                {% if hasAccess('on_admin_slug', 'add') %}
+                    <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url("on_admin_slug", {"action": "add"}) }}">Add</a></li>
+                {% endif %}
+                {% if hasAccess('on_admin_slug', 'old') %}
+                    <li><a {% if 'old' == getParam('action') %} class="active" {% endif %} href="{{ url("on_admin_slug", {"action": "old"}) }}">Old</a></li>
+                {% endif %}
+                {% if hasAccess('on_admin_slug', 'manage') %}
+                    <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url("on_admin_slug", {"action": "manage"}) }}">Manage</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+{% endblock %}

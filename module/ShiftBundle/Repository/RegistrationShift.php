@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace ShiftBundle\Repository;
 
@@ -287,6 +269,42 @@ class RegistrationShift extends \CommonBundle\Component\Doctrine\ORM\EntityRepos
                     $query->expr()->andX(
                         $query->expr()->lt('s.visibleDate', ':now'),
                         $query->expr()->gt('s.endDate', ':now')
+                    ),
+                    $query->expr()->eq('r.person', ':person')
+                )
+            )
+            ->orderBy('s.startDate', 'ASC')
+            ->setParameter('now', new DateTime())
+            ->setParameter('person', $person->getId())
+            ->getQuery()
+            ->getResult();
+
+        $shifts = array();
+        foreach ($responsibleResultSet as $result) {
+            $shifts[$result->getStartDate()->format('YmdHi') . $result->getId()] = $result;
+        }
+
+        ksort($shifts);
+
+        return array_values($shifts);
+    }
+
+    /**
+     * @param  Person $person
+     * @return array
+     */
+    public function findAllCurrentAndCudiTimeslotByPerson(Person $person)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $responsibleResultSet = $query->select('s')
+            ->from('ShiftBundle\Entity\RegistrationShift', 's')
+            ->innerJoin('s.registered', 'r')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->andX(
+                        $query->expr()->lt('s.startDate', ':now'),
+                        $query->expr()->gt('s.endDate', ':now'),
+                        $query->expr()->eq('s.cudiTimeslot', 'true')
                     ),
                     $query->expr()->eq('r.person', ':person')
                 )

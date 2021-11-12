@@ -1,26 +1,9 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace OnBundle\Entity;
 
 use CommonBundle\Entity\User\Person;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -73,12 +56,27 @@ class Slug
     private $hits;
 
     /**
+     * @var DateTime The expiration date of this slug
+     *
+     * @ORM\Column(name="expiration_date", type="datetime", nullable=true)
+     */
+    private $expirationDate;
+
+    /**
+     * @var boolean The flag whether the slug is active
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $active;
+
+    /**
      * @param Person|null $creationPerson
      */
     public function __construct($creationPerson)
     {
         $this->creationPerson = $creationPerson;
         $this->hits = 0;
+        $this->active = true;
     }
 
     /**
@@ -155,6 +153,25 @@ class Slug
     }
 
     /**
+     * @param  boolean $active
+     * @return self
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+    /**
      * @return self
      */
     public function incrementHits()
@@ -162,5 +179,25 @@ class Slug
         $this->hits++;
 
         return $this;
+    }
+
+    /**
+     * @param DateTime $expirationDate
+     *
+     * @return self
+     */
+    public function setExpirationDate(DateTime $expirationDate)
+    {
+        $this->expirationDate = $expirationDate;
+
+        return $this;
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getExpirationDate()
+    {
+        return $this->expirationDate;
     }
 }

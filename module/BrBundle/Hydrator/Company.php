@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace BrBundle\Hydrator;
 
@@ -34,7 +16,7 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $stdKeys = array('name', 'vat_number', 'phone_number', 'website');
+    private static $stdKeys = array('name', 'vat_number', 'phone_number', 'website', 'large');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -64,22 +46,23 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
 
         $object->setSector($data['sector']);
 
-        $years = array();
-        $archiveYears = array();
-        if (isset($data['cvbook']) && count($data['cvbook']) > 0) {
-            $repository = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\AcademicYear');
-            foreach ($data['cvbook'] as $yearId) {
-                if (strpos($yearId, 'archive-') === 0) {
-                    $archiveYears[] = substr($yearId, strlen('archive-'));
-                } else {
-                    $years[] = $repository->findOneById(substr($yearId, strlen('year-')));
+        if (isset($data['cvbook'])) {
+            $years = array();
+            $archiveYears = array();
+            if (count($data['cvbook']) > 0) {
+                $repository = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\AcademicYear');
+                foreach ($data['cvbook'] as $yearId) {
+                    if (strpos($yearId, 'archive-') === 0) {
+                        $archiveYears[] = substr($yearId, strlen('archive-'));
+                    } else {
+                        $years[] = $repository->findOneById(substr($yearId, strlen('year-')));
+                    }
                 }
             }
+            $object->setCvBookYears($years);
+            $object->setCvBookArchiveYears($archiveYears);
         }
-
-        $object->setCvBookYears($years);
-        $object->setCvBookArchiveYears($archiveYears);
 
         $years = array();
         if (isset($data['page']['years']) && count($data['page']['years']) > 0) {
@@ -101,7 +84,12 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $object->getPage()->setYears($years)
-            ->setDescription($data['page']['description']);
+            ->setDescription($data['page']['description'])
+            ->setShortDescription($data['page']['short_description'])
+            ->setYoutubeURL($data['page']['youtube_url']);
+        if (isset($data['page']['atEvent'])) {
+            $object->getPage()->setAtEvent($data['page']['atEvent']);
+        }
 
         return $this->stdHydrate($data, $object, self::$stdKeys);
     }
@@ -144,6 +132,8 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
                 $data['page']['years'][] = $year->getId();
             }
             $data['page']['description'] = $page->getDescription();
+            $data['page']['short_description'] = $page->getShortDescription();
+            $data['page']['youtube_url'] = $page->getYoutubeURL();
         }
 
         return $data;

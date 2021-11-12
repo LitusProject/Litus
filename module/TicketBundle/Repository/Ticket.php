@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace TicketBundle\Repository;
 
@@ -43,7 +25,7 @@ class Ticket extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                     $query->expr()->eq('t.number', ':number')
                 )
             )
-            ->setParameter('event', $event)
+            ->setParameter('event', $event->getId())
             ->setParameter('number', $number)
             ->setMaxResults(1)
             ->getQuery()
@@ -60,6 +42,49 @@ class Ticket extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             )
             ->setParameter('event', $event)
             ->getQuery();
+    }
+
+    public function findAllInvoiceIdsByEvent(EventEntity $event)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('t.invoiceId')
+            ->from('TicketBundle\Entity\Ticket', 't')
+            ->where(
+                $query->expr()->eq('t.event', ':event')
+            )
+            ->setParameter('event', $event)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByOption(EventEntity\Option $option)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('t')
+            ->from('TicketBundle\Entity\Ticket', 't')
+            ->where(
+                $query->expr()->eq('t.option', ':option')
+            )
+            ->setParameter('option', $option)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByStatusAndEvent($status, EventEntity $event)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('t')
+            ->from('TicketBundle\Entity\Ticket', 't')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('t.event', ':event'),
+                    $query->expr()->eq('t.status', ':status')
+                )
+            )
+            ->setParameter('event', $event)
+            ->setParameter('status', $status)
+            ->getQuery()
+            ->getResult();
     }
 
     public function findAllByEventAndPersonQuery(EventEntity $event, Person $person)
@@ -275,5 +300,23 @@ class Ticket extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         ksort($tickets);
 
         return $tickets;
+    }
+
+    /**
+     * @param  integer $id
+     * @return \TicketBundle\Entity\Ticket|null
+     */
+    public function findOneById($id)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('p')
+            ->from('TicketBundle\Entity\Ticket', 'p')
+            ->where(
+                $query->expr()->eq('p.id', ':id')
+            )
+            ->setParameter('id', $id)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

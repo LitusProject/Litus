@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace BrBundle\Entity\Company;
 
@@ -162,8 +144,8 @@ class Job
      * @var array All the possible types allowed
      */
     public static $possibleTypes = array(
-        'internship' => 'Internship',
-        'vacancy'    => 'Vacancy',
+        'internship'  => 'Internship',
+        'vacancy'     => 'Vacancy',
         'student job' => 'Student Job',
     );
 
@@ -470,10 +452,13 @@ class Job
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getMaster()
     {
+        if (!$this->master || substr($this->master, 0, 1) == 'N') {
+            return null;
+        }
         $mastersArray = array();
         if (substr($this->master, 0, 2) == 'a:') {
             $masters = unserialize($this->master);
@@ -484,16 +469,20 @@ class Job
             }
             return implode(', ', $mastersArray);
         } else {
-            return $this->master;
+            return Company::POSSIBLE_MASTERS[$this->master];
         }
     }
 
     /**
-     * @param  array $masters
+     * @param  array|null $masters
      * @return Job
      */
     public function setMaster($masters)
     {
+        if (!$masters) {
+            $this->master = null;
+        }
+
         if (!is_string($masters)) {
             $masters = serialize($masters);
         }
@@ -504,10 +493,14 @@ class Job
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getMasterCode()
     {
+        if (!$this->master || substr($this->master, 0, 1) == 'N') {
+            return null;
+        }
+
         $unserializedMasters = unserialize($this->master);
 
         foreach ($unserializedMasters as $master) {
@@ -554,10 +547,13 @@ class Job
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getSector()
     {
+        if (!$this->sector) {
+            return null;
+        }
         $sectorsArray = array();
         if (substr($this->sector, 0, 2) === 'a:') {
             $sectors = unserialize($this->sector);
@@ -568,7 +564,7 @@ class Job
             }
             return implode(', ', $sectorsArray);
         } else {
-            return $this->sector;
+            return Company::POSSIBLE_SECTORS[$this->sector];
         }
     }
 
@@ -588,18 +584,27 @@ class Job
     }
 
     /**
-     * @return string
+     * @return string|array|null
      */
     public function getSectorCode()
     {
-        $unserializedSectors = unserialize($this->sector);
-        if ($unserializedSectors !== false) {
-            foreach ($unserializedSectors as $sector) {
-                if (!Company::isValidsector($sector)) {
-                    throw new InvalidArgumentException('The sector is not valid.');
+        if (!$this->sector) {
+            return null;
+        }
+        $sectorsArray = array();
+        if (substr($this->sector, 0, 2) === 'a:') {
+            $unserializedSectors = unserialize($this->sector);
+            if ($unserializedSectors !== false) {
+                foreach ($unserializedSectors as $sector) {
+                    if (!Company::isValidsector($sector)) {
+                        throw new InvalidArgumentException('The sector is not valid.');
+                    }
+                    array_push($sectorsArray, $sector);
                 }
             }
+            return $sectorsArray;
+        } else {
+            return $this->sector;
         }
-        return $unserializedSectors;
     }
 }

@@ -9,4 +9,89 @@
         <h1>Edit</h1>
         {{ forms.renderForm(propertiesForm) }}
     </div>
+        <h1>Participants</h1>
+        {{ forms.renderForm(companyMapForm) }}
+        <br>
+        <h2>Total: {{ eventCompanyMaps|length }}</h2>
+         <table class="manage">
+            <tr>
+                <th>Name</th>
+                <th>Status</th>
+                <th width="90px">Actions</th>
+            </tr>
+            {% for eventCompanyMap in eventCompanyMaps %}
+                {% if '' != eventCompanyMap.getCompany().getName() %}
+                    <tr class="item item-{{ eventCompanyMap.getId() }}">
+                        <td>{{ eventCompanyMap.getCompany().getName() }}</td>
+                        <td>{{ eventCompanyMap.getStatus() }}</td>
+                        <td>
+                            {% if hasAccess('br_admin_event', 'deleteAttendee') %}
+                                <a href="#" data-id="{{ event.getId() }}" data-map="{{ eventCompanyMap.getId() }}" data-name="{{ eventCompanyMap.getCompany().getName() }}" class="delete">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+    </div>
+    <div class="modal fade" id="removeAttendee" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Attendee
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following company: <b class="attendeeName"></b>!
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .delete').click(openModal);
+        });
+
+        function openModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeAttendee = $('#removeAttendee');
+            removeAttendee.find('.attendeeName').html($(this).data('name'));
+            var id = $this.data('id');
+            var map = $this.data('map');
+            removeAttendee.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('br_admin_event', {"action": "deleteAttendee"})}}' + id + '/map/'+ map, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.attendee_removed_success').removeClass('hide');
+                        $('.item-' + map).remove();
+                        removeAttendee.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeAttendee.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.attendee_removed_error').removeClass('hide');
+            $('#removeAttendee').modal('hide');
+        }
+    </script>
 {% endblock %}

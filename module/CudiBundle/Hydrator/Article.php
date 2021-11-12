@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace CudiBundle\Hydrator;
 
@@ -59,10 +41,11 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
                 $object,
                 array(
                     self::$internalKeys,
-                    array('perforated', 'colored', 'hardcovered', 'official'),
+                    array('perforated', 'hardcovered', 'official'),
                 )
             );
 
+            $data['internal']['colored'] = $object->isColored();
             $data['internal']['binding'] = $object->getBinding() ? $object->getBinding()->getId() : '';
             $data['internal']['front_color'] = $object->getFrontColor() ? $object->getFrontColor()->getId() : '';
             $data['internal']['rectoverso'] = $object->isRectoVerso();
@@ -109,12 +92,13 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
 
             $this->stdHydrate($data['internal'], $object, self::$internalKeys);
 
+            $colored = ($data['internal']['colored'] || $data['internal']['nb_colored'] > 0);
             $object->setBinding($binding)
                 ->setIsOfficial($data['internal']['official'] ?? true)
                 ->setIsRectoVerso($data['internal']['rectoverso'])
                 ->setFrontColor($frontPageColor)
                 ->setIsPerforated($data['internal']['perforated'])
-                ->setIsColored($data['internal']['colored'])
+                ->setIsColored($colored)
                 ->setIsHardCovered($data['internal']['hardcovered'] ?? false);
         }
 

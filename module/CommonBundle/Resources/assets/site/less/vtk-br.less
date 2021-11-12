@@ -1,0 +1,619 @@
+// COMPANY PAGE
+
+.largeCompanyHolder,
+.vacancyHolder {
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid rgb(233, 233, 233);
+  transition-duration: 100ms;
+  margin-bottom: 10px;
+  padding: 30px 20px;
+
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-content: stretch;
+  -ms-flex-line-pack: stretch;
+  align-content: stretch;
+}
+
+.vacancyHolder {
+  padding: 10px;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.largeCompanyHolder:hover,
+.br-smallcompany:hover,
+.vacancyHolder:hover {
+  -webkit-box-shadow: 0px 0px 7px 1px rgba(150, 150, 150, 0.17);
+  box-shadow: 0px 0px 7px 1px rgba(150, 150, 150, 0.17);
+  cursor: pointer;
+}
+
+.companyLogoHolder {
+  width: 120px;
+  height: 60px;
+  background-position: center;
+  background-size: contain;
+  background-image: url(/_site/img/logo_vtk.png);
+}
+
+.br-spacer {
+  width: 1px;
+  background-color: @color-yellow;
+  margin-right: 20px;
+  -webkit-align-self: stretch;
+  -ms-flex-item-align: stretch;
+  align-self: stretch;
+}
+
+.br-companiesholder {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  margin-bottom: 10px;
+}
+
+.br-smallcompany {
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid rgb(233, 233, 233);
+  transition-duration: 100ms;
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.br-jobIndication {
+  display: inline-block;
+  padding: 3px;
+  margin-right: 5px;
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: 600;
+  color: @color-blue;
+  border: 1px dashed @color-blue;
+  opacity: 60%;
+}
+
+// VACANCY / STUDENT JOB / STAGE PAGE
+
+.br-filterholder > form {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+// SPECIFIC COMPANY PAGE
+
+.br-companyLogoHolder {
+  display: inline-block;
+  width: 140px;
+  height: 85px;
+  border-radius: 5px;
+  border: 1px solid rgb(233, 233, 233);
+  padding: 10px;
+}
+
+.br-companyLogo {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  width: 100%;
+  height: 100%;
+}
+
+.br-companyTitleHolder {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-content: stretch;
+  -ms-flex-line-pack: stretch;
+  align-content: stretch;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.br-infoHolder {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-content: stretch;
+  -ms-flex-line-pack: stretch;
+  align-content: stretch;
+  -webkit-align-items: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+}
+
+.br-markdown > p {
+  margin-bottom: 10px;
+  text-align: justify;
+  line-height: 22px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.br-titledecoration {
+  background-color: @color-yellow;
+  width: 20px;
+  height: 30px;
+  position: absolute;
+  left: -5px;
+  top: -3px;
+  z-index: 0;
+}
+
+.br-companyEventHolder {
+  width: 300px;
+  height: 170px;
+  position: relative;
+  background-image: url("https://images.pexels.com/photos/2608517/pexels-photo-2608517.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+  background-position: center;
+  background-size: cover;
+}
+
+.br-eventTitleHolder {
+  background-color: white;
+  padding: 20px;
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
+  -webkit-box-shadow: 0px 0px 7px 1px rgba(150, 150, 150, 0.17);
+  box-shadow: 0px 0px 7px 1px rgba(150, 150, 150, 0.17);
+  max-width: 100%;
+}
+
+.br-arrowAnimation {
+  -webkit-transition: all 0.3s ease-out;
+  -moz-transition: all 0.3s ease-out;
+  -ms-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+
+  &::before {
+    display: inline-block;
+    // padding-left: 8px;
+    content: "\0279E"; // arrow right unicode
+    opacity: 0;
+    margin-right: 8px;
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -ms-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+  }
+
+  &:hover {
+    -webkit-transform: translateX(4px);
+    -moz-transform: translateX(4px);
+    -ms-transform: translateX(4px);
+    -o-transform: translateX(4px);
+    transform: translateX(4px);
+
+    &::before {
+      opacity: 1;
+      -webkit-transform: translateX(4px);
+      -moz-transform: translateX(4px);
+      -ms-transform: translateX(4px);
+      -o-transform: translateX(4px);
+      transform: translateX(4px);
+    }
+  }
+}
+
+// VTK Students launch page
+
+.br-studentLaunchBg {
+  background: linear-gradient(
+      0deg,
+      rgba(7, 2, 59, 0.4) 0%,
+      rgba(7, 2, 59, 0.4) 100%
+    ),
+    url(https://images.pexels.com/photos/2774556/pexels-photo-2774556.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+  background-size: cover;
+  background-position: center;
+  padding: 150px 0px;
+  height: 500px;
+}
+
+.br-blueBanner {
+  background-color: @color-blue;
+  padding: 80px 0px;
+}
+
+// CORPORATE LAUNCH PAGE
+
+.br-corporateLaunchBg {
+  background: linear-gradient(
+      0deg,
+      rgba(7, 2, 59, 0.4) 0%,
+      rgba(7, 2, 59, 0.4) 100%
+    ),
+    url(https://images.pexels.com/photos/2020156/pexels-photo-2020156.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+  background-size: cover;
+  background-position: center;
+  padding: 150px 0px;
+  height: 500px;
+}
+
+.servicesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 15px;
+  grid-row-gap: 0px;
+}
+
+.servicesHolder {
+  background-color: #f3f3f3;
+  padding: 30px;
+  position: relative;
+}
+
+.servicesTitle {
+  position: absolute;
+  top: -12px;
+}
+
+// BR Events voor bedrijven
+
+.br-eventHolder {
+  margin-top: 50px;
+  background-color: rgb(243, 243, 243);
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: space-between;
+  justify-content: space-between;
+  -webkit-align-content: stretch;
+  -ms-flex-line-pack: stretch;
+  align-content: stretch;
+  border-left: 8px solid @color-yellow;
+}
+
+.br-eventTextHolder {
+  padding: 20px;
+  position: relative;
+  flex-grow: 1;
+}
+
+.br-eventImageHolder {
+  background-image: url(https://images.pexels.com/photos/2020156/pexels-photo-2020156.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+  background-size: cover;
+  background-position: center;
+  flex: 0 0 300px;
+}
+
+.br-eventTitle {
+  position: absolute;
+  top: -17px;
+}
+
+.br-eventInfoHolder {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-content: stretch;
+  -ms-flex-line-pack: stretch;
+  align-content: stretch;
+}
+
+.br-eventInfoTitle {
+  font-weight: 700;
+  font-size: 15px;
+  color: @color-blue;
+}
+
+.br-menuUnderlineStyle {
+  transition-duration: 100ms;
+  cursor: pointer;
+  padding: 10px;
+  color: @color-blue;
+}
+
+.br-menuUnderlineStyle.active {
+  font-weight: 700;
+}
+
+.br-menuUnderlineStyle:hover,
+.br-menuUnderlineStyle:focus,
+.br-menuUnderlineStyle:active {
+  background-color: whitesmoke;
+  text-decoration: none;
+  color: @color-blue;
+}
+
+.vtk-menuitem-holder.br {
+  padding: 10px 0px;
+}
+
+.vtk-menuitem-holder.br:hover {
+  background-color: white;
+}
+
+// CSS VOOR GALLERIJ
+
+/* The Modal (background) */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 100000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.77);
+}
+
+/* The Close Button */
+.closeModal {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  color: white;
+  font-size: 35px;
+  font-weight: bold;
+  transition: 100ms;
+  padding: 5px;
+  border-radius: 3px;
+}
+
+.closeModal:hover,
+.closeModal:focus {
+  background-color: white;
+  color: @color-blue;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Hide the slides by default */
+.mySlides {
+  display: none;
+}
+
+/* Next & previous buttons */
+.prev,
+.next {
+  cursor: pointer;
+  width: auto;
+  padding: 16px;
+  margin-top: -50px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  transition: 0.6s ease;
+  user-select: none;
+  -webkit-user-select: none;
+  border-radius: 3px;
+}
+
+.prev:hover,
+.next:hover {
+  background-color: white;
+}
+
+.lightboxParent {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  overflow: hidden;
+  height: 500px;
+}
+
+.lightboxImage {
+  background-position: center;
+  background-size: cover;
+  cursor: pointer;
+}
+
+.lightbox1 {
+  grid-area: 1 / 1 / span 2 / span 2;
+}
+
+.lightboxParentmodal-content {
+  height: 100%;
+  padding: 50px 50px;
+}
+
+.mySlides {
+  height: 100%;
+  width: 100%;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.br-lightboxContainer {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.lightboxZoomedImage {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.videoIframe {
+  width: 680px;
+  height: 340px;
+}
+
+.noMarginMobile {
+  margin-right: 40px;
+}
+
+.br-specificInfoHolder {
+  min-width: 50%;
+  padding: 20px;
+}
+
+.br-corporate-heading {
+  color: white;
+  margin-bottom: 0px;
+  font-size: 70px;
+  font-weight: 800;
+}
+
+@media (max-width: 991px) {
+  .br-infoHolder {
+    flex-direction: column;
+  }
+
+  .br-specificInfoHolder {
+    padding: 20px 0px;
+  }
+
+  .br-markdown.noMarginMobile {
+    margin-right: 0px;
+  }
+
+  .videoIframe {
+    width: 100%;
+    height: 330px;
+  }
+
+  .br-companiesholder {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .mySlides {
+    flex-grow: 1;
+  }
+
+  .next,
+  .prev {
+    flex-grow: 1;
+  }
+
+  .br-lightboxContainer {
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+  }
+}
+
+@media (max-width: 768px) {
+  .largeCompanyHolder {
+    flex-direction: column;
+  }
+
+  .br-corporate-heading {
+    font-size: 50px;
+  }
+
+  .lightboxParent {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    overflow: hidden;
+    height: 500px;
+  }
+
+  .lightbox1 {
+    grid-area: 1 / 1 / 1 / 1;
+  }
+
+  .servicesGrid {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, 1fr);
+    row-gap: 20px;
+  }
+
+  .br-eventHolder {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .br-companiesholder {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace ShiftBundle\Repository\Shift;
 
@@ -185,6 +167,52 @@ class Volunteer extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->setParameter('startAcademicYear', $academicYear->getStartDate())
             ->setParameter('endAcademicYear', $academicYear->getEndDate())
             ->setParameter('now', new DateTime())
+            ->getQuery();
+    }
+
+    /**
+     * @param AcademicYear  $academicYear
+     * @param $hoursPerBlock
+     * @param $points
+     * @param DateTime      $date
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllCountsAtTimeByAcademicYearQuery(AcademicYear $academicYear, $hoursPerBlock, $points, DateTime $date)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+
+        if ($points) {
+            $select = 'SUM(s.points) resultCount';
+        } else {
+            if ($hoursPerBlock > 0) {
+                $select = 'SUM(CASE WHEN s.endDate < DATE_ADD(s.startDate,'. strval($hoursPerBlock * 2) .',\'hour\') THEN 1 ';
+                $block = 2;
+                while ($block < 24 / $hoursPerBlock) {
+                    $select .= 'WHEN (DATE_ADD(s.startDate,'. strval($hoursPerBlock * $block) .',\'hour\') <= s.endDate AND s.endDate < DATE_ADD(s.startDate,'. strval($hoursPerBlock * $block + $hoursPerBlock) .',\'hour\')) THEN '. strval($block) .' ';
+                    $block += 1;
+                }
+                $select .= 'ELSE '. strval($block) .' END) resultCount';
+            } else {
+                $select = 'count(p.id) resultCount';
+            }
+        }
+
+        return $query->select('p.id', $select)
+            ->from('ShiftBundle\Entity\Shift', 's')
+            ->innerJoin('s.volunteers', 'v')
+            ->innerJoin('v.person', 'p')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gt('v.signupTime', ':startAcademicYear'),
+                    $query->expr()->lt('v.signupTime', ':endAcademicYear'),
+                    $query->expr()->lte('s.endDate', ':date')
+                )
+            )
+            ->groupBy('p.id')
+            ->orderBy('resultCount')
+            ->setParameter('startAcademicYear', $academicYear->getStartDate())
+            ->setParameter('endAcademicYear', $academicYear->getEndDate())
+            ->setParameter('date', $date)
             ->getQuery();
     }
 }

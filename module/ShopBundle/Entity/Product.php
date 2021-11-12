@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace ShopBundle\Entity;
 
@@ -36,15 +18,21 @@ class Product
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="bigint")
+     *
      */
     private $id;
 
     /**
      * @var string The name of this product
-     *
      * @ORM\Column(type="text")
      */
     private $name;
+
+    /**
+     * @var string The English name of this product
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $name_en;
 
     /**
      * @var float The selling price of the product
@@ -80,10 +68,27 @@ class Product
     }
 
     /**
+     * @param  string $name_en
+     * @return self
+     */
+    public function setNameEN($name_en)
+    {
+        $this->name_en = $name_en;
+        return $this;
+    }
+
+    /**
+     * @param string $lang
      * @return string
      */
-    public function getName()
+    public function getName($lang = 'nl')
     {
+
+        if ($lang === 'en') {
+            if ($this->name_en !== null) {
+                return $this->name_en;
+            }
+        }
         return $this->name;
     }
 
