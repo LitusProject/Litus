@@ -208,7 +208,7 @@ class Csv extends \CommonBundle\Component\Form\Admin\Form
     {
         $events = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
-            ->findAllActive();
+            ->findAllActive(30);
 
         $eventsArray = array(
             '' => '',
