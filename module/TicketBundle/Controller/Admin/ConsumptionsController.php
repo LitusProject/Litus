@@ -4,6 +4,7 @@ namespace TicketBundle\Controller\Admin;
 
 use DateTime;
 use Laminas\View\Model\ViewModel;
+use TicketBundle\Component\Validator\Date;
 use TicketBundle\Entity\Consumptions;
 use TicketBundle\Entity\Transactions;
 
@@ -244,7 +245,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
         );
         $dateToCheck = new DateTime($newDate);
         $period = new \DateInterval('P1D');
-        if ($date->format("h-m-s") < $dateToCheck->format('h-m-s')) {
+        if ($date->format("h-i-s") < $dateToCheck->format('h-i-s')) {
             $dateToCheck->sub($period);
         }
 
