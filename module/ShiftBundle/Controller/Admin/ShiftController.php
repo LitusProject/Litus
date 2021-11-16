@@ -198,7 +198,10 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $count = 0;
                 foreach ($shiftArray as $key => $data) {
-                    if ($key == '0') {
+                    if (in_array(null, $data) {
+ 		    	continue;
+	            }
+		    if ($key == '0') {
                         continue;
                     }
                     //Create each shift with standard variables
