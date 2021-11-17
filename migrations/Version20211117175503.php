@@ -29,7 +29,6 @@ class Version20211117175503 extends \Doctrine\Migrations\AbstractMigration
         $this->addSql('CREATE TABLE br_events_companies_metadata (id BIGINT NOT NULL, master_interests TEXT DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('ALTER TABLE br_events_companies_attendee ADD CONSTRAINT FK_8D3AF51899A014AB FOREIGN KEY (companyMap_id) REFERENCES br_events_companies_map (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE br_events_subscriptions ADD CONSTRAINT FK_18F9705871F7E88B FOREIGN KEY (event_id) REFERENCES br_events (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER INDEX registration_shift_users_academic_years_map_person_academic_yea RENAME TO registration_shift_users_academic_years_map_person_academic_year');
     }
 
     /**
