@@ -150,12 +150,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(
             array(
                 'type'       => 'text',
-                'name'       => 'other_university',
+                'name'       => 'university',
                 'label'      => 'University',
                 'required'   => true,
                 'attributes' => array(
-                    'id'      => 'other_university',
-                    'hidden'  => true,
+                    'id'      => 'university',
                 ),
                 'options' => array(
                     'input' => array(
@@ -194,7 +193,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'required'   => true,
                 'attributes' => array(
                     'id'      => 'other_study',
-                    'hidden'  => true,
                 ),
                 'options' => array(
                     'input' => array(
@@ -224,7 +222,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type'       => 'select',
                 'name'       => 'food',
                 'label'      => 'Food',
-                'required'   => true,
+                'required'   => false,
                 'attributes' => array(
                     'id'      => 'food',
                     'options' => $this->getFood(),
@@ -240,6 +238,40 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
+        $this->add(
+            array(
+                'type'     => 'checkbox',
+                'name'     => 'network_reception',
+                'label'    => 'Network reception',
+                'required' => true,
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'checkbox',
+                'name'     => 'consent',
+                'label'    => 'Consent',
+                'required' => true,
+            )
+        );
+        $this->add(
+            array(
+                'type'    => 'text',
+                'name'    => 'study_year',
+                'label'   => 'Year of study',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
+                        ),
+                    ),
+                ),
+            )
+        );
 
         $this->addSubmit('Add', 'add');
 
@@ -279,6 +311,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      * @return array of possible universities
      */
     protected function getStudies(){
+        //error_log(print_r(Event\CompanyMetadata::POSSIBLE_MASTERS, true));
         return Event\CompanyMetadata::POSSIBLE_MASTERS;
     }
 
@@ -286,6 +319,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      * @return array of possible universities
      */
     protected function getFood(){
-
+        return array("None");
     }
 }

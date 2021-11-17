@@ -82,6 +82,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
     {
 
         $form = $this->getForm('br_event_subscription_add');
+        $eventObject = $this->getEventEntity();
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -111,6 +112,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         return new ViewModel(
             array(
                 'form' => $form,
+                'event' => $eventObject,
             )
         );
     }
