@@ -47,7 +47,7 @@ class Team
     /**
      * @var ArrayCollection The points scored by this team
      *
-     * @ORM\OneToMany(targetEntity="QuizBundle\Entity\Point", mappedBy="team", cascade="remove")
+     * @ORM\OneToMany(targetEntity="QuizBundle\Entity\Point", mappedBy="team", cascade={"remove"})
      */
     private $points;
 

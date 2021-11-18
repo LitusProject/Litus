@@ -75,11 +75,11 @@ abstract class Hydrator implements HydratorInterface, ServiceLocatorAwareInterfa
     abstract protected function doExtract($object = null);
 
     /**
-     * @param  object|null $object The object to extract data from, or null
+     * @param  object $object The object to extract data from
      * @return array                            The object's data, if any
      * @throws Exception\InvalidObjectException If the object is of the wrong class
      */
-    public function extract($object = null)
+    public function extract(object $object): array
     {
         $this->checkType($object, __METHOD__);
 
@@ -96,14 +96,14 @@ abstract class Hydrator implements HydratorInterface, ServiceLocatorAwareInterfa
     abstract protected function doHydrate(array $array, $object = null);
 
     /**
-     * @param  array       $array  The data, if any
-     * @param  object|null $object The object to hydrate, or null
+     * @param  array  $array  The data, if any
+     * @param  object $object The object to hydrate
      * @return object                           The hydrated object or a new instance if $object is null
      * @throws Exception\InvalidObjectException If the object is of the wrong class
      * @throws \InvalidArgumentException        If the array contains illegal data
      * @throws \InvalidArgumentException        If the object is null and this hydrator cannot create new objects
      */
-    public function hydrate(array $array, $object = null)
+    public function hydrate(array $array, object $object)
     {
         $this->checkType($object, __METHOD__);
 

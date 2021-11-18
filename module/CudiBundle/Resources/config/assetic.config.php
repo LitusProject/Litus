@@ -2,8 +2,8 @@
 
 namespace CudiBundle;
 
-use CommonBundle\Component\Assetic\Filter\Js as JsFilter;
-use CommonBundle\Component\Assetic\Filter\Less as LessFilter;
+use Assetic\Filter\LessFilter;
+use Assetic\Filter\UglifyJs3Filter;
 
 return array(
     'controllers' => array(
@@ -468,8 +468,8 @@ return array(
                 'queue/js/*.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -478,8 +478,8 @@ return array(
                 'sale/js/*.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -527,8 +527,8 @@ return array(
                 'opening-hour/js/*.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),

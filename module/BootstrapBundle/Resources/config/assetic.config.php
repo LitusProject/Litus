@@ -2,8 +2,8 @@
 
 namespace BootstrapBundle;
 
-use CommonBundle\Component\Assetic\Filter\Js as JsFilter;
-use CommonBundle\Component\Assetic\Filter\Less as LessFilter;
+use Assetic\Filter\LessFilter;
+use Assetic\Filter\UglifyJs3Filter;
 
 return array(
     'collections' => array(
@@ -25,8 +25,8 @@ return array(
                 __DIR__ . '/../../../../vendor/twitter/bootstrap/js/affix.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -35,8 +35,8 @@ return array(
                 __DIR__ . '/../../../../vendor/twitter/bootstrap/js/alert.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -45,8 +45,8 @@ return array(
                 __DIR__ . '/../../../../vendor/twitter/bootstrap/js/button.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -55,8 +55,8 @@ return array(
                 __DIR__ . '/../../../../vendor/twitter/bootstrap/js/carousel.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -65,8 +65,8 @@ return array(
                 __DIR__ . '/../../../../vendor/twitter/bootstrap/js/collapse.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -75,8 +75,8 @@ return array(
                 __DIR__ . '/../../../../vendor/twitter/bootstrap/js/dropdown.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -85,8 +85,8 @@ return array(
                 __DIR__ . '/../../../../vendor/twitter/bootstrap/js/modal.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -95,8 +95,8 @@ return array(
                 __DIR__ . '/../../../../vendor/twitter/bootstrap/js/popover.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -105,8 +105,8 @@ return array(
                 __DIR__ . '/../../../../vendor/twitter/bootstrap/js/scrollspy.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -115,8 +115,8 @@ return array(
                 __DIR__ . '/../../../../vendor/twitter/bootstrap/js/tab.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -125,8 +125,8 @@ return array(
                 __DIR__ . '/../../../../vendor/twitter/bootstrap/js/tooltip.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -135,8 +135,8 @@ return array(
                 __DIR__ . '/../../../../vendor/twitter/bootstrap/js/transition.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),

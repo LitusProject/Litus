@@ -53,10 +53,18 @@ return array(
 
         'migrations_configuration' => array(
             'orm_default' => array(
-                'directory'       => __DIR__ . '/../../migrations',
-                'namespace'       => 'Migrations',
-                'table'           => 'general_migrations',
-                'custom_template' => __DIR__ . '/../../migrations/migration.tpl'
+                'table_storage' => array(
+                    'table_name' => 'general_migrations',
+                    'executed_at_column_name' => 'executed_at',
+                    'execution_time_column_name' => 'execution_time',
+                ),
+
+                'migrations_paths' => array(
+                    'Migrations' => __DIR__ . '/../../migrations',
+                ),
+
+                'custom_template' => __DIR__ . '/../../migrations/migration.tpl',
+                'all_or_nothing' => true,
             ),
         ),
     ),

@@ -49,14 +49,14 @@ class Quiz
     /**
      * @var ArrayCollection The rounds in this quiz
      *
-     * @ORM\OneToMany(targetEntity="QuizBundle\Entity\Round", mappedBy="quiz", cascade="remove")
+     * @ORM\OneToMany(targetEntity="QuizBundle\Entity\Round", mappedBy="quiz", cascade={"remove"})
      */
     private $rounds;
 
     /**
      * @var ArrayCollection The teams in this quiz
      *
-     * @ORM\OneToMany(targetEntity="QuizBundle\Entity\Team", mappedBy="quiz", cascade="remove")
+     * @ORM\OneToMany(targetEntity="QuizBundle\Entity\Team", mappedBy="quiz", cascade={"remove"})
      */
     private $teams;
 

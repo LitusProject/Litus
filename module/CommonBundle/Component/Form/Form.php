@@ -2,6 +2,7 @@
 
 namespace CommonBundle\Component\Form;
 
+use CommonBundle\Component\Hydrator\Hydrator;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\HydratorPluginManagerTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\SessionContainerTrait;
@@ -11,7 +12,7 @@ use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Component\Validator\FormAwareInterface;
 use Laminas\Form\FieldsetInterface as LaminasFieldsetInterface;
 use Laminas\Form\FormInterface;
-use Laminas\Hydrator\ClassMethods as ClassMethodsHydrator;
+use Laminas\Hydrator\ClassMethodsHydrator;
 use Laminas\InputFilter\InputFilterAwareInterface;
 use Laminas\InputFilter\InputFilterInterface;
 use Laminas\InputFilter\InputInterface;

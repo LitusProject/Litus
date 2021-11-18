@@ -2,9 +2,9 @@
 
 namespace GalleryBundle;
 
-use CommonBundle\Component\Assetic\Filter\Css as CssFilter;
-use CommonBundle\Component\Assetic\Filter\Js as JsFilter;
-use CommonBundle\Component\Assetic\Filter\Less as LessFilter;
+use Assetic\Filter\LessFilter;
+use Assetic\Filter\UglifyCssFilter;
+use Assetic\Filter\UglifyJs3Filter;
 
 return array(
     'controllers' => array(
@@ -58,8 +58,8 @@ return array(
                 'common/js/imageGallery.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -69,8 +69,8 @@ return array(
                 'plupload/js/uploadkit/uploadkit.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
@@ -79,8 +79,8 @@ return array(
                 'plupload/js/uploadkit/uploadkit.css',
             ),
             'filters' => array(
-                '?CssFilter' => array(
-                    'name' => CssFilter::class,
+                '?UglifyCssFilter' => array(
+                    'name' => UglifyCssFilter::class,
                 ),
             ),
             'options' => array(

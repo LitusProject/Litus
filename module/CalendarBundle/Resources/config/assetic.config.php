@@ -2,8 +2,9 @@
 
 namespace CalendarBundle;
 
-use CommonBundle\Component\Assetic\Filter\Js as JsFilter;
-use CommonBundle\Component\Assetic\Filter\Less as LessFilter;
+use Assetic\Filter\LessFilter;
+use Assetic\Filter\UglifyCssFilter;
+use Assetic\Filter\UglifyJs3Filter;
 
 return array(
     'controllers' => array(
@@ -70,8 +71,8 @@ return array(
                 'calendar/js/calendar.js',
             ),
             'filters' => array(
-                '?JsFilter' => array(
-                    'name' => JsFilter::class,
+                '?UglifyJs3Filter' => array(
+                    'name' => UglifyJs3Filter::class,
                 ),
             ),
         ),
