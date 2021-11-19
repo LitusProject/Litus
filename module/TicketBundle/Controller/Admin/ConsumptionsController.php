@@ -4,7 +4,6 @@ namespace TicketBundle\Controller\Admin;
 
 use DateTime;
 use Laminas\View\Model\ViewModel;
-use TicketBundle\Component\Validator\Date;
 use TicketBundle\Entity\Consumptions;
 use TicketBundle\Entity\Transactions;
 
@@ -115,7 +114,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
                 );
 //                $this->getEntityManager()->persist($form);
 
-                if ($consumption instanceof Consumptions){
+                if ($consumption instanceof Consumptions) {
                     $person = $this->getPersonEntity();
 
                     $transaction = new Transactions($form->getData()['number_of_consumptions'], $consumption->getPerson(), $person);
@@ -159,7 +158,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                if ($consumptions instanceof Consumptions){
+                if ($consumptions instanceof Consumptions) {
                     $person = $this->getPersonEntity();
                     $transaction = new Transactions($form->getData()['number_of_consumptions'] - $old, $consumptions->getPerson(), $person);
                     $this->getEntityManager()->persist($transaction);
@@ -199,7 +198,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
             return new ViewModel();
         }
 
-        if ($consumptions instanceof Consumptions){
+        if ($consumptions instanceof Consumptions) {
             $person = $this->getPersonEntity();
             $transaction = new Transactions(-$consumptions->getConsumptions(), $consumptions->getPerson(), $person);
             $this->getEntityManager()->persist($transaction);
@@ -245,7 +244,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
         );
         $dateToCheck = new DateTime($newDate);
         $period = new \DateInterval('P1D');
-        if ($date->format("h-i-s") < $dateToCheck->format('h-i-s')) {
+        if ($date->format('h-i-s') < $dateToCheck->format('h-i-s')) {
             $dateToCheck->sub($period);
         }
 
