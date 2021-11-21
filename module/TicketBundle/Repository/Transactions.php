@@ -10,7 +10,7 @@ class Transactions extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         return $query->select('t')
             ->from('TicketBundle\Entity\Transactions', 't')
             ->where(
-                $query->expr()->gte('t.time', ':date' )
+                $query->expr()->gte('t.time', ':date')
             )
             ->setParameter('date', $date)
             ->getQuery()

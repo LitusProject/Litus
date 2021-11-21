@@ -1,8 +1,9 @@
 <?php
 
 namespace TicketBundle\Entity;
-use DateTime;
+
 use CommonBundle\Entity\User\Person;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

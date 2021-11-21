@@ -350,15 +350,22 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $payed = true;
         }
 
-        $shift->addVolunteer(
-            $this->getEntityManager(),
-            new Volunteer(
-                $person,
-                $payed
-            )
-        );
+        $volunteers = $shift->getVolunteers();
+        $persons = array();
+        foreach ($volunteers as $vol) {
+            $persons[] = $vol->getPerson()->getId();
+        }
 
-        $this->getEntityManager()->flush();
+        if (!in_array($person->getId(), $persons)) {
+            $shift->addVolunteer(
+                $this->getEntityManager(),
+                new Volunteer(
+                    $person,
+                    $payed
+                )
+            );
+            $this->getEntityManager()->flush();
+        }
 
         return new ViewModel(
             array(

@@ -50,7 +50,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         $shifts = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
-            ->findByEvent($event);
+            ->findAllByEventQuery($event)->getResult();
 
         $shifters = array();
         foreach ($shifts as $shift) {
@@ -199,9 +199,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 $count = 0;
                 foreach ($shiftArray as $key => $data) {
                     if (in_array(null, $data)) {
- 		    	continue;
-	            }
-		    if ($key == '0') {
+                        continue;
+                    }
+                    if ($key == '0') {
                         continue;
                     }
                     //Create each shift with standard variables
