@@ -9,7 +9,7 @@ namespace CalendarBundle\Form\Admin\Event;
  */
 class Poster extends \CommonBundle\Component\Form\Admin\Form
 {
-    const FILE_SIZE = '10MB';
+    const FILE_SIZE = '20MB';
 
     public function init()
     {
