@@ -102,11 +102,15 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         $companyMapForm = $this->getForm('br_event_companyMap');
 
         if ($this->getRequest()->isPost()) {
+//            die("is post");
             $formData = $this->getRequest()->getPost();
             $propertiesForm->setData($formData);
             $companyMapForm->setData($formData);
-
-            if (isset($formData['event_edit']) && $propertiesForm->isValid()) {
+//            die(json_encode($propertiesForm->getData()));
+//            die(json_encode($propertiesForm->isValid()));
+//            if (isset($formData['event_edit']) && $propertiesForm->isValid()) {
+            if ($propertiesForm->isValid()) {
+//                die("hier zo");
                 $this->flashMessenger()->success(
                     'Success',
                     'The event was successfully updated!'
@@ -183,8 +187,8 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function deleteAction()
     {
+        die("delete");
         $this->initAjax();
-
         $event = $this->getEventEntity();
         if ($event === null) {
             return new ViewModel();

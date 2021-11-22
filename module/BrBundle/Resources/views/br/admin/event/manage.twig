@@ -42,7 +42,7 @@
                             <a href="{{ url('br_admin_event', {"action": "edit", "id": event.getId()}) }}" class="edit">Edit</a>
                         {% endif %}
                         {% if hasAccess('br_admin_event', 'delete') %}
-                            <a href="#" class="delete" data-id="{{ event.getId() }}">Delete</a>
+                            <a href="#" class="delete" data-id="{{ event.getId() }}" data-title="{{ event.getTitle() }}">Delete</a>
                         {% endif %}
                     </td>
                 </tr>

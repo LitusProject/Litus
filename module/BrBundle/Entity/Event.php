@@ -209,10 +209,10 @@ class Event
     }
 
     /**
-     * @param  DateTime $endDate
+     * @param  DateTime|null $subscriptionDate
      * @return self
      */
-    public function setSubscriptionDate(DateTime $subscriptionDate)
+    public function setSubscriptionDate(DateTime $subscriptionDate = null)
     {
         $this->subscriptionDate = $subscriptionDate;
 
@@ -228,10 +228,10 @@ class Event
     }
 
     /**
-     * @param  DateTime $mapviewDate
+     * @param  DateTime|null $mapviewDate
      * @return self
      */
-    public function setMapviewDate(DateTime $mapviewDate)
+    public function setMapviewDate(DateTime $mapviewDate = null)
     {
         $this->mapviewDate = $mapviewDate;
 

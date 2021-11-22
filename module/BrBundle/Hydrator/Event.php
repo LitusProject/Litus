@@ -56,11 +56,19 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             $object->setEndDate(self::loadDateTime($data['end_date']));
         }
 
-        if (isset($data['subscription_date']) and !($data['subscription_date'] == "")) {
+//        if ($data['subscription_date'] == "") {
+//            $data['subscription_date'] = null;
+//        }
+
+        if (isset($data['subscription_date'])) {
             $object->setSubscriptionDate(self::loadDateTime($data['subscription_date']));
         }
 
-        if (isset($data['mapview_date']) and !($data['mapview_date'] == "")) {
+//        if ($data['mapview_date'] == "") {
+//            $data['mapview_date'] = null;
+//        }
+
+        if (isset($data['mapview_date'])) {
             $object->setMapviewDate(self::loadDateTime($data['mapview_date']));
         }
 
