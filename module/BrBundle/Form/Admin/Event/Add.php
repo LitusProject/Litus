@@ -116,7 +116,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type'     => 'datetime',
                 'name'     => 'subscription_date',
                 'label'    => 'Subscription opening date',
-                'required' => true,
                 'options'  => array(
                     'input' => array(
                         'validators' => array(
@@ -137,7 +136,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type'     => 'datetime',
                 'name'     => 'mapview_date',
                 'label'    => 'Map viewing date',
-                'required' => true,
                 'options'  => array(
                     'input' => array(
                         'validators' => array(

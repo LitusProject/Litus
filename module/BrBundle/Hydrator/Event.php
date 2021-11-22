@@ -12,8 +12,8 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
     private static $stdKeys = array('title',
         'description_for_students',
         'description_for_companies',
-        'nb_companies',
-        'nb_students',
+//        'nb_companies',
+//        'nb_students',
         'visible_for_companies',
         'visible_for_students',
         'location',
@@ -56,12 +56,20 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             $object->setEndDate(self::loadDateTime($data['end_date']));
         }
 
-        if (isset($data['subscription_date'])) {
+        if (isset($data['subscription_date']) and !($data['subscription_date'] == "")) {
             $object->setSubscriptionDate(self::loadDateTime($data['subscription_date']));
         }
 
-        if (isset($data['mapview_date'])) {
+        if (isset($data['mapview_date']) and !($data['mapview_date'] == "")) {
             $object->setMapviewDate(self::loadDateTime($data['mapview_date']));
+        }
+
+        if(!($data['nb_students'] == "")) {
+            $object->setNbStudents($data['nb_students']);
+        }
+
+        if(!($data['nb_companies'] == "")) {
+            $object->setNbCompanies($data['nb_companies']);
         }
 
         return $object;
