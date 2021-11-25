@@ -1,0 +1,13 @@
+{% extends 'corporate/base.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6">
+            <h1 style="float:left;">{{ translate('Matching Platform') }}</h1>
+            <div style="margin-top: 37px;"><strong>&nbsp;&nbsp;{{ translate('Find your match with our students!') }}</div></strong>
+        </div>
+        <div class="col-md-6">
+            <a class="btn btn-success pull-right" href="{{ url('br_corporate_match', {'action': 'overview'}) }}" style="margin-bottom: 5px; margin-top: 20px;">{{ translate('Start Matching!') }}</a>
+        </div>
+    </div>
+{% endblock %}

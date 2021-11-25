@@ -98,11 +98,27 @@ class Match
     }
 
     /**
+     * @return Company
+     */
+    public function getCompany()
+    {
+        return $this->companyMatchee->getCompany();
+    }
+
+    /**
      * @return StudentMatcheeMap
      */
     public function getStudentMatchee()
     {
         return $this->studentMatchee;
+    }
+
+    /**
+     * @return Person
+     */
+    public function getStudent()
+    {
+        return $this->studentMatchee->getStudent();
     }
 
     /**

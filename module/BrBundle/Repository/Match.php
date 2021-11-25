@@ -54,4 +54,21 @@ class Match extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function findByCompany(\BrBundle\Entity\Company $company)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('m')
+            ->from('BrBundle\Entity\Match', 'm')
+            ->innerJoin('m.companyMatchee', 'c')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('c.company', ':company')
+                )
+            )
+            ->orderBy('m.matchPercentage', 'ASC')
+            ->setParameter('company', $company)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

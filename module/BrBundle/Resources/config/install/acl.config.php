@@ -134,6 +134,9 @@ return array(
         ),
         'br_corporate_company' => array(
             'edit',
+        ),
+        'br_corporate_match' => array(
+            'index', 'overview', 'addProfile', 'editProfile', 'viewMatch'
         )
     ),
 );

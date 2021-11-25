@@ -558,6 +558,23 @@ return array(
                 ),
             ),
         ),
+        'br_corporate_match' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '[/:language]/corporate/match[/:action[/:profile][/type/:type][/match/:match][/page/:page]][/]',
+                'constraints' => array(
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'type'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'match'       => '[0-9_-]*',
+                    'profile'  => '[0-9_-]*',
+                    'language' => '(en|nl)',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_corporate_match',
+                    'action'     => 'index',
+                ),
+            ),
+        ),
         'br_cv_index' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -618,6 +635,7 @@ return array(
         'br_corporate_internship' => 'BrBundle\Controller\Corporate\InternshipController',
         'br_corporate_student_job' => 'BrBundle\Controller\Corporate\StudentJobController',
         'br_corporate_company'    => 'BrBundle\Controller\Corporate\CompanyController',
+        'br_corporate_match'      => 'BrBundle\Controller\Corporate\MatchController',
 
         'br_career_index'          => 'BrBundle\Controller\Career\IndexController',
         'br_career_vacancy'        => 'BrBundle\Controller\Career\VacancyController',
