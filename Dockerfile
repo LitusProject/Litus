@@ -74,15 +74,12 @@ RUN apk add --no-cache \
     pgsql \
     soap \
     zip && \
+  pecl install imagick && \
+  docker-php-ext-enable imagick && \
   pecl install mailparse && \
   docker-php-ext-enable mailparse && \
   pecl install redis && \
   docker-php-ext-enable redis && \
-  mkdir -p /usr/src/php/ext/imagick && \
-  curl -fsSL -o /tmp/imagick-448c1cd0d58ba2838b9b6dff71c9b7e70a401b90.tar.gz https://github.com/imagick/imagick/archive/448c1cd0d58ba2838b9b6dff71c9b7e70a401b90.tar.gz && \
-  tar --strip-components=1 -C /usr/src/php/ext/imagick -xzf /tmp/imagick-448c1cd0d58ba2838b9b6dff71c9b7e70a401b90.tar.gz && \
-  docker-php-ext-install imagick && \
-  rm /tmp/imagick-448c1cd0d58ba2838b9b6dff71c9b7e70a401b90.tar.gz && \
   apk del .phpize-deps
 
 RUN apk add --no-cache \
