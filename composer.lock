@@ -4802,16 +4802,16 @@
         },
         {
             "name": "laminas/laminas-permissions-acl",
-            "version": "2.8.0",
+            "version": "2.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-permissions-acl.git",
-                "reference": "7af6463695d76dbf25c6b03e6ebb792c8f1ab67e"
+                "reference": "13f30605fe83e2e917168b8510ca59916c307a8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-permissions-acl/zipball/7af6463695d76dbf25c6b03e6ebb792c8f1ab67e",
-                "reference": "7af6463695d76dbf25c6b03e6ebb792c8f1ab67e",
+                "url": "https://api.github.com/repos/laminas/laminas-permissions-acl/zipball/13f30605fe83e2e917168b8510ca59916c307a8c",
+                "reference": "13f30605fe83e2e917168b8510ca59916c307a8c",
                 "shasum": ""
             },
             "require": {
@@ -4827,7 +4827,9 @@
             "require-dev": {
                 "laminas/laminas-coding-standard": "~1.0.0",
                 "laminas/laminas-servicemanager": "^3.0.3",
-                "phpunit/phpunit": "^9.5"
+                "phpunit/phpunit": "^9.5.0",
+                "psalm/plugin-phpunit": "^0.15.1",
+                "vimeo/psalm": "^4.7"
             },
             "suggest": {
                 "laminas/laminas-servicemanager": "To support Laminas\\Permissions\\Acl\\Assertion\\AssertionManager plugin manager usage"
@@ -4862,7 +4864,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2021-04-08T12:56:14+00:00"
+            "time": "2021-12-02T15:07:54+00:00"
         },
         {
             "name": "laminas/laminas-router",
