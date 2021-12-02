@@ -17,7 +17,9 @@
                 <h3 style="color:white; font-weight: 500">{{ texts['br_corporate_launch']['sub'] }}</h3>
                 <div style="height: 20px"></div>
                 {# TO DO buttons invullen & doen werken #}
-                <a class="button white unfilled" href="{{ url("br_corporate_index", {"action": "login"}) }}">{{ translate('Log In') }}</a>
+                {% if authenticatedPerson is null %}
+                    <a class="button white unfilled" href="{{ url("br_corporate_index", {"action": "login"}) }}">{{ translate('Log In') }}</a>
+                {% endif %}
             </div>
         </div>
 
