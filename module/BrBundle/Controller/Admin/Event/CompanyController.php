@@ -69,7 +69,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 $this->redirect()->toRoute(
                     'br_admin_event_company',
                     array(
-                        'action' => 'edit',
+                        'action' => 'manage',
                         'event'  => $eventObject->getId(),
                         'id' => $objectMap->getCompany()->getId(),
                     )
@@ -341,7 +341,6 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
     private function getCompanyMapEntity()
     {
         $companyMap = $this->getEntityById('BrBundle\Entity\Event\CompanyMap');
-
         if (!($companyMap instanceof CompanyMap)) {
             $this->flashMessenger()->error(
                 'Error',

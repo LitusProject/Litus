@@ -96,6 +96,15 @@ class CompanyMap
     }
 
     /**
+     * @param Event $event
+     * @return self
+     */
+    public function setEvent(Event $event) {
+        $this->event = $event;
+        return $this;
+    }
+
+    /**
      * @return CompanyAttendee
      */
     public function getAttendees()
@@ -109,6 +118,7 @@ class CompanyMap
     public function setAttendees($attendees)
     {
         $this->attendees = $attendees;
+        return $this;
     }
 
     /**
