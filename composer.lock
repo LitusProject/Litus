@@ -4933,26 +4933,25 @@
         },
         {
             "name": "laminas/laminas-serializer",
-            "version": "2.11.0",
+            "version": "2.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-serializer.git",
-                "reference": "a76e3a341a1a4993fd88e1d3587b93d60406d08e"
+                "reference": "2826fd71f202569c169456a4b84297da9ff630cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-serializer/zipball/a76e3a341a1a4993fd88e1d3587b93d60406d08e",
-                "reference": "a76e3a341a1a4993fd88e1d3587b93d60406d08e",
+                "url": "https://api.github.com/repos/laminas/laminas-serializer/zipball/2826fd71f202569c169456a4b84297da9ff630cd",
+                "reference": "2826fd71f202569c169456a4b84297da9ff630cd",
                 "shasum": ""
             },
             "require": {
                 "laminas/laminas-json": "^3.1",
                 "laminas/laminas-stdlib": "^3.2",
-                "laminas/laminas-zendframework-bridge": "^1.0",
                 "php": "^7.3 || ~8.0.0 || ~8.1.0"
             },
-            "replace": {
-                "zendframework/zend-serializer": "^2.9.1"
+            "conflict": {
+                "zendframework/zend-serializer": "*"
             },
             "require-dev": {
                 "laminas/laminas-coding-standard": "~2.3.0",
@@ -5000,7 +4999,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2021-10-24T10:53:34+00:00"
+            "time": "2021-12-06T04:52:05+00:00"
         },
         {
             "name": "laminas/laminas-server",
