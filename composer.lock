@@ -3494,25 +3494,24 @@
         },
         {
             "name": "laminas/laminas-file",
-            "version": "2.9.0",
+            "version": "2.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-file.git",
-                "reference": "3bfa2ea25d53d27d35736d7806f4b21bad13689c"
+                "reference": "e72846e943cfc3ac6578e4e69b259e741e6c9e05"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-file/zipball/3bfa2ea25d53d27d35736d7806f4b21bad13689c",
-                "reference": "3bfa2ea25d53d27d35736d7806f4b21bad13689c",
+                "url": "https://api.github.com/repos/laminas/laminas-file/zipball/e72846e943cfc3ac6578e4e69b259e741e6c9e05",
+                "reference": "e72846e943cfc3ac6578e4e69b259e741e6c9e05",
                 "shasum": ""
             },
             "require": {
                 "laminas/laminas-stdlib": "^2.7.7 || ^3.1",
-                "laminas/laminas-zendframework-bridge": "^1.0",
                 "php": "^7.3 || ~8.0.0"
             },
-            "replace": {
-                "zendframework/zend-file": "^2.8.3"
+            "conflict": {
+                "zendframework/zend-file": "*"
             },
             "require-dev": {
                 "laminas/laminas-coding-standard": "~1.0.0",
@@ -3559,7 +3558,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2021-02-12T15:05:42+00:00"
+            "time": "2021-12-08T06:58:52+00:00"
         },
         {
             "name": "laminas/laminas-filter",
