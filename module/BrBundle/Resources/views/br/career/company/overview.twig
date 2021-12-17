@@ -2,91 +2,150 @@
 
 {% block page_content %}
 
-    <div class="flashmessage alert alert-danger full_width search_error hide">
-        <div class="title">Error</div>
-        <div class="content">
-            <p>An error occurred while trying to perform the search.</p>
-        </div>
-    </div>
+    <h1>{{ translate("Partners of VTK") }}</h1>
+    <div style="height: 30px"></div>
 
-    <div style="text-align:right;margin-bottom: 10px;" class="form-inline">
-        <select id="sector" class="form-control" name="Sector" required="required">
-            {% for sector_id, sector_name in possible_sectors %}
-                <option value={{ sector_id }}>{{ sector_name }}</option>
-            {% endfor %}
-        </select>
-        <input id="searchbox" type="text" class="search-query form-control" placeholder="{{ translate('Search') }}">
-    </div>
+{#    <div class="flashmessage alert alert-danger full_width search_error hide">#}
+{#        <div class="title">Error</div>#}
+{#        <div class="content">#}
+{#            <p>An error occurred while trying to perform the search.</p>#}
+{#        </div>#}
+{#    </div>#}
 
-    <div id="companies" class="row" style="min-height: 100px">
-    </div>
+    {# SEARCH BOX LATER TERUG TOEVOEGEN -- DISPLAY:NONE, nodig voor werking v companies ...#}
+{#    <div style="text-align:right;margin-bottom: 10px; display: none" class="form-inline">#}
+{#        <select id="sector" class="form-control" name="Sector" required="required">#}
+{#            {% for sector_id, sector_name in possible_sectors %}#}
+{#                <option value={{ sector_id }}>{{ sector_name }}</option>#}
+{#            {% endfor %}#}
+{#        </select>#}
+{#        <input id="searchbox" type="text" class="search-query form-control" placeholder="{{ translate('Search') }}">#}
+{#    </div>#}
+
+    {% for company in allCompanies %}
+        {% if company.large == 1 %}
+            <a class="largeCompanyHolder" href='{{ url("br_career_company", {"action": "view", "company": company.slug}) }}'>
+                {% if company.logo %}
+                    <div style="padding: 20px">
+                        <div class="companyLogoHolder" style="margin:auto; max-width:120px; height:75px; background-position:center;
+                                background-repeat:no-repeat; background-size:contain;
+                                background-image:url('{{"/" ~ logoPath ~ "/" ~ company.logo }}'); vertical-align:middle;">
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="br-spacer"></div>
+                <div style="padding: 10px 0px">
+                    <h4 style="text-transform: uppercase">{{ company.name }}</h4>
+                    <p>{{ company.description }}</p>
+                    {% if company.vacancies > 0 %}
+                    <p class="br-jobIndication">{{ company.vacancies }} {{ company.vacancies == 1 ? translate('Vacancy') : translate('Vacancies') }}</p>
+                    {% endif %}{% if company.internships > 0 %}
+                    <p class="br-jobIndication">{{ company.internships }} {{ company.internships == 1 ? translate('Internship') : translate('Internships') }}</p>
+                    {% endif %}{% if company.studentJobs > 0 %}
+                    <p class="br-jobIndication">{{ company.studentJobs }} {{ company.studentJobs == 1 ? translate('Student Job') : translate('Student Jobs') }}</p>
+                    {% endif %}
+                </div>
+            </a>
+        {% else %}
+            <div id="companies" class="br-companiesholder" style="min-height: 100px">
+                {% for smallCompany in company %}
+                    <a class="br-smallcompany" href="{{ url("br_career_company", {"action": "view", "company": smallCompany.slug}) }}">
+                        {% if smallCompany.logo %}
+                            <div style="padding: 20px">
+                                <div class="companyLogoHolder" style="margin:auto; max-width:120px; height:75px; background-position:center;
+                                        background-repeat:no-repeat; background-size:contain;
+                                        background-image:url('{{"/" ~ logoPath ~ "/" ~ smallCompany.logo }}'); vertical-align:middle;">
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <h4 style="text-transform: uppercase">{{ smallCompany.name }}</h4>
+
+                        <div>
+                            {% if smallCompany.vacancies > 0 %}
+                                <p class="br-jobIndication">{{ smallCompany.vacancies }} {{ smallCompany.vacancies == 1 ? translate('Vacancy') : translate('Vacancies') }}</p>
+                            {% endif %}{% if smallCompany.internships > 0 %}
+                                <p class="br-jobIndication">{{ smallCompany.internships }} {{ smallCompany.internships == 1 ? translate('Internship') : translate('Internships') }}</p>
+                            {% endif %}{% if smallCompany.studentJobs > 0 %}
+                                <p class="br-jobIndication">{{ smallCompany.studentJobs }} {{ smallCompany.studentJobs == 1 ? translate('Student Job') : translate('Student Jobs') }}</p>
+                            {% endif %}
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    <div style="height: 100px"></div>
 
 {% endblock %}
 
 {% block content_script %}
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#searchbox').bind("input propertychange", function() {
-                setTimer(500);
-            });
+{#    <script type="text/javascript">#}
+{#        $(document).ready(function() {#}
+{#            $('#searchbox').bind("input propertychange", function() {#}
+{#                setTimer(500);#}
+{#            });#}
 
-            $('#sector').change(function(){
-                setTimer(500);
-            });
+{#            $('#sector').change(function(){#}
+{#                setTimer(500);#}
+{#            });#}
 
-            performSearch();
+{#            performSearch();#}
 
-            function setTimer(delay) {
-                var $this = $(this)
+{#            function setTimer(delay) {#}
+{#                var $this = $(this)#}
 
-                clearTimeout($this.data("timer"));
-                $this.data("timer", setTimeout(function() {
-                    $this.removeData("timer");
-                    performSearch();
-                }, delay));
-            }
-        });
+{#                clearTimeout($this.data("timer"));#}
+{#                $this.data("timer", setTimeout(function() {#}
+{#                    $this.removeData("timer");#}
+{#                    performSearch();#}
+{#                }, delay));#}
+{#            }#}
+{#        });#}
 
-        function performSearch() {
-            $('#companies').html('').spin({
-                color: '#ccc',
-                length: 0,
-                width: 4,
-                lines: 10
-            });
+{#        function performSearch() {#}
+{#            $('#companies').html('').spin({#}
+{#                color: '#ccc',#}
+{#                length: 0,#}
+{#                width: 4,#}
+{#                lines: 10#}
+{#            });#}
 
-            $.ajax({
-                type: "POST",
-                url: '{{ url('br_career_company', {'action': 'search'}) }}',
-                data: {query: '%' + $('#searchbox').val() + '%', sector: $('#sector').val()},
-                success: function (data) {
-                    $('#companies').html('');
-                    $.each(data, function(index, element) {
-                        $('#companies').append(
-                            $('<div>', {'class': 'col-xs-6 col-sm-4 col-md-2'}).append(
-                                $('<div>', {'class': 'thumbnail'}).append(
-                                    $('<a>', {'href': '{{ url("br_career_company", {"action": "view"}) }}' + element.slug}).append(
-                                        $('<span>').append(
-                                            element.logo ?
-                                                $('<img>', {'src': '/{{ logoPath }}/' + element.logo, 'alt': element.name}).css({'max-height': '100px', 'max-width': '120px', 'vertical-align': 'middle'})
-                                                :
-                                                $('<h4>').html(element.name).css({'position': 'absolute', 'top': '0', 'left': '0', 'width': '120px', 'line-height': '20px'}),
-                                            $('<span>').html(element.name).css({'position': 'absolute', 'bottom': '0', 'left': '0', 'width': '120px', 'line-height': '20px'})
-                                        ).css({'display': 'block', 'line-height': '120px', 'height': '150px', 'width': '120px', 'margin': '0 auto', 'text-align': 'center', 'position': 'relative'})
-                                    )
-                                ).css({'text-align': 'center'})
-                            )
-                        );
-                    });
-                },
-                dataType: 'json',
-                error: errorSearch,
-                }
-            );
-        }
+{#            $.ajax({#}
+{#                type: "POST",#}
+{#                url: '{{ url('br_career_company', {'action': 'search'}) }}',#}
+{#                data: {query: '%' + $('#searchbox').val() + '%', sector: $('#sector').val()},#}
+{#                success: function (data) {#}
+{#                    $('#companies').html('');#}
+{#                    $.each(data, function(index, element) {#}
+{#                        element.logo ?#}
+{#                        $('#companies').append(#}
+{#                            $('<a>', {'class': 'br-smallcompany', 'href': '{{ url("br_career_company", {"action": "view"}) }}' + element.slug}).append(#}
+{#                                $('<div>').append(#}
+{#                                            element.logo ?#}
+{#                                                $('<div>').css({'margin': 'auto', 'max-width': '120px', 'height': '75px', 'background-position': 'center', 'background-repeat': 'no-repeat', 'background-size': 'contain', 'background-image' : 'url("/{{ logoPath }}/' + element.logo + '")', 'max-width': '120px', 'vertical-align': 'middle'})#}
+{#                                                :#}
+{#                                                $('<h4>').html(element.name),#}
+{#                                            $('<h4>').html(element.name)#}
+{#                                        ).css({'display': 'block', 'margin': '0 auto', 'text-align': 'center', 'position': 'relative'}),#}
+{#                                $('<div>').append(#}
+{#                                        $('<div>' , {'class': 'br-jobIndication'}).html('Stages'), #}
+{#                                        $('<div>' , {'class': 'br-jobIndication'}).html('Vakantiejobs'), #}
+{#                                        $('<div>' , {'class': 'br-jobIndication'}).html('Jobs'), #}
+{#                                    )#}
+{#                                )#}
+{#                        ) : '';#}
+{#                    });#}
+{#                },#}
+{#                dataType: 'json',#}
+{#                error: errorSearch,#}
+{#                }#}
+{#            );#}
+{#        }#}
 
-        function errorSearch() {
-            $('.search_error').show();
-        }
-    </script>
+{#        function errorSearch() {#}
+{#            $('.search_error').show();#}
+{#        }#}
+{#    </script>#}
 {% endblock %}

@@ -1,6 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
+    {% include 'br/admin/match/partials/navigation.twig' %}
     {% include 'br/admin/match/profile/partials/navigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
@@ -9,6 +10,7 @@
     <div id="controller_action">
         {% import 'admin/partials/form.twig' as forms %}
         <h1>Edit</h1>
+        <h2>{{ profile.getProfileType() | title }} {{ translate('Profile') }}</h2>
         {{ forms.renderForm(form) }}
     </div>
 

@@ -64,17 +64,9 @@ return array(
                     'title' => 'Events',
                     'help'  => 'Here you can manage all events by VTK Corporate Relations.',
                 ),
-                'br_admin_match_feature' => array(
-                    'title' => 'Match Features',
-                    'help'  => 'Here you can manage all features for Matching.',
-                ),
                 'br_admin_match_match' => array(
-                    'title' => 'Matches',
+                    'title' => 'Matching Software',
                     'help'  => 'Here you can manage all Matches.',
-                ),
-                'br_admin_match_profile' => array(
-                    'title' => 'Match Profiles',
-                    'help'  => 'Here you can manage all profiles for Matching.',
                 ),
             ),
             'controllers' => array(

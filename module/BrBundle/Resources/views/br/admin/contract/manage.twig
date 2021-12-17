@@ -63,7 +63,7 @@
                     <td>&euro; {{row['value']}}</td>
                     <td class="actions">
                         {% if hasAccess('br_admin_contract', 'edit') and row['contract'].isSigned() == false %}
-                            <a href="{{ url('br_admin_contract', {"action": "edit", "id": row['contract'].getId()}) }}" class="edit">Edit</a>
+                            <a href="{{ url('br_admin_contract', {"action": "edit", "id": row['contract'].getId(), "language": "nl"}) }}" class="edit">Edit</a>
                         {% endif %}
                         {% if hasAccess('br_admin_contract', 'view') %}
                             <a href="{{ url('br_admin_contract', {"action": "view", "id": row['contract'].getId()}) }}" class="view">View</a>

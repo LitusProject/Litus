@@ -12,20 +12,28 @@
 
         {% if needs_sp or needs_cp %}
             <div><b>{{ translate('You are not ready to match yet!') }}</b><br>{{ translate('Please create your Profile so you can start matching!') }}</div>
-            <h4></h4>
-            {% if needs_sp %}
-                <a class="btn btn-sm btn-info" href="{{ url('br_corporate_match', {'action': 'addProfile', 'type': 'student' }) }}">{{ translate('Add Student Profile') }}</a>
-            {% endif %}
-            {% if needs_cp %}
-                <a class="btn btn-sm btn-info" href="{{ url('br_corporate_match', {'action': 'addProfile', 'type': 'company' }) }}">{{ translate('Add Company Profile') }}</a>
-            {% endif %}
-        {% else %}
-            <p>{{ translate('Last Updated') }}: <strong>{{ dateLocalized(lastUpdate, 'd  MMMM y') }}</strong></p>
-            <a class="btn btn-sm btn-warning" href="{{ url('br_corporate_match', {'action': 'viewProfile', 'type': 'student' }) }}">{{ translate('Edit Student Profile') }}</a>
-            <a class="btn btn-sm btn-warning" href="{{ url('br_corporate_match', {'action': 'viewProfile', 'type': 'company' }) }}">{{ translate('Edit Company Profile') }}</a>
         {% endif %}
 
-        <div style="height: 20px"></div>
+        <div class="row">
+            <div class="col-md-3">
+                <h3>Student Profile</h3>
+                {% if needs_sp %}
+                    <a class="btn btn-sm btn-info" href="{{ url('br_corporate_match', {'action': 'addProfile', 'type': 'student' }) }}">{{ translate('Add Student Profile') }}</a>
+                {% else %}
+                    <a class="btn btn-sm btn-success" href="{{ url('br_corporate_match', {'action': 'viewProfile', 'type': 'student' }) }}">{{ translate('View Student Profile') }}</a>
+                {% endif %}
+            </div>
+            <div class="col-md-3">
+                <h3>Company Profile</h3>
+                {% if needs_cp %}
+                    <a class="btn btn-sm btn-info" href="{{ url('br_corporate_match', {'action': 'addProfile', 'type': 'company' }) }}">{{ translate('Add Company Profile') }}</a>
+                {% else %}
+                    <a class="btn btn-sm btn-success" href="{{ url('br_corporate_match', {'action': 'viewProfile', 'type': 'company' }) }}">{{ translate('View Company Profile') }}</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div style="height: 40px"></div>
 
         <div class="row">
             <div class="col-md-12">
@@ -52,6 +60,8 @@
                 {% include 'site/partials/paginationControl.twig' %}
             </div>
         </div>
+        <div style="height: 20px"></div>
+        <p>{{ translate('Last Updated') }}: <strong>{{ dateLocalized(lastUpdate, 'd  MMMM y') }}</strong></p>
     </div>
 
 {% endblock %}

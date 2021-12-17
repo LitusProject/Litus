@@ -2,88 +2,102 @@
 
 {% block page_content %}
     <h1>{{ translate('Vacancies') }}</h1>
-    <div class="row">
-        <div class="col-md-4">
-            {% if vacancySearchForm is defined %}
-                {% do vacancySearchForm.prepare() %}
-                {% autoescape false %}
-                    {{ form().openTag(vacancySearchForm) }}
-                    {{ formElement(vacancySearchForm.get('csrf')) }}
 
-                    <div class="well">
-                        <h4>{{ translate('Arrange By') }}</h4>
-                        <div class="form-group">
-                            <div class="input-group">
-                                {{ formElement(vacancySearchForm.get('searchType')) }}
-                            </div>
+    <div class="br-filterholder">
+        {% if vacancySearchForm is defined %}
+            {% do vacancySearchForm.prepare() %}
+            {% autoescape false %}
+                {{ form().openTag(vacancySearchForm) }}
+                {{ formElement(vacancySearchForm.get('csrf')) }}
+
+                <div class="well" style="margin-bottom:0px">
+                    <h4>{{ translate('Arrange By') }}</h4>
+                    <div class="form-group">
+                        <div class="input-group">
+                            {{ formElement(vacancySearchForm.get('searchType')) }}
                         </div>
                     </div>
+                </div>
 
-                    <div class="well">
-                        <h4>{{ translate('Sector') }}</h4>
-                        <div class="form-group">
-                            <div class="input-group">
-                                {{ formElement(vacancySearchForm.get('sector')) }}
-                            </div>
+                <div class="well" style="margin-bottom:0px">
+                    <h4>{{ translate('Sector') }}</h4>
+                    <div class="form-group">
+                        <div class="input-group">
+                            {{ formElement(vacancySearchForm.get('sector')) }}
                         </div>
                     </div>
+                </div>
 
-                    <div class="well">
-                        <h4>{{ translate('Location') }}</h4>
-                        <div class="form-group">
-                            <div class="input-group">
-                                {{ formElement(vacancySearchForm.get('location')) }}
-                            </div>
+                <div class="well" style="margin-bottom:0px">
+                    <h4>{{ translate('Location') }}</h4>
+                    <div class="form-group">
+                        <div class="input-group">
+                            {{ formElement(vacancySearchForm.get('location')) }}
                         </div>
                     </div>
+                </div>
 
-                    <div class="well">
-                        <h4>{{ translate('Master') }}</h4>
-                        <div class="form-group">
-                            <div class="input-group">
-                                {{ formElement(vacancySearchForm.get('master')) }}
-                            </div>
+                <div class="well" style="margin-bottom:0px">
+                    <h4>{{ translate('Master') }}</h4>
+                    <div class="form-group">
+                        <div class="input-group">
+                            {{ formElement(vacancySearchForm.get('master')) }}
                         </div>
                     </div>
-                    <div class="input-group-btn">
-                        {{ formElement(vacancySearchForm.get('submit')) }}
-                    </div>
+                </div>
+                <div class="input-group-btn">
+                    {{ formElement(vacancySearchForm.get('submit')) }}
+                </div>
 
-                    {{ form().closeTag() }}
-                {% endautoescape %}
-            {% endif %}
-        </div>
-        <div class="col-md-8">
-            <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">
-                {% for vacancy in paginator %}
-                    <tr>
-                        <td width="120">
-                            <a href="{{ url('br_career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">
-                                {% if vacancy.getCompany().getLogo() is not empty %}
-                                    <img width="120" src="/{{ logoPath }}/{{ vacancy.getCompany().getLogo() }}" alt="{{ vacancy.getCompany().getName() }}">
-                                {% else %}
-                                    <center class="company-name">{{ vacancy.getCompany().getName() }}</center>
-                                {% endif %}
-                            </a>
-                        </td>
-
-                        <td>
-                            <strong>{{ vacancy.getCompany().getName() }} - {{ vacancy.getName() }}</strong>
-                            <br/>
-                            <div class="pull-right hidden-xs">{{ translate('Last Updated') }}: <strong>{{ dateLocalized(vacancy.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
-                            <br/>
-                            {{ vacancy.getSummary(200)|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
-                        </td>
-                    </tr>
-                {% else %}
-                    <div class="flashmessage alert alert-warning fade in">
-                        <a class="close" data-dismiss="alert">&times;</a>
-                        {{ translate('No items found') }}
-                    </div>
-                {% endfor %}
-            </table>
-
-            {% include 'site/partials/paginationControl.twig' %}
-        </div>
+                {{ form().closeTag() }}
+            {% endautoescape %}
+        {% endif %}
     </div>
+
+    <div style="height: 40px"></div>
+
+    {% for vacancy in paginator %}
+        <a class="vacancyHolder" href="{{ url('br_career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">
+            {% if vacancy.getCompany().getLogo() is not empty %}
+                <div style="padding: 0px 20px">
+                    <div style='background-repeat: no-repeat; background-image: url("/{{ logoPath }}/{{ vacancy.getCompany().getLogo() }}"); background-size: contain; background-position: center; width: 120px; height: 60px;'></div>
+                </div>
+            {% else %}
+                <div style="padding: 0px 20px; width: 160px; height: 60px; ">{{ vacancy.getCompany().getName() }}</div>
+            {% endif %}
+
+            <div class="br-spacer"></div>  
+
+            <div><h4 style="margin-bottom: 0px">{{ vacancy.getCompany().getName() }} - {{ vacancy.getName() }}</h4></div>
+           
+        </a>   
+
+        {# <tr>
+            <td width="120">
+                <a href="{{ url('br_career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">
+                    {% if vacancy.getCompany().getLogo() is not empty %}
+                        <img width="120" src="/{{ logoPath }}/{{ vacancy.getCompany().getLogo() }}" alt="{{ vacancy.getCompany().getName() }}">
+                    {% else %}
+                        <center class="company-name">{{ vacancy.getCompany().getName() }}</center>
+                    {% endif %}
+                </a>
+            </td>
+
+            <td>
+                <strong>{{ vacancy.getCompany().getName() }} - {{ vacancy.getName() }}</strong>
+                <br/>
+                <div class="pull-right hidden-xs">{{ translate('Last Updated') }}: <strong>{{ dateLocalized(vacancy.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
+                <br/>
+                {{ vacancy.getSummary(200)|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
+            </td>
+        </tr> #}
+    {% else %}
+        <div class="flashmessage alert alert-warning fade in">
+            <a class="close" data-dismiss="alert">&times;</a>
+            {{ translate('No items found') }}
+        </div>
+    {% endfor %}
+
+    {% include 'site/partials/paginationControl.twig' %}
+
 {% endblock %}

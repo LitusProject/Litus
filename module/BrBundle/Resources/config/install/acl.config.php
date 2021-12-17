@@ -136,7 +136,7 @@ return array(
             'edit',
         ),
         'br_corporate_match' => array(
-            'index', 'overview', 'addProfile', 'editProfile', 'viewMatch'
+            'index', 'overview', 'addProfile', 'editProfile', 'viewMatch', 'viewProfile'
         )
     ),
 );

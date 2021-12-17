@@ -193,6 +193,50 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
         );
     }
 
+
+    public function viewProfileAction()
+    {
+        $person = $this->getCorporateEntity();
+        if ($person === null) {
+            return new ViewModel();
+        }
+
+        $profiles = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Match\Profile\ProfileCompanyMap')
+            ->findByCompany($person->getCompany());
+
+        print(json_encode($profiles));
+
+        $type = $this->getParam('type');
+
+        if (!in_array($type, array('company', 'student'))) {
+            return new ViewModel();
+        }
+
+        // Get the correct form by profile type and check whether there already exists one of this type!
+        if ($type == 'company'){
+            foreach ($profiles as $p){
+                if ($p instanceof Match\Profile\CompanyProfile){
+                    $profile = $p;
+                }
+            }
+        } else {
+            foreach ($profiles as $p){
+                if ($p instanceof Match\Profile\StudentProfile){
+                    $profile = $p;
+                }
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'type'      => $type,
+                'features'  => $profile->getFeatures()->toArray(),
+            )
+        );
+    }
+
+
     public function editProfileAction()
     {
         $person = $this->getCorporateEntity();
@@ -264,13 +308,10 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
 
                 foreach ($oldFeatureIds as $feature){
                     $map = $this->getEntityManager()
-                    ProfileFeatureMap(
-                        $this->getEntityManager()
-                            ->getRepository('BrBundle\Entity\Match\Feature')
-                            ->findOneById($feature),
-                        $profile);
-                    $this->getEntityManager()->persist($map);
-                    $profile->addFeature($map);
+                        ->getRepository('BrBundle\Entity\Match\Profile\ProfileFeatureMap')
+                        ->findById($feature);
+                    $profile->getFeatures()->removeElement($map);
+                    $this->getEntityManager()->remove($map);
                 }
 
                 $this->getEntityManager()->flush();

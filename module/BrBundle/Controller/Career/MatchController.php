@@ -178,5 +178,45 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
         );
     }
 
+    public function viewProfileAction()
+    {
+        $person = $this->getAuthentication()->getPersonObject();
+        if ($person === null) {
+            return new ViewModel();
+        }
+
+        $profiles = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Match\Profile\ProfileStudentMap')
+            ->findByStudent($person);
+
+        $type = $this->getParam('type');
+
+        if (!in_array($type, array('company', 'student'))) {
+            return new ViewModel();
+        }
+
+        // Get the correct form by profile type and check whether there already exists one of this type!
+        if ($type == 'company'){
+            foreach ($profiles as $p){
+                if ($p instanceof Match\Profile\CompanyProfile){
+                    $profile = $p;
+                }
+            }
+        } else {
+            foreach ($profiles as $p){
+                if ($p instanceof Match\Profile\StudentProfile){
+                    $profile = $p;
+                }
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'type'      => $type,
+                'profile'   => $profile,
+            )
+        );
+    }
+
 
 }
