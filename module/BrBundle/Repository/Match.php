@@ -69,6 +69,23 @@ class Match extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->orderBy('m.matchPercentage', 'ASC')
             ->setParameter('company', $company)
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getResult();
+    }
+
+    public function findByStudent(Person $student)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('m')
+            ->from('BrBundle\Entity\Match', 'm')
+            ->innerJoin('m.studentMatchee', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('s.student', ':student')
+                )
+            )
+            ->orderBy('m.matchPercentage', 'ASC')
+            ->setParameter('student', $student)
+            ->getQuery()
+            ->getResult();
     }
 }

@@ -1,0 +1,52 @@
+{% extends 'career/partials/layout.twig' %}
+
+{% block page_content %}
+
+    <h1>{{ translate("Your Matching Profile") }}</h1>
+    <div style="height: 10px"></div>
+    <h4>{{ translate('Find your match with a company!') }}</h4>
+    <div style="height: 40px"></div>
+
+    {% if needs_sp or needs_cp %}
+        <div><b>{{ translate('You are not ready to match yet!') }}</b><br>{{ translate('Please create your Profile so you can start matching!') }}</div>
+        <h4></h4>
+        {% if needs_sp %}
+            <a class="btn btn-sm btn-info" href="{{ url('br_career_match', {'action': 'addProfile', 'type': 'student' }) }}">{{ translate('Add Student Profile') }}</a>
+        {% endif %}
+        {% if needs_cp %}
+            <a class="btn btn-sm btn-info" href="{{ url('br_career_match', {'action': 'addProfile', 'type': 'company' }) }}">{{ translate('Add Company Profile') }}</a>
+        {% endif %}
+    {% else %}
+        <p>{{ translate('Last Updated') }}: <strong>{{ dateLocalized(lastUpdate, 'd  MMMM y') }}</strong></p>
+        <a class="btn btn-sm btn-warning" href="{{ url('br_career_match', {'action': 'viewProfile', 'type': 'student' }) }}">{{ translate('Edit Student Profile') }}</a>
+        <a class="btn btn-sm btn-warning" href="{{ url('br_career_match', {'action': 'viewProfile', 'type': 'company' }) }}">{{ translate('Edit Company Profile') }}</a>
+    {% endif %}
+
+    <div style="height: 20px"></div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4>Matches</h4>
+            <table class="table table-hover full-width">
+                {% for match in matches %}
+                        <tr>
+                            <td>
+                                <strong>{{ match.getCompany().getName() }}</strong>
+                                <br/>
+                                {{ match.getMatchPercentage() }}
+                            </td>
+                            <td width="230" style="vertical-align: middle;">
+                                <a class="btn btn-sm btn-info" href="{{ url('br_career_match', {'action': 'viewMatch', 'id': match.getId() }) }}">{{ translate('View Match') }}</a>
+
+                            </td>
+
+                        </tr>
+                {% else %}
+                    <p>{{ translate('No matches were found...') }}</p>
+                {% endfor %}
+            </table>
+
+            {% include 'site/partials/paginationControl.twig' %}
+        </div>
+    </div>
+{% endblock %}
