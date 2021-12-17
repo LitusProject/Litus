@@ -4,8 +4,102 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ed708f795367a0c2e8f60b4526429160",
+    "content-hash": "85d1a905a87e13f106f4d5c6c6e9f618",
     "packages": [
+        {
+            "name": "assetic/framework",
+            "version": "v2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/assetic-php/assetic.git",
+                "reference": "e25c9c3590b15e086218ad20ed6cc17d26473f2f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/assetic-php/assetic/zipball/e25c9c3590b15e086218ad20ed6cc17d26473f2f",
+                "reference": "e25c9c3590b15e086218ad20ed6cc17d26473f2f",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-simplexml": "*",
+                "php": "^7.2 || ^8.0",
+                "symfony/deprecation-contracts": "^2.2.0",
+                "symfony/process": "~3.4 || ~4.0 || ~5.0"
+            },
+            "replace": {
+                "kriswallsmith/assetic": "*"
+            },
+            "require-dev": {
+                "meenie/javascript-packer": "^1.1",
+                "mrclay/minify": "<2.3",
+                "natxet/cssmin": "^3.0.6",
+                "patchwork/jsqueeze": "^1.0 || ^2.0",
+                "phpunit/phpunit": "^8.5",
+                "psr/log": "^1.0",
+                "ptachoire/cssembed": "^1.0",
+                "scssphp/scssphp": "^1.0",
+                "symfony/phpunit-bridge": "~3.4 || ~4.0 || ~5.0",
+                "twig/extensions": "^1.5",
+                "twig/twig": "^2.11",
+                "wikimedia/less.php": "~3.0.0"
+            },
+            "suggest": {
+                "meenie/javascript-packer": "The Assetic\\Filter\\PackerFilter requires meenie/javascript-packer",
+                "mrclay/minify": "The Assetic\\Filter\\JSMinFilter requires mrclay/minify < 2.3",
+                "natxet/cssmin": "The Assetic\\Filter\\CssMinFilter requires natxet/cssmin",
+                "patchwork/jsqueeze": "The Assetic\\Filter\\JSqueezeFilter requires patchwork/jsqueeze",
+                "ptachoire/cssembed": "The Assetic\\Filter\\PhpCssEmbedFilter requires ptachoire/cssembed",
+                "scssphp/scssphp": "The Assetic\\Filter\\ScssphpFilter requires scssphp/scssphp",
+                "twig/extensions": "Assetic provides an integration with the Twig templating engine",
+                "twig/twig": "Assetic provides an integration with the Twig templating engine",
+                "wikimedia/less.php": "The Assetic\\Filter\\LessphpFilter requires wikimedia/less.php"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Assetic": "src/"
+                },
+                "files": [
+                    "src/functions.php",
+                    "src/aliasing.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kris Wallsmith",
+                    "email": "kris.wallsmith@gmail.com",
+                    "homepage": "http://kriswallsmith.net/"
+                },
+                {
+                    "name": "Jack Wilkinson",
+                    "email": "me@jackwilky.com",
+                    "homepage": "https://jackwilky.com/"
+                },
+                {
+                    "name": "Luke Towers",
+                    "email": "octobercms@luketowers.ca",
+                    "homepage": "https://luketowers.ca"
+                }
+            ],
+            "description": "Asset Management for PHP",
+            "homepage": "https://github.com/assetic-php/assetic",
+            "keywords": [
+                "assets",
+                "compression",
+                "minification"
+            ],
+            "support": {
+                "issues": "https://github.com/assetic-php/assetic/issues",
+                "source": "https://github.com/assetic-php/assetic/tree/v2.0.1"
+            },
+            "time": "2021-06-30T23:22:21+00:00"
+        },
         {
             "name": "brick/varexporter",
             "version": "0.3.5",
@@ -1991,87 +2085,6 @@
                 }
             ],
             "time": "2021-10-06T17:43:30+00:00"
-        },
-        {
-            "name": "kriswallsmith/assetic",
-            "version": "v1.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/kriswallsmith/assetic.git",
-                "reference": "e911c437dbdf006a8f62c2f59b15b2d69a5e0aa1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/kriswallsmith/assetic/zipball/e911c437dbdf006a8f62c2f59b15b2d69a5e0aa1",
-                "reference": "e911c437dbdf006a8f62c2f59b15b2d69a5e0aa1",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.1",
-                "symfony/process": "~2.1|~3.0"
-            },
-            "conflict": {
-                "twig/twig": "<1.27"
-            },
-            "require-dev": {
-                "leafo/lessphp": "^0.3.7",
-                "leafo/scssphp": "~0.1",
-                "meenie/javascript-packer": "^1.1",
-                "mrclay/minify": "<2.3",
-                "natxet/cssmin": "3.0.4",
-                "patchwork/jsqueeze": "~1.0|~2.0",
-                "phpunit/phpunit": "~4.8 || ^5.6",
-                "psr/log": "~1.0",
-                "ptachoire/cssembed": "~1.0",
-                "symfony/phpunit-bridge": "~2.7|~3.0",
-                "twig/twig": "~1.23|~2.0",
-                "yfix/packager": "dev-master"
-            },
-            "suggest": {
-                "leafo/lessphp": "Assetic provides the integration with the lessphp LESS compiler",
-                "leafo/scssphp": "Assetic provides the integration with the scssphp SCSS compiler",
-                "leafo/scssphp-compass": "Assetic provides the integration with the SCSS compass plugin",
-                "patchwork/jsqueeze": "Assetic provides the integration with the JSqueeze JavaScript compressor",
-                "ptachoire/cssembed": "Assetic provides the integration with phpcssembed to embed data uris",
-                "twig/twig": "Assetic provides the integration with the Twig templating engine"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.4-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Assetic": "src/"
-                },
-                "files": [
-                    "src/functions.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Kris Wallsmith",
-                    "email": "kris.wallsmith@gmail.com",
-                    "homepage": "http://kriswallsmith.net/"
-                }
-            ],
-            "description": "Asset Management for PHP",
-            "homepage": "https://github.com/kriswallsmith/assetic",
-            "keywords": [
-                "assets",
-                "compression",
-                "minification"
-            ],
-            "support": {
-                "issues": "https://github.com/kriswallsmith/assetic/issues",
-                "source": "https://github.com/kriswallsmith/assetic/tree/master"
-            },
-            "time": "2016-11-11T18:43:20+00:00"
         },
         {
             "name": "laminas/laminas-authentication",
@@ -7849,20 +7862,21 @@
         },
         {
             "name": "symfony/process",
-            "version": "v3.4.47",
+            "version": "v5.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "b8648cf1d5af12a44a51d07ef9bf980921f15fca"
+                "reference": "5be20b3830f726e019162b26223110c8f47cf274"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/b8648cf1d5af12a44a51d07ef9bf980921f15fca",
-                "reference": "b8648cf1d5af12a44a51d07ef9bf980921f15fca",
+                "url": "https://api.github.com/repos/symfony/process/zipball/5be20b3830f726e019162b26223110c8f47cf274",
+                "reference": "5be20b3830f726e019162b26223110c8f47cf274",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.5.9|>=7.0.8"
+                "php": ">=7.2.5",
+                "symfony/polyfill-php80": "^1.16"
             },
             "type": "library",
             "autoload": {
@@ -7887,10 +7901,10 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "Symfony Process Component",
+            "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/process/tree/v3.4.47"
+                "source": "https://github.com/symfony/process/tree/v5.4.0"
             },
             "funding": [
                 {
@@ -7906,7 +7920,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-10-24T10:57:07+00:00"
+            "time": "2021-11-28T15:25:38+00:00"
         },
         {
             "name": "symfony/routing",
@@ -8525,28 +8539,28 @@
         },
         {
             "name": "widmogrod/zf2-assetic-module",
-            "version": "2.4.0",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/widmogrod/zf2-assetic-module.git",
-                "reference": "0d7b36a621bd25e2402c751869e7c84ccbf4737c"
+                "reference": "dfc8c813547d94833700c451880d1d6001c4ccd3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/widmogrod/zf2-assetic-module/zipball/0d7b36a621bd25e2402c751869e7c84ccbf4737c",
-                "reference": "0d7b36a621bd25e2402c751869e7c84ccbf4737c",
+                "url": "https://api.github.com/repos/widmogrod/zf2-assetic-module/zipball/dfc8c813547d94833700c451880d1d6001c4ccd3",
+                "reference": "dfc8c813547d94833700c451880d1d6001c4ccd3",
                 "shasum": ""
             },
             "require": {
-                "kriswallsmith/assetic": "^1.2",
-                "php": "^5.6 || ^7.0",
-                "symfony/console": "^3.1.3",
+                "assetic/framework": "~2.0.0",
+                "php": "^7.3",
+                "symfony/console": "^3.1.3 | ^4.0 | ^5.0",
                 "widmogrod/php-functional": "^1.0",
                 "zendframework/zend-mvc": "^3.0"
             },
             "require-dev": {
-                "fabpot/php-cs-fixer": "^1.12",
-                "phpunit/phpunit": "^5.4"
+                "friendsofphp/php-cs-fixer": "^2.17",
+                "phpunit/phpunit": "^9"
             },
             "suggest": {
                 "leafo/lessphp": "Assetic provides the integration with the lessphp LESS compiler",
@@ -8588,9 +8602,9 @@
             ],
             "support": {
                 "issues": "https://github.com/widmogrod/zf2-assetic-module/issues",
-                "source": "https://github.com/widmogrod/zf2-assetic-module/tree/master"
+                "source": "https://github.com/widmogrod/zf2-assetic-module/tree/3.0.0"
             },
-            "time": "2018-01-13T15:39:38+00:00"
+            "time": "2020-12-29T19:18:30+00:00"
         }
     ],
     "packages-dev": [
