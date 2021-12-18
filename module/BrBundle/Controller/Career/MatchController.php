@@ -198,14 +198,14 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
         // Get the correct form by profile type and check whether there already exists one of this type!
         if ($type == 'company'){
             foreach ($profiles as $p){
-                if ($p instanceof Match\Profile\CompanyProfile){
-                    $profile = $p;
+                if ($p->getProfile() instanceof Match\Profile\CompanyProfile){
+                    $profile = $p->getProfile();
                 }
             }
         } else {
             foreach ($profiles as $p){
-                if ($p instanceof Match\Profile\StudentProfile){
-                    $profile = $p;
+                if ($p->getProfile() instanceof Match\Profile\StudentProfile){
+                    $profile = $p->getProfile();
                 }
             }
         }
@@ -213,10 +213,111 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
         return new ViewModel(
             array(
                 'type'      => $type,
-                'profile'   => $profile,
+                'features'  => $profile->getFeatures()->toArray(),
             )
         );
     }
 
 
+    public function editProfileAction()
+    {
+        $person = $this->getAuthentication()->getPersonObject();
+        if ($person === null) {
+            return new ViewModel();
+        }
+
+        $profiles = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Match\Profile\ProfileStudentMap')
+            ->findByStudent($person);
+
+        $type = $this->getParam('type');
+
+        if (!in_array($type, array('company', 'student'))) {
+            return new ViewModel();
+        }
+
+        $form = Null;
+        // Get the correct form by profile type and check whether there already exists one of this type!
+        if ($type == 'company'){
+            foreach ($profiles as $p){
+                if ($p->getProfile() instanceof Match\Profile\CompanyProfile){
+                    $profile = $p->getProfile();
+                    $form = $this->getForm('br_career_match_company_edit', array('profile' => $profile));
+                }
+            }
+        } else {
+            foreach ($profiles as $p){
+                if ($p->getProfile() instanceof Match\Profile\StudentProfile){
+                    $profile = $p->getProfile();
+                    $form = $this->getForm('br_career_match_student_edit', array('profile' => $profile));
+                }
+            }
+        }
+        if (is_null($form)){
+            return new ViewModel();
+        }
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                // Current Features
+                $currentFeatures = $profile->getFeatures();
+                $currentFeatureIds = array();
+                $currentFeatureMaps = array();
+                foreach ($currentFeatures as $c){
+                    $currentFeatureIds[] = $c->getFeature()->getId();
+                    $currentFeatureMaps[$c->getFeature()->getId()] = $c->getId();
+                }
+
+                // Form Features
+                $formFeatureIds = array_values($formData['features_ids']);
+
+                // Features to remove (old features)
+                $oldFeatureIds = array_diff($currentFeatureIds, $formFeatureIds);
+                foreach ($oldFeatureIds as $feature){
+                    $map = $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Match\Profile\ProfileFeatureMap')
+                        ->findOneById($currentFeatureMaps[$feature]);
+                    $profile->getFeatures()->removeElement($map);
+                    $this->getEntityManager()->remove($map);
+                }
+
+                // Features to add (new features)
+                $newFeatureIds = array_diff($formFeatureIds, $currentFeatureIds);
+                foreach ($newFeatureIds as $feature){
+                    $map = new ProfileFeatureMap(
+                        $this->getEntityManager()
+                            ->getRepository('BrBundle\Entity\Match\Feature')
+                            ->findOneById($feature),
+                        $profile);
+                    $this->getEntityManager()->persist($map);
+                    $profile->addFeature($map);
+                }
+
+                $this->getEntityManager()->flush();
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The profile was successfully created!'
+                );
+
+                $this->redirect()->toRoute(
+                    'br_corporate_match',
+                    array(
+                        'action' => 'overview',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'type' => $type,
+            )
+        );
+    }
 }

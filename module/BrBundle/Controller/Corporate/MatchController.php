@@ -205,8 +205,6 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
             ->getRepository('BrBundle\Entity\Match\Profile\ProfileCompanyMap')
             ->findByCompany($person->getCompany());
 
-        print(json_encode($profiles));
-
         $type = $this->getParam('type');
 
         if (!in_array($type, array('company', 'student'))) {
@@ -216,14 +214,14 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
         // Get the correct form by profile type and check whether there already exists one of this type!
         if ($type == 'company'){
             foreach ($profiles as $p){
-                if ($p instanceof Match\Profile\CompanyProfile){
-                    $profile = $p;
+                if ($p->getProfile() instanceof Match\Profile\CompanyProfile){
+                    $profile = $p->getProfile();
                 }
             }
         } else {
             foreach ($profiles as $p){
-                if ($p instanceof Match\Profile\StudentProfile){
-                    $profile = $p;
+                if ($p->getProfile() instanceof Match\Profile\StudentProfile){
+                    $profile = $p->getProfile();
                 }
             }
         }
@@ -258,19 +256,20 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
         // Get the correct form by profile type and check whether there already exists one of this type!
         if ($type == 'company'){
             foreach ($profiles as $p){
-                if ($p instanceof Match\Profile\CompanyProfile){
-                    $profile = $p;
-                    $form = $this->getForm('br_corporate_match_company_add');
+                if ($p->getProfile() instanceof Match\Profile\CompanyProfile){
+                    $profile = $p->getProfile();
+                    $form = $this->getForm('br_corporate_match_company_edit', array('profile' => $profile));
                 }
             }
         } else {
             foreach ($profiles as $p){
-                if ($p instanceof Match\Profile\StudentProfile){
-                    $profile = $p;
-                    $form = $this->getForm('br_corporate_match_student_add');
+                if ($p->getProfile() instanceof Match\Profile\StudentProfile){
+                    $profile = $p->getProfile();
+                    $form = $this->getForm('br_corporate_match_student_edit', array('profile' => $profile));
                 }
             }
         }
+
         if (is_null($form)){
             return new ViewModel();
         }
@@ -283,16 +282,27 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
                 // Current Features
                 $currentFeatures = $profile->getFeatures();
                 $currentFeatureIds = array();
+                $currentFeatureMaps = array();
                 foreach ($currentFeatures as $c){
-                    $currentFeatureIds[] = $c->getId();
+                    $currentFeatureIds[] = $c->getFeature()->getId();
+                    $currentFeatureMaps[$c->getFeature()->getId()] = $c->getId();
                 }
 
                 // Form Features
                 $formFeatureIds = array_values($formData['features_ids']);
 
+                // Features to remove (old features)
+                $oldFeatureIds = array_diff($currentFeatureIds, $formFeatureIds);
+                foreach ($oldFeatureIds as $feature){
+                    $map = $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Match\Profile\ProfileFeatureMap')
+                        ->findOneById($currentFeatureMaps[$feature]);
+                    $profile->getFeatures()->removeElement($map);
+                    $this->getEntityManager()->remove($map);
+                }
+
                 // Features to add (new features)
                 $newFeatureIds = array_diff($formFeatureIds, $currentFeatureIds);
-
                 foreach ($newFeatureIds as $feature){
                     $map = new ProfileFeatureMap(
                         $this->getEntityManager()
@@ -301,17 +311,6 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
                         $profile);
                     $this->getEntityManager()->persist($map);
                     $profile->addFeature($map);
-                }
-
-                // Features to remove (old features)
-                $oldFeatureIds = array_diff($currentFeatureIds, $formFeatureIds);
-
-                foreach ($oldFeatureIds as $feature){
-                    $map = $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Match\Profile\ProfileFeatureMap')
-                        ->findById($feature);
-                    $profile->getFeatures()->removeElement($map);
-                    $this->getEntityManager()->remove($map);
                 }
 
                 $this->getEntityManager()->flush();

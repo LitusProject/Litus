@@ -1,0 +1,26 @@
+{% extends 'career/partials/layout.twig' %}
+
+{% block page_content %}
+    <div class="container">
+        <div style="height: 40px"></div>
+
+        <div class="row">
+            <h1 style="float:left;">{{ translate('Edit Profile') }}</h1>
+        </div>
+        <div class="row">
+            {% if type == 'student' %}
+                <div style="margin-top: 15px;"><u><strong>{{ translate('This profile should describe what you are like as a student.') }}</strong></u>
+                    <p>{{ translate('A company will have a higher match rating, if your personal traits matches the traits that they are looking for!') }}</p></div>
+            {% elseif type == 'company' %}
+                <div style="margin-top: 15px;"><u><strong>{{ translate('This profile should describe what you are looking for in a company.') }}</strong></u>
+                    <p>{{ translate('A company will have a higher match rating, if the company matches the traits that you are looking for!') }}</p></div>
+            {% endif %}
+        </div>
+
+        <div style="height: 40px"></div>
+
+        {% import 'site/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+
+{% endblock %}

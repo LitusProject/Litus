@@ -9,10 +9,10 @@
         </div>
         <div class="row">
             {% if type == 'student' %}
-                <div style="margin-top: 15px;"><strong>{{ translate('This profile should describe what you are like as a student.') }}</strong>
+                <div style="margin-top: 15px;"><u><strong>{{ translate('This profile should describe what you are like as a student.') }}</strong></u>
                 <p>{{ translate('A company will have a higher match rating, if your personal traits matches the traits that they are looking for!') }}</p></div>
             {% elseif type == 'company' %}
-                <div style="margin-top: 15px;"><strong>{{ translate('This profile should describe what you are looking for in a company.') }}</strong>
+                <div style="margin-top: 15px;"><u><strong>{{ translate('This profile should describe what you are looking for in a company.') }}</strong></u>
                 <p>{{ translate('A company will have a higher match rating, if the company matches the traits that you are looking for!') }}</p></div>
             {% endif %}
         </div>

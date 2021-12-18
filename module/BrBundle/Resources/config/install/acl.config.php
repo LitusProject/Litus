@@ -108,6 +108,9 @@ return array(
         'br_career_internshipfair' => array(
             'view', 'overview', 'file', 'search',
         ),
+        'br_career_match' => array(
+            'index', 'overview', 'addProfile', 'editProfile', 'viewMatch', 'viewProfile'
+        ),
         'br_cv_index' => array(
             'cv', 'edit', 'complete', 'delete', 'download', 'uploadProfileImage',
         ),
