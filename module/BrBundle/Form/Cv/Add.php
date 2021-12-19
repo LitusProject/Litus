@@ -40,6 +40,36 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         parent::init();
 
         list($currentYear, $allYears) = $this->getYears();
+        $this->add(
+            array(
+                'type'     => 'fieldset',
+                'name'     => 'personal',
+                'label'    => 'Personal',
+                'elements' => array(
+                    array(
+                        'type'       => 'textarea',
+                        'name'       => 'email',
+                        'label'      => 'Personal E-mail',
+                        'required'   => false,
+                        'options'    => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'FieldLength',
+                                        'options' => array(
+                                            'max_length'      => 100,
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            )
+        );
 
         $this->add(
             array(
