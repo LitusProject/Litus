@@ -47,7 +47,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'label'    => 'Personal',
                 'elements' => array(
                     array(
-                        'type'       => 'textarea',
+                        'type'       => 'text',
                         'name'       => 'email',
                         'label'      => 'Personal E-mail',
                         'required'   => false,
