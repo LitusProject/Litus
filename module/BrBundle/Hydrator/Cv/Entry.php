@@ -28,7 +28,7 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
             ->setBirthday($person->getBirthDay())
             ->setSex($person->getSex())
             ->setPhoneNumber($person->getPhoneNumber())
-            ->setEmail($person->getPersonalEmail())
+            ->setEmail($data['personal']['email'])
             ->setPriorStudy($data['studies']['prior_degree'])
             ->setPriorGrade($data['studies']['prior_grade'] * 100)
             ->setStudy(
@@ -126,6 +126,8 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $data = array();
+
+        $data['personal']['email'] = $object->getEmail();
 
         $data['studies']['prior_degree'] = $object->getPriorStudy();
         $data['studies']['prior_grade'] = $object->getPriorGrade() / 100;
