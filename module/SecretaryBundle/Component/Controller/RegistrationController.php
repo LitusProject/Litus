@@ -340,7 +340,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         if ($map === null) {
             $this->getEntityManager()->persist(new AcademicYearMap($academic, $academicYear, $organization));
-        } else {;
+        } else {
             $map->setOrganization($organization);
         }
         $this->getEntityManager()->flush();
