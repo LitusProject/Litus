@@ -854,8 +854,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             }
         }
 
-        foreach ($werkendGroups as $group) {
-            $group->addToExcluded($email);
+        foreach ($werkendGroups as $werkend) {
+            $werkend->addToExcluded($email);
         }
     }
 }
