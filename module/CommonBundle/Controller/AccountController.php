@@ -698,8 +698,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             }
         }
 
-        foreach ($werkendGroups as $group) {
-            $group->addToExcluded($email);
+        foreach ($werkendGroups as $werkend) {
+            $werkend->addToExcluded($email);
         }
     }
 }
