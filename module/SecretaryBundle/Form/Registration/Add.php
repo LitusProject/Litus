@@ -213,6 +213,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'value' => true,
                     ),
                     array(
+                        'type' => 'checkbox',
+                        'name' => 'no_mail',
+                        'label' => "I don't want to receive any Corporate Relations mails",
+                        'value' => true,
+                    ),
+                    array(
                         'type'  => 'checkbox',
                         'name'  => 'is_international',
                         'label' => 'I am an international student',
