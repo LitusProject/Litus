@@ -66,9 +66,7 @@ class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $academic = $object->getAcademic();
-
         $data = $data['organization_info'];
-
         if ($data['become_member'] == '') {
             $data['become_member'] = false;
         }
@@ -89,7 +87,7 @@ class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
         } else {
             $this->stdHydrate($data, $object, array('become_member', 'bakske_by_mail'));
         }
-
         return $this->stdHydrate($data, $object, self::$stdKeys);
+//        return $this;
     }
 }

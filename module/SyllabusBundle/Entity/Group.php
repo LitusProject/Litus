@@ -223,4 +223,15 @@ class Group
 
         return $pocIndicator->getEmailAdress();
     }
+
+    /**
+     * @param string $email
+     * @return self
+     */
+    public function addToExcluded(string $email) {
+        $oldExcluded = unserialize($this->excludedMembers);
+        array_push($oldExcluded, $email);
+        $this->excludedMembers = serialize($oldExcluded);
+        return $this;
+    }
 }
