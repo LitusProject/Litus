@@ -846,7 +846,15 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getRepository('SyllabusBundle\Entity\Group')
             ->findAll();
 
+        $werkendGroups = [];
+
         foreach ($groups as $group) {
+            if (strpos($group->getName(), "[werkend]")) {
+                array_push($werkendGroups, $group);
+            }
+        }
+
+        foreach ($werkendGroups as $group) {
             $group->addToExcluded($email);
         }
     }
