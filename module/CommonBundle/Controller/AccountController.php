@@ -690,7 +690,15 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->getRepository('SyllabusBundle\Entity\Group')
             ->findAll();
 
+        $werkendGroups = [];
+
         foreach ($groups as $group) {
+            if (strpos($group->getName(), "[werkend]")) {
+                array_push($werkendGroups, $group);
+            }
+        }
+
+        foreach ($werkendGroups as $group) {
             $group->addToExcluded($email);
         }
     }
