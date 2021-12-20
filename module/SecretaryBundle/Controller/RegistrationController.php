@@ -225,6 +225,14 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         }
                     }
 
+                    $noMail = $formData['academic']['no_mail'];
+                    if ($noMail) {
+                        $univMail = $formData["academic"]["university"]['email'] . "@student.kuleuven.be";
+                        $personalMail = $formData["academic"]["personal_email"];
+                        $this->addToExcluded($univMail);
+                        $this->addToExcluded($personalMail);
+                    }
+
                     $academic->activate(
                         $this->getEntityManager(),
                         $this->getMailTransport()
@@ -530,6 +538,14 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     }
                 }
 
+                $noMail = $formData['academic']['no_mail'];
+                if ($noMail) {
+                    $univMail = $formData["academic"]["university"]['email'] . "@student.kuleuven.be";
+                    $personalMail = $formData["academic"]["personal_email"];
+                    $this->addToExcluded($univMail);
+                    $this->addToExcluded($personalMail);
+                }
+
                 $academic->activate(
                     $this->getEntityManager(),
                     $this->getMailTransport()
@@ -822,6 +838,16 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 '',
                 true
             );
+        }
+    }
+
+    private function addToExcluded(string $email) {
+        $groups = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Group')
+            ->findAll();
+
+        foreach ($groups as $group) {
+            $group->addToExcluded($email);
         }
     }
 }
