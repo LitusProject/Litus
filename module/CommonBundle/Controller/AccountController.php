@@ -9,7 +9,6 @@ use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
 use Imagick;
 use Laminas\View\Model\ViewModel;
 use SecretaryBundle\Entity\Registration;
-use SyllabusBundle\Entity\Group;
 
 /**
  * Handles account page.
@@ -348,8 +347,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
                 $noMail = $formData['academic']['no_mail'];
                 if ($noMail) {
-                    $univMail = $formData["academic"]["university"]['email'] . "@student.kuleuven.be";
-                    $personalMail = $formData["academic"]["personal_email"];
+                    $univMail = $formData['academic']['university']['email'] . '@student.kuleuven.be';
+                    $personalMail = $formData['academic']['personal_email'];
                     $this->addToExcluded($univMail);
                     $this->addToExcluded($personalMail);
                 }
@@ -685,14 +684,15 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->getConfigValue('shop.name');
     }
 
-    private function addToExcluded(string $email) {
+    private function addToExcluded(string $email)
+    {
         $groups = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Group')
             ->findAll();
 
-        $werkendGroups = [];
+        $werkendGroups = array();
         foreach ($groups as $group) {
-            if (strpos($group->getName(), "werkend")) {
+            if (strpos($group->getName(), 'werkend')) {
                 array_push($werkendGroups, $group);
             }
         }

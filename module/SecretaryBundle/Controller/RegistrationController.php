@@ -227,8 +227,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
                     $noMail = $formData['academic']['no_mail'];
                     if ($noMail) {
-                        $univMail = $formData["academic"]["university"]['email'] . "@student.kuleuven.be";
-                        $personalMail = $formData["academic"]["personal_email"];
+                        $univMail = $formData['academic']['university']['email'] . '@student.kuleuven.be';
+                        $personalMail = $formData['academic']['personal_email'];
                         $this->addToExcluded($univMail);
                         $this->addToExcluded($personalMail);
                     }
@@ -540,8 +540,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
                 $noMail = $formData['academic']['no_mail'];
                 if ($noMail) {
-                    $univMail = $formData["academic"]["university"]['email'] . "@student.kuleuven.be";
-                    $personalMail = $formData["academic"]["personal_email"];
+                    $univMail = $formData['academic']['university']['email'] . '@student.kuleuven.be';
+                    $personalMail = $formData['academic']['personal_email'];
                     $this->addToExcluded($univMail);
                     $this->addToExcluded($personalMail);
                 }
@@ -841,15 +841,16 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         }
     }
 
-    private function addToExcluded(string $email) {
+    private function addToExcluded(string $email)
+    {
         $groups = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Group')
             ->findAll();
 
-        $werkendGroups = [];
+        $werkendGroups = array();
 
         foreach ($groups as $group) {
-            if (strpos($group->getName(), "[werkend]")) {
+            if (strpos($group->getName(), '[werkend]')) {
                 array_push($werkendGroups, $group);
             }
         }
