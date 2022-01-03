@@ -20,11 +20,13 @@
 
 namespace BrBundle\Entity;
 
+use BrBundle\Entity\Match\CompanyWave;
 use BrBundle\Entity\Match\MatcheeMap\CompanyMatcheeMap;
 use BrBundle\Entity\Match\MatcheeMap\StudentMatcheeMap;
 use BrBundle\Entity\Match\Profile;
 use BrBundle\Entity\Match\Profile\CompanyProfile;
 use BrBundle\Entity\Match\Profile\StudentProfile;
+use BrBundle\Entity\Match\Wave;
 use CommonBundle\Entity\User\Person;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -68,6 +70,14 @@ class Match
      * @ORM\Column(name="match_percentage", type="integer")
      */
     private $matchPercentage;
+
+    /**
+     * @var CompanyWave The match's wave
+     *
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Match\CompanyWave")
+     * @ORM\JoinColumn(name="wave", referencedColumnName="id", nullable=true)
+     */
+    private $wave;
 
     /**
      * @param StudentMatcheeMap $student
@@ -135,6 +145,25 @@ class Match
     public function setMatchPercentage($matchPercentage)
     {
         $this->matchPercentage = round($matchPercentage*100);
+    }
+
+    /**
+     * @param  CompanyWave|null $wave
+     * @return self
+     */
+    public function setWave($wave)
+    {
+        $this->wave = $wave;
+
+        return $this;
+    }
+
+    /**
+     * @return CompanyWave
+     */
+    public function getWave()
+    {
+        return $this->wave;
     }
 
     /**

@@ -30,6 +30,27 @@ class Version20211106232859 extends \Doctrine\Migrations\AbstractMigration
         $this->addSql('CREATE INDEX IDX_94BE8AFF4FBF094F ON br_match_matchee_map_company (company)');
         $this->addSql('DROP INDEX uniq_6c222c8334dcd176');
         $this->addSql('CREATE INDEX IDX_6C222C8334DCD176 ON br_match_matchee_map_student (person)');
+        $this->addSql('CREATE TABLE br_match_profile_companyprofile (id BIGINT NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE br_match_profile_studentprofile (id BIGINT NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('ALTER TABLE br_match_profile_companyprofile ADD CONSTRAINT FK_FB6EED77BF396750 FOREIGN KEY (id) REFERENCES br_match_profile (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE br_match_profile_studentprofile ADD CONSTRAINT FK_48C75182BF396750 FOREIGN KEY (id) REFERENCES br_match_profile (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE br_events ADD description TEXT DEFAULT NULL');
+        $this->addSql('CREATE SEQUENCE br_match_wave_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE TABLE br_match_wave (id BIGINT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE SEQUENCE br_match_companywave_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE TABLE br_match_companywave (id BIGINT NOT NULL, company BIGINT DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE INDEX IDX_ECDE82454FBF094F ON br_match_companywave (company)');
+        $this->addSql('ALTER TABLE br_match_companywave ADD CONSTRAINT FK_ECDE82454FBF094F FOREIGN KEY (company) REFERENCES br_companies (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE br_match ADD wave BIGINT DEFAULT NULL');
+        $this->addSql('ALTER TABLE br_match ADD CONSTRAINT FK_CDBA3197DA04AD89 FOREIGN KEY (wave) REFERENCES br_match_companywave (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('CREATE INDEX IDX_CDBA3197DA04AD89 ON br_match (wave)');
+        $this->addSql('ALTER TABLE br_match_companywave ADD wave BIGINT DEFAULT NULL');
+        $this->addSql('ALTER TABLE br_match_companywave ADD CONSTRAINT FK_ECDE8245DA04AD89 FOREIGN KEY (wave) REFERENCES br_match_wave (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('CREATE INDEX IDX_ECDE8245DA04AD89 ON br_match_companywave (wave)');
+        $this->addSql('ALTER TABLE br_match_matchee_map ADD match BIGINT DEFAULT NULL');
+        $this->addSql('ALTER TABLE br_match_matchee_map ADD CONSTRAINT FK_CBB8A497A5BC505 FOREIGN KEY (match) REFERENCES br_match (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_CBB8A497A5BC505 ON br_match_matchee_map (match)');
+        $this->addSql('ALTER TABLE br_match_wave ADD creation_time TIMESTAMP(0) WITHOUT TIME ZONE');
     }
 
     /**

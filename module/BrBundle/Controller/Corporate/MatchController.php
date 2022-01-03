@@ -28,6 +28,7 @@ use BrBundle\Entity\Match\MatcheeMap\StudentMatcheeMap;
 use BrBundle\Entity\Match\Profile\ProfileCompanyMap;
 use BrBundle\Entity\Match\Profile\ProfileFeatureMap;
 use BrBundle\Entity\Match\Profile\ProfileStudentMap;
+use BrBundle\Entity\Match\Wave;
 use BrBundle\Entity\Product;
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Form\Admin\Element\DateTime;
@@ -44,26 +45,26 @@ use function Functional\map;
  */
 class MatchController extends \BrBundle\Component\Controller\CorporateController
 {
-    public function indexAction()
+    public function overviewAction()
     {
         $person = $this->getCorporateEntity();
         if ($person === null) {
             return new ViewModel();
         }
 
-        $profiles = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Match\Profile\ProfileCompanyMap')
-            ->findByCompany($person->getCompany());
+        $allWaves = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Match\Wave')
+            ->findAll();
 
-        error_log(sizeof($profiles));
-
-        return new ViewModel();
-    }
-
-    public function overviewAction()
-    {
-        $person = $this->getCorporateEntity();
-        if ($person === null) {
+        $wave = $this->getWaveEntity();
+        if ($wave === null) {
+            $this->redirect()->toRoute(
+                'br_corporate_match',
+                array(
+                    'action' => 'overview',
+                    'wave'  => $allWaves[0]->getId(),
+                )
+            );
             return new ViewModel();
         }
 
@@ -80,16 +81,27 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
                 $cp = false;
         }
 
-        $matches = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Match')
+        $companyWaves = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Match\CompanyWave')
             ->findByCompany($person->getCompany());
+
+        foreach ($companyWaves as $cw)
+            if ($cw->getWave() == $wave)
+                $matches = $cw->getMatches();
+
+        $bannerText = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.match_corporate_banner_text');
 
         return new ViewModel(
             array(
-                'matches' => $matches,
+                'wave' => $wave,
+                'allWaves' => $allWaves,
+                'matches' => $matches??null,
                 'lastUpdate' => new \DateTime(), // TODO!!
                 'needs_sp'  => $sp,
                 'needs_cp'  => $cp,
+                'bannerText' => $bannerText,
             )
         );
     }
@@ -338,4 +350,29 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
         );
     }
 
+    /**
+     * @return Wave|null
+     */
+    private function getWaveEntity()
+    {
+        $wave = $this->getEntityById('BrBundle\Entity\Match\Wave', 'wave');
+
+        if (!($wave instanceof Wave) && $wave !== null) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No wave was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'br_corporate_match',
+                array(
+                    'action' => 'overview',
+                )
+            );
+
+            return;
+        }
+
+        return $wave;
+    }
 }

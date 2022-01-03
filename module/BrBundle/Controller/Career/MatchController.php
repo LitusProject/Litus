@@ -28,6 +28,7 @@ use BrBundle\Entity\Match\MatcheeMap\StudentMatcheeMap;
 use BrBundle\Entity\Match\Profile\ProfileCompanyMap;
 use BrBundle\Entity\Match\Profile\ProfileFeatureMap;
 use BrBundle\Entity\Match\Profile\ProfileStudentMap;
+use BrBundle\Entity\Match\Wave;
 use BrBundle\Entity\Product;
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Form\Admin\Element\DateTime;
@@ -43,28 +44,16 @@ use Laminas\View\Model\ViewModel;
  */
 class MatchController extends \BrBundle\Component\Controller\CareerController
 {
-    public function indexAction()
-    {
-        $person = $this->getAuthentication()->getPersonObject();
-        if ($person === null) {
-            return new ViewModel();
-        }
-
-        $profiles = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Match\Profile\ProfileStudentMap')
-            ->findByStudent($person);
-
-        error_log(sizeof($profiles));
-
-        return new ViewModel();
-    }
-
     public function overviewAction()
     {
         $person = $this->getAuthentication()->getPersonObject();
         if ($person === null) {
             return new ViewModel();
         }
+
+        $allWaves = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Match\Wave')
+            ->findAll();
 
         $profiles = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Match\Profile\ProfileStudentMap')
@@ -83,12 +72,73 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
             ->getRepository('BrBundle\Entity\Match')
             ->findByStudent($person);
 
+        $bannerText = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.match_career_banner_text');
+
         return new ViewModel(
             array(
+                'allWaves' => $allWaves,
                 'matches' => $matches,
                 'lastUpdate' => new \DateTime(), // TODO!!
                 'needs_sp'  => $sp,
                 'needs_cp'  => $cp,
+                'bannerText' => $bannerText,
+            )
+        );
+    }
+
+    public function wavesAction()
+    {
+        $person = $this->getAuthentication()->getPersonObject();
+        if ($person === null) {
+            return new ViewModel();
+        }
+
+        $allWaves = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Match\Wave')
+            ->findAll();
+
+        $wave = $this->getWaveEntity();
+        if ($wave === null) {
+            $this->redirect()->toRoute(
+                'br_career_match',
+                array(
+                    'action' => 'overview',
+                )
+            );
+            return new ViewModel();
+        }
+
+        $matches = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Match')
+            ->findByStudentAndWave($person, $wave);
+
+        $profiles = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Match\Profile\ProfileStudentMap')
+            ->findByStudent($person);
+
+        $sp = True;
+        $cp = True;
+        foreach ($profiles as $p){
+            if ($p->getProfile()->getProfileType() == 'student')
+                $sp = false;
+            if ($p->getProfile()->getProfileType() == 'company')
+                $cp = false;
+        }
+
+        $bannerText = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.match_career_banner_text');
+
+        return new ViewModel(
+            array(
+                'allWaves' => $allWaves,
+                'matches' => $matches,
+//                'lastUpdate' => new \DateTime(), // TODO!!
+                'needs_sp'  => $sp,
+                'needs_cp'  => $cp,
+                'bannerText' => $bannerText,
             )
         );
     }
@@ -100,9 +150,43 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
             return new ViewModel();
         }
 
+        // Check whether this person is a Master's student.
+        $studies = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
+            ->findAllByAcademicAndAcademicYear($person, $this->getCurrentAcademicYear());
+
+        $masterGroupNames = unserialize($this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('syllabus.master_group_names'));
+
+        $boolean = false;
+        foreach ($masterGroupNames as $groupName){
+            $group = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Repository\Group')
+                ->findOneByName($groupName);
+            $studyMaps = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
+                ->findAllByGroup($group);
+
+            foreach($studyMaps as $map){
+                foreach($studies as $study){
+                    if ($study == $map->getStudy()){
+                        $boolean = true;
+                    }
+                }
+            }
+        }
+        if ($boolean == false){
+            $this->flashMessenger()->error(
+                'Error',
+                "You are not a Master's student, and therefore cannot enroll in the matching platform!"
+            );
+            return new ViewModel();
+        }
+
         $profiles = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Match\Profile\ProfileCompanyMap')
-            ->findByCompany($person);
+            ->getRepository('BrBundle\Entity\Match\Profile\ProfileStudentMap')
+            ->findByStudent($person);
 
         $type = $this->getParam('type');
 
@@ -319,5 +403,31 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
                 'type' => $type,
             )
         );
+    }
+
+    /**
+     * @return Wave|null
+     */
+    private function getWaveEntity()
+    {
+        $wave = $this->getEntityById('BrBundle\Entity\Match\Wave', 'wave');
+
+        if (!($wave instanceof Wave) && $wave !== null) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No wave was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'br_career_match',
+                array(
+                    'action' => 'overview',
+                )
+            );
+
+            return;
+        }
+
+        return $wave;
     }
 }

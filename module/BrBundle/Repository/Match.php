@@ -20,6 +20,7 @@
 
 namespace BrBundle\Repository;
 
+use BrBundle\Entity\Match\Wave;
 use CommonBundle\Entity\User\Person;
 
 /**
@@ -85,6 +86,26 @@ class Match extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             )
             ->orderBy('m.matchPercentage', 'ASC')
             ->setParameter('student', $student)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByStudentAndWave(Person $student, Wave $wave)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('m')
+            ->from('BrBundle\Entity\Match', 'm')
+            ->innerJoin('m.studentMatchee', 's')
+            ->innerJoin('m.wave', 'cw')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('s.student', ':student'),
+                    $query->expr()->eq('cw.wave', ':wave')
+                )
+            )
+            ->orderBy('m.matchPercentage', 'ASC')
+            ->setParameter('student', $student)
+            ->setParameter('wave', $wave)
             ->getQuery()
             ->getResult();
     }

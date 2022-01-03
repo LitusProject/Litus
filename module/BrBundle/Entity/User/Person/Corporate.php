@@ -37,7 +37,7 @@ use RuntimeException;
 class Corporate extends \CommonBundle\Entity\User\Person
 {
     /**
-     * @var \BrBundle\Entity\Company The user's company
+     * @var Company The user's company
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Company")
      * @ORM\JoinColumn(name="company", referencedColumnName="id")

@@ -22,6 +22,7 @@ namespace BrBundle\Entity\Match;
 
 use BrBundle\Entity\Company;
 use BrBundle\Entity\Event;
+use BrBundle\Entity\Match;
 use BrBundle\Entity\Profile\CompanyProfile;
 use BrBundle\Entity\Profile\StudentProfile;
 use Doctrine\ORM\Mapping as ORM;
@@ -64,6 +65,14 @@ abstract class MatcheeMap
     private $studentProfile;
 
     /**
+     * @var Match The match
+     *
+     * @ORM\OneToOne(targetEntity="\BrBundle\Entity\Match")
+     * @ORM\JoinColumn(name="match", referencedColumnName="id")
+     */
+    private $match;
+
+    /**
      * @param Profile $companyProfile
      * @param Profile $studentProfile
      */
@@ -95,5 +104,13 @@ abstract class MatcheeMap
     public function getStudentProfile()
     {
         return $this->studentProfile;
+    }
+
+    /**
+     * @return Match
+     */
+    public function getMatch()
+    {
+        return $this->match;
     }
 }

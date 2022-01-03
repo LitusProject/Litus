@@ -2,6 +2,9 @@
     <div class="title"><span class="product">MATCHING SOFTWARE</span></div>
     <nav id="controller_nav">
         <ul>
+            {% if hasAccess('br_admin_match_wave', 'manage') %}
+                <li><a {% if 'br_admin_match_wave' == getParam('controller') %} class="active" {% endif %} href="{{ url('br_admin_match_wave', {"action": "manage"}) }}">Waves</a></li>
+            {% endif %}
             {% if hasAccess('br_admin_match_profile', 'manage') %}
                 <li><a {% if 'br_admin_match_profile' == getParam('controller') %} class="active" {% endif %} href="{{ url('br_admin_match_profile', {"action": "manage"}) }}">Profiles</a></li>
             {% endif %}

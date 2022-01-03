@@ -56,4 +56,14 @@ return array(
         'value'       => '0',
         'description' => 'Enable Syllabus update',
     ),
+    array(
+        'key'         => 'syllabus.master_group_names',
+        'value'       => serialize(
+            array(
+                '[Werkend] Alle 1e Masters',
+                '[Werkend] Alle 2e Masters',
+            )
+        ),
+        'description' => 'The group names that contain all masters.',
+    ),
 );

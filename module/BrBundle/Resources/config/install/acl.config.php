@@ -87,6 +87,9 @@ return array(
         'br_admin_match_match' => array(
             'manage', 'view', 'delete', 'generateMatches',
         ),
+        'br_admin_match_wave' => array(
+            'manage', 'delete', 'add', 'generateWaves', 'view'
+        ),
         'br_career_index' => array(
             'index',
         ),
@@ -109,7 +112,7 @@ return array(
             'view', 'overview', 'file', 'search',
         ),
         'br_career_match' => array(
-            'index', 'overview', 'addProfile', 'editProfile', 'viewMatch', 'viewProfile'
+            'overview', 'addProfile', 'editProfile', 'viewMatch', 'viewProfile'
         ),
         'br_cv_index' => array(
             'cv', 'edit', 'complete', 'delete', 'download', 'uploadProfileImage',
@@ -139,7 +142,7 @@ return array(
             'edit',
         ),
         'br_corporate_match' => array(
-            'index', 'overview', 'addProfile', 'editProfile', 'viewMatch', 'viewProfile'
+            'overview', 'addProfile', 'editProfile', 'viewMatch', 'viewProfile'
         )
     ),
 );

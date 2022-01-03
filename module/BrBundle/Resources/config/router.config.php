@@ -294,6 +294,21 @@ return array(
                 ),
             ),
         ),
+        'br_admin_match_wave' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/br/match/wave[/:action[/:id][/page/:page]][/]',
+                'constraints' => array(
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'       => '[0-9_-]*',
+                    'page'     => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_admin_match_wave',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
         'br_career_index' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -432,17 +447,18 @@ return array(
         'br_career_match' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '[/:language]/career/match[/:action[/:profile][/type/:type][/match/:match][/page/:page]][/]',
+                'route'       => '[/:language]/career/match[/:action[/:profile][/type/:type][/match/:match][/wave/:wave]][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'type'     => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'match'       => '[0-9_-]*',
                     'profile'  => '[0-9_-]*',
+                    'wave'  => '[0-9_-]*',
                     'language' => '(en|nl)',
                 ),
                 'defaults' => array(
                     'controller' => 'br_career_match',
-                    'action'     => 'index',
+                    'action'     => 'overview',
                 ),
             ),
         ),
@@ -578,17 +594,18 @@ return array(
         'br_corporate_match' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '[/:language]/corporate/match[/:action[/:profile][/type/:type][/match/:match][/page/:page]][/]',
+                'route'       => '[/:language]/corporate/match[/:action[/:profile][/type/:type][/match/:match][/wave/:wave]][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'type'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'match'       => '[0-9_-]*',
+                    'match'    => '[0-9_-]*',
                     'profile'  => '[0-9_-]*',
+                    'wave'     => '[0-9_-]*',
                     'language' => '(en|nl)',
                 ),
                 'defaults' => array(
                     'controller' => 'br_corporate_match',
-                    'action'     => 'index',
+                    'action'     => 'overview',
                 ),
             ),
         ),
@@ -643,6 +660,7 @@ return array(
         'br_admin_match_feature'      => 'BrBundle\Controller\Admin\Match\FeatureController',
         'br_admin_match_profile'      => 'BrBundle\Controller\Admin\Match\ProfileController',
         'br_admin_match_match'      => 'BrBundle\Controller\Admin\Match\MatchController',
+        'br_admin_match_wave'      => 'BrBundle\Controller\Admin\Match\WaveController',
 
         'br_corporate_index'      => 'BrBundle\Controller\Corporate\IndexController',
         'br_corporate_cv'         => 'BrBundle\Controller\Corporate\CvController',

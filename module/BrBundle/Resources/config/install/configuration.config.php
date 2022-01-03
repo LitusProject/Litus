@@ -300,4 +300,19 @@ Example content of this section.
         'value'       => 'RPR Leuven',
         'description' => '',
     ),
+    array(
+        'key'         => 'br.wave_nb_top_matches',
+        'value'       => 5,
+        'description' => 'The amount of matches in a companies\' wave',
+    ),
+    array(
+        'key'         => 'br.match_career_banner_text',
+        'value'       => 'Hier komt nog mooie text van BR',
+        'description' => 'banner text on career/match/overview',
+    ),
+    array(
+        'key'         => 'br.match_corporate_banner_text',
+        'value'       => 'Ook hier komt nog mooie text van BR',
+        'description' => 'banner text on corporate/match/overview',
+    ),
 );
