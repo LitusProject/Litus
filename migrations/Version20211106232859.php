@@ -51,6 +51,7 @@ class Version20211106232859 extends \Doctrine\Migrations\AbstractMigration
         $this->addSql('ALTER TABLE br_match_matchee_map ADD CONSTRAINT FK_CBB8A497A5BC505 FOREIGN KEY (match) REFERENCES br_match (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_CBB8A497A5BC505 ON br_match_matchee_map (match)');
         $this->addSql('ALTER TABLE br_match_wave ADD creation_time TIMESTAMP(0) WITHOUT TIME ZONE');
+        $this->addSql('ALTER TABLE br_match ADD interested BOOLEAN DEFAULT \'false\' NOT NULL');
     }
 
     /**

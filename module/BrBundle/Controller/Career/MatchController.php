@@ -302,7 +302,6 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
         );
     }
 
-
     public function editProfileAction()
     {
         $person = $this->getAuthentication()->getPersonObject();
@@ -405,6 +404,28 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
         );
     }
 
+
+    public function sendDataAction()
+    {
+        $this->initAjax();
+
+        $match = $this->getMatchEntity();
+        if ($match === null) {
+            return new ViewModel();
+        }
+
+        $match->setInterested(true);
+
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+
     /**
      * @return Wave|null
      */
@@ -429,5 +450,31 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
         }
 
         return $wave;
+    }
+
+    /**
+     * @return Match|null
+     */
+    private function getMatchEntity()
+    {
+        $match = $this->getEntityById('BrBundle\Entity\Match', 'match');
+
+        if (!($match instanceof Match)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No match was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'br_career_match',
+                array(
+                    'action' => 'overview',
+                )
+            );
+
+            return;
+        }
+
+        return $match;
     }
 }

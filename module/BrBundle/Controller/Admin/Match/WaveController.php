@@ -211,7 +211,7 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
         $nbTopMatches = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.wave_nb_top_matches');
-        
+
         foreach($companies as $company){
             $profileMaps = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Match\Profile\ProfileCompanyMap')

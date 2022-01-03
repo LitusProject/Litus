@@ -95,7 +95,6 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
 
         return new ViewModel(
             array(
-                'wave' => $wave,
                 'allWaves' => $allWaves,
                 'matches' => $matches??null,
                 'lastUpdate' => new \DateTime(), // TODO!!
@@ -349,6 +348,53 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
             )
         );
     }
+
+    // statsAction
+
+    public function interestedAction()
+    {
+        $person = $this->getCorporateEntity();
+        if ($person === null) {
+            return new ViewModel();
+        }
+
+        $matches = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Match')
+            ->findInterestedByCompany($person->getCompany());
+
+        $allWaves = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Match\Wave')
+            ->findAll();
+
+        $profiles = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Match\Profile\ProfileCompanyMap')
+            ->findByCompany($person->getCompany());
+
+        $sp = True;
+        $cp = True;
+        foreach ($profiles as $p){
+            if ($p->getProfile()->getProfileType() == 'student')
+                $sp = false;
+            if ($p->getProfile()->getProfileType() == 'company')
+                $cp = false;
+        }
+
+        $bannerText = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.match_corporate_banner_text');
+
+        return new ViewModel(
+            array(
+                'allWaves' => $allWaves,
+                'matches' => $matches??null,
+                'lastUpdate' => new \DateTime(), // TODO!!
+                'needs_sp'  => $sp,
+                'needs_cp'  => $cp,
+                'bannerText' => $bannerText,
+            )
+        );
+    }
+
 
     /**
      * @return Wave|null

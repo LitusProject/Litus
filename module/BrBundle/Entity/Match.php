@@ -80,6 +80,13 @@ class Match
     private $wave;
 
     /**
+     * @var boolean True if the student has shown interest.
+     *
+     * @ORM\Column(type="boolean", options={"default":false})
+     */
+    private $interested;
+
+    /**
      * @param StudentMatcheeMap $student
      * @param CompanyMatcheeMap $company
      */
@@ -89,6 +96,7 @@ class Match
         $this->studentMatchee = $student;
         $this->matchPercentage = round(($this->getMatchPercentages($company->getCompanyProfile(), $student->getCompanyProfile()) +
                 $this->getMatchPercentages($company->getStudentProfile(), $student->getStudentProfile())) / 2);
+        $this->interested = false;
     }
 
     /**
@@ -165,6 +173,23 @@ class Match
     {
         return $this->wave;
     }
+
+    /**
+     * @return boolean
+     */
+    public function isInterested()
+    {
+        return $this->interested;
+    }
+
+    /**
+     * @param boolean $interested
+     */
+    public function setInterested(bool $interested)
+    {
+        $this->interested = $interested;
+    }
+
 
     /**
      * @param Profile $companyProfile
