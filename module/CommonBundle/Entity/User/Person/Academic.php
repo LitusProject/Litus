@@ -209,7 +209,8 @@ class Academic extends \CommonBundle\Entity\User\Person
     /**
      * @return boolean
      */
-    public function getNoMail() {
+    public function getNoMail()
+    {
         return $this->noMail;
     }
 
@@ -217,7 +218,8 @@ class Academic extends \CommonBundle\Entity\User\Person
      * @param boolean $noMail
      * @return self
      */
-    public function setNoMail(bool $noMail) {
+    public function setNoMail(bool $noMail)
+    {
         $this->noMail = $noMail;
 
         return $this;

@@ -47,11 +47,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'label'    => 'Personal',
                 'elements' => array(
                     array(
-                        'type'       => 'text',
-                        'name'       => 'email',
-                        'label'      => 'Personal E-mail',
-                        'required'   => false,
-                        'options'    => array(
+                        'type'     => 'text',
+                        'name'     => 'email',
+                        'label'    => 'Personal E-mail',
+                        'required' => false,
+                        'options'  => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -60,7 +60,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                     array(
                                         'name'    => 'FieldLength',
                                         'options' => array(
-                                            'max_length'      => 100,
+                                            'max_length' => 100,
                                         ),
                                     ),
                                 ),

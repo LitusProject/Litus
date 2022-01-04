@@ -38,23 +38,23 @@ class Csv extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type' => 'select',
-                'name' => 'edit_roles',
-                'label' => 'Edit Roles',
+                'type'       => 'select',
+                'name'       => 'edit_roles',
+                'label'      => 'Edit Roles',
                 'attributes' => array(
                     'multiple' => true,
-                    'options' => $this->createEditRolesArray(),
+                    'options'  => $this->createEditRolesArray(),
                 ),
             )
         );
 
         $this->add(
             array(
-                'type' => 'typeahead',
-                'name' => 'manager',
-                'label' => 'Manager',
+                'type'     => 'typeahead',
+                'name'     => 'manager',
+                'label'    => 'Manager',
                 'required' => true,
-                'options' => array(
+                'options'  => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -69,10 +69,10 @@ class Csv extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type' => 'select',
-                'name' => 'unit',
-                'label' => 'Unit',
-                'required' => true,
+                'type'       => 'select',
+                'name'       => 'unit',
+                'label'      => 'Unit',
+                'required'   => true,
                 'attributes' => array(
                     'options' => $this->createUnitsArray(),
                 ),
@@ -86,16 +86,16 @@ class Csv extends \CommonBundle\Component\Form\Admin\Form
         if ($rewards_enabled) {
             $this->add(
                 array(
-                    'type' => 'checkbox',
-                    'name' => 'handled_on_event',
+                    'type'  => 'checkbox',
+                    'name'  => 'handled_on_event',
                     'label' => 'Payed at event',
                 )
             );
         } else {
             $this->add(
                 array(
-                    'type' => 'hidden',
-                    'name' => 'handled_on_event',
+                    'type'       => 'hidden',
+                    'name'       => 'handled_on_event',
                     'attributes' => array(
                         'value' => '0',
                     ),
@@ -105,17 +105,17 @@ class Csv extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type' => 'checkbox',
-                'name' => 'ticket_needed',
+                'type'  => 'checkbox',
+                'name'  => 'ticket_needed',
                 'label' => 'Ticket needed',
             )
         );
 
         $this->add(
             array(
-                'type' => 'select',
-                'name' => 'event',
-                'label' => 'Event',
+                'type'       => 'select',
+                'name'       => 'event',
+                'label'      => 'Event',
                 'attributes' => array(
                     'options' => $this->createEventsArray(),
                 ),
@@ -124,10 +124,10 @@ class Csv extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type' => 'select',
-                'name' => 'location',
-                'label' => 'Location',
-                'required' => true,
+                'type'       => 'select',
+                'name'       => 'location',
+                'label'      => 'Location',
+                'required'   => true,
                 'attributes' => array(
                     'options' => $this->createLocationsArray(),
                 ),
@@ -143,7 +143,7 @@ class Csv extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'data-help' => 'The maximum file size is ' . self::FILE_SIZE . '.',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array(

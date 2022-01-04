@@ -32,7 +32,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -62,10 +62,10 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'event'     => $event,
-                'shifters'  => $shifters,
+                'event'             => $event,
+                'shifters'          => $shifters,
             )
         );
     }
@@ -81,7 +81,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -381,8 +381,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'event' => $shift->getEvent() ?? null,
-                'form' => $form,
-                'em' => $this->getEntityManager(),
+                'form'  => $form,
+                'em'    => $this->getEntityManager(),
             )
         );
     }

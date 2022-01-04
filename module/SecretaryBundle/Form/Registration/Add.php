@@ -213,8 +213,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'value' => true,
                     ),
                     array(
-                        'type' => 'checkbox',
-                        'name' => 'no_mail',
+                        'type'  => 'checkbox',
+                        'name'  => 'no_mail',
                         'label' => "I don't want to receive any Corporate Relations mails",
                         'value' => true,
                     ),

@@ -55,9 +55,9 @@ class Transactions
 
     /**
      * Transactions constructor.
-     * @param int $amount
+     * @param integer                           $amount
      * @param \TicketBundle\Entity\Consumptions $consumption
-     * @param Person $person
+     * @param Person                            $person
      */
     public function __construct(int $amount, Person $owner, Person $person = null)
     {
@@ -68,7 +68,7 @@ class Transactions
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {

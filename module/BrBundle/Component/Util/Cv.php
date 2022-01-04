@@ -83,11 +83,11 @@ class Cv
                 'phone'     => substr($phoneNumber, 0, 3) . ' (0)' . substr($phoneNumber, 3, 3) . ' ' . substr($phoneNumber, 6, 2) . ' ' . substr($phoneNumber, 8, 2) . ' ' . substr($phoneNumber, 10, 2),
                 'img'       => $picturePath . '/' . $cv->getAcademic()->getPhotoPath(),
             ),
-            self::getSections($cv, $translator)
+            self::getSections($cv, $translator, $entityManager)
         );
     }
 
-    private static function getSections(Entry $cv, Translator $translator)
+    private static function getSections(Entry $cv, Translator $translator, EntityManager $em)
     {
         $result = array();
 
@@ -109,15 +109,36 @@ class Cv
             )
         );
 
-        //Grades may be 0 in the database
-        $masterGrade = (string) ($cv->getGrade() / 100);
-        if ($cv->getGrade() == 0) {
-            $masterGrade = '-';
+        $gradesMapEnabled = $em->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.cv_grades_map_enabled');
+
+        if ($gradesMapEnabled == 0) {
+            //Grades may be 0 in the database
+            $masterGrade = (string) ($cv->getGrade() / 100);
+            if ($cv->getGrade() == 0) {
+                $masterGrade = '-';
+            }
+            $bachelorGrade = (string) ($cv->getPriorGrade() / 100);
+            if ($cv->getPriorGrade() == 0) {
+                $bachelorGrade = '-';
+            }
+        } else {
+            $gradesMap = unserialize(
+                $em->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('br.cv_grades_map')
+            );
+
+            //Grades may be 0 in the database
+            $masterGrade = (string) ($cv->getGradeMapped($gradesMap));
+            if ($cv->getGrade() == 0) {
+                $masterGrade = '-';
+            }
+            $bachelorGrade = (string) ($cv->getPriorGradeMapped($gradesMap));
+            if ($cv->getPriorGrade() == 0) {
+                $bachelorGrade = '-';
+            }
         }
-        $bachelorGrade = (string) ($cv->getPriorGrade() / 100);
-        if ($cv->getPriorGrade() == 0) {
-            $bachelorGrade = '-';
-        }
+
 
         $result[] = new Node(
             'section',

@@ -99,7 +99,7 @@ class Volunteer
     }
 
     /**
-     * @param boolean $payed
+     * @param boolean           $payed
      * @param AcademicYear|null $academicYear
      * @return self
      */
