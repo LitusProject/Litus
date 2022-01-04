@@ -457,6 +457,24 @@ class Entry
     }
 
     /**
+     * Retrieves the priorGrade of this entry.
+     *
+     * @param array $map
+     * @return string
+     */
+    public function getPriorGradeMapped($map)
+    {
+        ksort($map);
+        foreach ($map as $key => $value){
+            if ($this->priorGrade < $key){
+                return $value;
+            }
+        }
+
+        return "Unspecified";
+    }
+
+    /**
      * Changes the priorGrade of this cv entry to the given value.
      *
      * @param  integer $priorGrade The new value
@@ -500,6 +518,24 @@ class Entry
     public function getGrade()
     {
         return $this->grade;
+    }
+
+    /**
+     * Retrieves the priorGrade of this entry.
+     *
+     * @param array $map
+     * @return string
+     */
+    public function getGradeMapped($map)
+    {
+        ksort($map);
+        foreach ($map as $key => $value){
+            if ($this->grade < $key){
+                return $value;
+            }
+        }
+
+        return "Unspecified";
     }
 
     /**
