@@ -112,7 +112,7 @@ class Cv
         $gradesMapEnabled = $em->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.cv_grades_map_enabled');
 
-        if ($gradesMapEnabled == 0){
+        if ($gradesMapEnabled == 0) {
             //Grades may be 0 in the database
             $masterGrade = (string) ($cv->getGrade() / 100);
             if ($cv->getGrade() == 0) {
@@ -123,8 +123,10 @@ class Cv
                 $bachelorGrade = '-';
             }
         } else {
-            $gradesMap = unserialize($em->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('br.cv_grades_map'));
+            $gradesMap = unserialize(
+                $em->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('br.cv_grades_map')
+            );
 
             //Grades may be 0 in the database
             $masterGrade = (string) ($cv->getGradeMapped($gradesMap));

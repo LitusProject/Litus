@@ -465,13 +465,13 @@ class Entry
     public function getPriorGradeMapped($map)
     {
         ksort($map);
-        foreach ($map as $key => $value){
-            if ($this->priorGrade < $key){
+        foreach ($map as $key => $value) {
+            if ($this->priorGrade < $key) {
                 return $value;
             }
         }
 
-        return "Unspecified";
+        return 'Unspecified';
     }
 
     /**
@@ -529,13 +529,13 @@ class Entry
     public function getGradeMapped($map)
     {
         ksort($map);
-        foreach ($map as $key => $value){
-            if ($this->grade < $key){
+        foreach ($map as $key => $value) {
+            if ($this->grade < $key) {
                 return $value;
             }
         }
 
-        return "Unspecified";
+        return 'Unspecified';
     }
 
     /**

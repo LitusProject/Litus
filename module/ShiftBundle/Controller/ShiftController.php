@@ -181,18 +181,18 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'resultString'     => $resultString,
-                'eventSearchForm'  => $eventSearchForm,
-                'unitSearchForm'   => $unitSearchForm,
-                'dateSearchForm'   => $dateSearchForm,
-                'myShifts'         => $myShifts,
-                'token'            => $token,
-                'searchResults'    => $searchResults,
-                'entityManager'    => $this->getEntityManager(),
-                'currentAcademicYear'  => $currentAcademicYear,
-                'hasReadInsurance' => $hasReadInsurance,
-                'insuranceText'    => $insuranceText[$this->getLanguage()->getAbbrev()],
-                'insuranceEnabled' => $insuranceEnabled,
+                'resultString'        => $resultString,
+                'eventSearchForm'     => $eventSearchForm,
+                'unitSearchForm'      => $unitSearchForm,
+                'dateSearchForm'      => $dateSearchForm,
+                'myShifts'            => $myShifts,
+                'token'               => $token,
+                'searchResults'       => $searchResults,
+                'entityManager'       => $this->getEntityManager(),
+                'currentAcademicYear' => $currentAcademicYear,
+                'hasReadInsurance'    => $hasReadInsurance,
+                'insuranceText'       => $insuranceText[$this->getLanguage()->getAbbrev()],
+                'insuranceEnabled'    => $insuranceEnabled,
             )
         );
     }

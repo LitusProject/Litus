@@ -63,17 +63,19 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         $gradesMapEnabled = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.cv_grades_map_enabled');
 
-        $gradesMap = unserialize($this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.cv_grades_map'));
+        $gradesMap = unserialize(
+            $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.cv_grades_map')
+        );
 
         return new ViewModel(
             array(
-                'academicYear' => $academicYear,
+                'academicYear'     => $academicYear,
                 'gradesMapEnabled' => $gradesMapEnabled,
-                'gradesMap' => $gradesMap,
-                'studies'      => $result,
-                'onlyArchive'  => $onlyArchive,
-                'profilePath'  => $this->getEntityManager()
+                'gradesMap'        => $gradesMap,
+                'studies'          => $result,
+                'onlyArchive'      => $onlyArchive,
+                'profilePath'      => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
             )
@@ -129,19 +131,21 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         $gradesMapEnabled = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.cv_grades_map_enabled');
 
-        $gradesMap = unserialize($this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.cv_grades_map'));
+        $gradesMap = unserialize(
+            $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.cv_grades_map')
+        );
 
         return new ViewModel(
             array(
-                'academicYear' => $academicYear,
-                'entries'      => $entries,
+                'academicYear'     => $academicYear,
+                'entries'          => $entries,
                 'gradesMapEnabled' => $gradesMapEnabled,
-                'gradesMap' => $gradesMap,
-                'profilePath'  => $this->getEntityManager()
+                'gradesMap'        => $gradesMap,
+                'profilePath'      => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
-                'onlyArchive'  => $onlyArchive,
+                'onlyArchive'      => $onlyArchive,
             )
         );
     }
