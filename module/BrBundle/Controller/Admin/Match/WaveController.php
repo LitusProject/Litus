@@ -165,9 +165,14 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
         foreach($wave->getCompanyWaves() as $cw){
             foreach($cw->getMatches() as $match){
                 $match->setCompanyWave(null);
+                error_log("remove match");
+                error_log($match->getId());
             }
+            error_log("remove cw");
+            error_log($cw->getId());
             $this->getEntityManager()->remove($cw);
         }
+        error_log("here");
 
         $this->getEntityManager()->remove($wave);
         $this->getEntityManager()->flush();
@@ -289,11 +294,11 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
         $cw = new CompanyWave($wave, $company);
         $this->getEntityManager()->persist($cw);
 
-        $i = 0;
+        $i = 0; // index of highest match
+        $n = 0; // number of matches in this wave
         $sizeMM = sizeof($matcheeMaps);
-        $ids = array();
 
-        while ($i < $sizeMM && sizeof($ids)<$nb){
+        while ($i < $sizeMM && $n<$nb){
             $matchee = $matcheeMaps[$i];
             print($matchee == null);
             $match = $this->getEntityManager()
@@ -304,6 +309,7 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
                 $i += 1;
                 continue;
             }
+            $n += 1;
             $match->setWave($cw);
             $i += 1;
         }
