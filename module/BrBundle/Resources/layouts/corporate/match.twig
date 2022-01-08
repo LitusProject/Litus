@@ -20,8 +20,10 @@
                 <div><b>{{ translate('You are not ready to match yet!') }}</b><br>{{ translate('Please finish creating your Profile so you can start matching!') }}</div>
             {% endif %}
 
-            {% if needs_sp or needs_cp %}
-                <a class="button yellow unfilled" href="{{ url('br_corporate_match', {'action': 'addProfile' }) }}">{{ translate('Create Profile') }}</a>
+            {% if needs_cp %}
+                <a class="button yellow unfilled" href="{{ url('br_corporate_match', {'action': 'addProfile', 'type': 'company' }) }}">{{ translate('Create Profile') }}</a>
+            {% elseif needs_sp %}
+                <a class="button yellow unfilled" href="{{ url('br_corporate_match', {'action': 'addProfile', 'type': 'student' }) }}">{{ translate('Create Profile') }}</a>
             {% else %}
                 <a class="button yellow unfilled" href="{{ url('br_corporate_match', {'action': 'viewProfile' }) }}">{{ translate('View Profile') }}</a>
             {% endif %}

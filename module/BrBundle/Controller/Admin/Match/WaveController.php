@@ -156,7 +156,6 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
     public function deleteAction()
     {
         $this->initAjax();
-
         $wave = $this->getWaveEntity();
         if ($wave === null) {
             return new ViewModel();
@@ -164,15 +163,10 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
 
         foreach($wave->getCompanyWaves() as $cw){
             foreach($cw->getMatches() as $match){
-                $match->setCompanyWave(null);
-                error_log("remove match");
-                error_log($match->getId());
+                $match->setWave(null);
             }
-            error_log("remove cw");
-            error_log($cw->getId());
             $this->getEntityManager()->remove($cw);
         }
-        error_log("here");
 
         $this->getEntityManager()->remove($wave);
         $this->getEntityManager()->flush();

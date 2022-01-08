@@ -150,33 +150,7 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
             return new ViewModel();
         }
 
-        // Check whether this person is a Master's student.
-        $studies = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
-            ->findAllByAcademicAndAcademicYear($person, $this->getCurrentAcademicYear());
-
-        $masterGroupNames = unserialize($this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('syllabus.master_group_names'));
-
-        $boolean = false;
-        foreach ($masterGroupNames as $groupName){
-            $group = $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Repository\Group')
-                ->findOneByName($groupName);
-            $studyMaps = $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
-                ->findAllByGroup($group);
-
-            foreach($studyMaps as $map){
-                foreach($studies as $study){
-                    if ($study == $map->getStudy()){
-                        $boolean = true;
-                    }
-                }
-            }
-        }
-        if ($boolean == false){
+        if ($this->isMasterStudent($person) == false){
             $this->flashMessenger()->error(
                 'Error',
                 "You are not a Master's student, and therefore cannot enroll in the matching platform!"
@@ -211,6 +185,15 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
             $form = $this->getForm('br_career_match_student_add');
         }
 
+        $sp = True;
+        $cp = True;
+        foreach ($profiles as $p){
+            if ($p->getProfile()->getProfileType() == 'student')
+                $sp = false;
+            if ($p->getProfile()->getProfileType() == 'company')
+                $cp = false;
+        }
+
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -243,12 +226,31 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
                     'The profile was successfully created!'
                 );
 
-                $this->redirect()->toRoute(
-                    'br_career_match',
-                    array(
-                        'action' => 'overview',
-                    )
-                );
+                // REDIRECT TO OTHER FORM
+                if ($type == 'company' && $sp){
+                    $this->redirect()->toRoute(
+                        'br_career_match',
+                        array(
+                            'action' => 'addProfile',
+                            'type'   => 'student'
+                        )
+                    );
+                } elseif ($type == 'student' && $cp){
+                    $this->redirect()->toRoute(
+                        'br_career_match',
+                        array(
+                            'action' => 'addProfile',
+                            'type'   => 'company'
+                        )
+                    );
+                } else {
+                    $this->redirect()->toRoute(
+                        'br_career_match',
+                        array(
+                            'action' => 'overview',
+                        )
+                    );
+                }
 
                 return new ViewModel();
             }
@@ -476,5 +478,34 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
         }
 
         return $match;
+    }
+
+    private function isMasterStudent($person){
+        // Check whether this person is a Master's student.
+        $studies = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
+            ->findAllByAcademicAndAcademicYear($person, $this->getCurrentAcademicYear());
+
+        $masterGroupNames = unserialize($this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('syllabus.master_group_names'));
+
+        foreach ($masterGroupNames as $groupName){
+            $group = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Repository\Group')
+                ->findOneByName($groupName);
+            $studyMaps = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
+                ->findAllByGroup($group);
+
+            foreach($studyMaps as $map){
+                foreach($studies as $study){
+                    if ($study == $map->getStudy()){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

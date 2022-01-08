@@ -153,6 +153,14 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
             $form = $this->getForm('br_corporate_match_student_add');
         }
 
+        $sp = True;
+        $cp = True;
+        foreach ($profiles as $p){
+            if ($p->getProfile()->getProfileType() == 'student')
+                $sp = false;
+            if ($p->getProfile()->getProfileType() == 'company')
+                $cp = false;
+        }
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -180,10 +188,32 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
                 }
 
                 $this->getEntityManager()->flush();
-                $this->flashMessenger()->success(
-                    'Success',
-                    'The profile was successfully created!'
-                );
+
+                // REDIRECT TO OTHER FORM
+                if ($type == 'company' && $sp){
+                    $this->redirect()->toRoute(
+                        'br_career_match',
+                        array(
+                            'action' => 'addProfile',
+                            'type'   => 'student'
+                        )
+                    );
+                } elseif ($type == 'student' && $cp){
+                    $this->redirect()->toRoute(
+                        'br_career_match',
+                        array(
+                            'action' => 'addProfile',
+                            'type'   => 'company'
+                        )
+                    );
+                } else {
+                    $this->redirect()->toRoute(
+                        'br_career_match',
+                        array(
+                            'action' => 'overview',
+                        )
+                    );
+                }
 
                 $this->redirect()->toRoute(
                     'br_corporate_match',
