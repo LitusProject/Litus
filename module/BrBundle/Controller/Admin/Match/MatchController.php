@@ -227,7 +227,10 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
 
         $this->getEntityManager()->remove($match->getCompanyMatchee());
         $this->getEntityManager()->remove($match->getStudentMatchee());
+        $match->getWave()->getWave()->removeMatch($match);
+
         $this->getEntityManager()->remove($match);
+        error_log("here");
 
         $this->getEntityManager()->flush();
 

@@ -18,9 +18,10 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Entity\Match;
+namespace BrBundle\Entity\Match\Wave;
 
 use BrBundle\Entity\Company;
+use BrBundle\Entity\Match\Wave;
 use CommonBundle\Entity\User\Person;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -28,7 +29,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * This is a wave for a company.
  *
- * @ORM\Entity(repositoryClass="BrBundle\Repository\Match\CompanyWave")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Match\Wave\CompanyWave")
  * @ORM\Table(name="br_match_companywave")
  */
 class CompanyWave
@@ -53,7 +54,7 @@ class CompanyWave
     /**
      * @var ArrayCollection The company's contacts
      *
-     * @ORM\OneToMany(targetEntity="\BrBundle\Entity\Match", mappedBy="wave")
+     * @ORM\OneToMany(targetEntity="\BrBundle\Entity\Match\Wave\WaveMatchMap", mappedBy="wave")
      * @ORM\JoinColumn(name="matches", referencedColumnName="id")
      */
     private $matches;
@@ -94,6 +95,15 @@ class CompanyWave
     }
 
     /**
+     * @param array $matches
+     * @return void
+     */
+    public function setMatches($matches)
+    {
+        $this->matches = new ArrayCollection($matches);
+    }
+
+    /**
      * @return Company
      */
     public function getCompany()
@@ -117,5 +127,15 @@ class CompanyWave
     public function getWave()
     {
         return $this->wave;
+    }
+
+    /**
+     * @return self
+     */
+    public function removeMatch($match)
+    {
+        $this->matches->removeElement($match);
+
+        return $this;
     }
 }

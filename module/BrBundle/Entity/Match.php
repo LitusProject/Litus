@@ -72,9 +72,9 @@ class Match
     private $matchPercentage;
 
     /**
-     * @var CompanyWave The match's wave
+     * @var Wave\WaveMatchMap The match's wave
      *
-     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Match\CompanyWave")
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Match\Wave\WaveMatchMap")
      * @ORM\JoinColumn(name="wave", referencedColumnName="id", nullable=true)
      */
     private $wave;
@@ -156,7 +156,7 @@ class Match
     }
 
     /**
-     * @param  CompanyWave|null $wave
+     * @param  Wave\WaveMatchMap|null $wave
      * @return self
      */
     public function setWave($wave)
@@ -167,7 +167,7 @@ class Match
     }
 
     /**
-     * @return CompanyWave
+     * @return Wave\WaveMatchMap
      */
     public function getWave()
     {

@@ -51,9 +51,9 @@ class Wave
     private $name;
 
     /**
-     * @var ArrayCollection The company's contacts
+     * @var ArrayCollection The company waves
      *
-     * @ORM\OneToMany(targetEntity="\BrBundle\Entity\Match\CompanyWave", mappedBy="wave")
+     * @ORM\OneToMany(targetEntity="\BrBundle\Entity\Match\Wave\CompanyWave", mappedBy="wave")
      * @ORM\JoinColumn(name="company_waves", referencedColumnName="id")
      */
     private $companyWaves;
