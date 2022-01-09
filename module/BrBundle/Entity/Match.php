@@ -20,7 +20,7 @@
 
 namespace BrBundle\Entity;
 
-use BrBundle\Entity\Match\CompanyWave;
+use BrBundle\Entity\Match\Wave\CompanyWave;
 use BrBundle\Entity\Match\MatcheeMap\CompanyMatcheeMap;
 use BrBundle\Entity\Match\MatcheeMap\StudentMatcheeMap;
 use BrBundle\Entity\Match\Profile;

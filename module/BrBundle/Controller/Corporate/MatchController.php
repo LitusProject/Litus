@@ -82,7 +82,7 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
         }
 
         $companyWaves = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Match\CompanyWave')
+            ->getRepository('BrBundle\Entity\Match\Wave\CompanyWave')
             ->findByCompany($person->getCompany());
 
         foreach ($companyWaves as $cw)

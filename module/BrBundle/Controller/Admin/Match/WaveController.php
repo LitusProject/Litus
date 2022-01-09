@@ -21,7 +21,7 @@
 namespace BrBundle\Controller\Admin\Match;
 
 use BrBundle\Entity\Company;
-use BrBundle\Entity\Match\CompanyWave;
+use BrBundle\Entity\Match\Wave\CompanyWave;
 use BrBundle\Entity\Match\Wave;
 use Doctrine\ORM\ORMException;
 use Laminas\View\Model\ViewModel;
@@ -163,7 +163,8 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
 
         foreach($wave->getCompanyWaves() as $cw){
             foreach($cw->getMatches() as $match){
-                $match->setWave(null);
+                $match->getMatch()->setWave(null);
+                $this->getEntityManager()->remove($match->getMatch());
             }
             $this->getEntityManager()->remove($cw);
         }
@@ -286,7 +287,6 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
         });
 
         $cw = new CompanyWave($wave, $company);
-        $this->getEntityManager()->persist($cw);
 
         $i = 0; // index of highest match
         $n = 0; // number of matches in this wave
@@ -294,7 +294,6 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
 
         while ($i < $sizeMM && $n<$nb){
             $matchee = $matcheeMaps[$i];
-            print($matchee == null);
             $match = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Match')
                 ->findOneByCompanyMatchee($matchee);
@@ -304,7 +303,11 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
                 continue;
             }
             $n += 1;
-            $match->setWave($cw);
+            $this->getEntityManager()->persist($cw);
+            $map = new Wave\WaveMatchMap($match, $cw);
+            $this->getEntityManager()->persist($map);
+            $cw->addMatch($map);
+            $match->setWave($map);
             $i += 1;
         }
 

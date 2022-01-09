@@ -52,7 +52,7 @@ class CompanyWave
     private $company;
 
     /**
-     * @var ArrayCollection The company's contacts
+     * @var ArrayCollection The company's top matches in this wave
      *
      * @ORM\OneToMany(targetEntity="\BrBundle\Entity\Match\Wave\WaveMatchMap", mappedBy="wave")
      * @ORM\JoinColumn(name="matches", referencedColumnName="id")
@@ -130,11 +130,23 @@ class CompanyWave
     }
 
     /**
+     * @param $match
      * @return self
      */
     public function removeMatch($match)
     {
         $this->matches->removeElement($match);
+
+        return $this;
+    }
+
+    /**
+     * @param $match
+     * @return self
+     */
+    public function addMatch($match)
+    {
+        $this->matches->add($match);
 
         return $this;
     }
