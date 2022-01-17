@@ -185,24 +185,24 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 ),
             )
         );
-        $this->add(
-            array(
-                'type'       => 'text',
-                'name'       => 'other_study',
-                'label'      => 'Study',
-                'required'   => true,
-                'attributes' => array(
-                    'id'      => 'other_study',
-                ),
-                'options' => array(
-                    'input' => array(
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
-                ),
-            )
-        );
+        // $this->add(
+        //     array(
+        //         'type'       => 'text',
+        //         'name'       => 'other_study',
+        //         'label'      => 'Study',
+        //         'required'   => true,
+        //         'attributes' => array(
+        //             'id'      => 'other_study',
+        //         ),
+        //         'options' => array(
+        //             'input' => array(
+        //                 'filters'  => array(
+        //                     array('name' => 'StringTrim'),
+        //                 ),
+        //             ),
+        //         ),
+        //     )
+        // );
         $this->add(
             array(
                 'type'     => 'text',
@@ -316,7 +316,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-     * @return array of possible universities
+     * @return array of possible Foods
      */
     protected function getFood(){
         return array("None");

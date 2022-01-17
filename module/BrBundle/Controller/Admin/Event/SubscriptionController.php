@@ -80,16 +80,18 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
 
     public function addAction()
     {
-
+        
         $form = $this->getForm('br_event_subscription_add');
         $eventObject = $this->getEventEntity();
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
-
+            
             if ($form->isValid()) {
+                $subscription = $form->hydrateObject();
+                $subscription->setEvent($eventObject);
                 $this->getEntityManager()->persist(
-                    $form->hydrateObject()
+                    $subscription
                 );
                 $this->getEntityManager()->flush();
 
@@ -102,12 +104,16 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                     'br_admin_event_subscription',
                     array(
                         'action' => 'overview',
+                        'event'  => $eventObject->getId(),
                     )
                 );
 
-                return new ViewModel();
+                return new ViewModel(array(
+                    'event' => $eventObject,
+                ));
             }
         }
+        // TODO: Mailing should maybe only be done automatically with user subscription and not admin subscription
 
         return new ViewModel(
             array(
@@ -123,18 +129,71 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         if ($subscription === null) {
             return new ViewModel();
         }
+        $eventObject = $this->getEventEntity();
 
-        $form = $this->getForm('br_admin_event_subscription_edit');
+
+        $form = $this->getForm('br_admin_event_subscription_edit', $subscription);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $subscription = $form->hydrateObject();
+                $subscription->setEvent($eventObject);
+                $this->getEntityManager()->persist(
+                    $subscription
+                );
+                $this->getEntityManager()->flush();
 
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The Subscription was succesfully created!'
+                );
+
+                $this->redirect()->toRoute(
+                    'br_admin_event_subscription',
+                    array(
+                        'action' => 'overview',
+                        'event'  => $eventObject->getId(),
+                    )
+                );
+
+                return new ViewModel(array(
+                    'event' => $eventObject,
+                ));
             }
         }
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'event' => $eventObject,
+            )
+        );
     }
+
+
+    public function mailAction(){
+        $subscription = $this->getSubscriptionEntity();
+        if ($subscription === null) {
+            return new ViewModel();
+        }
+        $eventObject = $this->getEventEntity();
+
+        $mailAddress = $subscription->getEmail();
+        
+        //TODO: Build mail from configs
+        // from
+        // Title
+        // Standard mail format with elements of subscriber filled in
+        // QR code generator?
+
+        // Send mail
+
+        // Reroute
+
+    }
+
 
 
     /**
@@ -180,7 +239,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                 'br_admin_event_company',
                 array(
                     'action' => 'manage',
-                    'event'  => $this->getEventEntity(),
+                    'event'  => strval($this->getEventEntity()->getId()),
                 )
             );
 
