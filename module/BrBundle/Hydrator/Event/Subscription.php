@@ -6,7 +6,7 @@ use BrBundle\Entity\Event\Subscription as SubscriptionEntity;
 
 class Subscription extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $stdKeys = array('first_name', 'last_name', 'email', 'phone_number','specialization', 'network_reception', 'university', 'study', 'study_year', 'food', 'network_reception', 'consent');
+    private static $stdKeys = array('first_name', 'last_name', 'email', 'phone_number','specialization', 'network_reception', 'university', 'study', 'study_year', 'food', 'network_reception');
     //TODO(Tom): event is een missing var, idk wrm
 
     protected function doExtract($object = null)
@@ -16,6 +16,7 @@ class Subscription extends \CommonBundle\Component\Hydrator\Hydrator
         }
         $data = $this->stdExtract($object, self::$stdKeys);
         $data["network_reception"] = $object->isAtNetworkReception();
+        $data["consent"] = $object->gaveConsent();
         return $data;
     }
 
@@ -26,6 +27,7 @@ class Subscription extends \CommonBundle\Component\Hydrator\Hydrator
         }
         $object = $this->stdHydrate($data, $object, self::$stdKeys);
         $object->setAtNetworkReception($data["network_reception"]);
+        $object->setConsent($data["consent"]);
         
         return $object;
     }

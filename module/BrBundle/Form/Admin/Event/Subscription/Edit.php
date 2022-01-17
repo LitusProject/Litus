@@ -18,14 +18,14 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Form\Admin\Event;
+namespace BrBundle\Form\Admin\Event\Subscription;
 
 /**
  * Edit an event.
  *
- * @author Matthias Swiggers <matthias.swiggers@vtk.be>
+ * @author Belian Callaerts <belian.callaerts@vtk.be>
  */
-class Edit extends \BrBundle\Form\Admin\Event\Add
+class Edit extends \BrBundle\Form\Admin\Event\Subscription\Add
 {
     public function init()
     {

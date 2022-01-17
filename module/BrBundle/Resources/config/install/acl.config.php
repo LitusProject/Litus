@@ -35,6 +35,9 @@ return array(
         'br_admin_event_company' => array(
             'manage', 'edit', 'delete', 'addAttendee', 'deleteAttendee', 'csv', 'csvAttendees',
         ),
+        'br_admin_event_subscription' => array(
+            'overview', 'add','edit', 'delete', 'mail',
+        ),
         'br_admin_event_location' => array(
             'manage',
         ),
