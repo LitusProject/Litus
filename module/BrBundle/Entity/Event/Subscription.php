@@ -359,4 +359,22 @@ class Subscription
     }
 
 
+    public function getStudyColor($study)
+    {
+        if( isset(self::$studyColors[strtolower($study)])){
+            return self::$studyColors[strtolower($study)];
+        } else {
+            return '';
+        }
+    }
+
+    public function getStudyTextColor($study)
+    {
+        if( isset(self::$studyTextColors[strtolower($study)])){
+            return self::$studyTextColors[strtolower($study)];
+        } else {
+            return '';
+        }
+    }
+
 }

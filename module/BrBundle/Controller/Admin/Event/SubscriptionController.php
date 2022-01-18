@@ -139,10 +139,8 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $subscription = $form->hydrateObject();
-                $subscription->setEvent($eventObject);
                 $this->getEntityManager()->persist(
-                    $subscription
+                    $form->hydrateObject()
                 );
                 $this->getEntityManager()->flush();
 
@@ -239,7 +237,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                 'br_admin_event_company',
                 array(
                     'action' => 'manage',
-                    'event'  => strval($this->getEventEntity()->getId()),
+                    'event'  => $this->getEventEntity()->getId(),
                 )
             );
 
