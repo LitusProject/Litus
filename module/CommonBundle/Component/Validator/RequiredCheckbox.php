@@ -15,7 +15,7 @@ class RequiredCheckbox extends \CommonBundle\Component\Validator\AbstractValidat
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_CHECKED => 'The checkbox is required',
+        self::NOT_CHECKED => 'The checkbox needs to be checked',
     );
 
     /**
@@ -29,13 +29,12 @@ class RequiredCheckbox extends \CommonBundle\Component\Validator\AbstractValidat
     {
         $this->setValue($value);
 
-
-        if ($value == '0') {
-            $this->error(self::NOT_CHECKED);
-
-            return false;
+        if (trim($value) != '0' && $value != 0) {
+            return true;
         }
 
-        return true;
+        $this->error(self::NOT_CHECKED);
+
+        return false;
     }
 }

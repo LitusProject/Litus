@@ -428,8 +428,7 @@ return array(
 
         'event_js' => array(
             'assets' => array(
-                'event/js/event.js',
-                'fullcalendar/fullcalendar.js',
+                'event/js/jcanvas.js',
             ),
             'filters' => array(
                 '?JsFilter' => array(

@@ -138,31 +138,27 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         );
 
         // TODO: get companies working
-        // $this->add(
-        //     array(
-        //         'type'       => 'select',
-        //         'name'       => 'copmany',
-        //         'label'      => 'Company',
-        //         'required'   => false,
-        //         'attributes' => array(
-        //             'id'      => 'company',
-        //             'options' => $this->getAttendingCompanies(),
-        //         ),
-        //         'options' => array(
-        //             'input' => array(
-        //                 'filters'  => array(
-        //                     array('name' => 'StringTrim'),
-        //                 ),
-        //             ),
-        //         ),
-        //     )
-        // );
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'company',
+                'label'      => 'Company',
+                'required'   => false,
+                'attributes' => array(
+                    'id'      => 'company',
+                    'options' => $this->getAttendingCompanies(),
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
 
         $this->addSubmit('Add', 'add');
-
-        if ($this->event !== null) {
-            $this->bind($this->event);
-        }
 
         if ($this->location !== null) {
             $this->bind($this->location);
@@ -204,6 +200,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      * @return array of possible location types
      */
     protected function getAttendingCompanies(){
-        return Event\Location::POSSIBLE_LOCATION_TYPES;
+        $companyMaps = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Event\CompanyMap')
+            ->findAllByEventQuery($this->location->getEvent())
+            ->getResult();
+
+        $companies = array('' => '');
+        foreach($companyMaps as $companyMap){
+            $companies[$companyMap->getCompany()->getId()] = $companyMap->getCompany()->getName();
+        }
+
+        return $companies;
     }
 }

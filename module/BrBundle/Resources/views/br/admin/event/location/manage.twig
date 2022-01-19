@@ -19,6 +19,7 @@
         </div>
     </div>
     <div id="controller_action">
+        
         <table class="manage full_width">
             <tr>
                 <th width="100px">Number</th>
@@ -36,7 +37,7 @@
                     <td>{{ location.getY() }}</td>
                     <td>{{ location.getOrientation() }}</td>
                     <td>{{ location.getType() }}</td>
-                    <td>{{ location.getCompany() }}</td>
+                    <td>{{ location.getCompany().getName() }}</td>
                     <td class="actions">
                         {% if hasAccess('br_admin_event_location', 'edit') %}
                             <a href="{{  url('br_admin_event_location', {"action": "edit", "event": event.getId(), "id": location.getId()}) }}" class="edit">Edit</a>

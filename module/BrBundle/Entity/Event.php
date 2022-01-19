@@ -241,7 +241,7 @@ class Event
     public function canSubscribe()
     {
         $now = new DateTime();
-        return ($this->subscriptionDate && $now >= $subscriptionDate );
+        return ($this->subscriptionDate && $now >= $this->subscriptionDate );
     }
 
 
@@ -270,7 +270,7 @@ class Event
     public function canViewMap()
     {
         $now = new DateTime();
-        return ($this->mapviewDate && $now >= $mapviewDate );
+        return ($this->mapviewDate && $now >= $this->mapviewDate );
     }
 
     /**

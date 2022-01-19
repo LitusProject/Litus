@@ -3,6 +3,7 @@
 namespace BrBundle\Controller\Career;
 
 use BrBundle\Entity\Event;
+use CommonBundle\Entity\User\Person\Academic;
 use DateTime;
 use Laminas\View\Model\ViewModel;
 
@@ -104,7 +105,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
     public function subscribeAction()
     {
         if ($this->getAuthentication()->isAuthenticated()) {
-            $person = $this->getAuthentication()->isAuthenticated();
+            $person = $this->getAuthentication()->getPersonObject();
         } else {
             $person = null;
         }
@@ -116,10 +117,17 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             return new ViewModel();
         }
         $form->setEvent($event);
-        
-        if ($person) {
-            //TODO: fill in + check whether person already is in event, if so then fill all subscriber info
+
+        if ($person instanceof Academic) {
+            
+            //TODO: Check for double subscriptions??
+
+            $data = array();
+            $data['first_name'] = $person->getFirstName();
+            $data['last_name'] = $person->getLastName();
+            $form->setData($data);
         }
+        
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -132,7 +140,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
                 $this->flashMessenger()->success(
                     'Success',
-                    'The event was succesfully created!'
+                    'You have succesfully subscribed for this event!'
                 );
 
                 $this->redirect()->toRoute(
@@ -147,10 +155,40 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             }
         }
 
+        
+
         return new ViewModel(
             array(
                 'event'=> $event,
                 'form' => $form,
+            )
+        );
+    }
+
+
+    public function mapAction()
+    {
+        $event = $this->getEventEntity();
+        if ($event === null) {
+            return new ViewModel();
+        }
+
+        $attendingCompaniesMaps = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Event\CompanyMap')
+            ->findAllByEventQuery($event)
+            ->getResult();
+
+        $locations = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Event\Location')
+            ->findAllByEventQuery($event)
+            ->getResult();
+
+        
+        return new ViewModel(
+            array(
+                'event' => $event,
+                'locations' => $locations,
+                'attendingCompanies' => $attendingCompaniesMaps,
             )
         );
     }

@@ -20,3 +20,27 @@
         </div>
     </div>
 {% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#university").change(function () {
+                if ($(this).val() == "other"){
+                    $("#other_university").removeProp("disabled");
+                } else {
+                    $("#other_university").prop("disabled", true);
+                }
+            });
+
+            $("#study").change(function () {
+                if ($(this).val() == "other"){
+                    $("#other_study").removeProp("disabled");
+                } else {
+                    $("#other_study").prop("disabled", true);
+                }
+            });
+
+            
+        });
+    </script>
+{% endblock %}

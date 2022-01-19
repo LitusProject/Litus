@@ -35,9 +35,8 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
 
     public function addAction()
     {
-        $form = $this->getForm('br_event_location_add');
         $eventObject = $this->getEventEntity();
-        // $form->setEvent($eventObject);
+        $form = $this->getForm('br_event_location_add', array('event' => $eventObject));
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -81,9 +80,9 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
     public function editAction(){
         $location = $this->getLocationEntity();
 
-        $form = $this->getForm('br_event_location_edit', $location);
         $eventObject = $this->getEventEntity();
-        // $form->setEvent($eventObject);
+        $form = $this->getForm('br_event_location_edit', array('location' => $location, 'event' => $eventObject));
+        $form->setEvent($eventObject);
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());

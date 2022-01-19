@@ -148,7 +148,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'label'      => 'Other university (if applicable)',
                 'required'   => false,
                 'attributes' => array(
-                    'id'      => 'other_university',
+                    'id'        => 'other_university',
+                    'disabled'  => true,
                 ),
                 'options' => array(
                     'input' => array(
@@ -186,7 +187,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'label'      => 'Other study (if applicable)',
                 'required'   => false,
                 'attributes' => array(
-                    'id'      => 'other_study',
+                    'id'        => 'other_study',
+                    'disabled'  => true,
                 ),
                 'options' => array(
                     'input' => array(
