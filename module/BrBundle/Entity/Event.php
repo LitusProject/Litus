@@ -55,6 +55,21 @@ class Event
      */
     private $descriptionForCompanies;
 
+    
+    /**
+     * @var string The description for this event for companies
+     *
+     * @ORM\Column(name="view_information_nl", type="text", nullable=true)
+     */
+    private $viewInformationNL;
+
+    /**
+     * @var string The description for this event for companies
+     *
+     * @ORM\Column(name="view_information_en", type="text", nullable=true)
+     */
+    private $viewInformationEN;
+
     /**
      * @var DateTime The start date and time of this event.
      *
@@ -219,6 +234,17 @@ class Event
         return $this;
     }
 
+
+    /**
+     * @return boolean
+     */
+    public function canSubscribe()
+    {
+        $now = new DateTime();
+        return ($this->subscriptionDate && $now >= $subscriptionDate );
+    }
+
+
     /**
      * @return DateTime
      */
@@ -236,6 +262,15 @@ class Event
         $this->mapviewDate = $mapviewDate;
 
         return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function canViewMap()
+    {
+        $now = new DateTime();
+        return ($this->mapviewDate && $now >= $mapviewDate );
     }
 
     /**
@@ -276,6 +311,54 @@ class Event
     public function setDescriptionForCompanies(string $descriptionForCompanies)
     {
         $this->descriptionForCompanies = $descriptionForCompanies;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getViewInformationNL()
+    {
+        return $this->viewInformationNL;
+    }
+
+    /**
+     * @param string $viewInformationNL
+     */
+    public function setViewInformationNL(string $viewInformationNL)
+    {
+        $this->viewInformationNL = $viewInformationNL;
+    }
+
+    /**
+     * @return string
+     */
+    public function getViewInformationEN()
+    {
+        return $this->viewInformationEN;
+    }
+
+    /**
+     * @param string $viewInformationNL
+     */
+    public function setViewInformationEN(string $viewInformationEN)
+    {
+        $this->viewInformationEN = $viewInformationEN;
+    }
+
+
+    /**
+     * @param string $lang
+     * @return string
+     */
+    public function getViewInformation(string $lang)
+    {
+        if ($lang == 'en' && $this->viewInformationEN){
+            return $this->viewInformationEN;
+        } else {
+            return $this->viewInformationNL;
+        }
+        
     }
 
     /**

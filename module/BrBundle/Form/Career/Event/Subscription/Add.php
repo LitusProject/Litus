@@ -18,7 +18,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Form\Admin\Event\Subscription;
+namespace BrBundle\Form\Career\Event\Subscription;
 
 use BrBundle\Entity\Company;
 use BrBundle\Entity\Event;
@@ -31,7 +31,7 @@ use Laminas\Validator\Identical;
  *
  * @author Belian Callaerts <belian.callaerts@vtk.be>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     protected $hydrator = 'BrBundle\Hydrator\Event\Subscription';
 
@@ -44,7 +44,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      * @var Subscription |null
      */
     protected $subscription;
-
 
 
     public function init()

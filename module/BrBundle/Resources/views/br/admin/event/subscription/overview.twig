@@ -22,14 +22,16 @@
         <table class="manage full_width">
             <tr>
                 <th>Name</th>
-                <th width="200px">Food</th>
+                <th width="200px">University</th>
+                <th width="200px">Study</th>
                 <th width="180px">At network reception</th>
                 <th width="100px">Action</th>
             </tr>
             {% for subscription in paginator %}
                 <tr class="item item-{{ subscription.getId() }}">
                     <td>{{ subscription.getFirstName() }} {{ subscription.getLastName() }}</td>
-                    <td>{{ subscription.getFood() }}</td>
+                    <td>{{ subscription.getUniversityString() }}</td>
+                    <td>{{ subscription.getStudyString() }}</td>
                     <td>{% if subscription.isAtNetworkReception() %}X{% endif %}</td>
                     <td class="actions">
                         {% if hasAccess('br_admin_event_subscription', 'edit') %}

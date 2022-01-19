@@ -83,6 +83,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         
         $form = $this->getForm('br_event_subscription_add');
         $eventObject = $this->getEventEntity();
+        $form->setEvent($eventObject);
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());

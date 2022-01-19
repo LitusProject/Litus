@@ -12,6 +12,8 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
     private static $stdKeys = array('title',
         'description_for_students',
         'description_for_companies',
+        'view_information_nl',
+        'view_information_en',        
 //        'nb_companies',
 //        'nb_students',
         'visible_for_companies',
@@ -37,6 +39,8 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         if ($date != null){
             $data['mapview_date'] = $object->getMapviewDate()->format('d/m/Y H:i');
         }
+
+
         return $data;
     }
 

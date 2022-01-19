@@ -70,6 +70,36 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'    => 'textarea',
+                'name'    => 'view_information_nl',
+                'label'   => 'Information displayed on the page in NL',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'    => 'textarea',
+                'name'    => 'view_information_en',
+                'label'   => 'Information displayed on the page in EN',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
                 'type'     => 'datetime',
                 'name'     => 'start_date',
                 'label'    => 'Start Date',

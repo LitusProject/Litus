@@ -74,6 +74,26 @@ class Subscription
      */
     private $university;
 
+
+    const POSSIBLE_UNIVERSITIES = array(
+        'ku leuven'     => 'KU Leuven',
+        'vub'           => 'Vrije Universiteit Brussel',
+        'ugent'         => 'UGent',
+        'uhasselt'      => 'UHasselt',
+        'uantwerpen'    => 'UAntwerpen',
+        'other'         => 'Other',
+    );
+
+
+
+    /**
+     * @var string University of the subscriber if it is not one of the available
+     *
+     * @ORM\Column(name="other_university", type="text", nullable=true)
+     *
+     */
+    private $other_university;
+
     /**
      * @var string Study of the subscriber
      *
@@ -81,6 +101,14 @@ class Subscription
      *
      */
     private $study;
+
+    /**
+     * @var string Study of the subscriber if it is not one of the available
+     *
+     * @ORM\Column(name="other_study", type="text", nullable=true)
+     *
+     */
+    private $other_study;
 
     /**
      * @var string Specialization of the subscriber
@@ -98,10 +126,22 @@ class Subscription
      */
     private $studyYear;
 
+
+    const POSSIBLE_STUDY_YEARS = array(
+        'bach1'         => '1st Bachelor',
+        'bach2'         => '2nd Bachelor',
+        'bach3'         => '3rd Bachelor',
+        'ma1'           => '1st Master',
+        'ma2'           => '2st Master',
+        'manama'        => 'MaNaMa',
+        'phd'           => 'PhD',
+        'other'         => 'Other',
+    );
+
     /**
      * @var string Food of the subscriber
      *
-     * @ORM\Column(name="food", type="text")
+     * @ORM\Column(name="food", type="text", nullable=true)
      *
      */
     private $food;
@@ -230,12 +270,23 @@ class Subscription
         $this->phoneNumber = $phoneNumber;
     }
 
-    /**
+        /**
      * @return string
      */
     public function getUniversity(): string
     {
         return $this->university;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUniversityString(): string
+    {
+        if ($this->university == 'other'){
+            return ($this->otherUniversity?$this->otherUniversity:' ');
+        }
+        return $this::POSSIBLE_UNIVERSITIES[$this->university];
     }
 
     /**
@@ -246,6 +297,7 @@ class Subscription
         $this->university = $university;
     }
 
+
     /**
      * @return string
      */
@@ -253,6 +305,20 @@ class Subscription
     {
         return $this->study;
     }
+
+    /**
+     * @return string
+     */
+    public function getStudyString(): string
+    {
+        if ($this->study == 'other'){
+            return ($this->otherStudy?$this->otherStudy:' ');
+        }
+        return Event\CompanyMetadata::POSSIBLE_MASTERS[$this->study];
+    }
+
+
+
 
     /**
      * @param string $study
@@ -299,7 +365,7 @@ class Subscription
      */
     public function getFood(): string
     {
-        return $this->food;
+        return ($this->food?$this->food:'');
     }
 
     /**
@@ -356,25 +422,6 @@ class Subscription
     public function setConsent(bool $consent): void
     {
         $this->consent = $consent;
-    }
-
-
-    public function getStudyColor($study)
-    {
-        if( isset(self::$studyColors[strtolower($study)])){
-            return self::$studyColors[strtolower($study)];
-        } else {
-            return '';
-        }
-    }
-
-    public function getStudyTextColor($study)
-    {
-        if( isset(self::$studyTextColors[strtolower($study)])){
-            return self::$studyTextColors[strtolower($study)];
-        } else {
-            return '';
-        }
     }
 
 }

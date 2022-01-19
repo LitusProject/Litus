@@ -2,7 +2,7 @@
 
 namespace BrBundle\Controller\Career;
 
-use BrBundle\Entity\Company\Event;
+use BrBundle\Entity\Event;
 use DateTime;
 use Laminas\View\Model\ViewModel;
 
@@ -53,7 +53,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                     'events' => (object) $result,
                 ),
             )
-        );
+        ); 
     }
 
     public function viewAction()
@@ -63,14 +63,11 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             return new ViewModel();
         }
 
-        $logoPath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.public_logo_path');
+        error_log($event->getTitle());
 
         return new ViewModel(
             array(
                 'event'    => $event,
-                'logoPath' => $logoPath,
             )
         );
     }
@@ -99,6 +96,61 @@ class EventController extends \BrBundle\Component\Controller\CareerController
         return new ViewModel(
             array(
                 'result' => $result,
+            )
+        );
+    }
+
+
+    public function subscribeAction()
+    {
+        if ($this->getAuthentication()->isAuthenticated()) {
+            $person = $this->getAuthentication()->isAuthenticated();
+        } else {
+            $person = null;
+        }
+
+        $form = $this->getForm('br_career_event_subscription_add');
+
+        $event = $this->getEventEntity();
+        if ($event === null) {
+            return new ViewModel();
+        }
+        $form->setEvent($event);
+        
+        if ($person) {
+            //TODO: fill in + check whether person already is in event, if so then fill all subscriber info
+        }
+
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->getRequest()->getPost());
+
+            if ($form->isValid()) {
+                $this->getEntityManager()->persist(
+                    $form->hydrateObject()
+                );
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The event was succesfully created!'
+                );
+
+                $this->redirect()->toRoute(
+                    'br_career_event',
+                    array(
+                        'action' => 'view',
+                        'id'  => $event->getId(),
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'event'=> $event,
+                'form' => $form,
             )
         );
     }
@@ -134,9 +186,9 @@ class EventController extends \BrBundle\Component\Controller\CareerController
      */
     private function getEventEntity()
     {
-        $event = $this->getEntityById('BrBundle\Entity\Company\Event');
+        $event = $this->getEntityById('BrBundle\Entity\Event');
 
-        if (!($event instanceof Event) || $event->getEvent()->getStartDate() < new DateTime() || !$event->getCompany()->isActive()) {
+        if (!($event instanceof Event)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No event was found!'
