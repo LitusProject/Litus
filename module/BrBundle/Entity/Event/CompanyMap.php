@@ -51,14 +51,20 @@ class CompanyMap
      * @ORM\OneToMany(targetEntity="BrBundle\Entity\Event\CompanyAttendee", mappedBy="companyMap")
      */
     private $attendees;
+    
+    /**
+     * @var string The master interests of the company
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $masterInterests;
 
     /**
-     *@var CompanyMetadata The metadata of the company for this event
+     * @var string The notes about the attending company
      *
-     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Event\CompanyMetadata")
-     * @ORM\JoinColumn(referencedColumnName="id", nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
-    private $metadata;
+    private $notes;
 
     /**
      * @param Company $company
@@ -122,26 +128,6 @@ class CompanyMap
     }
 
     /**
-     * @param  CompanyMetadata $metadata
-     *
-     * @return self
-     */
-    public function setCompanyMetadata(CompanyMetadata $metadata)
-    {
-        $this->metadata = $metadata;
-
-        return $this;
-    }
-
-    /**
-     * @return CompanyMetadata
-     */
-    public function getCompanyMetadata()
-    {
-        return $this->metadata;
-    }
-
-    /**
      * @return self
      */
     public function setDone()
@@ -168,4 +154,45 @@ class CompanyMap
         }
         return 'In Progress';
     }
+
+
+    /**
+     * @return array $masterInterests
+     */
+    public function getMasterInterests()
+    {
+        if (is_string($this->masterInterests) && substr($this->masterInterests, 0, 2) != 'a:') {
+            throw new \RuntimeException('Badly formatted master interests in company metadata (get)');
+        }
+        return unserialize($this->masterInterests);
+    }
+
+    /**
+     * @param  array $master_interests
+     * @return self
+     */
+    public function setMasterInterests($masterInterests)
+    {
+        $this->masterInterests = serialize($masterInterests);
+
+        return $this;
+    }
+
+    /**
+     * @param  string $notes
+     * @return
+     */
+    public function setNotes($notes)
+    {
+        $this->notes = $notes;
+    }
+
+    /**
+     * @return  string The notes of the company
+     */
+    public function getNotes()
+    {
+        return $this->notes;
+    }
+
 }

@@ -3,6 +3,7 @@
 namespace BrBundle\Controller\Career;
 
 use BrBundle\Entity\Event;
+use BrBundle\Entity\Company;
 use CommonBundle\Entity\User\Person\Academic;
 use DateTime;
 use Laminas\View\Model\ViewModel;
@@ -178,17 +179,25 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             ->findAllByEventQuery($event)
             ->getResult();
 
+        $interestedMasters = array();
+        foreach ($attendingCompaniesMaps as $companyMap){
+            $interestedMasters[$companyMap->getCompany()->getId()] = $companyMap->getMasterInterests();
+        }
+
         $locations = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Event\Location')
             ->findAllByEventQuery($event)
             ->getResult();
 
+
         
         return new ViewModel(
             array(
-                'event' => $event,
-                'locations' => $locations,
-                'attendingCompanies' => $attendingCompaniesMaps,
+                'event'                 => $event,
+                'locations'             => $locations,
+                'attendingCompanies'    => $attendingCompaniesMaps,
+                'interestedMasters'     => $interestedMasters,
+                'masters'               => Company::POSSIBLE_MASTERS + array('other' => 'Other')
             )
         );
     }

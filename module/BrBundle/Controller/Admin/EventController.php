@@ -229,6 +229,57 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function editAttendeeAction()
+    {
+        $event = $this->getEventEntity();
+        if ($event === null) {
+            return new ViewModel();
+        }
+
+        $companyMap = $this->getCompanyMapEntity();
+
+        $form = $this->getForm('br_event_company_edit', array('companyMap' => $companyMap ));
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+            if ($form->isValid()) {
+                error_log("here");
+                $this->getEntityManager()->persist(
+                    $form->hydrateObject($companyMap)
+                );
+                $this->getEntityManager()->flush();
+
+                error_log($event->getId());
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The attending company was successfully updated!'
+                );
+
+                $this->redirect()->toRoute(
+                    'br_admin_event',
+                    array(
+                        'action' => 'edit',
+                        'id'  => $event->getId(),
+                    )
+                );
+                return new ViewModel(array(
+                    'event'  => $event,
+                ));
+            }
+            
+        }
+
+        return new ViewModel(
+            array(
+                'form'   => $form,
+                'event'  => $event,
+                'map'    => $companyMap,
+            )
+        );
+    }
+
     /**
      * @return Event|null
      */

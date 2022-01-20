@@ -8,16 +8,23 @@
             <div class="pageTitleDeco"></div>
         </div>
         <div class="spacer40"></div>
+        
+        <a class="button blue unfilled" href="{{ url('br_career_event',{ 'action': 'view', 'id': event.getId() }) }}">← {{ translate('Return to the event information') }}</a>
 
         <div class="row">
+        <div class="col-sm-12">
+            <div class="page-header">
+                <h3>Company map</h3>
+            </div>
+        </div>
         
         <div class="col-sm-3">
             <ul class="nav nav-sidebar">
                 <li><a href="#" id="toggleAll"><input type="checkbox"> Select All</a></li>
                 <li class="divider"></li>
-                {# {% for sector in sectors %}
-                    <li><a href="#" data-sector="{{ sector.getName() }}"><input type="checkbox"> {{ sector.getName() }}</a></li>
-                {% endfor %}  #}
+                {% for master in masters %}
+                    <li><a href="#" data-master="{{ master }}"><input type="checkbox"> {{ master }}</a></li>
+                {% endfor %} 
             </ul>
         </div>
         <div class="col-sm-9">
@@ -26,7 +33,7 @@
         </div>
         <div class="col-sm-12">
             <div class="page-header">
-                <h2>Legend</h2>
+                <h4>Legend</h4>
             </div>
         </div>
         <div id="legend">
@@ -52,7 +59,7 @@
             
             {% for location in locations %}
                 {% if location.getNumber() != 0 %}
-                    {'id': '{{ location.getCompany().getId() }}', 'name': '{{ location.getCompany().getName() }}', 'location': '{{ location.getNumber() }}', {#'url': 'TODO', 'sectors': {{ company.getSectorsArray()|json_encode|raw }}#}} {% if not (loop.last) %},{% endif %}
+                    {'id': '{{ location.getCompany().getId() }}', 'name': '{{ location.getCompany().getName() }}', 'location': '{{ location.getNumber() }}', 'url': '{{ url("br_career_company", {"action": "view", "company": location.getCompany().getSlug()}) }}', 'masters': {{ interestedMasters[location.getCompany().getid()]|json_encode|raw }}} {% if not (loop.last) %},{% endif %}
                 {% endif %}
             {% endfor %}
 
@@ -68,7 +75,7 @@
         var locationWidth = 50;
         var locationHeight = 38;
         var canvasRatio = 650/900;
-        var canvasWidth = 900;
+        var canvasWidth = 1200;
         var borderColor = '#1c294b';
         var locationBackground = '#e5e3e9';
 
@@ -129,36 +136,20 @@
                     text: 'Not Interested'
                 }).drawRect({
                     layer: true,
-                    name: 'company-partiallyInterested',
-                    strokeStyle: borderColor,
-                    fillStyle: locationBackground,
-                    x: (200+locationWidth*0.5)*scale, y: 20*scale,
-                    width: locationWidth*scale,
-                    height: locationHeight*scale
-                }).drawText({
-                    layer: true,
-                    name: 'company-partiallyInterested-text',
-                    fillStyle: borderColor,
-                    x: ((220+locationWidth)+2*locationWidth*1.2)*scale, y: 20*scale,
-                    fontSize: 18*scale,
-                    fontFamily: 'Verdana, sans-serif',
-                    text: 'Partially Interested'
-                }).drawRect({
-                    layer: true,
                     name: 'company-coreBusiness',
                     strokeStyle: borderColor,
                     fillStyle: '#a29bb0',
-                    x: (425+locationWidth*0.5)*scale, y: 20*scale,
+                    x: (200+locationWidth*0.5)*scale, y: 20*scale,
                     width: locationWidth*scale,
                     height: locationHeight*scale
                 }).drawText({
                     layer: true,
                     name: 'company-coreBusiness-text',
                     fillStyle: borderColor,
-                    x: ((425+locationWidth*1.2)+2*locationWidth)*scale, y: 20*scale,
+                    x: ((205+locationWidth*1.2)+2*locationWidth)*scale, y: 20*scale,
                     fontSize: 18*scale,
                     fontFamily: 'Verdana, sans-serif',
-                    text: 'Core Business'
+                    text: 'Interested'
                 });
         }
 
@@ -171,7 +162,7 @@
                 name: 'door-1',
                 strokeStyle: borderColor,
                 fillStyle: borderColor,
-                x: 0, y: 190*scale,
+                x: scale*canvasWidth, y: 0.21*canvasWidth*scale,
                 width: 5*scale,
                 height: 70*scale,
             }).drawRect({
@@ -179,24 +170,24 @@
                 name: 'door-2',
                 strokeStyle: borderColor,
                 fillStyle: borderColor,
-                x: 0, y: 470*scale,
+                x: scale*canvasWidth, y: 0.52*canvasWidth*scale,
                 width: 5*scale,
                 height: 70*scale,
             }).drawText({
                 layer: true,
                 name: 'food_drinks',
                 fillStyle: borderColor,
-                x: 7, y: canvasRatio*canvasWidth/2*scale,
+                x: scale*canvasWidth-7, y: canvasRatio*canvasWidth/2*scale,
                 fontSize: 16*scale,
                 fontFamily: 'Verdana, sans-serif',
                 text: "Drink and Foods",
                 rotate: -90,
             });
 
-            var sectors = [];
+            var selectedMasters = [];
             $('.nav-sidebar li a').each(function () {
                 if ($(this).find('input').is(':checked')){
-                    sectors.push($(this).data('sector'));
+                    selectedMasters.push($(this).data('master'));
                 }
             });
             var legend = $('#legend');
@@ -207,10 +198,10 @@
                 var highlight = false;
 
                 var highlightColor = locationBackground;
-                $(this.sectors).each(function () {
-                    if ($.inArray(this.name.toString(), sectors) >= 0) {
+                $(this.masters).each(function () {
+                    if ($.inArray(this, selectedMasters) >= 0) {
                         highlight = true;
-                        if (String(this.interest) == "core business") {
+                        if (String(this.interest) == "interested") {
                             highlightColor = '#a29bb0';
                         }
                     }

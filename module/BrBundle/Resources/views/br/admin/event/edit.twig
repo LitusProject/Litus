@@ -25,7 +25,10 @@
                     <tr class="item item-{{ eventCompanyMap.getId() }}">
                         <td>{{ eventCompanyMap.getCompany().getName() }}</td>
                         <td>{{ eventCompanyMap.getStatus() }}</td>
-                        <td>
+                        <td class="actions">
+                            {% if hasAccess('br_admin_event', 'editAttendee') %}
+                                <a href="{{ url('br_admin_event', {"action": "editAttendee", "id": event.getId(), "map": eventCompanyMap.getId()}) }}" class="edit">Edit</a>
+                            {% endif %}
                             {% if hasAccess('br_admin_event', 'deleteAttendee') %}
                                 <a href="#" data-id="{{ event.getId() }}" data-map="{{ eventCompanyMap.getId() }}" data-name="{{ eventCompanyMap.getCompany().getName() }}" class="delete">Delete</a>
                             {% endif %}
