@@ -22,6 +22,7 @@ class Location extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                     $query->expr()->eq('l.event', ':event')
                 )
             )
+            ->orderBy('l.number')
             ->setParameter('event', $event->getId())
             ->getQuery();
     }

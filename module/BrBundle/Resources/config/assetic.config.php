@@ -120,6 +120,7 @@ return array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
+            '@event_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
             '@common_form_upload_progress',

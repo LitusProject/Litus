@@ -258,7 +258,7 @@ class Location
      */
     public function getHeight()
     {
-        return $this->LOCATION_HEIGHT[$this->type];
+        return $this::LOCATION_HEIGHT[$this->type];
     }
 
     /**
@@ -266,7 +266,7 @@ class Location
      */
     public function getWidth()
     {
-        return $this->LOCATION_WIDTH[$this->type];
+        return $this::LOCATION_WIDTH[$this->type];
     }
 
 }

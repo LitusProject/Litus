@@ -24,11 +24,17 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
             $this->getParam('page')
         );
 
+        $locations = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Event\Location')
+            ->findAllByEventQuery($event)
+            ->getResult();
+
         return new ViewModel(
             array(
                 'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
                 'event'             => $event,
+                'locations'         => $locations,
             )
         );
     }

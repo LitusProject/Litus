@@ -189,13 +189,11 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             ->findAllByEventQuery($event)
             ->getResult();
 
-
         
         return new ViewModel(
             array(
                 'event'                 => $event,
                 'locations'             => $locations,
-                'attendingCompanies'    => $attendingCompaniesMaps,
                 'interestedMasters'     => $interestedMasters,
                 'masters'               => Company::POSSIBLE_MASTERS + array('other' => 'Other')
             )
