@@ -325,10 +325,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
 
     /**
-     * @return array of possible universities
+     * @return array of possible studies
      */
     protected function getStudies(){
-        return Company::POSSIBLE_MASTERS + array('other' => 'Other');
+        return Subscription::POSSIBLE_STUDIES;
     }
 
 

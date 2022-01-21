@@ -3,8 +3,12 @@
 namespace BrBundle\Controller\Career;
 
 use BrBundle\Entity\Event;
+use BrBundle\Entity\Event\Subscriptions;
+use BrBundle\Entity\Event\Match;
+use BrBundle\Entity\Event\Visitor;
 use BrBundle\Entity\Company;
 use CommonBundle\Entity\User\Person\Academic;
+use BrBundle\Entity\User\Person\Corporate;
 use DateTime;
 use Laminas\View\Model\ViewModel;
 
@@ -64,8 +68,6 @@ class EventController extends \BrBundle\Component\Controller\CareerController
         if ($event === null) {
             return new ViewModel();
         }
-
-        error_log($event->getTitle());
 
         return new ViewModel(
             array(
@@ -165,6 +167,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             )
         );
     }
+    
 
 
     public function mapAction()
@@ -195,7 +198,143 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                 'event'                 => $event,
                 'locations'             => $locations,
                 'interestedMasters'     => $interestedMasters,
-                'masters'               => Company::POSSIBLE_MASTERS + array('other' => 'Other')
+                'masters'               => Subscription::POSSIBLE_STUDIES
+            )
+        );
+    }
+
+
+    public function qrAction()
+    {   
+        $qr = $this->getParam('code');
+        if ($qr === null) {
+            return new ViewModel();
+        }
+
+        $event = $this->getEventEntity();
+        if ($event === null) {
+            return new ViewModel();
+        }
+
+        $subscription = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Event\Subscription')
+            ->findOneByQREvent($event, $qr)[0];
+
+        if ($this->getAuthentication()->isAuthenticated()) {
+            $person = $this->getAuthentication()->getPersonObject();
+        }
+
+        // If someone is logged in
+        if ($person != null){
+            
+            // Check whether person is affiliated to a company
+            if ($person instanceof Corporate){
+                $companyMap = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Event\CompanyMap')
+                    ->findByEventAndCompany($event, $person->getCompany());
+                
+                // If company is at event
+                if ($companyMap != null) {
+                    $companyMap = $companyMap[0];
+                    
+                    // Check whether match already exists
+                    $match = $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Event\Match')
+                        ->findByMapAndSubscription($companyMap, $subscription);
+
+                    if ($match == null) {
+                        $match = new Match($companyMap, $subscription);
+                        $this->getEntityManager()->persist(
+                            $match
+                        );
+                        $this->getEntityManager()->flush();
+                        $duplicate = false;
+
+                    } else {
+                        $match = $match[0];
+                        $duplicate = true;
+                    }
+                    
+                    return new ViewModel(
+                        array(
+                            'event'     => $event,
+                            'match'     => $match,
+                            'duplicate' => $duplicate,
+                        )
+                    );
+                }
+            } 
+            
+            if ($this->hasAccess()->toResourceAction('br_career_event', 'scanQr')) {
+                // Check whether the person can use the scanQr for the entry scanning
+                $visitor = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Event\Visitor')
+                    ->findByQrAndExitNull($qr);
+                
+                $previousVisits = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Event\Visitor')
+                    ->findByQr($qr);
+
+                if ($visitor == null){
+                    // If there is no such result, then the person must be entering
+                    $entry = true;
+
+                    $visitor = new Visitor($qr);
+                    $this->getEntityManager()->persist(
+                        $visitor
+                    );
+                    $this->getEntityManager()->flush();
+
+                    $color = unserialize($this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('br.study_colors'))[$subscription->getStudy()];
+                    
+                    $textColor = unserialize($this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('br.study_text_colors'))[$subscription->getStudy()];
+                    
+                } else {
+                    // Otherwise, the person is exiting
+                    $entry = false;
+                    $visitor[0]->setExitTimestamp(new DateTime());
+
+                    $this->getEntityManager()->flush();
+                }
+
+                
+
+                return new ViewModel(
+                    array(
+                        'event'         => $event,
+                        'subscription'  => $subscription,
+                        'entry'         => $entry,
+                        'firstTime'     => ($previousVisits ==  null),
+                        'color'         => $color,
+                        'textColor'     => $textColor
+                    )
+                );
+            }
+        }
+
+        // This should only be reached when there is either no person logged in or that person has no special access
+
+        $encodedUrl = urlencode($this->url()
+                ->fromRoute('br_career_event',
+                    array('action' => 'qr',
+                        'event' => $event->getId(),
+                        'code' => $qr),
+                    array('force_canonical' => true)));
+            
+        $qrSource = str_replace('{{encodedUrl}}',
+                        $encodedUrl,
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('br.google_qr_api'));
+
+        return new ViewModel(
+            array(
+                'event'     => $event,
+                'qrSource'  => $qrSource,
             )
         );
     }

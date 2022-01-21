@@ -21,7 +21,7 @@
 namespace BrBundle\Form\Admin\Event\Company;
 
 
-use BrBundle\Entity\Company;
+use BrBundle\Entity\Event\Subscription;
 use BrBundle\Entity\Event\CompanyMap;
 
 class Edit extends \CommonBundle\Component\Form\Admin\Form
@@ -110,6 +110,6 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
      */
     private function getPossibleMasters()
     {
-        return Company::POSSIBLE_MASTERS + array('other' => 'Other');
+        return Subscription::POSSIBLE_STUDIES;
     }
 }

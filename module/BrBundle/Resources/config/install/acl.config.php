@@ -66,7 +66,7 @@ return array(
             'view', 'overview', 'file', 'search',
         ),
         'br_career_event' => array(
-            'view', 'overview',
+            'view', 'overview','map','subscribe','qr','scanQr',
         ),
         'br_career_vacancy' => array(
             'view', 'overview',

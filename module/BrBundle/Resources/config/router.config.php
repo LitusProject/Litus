@@ -344,9 +344,10 @@ return array(
         'br_career_event' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '[/:language]/career/event[/:action[/:id][/page/:page]][/]',
+                'route'       => '[/:language]/career/event[/:action[/:id][/code/:code][/page/:page]][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'code'     => '[a-z0-9]*',
                     'id'       => '[0-9_-]*',
                     'language' => '(en|nl)',
                     'page'     => '[0-9]*',

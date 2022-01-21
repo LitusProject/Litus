@@ -22,9 +22,10 @@
         <table class="manage full_width">
             <tr>
                 <th>Name</th>
-                <th width="200px">University</th>
+                <th width="150px">University</th>
                 <th width="200px">Study</th>
                 <th width="180px">At network reception</th>
+                <th width="150px">QR</th>
                 <th width="100px">Action</th>
             </tr>
             {% for subscription in paginator %}
@@ -33,6 +34,7 @@
                     <td>{{ subscription.getUniversityString() }}</td>
                     <td>{{ subscription.getStudyString() }}</td>
                     <td>{% if subscription.isAtNetworkReception() %}X{% endif %}</td>
+                    <td>{{subscription.getQrCode()}}</td>
                     <td class="actions">
                         {% if hasAccess('br_admin_event_subscription', 'edit') %}
                             <a href="{{  url('br_admin_event_subscription', {"action": "edit", "event": event.getId(), "id": subscription.getId()}) }}" class="edit">Edit</a>

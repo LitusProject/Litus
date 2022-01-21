@@ -404,4 +404,53 @@ Bestaand Bedrijf: {{ oldCompany }}.
         ),
         'description' => 'The mail sent when a duplicate date is chosen for a communication'
     ),
+    array(
+        'key'         => 'br.google_qr_api',
+        'value'       => 'https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl={{encodedUrl}}&choe=UTF-8',
+        'description' => 'The google qr code generator api',
+    ),
+    array(
+        'key'         => 'br.study_colors',
+        'value'       => serialize(array(
+            'architectural engineering' => 'rgb(46, 184, 184)',// 'rgb(255, 105, 185)',
+            'biomedical engineering' => 'rgb(240, 240, 219)',//'rgb(46, 170, 20)',
+            'civil engineering' => 'rgb(243, 239, 25)',//'rgb(0, 0, 0)',
+            'chemical engineering' => 'rgb(46, 115, 184)',//'rgb(40, 65, 120)',
+            'computer science engineering' => 'rgb(230, 92, 0)',//'rgb(255, 144, 36)',
+            'electrical engineering' => 'rgb(137, 1, 46)',//'rgb(33, 200, 233)',
+            'energy engineering' => 'rgb(0, 0, 0)',//'rgb(0, 150, 230)',
+            'logistics engineering' => 'rgb(153, 204, 0)',//'rgb(205, 143, 120)',
+            'materials engineering' => 'rgb(96, 0, 128)',//'rgb(135, 71, 149)',
+            'mathematical engineering' => 'rgb(255, 255, 255)',//'rgb(255, 255, 255)',
+            'mechanical engineering' => 'rgb(255, 0, 0)',//'rgb(255, 56, 53)',
+            'nanoengineering' => 'rgb(140, 140, 140)',//'rgb(255, 223, 0)',
+            'faculty of bio engineering' => 'rgb(46, 118, 46)',//'rgb(0, 78, 36)',
+            'faculty of business and economics' => 'rgb(106, 206, 226)',//'rgb(180, 202, 202)',
+            'faculty of engineering technology' => 'rgb(64, 191, 96)',//'rgb(255, 255, 143)',
+            'other' => 'rgb(230, 25, 107)'//'rgb(255, 248, 233)'
+        )),
+        'description' => 'The colors associated with a specific study in RGB values',
+    ),
+    array(
+        'key'         => 'br.study_text_colors',
+        'value'       => serialize(array(
+            'architectural engineering' => 'black',
+            'biomedical engineering' => 'black',
+            'construction engineering' => 'black',
+            'chemical engineering' => 'white',
+            'computer science' => 'black',
+            'electrical engineering' => 'white',
+            'energy science' => 'white',
+            'materials engineering' => 'white',
+            'mathematical engineering' => 'black',
+            'mechanical engineering' => 'white',
+            'nanoscience and nanotechnology' => 'white',
+            'logistics and transport systems' => 'black',
+            'faculty of bio engineering' => 'white',
+            'faculty of business and economics' => 'black',
+            'faculty of engineering technology' => 'white',
+            'other' => 'white'
+        )),
+        'description' => 'The text colors associated with a specific study to be visible on the background',
+    ),
 );

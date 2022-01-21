@@ -4,6 +4,7 @@
 namespace BrBundle\Entity\Event;
 
 use BrBundle\Entity\Event;
+use BrBundle\Entity\Company;
 use Doctrine\ORM\Mapping as ORM;
 use function Monad\Either\tryCatch;
 
@@ -13,7 +14,7 @@ use function Monad\Either\tryCatch;
  * @author Belian Callaerts <belian.callaerts@vtk.be>
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Event\Subscription")
- * @ORM\Table(name="br_events_subscriptions")
+ * @ORM\Table(name="br_events_subscriptions", uniqueConstraints={@ORM\UniqueConstraint(name="event_qr",columns={"event_id", "qr_code"})})
  */
 class Subscription
 {
@@ -109,6 +110,14 @@ class Subscription
      *
      */
     private $other_study;
+
+
+    const POSSIBLE_STUDIES = Company::POSSIBLE_MASTERS + array(
+        'faculty of bio engineering'        => 'Faculty of bio engineering',
+        'faculty of business and economics' => 'Faculty of business and economics',
+        'faculty of engineering technology' => 'Faculty of engineering technology',
+        'other'                             => 'Other'
+    );
 
     /**
      * @var string Specialization of the subscriber
@@ -314,7 +323,7 @@ class Subscription
         if ($this->study == 'other'){
             return ($this->otherStudy?$this->otherStudy:' ');
         }
-        return Event\CompanyMetadata::POSSIBLE_MASTERS[$this->study];
+        return $this::POSSIBLE_STUDIES[$this->study];
     }
 
 

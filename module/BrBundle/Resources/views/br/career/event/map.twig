@@ -4,7 +4,7 @@
     <div class="container">
 
         <div class="pageTitleHolder">
-            <h1>{{ event.getTitle(language) }}</h1>
+            <h1>{{ event.getTitle(language) }}: Company map</h1>
             <div class="pageTitleDeco"></div>
         </div>
         <div class="spacer40"></div>
@@ -12,11 +12,6 @@
         <a class="button blue unfilled" href="{{ url('br_career_event',{ 'action': 'view', 'id': event.getId() }) }}">← {{ translate('Return to the event information') }}</a>
 
         <div class="row">
-        <div class="col-sm-12">
-            <div class="page-header">
-                <h3>Company map</h3>
-            </div>
-        </div>
         
         <div class="col-sm-3">
             <ul class="nav nav-sidebar">
