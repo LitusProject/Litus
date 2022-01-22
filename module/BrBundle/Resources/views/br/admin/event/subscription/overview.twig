@@ -18,6 +18,28 @@
             <p>An error occurred while trying to delete a subscription.</p>
         </div>
     </div>
+    <div id="subscription_search" style="display:none;">
+        <div style="padding:4px;text-align:right">
+            Search:
+            <select id="searchField">
+                <option value="name">Name</option>
+            </select>
+            is
+            <input type="text" id="searchString" size="30" />
+        </div>
+
+        <table class="full_width manage">
+            <tr>
+                <th>Name</th>
+                <th width="150px">University</th>
+                <th width="200px">Study</th>
+                <th width="180px">At network reception</th>
+                <th width="150px">QR</th>
+                <th width="100px">Action</th>
+            </tr>
+        </table>
+    </div>
+
     <div id="controller_action">
         <table class="manage full_width">
             <tr>
@@ -82,8 +104,53 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
+            {% if hasAccess('br_admin_event_subscription', 'search') %}
+            $.searchDatabase({
+                defaultPage: $('#controller_action'),
+                searchDiv: $('#subscription_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                searchPage: '{{ url("br_admin_event_subscription", {"action": "overview", "event":event.getId()}) }}overview/',
+                url: '{{ url("br_admin_event_subscription", {"action": "search", "event": event.getId()}) }}',
+                display: function (data) {
+                    $('#subscription_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#subscription_search table').append(row = $('<tr>', {class: 'item'}));
+                        row.append('<td>' + this.name + '</td>')
+                            .append('<td>' + this.university + '</td>')
+                            .append('<td>' + this.study + '</td>')
+                            .append('<td>' + this.reception + '</td>')
+                            .append('<td>' + this.qr + '</td>')
+                            .append(
+                                actions = $('<td>', {'class': 'actions'})
+                            );
+                            {% if hasAccess('br_admin_event_subscription', 'edit') %}
+                                actions.append('<a href="{{  url("br_admin_event_subscription", {"action": "edit", "event": event.getId()}) }}' + this.id + '" class="edit">Edit</a>')
+                            {% endif %}
+                            {% if hasAccess('br_admin_event_subscription', 'delete') %}
+                                actions.append('<a href="#" class="delete" data-id="'+this.id+'" data-name="'+this.name+'">Delete</a>')
+                            {% endif %}
+                            {% if hasAccess('br_admin_event_subscription', 'resend') %}
+                                actions.append('<a href="{{  url("br_admin_event_subscription", {"action": "resend", "event": event.getId()}) }}'+this.id+'" class="edit">Resend mail</a>')
+                            {% endif %}
+                            
+                    });
+                    $('#subscription_search table').change();
+                    $('.item .delete').unbind('click').click(openModal);
+
+                },
+                clear: function () {
+                    $('#subscription_search table').find('tr.item').remove();
+                }
+            });
+            $('moreResults').remove();
+
+            {% endif %}
+
             $('.item .delete').click(openModal);
         });
+
+        
 
         function openModal(e) {
             var $this = $(this);

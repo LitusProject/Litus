@@ -46,7 +46,13 @@ class Visitor
      */
     private $id;
 
-    
+    /**
+     *@var Event The event that the company will be attending
+     *
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Event")
+     * @ORM\JoinColumn(referencedColumnName="id")
+     */
+    private $event;
 
     /**
      * @var string QR code of the visitor
@@ -73,10 +79,12 @@ class Visitor
 
 
     /**
+     * @param Event $event
      * @param string $qrCode
      */
-    public function __construct($qrCode)
+    public function __construct($event, $qrCode)
     {
+        $this->event = $event;
         $this->qrCode = $qrCode;
         $this->entryTimestamp = new DateTime();
     }
@@ -89,6 +97,13 @@ class Visitor
         return $this->id;
     }
 
+    /**
+     * @return Event
+     */
+    public function getEvent()
+    {
+        return $this->event;
+    }
 
     /**
      * @return string
@@ -97,6 +112,7 @@ class Visitor
     {
         return $this->qrCode;
     }
+
 
 
     /**

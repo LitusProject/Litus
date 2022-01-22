@@ -237,7 +237,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 array(
                     'type'       => 'select',
                     'name'       => 'food',
-                    'label'      => 'Food',
+                    'label'      => 'Food during event',
                     'required'   => false,
                     'attributes' => array(
                         'id'      => 'food',
@@ -292,10 +292,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->addSubmit('Add', 'add');
 
-        if ($this->event !== null) {
-            $this->bind($this->event);
-        }
-
         if ($this->subscription !== null) {
             $this->bind($this->subscription);
         }
@@ -343,7 +339,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      * @return array of possible Foods
      */
     protected function getFood(){
-        return array("None");
+        $food = $this->event->getFood();
+        if ($food != null){
+            $food = array(' '=>' ') + $food;
+        }
+        return $food;
     }
 
     /**

@@ -46,9 +46,9 @@ class CompanyMap
     private $event;
 
     /**
-     * @var CompanyAttendee All the attendees that will be attending for this company
+     * @var int Number of attendees that will be attending for this company
      *
-     * @ORM\OneToMany(targetEntity="BrBundle\Entity\Event\CompanyAttendee", mappedBy="companyMap")
+     * @ORM\Column(type="bigint", options={"default" = 0})
      */
     private $attendees;
     
@@ -65,6 +65,13 @@ class CompanyMap
      * @ORM\Column(type="text", nullable=true)
      */
     private $notes;
+
+    /**
+     * @var boolean Whether the information has been checked
+     *
+     * @ORM\Column(type="boolean", options={"default" = false})
+     */
+    private $checked;
 
     /**
      * @param Company $company
@@ -111,7 +118,7 @@ class CompanyMap
     }
 
     /**
-     * @return CompanyAttendee
+     * @return int
      */
     public function getAttendees()
     {
@@ -119,7 +126,8 @@ class CompanyMap
     }
 
     /**
-     * @param CompanyAttendee $attendees
+     * @param int $attendees
+     * @return self
      */
     public function setAttendees($attendees)
     {
@@ -193,6 +201,24 @@ class CompanyMap
     public function getNotes()
     {
         return $this->notes;
+    }
+
+    /**
+     * @param  boolean $checked
+     * @return self
+     */
+    public function setChecked($checked)
+    {
+        $this->checked = $checked;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isChecked()
+    {
+        return $this->checked;
     }
 
 }

@@ -6,6 +6,8 @@ use BrBundle\Entity\Event;
 use BrBundle\Entity\Event\CompanyMap;
 use Laminas\View\Model\ViewModel;
 
+use DateInterval;
+use DateTime;
 /**
  * EventController
  *
@@ -102,15 +104,11 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         $companyMapForm = $this->getForm('br_event_companyMap');
 
         if ($this->getRequest()->isPost()) {
-//            die("is post");
             $formData = $this->getRequest()->getPost();
             $propertiesForm->setData($formData);
             $companyMapForm->setData($formData);
-//            die(json_encode($propertiesForm->getData()));
-//            die(json_encode($propertiesForm->isValid()));
-//            if (isset($formData['event_edit']) && $propertiesForm->isValid()) {
+            
             if ($propertiesForm->isValid()) {
-//                die("hier zo");
                 $this->flashMessenger()->success(
                     'Success',
                     'The event was successfully updated!'
@@ -185,9 +183,98 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function statisticsAction()
+    {
+        $event = $this->getEventEntity();
+        if ($event === null) {
+            return new ViewModel();
+        }
+
+        $now = new DateTime();
+
+        $repository = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Event\Visitor');
+
+        $interval = new DateInterval($this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.event_graph_interval'));
+
+        $logGraphData = array(
+            'expirationTime' => $now->add($interval),
+            'labels'         => array(),
+            'dataset'        => array(),
+        );
+
+        
+
+        $sortedVisitors = $repository->findSortedByEvent($event);
+
+        if ($sortedVisitors != null){
+            $firstEntry = $sortedVisitors[0];
+            $data = array();
+            $beginInterval = $firstEntry->getEntryTimeStamp();
+            $endInterval = clone $beginInterval;
+            $endInterval->add($interval);
+            
+            while ($beginInterval <= $now) {
+                $count = $repository->countBetweenByEvent($event, $beginInterval, $endInterval);
+                error_log(print_r($count, true));
+                $logGraphData['labels'][] = $beginInterval->format('d/m h:i') .'-' .$endInterval->format('d/m h:i');
+                $logGraphData['dataset'][] = $count[0][1];
+                $beginInterval->add($interval);
+                $endInterval->add($interval);
+            }
+
+        }
+
+        $subscribersCount = count($this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Event\Subscription')
+            ->findAllByEventQuery($event)
+            ->getResult());
+        
+        $uniqueVisitors = $repository->countUniqueByEvent($event);
+        error_log(print_r($logGraphData,true));
+
+        $currentVisitors = count($repository->findCurrentVisitors($event));
+
+        $maps = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Event\CompanyMap')
+            ->findAllByEventQuery($event)
+            ->getResult();
+        
+        
+        $attendees = 0;
+        foreach ($maps as $map){
+            $attendees += $map->getAttendees();
+        }
+        
+        $matchesCount = count($this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Event\Match')
+            ->findAllByEvent($event));
+
+
+        $totals = array(
+            'visitors'          => $sortedVisitors ? $uniqueVisitors[0][1] : 0,
+            'subscribers'       => $subscribersCount,
+            'current'           => $currentVisitors,
+            'representatives'   => $attendees,
+            'matches'           => $matchesCount
+        );
+
+        
+
+        return new ViewModel(
+            array(
+                'event'     => $event,
+                'logGraph'  => $logGraphData,
+                'totals'    => $totals
+            )
+        );
+        
+    }
+
     public function deleteAction()
     {
-        die("delete");
         $this->initAjax();
         $event = $this->getEventEntity();
         if ($event === null) {
@@ -330,4 +417,5 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
         return $event;
     }
+
 }

@@ -10,7 +10,7 @@ use Laminas\View\Model\ViewModel;
 
 class LocationController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
-    public function manageAction()
+    public function drawAction()
     {
         $event = $this->getEventEntity();
         if ($event === null) {

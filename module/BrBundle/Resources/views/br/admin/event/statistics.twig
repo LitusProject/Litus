@@ -1,0 +1,80 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'br/admin/event/partials/eventNavigation.twig' %}
+
+
+    <div id="controller_action">
+        <h1>Attendance Overview</h1>
+        <div class="chart full_width">
+            <canvas id="logGraph" width="988" height="300"></canvas>
+        </div>
+
+        <h2><b>Statistics overview</b></h2>
+
+        <p>Total number of unique visitors: <b>{{totals['visitors']}}</b></p>
+        <p>Total number of subscribers: <b>{{totals['subscribers']}}</b></p>
+        <p>Current number of visitors: <b>{{totals['current']}}</b></p>
+        <p>Total number of company representatives: <b>{{totals['representatives']}}</b></p>
+        <p>Total Matches: <b>{{totals['matches']}}</b></p>
+
+    </div>
+
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .delete').click(openModal);
+            drawLogGraph();
+        });
+
+        function drawLogGraph() {
+            var data = {
+                labels : {% autoescape false %}{{ logGraph['labels']|json_encode }}{% endautoescape %},
+                datasets : [
+                    {
+                        fillColor : "rgba(98, 207, 252, 0.25)",
+                        strokeColor : "rgba(98, 207, 252, 1)",
+                        pointColor : "rgba(98, 207, 252, 1)",
+                        pointStrokeColor : "#fff",
+                        data : {% autoescape false %}{{ logGraph['dataset']|json_encode }}{% endautoescape %}
+                    }
+                ]
+            };
+
+            $('#logGraph').attr('width', $('#logGraph').parent().width());
+            new Chart($('#logGraph').get(0).getContext('2d')).Line(data);
+        }
+
+        function openModal(e) {
+            var $this = $(this);
+            e.preventDefault();
+            var removeRule = $('#removeRule');
+            removeRule.find('.name').html($(this).data('name'));
+            removeRule.find('.cancel').one('click', function () {
+                removeRule.modal('hide');
+            });
+            var id = $this.data('id');
+            removeRule.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('door_admin_rule', {"action": "delete"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.rule_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeRule.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeRule.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.rule_removed_error').removeClass('hide');
+            $('#removeRule').modal('hide');
+        }
+    </script>
+{% endblock %}

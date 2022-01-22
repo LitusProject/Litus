@@ -42,4 +42,37 @@ class Subscription extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getResult();
     }
 
+    public function findAllByEventAndNameSearchQuery(Event $event, string $name)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+
+        return $query->select('s')
+            ->from('BrBundle\Entity\Event\Subscription', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('s.event', ':event'),
+                    $query->expr()->orX(
+                        $query->expr()->like(
+                            $query->expr()->concat(
+                                $query->expr()->lower($query->expr()->concat('s.firstName', "' '")),
+                                $query->expr()->lower('s.lastName')
+                            ),
+                            ':name'
+                        ),
+                        $query->expr()->like(
+                            $query->expr()->concat(
+                                $query->expr()->lower($query->expr()->concat('s.lastName', "' '")),
+                                $query->expr()->lower('s.firstName')
+                            ),
+                            ':name'
+                        )
+                    ),
+                )
+            )
+            ->setParameter('name', '%' . strtolower($name) . '%')
+            ->setParameter('event', $event->getId())
+            ->getQuery();
+    }
+    
+
 }

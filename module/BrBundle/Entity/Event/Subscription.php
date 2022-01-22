@@ -394,6 +394,14 @@ class Subscription
     }
 
     /**
+     * @return string
+     */
+    public function getFoodString(): string
+    {
+        return ($this->food?$this->event->getFood()[$this->food]:'');
+    }
+
+    /**
      * @param string $qrCode
      */
     public function setQrCode(string $qrCode): void

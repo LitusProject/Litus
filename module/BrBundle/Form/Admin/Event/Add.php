@@ -249,6 +249,25 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'       => 'text',
+                'name'       => 'food',
+                'label'      => 'Food options',
+                'attributes' => array(
+                    'data-help' => 'The options comma separated.',
+                ),
+                'options'    => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+
+        $this->add(
+            array(
                 'type'     => 'checkbox',
                 'name'     => 'visible_for_companies',
                 'label'    => 'Visible for Companies',

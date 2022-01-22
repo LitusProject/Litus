@@ -4,10 +4,7 @@
     <nav id="controller_nav">
         <ul>
             {% if hasAccess('br_admin_event_company', 'csv') %}
-                <li><a href="{{ url('br_admin_event_company', {"action": "csv", "event": event.getId()}) }}">companies</a></li>
-            {% endif %}
-            {% if hasAccess('br_admin_event_company', 'csvAttendees') %}
-                <li><a href="{{ url('br_admin_event_company', {"action": "csvAttendees", "event": event.getId()}) }}">attendees</a></li>
+                <li><a href="{{ url('br_admin_event_company', {"action": "csv", "event": event.getId()}) }}">CSV companies</a></li>
             {% endif %}
         </ul>
     </nav>

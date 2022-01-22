@@ -143,6 +143,14 @@ class Event
     private $audience;
 
     /**
+     * @var string Food on the event
+     *
+     * @ORM\Column(name="food", type="text", nullable=true)
+     *
+     */
+    private $food;
+
+    /**
      * @param Person $creator
      */
     public function __construct(Person $creator)
@@ -457,12 +465,24 @@ class Event
         $this->audience = $audience;
     }
 
-    /**
-     * @return string
-     */
-    public function setCompanies($companies)
-    {
 
+    /**
+     * @return array $food
+     */
+    public function getFood()
+    {
+        return unserialize($this->food);
+    }
+
+    /**
+     * @param array $food
+     * @return self
+     */
+    public function setFood($food)
+    {
+        $this->food = serialize($food);
         return $this;
     }
+
+    
 }

@@ -181,19 +181,21 @@ return array(
                 ),
                 'defaults' => array(
                     'controller' => 'br_admin_event_location',
-                    'action'     => 'manage',
+                    'action'     => 'draw',
                 ),
             ),
         ),
         'br_admin_event_subscription' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/br/event/:event/subscription[/:action[/:id][/page/:page]][/]',
+                'route'       => '/admin/br/event/:event/subscription[/:action[/:id][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
                     'event'  => '[0-9]+',
                     'page'   => '[0-9]*',
+                    'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                 ),
                 'defaults' => array(
                     'controller' => 'br_admin_event_subscription',
@@ -344,11 +346,12 @@ return array(
         'br_career_event' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '[/:language]/career/event[/:action[/:id][/code/:code][/page/:page]][/]',
+                'route'       => '[/:language]/career/event[/:action[/:id][/code/:code][/match/:match][/page/:page]][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'code'     => '[a-z0-9]*',
                     'id'       => '[0-9_-]*',
+                    'match'    => '[0-9_-]*',
                     'language' => '(en|nl)',
                     'page'     => '[0-9]*',
                 ),

@@ -2,7 +2,7 @@
 
 {% block content %}
     {% include 'br/admin/event/partials/eventNavigation.twig' %}
-    {% include 'br/admin/event/partials/companyCsvNavigation.twig' %}
+    {% include 'br/admin/event/partials/companyNavigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
@@ -26,19 +26,17 @@
             <tr>
                 <th>Company</th>
                 <th width="140px"># representatives</th>
-                <th width="100px">Location</th>
                 <th width="100px">CV-book</th>
-                <th width="140px">Logistics checked</th>
+                <th width="160px">Information checked</th>
                 <th width="70px">Action</th>
             </tr>
             {% for companyMap in paginator %}
                 {% if '' != companyMap.getCompany().getName() %}
                     <tr class="item item-{{ companyMap.getId() }}">
                         <td>{{ companyMap.getCompany().getName() }}</td>
-                        <td>{{ companyMap.getAttendees() | length }}</td>
-                        <td>{{ companyMap.getMetadata().getLocation() }}</td>
+                        <td>{{ companyMap.getAttendees() }}</td>
                         <td>{% if currentYear in companyMap.getCompany().getCvBookYears() %}X{% endif %}</td>
-                        <td>{% if companyMap.getMetadata().isLogisticsChecked() %}X{% endif %}</td>
+                        <td>{% if companyMap.isChecked() %}X{% endif %}</td>
                         <td class="actions">
                             {% if hasAccess('br_admin_event_company', 'edit') %}
                                 <a href="{{  url('br_admin_event_company', {"action": "edit", "event": event.getId(), 'id': companyMap.getId()}) }}" class="edit">Edit</a>

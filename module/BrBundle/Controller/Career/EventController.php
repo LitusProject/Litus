@@ -11,6 +11,8 @@ use CommonBundle\Entity\User\Person\Academic;
 use BrBundle\Entity\User\Person\Corporate;
 use DateTime;
 use Laminas\View\Model\ViewModel;
+use Laminas\Mail\Message;
+
 
 /**
  * EventController
@@ -113,13 +115,12 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             $person = null;
         }
 
-        $form = $this->getForm('br_career_event_subscription_add');
-
         $event = $this->getEventEntity();
         if ($event === null) {
             return new ViewModel();
         }
-        $form->setEvent($event);
+
+        $form = $this->getForm('br_career_event_subscription_add', array('event' => $event));
 
         if ($person instanceof Academic) {
             
@@ -136,10 +137,11 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $this->getEntityManager()->persist(
-                    $form->hydrateObject()
-                );
+                $subscription = $form->hydrateObject();
+                $this->getEntityManager()->persist($subscription);
                 $this->getEntityManager()->flush();
+
+                $this->sendMail($event, $subscription);
 
                 $this->flashMessenger()->success(
                     'Success',
@@ -269,17 +271,17 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                 // Check whether the person can use the scanQr for the entry scanning
                 $visitor = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Event\Visitor')
-                    ->findByQrAndExitNull($qr);
+                    ->findByEventAndQrAndExitNull($event, $qr);
                 
                 $previousVisits = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Event\Visitor')
-                    ->findByQr($qr);
+                    ->findByEventAndQr($event, $qr);
 
                 if ($visitor == null){
                     // If there is no such result, then the person must be entering
                     $entry = true;
 
-                    $visitor = new Visitor($qr);
+                    $visitor = new Visitor($event, $qr);
                     $this->getEntityManager()->persist(
                         $visitor
                     );
@@ -339,6 +341,133 @@ class EventController extends \BrBundle\Component\Controller\CareerController
         );
     }
 
+
+    public function overviewMatchesAction()
+    {
+        $event = $this->getEventEntity();
+        if ($event === null) {
+            return new ViewModel();
+        }
+
+        if ($this->getAuthentication()->isAuthenticated()) {
+            $person = $this->getAuthentication()->getPersonObject();
+        }
+
+        if ($person === null || !($person instanceof Corporate)) {
+            $this->flashMessenger()->error(
+                'Error',
+                "You are not logged in and can't view any matches!"
+            );
+
+            $this->redirect()->toRoute(
+                'br_career_event',
+                array(
+                    'action' => 'view',
+                    'id'  => $event->getId(),
+                )
+            );
+            return new ViewModel();
+        }
+
+        $companyMap = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Event\CompanyMap')
+            ->findByEventAndCompany($event, $person->getCompany())[0];
+
+        $matches = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Event\Match')
+            ->findAllByCompanyMapQuery($companyMap)
+            ->getResult();
+
+        
+        return new ViewModel(
+            array(
+                'event'     => $event,
+                'matches'   => $matches,
+            )
+        );
+    }
+
+
+    public function removeMatchAction()
+    {
+        $this->initAjax();
+        $match = $this->getMatchEntity();
+        if ($match === null) {
+            return new ViewModel();
+        }
+
+        $this->getEntityManager()->remove($match);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+
+    private function sendMail(Event $event, Subscription $subscription)
+    {
+        $language = $this->getLanguage();
+        if ($language === null) {
+            $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
+                ->findOneByAbbrev('en');
+        }
+        $entityManager = $this->getEntityManager();
+
+        $mailData = unserialize(
+            $entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.subscription_mail_data')
+        );
+
+        $message = $mailData[$language->getAbbrev()]['content'];
+        $subject = str_replace('{{event}}', $event->getTitle(), $mailData[$language->getAbbrev()]['subject']);
+
+        $mailAddress = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.subscription_mail');
+
+        $mailName = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.subscription_mail_name');
+        
+        $url = $this->url()
+            ->fromRoute('br_career_event',
+                array('action' => 'qr',
+                    'event' => $event->getId(),
+                    'code' => $qr),
+                array('force_canonical' => true));
+                
+        $qrSource = str_replace('{{encodedUrl}}',
+                    urlencode($url),
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('br.google_qr_api'));
+
+        $message = str_replace('{{event}}', $event->getTitle(), $message );
+        $message = str_replace('{{eventDate}}', $event->getStartDate()->format('d/m/Y'), $message );
+        $message = str_replace('{{qrSource}}', $qrSource, $message );
+        $message = str_replace('{{qrLink}}', $url, $message );
+        $message = str_replace('{{brMail}}', $mailAddress, $message );
+
+        $mail = new Message();
+        $mail->setEncoding('UTF-8')
+            ->setBody($message)
+            ->setFrom($mailAddress, $mailName)
+            ->addTo($subscription->getEmail(), $subscription->getFirstName()." ".$subscription->getLastName())
+            ->addBcc(
+                $mailAddress,
+                $mailName
+            )
+            ->setSubject($subject);
+
+        if (getenv('APPLICATION_ENV') != 'development') {
+            $this->getMailTransport->send($mail);
+        }
+    }
+
     /**
      * @return array
      */
@@ -389,5 +518,34 @@ class EventController extends \BrBundle\Component\Controller\CareerController
         }
 
         return $event;
+    }
+
+
+    /**
+     * @return Match|null
+     */
+    private function getMatchEntity()
+    {
+        $event = $this->getEventEntity();
+        $match = $this->getEntityById('BrBundle\Entity\Event\Match', 'match');
+
+        if (!($match instanceof Match)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No match was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'br_career_event',
+                array(
+                    'action' => 'view',
+                    'event'  => $event->getId(),
+                )
+            );
+
+            return;
+        }
+
+        return $match;
     }
 }

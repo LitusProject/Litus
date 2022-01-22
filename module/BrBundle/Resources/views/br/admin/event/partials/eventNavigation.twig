@@ -9,11 +9,14 @@
             {% if hasAccess('br_admin_event_company', 'manage') %}
                 <li><a {% if getParam('event') and ('manage' == getParam('action') or 'edit' == getParam('action') or 'addAttendee' == getParam('action')) %} class="active" {% endif %} href="{{ url('br_admin_event_company', {"action": "manage", "event": event.getId()}) }}">Companies</a></li>
             {% endif %}
-            {% if hasAccess('br_admin_event_location', 'manage') %}
-                <li><a {% if getParam('event') and ('manage' == getParam('action')) %} class="active" {% endif %} href="{{ url('br_admin_event_location', {"action": "manage", "event": event.getId()}) }}">Location</a></li>
+            {% if hasAccess('br_admin_event_location', 'draw') %}
+                <li><a {% if getParam('event') and ('draw' == getParam('action')) %} class="active" {% endif %} href="{{ url('br_admin_event_location', {"action": "draw", "event": event.getId()}) }}">Location</a></li>
             {% endif %}
             {% if hasAccess('br_admin_event_subscription', 'overview') %}
                 <li><a {% if getParam('event') and ('overview' == getParam('action')) %} class="active" {% endif %} href="{{ url('br_admin_event_subscription', {"action": "overview", "event": event.getId()}) }}">Subscription</a></li>
+            {% endif %}
+            {% if hasAccess('br_admin_event', 'statistics') %}
+                <li><a {% if ('statistics' == getParam('action')) %} class="active" {% endif %} href="{{ url('br_admin_event', {"action": "statistics", "id": event.getId()}) }}">Statistics</a></li>
             {% endif %}
         </ul>
     </nav>

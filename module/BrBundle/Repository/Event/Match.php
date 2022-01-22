@@ -2,6 +2,7 @@
 
 namespace BrBundle\Repository\Event;
 
+use BrBundle\Entity\Event;
 use BrBundle\Entity\Event\CompanyMap;
 use BrBundle\Entity\Event\Subscription;
 
@@ -39,9 +40,23 @@ class Match extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->where(
                 $query->expr()->eq('m.companyMap', ':companyMap')
             )
-            ->orderBy()
+            ->orderBy('m.timestamp')
             ->setParameter('companyMap', $companyMap->getId())
             ->getQuery();
+    }
+
+    public function findAllByEvent(Event $event)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('m')
+            ->from('BrBundle\Entity\Event\Match', 'm')
+            ->join('m.companyMap', 'c')
+            ->where(
+                $query->expr()->eq('c.event', ':event')
+            )
+            ->setParameter('event', $event->getId())
+            ->getQuery()
+            ->getResult();
     }
     
 }

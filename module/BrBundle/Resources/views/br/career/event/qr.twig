@@ -48,11 +48,11 @@
             </div>
             <h3>Study: {{match.getSubscription().getStudyString()}}</h3>
             {% if match.getSubscription().getSpecialization() != '' %}
-                <h3>Specialization: match.getSubscription().getSpecialization() }}</h3>
+                <h3>Specialization: {{ match.getSubscription().getSpecialization() }}</h3>
             {% endif %}
             <h3>E-mail: {{match.getSubscription().getEmail()}}</h3>
             {% if match.getSubscription().getPhoneNumber() != '' %}
-                <h3>Phone number: {{match.getSubscription().getPhone()}}</h3>
+                <h3>Phone number: {{ match.getSubscription().getPhoneNumber() }}</h3>
             {% endif %}
             <div style="height: 100px"></div>
 

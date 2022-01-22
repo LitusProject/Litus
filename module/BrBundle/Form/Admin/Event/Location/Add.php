@@ -60,6 +60,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
+                        'validators' => array(
+                            array('name' => 'Int'),
+                        ),
                     ),
                 ),
             )
@@ -75,6 +78,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
+                        'validators' => array(
+                            array('name' => 'Int'),
+                        ),
                     ),
                 ),
             )
@@ -89,6 +95,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
                         ),
                     ),
                 ),

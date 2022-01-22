@@ -8,7 +8,7 @@ use BrBundle\Entity\Event as EventEntity;
 
 class CompanyMap extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $stdKeys = array('notes');
+    private static $stdKeys = array('notes', 'attendees');
 
     protected function doExtract($object = null) {
         if ($object === null) {
@@ -17,6 +17,7 @@ class CompanyMap extends \CommonBundle\Component\Hydrator\Hydrator
         $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['master_interests'] = $object->getMasterInterests();
+        $data['information_checked'] = $object->isChecked();
         return $data;
     }
 
@@ -27,8 +28,9 @@ class CompanyMap extends \CommonBundle\Component\Hydrator\Hydrator
 
         $object = $this->stdHydrate($data, $object, self::$stdKeys);
 
-        // error_log(print_r($data, true));
         $object->setMasterInterests($data['master_interests']);
+        $object->setChecked($data['information_checked']);
+
         return $object;
     }
 }

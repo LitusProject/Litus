@@ -27,7 +27,7 @@ use BrBundle\Entity\Event\CompanyMap;
 class Edit extends \CommonBundle\Component\Form\Admin\Form
 {
     protected $hydrator = 'BrBundle\Hydrator\Event\CompanyMap';
-    protected $copmanyMap;
+    protected $companyMap;
 
     public function init()
     {
@@ -42,6 +42,25 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'attendees',
+                'label'    => '# Attendees',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'int'),
                         ),
                     ),
                 ),
@@ -75,6 +94,14 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
                 'name'     => 'master_interests',
                 'label'    => 'Master interests',
                 'elements' => $masterFields,
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'checkbox',
+                'name'     => 'information_checked',
+                'label'    => 'The information has been checked and is correct',
             )
         );
 
