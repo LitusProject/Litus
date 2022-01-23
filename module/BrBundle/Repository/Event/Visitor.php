@@ -68,23 +68,42 @@ class Visitor extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     public function countBetweenByEvent(Event $event, DateTime $begin, DateTime $end)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $entries = $query->select($query->expr()->countDistinct('v.qrCode'))
+        return $query->select($query->expr()->countDistinct('v.qrCode'))
             ->from('BrBundle\Entity\Event\Visitor', 'v')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('v.event', ':event'),
-                    $query->expr()->andX(
-                        $query->expr()->orX(
-                            $query->expr()->gte('v.exitTimestamp', ':begin'),
-                            $query->expr()->isNull('v.exitTimestamp')
-                        ),
-                        $query->expr()->lte('v.entryTimestamp', ':end'),
-                    ),   
+                    $query->expr()->orX(
+                        $query->expr()->gte('v.exitTimestamp', ':begin'),
+                        $query->expr()->isNull('v.exitTimestamp')
+                    ),
+                    $query->expr()->lte('v.entryTimestamp', ':end'),
                 )
             )
             ->setParameter('event', $event)
             ->setParameter('begin', $begin)
-            ->setParameter('end', $begin)
+            ->setParameter('end', $end)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function countAtTimeByEvent(Event $event, DateTime $time)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select($query->expr()->countDistinct('v.qrCode'))
+            ->from('BrBundle\Entity\Event\Visitor', 'v')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('v.event', ':event'),
+                    $query->expr()->orX(
+                        $query->expr()->gte('v.exitTimestamp', ':time'),
+                        $query->expr()->isNull('v.exitTimestamp')
+                    ),
+                    $query->expr()->lte('v.entryTimestamp', ':time'),
+                )
+            )
+            ->setParameter('event', $event)
+            ->setParameter('time', $time)
             ->getQuery()
             ->getResult();
     }

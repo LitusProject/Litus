@@ -8,7 +8,7 @@ use BrBundle\Entity\Event as EventEntity;
 
 class CompanyMap extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $stdKeys = array('notes', 'attendees');
+    private static $stdKeys = array('notes','attendees');
 
     protected function doExtract($object = null) {
         if ($object === null) {

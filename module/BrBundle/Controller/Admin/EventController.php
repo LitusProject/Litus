@@ -14,6 +14,7 @@ use DateTime;
  * Controller for events organised by VTK Corporate Relations itself.
  *
  * @author Matthias Swiggers <matthias.swiggers@vtk.be>
+ * @author Belian Callaerts <belian.callaerts@vtk.be>
  */
 
 class EventController extends \CommonBundle\Component\Controller\ActionController\AdminController
@@ -108,7 +109,12 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             $propertiesForm->setData($formData);
             $companyMapForm->setData($formData);
             
-            if ($propertiesForm->isValid()) {
+            if (isset($formData['event_edit']) && $propertiesForm->isValid()) {
+                $this->getEntityManager()->persist(
+                    $form->hydrateObject($event)
+                );
+                $this->getEntityManager()->flush();
+
                 $this->flashMessenger()->success(
                     'Success',
                     'The event was successfully updated!'
@@ -127,12 +133,11 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 if (count(
                     $this->getEntityManager()
                         ->getRepository('BrBundle\Entity\Event\CompanyMap')
-                        ->findByEventAndCompany($event, $company)
-                ) == 0
-                ) {
+                        ->findByEventAndCompany($event, $company)) == 0) {
                     $objectMap = new CompanyMap($company, $event);
                     $objectMap->setDone();
                     $this->getEntityManager()->persist($objectMap);
+                    $this->getEntityManager()->flush();
 
                     $this->flashMessenger()->success(
                         'Success',
@@ -190,7 +195,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $now = new DateTime();
+        $now = new DateTime();        
 
         $repository = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Event\Visitor');
@@ -212,17 +217,18 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         if ($sortedVisitors != null){
             $firstEntry = $sortedVisitors[0];
             $data = array();
-            $beginInterval = $firstEntry->getEntryTimeStamp();
-            $endInterval = clone $beginInterval;
-            $endInterval->add($interval);
+            $time = clone $event->getStartDate();
+            $endTime = $event->getEndDate();
+            // $endInterval = clone $time;
+            // $endInterval->add($interval);
             
-            while ($beginInterval <= $now) {
-                $count = $repository->countBetweenByEvent($event, $beginInterval, $endInterval);
-                error_log(print_r($count, true));
-                $logGraphData['labels'][] = $beginInterval->format('d/m h:i') .'-' .$endInterval->format('d/m h:i');
-                $logGraphData['dataset'][] = $count[0][1];
-                $beginInterval->add($interval);
-                $endInterval->add($interval);
+            while ($time <= $endTime) {
+                $result = $repository->countAtTimeByEvent($event, $time);
+                // $result = $repository->countBetweenByEvent($event, $time, $endInterval);
+                $logGraphData['labels'][] = $time->format('d/m H:i');
+                $logGraphData['dataset'][] = ($result ? $result[0][1]:0);
+                $time->add($interval);
+                // $endInterval->add($interval);
             }
 
         }
@@ -233,7 +239,6 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             ->getResult());
         
         $uniqueVisitors = $repository->countUniqueByEvent($event);
-        error_log(print_r($logGraphData,true));
 
         $currentVisitors = count($repository->findCurrentVisitors($event));
 

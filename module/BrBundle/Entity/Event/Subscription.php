@@ -31,7 +31,7 @@ class Subscription
      *@var Event The event that the company will be attending
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Event")
-     * @ORM\JoinColumn(referencedColumnName="id")
+     * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
      */
     private $event;
 
@@ -141,7 +141,7 @@ class Subscription
         'bach2'         => '2nd Bachelor',
         'bach3'         => '3rd Bachelor',
         'ma1'           => '1st Master',
-        'ma2'           => '2st Master',
+        'ma2'           => '2nd Master',
         'manama'        => 'MaNaMa',
         'phd'           => 'PhD',
         'other'         => 'Other',

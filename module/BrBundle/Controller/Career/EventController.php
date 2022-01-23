@@ -3,7 +3,7 @@
 namespace BrBundle\Controller\Career;
 
 use BrBundle\Entity\Event;
-use BrBundle\Entity\Event\Subscriptions;
+use BrBundle\Entity\Event\Subscription;
 use BrBundle\Entity\Event\Match;
 use BrBundle\Entity\Event\Visitor;
 use BrBundle\Entity\Company;
@@ -18,6 +18,7 @@ use Laminas\Mail\Message;
  * EventController
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Belian Callaerts <belian.callaerts@vtk.be>
  */
 class EventController extends \BrBundle\Component\Controller\CareerController
 {
@@ -34,35 +35,35 @@ class EventController extends \BrBundle\Component\Controller\CareerController
         );
     }
 
-    public function fetchAction()
-    {
-        $this->initAjax();
+    // public function fetchAction()
+    // {
+    //     $this->initAjax();
 
-        $events = $this->getEvents();
+    //     $events = $this->getEvents();
 
-        if ($events === null) {
-            return $this->notFoundAction();
-        }
+    //     if ($events === null) {
+    //         return $this->notFoundAction();
+    //     }
 
-        $result = array();
-        foreach ($events as $event) {
-            $result[] = array (
-                'start' => $event->getStartDate()->getTimeStamp(),
-                'end'   => $event->getEndDate()->getTimeStamp(),
-                'title' => $event->getTitle(),
-                'id'    => $event->getId(),
-            );
-        }
+    //     $result = array();
+    //     foreach ($events as $event) {
+    //         $result[] = array (
+    //             'start' => $event->getStartDate()->getTimeStamp(),
+    //             'end'   => $event->getEndDate()->getTimeStamp(),
+    //             'title' => $event->getTitle(),
+    //             'id'    => $event->getId(),
+    //         );
+    //     }
 
-        return new ViewModel(
-            array(
-                'result' => (object) array(
-                    'status' => 'success',
-                    'events' => (object) $result,
-                ),
-            )
-        ); 
-    }
+    //     return new ViewModel(
+    //         array(
+    //             'result' => (object) array(
+    //                 'status' => 'success',
+    //                 'events' => (object) $result,
+    //             ),
+    //         )
+    //     ); 
+    // }
 
     public function viewAction()
     {
@@ -78,33 +79,33 @@ class EventController extends \BrBundle\Component\Controller\CareerController
         );
     }
 
-    public function searchAction()
-    {
-        $this->initAjax();
+    // public function searchAction()
+    // {
+    //     $this->initAjax();
 
-        $events = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Event')
-            ->findAllFutureBySearch(new DateTime(), $this->getParam('string'));
+    //     $events = $this->getEntityManager()
+    //         ->getRepository('BrBundle\Entity\Company\Event')
+    //         ->findAllFutureBySearch(new DateTime(), $this->getParam('string'));
 
-        $result = array();
-        foreach ($events as $event) {
-            $item = (object) array();
-            $item->id = $event->getId();
-            $item->poster = $event->getEvent()->getPoster();
-            $item->title = $event->getEvent()->getTitle($this->getLanguage());
-            $item->companyName = $event->getCompany()->getName();
-            // TODO: Localization
-            $item->startDate = $event->getEvent()->getStartDate()->format('d/m/Y h:i');
-            $item->summary = $event->getEvent()->getSummary(400, $this->getLanguage());
-            $result[] = $item;
-        }
+    //     $result = array();
+    //     foreach ($events as $event) {
+    //         $item = (object) array();
+    //         $item->id = $event->getId();
+    //         $item->poster = $event->getEvent()->getPoster();
+    //         $item->title = $event->getEvent()->getTitle($this->getLanguage());
+    //         $item->companyName = $event->getCompany()->getName();
+    //         // TODO: Localization
+    //         $item->startDate = $event->getEvent()->getStartDate()->format('d/m/Y h:i');
+    //         $item->summary = $event->getEvent()->getSummary(400, $this->getLanguage());
+    //         $result[] = $item;
+    //     }
 
-        return new ViewModel(
-            array(
-                'result' => $result,
-            )
-        );
-    }
+    //     return new ViewModel(
+    //         array(
+    //             'result' => $result,
+    //         )
+    //     );
+    // }
 
 
     public function subscribeAction()
@@ -218,9 +219,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             return new ViewModel();
         }
 
-        $subscription = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Event\Subscription')
-            ->findOneByQREvent($event, $qr)[0];
+       
 
         if ($this->getAuthentication()->isAuthenticated()) {
             $person = $this->getAuthentication()->getPersonObject();
@@ -228,6 +227,9 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
         // If someone is logged in
         if ($person != null){
+            $subscription = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Event\Subscription')
+                ->findOneByQREvent($event, $qr)[0];
             
             // Check whether person is affiliated to a company
             if ($person instanceof Corporate){
@@ -410,11 +412,12 @@ class EventController extends \BrBundle\Component\Controller\CareerController
     private function sendMail(Event $event, Subscription $subscription)
     {
         $language = $this->getLanguage();
+        $entityManager = $this->getEntityManager();
         if ($language === null) {
             $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev('en');
         }
-        $entityManager = $this->getEntityManager();
+        
 
         $mailData = unserialize(
             $entityManager
@@ -431,7 +434,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
         $mailName = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.subscription_mail_name');
+            ->getConfigValue('br.subscription_mail_name');
         
         $url = $this->url()
             ->fromRoute('br_career_event',

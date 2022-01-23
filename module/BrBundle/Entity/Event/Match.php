@@ -50,7 +50,7 @@ class Match
      *@var CompanyMap The companyMap of the matching company at the current event
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Event\CompanyMap")
-     * @ORM\JoinColumn(name="companymap", referencedColumnName="id")
+     * @ORM\JoinColumn(name="companymap", referencedColumnName="id", onDelete="CASCADE")
      */
     private $companyMap;
     
@@ -59,7 +59,7 @@ class Match
      *@var Subscription The companyMap of the matching company at the current event
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Event\Subscription")
-     * @ORM\JoinColumn(name="subscription", referencedColumnName="id")
+     * @ORM\JoinColumn(name="subscription", referencedColumnName="id", onDelete="CASCADE")
      */
     private $subscription;
 

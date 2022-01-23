@@ -211,7 +211,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     protected function getAttendingCompanies(){
         $companyMaps = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Event\CompanyMap')
-            ->findAllByEventQuery($this->location->getEvent())
+            ->findAllByEventQuery($this->event)
             ->getResult();
 
         $companies = array('' => '');

@@ -26,7 +26,7 @@ class CompanyMap
      *@var Company The company that will be attending this event
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Company")
-     * @ORM\JoinColumn(referencedColumnName="id")
+     * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
      */
     private $company;
 
@@ -41,7 +41,7 @@ class CompanyMap
      *@var Event The event that the company will be attending
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Event")
-     * @ORM\JoinColumn(referencedColumnName="id")
+     * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
      */
     private $event;
 
@@ -82,6 +82,8 @@ class CompanyMap
         $this->company = $company;
         $this->event = $event;
         $this->done = false;
+        $this->attendees = 0;
+        $this->checked = false;
     }
 
     /**
@@ -218,7 +220,7 @@ class CompanyMap
      */
     public function isChecked()
     {
-        return $this->checked;
+        return $this->checked ? $this->checked : false;
     }
 
 }

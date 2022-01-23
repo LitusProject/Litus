@@ -1,8 +1,8 @@
 <header class="controller_sub_header">
     <nav class="controller_sub_nav">
         <ul>
-            {% if hasAccess('br_admin_event_location', 'manage') %}
-                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_event_location', {"action": "manage", "event": event.getId()}) }}">Overview</a></li>
+            {% if hasAccess('br_admin_event_location', 'draw') %}
+                <li><a {% if 'draw' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_event_location', {"action": "draw", "event": event.getId()}) }}">Overview</a></li>
             {% endif %}
             {% if hasAccess('br_admin_event_location', 'add') %}
                 <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_event_location', {"action": "add", "event": event.getId()}) }}">Add</a></li>

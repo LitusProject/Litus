@@ -272,11 +272,12 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
     private function sendMail(Event $event, Subscription $subscription)
     {
         // $language Language is set to english when sent from admin
+        $entityManager = $this->getEntityManager();
         if ($language === null) {
             $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev('en');
         }
-        $entityManager = $this->getEntityManager();
+        
 
         $mailData = unserialize(
             $entityManager

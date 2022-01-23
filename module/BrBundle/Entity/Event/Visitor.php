@@ -50,7 +50,7 @@ class Visitor
      *@var Event The event that the company will be attending
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Event")
-     * @ORM\JoinColumn(referencedColumnName="id")
+     * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
      */
     private $event;
 

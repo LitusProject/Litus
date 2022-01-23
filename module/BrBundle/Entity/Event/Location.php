@@ -58,7 +58,7 @@ class Location
      *@var Event The company that will be attending this event
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Event")
-     * @ORM\JoinColumn(name="event_entity", referencedColumnName="id")
+     * @ORM\JoinColumn(name="event_entity", referencedColumnName="id", onDelete="CASCADE")
      */
     private $event;
     
@@ -106,19 +106,19 @@ class Location
 
 
     const POSSIBLE_LOCATION_TYPES = array(
-        'rectangle' => 'Rectangle',
-        'circle'    => 'Circle',
+        'rectangle' => 'Rectangle (50x35)',
+        'circle'    => 'Circle (35x35)',
     );
 
 
     const LOCATION_WIDTH = array(
         'rectangle' => 50,
-        'circle'    => 38,
+        'circle'    => 35,
     );
 
     const LOCATION_HEIGHT = array(
-        'rectangle' => 38,
-        'circle'    => 38,
+        'rectangle' => 35,
+        'circle'    => 35,
     );
 
     /**
