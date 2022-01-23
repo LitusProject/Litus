@@ -1,26 +1,7 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace BrBundle\Controller\Career;
 
-use BrBundle\Entity\Company;
 use BrBundle\Entity\Company\Page;
 use DateTime;
 use Laminas\Http\Headers;
@@ -39,10 +20,77 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.public_logo_path');
 
+        $pages = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Page')
+            ->findAllActiveQuery($this->getCurrentAcademicYear())->getResult();
+
+        $smallComps = array();
+        $largeComps = array();
+        foreach ($pages as $page) {
+            $item = (object) array();
+            $company = $page->getCompany();
+
+            $vacancies = count(
+                $this->getEntityManager()->getRepository('BrBundle\Entity\Company\Job')
+                    ->findAllActiveByCompanyAndTypeQuery($company, 'vacancy')->getResult()
+            );
+            $internships = count(
+                $this->getEntityManager()->getRepository('BrBundle\Entity\Company\Job')
+                    ->findAllActiveByCompanyAndTypeQuery($company, 'internship')->getResult()
+            );
+            $studentJobs = count(
+                $this->getEntityManager()->getRepository('BrBundle\Entity\Company\Job')
+                    ->findAllActiveByCompanyAndTypeQuery($company, 'student job')->getResult()
+            );
+
+            $item->name = $company->getName();
+            $item->logo = $company->getLogo();
+            $item->slug = $company->getSlug();
+            $item->vacancies = $vacancies;
+            $item->internships = $internships;
+            $item->studentJobs = $studentJobs;
+            if ($page->getCompany()->isLarge() == false) {
+                $item->large = 0;
+                $smallComps[] = $item;
+            } else {
+                $item->large = 1;
+                $item->description = $page->getShortDescription();
+                $largeComps[] = $item;
+            }
+        }
+        shuffle($smallComps);
+        shuffle($largeComps);
+        $allComps = array();
+
+        $nbLargeComps = count($largeComps);
+        $nbSmallComps = count($smallComps);
+        while ($nbLargeComps > 0 || $nbSmallComps > 0) {
+            if ($nbLargeComps > 0) {
+                $comp = array_pop($largeComps);
+                array_push($allComps, $comp);
+
+                $nbLargeComps--;
+            }
+            if ($nbSmallComps >= 4) {
+                $comp = array_splice($smallComps, 0, 4);
+                array_push($allComps, $comp);
+
+                $nbSmallComps = count($smallComps);
+            } else {
+                array_push($allComps, $smallComps);
+
+                $smallComps = array();
+                $nbSmallComps = 0;
+            }
+        }
+
         return new ViewModel(
             array(
-                'logoPath'         => $logoPath,
-                'possible_sectors' => array('all' => 'All') + Company::POSSIBLE_SECTORS,
+                'logoPath'       => $logoPath,
+                'smallCompanies' => $smallComps,
+                'largeCompanies' => $largeComps,
+                'allCompanies'   => $allComps
+                // 'possible_sectors' => array('all' => 'All') + Company::POSSIBLE_SECTORS,
             )
         );
     }
@@ -53,6 +101,8 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
         if ($page === null) {
             return new ViewModel();
         }
+
+        $language = $this->getLanguage();
 
         $logoPath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -77,6 +127,7 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
                 'events'      => $events,
                 'internships' => $internships,
                 'vacancies'   => $vacancies,
+                'language'    => $language,
             )
         );
     }

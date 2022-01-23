@@ -1,58 +1,27 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-    <div class="page-header">
-        {% block download %}{% endblock %}
+    <div class="container">
 
-        <h1>{% block title %}{{ translate('CV Book') }}{% endblock %}</h1>
-    </div>
+        <div class="page-header">
+            {% block download %}{% endblock %}
 
-    <div class="flashmessage alert alert-danger fade" id="profile_upload_error">
-        <a class="close">&times;</a>
-        <div class="content">
-            {{ translate('An error occurred while uploading your profile image.') }}
+            <h1>{% block title %}{{ translate('CV Book') }}{% endblock %}</h1>
         </div>
-    </div>
 
-    {% if messages %}
-        {% for flashMessage in messages %}
-            <div class="flashmessage alert alert-{{ flashMessage.getType() }} fade in">
-                <a class="close" data-dismiss="alert">&times;</a>
-                {{ translate(flashMessage.getMessage())|replace({"{{editurl}}" : url('common_account', {action: 'edit', return: 'br_cv_index'})})|raw }}
+        <div class="flashmessage alert alert-danger fade" id="profile_upload_error">
+            <a class="close">&times;</a>
+            <div class="content">
+                {{ translate('An error occurred while uploading your profile image.') }}
             </div>
-        {% endfor %}
-    {% else %}
-        {% block intro_message %}
-            {{ translate('The following data from your account will be used in the CV Book:') }}
-        {% endblock %}
+        </div>
 
-        <dl class="dl-horizontal wide">
-            <dt>{{ translate('Name') }}</dt>
-            <dd>{{ authenticatedPerson.getFullName() }}&nbsp;</dd>
-            <dt>{{ translate('Birthday') }}</dt>
-            <dd>{{ dateLocalized(authenticatedPerson.getBirthday(), 'd MMMM y') }}&nbsp;</dd>
-            <dt>{{ translate('Sex') }}</dt>
-            <dd>{{ authenticatedPerson.getSex()|capitalize }}&nbsp;</dd>
-            <dt>{{ translate('Phone Number') }}</dt>
-            <dd>{{ authenticatedPerson.getPhoneNumber() }}&nbsp;</dd>
-            <dt>{{ translate('Email') }}</dt>
-            <dd>{{ authenticatedPerson.getPersonalEmail() }}&nbsp;</dd>
-            <dt>{{ translate('Address') }}</dt>
-            <dd>
-                {{ authenticatedPerson.getSecondaryAddress().getStreet() }} {{ authenticatedPerson.getSecondaryAddress().getNumber() }}
-                {% if authenticatedPerson.getSecondaryAddress().getMailbox() %}
-                    / {{ authenticatedPerson.getSecondaryAddress().getMailbox() }}
-                {% endif %}<br>
-                {{ authenticatedPerson.getSecondaryAddress().getPostal() }} {{ authenticatedPerson.getSecondaryAddress().getCity() }}<br>
-                {{ authenticatedPerson.getSecondaryAddress().getCountry() }}
-            </dd>
-            <dt>{{ translate('Profile Picture') }}</dt>
-            <dd>
-                <div id="accountProfileImage" class="thumbnail" style="width: 180px; height: 135px; margin-top: 18px; position: relative;">
-                    <img src="{{ profilePath }}/{{ authenticatedPerson.getPhotoPath() }}" alt="">
-                    <button id="editProfile" class="btn btn-default btn-sm hidden-xs hidden-sm" style="position: absolute; bottom: 5px; right: 5px;">{{ translate('Edit') }}</button>
+        {% if messages %}
+            {% for flashMessage in messages %}
+                <div class="flashmessage alert alert-{{ flashMessage.getType() }} fade in">
+                    <a class="close" data-dismiss="alert">&times;</a>
+                    {{ translate(flashMessage.getMessage())|replace({"{{editurl}}" : url('common_account', {action: 'edit', return: 'br_cv_index'})})|raw }}
                 </div>
-            </dd>
             {% endfor %}
         {% else %}
             {% block intro_message %}
@@ -125,23 +94,16 @@
                             {% import 'site/partials/form.twig' as forms %}
                             {{ forms.renderForm(profileForm) }}
                         </div>
-                        <div class="flashmessage alert alert-danger fade" id="file_size_error">
-                            <div class="content">
-                                {{ translate('The selected file is too large.') }}
-                            </div>
-                        </div>
-                        {% import 'site/partials/form.twig' as forms %}
-                        {{ forms.renderForm(profileForm) }}
-                    </div>
 
-                    <div class="imageForm" style="display: none;">
-                        {% import 'site/partials/form.twig' as forms %}
-                        {{ forms.renderForm(profileForm) }}
+                        <div class="imageForm" style="display: none;">
+                            {% import 'site/partials/form.twig' as forms %}
+                            {{ forms.renderForm(profileForm) }}
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-success save">{{ translate('Save') }}</button>
-                    <button class="btn btn-default" data-dismiss="modal">{{ translate('Close') }}</button>
+                    <div class="modal-footer">
+                        <button class="btn btn-success save">{{ translate('Save') }}</button>
+                        <button class="btn btn-default" data-dismiss="modal">{{ translate('Close') }}</button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -7,6 +7,23 @@
         </li>
     {% endif %}
 
+    {# {% if hasAccess('cudi_booking', 'view') %}
+        <li {% if getParam('controller') == 'cudi' %}class="active"{% endif %}>
+            <a href="{{ url('cudi_booking', {'action': 'view'}) }}">
+                {{ translate('Cudi') }}
+            </a>
+        </li>
+    {% endif %}
+
+    {% if hasAccess('shift', 'index') %}
+        <li {% if getParam('controller') == 'shift' %}class="active"{% endif %}>
+            <a href="{{ url('shift', {'action': 'index'}) }}">
+                {{ translate('Shifts') }}
+            </a>
+        </li>
+    {% endif %} #}
+
+
     {% if hasAccess('common_account', 'profile') %}
         <li>
             <a class="{% if getParam('action') == 'profile' %} activeTab {% else %} tab {% endif %}" href="{{ url('common_account', {'action': 'profile'}) }}">
@@ -15,27 +32,4 @@
         </li>
     {% endif %}
 
-    {% if hasAccess('cudi_booking', 'view') %}
-        <li>
-            <a class="tab" href="{{ url('cudi_booking', {'action': 'view'}) }}">
-                {{ translate('Cudi') }}
-            </a>
-        </li>
-    {% endif %}
-
-    {% if hasAccess('shift', 'index') %}
-        <li>
-            <a class="tab" href="{{ url('shift', {'action': 'index'}) }}">
-                {{ translate('Shifts') }}
-            </a>
-        </li>
-    {% endif %}
-
-    {% if hasAccess('br_career_match', 'overview') %}
-        <li>
-            <a class="tab" href="{{ url('br_career_match', {'action': 'overview'}) }}">
-                {{ translate('Matching Software') }}
-            </a>
-        </li>
-    {% endif %}
 </ul>

@@ -1,28 +1,10 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 return array(
     'submenus' => array(
         'Corporate Relations' => array(
-            'subtitle' => array('Companies','CVs', 'Products'),
-            'items'    => array(
+            'subtitle'    => array('Companies','CVs', 'Products'),
+            'items'       => array(
                 'br_admin_collaborator' => array(
                     'title' => 'Collaborators',
                     'help'  => 'Here you can find a list of all the people that are collaborating with corporate relations.',
@@ -54,7 +36,7 @@ return array(
                 ),
                 'br_admin_product' => array(
                     'title' => 'Products',
-                    'help'  => 'Here you can manage all the products Student IT has to offer to every company.',
+                    'help'  => 'Here you can manage all the products VTK has to offer to every company.',
                 ),
                 'br_admin_request' => array(
                     'title' => 'Requests',
@@ -64,9 +46,9 @@ return array(
                     'title' => 'Events',
                     'help'  => 'Here you can manage all events by VTK Corporate Relations.',
                 ),
-                'br_admin_match_match' => array(
-                    'title' => 'Matching Software',
-                    'help'  => 'Here you can manage all Matches.',
+                'br_admin_communication' => array(
+                    'title' => 'Communications',
+                    'help'  => 'Here you can view all outgoing communications.',
                 ),
             ),
             'controllers' => array(
