@@ -5,13 +5,15 @@
         <div style="height: 40px"></div>
 
         <div class="row">
-            <h1 style="float:left;">
-                {% if type == 'company' %}
-                    {{ translate('Edit Company Profile') }}
-                {% elseif type == 'student' %}
-                    {{ translate('Edit Student Profile') }}
-                {% endif %}
-            </h1>
+            <a class="button blue pull-right" style="margin-left: 20px;margin-top: 10px;" href="{{ url('br_corporate_match') }}">HOME</a>
+
+            {% if type == 'company' %}
+                <h1 style="float:left;">{{ translate('Edit Company Profile') }}</h1>
+                <a class="button blue unfilled pull-right" style="margin-left: 20px;margin-top: 10px;" href="{{ url('br_corporate_match', {'action': 'editProfile', 'type': 'student' }) }}">Edit Student Profile</a>
+            {% elseif type == 'student' %}
+                <h1 style="float:left;">{{ translate('Edit Student Profile') }}</h1>
+                <a class="button blue unfilled pull-right" style="margin-left: 20px;margin-top: 10px;" href="{{ url('br_corporate_match', {'action': 'editProfile', 'type': 'company' }) }}">Edit Company Profile</a>
+            {% endif %}
         </div>
 
         <div class="row">

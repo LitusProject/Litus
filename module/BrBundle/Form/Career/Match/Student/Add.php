@@ -21,6 +21,7 @@
 namespace BrBundle\Form\Career\Match\Student;
 
 use BrBundle\Entity\Match\Profile;
+use Laminas\Validator\Identical;
 
 /**
  * Add Profile
@@ -41,21 +42,54 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         parent::init();
 
+        foreach ($this->getFeatureNames() as $featureId => $featureName){
+            $this->add(
+                array(
+                    'type'       => 'select',
+                    'name'       => 'feature_'.$featureId,
+                    'label'      => $featureName,
+                    'value'      => ' ',
+                    'attributes' => array(
+                        'style'    => 'max-height: 38px;height:38px;max-width:150px;',
+                        'options'  => $this->makeOptions(),
+                    ),
+                    'options' => array(
+                        'input' => array(
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array(
+                                    'name'    => 'FeatureImportanceConstraint',
+                                ),
+                            ),
+                        ),
+                    ),
+                )
+            );
+        }
+
         $this->add(
             array(
-                'type'       => 'select',
-                'name'       => 'features_ids',
-                'label'      => 'Features',
-                'required'   => true,
+                'type'       => 'checkbox',
+                'name'       => 'conditions',
+                'label'      => 'I have read and accept the GDPR terms and condition specified above',
                 'attributes' => array(
-                    'multiple' => true,
-                    'style'    => 'max-width: 100%;max-height: 600px;height:200px;',
-                    'options'  => $this->getFeatureNames(),
+                    'id' => 'conditions',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
+                        'validators' => array(
+                            array(
+                                'name'    => 'identical',
+                                'options' => array(
+                                    'token'    => true,
+                                    'strict'   => false,
+                                    'messages' => array(
+                                        Identical::NOT_SAME => 'You must agree to the terms and conditions.',
+                                    ),
+                                ),
+                            ),
                         ),
                     ),
                 ),
@@ -72,10 +106,24 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         $featureNames = array();
         foreach ($this->getEntityManager()->getRepository('BrBundle\Entity\Match\Feature')->findAll() as $feature) {
-            $featureNames[$feature->getId()] = $feature->getName();
+            if ($feature->getType() == 'student' || is_null($feature->getType()))
+                $featureNames[$feature->getId()] = $feature->getName();
         }
 
         return $featureNames;
+    }
+
+    /**
+     * @return array
+     */
+    private function makeOptions()
+    {
+
+        $options = array(' ');
+        foreach (Profile\ProfileFeatureMap::$POSSIBLE_VISIBILITIES as $val => $type)
+            $options[$val] = $type;
+
+        return $options;
     }
 
     /**

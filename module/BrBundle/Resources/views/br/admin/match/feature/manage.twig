@@ -31,6 +31,9 @@
                 <tr class="item item-{{ feature.getId() }}">
                     <td>{{ feature.getName() }}</td>
                     <td class="actions">
+                        {% if hasAccess('br_admin_match_feature', 'bonusMalus') %}
+                            <a href="{{ url('br_admin_match_feature', {"action": "bonusMalus", "id": feature.getId()}) }}" class="secretary">Bonus-Malus</a>
+                        {% endif %}
                         {% if hasAccess('br_admin_match_feature', 'edit') %}
                             <a href="{{ url('br_admin_match_feature', {"action": "edit", "id": feature.getId()}) }}" class="edit">Edit</a>
                         {% endif %}

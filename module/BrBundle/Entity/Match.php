@@ -211,10 +211,11 @@ class Match
         error_log(count($studentTraits). count($companyTraits));
 
         $positives = 0;
-        $negatives =0;
+        $negatives = 0;
         foreach ($studentTraits as $ST){
             foreach ($companyTraits as $CT){
-                if ($ST == $CT) $positives++;
+                if ($ST == $CT)
+                    $positives++;
 //                if ($ST->isOpposite($CT)) $negatives++;
             }
         }

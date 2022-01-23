@@ -79,7 +79,7 @@ return array(
             'reject', 'approve', 'manage', 'view',
         ),
         'br_admin_match_feature' => array(
-            'manage', 'add', 'edit', 'delete',
+            'manage', 'add', 'edit', 'delete', 'bonusMalus'
         ),
         'br_admin_match_profile' => array(
             'manage', 'add', 'edit', 'delete', 'matches'

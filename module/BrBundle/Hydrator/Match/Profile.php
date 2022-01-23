@@ -42,11 +42,9 @@ class Profile extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $this->stdExtract($object, self::$stdKeys);
 
-        $featureIds = array();
         foreach ($object->getFeatures() as $feature){
-            $featureIds[] = $feature->getFeature()->getId();
+            $data['feature_' . $feature->getFeature()->getId()] = $feature->getImportance();
         }
-        $data['features_ids'] = $featureIds;
         return $data;
     }
 
@@ -59,6 +57,7 @@ class Profile extends \CommonBundle\Component\Hydrator\Hydrator
                 $object = new CompanyProfileEntity();
             }
         }
+
         $object = $this->stdHydrate($data, $object, self::$stdKeys);
 
         return $object;

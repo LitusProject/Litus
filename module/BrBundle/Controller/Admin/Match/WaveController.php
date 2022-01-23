@@ -162,15 +162,14 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
         }
 
         foreach($wave->getCompanyWaves() as $cw){
-            foreach($cw->getMatches() as $match){
-                $match->getMatch()->setWave(null);
-                $this->getEntityManager()->remove($match->getMatch());
+            foreach($cw->getMatches() as $map){
+                $map->getMatch()->setWave(null);
+                $this->getEntityManager()->remove($map);
             }
             $this->getEntityManager()->remove($cw);
         }
-
-        $this->getEntityManager()->remove($wave);
         $this->getEntityManager()->flush();
+        $this->getEntityManager()->remove($wave);
 
         return new ViewModel(
             array(
@@ -287,6 +286,8 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
         });
 
         $cw = new CompanyWave($wave, $company);
+        $this->getEntityManager()->persist($cw);
+        $this->getEntityManager()->flush();
 
         $i = 0; // index of highest match
         $n = 0; // number of matches in this wave
@@ -303,7 +304,6 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
                 continue;
             }
             $n += 1;
-            $this->getEntityManager()->persist($cw);
             $map = new Wave\WaveMatchMap($match, $cw);
             $this->getEntityManager()->persist($map);
             $cw->addMatch($map);

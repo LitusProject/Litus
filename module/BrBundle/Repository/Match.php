@@ -114,7 +114,8 @@ class Match extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         return $query->select('m')
             ->from('BrBundle\Entity\Match', 'm')
             ->innerJoin('m.studentMatchee', 's')
-            ->innerJoin('m.wave', 'cw')
+            ->innerJoin('m.wave', 'wm')
+            ->innerJoin('wm.companywave', 'cw')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('s.student', ':student'),

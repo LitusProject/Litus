@@ -3,14 +3,21 @@
 {% block page_content %}
 
     <div class="row">
-        <h1 style="float:left;">
-            {% if type == 'company' %}
+        <a class="button blue pull-right" style="margin-left: 20px;margin-top: 10px;" href="{{ url('br_career_match') }}">HOME</a>
+
+        <a class="button blue unfilled pull-right" style="margin-left: 20px;margin-top: 10px;" href="{{ url('br_career_match', {'action': 'editProfile', 'type': type }) }}">Edit Profile</a>
+
+        {% if type == 'company' %}
+            <h1 style="float:left;">
                 {{ translate('View Company Profile') }}
-            {% elseif type == 'student' %}
+            </h1>
+            <a class="button blue unfilled pull-right" style="margin-left: 100px;margin-top: 10px;" href="{{ url('br_career_match', {'action': 'viewProfile', 'type': 'student' }) }}">View Student Profile</a>
+        {% elseif type == 'student' %}
+            <h1 style="float:left;">
                 {{ translate('View Student Profile') }}
-            {% endif %}
-        </h1>
-        <a class="btn btn-warning btn-sm pull-right" href="{{ url('br_career_match', {'action': 'editProfile', 'type': type }) }}">Edit Profile</a>
+            </h1>
+            <a class="button blue unfilled pull-right" style="margin-left: 100px;margin-top: 10px;" href="{{ url('br_career_match', {'action': 'viewProfile', 'type': 'company' }) }}">View Company Profile</a>
+        {% endif %}
     </div>
     <div class="row">
         {% if type == 'student' %}

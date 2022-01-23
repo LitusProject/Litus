@@ -195,7 +195,7 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
                 foreach (array_diff($oldFeaturesIds, $newFeatureIds) as $removableFeatures){
                     $map = $this->getEntityManager()
                         ->getRepository('BrBundle\Entity\Match\Profile\ProfileFeatureMap')
-                        ->findOneByProfile($profile);
+                        ->findOneByProfileAndFeatureId($profile, $removableFeatures);
                     $this->getEntityManager()->remove($map);
                 }
 

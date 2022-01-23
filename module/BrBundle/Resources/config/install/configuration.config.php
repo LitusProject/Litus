@@ -315,4 +315,24 @@ Example content of this section.
         'value'       => 'Ook hier komt nog mooie text van BR',
         'description' => 'banner text on corporate/match/overview',
     ),
+    array(
+        'key'         => 'br.match_profile_max_importances',
+        'value'       => serialize(
+            array(
+                100 => 5,
+                200 => 3
+            )
+        ),
+        'description' => 'The maximum allowed features per importance value',
+    ),
+    array(
+        'key'         => 'br.match_career_profile_GDPR_text',
+        'description' => 'I agree that this data can be used to contact companies',
+        'value' => serialize(
+            array(
+                'en' => 'I agree that this data can be used to contact companies, should you get a match or show them you\'re interested.',
+                'nl' => 'Ik ga akkoord dat deze gegevens gebruikt en bekeken kunnen worden door de bedrijven, als er een match gevormd wordt of als ik "Interesse toon".'
+            )
+        )
+    ),
 );

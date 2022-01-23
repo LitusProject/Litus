@@ -18,7 +18,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Repository\Match;
+namespace BrBundle\Repository\Match\Wave;
 
 /**
  *

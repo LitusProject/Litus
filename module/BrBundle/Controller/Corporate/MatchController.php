@@ -81,17 +81,20 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
                 $cp = false;
         }
 
-        $companyWaves = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Match\Wave\CompanyWave')
-            ->findByCompany($person->getCompany());
-
-        foreach ($companyWaves as $cw)
-            if ($cw->getWave() == $wave)
+        foreach ($wave->getCompanyWaves() as $cw){
+            if ($cw->getCompany() == $person->getCompany()){
                 $matches = $cw->getMatches();
+            }
+        }
 
         $bannerText = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.match_corporate_banner_text');
+
+        $matches = array_map(function($a) {
+            return $a->getMatch();
+        }, $matches);
+
 
         return new ViewModel(
             array(

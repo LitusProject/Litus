@@ -26,7 +26,7 @@ use BrBundle\Entity\Match\Feature as FeatureEntity;
  */
 class Feature extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $stdKeys = array('name');
+    private static $stdKeys = array('name', 'type');
 
     protected function doExtract($object = null)
     {

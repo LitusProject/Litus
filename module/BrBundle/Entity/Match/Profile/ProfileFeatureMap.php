@@ -73,14 +73,24 @@ class ProfileFeatureMap
     private $importance;
 
     /**
+     * @static
+     * @var array All the possible importances allowed
+     */
+    public static $POSSIBLE_VISIBILITIES = array(
+        100 => 'Important',
+        200 => 'Very important'
+    );
+
+    /**
      * @param Feature $feature
      * @param Profile $profile
+     * @param int $importance
      */
-    public function __construct(Feature $feature, Profile $profile)
+    public function __construct(Feature $feature, Profile $profile, $importance = 100)
     {
         $this->feature = $feature;
         $this->profile = $profile;
-        $this->importance = 100;
+        $this->importance = $importance;
     }
 
     /**
@@ -129,6 +139,17 @@ class ProfileFeatureMap
     public function getImportance()
     {
         return $this->importance;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImportanceName()
+    {
+        $possible = ProfileFeatureMap::$POSSIBLE_VISIBILITIES;
+        if (in_array($this->importance, array_keys($possible)))
+            return $possible[$this->importance];
+        return 'None';
     }
 
     /**

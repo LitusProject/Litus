@@ -260,6 +260,10 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
             array(
                 'form' => $form,
                 'type' => $type,
+                'gdpr_text' => unserialize(
+                    $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('br.match_career_profile_GDPR_text'))[$this->getLanguage()->getAbbrev()],
             )
         );
     }
@@ -347,36 +351,34 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
             $form->setData($formData);
 
             if ($form->isValid()) {
-                // Current Features
+                // Remove current Features
                 $currentFeatures = $profile->getFeatures();
-                $currentFeatureIds = array();
-                $currentFeatureMaps = array();
-                foreach ($currentFeatures as $c){
-                    $currentFeatureIds[] = $c->getFeature()->getId();
-                    $currentFeatureMaps[$c->getFeature()->getId()] = $c->getId();
-                }
-
-                // Form Features
-                $formFeatureIds = array_values($formData['features_ids']);
-
-                // Features to remove (old features)
-                $oldFeatureIds = array_diff($currentFeatureIds, $formFeatureIds);
-                foreach ($oldFeatureIds as $feature){
-                    $map = $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Match\Profile\ProfileFeatureMap')
-                        ->findOneById($currentFeatureMaps[$feature]);
+                foreach ($currentFeatures as $map){
                     $profile->getFeatures()->removeElement($map);
                     $this->getEntityManager()->remove($map);
                 }
+                $this->getEntityManager()->flush();
 
-                // Features to add (new features)
-                $newFeatureIds = array_diff($formFeatureIds, $currentFeatureIds);
-                foreach ($newFeatureIds as $feature){
+
+                // NEW FEATURES
+
+                // Get new features and importances
+                $features = array();
+                foreach ($formData as $key => $val){
+                    if (str_contains($key, 'feature_')){
+                        $id = substr($key, strlen('feature_'));
+                        $feature = $this->getEntityManager()->getRepository('BrBundle\Entity\Match\Feature')
+                            ->findOneById($id);
+                        $features[] = array($feature, $val);
+                    }
+                }
+
+                foreach ($features as $featureAndVal){
                     $map = new ProfileFeatureMap(
                         $this->getEntityManager()
                             ->getRepository('BrBundle\Entity\Match\Feature')
-                            ->findOneById($feature),
-                        $profile);
+                            ->findOneById($featureAndVal[0]),
+                        $profile, $featureAndVal[1]);
                     $this->getEntityManager()->persist($map);
                     $profile->addFeature($map);
                 }
@@ -384,11 +386,11 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
                 $this->getEntityManager()->flush();
                 $this->flashMessenger()->success(
                     'Success',
-                    'The profile was successfully created!'
+                    'The profile was successfully edited!'
                 );
 
                 $this->redirect()->toRoute(
-                    'br_corporate_match',
+                    'br_career_match',
                     array(
                         'action' => 'overview',
                     )
@@ -402,6 +404,10 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
             array(
                 'form' => $form,
                 'type' => $type,
+                'gdpr_text' => unserialize(
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('br.match_career_profile_GDPR_text'))[$this->getLanguage()->getAbbrev()],
             )
         );
     }

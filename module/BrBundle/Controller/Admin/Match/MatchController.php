@@ -224,15 +224,20 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
         if ($match === null) {
             return new ViewModel();
         }
-
-        $this->getEntityManager()->remove($match->getCompanyMatchee());
-        $this->getEntityManager()->remove($match->getStudentMatchee());
-        $match->getWave()->getWave()->removeMatch($match);
-
         $this->getEntityManager()->remove($match);
-        error_log("here");
 
         $this->getEntityManager()->flush();
+        $this->getEntityManager()->remove($match->getCompanyMatchee());
+        $this->getEntityManager()->remove($match->getStudentMatchee());
+        $this->getEntityManager()->flush();
+        if (!is_null($match->getWave())){
+            $match->getWave()->getWave()->removeMatch($match);
+            $this->getEntityManager()->remove($match->getWave());
+            $this->getEntityManager()->flush();
+        }
+
+
+
 
         return new ViewModel(
             array(

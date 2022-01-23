@@ -27,7 +27,7 @@ use BrBundle\Entity\Match\Wave;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="BrBundle\Repository\Match\MatcheeMap")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Match\Wave\WaveMatcheeMap")
  * @ORM\Table(name="br_match_companywave_match_map")
  */
 class WaveMatchMap

@@ -54,7 +54,7 @@ class CompanyWave
     /**
      * @var ArrayCollection The company's top matches in this wave
      *
-     * @ORM\OneToMany(targetEntity="\BrBundle\Entity\Match\Wave\WaveMatchMap", mappedBy="wave")
+     * @ORM\OneToMany(targetEntity="\BrBundle\Entity\Match\Wave\WaveMatchMap", mappedBy="companywave")
      * @ORM\JoinColumn(name="matches", referencedColumnName="id")
      */
     private $matches;
