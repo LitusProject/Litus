@@ -1,0 +1,109 @@
+{% extends 'career/partials/layout.twig' %}
+
+
+{% block page_content %}
+    <div class="container">
+        <div class="page-header">
+            <h2>{{ translate('My Matches') }}</h2>
+        </div>
+
+        <div class="flashmessage alert alert-danger match_removed_error fade">
+            <div class="title">Error</div>
+            <div class="content">
+                <p>An error occurred while trying to remove the match. Please try again later.</p>
+            </div>
+        </div>
+
+        {% if authenticatedPerson is null %}
+            {{ translate('Please login to view your matches.') }}
+        {% else %}
+
+            <table class="table">
+                <tr>
+                    <th>{{ translate('Name') }}</th>
+                    <th class="hidden-xs">{{ translate('University') }}</th>
+                    <th>{{ translate('Study') }}</th>
+                    <th>{{ translate('Specialization') }}</th>
+                    <th class="hidden-xs">{{ translate('Email') }}</th>
+                    <th class="hidden-xs">{{ translate('Phone number') }}</th>
+                    <th>{{ translate('Actions') }}</th>
+                </tr>
+                {% for match in matches %}
+                    <tr class="item item-{{ match.getId() }}">
+                        <td>{{ match.getSubscription().getFirstName() }} {{match.getSubscription().getLastName()}}</td>
+                        <td class="hidden-xs">{{ match.getSubscription().getUniversityString() }}</td>
+                        <td>{{ match.getSubscription().getStudyString() }}</td>
+                        <td>{% if match.getSubscription().getSpecialization() == '' %}/{% endif %}{{ match.getSubscription().getSpecialization() }}</td>
+                        <td class="hidden-xs">{{ match.getSubscription().getEmail() }}</td>
+                        <td class="hidden-xs">{% if match.getSubscription().getPhoneNumber() == '' %}/{% endif %}{{ match.getSubscription().getPhoneNumber() }}</td>
+                        <td class="actions">
+                            <a href="#" class="btn btn-default btn-sm remove" data-id="{{ match.getId() }}" data-name="{{ match.getSubscription().getFirstName() }} {{match.getSubscription().getLastName()}}">
+                                {{ translate('Remove match') }}
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+            </table>
+
+            <a class="button blue unfilled" href="{{ url('br_career_event',{ 'action': 'view', 'id': event.getId() }) }}">← {{ translate('Return to the event information') }}</a>
+
+        {% endif %}
+
+        <div class="modal fade" id="removeMatch">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4>{{event.getTitle(language)}}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            {{ translate('Are you sure you want to remove the following match:') }} <b class="matchName"></b>?
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-danger continue">Yes</button>
+                        <button class="btn btn-default remove" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .remove').click(openModal);
+        });
+
+        function openModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeMatch = $('#removeMatch');
+            removeMatch.find('.matchName').html($(this).data('name'));
+            var id = $this.data('id');
+            removeMatch.find('.continue').unbind('click').click(function () {
+                $.post('{{ url('br_career_event', {"action": "removeMatch", "id": event.getId()})}}match/' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.item-' + id).remove();
+                        $('#removeMatch').modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeMatch.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.item_removed_error').removeClass('hide');
+            $('#removeMatch').modal('hide');
+        }
+
+    </script>
+{% endblock %}

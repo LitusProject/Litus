@@ -153,6 +153,56 @@ return array(
                 ),
             ),
         ),
+        'br_admin_event_company' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/br/event/:event/company[/:action[/:id][/page/:page]][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'event'  => '[0-9]*',
+                    'page'   => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_admin_event_company',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
+        'br_admin_event_location' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/br/event/:event/location[/:action[/:id][/page/:page]][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'event'  => '[0-9]+',
+                    'page'   => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_admin_event_location',
+                    'action'     => 'draw',
+                ),
+            ),
+        ),
+        'br_admin_event_subscription' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/br/event/:event/subscription[/:action[/:id][/page/:page][/:field/:string]][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'event'  => '[0-9]+',
+                    'page'   => '[0-9]*',
+                    'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_admin_event_subscription',
+                    'action'     => 'overview',
+                ),
+            ),
+        ),
         'br_admin_invoice' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -296,10 +346,12 @@ return array(
         'br_career_event' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '[/:language]/career/event[/:action[/:id][/page/:page]][/]',
+                'route'       => '[/:language]/career/event[/:action[/:id][/code/:code][/match/:match][/page/:page]][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'code'     => '[a-z0-9]*',
                     'id'       => '[0-9_-]*',
+                    'match'    => '[0-9_-]*',
                     'language' => '(en|nl)',
                     'page'     => '[0-9]*',
                 ),
@@ -553,14 +605,17 @@ return array(
         'br_admin_cv_entry'        => 'BrBundle\Controller\Admin\CvController',
         'br_admin_communication'   => 'BrBundle\Controller\Admin\CommunicationController',
 
-        'br_admin_collaborator'    => 'BrBundle\Controller\Admin\CollaboratorController',
-        'br_admin_contract'        => 'BrBundle\Controller\Admin\ContractController',
-        'br_admin_event'           => 'BrBundle\Controller\Admin\EventController',
-        'br_admin_order'           => 'BrBundle\Controller\Admin\OrderController',
-        'br_admin_product'         => 'BrBundle\Controller\Admin\ProductController',
-        'br_admin_invoice'         => 'BrBundle\Controller\Admin\InvoiceController',
-        'br_admin_overview'        => 'BrBundle\Controller\Admin\OverviewController',
-        'br_admin_request'         => 'BrBundle\Controller\Admin\RequestController',
+        'br_admin_collaborator' => 'BrBundle\Controller\Admin\CollaboratorController',
+        'br_admin_contract'     => 'BrBundle\Controller\Admin\ContractController',
+        'br_admin_event'        => 'BrBundle\Controller\Admin\EventController',
+        'br_admin_event_company'=> 'BrBundle\Controller\Admin\Event\CompanyController',
+        'br_admin_event_location'=> 'BrBundle\Controller\Admin\Event\LocationController',
+        'br_admin_event_subscription'=> 'BrBundle\Controller\Admin\Event\SubscriptionController',
+        'br_admin_order'        => 'BrBundle\Controller\Admin\OrderController',
+        'br_admin_product'      => 'BrBundle\Controller\Admin\ProductController',
+        'br_admin_invoice'      => 'BrBundle\Controller\Admin\InvoiceController',
+        'br_admin_overview'     => 'BrBundle\Controller\Admin\OverviewController',
+        'br_admin_request'      => 'BrBundle\Controller\Admin\RequestController',
 
         'br_corporate_index'       => 'BrBundle\Controller\Corporate\IndexController',
         'br_corporate_cv'          => 'BrBundle\Controller\Corporate\CvController',

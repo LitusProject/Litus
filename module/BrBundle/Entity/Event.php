@@ -55,19 +55,48 @@ class Event
      */
     private $descriptionForCompanies;
 
+    
     /**
-     * @var DateTime The start date and time of this reservation.
+     * @var string The description for this event for companies
+     *
+     * @ORM\Column(name="view_information_nl", type="text", nullable=true)
+     */
+    private $viewInformationNL;
+
+    /**
+     * @var string The description for this event for companies
+     *
+     * @ORM\Column(name="view_information_en", type="text", nullable=true)
+     */
+    private $viewInformationEN;
+
+    /**
+     * @var DateTime The start date and time of this event.
      *
      * @ORM\Column(name="start_date", type="datetime")
      */
     private $startDate;
 
     /**
-     * @var DateTime The end date and time of this reservation.
+     * @var DateTime The end date and time of this event.
      *
      * @ORM\Column(name="end_date", type="datetime")
      */
     private $endDate;
+
+    /**
+     * @var DateTime The start date and time of the subscriptions.
+     *
+     * @ORM\Column(name="subscription_date", type="datetime", nullable=true)
+     */
+    private $subscriptionDate;
+
+    /**
+     * @var DateTime The start date and time of the map view. After this time the map is displayed
+     *
+     * @ORM\Column(name="mapview_date", type="datetime", nullable=true)
+     */
+    private $mapviewDate;
 
     /**
      * @var integer The number of companies that will attend
@@ -112,6 +141,14 @@ class Event
      *
      */
     private $audience;
+
+    /**
+     * @var string Food on the event
+     *
+     * @ORM\Column(name="food", type="text", nullable=true)
+     *
+     */
+    private $food;
 
     /**
      * @param Person $creator
@@ -184,6 +221,64 @@ class Event
         $this->endDate = $endDate;
 
         return $this;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getSubscriptionDate()
+    {
+        return $this->subscriptionDate;
+    }
+
+    /**
+     * @param  DateTime|null $subscriptionDate
+     * @return self
+     */
+    public function setSubscriptionDate(DateTime $subscriptionDate = null)
+    {
+        $this->subscriptionDate = $subscriptionDate;
+
+        return $this;
+    }
+
+
+    /**
+     * @return boolean
+     */
+    public function canSubscribe()
+    {
+        $now = new DateTime();
+        return ($this->subscriptionDate && $now >= $this->subscriptionDate );
+    }
+
+
+    /**
+     * @return DateTime
+     */
+    public function getMapviewDate()
+    {
+        return $this->mapviewDate;
+    }
+
+    /**
+     * @param  DateTime|null $mapviewDate
+     * @return self
+     */
+    public function setMapviewDate(DateTime $mapviewDate = null)
+    {
+        $this->mapviewDate = $mapviewDate;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function canViewMap()
+    {
+        $now = new DateTime();
+        return ($this->mapviewDate && $now >= $this->mapviewDate );
     }
 
     /**
@@ -321,4 +416,25 @@ class Event
     {
         $this->audience = $audience;
     }
+
+
+    /**
+     * @return array $food
+     */
+    public function getFood()
+    {
+        return unserialize($this->food);
+    }
+
+    /**
+     * @param array $food
+     * @return self
+     */
+    public function setFood($food)
+    {
+        $this->food = serialize($food);
+        return $this;
+    }
+
+    
 }
