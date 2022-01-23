@@ -43,7 +43,7 @@ return array(
             'add', 'delete', 'edit', 'manage', 'old', 'deleteAttendee'
         ),
         'br_admin_company' => array(
-            'add', 'delete', 'editLogo', 'edit', 'manage', 'search', 'upload', 'csv', 'pdf',
+            'add', 'delete', 'editLogo', 'edit', 'manage', 'search', 'upload', 'csv', 'pdf'
         ),
         'br_admin_company_event' => array(
             'add', 'delete', 'edit', 'editPoster', 'manage', 'upload',
@@ -62,6 +62,18 @@ return array(
         ),
         'br_admin_cv_entry' => array(
             'manage', 'delete', 'export', 'exportAcademics', 'exportCvCsv'
+        ),
+        'br_admin_event' => array(
+            'manage', 'delete', 'add', 'edit', 'old', 'statistics','deleteAttendee', 'editAttendee'
+        ),
+        'br_admin_event_company' => array(
+            'manage', 'edit', 'delete', 'csv',
+        ),
+        'br_admin_event_subscription' => array(
+            'overview', 'add','edit', 'delete', 'mail' ,'search', 'csv',
+        ),
+        'br_admin_event_location' => array(
+            'draw', 'add', 'edit', 'delete',
         ),
         'br_admin_invoice' => array(
             'history', 'view', 'edit', 'manage', 'download', 'payed', 'pay', 'manualAdd', 'csv', 'payedList',
@@ -97,7 +109,7 @@ return array(
             'view', 'overview', 'file', 'search',
         ),
         'br_career_event' => array(
-            'view', 'overview',
+             'overview','view','subscribe','map','qr','scanQr','overviewMatches','removeMatch'
         ),
         'br_career_vacancy' => array(
             'view', 'overview',

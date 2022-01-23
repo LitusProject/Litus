@@ -1,16 +1,16 @@
 <header id="controller_header">
-    <div class="title"><span class="event">Corporate Relations Events</span></div>
+    <div class="title"><span class="event">Corporate Relations Event</span></div>
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('br_admin_event', 'add') %}
-                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_event', {"action": "add"}) }}">Add</a></li>
+            {% if hasAccess('br_admin_event', 'edit') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_event', {"action": "add", "id": event.getId()}) }}">Add</a></li>
             {% endif %}
             {% if hasAccess('br_admin_event', 'old') %}
-                <li><a {% if 'old' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_event', {"action": "old"}) }}">Old</a></li>
+                <li><a {% if 'old' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_event', {'action': 'old'}) }}">Old</a></li>
             {% endif %}
             {% if hasAccess('br_admin_event', 'manage') %}
-                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_event', {"action": "manage"}) }}">Manage</a></li>
+                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{  url('br_admin_event', {'action': 'manage' }) }}">Manage</a></li>
             {% endif %}
         </ul>
     </nav>

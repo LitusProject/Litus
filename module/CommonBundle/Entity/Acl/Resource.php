@@ -26,7 +26,7 @@ class Resource
      * @var \CommonBundle\Entity\Acl\Resource The parent of this resource
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\Acl\Resource")
-     * @ORM\JoinColumn(name="parent", referencedColumnName="name")
+     * @ORM\JoinColumn(name="parent", referencedColumnName="name", onDelete="CASCADE")
      */
     private $parent;
 

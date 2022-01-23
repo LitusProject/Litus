@@ -32,6 +32,15 @@ class Edit extends \BrBundle\Form\Admin\Event\Add
         parent::init();
 
         $this->remove('submit')
-            ->addSubmit('Save', 'mail_edit');
+            ->add(
+                array(
+                    'type'       => 'submit',
+                    'name'       => 'event_edit',
+                    'value'      => 'Save',
+                    'attributes' => array(
+                        'class' => 'mail_add',
+                    ),
+                )
+        );
     }
 }

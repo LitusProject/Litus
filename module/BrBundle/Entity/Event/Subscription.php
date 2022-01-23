@@ -4,6 +4,7 @@
 namespace BrBundle\Entity\Event;
 
 use BrBundle\Entity\Event;
+use BrBundle\Entity\Company;
 use Doctrine\ORM\Mapping as ORM;
 use function Monad\Either\tryCatch;
 
@@ -13,7 +14,7 @@ use function Monad\Either\tryCatch;
  * @author Belian Callaerts <belian.callaerts@vtk.be>
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Event\Subscription")
- * @ORM\Table(name="br_events_subscriptions")
+ * @ORM\Table(name="br_events_subscriptions", uniqueConstraints={@ORM\UniqueConstraint(name="event_qr",columns={"event_id", "qr_code"})})
  */
 class Subscription
 {
@@ -30,7 +31,7 @@ class Subscription
      *@var Event The event that the company will be attending
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Event")
-     * @ORM\JoinColumn(referencedColumnName="id")
+     * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
      */
     private $event;
 
@@ -74,6 +75,26 @@ class Subscription
      */
     private $university;
 
+
+    const POSSIBLE_UNIVERSITIES = array(
+        'ku leuven'     => 'KU Leuven',
+        'vub'           => 'Vrije Universiteit Brussel',
+        'ugent'         => 'UGent',
+        'uhasselt'      => 'UHasselt',
+        'uantwerpen'    => 'UAntwerpen',
+        'other'         => 'Other',
+    );
+
+
+
+    /**
+     * @var string University of the subscriber if it is not one of the available
+     *
+     * @ORM\Column(name="other_university", type="text", nullable=true)
+     *
+     */
+    private $other_university;
+
     /**
      * @var string Study of the subscriber
      *
@@ -81,6 +102,22 @@ class Subscription
      *
      */
     private $study;
+
+    /**
+     * @var string Study of the subscriber if it is not one of the available
+     *
+     * @ORM\Column(name="other_study", type="text", nullable=true)
+     *
+     */
+    private $other_study;
+
+
+    const POSSIBLE_STUDIES = Company::POSSIBLE_MASTERS + array(
+        'faculty of bio engineering'        => 'Faculty of bio engineering',
+        'faculty of business and economics' => 'Faculty of business and economics',
+        'faculty of engineering technology' => 'Faculty of engineering technology',
+        'other'                             => 'Other'
+    );
 
     /**
      * @var string Specialization of the subscriber
@@ -98,10 +135,22 @@ class Subscription
      */
     private $studyYear;
 
+
+    const POSSIBLE_STUDY_YEARS = array(
+        'bach1'         => '1st Bachelor',
+        'bach2'         => '2nd Bachelor',
+        'bach3'         => '3rd Bachelor',
+        'ma1'           => '1st Master',
+        'ma2'           => '2nd Master',
+        'manama'        => 'MaNaMa',
+        'phd'           => 'PhD',
+        'other'         => 'Other',
+    );
+
     /**
      * @var string Food of the subscriber
      *
-     * @ORM\Column(name="food", type="text")
+     * @ORM\Column(name="food", type="text", nullable=true)
      *
      */
     private $food;
@@ -230,12 +279,23 @@ class Subscription
         $this->phoneNumber = $phoneNumber;
     }
 
-    /**
+        /**
      * @return string
      */
     public function getUniversity(): string
     {
         return $this->university;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUniversityString(): string
+    {
+        if ($this->university == 'other'){
+            return ($this->otherUniversity?$this->otherUniversity:' ');
+        }
+        return $this::POSSIBLE_UNIVERSITIES[$this->university];
     }
 
     /**
@@ -253,6 +313,20 @@ class Subscription
     {
         return $this->study;
     }
+
+    /**
+     * @return string
+     */
+    public function getStudyString(): string
+    {
+        if ($this->study == 'other'){
+            return ($this->otherStudy?$this->otherStudy:' ');
+        }
+        return $this::POSSIBLE_STUDIES[$this->study];
+    }
+
+
+
 
     /**
      * @param string $study
@@ -299,7 +373,7 @@ class Subscription
      */
     public function getFood(): string
     {
-        return $this->food;
+        return ($this->food?$this->food:'');
     }
 
     /**
@@ -316,6 +390,14 @@ class Subscription
     public function getQrCode(): string
     {
         return $this->qrCode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFoodString(): string
+    {
+        return ($this->food?$this->event->getFood()[$this->food]:'');
     }
 
     /**
@@ -357,6 +439,5 @@ class Subscription
     {
         $this->consent = $consent;
     }
-
 
 }
