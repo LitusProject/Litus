@@ -144,7 +144,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 $companyMap->getCompany()->getName(),
                 $companyMap->getAttendees(),
                 $positions[$companyMap->getCompany()->getId()],
-                in_array($currentYear, $companyMap.getCompany().getCvBookYears()),
+                in_array($currentYear, $companyMap->getCompany()->getCvBookYears()),
                 $companyMap->isChecked(),
             );
         }
