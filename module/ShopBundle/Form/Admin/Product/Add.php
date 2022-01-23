@@ -35,6 +35,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(
             array(
                 'type'     => 'text',
+                'name'     => 'name_en',
+                'label'    => 'English Name',
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'text',
                 'name'     => 'sell_price',
                 'label'    => 'Sell Price',
                 'required' => true,

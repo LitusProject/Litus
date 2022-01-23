@@ -19,14 +19,14 @@ class IndexController extends \BrBundle\Component\Controller\CorporateController
             ->getRepository('CommonBundle\Entity\General\Organization\Unit')
             ->findAllActiveQuery()->getResult();
 
-            $br = null;
+        $br = null;
         foreach ($units as $unit) {
             if ($unit->getName() === 'Bedrijvenrelaties') {
                 $br = $unit;
             }
         }
 
-            $members = array();
+        $members = array();
         if ($br != null) {
             $members = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')

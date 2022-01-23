@@ -1,4 +1,22 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
 namespace BrBundle\Form\Corporate\Company;
 
@@ -79,7 +97,7 @@ class Edit extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'placeholder' => '+CCAAANNNNNN',
                 ),
-                'options'    => array(
+                'options' => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -121,7 +139,7 @@ class Edit extends \CommonBundle\Component\Form\Bootstrap\Form
                     'multiple'  => true,
                     'options'   => $this->getCvBookYears(),
                     'data-help' => 'The selected years will be visible in the corporate app of this company. The archived ones are downloadable in pdf format.',
-                    'disabled'  => true,
+                    'disabled' => true,
                 ),
             )
         );
@@ -143,7 +161,7 @@ class Edit extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'id' => 'invoice_form',
                 ),
-                'elements'   => array(
+                'elements' => array(
                     array(
                         'type'     => 'text',
                         'name'     => 'invoice_name',
@@ -198,7 +216,16 @@ class Edit extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'id' => 'page_form',
                 ),
-                'elements'   => array(
+                'elements' => array(
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'years',
+                        'label'      => 'Page Visible During',
+                        'attributes' => array(
+                            'multiple' => true,
+                            'options'  => $this->getYears(),
+                        ),
+                    ),
                     array(
                         'type'       => 'textarea',
                         'name'       => 'description',
@@ -206,53 +233,10 @@ class Edit extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'id' => 'description',
                         ),
-                        'options'    => array(
+                        'options' => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
-                                ),
-                            ),
-                        ),
-                    ),
-                    array(
-                        'type'       => 'textarea',
-                        'name'       => 'short_description',
-                        'label'      => 'Short Description',
-                        'attributes' => array(
-                            'id' => 'shortDescription',
-                        ),
-                        'options'    => array(
-                            'input' => array(
-                                'filters' => array(
-                                    array('name' => 'StringTrim'),
-                                ),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name'    => 'StringLength',
-                                    'options' => array(
-                                        'max' => '250',
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                    array(
-                        'type'       => 'text',
-                        'name'       => 'youtube_url',
-                        'label'      => 'YouTube video URL',
-                        'required'   => false,
-                        'attributes' => array(
-                            'id'          => 'youtubeURL',
-                            'placeholder' => 'https://www.youtube.com/watch?v=AVJHzfv-Yis',
-                        ),
-                        'options'    => array(
-                            'input' => array(
-                                'filters' => array(
-                                    array('name' => 'StringTrim'),
-                                ),
-                                'validators' => array(
-                                    array('name' => 'Uri'),
                                 ),
                             ),
                         ),

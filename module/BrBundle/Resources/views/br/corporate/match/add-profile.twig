@@ -1,0 +1,34 @@
+{% extends 'corporate/base.twig' %}
+
+{% block content %}
+    <div class="container">
+        <div style="height: 40px"></div>
+
+        <div class="row">
+            <h1 style="float:left;">
+                {% if type == 'company' %}
+                    {{ translate('Add Company Profile') }}
+                {% elseif type == 'student' %}
+                    {{ translate('Add Student Profile') }}
+                {% endif %}
+            </h1>
+        </div>
+
+        <div class="row">
+            {% if type == 'company' %}
+                <div style="margin-top: 15px;"><u><strong>{{ translate('This profile should describe what your company is like.') }}</strong></u>
+                    <p>{{ translate('A student will have a higher match rating, if your company matches the traits that they are looking for!') }}</p>
+                </div>
+            {% elseif type == 'student' %}
+                <div style="margin-top: 15px;"><u><strong>{{ translate('This profile should describe what you are looking for in a student.') }}</strong></u>
+                    <p>{{ translate('A student will have a higher match rating, if the student matches the traits that you are looking for!') }}</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <div style="height: 40px"></div>
+
+        {% import 'site/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+{% endblock %}

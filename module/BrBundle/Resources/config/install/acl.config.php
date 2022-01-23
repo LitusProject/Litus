@@ -1,4 +1,38 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @license http://litus.cc/LICENSE
+ */
 
 return array(
     'brbundle' => array(
@@ -30,7 +64,7 @@ return array(
             'manage', 'delete', 'export', 'exportAcademics', 'exportCvCsv'
         ),
         'br_admin_invoice' => array(
-            'history', 'view', 'edit', 'manage', 'download', 'payed', 'pay', 'manualAdd', 'csv', 'payedList', 'downloadAll'
+            'history', 'view', 'edit', 'manage', 'download', 'payed', 'pay', 'manualAdd', 'csv', 'payedList',
         ),
         'br_admin_order' => array(
             'product', 'edit', 'delete', 'deleteProduct', 'editProduct', 'view', 'add', 'old', 'manage', 'signed', 'generate',
@@ -44,8 +78,17 @@ return array(
         'br_admin_request' => array(
             'reject', 'approve', 'manage', 'view',
         ),
-        'br_admin_communication' => array(
-            'add', 'manage', 'delete', 'view',
+        'br_admin_match_feature' => array(
+            'manage', 'add', 'edit', 'delete', 'bonusMalus'
+        ),
+        'br_admin_match_profile' => array(
+            'manage', 'add', 'edit', 'delete', 'matches'
+        ),
+        'br_admin_match_match' => array(
+            'manage', 'view', 'delete', 'generateMatches', 'stats'
+        ),
+        'br_admin_match_wave' => array(
+            'manage', 'delete', 'add', 'generateWaves', 'view'
         ),
         'br_career_index' => array(
             'index',
@@ -68,6 +111,9 @@ return array(
         'br_career_internshipfair' => array(
             'view', 'overview', 'file', 'search',
         ),
+        'br_career_match' => array(
+            'overview', 'addProfile', 'editProfile', 'viewMatch', 'viewProfile', 'sendData'
+        ),
         'br_cv_index' => array(
             'cv', 'edit', 'complete', 'delete', 'download', 'uploadProfileImage',
         ),
@@ -75,7 +121,7 @@ return array(
             'login', 'logout',
         ),
         'br_corporate_index' => array(
-            'index', 'events', 'login'
+            'index',
         ),
         'br_corporate_jobfair' => array(
             'overview',
@@ -94,6 +140,9 @@ return array(
         ),
         'br_corporate_company' => array(
             'edit',
+        ),
+        'br_corporate_match' => array(
+            'overview', 'addProfile', 'editProfile', 'viewMatch', 'viewProfile', 'interested', 'stats'
         )
     ),
 );
