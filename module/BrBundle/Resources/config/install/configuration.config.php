@@ -335,4 +335,22 @@ Example content of this section.
             )
         )
     ),
+    array(
+        'key'         => 'br.cv_grades_map_enabled',
+        'value'       => 0,
+        'description' => 'Use grades or the grades Map',
+    ),
+    array(
+        'key'         => 'br.cv_grades_map',
+        'value'       => serialize(
+            array(
+                6800  => 'Cum fructu',
+                7700  => 'Cum laude',
+                8500  => 'Magna cum laude',
+                9000  => 'Summa cum laude',
+                10000 => 'Summa cum laude with the congratulations of the examination committee',
+            )
+        ),
+        'description' => '',
+    ),
 );

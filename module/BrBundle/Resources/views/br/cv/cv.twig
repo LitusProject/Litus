@@ -53,36 +53,77 @@
                     <button id="editProfile" class="btn btn-default btn-sm hidden-xs hidden-sm" style="position: absolute; bottom: 5px; right: 5px;">{{ translate('Edit') }}</button>
                 </div>
             </dd>
-        </dl>
+            {% endfor %}
+        {% else %}
+            {% block intro_message %}
+                {{ translate('The following data from your account will be used in the CV Book:') }}
+            {% endblock %}
 
-        <strong>
-            <p>{{ translate('Please update your account data if necessary. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected automatically.')}}</p>
+            <dl class="dl-horizontal wide">
+                <dt>{{ translate('Name') }}</dt>
+                <dd>{{ authenticatedPerson.getFullName() }}&nbsp;</dd>
+                <dt>{{ translate('Birthday') }}</dt>
+                <dd>{{ dateLocalized(authenticatedPerson.getBirthday(), 'd MMMM y') }}&nbsp;</dd>
+                <dt>{{ translate('Sex') }}</dt>
+                <dd>{{ authenticatedPerson.getSex()|capitalize }}&nbsp;</dd>
+                <dt>{{ translate('Phone Number') }}</dt>
+                <dd>{{ authenticatedPerson.getPhoneNumber() }}&nbsp;</dd>
+{#                <dt>{{ translate('Email') }}</dt>#}
+{#                <dd>{{ authenticatedPerson.getPersonalEmail() }}&nbsp;</dd>#}
+                <dt>{{ translate('Address') }}</dt>
+                <dd>
+                    {{ authenticatedPerson.getSecondaryAddress().getStreet() }} {{ authenticatedPerson.getSecondaryAddress().getNumber() }}
+                    {% if authenticatedPerson.getSecondaryAddress().getMailbox() %}
+                        / {{ authenticatedPerson.getSecondaryAddress().getMailbox() }}
+                    {% endif %}<br>
+                    {{ authenticatedPerson.getSecondaryAddress().getPostal() }} {{ authenticatedPerson.getSecondaryAddress().getCity() }}<br>
+                    {{ authenticatedPerson.getSecondaryAddress().getCountry() }}
+                </dd>
+                <dt>{{ translate('Profile Picture') }}</dt>
+                <dd>
+                    <div id="accountProfileImage" class="thumbnail" style="width: 180px; height: 135px; margin-top: 18px; position: relative;">
+                        <img src="{{ profilePath }}/{{ authenticatedPerson.getPhotoPath() }}" alt="">
+                        <button id="editProfile" class="btn btn-default btn-sm hidden-xs hidden-sm" style="position: absolute; bottom: 5px; right: 5px;">{{ translate('Edit') }}</button>
+                    </div>
+                </dd>
+            </dl>
 
-            <p>{{ translate('You are advised to use your mother tongue for your CV.') }}</p>
-        </strong>
+            <strong>
+                <p>{{ translate('Please update your account data and profile picture if necessary via vtk.be/en/account/edit/ and vtk.be/en/account/. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected automatically.')}}</p>
 
-        {% import 'site/partials/form.twig' as forms %}
-        {{ forms.renderForm(form) }}
+                <p>{{ translate('You are advised to use your mother tongue for your CV.') }}</p>
+            </strong>
 
-        <strong>
-            <p>{{ translate('I grant permission to use my personal information in the CV book, which will be made available in an online and in a paperback version to the companies that ordered a CV book. These companies are only allowed to use this data for communication for the purpose of jobs or internships.') }}</p>
-        </strong>
-    {% endif %}
-    <div id="modalProfileImage" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <a class="close" data-dismiss="modal">&times;</a>
-                    <h4>{{ translate('Profile Image') }}</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="imageCrop">
-                        <div style="width: 320px; margin: 10px auto;">
-                            {% if authenticatedPerson.getPhotoPath() %}
-                                <img class="image" src="{{ profilePath }}/{{ authenticatedPerson.getPhotoPath() }}" alt="" width="320">
-                            {% else %}
-                                <img class="image" width="320" />
-                            {% endif %}
+            {% import 'site/partials/form.twig' as forms %}
+            {{ forms.renderForm(form) }}
+
+            <strong>
+                <p>{{ translate('I grant permission to use my personal information in the CV book, which will be made available in an online and in a paperback version to the companies that ordered a CV book. These companies are only allowed to use this data for communication for the purpose of jobs or internships.') }}</p>
+            </strong>
+        {% endif %}
+        <div id="modalProfileImage" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a class="close" data-dismiss="modal">&times;</a>
+                        <h4>{{ translate('Profile Image') }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="imageCrop">
+                            <div style="width: 320px; margin: 10px auto;">
+                                {% if authenticatedPerson.getPhotoPath() %}
+                                    <img class="image" src="{{ profilePath }}/{{ authenticatedPerson.getPhotoPath() }}" alt="" width="320">
+                                {% else %}
+                                    <img class="image" width="320" />
+                                {% endif %}
+                            </div>
+                            <div class="flashmessage alert alert-danger fade" id="file_size_error">
+                                <div class="content">
+                                    {{ translate('The selected file is too large.') }}
+                                </div>
+                            </div>
+                            {% import 'site/partials/form.twig' as forms %}
+                            {{ forms.renderForm(profileForm) }}
                         </div>
                         <div class="flashmessage alert alert-danger fade" id="file_size_error">
                             <div class="content">

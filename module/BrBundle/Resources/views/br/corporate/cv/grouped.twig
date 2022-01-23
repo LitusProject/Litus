@@ -22,7 +22,7 @@
                                     <div id="body-entry-{{ entry.getId() }}" class="panel-collapse collapse">
                                         <div class="panel-body">
                                             {% import 'corporate/partials/showcv.twig' as cv %}
-                                            {{ cv.displayEntry(entry, profilePath) }}
+                                            {{ cv.displayEntry(entry, profilePath, gradesMapEnabled, gradesMap) }}
                                         </div>
                                     </div>
                                 </div>

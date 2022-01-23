@@ -288,7 +288,6 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
                     $this->getEntityManager()->persist($metaData);
                 }
-
                 if ($academic->canHaveOrganizationStatus($this->getCurrentAcademicYear())) {
                     $academic->addOrganizationStatus(
                         new OrganizationStatus(
@@ -306,7 +305,6 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                         $selectedOrganization
                     );
                 }
-
                 if ($enableRegistration) {
                     if ($oldTshirtBooking !== null && $oldTshirtSize != $metaData->getTshirtSize()) {
                         $this->getEntityManager()->remove($oldTshirtBooking);
@@ -347,6 +345,13 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     }
                 }
 
+                $noMail = $formData['academic']['no_mail'];
+                if ($noMail) {
+                    $univMail = $formData['academic']['university']['email'] . '@student.kuleuven.be';
+                    $personalMail = $formData['academic']['personal_email'];
+                    $this->addToExcluded($univMail);
+                    $this->addToExcluded($personalMail);
+                }
                 $academic->activate(
                     $this->getEntityManager(),
                     $this->getMailTransport()
@@ -677,5 +682,22 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         return $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shop.name');
+    }
+
+    private function addToExcluded(string $email)
+    {
+        $groups = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Group')
+            ->findAll();
+
+        $werkendGroups = array();
+        foreach ($groups as $group) {
+            if (strpos($group->getName(), 'werkend')) {
+                array_push($werkendGroups, $group);
+            }
+        }
+        foreach ($werkendGroups as $werkend) {
+            $werkend->addToExcluded($email);
+        }
     }
 }

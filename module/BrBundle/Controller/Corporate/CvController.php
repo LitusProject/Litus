@@ -78,12 +78,22 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
         $result = Cv::getGrouped($this->getEntityManager(), $academicYear);
 
+        $gradesMapEnabled = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.cv_grades_map_enabled');
+
+        $gradesMap = unserialize(
+            $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.cv_grades_map')
+        );
+
         return new ViewModel(
             array(
-                'academicYear' => $academicYear,
-                'studies'      => $result,
-                'onlyArchive'  => $onlyArchive,
-                'profilePath'  => $this->getEntityManager()
+                'academicYear'     => $academicYear,
+                'gradesMapEnabled' => $gradesMapEnabled,
+                'gradesMap'        => $gradesMap,
+                'studies'          => $result,
+                'onlyArchive'      => $onlyArchive,
+                'profilePath'      => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
             )
@@ -136,14 +146,24 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
         $entries = $this->getList($academicYear);
 
+        $gradesMapEnabled = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.cv_grades_map_enabled');
+
+        $gradesMap = unserialize(
+            $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.cv_grades_map')
+        );
+
         return new ViewModel(
             array(
-                'academicYear' => $academicYear,
-                'entries'      => $entries,
-                'profilePath'  => $this->getEntityManager()
+                'academicYear'     => $academicYear,
+                'entries'          => $entries,
+                'gradesMapEnabled' => $gradesMapEnabled,
+                'gradesMap'        => $gradesMap,
+                'profilePath'      => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
-                'onlyArchive' => $onlyArchive,
+                'onlyArchive'      => $onlyArchive,
             )
         );
     }

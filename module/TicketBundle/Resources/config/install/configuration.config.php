@@ -2,6 +2,11 @@
 
 return array(
     array(
+        'key'         => 'ticket.transactions_refresh_date',
+        'value'       => '{{ currentDate }}-12:0:0',
+        'description' => 'The transactions since noon',
+    ),
+    array(
         'key'         => 'ticket.remove_reservation_treshold',
         'value'       => 'P2D',
         'description' => 'The date interval after which a person cannot remove a ticket reservation',
