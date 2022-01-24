@@ -50,7 +50,7 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
                 'br_corporate_match',
                 array(
                     'action' => 'overview',
-                    'wave'  => $allWaves[0]->getId(),
+                    'wave'   => $allWaves[0]->getId(),
                 )
             );
             return new ViewModel();
@@ -91,11 +91,11 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
 
         return new ViewModel(
             array(
-                'allWaves' => $allWaves,
-                'matches' => $matches ?? null,
+                'allWaves'   => $allWaves,
+                'matches'    => $matches ?? null,
                 'lastUpdate' => new \DateTime(), // TODO!!
-                'needs_sp'  => $sp,
-                'needs_cp'  => $cp,
+                'needs_sp'   => $sp,
+                'needs_cp'   => $cp,
                 'bannerText' => $bannerText,
             )
         );
@@ -267,8 +267,8 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
 
         return new ViewModel(
             array(
-                'type'      => $type,
-                'features'  => $profile->getFeatures()->toArray(),
+                'type'     => $type,
+                'features' => $profile->getFeatures()->toArray(),
             )
         );
     }
@@ -415,11 +415,11 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
 
         return new ViewModel(
             array(
-                'allWaves' => $allWaves,
-                'matches' => $matches ?? null,
+                'allWaves'   => $allWaves,
+                'matches'    => $matches ?? null,
                 'lastUpdate' => new \DateTime(), // TODO!!
-                'needs_sp'  => $sp,
-                'needs_cp'  => $cp,
+                'needs_sp'   => $sp,
+                'needs_cp'   => $cp,
                 'bannerText' => $bannerText,
             )
         );

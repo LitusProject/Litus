@@ -55,7 +55,7 @@ class WaveMatchMap
     private $match;
 
     /**
-     * @param Match $match
+     * @param Match       $match
      * @param CompanyWave $wave
      */
     public function __construct(Match $match, CompanyWave $wave)

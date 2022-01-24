@@ -75,12 +75,12 @@ class Subscription
 
 
     const POSSIBLE_UNIVERSITIES = array(
-        'ku leuven'     => 'KU Leuven',
-        'vub'           => 'Vrije Universiteit Brussel',
-        'ugent'         => 'UGent',
-        'uhasselt'      => 'UHasselt',
-        'uantwerpen'    => 'UAntwerpen',
-        'other'         => 'Other',
+        'ku leuven'  => 'KU Leuven',
+        'vub'        => 'Vrije Universiteit Brussel',
+        'ugent'      => 'UGent',
+        'uhasselt'   => 'UHasselt',
+        'uantwerpen' => 'UAntwerpen',
+        'other'      => 'Other',
     );
 
 
@@ -135,14 +135,14 @@ class Subscription
 
 
     const POSSIBLE_STUDY_YEARS = array(
-        'bach1'         => '1st Bachelor',
-        'bach2'         => '2nd Bachelor',
-        'bach3'         => '3rd Bachelor',
-        'ma1'           => '1st Master',
-        'ma2'           => '2nd Master',
-        'manama'        => 'MaNaMa',
-        'phd'           => 'PhD',
-        'other'         => 'Other',
+        'bach1'  => '1st Bachelor',
+        'bach2'  => '2nd Bachelor',
+        'bach3'  => '3rd Bachelor',
+        'ma1'    => '1st Master',
+        'ma2'    => '2nd Master',
+        'manama' => 'MaNaMa',
+        'phd'    => 'PhD',
+        'other'  => 'Other',
     );
 
     /**
@@ -190,7 +190,7 @@ class Subscription
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId(): int
     {
@@ -404,7 +404,7 @@ class Subscription
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isAtNetworkReception(): bool
     {
@@ -412,7 +412,7 @@ class Subscription
     }
 
     /**
-     * @param bool $atNetworkReception
+     * @param boolean $atNetworkReception
      */
     public function setAtNetworkReception(bool $atNetworkReception): void
     {
@@ -420,7 +420,7 @@ class Subscription
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function gaveConsent(): bool
     {
@@ -428,7 +428,7 @@ class Subscription
     }
 
     /**
-     * @param bool $consent
+     * @param boolean $consent
      */
     public function setConsent(bool $consent): void
     {

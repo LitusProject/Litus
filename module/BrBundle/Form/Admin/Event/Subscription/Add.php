@@ -105,7 +105,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'placeholder' => '+CCAAANNNNNN',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -128,7 +128,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'id'      => 'university',
                     'options' => $this->getUniversities(),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'required' => count($this->getUniversities()) > 1,
                         'filters'  => array(
@@ -145,11 +145,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'label'      => 'Other university (if applicable)',
                 'required'   => false,
                 'attributes' => array(
-                    'id'      => 'other_university',
+                    'id' => 'other_university',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
-                        'filters'  => array(
+                        'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
                     ),
@@ -166,7 +166,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'id'      => 'study',
                     'options' => $this->getStudies(),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'required' => count($this->getStudies()) > 1,
                         'filters'  => array(
@@ -183,23 +183,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'label'      => 'Other study (if applicable)',
                 'required'   => false,
                 'attributes' => array(
-                    'id'      => 'other_study',
+                    'id' => 'other_study',
                 ),
-                'options' => array(
-                    'input' => array(
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
-                ),
-            )
-        );
-        $this->add(
-            array(
-                'type'     => 'text',
-                'name'     => 'specialization',
-                'label'    => 'Specialization',
-                'options'  => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -210,15 +196,29 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         );
         $this->add(
             array(
-                'type'    => 'select',
-                'name'    => 'study_year',
-                'label'   => 'Year of study',
-                'required' => true,
+                'type'    => 'text',
+                'name'    => 'specialization',
+                'label'   => 'Specialization',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'study_year',
+                'label'      => 'Year of study',
+                'required'   => true,
                 'attributes' => array(
                     'id'      => 'study_year',
                     'options' => $this->getStudyYears(),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -239,7 +239,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         'id'      => 'food',
                         'options' => $this->getFood(),
                     ),
-                    'options' => array(
+                    'options'    => array(
                         'input' => array(
                             'required' => count($this->getFood()) > 1,
                             'filters'  => array(

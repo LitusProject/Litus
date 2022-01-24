@@ -67,7 +67,7 @@ class CompanyWave
     private $wave;
 
     /**
-     * @param Wave $wave
+     * @param Wave    $wave
      * @param Company $company
      */
     public function __construct(Wave $wave, Company $company)

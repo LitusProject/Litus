@@ -264,20 +264,20 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
 
         $totals = array(
-            'visitors'          => $sortedVisitors ? $uniqueVisitors[0][1] : 0,
-            'subscribers'       => $subscribersCount,
-            'current'           => $currentVisitors,
-            'representatives'   => $attendees,
-            'matches'           => $matchesCount
+            'visitors'        => $sortedVisitors ? $uniqueVisitors[0][1] : 0,
+            'subscribers'     => $subscribersCount,
+            'current'         => $currentVisitors,
+            'representatives' => $attendees,
+            'matches'         => $matchesCount
         );
 
 
 
         return new ViewModel(
             array(
-                'event'     => $event,
-                'logGraph'  => $logGraphData,
-                'totals'    => $totals
+                'event'    => $event,
+                'logGraph' => $logGraphData,
+                'totals'   => $totals
             )
         );
     }
@@ -357,12 +357,12 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     'br_admin_event',
                     array(
                         'action' => 'edit',
-                        'id'  => $event->getId(),
+                        'id'     => $event->getId(),
                     )
                 );
                 return new ViewModel(
                     array(
-                        'event'  => $event,
+                        'event' => $event,
                     )
                 );
             }
@@ -370,9 +370,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'form'   => $form,
-                'event'  => $event,
-                'map'    => $companyMap,
+                'form'  => $form,
+                'event' => $event,
+                'map'   => $companyMap,
             )
         );
     }

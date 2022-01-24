@@ -218,8 +218,8 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'form'      => $form,
-                'profile'   => $profile,
+                'form'    => $form,
+                'profile' => $profile,
             )
         );
     }

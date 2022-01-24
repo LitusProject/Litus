@@ -95,7 +95,7 @@ class CompanyAttendee
 
     /**
      * CompanyAttendee constructor.
-     * @param int $id
+     * @param integer                           $id
      * @param \BrBundle\Entity\Event\CompanyMap $companyMap
      */
     public function __construct(\BrBundle\Entity\Event\CompanyMap $companyMap)
@@ -104,7 +104,7 @@ class CompanyAttendee
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -184,7 +184,7 @@ class CompanyAttendee
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isLunch()
     {
@@ -192,7 +192,7 @@ class CompanyAttendee
     }
 
     /**
-     * @param bool $lunch
+     * @param boolean $lunch
      */
     public function setLunch($lunch)
     {
@@ -200,7 +200,7 @@ class CompanyAttendee
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isVeggie()
     {
@@ -208,7 +208,7 @@ class CompanyAttendee
     }
 
     /**
-     * @param bool $veggie
+     * @param boolean $veggie
      */
     public function setVeggie($veggie)
     {

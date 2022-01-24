@@ -137,7 +137,7 @@ class Match
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getMatchPercentage()
     {
@@ -145,7 +145,7 @@ class Match
     }
 
     /**
-     * @param int $matchPercentage
+     * @param integer $matchPercentage
      */
     public function setMatchPercentage($matchPercentage)
     {

@@ -51,10 +51,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'label'      => $featureName,
                     'value'      => ' ',
                     'attributes' => array(
-                        'style'    => 'max-height: 38px;height:38px;max-width:150px;',
-                        'options'  => $this->makeOptions(),
+                        'style'   => 'max-height: 38px;height:38px;max-width:150px;',
+                        'options' => $this->makeOptions(),
                     ),
-                    'options' => array(
+                    'options'    => array(
                         'input' => array(
                             'filters' => array(
                                 array('name' => 'StringTrim'),
@@ -62,7 +62,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         ),
                         'validators' => array(
                             array(
-                                'name'    => 'FeatureImportanceConstraint',
+                                'name' => 'FeatureImportanceConstraint',
                             ),
                         ),
                     ),

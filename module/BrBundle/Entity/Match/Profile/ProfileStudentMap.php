@@ -59,7 +59,7 @@ class ProfileStudentMap
     private $profile;
 
     /**
-     * @param Person $student
+     * @param Person  $student
      * @param Profile $profile
      */
     public function __construct(Person $student, Profile $profile)

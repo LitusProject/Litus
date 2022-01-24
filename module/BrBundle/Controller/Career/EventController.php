@@ -86,7 +86,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
         return new ViewModel(
             array(
-                'event'    => $event,
+                'event' => $event,
             )
         );
     }
@@ -164,7 +164,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                     'br_career_event',
                     array(
                         'action' => 'view',
-                        'id'  => $event->getId(),
+                        'id'     => $event->getId(),
                     )
                 );
 
@@ -177,7 +177,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
         return new ViewModel(
             array(
                 'event' => $event,
-                'form' => $form,
+                'form'  => $form,
             )
         );
     }
@@ -207,10 +207,10 @@ class EventController extends \BrBundle\Component\Controller\CareerController
         
         return new ViewModel(
             array(
-                'event'                 => $event,
-                'locations'             => $locations,
-                'interestedMasters'     => $interestedMasters,
-                'masters'               => Subscription::POSSIBLE_STUDIES
+                'event'             => $event,
+                'locations'         => $locations,
+                'interestedMasters' => $interestedMasters,
+                'masters'           => Subscription::POSSIBLE_STUDIES
             )
         );
     }
@@ -319,12 +319,12 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
                 return new ViewModel(
                     array(
-                        'event'         => $event,
-                        'subscription'  => $subscription,
-                        'entry'         => $entry,
-                        'firstTime'     => ($previousVisits == null),
-                        'color'         => $color,
-                        'textColor'     => $textColor
+                        'event'        => $event,
+                        'subscription' => $subscription,
+                        'entry'        => $entry,
+                        'firstTime'    => ($previousVisits == null),
+                        'color'        => $color,
+                        'textColor'    => $textColor
                     )
                 );
             }
@@ -337,8 +337,8 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                 ->fromRoute(
                     'br_career_event',
                     array('action' => 'qr',
-                        'event' => $event->getId(),
-                        'code' => $qr
+                        'event'    => $event->getId(),
+                        'code'     => $qr
                     ),
                     array('force_canonical' => true)
                 )
@@ -354,8 +354,8 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
         return new ViewModel(
             array(
-                'event'     => $event,
-                'qrSource'  => $qrSource,
+                'event'    => $event,
+                'qrSource' => $qrSource,
             )
         );
     }
@@ -381,7 +381,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                 'br_career_event',
                 array(
                     'action' => 'view',
-                    'id'  => $event->getId(),
+                    'id'     => $event->getId(),
                 )
             );
             return new ViewModel();
@@ -399,8 +399,8 @@ class EventController extends \BrBundle\Component\Controller\CareerController
         
         return new ViewModel(
             array(
-                'event'     => $event,
-                'matches'   => $matches,
+                'event'   => $event,
+                'matches' => $matches,
             )
         );
     }
@@ -454,8 +454,8 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             ->fromRoute(
                 'br_career_event',
                 array('action' => 'qr',
-                    'event' => $event->getId(),
-                    'code' => $qr
+                    'event'    => $event->getId(),
+                    'code'     => $qr
                 ),
                 array('force_canonical' => true)
             );

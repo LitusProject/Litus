@@ -64,7 +64,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'id' => 'description',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -149,10 +149,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'datetime',
-                'name'     => 'subscription_date',
-                'label'    => 'Subscription opening date',
-                'options'  => array(
+                'type'    => 'datetime',
+                'name'    => 'subscription_date',
+                'label'   => 'Subscription opening date',
+                'options' => array(
                     'input' => array(
                         'validators' => array(
                             array(
@@ -169,10 +169,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'datetime',
-                'name'     => 'mapview_date',
-                'label'    => 'Map viewing date',
-                'options'  => array(
+                'type'    => 'datetime',
+                'name'    => 'mapview_date',
+                'label'   => 'Map viewing date',
+                'options' => array(
                     'input' => array(
                         'validators' => array(
                             array(

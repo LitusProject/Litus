@@ -174,8 +174,8 @@ class Feature
     }
 
     /**
-     * @param array $bonus
-     * @param bool $recursive
+     * @param array   $bonus
+     * @param boolean $recursive
      */
     public function setBonus($bonus, $recursive = true)
     {
@@ -189,7 +189,7 @@ class Feature
 
     /**
      * @param Feature $bonus
-     * @param bool $recursive
+     * @param boolean $recursive
      */
     public function addMyBonus(Feature $bonus, $recursive = true)
     {
@@ -209,7 +209,7 @@ class Feature
 
     /**
      * @param Feature $bonus
-     * @param bool $recursive
+     * @param boolean $recursive
      */
     public function removeMyBonus(Feature $bonus, $recursive = true)
     {
@@ -254,8 +254,8 @@ class Feature
     }
 
     /**
-     * @param array $malus
-     * @param bool $recursive
+     * @param array   $malus
+     * @param boolean $recursive
      */
     public function setMalus($malus, $recursive = true)
     {
@@ -269,7 +269,7 @@ class Feature
 
     /**
      * @param Feature $malus
-     * @param bool $recursive
+     * @param boolean $recursive
      */
     public function addMyMalus(Feature $malus, $recursive = true)
     {
@@ -289,7 +289,7 @@ class Feature
 
     /**
      * @param Feature $malus
-     * @param bool $recursive
+     * @param boolean $recursive
      */
     public function removeMyMalus(Feature $malus, $recursive = true)
     {

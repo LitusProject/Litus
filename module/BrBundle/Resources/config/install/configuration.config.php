@@ -53,15 +53,15 @@ return array(
         'key'         => 'br.invoice_vat_explanation',
         'value'       => serialize(
             array(
-                'eu' => 'Vul in VAT voor EU companies',
-                'non-eu'    => 'Vul dit in VAT voor non-EU companies'
+                'eu'     => 'Vul in VAT voor EU companies',
+                'non-eu' => 'Vul dit in VAT voor non-EU companies'
             )
         ),
         'description' => 'Explains what the VAT',
     ),
     array(
-        'key'   => 'br.invoice_below_entries',
-        'value' => serialize(
+        'key'         => 'br.invoice_below_entries',
+        'value'       => serialize(
             array(
                 'en' => 'Please pay at the latest <payment_days/> days after the invoice date, as agreed in the contract. For information of a financial nature, you can always contact beheer@vtk.be.',
                 'nl' => 'Gelieve het bovenstaande factuurbedrag te betalen ten laatste <payment_days/> dagen na factuurdatum, zoals overeengekomen in het contract. Voor inlichtingen van financiële aard kan u steeds terecht bij beheer@vtk.be .',
@@ -70,8 +70,8 @@ return array(
         'description' => 'Payment information',
     ),
     array(
-        'key'   => 'br.account_activated_mail',
-        'value' => serialize(
+        'key'         => 'br.account_activated_mail',
+        'value'       => serialize(
             array(
                 'en' => array(
                     'subject' => 'Student IT Corporate Account',
@@ -117,8 +117,8 @@ Het Student IT Bedrijvenrelaties Team',
         'description' => 'I have no idea contract_final_entry',
     ),
     array(
-        'key'   => 'br.contract_below_entries',
-        'value' => serialize(
+        'key'         => 'br.contract_below_entries',
+        'value'       => serialize(
             array(
                 'en' => 'Herewith I agree to the terms and conditions of Student IT, found at the end of this contract.',
                 'nl' => 'Hiermede ga ik akkoord met de algemene verkoopsvoorwaarden van Student IT, te vinden aan het einde van dit contract.',
@@ -127,8 +127,8 @@ Het Student IT Bedrijvenrelaties Team',
         'description' => 'Payment information',
     ),
     array(
-        'key'   => 'br.contract_above_signatures',
-        'value' => serialize(
+        'key'         => 'br.contract_above_signatures',
+        'value'       => serialize(
             array(
                 'en' => 'Contract drawn up in in duplicate at ',
                 'nl' => 'Contract opgemaakt in tweevoud te ',
@@ -137,8 +137,8 @@ Het Student IT Bedrijvenrelaties Team',
         'description' => 'Extra line contract first part',
     ),
     array(
-        'key'   => 'br.contract_above_signatures_middle',
-        'value' => serialize(
+        'key'         => 'br.contract_above_signatures_middle',
+        'value'       => serialize(
             array(
                 'en' => ' on ',
                 'nl' => ' op ',
@@ -147,8 +147,8 @@ Het Student IT Bedrijvenrelaties Team',
         'description' => 'Extra line contract second part',
     ),
     array(
-        'key'   => 'br.corporate_jobfair_info',
-        'value' => 'Dear participant of the Student IT Jobfair,
+        'key'         => 'br.corporate_jobfair_info',
+        'value'       => 'Dear participant of the Student IT Jobfair,
 
 To complete your participation at our Jobfair, we kindly request to fill out the forms below so that we can provide you with optimal service. Not all forms have to be filled out at once as you can can continue your process where you left off. Every form has its own deadline though:<br><br>
 
@@ -162,8 +162,8 @@ Student IT Corporate Relations',
         'description' => 'Information on corporate jobfair overview',
     ),
     array(
-        'key'   => 'br.cv_book_foreword',
-        'value' => '<section title="Example section">
+        'key'         => 'br.cv_book_foreword',
+        'value'       => '<section title="Example section">
 <content>
 Example content of this section.
 </content>
@@ -186,8 +186,8 @@ Example content of this section.
         'description' => 'The default year prefix used for invoice numbers',
     ),
     array(
-        'key'   => 'br.vat_types',
-        'value' => serialize(
+        'key'         => 'br.vat_types',
+        'value'       => serialize(
             array(
                 6,
                 11,
@@ -197,8 +197,8 @@ Example content of this section.
         'description' => 'The possible amounts of VAT',
     ),
     array(
-        'key'   => 'br.cv_archive_years',
-        'value' => serialize(
+        'key'         => 'br.cv_archive_years',
+        'value'       => serialize(
             array(
                 /*
                 Structure:
@@ -211,8 +211,8 @@ Example content of this section.
         'description' => 'The cv archive years',
     ),
     array(
-        'key'   => 'br.product_contract_text',
-        'value' => '* You have to start every line with a *.
+        'key'         => 'br.product_contract_text',
+        'value'       => '* You have to start every line with a *.
 * Also the second bullet.
   * You can also make a sub bullet only use spaces before the bullet. It must be lined up with the text above.
   * The next sub bullet most be lined up with the one above.
@@ -220,8 +220,8 @@ Example content of this section.
         'description' => 'The standard text that is displayed on the creation of a new product.',
     ),
     array(
-        'key'   => 'br.contract_number_codes',
-        'value' => serialize(
+        'key'         => 'br.contract_number_codes',
+        'value'       => serialize(
             array(
                 '1415' => '22',
                 '1516' => '33',
@@ -232,8 +232,8 @@ Example content of this section.
         'description' => 'The codes to use for contract number generation.',
     ),
     array(
-        'key'   => 'br.automatic_discounts',
-        'value' => serialize(
+        'key'         => 'br.automatic_discounts',
+        'value'       => serialize(
             array(
                 '400000' => '5',
             )
@@ -241,8 +241,8 @@ Example content of this section.
         'description' => 'The automatic discount: (money value (in cents, discount percentage)',
     ),
     array(
-        'key' => 'br.contract_payment_details',
-        'value' => serialize(
+        'key'         => 'br.contract_payment_details',
+        'value'       => serialize(
             array(
                 'nl' => '* Het Bedrijf verklaart de volgende betalingsvoorwaarden na te leven: <total_price/> te betalen uiterlijk <payment_days/> dagen na facturatiedatum. De storting dient te gebeuren op het rekeningnummer BE30 7450 1759 0011 van VTK Ondersteuning vzw met vermelding van het factuurnummer.',
                 'en' => '* The company will comply to the following terms of payment: <total_price/> to be paid <payment_days/> days after the invoice date. The payment will need to happen in the account of VTK Ondersteuning VZW with IBAN BE30 7450 1759 0011 stating the invoice number.',
@@ -328,7 +328,7 @@ Example content of this section.
     array(
         'key'         => 'br.match_career_profile_GDPR_text',
         'description' => 'I agree that this data can be used to contact companies',
-        'value' => serialize(
+        'value'       => serialize(
             array(
                 'en' => 'I agree that this data can be used to contact companies, should you get a match or show them you\'re interested.',
                 'nl' => 'Ik ga akkoord dat deze gegevens gebruikt en bekeken kunnen worden door de bedrijven, als er een match gevormd wordt of als ik "Interesse toon".'
@@ -362,22 +362,22 @@ Example content of this section.
         'key'         => 'br.study_colors',
         'value'       => serialize(
             array(
-                'architectural engineering' => 'rgb(46, 184, 184)',// 'rgb(255, 105, 185)',
-                'biomedical engineering' => 'rgb(240, 240, 219)',//'rgb(46, 170, 20)',
-                'civil engineering' => 'rgb(243, 239, 25)',//'rgb(0, 0, 0)',
-                'chemical engineering' => 'rgb(46, 115, 184)',//'rgb(40, 65, 120)',
-                'computer science engineering' => 'rgb(230, 92, 0)',//'rgb(255, 144, 36)',
-                'electrical engineering' => 'rgb(137, 1, 46)',//'rgb(33, 200, 233)',
-                'energy engineering' => 'rgb(0, 0, 0)',//'rgb(0, 150, 230)',
-                'logistics engineering' => 'rgb(153, 204, 0)',//'rgb(205, 143, 120)',
-                'materials engineering' => 'rgb(96, 0, 128)',//'rgb(135, 71, 149)',
-                'mathematical engineering' => 'rgb(255, 255, 255)',//'rgb(255, 255, 255)',
-                'mechanical engineering' => 'rgb(255, 0, 0)',//'rgb(255, 56, 53)',
-                'nanoengineering' => 'rgb(140, 140, 140)',//'rgb(255, 223, 0)',
-                'faculty of bio engineering' => 'rgb(46, 118, 46)',//'rgb(0, 78, 36)',
+                'architectural engineering'         => 'rgb(46, 184, 184)',// 'rgb(255, 105, 185)',
+                'biomedical engineering'            => 'rgb(240, 240, 219)',//'rgb(46, 170, 20)',
+                'civil engineering'                 => 'rgb(243, 239, 25)',//'rgb(0, 0, 0)',
+                'chemical engineering'              => 'rgb(46, 115, 184)',//'rgb(40, 65, 120)',
+                'computer science engineering'      => 'rgb(230, 92, 0)',//'rgb(255, 144, 36)',
+                'electrical engineering'            => 'rgb(137, 1, 46)',//'rgb(33, 200, 233)',
+                'energy engineering'                => 'rgb(0, 0, 0)',//'rgb(0, 150, 230)',
+                'logistics engineering'             => 'rgb(153, 204, 0)',//'rgb(205, 143, 120)',
+                'materials engineering'             => 'rgb(96, 0, 128)',//'rgb(135, 71, 149)',
+                'mathematical engineering'          => 'rgb(255, 255, 255)',//'rgb(255, 255, 255)',
+                'mechanical engineering'            => 'rgb(255, 0, 0)',//'rgb(255, 56, 53)',
+                'nanoengineering'                   => 'rgb(140, 140, 140)',//'rgb(255, 223, 0)',
+                'faculty of bio engineering'        => 'rgb(46, 118, 46)',//'rgb(0, 78, 36)',
                 'faculty of business and economics' => 'rgb(106, 206, 226)',//'rgb(180, 202, 202)',
                 'faculty of engineering technology' => 'rgb(64, 191, 96)',//'rgb(255, 255, 143)',
-                'other' => 'rgb(230, 25, 107)'//'rgb(255, 248, 233)'
+                'other'                             => 'rgb(230, 25, 107)'//'rgb(255, 248, 233)'
             )
         ),
         'description' => 'The colors associated with a specific study in RGB values',
@@ -386,22 +386,22 @@ Example content of this section.
         'key'         => 'br.study_text_colors',
         'value'       => serialize(
             array(
-                'architectural engineering' => 'black',
-                'biomedical engineering' => 'black',
-                'construction engineering' => 'black',
-                'chemical engineering' => 'white',
-                'computer science' => 'black',
-                'electrical engineering' => 'white',
-                'energy science' => 'white',
-                'materials engineering' => 'white',
-                'mathematical engineering' => 'black',
-                'mechanical engineering' => 'white',
-                'nanoscience and nanotechnology' => 'white',
-                'logistics and transport systems' => 'black',
-                'faculty of bio engineering' => 'white',
+                'architectural engineering'         => 'black',
+                'biomedical engineering'            => 'black',
+                'construction engineering'          => 'black',
+                'chemical engineering'              => 'white',
+                'computer science'                  => 'black',
+                'electrical engineering'            => 'white',
+                'energy science'                    => 'white',
+                'materials engineering'             => 'white',
+                'mathematical engineering'          => 'black',
+                'mechanical engineering'            => 'white',
+                'nanoscience and nanotechnology'    => 'white',
+                'logistics and transport systems'   => 'black',
+                'faculty of bio engineering'        => 'white',
                 'faculty of business and economics' => 'black',
                 'faculty of engineering technology' => 'white',
-                'other' => 'white'
+                'other'                             => 'white'
             )
         ),
         'description' => 'The text colors associated with a specific study to be visible on the background',

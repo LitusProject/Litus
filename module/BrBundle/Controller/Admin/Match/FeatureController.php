@@ -45,9 +45,9 @@ class FeatureController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'em' => $this->getEntityManager(),
+                'em'                => $this->getEntityManager(),
             )
         );
     }

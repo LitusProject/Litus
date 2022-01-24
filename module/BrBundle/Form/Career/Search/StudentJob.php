@@ -33,9 +33,9 @@ class StudentJob extends \CommonBundle\Component\Form\Bootstrap\Form
      * @var array The search posibilities
      */
     private static $possibleSearchTypes = array(
-        'mostRecent' => 'Most Recent',
-        'company'    => 'Company',
-        'student job'    => 'Student Job',
+        'mostRecent'  => 'Most Recent',
+        'company'     => 'Company',
+        'student job' => 'Student Job',
     );
 
     /**

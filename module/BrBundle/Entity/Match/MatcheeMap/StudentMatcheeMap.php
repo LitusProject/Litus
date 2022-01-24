@@ -46,7 +46,7 @@ class StudentMatcheeMap extends MatcheeMap
     /**
      * @param CompanyProfile $companyProfile
      * @param StudentProfile $studentProfile
-     * @param Person $student
+     * @param Person         $student
      */
     public function __construct(CompanyProfile $companyProfile, StudentProfile $studentProfile, Person $student)
     {

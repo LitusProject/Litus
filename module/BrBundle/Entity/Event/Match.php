@@ -71,8 +71,8 @@ class Match
     private $timestamp;
 
     /**
-     * @param CompanyMap $companyMap
-     * @param Subscription   $subscription
+     * @param CompanyMap   $companyMap
+     * @param Subscription $subscription
      */
     public function __construct($companyMap, $subscription)
     {

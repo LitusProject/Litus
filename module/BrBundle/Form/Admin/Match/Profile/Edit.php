@@ -52,7 +52,7 @@ class Edit extends \BrBundle\Form\Admin\Match\Profile\Add
                     'style'    => 'max-width: 100%;max-height: 600px;',
                     'options'  => $this->getFeatureNames(),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

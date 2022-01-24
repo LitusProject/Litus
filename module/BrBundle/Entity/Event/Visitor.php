@@ -78,7 +78,7 @@ class Visitor
     private $exitTimestamp;
 
     /**
-     * @param Event $event
+     * @param Event  $event
      * @param string $qrCode
      */
     public function __construct($event, $qrCode)

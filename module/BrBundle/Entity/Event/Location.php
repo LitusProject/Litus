@@ -226,7 +226,7 @@ class Location
     }
 
     /**
-     * @return String orientation
+     * @return string orientation
      */
     public function getOrientation()
     {
@@ -242,7 +242,7 @@ class Location
     }
 
     /**
-     * @return String orientation
+     * @return string orientation
      */
     public function getType()
     {

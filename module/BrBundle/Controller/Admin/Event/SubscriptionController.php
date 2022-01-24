@@ -53,9 +53,9 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
 
         return new ViewModel(
             array(
-                'event'              => $eventObject,
-                'paginator'          => $paginator,
-                'paginationControl'  => $this->paginator()->createControl(true),
+                'event'             => $eventObject,
+                'paginator'         => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
@@ -120,7 +120,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'  => $form,
                 'event' => $eventObject,
             )
         );
@@ -169,7 +169,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         }
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'  => $form,
                 'event' => $eventObject,
             )
         );
@@ -299,8 +299,8 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             ->fromRoute(
                 'br_career_event',
                 array('action' => 'qr',
-                    'event' => $event->getId(),
-                    'code' => $qr
+                    'event'    => $event->getId(),
+                    'code'     => $qr
                 ),
                 array('force_canonical' => true)
             );

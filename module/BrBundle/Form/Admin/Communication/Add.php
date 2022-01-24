@@ -39,10 +39,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type' => 'select',
-                'name' => 'option',
-                'label' => 'Communication Option',
-                'required' => true,
+                'type'       => 'select',
+                'name'       => 'option',
+                'label'      => 'Communication Option',
+                'required'   => true,
                 'attributes' => array(
                     'options' => unserialize(
                         $this->getEntityManager()
@@ -55,10 +55,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type' => 'select',
-                'name' => 'companyId',
-                'label' => 'Company',
-                'required' => true,
+                'type'       => 'select',
+                'name'       => 'companyId',
+                'label'      => 'Company',
+                'required'   => true,
                 'attributes' => array(
                     'options' => $this->getCompanyArray(),
                 ),
@@ -67,20 +67,20 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type' => 'date',
-                'nane' => 'date',
-                'label' => 'Date',
+                'type'     => 'date',
+                'nane'     => 'date',
+                'label'    => 'Date',
                 'required' => true,
             )
         );
 
         $this->add(
             array(
-                'type' => 'text',
-                'name' => 'audience',
-                'label' => 'Audience',
+                'type'     => 'text',
+                'name'     => 'audience',
+                'label'    => 'Audience',
                 'required' => true,
-                'options' => array(
+                'options'  => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

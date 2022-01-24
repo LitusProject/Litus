@@ -60,7 +60,7 @@ class Experience extends \CommonBundle\Component\Form\Fieldset
                     'class'      => 'count',
                     'data-count' => 50,
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

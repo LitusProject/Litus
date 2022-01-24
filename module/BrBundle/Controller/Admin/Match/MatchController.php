@@ -106,9 +106,9 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'match' => $match,
-                'student'   => $student,
-                'company'   => $company,
+                'match'                  => $match,
+                'student'                => $student,
+                'company'                => $company,
                 'studentStudentFeatures' => $studentStudentFeatures,
                 'companyStudentFeatures' => $companyStudentFeatures,
                 'studentCompanyFeatures' => $studentCompanyFeatures,
@@ -167,7 +167,7 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param Person $student
+     * @param Person  $student
      * @param Company $company
      * @return Match|null
      * @throws \Doctrine\ORM\ORMException

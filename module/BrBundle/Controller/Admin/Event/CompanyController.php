@@ -69,7 +69,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                     array(
                         'action' => 'manage',
                         'event'  => $eventObject->getId(),
-                        'id' => $objectMap->getCompany()->getId(),
+                        'id'     => $objectMap->getCompany()->getId(),
                     )
                 );
             }
@@ -83,11 +83,11 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'event'              => $eventObject,
-                'paginator'              => $paginator,
+                'event'             => $eventObject,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'form'                     => $form,
-                'currentYear' => $this->getCurrentAcademicYear(),
+                'form'              => $form,
+                'currentYear'       => $this->getCurrentAcademicYear(),
             )
         );
     }
@@ -193,7 +193,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                     'br_admin_event_company',
                     array(
                         'action' => 'manage',
-                        'event' => $companyMap->getEvent()->getId()
+                        'event'  => $companyMap->getEvent()->getId()
                     )
                 );
             }
@@ -201,9 +201,9 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'event' => $companyMap->getEvent(),
+                'event'           => $companyMap->getEvent(),
                 'eventCompanyMap' => $companyMap,
-                'form' => $form,
+                'form'            => $form,
             )
         );
     }

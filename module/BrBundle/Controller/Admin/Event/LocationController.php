@@ -76,7 +76,7 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'  => $form,
                 'event' => $eventObject,
             )
         );
@@ -122,7 +122,7 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'  => $form,
                 'event' => $eventObject,
             )
         );

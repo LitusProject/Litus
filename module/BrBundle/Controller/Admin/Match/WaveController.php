@@ -72,7 +72,7 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'result' => $result,
-                'wave' => $wave,
+                'wave'   => $wave,
             )
         );
     }
@@ -265,8 +265,8 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
 
     /**
      * @param Company $company
-     * @param int $nb
-     * @param Wave $wave
+     * @param integer $nb
+     * @param Wave    $wave
      * @return CompanyWave
      * @throws ORMException
      */

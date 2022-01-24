@@ -52,7 +52,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'data-help' => 'The logo must be an image with a file size limit of ' . self::FILE_SIZE . '.',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array(
@@ -103,7 +103,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         <li><b>Cudi:<br> In the footer of the queue screen at Cudi</li>
                     </ul>',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array(

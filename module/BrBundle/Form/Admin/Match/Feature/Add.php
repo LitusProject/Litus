@@ -61,11 +61,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'select',
-                'name'     => 'type',
-                'label'    => 'Type',
+                'type'       => 'select',
+                'name'       => 'type',
+                'label'      => 'Type',
                 'attributes' => array(
-                    'options'  => $this->getTypeArray(),
+                    'options' => $this->getTypeArray(),
                 )
             )
         );

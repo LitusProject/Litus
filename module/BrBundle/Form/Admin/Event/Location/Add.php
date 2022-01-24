@@ -110,13 +110,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'id'      => 'orientation',
                     'options' => array(
-                        'horizontal'    => 'Horizontal',
-                        'vertical'      => 'Vertical'
+                        'horizontal' => 'Horizontal',
+                        'vertical'   => 'Vertical'
                     ),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
-                        'filters'  => array(
+                        'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
                     ),
@@ -133,9 +133,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'id'      => 'type',
                     'options' => $this->getTypes(),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
-                        'filters'  => array(
+                        'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
                     ),
@@ -154,9 +154,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'id'      => 'company',
                     'options' => $this->getAttendingCompanies(),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
-                        'filters'  => array(
+                        'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
                     ),

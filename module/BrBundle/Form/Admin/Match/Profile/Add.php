@@ -60,10 +60,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'label'      => 'Company',
                 'attributes' => array(
                     'multiple' => true,
-                    'id'      => 'company_select',
-                    'options' => $this->getCompanyArray(),
+                    'id'       => 'company_select',
+                    'options'  => $this->getCompanyArray(),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'required' => false,
                     ),
@@ -77,14 +77,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'name'       => 'student',
                 'label'      => 'Student',
                 'attributes' => array(
-                    'id'      => 'student_typeahead',
+                    'id' => 'student_typeahead',
                 ),
-                'options'  => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array('name' => 'TypeaheadPerson'),
                         ),
-                        'required' => false,
+                        'required'   => false,
                     ),
                 ),
             )
@@ -113,7 +113,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'style'    => 'max-width: 100%;max-height: 600px;',
                     'options'  => $this->getFeatureNames(),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

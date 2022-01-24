@@ -79,7 +79,7 @@ class ProfileFeatureMap
     /**
      * @param Feature $feature
      * @param Profile $profile
-     * @param int $importance
+     * @param integer $importance
      */
     public function __construct(Feature $feature, Profile $profile, $importance = 100)
     {
@@ -129,7 +129,7 @@ class ProfileFeatureMap
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getImportance()
     {
@@ -149,7 +149,7 @@ class ProfileFeatureMap
     }
 
     /**
-     * @param int $importance
+     * @param integer $importance
      */
     public function setImportance($importance)
     {

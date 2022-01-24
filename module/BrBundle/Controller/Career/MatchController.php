@@ -69,11 +69,11 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
 
         return new ViewModel(
             array(
-                'allWaves' => $allWaves,
-                'matches' => $matches,
+                'allWaves'   => $allWaves,
+                'matches'    => $matches,
                 'lastUpdate' => new \DateTime(), // TODO!!
-                'needs_sp'  => $sp,
-                'needs_cp'  => $cp,
+                'needs_sp'   => $sp,
+                'needs_cp'   => $cp,
                 'bannerText' => $bannerText,
             )
         );
@@ -126,11 +126,11 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
 
         return new ViewModel(
             array(
-                'allWaves' => $allWaves,
-                'matches' => $matches,
+                'allWaves'   => $allWaves,
+                'matches'    => $matches,
             //                'lastUpdate' => new \DateTime(), // TODO!!
-                'needs_sp'  => $sp,
-                'needs_cp'  => $cp,
+                'needs_sp'   => $sp,
+                'needs_cp'   => $cp,
                 'bannerText' => $bannerText,
             )
         );
@@ -254,8 +254,8 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
 
         return new ViewModel(
             array(
-                'form' => $form,
-                'type' => $type,
+                'form'      => $form,
+                'type'      => $type,
                 'gdpr_text' => unserialize(
                     $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
@@ -299,8 +299,8 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
 
         return new ViewModel(
             array(
-                'type'      => $type,
-                'features'  => $profile->getFeatures()->toArray(),
+                'type'     => $type,
+                'features' => $profile->getFeatures()->toArray(),
             )
         );
     }
@@ -401,8 +401,8 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
 
         return new ViewModel(
             array(
-                'form' => $form,
-                'type' => $type,
+                'form'      => $form,
+                'type'      => $type,
                 'gdpr_text' => unserialize(
                     $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')

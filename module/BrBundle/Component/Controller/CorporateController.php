@@ -109,8 +109,8 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
     public function getAuthenticationHandler()
     {
         return array(
-            'action'     => 'index',
-            'controller' => 'common_index',
+            'action'         => 'index',
+            'controller'     => 'common_index',
 
             'auth_route'     => 'br_corporate_index',
             'redirect_route' => 'br_corporate_index',

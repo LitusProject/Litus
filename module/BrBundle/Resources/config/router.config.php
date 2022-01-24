@@ -40,7 +40,7 @@ return array(
                     'page'   => '[0-9]*',
                     'id'     => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_admin_collaborator',
                     'action'     => 'manage',
                 ),
@@ -58,7 +58,7 @@ return array(
                     'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_admin_company',
                     'action'     => 'manage',
                 ),
@@ -72,7 +72,7 @@ return array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[a-zA-Z0-9_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_admin_company_event',
                     'action'     => 'manage',
                 ),
@@ -87,7 +87,7 @@ return array(
                     'id'     => '[a-zA-Z0-9_-]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_admin_company_job',
                     'action'     => 'manage',
                 ),
@@ -102,7 +102,7 @@ return array(
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_admin_company_user',
                     'action'     => 'manage',
                 ),
@@ -116,7 +116,7 @@ return array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[a-zA-Z0-9_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_admin_company_logo',
                     'action'     => 'manage',
                 ),
@@ -132,7 +132,7 @@ return array(
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
                     'page'         => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_admin_cv_entry',
                     'action'     => 'manage',
                 ),
@@ -149,7 +149,7 @@ return array(
                     'page'   => '[0-9]*',
 //                    'language'    => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_admin_contract',
                     'action'     => 'manage',
                 ),
@@ -164,7 +164,7 @@ return array(
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_admin_event',
                     'action'     => 'manage',
                 ),
@@ -180,7 +180,7 @@ return array(
                     'event'  => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_admin_event_company',
                     'action'     => 'manage',
                 ),
@@ -196,7 +196,7 @@ return array(
                     'event'  => '[0-9]+',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_admin_event_location',
                     'action'     => 'draw',
                 ),
@@ -214,7 +214,7 @@ return array(
                     'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_admin_event_subscription',
                     'action'     => 'overview',
                 ),
@@ -233,7 +233,7 @@ return array(
                     'language'    => '(en|nl)',
                     'invoiceyear' => '[0-9]{4}',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_admin_invoice',
                     'action'     => 'manage',
                 ),
@@ -249,7 +249,7 @@ return array(
                     'entry'  => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_admin_order',
                     'action'     => 'manage',
                 ),
@@ -263,7 +263,7 @@ return array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_admin_overview',
                     'action'     => 'person',
                 ),
@@ -278,7 +278,7 @@ return array(
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_admin_product',
                     'action'     => 'manage',
                 ),
@@ -293,7 +293,7 @@ return array(
                     'id'       => '[0-9]*',
                     'approved' => '(true|false)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_admin_request',
                     'action'     => 'manage',
                 ),
@@ -304,11 +304,11 @@ return array(
             'options' => array(
                 'route'       => '/admin/br/match/match[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
-                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'       => '[0-9_-]*',
-                    'page'     => '[0-9]*',
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9_-]*',
+                    'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_admin_match_match',
                     'action'     => 'manage',
                 ),
@@ -319,11 +319,11 @@ return array(
             'options' => array(
                 'route'       => '/admin/br/match/feature[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
-                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'       => '[0-9_-]*',
-                    'page'     => '[0-9]*',
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9_-]*',
+                    'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_admin_match_feature',
                     'action'     => 'manage',
                 ),
@@ -334,11 +334,11 @@ return array(
             'options' => array(
                 'route'       => '/admin/br/match/profile[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
-                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'       => '[0-9_-]*',
-                    'page'     => '[0-9]*',
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9_-]*',
+                    'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_admin_match_profile',
                     'action'     => 'manage',
                 ),
@@ -349,11 +349,11 @@ return array(
             'options' => array(
                 'route'       => '/admin/br/match/wave[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
-                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'       => '[0-9_-]*',
-                    'page'     => '[0-9]*',
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9_-]*',
+                    'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_admin_match_wave',
                     'action'     => 'manage',
                 ),
@@ -367,7 +367,7 @@ return array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_career_index',
                     'action'     => 'index',
                 ),
@@ -383,7 +383,7 @@ return array(
                     'language' => '(en|nl)',
                     'id'       => '[a-zA-Z0-9_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_career_company',
                     'action'     => 'overview',
                 ),
@@ -397,7 +397,7 @@ return array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_career_company',
                     'action'     => 'search',
                 ),
@@ -415,7 +415,7 @@ return array(
                     'language' => '(en|nl)',
                     'page'     => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_career_event',
                     'action'     => 'overview',
                 ),
@@ -429,7 +429,7 @@ return array(
                     'start' => '[0-9]*',
                     'end'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_career_event',
                     'action'     => 'fetch',
                 ),
@@ -445,7 +445,7 @@ return array(
                     'language' => '(en|nl)',
                     'page'     => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_career_vacancy',
                     'action'     => 'overview',
                 ),
@@ -461,7 +461,7 @@ return array(
                     'language' => '(en|nl)',
                     'page'     => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_career_internship',
                     'action'     => 'overview',
                 ),
@@ -477,7 +477,7 @@ return array(
                     'language' => '(en|nl)',
                     'page'     => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_career_student_job',
                     'action'     => 'overview',
                 ),
@@ -490,7 +490,7 @@ return array(
                 'constraints' => array(
                     'name' => '[a-zA-Z0-9_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_career_company',
                     'action'     => 'file',
                 ),
@@ -503,12 +503,12 @@ return array(
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'type'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'match'       => '[0-9_-]*',
+                    'match'    => '[0-9_-]*',
                     'profile'  => '[0-9_-]*',
-                    'wave'  => '[0-9_-]*',
+                    'wave'     => '[0-9_-]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_career_match',
                     'action'     => 'overview',
                     'type'       => 'student'
@@ -525,7 +525,7 @@ return array(
                     'language'     => '(en|nl)',
                     'image'        => '[a-zA-Z0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_corporate_index',
                     'action'     => 'index',
                 ),
@@ -545,7 +545,7 @@ return array(
                     'min'          => '[0-9]*',
                     'max'          => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_corporate_cv',
                     'action'     => 'grouped',
                 ),
@@ -560,7 +560,7 @@ return array(
                     'session'  => '[0-9]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_corporate_auth',
                     'action'     => 'login',
                 ),
@@ -575,7 +575,7 @@ return array(
                     'id'       => '[0-9_-]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_corporate_jobfair',
                     'action'     => 'overview',
                 ),
@@ -591,7 +591,7 @@ return array(
                     'language' => '(en|nl)',
                     'page'     => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_corporate_vacancy',
                     'action'     => 'overview',
                 ),
@@ -607,7 +607,7 @@ return array(
                     'language' => '(en|nl)',
                     'page'     => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_corporate_internship',
                     'action'     => 'overview',
                 ),
@@ -623,7 +623,7 @@ return array(
                     'language' => '(en|nl)',
                     'page'     => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_corporate_student_job',
                     'action'     => 'overview',
                 ),
@@ -638,7 +638,7 @@ return array(
                     'session'  => '[0-9]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_corporate_company',
                     'action'     => 'edit',
                 ),
@@ -656,7 +656,7 @@ return array(
                     'wave'     => '[0-9_-]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_corporate_match',
                     'action'     => 'overview',
                     'type'       => 'company'
@@ -671,7 +671,7 @@ return array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'language' => '(en|nl)',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_cv_index',
                     'action'     => 'cv',
                 ),
@@ -687,7 +687,7 @@ return array(
                     'language' => '(en|nl)',
                     'id'       => '[a-zA-Z0-9_-]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'br_career_internshipfair',
                     'action'     => 'overview',
                 ),
@@ -695,49 +695,49 @@ return array(
         ),
     ),
     'controllers' => array(
-        'br_admin_company'       => 'BrBundle\Controller\Admin\CompanyController',
-        'br_admin_company_event' => 'BrBundle\Controller\Admin\Company\EventController',
-        'br_admin_company_job'   => 'BrBundle\Controller\Admin\Company\JobController',
-        'br_admin_company_user'  => 'BrBundle\Controller\Admin\Company\UserController',
-        'br_admin_company_logo'  => 'BrBundle\Controller\Admin\Company\LogoController',
-        'br_admin_cv_entry'      => 'BrBundle\Controller\Admin\CvController',
+        'br_admin_company'            => 'BrBundle\Controller\Admin\CompanyController',
+        'br_admin_company_event'      => 'BrBundle\Controller\Admin\Company\EventController',
+        'br_admin_company_job'        => 'BrBundle\Controller\Admin\Company\JobController',
+        'br_admin_company_user'       => 'BrBundle\Controller\Admin\Company\UserController',
+        'br_admin_company_logo'       => 'BrBundle\Controller\Admin\Company\LogoController',
+        'br_admin_cv_entry'           => 'BrBundle\Controller\Admin\CvController',
 
-        'br_admin_collaborator' => 'BrBundle\Controller\Admin\CollaboratorController',
-        'br_admin_contract'     => 'BrBundle\Controller\Admin\ContractController',
-        'br_admin_event'        => 'BrBundle\Controller\Admin\EventController',
-        'br_admin_event_company' => 'BrBundle\Controller\Admin\Event\CompanyController',
-        'br_admin_event_location' => 'BrBundle\Controller\Admin\Event\LocationController',
+        'br_admin_collaborator'       => 'BrBundle\Controller\Admin\CollaboratorController',
+        'br_admin_contract'           => 'BrBundle\Controller\Admin\ContractController',
+        'br_admin_event'              => 'BrBundle\Controller\Admin\EventController',
+        'br_admin_event_company'      => 'BrBundle\Controller\Admin\Event\CompanyController',
+        'br_admin_event_location'     => 'BrBundle\Controller\Admin\Event\LocationController',
         'br_admin_event_subscription' => 'BrBundle\Controller\Admin\Event\SubscriptionController',
-        'br_admin_order'        => 'BrBundle\Controller\Admin\OrderController',
-        'br_admin_product'      => 'BrBundle\Controller\Admin\ProductController',
-        'br_admin_invoice'      => 'BrBundle\Controller\Admin\InvoiceController',
-        'br_admin_overview'     => 'BrBundle\Controller\Admin\OverviewController',
-        'br_admin_request'      => 'BrBundle\Controller\Admin\RequestController',
+        'br_admin_order'              => 'BrBundle\Controller\Admin\OrderController',
+        'br_admin_product'            => 'BrBundle\Controller\Admin\ProductController',
+        'br_admin_invoice'            => 'BrBundle\Controller\Admin\InvoiceController',
+        'br_admin_overview'           => 'BrBundle\Controller\Admin\OverviewController',
+        'br_admin_request'            => 'BrBundle\Controller\Admin\RequestController',
 
         'br_admin_match_feature'      => 'BrBundle\Controller\Admin\Match\FeatureController',
         'br_admin_match_profile'      => 'BrBundle\Controller\Admin\Match\ProfileController',
-        'br_admin_match_match'      => 'BrBundle\Controller\Admin\Match\MatchController',
-        'br_admin_match_wave'      => 'BrBundle\Controller\Admin\Match\WaveController',
+        'br_admin_match_match'        => 'BrBundle\Controller\Admin\Match\MatchController',
+        'br_admin_match_wave'         => 'BrBundle\Controller\Admin\Match\WaveController',
 
-        'br_corporate_index'      => 'BrBundle\Controller\Corporate\IndexController',
-        'br_corporate_cv'         => 'BrBundle\Controller\Corporate\CvController',
-        'br_corporate_auth'       => 'BrBundle\Controller\Corporate\AuthController',
-        'br_corporate_jobfair'    => 'BrBundle\Controller\Corporate\JobfairController',
-        'br_corporate_vacancy'    => 'BrBundle\Controller\Corporate\VacancyController',
-        'br_corporate_internship' => 'BrBundle\Controller\Corporate\InternshipController',
-        'br_corporate_student_job' => 'BrBundle\Controller\Corporate\StudentJobController',
-        'br_corporate_company'    => 'BrBundle\Controller\Corporate\CompanyController',
-        'br_corporate_match'      => 'BrBundle\Controller\Corporate\MatchController',
+        'br_corporate_index'          => 'BrBundle\Controller\Corporate\IndexController',
+        'br_corporate_cv'             => 'BrBundle\Controller\Corporate\CvController',
+        'br_corporate_auth'           => 'BrBundle\Controller\Corporate\AuthController',
+        'br_corporate_jobfair'        => 'BrBundle\Controller\Corporate\JobfairController',
+        'br_corporate_vacancy'        => 'BrBundle\Controller\Corporate\VacancyController',
+        'br_corporate_internship'     => 'BrBundle\Controller\Corporate\InternshipController',
+        'br_corporate_student_job'    => 'BrBundle\Controller\Corporate\StudentJobController',
+        'br_corporate_company'        => 'BrBundle\Controller\Corporate\CompanyController',
+        'br_corporate_match'          => 'BrBundle\Controller\Corporate\MatchController',
 
-        'br_career_index'          => 'BrBundle\Controller\Career\IndexController',
-        'br_career_vacancy'        => 'BrBundle\Controller\Career\VacancyController',
-        'br_career_internship'     => 'BrBundle\Controller\Career\InternshipController',
-        'br_career_student_job'    => 'BrBundle\Controller\Career\StudentJobController',
-        'br_career_event'          => 'BrBundle\Controller\Career\EventController',
-        'br_career_company'        => 'BrBundle\Controller\Career\CompanyController',
-        'br_career_internshipfair' => 'BrBundle\Controller\Career\InternshipfairController',
-        'br_career_match'          => 'BrBundle\Controller\Career\MatchController',
+        'br_career_index'             => 'BrBundle\Controller\Career\IndexController',
+        'br_career_vacancy'           => 'BrBundle\Controller\Career\VacancyController',
+        'br_career_internship'        => 'BrBundle\Controller\Career\InternshipController',
+        'br_career_student_job'       => 'BrBundle\Controller\Career\StudentJobController',
+        'br_career_event'             => 'BrBundle\Controller\Career\EventController',
+        'br_career_company'           => 'BrBundle\Controller\Career\CompanyController',
+        'br_career_internshipfair'    => 'BrBundle\Controller\Career\InternshipfairController',
+        'br_career_match'             => 'BrBundle\Controller\Career\MatchController',
 
-        'br_cv_index' => 'BrBundle\Controller\CvController',
+        'br_cv_index'                 => 'BrBundle\Controller\CvController',
     ),
 );

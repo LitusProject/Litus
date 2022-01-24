@@ -63,7 +63,7 @@ class CompanyMap
     private $event;
 
     /**
-     * @var int Number of attendees that will be attending for this company
+     * @var integer Number of attendees that will be attending for this company
      *
      * @ORM\Column(type="bigint", options={"default" = 0})
      */
@@ -138,7 +138,7 @@ class CompanyMap
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getAttendees()
     {
@@ -146,7 +146,7 @@ class CompanyMap
     }
 
     /**
-     * @param int $attendees
+     * @param integer $attendees
      * @return self
      */
     public function setAttendees($attendees)

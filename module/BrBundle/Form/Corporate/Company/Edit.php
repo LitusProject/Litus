@@ -97,7 +97,7 @@ class Edit extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'placeholder' => '+CCAAANNNNNN',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -139,7 +139,7 @@ class Edit extends \CommonBundle\Component\Form\Bootstrap\Form
                     'multiple'  => true,
                     'options'   => $this->getCvBookYears(),
                     'data-help' => 'The selected years will be visible in the corporate app of this company. The archived ones are downloadable in pdf format.',
-                    'disabled' => true,
+                    'disabled'  => true,
                 ),
             )
         );
@@ -161,7 +161,7 @@ class Edit extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'id' => 'invoice_form',
                 ),
-                'elements' => array(
+                'elements'   => array(
                     array(
                         'type'     => 'text',
                         'name'     => 'invoice_name',
@@ -216,7 +216,7 @@ class Edit extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'id' => 'page_form',
                 ),
-                'elements' => array(
+                'elements'   => array(
                     array(
                         'type'       => 'select',
                         'name'       => 'years',
@@ -233,7 +233,7 @@ class Edit extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'id' => 'description',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
