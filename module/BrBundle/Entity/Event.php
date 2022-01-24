@@ -48,8 +48,9 @@ class Event
      */
     private $descriptionForStudents;
 
+
     /**
-     * @var string The description for this event for companies
+     * @var string The description for this event
      *
      * @ORM\Column(name="description_for_companies", type="text", nullable=true)
      */
