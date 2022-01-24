@@ -303,7 +303,7 @@ class Event
      */
     public function getDescriptionForStudents()
     {
-        return $this->descriptionForStudents;
+        return $this->description;
     }
 
     /**
@@ -311,7 +311,7 @@ class Event
      */
     public function setDescriptionForStudents(string $descriptionForStudents)
     {
-        $this->descriptionForStudents = $descriptionForStudents;
+        $this->description = $descriptionForStudents;
     }
 
     /**
@@ -319,7 +319,7 @@ class Event
      */
     public function getDescriptionForCompanies()
     {
-        return $this->descriptionForCompanies;
+        return $this->description;
     }
 
     /**
@@ -327,7 +327,7 @@ class Event
      */
     public function setDescriptionForCompanies(string $descriptionForCompanies)
     {
-        $this->descriptionForCompanies = $descriptionForCompanies;
+        $this->description = $descriptionForCompanies;
     }
 
     /**

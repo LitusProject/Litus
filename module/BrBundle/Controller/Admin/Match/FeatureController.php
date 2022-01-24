@@ -301,7 +301,7 @@ class FeatureController extends \CommonBundle\Component\Controller\ActionControl
         // Remove old profileFeatureMaps from database
         foreach (array_diff($oldIds, $newIds) as $oldOne) {
             $oldMalus = $this->getEntityManager()->getRepository('BrBundle\Entity\Match\Feature')
-                ->findOneById($new);
+                ->findOneById($oldOne);
 
             if (in_array($oldOne, $myOldIds)) {
                 $feature->removeMyMalus($oldMalus); // Remove as myMalus

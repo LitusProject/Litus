@@ -39,9 +39,6 @@ return array(
         'br_admin_collaborator' => array(
             'add', 'retire', 'edit', 'manage', 'rehire',
         ),
-        'br_admin_event' => array(
-            'add', 'delete', 'edit', 'manage', 'old', 'deleteAttendee'
-        ),
         'br_admin_company' => array(
             'add', 'delete', 'editLogo', 'edit', 'manage', 'search', 'upload', 'csv', 'pdf'
         ),

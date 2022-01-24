@@ -268,14 +268,13 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
-    private function sendMail(Event $event, Subscription $subscription)
+    private function sendMail(Event $event, SubscriptionEntity $subscription)
     {
-        // $language Language is set to english when sent from admin
+        
         $entityManager = $this->getEntityManager();
-        if ($language === null) {
-            $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
-                ->findOneByAbbrev('en');
-        }
+        // $language Language is set to english when sent from admin
+        $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
+            ->findOneByAbbrev('en');
         
 
         $mailData = unserialize(
@@ -300,7 +299,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                 'br_career_event',
                 array('action' => 'qr',
                     'event'    => $event->getId(),
-                    'code'     => $qr
+                    'code'     => $subscription->getQrCode()
                 ),
                 array('force_canonical' => true)
             );
@@ -331,7 +330,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             ->setSubject($subject);
 
         if (getenv('APPLICATION_ENV') != 'development') {
-            $this->getMailTransport->send($mail);
+            $this->getMailTransport()->send($mail);
         }
     }
 

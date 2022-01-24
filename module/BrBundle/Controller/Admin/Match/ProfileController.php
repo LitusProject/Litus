@@ -109,12 +109,13 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
                     $student = $this->getEntityManager()->getRepository('CommonBundle\Entity\User\Person')
                         ->findOneById($formData['student']['id']);
                     $map = new ProfileStudentMap($student, $profile);
+                    $this->getEntityManager()->persist($map);
                 } elseif ($formData['type'] === 'company') {
                     $company = $this->getEntityManager()->getRepository('BrBundle\Entity\Company')
                         ->findOneById($formData['company'][0]);
                     $map = new ProfileCompanyMap($company, $profile);
+                    $this->getEntityManager()->persist($map);
                 }
-                $this->getEntityManager()->persist($map);
 
                 foreach (array_values($formData['features_ids']) as $feature) {
                     $map = new ProfileFeatureMap(

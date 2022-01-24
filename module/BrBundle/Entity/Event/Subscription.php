@@ -91,7 +91,7 @@ class Subscription
      * @ORM\Column(name="other_university", type="text", nullable=true)
      *
      */
-    private $other_university;
+    private $otherUniversity;
 
     /**
      * @var string Study of the subscriber
@@ -107,7 +107,7 @@ class Subscription
      * @ORM\Column(name="other_study", type="text", nullable=true)
      *
      */
-    private $other_study;
+    private $otherStudy;
 
 
     const POSSIBLE_STUDIES = Company::POSSIBLE_MASTERS + array(

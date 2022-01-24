@@ -228,7 +228,6 @@ class EventController extends \BrBundle\Component\Controller\CareerController
         }
 
        
-
         if ($this->getAuthentication()->isAuthenticated()) {
             $person = $this->getAuthentication()->getPersonObject();
         }
@@ -455,7 +454,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                 'br_career_event',
                 array('action' => 'qr',
                     'event'    => $event->getId(),
-                    'code'     => $qr
+                    'code'     => $subscription->getQrCode()
                 ),
                 array('force_canonical' => true)
             );
@@ -486,7 +485,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             ->setSubject($subject);
 
         if (getenv('APPLICATION_ENV') != 'development') {
-            $this->getMailTransport->send($mail);
+            $this->getMailTransport()->send($mail);
         }
     }
 

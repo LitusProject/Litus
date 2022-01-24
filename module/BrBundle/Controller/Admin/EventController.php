@@ -129,7 +129,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
             if (isset($formData['event_edit']) && $propertiesForm->isValid()) {
                 $this->getEntityManager()->persist(
-                    $form->hydrateObject($event)
+                    $propertiesForm->hydrateObject($event)
                 );
                 $this->getEntityManager()->flush();
 

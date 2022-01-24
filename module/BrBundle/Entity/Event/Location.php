@@ -142,6 +142,7 @@ class Location
     public function setCompany($company)
     {
         $this->company = $company;
+        return;
     }
 
     /**
@@ -158,6 +159,7 @@ class Location
     public function setEvent($event)
     {
         $this->event = $event;
+        return;
     }
 
     /**
@@ -175,6 +177,7 @@ class Location
     public function setNumber($number)
     {
         $this->number = $number;
+        return;
     }
 
     /**
@@ -191,6 +194,7 @@ class Location
     public function setX($x)
     {
         $this->x = $x;
+        return; 
     }
 
     /**
@@ -207,6 +211,7 @@ class Location
     public function setY($y)
     {
         $this->y = $y;
+        return;
     }
 
     /**
@@ -223,6 +228,7 @@ class Location
     public function setOrientation($orientation)
     {
         $this->orientation = $orientation;
+        return;
     }
 
     /**
@@ -239,6 +245,7 @@ class Location
     public function setType($type)
     {
         $this->type = $type;
+        return;
     }
 
     /**
