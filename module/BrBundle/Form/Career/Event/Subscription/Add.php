@@ -20,11 +20,9 @@
 
 namespace BrBundle\Form\Career\Event\Subscription;
 
-use BrBundle\Entity\Company;
 use BrBundle\Entity\Event;
 use BrBundle\Entity\Event\Subscription;
 use Laminas\Validator\Identical;
-
 
 /**
  * Add a corporate relations event.
@@ -44,7 +42,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
      * @var Subscription |null
      */
     protected $subscription;
-
 
     public function init()
     {
@@ -109,7 +106,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'placeholder' => '+CCAAANNNNNN',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -122,26 +119,26 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             )
         );
 
-       $this->add(
-           array(
-               'type'       => 'select',
-               'name'       => 'university',
-               'label'      => 'University',
-               'required'   => true,
-               'attributes' => array(
-                   'id'      => 'university',
-                   'options' => $this->getUniversities(),
-               ),
-               'options' => array(
-                   'input' => array(
-                       'required' => count($this->getUniversities()) > 1,
-                       'filters'  => array(
-                           array('name' => 'StringTrim'),
-                       ),
-                   ),
-               ),
-           )
-       );
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'university',
+                'label'      => 'University',
+                'required'   => true,
+                'attributes' => array(
+                    'id'      => 'university',
+                    'options' => $this->getUniversities(),
+                ),
+                'options'    => array(
+                    'input' => array(
+                        'required' => count($this->getUniversities()) > 1,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
         $this->add(
             array(
                 'type'       => 'text',
@@ -149,12 +146,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'label'      => 'Other university (if applicable)',
                 'required'   => false,
                 'attributes' => array(
-                    'id'        => 'other_university',
-                    'disabled'  => true,
+                    'id'       => 'other_university',
+                    'disabled' => true,
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
-                        'filters'  => array(
+                        'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
                     ),
@@ -171,7 +168,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'id'      => 'study',
                     'options' => $this->getStudies(),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'required' => count($this->getStudies()) > 1,
                         'filters'  => array(
@@ -188,24 +185,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'label'      => 'Other study (if applicable)',
                 'required'   => false,
                 'attributes' => array(
-                    'id'        => 'other_study',
-                    'disabled'  => true,
+                    'id'       => 'other_study',
+                    'disabled' => true,
                 ),
-                'options' => array(
-                    'input' => array(
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
-                ),
-            )
-        );
-        $this->add(
-            array(
-                'type'     => 'text',
-                'name'     => 'specialization',
-                'label'    => 'Specialization',
-                'options'  => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -216,15 +199,29 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         );
         $this->add(
             array(
-                'type'    => 'select',
-                'name'    => 'study_year',
-                'label'   => 'Year of study',
-                'required'=> true,
+                'type'    => 'text',
+                'name'    => 'specialization',
+                'label'   => 'Specialization',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'study_year',
+                'label'      => 'Year of study',
+                'required'   => true,
                 'attributes' => array(
                     'id'      => 'study_year',
                     'options' => $this->getStudyYears(),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -234,7 +231,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             )
         );
 
-        if (count($this->getFood()) > 1){
+        if (count($this->getFood()) > 1) {
             $this->add(
                 array(
                     'type'       => 'select',
@@ -245,7 +242,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'id'      => 'food',
                         'options' => $this->getFood(),
                     ),
-                    'options' => array(
+                    'options'    => array(
                         'input' => array(
                             'required' => count($this->getFood()) > 1,
                             'filters'  => array(
@@ -321,30 +318,30 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         return $this;
     }
 
-
     /**
      * @return array of possible universities
      */
-    protected function getStudies(){
+    protected function getStudies()
+    {
         return Subscription::POSSIBLE_STUDIES;
     }
 
-
     /**
      * @return array of possible universities
      */
-    protected function getUniversities(){
+    protected function getUniversities()
+    {
         return Subscription::POSSIBLE_UNIVERSITIES;
     }
-
 
     /**
      * @return array of possible Foods
      */
-    protected function getFood(){
+    protected function getFood()
+    {
         $food = $this->event->getFood();
-        if ($food != null){
-            $food = array(' '=>' ') + $food;
+        if ($food != null) {
+            $food = array(' ' => ' ') + $food;
         }
         return $food;
     }
@@ -352,7 +349,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     /**
      * @return array of possible study years
      */
-    protected function getStudyYears(){
+    protected function getStudyYears()
+    {
         return Subscription::POSSIBLE_STUDY_YEARS;
     }
 }

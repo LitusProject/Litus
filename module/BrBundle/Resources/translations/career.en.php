@@ -2,6 +2,7 @@
 
 return array(
     'Companies'                                                                                                                                                                        => 'Companies',
+    'Events'                                                                                                                                                                           => 'Events',
     'Vacancies'                                                                                                                                                                        => 'Vacancies',
     'Internships'                                                                                                                                                                      => 'Internships',
     'About'                                                                                                                                                                            => 'About',

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace BrBundle\Repository\Event;
 
 use BrBundle\Entity\Event;
@@ -25,7 +24,7 @@ class Subscription extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery();
     }
 
-    public function findOneByQREvent(Event $event,string $qrCode)
+    public function findOneByQREvent(Event $event, string $qrCode)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('s')
@@ -73,6 +72,4 @@ class Subscription extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->setParameter('event', $event->getId())
             ->getQuery();
     }
-    
-
 }

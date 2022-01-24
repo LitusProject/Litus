@@ -1,7 +1,7 @@
 <?php
+
 namespace BrBundle\Hydrator\Event;
 
-use BrBundle\Entity\Event as EventEntity;
 use BrBundle\Entity\Event\Location as LocationEntity;
 
 class Location extends \CommonBundle\Component\Hydrator\Hydrator
@@ -15,7 +15,7 @@ class Location extends \CommonBundle\Component\Hydrator\Hydrator
         }
         $data = $this->stdExtract($object, self::$stdKeys);
 
-        $data['company'] = $object->getCompany()?$object->getCompany()->getId():'';
+        $data['company'] = $object->getCompany() ? $object->getCompany()->getId() : '';
         return $data;
     }
 
@@ -27,9 +27,11 @@ class Location extends \CommonBundle\Component\Hydrator\Hydrator
 
         $object = $this->stdHydrate($data, $object, self::$stdKeys);
         
-        $object->setCompany($this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company')
-            ->findOneById($data['company']));
+        $object->setCompany(
+            $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Company')
+                ->findOneById($data['company'])
+        );
         return $object;
     }
 }

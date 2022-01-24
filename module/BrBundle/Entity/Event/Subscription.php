@@ -1,12 +1,10 @@
 <?php
 
-
 namespace BrBundle\Entity\Event;
 
-use BrBundle\Entity\Event;
 use BrBundle\Entity\Company;
+use BrBundle\Entity\Event;
 use Doctrine\ORM\Mapping as ORM;
-use function Monad\Either\tryCatch;
 
 /**
  * Subscription
@@ -77,12 +75,12 @@ class Subscription
 
 
     const POSSIBLE_UNIVERSITIES = array(
-        'ku leuven'     => 'KU Leuven',
-        'vub'           => 'Vrije Universiteit Brussel',
-        'ugent'         => 'UGent',
-        'uhasselt'      => 'UHasselt',
-        'uantwerpen'    => 'UAntwerpen',
-        'other'         => 'Other',
+        'ku leuven'  => 'KU Leuven',
+        'vub'        => 'Vrije Universiteit Brussel',
+        'ugent'      => 'UGent',
+        'uhasselt'   => 'UHasselt',
+        'uantwerpen' => 'UAntwerpen',
+        'other'      => 'Other',
     );
 
 
@@ -93,7 +91,7 @@ class Subscription
      * @ORM\Column(name="other_university", type="text", nullable=true)
      *
      */
-    private $other_university;
+    private $otherUniversity;
 
     /**
      * @var string Study of the subscriber
@@ -109,7 +107,7 @@ class Subscription
      * @ORM\Column(name="other_study", type="text", nullable=true)
      *
      */
-    private $other_study;
+    private $otherStudy;
 
 
     const POSSIBLE_STUDIES = Company::POSSIBLE_MASTERS + array(
@@ -137,14 +135,14 @@ class Subscription
 
 
     const POSSIBLE_STUDY_YEARS = array(
-        'bach1'         => '1st Bachelor',
-        'bach2'         => '2nd Bachelor',
-        'bach3'         => '3rd Bachelor',
-        'ma1'           => '1st Master',
-        'ma2'           => '2nd Master',
-        'manama'        => 'MaNaMa',
-        'phd'           => 'PhD',
-        'other'         => 'Other',
+        'bach1'  => '1st Bachelor',
+        'bach2'  => '2nd Bachelor',
+        'bach3'  => '3rd Bachelor',
+        'ma1'    => '1st Master',
+        'ma2'    => '2nd Master',
+        'manama' => 'MaNaMa',
+        'phd'    => 'PhD',
+        'other'  => 'Other',
     );
 
     /**
@@ -187,12 +185,12 @@ class Subscription
         try {
             $this->qrCode = bin2hex(random_bytes(10));
         } catch (\Exception $e) {
-            echo "Something went wrong";
+            echo 'Something went wrong';
         }
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId(): int
     {
@@ -292,8 +290,8 @@ class Subscription
      */
     public function getUniversityString(): string
     {
-        if ($this->university == 'other'){
-            return ($this->otherUniversity?$this->otherUniversity:' ');
+        if ($this->university == 'other') {
+            return ($this->otherUniversity ? $this->otherUniversity : ' ');
         }
         return $this::POSSIBLE_UNIVERSITIES[$this->university];
     }
@@ -319,14 +317,11 @@ class Subscription
      */
     public function getStudyString(): string
     {
-        if ($this->study == 'other'){
-            return ($this->otherStudy?$this->otherStudy:' ');
+        if ($this->study == 'other') {
+            return ($this->otherStudy ? $this->otherStudy : ' ');
         }
         return $this::POSSIBLE_STUDIES[$this->study];
     }
-
-
-
 
     /**
      * @param string $study
@@ -373,7 +368,7 @@ class Subscription
      */
     public function getFood(): string
     {
-        return ($this->food?$this->food:'');
+        return ($this->food ? $this->food : '');
     }
 
     /**
@@ -397,7 +392,7 @@ class Subscription
      */
     public function getFoodString(): string
     {
-        return ($this->food?$this->event->getFood()[$this->food]:'');
+        return ($this->food ? $this->event->getFood()[$this->food] : '');
     }
 
     /**
@@ -409,7 +404,7 @@ class Subscription
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isAtNetworkReception(): bool
     {
@@ -417,7 +412,7 @@ class Subscription
     }
 
     /**
-     * @param bool $atNetworkReception
+     * @param boolean $atNetworkReception
      */
     public function setAtNetworkReception(bool $atNetworkReception): void
     {
@@ -425,7 +420,7 @@ class Subscription
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function gaveConsent(): bool
     {
@@ -433,11 +428,10 @@ class Subscription
     }
 
     /**
-     * @param bool $consent
+     * @param boolean $consent
      */
     public function setConsent(bool $consent): void
     {
         $this->consent = $consent;
     }
-
 }

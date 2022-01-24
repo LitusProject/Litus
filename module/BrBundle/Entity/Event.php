@@ -242,16 +242,14 @@ class Event
         return $this;
     }
 
-
     /**
      * @return boolean
      */
     public function canSubscribe()
     {
         $now = new DateTime();
-        return ($this->subscriptionDate && $now >= $this->subscriptionDate );
+        return ($this->subscriptionDate && $now >= $this->subscriptionDate);
     }
-
 
     /**
      * @return DateTime
@@ -278,7 +276,7 @@ class Event
     public function canViewMap()
     {
         $now = new DateTime();
-        return ($this->mapviewDate && $now >= $this->mapviewDate );
+        return ($this->mapviewDate && $now >= $this->mapviewDate);
     }
 
     /**
@@ -294,7 +292,7 @@ class Event
      */
     public function getDescriptionForStudents()
     {
-        return $this->descriptionForStudents;
+        return $this->description;
     }
 
     /**
@@ -302,7 +300,7 @@ class Event
      */
     public function setDescriptionForStudents(string $descriptionForStudents)
     {
-        $this->descriptionForStudents = $descriptionForStudents;
+        $this->description = $descriptionForStudents;
     }
 
     /**
@@ -310,7 +308,7 @@ class Event
      */
     public function getDescriptionForCompanies()
     {
-        return $this->descriptionForCompanies;
+        return $this->description;
     }
 
     /**
@@ -318,7 +316,52 @@ class Event
      */
     public function setDescriptionForCompanies(string $descriptionForCompanies)
     {
-        $this->descriptionForCompanies = $descriptionForCompanies;
+        $this->description = $descriptionForCompanies;
+    }
+
+    /**
+     * @return string
+     */
+    public function getViewInformationNL()
+    {
+        return $this->viewInformationNL;
+    }
+
+    /**
+     * @param string $viewInformationNL
+     */
+    public function setViewInformationNL(string $viewInformationNL)
+    {
+        $this->viewInformationNL = $viewInformationNL;
+    }
+
+    /**
+     * @return string
+     */
+    public function getViewInformationEN()
+    {
+        return $this->viewInformationEN;
+    }
+
+    /**
+     * @param string $viewInformationNL
+     */
+    public function setViewInformationEN(string $viewInformationEN)
+    {
+        $this->viewInformationEN = $viewInformationEN;
+    }
+
+    /**
+     * @param string $lang
+     * @return string
+     */
+    public function getViewInformation(string $lang)
+    {
+        if ($lang == 'en' && $this->viewInformationEN) {
+            return $this->viewInformationEN;
+        } else {
+            return $this->viewInformationNL;
+        }
     }
 
     /**
@@ -417,7 +460,6 @@ class Event
         $this->audience = $audience;
     }
 
-
     /**
      * @return array $food
      */
@@ -435,6 +477,4 @@ class Event
         $this->food = serialize($food);
         return $this;
     }
-
-    
 }

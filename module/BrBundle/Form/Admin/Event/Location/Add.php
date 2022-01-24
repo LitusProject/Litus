@@ -20,7 +20,6 @@
 
 namespace BrBundle\Form\Admin\Event\Location;
 
-use BrBundle\Entity\Company;
 use BrBundle\Entity\Event;
 use BrBundle\Entity\Event\Location;
 
@@ -42,8 +41,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      * @var Subscription |null
      */
     protected $location;
-
-
 
     public function init()
     {
@@ -113,13 +110,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'id'      => 'orientation',
                     'options' => array(
-                        'horizontal'    => 'Horizontal',
-                        'vertical'      => 'Vertical'
+                        'horizontal' => 'Horizontal',
+                        'vertical'   => 'Vertical'
                     ),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
-                        'filters'  => array(
+                        'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
                     ),
@@ -136,9 +133,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'id'      => 'type',
                     'options' => $this->getTypes(),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
-                        'filters'  => array(
+                        'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
                     ),
@@ -157,9 +154,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'id'      => 'company',
                     'options' => $this->getAttendingCompanies(),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
-                        'filters'  => array(
+                        'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
                     ),
@@ -196,26 +193,26 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $this;
     }
 
-
     /**
      * @return array of possible location types
      */
-    protected function getTypes(){
+    protected function getTypes()
+    {
         return Event\Location::POSSIBLE_LOCATION_TYPES;
     }
 
-
     /**
      * @return array of possible location types
      */
-    protected function getAttendingCompanies(){
+    protected function getAttendingCompanies()
+    {
         $companyMaps = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Event\CompanyMap')
             ->findAllByEventQuery($this->event)
             ->getResult();
 
         $companies = array('' => '');
-        foreach($companyMaps as $companyMap){
+        foreach ($companyMaps as $companyMap) {
             $companies[$companyMap->getCompany()->getId()] = $companyMap->getCompany()->getName();
         }
 

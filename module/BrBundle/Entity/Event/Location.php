@@ -23,7 +23,6 @@ namespace BrBundle\Entity\Event;
 use BrBundle\Entity\Company;
 use BrBundle\Entity\Event;
 use Doctrine\ORM\Mapping as ORM;
-use RuntimeException;
 
 /**
  * Location
@@ -126,7 +125,8 @@ class Location
      * @param Event   $event
      */
     public function __construct()
-    {}
+    {
+    }
 
     /**
      * @return integer
@@ -142,6 +142,7 @@ class Location
     public function setCompany($company)
     {
         $this->company = $company;
+        return;
     }
 
     /**
@@ -158,6 +159,7 @@ class Location
     public function setEvent($event)
     {
         $this->event = $event;
+        return;
     }
 
     /**
@@ -168,7 +170,6 @@ class Location
         return $this->event;
     }
 
-
     /**
      * @param integer $number
      * @return None
@@ -176,8 +177,8 @@ class Location
     public function setNumber($number)
     {
         $this->number = $number;
+        return;
     }
-
 
     /**
      * @return integer
@@ -193,8 +194,8 @@ class Location
     public function setX($x)
     {
         $this->x = $x;
+        return; 
     }
-
 
     /**
      * @return integer
@@ -210,6 +211,7 @@ class Location
     public function setY($y)
     {
         $this->y = $y;
+        return;
     }
 
     /**
@@ -226,10 +228,11 @@ class Location
     public function setOrientation($orientation)
     {
         $this->orientation = $orientation;
+        return;
     }
 
     /**
-     * @return String orientation
+     * @return string orientation
      */
     public function getOrientation()
     {
@@ -242,16 +245,16 @@ class Location
     public function setType($type)
     {
         $this->type = $type;
+        return;
     }
 
     /**
-     * @return String orientation
+     * @return string orientation
      */
     public function getType()
     {
         return $this->type;
     }
-
 
     /**
      * @return integer
@@ -268,5 +271,4 @@ class Location
     {
         return $this::LOCATION_WIDTH[$this->type];
     }
-
 }

@@ -4,7 +4,6 @@ namespace BrBundle\Entity\Event;
 
 use BrBundle\Entity\Company;
 use BrBundle\Entity\Event;
-use BrBundle\Entity\Event\CompanyMetadata;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -46,7 +45,7 @@ class CompanyMap
     private $event;
 
     /**
-     * @var int Number of attendees that will be attending for this company
+     * @var integer Number of attendees that will be attending for this company
      *
      * @ORM\Column(type="bigint", options={"default" = 0})
      */
@@ -114,13 +113,14 @@ class CompanyMap
      * @param Event $event
      * @return self
      */
-    public function setEvent(Event $event) {
+    public function setEvent(Event $event)
+    {
         $this->event = $event;
         return $this;
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getAttendees()
     {
@@ -128,7 +128,7 @@ class CompanyMap
     }
 
     /**
-     * @param int $attendees
+     * @param integer $attendees
      * @return self
      */
     public function setAttendees($attendees)
@@ -164,7 +164,6 @@ class CompanyMap
         }
         return 'In Progress';
     }
-
 
     /**
      * @return array $masterInterests
@@ -222,5 +221,4 @@ class CompanyMap
     {
         return $this->checked ? $this->checked : false;
     }
-
 }

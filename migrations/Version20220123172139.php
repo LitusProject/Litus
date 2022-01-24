@@ -20,7 +20,6 @@ class Version20220123172139 extends \Doctrine\Migrations\AbstractMigration
 
         $this->addSql('ALTER TABLE acl_resources DROP CONSTRAINT fk_81e8333d3d8e604f');
         $this->addSql('ALTER TABLE acl_resources ADD CONSTRAINT FK_9863DD9B3D8E604F FOREIGN KEY (parent) REFERENCES acl_resources (name) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
-
     }
 
     /**

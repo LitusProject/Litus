@@ -2,6 +2,7 @@
 
 return array(
     'Companies'                                                                                                                                                                        => 'Bedrijven',
+    'Events'                                                                                                                                                                           => 'Evenementen',
     'Vacancies'                                                                                                                                                                        => 'Jobs',
     'Internships'                                                                                                                                                                      => 'Stages',
     'About'                                                                                                                                                                            => 'Over',

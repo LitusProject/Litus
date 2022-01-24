@@ -4,10 +4,10 @@ namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Event;
 use BrBundle\Entity\Event\CompanyMap;
-use Laminas\View\Model\ViewModel;
-
 use DateInterval;
 use DateTime;
+use Laminas\View\Model\ViewModel;
+
 /**
  * EventController
  *
@@ -56,7 +56,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     public function addAction()
     {
         $person = $this->getAuthentication()->getPersonObject();
-        if ($person == null){
+        if ($person == null) {
             return new ViewModel();
         }
 
@@ -108,10 +108,10 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             $formData = $this->getRequest()->getPost();
             $propertiesForm->setData($formData);
             $companyMapForm->setData($formData);
-            
+
             if (isset($formData['event_edit']) && $propertiesForm->isValid()) {
                 $this->getEntityManager()->persist(
-                    $form->hydrateObject($event)
+                    $propertiesForm->hydrateObject($event)
                 );
                 $this->getEntityManager()->flush();
 
@@ -130,9 +130,8 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 $company = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Company')
                     ->findOneById($formData['company']);
-                if ($this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Event\CompanyMap')
-                        ->findByEventAndCompany($event, $company) != null) {
+                if ($this->getEntityManager()                    ->getRepository('BrBundle\Entity\Event\CompanyMap')                    ->findByEventAndCompany($event, $company) != null
+                ) {
                     $objectMap = new CompanyMap($company, $event);
                     $objectMap->setDone();
                     $this->getEntityManager()->persist($objectMap);
@@ -157,7 +156,6 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     )
                 );
             }
-
         }
 
 
@@ -193,14 +191,16 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $now = new DateTime();        
+        $now = new DateTime();
 
         $repository = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Event\Visitor');
 
-        $interval = new DateInterval($this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.event_graph_interval'));
+        $interval = new DateInterval(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.event_graph_interval')
+        );
 
         $logGraphData = array(
             'expirationTime' => $now->add($interval),
@@ -208,34 +208,33 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             'dataset'        => array(),
         );
 
-        
+
 
         $sortedVisitors = $repository->findSortedByEvent($event);
 
-        if ($sortedVisitors != null){
-            $firstEntry = $sortedVisitors[0];
-            $data = array();
+        if ($sortedVisitors != null) {
             $time = clone $event->getStartDate();
             $endTime = $event->getEndDate();
             // $endInterval = clone $time;
             // $endInterval->add($interval);
-            
+
             while ($time <= $endTime) {
                 $result = $repository->countAtTimeByEvent($event, $time);
                 // $result = $repository->countBetweenByEvent($event, $time, $endInterval);
                 $logGraphData['labels'][] = $time->format('d/m H:i');
-                $logGraphData['dataset'][] = ($result ? $result[0][1]:0);
+                $logGraphData['dataset'][] = ($result ? $result[0][1] : 0);
                 $time->add($interval);
                 // $endInterval->add($interval);
             }
-
         }
 
-        $subscribersCount = count($this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Event\Subscription')
-            ->findAllByEventQuery($event)
-            ->getResult());
-        
+        $subscribersCount = count(
+            $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Event\Subscription')
+                ->findAllByEventQuery($event)
+                ->getResult()
+        );
+
         $uniqueVisitors = $repository->countUniqueByEvent($event);
 
         $currentVisitors = count($repository->findCurrentVisitors($event));
@@ -244,36 +243,37 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('BrBundle\Entity\Event\CompanyMap')
             ->findAllByEventQuery($event)
             ->getResult();
-        
-        
+
+
         $attendees = 0;
-        foreach ($maps as $map){
+        foreach ($maps as $map) {
             $attendees += $map->getAttendees();
         }
-        
-        $matchesCount = count($this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Event\Match')
-            ->findAllByEvent($event));
+
+        $matchesCount = count(
+            $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Event\Match')
+                ->findAllByEvent($event)
+        );
 
 
         $totals = array(
-            'visitors'          => $sortedVisitors ? $uniqueVisitors[0][1] : 0,
-            'subscribers'       => $subscribersCount,
-            'current'           => $currentVisitors,
-            'representatives'   => $attendees,
-            'matches'           => $matchesCount
+            'visitors'        => $sortedVisitors ? $uniqueVisitors[0][1] : 0,
+            'subscribers'     => $subscribersCount,
+            'current'         => $currentVisitors,
+            'representatives' => $attendees,
+            'matches'         => $matchesCount
         );
 
-        
+
 
         return new ViewModel(
             array(
-                'event'     => $event,
-                'logGraph'  => $logGraphData,
-                'totals'    => $totals
+                'event'    => $event,
+                'logGraph' => $logGraphData,
+                'totals'   => $totals
             )
         );
-        
     }
 
     public function deleteAction()
@@ -334,7 +334,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
             if ($form->isValid()) {
-                error_log("here");
+                error_log('here');
                 $this->getEntityManager()->persist(
                     $form->hydrateObject($companyMap)
                 );
@@ -351,21 +351,22 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     'br_admin_event',
                     array(
                         'action' => 'edit',
-                        'id'  => $event->getId(),
+                        'id'     => $event->getId(),
                     )
                 );
-                return new ViewModel(array(
-                    'event'  => $event,
-                ));
+                return new ViewModel(
+                    array(
+                        'event' => $event,
+                    )
+                );
             }
-            
         }
 
         return new ViewModel(
             array(
-                'form'   => $form,
-                'event'  => $event,
-                'map'    => $companyMap,
+                'form'  => $form,
+                'event' => $event,
+                'map'   => $companyMap,
             )
         );
     }
@@ -420,5 +421,4 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
         return $event;
     }
-
 }

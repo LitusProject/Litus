@@ -20,9 +20,8 @@
 
 namespace BrBundle\Form\Admin\Event\Company;
 
-
-use BrBundle\Entity\Event\Subscription;
 use BrBundle\Entity\Event\CompanyMap;
+use BrBundle\Entity\Event\Subscription;
 
 class Edit extends \CommonBundle\Component\Form\Admin\Form
 {
@@ -78,9 +77,9 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
                     'id'      => $master_key,
                     'options' => $this->getInterestOptions(),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
-                        'filters'  => array(
+                        'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
                     ),
@@ -99,9 +98,9 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'checkbox',
-                'name'     => 'information_checked',
-                'label'    => 'The information has been checked and is correct',
+                'type'  => 'checkbox',
+                'name'  => 'information_checked',
+                'label' => 'The information has been checked and is correct',
             )
         );
 
@@ -113,10 +112,11 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
         }
     }
 
-    public function getInterestOptions() {
+    public function getInterestOptions()
+    {
         return array(
-            'not interested'    => 'Not interested',
-            'interested'        => 'Interested',
+            'not interested' => 'Not interested',
+            'interested'     => 'Interested',
         );
     }
 

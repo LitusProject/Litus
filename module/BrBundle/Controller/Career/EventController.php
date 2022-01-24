@@ -3,16 +3,14 @@
 namespace BrBundle\Controller\Career;
 
 use BrBundle\Entity\Event;
-use BrBundle\Entity\Event\Subscription;
 use BrBundle\Entity\Event\Match;
+use BrBundle\Entity\Event\Subscription;
 use BrBundle\Entity\Event\Visitor;
-use BrBundle\Entity\Company;
-use CommonBundle\Entity\User\Person\Academic;
 use BrBundle\Entity\User\Person\Corporate;
+use CommonBundle\Entity\User\Person\Academic;
 use DateTime;
-use Laminas\View\Model\ViewModel;
 use Laminas\Mail\Message;
-
+use Laminas\View\Model\ViewModel;
 
 /**
  * EventController
@@ -74,7 +72,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
         return new ViewModel(
             array(
-                'event'    => $event,
+                'event' => $event,
             )
         );
     }
@@ -124,7 +122,6 @@ class EventController extends \BrBundle\Component\Controller\CareerController
         $form = $this->getForm('br_career_event_subscription_add', array('event' => $event));
 
         if ($person instanceof Academic) {
-            
             //TODO: Check for double subscriptions??
 
             $data = array();
@@ -153,7 +150,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                     'br_career_event',
                     array(
                         'action' => 'view',
-                        'id'  => $event->getId(),
+                        'id'     => $event->getId(),
                     )
                 );
 
@@ -165,13 +162,11 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
         return new ViewModel(
             array(
-                'event'=> $event,
-                'form' => $form,
+                'event' => $event,
+                'form'  => $form,
             )
         );
     }
-    
-
 
     public function mapAction()
     {
@@ -186,7 +181,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             ->getResult();
 
         $interestedMasters = array();
-        foreach ($attendingCompaniesMaps as $companyMap){
+        foreach ($attendingCompaniesMaps as $companyMap) {
             $interestedMasters[$companyMap->getCompany()->getId()] = $companyMap->getMasterInterests();
         }
 
@@ -198,14 +193,13 @@ class EventController extends \BrBundle\Component\Controller\CareerController
         
         return new ViewModel(
             array(
-                'event'                 => $event,
-                'locations'             => $locations,
-                'interestedMasters'     => $interestedMasters,
-                'masters'               => Subscription::POSSIBLE_STUDIES
+                'event'             => $event,
+                'locations'         => $locations,
+                'interestedMasters' => $interestedMasters,
+                'masters'           => Subscription::POSSIBLE_STUDIES
             )
         );
     }
-
 
     public function qrAction()
     {   
@@ -220,19 +214,18 @@ class EventController extends \BrBundle\Component\Controller\CareerController
         }
 
        
-
         if ($this->getAuthentication()->isAuthenticated()) {
             $person = $this->getAuthentication()->getPersonObject();
         }
 
         // If someone is logged in
-        if ($person != null){
+        if ($person != null) {
             $subscription = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Event\Subscription')
                 ->findOneByQREvent($event, $qr)[0];
             
             // Check whether person is affiliated to a company
-            if ($person instanceof Corporate){
+            if ($person instanceof Corporate) {
                 $companyMap = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Event\CompanyMap')
                     ->findByEventAndCompany($event, $person->getCompany());
@@ -253,7 +246,6 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                         );
                         $this->getEntityManager()->flush();
                         $duplicate = false;
-
                     } else {
                         $match = $match[0];
                         $duplicate = true;
@@ -279,7 +271,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                     ->getRepository('BrBundle\Entity\Event\Visitor')
                     ->findByEventAndQr($event, $qr);
 
-                if ($visitor == null){
+                if ($visitor == null) {
                     // If there is no such result, then the person must be entering
                     $entry = true;
 
@@ -289,14 +281,17 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                     );
                     $this->getEntityManager()->flush();
 
-                    $color = unserialize($this->getEntityManager()
+                    $color = unserialize(
+                        $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('br.study_colors'))[$subscription->getStudy()];
+                            ->getConfigValue('br.study_colors')
+                    )[$subscription->getStudy()];
                     
-                    $textColor = unserialize($this->getEntityManager()
+                    $textColor = unserialize(
+                        $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('br.study_text_colors'))[$subscription->getStudy()];
-                    
+                            ->getConfigValue('br.study_text_colors')
+                    )[$subscription->getStudy()];
                 } else {
                     // Otherwise, the person is exiting
                     $entry = false;
@@ -309,12 +304,12 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
                 return new ViewModel(
                     array(
-                        'event'         => $event,
-                        'subscription'  => $subscription,
-                        'entry'         => $entry,
-                        'firstTime'     => ($previousVisits ==  null),
-                        'color'         => $color,
-                        'textColor'     => $textColor
+                        'event'        => $event,
+                        'subscription' => $subscription,
+                        'entry'        => $entry,
+                        'firstTime'    => ($previousVisits == null),
+                        'color'        => $color,
+                        'textColor'    => $textColor
                     )
                 );
             }
@@ -322,27 +317,33 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
         // This should only be reached when there is either no person logged in or that person has no special access
 
-        $encodedUrl = urlencode($this->url()
-                ->fromRoute('br_career_event',
+        $encodedUrl = urlencode(
+            $this->url()
+                ->fromRoute(
+                    'br_career_event',
                     array('action' => 'qr',
-                        'event' => $event->getId(),
-                        'code' => $qr),
-                    array('force_canonical' => true)));
+                        'event'    => $event->getId(),
+                        'code'     => $qr
+                    ),
+                    array('force_canonical' => true)
+                )
+        );
             
-        $qrSource = str_replace('{{encodedUrl}}',
-                        $encodedUrl,
-                        $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('br.google_qr_api'));
+        $qrSource = str_replace(
+            '{{encodedUrl}}',
+            $encodedUrl,
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.google_qr_api')
+        );
 
         return new ViewModel(
             array(
-                'event'     => $event,
-                'qrSource'  => $qrSource,
+                'event'    => $event,
+                'qrSource' => $qrSource,
             )
         );
     }
-
 
     public function overviewMatchesAction()
     {
@@ -365,7 +366,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                 'br_career_event',
                 array(
                     'action' => 'view',
-                    'id'  => $event->getId(),
+                    'id'     => $event->getId(),
                 )
             );
             return new ViewModel();
@@ -383,12 +384,11 @@ class EventController extends \BrBundle\Component\Controller\CareerController
         
         return new ViewModel(
             array(
-                'event'     => $event,
-                'matches'   => $matches,
+                'event'   => $event,
+                'matches' => $matches,
             )
         );
     }
-
 
     public function removeMatchAction()
     {
@@ -407,7 +407,6 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             )
         );
     }
-
 
     private function sendMail(Event $event, Subscription $subscription)
     {
@@ -437,29 +436,34 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             ->getConfigValue('br.subscription_mail_name');
         
         $url = $this->url()
-            ->fromRoute('br_career_event',
+            ->fromRoute(
+                'br_career_event',
                 array('action' => 'qr',
-                    'event' => $event->getId(),
-                    'code' => $qr),
-                array('force_canonical' => true));
+                    'event'    => $event->getId(),
+                    'code'     => $subscription->getQrCode()
+                ),
+                array('force_canonical' => true)
+            );
                 
-        $qrSource = str_replace('{{encodedUrl}}',
-                    urlencode($url),
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('br.google_qr_api'));
+        $qrSource = str_replace(
+            '{{encodedUrl}}',
+            urlencode($url),
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.google_qr_api')
+        );
 
-        $message = str_replace('{{event}}', $event->getTitle(), $message );
-        $message = str_replace('{{eventDate}}', $event->getStartDate()->format('d/m/Y'), $message );
-        $message = str_replace('{{qrSource}}', $qrSource, $message );
-        $message = str_replace('{{qrLink}}', $url, $message );
-        $message = str_replace('{{brMail}}', $mailAddress, $message );
+        $message = str_replace('{{event}}', $event->getTitle(), $message);
+        $message = str_replace('{{eventDate}}', $event->getStartDate()->format('d/m/Y'), $message);
+        $message = str_replace('{{qrSource}}', $qrSource, $message);
+        $message = str_replace('{{qrLink}}', $url, $message);
+        $message = str_replace('{{brMail}}', $mailAddress, $message);
 
         $mail = new Message();
         $mail->setEncoding('UTF-8')
             ->setBody($message)
             ->setFrom($mailAddress, $mailName)
-            ->addTo($subscription->getEmail(), $subscription->getFirstName()." ".$subscription->getLastName())
+            ->addTo($subscription->getEmail(), $subscription->getFirstName().' '.$subscription->getLastName())
             ->addBcc(
                 $mailAddress,
                 $mailName
@@ -467,7 +471,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             ->setSubject($subject);
 
         if (getenv('APPLICATION_ENV') != 'development') {
-            $this->getMailTransport->send($mail);
+            $this->getMailTransport()->send($mail);
         }
     }
 
@@ -522,7 +526,6 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
         return $event;
     }
-
 
     /**
      * @return Match|null
