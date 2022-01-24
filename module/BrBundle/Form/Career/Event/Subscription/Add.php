@@ -289,7 +289,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             )
         );
 
-        $this->addSubmit('Add', 'add');
+        $this->addSubmit('Subscribe', 'add');
 
         if ($this->subscription !== null) {
             $this->bind($this->subscription);
@@ -306,7 +306,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         return $this;
     }
-
+ 
     /**
      * @param  Subscription $subscription
      * @return self

@@ -298,7 +298,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             ->fromRoute(
                 'br_career_event',
                 array('action' => 'qr',
-                    'event'    => $event->getId(),
+                    'id'       => $event->getId(),
                     'code'     => $subscription->getQrCode()
                 ),
                 array('force_canonical' => true)

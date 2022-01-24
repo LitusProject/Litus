@@ -62,9 +62,16 @@ class Event
     /**
      * @var string The description for this event
      *
-     * @ORM\Column(name="description", type="text", nullable=true)
+     * @ORM\Column(name="description_for_students", type="text", nullable=true)
      */
-    private $description;
+    private $descriptionForStudents;
+
+    /**
+     * @var string The description for this event
+     *
+     * @ORM\Column(name="description_for_companies", type="text", nullable=true)
+     */
+    private $descriptionForCompanies;
 
     
     /**
@@ -303,7 +310,7 @@ class Event
      */
     public function getDescriptionForStudents()
     {
-        return $this->description;
+        return $this->descriptionForStudents;
     }
 
     /**
@@ -311,7 +318,7 @@ class Event
      */
     public function setDescriptionForStudents(string $descriptionForStudents)
     {
-        $this->description = $descriptionForStudents;
+        $this->descriptionForStudents = $descriptionForStudents;
     }
 
     /**
@@ -319,7 +326,7 @@ class Event
      */
     public function getDescriptionForCompanies()
     {
-        return $this->description;
+        return $this->descriptionForCompanies;
     }
 
     /**
@@ -327,7 +334,7 @@ class Event
      */
     public function setDescriptionForCompanies(string $descriptionForCompanies)
     {
-        $this->description = $descriptionForCompanies;
+        $this->descriptionForCompanies = $descriptionForCompanies;
     }
 
     /**

@@ -61,7 +61,7 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
                 $this->redirect()->toRoute(
                     'br_admin_event_location',
                     array(
-                        'action' => 'manage',
+                        'action' => 'draw',
                         'event'  => $eventObject->getId(),
                     )
                 );
@@ -107,7 +107,7 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
                 $this->redirect()->toRoute(
                     'br_admin_event_location',
                     array(
-                        'action' => 'manage',
+                        'action' => 'draw',
                         'event'  => $eventObject->getId(),
                     )
                 );

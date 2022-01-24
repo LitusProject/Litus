@@ -40,9 +40,13 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 {
     public function overviewAction()
     {
+        $events = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Event')
+            ->findAllActiveQuery()->getResult();
+
         return new ViewModel(
             array(
-                'date' => $this->getParam('date'),
+                'events' => $events,
             )
         );
     }
@@ -150,6 +154,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
             if ($form->isValid()) {
                 $subscription = $form->hydrateObject();
+                $subscription->setEvent($event);
                 $this->getEntityManager()->persist($subscription);
                 $this->getEntityManager()->flush();
 
@@ -168,7 +173,11 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                     )
                 );
 
-                return new ViewModel();
+                return new ViewModel(
+                    array(
+                        'event' => $event,
+                    )
+                );
             }
         }
 
@@ -453,7 +462,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             ->fromRoute(
                 'br_career_event',
                 array('action' => 'qr',
-                    'event'    => $event->getId(),
+                    'id'       => $event->getId(),
                     'code'     => $subscription->getQrCode()
                 ),
                 array('force_canonical' => true)

@@ -59,10 +59,28 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(
             array(
                 'type'       => 'textarea',
-                'name'       => 'description',
-                'label'      => 'Description',
+                'name'       => 'description_for_students',
+                'label'      => 'Description for students',
                 'attributes' => array(
-                    'id' => 'description',
+                    'id' => 'description_for_companies',
+                ),
+                'options'    => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'textarea',
+                'name'       => 'description_for_companies',
+                'label'      => 'Description for companies',
+                'attributes' => array(
+                    'id' => 'description_for_companies',
                 ),
                 'options'    => array(
                     'input' => array(
