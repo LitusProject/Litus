@@ -57,6 +57,7 @@ ENV COMMIT_SHA=${COMMIT_SHA}
 RUN apk add --no-cache \
     icu \
     imagemagick \
+    libgomp \
     libpq \
     libxml2 \
     libzip && \
@@ -108,6 +109,7 @@ ENV COMMIT_SHA=${COMMIT_SHA}
 RUN apk add --no-cache \
   icu \
   imagemagick \
+  libgomp \
   libpq \
   libxml2 \
   libzip \
