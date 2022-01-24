@@ -1,12 +1,10 @@
 <?php
 
-
 namespace BrBundle\Entity\Event;
 
-use BrBundle\Entity\Event;
 use BrBundle\Entity\Company;
+use BrBundle\Entity\Event;
 use Doctrine\ORM\Mapping as ORM;
-use function Monad\Either\tryCatch;
 
 /**
  * Subscription
@@ -187,7 +185,7 @@ class Subscription
         try {
             $this->qrCode = bin2hex(random_bytes(10));
         } catch (\Exception $e) {
-            echo "Something went wrong";
+            echo 'Something went wrong';
         }
     }
 
@@ -292,8 +290,8 @@ class Subscription
      */
     public function getUniversityString(): string
     {
-        if ($this->university == 'other'){
-            return ($this->otherUniversity?$this->otherUniversity:' ');
+        if ($this->university == 'other') {
+            return ($this->otherUniversity ? $this->otherUniversity : ' ');
         }
         return $this::POSSIBLE_UNIVERSITIES[$this->university];
     }
@@ -319,14 +317,11 @@ class Subscription
      */
     public function getStudyString(): string
     {
-        if ($this->study == 'other'){
-            return ($this->otherStudy?$this->otherStudy:' ');
+        if ($this->study == 'other') {
+            return ($this->otherStudy ? $this->otherStudy : ' ');
         }
         return $this::POSSIBLE_STUDIES[$this->study];
     }
-
-
-
 
     /**
      * @param string $study
@@ -373,7 +368,7 @@ class Subscription
      */
     public function getFood(): string
     {
-        return ($this->food?$this->food:'');
+        return ($this->food ? $this->food : '');
     }
 
     /**
@@ -397,7 +392,7 @@ class Subscription
      */
     public function getFoodString(): string
     {
-        return ($this->food?$this->event->getFood()[$this->food]:'');
+        return ($this->food ? $this->event->getFood()[$this->food] : '');
     }
 
     /**
@@ -439,5 +434,4 @@ class Subscription
     {
         $this->consent = $consent;
     }
-
 }

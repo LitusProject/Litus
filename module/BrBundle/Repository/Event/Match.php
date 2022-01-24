@@ -31,7 +31,6 @@ class Match extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getResult();
     }
 
-
     public function findAllByCompanyMapQuery(CompanyMap $companyMap)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -58,5 +57,4 @@ class Match extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getResult();
     }
-    
 }

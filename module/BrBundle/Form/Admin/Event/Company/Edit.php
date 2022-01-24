@@ -20,9 +20,8 @@
 
 namespace BrBundle\Form\Admin\Event\Company;
 
-
-use BrBundle\Entity\Event\Subscription;
 use BrBundle\Entity\Event\CompanyMap;
+use BrBundle\Entity\Event\Subscription;
 
 class Edit extends \CommonBundle\Component\Form\Admin\Form
 {
@@ -113,7 +112,8 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
         }
     }
 
-    public function getInterestOptions() {
+    public function getInterestOptions()
+    {
         return array(
             'not interested'    => 'Not interested',
             'interested'        => 'Interested',

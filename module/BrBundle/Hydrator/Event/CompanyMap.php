@@ -1,16 +1,13 @@
 <?php
 
-
 namespace BrBundle\Hydrator\Event;
-
-
-use BrBundle\Entity\Event as EventEntity;
 
 class CompanyMap extends \CommonBundle\Component\Hydrator\Hydrator
 {
     private static $stdKeys = array('notes','attendees');
 
-    protected function doExtract($object = null) {
+    protected function doExtract($object = null)
+    {
         if ($object === null) {
             return array();
         }
@@ -21,7 +18,8 @@ class CompanyMap extends \CommonBundle\Component\Hydrator\Hydrator
         return $data;
     }
 
-    protected function doHydrate(array $data, $object = null) {
+    protected function doHydrate(array $data, $object = null)
+    {
         if ($object === null) {
             return;
         }

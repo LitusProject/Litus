@@ -214,10 +214,4 @@ class CompanyAttendee
     {
         $this->veggie = $veggie;
     }
-
-
-
 }
-
-
-

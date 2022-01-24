@@ -21,8 +21,8 @@
 namespace BrBundle\Controller\Admin\Match;
 
 use BrBundle\Entity\Company;
-use BrBundle\Entity\Match\Wave\CompanyWave;
 use BrBundle\Entity\Match\Wave;
+use BrBundle\Entity\Match\Wave\CompanyWave;
 use Doctrine\ORM\ORMException;
 use Laminas\View\Model\ViewModel;
 
@@ -60,7 +60,7 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
         $result = array();
-        foreach ($wave->getCompanyWaves() as $cw){
+        foreach ($wave->getCompanyWaves() as $cw) {
             $item = (object) array();
             $item->id = $cw->getId();
             $item->company = $cw->getCompany()->getName();
@@ -161,8 +161,8 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        foreach($wave->getCompanyWaves() as $cw){
-            foreach($cw->getMatches() as $map){
+        foreach ($wave->getCompanyWaves() as $cw) {
+            foreach ($cw->getMatches() as $map) {
                 $map->getMatch()->setWave(null);
                 $this->getEntityManager()->remove($map);
             }
@@ -178,16 +178,15 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
-
     public function generateWavesAction()
     {
 
         $wave = $this->getWaveEntity();
-        if ($wave === null ) {
+        if ($wave === null) {
             return new ViewModel();
         }
 
-        if (count($wave->getCompanyWaves()) > 0){
+        if (count($wave->getCompanyWaves()) > 0) {
             $this->flashMessenger()->error(
                 'Error',
                 'The wave was already generated!'
@@ -201,7 +200,8 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
                 )
             );
 
-            return new ViewModel();        }
+            return new ViewModel();
+        }
 
         $companies = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
@@ -211,11 +211,12 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.wave_nb_top_matches');
 
-        foreach($companies as $company){
+        $companyWaves = array();
+        foreach ($companies as $company) {
             $profileMaps = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Match\Profile\ProfileCompanyMap')
                 ->findByCompany($company);
-            if (count($profileMaps) > 0){
+            if (count($profileMaps) > 0) {
                 $CW = $this->makeCompanyWave($company, $nbTopMatches, $wave);
                 $companyWaves[] = $CW;
             }
@@ -269,21 +270,25 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
      * @return CompanyWave
      * @throws ORMException
      */
-    private function makeCompanyWave(Company $company, int $nb, Wave $wave){
+    private function makeCompanyWave(Company $company, int $nb, Wave $wave)
+    {
         $matcheeMaps = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Match\MatcheeMap\CompanyMatcheeMap')
             ->findByCompany($company);
 
-        usort($matcheeMaps, function($a, $b) {
-            $am = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Match')
-                ->findOneByCompanyMatchee($a);
+        usort(
+            $matcheeMaps,
+            function ($a, $b) {
+                $am = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Match')
+                    ->findOneByCompanyMatchee($a);
 
-            $bm = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Match')
-                ->findOneByCompanyMatchee($b);
-            return $am->getMatchPercentage() - $bm->getMatchPercentage();
-        });
+                $bm = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Match')
+                    ->findOneByCompanyMatchee($b);
+                return $am->getMatchPercentage() - $bm->getMatchPercentage();
+            }
+        );
 
         $cw = new CompanyWave($wave, $company);
         $this->getEntityManager()->persist($cw);
@@ -291,15 +296,15 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
 
         $i = 0; // index of highest match
         $n = 0; // number of matches in this wave
-        $sizeMM = sizeof($matcheeMaps);
+        $sizeMM = count($matcheeMaps);
 
-        while ($i < $sizeMM && $n<$nb){
+        while ($i < $sizeMM && $n < $nb) {
             $matchee = $matcheeMaps[$i];
             $match = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Match')
                 ->findOneByCompanyMatchee($matchee);
 
-            if (!is_null($match->getWave())){
+            if (!is_null($match->getWave())) {
                 $i += 1;
                 continue;
             }
@@ -313,6 +318,5 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
 
 
         return $cw;
-
     }
 }

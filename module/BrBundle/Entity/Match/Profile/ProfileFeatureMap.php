@@ -20,13 +20,8 @@
 
 namespace BrBundle\Entity\Match\Profile;
 
-use BrBundle\Entity\Company;
 use BrBundle\Entity\Match\Feature;
-use BrBundle\Entity\Match\MatcheeMap;
 use BrBundle\Entity\Match\Profile;
-use BrBundle\Entity\Match\Profile\CompanyProfile;
-use BrBundle\Entity\Match\Profile\StudentProfile;
-use CommonBundle\Entity\User\Person;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -147,8 +142,9 @@ class ProfileFeatureMap
     public function getImportanceName()
     {
         $possible = ProfileFeatureMap::$POSSIBLE_VISIBILITIES;
-        if (in_array($this->importance, array_keys($possible)))
+        if (in_array($this->importance, array_keys($possible))) {
             return $possible[$this->importance];
+        }
         return 'None';
     }
 

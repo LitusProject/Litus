@@ -21,7 +21,6 @@
 namespace BrBundle\Entity\Match\Profile;
 
 use BrBundle\Entity\Match\Profile;
-use CommonBundle\Entity\User\Person;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -42,17 +41,13 @@ class StudentProfile extends Profile
 //    private $person;
 
 
-    /**
-     */
     public function __construct()
     {
         Profile::__construct();
     }
 
-    /**
-     *
-     */
-    public function getProfileType(){
-        return "student";
+    public function getProfileType()
+    {
+        return 'student';
     }
 }

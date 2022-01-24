@@ -20,8 +20,6 @@
 
 namespace BrBundle\Form\Admin\Match\Wave;
 
-use BrBundle\Entity\Match\Profile;
-
 /**
  * Add Wave
  *

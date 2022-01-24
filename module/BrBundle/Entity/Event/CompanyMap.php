@@ -22,7 +22,6 @@ namespace BrBundle\Entity\Event;
 
 use BrBundle\Entity\Company;
 use BrBundle\Entity\Event;
-use BrBundle\Entity\Event\CompanyMetadata;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -132,7 +131,8 @@ class CompanyMap
      * @param Event $event
      * @return self
      */
-    public function setEvent(Event $event) {
+    public function setEvent(Event $event)
+    {
         $this->event = $event;
         return $this;
     }
@@ -182,7 +182,6 @@ class CompanyMap
         }
         return 'In Progress';
     }
-
 
     /**
      * @return array $masterInterests
@@ -240,5 +239,4 @@ class CompanyMap
     {
         return $this->checked ? $this->checked : false;
     }
-
 }

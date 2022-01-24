@@ -22,14 +22,9 @@ namespace BrBundle\Controller\Admin\Match;
 
 use BrBundle\Entity\Company;
 use BrBundle\Entity\Match;
-use BrBundle\Entity\Match\Feature;
 use BrBundle\Entity\Match\MatcheeMap\CompanyMatcheeMap;
 use BrBundle\Entity\Match\MatcheeMap\StudentMatcheeMap;
-use BrBundle\Entity\Product;
-use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
-use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use CommonBundle\Entity\User\Person;
-use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
 
 /**
@@ -72,19 +67,19 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
         $studentStudentFeatures = array();
         $companyStudentFeatures = array();
         // THE STUDENT FEATURES
-        foreach ($match->getStudentMatchee()->getStudentProfile()->getFeatures() as $feature){
+        foreach ($match->getStudentMatchee()->getStudentProfile()->getFeatures() as $feature) {
             $feat = (object) array();
             $feat->name = $feature->getFeature()->getName();
             $feat->importance = $feature->getImportance();
             $studentStudentFeatures[$feature->getFeature()->getId()] = $feat;
         }
-        foreach ($match->getCompanyMatchee()->getStudentProfile()->getFeatures() as $feature){
+        foreach ($match->getCompanyMatchee()->getStudentProfile()->getFeatures() as $feature) {
             $feat = (object) array();
             $feat->name = $feature->getFeature()->getName();
             $feat->importance = $feature->getImportance();
             $companyStudentFeatures[$feature->getFeature()->getId()] = $feat;
         }
-        foreach (array_intersect(array_keys($studentStudentFeatures), array_keys($companyStudentFeatures)) as $shared){
+        foreach (array_intersect(array_keys($studentStudentFeatures), array_keys($companyStudentFeatures)) as $shared) {
             $studentStudentFeatures[$shared]->shared = true;
             $companyStudentFeatures[$shared]->shared = true;
         }
@@ -92,19 +87,19 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
         $studentCompanyFeatures = array();
         $companyCompanyFeatures = array();
         // THE COMPANY FEATURES
-        foreach ($match->getStudentMatchee()->getCompanyProfile()->getFeatures() as $feature){
+        foreach ($match->getStudentMatchee()->getCompanyProfile()->getFeatures() as $feature) {
             $feat = (object) array();
             $feat->name = $feature->getFeature()->getName();
             $feat->importance = $feature->getImportance();
             $studentCompanyFeatures[$feature->getFeature()->getId()] = $feat;
         }
-        foreach ($match->getCompanyMatchee()->getCompanyProfile()->getFeatures() as $feature){
+        foreach ($match->getCompanyMatchee()->getCompanyProfile()->getFeatures() as $feature) {
             $feat = (object) array();
             $feat->name = $feature->getFeature()->getName();
             $feat->importance = $feature->getImportance();
             $companyCompanyFeatures[$feature->getFeature()->getId()] = $feat;
         }
-        foreach (array_intersect(array_keys($studentCompanyFeatures), array_keys($companyCompanyFeatures)) as $shared){
+        foreach (array_intersect(array_keys($studentCompanyFeatures), array_keys($companyCompanyFeatures)) as $shared) {
             $studentCompanyFeatures[$shared]->shared = true;
             $companyCompanyFeatures[$shared]->shared = true;
         }
@@ -135,27 +130,28 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
         $allCompanies = array();
         $students = array();
         $allStudents = array();
-        foreach ($companyMaps as $companyMap){
+        foreach ($companyMaps as $companyMap) {
             if (!in_array($companyMap->getCompany()->getId(), $companies)) {
                 array_push($companies, $companyMap->getCompany()->getId());
                 array_push($allCompanies, $companyMap->getCompany());
             }
         }
-        foreach ($studentMaps as $studentMap){
-            if (!in_array($studentMap->getStudent()->getId(), $students)){
+        foreach ($studentMaps as $studentMap) {
+            if (!in_array($studentMap->getStudent()->getId(), $students)) {
                 array_push($students, $studentMap->getStudent()->getId());
                 array_push($allStudents, $studentMap->getStudent());
             }
         }
 
-        foreach ($allStudents as $student){
-            foreach ($allCompanies as $company){
+        foreach ($allStudents as $student) {
+            foreach ($allCompanies as $company) {
                 $map = $this->getEntityManager()->getRepository('BrBundle\Entity\Match')
                     ->findOneByStudentAndCompany($student, $company);
-                if ($map === null){
+                if ($map === null) {
                     $match = $this->generateMatch($student, $company);
-                    if ($match !== null)
+                    if ($match !== null) {
                         $this->getEntityManager()->persist($match);
+                    }
                 }
             }
         }
@@ -186,21 +182,24 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('BrBundle\Entity\Match\Profile\ProfileCompanyMap')
             ->findByCompany($company);
 
-        foreach ($studentProfiles as $profile){
-            if ($profile->getProfile()->getProfileType() === 'student')
+        foreach ($studentProfiles as $profile) {
+            if ($profile->getProfile()->getProfileType() === 'student') {
                 $studentStudentProfile = $profile->getProfile();
-            elseif ($profile->getProfile()->getProfileType() === 'company')
+            } elseif ($profile->getProfile()->getProfileType() === 'company') {
                 $studentCompanyProfile = $profile->getProfile();
+            }
         }
-        foreach ($companyProfiles as $profile){
-            if ($profile->getProfile()->getProfileType() === 'student')
+        foreach ($companyProfiles as $profile) {
+            if ($profile->getProfile()->getProfileType() === 'student') {
                 $companyStudentProfile = $profile->getProfile();
-            elseif ($profile->getProfile()->getProfileType() === 'company')
+            } elseif ($profile->getProfile()->getProfileType() === 'company') {
                 $companyCompanyProfile = $profile->getProfile();
+            }
         }
 
         if ($studentStudentProfile === null || $studentCompanyProfile === null
-            || $companyStudentProfile === null || $companyCompanyProfile === null){
+            || $companyStudentProfile === null || $companyCompanyProfile === null
+        ) {
             return null;
         }
 
@@ -211,9 +210,7 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
         $this->getEntityManager()->persist($studentMatchee);
 
 
-        $match = new Match($studentMatchee, $companyMatchee);
-
-        return $match;
+        return new Match($studentMatchee, $companyMatchee);
     }
 
     public function deleteAction()
@@ -230,7 +227,7 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
         $this->getEntityManager()->remove($match->getCompanyMatchee());
         $this->getEntityManager()->remove($match->getStudentMatchee());
         $this->getEntityManager()->flush();
-        if (!is_null($match->getWave())){
+        if (!is_null($match->getWave())) {
             $match->getWave()->getWave()->removeMatch($match);
             $this->getEntityManager()->remove($match->getWave());
             $this->getEntityManager()->flush();

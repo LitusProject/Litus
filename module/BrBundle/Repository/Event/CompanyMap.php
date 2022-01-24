@@ -47,13 +47,13 @@ class CompanyMap extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     }
 
     public function findAllByEventQuery(Event $event)
-        {
+    {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('m')
             ->from('BrBundle\Entity\Event\CompanyMap', 'm')
             ->where(
                 $query->expr()->andX(
-                         $query->expr()->eq('m.event', ':event')
+                    $query->expr()->eq('m.event', ':event')
                 )
             )
             ->setParameter('event', $event->getId())
@@ -63,7 +63,7 @@ class CompanyMap extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     public function findAllByEventSortedByCompanyQuery(Event $event)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        return $query->select('m','c')
+        return $query->select('m', 'c')
             ->from('BrBundle\Entity\Event\CompanyMap', 'm')
             ->join('m.company', 'c')
             ->where(
@@ -75,7 +75,6 @@ class CompanyMap extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->setParameter('event', $event->getId())
             ->getQuery();
     }
-
 
     public function findByEventAndCompany(Event $event, Company $company)
     {

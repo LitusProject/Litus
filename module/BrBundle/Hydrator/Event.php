@@ -50,11 +50,11 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
         $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
         $date = $object->getSubscriptionDate();
-        if ($date != null){
+        if ($date != null) {
             $data['subscription_date'] = $date->format('d/m/Y H:i');
         }
         $date = $object->getMapviewDate();
-        if ($date != null){
+        if ($date != null) {
             $data['mapview_date'] = $object->getMapviewDate()->format('d/m/Y H:i');
         }
 
@@ -90,15 +90,15 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             $object->setMapviewDate(self::loadDateTime($data['mapview_date']));
         }
 
-        if(!($data['nb_students'] == "")) {
+        if (!($data['nb_students'] == '')) {
             $object->setNbStudents($data['nb_students']);
         }
 
-        if(!($data['nb_companies'] == "")) {
+        if (!($data['nb_companies'] == '')) {
             $object->setNbCompanies($data['nb_companies']);
         }
 
-        if (!($data['food'] == "")) {
+        if (!($data['food'] == '')) {
             $object->setFood(explode(',', $data['food']));
         }
         return $object;

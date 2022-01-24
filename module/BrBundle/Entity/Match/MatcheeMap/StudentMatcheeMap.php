@@ -20,9 +20,7 @@
 
 namespace BrBundle\Entity\Match\MatcheeMap;
 
-use BrBundle\Entity\Company;
 use BrBundle\Entity\Match\MatcheeMap;
-use BrBundle\Entity\Match\Profile;
 use BrBundle\Entity\Match\Profile\CompanyProfile;
 use BrBundle\Entity\Match\Profile\StudentProfile;
 use CommonBundle\Entity\User\Person;
@@ -44,7 +42,6 @@ class StudentMatcheeMap extends MatcheeMap
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $student;
-
 
     /**
      * @param CompanyProfile $companyProfile

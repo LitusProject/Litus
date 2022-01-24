@@ -21,7 +21,6 @@
 namespace BrBundle\Entity\Match;
 
 use BrBundle\Entity\Match\Profile\ProfileFeatureMap;
-use CommonBundle\Entity\User\Person;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
@@ -60,12 +59,10 @@ abstract class Profile
      * @var array The possible types of a profile
      */
     const POSSIBLE_TYPES = array(
-        'student'    => 'Student',
+        'student' => 'Student',
         'company' => 'Company',
     );
 
-    /**
-     */
     public function __construct()
     {
         $this->features = new ArrayCollection();
@@ -109,12 +106,11 @@ abstract class Profile
     public function getUserName(EntityManager $em)
     {
         $profile = $em->getRepository('BrBundle\Entity\Match\Profile\ProfileStudentMap')
-        ->findOneByProfile($this) ?? $em->getRepository('BrBundle\Entity\Match\Profile\ProfileCompanyMap')
-                ->findOneByProfile($this);
+            ->findOneByProfile($this) ?? $em->getRepository('BrBundle\Entity\Match\Profile\ProfileCompanyMap')
+            ->findOneByProfile($this);
 
         return $profile->getUserName();
-
     }
 
-    abstract function getProfileType();
+    abstract public function getProfileType();
 }

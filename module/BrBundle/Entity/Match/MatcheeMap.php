@@ -20,11 +20,7 @@
 
 namespace BrBundle\Entity\Match;
 
-use BrBundle\Entity\Company;
-use BrBundle\Entity\Event;
 use BrBundle\Entity\Match;
-use BrBundle\Entity\Profile\CompanyProfile;
-use BrBundle\Entity\Profile\StudentProfile;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

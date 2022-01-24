@@ -20,8 +20,6 @@
 
 namespace BrBundle\Component\Validator;
 
-use BrBundle\Entity\Match\Profile\ProfileFeatureMap;
-
 /**
  * Checks if the form does not have more than the maximum allowed features for the importance levels
  *
@@ -84,21 +82,26 @@ class FeatureImportanceConstraint extends \CommonBundle\Component\Validator\Abst
     {
         $this->setValue($value);
 
-        $levels = unserialize($this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.match_profile_max_importances'));
+        $levels = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.match_profile_max_importances')
+        );
 
         // INIT counts array
         $counts = array();
-        foreach ($levels as $a => $b)
-            $counts[$a] = 0;
+        foreach (array_keys($levels) as $key) {
+            $counts[$key] = 0;
+        }
 
-        foreach ($context as $key => $val)
-            if (str_contains($key, 'feature_'))
+        foreach ($context as $key => $val) {
+            if (str_contains($key, 'feature_')) {
                 $counts[$val] += 1;
+            }
+        }
 
         if ($counts[$value] > $levels[$value]) {
-            if ($levels[$value]>0){
+            if ($levels[$value] > 0) {
                 $this->error(self::TOO_MANY);
                 return false;
             }

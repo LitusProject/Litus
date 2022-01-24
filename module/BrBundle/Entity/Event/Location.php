@@ -23,7 +23,6 @@ namespace BrBundle\Entity\Event;
 use BrBundle\Entity\Company;
 use BrBundle\Entity\Event;
 use Doctrine\ORM\Mapping as ORM;
-use RuntimeException;
 
 /**
  * Location
@@ -126,7 +125,8 @@ class Location
      * @param Event   $event
      */
     public function __construct()
-    {}
+    {
+    }
 
     /**
      * @return integer
@@ -168,7 +168,6 @@ class Location
         return $this->event;
     }
 
-
     /**
      * @param integer $number
      * @return None
@@ -177,7 +176,6 @@ class Location
     {
         $this->number = $number;
     }
-
 
     /**
      * @return integer
@@ -194,7 +192,6 @@ class Location
     {
         $this->x = $x;
     }
-
 
     /**
      * @return integer
@@ -252,7 +249,6 @@ class Location
         return $this->type;
     }
 
-
     /**
      * @return integer
      */
@@ -268,5 +264,4 @@ class Location
     {
         return $this::LOCATION_WIDTH[$this->type];
     }
-
 }

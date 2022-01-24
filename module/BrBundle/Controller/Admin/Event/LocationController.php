@@ -1,8 +1,6 @@
 <?php
 
-
 namespace BrBundle\Controller\Admin\Event;
-
 
 use BrBundle\Entity\Event;
 use BrBundle\Entity\Event\Location;
@@ -68,9 +66,11 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
                     )
                 );
 
-                return new ViewModel(array(
-                    'event' => $eventObject,
-                ));
+                return new ViewModel(
+                    array(
+                        'event' => $eventObject,
+                    )
+                );
             }
         }
 
@@ -82,8 +82,8 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-
-    public function editAction(){
+    public function editAction()
+    {
         $location = $this->getLocationEntity();
 
         $eventObject = $this->getEventEntity();
@@ -112,9 +112,11 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
                     )
                 );
 
-                return new ViewModel(array(
-                    'event' => $eventObject,
-                ));
+                return new ViewModel(
+                    array(
+                        'event' => $eventObject,
+                    )
+                );
             }
         }
 
@@ -145,7 +147,6 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-
     /**
      * @return Location|null
      */
@@ -172,7 +173,6 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
 
         return $location;
     }
-
 
     /**
      * @return Event|null

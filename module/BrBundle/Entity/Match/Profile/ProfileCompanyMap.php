@@ -22,7 +22,6 @@ namespace BrBundle\Entity\Match\Profile;
 
 use BrBundle\Entity\Company;
 use BrBundle\Entity\Match\Profile;
-use CommonBundle\Entity\User\Person;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -58,7 +57,6 @@ class ProfileCompanyMap
      * @ORM\JoinColumn(name="profile", referencedColumnName="id", unique=false)
      */
     private $profile;
-
 
     /**
      * @param Company $company

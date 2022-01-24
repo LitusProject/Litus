@@ -253,16 +253,14 @@ class Event
         return $this;
     }
 
-
     /**
      * @return boolean
      */
     public function canSubscribe()
     {
         $now = new DateTime();
-        return ($this->subscriptionDate && $now >= $this->subscriptionDate );
+        return ($this->subscriptionDate && $now >= $this->subscriptionDate);
     }
-
 
     /**
      * @return DateTime
@@ -289,7 +287,7 @@ class Event
     public function canViewMap()
     {
         $now = new DateTime();
-        return ($this->mapviewDate && $now >= $this->mapviewDate );
+        return ($this->mapviewDate && $now >= $this->mapviewDate);
     }
 
     /**
@@ -332,7 +330,6 @@ class Event
         $this->descriptionForCompanies = $descriptionForCompanies;
     }
 
-
     /**
      * @return string
      */
@@ -365,19 +362,17 @@ class Event
         $this->viewInformationEN = $viewInformationEN;
     }
 
-
     /**
      * @param string $lang
      * @return string
      */
     public function getViewInformation(string $lang)
     {
-        if ($lang == 'en' && $this->viewInformationEN){
+        if ($lang == 'en' && $this->viewInformationEN) {
             return $this->viewInformationEN;
         } else {
             return $this->viewInformationNL;
         }
-        
     }
 
     /**
@@ -462,7 +457,6 @@ class Event
         return $this->description;
     }
 
-
     /**
      * @return array $food
      */
@@ -480,6 +474,4 @@ class Event
         $this->food = serialize($food);
         return $this;
     }
-
-    
 }

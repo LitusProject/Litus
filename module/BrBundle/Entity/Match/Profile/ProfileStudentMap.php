@@ -58,7 +58,6 @@ class ProfileStudentMap
      */
     private $profile;
 
-
     /**
      * @param Person $student
      * @param Profile $profile

@@ -84,5 +84,4 @@ class CompanyMap extends \CommonBundle\Component\Form\Admin\Form
 
         return $companyArray;
     }
-
 }

@@ -26,5 +26,4 @@ class Location extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->setParameter('event', $event->getId())
             ->getQuery();
     }
-    
 }

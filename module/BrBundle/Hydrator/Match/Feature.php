@@ -21,6 +21,7 @@
 namespace BrBundle\Hydrator\Match;
 
 use BrBundle\Entity\Match\Feature as FeatureEntity;
+
 /**
  * @author Robin Wroblowski <robin.wroblowski@vtk.be>
  */
@@ -34,9 +35,7 @@ class Feature extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$stdKeys);
-
-        return $data;
+        return $this->stdExtract($object, self::$stdKeys);
     }
 
     protected function doHydrate(array $data, $object = null)

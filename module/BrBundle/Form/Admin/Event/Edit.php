@@ -41,6 +41,6 @@ class Edit extends \BrBundle\Form\Admin\Event\Add
                         'class' => 'mail_add',
                     ),
                 )
-        );
+            );
     }
 }

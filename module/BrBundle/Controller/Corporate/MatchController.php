@@ -20,23 +20,11 @@
 
 namespace BrBundle\Controller\Corporate;
 
-use BrBundle\Entity\Company;
 use BrBundle\Entity\Match;
-use BrBundle\Entity\Match\Feature;
-use BrBundle\Entity\Match\MatcheeMap\CompanyMatcheeMap;
-use BrBundle\Entity\Match\MatcheeMap\StudentMatcheeMap;
 use BrBundle\Entity\Match\Profile\ProfileCompanyMap;
 use BrBundle\Entity\Match\Profile\ProfileFeatureMap;
-use BrBundle\Entity\Match\Profile\ProfileStudentMap;
 use BrBundle\Entity\Match\Wave;
-use BrBundle\Entity\Product;
-use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
-use CommonBundle\Component\Form\Admin\Element\DateTime;
-use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
-use CommonBundle\Entity\User\Person;
-use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
-use function Functional\map;
 
 /**
  * MatchController
@@ -72,17 +60,19 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
             ->getRepository('BrBundle\Entity\Match\Profile\ProfileCompanyMap')
             ->findByCompany($person->getCompany());
 
-        $sp = True;
-        $cp = True;
-        foreach ($profiles as $p){
-            if ($p->getProfile()->getProfileType() == 'student')
+        $sp = true;
+        $cp = true;
+        foreach ($profiles as $p) {
+            if ($p->getProfile()->getProfileType() == 'student') {
                 $sp = false;
-            if ($p->getProfile()->getProfileType() == 'company')
+            }
+            if ($p->getProfile()->getProfileType() == 'company') {
                 $cp = false;
+            }
         }
 
-        foreach ($wave->getCompanyWaves() as $cw){
-            if ($cw->getCompany() == $person->getCompany()){
+        foreach ($wave->getCompanyWaves() as $cw) {
+            if ($cw->getCompany() == $person->getCompany()) {
                 $matches = $cw->getMatches();
             }
         }
@@ -91,15 +81,18 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.match_corporate_banner_text');
 
-        $matches = array_map(function($a) {
-            return $a->getMatch();
-        }, $matches);
+        $matches = array_map(
+            function ($a) {
+                return $a->getMatch();
+            },
+            $matches
+        );
 
 
         return new ViewModel(
             array(
                 'allWaves' => $allWaves,
-                'matches' => $matches??null,
+                'matches' => $matches ?? null,
                 'lastUpdate' => new \DateTime(), // TODO!!
                 'needs_sp'  => $sp,
                 'needs_cp'  => $cp,
@@ -126,9 +119,9 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
         }
 
         // Get the correct form by profile type and check whether there already exists one of this type!
-        if ($type == 'company'){
-            foreach ($profiles as $p){
-                if ($p instanceof Match\Profile\CompanyProfile){
+        if ($type == 'company') {
+            foreach ($profiles as $p) {
+                if ($p instanceof Match\Profile\CompanyProfile) {
                     $this->redirect()->toRoute(
                         'br_corporate_match',
                         array(
@@ -141,8 +134,8 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
             }
             $form = $this->getForm('br_corporate_match_company_add');
         } else {
-            foreach ($profiles as $p){
-                if ($p instanceof Match\Profile\StudentProfile){
+            foreach ($profiles as $p) {
+                if ($p instanceof Match\Profile\StudentProfile) {
                     $this->redirect()->toRoute(
                         'br_corporate_match',
                         array(
@@ -156,13 +149,15 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
             $form = $this->getForm('br_corporate_match_student_add');
         }
 
-        $sp = True;
-        $cp = True;
-        foreach ($profiles as $p){
-            if ($p->getProfile()->getProfileType() == 'student')
+        $sp = true;
+        $cp = true;
+        foreach ($profiles as $p) {
+            if ($p->getProfile()->getProfileType() == 'student') {
                 $sp = false;
-            if ($p->getProfile()->getProfileType() == 'company')
+            }
+            if ($p->getProfile()->getProfileType() == 'company') {
                 $cp = false;
+            }
         }
 
         if ($this->getRequest()->isPost()) {
@@ -180,12 +175,13 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
                 $map = new ProfileCompanyMap($person->getCompany(), $profile);
                 $this->getEntityManager()->persist($map);
 
-                foreach (array_values($formData['features_ids']) as $feature){
+                foreach (array_values($formData['features_ids']) as $feature) {
                     $map = new ProfileFeatureMap(
                         $this->getEntityManager()
                             ->getRepository('BrBundle\Entity\Match\Feature')
                             ->findOneById($feature),
-                        $profile);
+                        $profile
+                    );
                     $this->getEntityManager()->persist($map);
                     $profile->addFeature($map);
                 }
@@ -193,7 +189,7 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
                 $this->getEntityManager()->flush();
 
                 // REDIRECT TO OTHER FORM
-                if ($type == 'company' && $sp){
+                if ($type == 'company' && $sp) {
                     $this->redirect()->toRoute(
                         'br_career_match',
                         array(
@@ -201,7 +197,7 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
                             'type'   => 'student'
                         )
                     );
-                } elseif ($type == 'student' && $cp){
+                } elseif ($type == 'student' && $cp) {
                     $this->redirect()->toRoute(
                         'br_career_match',
                         array(
@@ -237,7 +233,6 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
         );
     }
 
-
     public function viewProfileAction()
     {
         $person = $this->getCorporateEntity();
@@ -256,15 +251,15 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
         }
 
         // Get the correct form by profile type and check whether there already exists one of this type!
-        if ($type == 'company'){
-            foreach ($profiles as $p){
-                if ($p->getProfile() instanceof Match\Profile\CompanyProfile){
+        if ($type == 'company') {
+            foreach ($profiles as $p) {
+                if ($p->getProfile() instanceof Match\Profile\CompanyProfile) {
                     $profile = $p->getProfile();
                 }
             }
         } else {
-            foreach ($profiles as $p){
-                if ($p->getProfile() instanceof Match\Profile\StudentProfile){
+            foreach ($profiles as $p) {
+                if ($p->getProfile() instanceof Match\Profile\StudentProfile) {
                     $profile = $p->getProfile();
                 }
             }
@@ -277,7 +272,6 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
             )
         );
     }
-
 
     public function editProfileAction()
     {
@@ -296,25 +290,25 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
             return new ViewModel();
         }
 
-        $form = Null;
+        $form = null;
         // Get the correct form by profile type and check whether there already exists one of this type!
-        if ($type == 'company'){
-            foreach ($profiles as $p){
-                if ($p->getProfile() instanceof Match\Profile\CompanyProfile){
+        if ($type == 'company') {
+            foreach ($profiles as $p) {
+                if ($p->getProfile() instanceof Match\Profile\CompanyProfile) {
                     $profile = $p->getProfile();
                     $form = $this->getForm('br_corporate_match_company_edit', array('profile' => $profile));
                 }
             }
         } else {
-            foreach ($profiles as $p){
-                if ($p->getProfile() instanceof Match\Profile\StudentProfile){
+            foreach ($profiles as $p) {
+                if ($p->getProfile() instanceof Match\Profile\StudentProfile) {
                     $profile = $p->getProfile();
                     $form = $this->getForm('br_corporate_match_student_edit', array('profile' => $profile));
                 }
             }
         }
 
-        if (is_null($form)){
+        if (is_null($form)) {
             return new ViewModel();
         }
 
@@ -327,7 +321,7 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
                 $currentFeatures = $profile->getFeatures();
                 $currentFeatureIds = array();
                 $currentFeatureMaps = array();
-                foreach ($currentFeatures as $c){
+                foreach ($currentFeatures as $c) {
                     $currentFeatureIds[] = $c->getFeature()->getId();
                     $currentFeatureMaps[$c->getFeature()->getId()] = $c->getId();
                 }
@@ -337,7 +331,7 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
 
                 // Features to remove (old features)
                 $oldFeatureIds = array_diff($currentFeatureIds, $formFeatureIds);
-                foreach ($oldFeatureIds as $feature){
+                foreach ($oldFeatureIds as $feature) {
                     $map = $this->getEntityManager()
                         ->getRepository('BrBundle\Entity\Match\Profile\ProfileFeatureMap')
                         ->findOneById($currentFeatureMaps[$feature]);
@@ -347,12 +341,13 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
 
                 // Features to add (new features)
                 $newFeatureIds = array_diff($formFeatureIds, $currentFeatureIds);
-                foreach ($newFeatureIds as $feature){
+                foreach ($newFeatureIds as $feature) {
                     $map = new ProfileFeatureMap(
                         $this->getEntityManager()
                             ->getRepository('BrBundle\Entity\Match\Feature')
                             ->findOneById($feature),
-                        $profile);
+                        $profile
+                    );
                     $this->getEntityManager()->persist($map);
                     $profile->addFeature($map);
                 }
@@ -403,13 +398,15 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
             ->getRepository('BrBundle\Entity\Match\Profile\ProfileCompanyMap')
             ->findByCompany($person->getCompany());
 
-        $sp = True;
-        $cp = True;
-        foreach ($profiles as $p){
-            if ($p->getProfile()->getProfileType() == 'student')
+        $sp = true;
+        $cp = true;
+        foreach ($profiles as $p) {
+            if ($p->getProfile()->getProfileType() == 'student') {
                 $sp = false;
-            if ($p->getProfile()->getProfileType() == 'company')
+            }
+            if ($p->getProfile()->getProfileType() == 'company') {
                 $cp = false;
+            }
         }
 
         $bannerText = $this->getEntityManager()
@@ -419,7 +416,7 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
         return new ViewModel(
             array(
                 'allWaves' => $allWaves,
-                'matches' => $matches??null,
+                'matches' => $matches ?? null,
                 'lastUpdate' => new \DateTime(), // TODO!!
                 'needs_sp'  => $sp,
                 'needs_cp'  => $cp,
@@ -427,7 +424,6 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
             )
         );
     }
-
 
     /**
      * @return Wave|null

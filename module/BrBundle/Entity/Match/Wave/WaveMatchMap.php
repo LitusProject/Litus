@@ -20,10 +20,7 @@
 
 namespace BrBundle\Entity\Match\Wave;
 
-use BrBundle\Entity\Company;
-use BrBundle\Entity\Event;
 use BrBundle\Entity\Match;
-use BrBundle\Entity\Match\Wave;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -61,7 +58,7 @@ class WaveMatchMap
      * @param Match $match
      * @param CompanyWave $wave
      */
-    public function __construct(Match $match,CompanyWave $wave)
+    public function __construct(Match $match, CompanyWave $wave)
     {
         $this->companywave = $wave;
         $this->match = $match;

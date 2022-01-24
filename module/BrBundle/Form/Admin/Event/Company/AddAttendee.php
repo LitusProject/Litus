@@ -1,12 +1,6 @@
 <?php
 
-
 namespace BrBundle\Form\Admin\Event\Company;
-
-
-use BrBundle\Entity\Company;
-use BrBundle\Entity\Event\CompanyMetadata;
-use BrBundle\Form\Admin\Company\Add;
 
 class AddAttendee extends \CommonBundle\Component\Form\Admin\Form
 {
@@ -122,7 +116,5 @@ class AddAttendee extends \CommonBundle\Component\Form\Admin\Form
                 ),
             )
         );
-
     }
-
 }

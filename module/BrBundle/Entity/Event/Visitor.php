@@ -77,7 +77,6 @@ class Visitor
      */
     private $exitTimestamp;
 
-
     /**
      * @param Event $event
      * @param string $qrCode
@@ -113,8 +112,6 @@ class Visitor
         return $this->qrCode;
     }
 
-
-
     /**
      * @return DateTime
      */
@@ -140,5 +137,4 @@ class Visitor
     {
         return $this->exitTimestamp;
     }
-
 }

@@ -20,12 +20,8 @@
 
 namespace BrBundle\Hydrator\Match;
 
-use BrBundle\Entity\Match\Profile\ProfileCompanyMap;
-use BrBundle\Entity\Match\Profile\ProfileStudentMap;
-use BrBundle\Entity\Match\Profile\StudentProfile as StudentProfileEntity;
-use BrBundle\Entity\Match\Profile as ProfileEntity;
 use BrBundle\Entity\Match\Profile\CompanyProfile as CompanyProfileEntity;
-use BrBundle\Entity\Match\Profile\ProfileFeatureMap;
+use BrBundle\Entity\Match\Profile\StudentProfile as StudentProfileEntity;
 
 /**
  * @author Robin Wroblowski <robin.wroblowski@vtk.be>
@@ -42,7 +38,7 @@ class Profile extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $this->stdExtract($object, self::$stdKeys);
 
-        foreach ($object->getFeatures() as $feature){
+        foreach ($object->getFeatures() as $feature) {
             $data['feature_' . $feature->getFeature()->getId()] = $feature->getImportance();
         }
         return $data;

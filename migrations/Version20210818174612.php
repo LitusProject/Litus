@@ -49,7 +49,7 @@ class Version20210818174612 extends \Doctrine\Migrations\AbstractMigration
         $this->addSql('DROP INDEX uniq_de998a678157aa0f');
         $this->addSql('CREATE INDEX IDX_DE998A67B723AF33 ON br_match_profile_student_map (student)');
         $this->addSql('CREATE INDEX IDX_DE998A678157AA0F ON br_match_profile_student_map (profile)');
-        }
+    }
 
     /**
      * @param  \Doctrine\DBAL\Schema\Schema $schema

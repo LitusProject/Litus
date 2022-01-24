@@ -17,18 +17,16 @@
  *
  * @license http://litus.cc/LICENSE
  */
-namespace BrBundle\Controller\Admin\Event;
 
+namespace BrBundle\Controller\Admin\Event;
 
 use BrBundle\Entity\Event;
 use BrBundle\Entity\Event\Subscription as SubscriptionEntity;
-use Laminas\View\Model\ViewModel;
-
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use Laminas\Http\Headers;
-
 use Laminas\Mail\Message;
+use Laminas\View\Model\ViewModel;
 
 /**
  * SubscriptionController
@@ -61,7 +59,6 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             )
         );
     }
-
 
     public function deleteAction()
     {
@@ -112,9 +109,11 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                     )
                 );
 
-                return new ViewModel(array(
-                    'event' => $eventObject,
-                ));
+                return new ViewModel(
+                    array(
+                        'event' => $eventObject,
+                    )
+                );
             }
         }
         // TODO: Mailing should maybe only be done automatically with user subscription and not admin subscription
@@ -161,9 +160,11 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                     )
                 );
 
-                return new ViewModel(array(
-                    'event' => $eventObject,
-                ));
+                return new ViewModel(
+                    array(
+                        'event' => $eventObject,
+                    )
+                );
             }
         }
         return new ViewModel(
@@ -192,7 +193,6 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
 
         $result = array();
         foreach ($subscriptions as $subscription) {
-
             $item = (object) array();
             $item->id = $subscription->getId();
             $item->name = $subscription->getFirstName().' '.$subscription->getLastName();
@@ -212,8 +212,8 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
-
-    public function mailAction(){
+    public function mailAction()
+    {
         $subscription = $this->getSubscriptionEntity();
         if ($subscription === null) {
             return new ViewModel();
@@ -268,7 +268,6 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
-
     private function sendMail(Event $event, Subscription $subscription)
     {
         // $language Language is set to english when sent from admin
@@ -297,29 +296,34 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             ->getConfigValue('cudi.subscription_mail_name');
         
         $url = $this->url()
-            ->fromRoute('br_career_event',
+            ->fromRoute(
+                'br_career_event',
                 array('action' => 'qr',
                     'event' => $event->getId(),
-                    'code' => $qr),
-                array('force_canonical' => true));
+                    'code' => $qr
+                ),
+                array('force_canonical' => true)
+            );
                 
-        $qrSource = str_replace('{{encodedUrl}}',
-                    urlencode($url),
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('br.google_qr_api'));
+        $qrSource = str_replace(
+            '{{encodedUrl}}',
+            urlencode($url),
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.google_qr_api')
+        );
 
-        $message = str_replace('{{event}}', $event->getTitle(), $message );
-        $message = str_replace('{{eventDate}}', $event->getStartDate()->format('d/m/Y'), $message );
-        $message = str_replace('{{qrSource}}', $qrSource, $message );
-        $message = str_replace('{{qrLink}}', $url, $message );
-        $message = str_replace('{{brMail}}', $mailAddress, $message );
+        $message = str_replace('{{event}}', $event->getTitle(), $message);
+        $message = str_replace('{{eventDate}}', $event->getStartDate()->format('d/m/Y'), $message);
+        $message = str_replace('{{qrSource}}', $qrSource, $message);
+        $message = str_replace('{{qrLink}}', $url, $message);
+        $message = str_replace('{{brMail}}', $mailAddress, $message);
 
         $mail = new Message();
         $mail->setEncoding('UTF-8')
             ->setBody($message)
             ->setFrom($mailAddress, $mailName)
-            ->addTo($subscription->getEmail(), $subscription->getFirstName()." ".$subscription->getLastName())
+            ->addTo($subscription->getEmail(), $subscription->getFirstName().' '.$subscription->getLastName())
             ->addBcc(
                 $mailAddress,
                 $mailName
@@ -330,7 +334,6 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             $this->getMailTransport->send($mail);
         }
     }
-
 
     /**
      * @return Event|null

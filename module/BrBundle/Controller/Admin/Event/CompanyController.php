@@ -17,17 +17,15 @@
  *
  * @license http://litus.cc/LICENSE
  */
-namespace BrBundle\Controller\Admin\Event;
 
+namespace BrBundle\Controller\Admin\Event;
 
 use BrBundle\Entity\Event;
 use BrBundle\Entity\Event\CompanyMap;
-use Laminas\View\Model\ViewModel;
-
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use Laminas\Http\Headers;
-
+use Laminas\View\Model\ViewModel;
 
 /**
  * CompanyController
@@ -93,7 +91,6 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             )
         );
     }
-    
 
     public function deleteAction()
     {
@@ -134,7 +131,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             ->findAllByEvent($event);
         
         $positions = array();
-        foreach ($locations as $location){
+        foreach ($locations as $location) {
             $positions[$location->getCompany()->getId()] = $location->getNumber();
         }
 
@@ -168,8 +165,8 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-
-    public function editAction() {
+    public function editAction()
+    {
         $companyMap = $this->getCompanyMapEntity();
         if ($companyMap === null) {
             return new ViewModel();
@@ -210,7 +207,6 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             )
         );
     }
-
 
     /**
      * @return Event|null

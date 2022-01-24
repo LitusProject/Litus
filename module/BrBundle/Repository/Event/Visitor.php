@@ -2,8 +2,8 @@
 
 namespace BrBundle\Repository\Event;
 
-use DateTime;
 use BrBundle\Entity\Event;
+use DateTime;
 
 /**
  * Visitor
@@ -46,7 +46,7 @@ class Visitor extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getResult();
     }
 
-    public function findByEventAndQrAndExitNull(Event $event,string $qr)
+    public function findByEventAndQrAndExitNull(Event $event, string $qr)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('v')
@@ -63,7 +63,6 @@ class Visitor extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getResult();
     }
-
 
     public function countBetweenByEvent(Event $event, DateTime $begin, DateTime $end)
     {
@@ -138,5 +137,4 @@ class Visitor extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getResult();
     }
-    
 }

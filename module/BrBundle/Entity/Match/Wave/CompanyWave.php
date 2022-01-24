@@ -22,7 +22,6 @@ namespace BrBundle\Entity\Match\Wave;
 
 use BrBundle\Entity\Company;
 use BrBundle\Entity\Match\Wave;
-use CommonBundle\Entity\User\Person;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 

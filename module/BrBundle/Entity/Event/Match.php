@@ -20,7 +20,6 @@
 
 namespace BrBundle\Entity\Event;
 
-use BrBundle\Entity\Event;
 use BrBundle\Entity\Event\CompanyMap;
 use BrBundle\Entity\Event\Subscription;
 use DateTime;
@@ -71,7 +70,6 @@ class Match
      */
     private $timestamp;
 
-
     /**
      * @param CompanyMap $companyMap
      * @param Subscription   $subscription
@@ -91,7 +89,6 @@ class Match
         return $this->id;
     }
 
-
     /**
      * @return CompanyMap
      */
@@ -99,7 +96,6 @@ class Match
     {
         return $this->companyMap;
     }
-
 
     /**
      * @return Subscription
@@ -116,5 +112,4 @@ class Match
     {
         return $this->timestamp;
     }
-
 }

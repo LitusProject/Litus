@@ -20,8 +20,6 @@
 
 namespace BrBundle\Entity\Match;
 
-use BrBundle\Entity\Company;
-use CommonBundle\Entity\User\Person;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -65,8 +63,6 @@ class Wave
      */
     private $creationTime;
 
-    /**
-     */
     public function __construct()
     {
         $this->companyWaves = new ArrayCollection();
@@ -112,5 +108,4 @@ class Wave
     {
         return $this->creationTime;
     }
-
 }

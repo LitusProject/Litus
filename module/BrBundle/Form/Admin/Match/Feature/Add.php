@@ -73,9 +73,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->addSubmit('Add', 'feature_add');
     }
 
-    private function getTypeArray(){
+    private function getTypeArray()
+    {
         $types = Feature::$possibleTypes;
-        array_push($types,null);
+        array_push($types, null);
         return array_reverse($types);
     }
 }
