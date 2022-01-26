@@ -210,14 +210,17 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
                 $map = new ProfileStudentMap($person, $profile);
                 $this->getEntityManager()->persist($map);
 
-                foreach (array_values($formData['features_ids']) as $feature){
-                    $map = new ProfileFeatureMap(
-                        $this->getEntityManager()
-                            ->getRepository('BrBundle\Entity\Match\Feature')
-                            ->findOneById($feature),
-                        $profile);
-                    $this->getEntityManager()->persist($map);
-                    $profile->addFeature($map);
+                // Add new features with their importances
+                foreach ($formData as $key => $val){
+                    if (str_contains($key, 'feature_') && $val != 0){
+                        $id = substr($key, strlen('feature_'));
+                        $map = new ProfileFeatureMap(
+                            $this->getEntityManager()
+                                ->getRepository('BrBundle\Entity\Match\Feature')
+                                ->findOneById($id),$profile, $val);
+                        $this->getEntityManager()->persist($map);
+                        $profile->addFeature($map);
+                    }
                 }
 
                 $this->getEntityManager()->flush();
@@ -359,31 +362,21 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
                 }
                 $this->getEntityManager()->flush();
 
-
-                // NEW FEATURES
-
-                // Get new features and importances
-                $features = array();
+                // Add new features with their importances
                 foreach ($formData as $key => $val){
-                    if (str_contains($key, 'feature_')){
+                    if (str_contains($key, 'feature_') && $val != 0){
                         $id = substr($key, strlen('feature_'));
-                        $feature = $this->getEntityManager()->getRepository('BrBundle\Entity\Match\Feature')
-                            ->findOneById($id);
-                        $features[] = array($feature, $val);
+                        $map = new ProfileFeatureMap(
+                            $this->getEntityManager()
+                                ->getRepository('BrBundle\Entity\Match\Feature')
+                                ->findOneById($id),$profile, $val);
+                        $this->getEntityManager()->persist($map);
+                        $profile->addFeature($map);
                     }
                 }
 
-                foreach ($features as $featureAndVal){
-                    $map = new ProfileFeatureMap(
-                        $this->getEntityManager()
-                            ->getRepository('BrBundle\Entity\Match\Feature')
-                            ->findOneById($featureAndVal[0]),
-                        $profile, $featureAndVal[1]);
-                    $this->getEntityManager()->persist($map);
-                    $profile->addFeature($map);
-                }
-
                 $this->getEntityManager()->flush();
+
                 $this->flashMessenger()->success(
                     'Success',
                     'The profile was successfully edited!'

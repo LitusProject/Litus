@@ -52,22 +52,6 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
             return new ViewModel();
         }
 
-        $allWaves = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Match\Wave')
-            ->findAll();
-
-        $wave = $this->getWaveEntity();
-        if ($wave === null) {
-            $this->redirect()->toRoute(
-                'br_corporate_match',
-                array(
-                    'action' => 'overview',
-                    'wave'  => $allWaves[0]->getId(),
-                )
-            );
-            return new ViewModel();
-        }
-
         $profiles = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Match\Profile\ProfileCompanyMap')
             ->findByCompany($person->getCompany());
@@ -81,19 +65,46 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
                 $cp = false;
         }
 
+        $bannerText = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.match_corporate_banner_text');
+
+        $allWaves = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Match\Wave')
+            ->findAll();
+
+        if (is_null($allWaves[0])){
+            return new ViewModel(
+                array(
+                    'needs_sp'  => $sp,
+                    'needs_cp'  => $cp,
+                    'bannerText' => $bannerText,
+                )
+            );
+        }
+
+        $wave = $this->getWaveEntity();
+        if ($wave === null) {
+            $this->redirect()->toRoute(
+                'br_corporate_match',
+                array(
+                    'action' => 'overview',
+                    'wave'  => $allWaves[0]->getId(),
+                )
+            );
+            return new ViewModel();
+        }
+
+        $matches = null;
         foreach ($wave->getCompanyWaves() as $cw){
             if ($cw->getCompany() == $person->getCompany()){
                 $matches = $cw->getMatches();
             }
         }
 
-        $bannerText = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.match_corporate_banner_text');
-
-        $matches = array_map(function($a) {
+        $matches = !is_null($matches)?array_map(function($a) {
             return $a->getMatch();
-        }, $matches);
+        }, $matches):$matches;
 
 
         return new ViewModel(
@@ -128,7 +139,7 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
         // Get the correct form by profile type and check whether there already exists one of this type!
         if ($type == 'company'){
             foreach ($profiles as $p){
-                if ($p instanceof Match\Profile\CompanyProfile){
+                if (!is_null($profiles) && $p instanceof Match\Profile\CompanyProfile){
                     $this->redirect()->toRoute(
                         'br_corporate_match',
                         array(
@@ -142,7 +153,7 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
             $form = $this->getForm('br_corporate_match_company_add');
         } else {
             foreach ($profiles as $p){
-                if ($p instanceof Match\Profile\StudentProfile){
+                if (!is_null($profiles) && $p instanceof Match\Profile\StudentProfile){
                     $this->redirect()->toRoute(
                         'br_corporate_match',
                         array(
@@ -156,8 +167,8 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
             $form = $this->getForm('br_corporate_match_student_add');
         }
 
-        $sp = True;
-        $cp = True;
+        $sp = true;
+        $cp = true;
         foreach ($profiles as $p){
             if ($p->getProfile()->getProfileType() == 'student')
                 $sp = false;
@@ -180,22 +191,24 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
                 $map = new ProfileCompanyMap($person->getCompany(), $profile);
                 $this->getEntityManager()->persist($map);
 
-                foreach (array_values($formData['features_ids']) as $feature){
-                    $map = new ProfileFeatureMap(
-                        $this->getEntityManager()
-                            ->getRepository('BrBundle\Entity\Match\Feature')
-                            ->findOneById($feature),
-                        $profile);
-                    $this->getEntityManager()->persist($map);
-                    $profile->addFeature($map);
+                // Add new features with their importances
+                foreach ($formData as $key => $val){
+                    if (str_contains($key, 'feature_') && $val != 0){
+                        $id = substr($key, strlen('feature_'));
+                        $map = new ProfileFeatureMap(
+                            $this->getEntityManager()
+                                ->getRepository('BrBundle\Entity\Match\Feature')
+                                ->findOneById($id),$profile, $val);
+                        $this->getEntityManager()->persist($map);
+                        $profile->addFeature($map);
+                    }
                 }
 
                 $this->getEntityManager()->flush();
-
                 // REDIRECT TO OTHER FORM
-                if ($type == 'company' && $sp){
+                if ($type == 'company' && $sp == true){
                     $this->redirect()->toRoute(
-                        'br_career_match',
+                        'br_corporate_match',
                         array(
                             'action' => 'addProfile',
                             'type'   => 'student'
@@ -203,7 +216,7 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
                     );
                 } elseif ($type == 'student' && $cp){
                     $this->redirect()->toRoute(
-                        'br_career_match',
+                        'br_corporate_match',
                         array(
                             'action' => 'addProfile',
                             'type'   => 'company'
@@ -211,19 +224,12 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
                     );
                 } else {
                     $this->redirect()->toRoute(
-                        'br_career_match',
+                        'br_corporate_match',
                         array(
                             'action' => 'overview',
                         )
                     );
                 }
-
-                $this->redirect()->toRoute(
-                    'br_corporate_match',
-                    array(
-                        'action' => 'overview',
-                    )
-                );
 
                 return new ViewModel();
             }
@@ -233,6 +239,10 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
             array(
                 'form' => $form,
                 'type' => $type,
+                'gdpr_text' => unserialize(
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('br.match_career_profile_GDPR_text'))[$this->getLanguage()->getAbbrev()],
             )
         );
     }
@@ -323,38 +333,25 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
             $form->setData($formData);
 
             if ($form->isValid()) {
-                // Current Features
+                // Remove current Features
                 $currentFeatures = $profile->getFeatures();
-                $currentFeatureIds = array();
-                $currentFeatureMaps = array();
-                foreach ($currentFeatures as $c){
-                    $currentFeatureIds[] = $c->getFeature()->getId();
-                    $currentFeatureMaps[$c->getFeature()->getId()] = $c->getId();
-                }
-
-                // Form Features
-                $formFeatureIds = array_values($formData['features_ids']);
-
-                // Features to remove (old features)
-                $oldFeatureIds = array_diff($currentFeatureIds, $formFeatureIds);
-                foreach ($oldFeatureIds as $feature){
-                    $map = $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Match\Profile\ProfileFeatureMap')
-                        ->findOneById($currentFeatureMaps[$feature]);
+                foreach ($currentFeatures as $map){
                     $profile->getFeatures()->removeElement($map);
                     $this->getEntityManager()->remove($map);
                 }
+                $this->getEntityManager()->flush();
 
-                // Features to add (new features)
-                $newFeatureIds = array_diff($formFeatureIds, $currentFeatureIds);
-                foreach ($newFeatureIds as $feature){
-                    $map = new ProfileFeatureMap(
-                        $this->getEntityManager()
-                            ->getRepository('BrBundle\Entity\Match\Feature')
-                            ->findOneById($feature),
-                        $profile);
-                    $this->getEntityManager()->persist($map);
-                    $profile->addFeature($map);
+                // Add new features with their importances
+                foreach ($formData as $key => $val){
+                    if (str_contains($key, 'feature_') && $val != 0){
+                        $id = substr($key, strlen('feature_'));
+                        $map = new ProfileFeatureMap(
+                            $this->getEntityManager()
+                                ->getRepository('BrBundle\Entity\Match\Feature')
+                                ->findOneById($id),$profile, $val);
+                        $this->getEntityManager()->persist($map);
+                        $profile->addFeature($map);
+                    }
                 }
 
                 $this->getEntityManager()->flush();
@@ -378,6 +375,10 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
             array(
                 'form' => $form,
                 'type' => $type,
+                'gdpr_text' => unserialize(
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('br.match_career_profile_GDPR_text'))[$this->getLanguage()->getAbbrev()],
             )
         );
     }

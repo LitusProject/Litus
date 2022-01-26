@@ -51,16 +51,16 @@ class Match
     /**
      * @var CompanyMatcheeMap The company-matchee's profiles
      *
-     * @ORM\OneToOne(targetEntity="\BrBundle\Entity\Match\MatcheeMap\CompanyMatcheeMap")
-     * @ORM\JoinColumn(name="company", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="\BrBundle\Entity\Match\MatcheeMap\CompanyMatcheeMap", cascade={"remove"})
+     * @ORM\JoinColumn(name="company", referencedColumnName="id", onDelete="CASCADE")
      */
     private $companyMatchee;
 
     /**
      * @var StudentMatcheeMap The student-matchee's profiles
      *
-     * @ORM\OneToOne(targetEntity="\BrBundle\Entity\Match\MatcheeMap\StudentMatcheeMap")
-     * @ORM\JoinColumn(name="student", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="\BrBundle\Entity\Match\MatcheeMap\StudentMatcheeMap", cascade={"remove"})
+     * @ORM\JoinColumn(name="student", referencedColumnName="id", onDelete="CASCADE")
      */
     private $studentMatchee;
 
@@ -75,7 +75,7 @@ class Match
      * @var Wave\WaveMatchMap The match's wave
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Match\Wave\WaveMatchMap")
-     * @ORM\JoinColumn(name="wave", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="wave", referencedColumnName="id", nullable=true, onDelete="cascade")
      */
     private $wave;
 
@@ -201,21 +201,21 @@ class Match
         $companyTraitMaps = $companyProfile->getFeatures()->toArray();
         $studentTraitMaps = $studentProfile->getFeatures()->toArray();
 
-        $studentTraits = array();
-        $companyTraits = array();
         foreach ($studentTraitMaps as $trait)
-            $studentTraits[] = $trait->getFeature()->getId();
+            $studentTraits[] = array(
+                'id' => $trait->getFeature()->getId(),
+                'importance' => $trait->getImportance());
         foreach ($companyTraitMaps as $trait)
-            $companyTraits[] = $trait->getFeature()->getId();
-
-        error_log(count($studentTraits). count($companyTraits));
+            $companyTraits[] = array(
+                'id' => $trait->getFeature()->getId(),
+                'importance' => $trait->getImportance());
 
         $positives = 0;
         $negatives = 0;
         foreach ($studentTraits as $ST){
             foreach ($companyTraits as $CT){
-                if ($ST == $CT)
-                    $positives++;
+                if ($ST['id'] == $CT['id'])
+                    $positives += $ST['importance']*$CT['importance']/10000;
 //                if ($ST->isOpposite($CT)) $negatives++;
             }
         }

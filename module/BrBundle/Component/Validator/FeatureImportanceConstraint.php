@@ -93,11 +93,14 @@ class FeatureImportanceConstraint extends \CommonBundle\Component\Validator\Abst
         foreach ($levels as $a => $b)
             $counts[$a] = 0;
 
-        foreach ($context as $key => $val)
-            if (str_contains($key, 'feature_'))
+        foreach ($context as $key => $val) {
+            if ($val != 0 && str_contains($key, 'feature_')){
                 $counts[$val] += 1;
+            }
 
-        if ($counts[$value] > $levels[$value]) {
+        }
+
+        if (in_array($value, array_keys($levels)) && $counts[$value] > $levels[$value]) {
             if ($levels[$value]>0){
                 $this->error(self::TOO_MANY);
                 return false;

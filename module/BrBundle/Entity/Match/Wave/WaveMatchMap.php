@@ -45,7 +45,7 @@ class WaveMatchMap
      *@var CompanyWave The company wave
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Match\Wave\CompanyWave")
-     * @ORM\JoinColumn(referencedColumnName="id")
+     * @ORM\JoinColumn(referencedColumnName="id", onDelete="cascade")
      */
     private $companywave;
 
@@ -53,7 +53,7 @@ class WaveMatchMap
      * @var Match The match
      *
      * @ORM\OneToOne(targetEntity="\BrBundle\Entity\Match")
-     * @ORM\JoinColumn(name="match", referencedColumnName="id")
+     * @ORM\JoinColumn(name="match", referencedColumnName="id", onDelete="cascade")
      */
     private $match;
 

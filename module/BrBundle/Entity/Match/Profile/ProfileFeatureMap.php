@@ -53,7 +53,7 @@ class ProfileFeatureMap
      * @var Feature
      *
      * @ORM\ManyToOne(targetEntity="\BrBundle\Entity\Match\Feature")
-     * @ORM\JoinColumn(name="feature", referencedColumnName="id")
+     * @ORM\JoinColumn(name="feature", referencedColumnName="id", onDelete="CASCADE")
      */
     private $feature;
 
@@ -61,7 +61,7 @@ class ProfileFeatureMap
      * @var Profile
      *
      * @ORM\ManyToOne(targetEntity="\BrBundle\Entity\Match\Profile")
-     * @ORM\JoinColumn(name="profile", referencedColumnName="id")
+     * @ORM\JoinColumn(name="profile", referencedColumnName="id", onDelete="CASCADE")
      */
     private $profile;
 

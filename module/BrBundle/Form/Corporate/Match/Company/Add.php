@@ -43,11 +43,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         parent::init();
 
 
-        foreach ($this->getFeatureNames() as $featureName){
+        foreach ($this->getFeatureNames() as $featureId => $featureName){
             $this->add(
                 array(
                     'type'       => 'select',
-                    'name'       => 'feature_'.$featureName,
+                    'name'       => 'feature_'.$featureId,
                     'label'      => $featureName,
                     'value'      => ' ',
                     'attributes' => array(
@@ -59,12 +59,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name'    => 'FeatureImportanceConstraint',
+                            'validators' => array(
+                                array(
+                                    'name'    => 'FeatureImportanceConstraint',
+                                ),
                             ),
                         ),
+
                     ),
                 )
             );

@@ -38,11 +38,12 @@
         <div class="vtk-flex-stretch">
             <div class="col-md-6" style="margin:auto;">
                 <h4>Features</h4>
-                <table class="table table-striped full-width">
+                <table class="table table-striped full-width table-bordered">
                     {% for feature in features %}
                         <tr>
                             <td>
-                                <strong>{{ feature.getFeature().getName() }}</strong>
+                                <strong style="padding-left: 40px;">{{ feature.getFeature().getName() }}</strong>
+                                <strong class="pull-right" style="padding-right: 40px;">{{ feature.getImportanceName() }}</strong>
                             </td>
                         </tr>
                     {% endfor %}

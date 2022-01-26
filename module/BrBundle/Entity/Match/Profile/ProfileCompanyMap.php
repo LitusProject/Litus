@@ -47,7 +47,7 @@ class ProfileCompanyMap
      * @var Company The company
      *
      * @ORM\ManyToOne(targetEntity="\BrBundle\Entity\Company")
-     * @ORM\JoinColumn(name="company", referencedColumnName="id", unique=false)
+     * @ORM\JoinColumn(name="company", referencedColumnName="id", unique=false, onDelete="CASCADE")
      */
     private $company;
 
@@ -55,7 +55,7 @@ class ProfileCompanyMap
      * @var Profile The profile
      *
      * @ORM\ManyToOne(targetEntity="\BrBundle\Entity\Match\Profile")
-     * @ORM\JoinColumn(name="profile", referencedColumnName="id", unique=false)
+     * @ORM\JoinColumn(name="profile", referencedColumnName="id", unique=false, onDelete="CASCADE")
      */
     private $profile;
 

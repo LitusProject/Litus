@@ -161,15 +161,8 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        foreach($wave->getCompanyWaves() as $cw){
-            foreach($cw->getMatches() as $map){
-                $map->getMatch()->setWave(null);
-                $this->getEntityManager()->remove($map);
-            }
-            $this->getEntityManager()->remove($cw);
-        }
-        $this->getEntityManager()->flush();
         $this->getEntityManager()->remove($wave);
+        $this->getEntityManager()->flush();
 
         return new ViewModel(
             array(
@@ -273,6 +266,10 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
         $matcheeMaps = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Match\MatcheeMap\CompanyMatcheeMap')
             ->findByCompany($company);
+
+        foreach ($matcheeMaps as $m){
+            print(json_encode($m->getId()).";");
+        }
 
         usort($matcheeMaps, function($a, $b) {
             $am = $this->getEntityManager()

@@ -62,20 +62,21 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
     {
         $profile = $this->getProfileEntity();
 
+        $companyMap = $this->getEntityManager()->getRepository('BrBundle\Entity\Match\Profile\ProfileCompanyMap')
+            ->findOneByProfile($profile);
+        $studentMap = $this->getEntityManager()->getRepository('BrBundle\Entity\Match\Profile\ProfileStudentMap')
+            ->findOneByProfile($profile);
+
         $matches = array();
-        if ($profile->getProfileType() == 'student'){
-            $student = $this->getEntityManager()->getRepository('BrBundle\Entity\Match\Profile\ProfileStudentMap')
-                ->findOneByProfile($profile)->getStudent();
+        if (!is_null($studentMap)){
             $maps = $this->getEntityManager()->getRepository('BrBundle\Entity\Match\MatcheeMap\StudentMatcheeMap')
-                ->findByStudent($student);
+                ->findByStudent($studentMap->getStudent());
             foreach ($maps as $map)
                 $matches[] = $this->getEntityManager()->getRepository('BrBundle\Entity\Match')
                     ->findOneByStudentMatchee($map);
-        } elseif ($profile->getProfileType() == 'company'){
-            $company = $this->getEntityManager()->getRepository('BrBundle\Entity\Match\Profile\ProfileCompanyMap')
-                ->findOneByProfile($profile)->getCompany();
+        } elseif (!is_null($companyMap)){
             $maps = $this->getEntityManager()->getRepository('BrBundle\Entity\Match\MatcheeMap\CompanyMatcheeMap')
-                ->findByCompany($company);
+                ->findByCompany($companyMap->getCompany());
             foreach ($maps as $map)
                 $matches[] = $this->getEntityManager()->getRepository('BrBundle\Entity\Match')
                     ->findOneByCompanyMatchee($map);
@@ -90,8 +91,8 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'student'           => $student??null,
-                'company'           => $company??null,
+                'student'           => $studentMap?$studentMap->getStudent():null,
+                'company'           => $companyMap?$companyMap->getCompany():null,
             )
         );
     }
@@ -111,23 +112,27 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
                 if ($formData['type'] === 'student') {
                     $student = $this->getEntityManager()->getRepository('CommonBundle\Entity\User\Person')
                         ->findOneById($formData['student']['id']);
-                    $map = new ProfileStudentMap($student, $profile);
+                    $pmap = new ProfileStudentMap($student, $profile);
                 } elseif ($formData['type'] === 'company') {
                     $company = $this->getEntityManager()->getRepository('BrBundle\Entity\Company')
                         ->findOneById($formData['company'][0]);
-                    $map = new ProfileCompanyMap($company, $profile);
+                    $pmap = new ProfileCompanyMap($company, $profile);
                 }
-                $this->getEntityManager()->persist($map);
+                $this->getEntityManager()->persist($pmap);
 
-                foreach (array_values($formData['features_ids']) as $feature){
-                    $map = new ProfileFeatureMap(
-                        $this->getEntityManager()
-                            ->getRepository('BrBundle\Entity\Match\Feature')
-                            ->findOneById($feature),
-                        $profile);
-                    $this->getEntityManager()->persist($map);
-                    $profile->addFeature($map);
+                // Add new features with their importances
+                foreach ($formData as $key => $val){
+                    if (str_contains($key, 'feature_') && $val != 0){
+                        $id = substr($key, strlen('feature_'));
+                        $map = new ProfileFeatureMap(
+                            $this->getEntityManager()
+                                ->getRepository('BrBundle\Entity\Match\Feature')
+                                ->findOneById($id),$profile, $val);
+                        $this->getEntityManager()->persist($map);
+                        $profile->addFeature($map);
+                    }
                 }
+
                 $this->getEntityManager()->flush();
                 $this->flashMessenger()->success(
                     'Success',
@@ -166,41 +171,28 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()){
-                // Set the new features and remove the old profileFeatureMaps
-
-                // Get old features
-                $oldFeatures = $profile->getFeatures()->toArray();
-                $oldFeaturesIds = array();
-                foreach ($oldFeatures as $oldFeature) {
-                    $oldFeaturesIds[] = $oldFeature->getFeature()->getId();
+                // Remove current Features
+                $currentFeatures = $profile->getFeatures();
+                foreach ($currentFeatures as $map){
+                    $profile->getFeatures()->removeElement($map);
+                    $this->getEntityManager()->remove($map);
                 }
+                $this->getEntityManager()->flush();
 
-                // Get new features
-                $newFeatureIds = array_values($formData['features_ids']);
-
-                // Add the new profileFeatureMaps to the database
-                foreach ($newFeatureIds as $feature){
-                    if (!in_array($feature, $oldFeaturesIds)){
+                // Add new features with their importances
+                foreach ($formData as $key => $val){
+                    if (str_contains($key, 'feature_') && $val != 0){
+                        $id = substr($key, strlen('feature_'));
                         $map = new ProfileFeatureMap(
                             $this->getEntityManager()
                                 ->getRepository('BrBundle\Entity\Match\Feature')
-                                ->findOneById($feature),
-                            $profile);
+                                ->findOneById($id),$profile, $val);
                         $this->getEntityManager()->persist($map);
                         $profile->addFeature($map);
                     }
                 }
 
-                // Remove old profileFeatureMaps from database
-                foreach (array_diff($oldFeaturesIds, $newFeatureIds) as $removableFeatures){
-                    $map = $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Match\Profile\ProfileFeatureMap')
-                        ->findOneByProfileAndFeatureId($profile, $removableFeatures);
-                    $this->getEntityManager()->remove($map);
-                }
-
                 $this->getEntityManager()->flush();
-
                 $this->flashMessenger()->success(
                     'Success',
                     'The profile was succesfully updated!'
@@ -232,17 +224,6 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
         $profile = $this->getProfileEntity();
         if ($profile === null) {
             return new ViewModel();
-        }
-
-        foreach ($profile->getFeatures() as $f){
-            $this->getEntityManager()->remove($f);
-        }
-        if ($profile->getProfileType() == 'student'){
-            $this->getEntityManager()->remove($this->getEntityManager()->getRepository('BrBundle\Entity\Match\Profile\ProfileStudentMap')
-                ->findOneByProfile($profile));
-        } elseif ($profile->getProfileType() == 'company'){
-            $this->getEntityManager()->remove($this->getEntityManager()->getRepository('BrBundle\Entity\Match\Profile\ProfileCompanyMap')
-                ->findOneByProfile($profile));
         }
 
         $this->getEntityManager()->remove($profile);
