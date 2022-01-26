@@ -48,7 +48,7 @@ abstract class MatcheeMap
      *@var Profile The company-profile of this matchee
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Match\Profile")
-     * @ORM\JoinColumn(referencedColumnName="id")
+     * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
      */
     private $companyProfile;
 
@@ -56,15 +56,15 @@ abstract class MatcheeMap
      *@var Profile The student-profile of this matchee
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Match\Profile")
-     * @ORM\JoinColumn(referencedColumnName="id")
+     * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
      */
     private $studentProfile;
 
     /**
      * @var Match The match
      *
-     * @ORM\OneToOne(targetEntity="\BrBundle\Entity\Match")
-     * @ORM\JoinColumn(name="match", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="\BrBundle\Entity\Match", cascade={"remove"})
+     * @ORM\JoinColumn(name="match", referencedColumnName="id", onDelete="cascade")
      */
     private $match;
 

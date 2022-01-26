@@ -40,6 +40,10 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('BrBundle\Entity\Match')
             ->findAll();
 
+        usort($matches, function($a, $b) { // Order the matches by match rating
+            return -$a->getMatchPercentage() + $b->getMatchPercentage();
+        });
+
         $paginator = $this->paginator()->createFromArray(
             $matches,
             $this->getParam('page')
