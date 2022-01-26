@@ -41,6 +41,7 @@ class Edit extends Add
 
         $this->remove('submit')
             ->addSubmit('Save Changes');
+        $this->remove('conditions');
 
         if ($this->profile !== null) {
             $hydrator = $this->getHydrator();
