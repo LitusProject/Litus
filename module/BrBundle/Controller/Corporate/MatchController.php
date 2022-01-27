@@ -361,7 +361,8 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
                 $this->redirect()->toRoute(
                     'br_corporate_match',
                     array(
-                        'action' => 'overview',
+                        'action' => 'viewProfile',
+                        'type'   => $type,
                     )
                 );
 

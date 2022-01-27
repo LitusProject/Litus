@@ -57,13 +57,13 @@ return array(
         'description' => 'Enable Syllabus update',
     ),
     array(
-        'key'         => 'syllabus.master_group_names',
+        'key'         => 'syllabus.master_group_ids',
         'value'       => serialize(
             array(
-                '[Werkend] Alle 1e Masters',
-                '[Werkend] Alle 2e Masters',
+                144,
+                145,
             )
         ),
-        'description' => 'The group names that contain all masters.',
+        'description' => 'The ids that contain all masters.',
     ),
 );
