@@ -24,6 +24,7 @@
 
                 <tbody>
                 {% for match in res.matches %}
+                    {% set match = match.getMatch() %}
                     <tr class="item">
                         <td>{{ match.getStudent().getFullName() }}</td>
                         <td>{{ match.getMatchPercentage() }}%</td>

@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 return array(
     array(
@@ -53,15 +35,15 @@ return array(
         'key'         => 'br.invoice_vat_explanation',
         'value'       => serialize(
             array(
-                'eu' => 'Vul in VAT voor EU companies',
-                'non-eu'    => 'Vul dit in VAT voor non-EU companies'
+                'eu'     => 'Vul in VAT voor EU companies',
+                'non-eu' => 'Vul dit in VAT voor non-EU companies'
             )
         ),
         'description' => 'Explains what the VAT',
     ),
     array(
-        'key'   => 'br.invoice_below_entries',
-        'value' => serialize(
+        'key'         => 'br.invoice_below_entries',
+        'value'       => serialize(
             array(
                 'en' => 'Please pay at the latest <payment_days/> days after the invoice date, as agreed in the contract. For information of a financial nature, you can always contact beheer@vtk.be.',
                 'nl' => 'Gelieve het bovenstaande factuurbedrag te betalen ten laatste <payment_days/> dagen na factuurdatum, zoals overeengekomen in het contract. Voor inlichtingen van financiële aard kan u steeds terecht bij beheer@vtk.be .',
@@ -70,11 +52,11 @@ return array(
         'description' => 'Payment information',
     ),
     array(
-        'key'   => 'br.account_activated_mail',
-        'value' => serialize(
+        'key'         => 'br.account_activated_mail',
+        'value'       => serialize(
             array(
                 'en' => array(
-                    'subject' => 'Student IT Corporate Account',
+                    'subject' => 'VTK Corporate Account',
                     'content' => 'Dear {{ name }},
 
 A corporate account was created for you with username {{ username }}.
@@ -83,10 +65,10 @@ You can use this account to view the CV Book at http://litus/corporate
 
 Kind regards,
 
-The Student IT Corporate Relations Team',
+The VTK Corporate Relations Team',
                 ),
                 'nl' => array(
-                    'subject' => 'Student IT Bedrijfsaccount',
+                    'subject' => 'VTK Bedrijfsaccount',
                     'content' => 'Beste {{ name }},
 
 Een bedrijfsaccount werd voor u aangemaakt met gebruikersnaam {{ username }}.
@@ -95,7 +77,7 @@ U kan dit account gebruiken om het CV Book te bekijken op http://litus/corporate
 
 Met vriendelijke groeten,
 
-Het Student IT Bedrijvenrelaties Team',
+Het VTK Bedrijvenrelaties Team',
                 ),
             )
         ),
@@ -108,7 +90,7 @@ Het Student IT Bedrijvenrelaties Team',
     ),
     array(
         'key'         => 'br.contract_name',
-        'value'       => 'Student IT',
+        'value'       => 'Vlaamse Technische Kring',
         'description' => 'I have no idea',
     ),
     array(
@@ -117,18 +99,18 @@ Het Student IT Bedrijvenrelaties Team',
         'description' => 'I have no idea contract_final_entry',
     ),
     array(
-        'key'   => 'br.contract_below_entries',
-        'value' => serialize(
+        'key'         => 'br.contract_below_entries',
+        'value'       => serialize(
             array(
-                'en' => 'Herewith I agree to the terms and conditions of Student IT, found at the end of this contract.',
-                'nl' => 'Hiermede ga ik akkoord met de algemene verkoopsvoorwaarden van Student IT, te vinden aan het einde van dit contract.',
+                'en' => 'Herewith I agree to the terms and conditions of VTK Leuven, found at the end of this contract.',
+                'nl' => 'Hiermede ga ik akkoord met de algemene verkoopsvoorwaarden van VTK Leuven, te vinden aan het einde van dit contract.',
             )
         ),
         'description' => 'Payment information',
     ),
     array(
-        'key'   => 'br.contract_above_signatures',
-        'value' => serialize(
+        'key'         => 'br.contract_above_signatures',
+        'value'       => serialize(
             array(
                 'en' => 'Contract drawn up in in duplicate at ',
                 'nl' => 'Contract opgemaakt in tweevoud te ',
@@ -137,8 +119,8 @@ Het Student IT Bedrijvenrelaties Team',
         'description' => 'Extra line contract first part',
     ),
     array(
-        'key'   => 'br.contract_above_signatures_middle',
-        'value' => serialize(
+        'key'         => 'br.contract_above_signatures_middle',
+        'value'       => serialize(
             array(
                 'en' => ' on ',
                 'nl' => ' op ',
@@ -147,8 +129,8 @@ Het Student IT Bedrijvenrelaties Team',
         'description' => 'Extra line contract second part',
     ),
     array(
-        'key'   => 'br.corporate_jobfair_info',
-        'value' => 'Dear participant of the Student IT Jobfair,
+        'key'         => 'br.corporate_jobfair_info',
+        'value'       => 'Dear participant of the Student IT Jobfair,
 
 To complete your participation at our Jobfair, we kindly request to fill out the forms below so that we can provide you with optimal service. Not all forms have to be filled out at once as you can can continue your process where you left off. Every form has its own deadline though:<br><br>
 
@@ -162,8 +144,8 @@ Student IT Corporate Relations',
         'description' => 'Information on corporate jobfair overview',
     ),
     array(
-        'key'   => 'br.cv_book_foreword',
-        'value' => '<section title="Example section">
+        'key'         => 'br.cv_book_foreword',
+        'value'       => '<section title="Example section">
 <content>
 Example content of this section.
 </content>
@@ -172,7 +154,7 @@ Example content of this section.
     ),
     array(
         'key'         => 'br.organization_name',
-        'value'       => 'Student IT vzw',
+        'value'       => 'VTK Ondersteuning vzw',
         'description' => 'Name of corporate relations vzw',
     ),
     array(
@@ -186,8 +168,8 @@ Example content of this section.
         'description' => 'The default year prefix used for invoice numbers',
     ),
     array(
-        'key'   => 'br.vat_types',
-        'value' => serialize(
+        'key'         => 'br.vat_types',
+        'value'       => serialize(
             array(
                 6,
                 11,
@@ -197,8 +179,8 @@ Example content of this section.
         'description' => 'The possible amounts of VAT',
     ),
     array(
-        'key'   => 'br.cv_archive_years',
-        'value' => serialize(
+        'key'         => 'br.cv_archive_years',
+        'value'       => serialize(
             array(
                 /*
                 Structure:
@@ -211,8 +193,8 @@ Example content of this section.
         'description' => 'The cv archive years',
     ),
     array(
-        'key'   => 'br.product_contract_text',
-        'value' => '* You have to start every line with a *.
+        'key'         => 'br.product_contract_text',
+        'value'       => '* You have to start every line with a *.
 * Also the second bullet.
   * You can also make a sub bullet only use spaces before the bullet. It must be lined up with the text above.
   * The next sub bullet most be lined up with the one above.
@@ -220,8 +202,8 @@ Example content of this section.
         'description' => 'The standard text that is displayed on the creation of a new product.',
     ),
     array(
-        'key'   => 'br.contract_number_codes',
-        'value' => serialize(
+        'key'         => 'br.contract_number_codes',
+        'value'       => serialize(
             array(
                 '1415' => '22',
                 '1516' => '33',
@@ -232,8 +214,8 @@ Example content of this section.
         'description' => 'The codes to use for contract number generation.',
     ),
     array(
-        'key'   => 'br.automatic_discounts',
-        'value' => serialize(
+        'key'         => 'br.automatic_discounts',
+        'value'       => serialize(
             array(
                 '400000' => '5',
             )
@@ -241,8 +223,8 @@ Example content of this section.
         'description' => 'The automatic discount: (money value (in cents, discount percentage)',
     ),
     array(
-        'key' => 'br.contract_payment_details',
-        'value' => serialize(
+        'key'         => 'br.contract_payment_details',
+        'value'       => serialize(
             array(
                 'nl' => '* Het Bedrijf verklaart de volgende betalingsvoorwaarden na te leven: <total_price/> te betalen uiterlijk <payment_days/> dagen na facturatiedatum. De storting dient te gebeuren op het rekeningnummer BE30 7450 1759 0011 van VTK Ondersteuning vzw met vermelding van het factuurnummer.',
                 'en' => '* The company will comply to the following terms of payment: <total_price/> to be paid <payment_days/> days after the invoice date. The payment will need to happen in the account of VTK Ondersteuning VZW with IBAN BE30 7450 1759 0011 stating the invoice number.',
@@ -301,39 +283,126 @@ Example content of this section.
         'description' => '',
     ),
     array(
-        'key'         => 'br.wave_nb_top_matches',
-        'value'       => 5,
-        'description' => 'The amount of matches in a companies\' wave',
-    ),
-    array(
-        'key'         => 'br.match_career_banner_text',
-        'value'       => 'Hier komt nog mooie text van BR',
-        'description' => 'banner text on career/match/overview',
-    ),
-    array(
-        'key'         => 'br.match_corporate_banner_text',
-        'value'       => 'Ook hier komt nog mooie text van BR',
-        'description' => 'banner text on corporate/match/overview',
-    ),
-    array(
-        'key'         => 'br.match_profile_max_importances',
+        'key'         => 'br.career_page_text',
         'value'       => serialize(
             array(
-                100 => 5,
-                200 => 3
+                'nl' => array(
+                    'br_career_student_launch' => array(
+                        'main' => 'VTK als accelerator van jouw carrière',
+                        'sub'  => 'Ontdek wat wij voor jou als toekomstig ingenieur betekenen',
+                    ),
+                    'br_career_student_container' => array(
+                        'main' => 'VTK maakt voor jou het vershil',
+                        'sub'  => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
+                    ),
+                    'br_career_student_search' => array(
+                        'search' => 'Op zoek naar een stage, job of studentenjob?',
+                    ),
+                ),
+                'en' => array(
+                    'br_career_student_launch' => array(
+                        'main' => 'VTK as accelerator for your future',
+                        'sub'  => 'Discover what we can do for your future',
+                    ),
+                    'br_career_student_container' => array(
+                        'main' => 'VTK makes the difference',
+                        'sub'  => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
+                    ),
+                    'br_career_student_search' => array(
+                        'search' => 'Searching for an internship, job or student job?',
+                    ),
+                ),
             )
         ),
-        'description' => 'The maximum allowed features per importance value',
+        'description' => 'The texts for the career page',
     ),
     array(
-        'key'         => 'br.match_career_profile_GDPR_text',
-        'description' => 'I agree that this data can be used to contact companies',
-        'value' => serialize(
+        'key'         => 'br.corporate_page_text',
+        'value'       => serialize(
             array(
-                'en' => 'I agree that this data can be used to contact companies, should you get a match or show them you\'re interested.',
-                'nl' => 'Ik ga akkoord dat deze gegevens gebruikt en bekeken kunnen worden door de bedrijven, als er een match gevormd wordt of als ik "Interesse toon".'
+                'nl' => array(
+                    'br_corporate_launch' => array(
+                        'main' => 'VTK als partner voor jouw bedrijf',
+                        'sub'  => 'Kom te weten wat wij voor jou kunnen betekenen',
+                    ),
+                    'br_corporate_intro' => array(
+                        'main' => 'VTK maakt voor jou het vershil',
+                        'sub'  => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
+                    ),
+                    'br_corporate_events' => array(
+                        'main' => 'Zien we jou op één van onze volgende evenementen?',
+                        'sub'  => 'Evenementen bekijken',
+                    ),
+                    'br_corporate_services' => array(
+                        'title' => 'Hoe wij u bedrijf mee boosten',
+                        'one'   => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
+                        'two'   => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
+                        'three' => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
+                    ),
+                ),
+                'en' => array(
+                    'br_corporate_launch' => array(
+                        'main' => 'VTK as partner for your company',
+                        'sub'  => 'Get to know what we can do for you',
+                    ),
+                    'br_corporate_intro' => array(
+                        'main' => 'VTK makes the difference for you',
+                        'sub'  => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
+                    ),
+                    'br_corporate_events' => array(
+                        'main' => 'Do we see you on one of our next events?',
+                        'sub'  => 'See events',
+                    ),
+                    'br_corporate_services' => array(
+                        'title' => 'How we help to boost your company',
+                        'one'   => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
+                        'two'   => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
+                        'three' => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
+                    ),
+                ),
+            ),
+        ),
+        'description' => 'The texts for the corporate page'
+    ),
+    array(
+        'key'         => 'br.communication_options',
+        'value'       => serialize(
+            array(
+                'Mail',
+                'Facebook',
+                'Instagram',
+                'Bakske',
+                'IrReeel',
             )
-        )
+        ),
+        'description' => 'The options displayed in the communications tab in the br admin',
+    ),
+    array(
+        'key'         => 'br.communication_mail',
+        'value'       => 'stan.cardinaels@vtk.be',
+        'description' => 'The mail address to which notifications should be send when a duplicate communication date is chosen.',
+    ),
+    array(
+        'key'         => 'br.communication_mail_name',
+        'value'       => 'VTK Bedrijvenrelaties',
+        'description' => '',
+    ),
+    array(
+        'key'         => 'br.communication_mail_body',
+        'value'       => serialize(
+            array(
+                'subject' => 'Dubbele boeking voor communicatie op {{ date }}',
+                'content' => 'Beste
+Er is een dubbele communicatie boeking aangemaakt op {{ date }} door {{ person }}.
+Communicatie optie: {{ option }}.
+Nieuw Doelpubliek: {{ newAudience }}.
+Nieuw Bedrijf: {{ newCompany }}.
+Bestaand Doelpubliek: {{ oldAudience }}.
+Bestaand Bedrijf: {{ oldCompany }}.
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
+            )
+        ),
+        'description' => 'The mail sent when a duplicate date is chosen for a communication'
     ),
     array(
         'key'         => 'br.cv_grades_map_enabled',
@@ -352,5 +421,32 @@ Example content of this section.
             )
         ),
         'description' => '',
+    ),
+    array(
+        'key'         => 'br.communication_mail',
+        'value'       => 'bedrijvenrelaties@vtk.be',
+        'description' => 'The mail address to which notifications should be sent.',
+    ),
+    array(
+        'key'         => 'br.communication_mail_name',
+        'value'       => 'VTK Bedrijvenrelaties',
+        'description' => '',
+    ),
+    array(
+        'key'         => 'br.communication_mail_body',
+        'value'       => serialize(
+            array(
+                'subject' => 'Dubbele boeking voor communicatie op {{ date }}',
+                'content' => 'Beste
+Er is een dubbele communicatie boeking aangemaakt op {{ date }} door {{ person }}.
+Communicatie optie: {{ option }}.
+Nieuw Doelpubliek: {{ newAudience }}.
+Nieuw Bedrijf: {{ newCompany }}.
+Bestaand Doelpubliek: {{ oldAudience }}.
+Bestaand Bedrijf: {{ oldCompany }}.
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
+            )
+        ),
+        'description' => 'The mail sent when a duplicate date is chosen for a communication'
     ),
 );

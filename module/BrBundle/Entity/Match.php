@@ -20,6 +20,7 @@
 
 namespace BrBundle\Entity;
 
+use BrBundle\Entity\Company\Page;
 use BrBundle\Entity\Match\Wave\CompanyWave;
 use BrBundle\Entity\Match\MatcheeMap\CompanyMatcheeMap;
 use BrBundle\Entity\Match\MatcheeMap\StudentMatcheeMap;
@@ -27,8 +28,10 @@ use BrBundle\Entity\Match\Profile;
 use BrBundle\Entity\Match\Profile\CompanyProfile;
 use BrBundle\Entity\Match\Profile\StudentProfile;
 use BrBundle\Entity\Match\Wave;
+use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -51,7 +54,7 @@ class Match
     /**
      * @var CompanyMatcheeMap The company-matchee's profiles
      *
-     * @ORM\OneToOne(targetEntity="\BrBundle\Entity\Match\MatcheeMap\CompanyMatcheeMap", cascade={"remove"})
+     * @ORM\OneToOne(targetEntity="\BrBundle\Entity\Match\MatcheeMap\CompanyMatcheeMap")
      * @ORM\JoinColumn(name="company", referencedColumnName="id", onDelete="CASCADE")
      */
     private $companyMatchee;
@@ -59,7 +62,7 @@ class Match
     /**
      * @var StudentMatcheeMap The student-matchee's profiles
      *
-     * @ORM\OneToOne(targetEntity="\BrBundle\Entity\Match\MatcheeMap\StudentMatcheeMap", cascade={"remove"})
+     * @ORM\OneToOne(targetEntity="\BrBundle\Entity\Match\MatcheeMap\StudentMatcheeMap")
      * @ORM\JoinColumn(name="student", referencedColumnName="id", onDelete="CASCADE")
      */
     private $studentMatchee;
@@ -75,7 +78,7 @@ class Match
      * @var Wave\WaveMatchMap The match's wave
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Match\Wave\WaveMatchMap")
-     * @ORM\JoinColumn(name="wave", referencedColumnName="id", nullable=true, onDelete="cascade")
+     * @ORM\JoinColumn(name="wave", referencedColumnName="id", nullable=true, onDelete="set null")
      */
     private $wave;
 
@@ -94,8 +97,7 @@ class Match
     {
         $this->companyMatchee = $company;
         $this->studentMatchee = $student;
-        $this->matchPercentage = round(($this->getMatchPercentages($company->getCompanyProfile(), $student->getCompanyProfile()) +
-                $this->getMatchPercentages($company->getStudentProfile(), $student->getStudentProfile())) / 2);
+        $this->matchPercentage = $this->calculateMatchPercentage();
         $this->interested = false;
     }
 
@@ -188,6 +190,32 @@ class Match
     public function setInterested(bool $interested)
     {
         $this->interested = $interested;
+    }
+
+    /**
+     * @param EntityManager $em
+     * @param AcademicYear $academicYear
+     * @return boolean
+     */
+    public function doesCompanyHavePage(EntityManager $em, AcademicYear $academicYear)
+    {
+        $page = $em
+            ->getRepository('BrBundle\Entity\Company\Page')
+            ->findOneActiveBySlug($this->getCompany()->getSlug(), $academicYear);
+
+        if (!($page instanceof Page)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * @return integer
+     */
+    public function calculateMatchPercentage()
+    {
+        return round(($this->getMatchPercentages($this->companyMatchee->getCompanyProfile(), $this->studentMatchee->getCompanyProfile()) +
+                $this->getMatchPercentages($this->companyMatchee->getStudentProfile(), $this->studentMatchee->getStudentProfile())) / 2);
     }
 
 

@@ -68,7 +68,6 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
             $result[] = $item;
         }
 
-
         return new ViewModel(
             array(
                 'result' => $result,
@@ -263,23 +262,22 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
      * @throws ORMException
      */
     private function makeCompanyWave(Company $company, int $nb, Wave $wave){
-        $matcheeMaps = $this->getEntityManager()
+        $maps = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Match\MatcheeMap\CompanyMatcheeMap')
             ->findByCompany($company);
 
-        foreach ($matcheeMaps as $m){
-            print(json_encode($m->getId()).";");
+        $matches = array();
+        foreach ($maps as $m){
+            $match = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Match')
+                ->findOneByCompanyMatchee($m);
+
+            if (!is_null($match))
+                $matches[] = $match;
         }
 
-        usort($matcheeMaps, function($a, $b) {
-            $am = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Match')
-                ->findOneByCompanyMatchee($a);
-
-            $bm = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Match')
-                ->findOneByCompanyMatchee($b);
-            return $am->getMatchPercentage() - $bm->getMatchPercentage();
+        usort($matches, function($a, $b) {
+            return $a->getMatchPercentage() - $b->getMatchPercentage();
         });
 
         $cw = new CompanyWave($wave, $company);
@@ -288,13 +286,10 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
 
         $i = 0; // index of highest match
         $n = 0; // number of matches in this wave
-        $sizeMM = sizeof($matcheeMaps);
+        $sizeMM = sizeof($matches);
 
         while ($i < $sizeMM && $n<$nb){
-            $matchee = $matcheeMaps[$i];
-            $match = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Match')
-                ->findOneByCompanyMatchee($matchee);
+            $match = $matches[$i];
 
             if (!is_null($match->getWave())){
                 $i += 1;

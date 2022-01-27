@@ -35,6 +35,7 @@ use CommonBundle\Component\Form\Admin\Element\DateTime;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use CommonBundle\Entity\User\Person;
 use Laminas\Http\Headers;
+use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
 
 /**
@@ -84,6 +85,8 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
                 'needs_sp'  => $sp,
                 'needs_cp'  => $cp,
                 'bannerText' => $bannerText,
+                'em' => $this->getEntityManager(),
+                'ay' => $this->getCurrentAcademicYear(),
             )
         );
     }
@@ -139,6 +142,8 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
                 'needs_sp'  => $sp,
                 'needs_cp'  => $cp,
                 'bannerText' => $bannerText,
+                'em' => $this->getEntityManager(),
+                'ay' => $this->getCurrentAcademicYear(),
             )
         );
     }
@@ -154,6 +159,12 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
             $this->flashMessenger()->error(
                 'Error',
                 "You are not a Master's student, and therefore cannot enroll in the matching platform!"
+            );
+            $this->redirect()->toRoute(
+                'br_career_match',
+                array(
+                    'action' => 'overview',
+                )
             );
             return new ViewModel();
         }
@@ -417,6 +428,14 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
 
         $match->setInterested(true);
 
+//        $interested = $this->getEntityManager()
+//            ->getRepository('BrBundle\Entity\Match')
+//            ->countInterestedByCompany($match->getCompany());
+//
+//        if ($interested == 0){
+//            $this->sendFirstInterestedMail($match->getCompany());
+//        }
+
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -485,26 +504,66 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
             ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
             ->findAllByAcademicAndAcademicYear($person, $this->getCurrentAcademicYear());
 
-        $masterGroupNames = unserialize($this->getEntityManager()
+        $masterGroupIds = unserialize($this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('syllabus.master_group_names'));
+            ->getConfigValue('syllabus.master_group_ids'));
 
-        foreach ($masterGroupNames as $groupName){
+        foreach ($masterGroupIds as $groupId){
             $group = $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Repository\Group')
-                ->findOneByName($groupName);
-            $studyMaps = $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
-                ->findAllByGroup($group);
+                ->getRepository('SyllabusBundle\Entity\Group')
+                ->findById($groupId)[0];
 
-            foreach($studyMaps as $map){
-                foreach($studies as $study){
-                    if ($study == $map->getStudy()){
-                        return true;
+            if (!is_null($group)){
+                $studyMaps = $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
+                    ->findAllByGroupAndAcademicYear($group, $this->getCurrentAcademicYear());
+
+                foreach($studyMaps as $map){
+                    foreach($studies as $study){
+                        if ($study == $map->getStudy()){
+                            return true;
+                        }
                     }
                 }
             }
         }
         return false;
+    }
+
+    private function sendFirstInterestedMail(Company $company)
+    {
+        $mailAddress = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.match_mail');
+
+        $mailName = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.match_mail_name');
+
+        $mailData = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.match_first_interested_mail_body')
+        );
+
+        $message = $mailData['content'];
+        $subject = $mailData['subject'];
+
+        $to = $company->getContacts(); // TODO: TO WHOM??
+
+        $mail = new Message();
+        $mail->setEncoding('UTF-8')
+            ->setBody(
+                str_replace(
+                    array('{{ company }}'),
+                    array($company->getName()),
+                    $message
+                )
+            )
+            ->setFrom($mailAddress, $mailName)
+            ->addTo($company, $mailName)
+            ->setSubject($subject);
+
+        $this->getMailTransport()->send($mail);
     }
 }

@@ -59,7 +59,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'name'       => 'company',
                 'label'      => 'Company',
                 'attributes' => array(
-                    'multiple' => true,
                     'id'      => 'company_select',
                     'options' => $this->getCompanyArray(),
                 ),
@@ -101,74 +100,74 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 ),
             )
         );
-
-        foreach ($this->getFeatureNames() as $featureId => $featureName){
-            $this->add(
-                array(
-                    'type'       => 'select',
-                    'name'       => 'feature_'.$featureId,
-                    'label'      => $featureName,
-                    'value'      => ' ',
-                    'attributes' => array(
-                        'options'  => $this->makeOptions(),
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name'    => 'FeatureImportanceConstraint',
-                                ),
-                            ),
-                        ),
-
-                    ),
-                )
-            );
-        }
+//
+//        foreach ($this->getFeatureNames() as $featureId => $featureName){
+//            $this->add(
+//                array(
+//                    'type'       => 'select',
+//                    'name'       => 'feature_'.$featureId,
+//                    'label'      => $featureName,
+//                    'value'      => ' ',
+//                    'attributes' => array(
+//                        'options'  => $this->makeOptions(),
+//                    ),
+//                    'options' => array(
+//                        'input' => array(
+//                            'filters' => array(
+//                                array('name' => 'StringTrim'),
+//                            ),
+//                            'validators' => array(
+//                                array(
+//                                    'name'    => 'FeatureImportanceConstraint',
+//                                ),
+//                            ),
+//                        ),
+//
+//                    ),
+//                )
+//            );
+//        }
 
         $this->addSubmit('Add', 'profile_add');
     }
-
-    /**
-     * @return array
-     */
-    private function getFeatureNames()
-    {
-        $featureNames = array();
-        foreach ($this->getEntityManager()->getRepository('BrBundle\Entity\Match\Feature')->findAll() as $feature) {
-            if ($feature->getType() == 'company' || is_null($feature->getType()))
-                $featureNames[$feature->getId()] = $feature->getName();
-        }
-
-        return $featureNames;
-    }
-
-    /**
-     * @return array
-     */
-    private function makeOptions()
-    {
-
-        $options = array(' ');
-        foreach (Profile\ProfileFeatureMap::$POSSIBLE_VISIBILITIES as $val => $type)
-            $options[$val] = $type;
-
-        return $options;
-    }
-
-    /**
-     * @param  array All possible features
-     * @return self
-     */
-    public function setFeatures(array $features)
-    {
-        $this->features = $features;
-
-        return $this;
-    }
+//
+//    /**
+//     * @return array
+//     */
+//    private function getFeatureNames()
+//    {
+//        $featureNames = array();
+//        foreach ($this->getEntityManager()->getRepository('BrBundle\Entity\Match\Feature')->findAll() as $feature) {
+//            if ($feature->getType() == 'company' || is_null($feature->getType()))
+//                $featureNames[$feature->getId()] = $feature->getName();
+//        }
+//
+//        return $featureNames;
+//    }
+//
+//    /**
+//     * @return array
+//     */
+//    private function makeOptions()
+//    {
+//
+//        $options = array(' ');
+//        foreach (Profile\ProfileFeatureMap::$POSSIBLE_VISIBILITIES as $val => $type)
+//            $options[$val] = $type;
+//
+//        return $options;
+//    }
+//
+//    /**
+//     * @param  array All possible features
+//     * @return self
+//     */
+//    public function setFeatures(array $features)
+//    {
+//        $this->features = $features;
+//
+//        return $this;
+//    }
 
     /**
      * @return array

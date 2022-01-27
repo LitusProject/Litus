@@ -106,32 +106,71 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $profile = $form->hydrateObject();
-                $this->getEntityManager()->persist($profile);
 
                 if ($formData['type'] === 'student') {
                     $student = $this->getEntityManager()->getRepository('CommonBundle\Entity\User\Person')
                         ->findOneById($formData['student']['id']);
+
+                    // GET EXISTING PROFILES AND CHECK IF THIS TYPE ALREADY EXISTS
+                    $profiles = $this->getEntityManager()->getRepository('BrBundle\Entity\Match\Profile\ProfileStudentMap')
+                        ->findByStudent($student);
+                    foreach ($profiles as $prof){
+                        if ($formData['profile_type'] == $prof->getProfile()->getProfileType()){
+                            $this->flashMessenger()->error(
+                                'Error',
+                                'This type of profile already exists for this student!'
+                            );
+                            $this->redirect()->toRoute(
+                                'br_admin_match_profile',
+                                array(
+                                    'action' => 'add',
+                                )
+                            );
+                            return new ViewModel();
+                        }
+                    }
+                    $profile = $form->hydrateObject();
+                    $this->getEntityManager()->persist($profile);
                     $pmap = new ProfileStudentMap($student, $profile);
                 } elseif ($formData['type'] === 'company') {
                     $company = $this->getEntityManager()->getRepository('BrBundle\Entity\Company')
                         ->findOneById($formData['company'][0]);
+                    // GET EXISTING PROFILES AND CHECK IF THIS TYPE ALREADY EXISTS
+                    $profiles = $this->getEntityManager()->getRepository('BrBundle\Entity\Match\Profile\ProfileCompanyMap')
+                        ->findByCompany($company);
+                    foreach ($profiles as $prof){
+                        if ($formData['profile_type'] == $prof->getProfile()->getProfileType()){
+                            $this->flashMessenger()->error(
+                                'Error',
+                                'This type of profile already exists for this company!'
+                            );
+                            $this->redirect()->toRoute(
+                                'br_admin_match_profile',
+                                array(
+                                    'action' => 'add',
+                                )
+                            );
+                            return new ViewModel();
+                        }
+                    }
+                    $profile = $form->hydrateObject();
+                    $this->getEntityManager()->persist($profile);
                     $pmap = new ProfileCompanyMap($company, $profile);
                 }
                 $this->getEntityManager()->persist($pmap);
 
-                // Add new features with their importances
-                foreach ($formData as $key => $val){
-                    if (str_contains($key, 'feature_') && $val != 0){
-                        $id = substr($key, strlen('feature_'));
-                        $map = new ProfileFeatureMap(
-                            $this->getEntityManager()
-                                ->getRepository('BrBundle\Entity\Match\Feature')
-                                ->findOneById($id),$profile, $val);
-                        $this->getEntityManager()->persist($map);
-                        $profile->addFeature($map);
-                    }
-                }
+//                // Add new features with their importances
+//                foreach ($formData as $key => $val){
+//                    if (str_contains($key, 'feature_') && $val != 0){
+//                        $id = substr($key, strlen('feature_'));
+//                        $map = new ProfileFeatureMap(
+//                            $this->getEntityManager()
+//                                ->getRepository('BrBundle\Entity\Match\Feature')
+//                                ->findOneById($id),$profile, $val);
+//                        $this->getEntityManager()->persist($map);
+//                        $profile->addFeature($map);
+//                    }
+//                }
 
                 $this->getEntityManager()->flush();
                 $this->flashMessenger()->success(
@@ -142,7 +181,8 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
                 $this->redirect()->toRoute(
                     'br_admin_match_profile',
                     array(
-                        'action' => 'manage',
+                        'action' => 'edit',
+                        'id'     => $profile->getId()
                     )
                 );
 
@@ -213,6 +253,7 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 'form'      => $form,
                 'profile'   => $profile,
+                'em'        => $this->getEntityManager(),
             )
         );
     }
@@ -225,6 +266,13 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
         if ($profile === null) {
             return new ViewModel();
         }
+
+        $matches = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Match')
+            ->findAllByProfile($profile);
+
+        foreach ($matches as $match)
+            $this->getEntityManager()->remove($match);
 
         $this->getEntityManager()->remove($profile);
 
