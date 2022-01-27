@@ -63,7 +63,7 @@ abstract class MatcheeMap
     /**
      * @var Match The match
      *
-     * @ORM\OneToOne(targetEntity="\BrBundle\Entity\Match", cascade={"remove"})
+     * @ORM\ManyToOne(targetEntity="\BrBundle\Entity\Match")
      * @ORM\JoinColumn(name="match", referencedColumnName="id", onDelete="cascade")
      */
     private $match;

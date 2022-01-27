@@ -20,6 +20,7 @@
 
 namespace BrBundle\Repository;
 
+use BrBundle\Entity\Match\Profile;
 use BrBundle\Entity\Match\Wave;
 use CommonBundle\Entity\User\Person;
 
@@ -104,6 +105,26 @@ class Match extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             )
             ->orderBy('m.matchPercentage', 'ASC')
             ->setParameter('student', $student)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByProfile(Profile $profile)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('m')
+            ->from('BrBundle\Entity\Match', 'm')
+            ->innerJoin('m.studentMatchee', 's')
+            ->innerJoin('m.companyMatchee', 'c')
+            ->where(
+                $query->expr()->orX(
+                    $query->expr()->eq('s.studentProfile', ':profile'),
+                    $query->expr()->eq('s.companyProfile', ':profile'),
+                    $query->expr()->eq('c.studentProfile', ':profile'),
+                    $query->expr()->eq('c.companyProfile', ':profile')
+                )
+            )
+            ->setParameter('profile', $profile)
             ->getQuery()
             ->getResult();
     }
