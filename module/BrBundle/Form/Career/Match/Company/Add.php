@@ -71,6 +71,35 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             );
         }
 
+        // Sector features
+        foreach ($this->getSectorFeatureNames() as $featureId => $featureName) {
+            $this->add(
+                array(
+                    'type'       => 'select',
+                    'name'       => 'sector_feature_'.$featureId,
+                    'label'      => 'Sector Feature: '.$featureName,
+                    'value'      => 0,
+                    'attributes' => array(
+                        'style'   => 'max-height: 38px;height:38px;max-width:150px;',
+                        'options' => $this->makeSectorOptions(),
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array(
+                                    'name' => 'SectorImportanceConstraint',
+                                ),
+                            ),
+                        ),
+
+                    ),
+                )
+            );
+        }
+
         $this->add(
             array(
                 'type'       => 'checkbox',
@@ -128,6 +157,32 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         return $options;
+    }
+
+    /**
+     * @return array
+     */
+    private function getSectorFeatureNames()
+    {
+        $featureNames = array();
+        foreach ($this->getEntityManager()->getRepository('BrBundle\Entity\Match\Feature')->findAll() as $feature) {
+            if ($feature->isSector()) {
+                $featureNames[$feature->getId()] = $feature->getName();
+            }
+        }
+
+        return $featureNames;
+    }
+
+    /**
+     * @return array
+     */
+    private function makeSectorOptions()
+    {
+        $amt = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.match_sector_feature_max_points');
+        return range(0, $amt);
     }
 
     /**

@@ -89,7 +89,6 @@ class Version20211106232859 extends \Doctrine\Migrations\AbstractMigration
         $this->addSql('ALTER TABLE br_match_companywave ADD CONSTRAINT FK_ECDE8245DA04AD89 FOREIGN KEY (wave) REFERENCES br_match_wave (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE br_match ADD CONSTRAINT FK_CDBA3197DA04AD89 FOREIGN KEY (wave) REFERENCES br_match_companywave_match_map (id) ON DELETE SET NULL NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE br_companies ADD matching_software_email VARCHAR(255) DEFAULT NULL');
-
     }
 
     /**
