@@ -317,7 +317,7 @@ return array(
         'br_admin_match_feature' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/br/match/feature[/:action[/option/:option][/:id][/page/:page]][/]',
+                'route'       => '/admin/br/match/feature[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9_-]*',
@@ -695,13 +695,13 @@ return array(
         ),
     ),
     'controllers' => array(
-        'br_admin_company'         => 'BrBundle\Controller\Admin\CompanyController',
-        'br_admin_company_event'   => 'BrBundle\Controller\Admin\Company\EventController',
-        'br_admin_company_job'     => 'BrBundle\Controller\Admin\Company\JobController',
-        'br_admin_company_user'    => 'BrBundle\Controller\Admin\Company\UserController',
-        'br_admin_company_logo'    => 'BrBundle\Controller\Admin\Company\LogoController',
-        'br_admin_cv_entry'        => 'BrBundle\Controller\Admin\CvController',
-        'br_admin_communication'   => 'BrBundle\Controller\Admin\CommunicationController',
+        'br_admin_company'            => 'BrBundle\Controller\Admin\CompanyController',
+        'br_admin_company_event'      => 'BrBundle\Controller\Admin\Company\EventController',
+        'br_admin_company_job'        => 'BrBundle\Controller\Admin\Company\JobController',
+        'br_admin_company_user'       => 'BrBundle\Controller\Admin\Company\UserController',
+        'br_admin_company_logo'       => 'BrBundle\Controller\Admin\Company\LogoController',
+        'br_admin_cv_entry'           => 'BrBundle\Controller\Admin\CvController',
+        'br_admin_communication'      => 'BrBundle\Controller\Admin\CommunicationController',
 
         'br_admin_collaborator'       => 'BrBundle\Controller\Admin\CollaboratorController',
         'br_admin_contract'           => 'BrBundle\Controller\Admin\ContractController',

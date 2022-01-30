@@ -283,6 +283,41 @@ Example content of this section.
         'description' => '',
     ),
     array(
+        'key'         => 'br.wave_nb_top_matches',
+        'value'       => 5,
+        'description' => 'The amount of matches in a companies\' wave',
+    ),
+            array(
+        'key'         => 'br.match_career_banner_text',
+        'value'       => 'Hier komt nog mooie text van BR',
+        'description' => 'banner text on career/match/overview',
+    ),
+    array(
+        'key'         => 'br.match_corporate_banner_text',
+        'value'       => 'Ook hier komt nog mooie text van BR',
+        'description' => 'banner text on corporate/match/overview',
+    ),
+    array(
+        'key'         => 'br.match_profile_max_importances',
+        'value'       => serialize(
+            array(
+                100 => 5,
+                200 => 3
+            )
+        ),
+        'description' => 'The maximum allowed features per importance value',
+    ),
+    array(
+        'key'         => 'br.match_career_profile_GDPR_text',
+        'description' => 'I agree that this data can be used to contact companies',
+        'value'       => serialize(
+            array(
+                'en' => 'I agree that this data can be used to contact companies, should you get a match or show them you\'re interested.',
+                'nl' => 'Ik ga akkoord dat deze gegevens gebruikt en bekeken kunnen worden door de bedrijven, als er een match gevormd wordt of als ik "Interesse toon".'
+            )
+        )
+    ),
+    array(
         'key'         => 'br.career_page_text',
         'value'       => serialize(
             array(
