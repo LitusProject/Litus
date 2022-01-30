@@ -3,8 +3,10 @@
 namespace BrBundle\Component\Controller;
 
 use BrBundle\Entity\User\Person\Corporate;
+use CommonBundle\Component\Controller\Exception\HasNoAccessException;
 use CommonBundle\Component\Util\AcademicYear;
 use Laminas\Mvc\MvcEvent;
+use Laminas\View\Model\ViewModel;
 
 /**
  * We extend the CommonBundle controller.
@@ -51,9 +53,10 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
     }
 
     /**
-     * @return Corporate|void
+     * @param boolean $login
+     * @return Corporate|boolean
      */
-    protected function getCorporateEntity()
+    protected function getCorporateEntity($login = true)
     {
         if ($this->getAuthentication()->isAuthenticated()) {
             $person = $this->getAuthentication()->getPersonObject();
@@ -63,12 +66,17 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
             }
         }
 
+        if ($login == false) {
+            throw new HasNoAccessException('You do not have sufficient permissions to access this resource');
+        }
+
         $this->redirect()->toRoute(
             'br_corporate_index',
             array(
-                'action' => 'index',
+                'action' => 'login',
             )
         );
+        return new ViewModel();
     }
 
     /**

@@ -48,7 +48,7 @@ class ProfileFeatureMap
      * @var Feature
      *
      * @ORM\ManyToOne(targetEntity="\BrBundle\Entity\Match\Feature")
-     * @ORM\JoinColumn(name="feature", referencedColumnName="id")
+     * @ORM\JoinColumn(name="feature", referencedColumnName="id", onDelete="CASCADE")
      */
     private $feature;
 
@@ -56,7 +56,7 @@ class ProfileFeatureMap
      * @var Profile
      *
      * @ORM\ManyToOne(targetEntity="\BrBundle\Entity\Match\Profile")
-     * @ORM\JoinColumn(name="profile", referencedColumnName="id")
+     * @ORM\JoinColumn(name="profile", referencedColumnName="id", onDelete="CASCADE")
      */
     private $profile;
 
@@ -72,8 +72,9 @@ class ProfileFeatureMap
      * @var array All the possible importances allowed
      */
     public static $POSSIBLE_VISIBILITIES = array(
+        0   => 'Not important',
         100 => 'Important',
-        200 => 'Very important'
+        200 => 'Very important',
     );
 
     /**
@@ -141,11 +142,14 @@ class ProfileFeatureMap
      */
     public function getImportanceName()
     {
+        if ($this->feature->isSector()) {
+            return $this->getImportance();
+        }
         $possible = ProfileFeatureMap::$POSSIBLE_VISIBILITIES;
         if (in_array($this->importance, array_keys($possible))) {
             return $possible[$this->importance];
         }
-        return 'None';
+        return $this->getImportance();
     }
 
     /**

@@ -16,7 +16,7 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $stdKeys = array('name', 'vat_number', 'phone_number', 'website', 'large');
+    private static $stdKeys = array('name', 'vat_number', 'phone_number', 'website', 'large', 'matching_software_email');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -91,6 +91,7 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
         if (isset($data['page']['atEvent'])) {
             $object->getPage()->setAtEvent($data['page']['atEvent']);
         }
+
 
         return $this->stdHydrate($data, $object, self::$stdKeys);
     }

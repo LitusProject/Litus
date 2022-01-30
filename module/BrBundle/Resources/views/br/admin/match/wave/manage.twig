@@ -23,13 +23,17 @@
         <table class="full_width manage">
             <tr>
                 <th>Name</th>
-                <th width="70px">Action</th>
+                <th width="150px">Creation Date</th>
+                <th width="80px">Generated</th>
+                <th width="80px">Action</th>
             </tr>
 
             {% for wave in paginator %}
 
                 <tr class="item item-{{ wave.getId() }}">
                     <td>{{ wave.getName() }}</td>
+                    <td>{{ dateLocalized(wave.getCreationTime(), 'd/MM/y HH:mm')  }}</td>
+                    <td>{{ wave.isGenerated()?"Yes" : "No" }}</td>
                     <td class="actions">
                         {% if hasAccess('br_admin_match_wave', 'generateWaves') %}
                             <a href="{{ url('br_admin_match_wave', {"action": "generateWaves", "id": wave.getId()}) }}" class="feature">Generate Waves</a>

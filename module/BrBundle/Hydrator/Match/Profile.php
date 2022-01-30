@@ -40,6 +40,7 @@ class Profile extends \CommonBundle\Component\Hydrator\Hydrator
 
         foreach ($object->getFeatures() as $feature) {
             $data['feature_' . $feature->getFeature()->getId()] = $feature->getImportance();
+            $data['sector_feature_' . $feature->getFeature()->getId()] = $feature->getImportance();
         }
         return $data;
     }

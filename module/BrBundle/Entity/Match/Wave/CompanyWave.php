@@ -46,7 +46,7 @@ class CompanyWave
      * @var Company The company
      *
      * @ORM\ManyToOne(targetEntity="\BrBundle\Entity\Company")
-     * @ORM\JoinColumn(name="company", referencedColumnName="id")
+     * @ORM\JoinColumn(name="company", referencedColumnName="id", onDelete="cascade")
      */
     private $company;
 
@@ -62,7 +62,7 @@ class CompanyWave
      * @var Wave The wave
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Match\Wave")
-     * @ORM\JoinColumn(name="wave", referencedColumnName="id")
+     * @ORM\JoinColumn(name="wave", referencedColumnName="id", onDelete="cascade")
      */
     private $wave;
 

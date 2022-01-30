@@ -12,13 +12,14 @@
 
         <div class="br-blueBanner" style="padding: 20px;">
             <h3 style="color:white;">{{ translate('Find your match with our students!') }}</h3>
-            <p style="color: white;font-size: 13px;">{{ bannerText }}</p>
+            <p style="color: white;">{{ bannerText }}</p>
             <div style="height: 20px;"></div>
             {% if needs_sp and needs_cp %}
-                <div><b>{{ translate('You are not ready to match yet!') }}</b><br>{{ translate('Please create your Profile so you can start matching!') }}</div>
+                <div style="color:white;"><h4 style="color:white;">{{ translate('You are not ready to match yet!') }}</h4>{{ translate('Please create your Profile so you can start matching!') }}</div>
             {% elseif needs_sp or needs_cp %}
-                <div><b>{{ translate('You are not ready to match yet!') }}</b><br>{{ translate('Please finish creating your Profile so you can start matching!') }}</div>
+                <div style="color:white;"><h4 style="color:white;">{{ translate('You are not ready to match yet!') }}</h4>{{ translate('Please finish creating your Profile so you can start matching!') }}</div>
             {% endif %}
+            <div style="height: 20px;"></div>
 
             {% if needs_cp %}
                 <a class="button yellow unfilled" href="{{ url('br_corporate_match', {'action': 'addProfile', 'type': 'company' }) }}">{{ translate('Create Profile') }}</a>
@@ -37,6 +38,8 @@
         <div style="height: 20px"></div>
 
         <div class="row">
+{#            <div class="col-md-3"></div>#}
+
             <div class="col-md-12">
                 <table class="table table-hover full-width">
                     {% for match in matches %}
@@ -49,8 +52,7 @@
                                 {{ match.getMatchPercentage() }} %
                             </td>
                             <td width="230" style="vertical-align: middle;">
-                                <a class="button blue unfilled" href="{{ url('br_corporate_match', {'action': 'viewMatch', 'id': match.getId() }) }}">{{ translate('View Match') }}</a>
-                                <a class="button blue" href="{{ url('br_corporate_match', {'action': 'viewMatch', 'id': match.getId() }) }}">{{ translate('View CV') }}</a>
+                                <a class="button blue pull-right" href="{{ url('br_corporate_match', {'action': 'viewMatch', 'id': match.getId() }) }}">{{ translate('View CV') }}</a>
                             </td>
 
                         </tr>

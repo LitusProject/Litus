@@ -4,7 +4,7 @@
     <div class="container">
         <div style="height: 40px"></div>
 
-        <div class="row">
+        <div style="position:relative">
             <h1 style="float:left;">
                 {% if type == 'company' %}
                     {{ translate('Add Company Profile') }}
@@ -13,8 +13,9 @@
                 {% endif %}
             </h1>
         </div>
+        <div style="height: 40px"></div>
 
-        <div class="row">
+        <div>
             {% if type == 'company' %}
                 <div style="margin-top: 15px;"><u><strong>{{ translate('This profile should describe what your company is like.') }}</strong></u>
                     <p>{{ translate('A student will have a higher match rating, if your company matches the traits that they are looking for!') }}</p>
@@ -26,6 +27,10 @@
             {% endif %}
         </div>
 
+        <div style="height: 10px"></div>
+        {{ gdpr_text }}
+        <div style="height: 40px"></div>
+        You can distribute maximum {{ sector_points }} points for the sector features!
         <div style="height: 40px"></div>
 
         {% import 'site/partials/form.twig' as forms %}

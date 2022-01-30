@@ -572,5 +572,4 @@ Bestaand Bedrijf: {{ oldCompany }}.
         'value'       => 'PT1800S',
         'description' => 'The interval for drawing the graphs',
     ),
-    
 );

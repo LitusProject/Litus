@@ -46,7 +46,7 @@ class ProfileStudentMap
      * @var Person The Person
      *
      * @ORM\ManyToOne(targetEntity="\CommonBundle\Entity\User\Person")
-     * @ORM\JoinColumn(name="student", referencedColumnName="id", unique=false)
+     * @ORM\JoinColumn(name="student", referencedColumnName="id", unique=false, onDelete="CASCADE")
      */
     private $student;
 
@@ -54,7 +54,7 @@ class ProfileStudentMap
      * @var Profile The profile
      *
      * @ORM\ManyToOne(targetEntity="\BrBundle\Entity\Match\Profile")
-     * @ORM\JoinColumn(name="profile", referencedColumnName="id", unique=false)
+     * @ORM\JoinColumn(name="profile", referencedColumnName="id", unique=false, onDelete="CASCADE")
      */
     private $profile;
 

@@ -1,24 +1,9 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace BrBundle\Repository\Match\Profile;
+
+use BrBundle\Entity\Match\Feature;
+use BrBundle\Entity\Match\Profile;
 
 /**
  *
@@ -27,4 +12,20 @@ namespace BrBundle\Repository\Match\Profile;
  */
 class ProfileStudentMap extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
+    public function findOneByProfileAndFeature(Profile $profile, Feature $feature)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('p')
+            ->from('BrBundle\Entity\Match\Profile\ProfileFeatureMap', 'p')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('p.profile', ':profile'),
+                    $query->expr()->eq('p.feature', ':feature')
+                )
+            )
+            ->setParameter('profile', $profile)
+            ->setParameter('feature', $feature)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

@@ -60,7 +60,7 @@ return array(
             'manage', 'add', 'edit', 'delete', 'matches'
         ),
         'br_admin_match_match' => array(
-            'manage', 'view', 'delete', 'generateMatches', 'stats'
+            'manage', 'view', 'delete', 'generateMatches', 'stats', 'sendMailStudents', 'sendMailCompanies'
         ),
         'br_admin_match_wave' => array(
             'manage', 'delete', 'add', 'generateWaves', 'view'

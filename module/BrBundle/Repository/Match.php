@@ -20,6 +20,7 @@
 
 namespace BrBundle\Repository;
 
+use BrBundle\Entity\Match\Profile;
 use BrBundle\Entity\Match\Wave;
 use CommonBundle\Entity\User\Person;
 
@@ -108,6 +109,26 @@ class Match extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getResult();
     }
 
+    public function findAllByProfile(Profile $profile)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('m')
+            ->from('BrBundle\Entity\Match', 'm')
+            ->innerJoin('m.studentMatchee', 's')
+            ->innerJoin('m.companyMatchee', 'c')
+            ->where(
+                $query->expr()->orX(
+                    $query->expr()->eq('s.studentProfile', ':profile'),
+                    $query->expr()->eq('s.companyProfile', ':profile'),
+                    $query->expr()->eq('c.studentProfile', ':profile'),
+                    $query->expr()->eq('c.companyProfile', ':profile')
+                )
+            )
+            ->setParameter('profile', $profile)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findByStudentAndWave(Person $student, Wave $wave)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -125,6 +146,24 @@ class Match extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->orderBy('m.matchPercentage', 'ASC')
             ->setParameter('student', $student)
             ->setParameter('wave', $wave)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function countInterestedByCompany(\BrBundle\Entity\Company $company)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select($query->expr()->countDistinct('m'))
+            ->from('BrBundle\Entity\Match', 'm')
+            ->innerJoin('m.companyMatchee', 'c')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('c.company', ':company'),
+                    $query->expr()->eq('m.interested', 'true')
+                )
+            )
+            ->orderBy('m.matchPercentage', 'ASC')
+            ->setParameter('company', $company)
             ->getQuery()
             ->getResult();
     }
