@@ -62,7 +62,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'id'      => 'company_select',
                     'options' => $this->getCompanyArray(),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'required' => false,
                     ),
@@ -76,14 +76,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'name'       => 'student',
                 'label'      => 'Student',
                 'attributes' => array(
-                    'id'      => 'student_typeahead',
+                    'id' => 'student_typeahead',
                 ),
-                'options'  => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array('name' => 'TypeaheadPerson'),
                         ),
-                        'required' => false,
+                        'required'   => false,
                     ),
                 ),
             )

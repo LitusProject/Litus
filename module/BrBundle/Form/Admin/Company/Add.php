@@ -121,7 +121,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'placeholder' => '+CCAAANNNNNN',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -184,7 +184,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'id' => 'invoice_form',
                 ),
-                'elements' => array(
+                'elements'   => array(
                     array(
                         'type'     => 'text',
                         'name'     => 'invoice_name',
@@ -239,7 +239,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'id' => 'page_form',
                 ),
-                'elements' => array(
+                'elements'   => array(
                     array(
                         'type'       => 'select',
                         'name'       => 'years',
@@ -256,7 +256,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         'attributes' => array(
                             'id' => 'description',
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
@@ -265,9 +265,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         ),
                     ),
                     array(
-                        'type'        => 'checkbox',
-                        'name'        => 'atEvent',
-                        'label'       => 'company is at internshipfair',
+                        'type'  => 'checkbox',
+                        'name'  => 'atEvent',
+                        'label' => 'company is at internshipfair',
                     ),
                 ),
             )

@@ -61,11 +61,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'select',
-                'name'     => 'type',
-                'label'    => 'Type',
+                'type'       => 'select',
+                'name'       => 'type',
+                'label'      => 'Type',
                 'attributes' => array(
-                    'options'  => $this->getTypeArray(),
+                    'options' => $this->getTypeArray(),
                 )
             )
         );
@@ -81,9 +81,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->addSubmit('Add', 'feature_add');
     }
 
-    private function getTypeArray(){
+    private function getTypeArray()
+    {
         $types = Feature::$possibleTypes;
-        array_push($types,null);
+        array_push($types, null);
         return array_reverse($types);
     }
 }

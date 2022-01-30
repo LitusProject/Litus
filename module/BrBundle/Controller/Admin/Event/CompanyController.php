@@ -17,17 +17,15 @@
  *
  * @license http://litus.cc/LICENSE
  */
-namespace BrBundle\Controller\Admin\Event;
 
+namespace BrBundle\Controller\Admin\Event;
 
 use BrBundle\Entity\Event;
 use BrBundle\Entity\Event\CompanyMap;
-use Laminas\View\Model\ViewModel;
-
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use Laminas\Http\Headers;
-
+use Laminas\View\Model\ViewModel;
 
 /**
  * CompanyController
@@ -69,9 +67,9 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 $this->redirect()->toRoute(
                     'br_admin_event_company',
                     array(
-                        'action' => 'edit',
+                        'action' => 'manage',
                         'event'  => $eventObject->getId(),
-                        'id' => $objectMap->getCompany()->getId(),
+                        'id'     => $objectMap->getCompany()->getId(),
                     )
                 );
             }
@@ -85,15 +83,14 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'event'              => $eventObject,
-                'paginator'              => $paginator,
+                'event'             => $eventObject,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'form'                     => $form,
-                'currentYear' => $this->getCurrentAcademicYear(),
+                'form'              => $form,
+                'currentYear'       => $this->getCurrentAcademicYear(),
             )
         );
     }
-    
 
     public function deleteAction()
     {
@@ -117,7 +114,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
     public function csvAction()
     {
         $file = new CsvFile();
-        $heading = array('company', 'nb_representatives', 'location', 'cv-book', 'logistics_approved');
+        $heading = array('company', 'nb_representatives', 'location', 'cv-book', 'is_checked');
         $results = array();
 
         $event = $this->getEventEntity();
@@ -128,14 +125,24 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         $companyMaps = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Event\CompanyMap')
             ->findAllByEvent($event);
+        
+        $locations = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Event\Location')
+            ->findAllByEvent($event);
+        
+        $positions = array();
+        foreach ($locations as $location) {
+            $positions[$location->getCompany()->getId()] = $location->getNumber();
+        }
 
+        $currentYear = $this->getCurrentAcademicYear();
         foreach ($companyMaps as $companyMap) {
             $results[] = array(
                 $companyMap->getCompany()->getName(),
-                count($companyMap->getAttendees()),
-                null,
-                null,
-                null,
+                $companyMap->getAttendees(),
+                $positions[$companyMap->getCompany()->getId()],
+                in_array($currentYear, $companyMap->getCompany()->getCvBookYears()),
+                $companyMap->isChecked(),
             );
         }
 
@@ -158,94 +165,23 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    public function csvAttendeesAction()
+    public function editAction()
     {
-        $file = new CsvFile();
-        $heading = array('company', 'first_name', 'last_name', 'email', 'phone_number', 'lunch', 'veggie');
-        $results = array();
-
-        $event = $this->getEventEntity();
-        if ($event === null) {
-            return new ViewModel();
-        }
-
-        $companyMaps = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Event\CompanyMap')
-            ->findAllByEvent($event);
-
-        foreach ($companyMaps as $companyMap) {
-            $companyName = $companyMap->getCompany()->getName();
-            foreach ($companyMap->getAttendees() as $attendee) {
-                $results[] = array(
-                    $companyName,
-                    $attendee->getFirstName(),
-                    $attendee->getLastName(),
-                    $attendee->getEmail(),
-                    $attendee->getPhoneNumber(),
-                    $attendee->isLunch() ? 1 : 0,
-                    $attendee->isVeggie() ? 1 : 0,
-                );
-            }
-        }
-
-        $document = new CsvGenerator($heading, $results);
-        $document->generateDocument($file);
-
-        $headers = new Headers();
-        $headers->addHeaders(
-            array(
-                'Content-Disposition' => 'attachment; filename="attendees_'. $event->getTitle() . '.csv"',
-                'Content-Type'        => 'text/csv',
-            )
-        );
-        $this->getResponse()->setHeaders($headers);
-
-        return new ViewModel(
-            array(
-                'data' => $file->getContent(),
-            )
-        );
-    }
-
-    public function deleteAttendeeAction()
-    {
-        $this->initAjax();
-
-        $attendee = $this->getAttendeeEntity();
-        if ($attendee === null) {
-            return new ViewModel();
-        }
-
-        $this->getEntityManager()->remove($attendee);
-        $this->getEntityManager()->flush();
-
-        return new ViewModel(
-            array(
-                'result' => (object) array('status' => 'success'),
-            )
-        );
-    }
-
-    public function editAction() {
         $companyMap = $this->getCompanyMapEntity();
         if ($companyMap === null) {
             return new ViewModel();
         }
 
-        $metadataMap = $companyMap->getCompanyMetadata() !== null ?
-            array('companyMetadata' => $companyMap->getCompanyMetadata()) : null;
-        $form = $this->getForm('br_admin_event_company_edit', $metadataMap);
+        $form = $this->getForm('br_admin_event_company_edit', array('companyMap' => $companyMap));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $companyMetadata = $form->hydrateObject($companyMap->getCompanyMetadata());
-                if ($companyMap->getCompanyMetadata() === null) {
-                    $companyMap->setCompanyMetadata($companyMetadata);
-                }
-                $this->getEntityManager()->persist($companyMetadata);
+                $this->getEntityManager()->persist(
+                    $form->hydrateObject($companyMap)
+                );
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -257,7 +193,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                     'br_admin_event_company',
                     array(
                         'action' => 'manage',
-                        'event' => $companyMap->getEvent()->getId()
+                        'event'  => $companyMap->getEvent()->getId()
                     )
                 );
             }
@@ -265,49 +201,12 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'event' => $companyMap->getEvent(),
+                'event'           => $companyMap->getEvent(),
                 'eventCompanyMap' => $companyMap,
-                'companyMetadataForm' => $form,
+                'form'            => $form,
             )
         );
     }
-
-    public function addAttendeeAction()
-    {
-        $companyMap = $this->getCompanyMapEntity();
-        if ($companyMap === null) {
-            return new ViewModel();
-        }
-
-        $form = $this->getForm('br_admin_event_company_addAttendee');
-
-        if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
-
-            if ($form->isValid()) {
-                $attendee = $form->hydrateObject(new Event\CompanyAttendee($companyMap));
-                $this->getEntityManager()->persist($attendee);
-                $this->getEntityManager()->flush();
-
-                $this->flashMessenger()->success(
-                    'Success',
-                    'The attendee was successfully added!'
-                );
-
-                $form->setData(array());
-            }
-        }
-
-        return new ViewModel(
-            array(
-                'event' => $companyMap->getEvent(),
-                'eventCompanyMap' => $companyMap,
-                'companyMapForm' => $form,
-            )
-        );
-    }
-
 
     /**
      * @return Event|null
@@ -341,7 +240,6 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
     private function getCompanyMapEntity()
     {
         $companyMap = $this->getEntityById('BrBundle\Entity\Event\CompanyMap');
-
         if (!($companyMap instanceof CompanyMap)) {
             $this->flashMessenger()->error(
                 'Error',

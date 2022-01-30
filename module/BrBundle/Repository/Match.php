@@ -32,7 +32,7 @@ use CommonBundle\Entity\User\Person;
 class Match extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
     /**
-     * @param Person $student
+     * @param Person  $student
      * @param  $company
      * @return array
      * @throws \Doctrine\ORM\NonUniqueResultException

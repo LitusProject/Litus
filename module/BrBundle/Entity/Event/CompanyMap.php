@@ -43,7 +43,7 @@ class CompanyMap
      *@var Company The company that will be attending this event
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Company")
-     * @ORM\JoinColumn(referencedColumnName="id")
+     * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
      */
     private $company;
 
@@ -58,9 +58,37 @@ class CompanyMap
      *@var Event The event that the company will be attending
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Event")
-     * @ORM\JoinColumn(referencedColumnName="id")
+     * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
      */
     private $event;
+
+    /**
+     * @var integer Number of attendees that will be attending for this company
+     *
+     * @ORM\Column(type="bigint", options={"default" = 0})
+     */
+    private $attendees;
+    
+    /**
+     * @var string The master interests of the company
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $masterInterests;
+
+    /**
+     * @var string The notes about the attending company
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $notes;
+
+    /**
+     * @var boolean Whether the information has been checked
+     *
+     * @ORM\Column(type="boolean", options={"default" = false})
+     */
+    private $checked;
 
     /**
      * @param Company $company
@@ -71,6 +99,8 @@ class CompanyMap
         $this->company = $company;
         $this->event = $event;
         $this->done = false;
+        $this->attendees = 0;
+        $this->checked = false;
     }
 
     /**
@@ -95,6 +125,34 @@ class CompanyMap
     public function getEvent()
     {
         return $this->event;
+    }
+
+    /**
+     * @param Event $event
+     * @return self
+     */
+    public function setEvent(Event $event)
+    {
+        $this->event = $event;
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getAttendees()
+    {
+        return $this->attendees;
+    }
+
+    /**
+     * @param integer $attendees
+     * @return self
+     */
+    public function setAttendees($attendees)
+    {
+        $this->attendees = $attendees;
+        return $this;
     }
 
     /**
@@ -123,5 +181,62 @@ class CompanyMap
             return 'Done';
         }
         return 'In Progress';
+    }
+
+    /**
+     * @return array $masterInterests
+     */
+    public function getMasterInterests()
+    {
+        if (is_string($this->masterInterests) && substr($this->masterInterests, 0, 2) != 'a:') {
+            throw new \RuntimeException('Badly formatted master interests in company metadata (get)');
+        }
+        return unserialize($this->masterInterests);
+    }
+
+    /**
+     * @param  array $master_interests
+     * @return self
+     */
+    public function setMasterInterests($masterInterests)
+    {
+        $this->masterInterests = serialize($masterInterests);
+
+        return $this;
+    }
+
+    /**
+     * @param  string $notes
+     * @return
+     */
+    public function setNotes($notes)
+    {
+        $this->notes = $notes;
+    }
+
+    /**
+     * @return  string The notes of the company
+     */
+    public function getNotes()
+    {
+        return $this->notes;
+    }
+
+    /**
+     * @param  boolean $checked
+     * @return self
+     */
+    public function setChecked($checked)
+    {
+        $this->checked = $checked;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isChecked()
+    {
+        return $this->checked ? $this->checked : false;
     }
 }

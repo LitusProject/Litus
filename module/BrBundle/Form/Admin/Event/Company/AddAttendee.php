@@ -1,12 +1,6 @@
 <?php
 
-
 namespace BrBundle\Form\Admin\Event\Company;
-
-
-use BrBundle\Entity\Company;
-use BrBundle\Entity\Event\CompanyMetadata;
-use BrBundle\Form\Admin\Company\Add;
 
 class AddAttendee extends \CommonBundle\Component\Form\Admin\Form
 {
@@ -26,7 +20,7 @@ class AddAttendee extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'id' => 'first_name',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -45,7 +39,7 @@ class AddAttendee extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'id' => 'last_name',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -62,7 +56,7 @@ class AddAttendee extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'placeholder' => '+CCAAANNNNNN',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -122,7 +116,5 @@ class AddAttendee extends \CommonBundle\Component\Form\Admin\Form
                 ),
             )
         );
-
     }
-
 }

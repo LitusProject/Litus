@@ -20,9 +20,7 @@ class Version20211106232859 extends \Doctrine\Migrations\AbstractMigration
 
 
         $this->addSql('ALTER TABLE br_match_matchee_map ADD inheritance_type VARCHAR(255) NOT NULL');
-        $this->addSql('ALTER TABLE br_match_profile ALTER inheritance_type TYPE VARCHAR(255)');
-        $this->addSql('ALTER TABLE br_match_profile ALTER inheritance_type DROP DEFAULT');
-        $this->addSql('ALTER TABLE br_match_profile ALTER inheritance_type SET NOT NULL');
+        $this->addSql('ALTER TABLE br_match_profile ADD inheritance_type VARCHAR(255) NOT NULL');
         $this->addSql('ALTER TABLE br_match_matchee_map_company ADD CONSTRAINT FK_94BE8AFFBF396750 FOREIGN KEY (id) REFERENCES br_match_matchee_map (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE br_match_matchee_map_student ADD CONSTRAINT FK_6C222C83BF396750 FOREIGN KEY (id) REFERENCES br_match_matchee_map (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('CREATE UNIQUE INDEX profile_feature_map_feature_profile ON br_match_profile_feature_map (feature, profile)');
@@ -34,7 +32,6 @@ class Version20211106232859 extends \Doctrine\Migrations\AbstractMigration
         $this->addSql('CREATE TABLE br_match_profile_studentprofile (id BIGINT NOT NULL, PRIMARY KEY(id))');
         $this->addSql('ALTER TABLE br_match_profile_companyprofile ADD CONSTRAINT FK_FB6EED77BF396750 FOREIGN KEY (id) REFERENCES br_match_profile (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE br_match_profile_studentprofile ADD CONSTRAINT FK_48C75182BF396750 FOREIGN KEY (id) REFERENCES br_match_profile (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE br_events ADD description TEXT DEFAULT NULL');
         $this->addSql('CREATE SEQUENCE br_match_wave_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE TABLE br_match_wave (id BIGINT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE SEQUENCE br_match_companywave_id_seq INCREMENT BY 1 MINVALUE 1 START 1');

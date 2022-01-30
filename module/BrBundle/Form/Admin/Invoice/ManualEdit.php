@@ -50,7 +50,7 @@ class ManualEdit extends \BrBundle\Form\Admin\Invoice\ManualAdd
                     'data-help' => 'The file can be of any type and has a filesize limit of ' . self::FILE_SIZE . '.',
                     'size'      => 256,
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array(

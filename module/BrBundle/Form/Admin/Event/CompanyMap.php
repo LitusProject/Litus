@@ -20,6 +20,8 @@
 
 namespace BrBundle\Form\Admin\Event;
 
+use BrBundle\Entity\Event;
+
 /**
  * Add a corporate relations event.
  *
@@ -27,6 +29,14 @@ namespace BrBundle\Form\Admin\Event;
  */
 class CompanyMap extends \CommonBundle\Component\Form\Admin\Form
 {
+
+//    protected $hydrator = 'BrBundle\Hydrator\Event\CompanyMap';
+
+    /**
+     * @var Event
+     */
+    private $event;
+
     public function init()
     {
         parent::init();
@@ -50,7 +60,7 @@ class CompanyMap extends \CommonBundle\Component\Form\Admin\Form
                 'name'       => 'event_companyMap',
                 'value'      => 'Add participant',
                 'attributes' => array(
-                    'class' => 'mail_add',
+                    'class' => 'add',
                 ),
             )
         );

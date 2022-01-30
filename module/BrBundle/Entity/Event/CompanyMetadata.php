@@ -60,7 +60,8 @@ class CompanyMetadata
      * @param Event   $event
      */
     public function __construct()
-    {}
+    {
+    }
 
     /**
      * @return integer

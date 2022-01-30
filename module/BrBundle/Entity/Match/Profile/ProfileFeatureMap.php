@@ -20,13 +20,8 @@
 
 namespace BrBundle\Entity\Match\Profile;
 
-use BrBundle\Entity\Company;
 use BrBundle\Entity\Match\Feature;
-use BrBundle\Entity\Match\MatcheeMap;
 use BrBundle\Entity\Match\Profile;
-use BrBundle\Entity\Match\Profile\CompanyProfile;
-use BrBundle\Entity\Match\Profile\StudentProfile;
-use CommonBundle\Entity\User\Person;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -84,7 +79,7 @@ class ProfileFeatureMap
     /**
      * @param Feature $feature
      * @param Profile $profile
-     * @param int $importance
+     * @param integer $importance
      */
     public function __construct(Feature $feature, Profile $profile, $importance = 100)
     {
@@ -134,7 +129,7 @@ class ProfileFeatureMap
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getImportance()
     {
@@ -147,13 +142,14 @@ class ProfileFeatureMap
     public function getImportanceName()
     {
         $possible = ProfileFeatureMap::$POSSIBLE_VISIBILITIES;
-        if (in_array($this->importance, array_keys($possible)))
+        if (in_array($this->importance, array_keys($possible))) {
             return $possible[$this->importance];
+        }
         return 'None';
     }
 
     /**
-     * @param int $importance
+     * @param integer $importance
      */
     public function setImportance($importance)
     {

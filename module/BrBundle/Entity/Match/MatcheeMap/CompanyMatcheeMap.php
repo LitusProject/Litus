@@ -22,10 +22,8 @@ namespace BrBundle\Entity\Match\MatcheeMap;
 
 use BrBundle\Entity\Company;
 use BrBundle\Entity\Match\MatcheeMap;
-use BrBundle\Entity\Match\Profile;
 use BrBundle\Entity\Match\Profile\CompanyProfile;
 use BrBundle\Entity\Match\Profile\StudentProfile;
-use CommonBundle\Entity\User\Person;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -45,11 +43,10 @@ class CompanyMatcheeMap extends MatcheeMap
      */
     private $company;
 
-
     /**
      * @param CompanyProfile $companyProfile
      * @param StudentProfile $studentProfile
-     * @param Company $company
+     * @param Company        $company
      */
     public function __construct(CompanyProfile $companyProfile, StudentProfile $studentProfile, Company $company)
     {

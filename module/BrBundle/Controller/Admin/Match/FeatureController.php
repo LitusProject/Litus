@@ -21,10 +21,6 @@
 namespace BrBundle\Controller\Admin\Match;
 
 use BrBundle\Entity\Match\Feature;
-use BrBundle\Entity\Product;
-use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
-use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
-use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
 
 /**
@@ -36,9 +32,11 @@ class FeatureController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function manageAction()
     {
-        $features = array_reverse($this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Match\Feature')
-            ->findAll());
+        $features = array_reverse(
+            $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Match\Feature')
+                ->findAll()
+        );
 
         $paginator = $this->paginator()->createFromArray(
             $features,
@@ -47,9 +45,9 @@ class FeatureController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'em' => $this->getEntityManager(),
+                'em'                => $this->getEntityManager(),
             )
         );
     }
@@ -221,8 +219,9 @@ class FeatureController extends \CommonBundle\Component\Controller\ActionControl
 
     private function updateBonusses(Feature $feature, $data)
     {
-        if (!isset($data["bonus"]))
+        if (!isset($data['bonus'])) {
             return null;
+        }
 
         // Get all old bonusses
         $old = $feature->getBonus();
@@ -235,8 +234,8 @@ class FeatureController extends \CommonBundle\Component\Controller\ActionControl
         $newIds = array_values($data['bonus']);
 
         // Add to the database
-        foreach ($newIds as $new){
-            if (!in_array($new, $oldIds)){
+        foreach ($newIds as $new) {
+            if (!in_array($new, $oldIds)) {
                 $newBonus = $this->getEntityManager()->getRepository('BrBundle\Entity\Match\Feature')
                     ->findOneById($new);
                 $feature->addMyBonus($newBonus);
@@ -251,11 +250,11 @@ class FeatureController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         // Remove old profileFeatureMaps from database
-        foreach (array_diff($oldIds, $newIds) as $oldOne){
+        foreach (array_diff($oldIds, $newIds) as $oldOne) {
             $oldBonus = $this->getEntityManager()->getRepository('BrBundle\Entity\Match\Feature')
                 ->findOneById($oldOne);
 
-            if (in_array($oldOne, $myOldIds)){
+            if (in_array($oldOne, $myOldIds)) {
                 $feature->removeMyBonus($oldBonus); // Remove as myBonus
             } else {
                 $oldBonus->removeMyBonus($feature); // Remove as theirBonus
@@ -269,8 +268,9 @@ class FeatureController extends \CommonBundle\Component\Controller\ActionControl
 
     private function updateMalusses(Feature $feature, $data)
     {
-        if (!isset($data["malus"]))
+        if (!isset($data['malus'])) {
             return null;
+        }
 
         // Get all old malusses
         $old = $feature->getMalus();
@@ -283,8 +283,8 @@ class FeatureController extends \CommonBundle\Component\Controller\ActionControl
         $newIds = array_values($data['malus']);
 
         // Add to the database
-        foreach ($newIds as $new){
-            if (!in_array($new, $oldIds)){
+        foreach ($newIds as $new) {
+            if (!in_array($new, $oldIds)) {
                 $newMalus = $this->getEntityManager()->getRepository('BrBundle\Entity\Match\Feature')
                     ->findOneById($new);
                 $feature->addMyMalus($newMalus);
@@ -299,11 +299,11 @@ class FeatureController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         // Remove old profileFeatureMaps from database
-        foreach (array_diff($oldIds, $newIds) as $oldOne){
+        foreach (array_diff($oldIds, $newIds) as $oldOne) {
             $oldMalus = $this->getEntityManager()->getRepository('BrBundle\Entity\Match\Feature')
-                ->findOneById($new);
+                ->findOneById($oldOne);
 
-            if (in_array($oldOne, $myOldIds)){
+            if (in_array($oldOne, $myOldIds)) {
                 $feature->removeMyMalus($oldMalus); // Remove as myMalus
             } else {
                 $oldMalus->removeMyMalus($feature); // Remove as theirMalus
@@ -314,5 +314,4 @@ class FeatureController extends \CommonBundle\Component\Controller\ActionControl
 
         return;
     }
-
 }

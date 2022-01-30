@@ -25,8 +25,6 @@ use BrBundle\Entity\Match\Wave\CompanyWave;
 use BrBundle\Entity\Match\MatcheeMap\CompanyMatcheeMap;
 use BrBundle\Entity\Match\MatcheeMap\StudentMatcheeMap;
 use BrBundle\Entity\Match\Profile;
-use BrBundle\Entity\Match\Profile\CompanyProfile;
-use BrBundle\Entity\Match\Profile\StudentProfile;
 use BrBundle\Entity\Match\Wave;
 use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person;
@@ -142,19 +140,19 @@ class Match
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getMatchPercentage()
     {
-        return $this->matchPercentage/100;
+        return $this->matchPercentage / 100;
     }
 
     /**
-     * @param int $matchPercentage
+     * @param integer $matchPercentage
      */
     public function setMatchPercentage($matchPercentage)
     {
-        $this->matchPercentage = round($matchPercentage*100);
+        $this->matchPercentage = round($matchPercentage * 100);
     }
 
     /**
@@ -247,8 +245,8 @@ class Match
 //                if ($ST->isOpposite($CT)) $negatives++;
             }
         }
-        return ceil(5000
-            + 5000 * $positives / max(count($studentTraits), count($companyTraits))
-            - 5000 * $negatives / max(count($studentTraits), count($companyTraits)));
+        return ceil(
+            5000 + 5000 * $positives / max(count($studentTraits), count($companyTraits)) - 5000 * $negatives / max(count($studentTraits), count($companyTraits))
+        );
     }
 }

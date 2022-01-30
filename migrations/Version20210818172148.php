@@ -53,7 +53,7 @@ class Version20210818172148 extends \Doctrine\Migrations\AbstractMigration
         $this->addSql('ALTER TABLE br_match_profile_student_map ADD CONSTRAINT FK_DE998A678157AA0F FOREIGN KEY (profile) REFERENCES br_match_profile (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('DROP TABLE br_match_profile_companyprofile');
         $this->addSql('DROP TABLE br_match_profile_studentprofile');
-        }
+    }
 
     /**
      * @param  \Doctrine\DBAL\Schema\Schema $schema

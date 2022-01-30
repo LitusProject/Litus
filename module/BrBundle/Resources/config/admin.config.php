@@ -21,8 +21,8 @@
 return array(
     'submenus' => array(
         'Corporate Relations' => array(
-            'subtitle' => array('Companies','CVs', 'Products'),
-            'items'    => array(
+            'subtitle'    => array('Companies','CVs', 'Products'),
+            'items'       => array(
                 'br_admin_collaborator' => array(
                     'title' => 'Collaborators',
                     'help'  => 'Here you can find a list of all the people that are collaborating with corporate relations.',

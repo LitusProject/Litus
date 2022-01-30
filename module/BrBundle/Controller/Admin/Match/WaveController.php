@@ -21,8 +21,8 @@
 namespace BrBundle\Controller\Admin\Match;
 
 use BrBundle\Entity\Company;
-use BrBundle\Entity\Match\Wave\CompanyWave;
 use BrBundle\Entity\Match\Wave;
+use BrBundle\Entity\Match\Wave\CompanyWave;
 use Doctrine\ORM\ORMException;
 use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
@@ -61,7 +61,7 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
         $result = array();
-        foreach ($wave->getCompanyWaves() as $cw){
+        foreach ($wave->getCompanyWaves() as $cw) {
             $item = (object) array();
             $item->id = $cw->getId();
             $item->company = $cw->getCompany()->getName();
@@ -72,7 +72,7 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'result' => $result,
-                'wave' => $wave,
+                'wave'   => $wave,
             )
         );
     }
@@ -175,11 +175,11 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
     {
 
         $wave = $this->getWaveEntity();
-        if ($wave === null ) {
+        if ($wave === null) {
             return new ViewModel();
         }
 
-        if (count($wave->getCompanyWaves()) > 0){
+        if (count($wave->getCompanyWaves()) > 0) {
             $this->flashMessenger()->error(
                 'Error',
                 'The wave was already generated!'
@@ -193,7 +193,8 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
                 )
             );
 
-            return new ViewModel();        }
+            return new ViewModel();
+        }
 
         $companies = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
@@ -203,11 +204,12 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.wave_nb_top_matches');
 
-        foreach($companies as $company){
+        $companyWaves = array();
+        foreach ($companies as $company) {
             $profileMaps = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Match\Profile\ProfileCompanyMap')
                 ->findByCompany($company);
-            if (count($profileMaps) > 0){
+            if (count($profileMaps) > 0) {
                 $CW = $this->makeCompanyWave($company, $nbTopMatches, $wave);
                 $companyWaves[] = $CW;
             }
@@ -256,8 +258,8 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
 
     /**
      * @param Company $company
-     * @param int $nb
-     * @param Wave $wave
+     * @param integer $nb
+     * @param Wave    $wave
      * @return CompanyWave
      * @throws ORMException
      */
@@ -291,7 +293,7 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
         while ($i < $sizeMM && $n<$nb){
             $match = $matches[$i];
 
-            if (!is_null($match->getWave())){
+            if (!is_null($match->getWave())) {
                 $i += 1;
                 continue;
             }
@@ -304,6 +306,5 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
         }
 
         return $cw;
-
     }
 }

@@ -20,32 +20,66 @@
 
 namespace BrBundle\Form\Admin\Event\Company;
 
-
-use BrBundle\Entity\Event\CompanyMetadata;
+use BrBundle\Entity\Event\CompanyMap;
+use BrBundle\Entity\Event\Subscription;
 
 class Edit extends \CommonBundle\Component\Form\Admin\Form
 {
-    protected $hydrator = 'BrBundle\Hydrator\Event\CompanyMetadata';
-    protected $companyMetadata;
+    protected $hydrator = 'BrBundle\Hydrator\Event\CompanyMap';
+    protected $companyMap;
 
     public function init()
     {
         parent::init();
 
+        $this->add(
+            array(
+                'type'    => 'textarea',
+                'name'    => 'notes',
+                'label'   => 'Any notes for this company',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'attendees',
+                'label'    => '# Attendees',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'int'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
         $masterFields = array();
-        foreach (CompanyMetadata::POSSIBLE_MASTERS as $master_key => $master) {
+        foreach ($this->getPossibleMasters() as $master_key => $master) {
             $masterFields[] = array(
                 'type'       => 'select',
                 'name'       => $master_key,
                 'label'      => $master,
                 'required'   => false,
                 'attributes' => array(
-                    'id'      => 'study',
+                    'id'      => $master_key,
                     'options' => $this->getInterestOptions(),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
-                        'filters'  => array(
+                        'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
                     ),
@@ -62,30 +96,47 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
+        $this->add(
+            array(
+                'type'  => 'checkbox',
+                'name'  => 'information_checked',
+                'label' => 'The information has been checked and is correct',
+            )
+        );
+
         $this->remove('submit')
             ->addSubmit('Save', 'edit');
 
-        if ($this->companyMetadata !== null) {
-            $this->bind($this->companyMetadata);
+        if ($this->companyMap !== null) {
+            $this->bind($this->companyMap);
         }
     }
 
-    public function getInterestOptions() {
+    public function getInterestOptions()
+    {
         return array(
-            'Not interested',
-            'Partially interested',
-            'Core business'
+            'not interested' => 'Not interested',
+            'interested'     => 'Interested',
         );
     }
 
     /**
-     * @param  CompanyMetadata|null $companyMetadata
+     * @param  CompanyMap|null $companyMap
      * @return self
      */
-    public function setCompanyMetadata(CompanyMetadata $companyMetadata)
+    public function setCompanyMap(CompanyMap $companyMap)
     {
-        $this->companyMetadata = $companyMetadata;
+        $this->companyMap = $companyMap;
 
         return $this;
+    }
+
+    /**
+     * @param  CompanyMap|null $companyMap
+     * @return self
+     */
+    private function getPossibleMasters()
+    {
+        return Subscription::POSSIBLE_STUDIES;
     }
 }

@@ -39,7 +39,7 @@ class Version20210818173650 extends \Doctrine\Migrations\AbstractMigration
 
         $this->addSql('DROP INDEX br_match_profile_company_map_company_profile');
         $this->addSql('DROP INDEX br_match_profile_student_map_student_profile');
-        }
+    }
 
     /**
      * @param  \Doctrine\DBAL\Schema\Schema $schema

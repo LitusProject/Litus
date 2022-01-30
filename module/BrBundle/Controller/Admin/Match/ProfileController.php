@@ -20,15 +20,10 @@
 
 namespace BrBundle\Controller\Admin\Match;
 
-use BrBundle\Entity\Match\Feature;
 use BrBundle\Entity\Match\Profile;
 use BrBundle\Entity\Match\Profile\ProfileCompanyMap;
 use BrBundle\Entity\Match\Profile\ProfileFeatureMap;
 use BrBundle\Entity\Match\Profile\ProfileStudentMap;
-use BrBundle\Entity\Product;
-use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
-use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
-use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
 
 /**
@@ -80,6 +75,7 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
             foreach ($maps as $map)
                 $matches[] = $this->getEntityManager()->getRepository('BrBundle\Entity\Match')
                     ->findOneByCompanyMatchee($map);
+            }
         }
 
         $paginator = $this->paginator()->createFromArray(
@@ -287,8 +283,6 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
             )
         );
     }
-
-
 
     /**
      * @return Profile|null

@@ -20,9 +20,9 @@
 
 namespace BrBundle\Form\Admin\Event\Subscription;
 
-use BrBundle\Entity\Company;
 use BrBundle\Entity\Event;
 use BrBundle\Entity\Event\Subscription;
+use Laminas\Validator\Identical;
 
 /**
  * Add a corporate relations event.
@@ -42,15 +42,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      * @var Subscription |null
      */
     protected $subscription;
-
-
-    const POSSIBLE_UNIVERSITIES = array(
-        'ku leuven'     => 'KU Leuven',
-        'vub'           => 'Vrije Universiteit Brussel',
-        'ugent'         => 'UGent',
-        'other'         => 'Other',
-    );
-
 
     public function init()
     {
@@ -114,7 +105,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'placeholder' => '+CCAAANNNNNN',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -127,39 +118,38 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-//        $this->add( TODO: wat was dit?
-//            array(
-//                'type'       => 'select',
-//                'name'       => 'university',
-//                'label'      => 'University',
-//                'required'   => true,
-//                'attributes' => array(
-//                    'id'      => 'university',
-//                    'options' => ,
-//                ),
-//                'options' => array(
-//                    'input' => array(
-//                        'required' => count($this->getUniversities()) > 1,
-//                        'filters'  => array(
-//                            array('name' => 'StringTrim'),
-//                        ),
-//                    ),
-//                ),
-//            )
-//        );
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'university',
+                'label'      => 'University',
+                'required'   => true,
+                'attributes' => array(
+                    'id'      => 'university',
+                    'options' => $this->getUniversities(),
+                ),
+                'options'    => array(
+                    'input' => array(
+                        'required' => count($this->getUniversities()) > 1,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
         $this->add(
             array(
                 'type'       => 'text',
                 'name'       => 'other_university',
-                'label'      => 'University',
-                'required'   => true,
+                'label'      => 'Other university (if applicable)',
+                'required'   => false,
                 'attributes' => array(
-                    'id'      => 'other_university',
-                    'hidden'  => true,
+                    'id' => 'other_university',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
-                        'filters'  => array(
+                        'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
                     ),
@@ -176,7 +166,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'id'      => 'study',
                     'options' => $this->getStudies(),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'required' => count($this->getStudies()) > 1,
                         'filters'  => array(
@@ -190,15 +180,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             array(
                 'type'       => 'text',
                 'name'       => 'other_study',
-                'label'      => 'Study',
-                'required'   => true,
+                'label'      => 'Other study (if applicable)',
+                'required'   => false,
                 'attributes' => array(
-                    'id'      => 'other_study',
-                    'hidden'  => true,
+                    'id' => 'other_study',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
-                        'filters'  => array(
+                        'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
                     ),
@@ -207,10 +196,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         );
         $this->add(
             array(
-                'type'     => 'text',
-                'name'     => 'specialization',
-                'label'    => 'Specialization',
-                'options'  => array(
+                'type'    => 'text',
+                'name'    => 'specialization',
+                'label'   => 'Specialization',
+                'options' => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -222,17 +211,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(
             array(
                 'type'       => 'select',
-                'name'       => 'food',
-                'label'      => 'Food',
+                'name'       => 'study_year',
+                'label'      => 'Year of study',
                 'required'   => true,
                 'attributes' => array(
-                    'id'      => 'food',
-                    'options' => $this->getFood(),
+                    'id'      => 'study_year',
+                    'options' => $this->getStudyYears(),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
-                        'required' => count($this->getFood()) > 1,
-                        'filters'  => array(
+                        'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
                     ),
@@ -240,12 +228,65 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
+        if (count($this->getFood()) > 1) {
+            $this->add(
+                array(
+                    'type'       => 'select',
+                    'name'       => 'food',
+                    'label'      => 'Food during event',
+                    'required'   => false,
+                    'attributes' => array(
+                        'id'      => 'food',
+                        'options' => $this->getFood(),
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'required' => count($this->getFood()) > 1,
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                )
+            );
+        }
+
+        $this->add(
+            array(
+                'type'     => 'checkbox',
+                'name'     => 'network_reception',
+                'label'    => 'Network reception',
+                'required' => true,
+            )
+        );
+        $this->add(
+            array(
+                'type'       => 'checkbox',
+                'name'       => 'consent',
+                'label'      => 'I consent that my personal information can be used within this event for necessary purposes.',
+                'attributes' => array(
+                    'id' => 'conditions',
+                ),
+                'options'    => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name'    => 'identical',
+                                'options' => array(
+                                    'token'    => true,
+                                    'strict'   => false,
+                                    'messages' => array(
+                                        Identical::NOT_SAME => 'You must give your consent to allow us to use your personal information.',
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            )
+        );
 
         $this->addSubmit('Add', 'add');
-
-        if ($this->event !== null) {
-            $this->bind($this->event);
-        }
 
         if ($this->subscription !== null) {
             $this->bind($this->subscription);
@@ -274,18 +315,39 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $this;
     }
 
-
     /**
-     * @return array of possible universities
+     * @return array of possible studies
      */
-    protected function getStudies(){
-        return Event\CompanyMetadata::POSSIBLE_MASTERS;
+    protected function getStudies()
+    {
+        return Subscription::POSSIBLE_STUDIES;
     }
 
     /**
      * @return array of possible universities
      */
-    protected function getFood(){
+    protected function getUniversities()
+    {
+        return Subscription::POSSIBLE_UNIVERSITIES;
+    }
 
+    /**
+     * @return array of possible Foods
+     */
+    protected function getFood()
+    {
+        $food = $this->event->getFood();
+        if ($food != null) {
+            $food = array(' ' => ' ') + $food;
+        }
+        return $food;
+    }
+
+    /**
+     * @return array of possible study years
+     */
+    protected function getStudyYears()
+    {
+        return Subscription::POSSIBLE_STUDY_YEARS;
     }
 }

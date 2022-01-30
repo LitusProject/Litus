@@ -49,7 +49,7 @@ class Language extends \CommonBundle\Component\Form\Fieldset
                     'class'      => 'count',
                     'data-count' => 30,
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

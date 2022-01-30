@@ -20,9 +20,7 @@
 
 namespace BrBundle\Entity\Match\MatcheeMap;
 
-use BrBundle\Entity\Company;
 use BrBundle\Entity\Match\MatcheeMap;
-use BrBundle\Entity\Match\Profile;
 use BrBundle\Entity\Match\Profile\CompanyProfile;
 use BrBundle\Entity\Match\Profile\StudentProfile;
 use CommonBundle\Entity\User\Person;
@@ -45,11 +43,10 @@ class StudentMatcheeMap extends MatcheeMap
      */
     private $student;
 
-
     /**
      * @param CompanyProfile $companyProfile
      * @param StudentProfile $studentProfile
-     * @param Person $student
+     * @param Person         $student
      */
     public function __construct(CompanyProfile $companyProfile, StudentProfile $studentProfile, Person $student)
     {

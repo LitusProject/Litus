@@ -162,8 +162,8 @@ class Job
      * @var array All the possible types allowed
      */
     public static $possibleTypes = array(
-        'internship' => 'Internship',
-        'vacancy'    => 'Vacancy',
+        'internship'  => 'Internship',
+        'vacancy'     => 'Vacancy',
         'student job' => 'Student Job',
     );
 

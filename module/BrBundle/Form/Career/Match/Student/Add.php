@@ -42,7 +42,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         parent::init();
 
-        foreach ($this->getFeatureNames() as $featureId => $featureName){
+        foreach ($this->getFeatureNames() as $featureId => $featureName) {
             $this->add(
                 array(
                     'type'       => 'select',
@@ -50,17 +50,17 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'label'      => $featureName,
                     'value'      => ' ',
                     'attributes' => array(
-                        'style'    => 'max-height: 38px;height:38px;max-width:150px;',
-                        'options'  => $this->makeOptions(),
+                        'style'   => 'max-height: 38px;height:38px;max-width:150px;',
+                        'options' => $this->makeOptions(),
                     ),
-                    'options' => array(
+                    'options'    => array(
                         'input' => array(
                             'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
                                 array(
-                                    'name'    => 'FeatureImportanceConstraint',
+                                    'name' => 'FeatureImportanceConstraint',
                                 ),
                             ),
                         ),
@@ -106,8 +106,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         $featureNames = array();
         foreach ($this->getEntityManager()->getRepository('BrBundle\Entity\Match\Feature')->findAll() as $feature) {
-            if ($feature->getType() == 'student' || is_null($feature->getType()))
+            if ($feature->getType() == 'student' || is_null($feature->getType())) {
                 $featureNames[$feature->getId()] = $feature->getName();
+            }
         }
 
         return $featureNames;
@@ -120,8 +121,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
 
         $options = array(' ');
-        foreach (Profile\ProfileFeatureMap::$POSSIBLE_VISIBILITIES as $val => $type)
+        foreach (Profile\ProfileFeatureMap::$POSSIBLE_VISIBILITIES as $val => $type) {
             $options[$val] = $type;
+        }
 
         return $options;
     }

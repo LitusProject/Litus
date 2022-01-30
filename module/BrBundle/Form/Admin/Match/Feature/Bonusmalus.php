@@ -102,7 +102,7 @@ class Bonusmalus extends \CommonBundle\Component\Form\Admin\Form
     {
         $featNames = array();
         foreach ($this->features as $feat) {
-            if ($feat->getName() != $this->feature->getName()){
+            if ($feat->getName() != $this->feature->getName()) {
                 $featNames[$feat->getId()] = $feat->getName();
             }
         }
@@ -115,12 +115,14 @@ class Bonusmalus extends \CommonBundle\Component\Form\Admin\Form
      */
     private function populateBonusMalus()
     {
-        if ($this->feature != null){
+        if ($this->feature != null) {
             $data = array();
-            foreach ($this->feature->getBonus() as $b)
+            foreach ($this->feature->getBonus() as $b) {
                 $data['bonus'][] = $b->getId();
-            foreach ($this->feature->getMalus() as $b)
+            }
+            foreach ($this->feature->getMalus() as $b) {
                 $data['malus'][] = $b->getId();
+            }
 
             $this->populateValues($data, true);
         }

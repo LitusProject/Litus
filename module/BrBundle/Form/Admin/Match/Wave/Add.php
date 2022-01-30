@@ -20,8 +20,6 @@
 
 namespace BrBundle\Form\Admin\Match\Wave;
 
-use BrBundle\Entity\Match\Profile;
-
 /**
  * Add Wave
  *
@@ -38,10 +36,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'       => 'text',
-                'name'       => 'name',
-                'label'      => 'Name',
-                'required'   => true,
+                'type'     => 'text',
+                'name'     => 'name',
+                'label'    => 'Name',
+                'required' => true,
             )
         );
 

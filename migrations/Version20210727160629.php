@@ -71,7 +71,6 @@ class Version20210727160629 extends \Doctrine\Migrations\AbstractMigration
         $this->addSql('ALTER TABLE br_match_profile_feature_map ADD CONSTRAINT FK_A89CA721FD77566 FOREIGN KEY (feature) REFERENCES br_match_feature (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE br_match_profile_feature_map ADD CONSTRAINT FK_A89CA728157AA0F FOREIGN KEY (profile) REFERENCES br_match_profile (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE br_match_profile_studentprofile ADD CONSTRAINT FK_48C7518234DCD176 FOREIGN KEY (person) REFERENCES users_people (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-
     }
 
     /**

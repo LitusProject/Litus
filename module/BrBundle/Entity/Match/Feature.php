@@ -20,10 +20,7 @@
 
 namespace BrBundle\Entity\Match;
 
-use BrBundle\Entity\Match\Feature\FeatureRelationMap;
-use CommonBundle\Entity\User\Person;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -109,8 +106,6 @@ class Feature
         'student' => 'Student'
     );
 
-    /**
-     */
     public function __construct()
     {
         $this->myBonus = new ArrayCollection();
@@ -203,27 +198,29 @@ class Feature
     }
 
     /**
-     * @param array $bonus
-     * @param bool $recursive
+     * @param array   $bonus
+     * @param boolean $recursive
      */
-    public function setBonus($bonus, $recursive=true)
+    public function setBonus($bonus, $recursive = true)
     {
         $this->myBonus = new ArrayCollection($bonus);
-        if ($recursive == true)
-            foreach ($bonus as $feature){
+        if ($recursive == true) {
+            foreach ($bonus as $feature) {
                 $feature->addTheirBonus($this);
             }
+        }
     }
 
     /**
      * @param Feature $bonus
-     * @param bool $recursive
+     * @param boolean $recursive
      */
-    public function addMyBonus(Feature $bonus, $recursive=true)
+    public function addMyBonus(Feature $bonus, $recursive = true)
     {
         $this->myBonus->add($bonus);
-        if ($recursive == true)
+        if ($recursive == true) {
             $bonus->addTheirBonus($this);
+        }
     }
 
     /**
@@ -236,13 +233,14 @@ class Feature
 
     /**
      * @param Feature $bonus
-     * @param bool $recursive
+     * @param boolean $recursive
      */
-    public function removeMyBonus(Feature $bonus, $recursive=true)
+    public function removeMyBonus(Feature $bonus, $recursive = true)
     {
         $this->myBonus->removeElement($bonus); // You need to call $em->flush() to make persist these changes in the database permanently.
-        if ($recursive == true)
+        if ($recursive == true) {
             $bonus->removeTheirBonus($this);
+        }
     }
 
     /**
@@ -280,27 +278,29 @@ class Feature
     }
 
     /**
-     * @param array $malus
-     * @param bool $recursive
+     * @param array   $malus
+     * @param boolean $recursive
      */
-    public function setMalus($malus, $recursive=true)
+    public function setMalus($malus, $recursive = true)
     {
         $this->myMalus = new ArrayCollection($malus);
-        if ($recursive == true)
-            foreach ($malus as $feature){
+        if ($recursive == true) {
+            foreach ($malus as $feature) {
                 $feature->addTheirMalus($this);
             }
+        }
     }
 
     /**
      * @param Feature $malus
-     * @param bool $recursive
+     * @param boolean $recursive
      */
-    public function addMyMalus(Feature $malus, $recursive=true)
+    public function addMyMalus(Feature $malus, $recursive = true)
     {
         $this->myMalus->add($malus);
-        if ($recursive == true)
+        if ($recursive == true) {
             $malus->addTheirMalus($this);
+        }
     }
 
     /**
@@ -313,13 +313,14 @@ class Feature
 
     /**
      * @param Feature $malus
-     * @param bool $recursive
+     * @param boolean $recursive
      */
-    public function removeMyMalus(Feature $malus, $recursive=true)
+    public function removeMyMalus(Feature $malus, $recursive = true)
     {
         $this->myMalus->removeElement($malus); // You need to call $em->flush() to make persist these changes in the database permanently.
-        if ($recursive == true)
+        if ($recursive == true) {
             $malus->removeTheirMalus($this);
+        }
     }
 
     /**

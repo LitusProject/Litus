@@ -1,0 +1,22 @@
+<header id="controller_header">
+    {% if eventCompanyMap is not null %}
+    <div class="title"><span class="event">Company: {{ eventCompanyMap.getCompany().getName() }}</span></div>
+    {% endif %}
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('br_admin_event_company', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_event_company', {"action": "manage", "event": event.getId(), 'id': eventCompanyMap.getId()}) }}">Manage</a></li>
+            {% endif %}
+            {% if 'edit' == getParam('action') %} 
+                {% if hasAccess('br_admin_event_company', 'edit') %}
+                    <li><a class="active" href="{{ url('br_admin_event_company', {"action": "edit", "event": event.getId(), 'id': eventCompanyMap.getId()}) }}">Edit Company</a></li>
+                {% endif %}
+            {% endif %}
+            {% if 'manage' == getParam('action') %}
+                {% if hasAccess('br_admin_event_company', 'csv') %}
+                    <li><a href="{{ url('br_admin_event_company', {"action": "csv", "event": event.getId()}) }}">CSV companies</a></li>
+                {% endif %} 
+            {% endif %}
+        </ul>
+    </nav>
+</header>
