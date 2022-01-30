@@ -108,4 +108,20 @@ class Wave
     {
         return $this->creationTime;
     }
+
+    /**
+     * @return string
+     */
+    public function getCreationTimeString()
+    {
+        return $this->creationTime->format('Y/m/d H:i');
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isGenerated()
+    {
+        return $this->companyWaves->count()>0;
+    }
 }
