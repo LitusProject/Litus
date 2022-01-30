@@ -19,6 +19,7 @@ class Version20220130220428 extends \Doctrine\Migrations\AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
         
         $this->addSql('ALTER TABLE br_companies ADD matching_software_email VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE br_match_feature ADD sector BOOLEAN DEFAULT \'false\' NOT NULL');
 
     }
 
