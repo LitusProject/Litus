@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace BrBundle\Entity;
 
@@ -150,6 +132,13 @@ class Company
     private $cvBookArchiveYears;
 
     /**
+     * @var string The Email address to use for matching software.
+     *
+     * @ORM\Column(name="matching_software_email", type="string", nullable=true)
+     */
+    private $matchingEmail;
+
+    /**
      * @var ArrayCollection The company's contacts
      *
      * @ORM\OneToMany(targetEntity="BrBundle\Entity\User\Person\Corporate", mappedBy="company")
@@ -162,6 +151,13 @@ class Company
      * @ORM\OneToOne(targetEntity="BrBundle\Entity\Company\Page", mappedBy="company")
      */
     private $page;
+
+    /**
+     * @var boolean Whether this is a large company (on the company page)
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $large;
 
     /**
      * @var array The possible masters for students
@@ -545,6 +541,24 @@ class Company
     }
 
     /**
+     * @return boolean
+     */
+    public function isLarge()
+    {
+        return $this->large;
+    }
+
+    /**
+     * @param boolean $large
+     * @return self
+     */
+    public function setLarge($large)
+    {
+        $this->large = $large;
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getContacts()
@@ -605,5 +619,21 @@ class Company
         $this->cvBookArchiveYears = serialize($archiveYears);
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getMatchingSoftwareEmail()
+    {
+        return $this->matchingEmail;
+    }
+
+    /**
+     * @param string|null $matchingEmail
+     */
+    public function setMatchingSoftwareEmail($matchingEmail)
+    {
+        $this->matchingEmail = $matchingEmail;
     }
 }
