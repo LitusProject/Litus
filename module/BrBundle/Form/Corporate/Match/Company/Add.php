@@ -43,11 +43,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         parent::init();
 
 
-        foreach ($this->getFeatureNames() as $featureName) {
+        foreach ($this->getFeatureNames() as $featureId => $featureName){
             $this->add(
                 array(
                     'type'       => 'select',
-                    'name'       => 'feature_'.$featureName,
+                    'name'       => 'feature_'.$featureId,
                     'label'      => $featureName,
                     'value'      => ' ',
                     'attributes' => array(
@@ -59,12 +59,42 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'FeatureImportanceConstraint',
+                            'validators' => array(
+                                array(
+                                    'name'    => 'FeatureImportanceConstraint',
+                                ),
                             ),
                         ),
+
+                    ),
+                )
+            );
+        }
+
+        // Sector features
+        foreach ($this->getSectorFeatureNames() as $featureId => $featureName){
+            $this->add(
+                array(
+                    'type'       => 'select',
+                    'name'       => 'sector_feature_'.$featureId,
+                    'label'      => 'Sector Feature: '.$featureName,
+                    'value'      => 0,
+                    'attributes' => array(
+                        'style'   => 'max-height: 38px;height:38px;max-width:150px;',
+                        'options'  => $this->makeSectorOptions(),
+                    ),
+                    'options' => array(
+                        'input' => array(
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array(
+                                    'name'    => 'SectorImportanceConstraint',
+                                ),
+                            ),
+                        ),
+
                     ),
                 )
             );
@@ -127,6 +157,31 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         return $options;
+    }
+
+    /**
+     * @return array
+     */
+    private function getSectorFeatureNames()
+    {
+        $featureNames = array();
+        foreach ($this->getEntityManager()->getRepository('BrBundle\Entity\Match\Feature')->findAll() as $feature) {
+            if ($feature->isSector())
+                $featureNames[$feature->getId()] = $feature->getName();
+        }
+
+        return $featureNames;
+    }
+
+    /**
+     * @return array
+     */
+    private function makeSectorOptions()
+    {
+        $amt = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.match_sector_feature_max_points');
+        return range(0,$amt);
     }
 
     /**

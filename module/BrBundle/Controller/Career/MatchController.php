@@ -1,29 +1,19 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace BrBundle\Controller\Career;
 
+use BrBundle\Entity\Company;
 use BrBundle\Entity\Match;
 use BrBundle\Entity\Match\Profile\ProfileFeatureMap;
 use BrBundle\Entity\Match\Profile\ProfileStudentMap;
 use BrBundle\Entity\Match\Wave;
+use BrBundle\Entity\Product;
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Form\Admin\Element\DateTime;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use CommonBundle\Entity\User\Person;
+use Laminas\Http\Headers;
+use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
 
 /**
@@ -75,6 +65,8 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
                 'needs_sp'   => $sp,
                 'needs_cp'   => $cp,
                 'bannerText' => $bannerText,
+                'em' => $this->getEntityManager(),
+                'ay' => $this->getCurrentAcademicYear(),
             )
         );
     }
@@ -128,10 +120,12 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
             array(
                 'allWaves'   => $allWaves,
                 'matches'    => $matches,
-            //                'lastUpdate' => new \DateTime(), // TODO!!
+                //                'lastUpdate' => new \DateTime(), // TODO!!
                 'needs_sp'   => $sp,
                 'needs_cp'   => $cp,
                 'bannerText' => $bannerText,
+                'em' => $this->getEntityManager(),
+                'ay' => $this->getCurrentAcademicYear(),
             )
         );
     }
@@ -147,6 +141,12 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
             $this->flashMessenger()->error(
                 'Error',
                 "You are not a Master's student, and therefore cannot enroll in the matching platform!"
+            );
+            $this->redirect()->toRoute(
+                'br_career_match',
+                array(
+                    'action' => 'overview',
+                )
             );
             return new ViewModel();
         }
@@ -205,15 +205,20 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
                 $map = new ProfileStudentMap($person, $profile);
                 $this->getEntityManager()->persist($map);
 
-                foreach (array_values($formData['features_ids']) as $feature) {
-                    $map = new ProfileFeatureMap(
-                        $this->getEntityManager()
-                            ->getRepository('BrBundle\Entity\Match\Feature')
-                            ->findOneById($feature),
-                        $profile
-                    );
-                    $this->getEntityManager()->persist($map);
-                    $profile->addFeature($map);
+                // Add new features with their importances
+                foreach ($formData as $key => $val){
+                    if (str_contains($key, 'feature_') && $val != 0){
+                        $id = substr($key, strlen('feature_'));
+                        if (str_contains($key, 'sector_feature_')){
+                            $id = substr($key, strlen('sector_feature_'));
+                        }
+                        $map = new ProfileFeatureMap(
+                            $this->getEntityManager()
+                                ->getRepository('BrBundle\Entity\Match\Feature')
+                                ->findOneById($id),$profile, $val);
+                        $this->getEntityManager()->persist($map);
+                        $profile->addFeature($map);
+                    }
                 }
 
                 $this->getEntityManager()->flush();
@@ -261,6 +266,9 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('br.match_career_profile_GDPR_text')
                 )[$this->getLanguage()->getAbbrev()],
+                'sector_points' => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('br.match_sector_feature_max_points'),
             )
         );
     }
@@ -356,33 +364,23 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
                 }
                 $this->getEntityManager()->flush();
 
-
-                // NEW FEATURES
-
-                // Get new features and importances
-                $features = array();
-                foreach ($formData as $key => $val) {
-                    if (str_contains($key, 'feature_')) {
+                // Add new features with their importances
+                foreach ($formData as $key => $val){
+                    if (str_contains($key, 'feature_') && $val != 0){
                         $id = substr($key, strlen('feature_'));
-                        $feature = $this->getEntityManager()->getRepository('BrBundle\Entity\Match\Feature')
-                            ->findOneById($id);
-                        $features[] = array($feature, $val);
+                        if (str_contains($key, 'sector_feature_')){
+                            $id = substr($key, strlen('sector_feature_'));
+                        }                        $map = new ProfileFeatureMap(
+                            $this->getEntityManager()
+                                ->getRepository('BrBundle\Entity\Match\Feature')
+                                ->findOneById($id),$profile, $val);
+                        $this->getEntityManager()->persist($map);
+                        $profile->addFeature($map);
                     }
                 }
 
-                foreach ($features as $featureAndVal) {
-                    $map = new ProfileFeatureMap(
-                        $this->getEntityManager()
-                            ->getRepository('BrBundle\Entity\Match\Feature')
-                            ->findOneById($featureAndVal[0]),
-                        $profile,
-                        $featureAndVal[1]
-                    );
-                    $this->getEntityManager()->persist($map);
-                    $profile->addFeature($map);
-                }
-
                 $this->getEntityManager()->flush();
+
                 $this->flashMessenger()->success(
                     'Success',
                     'The profile was successfully edited!'
@@ -408,6 +406,9 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('br.match_career_profile_GDPR_text')
                 )[$this->getLanguage()->getAbbrev()],
+                'sector_points' => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('br.match_sector_feature_max_points'),
             )
         );
     }
@@ -419,6 +420,20 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
         $match = $this->getMatchEntity();
         if ($match === null) {
             return new ViewModel();
+        }
+
+        $firstInterestedMailEnabled = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.match_enable_first_interested_mail');
+
+        if ($firstInterestedMailEnabled){
+            $interested = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Match')
+                ->countInterestedByCompany($match->getCompany());
+
+            if ($interested == 0){
+                $this->sendMailToCompanyAction($match->getCompany());
+            }
         }
 
         $match->setInterested(true);
@@ -491,28 +506,67 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
             ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
             ->findAllByAcademicAndAcademicYear($person, $this->getCurrentAcademicYear());
 
-        $masterGroupNames = unserialize(
-            $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('syllabus.master_group_names')
-        );
+        $masterGroupIds = unserialize($this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('syllabus.master_group_ids'));
 
-        foreach ($masterGroupNames as $groupName) {
+        foreach ($masterGroupIds as $groupId){
             $group = $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Repository\Group')
-                ->findOneByName($groupName);
-            $studyMaps = $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
-                ->findAllByGroup($group);
+                ->getRepository('SyllabusBundle\Entity\Group')
+                ->findById($groupId)[0];
 
-            foreach ($studyMaps as $map) {
-                foreach ($studies as $study) {
-                    if ($study == $map->getStudy()) {
-                        return true;
+            if (!is_null($group)){
+                $studyMaps = $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
+                    ->findAllByGroupAndAcademicYear($group, $this->getCurrentAcademicYear());
+
+                foreach($studyMaps as $map){
+                    foreach($studies as $study){
+                        if ($study == $map->getStudy()){
+                            return true;
+                        }
                     }
                 }
             }
         }
         return false;
+    }
+
+    public function sendMailToCompanyAction(Company $company)
+    {
+        $mailAddress = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.match_mail');
+
+        $mailName = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.match_mail_name');
+
+        $mailData = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.match_wave_companies_body')
+        );
+
+        $message = $mailData['content'];
+        $subject = $mailData['subject'];
+
+        $mail = new Message();
+        $mail->setEncoding('UTF-8')
+            ->setBody($message)
+            ->setFrom($mailAddress, $mailName)
+            ->setSubject($subject);
+
+        if (is_null($company->getMatchingSoftwareEmail())){
+            $body = "The following company does not have a default email set:\n";
+            $body .= $company->getName()."\n";
+            $mail->setBody($body)->addTo($mailAddress, $mailName);
+        } else {
+            $mail->addTo($company->getMatchingSoftwareEmail(),$bccName = $company->getName());
+        }
+
+        if (getenv('APPLICATION_ENV') != 'development') {
+            $this->getMailTransport()->send($mail);
+        }
     }
 }

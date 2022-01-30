@@ -41,26 +41,61 @@ class Edit extends \BrBundle\Form\Admin\Match\Profile\Add
         $this->remove('submit')->remove('type')->remove('company')
             ->remove('student')->remove('features')->remove('profile_type');
 
-        $this->add(
-            array(
-                'type'       => 'select',
-                'name'       => 'features_ids',
-                'label'      => 'Features',
-                'required'   => true,
-                'attributes' => array(
-                    'multiple' => true,
-                    'style'    => 'max-width: 100%;max-height: 600px;',
-                    'options'  => $this->getFeatureNames(),
-                ),
-                'options'    => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
+        // Type features
+        foreach ($this->getFeatureNames() as $featureId => $featureName){
+            $this->add(
+                array(
+                    'type'       => 'select',
+                    'name'       => 'feature_'.$featureId,
+                    'label'      => 'Company Feature: '.$featureName,
+                    'value'      => ' ',
+                    'attributes' => array(
+                        'options'  => $this->makeOptions(),
                     ),
-                ),
-            )
-        );
+                    'options' => array(
+                        'input' => array(
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array(
+                                    'name'    => 'FeatureImportanceConstraint',
+                                ),
+                            ),
+                        ),
+
+                    ),
+                )
+            );
+        }
+
+        // Sector features
+        foreach ($this->getSectorFeatureNames() as $featureId => $featureName){
+            $this->add(
+                array(
+                    'type'       => 'select',
+                    'name'       => 'sector_feature_'.$featureId,
+                    'label'      => 'Sector Feature: '.$featureName,
+                    'value'      => 0,
+                    'attributes' => array(
+                        'options'  => $this->makeSectorOptions(),
+                    ),
+                    'options' => array(
+                        'input' => array(
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array(
+                                    'name'    => 'SectorImportanceConstraint',
+                                ),
+                            ),
+                        ),
+
+                    ),
+                )
+            );
+        }
 
         $this
             ->addSubmit('Save Changes', 'feature_edit');
@@ -71,17 +106,58 @@ class Edit extends \BrBundle\Form\Admin\Match\Profile\Add
         }
     }
 
+
     /**
      * @return array
      */
     private function getFeatureNames()
     {
+        $type = $this->profile->getProfileType();
         $featureNames = array();
         foreach ($this->getEntityManager()->getRepository('BrBundle\Entity\Match\Feature')->findAll() as $feature) {
-            $featureNames[$feature->getId()] = $feature->getName();
+            if ($feature->getType() == $type || is_null($feature->getType()))
+                $featureNames[$feature->getId()] = $feature->getName();
         }
 
         return $featureNames;
+    }
+
+    /**
+     * @return array
+     */
+    private function makeOptions()
+    {
+
+        $options = array();
+        foreach (Profile\ProfileFeatureMap::$POSSIBLE_VISIBILITIES as $val => $type)
+            $options[$val] = $type;
+
+        return $options;
+    }
+
+    /**
+     * @return array
+     */
+    private function getSectorFeatureNames()
+    {
+        $featureNames = array();
+        foreach ($this->getEntityManager()->getRepository('BrBundle\Entity\Match\Feature')->findAll() as $feature) {
+            if ($feature->isSector())
+                $featureNames[$feature->getId()] = $feature->getName();
+        }
+
+        return $featureNames;
+    }
+
+    /**
+     * @return array
+     */
+    private function makeSectorOptions()
+    {
+        $amt = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.match_sector_feature_max_points');
+        return range(0,$amt);
     }
 
     /**

@@ -1,22 +1,4 @@
 <?php
-/**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
- */
 
 namespace BrBundle\Controller\Admin\Match;
 
@@ -68,7 +50,6 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
             $item->matches = $cw->getMatches();
             $result[] = $item;
         }
-
 
         return new ViewModel(
             array(
@@ -162,15 +143,8 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        foreach ($wave->getCompanyWaves() as $cw) {
-            foreach ($cw->getMatches() as $map) {
-                $map->getMatch()->setWave(null);
-                $this->getEntityManager()->remove($map);
-            }
-            $this->getEntityManager()->remove($cw);
-        }
-        $this->getEntityManager()->flush();
         $this->getEntityManager()->remove($wave);
+        $this->getEntityManager()->flush();
 
         return new ViewModel(
             array(
@@ -271,25 +245,24 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
      * @return CompanyWave
      * @throws ORMException
      */
-    private function makeCompanyWave(Company $company, int $nb, Wave $wave)
-    {
-        $matcheeMaps = $this->getEntityManager()
+    private function makeCompanyWave(Company $company, int $nb, Wave $wave){
+        $maps = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Match\MatcheeMap\CompanyMatcheeMap')
             ->findByCompany($company);
 
-        usort(
-            $matcheeMaps,
-            function ($a, $b) {
-                $am = $this->getEntityManager()
-                    ->getRepository('BrBundle\Entity\Match')
-                    ->findOneByCompanyMatchee($a);
+        $matches = array();
+        foreach ($maps as $m){
+            $match = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Match')
+                ->findOneByCompanyMatchee($m);
 
-                $bm = $this->getEntityManager()
-                    ->getRepository('BrBundle\Entity\Match')
-                    ->findOneByCompanyMatchee($b);
-                return $am->getMatchPercentage() - $bm->getMatchPercentage();
-            }
-        );
+            if (!is_null($match))
+                $matches[] = $match;
+        }
+
+        usort($matches, function($a, $b) {
+            return $a->getMatchPercentage() - $b->getMatchPercentage();
+        });
 
         $cw = new CompanyWave($wave, $company);
         $this->getEntityManager()->persist($cw);
@@ -297,13 +270,10 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
 
         $i = 0; // index of highest match
         $n = 0; // number of matches in this wave
-        $sizeMM = count($matcheeMaps);
+        $sizeMM = sizeof($matches);
 
-        while ($i < $sizeMM && $n < $nb) {
-            $matchee = $matcheeMaps[$i];
-            $match = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Match')
-                ->findOneByCompanyMatchee($matchee);
+        while ($i < $sizeMM && $n<$nb){
+            $match = $matches[$i];
 
             if (!is_null($match->getWave())) {
                 $i += 1;
