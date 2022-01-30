@@ -71,7 +71,7 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
     }
 
     /**
-     * @param bool $login
+     * @param boolean $login
      * @return Corporate|boolean
      */
     protected function getCorporateEntity($login = true)
@@ -84,8 +84,9 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
             }
         }
 
-        if ($login == false)
+        if ($login == false) {
             throw new HasNoAccessException('You do not have sufficient permissions to access this resource');
+        }
 
         $this->redirect()->toRoute(
             'br_corporate_index',

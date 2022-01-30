@@ -12,6 +12,9 @@
         <h1>Edit</h1>
         <h2>{{ profile.getUserName(em) | title }}</h2>
         <h2>{{ profile.getProfileType() | title }} {{ translate('Profile') }}</h2>
+        <br>
+        <b><p>You can distribute maximum {{ sector_points }} points for the sector features! </p></b>
+        <br>
         {{ forms.renderForm(form) }}
     </div>
 

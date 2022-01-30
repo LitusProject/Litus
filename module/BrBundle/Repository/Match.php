@@ -149,4 +149,22 @@ class Match extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function countInterestedByCompany(\BrBundle\Entity\Company $company)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select($query->expr()->countDistinct('m'))
+            ->from('BrBundle\Entity\Match', 'm')
+            ->innerJoin('m.companyMatchee', 'c')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('c.company', ':company'),
+                    $query->expr()->eq('m.interested', 'true')
+                )
+            )
+            ->orderBy('m.matchPercentage', 'ASC')
+            ->setParameter('company', $company)
+            ->getQuery()
+            ->getResult();
+    }
 }
