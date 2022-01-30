@@ -24,6 +24,7 @@ use BrBundle\Entity\Company;
 use BrBundle\Entity\Match\Wave\CompanyWave;
 use BrBundle\Entity\Match\Wave;
 use Doctrine\ORM\ORMException;
+use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
 
 /**
@@ -170,7 +171,6 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
-
     public function generateWavesAction()
     {
 
@@ -302,7 +302,6 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
             $match->setWave($map);
             $i += 1;
         }
-
 
         return $cw;
 

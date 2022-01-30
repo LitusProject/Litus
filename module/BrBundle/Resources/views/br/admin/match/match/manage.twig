@@ -12,10 +12,35 @@
             <p>The match was successfully removed!</p>
         </div>
     </div>
+    <div class="flashmessage success_message full_width student_mail_sent hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The mails were successfully sent to the students!</p>
+        </div>
+    </div>
+    <div class="flashmessage success_message full_width company_mail_sent hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The mails were successfully sent to the companies (or to BR)!</p>
+        </div>
+    </div>
+
     <div class="flashmessage error_message full_width match_removed_error hide">
         <div class="title">Error</div>
         <div class="content">
             <p>An error occurred while trying to delete a match.</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width student_mail_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to send a mail to the students.</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width company_mail_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to send a mail to the companies.</p>
         </div>
     </div>
 
@@ -74,6 +99,56 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="student_mail_modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Send Mail to Students
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to Send a mail to all students that have a match!
+                        Be sure to check out (or ask IT) what the current mail body is!!
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="send">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="company_mail_modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Send Mail to Companies
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to Send a mail to all companies that have a match!
+                        Be sure to check out (or ask IT) what the current mail body is!!
+                        Please note that this operation cannot be undone!
+                        If any company does not have a default mail address listed (on the admin), this mail will not be sent.
+                        Instead, a list of all those companies will be sent to the sender.
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="send">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
@@ -81,11 +156,12 @@
 
         $(document).ready(function () {
             $('.item .delete').click(openModal);
+            $('#sendMailStudents').click(openModalStudents);
+            $('#sendMailCompanies').click(openModalCompanies);
         });
 
         function openModal(e) {
             var $this = $(this);
-
             e.preventDefault();
             var removeMatch = $('#removeMatch');
             removeMatch.find('.matchTitle').html($(this).data('title'));
@@ -105,10 +181,53 @@
             removeMatch.modal();
         }
 
+        function openModalStudents(e) {
+            e.preventDefault();
+            var studentModal = $('#student_mail_modal');
+            studentModal.find('.send').unbind('click').click(function () {
+                $.post('{{ url('br_admin_match_match', {"action": "sendMailStudents"}) }}', function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.student_mail_sent').removeClass('hide');
+                        studentModal.modal('hide');
+                    } else {
+                        errorSendStudents();
+                    }
+                }, 'json').error(errorSendStudents);
+            });
+            studentModal.modal();
+        }
+        function openModalCompanies(e) {
+            e.preventDefault();
+            var companyModal = $('#company_mail_modal');
+            companyModal.find('.send').unbind('click').click(function () {
+                $.post('{{ url('br_admin_match_match', {"action": "sendMailCompanies"}) }}', function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.company_mail_sent').removeClass('hide');
+                        companyModal.modal('hide');
+                    } else {
+                        errorSendCompanies();
+                    }
+                }, 'json').error(errorSendCompanies);
+            });
+            companyModal.modal();
+        }
+
         function errorRemove() {
             $('.flashmessage').addClass('hide');
             $('.match_removed_error').removeClass('hide');
             $('#removeMatch').modal('hide');
+        }
+        function errorSendStudents() {
+            $('.flashmessage').addClass('hide');
+            $('.student_mail_error').removeClass('hide');
+            $('#student_mail_modal').modal('hide');
+        }
+        function errorSendCompanies() {
+            $('.flashmessage').addClass('hide');
+            $('.company_mail_error').removeClass('hide');
+            $('#company_mail_modal').modal('hide');
         }
 
     </script>

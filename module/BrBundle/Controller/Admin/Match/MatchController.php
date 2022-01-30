@@ -29,7 +29,9 @@ use BrBundle\Entity\Product;
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use CommonBundle\Entity\User\Person;
+use Doctrine\ORM\ORMException;
 use Laminas\Http\Headers;
+use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
 
 /**
@@ -174,11 +176,60 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel();
     }
 
+    public function sendMailStudentsAction()
+    {
+        $this->initAjax();
+
+        $maps = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Match\MatcheeMap\StudentMatcheeMap')
+            ->findAll();
+
+        $students = array();
+        $allStudents = array();
+        foreach ($maps as $studentMap){
+            if (!in_array($studentMap->getStudent()->getId(), $students)){
+                array_push($students, $studentMap->getStudent()->getId());
+                array_push($allStudents, $studentMap->getStudent());
+            }
+        }
+
+        $this->sendMailToStudentsAction($allStudents);
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+    public function sendMailCompaniesAction()
+    {
+        $this->initAjax();
+
+        $maps = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Match\MatcheeMap\CompanyMatcheeMap')
+            ->findAll();
+
+        $companies = array();
+        $allCompanies = array();
+        foreach ($maps as $companyMap){
+            if (!in_array($companyMap->getCompany()->getId(), $companies)){
+                $companies[] = $companyMap->getCompany()->getId();
+                $allCompanies[] = $companyMap->getCompany();
+            }
+        }
+        $this->sendMailToCompaniesAction($allCompanies);
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
     /**
      * @param Person $student
      * @param Company $company
      * @return Match|null
-     * @throws \Doctrine\ORM\ORMException
+     * @throws ORMException
      */
     private function generateMatch(Person $student, Company $company)
     {
@@ -240,9 +291,6 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
             $this->getEntityManager()->flush();
         }
 
-
-
-
         return new ViewModel(
             array(
                 'result' => (object) array('status' => 'success'),
@@ -274,5 +322,98 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         return $match;
+    }
+
+
+    public function sendMailToCompaniesAction(array $companies)
+    {
+        $mailAddress = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.match_mail');
+
+        $mailName = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.match_mail_name');
+
+        $mailData = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.match_wave_companies_body')
+        );
+
+        $message = $mailData['content'];
+        $subject = $mailData['subject'];
+
+        $mail = new Message();
+        $mail->setEncoding('UTF-8')
+            ->setBody($message)
+            ->setFrom($mailAddress, $mailName)
+            ->setSubject($subject)
+            ->addTo($mailAddress, $mailName);
+
+        $noEmails = array();
+        $bccs = array();
+        foreach ($companies as $company) {
+            if (is_null($company->getMatchingSoftwareEmail())){
+                $noEmails[] = $company->getName();
+            } else {
+                $bccs[] = array($company->getMatchingSoftwareEmail(),$bccName = $company->getName());
+            }
+        }
+
+        if (sizeof($noEmails) > 0){
+            $body = "The following companies do not have a default email set:\n";
+            foreach ($noEmails as $name){
+                $body .= $name."\n";
+            }
+            $mail->setBody($body);
+            if (getenv('APPLICATION_ENV') != 'development') {
+                $this->getMailTransport()->send($mail);
+            }
+        } else {
+            foreach ($bccs as $bcc){
+                $mail->addBcc($bcc[0], $bcc[1]);
+            }
+
+            if (getenv('APPLICATION_ENV') != 'development') {
+                $this->getMailTransport()->send($mail);
+            }
+        }
+    }
+
+    public function sendMailToStudentsAction(array $students)
+    {
+        $mailAddress = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.match_mail');
+
+        $mailName = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.match_mail_name');
+
+        $mailData = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.match_wave_students_body')
+        );
+
+        $message = $mailData['content'];
+        $subject = $mailData['subject'];
+
+        $mail = new Message();
+        $mail->setEncoding('UTF-8')
+            ->setBody($message)
+            ->setFrom($mailAddress, $mailName)
+            ->setSubject($subject)
+            ->addTo($mailAddress, $mailName);
+
+        foreach ($students as $student) {
+            $bcc = $student->getEmail();
+            $bccName = $student->getFullName();
+            $mail->addBcc($bcc, $bccName);
+        }
+        if (getenv('APPLICATION_ENV') != 'development') {
+            $this->getMailTransport()->send($mail);
+        }
     }
 }

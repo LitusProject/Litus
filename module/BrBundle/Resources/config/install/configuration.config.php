@@ -423,30 +423,54 @@ Bestaand Bedrijf: {{ oldCompany }}.
         'description' => '',
     ),
     array(
-        'key'         => 'br.communication_mail',
+        'key'         => 'br.match_mail',
         'value'       => 'bedrijvenrelaties@vtk.be',
-        'description' => 'The mail address to which notifications should be sent.',
+        'description' => 'The mail address from where matching software notifications should be sent.',
     ),
     array(
-        'key'         => 'br.communication_mail_name',
+        'key'         => 'br.match_mail_name',
         'value'       => 'VTK Bedrijvenrelaties',
         'description' => '',
     ),
     array(
-        'key'         => 'br.communication_mail_body',
+        'key'         => 'br.match_first_interested_mail_body',
         'value'       => serialize(
             array(
-                'subject' => 'Dubbele boeking voor communicatie op {{ date }}',
+                'subject' => 'First interested student',
                 'content' => 'Beste
-Er is een dubbele communicatie boeking aangemaakt op {{ date }} door {{ person }}.
-Communicatie optie: {{ option }}.
-Nieuw Doelpubliek: {{ newAudience }}.
-Nieuw Bedrijf: {{ newCompany }}.
-Bestaand Doelpubliek: {{ oldAudience }}.
-Bestaand Bedrijf: {{ oldCompany }}.
--- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
+Een student heeft zijn data doorgestuurd naar jou op het Matching Software platform!
+-- Dit is een automatisch gegenereerde email --',
             )
         ),
         'description' => 'The mail sent when a duplicate date is chosen for a communication'
+    ),
+    array(
+        'key'         => 'br.match_wave_companies_body',
+        'value'       => serialize(
+            array(
+                'subject' => 'Generated new matches',
+                'content' => 'Beste
+Er zijn nieuwe matches!
+-- Dit is een automatisch gegenereerde email --',
+            )
+        ),
+        'description' => 'The mail sent to all companies that have matches, when the button in the admin is used'
+    ),
+    array(
+        'key'         => 'br.match_wave_students_body',
+        'value'       => serialize(
+            array(
+                'subject' => 'Generated new matches',
+                'content' => 'Beste
+Er zijn nieuwe matches!
+-- Dit is een automatisch gegenereerde email --',
+            )
+        ),
+        'description' => 'The mail sent to all students that have matches, when the button in the admin is used'
+    ),
+    array(
+        'key'         => 'br.match_sector_feature_max_points',
+        'value'       => 6,
+        'description' => 'The amount of points to be distributed between the sectors.',
     ),
 );

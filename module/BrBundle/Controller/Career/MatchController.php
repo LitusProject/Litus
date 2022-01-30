@@ -549,7 +549,8 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
         $message = $mailData['content'];
         $subject = $mailData['subject'];
 
-        $to = $company->getContacts(); // TODO: TO WHOM??
+        $to = $company->getMatchingSoftwareEmail() ?? $mailAddress; // To default company Matching mail OR to BR
+        $toName = $company->getName();
 
         $mail = new Message();
         $mail->setEncoding('UTF-8')
@@ -561,9 +562,11 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
                 )
             )
             ->setFrom($mailAddress, $mailName)
-            ->addTo($company, $mailName)
+            ->addTo($to, $toName)
             ->setSubject($subject);
 
-        $this->getMailTransport()->send($mail);
+        if (getenv('APPLICATION_ENV') != 'development') {
+            $this->getMailTransport()->send($mail);
+        }
     }
 }

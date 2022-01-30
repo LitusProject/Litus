@@ -254,6 +254,9 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
                 'form'      => $form,
                 'profile'   => $profile,
                 'em'        => $this->getEntityManager(),
+                'sector_points' => $this->getEntityManager()
+        ->getRepository('CommonBundle\Entity\General\Config')
+        ->getConfigValue('br.match_sector_feature_max_points'),
             )
         );
     }

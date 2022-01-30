@@ -94,6 +94,13 @@ class Feature
     private $type;
 
     /**
+     * @var boolean Is this a sector feature.
+     *
+     * @ORM\Column(type="boolean", options={"default" = false})
+     */
+    private $sector;
+
+    /**
      * @static
      * @var array All the possible types allowed
      */
@@ -110,6 +117,7 @@ class Feature
         $this->theirBonus = new ArrayCollection();
         $this->theirMalus = new ArrayCollection();
         $this->myMalus = new ArrayCollection();
+        $this->sector = false;
     }
 
     /**
@@ -150,6 +158,22 @@ class Feature
     public function setType($type)
     {
         $this->type = $type;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isSector()
+    {
+        return $this->sector;
+    }
+
+    /**
+     * @param boolean $isSector
+     */
+    public function setSector($isSector)
+    {
+        $this->sector = $isSector;
     }
 
     // BONUS FUNCTIONS
