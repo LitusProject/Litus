@@ -56,8 +56,6 @@ return array(
         'value'       => '0',
         'description' => 'Enable Syllabus update',
     ),
-<<<<<<< HEAD
-=======
     array(
         'key'         => 'syllabus.master_group_ids',
         'value'       => serialize(
@@ -68,5 +66,4 @@ return array(
         ),
         'description' => 'The ids that contain all masters.',
     ),
->>>>>>> master
 );
