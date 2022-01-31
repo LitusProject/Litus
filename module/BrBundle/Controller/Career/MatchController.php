@@ -516,9 +516,10 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
             $group = $this->getEntityManager()
                 ->getRepository('SyllabusBundle\Entity\Group')
                 ->findOneById($groupId);
-            print("group is : ". $group->getId());
 
             if (!is_null($group)){
+                print("group is : ". $group->getId());
+
                 $studyMaps = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
                     ->findAllByGroupAndAcademicYear($group, $this->getCurrentAcademicYear());
