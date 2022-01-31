@@ -413,11 +413,6 @@ Example content of this section.
         'description' => 'The options displayed in the communications tab in the br admin',
     ),
     array(
-        'key'         => 'br.match_career_profile_GDPR_text',
-        'value' => 'I agree that this data can be used to contact companies',
-        'description' => 'I agree that this data can be used to contact companies',
-    ),
-    array(
         'key'         => 'br.communication_mail',
         'value'       => 'stan.cardinaels@vtk.be',
         'description' => 'The mail address to which notifications should be send when a duplicate communication date is chosen.',
