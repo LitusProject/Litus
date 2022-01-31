@@ -506,7 +506,7 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
             ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
             ->findAllByAcademicAndAcademicYear($person, $this->getCurrentAcademicYear());
 
-        error_log("studies are : ". $studies[0]->getId());
+        print("studies are : ". $studies[0]->getId());
 
         $masterGroupIds = unserialize($this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -516,7 +516,7 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
             $group = $this->getEntityManager()
                 ->getRepository('SyllabusBundle\Entity\Group')
                 ->findOneById($groupId);
-            error_log("group is : ". $group->getId());
+            print("group is : ". $group->getId());
 
             if (!is_null($group)){
                 $studyMaps = $this->getEntityManager()
