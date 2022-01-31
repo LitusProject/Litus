@@ -115,8 +115,9 @@ class Edit extends \BrBundle\Form\Admin\Match\Profile\Add
         $type = $this->profile->getProfileType();
         $featureNames = array();
         foreach ($this->getEntityManager()->getRepository('BrBundle\Entity\Match\Feature')->findAll() as $feature) {
-            if ($feature->getType() == $type || is_null($feature->getType()))
+            if (!$feature->isSector() && ($feature->getType() == 'company' || $feature->getType() == null)) {
                 $featureNames[$feature->getId()] = $feature->getName();
+            }
         }
 
         return $featureNames;
