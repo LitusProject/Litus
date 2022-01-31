@@ -137,10 +137,22 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
             return new ViewModel();
         }
 
-        if ($this->isMasterStudent($person) == false) {
+        $isMaster = $this->isMasterStudent($person);
+
+        if ($isMaster[0] == false) {
+//        if ($this->isMasterStudent($person) == false) {
+            $msg = "You are not a Master's student, and therefore cannot enroll in the matching platform!\nAccepted were:\n";
+            foreach ($isMaster[1] as $map){
+                $msg .= $map->getId().";\n";
+            }
+            $msg .= "What you have is ". $isMaster[2];
+//            $this->flashMessenger()->error(
+//                'Error',
+//                "You are not a Master's student, and therefore cannot enroll in the matching platform!\n". "Accepted were: "
+//            );
             $this->flashMessenger()->error(
                 'Error',
-                "You are not a Master's student, and therefore cannot enroll in the matching platform!"
+                $msg,
             );
             $this->redirect()->toRoute(
                 'br_career_match',
@@ -506,34 +518,34 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
             ->getRepository('SecretaryBundle\Entity\Syllabus\Enrollment\Study')
             ->findAllByAcademicAndAcademicYear($person, $this->getCurrentAcademicYear());
 
-        print("studies are : ". $studies[0]->getId());
-
         $masterGroupIds = unserialize($this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('syllabus.master_group_ids'));
 
+        $set = false;
         foreach ($masterGroupIds as $groupId){
             $group = $this->getEntityManager()
                 ->getRepository('SyllabusBundle\Entity\Group')
                 ->findOneById($groupId);
 
             if (!is_null($group)){
-                print("group is : ". $group->getId());
 
                 $studyMaps = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
                     ->findAllByGroupAndAcademicYear($group, $this->getCurrentAcademicYear());
 
                 foreach($studyMaps as $map){
+                    $accepted[] = $map->getStudy();
                     foreach($studies as $study){
                         if ($study == $map->getStudy()){
-                            return true;
+                            $set = true;
                         }
                     }
                 }
             }
         }
-        return false;
+
+        return array($set, $accepted, $studies[0]->getId());
     }
 
     public function sendMailToCompanyAction(Company $company)
