@@ -137,22 +137,10 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
             return new ViewModel();
         }
 
-        $isMaster = $this->isMasterStudent($person);
-
-        if ($isMaster[0] == false) {
-//        if ($this->isMasterStudent($person) == false) {
-            $msg = "You are not a Master's student, and therefore cannot enroll in the matching platform!\nAccepted were:\n";
-            foreach ($isMaster[1] as $map){
-                $msg .= $map->getId().";\n";
-            }
-            $msg .= "What you have is ". $isMaster[2];
-//            $this->flashMessenger()->error(
-//                'Error',
-//                "You are not a Master's student, and therefore cannot enroll in the matching platform!\n". "Accepted were: "
-//            );
+        if ($this->isMasterStudent($person) == false) {
             $this->flashMessenger()->error(
                 'Error',
-                $msg,
+                "You are not a Master's student, and therefore cannot enroll in the matching platform!\n". "Accepted were: "
             );
             $this->redirect()->toRoute(
                 'br_career_match',
@@ -522,14 +510,12 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('syllabus.master_group_ids'));
 
-        $set = false;
         foreach ($masterGroupIds as $groupId){
             $group = $this->getEntityManager()
                 ->getRepository('SyllabusBundle\Entity\Group')
                 ->findOneById($groupId);
 
             if (!is_null($group)){
-
                 $studyMaps = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
                     ->findAllByGroupAndAcademicYear($group, $this->getCurrentAcademicYear());
@@ -537,15 +523,15 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
                 foreach($studyMaps as $map){
                     $accepted[] = $map->getStudy();
                     foreach($studies as $study){
-                        if ($study == $map->getStudy()){
-                            $set = true;
+                        if ($study->getStudy() == $map->getStudy()){
+                            return true;
                         }
                     }
                 }
             }
         }
 
-        return array($set, $accepted, $studies[0]->getId());
+        return false;
     }
 
     public function sendMailToCompanyAction(Company $company)
