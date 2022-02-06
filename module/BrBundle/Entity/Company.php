@@ -162,7 +162,7 @@ class Company
     /**
      * @var boolean Whether this is a large company (on the company page)
      *
-     * @ORM\Column(type="boolean", name="attends_jobfair")
+     * @ORM\Column(type="boolean", name="attends_jobfair", nullable=true)
      */
     private $attendsJobfair;
 
