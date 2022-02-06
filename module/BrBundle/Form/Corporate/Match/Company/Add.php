@@ -104,7 +104,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             array(
                 'type'       => 'checkbox',
                 'name'       => 'conditions',
-                'label'      => 'I have read and accept the GDPR terms and condition specified above',
+                'label'      => 'I have read and accept the terms specified above',
                 'attributes' => array(
                     'id' => 'conditions',
                 ),

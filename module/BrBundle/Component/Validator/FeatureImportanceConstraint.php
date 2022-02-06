@@ -95,7 +95,7 @@ class FeatureImportanceConstraint extends \CommonBundle\Component\Validator\Abst
         }
 
         foreach ($context as $key => $val) {
-            if ($val != 0 && str_contains($key, 'feature_') && in_array($key, array_keys($counts))){
+            if ($val != 0 && str_contains($key, 'feature_') && in_array($val, array_keys($counts))){
                 $counts[$val] += 1;
             }
         }
