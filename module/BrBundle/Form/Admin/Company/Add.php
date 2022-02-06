@@ -166,10 +166,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        array(
-            'type'  => 'checkbox',
-            'name'  => 'attendsJobfair',
-            'label' => 'company is at Jobfair this year',
+        $this->add(
+            array(
+                'type'  => 'checkbox',
+                'name'  => 'attendsJobfair',
+                'label' => 'company is at Jobfair this year',
+            )
         );
 
         $this->add(
