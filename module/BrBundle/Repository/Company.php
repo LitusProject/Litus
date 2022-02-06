@@ -61,4 +61,21 @@ class Company extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->orderBy('c.name', 'ASC')
             ->getQuery();
     }
+
+    /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllAttendingJobfair()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('c')
+            ->from('BrBundle\Entity\Company', 'c')
+            ->where(
+                $query->expr()->eq('c.attendsJobfair', 'true'),
+            )
+            ->setParameter('name', '%' . strtolower($name) . '%')
+            ->orderBy('c.name', 'ASC')
+            ->getQuery();
+    }
+
 }

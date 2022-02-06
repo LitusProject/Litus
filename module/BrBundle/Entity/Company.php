@@ -160,6 +160,13 @@ class Company
     private $large;
 
     /**
+     * @var boolean Whether this is a large company (on the company page)
+     *
+     * @ORM\Column(type="boolean", name="attends_jobfair")
+     */
+    private $attendsJobfair;
+
+    /**
      * @var array The possible masters for students
      */
     const POSSIBLE_MASTERS = array(
@@ -555,6 +562,24 @@ class Company
     public function setLarge($large)
     {
         $this->large = $large;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function attendsJobfair()
+    {
+        return $this->attendsJobfair;
+    }
+
+    /**
+     * @param boolean $attendsJobfair
+     * @return self
+     */
+    public function setAttendsJobfair($attendsJobfair)
+    {
+        $this->attendsJobfair = $attendsJobfair;
         return $this;
     }
 

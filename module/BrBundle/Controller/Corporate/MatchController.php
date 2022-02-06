@@ -22,6 +22,10 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
             return new ViewModel();
         }
 
+        if (!$person->getCompany()->attendsJobfair()){
+            return new ViewModel();
+        }
+
         $profiles = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Match\Profile\ProfileCompanyMap')
             ->findByCompany($person->getCompany());
@@ -93,6 +97,10 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
     {
         $person = $this->getCorporateEntity();
         if ($person === null) {
+            return new ViewModel();
+        }
+
+        if (!$person->getCompany()->attendsJobfair()){
             return new ViewModel();
         }
 
@@ -232,6 +240,10 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
             return new ViewModel();
         }
 
+        if (!$person->getCompany()->attendsJobfair()){
+            return new ViewModel();
+        }
+
         $profiles = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Match\Profile\ProfileCompanyMap')
             ->findByCompany($person->getCompany());
@@ -269,6 +281,10 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
     {
         $person = $this->getCorporateEntity();
         if ($person === null) {
+            return new ViewModel();
+        }
+
+        if (!$person->getCompany()->attendsJobfair()){
             return new ViewModel();
         }
 
@@ -372,6 +388,10 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
     {
         $person = $this->getCorporateEntity();
         if ($person === null) {
+            return new ViewModel();
+        }
+
+        if (!$person->getCompany()->attendsJobfair()){
             return new ViewModel();
         }
 

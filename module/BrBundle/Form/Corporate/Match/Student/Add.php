@@ -70,40 +70,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             );
         }
 
-        // Sector features
-        foreach ($this->getSectorFeatureNames() as $featureId => $featureName){
-            $this->add(
-                array(
-                    'type'       => 'select',
-                    'name'       => 'sector_feature_'.$featureId,
-                    'label'      => 'Sector Feature: '.$featureName,
-                    'value'      => 0,
-                    'attributes' => array(
-                        'style'   => 'max-height: 38px;height:38px;max-width:150px;',
-                        'options'  => $this->makeSectorOptions(),
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name'    => 'SectorImportanceConstraint',
-                                ),
-                            ),
-                        ),
-
-                    ),
-                )
-            );
-        }
-
         $this->add(
             array(
                 'type'       => 'checkbox',
                 'name'       => 'conditions',
-                'label'      => 'I have read and accept the GDPR terms and condition specified above',
+                'label'      => 'I have read and accept the terms specified above',
                 'attributes' => array(
                     'id' => 'conditions',
                 ),

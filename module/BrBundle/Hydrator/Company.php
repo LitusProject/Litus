@@ -34,7 +34,7 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $stdKeys = array('name', 'vat_number', 'phone_number', 'website', 'matching_software_email');
+    private static $stdKeys = array('name', 'vat_number', 'phone_number', 'website', 'matching_software_email', 'attendsJobfair');
 
     protected function doHydrate(array $data, $object = null)
     {

@@ -70,31 +70,33 @@ class Edit extends \BrBundle\Form\Admin\Match\Profile\Add
         }
 
         // Sector features
-        foreach ($this->getSectorFeatureNames() as $featureId => $featureName){
-            $this->add(
-                array(
-                    'type'       => 'select',
-                    'name'       => 'sector_feature_'.$featureId,
-                    'label'      => 'Sector Feature: '.$featureName,
-                    'value'      => 0,
-                    'attributes' => array(
-                        'options'  => $this->makeSectorOptions(),
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name'    => 'SectorImportanceConstraint',
+        if ($this->profile->getProfileType() == 'company'){
+            foreach ($this->getSectorFeatureNames() as $featureId => $featureName){
+                $this->add(
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'sector_feature_'.$featureId,
+                        'label'      => 'Sector Feature: '.$featureName,
+                        'value'      => 0,
+                        'attributes' => array(
+                            'options'  => $this->makeSectorOptions(),
+                        ),
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'SectorImportanceConstraint',
+                                    ),
                                 ),
                             ),
-                        ),
 
-                    ),
-                )
-            );
+                        ),
+                    )
+                );
+            }
         }
 
         $this
