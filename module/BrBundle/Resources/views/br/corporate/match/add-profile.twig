@@ -17,11 +17,11 @@
 
         <div>
             {% if type == 'company' %}
-                <div style="margin-top: 15px;"><u><strong>{{ translate('This profile should describe what your company is like.') }}</strong></u>
+                <div style="margin-top: 15px;"><u><strong>{{ translate('This profile describes your company. Based on this profile, students with similar interests will be matched with you. Try to focus on your unique aspects as a company and showcase your strengths. This way, you increase your chances of getting a unique match with someone who is looking for a company like yours.') }}</strong></u>
                     <p>{{ translate('A student will have a higher match rating, if your company matches the traits that they are looking for!') }}</p>
                 </div>
             {% elseif type == 'student' %}
-                <div style="margin-top: 15px;"><u><strong>{{ translate('This profile should describe what you are looking for in a student.') }}</strong></u>
+                <div style="margin-top: 15px;"><u><strong>{{ translate('With this profile, you can describe the qualities of a student you are looking for. Such that the students that best match your preferences will be at the top of your list. So do make sure that your profile is tailored to features that are essential.') }}</strong></u>
                     <p>{{ translate('A student will have a higher match rating, if the student matches the traits that you are looking for!') }}</p>
                 </div>
             {% endif %}
