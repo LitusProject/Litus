@@ -104,7 +104,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             array(
                 'type'       => 'checkbox',
                 'name'       => 'conditions',
-                'label'      => 'I have read and accept the terms specified above',
+                'label'      => 'The information provided in this survey may be used within this application. My personal information may be shared with companies matched to my profile.',
                 'attributes' => array(
                     'id' => 'conditions',
                 ),
