@@ -16,7 +16,7 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $stdKeys = array('name', 'vat_number', 'phone_number', 'website', 'matching_software_email', 'attends_jobfair', 'large');
+    private static $stdKeys = array('name', 'vat_number', 'phone_number', 'website', 'matching_software_email', 'large');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -43,6 +43,8 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
                 $hydrator->hydrate($data['invoice']['invoice_address'], $object->getRawInvoiceAddress())
             );
         }
+        
+        $object->setAttendsJobfair($data['attends_jobfair']);
 
         $object->setSector($data['sector']);
 
@@ -105,6 +107,8 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
         $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['sector'] = $object->getSectorCode();
+        
+        $data['attends_jobfair'] = $object->attendsJobfair();
 
         $data['cvbook'] = array();
         foreach ($object->getCvBookYears() as $year) {
