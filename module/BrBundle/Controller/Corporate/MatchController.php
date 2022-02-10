@@ -47,7 +47,7 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
             ->getRepository('BrBundle\Entity\Match\Wave')
             ->findAll();
 
-        if (is_null($allWaves[0])){
+        if (is_null($allWaves) || is_null($allWaves[0])){
             return new ViewModel(
                 array(
                     'needs_sp'  => $sp,
