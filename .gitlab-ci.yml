@@ -4,6 +4,8 @@ stages:
 
 variables:
     COMPOSER_HOME: $CI_PROJECT_DIR/.composer
+    NO_PROXY: "gitlab.vtk.be"
+
 
 build:
     stage: build
@@ -21,6 +23,7 @@ build:
     artifacts:
         paths:
             - litus.tar.gz
+
 
 .deploy: &deploy
     stage: deploy
