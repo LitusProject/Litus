@@ -261,7 +261,7 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
         }
 
         usort($matches, function($a, $b) {
-            return $a->getMatchPercentage() - $b->getMatchPercentage();
+            return $b->getMatchPercentage() - $a->getMatchPercentage();
         });
 
         $cw = new CompanyWave($wave, $company);
@@ -284,6 +284,7 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
             $this->getEntityManager()->persist($map);
             $cw->addMatch($map);
             $match->setWave($map);
+            $match->setInterested(true);
             $i += 1;
         }
 

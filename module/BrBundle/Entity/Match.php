@@ -209,26 +209,48 @@ class Match
         $companyTraitMaps = $companyProfile->getFeatures()->toArray();
         $studentTraitMaps = $studentProfile->getFeatures()->toArray();
 
-        foreach ($studentTraitMaps as $trait)
+        $max = 0;
+        foreach ($studentTraitMaps as $trait) {
             $studentTraits[] = array(
                 'id' => $trait->getFeature()->getId(),
-                'importance' => $trait->getImportance());
+                'importance' => $trait->getImportanceWorth());
+            $max += $trait->getImportanceWorth()/100;
+        }
         foreach ($companyTraitMaps as $trait)
+        {
             $companyTraits[] = array(
                 'id' => $trait->getFeature()->getId(),
-                'importance' => $trait->getImportance());
+                'bonusIds' => $trait->getFeature()->getBonus(),
+                'malusIds' => $trait->getFeature()->getMalus(),
+                'importance' => $trait->getImportanceWorth());
+            $max += $trait->getImportanceWorth()/100;
+        }
+
 
         $positives = 0;
         $negatives = 0;
         foreach ($studentTraits as $ST){
             foreach ($companyTraits as $CT){
                 if ($ST['id'] == $CT['id'])
-                    $positives += $ST['importance']*$CT['importance']/10000;
-//                if ($ST->isOpposite($CT)) $negatives++;
+                    $positives += ($ST['importance']+$CT['importance'])/100;
+                if (in_array($ST['id'], $CT['bonusIds']))
+                    $positives += ($ST['importance']+$CT['importance'])/100;
+                if (in_array($ST['id'], $CT['malusIds']))
+                    $negatives += ($ST['importance']+$CT['importance'])/100;
             }
         }
-        return ceil(
-            5000 + 5000 * $positives / max(count($studentTraits), count($companyTraits)) - 5000 * $negatives / max(count($studentTraits), count($companyTraits))
+
+
+        $val = ceil(
+            5000 + 5000 * ($positives - $negatives) / $max
         );
+        error_log("SO: positives ".$positives. " and negatives ".$negatives.", max ".$max.", val ".$val);
+        if ($val > 10000){
+            $val = 10000;
+        }
+        if ($val < 0){
+            $val = 0;
+        }
+        return $val;
     }
 }
