@@ -143,8 +143,8 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
                     }
                 }
             }
+            $this->getEntityManager()->flush();
         }
-        $this->getEntityManager()->flush();
 
         $this->redirect()->toRoute(
             'br_admin_match_match',
@@ -220,6 +220,10 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('BrBundle\Entity\Match\Profile\ProfileCompanyMap')
             ->findByCompany($company);
 
+        $studentStudentProfile = null;
+        $studentCompanyProfile = null;
+        $companyStudentProfile = null;
+        $companyCompanyProfile = null;
         foreach ($studentProfiles as $profile) {
             if ($profile->getProfile()->getProfileType() === 'student') {
                 $studentStudentProfile = $profile->getProfile();
