@@ -466,16 +466,16 @@ class EventController extends \BrBundle\Component\Controller\CareerController
         $message = str_replace('{{qrLink}}', $url, $message);
         $message = str_replace('{{brMail}}', $mailAddress, $message);
 
-        $test = new Part($message);
+        $part = new Part($message);
 
-        $test->type = Mime::TYPE_HTML;
-        $test->charset = 'utf-8';
-        $bericht = new \Laminas\Mime\Message();
-        $bericht->addPart($test);
+        $part->type = Mime::TYPE_HTML;
+        $part->charset = 'utf-8';
+        $newMessage = new \Laminas\Mime\Message();
+        $newMessage->addPart($part);
 
         $mail = new Message();
         $mail->setEncoding('UTF-8')
-            ->setBody($bericht)
+            ->setBody($newMessage)
             ->setFrom($mailAddress, $mailName)
             ->addTo($subscription->getEmail(), $subscription->getFirstName().' '.$subscription->getLastName())
             ->addBcc(
@@ -484,7 +484,6 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             )
             ->setSubject($subject);
 
-//        die(json_encode($mail->toString()));
         if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);
         }
