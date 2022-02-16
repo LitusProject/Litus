@@ -367,6 +367,26 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $this->getEntityManager()->flush(); 
         }
 
+        $shifter = $shift->getVolunteers();
+        $count = 0;
+        $personen = array();
+        foreach ($shifter as $vol) {
+            $personen[] = $vol->getPerson()->getId();
+        }
+
+        foreach ($personen as $per) {
+            if ($per == $person->getId()) {
+                $count++;
+            }
+        }
+        while ($count > 1) {
+            $remove = $this->getShiftEntity()->removePerson($person);
+            if ($remove !== null) {
+                $this->getEntityManager()->remove($remove);
+            }
+            $count--;
+        }
+
         return new ViewModel(
             array(
                 'result' => (object) array(
