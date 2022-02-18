@@ -496,10 +496,6 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             ->setBody($newMessage)
             ->setFrom($mailAddress, $mailName)
             ->addTo($subscription->getEmail(), $subscription->getFirstName().' '.$subscription->getLastName())
-            ->addBcc(
-                $mailAddress,
-                $mailName
-            )
             ->setSubject($subject);
 
         if (getenv('APPLICATION_ENV') != 'development') {
