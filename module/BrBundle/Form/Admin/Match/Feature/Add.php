@@ -72,9 +72,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'checkbox',
-                'name'     => 'sector',
-                'label'    => 'Is Sector?',
+                'type'  => 'checkbox',
+                'name'  => 'sector',
+                'label' => 'Is Sector?',
             )
         );
 

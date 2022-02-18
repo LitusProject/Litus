@@ -160,12 +160,11 @@ class ProfileFeatureMap
         $this->importance = $importance;
     }
 
-    /**
-     */
     public function getImportanceWorth()
     {
-        if($this->getFeature()->isSector() == true)
-            return $this->importance*100;
+        if ($this->getFeature()->isSector() == true) {
+            return $this->importance * 100;
+        }
         return $this->importance;
     }
 }

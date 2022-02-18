@@ -106,7 +106,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         $featureNames = array();
         foreach ($this->getEntityManager()->getRepository('BrBundle\Entity\Match\Feature')->findAll() as $feature) {
-            if (!$feature->isSector() && ($feature->getType() == 'student' || $feature->getType() == null)){
+            if (!$feature->isSector() && ($feature->getType() == 'student' || $feature->getType() == null)) {
                 $featureNames[$feature->getId()] = $feature->getName();
             }
         }

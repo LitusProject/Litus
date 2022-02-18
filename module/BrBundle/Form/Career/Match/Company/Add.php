@@ -72,7 +72,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         // Sector features
-        foreach ($this->getSectorFeatureNames() as $featureId => $featureName){
+        foreach ($this->getSectorFeatureNames() as $featureId => $featureName) {
             $this->add(
                 array(
                     'type'       => 'select',
@@ -81,16 +81,16 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'value'      => 0,
                     'attributes' => array(
                         'style'   => 'max-height: 38px;height:38px;max-width:150px;',
-                        'options'  => $this->makeSectorOptions(),
+                        'options' => $this->makeSectorOptions(),
                     ),
-                    'options' => array(
+                    'options'    => array(
                         'input' => array(
                             'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
                                 array(
-                                    'name'    => 'SectorImportanceConstraint',
+                                    'name' => 'SectorImportanceConstraint',
                                 ),
                             ),
                         ),
@@ -137,7 +137,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         $featureNames = array();
         foreach ($this->getEntityManager()->getRepository('BrBundle\Entity\Match\Feature')->findAll() as $feature) {
-            if (!$feature->isSector() && ($feature->getType() == 'company' || $feature->getType() == null)){
+            if (!$feature->isSector() && ($feature->getType() == 'company' || $feature->getType() == null)) {
                 $featureNames[$feature->getId()] = $feature->getName();
             }
         }
@@ -166,8 +166,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         $featureNames = array();
         foreach ($this->getEntityManager()->getRepository('BrBundle\Entity\Match\Feature')->findAll() as $feature) {
-            if ($feature->isSector())
+            if ($feature->isSector()) {
                 $featureNames[$feature->getId()] = $feature->getName();
+            }
         }
 
         return $featureNames;
@@ -181,7 +182,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $amt = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.match_sector_feature_max_points');
-        return range(0,$amt);
+        return range(0, $amt);
     }
 
     /**

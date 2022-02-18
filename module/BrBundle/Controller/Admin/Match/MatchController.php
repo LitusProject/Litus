@@ -8,7 +8,6 @@ use BrBundle\Entity\Match\MatcheeMap\CompanyMatcheeMap;
 use BrBundle\Entity\Match\MatcheeMap\StudentMatcheeMap;
 use CommonBundle\Entity\User\Person;
 use Doctrine\ORM\ORMException;
-use Laminas\Http\Headers;
 use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
 
@@ -25,9 +24,13 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('BrBundle\Entity\Match')
             ->findAll();
 
-        usort($matches, function($a, $b) { // Order the matches by match rating
-            return -$a->getMatchPercentage() + $b->getMatchPercentage();
-        });
+        usort(
+            $matches,
+            function ($a, $b) {
+            // Order the matches by match rating
+                return -$a->getMatchPercentage() + $b->getMatchPercentage();
+            }
+        );
 
         $paginator = $this->paginator()->createFromArray(
             $matches,
@@ -143,8 +146,8 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
                     }
                 }
             }
-            $this->getEntityManager()->flush();
         }
+        $this->getEntityManager()->flush();
 
         $this->redirect()->toRoute(
             'br_admin_match_match',
@@ -165,8 +168,8 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
 
         $students = array();
         $allStudents = array();
-        foreach ($maps as $studentMap){
-            if (!in_array($studentMap->getStudent()->getId(), $students)){
+        foreach ($maps as $studentMap) {
+            if (!in_array($studentMap->getStudent()->getId(), $students)) {
                 array_push($students, $studentMap->getStudent()->getId());
                 array_push($allStudents, $studentMap->getStudent());
             }
@@ -190,8 +193,8 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
 
         $companies = array();
         $allCompanies = array();
-        foreach ($maps as $companyMap){
-            if (!in_array($companyMap->getCompany()->getId(), $companies)){
+        foreach ($maps as $companyMap) {
+            if (!in_array($companyMap->getCompany()->getId(), $companies)) {
                 $companies[] = $companyMap->getCompany()->getId();
                 $allCompanies[] = $companyMap->getCompany();
             }
@@ -220,10 +223,6 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('BrBundle\Entity\Match\Profile\ProfileCompanyMap')
             ->findByCompany($company);
 
-        $studentStudentProfile = null;
-        $studentCompanyProfile = null;
-        $companyStudentProfile = null;
-        $companyCompanyProfile = null;
         foreach ($studentProfiles as $profile) {
             if ($profile->getProfile()->getProfileType() === 'student') {
                 $studentStudentProfile = $profile->getProfile();
@@ -308,7 +307,6 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
         return $match;
     }
 
-
     public function sendMailToCompaniesAction(array $companies)
     {
         $mailAddress = $this->getEntityManager()
@@ -338,16 +336,16 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
         $noEmails = array();
         $bccs = array();
         foreach ($companies as $company) {
-            if (is_null($company->getMatchingSoftwareEmail())){
+            if (is_null($company->getMatchingSoftwareEmail())) {
                 $noEmails[] = $company->getName();
             } else {
-                $bccs[] = array($company->getMatchingSoftwareEmail(),$bccName = $company->getName());
+                $bccs[] = array($company->getMatchingSoftwareEmail(), $company->getName());
             }
         }
 
-        if (sizeof($noEmails) > 0){
+        if (count($noEmails) > 0) {
             $body = "The following companies do not have a default email set:\n";
-            foreach ($noEmails as $name){
+            foreach ($noEmails as $name) {
                 $body .= $name."\n";
             }
             $mail->setBody($body);
@@ -355,7 +353,7 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
                 $this->getMailTransport()->send($mail);
             }
         } else {
-            foreach ($bccs as $bcc){
+            foreach ($bccs as $bcc) {
                 $mail->addBcc($bcc[0], $bcc[1]);
             }
 

@@ -122,6 +122,6 @@ class Wave
      */
     public function isGenerated()
     {
-        return $this->companyWaves->count()>0;
+        return $this->companyWaves->count() > 0;
     }
 }
