@@ -2,15 +2,12 @@
 
 namespace BrBundle\Entity;
 
-use BrBundle\Entity\Company\Page;
-use BrBundle\Entity\Match\Wave\CompanyWave;
 use BrBundle\Entity\Match\MatcheeMap\CompanyMatcheeMap;
 use BrBundle\Entity\Match\MatcheeMap\StudentMatcheeMap;
 use BrBundle\Entity\Match\Profile;
 use BrBundle\Entity\Match\Wave;
 use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -174,7 +171,7 @@ class Match
 
     /**
      * @param EntityManager $em
-     * @param AcademicYear $academicYear
+     * @param AcademicYear  $academicYear
      * @return boolean
      */
     public function doesCompanyHavePage(EntityManager $em, AcademicYear $academicYear)
@@ -183,9 +180,10 @@ class Match
             ->getRepository('BrBundle\Entity\Company\Page')
             ->findOneActiveBySlug($this->getCompany()->getSlug(), $academicYear);
 
-        if (!($page instanceof Page)) {
+        if (is_null($page)) {
             return false;
         }
+        
         return true;
     }
 
@@ -194,10 +192,10 @@ class Match
      */
     public function calculateMatchPercentage()
     {
-        return round(($this->getMatchPercentages($this->companyMatchee->getCompanyProfile(), $this->studentMatchee->getCompanyProfile()) +
-                $this->getMatchPercentages($this->companyMatchee->getStudentProfile(), $this->studentMatchee->getStudentProfile())) / 2);
+        return round(
+            ($this->getMatchPercentages($this->companyMatchee->getCompanyProfile(), $this->studentMatchee->getCompanyProfile()) + $this->getMatchPercentages($this->companyMatchee->getStudentProfile(), $this->studentMatchee->getStudentProfile())) / 2
+        );
     }
-
 
     /**
      * @param Profile $companyProfile
@@ -210,45 +208,48 @@ class Match
         $studentTraitMaps = $studentProfile->getFeatures()->toArray();
 
         $max = 0;
+        $studentTraits = array();
+        $companyTraits = array();
         foreach ($studentTraitMaps as $trait) {
             $studentTraits[] = array(
-                'id' => $trait->getFeature()->getId(),
-                'importance' => $trait->getImportanceWorth());
-            $max += $trait->getImportanceWorth()/100;
+                'id'         => $trait->getFeature()->getId(),
+                'importance' => $trait->getImportanceWorth()
+            );
+            $max += $trait->getImportanceWorth() / 100;
         }
-        foreach ($companyTraitMaps as $trait)
-        {
+        foreach ($companyTraitMaps as $trait) {
             $companyTraits[] = array(
-                'id' => $trait->getFeature()->getId(),
-                'bonusIds' => $trait->getFeature()->getBonus(),
-                'malusIds' => $trait->getFeature()->getMalus(),
-                'importance' => $trait->getImportanceWorth());
-            $max += $trait->getImportanceWorth()/100;
+                'id'         => $trait->getFeature()->getId(),
+                'bonusIds'   => $trait->getFeature()->getBonus(),
+                'malusIds'   => $trait->getFeature()->getMalus(),
+                'importance' => $trait->getImportanceWorth()
+            );
+            $max += $trait->getImportanceWorth() / 100;
         }
-
 
         $positives = 0;
         $negatives = 0;
-        foreach ($studentTraits as $ST){
-            foreach ($companyTraits as $CT){
-                if ($ST['id'] == $CT['id'])
-                    $positives += ($ST['importance']+$CT['importance'])/100;
-                if (in_array($ST['id'], $CT['bonusIds']))
-                    $positives += ($ST['importance']+$CT['importance'])/100;
-                if (in_array($ST['id'], $CT['malusIds']))
-                    $negatives += ($ST['importance']+$CT['importance'])/100;
+        foreach ($studentTraits as $ST) {
+            foreach ($companyTraits as $CT) {
+                if ($ST['id'] == $CT['id']) {
+                    $positives += ($ST['importance'] + $CT['importance']) / 100;
+                }
+                if (in_array($ST['id'], $CT['bonusIds'])) {
+                    $positives += ($ST['importance'] + $CT['importance']) / 100;
+                }
+                if (in_array($ST['id'], $CT['malusIds'])) {
+                    $negatives += ($ST['importance'] + $CT['importance']) / 100;
+                }
             }
         }
-
 
         $val = ceil(
             5000 + 5000 * ($positives - $negatives) / $max
         );
-        error_log("SO: positives ".$positives. " and negatives ".$negatives.", max ".$max.", val ".$val);
-        if ($val > 10000){
+        if ($val > 10000) {
             $val = 10000;
         }
-        if ($val < 0){
+        if ($val < 0) {
             $val = 0;
         }
         return $val;

@@ -68,7 +68,7 @@ class Match extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                     $query->expr()->eq('c.company', ':company')
                 )
             )
-            ->orderBy('m.matchPercentage', 'ASC')
+            ->orderBy('m.matchPercentage', 'DESC')
             ->setParameter('company', $company)
             ->getQuery()
             ->getResult();
@@ -86,7 +86,7 @@ class Match extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                     $query->expr()->eq('m.interested', 'true')
                 )
             )
-            ->orderBy('m.matchPercentage', 'ASC')
+            ->orderBy('m.matchPercentage', 'DESC')
             ->setParameter('company', $company)
             ->getQuery()
             ->getResult();
@@ -103,7 +103,7 @@ class Match extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                     $query->expr()->eq('s.student', ':student')
                 )
             )
-            ->orderBy('m.matchPercentage', 'ASC')
+            ->orderBy('m.matchPercentage', 'DESC')
             ->setParameter('student', $student)
             ->getQuery()
             ->getResult();
@@ -143,7 +143,7 @@ class Match extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                     $query->expr()->eq('cw.wave', ':wave')
                 )
             )
-            ->orderBy('m.matchPercentage', 'ASC')
+            ->orderBy('m.matchPercentage', 'DESC')
             ->setParameter('student', $student)
             ->setParameter('wave', $wave)
             ->getQuery()
@@ -153,18 +153,19 @@ class Match extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     public function countInterestedByCompany(\BrBundle\Entity\Company $company)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        return $query->select($query->expr()->countDistinct('m'))
-            ->from('BrBundle\Entity\Match', 'm')
-            ->innerJoin('m.companyMatchee', 'c')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->eq('c.company', ':company'),
-                    $query->expr()->eq('m.interested', 'true')
+        return count(
+            $query->select('m')
+                ->from('BrBundle\Entity\Match', 'm')
+                ->innerJoin('m.companyMatchee', 'c')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->eq('c.company', ':company'),
+                        $query->expr()->eq('m.interested', 'true')
+                    )
                 )
-            )
-            ->orderBy('m.matchPercentage', 'ASC')
-            ->setParameter('company', $company)
-            ->getQuery()
-            ->getResult();
+                ->setParameter('company', $company)
+                ->getQuery()
+                ->getResult()
+        );
     }
 }

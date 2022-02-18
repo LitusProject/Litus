@@ -59,5 +59,4 @@ class Company extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->orderBy('c.name', 'ASC')
             ->getQuery();
     }
-
 }

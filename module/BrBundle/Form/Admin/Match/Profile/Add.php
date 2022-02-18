@@ -100,7 +100,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 ),
             )
         );
-//
 //        foreach ($this->getFeatureNames() as $featureId => $featureName){
 //            $this->add(
 //                array(
@@ -130,7 +129,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->addSubmit('Add', 'profile_add');
     }
-//
+
 //    /**
 //     * @return array
 //     */

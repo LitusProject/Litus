@@ -45,16 +45,17 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
             ->findOneByProfile($profile);
 
         $matches = array();
-        if (!is_null($studentMap)){
+        if (!is_null($studentMap)) {
             $maps = $this->getEntityManager()->getRepository('BrBundle\Entity\Match\MatcheeMap\StudentMatcheeMap')
                 ->findByStudent($studentMap->getStudent());
-            foreach ($maps as $map)
+            foreach ($maps as $map) {
                 $matches[] = $this->getEntityManager()->getRepository('BrBundle\Entity\Match')
                     ->findOneByStudentMatchee($map);
-        } elseif (!is_null($companyMap)){
+            }
+        } elseif (!is_null($companyMap)) {
             $maps = $this->getEntityManager()->getRepository('BrBundle\Entity\Match\MatcheeMap\CompanyMatcheeMap')
                 ->findByCompany($companyMap->getCompany());
-            foreach ($maps as $map){
+            foreach ($maps as $map) {
                 $matches[] = $this->getEntityManager()->getRepository('BrBundle\Entity\Match')
                     ->findOneByCompanyMatchee($map);
             }
@@ -71,8 +72,8 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'student'           => $studentMap?$studentMap->getStudent():null,
-                'company'           => $companyMap?$companyMap->getCompany():null,
+                'student'           => $studentMap ? $studentMap->getStudent() : null,
+                'company'           => $companyMap ? $companyMap->getCompany() : null,
             )
         );
     }
@@ -86,7 +87,6 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()) {
-
                 if ($formData['type'] === 'student') {
                     $student = $this->getEntityManager()->getRepository('CommonBundle\Entity\User\Person')
                         ->findOneById($formData['student']['id']);
@@ -94,8 +94,8 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
                     // GET EXISTING PROFILES AND CHECK IF THIS TYPE ALREADY EXISTS
                     $profiles = $this->getEntityManager()->getRepository('BrBundle\Entity\Match\Profile\ProfileStudentMap')
                         ->findByStudent($student);
-                    foreach ($profiles as $prof){
-                        if ($formData['profile_type'] == $prof->getProfile()->getProfileType()){
+                    foreach ($profiles as $prof) {
+                        if ($formData['profile_type'] == $prof->getProfile()->getProfileType()) {
                             $this->flashMessenger()->error(
                                 'Error',
                                 'This type of profile already exists for this student!'
@@ -118,8 +118,8 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
                     // GET EXISTING PROFILES AND CHECK IF THIS TYPE ALREADY EXISTS
                     $profiles = $this->getEntityManager()->getRepository('BrBundle\Entity\Match\Profile\ProfileCompanyMap')
                         ->findByCompany($company);
-                    foreach ($profiles as $prof){
-                        if ($formData['profile_type'] == $prof->getProfile()->getProfileType()){
+                    foreach ($profiles as $prof) {
+                        if ($formData['profile_type'] == $prof->getProfile()->getProfileType()) {
                             $this->flashMessenger()->error(
                                 'Error',
                                 'This type of profile already exists for this company!'
@@ -190,26 +190,29 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()){
+            if ($form->isValid()) {
                 // Remove current Features
                 $currentFeatures = $profile->getFeatures();
-                foreach ($currentFeatures as $map){
+                foreach ($currentFeatures as $map) {
                     $profile->getFeatures()->removeElement($map);
                     $this->getEntityManager()->remove($map);
                 }
                 $this->getEntityManager()->flush();
 
                 // Add new features with their importances
-                foreach ($formData as $key => $val){
-                    if (str_contains($key, 'feature_') && $val != 0){
+                foreach ($formData as $key => $val) {
+                    if (str_contains($key, 'feature_') && $val != 0) {
                         $id = substr($key, strlen('feature_'));
-                        if (str_contains($key, 'sector_feature_')){
+                        if (str_contains($key, 'sector_feature_')) {
                             $id = substr($key, strlen('sector_feature_'));
                         }
                         $map = new ProfileFeatureMap(
                             $this->getEntityManager()
                                 ->getRepository('BrBundle\Entity\Match\Feature')
-                                ->findOneById($id),$profile, $val);
+                                ->findOneById($id), 
+                            $profile,
+                            $val
+                        );
                         $this->getEntityManager()->persist($map);
                         $profile->addFeature($map);
                     }
@@ -234,9 +237,9 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'form'      => $form,
-                'profile'   => $profile,
-                'em'        => $this->getEntityManager(),
+                'form'          => $form,
+                'profile'       => $profile,
+                'em'            => $this->getEntityManager(),
                 'sector_points' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('br.match_sector_feature_max_points'),
@@ -257,8 +260,9 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('BrBundle\Entity\Match')
             ->findAllByProfile($profile);
 
-        foreach ($matches as $match)
+        foreach ($matches as $match) {
             $this->getEntityManager()->remove($match);
+        }
 
         $this->getEntityManager()->remove($profile);
 

@@ -51,10 +51,9 @@
                                 <br/>
                                 {{ match.getMatchPercentage() }} %
                             </td>
-{#                            <td width="230" style="vertical-align: middle;">
+                            <td width="230" style="vertical-align: middle;">
                                 <a class="button blue pull-right" href="{{ url('br_corporate_match', {'action': 'viewMatch', 'id': match.getId() }) }}">{{ translate('View CV') }}</a>
-                            </td>#}
-
+                            </td>
                         </tr>
                     {% else %}
                         <p>{{ translate('No matches were found...') }}</p>
@@ -65,6 +64,6 @@
             </div>
         </div>
     </div>
-    </div>
 
 {% endblock %}
+

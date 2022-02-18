@@ -6,7 +6,6 @@ use BrBundle\Entity\Company;
 use BrBundle\Entity\Match\Wave;
 use BrBundle\Entity\Match\Wave\CompanyWave;
 use Doctrine\ORM\ORMException;
-use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
 
 /**
@@ -245,24 +244,29 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
      * @return CompanyWave
      * @throws ORMException
      */
-    private function makeCompanyWave(Company $company, int $nb, Wave $wave){
+    private function makeCompanyWave(Company $company, int $nb, Wave $wave)
+    {
         $maps = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Match\MatcheeMap\CompanyMatcheeMap')
             ->findByCompany($company);
 
         $matches = array();
-        foreach ($maps as $m){
+        foreach ($maps as $m) {
             $match = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Match')
                 ->findOneByCompanyMatchee($m);
 
-            if (!is_null($match))
+            if (!is_null($match)) {
                 $matches[] = $match;
+            }
         }
 
-        usort($matches, function($a, $b) {
-            return $b->getMatchPercentage() - $a->getMatchPercentage();
-        });
+        usort(
+            $matches,
+            function ($a, $b) {
+                return $a->getMatchPercentage() - $b->getMatchPercentage();
+            }
+        );
 
         $cw = new CompanyWave($wave, $company);
         $this->getEntityManager()->persist($cw);
@@ -270,9 +274,9 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
 
         $i = 0; // index of highest match
         $n = 0; // number of matches in this wave
-        $sizeMM = sizeof($matches);
+        $sizeMM = count($matches);
 
-        while ($i < $sizeMM && $n<$nb){
+        while ($i < $sizeMM && $n < $nb) {
             $match = $matches[$i];
 
             if (!is_null($match->getWave())) {

@@ -42,7 +42,7 @@ class Edit extends \BrBundle\Form\Admin\Match\Profile\Add
             ->remove('student')->remove('features')->remove('profile_type');
 
         // Type features
-        foreach ($this->getFeatureNames() as $featureId => $featureName){
+        foreach ($this->getFeatureNames() as $featureId => $featureName) {
             $this->add(
                 array(
                     'type'       => 'select',
@@ -50,16 +50,16 @@ class Edit extends \BrBundle\Form\Admin\Match\Profile\Add
                     'label'      => 'Company Feature: '.$featureName,
                     'value'      => ' ',
                     'attributes' => array(
-                        'options'  => $this->makeOptions(),
+                        'options' => $this->makeOptions(),
                     ),
-                    'options' => array(
+                    'options'    => array(
                         'input' => array(
                             'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
                                 array(
-                                    'name'    => 'FeatureImportanceConstraint',
+                                    'name' => 'FeatureImportanceConstraint',
                                 ),
                             ),
                         ),
@@ -70,8 +70,8 @@ class Edit extends \BrBundle\Form\Admin\Match\Profile\Add
         }
 
         // Sector features
-        if ($this->profile->getProfileType() == 'company'){
-            foreach ($this->getSectorFeatureNames() as $featureId => $featureName){
+        if ($this->profile->getProfileType() == 'company') {
+            foreach ($this->getSectorFeatureNames() as $featureId => $featureName) {
                 $this->add(
                     array(
                         'type'       => 'select',
@@ -79,16 +79,16 @@ class Edit extends \BrBundle\Form\Admin\Match\Profile\Add
                         'label'      => 'Sector Feature: '.$featureName,
                         'value'      => 0,
                         'attributes' => array(
-                            'options'  => $this->makeSectorOptions(),
+                            'options' => $this->makeSectorOptions(),
                         ),
-                        'options' => array(
+                        'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
                                 ),
                                 'validators' => array(
                                     array(
-                                        'name'    => 'SectorImportanceConstraint',
+                                        'name' => 'SectorImportanceConstraint',
                                     ),
                                 ),
                             ),
@@ -108,7 +108,6 @@ class Edit extends \BrBundle\Form\Admin\Match\Profile\Add
         }
     }
 
-
     /**
      * @return array
      */
@@ -117,7 +116,7 @@ class Edit extends \BrBundle\Form\Admin\Match\Profile\Add
         $type = $this->profile->getProfileType();
         $featureNames = array();
         foreach ($this->getEntityManager()->getRepository('BrBundle\Entity\Match\Feature')->findAll() as $feature) {
-            if (!$feature->isSector() && ($feature->getType() == 'company' || $feature->getType() == null)) {
+            if (!$feature->isSector() && ($feature->getType() == $type || $feature->getType() == null)) {
                 $featureNames[$feature->getId()] = $feature->getName();
             }
         }
@@ -132,8 +131,9 @@ class Edit extends \BrBundle\Form\Admin\Match\Profile\Add
     {
 
         $options = array();
-        foreach (Profile\ProfileFeatureMap::$POSSIBLE_VISIBILITIES as $val => $type)
+        foreach (Profile\ProfileFeatureMap::$POSSIBLE_VISIBILITIES as $val => $type) {
             $options[$val] = $type;
+        }
 
         return $options;
     }
@@ -145,8 +145,9 @@ class Edit extends \BrBundle\Form\Admin\Match\Profile\Add
     {
         $featureNames = array();
         foreach ($this->getEntityManager()->getRepository('BrBundle\Entity\Match\Feature')->findAll() as $feature) {
-            if ($feature->isSector())
+            if ($feature->isSector()) {
                 $featureNames[$feature->getId()] = $feature->getName();
+            }
         }
 
         return $featureNames;
@@ -160,7 +161,7 @@ class Edit extends \BrBundle\Form\Admin\Match\Profile\Add
         $amt = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.match_sector_feature_max_points');
-        return range(0,$amt);
+        return range(0, $amt);
     }
 
     /**
