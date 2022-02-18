@@ -545,7 +545,7 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
         $mailData = unserialize(
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('br.match_wave_companies_body')
+                ->getConfigValue('br.match_first_interested_mail_body')
         );
 
         $message = $mailData['content'];

@@ -175,7 +175,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'required' => true,
             )
         );
-        
+
         $this->add(
             array(
                 'type'  => 'checkbox',
