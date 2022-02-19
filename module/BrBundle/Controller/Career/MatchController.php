@@ -132,9 +132,14 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
         }
 
         if ($this->isMasterStudent($person) == false) {
+            $msg = "You are not a Master's student, and therefore cannot enroll in the matching platform!\nThe following studies would have been accepted:";
+            foreach (unserialize($this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('syllabus.master_group_ids')) as $id){
+                $msg .= " ".$id;
+            }
             $this->flashMessenger()->error(
-                'Error',
-                "You are not a Master's student, and therefore cannot enroll in the matching platform!\n". "Accepted were: "
+                'Error', $msg."!"
             );
             $this->redirect()->toRoute(
                 'br_career_match',
@@ -520,11 +525,11 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
             if (!is_null($group)) {
                 $studyMaps = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
-                    ->findAllByGroupAndAcademicYear($group, $this->getCurrentAcademicYear());
+                    ->findAllByGroupAndAcademicYear($group, $this->getCurrentAcademicYear()); // is null
 
                 foreach ($studyMaps as $map) {
                     foreach ($studies as $study) {
-                        if ($study == $map->getStudy()) {
+                        if ($study->getStudy() == $map->getStudy()) {
                             return true;
                         }
                     }
