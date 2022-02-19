@@ -16,7 +16,7 @@
         <div style="height: 100px"></div>
 
         {% if event.canSubscribe() %}
-        <a class="button blue unfilled" href="{{ url('br_career_event',{ 'action': 'subscribe', 'id': event.getId() }) }}">{{ translate('Subscribe to this event here') }} →</a>
+        <a class="button blue unfilled" href="{{ url('br_career_event',{ 'action': 'subscribe', 'id': event.getId() }) }}">{{ translate('Register to this event here') }} →</a>
         {% endif %}
         {% if event.canViewMap() %}
         <a class="button blue unfilled" href="{{ url('br_career_event',{ 'action': 'map', 'id': event.getId() }) }}">{{ translate('Look at the attending companies here') }} →</a>
