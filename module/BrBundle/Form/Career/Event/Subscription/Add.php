@@ -258,7 +258,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             array(
                 'type'     => 'checkbox',
                 'name'     => 'network_reception',
-                'label'    => 'Network reception',
+                'label'    => 'I will participate in the network reception.',
                 'required' => true,
             )
         );
