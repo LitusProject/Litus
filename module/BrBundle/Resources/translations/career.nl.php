@@ -45,4 +45,7 @@ return array(
     'No items found'                                                                                                                                                                   => 'Geen items gevonden',
     'This vacancy is not yet on publicly visible. It will be after it is approved by an admin.'                                                                                        => 'Deze job is nog niet publiek zichtbaar. De job zal zichtbaar zijn zodra een beheerder hem heeft goedgekeurd.',
     'This internship is not yet on publicly visible. It will be after it is approved by an admin.'                                                                                     => 'Deze stage is nog niet publiek zichtbaar. De stage zal zichtbaar zijn zodra een beheerder hem heeft goedgekeurd.',
+    'Return to the Event Information'                                                                                                                                                  => 'Terug naar de algemene informatie',
+    'Register to this event here'                                                                                                                                                      => 'Registreer hier voor het evenement',
+    'Look at the attending companies here'                                                                                                                                             => 'Vindt hier de deelnemende bedrijven',
 );

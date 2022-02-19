@@ -289,7 +289,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             )
         );
 
-        $this->addSubmit('Subscribe', 'add');
+        $this->addSubmit('Register', 'add');
 
         if ($this->subscription !== null) {
             $this->bind($this->subscription);

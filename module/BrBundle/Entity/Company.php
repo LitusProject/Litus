@@ -177,7 +177,7 @@ class Company
         'computer science engineering' => 'Computer Science Engineering',
         'electrical engineering'       => 'Electrical Engineering',
         'energy engineering'           => 'Energy Engineering',
-        'logistics engineering'        => 'Logistics Engineering',
+        'logistics engineering'        => 'Mobility & Supply Chain Engineering',
         'materials engineering'        => 'Materials Engineering',
         'mathematical engineering'     => 'Mathematical Engineering',
         'mechanical engineering'       => 'Mechanical Engineering',

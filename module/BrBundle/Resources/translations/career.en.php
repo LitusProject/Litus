@@ -44,4 +44,7 @@ return array(
     'No items found'                                                                                                                                                                   => 'No items found',
     'This vacancy is not yet on publicly visible. It will be after it is approved by an admin.'                                                                                        => 'This vacancy is not yet on publicly visible. It will be after it is approved by an admin.',
     'This internship is not yet on publicly visible. It will be after it is approved by an admin.'                                                                                     => 'This internship is not yet on publicly visible. It will be after it is approved by an admin.',
+    'Return to the Event Information'                                                                                                                                                  => 'Return to the Event Information',
+    'Register to this event here'                                                                                                                                                      => 'Register to this event here',
+    'Look at the attending companies here'                                                                                                                                             => 'Look at the attending companies here',
 );
