@@ -5,22 +5,22 @@
         {% for study in studies %}
             <div class="panel panel-default panel-study">
                 <div class="panel-heading">
-                    <a class="pannel-title" data-toggle="collapse" href="#body-study-{{ study.id }}">
+                    <a class="panel-title study-toggle" data-target="body-study-{{ study.id }}" href="#" onclick="event.preventDefault();">
                         {{ study.name }}
                     </a>
                 </div>
-                <div id="body-study-{{ study.id }}" class="panel-collapse collapse">
+                <div id="body-study-{{ study.id }}" style="display: none;">
                     <div class="panel-body">
                         <div class="panel-group" id="accordion-study-{{ study.id }}">
                             {% for entry in study.entries %}
                                 <div class="panel panel-default panel-group-entry" id="accordion-group-{{ entry.getId() }}">
                                     <div class="panel-heading">
-                                        <a class="pannel-title entry-toggle" data-toggle="collapse" href="#body-entry-{{ entry.getId() }}">
+                                        <a class="panel-title entry-toggle" data-target="body-entry-{{ entry.getId() }}" href="#" onclick="event.preventDefault();">
                                             {{ entry.getFirstName() }} {{ entry.getLastName() }}
                                         </a>
                                     </div>
-                                    <div id="body-entry-{{ entry.getId() }}" class="panel-collapse collapse">
-                                        <div class="panel-body">
+                                    <div id="body-entry-{{ entry.getId() }}">
+                                        <div class="panel-body" style="display: none;">
                                             {% import 'corporate/partials/showcv.twig' as cv %}
                                             {{ cv.displayEntry(entry, profilePath, gradesMapEnabled, gradesMap) }}
                                         </div>

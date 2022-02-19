@@ -61,7 +61,7 @@
                 <div style="margin-bottom: 20px; text-align: right;" class="form-inline">
                     <select style="margin-bottom: 0px;" class="form-control" id="searchtype" name="searchtype">
                         <option value="text">{{ translate('By Name') }}</option>
-                        <option value="grade">{{ translate('By Minimum Grade') }}</option>
+{#                        <option value="grade">{{ translate('By Minimum Grade') }}</option>#}
                     </select>
                     <input id="searchbox" type="text" class="search-query form-control" placeholder="{{ translate('Search') }}">
                 </div>
@@ -100,7 +100,16 @@
 
             $('.entry-toggle').click(function() {
                 var element = $(this).parent().parent().find('.profile-picture');
+                var target = $(this).data('target');
+                var display = document.getElementById(target).children[0].style.display;
+                document.getElementById(target).children[0].style.display = display === 'none' ? 'block' : 'none';
                 element.attr('src', element.attr('data-url'));
+            });
+
+            $('.study-toggle').click(function() {
+                var target = $(this).data('target');
+                var display = document.getElementById(target).style.display;
+                document.getElementById(target).style.display = display === 'none' ? 'block' : 'none';
             });
 
             $('#searchbox').bind("input propertychange", function(){
@@ -137,7 +146,7 @@
         }
 
         function performSearch(text) {
-            $.post('{{ url('br_corporate_cv', {"action": "search"})}}string/' + text, function (data) {
+            $.post('{{ url('br_corporate_cv', {"action": "search"})}}string/' + text+'/academicyear/{{ getParam('academicyear') }}', function (data) {
                 $('.panel-group-entry').hide().removeClass('shown');
                 $('.panel-study').show();
                 $.each(data, function(index, element) {
