@@ -153,7 +153,6 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
     public function searchAction()
     {
         $this->initAjax();
-
         $person = $this->getCorporateEntity();
         if ($person === null) {
             return new ViewModel();
@@ -280,9 +279,10 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
      */
     private function getList(AcademicYear $academicYear)
     {
-        return $this->getEntityManager()
+        $list = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Cv\Entry')
             ->findAllByAcademicYear($academicYear);
+        return $list;
     }
 
     /**

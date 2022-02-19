@@ -83,7 +83,7 @@ class Match extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('c.company', ':company'),
-                    $query->expr()->eq('m.interested', 'true')
+                    $query->expr()->eq('m.interested', 'TRUE')
                 )
             )
             ->orderBy('m.matchPercentage', 'DESC')

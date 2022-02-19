@@ -23,6 +23,10 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
         }
 
         if (!$person->getCompany()->attendsJobfair()) {
+            $this->flashMessenger()->error(
+                'Error',
+                'Your company is not attending this year\'s Jobfair!'
+            );
             return new ViewModel();
         }
 
@@ -86,6 +90,14 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
             $matches
         ) : $matches;
 
+        $gradesMapEnabled = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.cv_grades_map_enabled');
+
+        $gradesMap = unserialize(
+            $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.cv_grades_map')
+        );
+
 
         return new ViewModel(
             array(
@@ -95,6 +107,12 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
                 'needs_sp'   => $sp,
                 'needs_cp'   => $cp,
                 'bannerText' => $bannerText,
+                'academicYear' => $this->getCurrentAcademicYear()->getCode(),
+                'gradesMapEnabled' => $gradesMapEnabled,
+                'gradesMap'        => $gradesMap,
+                'profilePath'      => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.profile_path'),
             )
         );
     }
@@ -107,6 +125,10 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
         }
 
         if (!$person->getCompany()->attendsJobfair()) {
+            $this->flashMessenger()->error(
+                'Error',
+                'Your company is not attending this year\'s Jobfair!'
+            );
             return new ViewModel();
         }
 
@@ -251,6 +273,10 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
         }
 
         if (!$person->getCompany()->attendsJobfair()) {
+            $this->flashMessenger()->error(
+                'Error',
+                'Your company is not attending this year\'s Jobfair!'
+            );
             return new ViewModel();
         }
 
@@ -295,6 +321,10 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
         }
 
         if (!$person->getCompany()->attendsJobfair()) {
+            $this->flashMessenger()->error(
+                'Error',
+                'Your company is not attending this year\'s Jobfair!'
+            );
             return new ViewModel();
         }
 
@@ -406,6 +436,10 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
         }
 
         if (!$person->getCompany()->attendsJobfair()) {
+            $this->flashMessenger()->error(
+                'Error',
+                'Your company is not attending this year\'s Jobfair!'
+            );
             return new ViewModel();
         }
 
@@ -436,6 +470,25 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.match_corporate_banner_text');
 
+        $entries = array();
+
+        if (in_array($this->getCurrentAcademicYear(), $person->getCompany()->getCvBookYears())){
+            $gradesMapEnabled = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.cv_grades_map_enabled');
+
+            $gradesMap = unserialize(
+                $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('br.cv_grades_map')
+            );
+            foreach ($matches as $match){
+                $entry = $match->getStudentCV($this->getEntityManager(), $this->getCurrentAcademicYear());
+                if ($entry != false){
+                    $entries[] = array('id' => $match->getId(), 'cv' => $entry);
+                }
+            }
+        }
+
+
         return new ViewModel(
             array(
                 'allWaves'   => $allWaves,
@@ -444,6 +497,35 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
                 'needs_sp'   => $sp,
                 'needs_cp'   => $cp,
                 'bannerText' => $bannerText,
+                'academicYear' => $this->getCurrentAcademicYear()->getCode(),
+                'academicYearObject' => $this->getCurrentAcademicYear(),
+                'entityManager' => $this->getEntityManager(),
+                'gradesMapEnabled' => $gradesMapEnabled,
+                'gradesMap'        => $gradesMap,
+                'profilePath'      => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.profile_path'),
+                'entries'       => $entries,
+            )
+        );
+    }
+
+    public function viewCVAction()
+    {
+        $person = $this->getCorporateEntity();
+        if ($person === null) {
+            return new ViewModel();
+        }
+
+        if (!$person->getCompany()->attendsJobfair()) {
+            return new ViewModel();
+        }
+
+
+
+
+        return new ViewModel(
+            array(
             )
         );
     }

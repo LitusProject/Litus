@@ -52,7 +52,9 @@
                                 {{ match.getMatchPercentage() }} %
                             </td>
                             <td width="230" style="vertical-align: middle;">
-                                <a class="button blue pull-right" href="{{ url('br_corporate_match', {'action': 'viewMatch', 'id': match.getId() }) }}">{{ translate('View CV') }}</a>
+                                {% if match.getStudentCV(entityManager, academicYearObject) and entries %}
+                                    <a class="button blue pull-right cv_search" data-toggle="modal" data-target="#searchCV-{{ match.getId() }}">{{ translate('View CV') }}</a>
+                                {% endif %}
                             </td>
                         </tr>
                     {% else %}
@@ -65,5 +67,39 @@
         </div>
     </div>
 
+    <div class="flashmessage alert alert-danger full_width search_error hide">
+        <div class="title">{{ translate('Error') }}</div>
+        <div class="content">
+            <p>{{ translate('An error occurred while trying to perform the search.') }}</p>
+        </div>
+    </div>
+
+    {% for entry in entries %}
+        <div class="modal fade" id="searchCV-{{ entry['id'] }}" tabindex="-1">
+            <div class="modal-dialog" style="width: 50%">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a class="close" data-dismiss="modal">&times;</a>
+                        <h3>CV</h3>
+                    </div>
+                    <div class="modal-body">
+                        {% import 'corporate/partials/showcv.twig' as cv %}
+                        {{ cv.displayEntry(entry['cv'], profilePath, gradesMapEnabled, gradesMap) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 {% endblock %}
 
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.cv_search').bind("click", function(){
+
+            });
+        });
+
+
+    </script>
+{% endblock %}

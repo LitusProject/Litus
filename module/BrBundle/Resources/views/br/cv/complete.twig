@@ -1,16 +1,18 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-    <div class="page-header">
-        <div class="pull-right hidden-xs hidden-sm">
-            <a href="{{ url('br_cv_index', {'action': 'download'}) }}" class="btn btn-default"><span class="glyphicon glyphicon-arrow-down"></span> {{ translate('Download Preview') }}</a>
+    <div class="container">
+        <div class="page-header">
+            <div class="pull-right hidden-xs hidden-sm">
+                <a href="{{ url('br_cv_index', {'action': 'download'}) }}" class="btn btn-default"><span class="glyphicon glyphicon-arrow-down"></span> {{ translate('Download Preview') }}</a>
+            </div>
+
+            <h1>{{ translate('CV Book') }}</h1>
         </div>
 
-        <h1>{{ translate('CV Book') }}</h1>
-    </div>
-
-    <div class="flashmessage alert alert-success fade in">
-        <a class="close" data-dismiss="alert">&times;</a>
-        {{ translate('Your entry has been recorded in the CV Book.') }}
+        <div class="flashmessage alert alert-success fade in">
+            <a class="close" data-dismiss="alert">&times;</a>
+            {{ translate('Your entry has been recorded in the CV Book.') }}
+        </div>
     </div>
 {% endblock %}
