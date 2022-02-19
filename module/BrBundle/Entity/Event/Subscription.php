@@ -140,7 +140,7 @@ class Subscription
         'bach3'  => '3rd Bachelor',
         'ma1'    => '1st Master',
         'ma2'    => '2nd Master',
-        'manama' => 'MaNaMa',
+        'manama' => 'ManaMa',
         'phd'    => 'PhD',
         'other'  => 'Other',
     );
