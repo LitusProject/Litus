@@ -4,12 +4,12 @@
     <div class="container">
 
         <div class="pageTitleHolder">
-            <h1>{{ event.getTitle(language) }}: Subscribe</h1>
+            <h1>{{ event.getTitle(language) }}: Register</h1>
             <div class="pageTitleDeco"></div>
         </div>
         <div class="spacer40"></div>
 
-        <a class="button blue unfilled" href="{{ url('br_career_event',{ 'action': 'view', 'id': event.getId() }) }}">← {{ translate('Return to the event information') }}</a>
+        <a class="button blue unfilled" href="{{ url('br_career_event',{ 'action': 'view', 'id': event.getId() }) }}">← {{ translate('Return to the Event Information') }}</a>
 
         <div style="height: 100px"></div>
         {# TODO: Add subtitle #}
