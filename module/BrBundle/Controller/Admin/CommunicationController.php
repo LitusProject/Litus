@@ -34,6 +34,11 @@ class CommunicationController extends \CommonBundle\Component\Controller\ActionC
 {
     public function manageAction()
     {
+        $allCommunications = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Communication')
+            ->findAll();
+        $this->deleteOldCommunications($allCommunications);
+
         if ($this->getParam('option') === null) {
             $paginator = $this->paginator()->createFromArray(
                 $this->getEntityManager()
@@ -285,5 +290,18 @@ class CommunicationController extends \CommonBundle\Component\Controller\ActionC
         }
 
         return $this->getAuthentication()->getPersonObject();
+    }
+
+    private function deleteOldCommunications(array $communications)
+    {
+        $currentDate = date('Y-m-d');
+        $currentDate = date('Y-m-d',(strtotime ( '-3 day' , strtotime ( $currentDate ) ) ));
+        foreach ($communications as $comm) {
+            $commDate = $comm->getDate()->format('Y-m-d');
+            if ($commDate < $currentDate) {
+                $this->getEntityManager()->remove($comm);
+                $this->getEntityManager()->flush();
+            }
+        }
     }
 }
