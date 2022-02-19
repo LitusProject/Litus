@@ -469,6 +469,8 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                 ),
                 array('force_canonical' => true)
             );
+
+        $url = str_replace('leia.', '', $url);
                 
         $qrSource = str_replace(
             '{{encodedUrl}}',
