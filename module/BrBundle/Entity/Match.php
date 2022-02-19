@@ -187,6 +187,16 @@ class Match
         return true;
     }
 
+    public function getStudentCV(EntityManager $em, AcademicYear $ay)
+    {
+        $person = $this->getStudent();
+        $entry = $em->getRepository('BrBundle\Entity\Cv\Entry')
+            ->findOneByAcademicAndAcademicYear($ay, $person);
+        if (is_null($entry))
+            return false;
+        return $entry;
+    }
+
     /**
      * @return integer
      */
