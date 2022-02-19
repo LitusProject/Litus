@@ -111,10 +111,10 @@ class Subscription
 
 
     const POSSIBLE_STUDIES = Company::POSSIBLE_MASTERS + array(
-        'faculty of bio engineering'        => 'Faculty of bio engineering',
-        'faculty of business and economics' => 'Faculty of business and economics',
-        'faculty of engineering technology' => 'Faculty of engineering technology',
-        'other'                             => 'Other'
+        'faculty of bio engineering'        => 'Faculty of Bio Engineering',
+        'faculty of business and economics' => 'Faculty of Business and Economics',
+        'faculty of engineering technology' => 'Faculty of Engineering Technology',
+        'Other'                             => 'Other'
     );
 
     /**
@@ -142,7 +142,7 @@ class Subscription
         'ma2'    => '2nd Master',
         'manama' => 'ManaMa',
         'phd'    => 'PhD',
-        'other'  => 'Other',
+        'Other'  => 'Other',
     );
 
     /**
