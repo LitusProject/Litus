@@ -3796,16 +3796,16 @@
         },
         {
             "name": "laminas/laminas-form",
-            "version": "2.15.1",
+            "version": "2.15.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-form.git",
-                "reference": "37c5f5ac9240159f5d93f52367d0e57fa96f9b22"
+                "reference": "795e0183fd3c54433e99902b51c24a0b57d0e354"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-form/zipball/37c5f5ac9240159f5d93f52367d0e57fa96f9b22",
-                "reference": "37c5f5ac9240159f5d93f52367d0e57fa96f9b22",
+                "url": "https://api.github.com/repos/laminas/laminas-form/zipball/795e0183fd3c54433e99902b51c24a0b57d0e354",
+                "reference": "795e0183fd3c54433e99902b51c24a0b57d0e354",
                 "shasum": ""
             },
             "require": {
@@ -3853,12 +3853,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Laminas\\Form\\": "src/"
-                },
                 "files": [
                     "autoload/formElementManagerPolyfill.php"
-                ]
+                ],
+                "psr-4": {
+                    "Laminas\\Form\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -3884,7 +3884,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2021-03-17T13:07:46+00:00"
+            "time": "2022-02-21T14:08:44+00:00"
         },
         {
             "name": "laminas/laminas-http",
