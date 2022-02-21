@@ -9,7 +9,7 @@ return array(
             'export', 'manage', 'print', 'search',
         ),
         'ticket_admin_consumptions' => array(
-            'add', 'delete', 'edit', 'manage', 'search', 'consume', 'transactions', 'total-transactions', 'delete_all',
+            'add', 'delete', 'edit', 'manage', 'search', 'consume', 'transactions', 'total-transactions', 'delete_all', 'csv', 'template',
         ),
         'ticket_sale_index' => array(
             'sale', 'validate',

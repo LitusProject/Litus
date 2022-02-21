@@ -2,7 +2,11 @@
 
 namespace TicketBundle\Controller\Admin;
 
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use DateTime;
+use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
 use TicketBundle\Entity\Consumptions;
 use TicketBundle\Entity\Transactions;
@@ -332,6 +336,110 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
         return new ViewModel(
             array(
                 'result' => $result,
+            )
+        );
+    }
+
+    public function csvAction()
+    {
+        $form = $this->getForm('ticket_consumptions_csv');
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $fileData = $this->getRequest()->getFiles();
+
+            $fileName = $fileData['file']['tmp_name'];
+
+            $consumptionsArray = array();
+
+            $open = fopen($fileName, 'r');
+            if ($open != false) {
+                $data = fgetcsv($open, 1000, ',');
+                while ($data !== false) {
+                    $consumptionsArray[] = $data;
+                    $data = fgetcsv($open, 1000, ',');
+                }
+                fclose($open);
+            }
+
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $count = 0;
+                foreach ($consumptionsArray as $key => $data) {
+                    if (in_array(null, $data)) {
+                        continue;
+                    }
+                    if ($key == '0') {
+                        continue;
+                    }
+
+                    $consumption = new Consumptions();
+                    $person = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\User\Person')
+                        ->findOneByUsername($data[0]);
+                    $consumption->setPerson($person);
+                    $consumption->setConsumptions($data[1]);
+                    $consumption->setUserName($person->getUserName());
+                    $consumption->setFullName($person->getFullName());
+
+                    $this->getEntityManager()->persist($consumption);
+                    $count += 1;
+                }
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Succes',
+                    $count . ' consumptions were successfully added!'
+                );
+
+                $this->redirect()->toRoute(
+                    'ticket_admin_consumptions',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form
+            ),
+        );
+    }
+
+    public function templateAction()
+    {
+        $file = new CsvFile();
+        $heading = array(
+            'r-number',
+            'amount',
+        );
+
+        $results = array();
+        $results[] = array(
+            'r0000000',
+            0,
+        );
+
+        $document = new CsvGenerator($heading, $results);
+        $document->generateDocument($file);
+
+        $headers = new Headers();
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="consumptions_template.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
             )
         );
     }
