@@ -210,11 +210,11 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
             return new ViewModel();
         }
 
-        if ($consumptions instanceof Consumptions) {
-            $person = $this->getPersonEntity();
-            $transaction = new Transactions(-$consumptions->getConsumptions(), $consumptions->getPerson(), $person);
-            $this->getEntityManager()->persist($transaction);
-        }
+//        if ($consumptions instanceof Consumptions) {
+//            $person = $this->getPersonEntity();
+//            $transaction = new Transactions(-$consumptions->getConsumptions(), $consumptions->getPerson(), $person);
+//            $this->getEntityManager()->persist($transaction);
+//        }
 
         $this->getEntityManager()->remove($consumptions);
         $this->getEntityManager()->flush();
@@ -233,11 +233,11 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
             ->findAll();
 
         foreach ($allConsumptions as $consumption) {
-            if ($consumption instanceof Consumptions) {
-                $person = $this->getPersonEntity();
-                $transaction = new Transactions(-$consumption->getConsumptions(), $consumption->getPerson(), $person);
-                $this->getEntityManager()->persist($transaction);
-            }
+//            if ($consumption instanceof Consumptions) {
+//                $person = $this->getPersonEntity();
+//                $transaction = new Transactions(-$consumption->getConsumptions(), $consumption->getPerson(), $person);
+//                $this->getEntityManager()->persist($transaction);
+//            }
 
             $this->getEntityManager()->remove($consumption);
         }
@@ -290,7 +290,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
 
         $transactions = $this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Transactions')
-            ->findAllSinceDate($dateToCheck);
+            ->findAllSinceDateQuery($dateToCheck);
 
         $total = 0;
         foreach ($transactions as $transaction) {
@@ -306,6 +306,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
 
     public function searchAction()
     {
+        error_log("fout 2 ");
         $this->initAjax();
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -314,7 +315,6 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
         $consumptions = $this->search()
             ->setMaxResults($numResults)
             ->getResult();
-
         $result = array();
         foreach ($consumptions as $consumption) {
             $item = (object) array();
@@ -323,6 +323,33 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
             $item->username = $consumption->getUserName();
             $item->consumptions = $consumption->getConsumptions();
 
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+    public function searchTransactionAction()
+    {
+        $this->initAjax();
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+        error_log("hier zo");
+        $transactions = $this->searchTransaction()
+            ->setMaxRestults($numResults)
+            ->getResult();
+        $result = array();
+        foreach ($transactions as $transaction) {
+            $item = (object) array();
+            $item->executor = $transaction->getPerson()->getFullName();
+            $item->username = $transaction->getOwner()->getFullName();
+            $item->amount = $transaction->getAmount();
+            $item->timestamp = $transaction->getTime()->format('d-m-Y H:i:s');
             $result[] = $item;
         }
 
@@ -477,6 +504,17 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
                 return $this->getEntityManager()
                     ->getRepository('TicketBundle\Entity\Consumptions')
                     ->findAllByNameQuery($this->getParam('string'));
+        }
+    }
+
+    private function searchTransaction()
+    {
+        error_log("in search funciton");
+        switch ($this->getParam('field')) {
+            case 'date':
+                return $this->getEntityManager()
+                    ->getRepository('TicketBundle\Entity\Transaction')
+                    ->findAllOnDateQuery($this->getParam('date'));
         }
     }
 
