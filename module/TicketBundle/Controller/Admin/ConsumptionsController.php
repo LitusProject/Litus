@@ -120,7 +120,6 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
 
                 if ($consumption instanceof Consumptions) {
                     $person = $this->getPersonEntity();
-
                     $transaction = new Transactions($form->getData()['number_of_consumptions'], $consumption->getPerson(), $person);
                     $this->getEntityManager()->persist($transaction);
                 }
@@ -225,6 +224,12 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
             ->findAll();
 
         foreach ($allConsumptions as $consumption) {
+            if ($consumption instanceof Consumptions) {
+                $person = $this->getPersonEntity();
+                $transaction = new Transactions(-$consumption->getConsumptions(), $consumption->getPerson(), $person);
+                $this->getEntityManager()->persist($transaction);
+            }
+
             $this->getEntityManager()->remove($consumption);
         }
         $this->getEntityManager()->flush();
@@ -286,29 +291,6 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
                 'total' => $total,
             )
         );
-    }
-
-    private function getConsumptionsEntity()
-    {
-        $consumptions = $this->getEntityById('TicketBundle\Entity\Consumptions');
-
-        if (!($consumptions instanceof Consumptions)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No consumptions were found!'
-            );
-
-            $this->redirect()->toRoute(
-                'ticket_admin_consumptions',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $consumptions;
     }
 
     public function searchAction()
@@ -383,9 +365,15 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
                     $consumption->setUserName($person->getUserName());
                     $consumption->setFullName($person->getFullName());
 
+                    $executor = $this->getPersonEntity();
+                    $transaction = new Transactions($data[1], $consumption->getPerson(), $executor);
+
+                    $this->getEntityManager()->persist($transaction);
                     $this->getEntityManager()->persist($consumption);
+
                     $count += 1;
                 }
+
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -442,6 +430,29 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
                 'data' => $file->getContent(),
             )
         );
+    }
+
+    private function getConsumptionsEntity()
+    {
+        $consumptions = $this->getEntityById('TicketBundle\Entity\Consumptions');
+
+        if (!($consumptions instanceof Consumptions)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No consumptions were found!'
+            );
+
+            $this->redirect()->toRoute(
+                'ticket_admin_consumptions',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return;
+        }
+
+        return $consumptions;
     }
 
     private function search()
