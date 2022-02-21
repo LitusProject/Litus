@@ -214,6 +214,26 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
+    public function deleteAllAction()
+    {
+        $allConsumptions = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Consumptions')
+            ->findAll();
+
+        foreach ($allConsumptions as $consumption) {
+            $this->getEntityManager()->remove($consumption);
+        }
+        $this->getEntityManager()->flush();
+
+        $this->redirect()->toRoute(
+            'ticket_admin_consumptions',
+            array(
+                'action' => 'manage',
+            )
+        );
+        return new ViewModel();
+    }
+
     public function transactionsAction()
     {
         $paginator = $this->paginator()->createFromArray(
