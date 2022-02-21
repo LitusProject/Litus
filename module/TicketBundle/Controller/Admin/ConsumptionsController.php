@@ -25,8 +25,17 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
             $this->getParam('page')
         );
 
+        $totalConsumptions = 0;
+        $allConsumptions = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Consumptions')
+            ->findAll();
+        foreach ($allConsumptions as $consumption) {
+            $totalConsumptions += $consumption->getConsumptions();
+        }
+
         return new ViewModel(
             array(
+                'totalAmount'       => $totalConsumptions,
                 'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
