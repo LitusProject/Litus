@@ -281,8 +281,10 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
                 ->getConfigValue('ticket.transactions_refresh_date')
         );
         $dateToCheck = new DateTime($newDate);
+
         $period = new \DateInterval('P1D');
-        if ($date->format('h-i-s') < $dateToCheck->format('h-i-s')) {
+
+        if ($date->format('H-i-s') < $dateToCheck->format('H-i-s')) {
             $dateToCheck->sub($period);
         }
 
