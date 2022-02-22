@@ -34,6 +34,22 @@
         {% endif %}
     </aside>
 
+    <aside>
+        {% if hasAccess('ticket_admin_consumptions', 'delete_all') %}
+            <div class="sidebox">
+                <div class="title">Delete All</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to delete all consumptions!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('ticket_admin_consumptions', {"action": "delete_all"}) }}">&rarr; Delete All</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
+
     <div id="controller_action">
         <div id="consumptions_search" style="display: none;">
             <div style="padding: 4px; text-align: right">
@@ -90,6 +106,9 @@
 
             {% include 'admin/partials/paginationControl.twig' %}
         </div>
+
+        <h1> The amount of consumptions left: {{ totalAmount }}</h1>
+
     </div>
 
     <div class="modal fade" id="removeConsumptions" tabindex="-1">
@@ -159,7 +178,6 @@
         });
 
         function openModal(e) {
-            console.log('hier');
             var $this = $(this);
 
             e.preventDefault();

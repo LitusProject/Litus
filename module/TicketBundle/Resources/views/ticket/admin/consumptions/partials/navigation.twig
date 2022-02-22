@@ -12,12 +12,15 @@
             {%  if hasAccess('ticket_admin_consumptions', 'add') %}
                 <li><a {% if 'add' == getParam('action') %} class = 'active' {%  endif %} href="{{ url('ticket_admin_consumptions', {"action": "add"}) }}"> Add </a></li>
             {%  endif %}
-{#                        {%  if hasAccess('br_admin_communication', 'old') %}#}
-{#                            <li><a {% if 'old' == getParam('action') %} class = 'active' {%  endif %} href="{{ url('br_admin_communication', {"action": "old"}) }}"> Old </a></li>#}
-{#                        {%  endif %}#}
             {% if hasAccess('ticket_admin_consumptions', 'manage') %}
                 <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') or 'delete' == getParam('action') %} class="active" {% endif %}
                             href="{{ url('ticket_admin_consumptions', {"action": "manage"}) }}">Manage</a></li>
+            {% endif %}
+            {% if hasAccess('ticket_admin_consumptions', 'csv') %}
+                <li><a {% if 'csv' == getParam('action') %} class="active" {% endif %} href="{{ url("ticket_admin_consumptions", {"action": "csv"}) }}">Add from Csv</a></li>
+            {% endif %}
+            {% if hasAccess('ticket_admin_consumptions', 'template') %}
+                <li><a {% if 'template' == getParam('action') %} class="active" {% endif %} href="{{ url("ticket_admin_consumptions", {"action": "template"}) }}">Csv template</a></li>
             {% endif %}
         </ul>
     </nav>

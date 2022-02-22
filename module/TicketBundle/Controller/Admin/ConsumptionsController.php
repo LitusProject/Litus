@@ -2,7 +2,11 @@
 
 namespace TicketBundle\Controller\Admin;
 
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use DateTime;
+use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
 use TicketBundle\Entity\Consumptions;
 use TicketBundle\Entity\Transactions;
@@ -21,8 +25,17 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
             $this->getParam('page')
         );
 
+        $totalConsumptions = 0;
+        $allConsumptions = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Consumptions')
+            ->findAll();
+        foreach ($allConsumptions as $consumption) {
+            $totalConsumptions += $consumption->getConsumptions();
+        }
+
         return new ViewModel(
             array(
+                'totalAmount'       => $totalConsumptions,
                 'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
@@ -116,7 +129,6 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
 
                 if ($consumption instanceof Consumptions) {
                     $person = $this->getPersonEntity();
-
                     $transaction = new Transactions($form->getData()['number_of_consumptions'], $consumption->getPerson(), $person);
                     $this->getEntityManager()->persist($transaction);
                 }
@@ -198,11 +210,11 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
             return new ViewModel();
         }
 
-        if ($consumptions instanceof Consumptions) {
-            $person = $this->getPersonEntity();
-            $transaction = new Transactions(-$consumptions->getConsumptions(), $consumptions->getPerson(), $person);
-            $this->getEntityManager()->persist($transaction);
-        }
+//        if ($consumptions instanceof Consumptions) {
+//            $person = $this->getPersonEntity();
+//            $transaction = new Transactions(-$consumptions->getConsumptions(), $consumptions->getPerson(), $person);
+//            $this->getEntityManager()->persist($transaction);
+//        }
 
         $this->getEntityManager()->remove($consumptions);
         $this->getEntityManager()->flush();
@@ -212,6 +224,32 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
                 'result' => (object) array('status' => 'succes'),
             )
         );
+    }
+
+    public function deleteAllAction()
+    {
+        $allConsumptions = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Consumptions')
+            ->findAll();
+
+        foreach ($allConsumptions as $consumption) {
+//            if ($consumption instanceof Consumptions) {
+//                $person = $this->getPersonEntity();
+//                $transaction = new Transactions(-$consumption->getConsumptions(), $consumption->getPerson(), $person);
+//                $this->getEntityManager()->persist($transaction);
+//            }
+
+            $this->getEntityManager()->remove($consumption);
+        }
+        $this->getEntityManager()->flush();
+
+        $this->redirect()->toRoute(
+            'ticket_admin_consumptions',
+            array(
+                'action' => 'manage',
+            )
+        );
+        return new ViewModel();
     }
 
     public function transactionsAction()
@@ -243,14 +281,16 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
                 ->getConfigValue('ticket.transactions_refresh_date')
         );
         $dateToCheck = new DateTime($newDate);
+
         $period = new \DateInterval('P1D');
-        if ($date->format('h-i-s') < $dateToCheck->format('h-i-s')) {
+
+        if ($date->format('H-i-s') < $dateToCheck->format('H-i-s')) {
             $dateToCheck->sub($period);
         }
 
         $transactions = $this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Transactions')
-            ->findAllSinceDate($dateToCheck);
+            ->findAllSinceDateQuery($dateToCheck);
 
         $total = 0;
         foreach ($transactions as $transaction) {
@@ -260,6 +300,172 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
         return new ViewModel(
             array(
                 'total' => $total,
+            )
+        );
+    }
+
+    public function searchAction()
+    {
+        error_log("fout 2 ");
+        $this->initAjax();
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        $consumptions = $this->search()
+            ->setMaxResults($numResults)
+            ->getResult();
+        $result = array();
+        foreach ($consumptions as $consumption) {
+            $item = (object) array();
+            $item->id = $consumption->getId();
+            $item->name = $consumption->getFullName();
+            $item->username = $consumption->getUserName();
+            $item->consumptions = $consumption->getConsumptions();
+
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+    public function searchTransactionAction()
+    {
+        $this->initAjax();
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+        error_log("hier zo");
+        $transactions = $this->searchTransaction()
+            ->setMaxRestults($numResults)
+            ->getResult();
+        $result = array();
+        foreach ($transactions as $transaction) {
+            $item = (object) array();
+            $item->executor = $transaction->getPerson()->getFullName();
+            $item->username = $transaction->getOwner()->getFullName();
+            $item->amount = $transaction->getAmount();
+            $item->timestamp = $transaction->getTime()->format('d-m-Y H:i:s');
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+    public function csvAction()
+    {
+        $form = $this->getForm('ticket_consumptions_csv');
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $fileData = $this->getRequest()->getFiles();
+
+            $fileName = $fileData['file']['tmp_name'];
+
+            $consumptionsArray = array();
+
+            $open = fopen($fileName, 'r');
+            if ($open != false) {
+                $data = fgetcsv($open, 1000, ',');
+                while ($data !== false) {
+                    $consumptionsArray[] = $data;
+                    $data = fgetcsv($open, 1000, ',');
+                }
+                fclose($open);
+            }
+
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $count = 0;
+                foreach ($consumptionsArray as $key => $data) {
+                    if (in_array(null, $data)) {
+                        continue;
+                    }
+                    if ($key == '0') {
+                        continue;
+                    }
+
+                    $consumption = new Consumptions();
+                    $person = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\User\Person')
+                        ->findOneByUsername($data[0]);
+                    $consumption->setPerson($person);
+                    $consumption->setConsumptions($data[1]);
+                    $consumption->setUserName($person->getUserName());
+                    $consumption->setFullName($person->getFullName());
+
+                    $executor = $this->getPersonEntity();
+                    $transaction = new Transactions($data[1], $consumption->getPerson(), $executor);
+
+                    $this->getEntityManager()->persist($transaction);
+                    $this->getEntityManager()->persist($consumption);
+
+                    $count += 1;
+                }
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Succes',
+                    $count . ' consumptions were successfully added!'
+                );
+
+                $this->redirect()->toRoute(
+                    'ticket_admin_consumptions',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form
+            ),
+        );
+    }
+
+    public function templateAction()
+    {
+        $file = new CsvFile();
+        $heading = array(
+            'r-number',
+            'amount',
+        );
+
+        $results = array();
+        $results[] = array(
+            'r0000000',
+            0,
+        );
+
+        $document = new CsvGenerator($heading, $results);
+        $document->generateDocument($file);
+
+        $headers = new Headers();
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="consumptions_template.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
             )
         );
     }
@@ -287,35 +493,6 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
         return $consumptions;
     }
 
-    public function searchAction()
-    {
-        $this->initAjax();
-        $numResults = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('search_max_results');
-
-        $consumptions = $this->search()
-            ->setMaxResults($numResults)
-            ->getResult();
-
-        $result = array();
-        foreach ($consumptions as $consumption) {
-            $item = (object) array();
-            $item->id = $consumption->getId();
-            $item->name = $consumption->getFullName();
-            $item->username = $consumption->getUserName();
-            $item->consumptions = $consumption->getConsumptions();
-
-            $result[] = $item;
-        }
-
-        return new ViewModel(
-            array(
-                'result' => $result,
-            )
-        );
-    }
-
     private function search()
     {
         switch ($this->getParam('field')) {
@@ -327,6 +504,17 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
                 return $this->getEntityManager()
                     ->getRepository('TicketBundle\Entity\Consumptions')
                     ->findAllByNameQuery($this->getParam('string'));
+        }
+    }
+
+    private function searchTransaction()
+    {
+        error_log("in search funciton");
+        switch ($this->getParam('field')) {
+            case 'date':
+                return $this->getEntityManager()
+                    ->getRepository('TicketBundle\Entity\Transaction')
+                    ->findAllOnDateQuery($this->getParam('date'));
         }
     }
 
