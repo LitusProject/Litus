@@ -264,7 +264,7 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
         usort(
             $matches,
             function ($a, $b) {
-                return $a->getMatchPercentage() - $b->getMatchPercentage();
+                return $b->getMatchPercentage() - $a->getMatchPercentage();
             }
         );
 
