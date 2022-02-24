@@ -72,9 +72,14 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             return new ViewModel();
         }
 
+        $guide = $event->getGuide();
+
+        $hasGuide = !is_null($guide);
+
         return new ViewModel(
             array(
                 'event' => $event,
+                'hasGuide' => $hasGuide,
             )
         );
     }
@@ -204,6 +209,28 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                 'locations'         => $locations,
                 'interestedMasters' => $interestedMasters,
                 'masters'           => Subscription::POSSIBLE_STUDIES
+            )
+        );
+    }
+
+    public function guideAction()
+    {
+        $event = $this->getEventEntity();
+        if ($event === null) {
+            return new ViewModel();
+        }
+
+        $guide = $event->getGuide();
+
+        $publicPdfDir = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('publication.public_pdf_directory');
+
+        return new ViewModel(
+            array(
+                'event' => $event,
+                'guide' => $guide,
+                'publicPdfDir' => $publicPdfDir,
             )
         );
     }

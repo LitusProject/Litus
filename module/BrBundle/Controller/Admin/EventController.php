@@ -371,6 +371,59 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function guideAction()
+    {
+        $event = $this->getEventEntity();
+
+        if ($event === null) {
+            return new ViewModel();
+        }
+
+        $form = $this->getForm('br_admin_event_guide');
+
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $fileData = $this->getRequest()->getFiles();
+
+            $form->setData(
+                array_merge_recursive(
+                    $formData->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
+
+            if ($form->isValid()) {
+                $formData = $form->getData();
+
+                $filePath = 'public' . $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('publication.public_pdf_directory');
+
+                do {
+                    $fileName = sha1(uniqid()) . '.pdf';
+                } while (file_exists($filePath . $fileName));
+
+                $event->setGuide($fileName);
+
+                rename($formData['file']['tmp_name'], $filePath . $fileName);
+
+                $this->getEntityManager()->persist($event);
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The Company Guide was succesfully uploaded!'
+                );
+            }
+        }
+        return new ViewModel(
+            array(
+                'event' => $event,
+                'form' => $form
+            ),
+        );
+    }
+
     /**
      * @return Event|null
      */

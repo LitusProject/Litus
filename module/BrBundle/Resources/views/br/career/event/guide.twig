@@ -1,0 +1,23 @@
+{% extends 'career/partials/layout.twig' %}
+
+{% block page_content %}
+    <div class="container">
+
+        <div class="pageTitleHolder">
+            <h1>{{ event.getTitle(language) }}: Company Guide</h1>
+            <div class="pageTitleDeco"></div>
+        </div>
+        <div class="spacer40"></div>
+
+        <a class="button blue unfilled" href="{{ url('br_career_event',{ 'action': 'view', 'id': event.getId() }) }}">← {{ translate('Return to the event information') }}</a>
+
+        {% if guide %}
+
+            <div style="height: 750px">
+                <iframe src="{{ publicPdfDir}}{{ event.getGuide() }}#zoom=Fit" width="100%" height="100%"></iframe>
+            </div>
+
+        {% endif %}
+
+    </div>
+{% endblock %}
