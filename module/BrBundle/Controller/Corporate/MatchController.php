@@ -89,14 +89,24 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
             $matches
         ) : $matches;
 
-        $gradesMapEnabled = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.cv_grades_map_enabled');
+        $gradesMap = array();
+        $gradesMapEnabled = false;
+        if (in_array($this->getCurrentAcademicYear(), $person->getCompany()->getCvBookYears())){
+            $gradesMapEnabled = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.cv_grades_map_enabled');
 
-        $gradesMap = unserialize(
-            $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('br.cv_grades_map')
-        );
-
+            $gradesMap = unserialize(
+                $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('br.cv_grades_map')
+            );
+            foreach ($matches as $match){
+                $entry = $match->getStudentCV($this->getEntityManager(), $this->getCurrentAcademicYear());
+                if ($entry != false){
+                    $entries[] = array('id' => $match->getId(), 'cv' => $entry);
+                }
+            }
+        }
+        
 
         return new ViewModel(
             array(
@@ -107,11 +117,14 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
                 'needs_cp'   => $cp,
                 'bannerText' => $bannerText,
                 'academicYear' => $this->getCurrentAcademicYear()->getCode(),
+                'academicYearObject' => $this->getCurrentAcademicYear(),
+                'entityManager' => $this->getEntityManager(),
                 'gradesMapEnabled' => $gradesMapEnabled,
                 'gradesMap'        => $gradesMap,
                 'profilePath'      => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
+                'entries'       => $entries,
             )
         );
     }
@@ -471,6 +484,8 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
 
         $entries = array();
 
+        $gradesMap = array();
+        $gradesMapEnabled = false;
         if (in_array($this->getCurrentAcademicYear(), $person->getCompany()->getCvBookYears())){
             $gradesMapEnabled = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('br.cv_grades_map_enabled');
