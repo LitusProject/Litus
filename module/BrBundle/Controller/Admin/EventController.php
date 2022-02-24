@@ -22,7 +22,6 @@ namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Event;
 use BrBundle\Entity\Event\CompanyMap;
-use CudiBundle\Form\Admin\Sale\Article\View;
 use DateInterval;
 use DateTime;
 use Laminas\View\Model\ViewModel;
