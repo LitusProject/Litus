@@ -21,5 +21,8 @@
         {% if event.canViewMap() %}
         <a class="button blue unfilled" href="{{ url('br_career_event',{ 'action': 'map', 'id': event.getId() }) }}">{{ translate('Look at the attending companies here') }} →</a>
         {% endif %}
+        {% if hasGuide %}
+        <a class="button blue unfilled" href="{{ url('br_career_event',{ 'action': 'guide', 'id': event.getId() }) }}">{{ translate('Get the company guide here') }} →</a>
+        {% endif %}
     </div>
 {% endblock %}

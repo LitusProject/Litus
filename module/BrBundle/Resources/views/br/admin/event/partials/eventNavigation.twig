@@ -18,6 +18,9 @@
             {% if hasAccess('br_admin_event', 'statistics') %}
                 <li><a {% if ('statistics' == getParam('action')) %} class="active" {% endif %} href="{{ url('br_admin_event', {"action": "statistics", "id": event.getId()}) }}">Statistics</a></li>
             {% endif %}
+            {% if hasAccess('br_admin_event', 'guide') %}
+                <li><a {% if ('guide' == getParam('action')) %} class="active" {% endif %} href="{{ url('br_admin_event', {"action": "guide", "id": event.getId()}) }}">Company Guide</a></li>
+            {% endif %}
         </ul>
     </nav>
 </header>

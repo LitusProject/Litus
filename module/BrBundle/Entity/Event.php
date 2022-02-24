@@ -169,6 +169,13 @@ class Event
     private $food;
 
     /**
+     * @var string The file name of the company guide
+     *
+     * @ORM\Column(name="file_name", type="string", unique=true, nullable=true)
+     */
+    private $guide;
+
+    /**
      * @param Person $creator
      */
     public function __construct(Person $creator)
@@ -479,6 +486,24 @@ class Event
     public function setFood($food)
     {
         $this->food = serialize($food);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGuide()
+    {
+        return $this->guide;
+    }
+
+    /**
+     * @param string $guide
+     * @return self
+     */
+    public function setGuide($guide)
+    {
+        $this->guide = $guide;
         return $this;
     }
 }
