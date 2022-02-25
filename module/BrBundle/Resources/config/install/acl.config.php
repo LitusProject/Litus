@@ -71,7 +71,7 @@ return array(
             'view', 'overview', 'file', 'search',
         ),
         'br_career_event' => array(
-            'overview','view','subscribe','map','qr','scanQr','overviewMatches','removeMatch'
+            'overview','view','subscribe','map','qr','scanQr','overviewMatches','removeMatch', 'guide',
         ),
         'br_career_vacancy' => array(
             'view', 'overview',
