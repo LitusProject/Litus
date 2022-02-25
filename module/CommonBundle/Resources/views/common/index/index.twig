@@ -155,7 +155,7 @@
                 {% endif %} #}
                 {% if cudi.openingHours|length > 0 %}
                     <div class="col-md-6"><h2>{{ translate('Cudi - Opening Hours') }}</h2>
-                        <b>{{ translate('No Timeslot') }} <br>
+                        <b>{{ translate('No Timeslot') }} </b>
                         {% for opening in cudi.openingHours %}
                             <div><p style="display:inline-block">{{ dateLocalized(opening.getStart(), 'EEEE (d/M)')|capitalize }}</p><p style="float:right">{{ opening.getStart().format('H:i') }}-{{ opening.getEnd().format('H:i') }}</p></div>
                         {% endfor %}
