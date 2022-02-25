@@ -26,7 +26,7 @@ return array(
             'manage', 'delete', 'export', 'exportAcademics', 'exportCvCsv'
         ),
         'br_admin_event' => array(
-            'manage', 'delete', 'add', 'edit', 'old', 'statistics','deleteAttendee', 'editAttendee', 'guide'
+            'manage', 'delete', 'add', 'edit', 'old', 'statistics','deleteAttendee', 'editAttendee', 'guide',
         ),
         'br_admin_event_company' => array(
             'manage', 'edit', 'delete', 'csv',
