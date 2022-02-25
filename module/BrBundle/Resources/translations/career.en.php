@@ -47,4 +47,5 @@ return array(
     'Return to the Event Information'                                                                                                                                                  => 'Return to the Event Information',
     'Register to this event here'                                                                                                                                                      => 'Register to this event here',
     'Look at the attending companies here'                                                                                                                                             => 'Look at the attending companies here',
+    'Get the company guide here'                                                                                                                                                       => 'Get the company guide here',
 );
