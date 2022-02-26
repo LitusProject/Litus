@@ -19,14 +19,11 @@ class Transactions extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 
     public function findAllOnDateQuery($date)
     {
-        die("hier zo");
-        $date = new \DateTime($date);
-        error_log(json_encode($date));
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('t')
             ->from('TicketBundle\Entity\Transactions', 't')
             ->where(
-                $query->expr()->eq('t.time', ':date')
+                $query->expr()->eq('t.time->format("d-m-Y")', ':date')
             )
             ->setParameter('date', $date)
             ->getQuery()

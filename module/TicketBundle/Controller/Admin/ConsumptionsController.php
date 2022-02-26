@@ -294,7 +294,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
                 ->getRepository('TicketBundle\Entity\Transactions')
-                ->findAll(),
+                ->findBy(array(), array('time' => 'DESC')),
             $this->getParam('page')
         );
 
@@ -343,7 +343,6 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
 
     public function searchAction()
     {
-        error_log("fout 2 ");
         $this->initAjax();
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -376,7 +375,6 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
-        error_log("hier zo");
         $transactions = $this->searchTransaction()
             ->setMaxRestults($numResults)
             ->getResult();
@@ -563,12 +561,12 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
 
     private function searchTransaction()
     {
-        error_log("in search funciton");
         switch ($this->getParam('field')) {
             case 'date':
+                $date = new DateTime(substr($this->getParam('string'), 1));
                 return $this->getEntityManager()
-                    ->getRepository('TicketBundle\Entity\Transaction')
-                    ->findAllOnDateQuery($this->getParam('date'));
+                    ->getRepository('TicketBundle\Entity\Transactions')
+                    ->findAllOnDateQuery($date);
         }
     }
 

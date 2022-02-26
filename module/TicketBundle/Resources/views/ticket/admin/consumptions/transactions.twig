@@ -6,24 +6,24 @@
     {% include 'admin/partials/flashMessenger.twig' %}
 
     <div id="controller_action">
-        <div id="transactions_search" style="display: none;">
-            <div style="padding: 4px; text-align: right">
-                Search:
-                <select id="searchField">
-                    <option value="date">date</option>
-                </select>
-                is
-                <input type="date" id="searchString" size="30"/>
-            </div>
-            <table class="full_width manage">
-                <tr>
-                    <th>Executor</th>
-                    <th>Username</th>
-                    <th>Amount</th>
-                    <th>Timestamp</th>
-                </tr>
-            </table>
-        </div>
+{#        <div id="transactions_search" style="display: none;">#}
+{#            <div style="padding: 4px; text-align: right">#}
+{#                Search:#}
+{#                <select id="searchField">#}
+{#                    <option value="date">date</option>#}
+{#                </select>#}
+{#                is#}
+{#                <input type="text" id="searchString" size="30"/>#}
+{#            </div>#}
+{#            <table class="full_width manage">#}
+{#                <tr>#}
+{#                    <th>Executor</th>#}
+{#                    <th>Username</th>#}
+{#                    <th>Amount</th>#}
+{#                    <th>Timestamp</th>#}
+{#                </tr>#}
+{#            </table>#}
+{#        </div>#}
         <div id="default_page">
             <table class="full_width manage">
                 <thead>
@@ -62,7 +62,7 @@
                 searchDiv: $('#transactions_search'),
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                searchPage: '{{ url('ticket_admin_consumptions', {'action': 'transactions'}) }}',
+                searchPage: '{{ url('ticket_admin_consumptions', {'action': 'transactions'}) }}transactions/',
                 url: '{{ url('ticket_admin_consumptions', {'action': 'search_transaction'}) }}',
                 display: function (data) {
                     $('#transactions_search table').find('tr.item').remove();
