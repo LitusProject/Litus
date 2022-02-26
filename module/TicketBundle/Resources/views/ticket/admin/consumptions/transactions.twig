@@ -6,6 +6,24 @@
     {% include 'admin/partials/flashMessenger.twig' %}
 
     <div id="controller_action">
+{#        <div id="transactions_search" style="display: none;">#}
+{#            <div style="padding: 4px; text-align: right">#}
+{#                Search:#}
+{#                <select id="searchField">#}
+{#                    <option value="date">date</option>#}
+{#                </select>#}
+{#                is#}
+{#                <input type="text" id="searchString" size="30"/>#}
+{#            </div>#}
+{#            <table class="full_width manage">#}
+{#                <tr>#}
+{#                    <th>Executor</th>#}
+{#                    <th>Username</th>#}
+{#                    <th>Amount</th>#}
+{#                    <th>Timestamp</th>#}
+{#                </tr>#}
+{#            </table>#}
+{#        </div>#}
         <div id="default_page">
             <table class="full_width manage">
                 <thead>
@@ -23,7 +41,7 @@
                         <td>{{ transactions.getPerson().getFullName() }}</td>
                         <td>{{ transactions.getOwner().getFullName() }}</td>
                         <td>{{ transactions.getAmount() }}</td>
-                        <td>{{ transactions.getTime().format('H:i:s d-m-Y') }}</td>
+                        <td>{{ transactions.getTime().format('d-m-Y H:i:s') }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -33,4 +51,34 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            {% if hasAccess('ticket_admin_consumptions', 'search_transaction') %}
+            $.searchDatabase({
+                defaultPage: $('#default_page'),
+                searchDiv: $('#transactions_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                searchPage: '{{ url('ticket_admin_consumptions', {'action': 'transactions'}) }}transactions/',
+                url: '{{ url('ticket_admin_consumptions', {'action': 'search_transaction'}) }}',
+                display: function (data) {
+                    $('#transactions_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#transactions_search table').append(row =$('<tr>', {class: 'item item-' + this.id}));
+                        row.append('<td>' + this.executor + '</td>')
+                            .append('<td>' + this.username + '</td>')
+                            .append('<td>' + this.amount + '</td>')
+                            .append('<td>' + this.timestamp + '</td>')
+                    });
+                },
+                clear: function () {
+                    $('#transactions_search table').find('tr.item').remove();
+                }
+            });
+            {% endif %}
+        });
+    </script>
 {% endblock %}
