@@ -121,32 +121,69 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $consumption = $form->hydrateObject();
-                $this->getEntityManager()->persist(
-                    $consumption
-                );
-//                $this->getEntityManager()->persist($form);
+                $owner = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\User\Person')
+                    ->findOneById($form->getData()['person']['id']);
 
-                if ($consumption instanceof Consumptions) {
-                    $person = $this->getPersonEntity();
-                    $transaction = new Transactions($form->getData()['number_of_consumptions'], $consumption->getPerson(), $person);
-                    $this->getEntityManager()->persist($transaction);
+                $consumptionsOwner = $this->getEntityManager()
+                    ->getRepository('TicketBundle\Entity\Consumptions')
+                    ->findAllByUserNameQuery($owner->getUserName())
+                    ->getResult();
+                if (empty($consumptionsOwner)) {
+                    $consumption = $form->hydrateObject();
+                    $this->getEntityManager()->persist(
+                        $consumption
+                    );
+
+                    if ($consumption instanceof Consumptions) {
+                        $person = $this->getPersonEntity();
+                        $transaction = new Transactions($form->getData()['number_of_consumptions'], $consumption->getPerson(), $person);
+                        $this->getEntityManager()->persist($transaction);
+                    }
+                    $this->getEntityManager()->flush();
+
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'The consumptions were succesfully created!'
+                    );
+
+                    $this->redirect()->toRoute(
+                        'ticket_admin_consumptions',
+                        array(
+                            'action' => 'add',
+                        )
+                    );
+
+                    return new ViewModel();
+                } else {
+                    $consumption = $consumptionsOwner[0];
+                    $oldNb = $consumption->getConsumptions();
+                    $newNb = $oldNb + $form->getData()['number_of_consumptions'];
+                    $consumption->setConsumptions($newNb);
+                    $this->getEntityManager()->persist(
+                        $consumption
+                    );
+                    if ($consumption instanceof Consumptions) {
+                        $person = $this->getPersonEntity();
+                        $transaction = new Transactions($form->getData()['number_of_consumptions'], $consumption->getPerson(), $person);
+                        $this->getEntityManager()->persist($transaction);
+                    }
+                    $this->getEntityManager()->flush();
+
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'The consumptions were succesfully created!'
+                    );
+
+                    $this->redirect()->toRoute(
+                        'ticket_admin_consumptions',
+                        array(
+                            'action' => 'add',
+                        )
+                    );
+
+                    return new ViewModel();
                 }
-                $this->getEntityManager()->flush();
-
-                $this->flashMessenger()->success(
-                    'Success',
-                    'The consumptions were succesfully created!'
-                );
-
-                $this->redirect()->toRoute(
-                    'ticket_admin_consumptions',
-                    array(
-                        'action' => 'add',
-                    )
-                );
-
-                return new ViewModel();
             }
         }
 
@@ -394,20 +431,37 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
                         continue;
                     }
 
-                    $consumption = new Consumptions();
-                    $person = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\User\Person')
-                        ->findOneByUsername($data[0]);
-                    $consumption->setPerson($person);
-                    $consumption->setConsumptions($data[1]);
-                    $consumption->setUserName($person->getUserName());
-                    $consumption->setFullName($person->getFullName());
+                    $consumptionsOwner = $this->getEntityManager()
+                        ->getRepository('TicketBundle\Entity\Consumptions')
+                        ->findAllByUserNameQuery($data[0])
+                        ->getResult();
+                    if (empty($consumptionsOwner)) {
+                        $consumption = new Consumptions();
+                        $person = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\User\Person')
+                            ->findOneByUsername($data[0]);
+                        $consumption->setPerson($person);
+                        $consumption->setConsumptions($data[1]);
+                        $consumption->setUserName($person->getUserName());
+                        $consumption->setFullName($person->getFullName());
 
-                    $executor = $this->getPersonEntity();
-                    $transaction = new Transactions($data[1], $consumption->getPerson(), $executor);
+                        $executor = $this->getPersonEntity();
+                        $transaction = new Transactions($data[1], $consumption->getPerson(), $executor);
 
-                    $this->getEntityManager()->persist($transaction);
-                    $this->getEntityManager()->persist($consumption);
+                        $this->getEntityManager()->persist($transaction);
+                        $this->getEntityManager()->persist($consumption);
+                    } else {
+                        $consumption = $consumptionsOwner[0];
+                        $oldNb = $consumption->getConsumptions();
+                        $newNb = $oldNb + $data[1];
+                        $consumption->setConsumptions($newNb);
+
+                        $executor = $this->getPersonEntity();
+                        $transaction = new Transactions($data[1], $consumption->getPerson(), $executor);
+
+                        $this->getEntityManager()->persist($transaction);
+                        $this->getEntityManager()->persist($consumption);
+                    }
 
                     $count += 1;
                 }
