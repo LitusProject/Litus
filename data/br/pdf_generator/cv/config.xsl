@@ -33,8 +33,12 @@
     <!-- The font size -->
     <xsl:variable name="font-size"                  select="10"/>
     <xsl:variable name="title-font-size"            select="30"/>
+    <xsl:variable name="toc-font-size"              select="8"/>
     <xsl:variable name="line-height"                select="1.4"/>
     <xsl:variable name="title-line-height"          select="2"/>
+    <xsl:variable name="toc-line-height"            select="3"/>
+    <xsl:variable name="toc-margin"                 select="3.25"/>
+
 
 
     <!-- Footer size -->
