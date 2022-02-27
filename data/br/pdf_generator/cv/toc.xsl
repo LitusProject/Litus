@@ -39,7 +39,10 @@
                         <fo:table-row>
                             <fo:table-cell>
 
-                                <fo:block>
+                                <fo:block
+                                    font-size="{$toc-font-size}pt"
+                                    margin="{$toc-margin}">
+
                                     <xsl:value-of select="@name"/>
                                 </fo:block>
 
@@ -49,7 +52,7 @@
                                 <fo:block>
                                     <fo:page-number-citation>
                                         <xsl:attribute name="ref-id">
-                                            <xsl:value-of select="@name"/>
+                                            <xsl:value-of select="@id"/>
                                         </xsl:attribute>
                                     </fo:page-number-citation>
                                 </fo:block>
