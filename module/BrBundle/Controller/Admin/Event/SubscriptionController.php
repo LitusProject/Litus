@@ -228,7 +228,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
     public function csvAction()
     {
         $file = new CsvFile();
-        $heading = array('first_name','last_name', 'study', 'food');
+        $heading = array('first_name','last_name', 'study', 'food', 'network_reception');
         $results = array();
 
         $event = $this->getEventEntity();
@@ -246,6 +246,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                 $subscription->getLastName(),
                 $subscription->getStudyString(),
                 ($event->getFood() ? $subscription->getFoodString() : '/'),
+                $subscription->isAtNetworkReception() ? 'true' : '',
             );
         }
 
