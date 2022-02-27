@@ -7,6 +7,21 @@
             <h1>{{ event.getTitle(language) }}</h1>
             <div class="pageTitleDeco"></div>
         </div>
+
+        <div class="spacer40"></div>
+
+        <div>
+            {% if event.canSubscribe() %}
+                <a class="button blue unfilled" href="{{ url('br_career_event',{ 'action': 'subscribe', 'id': event.getId() }) }}">{{ translate('Register to this event here') }} →</a>
+            {% endif %}
+            {% if event.canViewMap() %}
+                <a class="button blue unfilled" href="{{ url('br_career_event',{ 'action': 'map', 'id': event.getId() }) }}">{{ translate('Look at the attending companies here') }} →</a>
+            {% endif %}
+            {% if hasGuide %}
+                <a class="button blue unfilled" href="{{ url('br_career_event',{ 'action': 'guide', 'id': event.getId() }) }}">{{ translate('Get the company guide here') }} →</a>
+            {% endif %}
+        </div>
+
         <div class="spacer40"></div>
 
         <div class="markdown">
@@ -14,15 +29,5 @@
         </div>
 
         <div style="height: 100px"></div>
-
-        {% if event.canSubscribe() %}
-        <a class="button blue unfilled" href="{{ url('br_career_event',{ 'action': 'subscribe', 'id': event.getId() }) }}">{{ translate('Register to this event here') }} →</a>
-        {% endif %}
-        {% if event.canViewMap() %}
-        <a class="button blue unfilled" href="{{ url('br_career_event',{ 'action': 'map', 'id': event.getId() }) }}">{{ translate('Look at the attending companies here') }} →</a>
-        {% endif %}
-        {% if hasGuide %}
-        <a class="button blue unfilled" href="{{ url('br_career_event',{ 'action': 'guide', 'id': event.getId() }) }}">{{ translate('Get the company guide here') }} →</a>
-        {% endif %}
     </div>
 {% endblock %}
