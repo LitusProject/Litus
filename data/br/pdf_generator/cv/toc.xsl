@@ -52,7 +52,7 @@
                                 <fo:block>
                                     <fo:page-number-citation>
                                         <xsl:attribute name="ref-id">
-                                            <xsl:value-of select="@id"/>
+                                            <xsl:value-of select="@name"/>
                                         </xsl:attribute>
                                     </fo:page-number-citation>
                                 </fo:block>
