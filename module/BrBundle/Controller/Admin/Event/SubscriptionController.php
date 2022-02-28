@@ -304,7 +304,9 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                 ),
                 array('force_canonical' => true)
             );
-                
+
+        $url = str_replace('leia.', '', $url);
+
         $qrSource = str_replace(
             '{{encodedUrl}}',
             urlencode($url),

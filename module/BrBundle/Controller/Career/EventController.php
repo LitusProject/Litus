@@ -374,13 +374,15 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                 ->fromRoute(
                     'br_career_event',
                     array('action' => 'qr',
-                        'event'    => $event->getId(),
+                        'id'    => $event->getId(),
                         'code'     => $qr
                     ),
                     array('force_canonical' => true)
                 )
         );
-            
+
+        $encodedUrl = str_replace('leia.', '', $encodedUrl);
+
         $qrSource = str_replace(
             '{{encodedUrl}}',
             $encodedUrl,
