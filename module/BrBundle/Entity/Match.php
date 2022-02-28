@@ -236,6 +236,7 @@ class Match
             );
             $max += $trait->getImportanceWorth() / 100;
         }
+        $max = $max == 0 ? 1 : $max;
 
         $positives = 0;
         $negatives = 0;
