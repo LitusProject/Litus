@@ -76,7 +76,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         $groups = array();
 
         foreach ($data as $studyData) {
-            $groups[] = $this->generateGroup($studyData['name'], $studyData['entries']);
+            $groups[] = $this->generateGroup($studyData['name'], $studyData['entries'], $studyData['id']);
         }
 
         $organization_logo = $this->getEntityManager()
@@ -113,7 +113,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         );
     }
 
-    private function generateGroup($groupName, $entries)
+    private function generateGroup($groupName, $entries, $id)
     {
         $cvs = array();
         foreach ($entries as $entry) {
@@ -124,6 +124,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
             'cvgroup',
             array(
                 'name' => $groupName,
+                'id'   => $id,
             ),
             $cvs
         );
