@@ -92,7 +92,7 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
 
         $gradesMap = array();
         $gradesMapEnabled = false;
-        if (in_array($this->getCurrentAcademicYear(), $person->getCompany()->getCvBookYears())){
+        if (!is_null($matches) && in_array($this->getCurrentAcademicYear(), $person->getCompany()->getCvBookYears())){
             $gradesMapEnabled = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('br.cv_grades_map_enabled');
 
