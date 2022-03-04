@@ -26,6 +26,7 @@ use BrBundle\Entity\Event\Subscription;
 use BrBundle\Entity\Event\Visitor;
 use BrBundle\Entity\User\Person\Corporate;
 use CommonBundle\Entity\User\Person\Academic;
+use CudiBundle\Form\Admin\Sale\Article\View;
 use DateTime;
 use Laminas\Mail\Message;
 use Laminas\Mime\Mime;
@@ -94,10 +95,13 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
         $hasGuide = !is_null($guide);
 
+        $hasBusschema = !is_null($event->getBusschema());
+
         return new ViewModel(
             array(
                 'event' => $event,
                 'hasGuide' => $hasGuide,
+                'hasBusschema' => $hasBusschema,
             )
         );
     }
@@ -249,6 +253,28 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                 'event' => $event,
                 'guide' => $guide,
                 'publicPdfDir' => $publicPdfDir,
+            )
+        );
+    }
+
+    public function busschemaAction()
+    {
+        $event = $this->getEventEntity();
+        if ($event === null) {
+            return new ViewModel();
+        }
+
+        $busschema = $event->getBusschema();
+
+        $imageDir = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('publication.public_pdf_directory');
+
+        return new ViewModel(
+            array(
+                'event' => $event,
+                'busschema' => $busschema,
+                'publicPdfDir' => $imageDir,
             )
         );
     }

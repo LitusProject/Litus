@@ -20,6 +20,9 @@
             {% if hasGuide %}
                 <a class="button blue unfilled" href="{{ url('br_career_event',{ 'action': 'guide', 'id': event.getId() }) }}">{{ translate('Get the company guide here') }} →</a>
             {% endif %}
+            {% if hasBusschema %}
+                <a class="button blue unfilled" href="{{ url('br_career_event',{ 'action': 'busschema', 'id': event.getId() }) }}">{{ translate('View the time table for the busses here') }} →</a>
+            {% endif %}
         </div>
 
         <div class="spacer40"></div>
