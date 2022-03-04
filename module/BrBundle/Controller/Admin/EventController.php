@@ -7,6 +7,7 @@ use BrBundle\Entity\Event\CompanyMap;
 use DateInterval;
 use DateTime;
 use Laminas\View\Model\ViewModel;
+use Imagick;
 
 /**
  * EventController
@@ -421,6 +422,61 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 'event' => $event,
                 'form' => $form
             ),
+        );
+    }
+
+    public function busschemaAction()
+    {
+        $event = $this->getEventEntity();
+
+        if ($event === null) {
+            return new ViewModel();
+        }
+
+        $form = $this->getForm('br_admin_event_busschema');
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $fileData = $this->getRequest()->getFiles();
+
+            $form->setData(
+                array_merge_recursive(
+                    $formData->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
+
+            if ($form->isValid()) {
+                $formData = $form->getData();
+
+                $filePath = 'public' . $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('publication.public_pdf_directory');
+
+                do {
+                    $fileName = sha1(uniqid()) . '.pdf';
+                } while (file_exists($filePath . $fileName));
+
+                $event->setBusschema($fileName);
+
+                rename($formData['file']['tmp_name'], $filePath . $fileName);
+
+                $this->getEntityManager()->persist($event);
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The Timetable was succesfully uploaded!'
+                );
+
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'event' => $event,
+                'form'  => $form
+            )
         );
     }
 

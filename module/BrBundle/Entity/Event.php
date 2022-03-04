@@ -159,6 +159,13 @@ class Event
     private $guide;
 
     /**
+     * @var string The file name of the busschema
+     *
+     * @ORM\Column(name="busschema", type="string", unique=true, nullable=true)
+     */
+    private $busschema;
+
+    /**
      * @param Person $creator
      */
     public function __construct(Person $creator)
@@ -501,6 +508,24 @@ class Event
     public function setGuide($guide)
     {
         $this->guide = $guide;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBusschema()
+    {
+        return $this->busschema;
+    }
+
+    /**
+     * @param string $busschema
+     * @return self
+     */
+    public function setBusschema($busschema)
+    {
+        $this->busschema = $busschema;
         return $this;
     }
 }

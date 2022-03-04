@@ -21,6 +21,9 @@
             {% if hasAccess('br_admin_event', 'guide') %}
                 <li><a {% if ('guide' == getParam('action')) %} class="active" {% endif %} href="{{ url('br_admin_event', {"action": "guide", "id": event.getId()}) }}">Company Guide</a></li>
             {% endif %}
+            {% if hasAccess('br_admin_event', 'busschema') %}
+                <li><a {% if ('busschema' == getParam('action')) %} class="active" {% endif %} href="{{ url('br_admin_event', {"action": "busschema", "id": event.getId()}) }}">Busschema</a></li>
+            {% endif %}
         </ul>
     </nav>
 </header>

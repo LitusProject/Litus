@@ -36,4 +36,5 @@ return array(
     'Register to this event here'                                                                                                                                                      => 'Registreer hier voor het evenement',
     'Look at the attending companies here'                                                                                                                                             => 'Vind hier de deelnemende bedrijven',
     'Get the company guide here'                                                                                                                                                       => 'Bekijk de Company Guide hier',
+    'View the time table for the busses here'                                                                                                                                          => 'Bekijk hier het busschema'
 );

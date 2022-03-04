@@ -27,7 +27,7 @@ return array(
             'manage', 'delete', 'export', 'exportAcademics', 'exportCvCsv'
         ),
         'br_admin_event' => array(
-            'manage', 'delete', 'add', 'edit', 'old', 'statistics','deleteAttendee', 'editAttendee', 'guide',
+            'manage', 'delete', 'add', 'edit', 'old', 'statistics','deleteAttendee', 'editAttendee', 'guide', 'busschema',
         ),
         'br_admin_event_company' => array(
             'manage', 'edit', 'delete', 'csv',
@@ -75,7 +75,7 @@ return array(
             'view', 'overview', 'file', 'search',
         ),
         'br_career_event' => array(
-            'overview','view','subscribe','map','qr','scanQr','overviewMatches','removeMatch', 'guide',
+            'overview','view','subscribe','map','qr','scanQr','overviewMatches','removeMatch', 'guide', 'busschema',
         ),
         'br_career_vacancy' => array(
             'view', 'overview',
