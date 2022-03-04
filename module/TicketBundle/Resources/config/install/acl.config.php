@@ -11,6 +11,7 @@ return array(
         'ticket_admin_consumptions' => array(
             'add', 'delete', 'edit', 'manage', 'search', 'consume', 'transactions',
             'total-transactions', 'delete_all', 'csv', 'template', 'search_transaction',
+            'export',
         ),
         'ticket_sale_index' => array(
             'sale', 'validate',
