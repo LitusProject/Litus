@@ -42,7 +42,7 @@
                     <tr class="item item-{{ transactions.getId() }}">
                         <td>{{ transactions.getPerson().getFullName() }}</td>
                         <td>{{ transactions.getOwner().getFullName() }}</td>
-                        <td>{{ transactions.getPerson().getUserName() }}</td>
+                        <td>{{ transactions.getOwner().getUserName() }}</td>
                         <td>{{ transactions.getAmount() }}</td>
                         <td>{{ transactions.getTime().format('d-m-Y H:i:s') }}</td>
                     </tr>
