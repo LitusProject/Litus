@@ -269,6 +269,28 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
+    public function qrAction()
+    {
+        $subscription = $this->getSubscriptionEntity();
+        if ($subscription === null) {
+            return new ViewModel();
+        }
+
+        $event = $this->getEventEntity();
+        if ($event === null) {
+            return new ViewModel();
+        }
+
+        $this->redirect()->toRoute(
+            'br_career_event',
+            array(
+                'action' => 'qr',
+                'id'     => $event->getId(),
+                'code'   => $subscription->getQrCode(),
+            ),
+        );
+    }
+
     private function sendMail(Event $event, SubscriptionEntity $subscription)
     {
         
@@ -364,7 +386,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
     }
 
     /**
-     * @return Event|null
+     * @return SubscriptionEntity|null
      */
     private function getSubscriptionEntity()
     {

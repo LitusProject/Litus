@@ -67,6 +67,9 @@
                         {% if hasAccess('br_admin_event_subscription', 'resend') %}
                             <a href="{{  url('br_admin_event_subscription', {"action": "resend", "event": event.getId(), "id": subscription.getId()}) }}" class="edit">Resend mail</a>
                         {% endif %}
+                        {% if hasAccess('br_admin_event_subscription', 'qr') %}
+                            <a href="{{ url('br_admin_event_subscription', {"action": "qr", "event": event.getId(), "id": subscription.getId()}) }}">QR</a>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
@@ -133,7 +136,9 @@
                             {% if hasAccess('br_admin_event_subscription', 'resend') %}
                                 actions.append('<a href="{{  url("br_admin_event_subscription", {"action": "resend", "event": event.getId()}) }}'+this.id+'" class="edit">Resend mail</a>')
                             {% endif %}
-                            
+                            {% if hasAccess('br_admin_event_subscription', 'qr') %}
+                                actions.append('<a href="{{ url("br_admin_event_subscription", {"action": "qr", "event": event.getId()}) }}'+this.id+'">QR</a>')
+                            {% endif %}
                     });
                     $('#subscription_search table').change();
                     $('.item .delete').unbind('click').click(openModal);
