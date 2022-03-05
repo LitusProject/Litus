@@ -2,7 +2,6 @@
 
 namespace TicketBundle\Controller\Admin;
 
-use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use DateTime;
@@ -10,6 +9,7 @@ use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
 use TicketBundle\Entity\Consumptions;
 use TicketBundle\Entity\Transactions;
+use TicketBundle\Component\Document\Generator\Consumptions\Csv as CsvGenerator;
 
 /**
  * ConsumptionsController
@@ -510,6 +510,34 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
         $headers->addHeaders(
             array(
                 'Content-Disposition' => 'attachment; filename="consumptions_template.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
+    }
+
+    public function exportAction()
+    {
+        $consumptions = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Consumptions')
+            ->findAll();
+
+        $file = new CsvFile();
+        $document = new CsvGenerator($consumptions);
+        $document->generateDocument($file);
+
+        $filename = 'Consumptions.csv';
+
+        $headers = new Headers();
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="' . $filename . '"',
                 'Content-Type'        => 'text/csv',
             )
         );

@@ -3,6 +3,15 @@
 
     <nav id="controller_nav">
         <ul>
+            {% if hasAccess('ticket_admin_consumptions', 'export') %}
+                <li><a {% if 'export' == getParam('action') %} class="active" {% endif %} href="{{ url("ticket_admin_consumptions", {"action": "export"}) }}">Export</a></li>
+            {% endif %}
+            {% if hasAccess('ticket_admin_consumptions', 'csv') %}
+                <li><a {% if 'csv' == getParam('action') %} class="active" {% endif %} href="{{ url("ticket_admin_consumptions", {"action": "csv"}) }}">Add from Csv</a></li>
+            {% endif %}
+            {% if hasAccess('ticket_admin_consumptions', 'template') %}
+                <li><a {% if 'template' == getParam('action') %} class="active" {% endif %} href="{{ url("ticket_admin_consumptions", {"action": "template"}) }}">Csv template</a></li>
+            {% endif %}
             {%  if hasAccess('ticket_admin_consumptions', 'transactions') %}
                 <li><a {% if 'transactions' == getParam('action') %} class = 'active' {%  endif %} href="{{ url('ticket_admin_consumptions', {"action": "transactions"}) }}"> Transactions </a></li>
             {%  endif %}
@@ -15,12 +24,6 @@
             {% if hasAccess('ticket_admin_consumptions', 'manage') %}
                 <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') or 'delete' == getParam('action') %} class="active" {% endif %}
                             href="{{ url('ticket_admin_consumptions', {"action": "manage"}) }}">Manage</a></li>
-            {% endif %}
-            {% if hasAccess('ticket_admin_consumptions', 'csv') %}
-                <li><a {% if 'csv' == getParam('action') %} class="active" {% endif %} href="{{ url("ticket_admin_consumptions", {"action": "csv"}) }}">Add from Csv</a></li>
-            {% endif %}
-            {% if hasAccess('ticket_admin_consumptions', 'template') %}
-                <li><a {% if 'template' == getParam('action') %} class="active" {% endif %} href="{{ url("ticket_admin_consumptions", {"action": "template"}) }}">Csv template</a></li>
             {% endif %}
         </ul>
     </nav>

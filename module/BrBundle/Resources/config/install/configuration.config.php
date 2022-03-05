@@ -501,4 +501,9 @@ Er zijn nieuwe matches!
         'value'       => 'PT1800S',
         'description' => 'The interval for drawing the graphs',
     ),
+    array(
+        'key'         => 'br.event_busschema_path',
+        'value'       => '/_br/jobfair/',
+        'description' => 'The path to the busschema files',
+    ),
 );

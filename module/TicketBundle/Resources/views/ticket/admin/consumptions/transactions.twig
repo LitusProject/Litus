@@ -19,6 +19,7 @@
 {#                <tr>#}
 {#                    <th>Executor</th>#}
 {#                    <th>Username</th>#}
+{#                    <th>R-number</th>#}
 {#                    <th>Amount</th>#}
 {#                    <th>Timestamp</th>#}
 {#                </tr>#}
@@ -30,6 +31,7 @@
                 <tr>
                     <th>Executor</th>
                     <th>Username</th>
+                    <th>R-number</th>
                     <th>Amount</th>
                     <th>Timestamp</th>
                 </tr>
@@ -40,6 +42,7 @@
                     <tr class="item item-{{ transactions.getId() }}">
                         <td>{{ transactions.getPerson().getFullName() }}</td>
                         <td>{{ transactions.getOwner().getFullName() }}</td>
+                        <td>{{ transactions.getOwner().getUserName() }}</td>
                         <td>{{ transactions.getAmount() }}</td>
                         <td>{{ transactions.getTime().format('d-m-Y H:i:s') }}</td>
                     </tr>
@@ -70,6 +73,7 @@
                         $('#transactions_search table').append(row =$('<tr>', {class: 'item item-' + this.id}));
                         row.append('<td>' + this.executor + '</td>')
                             .append('<td>' + this.username + '</td>')
+                            .append('<td>' + this.rnumber + '</td>')
                             .append('<td>' + this.amount + '</td>')
                             .append('<td>' + this.timestamp + '</td>')
                     });
