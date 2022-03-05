@@ -33,7 +33,7 @@ return array(
             'manage', 'edit', 'delete', 'csv',
         ),
         'br_admin_event_subscription' => array(
-            'overview', 'add','edit', 'delete', 'mail' ,'search', 'csv',
+            'overview', 'add', 'edit', 'delete', 'mail' ,'search', 'csv',  'qr',
         ),
         'br_admin_event_location' => array(
             'draw', 'add', 'edit', 'delete',
