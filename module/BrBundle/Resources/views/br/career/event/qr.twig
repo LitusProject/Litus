@@ -45,15 +45,15 @@
 
         {% elseif match is not null %}
             <div class="page-header">
-                <h2>{{ match.getSubscription().getFirstName() }} {{ match.getSubscription().getLastName() }} ({% if duplicate %}Duplicate{% else %}New{% endif %} Match)</h2>
+                <h3>{{ match.getSubscription().getFirstName() }} {{ match.getSubscription().getLastName() }} ({% if duplicate %}Duplicate{% else %}New{% endif %} Match)</h3>
             </div>
-            <h3>Study: {{match.getSubscription().getStudyString()}}</h3>
+            <p>Study: {{match.getSubscription().getStudyString()}}</p>
             {% if match.getSubscription().getSpecialization() != '' %}
-                <h3>Specialization: {{ match.getSubscription().getSpecialization() }}</h3>
+                <p>Specialization: {{ match.getSubscription().getSpecialization() }}</p>
             {% endif %}
-            <h3>E-mail: {{match.getSubscription().getEmail()}}</h3>
+            <p>E-mail: {{match.getSubscription().getEmail()}}</p>
             {% if match.getSubscription().getPhoneNumber() != '' %}
-                <h3>Phone number: {{ match.getSubscription().getPhoneNumber() }}</h3>
+                <p>Phone number: {{ match.getSubscription().getPhoneNumber() }}</p>
             {% endif %}
             <div style="height: 100px"></div>
 
