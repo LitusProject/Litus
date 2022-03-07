@@ -1,4 +1,22 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
 namespace BrBundle\Repository\Event;
 
@@ -42,6 +60,21 @@ class CompanyMap extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery();
     }
 
+    public function findAllByCompany(Company $company)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('m')
+            ->from('BrBundle\Entity\Event\CompanyMap', 'm')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('m.company', ':company')
+                )
+            )
+            ->setParameter('company', $company->getId())
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findAllByEventSortedByCompanyQuery(Event $event)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -72,6 +105,6 @@ class CompanyMap extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->setParameter('event', $event->getId())
             ->setParameter('company', $company->getId())
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
     }
 }
