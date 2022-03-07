@@ -292,7 +292,6 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                 
                 // If company is at event
                 if ($companyMap != null) {
-                    $companyMap = $companyMap[0];
                     
                     // Check whether match already exists
                     $match = $this->getEntityManager()
