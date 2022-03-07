@@ -454,7 +454,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
         $companyMap = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Event\CompanyMap')
-            ->findByEventAndCompany($event, $person->getCompany())[0];
+            ->findByEventAndCompany($event, $person->getCompany());
 
         $matches = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Event\Match')
