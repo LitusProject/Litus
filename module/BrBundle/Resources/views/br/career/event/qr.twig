@@ -4,29 +4,27 @@
     <div class="container">
 
         <div class="pageTitleHolder">
-            <h1>{{ event.getTitle(language) }}: QR code</h1>
+            <h3>{{ event.getTitle(language) }}: QR code</h3>
             <div class="pageTitleDeco"></div>
         </div>
         <div class="spacer40"></div>
 
         <a class="button blue unfilled" href="{{ url('br_career_event',{ 'action': 'view', 'id': event.getId() }) }}">← {{ translate('Return to the event information') }}</a>
 
-        <div style="height: 20px"></div>
+        <div style="height: 5px"></div>
 
         {% if entry is not null %}
             {# In other words, it is either entry or exit #}
             
             <div class="page-header">
-                <h1>{{ subscription.getFirstName() }} {{ subscription.getLastName() }}</h1>
+                <h3>{{ subscription.getFirstName() }} {{ subscription.getLastName() }}</h3>
             </div>
             {% if entry %}
-                <h1>Welcome</h1>
+                <h2>Welcome</h2>
                 {% if firstTime %}
                     <h3>This person is entering for the first time</h3>
-
                 {% else %}
                     <h3>This person has entered before</h3>
-
                 {% endif %}
                 
 
@@ -39,30 +37,30 @@
                     {% endif %}
                 </div>
             {% else  %}
-                <h1>Goodbye</h1>
+                <h2>Goodbye</h2>
 
-                <h3>This person should be exiting the building.</h3>
+                <p>This person should be exiting the building.</p>
 
             {% endif %}
 
         {% elseif match is not null %}
             <div class="page-header">
-                <h1>{{ match.getSubscription().getFirstName() }} {{ match.getSubscription().getLastName() }} ({% if duplicate %}Duplicate{% else %}New{% endif %} Match)</h1>
+                <h3>{{ match.getSubscription().getFirstName() }} {{ match.getSubscription().getLastName() }} ({% if duplicate %}Duplicate{% else %}New{% endif %} Match)</h3>
             </div>
-            <h3>Study: {{match.getSubscription().getStudyString()}}</h3>
+            <p>Study: {{match.getSubscription().getStudyString()}}</p>
             {% if match.getSubscription().getSpecialization() != '' %}
-                <h3>Specialization: {{ match.getSubscription().getSpecialization() }}</h3>
+                <p>Specialization: {{ match.getSubscription().getSpecialization() }}</p>
             {% endif %}
-            <h3>E-mail: {{match.getSubscription().getEmail()}}</h3>
+            <p>E-mail: {{match.getSubscription().getEmail()}}</p>
             {% if match.getSubscription().getPhoneNumber() != '' %}
-                <h3>Phone number: {{ match.getSubscription().getPhoneNumber() }}</h3>
+                <p>Phone number: {{ match.getSubscription().getPhoneNumber() }}</p>
             {% endif %}
             <div style="height: 100px"></div>
 
             <a class="button blue unfilled" href="{{ url('br_career_event',{ 'action': 'overviewMatches', 'id': event.getId() }) }}">{{ translate('View your matches here') }} →</a>
         {% else %}
             <div class="page-header">
-                <h1>QR code</h1>
+                <h3>QR code</h3>
             </div>
             <div class="row">
                 
