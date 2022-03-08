@@ -133,8 +133,8 @@
                             {% if hasAccess('br_admin_event_subscription', 'delete') %}
                                 actions.append('<a href="#" class="delete" data-id="'+this.id+'" data-name="'+this.name+'">Delete</a>')
                             {% endif %}
-                            {% if hasAccess('br_admin_event_subscription', 'resend') %}
-                                actions.append('<a href="{{  url("br_admin_event_subscription", {"action": "resend", "event": event.getId()}) }}'+this.id+'" class="edit">Resend mail</a>')
+                            {% if hasAccess('br_admin_event_subscription', 'mail') %}
+                                actions.append('<a href="{{  url("br_admin_event_subscription", {"action": "mail", "event": event.getId()}) }}'+this.id+'" class="edit">Resend mail</a>')
                             {% endif %}
                             {% if hasAccess('br_admin_event_subscription', 'qr') %}
                                 actions.append('<a href="{{ url("br_admin_event_subscription", {"action": "qr", "event": event.getId()}) }}'+this.id+'">QR</a>')
