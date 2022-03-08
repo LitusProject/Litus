@@ -26,6 +26,8 @@ use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use Laminas\Http\Headers;
 use Laminas\Mail\Message;
+use Laminas\Mime\Mime;
+use Laminas\Mime\Part;
 use Laminas\View\Model\ViewModel;
 
 /**
@@ -343,15 +345,18 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         $message = str_replace('{{qrLink}}', $url, $message);
         $message = str_replace('{{brMail}}', $mailAddress, $message);
 
+        $part = new Part($message);
+
+        $part->type = Mime::TYPE_HTML;
+        $part->charset = 'utf-8';
+        $newMessage = new \Laminas\Mime\Message();
+        $newMessage->addPart($part);
+
         $mail = new Message();
         $mail->setEncoding('UTF-8')
-            ->setBody($message)
+            ->setBody($newMessage)
             ->setFrom($mailAddress, $mailName)
             ->addTo($subscription->getEmail(), $subscription->getFirstName().' '.$subscription->getLastName())
-            ->addBcc(
-                $mailAddress,
-                $mailName
-            )
             ->setSubject($subject);
 
         if (getenv('APPLICATION_ENV') != 'development') {
