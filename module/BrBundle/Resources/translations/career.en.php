@@ -36,5 +36,5 @@ return array(
     'Register to this event here'                                                                                                                                                      => 'Register to this event here',
     'Look at the attending companies here'                                                                                                                                             => 'Look at the attending companies here',
     'Get the company guide here'                                                                                                                                                       => 'Get the company guide here',
-    'View the time table for the busses here'                                                                                                                                          => 'View the time table for the busses here',
+    'View the time table for the busses here'                                                                                                                                          => 'View the time table for the buses here',
 );
