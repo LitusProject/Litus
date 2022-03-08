@@ -315,7 +315,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
 
         $mailName = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.subscription_mail_name');
+            ->getConfigValue('br.subscription_mail_name');
         
         $url = $this->url()
             ->fromRoute(
@@ -353,7 +353,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                 $mailName
             )
             ->setSubject($subject);
-
+        
         if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);
         }

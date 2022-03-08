@@ -64,8 +64,8 @@
                         {% if hasAccess('br_admin_event_subscription', 'delete') %}
                             <a href="#" class="delete" data-id="{{  subscription.getId() }}" data-name="{{ subscription.getFirstName() }} {{ subscription.getLastName() }}">Delete</a>
                         {% endif %}
-                        {% if hasAccess('br_admin_event_subscription', 'resend') %}
-                            <a href="{{  url('br_admin_event_subscription', {"action": "resend", "event": event.getId(), "id": subscription.getId()}) }}" class="edit">Resend mail</a>
+                        {% if hasAccess('br_admin_event_subscription', 'mail') %}
+                            <a href="{{  url('br_admin_event_subscription', {"action": "mail", "event": event.getId(), "id": subscription.getId()}) }}" class="edit">Resend mail</a>
                         {% endif %}
                         {% if hasAccess('br_admin_event_subscription', 'qr') %}
                             <a href="{{ url('br_admin_event_subscription', {"action": "qr", "event": event.getId(), "id": subscription.getId()}) }}">QR</a>
