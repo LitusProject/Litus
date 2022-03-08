@@ -223,7 +223,15 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         $eventObject = $this->getEventEntity();
 
         $this->sendMail($eventObject, $subscription);
-        
+
+        $this->redirect()->toRoute(
+            'br_admin_event_subscription',
+            array(
+                'action' => 'overview',
+                'event'  => $eventObject->getId(),
+            )
+        );
+
         return new ViewModel();
     }
 
