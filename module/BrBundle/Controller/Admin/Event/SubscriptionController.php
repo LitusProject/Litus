@@ -235,6 +235,30 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         return new ViewModel();
     }
 
+    public function reminderAction()
+    {
+        $event = $this->getEventEntity();
+
+        $subscriptions = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Event\Subscription')
+            ->findAllByEventQuery($event)
+            ->getResult();
+
+        foreach ($subscriptions as $subscription) {
+            $this->sendReminder($event, $subscription);
+        }
+
+        $this->redirect()->toRoute(
+            'br_admin_event_subscription',
+            array(
+                'action' => 'overview',
+                'event'  => $event->getId(),
+            )
+        );
+
+        return new ViewModel();
+    }
+
     public function csvAction()
     {
         $file = new CsvFile();
@@ -327,6 +351,77 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.subscription_mail_name');
         
+        $url = $this->url()
+            ->fromRoute(
+                'br_career_event',
+                array('action' => 'qr',
+                    'id'       => $event->getId(),
+                    'code'     => $subscription->getQrCode()
+                ),
+                array('force_canonical' => true)
+            );
+
+        $url = str_replace('leia.', '', $url);
+
+        $qrSource = str_replace(
+            '{{encodedUrl}}',
+            urlencode($url),
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.google_qr_api')
+        );
+
+        $message = str_replace('{{event}}', $event->getTitle(), $message);
+        $message = str_replace('{{eventDate}}', $event->getStartDate()->format('d/m/Y'), $message);
+        $message = str_replace('{{qrSource}}', $qrSource, $message);
+        $message = str_replace('{{qrLink}}', $url, $message);
+        $message = str_replace('{{brMail}}', $mailAddress, $message);
+
+        $part = new Part($message);
+
+        $part->type = Mime::TYPE_HTML;
+        $part->charset = 'utf-8';
+        $newMessage = new \Laminas\Mime\Message();
+        $newMessage->addPart($part);
+
+        $mail = new Message();
+        $mail->setEncoding('UTF-8')
+            ->setBody($newMessage)
+            ->setFrom($mailAddress, $mailName)
+            ->addTo($subscription->getEmail(), $subscription->getFirstName().' '.$subscription->getLastName())
+            ->setSubject($subject);
+
+        if (getenv('APPLICATION_ENV') != 'development') {
+            $this->getMailTransport()->send($mail);
+        }
+    }
+
+    private function sendReminder(Event $event, SubscriptionEntity $subscription)
+    {
+
+        $entityManager = $this->getEntityManager();
+        // $language Language is set to english when sent from admin
+        $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
+            ->findOneByAbbrev('en');
+
+
+        $mailData = unserialize(
+            $entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.subscription_reminder_data')
+        );
+
+        $message = $mailData[$language->getAbbrev()]['content'];
+        $subject = str_replace('{{event}}', $event->getTitle(), $mailData[$language->getAbbrev()]['subject']);
+
+        $mailAddress = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.subscription_mail');
+
+        $mailName = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.subscription_mail_name');
+
         $url = $this->url()
             ->fromRoute(
                 'br_career_event',
