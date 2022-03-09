@@ -10,6 +10,9 @@
             {% if hasAccess('br_admin_event_subscription', 'csv') %}
                 <li><a {% if 'csv' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_event_subscription', {"action": "csv", "event": event.getId()}) }}">CSV</a></li>
             {% endif %}
+            {% if hasAccess('br_admin_event_subscription', 'reminder') %}
+                <li><a {% if 'reminder' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_event_subscription', {"action": "reminder", "event": event.getId()}) }}">Mail All</a></li>
+            {% endif %}
         </ul>
     </nav>
 </header>
