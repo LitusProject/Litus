@@ -41,16 +41,14 @@
     {% endfor %}
 
     <div class="vtk-home-header">
-        <a href="{{ url('br_career_event',{ 'action': 'view', 'id': 1 }) }}" target="_blank">
-            <div class="vtk-home-image">
-                <div class="container" style="text-align: center">
-                    {#                <h1 class="vtk-hometitle">{{ translate('welcome to')}} VTK</h1>#}
-                    {#                <div class="vtk-home-titleDecoration"></div>#}
-                    {#                <h2 class="vtk-home-subtitle" style="color: white; font-weight: 500">Vlaamse Technische Kring - partner in crime since 1920</h2>#}
-                    <div style="height: 100px"></div>
-                </div>
+        <div class="vtk-home-image">
+            <div class="container" style="text-align: center">
+                <h1 class="vtk-hometitle">{{ translate('welcome to')}} VTK</h1>
+                <div class="vtk-home-titleDecoration"></div>
+                <h2 class="vtk-home-subtitle" style="color: white; font-weight: 500">Vlaamse Technische Kring - partner in crime since 1920</h2>
+                <div style="height: 100px"></div>
             </div>
-        </a>
+        </div>
     </div>
 
     {% if newsItems|length > 0 or cudi.openingHours|length > 0 %}
