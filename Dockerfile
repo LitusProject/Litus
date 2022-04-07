@@ -99,7 +99,7 @@ COPY docker/php-cli/entrypoint.sh /
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-FROM php:8.1.3-cli-alpine AS php-fpm
+FROM php:8.1.3-fpm-alpine AS php-fpm
 
 ARG APPLICATION_ENV=development
 ENV APPLICATION_ENV=${APPLICATION_ENV}
