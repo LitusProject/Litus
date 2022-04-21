@@ -146,7 +146,7 @@
         }
 
         function performSearch(text) {
-            $.post('{{ url('br_corporate_cv', {"action": "search"})}}string/' + text+'/academicyear/{{ getParam('academicyear') }}', function (data) {
+            $.post('{{ url('br_corporate_cv', {"action": "search"})}}string/' + text+'/academicyear/{{ academicYear.getCode() }}', function (data) {
                 $('.panel-group-entry').hide().removeClass('shown');
                 $('.panel-study').show();
                 $.each(data, function(index, element) {

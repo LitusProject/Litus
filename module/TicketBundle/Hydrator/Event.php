@@ -43,7 +43,6 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                     $option = $this->getEntityManager()
                         ->getRepository('TicketBundle\Entity\Event\Option')
                         ->findOneById($optionData['option_id']);
-
                     $option->setName($optionData['option'])
                         ->setPriceMembers($optionData['price_members'])
                         ->setMaximum(intval($optionData['maximum']));
@@ -174,6 +173,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                     'maximum'           => $option->getMaximum(),
                     'price_members'     => number_format($option->getPriceMembers() / 100, 2),
                     'price_non_members' => $object->isOnlyMembers() ? '' : number_format($option->getPriceNonMembers() / 100, 2),
+                    'membershipDiscount' => $option->getPriceNonMembers() > 0,
                 );
             }
         }
