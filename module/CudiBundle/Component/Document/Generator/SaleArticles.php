@@ -39,6 +39,7 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
         $headers = array(
             'Title',
             'Barcode',
+            'Supplier',
             'Author',
             'Code',
             'Vak',
@@ -90,6 +91,7 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
                 $articleData = array(
                     $article->getMainArticle()->getTitle(),
                     $article->getBarcode(),
+                    $article->getSupplier()->getName(),
                     $article->getMainArticle()->getAuthors(),
                     $code->getSubject()->getCode(),
                     $code->getSubject()->getName(),
