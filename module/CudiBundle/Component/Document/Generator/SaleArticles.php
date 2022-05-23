@@ -21,21 +21,6 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
      */
     public function __construct(EntityManager $entityManager, AcademicYear $academicYear, $semester)
     {
-//        $headers = array(
-//            'Title',
-//            'Author',
-//            'Barcode',
-//            'Sell Price',
-//            'Stock',
-//            'Code',
-//            'Vak',
-//            'Sold 21-22',
-//            'Pages Black White',
-//            'Pages Colored',
-//            'Recto Verso',
-//            'Purchase Price'
-//        );
-
         $headers = array(
             'Title',
             'Barcode',
@@ -52,16 +37,6 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
             'Sell Price',
         );
 
-        $organizations = $entityManager
-            ->getRepository('CommonBundle\Entity\General\Organization')
-            ->findAll();
-
-//        foreach (Discount::$possibleTypes as $type) {
-//            foreach ($organizations as $organization) {
-//                $headers[] = 'Sell Price (' . $type . ' Discounted ' . $organization->getName() . ')';
-//            }
-//        }
-
         parent::__construct(
             $headers,
             $this->getData($entityManager, $academicYear, $semester)
@@ -75,14 +50,9 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
      */
     private function getData(EntityManager $entityManager, AcademicYear $academicYear, $semester)
     {
-//        die(json_encode($academicYear->getId()));
         $articles = $entityManager
             ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findAllByAcademicYear($academicYear, $semester);
-
-        $organizations = $entityManager
-            ->getRepository('CommonBundle\Entity\General\Organization')
-            ->findAll();
 
         $data = array();
         foreach ($articles as $article) {
@@ -104,30 +74,10 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
                     number_format($article->getSellPrice() / 100, 2),
                 );
             }
-
-            $discounts = $article->getDiscounts();
-
-//            foreach (array_keys(Discount::$possibleTypes) as $key) {
-//                foreach ($organizations as $organization) {
-//                    $foundDiscount = null;
-//
-//                    foreach ($discounts as $discount) {
-//                        if ($discount->getRawType() == $key && ($discount->getOrganization() == $organization || $discount->getOrganization() === null)) {
-//                            $foundDiscount = $discount;
-//                        }
-//                    }
-//
-//                    if ($foundDiscount !== null) {
-//                        $articleData[] = number_format($foundDiscount->apply($article->getSellPrice()) / 100, 2);
-//                    } else {
-//                        $articleData[] = '';
-//                    }
-//                }
-//            }
-
-            $data[] = $articleData;
+            if (!in_array($articleData, $data)) {
+                $data[] = $articleData;
+            }
         }
-
         return $data;
     }
 
