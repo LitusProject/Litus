@@ -6,6 +6,7 @@ use CommonBundle\Entity\User\Person;
 use CudiBundle\Entity\Sale\Article;
 use CudiBundle\Entity\Sale\Booking;
 use CudiBundle\Entity\Sale\QueueItem;
+use CudiBundle\Entity\Article as General;
 use DateInterval;
 use Laminas\View\Model\ViewModel;
 
@@ -389,6 +390,122 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                 )
             );
         }
+    }
+
+    /**
+     * input: json:
+     * {
+     *      "key": "api key",
+     *      "is_same": "true/false",
+     *      "barcode": barcode,
+     *      "black_white": "number",
+     *      "colored": "number",
+     *      "official": "true/false",
+     *      "recto_verso": "true/false",
+     *      "purchase_price": "number",
+     *      "sell_price": "number"
+     * })
+     */
+    public function isSameAction()
+    {
+        $this->initJson();
+
+        if (!$this->getRequest()->isPost()) {
+            return $this->error(405, 'This endpoint can only be accessed through POST');
+        }
+
+        $input = $this->getRequest()->getContent();
+        $json = json_decode($input);
+
+        $barcode = $json->barcode;
+
+        $saleArticle = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Article')
+            ->findOneByBarcode($barcode);
+
+        $articleId = $saleArticle->getMainArticle();
+
+        $article = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Article')
+            ->findBy(array(
+                'id' => $articleId
+            ))[0];
+
+        $originalArticle = $article;
+
+        if ($article == null) {
+            return $this->error(404, 'This article doesn\'t exist');
+        }
+        if ($json->is_same === "true") {
+            $article->setIsSameAsPreviousYear(true);
+        }
+        else {
+            error_log("not same");
+//            die();
+            $internal = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Article\Internal')
+                ->findBy(array(
+                    'id' => $articleId
+                ))[0];
+            $internal->setNbBlackAndWhite($json->black_white);
+            $internal->setNbColored($json->colored);
+            $internal->setIsOfficial($json->official);
+            $internal->setIsRectoVerso($json->recto_verso);
+            $article->setIsSameAsPreviousYear(false);
+        }
+
+        // To Do: Subject Code toevoegen
+
+        $this->copyArticleSubject($originalArticle);
+
+        $newBarcode = $this->changeBarcode($barcode);
+        $saleArticle->setBarcode($newBarcode);
+        if (!($json->is_same === "true")) {
+            $saleArticle->setPurchasePrice($json->purchase_price);
+            $saleArticle->setSellPrice($json->sell_price);
+        }
+        $saleArticle->setIsBookable(true);
+        $saleArticle->setIsUnbookable(true);
+        $saleArticle->setIsSellable(true);
+        $saleArticle->setCanExpire(true);
+        $this->getEntityManager()->flush();
+        die();
+    }
+
+    private function copyArticleSubject(General $article)
+    {
+        $currentYear = $this->getCurrentAcademicYear();
+        $date = $currentYear->getEndDate();
+        date_add($date, date_interval_create_from_date_string("30 days"));
+        $nextYear = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByDate($date);
+
+        $currentSubjects = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Article\SubjectMap')
+            ->findAllByArticleQuery($article)
+            ->getResult();
+
+        foreach ($currentSubjects as $subjectMap) {
+//            error_log(json_encode($test->getSubject()->getCode()));
+            $newMap = new General\SubjectMap($article, $subjectMap->getSubject(), $nextYear, false);
+            $this->getEntityManager()->persist($newMap);
+        }
+    }
+
+    private function changeBarcode(string $barcode)
+    {
+        $currentYear = $this->getCurrentAcademicYear();
+        $date = $currentYear->getEndDate();
+        date_add($date, date_interval_create_from_date_string("30 days"));
+        $nextYear = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByDate($date);
+        $nextYearCode = $nextYear->getCode(true);
+
+        $newBarcode = substr($barcode, 0, 3) . $nextYearCode . substr($barcode, 7);
+
+        return $newBarcode;
     }
 
     /**
