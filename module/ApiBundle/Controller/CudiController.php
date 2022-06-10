@@ -440,8 +440,6 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             $article->setIsSameAsPreviousYear(true);
         }
         else {
-            error_log("not same");
-//            die();
             $internal = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Article\Internal')
                 ->findBy(array(
@@ -453,8 +451,6 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             $internal->setIsRectoVerso($json->recto_verso);
             $article->setIsSameAsPreviousYear(false);
         }
-
-        // To Do: Subject Code toevoegen
 
         $this->copyArticleSubject($originalArticle);
 
@@ -469,7 +465,14 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
         $saleArticle->setIsSellable(true);
         $saleArticle->setCanExpire(true);
         $this->getEntityManager()->flush();
-        die();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array(
+                    'front_page' => '/admin/cudi/article/file/front/' . $saleArticle->getId(),
+                )
+            )
+        );
     }
 
     private function copyArticleSubject(General $article)
@@ -487,7 +490,6 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->getResult();
 
         foreach ($currentSubjects as $subjectMap) {
-//            error_log(json_encode($test->getSubject()->getCode()));
             $newMap = new General\SubjectMap($article, $subjectMap->getSubject(), $nextYear, false);
             $this->getEntityManager()->persist($newMap);
         }
