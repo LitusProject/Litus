@@ -15,7 +15,7 @@ return array(
             'entries',
         ),
         'api_cudi' => array(
-            'articles', 'book', 'bookings', 'cancelBooking', 'currentSession', 'openingHours', 'signIn', 'signInStatus',
+            'articles', 'book', 'bookings', 'cancelBooking', 'currentSession', 'openingHours', 'signIn', 'signInStatus', 'isSame',
         ),
         'api_door' => array(
             'getRules', 'log',
