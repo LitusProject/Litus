@@ -107,10 +107,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                         $formData['guest_form']['comments'],
                     );
 
-//                    die($formData['guest_form']['picture']);
-
                     if ($formData['guest_form']['picture']) {
-//                        die(json_encode($formData['guest_form']['picture']));
                         $image = new \Imagick($formData['guest_form']['picture']['tmp_name']);
                     }
 
@@ -575,8 +572,6 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             ->addTo($mailTo)
             ->addBcc($mailFrom)
             ->setSubject(str_replace('{{ event }}', $eventName, $mailSubject));
-
-        die(json_encode($mail->toString()));
 
         if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);
