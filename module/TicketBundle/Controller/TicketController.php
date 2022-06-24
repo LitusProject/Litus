@@ -52,7 +52,15 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             $form = $this->getForm('ticket_ticket_bookguest', array('event' => $event));
 
             if ($this->getRequest()->isPost()) {
-                $form->setData($this->getRequest()->getPost());
+//                $form->setData($this->getRequest()->getPost());
+                $form->setData(
+                    array_merge_recursive(
+                        $this->getRequest()->getPost()->toArray(),
+                        $this->getRequest()->getFiles()->toArray(),
+                    )
+                );
+
+                $filePath = 'public/_ticket/img';
 
                 if ($form->isValid()) {
                     $formData = $form->getData();
@@ -90,7 +98,28 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                         $formData['guest_form']['guest_email'],
                         $formData['guest_form']['guest_organization'],
                         $formData['guest_form']['guest_identification'],
+                        $formData['guest_form']['phone_number'],
+                        $formData['guest_form']['address'],
+                        $formData['guest_form']['studies'],
+                        $formData['guest_form']['food_option'],
+                        $formData['guest_form']['allergies'],
+                        $formData['guest_form']['transportation'],
+                        $formData['guest_form']['comments'],
                     );
+
+//                    die($formData['guest_form']['picture']);
+
+                    if ($formData['guest_form']['picture']) {
+//                        die(json_encode($formData['guest_form']['picture']));
+                        $image = new \Imagick($formData['guest_form']['picture']['tmp_name']);
+                    }
+
+                    do {
+                        $newFileName = sha1(uniqid());
+                    } while (file_exists($filePath . '/' . $newFileName));
+
+                    $image->writeImage($filePath . '/' . $newFileName);
+                    $guestInfo->setPicture($newFileName);
 
                     $this->getEntityManager()->persist($guestInfo);
                     $this->getEntityManager()->flush();
@@ -546,6 +575,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             ->addTo($mailTo)
             ->addBcc($mailFrom)
             ->setSubject(str_replace('{{ event }}', $eventName, $mailSubject));
+
+        die(json_encode($mail->toString()));
 
         if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);
