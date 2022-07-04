@@ -541,7 +541,8 @@ class ActionController extends \Laminas\Mvc\Controller\AbstractActionController 
 
         $response = curl_exec($curl);
         $userName = json_decode($response)->userName;
-        die($userName);
+
+        return $userName;
     }
 
     private function getBearerToken()
