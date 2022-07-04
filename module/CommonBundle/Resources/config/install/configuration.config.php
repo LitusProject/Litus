@@ -470,7 +470,7 @@ You can remove any installed cookies from your computer or mobile device at any 
     ),
     array(
         'key'       => 'common.studcard_client_id',
-        'value'     => 'vtk_cursusdienst',
+        'value'     => 'vtk-cursusdienst',
         'description' => 'Client ID for Student Card API basic authentication',
     ),
     array(
