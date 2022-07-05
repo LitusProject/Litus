@@ -3,6 +3,7 @@
 namespace ApiBundle\Controller;
 
 use BrBundle\Entity\Company;
+use Laminas\View\Model\ViewModel;
 
 /**
  * BrController
@@ -14,6 +15,12 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
 
     }
 
+    /**
+     * input: json {
+     *      "key": "api key",
+     *      "company": "company name"
+     * }
+     */
     public function addCvBookAction()
     {
         $this->initJson();
@@ -30,9 +37,18 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
         $company = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
             ->findallByNameQuery($company_name)
-            ->getResult();
+            ->getResult()[0];
 
+        $company->addCvBookYear($this->getCurrentAcademicYear());
+
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array(
+                    'status' => 'success',
+                ),
+            )
+        );
     }
-
-
 }

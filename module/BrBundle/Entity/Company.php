@@ -620,6 +620,20 @@ class Company
     }
 
     /**
+     * @param $year
+     * @return self
+     */
+    public function addCvBookYear($year)
+    {
+
+        $current_years = $this->cvBookYears;
+        $current_years->add($year);
+        $this->cvBookYears = $current_years;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getCvBookArchiveYears()
