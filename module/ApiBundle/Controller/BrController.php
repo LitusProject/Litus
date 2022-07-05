@@ -6,7 +6,6 @@ use BrBundle\Entity\Company;
 use CommonBundle\Entity\General\AcademicYear;
 use Doctrine\Common\Collections\ArrayCollection;
 use Laminas\View\Model\ViewModel;
-use function Sodium\add;
 
 /**
  * BrController
