@@ -69,7 +69,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type'       => 'select',
                 'name'       => 'sector',
                 'label'      => 'Sector',
-                'required'   => true,
+                'required'   => false,
                 'attributes' => array(
                     'options' => Company::POSSIBLE_SECTORS,
                 ),
@@ -81,7 +81,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type'     => 'text',
                 'name'     => 'vat_number',
                 'label'    => 'VAT Number',
-                'required' => true,
+                'required' => false,
                 'options'  => array(
                     'input' => array(
                         'filters' => array(
@@ -139,7 +139,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type'     => 'text',
                 'name'     => 'website',
                 'label'    => 'Website',
-                'required' => true,
+                'required' => false,
                 'options'  => array(
                     'input' => array(
                         'filters' => array(
@@ -172,7 +172,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type'     => 'common_address_add',
                 'name'     => 'address',
                 'label'    => 'Address',
-                'required' => true,
+                'required' => false,
             )
         );
 
@@ -233,7 +233,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         'type'     => 'common_address_add',
                         'name'     => 'invoice_address',
                         'label'    => 'Invoice Address',
-                        'required' => true,
+                        'required' => false,
                     ),
                 ),
             )

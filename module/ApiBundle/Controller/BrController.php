@@ -150,7 +150,14 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
 
         $page = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Page')
-            ->findById($company->getId())[0];
+            ->findOneBy(array(
+                'company' => $company));
+
+//        $this->entityManager
+//            ->getRepository('CudiBundle\Entity\IsicCard')
+//            ->findOneBy(array('booking' => $booking->getId()));
+
+//        die(var_dump($page->getId()));
 
         $page->addYear($this->getCurrentAcademicYear());
 
@@ -163,6 +170,38 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
                 ),
             )
         );
+    }
+
+    /**
+     * input: json {
+     *      "key": "api key",
+     *      "company": "company name"
+     * }
+     */
+    public function isPageVisibleAction()
+    {
+        $this->initJson();
+
+        if (!$this->getRequest()->isPost()) {
+            return $this->error(405, 'This endpoint can only be accessed through POST');
+        }
+
+        $input = $this->getRequest()->getContent();
+        $json = json_decode($input);
+
+        $company_name = $json->company;
+
+        $company = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company')
+            ->findallByNameQuery($company_name)
+            ->getResult()[0];
+
+        $page = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Page')
+            ->findOneBy(array(
+                'company' => $company));
+
+        die(var_dump($page->getId()));
     }
 
     /**
