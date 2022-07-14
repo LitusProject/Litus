@@ -63,7 +63,8 @@
     },
     "config": {
         "allow-plugins": {
-            "laminas/laminas-dependency-plugin": true
+            "laminas/laminas-dependency-plugin": true,
+            "phpstan/extension-installer": true
         }
     },
     "autoload": {
