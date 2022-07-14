@@ -2,8 +2,6 @@
 
 namespace BrBundle\Form\Admin\Event;
 
-use RuntimeException;
-
 class Guide extends \CommonBundle\Component\Form\Admin\Form
 {
     const FILE_SIZE = '200MB';
