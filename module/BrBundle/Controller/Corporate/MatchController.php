@@ -90,9 +90,10 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
             $matches
         ) : $matches;
 
-        $gradesMap = array();
         $gradesMapEnabled = false;
-        if (!is_null($matches) && in_array($this->getCurrentAcademicYear(), $person->getCompany()->getCvBookYears())){
+        $gradesMap = array();
+        $entries = array();
+        if (!is_null($matches) && in_array($this->getCurrentAcademicYear(), $person->getCompany()->getCvBookYears())) {
             $gradesMapEnabled = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('br.cv_grades_map_enabled');
 
@@ -100,14 +101,14 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
                 $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('br.cv_grades_map')
             );
-            foreach ($matches as $match){
+            foreach ($matches as $match) {
                 $entry = $match->getStudentCV($this->getEntityManager(), $this->getCurrentAcademicYear());
-                if ($entry != false){
+                if ($entry != false) {
                     $entries[] = array('id' => $match->getId(), 'cv' => $entry);
                 }
             }
         }
-        
+
 
         return new ViewModel(
             array(
@@ -222,7 +223,7 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
                         $map = new ProfileFeatureMap(
                             $this->getEntityManager()
                                 ->getRepository('BrBundle\Entity\Match\Feature')
-                                ->findOneById($id), 
+                                ->findOneById($id),
                             $profile,
                             $val
                         );
@@ -396,7 +397,7 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
                         $map = new ProfileFeatureMap(
                             $this->getEntityManager()
                                 ->getRepository('BrBundle\Entity\Match\Feature')
-                                ->findOneById($id), 
+                                ->findOneById($id),
                             $profile,
                             $val
                         );
@@ -487,7 +488,7 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
 
         $gradesMap = array();
         $gradesMapEnabled = false;
-        if (in_array($this->getCurrentAcademicYear(), $person->getCompany()->getCvBookYears())){
+        if (in_array($this->getCurrentAcademicYear(), $person->getCompany()->getCvBookYears())) {
             $gradesMapEnabled = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('br.cv_grades_map_enabled');
 
@@ -495,9 +496,9 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
                 $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('br.cv_grades_map')
             );
-            foreach ($matches as $match){
+            foreach ($matches as $match) {
                 $entry = $match->getStudentCV($this->getEntityManager(), $this->getCurrentAcademicYear());
-                if ($entry != false){
+                if ($entry != false) {
                     $entries[] = array('id' => $match->getId(), 'cv' => $entry);
                 }
             }

@@ -180,11 +180,7 @@ class Match
             ->getRepository('BrBundle\Entity\Company\Page')
             ->findOneActiveBySlug($this->getCompany()->getSlug(), $academicYear);
 
-        if (is_null($page)) {
-            return false;
-        }
-        
-        return true;
+        return !is_null($page);
     }
 
     public function getStudentCV(EntityManager $em, AcademicYear $ay)
@@ -192,8 +188,9 @@ class Match
         $person = $this->getStudent();
         $entry = $em->getRepository('BrBundle\Entity\Cv\Entry')
             ->findOneByAcademicAndAcademicYear($ay, $person);
-        if (is_null($entry))
+        if (is_null($entry)) {
             return false;
+        }
         return $entry;
     }
 

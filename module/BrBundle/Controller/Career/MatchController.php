@@ -133,13 +133,16 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
 
         if ($this->isMasterStudent($person) == false) {
             $msg = "You are not a Master's student, and therefore cannot enroll in the matching platform!\nThe following studies would have been accepted:";
-            foreach (unserialize($this->getEntityManager()
+            foreach (unserialize(
+                $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('syllabus.master_group_ids')) as $id){
-                $msg .= " ".$id;
+                    ->getConfigValue('syllabus.master_group_ids')
+            ) as $id) {
+                $msg .= ' '.$id;
             }
             $this->flashMessenger()->error(
-                'Error', $msg."!"
+                'Error',
+                $msg.'!'
             );
             $this->redirect()->toRoute(
                 'br_career_match',
