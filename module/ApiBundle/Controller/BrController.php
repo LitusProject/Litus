@@ -151,13 +151,7 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
         $page = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Page')
             ->findOneBy(array(
-                'company' => $company));
-
-//        $this->entityManager
-//            ->getRepository('CudiBundle\Entity\IsicCard')
-//            ->findOneBy(array('booking' => $booking->getId()));
-
-//        die(var_dump($page->getId()));
+                'company' => $company->getId()));
 
         $page->addYear($this->getCurrentAcademicYear());
 
@@ -199,9 +193,19 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
         $page = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Page')
             ->findOneBy(array(
-                'company' => $company));
+                'company' => $company->getId()));
 
-        die(var_dump($page->getId()));
+        $current_academic_year = $this->getCurrentAcademicYear();
+
+        $is_visible = in_array($current_academic_year ,$page->getYears());
+
+        return new ViewModel(
+            array(
+                'result' => (object) array(
+                    'visible' => $is_visible,
+                ),
+            )
+        );
     }
 
     /**
