@@ -2,8 +2,6 @@
 
 namespace TicketBundle\Form\Admin\Consumptions;
 
-use RuntimeException;
-
 class Csv extends \CommonBundle\Component\Form\Admin\Form
 {
     const FILE_SIZE = '10MB';

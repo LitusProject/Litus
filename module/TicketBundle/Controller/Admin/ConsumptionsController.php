@@ -2,14 +2,13 @@
 
 namespace TicketBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use DateTime;
 use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
+use TicketBundle\Component\Document\Generator\Consumptions\Csv as CsvGenerator;
 use TicketBundle\Entity\Consumptions;
 use TicketBundle\Entity\Transactions;
-use TicketBundle\Component\Document\Generator\Consumptions\Csv as CsvGenerator;
 
 /**
  * ConsumptionsController
@@ -129,7 +128,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
                     ->getRepository('TicketBundle\Entity\Consumptions')
                     ->findAllByUserNameQuery($owner->getUserName())
                     ->getResult();
-                if (empty($consumptionsOwner)) {
+                if (count($consumptionsOwner) == 0) {
                     $consumption = $form->hydrateObject();
                     $this->getEntityManager()->persist(
                         $consumption
@@ -433,7 +432,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
                         ->getRepository('TicketBundle\Entity\Consumptions')
                         ->findAllByUserNameQuery($data[0])
                         ->getResult();
-                    if (empty($consumptionsOwner)) {
+                    if (count($consumptionsOwner) == 0) {
                         $consumption = new Consumptions();
                         $person = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\User\Person')

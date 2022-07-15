@@ -3,10 +3,10 @@
 namespace ApiBundle\Controller;
 
 use CommonBundle\Entity\User\Person;
+use CudiBundle\Entity\Article as General;
 use CudiBundle\Entity\Sale\Article;
 use CudiBundle\Entity\Sale\Booking;
 use CudiBundle\Entity\Sale\QueueItem;
-use CudiBundle\Entity\Article as General;
 use DateInterval;
 use Laminas\View\Model\ViewModel;
 
@@ -427,24 +427,27 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
-            ->findBy(array(
-                'id' => $articleId
-            ))[0];
+            ->findBy(
+                array(
+                    'id' => $articleId
+                )
+            )[0];
 
         $originalArticle = $article;
 
         if ($article == null) {
             return $this->error(404, 'This article doesn\'t exist');
         }
-        if ($json->is_same === "true") {
+        if ($json->is_same === 'true') {
             $article->setIsSameAsPreviousYear(true);
-        }
-        else {
+        } else {
             $internal = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Article\Internal')
-                ->findBy(array(
-                    'id' => $articleId
-                ))[0];
+                ->findBy(
+                    array(
+                        'id' => $articleId
+                    )
+                )[0];
             $internal->setNbBlackAndWhite($json->black_white);
             $internal->setNbColored($json->colored);
             $internal->setIsOfficial($json->official);
@@ -456,7 +459,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         $newBarcode = $this->changeBarcode($barcode);
         $saleArticle->setBarcode($newBarcode);
-        if (!($json->is_same === "true")) {
+        if (!($json->is_same === 'true')) {
             $saleArticle->setPurchasePrice($json->purchase_price);
             $saleArticle->setSellPrice($json->sell_price);
         }
@@ -479,7 +482,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $currentYear = $this->getCurrentAcademicYear();
         $date = $currentYear->getEndDate();
-        date_add($date, date_interval_create_from_date_string("30 days"));
+        date_add($date, date_interval_create_from_date_string('30 days'));
         $nextYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findOneByDate($date);
@@ -499,15 +502,13 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $currentYear = $this->getCurrentAcademicYear();
         $date = $currentYear->getEndDate();
-        date_add($date, date_interval_create_from_date_string("30 days"));
+        date_add($date, date_interval_create_from_date_string('30 days'));
         $nextYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findOneByDate($date);
         $nextYearCode = $nextYear->getCode(true);
 
-        $newBarcode = substr($barcode, 0, 3) . $nextYearCode . substr($barcode, 7);
-
-        return $newBarcode;
+        return substr($barcode, 0, 3) . $nextYearCode . substr($barcode, 7);
     }
 
     /**

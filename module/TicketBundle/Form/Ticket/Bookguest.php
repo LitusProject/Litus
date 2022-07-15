@@ -223,41 +223,41 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                         ),
                     ),
-//                    array(
-//                        'type'       => 'text',
-//                        'name'       => 'guest_identification',
-//                        'label'      => 'R-Number (optional)',
-//                        'required'   => false,
-//                        'attributes' => array(
-//                            'id' => 'guest_identification',
-//                        ),
-//                        'options'    => array(
-//                            'input' => array(
-//                                'filters' => array(
-//                                    array('name' => 'StringTrim'),
-//                                ),
-//                                'validators' => array(
-//                                    array('name' => 'UniversityIdentification'),
-//                                ),
-//                            ),
-//                        ),
-//                    ),
-//                    array(
-//                        'type'       => 'text',
-//                        'name'       => 'guest_organization',
-//                        'label'      => 'Kring (optional)',
-//                        'required'   => false,
-//                        'attributes' => array(
-//                            'id' => 'guest_organization',
-//                        ),
-//                        'options'    => array(
-//                            'input' => array(
-//                                'filters' => array(
-//                                    array('name' => 'StringTrim'),
-//                                ),
-//                            ),
-//                        ),
-//                    ),
+                    // array(
+                    //     'type'       => 'text',
+                    //     'name'       => 'guest_identification',
+                    //     'label'      => 'R-Number (optional)',
+                    //     'required'   => false,
+                    //     'attributes' => array(
+                    //         'id' => 'guest_identification',
+                    //     ),
+                    //     'options'    => array(
+                    //         'input' => array(
+                    //             'filters' => array(
+                    //                 array('name' => 'StringTrim'),
+                    //             ),
+                    //             'validators' => array(
+                    //                 array('name' => 'UniversityIdentification'),
+                    //             ),
+                    //         ),
+                    //     ),
+                    // ),
+                    // array(
+                    //     'type'       => 'text',
+                    //     'name'       => 'guest_organization',
+                    //     'label'      => 'Kring (optional)',
+                    //     'required'   => false,
+                    //     'attributes' => array(
+                    //         'id' => 'guest_organization',
+                    //     ),
+                    //     'options'    => array(
+                    //         'input' => array(
+                    //             'filters' => array(
+                    //                 array('name' => 'StringTrim'),
+                    //             ),
+                    //         ),
+                    //     ),
+                    // ),
                 ),
             )
         );
@@ -376,7 +376,7 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
             array(
                 'type'       => 'checkbox',
                 'name'       => 'conditions',
-//                'label'      => 'I have read and accept the GDPR terms and condition specified above',
+            //                'label'      => 'I have read and accept the GDPR terms and condition specified above',
                 'label'      => 'Bij deze ga ik akkoord dat VTK mijn gegevens mag gebruiken voor de werking van deze activiteit, om te gebruiken voor noodgevallen en mij te contacteren. Na afloop van de contacttracing worden mijn gegevens verwijderd.',
                 'attributes' => array(
                     'id' => 'conditions',
@@ -419,8 +419,8 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         $options = array();
 
-        $options['burgie'] = "Ingenieurswetenschappen";
-        $options['archie'] = "Ingenieurswetenschappen: Architectuur";
+        $options['burgie'] = 'Ingenieurswetenschappen';
+        $options['archie'] = 'Ingenieurswetenschappen: Architectuur';
 
         return $options;
     }
@@ -429,8 +429,8 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         $options = array();
 
-        $options['Vlees'] = "Vlees";
-        $options['Vegetariër'] = "Vegetariër";
+        $options['Vlees'] = 'Vlees';
+        $options['Vegetariër'] = 'Vegetariër';
 
         return $options;
     }
@@ -439,8 +439,8 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         $options = array();
 
-        $options["Eigen vervoer"] = "Eigen vervoer";
-        $options["Trein"] = "Ik kom met de trein naar Genk, en wordt daar opgehaald met de VTK bus";
+        $options['Eigen vervoer'] = 'Eigen vervoer';
+        $options['Trein'] = 'Ik kom met de trein naar Genk, en wordt daar opgehaald met de VTK bus';
 
         return $options;
     }
