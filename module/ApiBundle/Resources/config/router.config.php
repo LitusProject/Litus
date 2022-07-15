@@ -30,6 +30,19 @@ return array(
                 ),
             ),
         ),
+        'api_br' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '[/:language]/api/br[/:action][/]',
+                'constraints' => array(
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'language' => '(en|nl)',
+                ),
+                'defaults'    => array(
+                    'controller' => 'api_br',
+                ),
+            ),
+        ),
         'api_calendar' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -160,6 +173,7 @@ return array(
         'api_auth'      => 'ApiBundle\Controller\AuthController',
         'api_calendar'  => 'ApiBundle\Controller\CalendarController',
         'api_config'    => 'ApiBundle\Controller\ConfigController',
+        'api_br'        => 'ApiBundle\Controller\BrController',
         'api_cudi'      => 'ApiBundle\Controller\CudiController',
         'api_door'      => 'ApiBundle\Controller\DoorController',
         'api_mail'      => 'ApiBundle\Controller\MailController',

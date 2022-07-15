@@ -8,6 +8,9 @@ return array(
         'api_auth' => array(
             'getCorporate', 'getPerson',
         ),
+        'api_br' => array(
+            'addCompany', 'editCompanyName', 'addCvBook', 'addPageVisible', 'isPageVisible','getCvYears',
+        ),
         'api_calendar' => array(
             'activeEvents', 'poster',
         ),

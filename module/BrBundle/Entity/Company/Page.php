@@ -154,6 +154,19 @@ class Page
     }
 
     /**
+     * @param AcademicYear $year adds a year that the page is visible
+     * @return self
+     */
+    public function addYear(AcademicYear $year)
+    {
+        $current_years = $this->years;
+        $current_years->add($year);
+        $this->years = $current_years;
+
+        return $this;
+    }
+
+    /**
      * @return boolean
      */
     public function isAtEvent()

@@ -224,6 +224,7 @@ class Edit extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'multiple' => true,
                             'options'  => $this->getYears(),
+                            'disabled'  => true,
                         ),
                     ),
                     array(
