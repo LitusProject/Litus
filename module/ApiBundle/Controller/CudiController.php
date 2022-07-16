@@ -435,7 +435,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
         if ($article == null) {
             return $this->error(404, 'This article doesn\'t exist');
         }
-        if ($this->getRequest()->getPost("is_same") === 'true') {
+        if ($this->getRequest()->getPost("is_same") === 'True') {
             $article->setIsSameAsPreviousYear(true);
         } else {
             $internal = $this->getEntityManager()
