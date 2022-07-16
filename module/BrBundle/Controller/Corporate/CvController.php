@@ -297,10 +297,9 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
      */
     private function getList(AcademicYear $academicYear)
     {
-        $list = $this->getEntityManager()
+        return $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Cv\Entry')
             ->findAllByAcademicYear($academicYear);
-        return $list;
     }
 
     /**

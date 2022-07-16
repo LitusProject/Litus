@@ -295,7 +295,7 @@ class CommunicationController extends \CommonBundle\Component\Controller\ActionC
     private function deleteOldCommunications(array $communications)
     {
         $currentDate = date('Y-m-d');
-        $currentDate = date('Y-m-d',(strtotime ( '-3 day' , strtotime ( $currentDate ) ) ));
+        $currentDate = date('Y-m-d', strtotime('-3 day', strtotime($currentDate)));
         foreach ($communications as $comm) {
             $commDate = $comm->getDate()->format('Y-m-d');
             if ($commDate < $currentDate) {

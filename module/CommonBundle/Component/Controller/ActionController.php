@@ -522,7 +522,7 @@ class ActionController extends \Laminas\Mvc\Controller\AbstractActionController 
     {
         $bearerToken = $this->getBearerToken();
 
-        $url = "https://account.kuleuven.be/api/v1/idverification";
+        $url = 'https://account.kuleuven.be/api/v1/idverification';
 
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_URL, $url);
@@ -530,8 +530,8 @@ class ActionController extends \Laminas\Mvc\Controller\AbstractActionController 
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
         $headers = array(
-            "Authorization: Bearer " . $bearerToken,
-            "Content-Type: application/json",
+            'Authorization: Bearer ' . $bearerToken,
+            'Content-Type: application/json',
         );
 
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
@@ -540,9 +540,7 @@ class ActionController extends \Laminas\Mvc\Controller\AbstractActionController 
         curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
 
         $response = curl_exec($curl);
-        $userName = json_decode($response)->userName;
-
-        return $userName;
+        return json_decode($response)->userName;
     }
 
     private function getBearerToken()
@@ -554,9 +552,9 @@ class ActionController extends \Laminas\Mvc\Controller\AbstractActionController 
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('common.studcard_client_secret');
 
-        $endpoint = "https://idp.kuleuven.be/auth/realms/kuleuven/protocol/openid-connect/token";
+        $endpoint = 'https://idp.kuleuven.be/auth/realms/kuleuven/protocol/openid-connect/token';
 
-        $base64 = base64_encode($clientId . ":" . $clientSecret);
+        $base64 = base64_encode($clientId . ':' . $clientSecret);
 
         $curl = curl_init($endpoint);
         curl_setopt($curl, CURLOPT_URL, $endpoint);
@@ -564,18 +562,16 @@ class ActionController extends \Laminas\Mvc\Controller\AbstractActionController 
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
         $headers = array(
-            "Authorization: Basic " . $base64,
-            "Content-Type: application/x-www-form-urlencoded"
+            'Authorization: Basic ' . $base64,
+            'Content-Type: application/x-www-form-urlencoded'
         );
 
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        $body = "grant_type=client_credentials";
+        $body = 'grant_type=client_credentials';
         curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
 
         $response = curl_exec($curl);
         curl_close($curl);
-        $token = json_decode($response)->access_token;
-
-        return $token;
+        return json_decode($response)->access_token;
     }
 }

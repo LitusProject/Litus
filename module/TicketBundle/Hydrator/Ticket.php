@@ -18,11 +18,20 @@ class Ticket extends \CommonBundle\Component\Hydrator\Hydrator
 
         if ($data['is_guest']) {
             $person = null;
-            $guestInfo = new GuestInfo($data['guest_form']['guest_first_name'],
-                $data['guest_form']['guest_last_name'], $data['guest_form']['guest_email'],
-                null, null, $data['guest_form']['phone_number'], $data['guest_form']['address'],
-                $data['guest_form']['studies'], $data['guest_form']['food_option'], $data['guest_form']['allergies'],
-                $data['guest_form']['transportation'], $data['guest_form']['comments']);
+            $guestInfo = new GuestInfo(
+                $data['guest_form']['guest_first_name'],
+                $data['guest_form']['guest_last_name'],
+                $data['guest_form']['guest_email'],
+                null,
+                null,
+                $data['guest_form']['phone_number'],
+                $data['guest_form']['address'],
+                $data['guest_form']['studies'],
+                $data['guest_form']['food_option'],
+                $data['guest_form']['allergies'],
+                $data['guest_form']['transportation'],
+                $data['guest_form']['comments']
+            );
             $this->getEntityManager()->persist($guestInfo);
         } else {
             $person = $this->getEntityManager()
