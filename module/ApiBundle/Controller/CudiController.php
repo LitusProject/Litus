@@ -414,10 +414,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
-        $input = $this->getRequest()->getContent();
-        $json = json_decode($input);
-
-        $barcode = $json->barcode;
+        $barcode = $this->getRequest()->getPost("barcode");
 
         $saleArticle = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Article')
@@ -438,7 +435,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
         if ($article == null) {
             return $this->error(404, 'This article doesn\'t exist');
         }
-        if ($json->is_same === 'true') {
+        if ($this->getRequest()->getPost("is_same") === 'true') {
             $article->setIsSameAsPreviousYear(true);
         } else {
             $internal = $this->getEntityManager()
@@ -448,10 +445,10 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                         'id' => $articleId
                     )
                 )[0];
-            $internal->setNbBlackAndWhite($json->black_white);
-            $internal->setNbColored($json->colored);
-            $internal->setIsOfficial($json->official);
-            $internal->setIsRectoVerso($json->recto_verso);
+            $internal->setNbBlackAndWhite($this->getRequest()->getPost("black_white"));
+            $internal->setNbColored($this->getRequest()->getPost("colored"));
+            $internal->setIsOfficial($this->getRequest()->getPost("official"));
+            $internal->setIsRectoVerso($this->getRequest()->getPost("recto_verso"));
             $article->setIsSameAsPreviousYear(false);
         }
 
@@ -459,10 +456,8 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         $newBarcode = $this->changeBarcode($barcode);
         $saleArticle->setBarcode($newBarcode);
-        if (!($json->is_same === 'true')) {
-            $saleArticle->setPurchasePrice($json->purchase_price);
-            $saleArticle->setSellPrice($json->sell_price);
-        }
+        $saleArticle->setPurchasePrice($this->getRequest()->getPost("purchase_price"));
+        $saleArticle->setSellPrice($this->getRequest()->getPost("sell_price"));
         $saleArticle->setIsBookable(true);
         $saleArticle->setIsUnbookable(true);
         $saleArticle->setIsSellable(true);
@@ -482,16 +477,23 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $currentYear = $this->getCurrentAcademicYear();
         $date = $currentYear->getEndDate();
-        date_add($date, date_interval_create_from_date_string('30 days'));
-        $nextYear = $this->getEntityManager()
+        $date2 = $currentYear->getEndDate();
+        date_add($date2, date_interval_create_from_date_string('30 days'));
+
+        date_sub($date, date_interval_create_from_date_string('9 months'));
+
+        $previousYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findOneByDate($date);
 
+        $nextYear = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByDate($date2);
+
         $currentSubjects = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article\SubjectMap')
-            ->findAllByArticleQuery($article)
+            ->findAllByArticleAndAcademicYearQuery($article, $previousYear)
             ->getResult();
-
         foreach ($currentSubjects as $subjectMap) {
             $newMap = new General\SubjectMap($article, $subjectMap->getSubject(), $nextYear, false);
             $this->getEntityManager()->persist($newMap);
