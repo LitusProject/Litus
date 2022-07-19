@@ -9,6 +9,9 @@ return array(
             'api_oauth' => array(
                 'authorize', 'shibboleth',
             ),
+            'api_cudi' => array(
+                'isSame', 'is-same',
+            ),
         ),
     ),
     'student' => array(
