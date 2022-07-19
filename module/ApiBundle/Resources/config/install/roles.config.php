@@ -12,6 +12,9 @@ return array(
             'api_cudi' => array(
                 'isSame', 'is-same',
             ),
+            'api_br' => array(
+                'addCompany', 'editCompanyName', 'addCvBook', 'addPageVisible', 'isPageVisible','getCvYears',
+            ),
         ),
     ),
     'student' => array(

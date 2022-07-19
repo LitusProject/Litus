@@ -13,23 +13,17 @@ use Laminas\View\Model\ViewModel;
 class BrController extends \ApiBundle\Component\Controller\ActionController\ApiController
 {
     /**
-     * input: json {
+     * input: {
      *      "key": "api key",
      *      "company": "company name",
      * }
      */
     public function AddCompanyAction()
     {
-        $this->initJson();
-
         if (!$this->getRequest()->isPost()) {
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
-
-        $input = $this->getRequest()->getContent();
-        $json = json_decode($input);
-
-        $company_name = $json->company;
+        $company_name = $this->getRequest()->getPost("company");
 
         $company = new Company();
         $company->setName($company_name);
@@ -47,7 +41,7 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
     }
 
     /**
-     * input: json {
+     * input: {
      *      "key": "api key",
      *      "company": "old company name",
      *      "new_name": "new company name"
@@ -55,22 +49,18 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
      */
     public function editCompanyNameAction()
     {
-        $this->initJson();
-
         if (!$this->getRequest()->isPost()) {
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
-        $input = $this->getRequest()->getContent();
-        $json = json_decode($input);
+        $company_name = $this->getRequest()->getPost("company");
 
-        $company_name = $json->company;
         $company = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
             ->findallByNameQuery($company_name)
             ->getResult()[0];
 
-        $new_name = $json->new_name;
+        $new_name = $this->getRequest()->getPost("new_name");
 
         $company->setName($new_name);
 
@@ -86,7 +76,7 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
     }
 
     /**
-     * input: json {
+     * input: {
      *      "key": "api key",
      *      "company": "company name",
      *      "year": "xxxx-yyyy"
@@ -94,22 +84,17 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
      */
     public function addCvBookAction()
     {
-        $this->initJson();
-
         if (!$this->getRequest()->isPost()) {
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
-        $input = $this->getRequest()->getContent();
-        $json = json_decode($input);
-
-        $company_name = $json->company;
+        $company_name = $this->getRequest()->getPost("company");
         $company = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
             ->findallByNameQuery($company_name)
             ->getResult()[0];
 
-        $year = $json->year;
+        $year = $this->getRequest()->getPost("year");
         $academic_year = $this->getAcademicYear($year);
         $company->addCvBookYear($academic_year);
 
@@ -125,23 +110,18 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
     }
 
     /**
-     * input: json {
+     * input: {
      *      "key": "api key",
      *      "company": "company name"
      * }
      */
     public function addPageVisibleAction()
     {
-        $this->initJson();
-
         if (!$this->getRequest()->isPost()) {
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
-        $input = $this->getRequest()->getContent();
-        $json = json_decode($input);
-
-        $company_name = $json->company;
+        $company_name = $this->getRequest()->getPost("company");
 
         $company = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
@@ -167,23 +147,18 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
     }
 
     /**
-     * input: json {
+     * input: {
      *      "key": "api key",
      *      "company": "company name"
      * }
      */
     public function isPageVisibleAction()
     {
-        $this->initJson();
-
         if (!$this->getRequest()->isPost()) {
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
-        $input = $this->getRequest()->getContent();
-        $json = json_decode($input);
-
-        $company_name = $json->company;
+        $company_name = $this->getRequest()->getPost("company");
 
         $company = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
@@ -209,23 +184,18 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
     }
 
     /**
-     * input: json {
+     * input: {
      *      "key": "api key",
      *      "company": "company name"
      * }
      */
     public function getCvYearsAction()
     {
-        $this->initJson();
-
         if (!$this->getRequest()->isPost()) {
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
-        $input = $this->getRequest()->getContent();
-        $json = json_decode($input);
-
-        $company_name = $json->company;
+        $company_name = $this->getRequest()->getPost("company");
 
         $company = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
