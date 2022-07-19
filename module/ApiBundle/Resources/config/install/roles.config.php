@@ -13,7 +13,7 @@ return array(
                 'isSame', 'is-same',
             ),
             'api_br' => array(
-                'addCompany', 'editCompanyName', 'addCvBook', 'addPageVisible', 'isPageVisible','getCvYears',
+                'addCompany', 'add-company','editCompanyName', 'edit-company-name', 'addCvBook', 'add-cv-book', 'addPageVisible', 'add-page-visible', 'isPageVisible', 'is-page-visible','getCvYears', 'get-cv-years',
             ),
         ),
     ),
