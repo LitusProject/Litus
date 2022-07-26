@@ -43,7 +43,7 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
     /**
      * input: {
      *      "key": "api key",
-     *      "company": "old company name",
+     *      "company": "company id",
      *      "new_name": "new company name"
      * }
      */
@@ -53,12 +53,11 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
-        $company_name = $this->getRequest()->getPost("company");
+        $company_id = $this->getRequest()->getPost("company");
 
         $company = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
-            ->findallByNameQuery($company_name)
-            ->getResult()[0];
+            ->findById($company_id)[0];
 
         $new_name = $this->getRequest()->getPost("new_name");
 
@@ -78,7 +77,7 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
     /**
      * input: {
      *      "key": "api key",
-     *      "company": "company name",
+     *      "company": "company id",
      *      "year": "xxxx-yyyy"
      * }
      */
@@ -88,11 +87,11 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
-        $company_name = $this->getRequest()->getPost("company");
+        $company_id = $this->getRequest()->getPost("company");
+
         $company = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
-            ->findallByNameQuery($company_name)
-            ->getResult()[0];
+            ->findById($company_id)[0];
 
         $year = $this->getRequest()->getPost("year");
         $academic_year = $this->getAcademicYear($year);
@@ -112,7 +111,7 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
     /**
      * input: {
      *      "key": "api key",
-     *      "company": "company name"
+     *      "company": "company id"
      * }
      */
     public function addPageVisibleAction()
@@ -121,12 +120,11 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
-        $company_name = $this->getRequest()->getPost("company");
+        $company_id = $this->getRequest()->getPost("company");
 
         $company = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
-            ->findallByNameQuery($company_name)
-            ->getResult()[0];
+            ->findById($company_id)[0];
 
         $page = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Page')
@@ -149,7 +147,7 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
     /**
      * input: {
      *      "key": "api key",
-     *      "company": "company name"
+     *      "company": "company id"
      * }
      */
     public function isPageVisibleAction()
@@ -158,12 +156,11 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
-        $company_name = $this->getRequest()->getPost("company");
+        $company_id = $this->getRequest()->getPost("company");
 
         $company = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
-            ->findallByNameQuery($company_name)
-            ->getResult()[0];
+            ->findById($company_id)[0];
 
         $page = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Page')
@@ -186,7 +183,7 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
     /**
      * input: {
      *      "key": "api key",
-     *      "company": "company name"
+     *      "company": "company id"
      * }
      */
     public function getCvYearsAction()
@@ -195,12 +192,11 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
-        $company_name = $this->getRequest()->getPost("company");
+        $company_id = $this->getRequest()->getPost("company");
 
         $company = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
-            ->findallByNameQuery($company_name)
-            ->getResult()[0];
+            ->findById($company_id)[0];
 
         $cv_years = $company->getCvBookYears();
         $years_array = new ArrayCollection();
@@ -214,6 +210,37 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
                 'result' => (object) array(
                     'status' => 'success',
                     "years"  => (object) $years_array->toArray(),
+                ),
+            )
+        );
+    }
+
+    /**
+     * input: {
+     *      "key": "api key",
+     *      "company": "company name"
+     * }
+     */
+    public function getCompanyIdAction()
+    {
+        if (!$this->getRequest()->isPost()) {
+            return $this->error(405, 'This endpoint can only be accessed through POST');
+        }
+
+        $company_name = $this->getRequest()->getPost("company");
+
+        $company = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company')
+            ->findallByNameQuery($company_name)
+            ->getResult()[0];
+
+        $company_id = $company->getId();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array(
+                    'status' => 'success',
+                    "id"  => $company_id,
                 ),
             )
         );
