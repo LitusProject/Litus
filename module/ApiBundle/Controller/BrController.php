@@ -3,6 +3,7 @@
 namespace ApiBundle\Controller;
 
 use BrBundle\Entity\Company;
+use BrBundle\Entity\User\Person\Corporate as CorporateEntity;
 use CommonBundle\Entity\General\AcademicYear;
 use Doctrine\Common\Collections\ArrayCollection;
 use Laminas\View\Model\ViewModel;
@@ -247,6 +248,124 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
     }
 
     /**
+     * input: {
+     *      "key": "api key",
+     *      "user": "user id"
+     * }
+     */
+    public function sendActivationAction()
+    {
+        if (!$this->getRequest()->isPost()) {
+            return $this->error(405, 'This endpoint can only be accessed through POST');
+        }
+
+        $user_id = $this->getRequest()->getPost("user");
+
+        $person = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person')
+            ->findOneById($user_id);
+        if (!is_null($person)) {
+            $person->activate(
+                $this->getEntityManager(),
+                $this->getMailTransport(),
+                false,
+                'br.account_activated_mail',
+                86400 * 30
+            );
+            return new ViewModel(
+                array(
+                    'result' => (object)array(
+                        'status' => 'success',
+                    ),
+                )
+            );
+        } else {
+            return $this->error(400, "The user is not found");
+        }
+    }
+
+    /**
+     * input: {
+     *      "key": "api key",
+     *      "user_name": "user name"
+     *      "first_name": "first name"
+     *      "last_name": "last name"
+     *      "email": "email"
+     *      "sex": "m/f/null"
+     *      "company": "company id"
+     * }
+     */
+    public function addUserAction()
+    {
+        if (!$this->getRequest()->isPost()) {
+            return $this->error(405, 'This endpoint can only be accessed through POST');
+        }
+
+        $person = new CorporateEntity();
+        $person->setUsername($this->getRequest()->getPost("user_name"));
+        $person->setFirstName($this->getRequest()->getPost("first_name"));
+        $person->setLastName($this->getRequest()->getPost("last_name"));
+        $person->setEmail($this->getRequest()->getPost("email"));
+        $person->setSex($this->getRequest()->getPost("sex"));
+
+        $person->setRoles(array_unique(array_merge($this->dataToRoles(array('corporate')), $person->getSystemRoles())));
+
+        $company = $this->getEntityManager()
+            ->getRepository("BrBundle\Entity\Company")
+            ->findOneById($this->getRequest()->getPost("company"));
+
+        $person->setCompany($company);
+
+        $this->getEntityManager()->persist($person);
+        $this->getEntityManager()->flush();
+
+        $person->activate(
+            $this->getEntityManager(),
+            $this->getMailTransport(),
+            false,
+            'br.account_activated_mail',
+            86400 * 30
+        );
+
+        return new ViewModel(
+            array(
+                'result' => (object)array(
+                    'status' => 'success',
+                    'id'     => $person->getId(),
+                ),
+            )
+        );
+    }
+
+    /**
+     * input: {
+     *      "key": "api key",
+     *      "user_name": "user name"
+     * }
+     */
+    public function getUserIdAction()
+    {
+        if (!$this->getRequest()->isPost()) {
+            return $this->error(405, 'This endpoint can only be accessed through POST');
+        }
+
+        $user_name = $this->getRequest()->getPost("user_name");
+
+        $person = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person')
+            ->findOneByUsername($user_name);
+
+        return new ViewModel(
+            array(
+                'result' => (object)array(
+                    'status' => 'success',
+                    'id'     => $person->getId(),
+                ),
+            )
+        );
+    }
+
+    /**
      * @param string $year The year for which to add a CV book, notation: xxxx-yyyy
      * @return AcademicYear|null
      *
@@ -264,5 +383,18 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
                 return $academic_year;
         }
         return null;
+    }
+
+    protected function dataToRoles($rolesData)
+    {
+        $roles = array();
+
+        foreach ($rolesData as $role) {
+            $roles[] = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\Acl\Role')
+                ->findOneByName($role);
+        }
+
+        return $roles;
     }
 }

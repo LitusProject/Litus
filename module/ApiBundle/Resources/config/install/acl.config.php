@@ -9,7 +9,7 @@ return array(
             'getCorporate', 'getPerson',
         ),
         'api_br' => array(
-            'addCompany', 'add-company','editCompanyName', 'edit-company-name', 'addCvBook', 'add-cv-book', 'addPageVisible', 'add-page-visible', 'isPageVisible', 'is-page-visible','getCvYears', 'get-cv-years', 'get-company-id',
+            'add-company','edit-company-name', 'add-cv-book',  'add-page-visible', 'is-page-visible', 'get-cv-years', 'get-company-id', 'send-activation', 'add-user', 'get-user-id',
         ),
         'api_calendar' => array(
             'activeEvents', 'poster',
@@ -18,7 +18,7 @@ return array(
             'entries',
         ),
         'api_cudi' => array(
-            'articles', 'book', 'bookings', 'cancelBooking', 'currentSession', 'openingHours', 'signIn', 'signInStatus', 'isSame', 'is-same',
+            'articles', 'book', 'bookings', 'cancelBooking', 'currentSession', 'openingHours', 'signIn', 'signInStatus', 'is-same',
         ),
         'api_door' => array(
             'getRules', 'log',
