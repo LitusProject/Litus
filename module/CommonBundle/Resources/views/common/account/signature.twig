@@ -1,81 +1,96 @@
 <!Start signature>
-<table cellpadding="0" cellspacing="0" border="0"
-       style="background: none; border-width: 0px; border: 0px; margin: 0; padding: 0;">
-    <!-- ### LINK NAAR AFBEELDING ### -->
+<table>
     <tr>
-        <td valign="top"
-            style="padding-top: 0; padding-bottom: 0; padding-left: 0; padding-right: 7px; border-top: 0; border-bottom: 0; border-left: 0; border-right: solid 3px#00008F">
-            <a href="https://www.vtk.be"><img width="150" id="preview-image-url"
-                                              src="https://www.vtk.be/_site/img/schild.jpg" alt="VTK logo"></a></td>
-        <!-- ### STREEP IN MIDDEN ### -->
-        <td style="padding-top: 0; padding-bottom: 0; padding-left: 12px; padding-right: 0;">
-            <table cellpadding="0" cellspacing="0" border="0"
-                   style="background: none; border-width: 0px; border: 0px; margin: 0; padding: 0;">
-                <!-- ### NAAM ###-->
+        {# ### LINK NAAR AFBEELDING + STREEP IN MIDDEN ### #}
+        <td style="border-right: solid 6px #eed610; vertical-align: top; padding-top: 16px">
+            <a href="https://www.vtk.be">
+                <img height="150px"
+                     src="https://www.vtk.be/_site/img/schild_handtekening.jpg"
+                     alt="VTK Schild"/></a>
+        </td>
+        <td>
+            <table style="margin: 10px">
                 <tr>
-                    <td colspan="2"
-                        style="padding-bottom: 2px; color: #00008F; font-size: 13px; font-family: Verdana, Arial , sans-serif">
+                    {# ### NAAM ### #}
+                    <td style="padding-bottom: 2px; text-transform: uppercase; font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 12pt;">
                         <strong>{{ authenticatedPerson.getFullName() }}</strong>
                     </td>
-                </tr> <!--### FUNCTIE ### -->
-                <tr>
-                    <td colspan="2" style="color:#333333 ; font-size: 11px; font-family: Verdana, Arial, sans-serif;">
-                        {{ authenticatedPerson.getUnit(organizationYear).getName() }}
-                        VTK {{ organizationYear.getCode() }}
-                    </td>
-                </tr> <!-- ### VTK ### -->
-                <tr>
-                    <td colspan="2" style="color: #333333; font-size: 11px; font-family: Arial, Helvetica, sans-serif;">
-                        <strong>Vlaamse Technische Kring | Vlaamse Technische Kring vzw</strong></td>
                 </tr>
-                <!-- ### RPR Leuven ### -->
                 <tr>
-                    <td colspan="2" style="color: #333333; font-size: 11px; font-family: Arial, Helvetica, sans-serif;">
-                        RPR Leuven</td>
-                </tr><!-- ### GSM nummer ### -->
+                    {# ### FUNCTIE ### #}
+                    <td style="font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
+                        {% if authenticatedPerson.isCoordinator() %}
+                            <strong>Groepscoördinator - </strong>
+                        {% endif %}
+                        <strong>VTK {{ authenticatedPerson.getUnit(organizationYear).getName() }} {{ organizationYear.getCode() }}
+                        </strong>
+                    </td>
+                </tr>
                 <tr>
-                    <td width="20" valign="top"
-                        style="vertical-align: top; width: 20px; color: #FFD400 ; font-size: 11px; font-family: Arial, Helvetica, sans-serif;">
-                        m:
+                    {# ### VTK ### #}
+                    <td style="font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
+                        Vlaamse Technische Kring vzw
                     </td>
-                    <td valign="top"
-                        style="vertical-align: top; color: #333333; font-size: 11px; font-family: Arial, Helvetica, sans-serif;">
-                        <a id="phoneNumberVTK" href="tel:{{ authenticatedPerson.getPhoneNumber() }}"
-                           style=" color: #00008F; text-decoration: none; font-weight: normal; font-size: 11px;">
-                            {{ authenticatedPerson.getPhoneNumber() }}
-                        </a>
-                    </td>
-                </tr> <!-- ### ADRES ### -->
+                </tr>
                 <tr>
-                    <td width="20" valign="top"
-                        style="vertical-align: top; width: 20px; color: #FFD400; font-size: 11px; font-family: Arial, Helvetica, sans-serif;">
-                        a:
+                    {# ### RPR Leuven ### #}
+                    <td style="font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
+                        RPR Leuven
                     </td>
-                    <td valign="top"
-                        style="vertical-align: top; color: #333333; font-size: 11px; font-family: Arial, Helvetica, sans-serif;">
+                </tr>
+                <tr>
+                    {# ### ADRES ### #}
+                    <td style="font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
+                        Address:
                         <a href="https://www.google.com/maps?q=Studentenwijk+Arenberg+6&entry=gmail&source=g"
-                           style=" color: #00008F; text-decoration: none; font-weight: normal; font-size: 11px;">Studentenwijk
-                            Arenberg 6/1, 3001 Heverlee</a></td>
-                </tr> <!-- ### WEBSITE EN EMAIL ### -->
-                <tr>
-                    <td width="20" valign="top"
-                        style="vertical-align: top; width: 20px; color:#FFD400; font-size: 11px; font-family: Arial, Helvetica, sans-serif;">
-                        w:
+                           target="_blank"
+                           style="text-decoration: none; color: #202347; font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">Studentenwijk
+                            Arenberg 6/1,
+                            3001
+                            Heverlee</a>
                     </td>
-                    <td valign="top"
-                        style="vertical-align: top; color: #333333; font-size: 11px; font-family: Arial, Helvetica, sans-serif;">
-                        <a href="http://www.vtk.be"
-                           style=" color: #00008F; text-decoration: none; font-weight: normal; font-size: 11px;">www.vtk.be</a>&nbsp;&nbsp;<span
-                                style="color: #FFD400;">e:&nbsp;</span>
-                        <a  id="emailVTK" href="mailto:{{ authenticatedPerson.getFirstName() }}.{{ authenticatedPerson.getLastName() }}@vtk.be"
-                            style="color: #00008F; text-decoration: none; font-weight: normal; font-size: 11px; text-transform: lowercase;">
+                </tr>
+                <tr>
+                    {# ### EMAIL ### #}
+                    <td style="font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
+                        Email:
+                        <a id="emailVTK"
+                           href="mailto:{{ authenticatedPerson.getFirstName() }}.{{ authenticatedPerson.getLastName() }}@vtk.be"
+                           style="text-transform: lowercase; text-decoration: none; color: #202347; font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
                             {{ authenticatedPerson.getFirstName() }}.{{ authenticatedPerson.getLastName() }}@vtk.be
                         </a>
                     </td>
                 </tr>
                 <tr>
-                    <td id="socialMediaSpace" colspan="2" style="padding-top: 2px;">
+                    {# ### GSM NUMMER ### #}
+                    <td style="font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
+                        Phone:
+                        <a id="phoneNumberVTK" href="tel:{{ authenticatedPerson.getPhoneNumber() }}"
+                           style="text-decoration: none; color:#202347; font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
+                            {{ authenticatedPerson.getPhoneNumber() }}
+                        </a>
                     </td>
+                </tr>
+                <tr>
+                    {# ### VAT ### #}
+                    <td style="color:#202347; font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
+                        VAT: BE0479482282
+                    </td>
+                </tr>
+                <tr>
+                    {# ### WEBSITE ### #}
+                    <td style="font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
+                        Website:
+                        <a href="http://www.vtk.be"
+                           style="text-decoration: none; color:#202347; font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
+                            www.vtk.be
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    {# ### SOCIAL MEDIA ### #}
+                    <td id="socialMediaSpace" style="padding-top: 2px;"></td>
+                </tr>
                 </tr>
             </table>
         </td>
