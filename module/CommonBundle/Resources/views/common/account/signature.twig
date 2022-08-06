@@ -9,16 +9,17 @@
                      alt="VTK Schild"/></a>
         </td>
         <td>
-            <table style="margin: 10px">
+            <table style="margin: 10px 0 10px 10px;">
                 <tr>
                     {# ### NAAM ### #}
-                    <td style="padding-bottom: 2px; text-transform: uppercase; font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 12pt;">
+                    <td colspan="2"
+                        style="padding-bottom: 2px; text-transform: uppercase; font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 12pt;">
                         <strong>{{ authenticatedPerson.getFullName() }}</strong>
                     </td>
                 </tr>
                 <tr>
                     {# ### FUNCTIE ### #}
-                    <td style="font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
+                    <td colspan="2" style="font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
                         {% if authenticatedPerson.isCoordinator() %}
                             <strong>Groepscoördinator - </strong>
                         {% endif %}
@@ -31,8 +32,6 @@
                     <td style="font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
                         Vlaamse Technische Kring vzw
                     </td>
-                </tr>
-                <tr>
                     {# ### RPR Leuven ### #}
                     <td style="font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
                         RPR Leuven
@@ -40,7 +39,7 @@
                 </tr>
                 <tr>
                     {# ### ADRES ### #}
-                    <td style="font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
+                    <td colspan="2" style="font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
                         Address:
                         <a href="https://www.google.com/maps?q=Studentenwijk+Arenberg+6&entry=gmail&source=g"
                            target="_blank"
@@ -52,7 +51,7 @@
                 </tr>
                 <tr>
                     {# ### EMAIL ### #}
-                    <td style="font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
+                    <td colspan="2" style="font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
                         Email:
                         <a id="emailVTK"
                            href="mailto:{{ authenticatedPerson.getFirstName() }}.{{ authenticatedPerson.getLastName() }}@vtk.be"
@@ -63,7 +62,7 @@
                 </tr>
                 <tr>
                     {# ### GSM NUMMER ### #}
-                    <td style="font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
+                    <td colspan="2" style="font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
                         Phone:
                         <a id="phoneNumberVTK" href="tel:{{ authenticatedPerson.getPhoneNumber() }}"
                            style="text-decoration: none; color:#202347; font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
@@ -73,15 +72,16 @@
                 </tr>
                 <tr>
                     {# ### VAT ### #}
-                    <td style="color:#202347; font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
+                    <td colspan="2"
+                        style="color:#202347; font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
                         VAT: BE0479482282
                     </td>
                 </tr>
                 <tr>
                     {# ### WEBSITE ### #}
-                    <td style="font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
+                    <td colspan="2" style="font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
                         Website:
-                        <a href="http://www.vtk.be"
+                        <a href="https://www.vtk.be"
                            style="text-decoration: none; color:#202347; font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
                             www.vtk.be
                         </a>
@@ -89,8 +89,7 @@
                 </tr>
                 <tr>
                     {# ### SOCIAL MEDIA ### #}
-                    <td id="socialMediaSpace" style="padding-top: 2px;"></td>
-                </tr>
+                    <td colspan="2" id="socialMediaSpace" style="padding-top: 2px;"></td>
                 </tr>
             </table>
         </td>
