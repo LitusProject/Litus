@@ -306,7 +306,7 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
         $person->setFirstName($this->getRequest()->getPost("first_name"));
         $person->setLastName($this->getRequest()->getPost("last_name"));
         $person->setEmail($this->getRequest()->getPost("email"));
-        $person->setSex($this->getRequest()->getPost("sex"));
+        //$person->setSex($this->getRequest()->getPost("sex"));
 
         $person->setRoles(array_unique(array_merge($this->dataToRoles(array('corporate')), $person->getSystemRoles())));
 
