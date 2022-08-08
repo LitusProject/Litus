@@ -22,8 +22,9 @@
             <thead>
                 <tr>
                     <th>Subject</th>
-                    <th width="100px">Attachments</th>
-                    <th width="70px">Actions</th>
+                    <th style="width: 110px">Creation Time</th>
+                    <th style="width: 100px">Attachments</th>
+                    <th style="width: 70px">Actions</th>
                 </tr>
             </thead>
 
@@ -31,6 +32,7 @@
                 {% for message in paginator %}
                     <tr class="item item-{{ message.getId() }}">
                         <td>{{ message.getSubject() }}</td>
+                        <td>{{ message.getCreationTime().format('Y-m-d H:i') }}</td>
                         <td>{{ message.getAttachments() | length }}</td>
                         <td class="actions">
                             {% if hasAccess('mail_admin_message', 'edit') %}
