@@ -13,16 +13,13 @@
                 <tr>
                     {# ### NAAM ### #}
                     <td colspan="2"
-                        style="padding-bottom: 2px; text-transform: uppercase; font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 12pt;">
+                        style="padding-bottom: 2px; text-transform: uppercase; font-family: 'Droid Sans', Verdana, Arial , sans-serif; font-size: 16pt;">
                         <strong>{{ authenticatedPerson.getFullName() }}</strong>
                     </td>
                 </tr>
                 <tr>
                     {# ### FUNCTIE ### #}
                     <td colspan="2" style="font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
-                        {% if authenticatedPerson.isCoordinator() %}
-                            <strong>Groepscoördinator - </strong>
-                        {% endif %}
                         <strong>VTK {{ authenticatedPerson.getUnit(organizationYear).getName() }} {{ organizationYear.getCode() }}
                         </strong>
                     </td>
@@ -30,11 +27,7 @@
                 <tr>
                     {# ### VTK ### #}
                     <td style="font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
-                        Vlaamse Technische Kring vzw
-                    </td>
-                    {# ### RPR Leuven ### #}
-                    <td style="font-family: 'Century Gothic', Verdana, Arial , sans-serif; font-size: 9pt;">
-                        RPR Leuven
+                        Vlaamse Technische Kring vzw | RPR Leuven
                     </td>
                 </tr>
                 <tr>
