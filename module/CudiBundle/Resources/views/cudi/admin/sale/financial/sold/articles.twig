@@ -113,8 +113,8 @@
                             .append('<td>' + this.author + '</td>')
                             .append('<td class="widest">' + this.publishers + '</td>')
                             .append('<td class="wider">' + this.barcode + '</td>')
-                            .append('<td>&euro; ' + this.sellPrice + '</td>')
                             .append('<td>&euro; ' + this.purchasePrice + '</td>')
+                            .append('<td>&euro; ' + this.sellPrice + '</td>')
                             .append('<td>' + this.numberSold + '</td>')
                             .append('<td>' + {% if hasAccess('cudi_admin_sales_financial_sold', 'article') %}
                                 '<a href="{{ url('cudi_admin_sales_financial_sold', {'action': 'article'}) }}' + this.id + '/{{ activeAcademicYear.getCode() }}" class="view">View</a>'
