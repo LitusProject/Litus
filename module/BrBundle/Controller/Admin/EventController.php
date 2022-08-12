@@ -25,7 +25,6 @@ use BrBundle\Entity\Event\CompanyMap;
 use DateInterval;
 use DateTime;
 use Laminas\View\Model\ViewModel;
-use Imagick;
 
 /**
  * EventController
@@ -388,23 +387,18 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
         $form = $this->getForm('br_admin_event_guide');
 
-        if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $fileData = $this->getRequest()->getFiles();
-
-            $form->setData(
-                array_merge_recursive(
-                    $formData->toArray(),
-                    $this->getRequest()->getFiles()->toArray()
-                )
+        if ($this->getRequest()->isPost()) {
+            $formData = array_merge(
+                $this->getRequest()->getPost()->toArray(),
+                $this->getRequest()->getFiles()->toArray()
             );
 
-            if ($form->isValid()) {
-                $formData = $form->getData();
+            $form->setData($formData);
 
+            if ($form->isValid()) {
                 $filePath = 'public' . $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('publication.public_pdf_directory');
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('publication.public_pdf_directory');
 
                 do {
                     $fileName = sha1(uniqid()) . '.pdf';
@@ -423,6 +417,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 );
             }
         }
+
         return new ViewModel(
             array(
                 'event' => $event,
@@ -442,22 +437,17 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         $form = $this->getForm('br_admin_event_busschema');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $fileData = $this->getRequest()->getFiles();
-
-            $form->setData(
-                array_merge_recursive(
-                    $formData->toArray(),
-                    $this->getRequest()->getFiles()->toArray()
-                )
+            $formData = array_merge(
+                $this->getRequest()->getPost()->toArray(),
+                $this->getRequest()->getFiles()->toArray()
             );
 
-            if ($form->isValid()) {
-                $formData = $form->getData();
+            $form->setData($formData);
 
+            if ($form->isValid()) {
                 $filePath = 'public' . $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('publication.public_pdf_directory');
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('publication.public_pdf_directory');
 
                 do {
                     $fileName = sha1(uniqid()) . '.pdf';
@@ -474,7 +464,6 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     'Success',
                     'The Timetable was succesfully uploaded!'
                 );
-
             }
         }
 

@@ -245,7 +245,7 @@
 
         <div id="modalSignature" class="modal fade">
 
-            <div class="modal-dialog" style="width:30%;">
+            <div class="modal-dialog" style="width:40%;">
                 <div class="modal-content">
                     <div class="modal-header">
                         <a class="close" data-dismiss="modal">&times;</a>
@@ -270,7 +270,7 @@
                             </div>
                         </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary" id="rawHTML" style="float: left;">Genereer raw HTML</button><br>
+                        <button class="btn btn-primary" id="rawHTML" style="float: left;">Genereer raw HTML</button><br><br>
                         <label for="rawHTML" style="font-size: 14px; float: left">(je kan de handtekening ook rechtstreeks kopiëren)</label>
                     </div>
                 </div>
@@ -317,7 +317,7 @@
 
             igCheckbox.addEventListener('change', (event) => {
                 if (event.target.checked) {
-                    socialMedia.innerHTML += '<!-- ### INSTA BUTTON ### --><a id = "igSpot" href = "https://www.instagram.com/vtkleuven/" style = "border-width:0px; border:0px; text-decoration: none"><img width = "20" height = "20" style = "border: none; width: 20px; max-width: 25px !important; height: 20px; max-height: 20px !important;" src = "https://blog-assets.hootsuite.com/wp-content/uploads/2018/09/glyph-logo_May2016-150x150.png"> </a>';
+                    socialMedia.innerHTML += '<!-- ### INSTA BUTTON ### --><a id = "igSpot" href = "https://www.instagram.com/vtkleuven/" style = "border-width:0px; border:0px; text-decoration: none"><img width = "20" height = "20" style = "border: none; width: 20px; max-width: 25px !important; height: 20px; max-height: 20px !important;" src = "https://cdn.icon-icons.com/icons2/1211/PNG/512/1491579602-yumminkysocialmedia36_83067.png"> </a>';
                 } else {
                     socialMedia.removeChild(document.getElementById("igSpot"));
                 }

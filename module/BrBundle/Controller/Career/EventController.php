@@ -26,7 +26,6 @@ use BrBundle\Entity\Event\Subscription;
 use BrBundle\Entity\Event\Visitor;
 use BrBundle\Entity\User\Person\Corporate;
 use CommonBundle\Entity\User\Person\Academic;
-use CudiBundle\Form\Admin\Sale\Article\View;
 use DateTime;
 use Laminas\Mail\Message;
 use Laminas\Mime\Mime;
@@ -310,7 +309,6 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                 
                 // If company is at event
                 if ($companyMap != null) {
-                    
                     // Check whether match already exists
                     $match = $this->getEntityManager()
                         ->getRepository('BrBundle\Entity\Event\Match')

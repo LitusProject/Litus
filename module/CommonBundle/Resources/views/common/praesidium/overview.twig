@@ -34,9 +34,9 @@
                         {% if member.getPhotoPath() %}
                             <div class="memberPhoto" style="background-image: url({{ profilePath }}/{{ member.getPhotoPath() }})"></div>
                         {% else %}
-                            <img data-src="holder.js/180x135/auto/text:Image" alt="">
+                            <div class="memberPhoto" style="background-image: url(/_site/img/generic_profile.png)"></div>
                         {% endif %}
-                        <h4 style="margin-bottom: 0px">{{ member.getFullName() }}</h4>
+                        <h4 style="margin-bottom: 0px">{{ member.getFullName() }} </h4>
                         {% if member.isCoordinator() %}
                             <p style="text-align: center;">{{ translate('Groupcoordinator') }}</p>
                         {% endif %}

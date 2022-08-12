@@ -112,7 +112,6 @@ class GuestInfo
      */
     private $picture;
 
-
     /**
      * @param string $firstName
      * @param string $lastName

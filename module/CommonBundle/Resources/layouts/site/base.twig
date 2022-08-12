@@ -79,7 +79,7 @@
         <div style="text-align: right" class="container">
             <a class="vtk-primary-menuitem" href="{{ url('cudi_retail') }}">{{ translate('Second Hand') }}</a>
             <a class="vtk-primary-menuitem" href="{{ url('cudi_booking', {'action': 'book'}) }}">{{ translate('Order Books') }}</a>
-            <a class="vtk-primary-menuitem" href="{{ url('shop', {'action': 'reserve'}) }}">{{ translate('Reservations') }}</a>
+            <a class="vtk-primary-menuitem" href="{{ url('shop', {'action': 'reserve'}) }}">{{ translate('Theokot Sandwiches') }}</a>
             <a class="vtk-primary-menuitem" href="{{ url('shift', {'action': 'index'}) }}">{{ translate('Shifts') }}</a>
             <a class="vtk-primary-menuitem" href="{{ url('registration_shift', {'action': 'index'}) }}">{{ translate('Timeslots') }}</a>
         </div>
@@ -191,7 +191,8 @@
                     {% else %}
                         <div class="vtk-menuitem-holder">
                             <a style="cursor: pointer" class="vtk-menuitem" href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('Login') }}{% endautoescape %}</a>
-                        </li>
+                        </div>
+                        </div>
                     {% endif %}
                 </div> 
 
@@ -215,7 +216,7 @@
             </p>
             {% if authenticatedPerson is not null %}
                     <a class="vtk-mobile-primary-menuitem" href="{{ url('cudi_booking', {'action': 'book'}) }}">{{ translate('Order Books') }}</a>
-                    <a class="vtk-mobile-primary-menuitem" href="{{ url('shop', {'action': 'reserve'}) }}">{{ translate('Reservations') }}</a>
+                    <a class="vtk-mobile-primary-menuitem" href="{{ url('shop', {'action': 'reserve'}) }}">{{ translate('Theokot Sandwiches') }}</a>
                     <a class="vtk-mobile-primary-menuitem" href="{{ url('shift', {'action': 'index'}) }}">{{ translate('Shifts') }}</a>
                     <a class="vtk-mobile-primary-menuitem" href="{{ url('registration_shift', {'action': 'index'}) }}">{{ translate('Timeslots') }}</a>                
                 {% if hasAccess('common_account', 'index') %}
