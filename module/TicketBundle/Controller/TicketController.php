@@ -381,6 +381,66 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         return new ViewModel();
     }
 
+    public function payResponseAction()
+    {
+        $url = $this->getRequest()->getServer()->get('REQUEST_URI');
+
+        $allParams = substr($url, strpos($url, '?') + 1);
+        $data = array();
+        $paymentParams = array();
+        $shasign = '';
+
+        $params = explode('&', $allParams);
+        foreach ($params as $param) {
+            $keyAndVal = explode('=', $param);
+            if ($keyAndVal[0] !== 'SHASIGN') {
+                $paymentParams[strtoupper($keyAndVal[0])] = $keyAndVal[1];
+            } else {
+                $shasign = $keyAndVal[1];
+            }
+        }
+
+        if ($paymentParams['ORDERID'] === null) {
+            $this->getResponse()->setStatusCode(404);
+            return new ViewModel();
+        }
+
+        $ticket = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Ticket')
+            ->findOneBy(array(
+                'orderId' => $paymentParams['ORDERID']));
+
+        ksort($paymentParams);
+        foreach (array_keys($paymentParams) as $paymentKey) {
+            $data[] = new PaymentParam($paymentKey, $paymentParams[$paymentKey]);
+        }
+
+        $secretInfo = unserialize(
+            $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('common.kbc_secret_info')
+        );
+
+        $shaOut = $secretInfo['shaOut']; #Hash for params from the paypage to accepturl
+        $urlPrefix = $secretInfo['urlPrefix'];   #Change prod to test for testenvironment
+
+        $paymentUrl = PaymentParam::getUrl($data, $shaOut, $urlPrefix);
+        $generatedHash = substr($paymentUrl, strpos($paymentUrl, 'SHASIGN=') + strlen('SHASIGN='));
+
+        if (strtoupper($generatedHash) === $shasign) {
+            if (!($ticket->getStatus() === "sold"))
+            {
+                $ticket->setStatus('sold');
+                $this->getEntityManager()->flush();
+            }
+        }
+        else {
+            $this->getResponse()->setStatusCode(404);
+            return new ViewModel();
+        }
+
+        return new ViewModel();
+    }
+
     public function payAction()
     {
         $ticket = $this->getEntityManager()
