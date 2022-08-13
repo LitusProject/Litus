@@ -383,14 +383,6 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
     public function payResponseAction()
     {
-        $secretInfo = unserialize(
-            $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('common.kbc_secret_info')
-        );
-
-        $shaOut = $secretInfo['shaOut']; #Hash for params from the paypage to accepturl
-        $urlPrefix = $secretInfo['urlPrefix'];   #Change prod to test for testenvironment
-
         $url = $this->getRequest()->getServer()->get('REQUEST_URI');
 
         $allParams = substr($url, strpos($url, '?') + 1);
@@ -408,6 +400,11 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             }
         }
 
+        if ($paymentParams['ORDERID'] === null) {
+            $this->getResponse()->setStatusCode(404);
+            return new ViewModel();
+        }
+
         $ticket = $this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Ticket')
             ->findOneBy(array(
@@ -417,6 +414,15 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         foreach (array_keys($paymentParams) as $paymentKey) {
             $data[] = new PaymentParam($paymentKey, $paymentParams[$paymentKey]);
         }
+
+        $secretInfo = unserialize(
+            $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('common.kbc_secret_info')
+        );
+
+        $shaOut = $secretInfo['shaOut']; #Hash for params from the paypage to accepturl
+        $urlPrefix = $secretInfo['urlPrefix'];   #Change prod to test for testenvironment
+
         $paymentUrl = PaymentParam::getUrl($data, $shaOut, $urlPrefix);
         $generatedHash = substr($paymentUrl, strpos($paymentUrl, 'SHASIGN=') + strlen('SHASIGN='));
 
@@ -427,6 +433,12 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 $this->getEntityManager()->flush();
             }
         }
+        else {
+            $this->getResponse()->setStatusCode(404);
+            return new ViewModel();
+        }
+
+        return new ViewModel();
     }
 
     public function payAction()
