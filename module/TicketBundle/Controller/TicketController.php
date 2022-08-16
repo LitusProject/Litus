@@ -384,6 +384,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
     public function payResponseAction()
     {
         $url = $this->getRequest()->getServer()->get('REQUEST_URI');
+        $this->logMessage('url: ' . $url);
 
         $allParams = substr($url, strpos($url, '?') + 1);
         $data = array();
@@ -401,6 +402,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         }
 
         if ($paymentParams['ORDERID'] === null) {
+            $this->logMessage("no orderID provided");
             $this->getResponse()->setStatusCode(404);
             return new ViewModel();
         }
@@ -409,6 +411,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             ->getRepository('TicketBundle\Entity\Ticket')
             ->findOneBy(array(
                 'orderId' => $paymentParams['ORDERID']));
+        $this->logMessage("Ticket ID: " . $ticket->getId());
 
         ksort($paymentParams);
         foreach (array_keys($paymentParams) as $paymentKey) {
@@ -427,13 +430,16 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $generatedHash = substr($paymentUrl, strpos($paymentUrl, 'SHASIGN=') + strlen('SHASIGN='));
 
         if (strtoupper($generatedHash) === $shasign) {
+            $this->logMessage("SHA correct for orderId " . $paymentParams['ORDERID']);
             if (!($ticket->getStatus() === "sold"))
             {
+                $this->logMessage("Ticket not yet on sold");
                 $ticket->setStatus('sold');
                 $this->getEntityManager()->flush();
             }
         }
         else {
+            $this->logMessage("SHA sign not correct");
             $this->getResponse()->setStatusCode(404);
             return new ViewModel();
         }
