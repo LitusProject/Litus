@@ -56,6 +56,7 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
+        error_log("test");
         if ($object === null) {
             if (!isset($data['article']['internal'])) {
                 throw new InvalidArgumentException('Form data doesn\'t show whether to create an internal article or not');
@@ -67,6 +68,7 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
                 $object = new ExternalArticle();
             }
         }
+        error_log(json_encode($data['article']));
 
         if (isset($data['article'])) {
             $this->stdHydrate($data['article'], $object, self::$articleKeys);

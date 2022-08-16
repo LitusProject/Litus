@@ -86,6 +86,20 @@ abstract class Article
     private $url;
 
     /**
+     * @var string The name of the contact person of this article
+     *
+     * @ORM\Column(name="name_contact", type="string", nullable=true)
+     */
+    private $nameContact;
+
+    /**
+     * @var string The email address of the contact person of this article
+     *
+     * @ORM\Column(name="email_contact", type="string", nullable=true)
+     */
+    private $emailContact;
+
+    /**
      * @var boolean The flag whether the article is old or not
      *
      * @ORM\Column(name="is_history", type="boolean")
@@ -340,6 +354,54 @@ abstract class Article
     public function setUrl($url)
     {
         $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNameContact()
+    {
+        return $this->nameContact;
+    }
+
+    /**
+     * @param string $nameContact
+     *
+     * @return self
+     */
+    public function setNameContact($nameContact)
+    {
+        if (strlen($nameContact) == 0) {
+            $this->nameContact = null;
+        } else {
+            $this->nameContact = $nameContact;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmailContact()
+    {
+        return $this->emailContact;
+    }
+
+    /**
+     * @param string $emailContact
+     *
+     * @return self
+     */
+    public function setEmailContact($emailContact)
+    {
+        if (strlen($emailContact) == 0) {
+            $this->emailContact = null;
+        } else {
+            $this->emailContact = $emailContact;
+        }
 
         return $this;
     }
