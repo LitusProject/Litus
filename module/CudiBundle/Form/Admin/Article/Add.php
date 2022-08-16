@@ -131,6 +131,32 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         ),
                     ),
                     array(
+                        'type'    => 'text',
+                        'name'    => 'name_contact',
+                        'label'   => 'Name Contact Person',
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                )
+                                // TODO validator?
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'    => 'text',
+                        'name'    => 'email_contact',
+                        'label'   => 'E-mail Contact Person',
+                        'options' => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                )
+                                // TODO validator?
+                            ),
+                        ),
+                    ),
+                    array(
                         'type'       => 'checkbox',
                         'name'       => 'downloadable',
                         'label'      => 'Downloadable',
