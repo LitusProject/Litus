@@ -28,10 +28,11 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findOneById($data['event']);
 
-        $form = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Form')
-            ->findOneById($data['form']);
-
+        if ($data['form'] !== "") {
+            $form = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\Form')
+                ->findOneById($data['form']);
+        }
         $closeDate = self::loadDateTime($data['bookings_close_date']);
 
         $priceMembers = 0;
@@ -134,7 +135,6 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                 $this->getEntityManager()->remove($ticket);
             }
         }
-
         $object->setActivity($calendarEvent)
             ->setBookingsCloseDate($closeDate)
             ->setTicketsGenerated($generateTickets)

@@ -52,6 +52,20 @@ class GuestInfo
      */
     private $email;
 
+    /**
+     * @var string The organization of the guest
+     *
+     * @ORM\Column(name="organization", type="string", nullable=true)
+     */
+    private $organization;
+
+    /**
+     * @var string The r-number
+     *
+     * @ORM\Column(name="identification", type="string", nullable=true)
+     */
+    private $universityIdentification;
+
     public static $cookieNamespace = 'Litus_Form';
 
     /**
@@ -170,6 +184,44 @@ class GuestInfo
     public function getOrganizationStatus(AcademicYearEntity $academicYear)
     {
         return '';
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
+
+    /**
+     * @param $organization
+     * @return self
+     */
+    public function setOrganization($organization)
+    {
+        $this->organization = $organization;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUniversityIdentification()
+    {
+        return $this->universityIdentification;
+    }
+
+    /**
+     * @param $universityIdentification
+     * @return self
+     */
+    public function setUniversityIdentification($universityIdentification)
+    {
+        $this->universityIdentification = $universityIdentification;
+
+        return $this;
     }
 
     /**
