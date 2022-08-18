@@ -47,6 +47,21 @@ return array(
                 ),
             ),
         ),
+        'publication_admin_video' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/videos[/:action[/:id][/page/:page]][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'publication_admin_video',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
         'publication_archive' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -76,14 +91,30 @@ return array(
                 ),
             ),
         ),
+        'publication_video' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/archive/video[/:action[/:id]][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'publication_video',
+                    'action'     => 'view',
+                ),
+            ),
+        ),
     ),
 
     'controllers' => array(
         'publication_admin_publication'  => 'PublicationBundle\Controller\Admin\PublicationController',
         'publication_admin_edition_pdf'  => 'PublicationBundle\Controller\Admin\Edition\PdfController',
         'publication_admin_edition_html' => 'PublicationBundle\Controller\Admin\Edition\HtmlController',
+        'publication_admin_video'        => 'PublicationBundle\Controller\Admin\VideoController',
 
         'publication_archive'            => 'PublicationBundle\Controller\Archive\ArchiveController',
         'publication_edition_html'       => 'PublicationBundle\Controller\Edition\HtmlController',
+        'publication_video'        => 'PublicationBundle\Controller\Video\VideoController',
     ),
 );
