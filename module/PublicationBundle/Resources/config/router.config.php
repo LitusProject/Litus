@@ -50,7 +50,7 @@ return array(
         'publication_admin_video' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/videos[/:action[/:id][/page/:page]][/]',
+                'route'       => '/admin/video[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',

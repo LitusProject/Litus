@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * This is the entity for a video
  *
- * @ORM\Entity(repositoryClass="PublicationBundle\Repository\Publication")
+ * @ORM\Entity(repositoryClass="PublicationBundle\Repository\Video")
  * @ORM\Table(name="publications_videos")
  */
 class Video
@@ -24,14 +24,14 @@ class Video
     /**
      * @var string The title of this video
      *
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(name="video_title",type="string", nullable=true)
      */
     private $title;
 
     /**
      * @var string The link to the video
      *
-     * @ORM\Column(type="text")
+     * @ORM\Column(name="url", type="string", nullable=true)
      */
     private $url;
 
