@@ -138,6 +138,7 @@
                             {% if hasAccess('ticket_sale_ticket', 'unsale') %}
                                 <a href="#" data-id="{{ ticket.getId() }}" data-person="{{ ticket.getFullName() }}" class="btn btn-info btn-sm undoSaleTicket" {% if ticket.getStatusCode() != 'sold' %}style="display: none"{% endif %}>{{ translate('Undo Sale') }}</a>
                             {% endif %}
+{#                            <a href="{{ url('form_view', {'action': 'view', 'id': 43124}) }}">View Results</a>#}
                         </td>
                     </tr>
                 {% endfor %}

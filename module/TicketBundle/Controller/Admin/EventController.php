@@ -119,6 +119,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 'form'  => $form,
                 'event' => $event,
                 'em'    => $this->getEntityManager(),
+                'info_form'  => $event->getForm(),
             )
         );
     }

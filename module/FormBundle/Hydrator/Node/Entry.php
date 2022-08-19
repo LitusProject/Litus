@@ -32,7 +32,9 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
         if ($guestInfo !== null && isset($guestData['first_name'])) {
             $guestInfo->setFirstName($guestData['first_name'])
                 ->setLastName($guestData['last_name'])
-                ->setEmail($guestData['email']);
+                ->setEmail($guestData['email'])
+                ->setOrganization($guestData['organization'])
+                ->setUniversityIdentification($guestData['identification']);
         }
 
         $object->setDraft(isset($data['save_as_draft']) && $data['save_as_draft']);

@@ -17,5 +17,11 @@ return array(
         'publication_archive' => array(
             'overview', 'view', 'year',
         ),
+        'publication_admin_video' => array(
+            'add', 'delete', 'edit', 'manage',
+        ),
+        'publication_video' => array(
+            'view',
+        ),
     ),
 );

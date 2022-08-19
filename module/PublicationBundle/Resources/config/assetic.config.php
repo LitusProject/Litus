@@ -41,6 +41,13 @@ return array(
             '@common_jqueryui_css',
             '@common_jqueryui_datepicker_css',
         ),
+        'publication_admin_video' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
         'publication_archive' => array(
             '@common_jquery',
             '@bootstrap_css',
