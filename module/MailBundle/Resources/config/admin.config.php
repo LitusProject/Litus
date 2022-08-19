@@ -3,7 +3,7 @@
 return array(
     'submenus' => array(
         'Mail' => array(
-            'subtitle' => array('Aliases', 'Lists', 'Mass Mail'),
+            'subtitle' => array('Aliases', 'Lists', 'Newsletter', 'Mass Mail'),
             'items'    => array(
                 'mail_admin_alias' => array(
                     'action' => 'manage',
@@ -12,6 +12,10 @@ return array(
                 'mail_admin_bakske' => array(
                     'action' => 'send',
                     'title'  => 'Het Bakske',
+                ),
+                'mail_admin_section' => array(
+                    'action' => 'manage',
+                    'title'  => 'Newsletter',
                 ),
                 'mail_admin_group' => array(
                     'action' => 'groups',

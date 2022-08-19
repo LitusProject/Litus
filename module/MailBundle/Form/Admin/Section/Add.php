@@ -1,15 +1,13 @@
 <?php
 
-namespace MailBundle\Form\Admin\Alias;
+namespace MailBundle\Form\Admin\Section;
 
 /**
- * Add Alias.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
+ * Add Section
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class add extends \CommonBundle\Component\Form\Admin\Form
 {
-    protected $hydrator = 'MailBundle\Hydrator\Alias\Academic';
+    protected $hydrator = 'MailBundle\Hydrator\Section';
 
     public function init()
     {
@@ -18,16 +16,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(
             array(
                 'type'     => 'text',
-                'name'     => 'alias',
-                'label'    => 'Alias',
+                'name'     => 'name',
+                'label'    => 'Name',
                 'required' => true,
                 'options'  => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array('name' => 'Alias'),
                         ),
                     ),
                 ),
@@ -36,14 +31,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'typeahead',
-                'name'     => 'person',
-                'label'    => 'Account',
+                'type'     => 'text',
+                'name'     => 'attribute',
+                'label'    => 'Attribute SendInBlue',
                 'required' => true,
                 'options'  => array(
                     'input' => array(
-                        'validators' => array(
-                            array('name' => 'TypeaheadPerson'),
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
                         ),
                     ),
                 ),
