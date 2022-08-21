@@ -668,7 +668,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             $mail->setEncoding('UTF-8')
                 ->setBody("No OrderID provided. URL: " . $url)
                 ->setFrom('payresponse@vtk.be')
-                ->addTo('it@vtk.be, kevin.lepinoy@vtk.be')
+                ->addTo('it@vtk.be')
+                ->addTo('kevin.lepinoy@vtk.be')
                 ->setSubject($subject);
 
             if (getenv('APPLICATION_ENV') != 'development') {
@@ -683,7 +684,6 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             ->getRepository('TicketBundle\Entity\Ticket')
             ->findOneBy(array(
                 'orderId' => $paymentParams['ORDERID']));
-//        $this->logMessage("Ticket ID: " . $ticket->getId());
 
         $subject .= 'Ticket ID: ' . $ticket->getId();
 
@@ -704,12 +704,10 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $generatedHash = substr($paymentUrl, strpos($paymentUrl, 'SHASIGN=') + strlen('SHASIGN='));
 
         if (strtoupper($generatedHash) === $shasign) {
-//            $this->logMessage("SHA correct for orderId " . $paymentParams['ORDERID']);
             $subject .= ' orderID: ' . $paymentParams['ORDERID'];
             if (!($ticket->getStatus() === "sold"))
             {
                 $subject .= " Not yet on sold";
-//                $this->logMessage("Ticket not yet on sold");
                 $ticket->setStatus('sold');
                 $this->getEntityManager()->flush();
             }
@@ -724,11 +722,14 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $mail->setEncoding('UTF-8')
             ->setBody("URL: " .$url)
             ->setFrom("payresponse@vtk.be")
-            ->addTo("it@vtk.be, kevin.lepinoy@vtk.be")
+            ->addTo("it@vtk.be")
+            ->addTo('kevin.lepinoy@vtk.be')
             ->setSubject($subject);
+
         if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);
         }
+
         return new ViewModel();
     }
 
