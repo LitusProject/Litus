@@ -285,6 +285,16 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
                     'options'    => array(
                         'input' => array(
                             'required' => true,
+                            'validators' => array(
+                                array(
+                                    'name'    => 'NumberTicketsGuest',
+                                    'options' => array(
+                                        'event'   => $this->event,
+//                                        'person'  => $this->guestInfo,
+                                        'maximum' => $this->event->getLimitPerPerson(),
+                                    ),
+                                ),
+                            ),
                         ),
                     ),
                 )
@@ -302,6 +312,16 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
                         'options'    => array(
                             'input' => array(
                                 'required' => true,
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'NumberTicketsGuest',
+                                        'options' => array(
+                                            'event'   => $this->event,
+//                                            'person'  => $this->guestInfo,
+                                            'maximum' => $this->event->getLimitPerPerson(),
+                                        ),
+                                    ),
+                                ),
                             ),
                         ),
                     )
@@ -320,6 +340,16 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
                         'options'    => array(
                             'input' => array(
                                 'required' => true,
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'NumberTicketsGuest',
+                                        'options' => array(
+                                            'event'   => $this->event,
+//                                            'person'  => $this->guestInfo,
+                                            'maximum' => $this->event->getLimitPerPerson(),
+                                        ),
+                                    ),
+                                ),
                             ),
                         ),
                     )
@@ -337,6 +367,16 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
                             'options'    => array(
                                 'input' => array(
                                     'required' => true,
+                                    'validators' => array(
+                                        array(
+                                            'name'    => 'NumberTicketsGuest',
+                                            'options' => array(
+                                                'event'   => $this->event,
+//                                                'person'  => $this->guestInfo,
+                                                'maximum' => $this->event->getLimitPerPerson(),
+                                            ),
+                                        ),
+                                    ),
                                 ),
                             ),
                         )
