@@ -24,22 +24,33 @@
 
             <table class="full_width manage">
                 <tr>
+                    <th style="width: 50px;">ID</th>
                     <th>Title</th>
                     <th>Url</th>
+                    <th>Shown On Home Page</th>
                     <th style="width:70px">Actions</th>
                 </tr>
 
                 {% for video in paginator %}
 
                     <tr class="item item-{{ video.getId() }}">
+                        <td>{{ video.getId() }}</td>
                         <td>{{ video.getTitle() }}</td>
                         <td>{{ video.getUrl() }}</td>
+{#                        {% if video.getShowOnHomePage() %}#}
+{#                            <td>x</td>#}
+{#                        {% else %}#}
+{#                            <td></td>#}
+{#                        {% endif %}#}
+                        <td>{% if video.getShowOnHomePage() %}&times;{% endif %}</td>
                         <td class="actions">
                             {% if hasAccess('publication_admin_video', 'edit') %}
-                                <a href="{{ url('publication_admin_video', {"action": "edit", "id": video.getId() }) }}" class="edit">Edit</a>
+                                <a href="{{ url('publication_admin_video', {"action": "edit", "id": video.getId() }) }}"
+                                   class="edit">Edit</a>
                             {% endif %}
                             {% if hasAccess('publication_admin_video', 'delete') %}
-                                <a href="#" class="delete" data-id="{{ video.getId() }}" data-title="{{ video.getTitle() }}" data-url="{{ video.getUrl() }}">Delete</a>
+                                <a href="#" class="delete" data-id="{{ video.getId() }}"
+                                   data-title="{{ video.getTitle() }}" data-url="{{ video.getUrl() }}">Delete</a>
                             {% endif %}
                         </td>
                     </tr>
@@ -62,7 +73,8 @@
                 </div>
                 <div class="modal-body">
                     <p>
-                        You are about to delete the following video: <b class="videoTitle"></b>, <b class="videoUrl"></b>!
+                        You are about to delete the following video: <b class="videoTitle"></b>, <b
+                                class="videoUrl"></b>!
                         Please note that this operation cannot be undone!
                     </p>
                     <p>
@@ -96,7 +108,7 @@
             removeVideo.find('.videoUrl').html($(this).data('url'));
             var id = $this.data('id');
             removeVideo.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('publication_admin_video', {"action": "delete"})}}' + id, function (data) {
+                $.post('{{ url('publication_admin_video', {"action": "delete"}) }}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.video_removed_success').removeClass('hide');

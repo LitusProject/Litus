@@ -15,6 +15,19 @@ class Video extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('r')
             ->from('PublicationBundle\Entity\Video', 'r')
+            ->orderBy('r.id', 'DESC')
+            ->getQuery();
+    }
+
+    public function findAllOnHomePageQuery()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('r')
+            ->from('PublicationBundle\Entity\Video', 'r')
+            ->where(
+                    $query->expr()->eq('r.showOnHomePage', 'true')
+            )
+            ->orderBy('r.id', 'DESC')
             ->getQuery();
     }
 }

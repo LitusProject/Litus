@@ -2,9 +2,7 @@
 
 namespace PublicationBundle\Controller\Video;
 
-use CommonBundle\Entity\General\AcademicYear;
 use Laminas\View\Model\ViewModel;
-use PublicationBundle\Entity\Publication;
 
 /**
  * VideoController
@@ -16,41 +14,15 @@ class VideoController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function viewAction()
     {
-        $video = $this->getVideoEntity();
-        if ($video === null) {
-            return new ViewModel();
-        }
+        $videos = $this->getEntityManager()
+            ->getRepository('PublicationBundle\Entity\Video')
+            ->findAllQuery()
+            ->getResult();
 
         return new ViewModel(
             array(
-                'video'  => $video,
+                'videos'      => $videos,
             )
         );
-    }
-
-    /**
-     * @return Video|null
-     */
-    private function getVideoEntity()
-    {
-        $video = $this->getEntityById('PublicationBundle\Entity\Video');
-
-        if (!($video instanceof Video)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No video was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'publication_archive',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $video;
     }
 }

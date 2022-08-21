@@ -33,14 +33,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
-                        'validators' => array(
-                            array(
-                                'name'    => 'TitleVideo',
-                                'options' => array(
-                                    'exclude' => $this->video !== null ? $this->video->getId() : null,
-                                ),
-                            ),
-                        ),
                     ),
                 ),
             )
@@ -59,6 +51,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         ),
                     ),
                 ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'checkbox',
+                'name'     => 'showOnHomePage',
+                'label'    => 'Show On Home Page',
+                'required' => true,
             )
         );
 

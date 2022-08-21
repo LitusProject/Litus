@@ -113,7 +113,7 @@ class VideoController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $video->delete();
+        $this->getEntityManager()->remove($video);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -130,7 +130,7 @@ class VideoController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $video = $this->getEntityManager()
             ->getRepository('PublicationBundle\Entity\Video')
-            ->findOneActiveById($this->getParam('id'));
+            ->findOneById($this->getParam('id'));
 
         if (!($video instanceof Video)) {
             $this->flashMessenger()->error(
