@@ -644,8 +644,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
     public function payResponseAction()
     {
+        $mail = new Message();
+        $subject = '';
         $url = $this->getRequest()->getServer()->get('REQUEST_URI');
-        $this->logMessage('url: ' . $url);
 
         $allParams = substr($url, strpos($url, '?') + 1);
         $data = array();
@@ -663,7 +664,17 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         }
 
         if ($paymentParams['ORDERID'] === null) {
-            $this->logMessage("no orderID provided");
+            $subject .= "no orderID provided";
+            $mail->setEncoding('UTF-8')
+                ->setBody("No OrderID provided. URL: " . $url)
+                ->setFrom('payresponse@vtk.be')
+                ->addTo('it@vtk.be, kevin.lepinoy@vtk.be')
+                ->setSubject($subject);
+
+            if (getenv('APPLICATION_ENV') != 'development') {
+                $this->getMailTransport()->send($mail);
+            }
+
             $this->getResponse()->setStatusCode(404);
             return new ViewModel();
         }
@@ -672,7 +683,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             ->getRepository('TicketBundle\Entity\Ticket')
             ->findOneBy(array(
                 'orderId' => $paymentParams['ORDERID']));
-        $this->logMessage("Ticket ID: " . $ticket->getId());
+//        $this->logMessage("Ticket ID: " . $ticket->getId());
+
+        $subject .= 'Ticket ID: ' . $ticket->getId();
 
         ksort($paymentParams);
         foreach (array_keys($paymentParams) as $paymentKey) {
@@ -691,20 +704,31 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $generatedHash = substr($paymentUrl, strpos($paymentUrl, 'SHASIGN=') + strlen('SHASIGN='));
 
         if (strtoupper($generatedHash) === $shasign) {
-            $this->logMessage("SHA correct for orderId " . $paymentParams['ORDERID']);
+//            $this->logMessage("SHA correct for orderId " . $paymentParams['ORDERID']);
+            $subject .= ' orderID: ' . $paymentParams['ORDERID'];
             if (!($ticket->getStatus() === "sold"))
             {
-                $this->logMessage("Ticket not yet on sold");
+                $subject .= " Not yet on sold";
+//                $this->logMessage("Ticket not yet on sold");
                 $ticket->setStatus('sold');
                 $this->getEntityManager()->flush();
             }
         }
         else {
+            $subject .= " SHA not correct";
             $this->logMessage("SHA sign not correct");
             $this->getResponse()->setStatusCode(404);
             return new ViewModel();
         }
 
+        $mail->setEncoding('UTF-8')
+            ->setBody("URL: " .$url)
+            ->setFrom("payresponse@vtk.be")
+            ->addTo("it@vtk.be, kevin.lepinoy@vtk.be")
+            ->setSubject($subject);
+        if (getenv('APPLICATION_ENV') != 'development') {
+            $this->getMailTransport()->send($mail);
+        }
         return new ViewModel();
     }
 
