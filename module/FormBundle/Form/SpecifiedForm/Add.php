@@ -259,6 +259,23 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'options'    => array(
                             'input' => array(
                                 'required' => true,
+                                'validators' => array(
+//                                    array(
+//                                        'name'    => 'NumberTickets',
+//                                        'options' => array(
+//                                            'event'   => $this->event,
+//                                            'person'  => $this->person ?: $this->guestInfo,
+//                                            'maximum' => $this->event->getLimitPerPerson(),
+//                                        ),
+//                                    ),
+                                    array(
+                                        'name'    => 'NumberTicketsGuest',
+                                        'options' => array(
+                                            'event'   => $this->event,
+                                            'maximum' => $this->event->getLimitPerPerson(),
+                                        ),
+                                    ),
+                                ),
                             ),
                         ),
                     )
@@ -276,6 +293,23 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'options'    => array(
                                 'input' => array(
                                     'required' => true,
+                                    'validators' => array(
+//                                        array(
+//                                            'name'    => 'NumberTickets',
+//                                            'options' => array(
+//                                                'event'   => $this->event,
+//                                                'person'  => $this->person ?: $this->guestInfo,
+//                                                'maximum' => $this->event->getLimitPerPerson(),
+//                                            ),
+//                                        ),
+                                        array(
+                                            'name'    => 'NumberTicketsGuest',
+                                            'options' => array(
+                                                'event'   => $this->event,
+                                                'maximum' => $this->event->getLimitPerPerson(),
+                                            ),
+                                        ),
+                                    ),
                                 ),
                             ),
                         )
@@ -294,6 +328,23 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'options'    => array(
                                 'input' => array(
                                     'required' => true,
+                                    'validators' => array(
+//                                        array(
+//                                            'name'    => 'NumberTickets',
+//                                            'options' => array(
+//                                                'event'   => $this->event,
+//                                                'person'  => $this->person ?: $this->guestInfo,
+//                                                'maximum' => $this->event->getLimitPerPerson(),
+//                                            ),
+//                                        ),
+                                        array(
+                                            'name'    => 'NumberTicketsGuest',
+                                            'options' => array(
+                                                'event'   => $this->event,
+                                                'maximum' => $this->event->getLimitPerPerson(),
+                                            ),
+                                        ),
+                                    ),
                                 ),
                             ),
                         )
@@ -311,6 +362,23 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'options'    => array(
                                     'input' => array(
                                         'required' => true,
+                                        'validators' => array(
+//                                            array(
+//                                                'name'    => 'NumberTickets',
+//                                                'options' => array(
+//                                                    'event'   => $this->event,
+//                                                    'person'  => $this->person ?: $this->guestInfo,
+//                                                    'maximum' => $this->event->getLimitPerPerson(),
+//                                                ),
+//                                            ),
+                                            array(
+                                                'name'    => 'NumberTicketsGuest',
+                                                'options' => array(
+                                                    'event'   => $this->event,
+                                                    'maximum' => $this->event->getLimitPerPerson(),
+                                                ),
+                                            ),
+                                        ),
                                     ),
                                 ),
                             )
