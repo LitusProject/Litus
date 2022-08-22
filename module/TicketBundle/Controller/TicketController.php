@@ -644,6 +644,16 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
     public function payResponseAction()
     {
+        $startMail = new Message();
+        $startMail->setEncoding('UTF-8')
+            ->setBody("In Response Action")
+            ->setFrom('payresponse@vtk.be')
+            ->addTo('stan.cardinaels@vtk.be')
+            ->setSubject('In response Action');
+        if (getenv('APPLICATION_ENV') != 'development') {
+            $this->getMailTransport()->send($startMail);
+        }
+
         $mail = new Message();
         $subject = '';
         $url = $this->getRequest()->getServer()->get('REQUEST_URI');
@@ -714,7 +724,18 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         }
         else {
             $subject .= " SHA not correct";
-            $this->logMessage("SHA sign not correct");
+
+            $mail->setEncoding('UTF-8')
+                ->setBody("URL: " .$url)
+                ->setFrom("payresponse@vtk.be")
+                ->addTo("it@vtk.be")
+                ->addTo('kevin.lepinoy@vtk.be')
+                ->setSubject($subject);
+
+            if (getenv('APPLICATION_ENV') != 'development') {
+                $this->getMailTransport()->send($mail);
+            }
+
             $this->getResponse()->setStatusCode(404);
             return new ViewModel();
         }
