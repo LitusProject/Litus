@@ -111,12 +111,13 @@ return array(
         'ticket' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '[/:language]/ticket[/:action[/:id[/code/:code]]][/]',
+                'route'       => '[/:language]/ticket[/:action[/:id[/code/:code][/qr/:qr]]][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'       => '[0-9]*',
                     'code'     => '[0-9]*',
                     'language' => '(en|nl)',
+                    'qr'  => '[a-zA-Z0-9_-]*',
                 ),
                 'defaults'    => array(
                     'controller' => 'ticket',

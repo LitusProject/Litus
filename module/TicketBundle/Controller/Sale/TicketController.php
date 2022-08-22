@@ -265,11 +265,10 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
                 'ticket',
                 array('action' => 'qr',
                     'id'       => $event->getId(),
-                    'code'     => $ticket->getQrCode()
+                    'qr'     => $ticket->getQrCode()
                 ),
                 array('force_canonical' => true)
             );
-
         $url = str_replace('leia.', '', $url);
 
         $qrSource = str_replace(

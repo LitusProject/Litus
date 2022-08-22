@@ -647,6 +647,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
     public function payResponseAction()
     {
+        die("in payresponse");
         $startMail = new Message();
         $startMail->setEncoding('UTF-8')
             ->setBody("In Response Action")
@@ -786,7 +787,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
     public function qrAction()
     {
-        $qr = $this->getParam('code');
+        $qr = $this->getParam('qrcode');
         if ($qr === null) {
             return new ViewModel();
         }
@@ -800,7 +801,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             $person = $this->getAuthentication()->getPersonObject();
         }
 
-        if ($person != null) {
+        if ($person !== null) {
             // Check if person has access to scan QR
             if ($this->hasAccess()->toResourceAction('ticket', 'scanQr')) {
                 $visitor = $this->getEntityManager()
@@ -1100,7 +1101,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 'ticket',
                 array('action' => 'qr',
                     'id'       => $event->getId(),
-                    'code'     => $ticket->getQrCode()
+                    'qr'     => $ticket->getQrCode()
                 ),
                 array('force_canonical' => true)
             );
