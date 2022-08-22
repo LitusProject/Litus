@@ -42,6 +42,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'profilePath'        => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
+                'videos'             => $this->getVideos(),
             )
         );
     }
@@ -377,5 +378,13 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         return $academic;
+    }
+
+    private function getVideos()
+    {
+        return $this->getEntityManager()
+            ->getRepository('PublicationBundle\Entity\Video')
+            ->findAllOnHomePageQuery()
+            ->getResult();
     }
 }

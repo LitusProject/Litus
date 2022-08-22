@@ -11,14 +11,14 @@ return array(
         'publication_admin_edition_pdf' => array(
             'add', 'delete', 'manage', 'upload', 'view',
         ),
+        'publication_admin_video' => array(
+            'add', 'delete', 'edit', 'manage',
+        ),
         'publication_edition_html' => array(
             'view',
         ),
         'publication_archive' => array(
             'overview', 'view', 'year',
-        ),
-        'publication_admin_video' => array(
-            'add', 'delete', 'edit', 'manage',
         ),
         'publication_video' => array(
             'view',

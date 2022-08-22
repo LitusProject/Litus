@@ -6,12 +6,12 @@ use PublicationBundle\Entity\Video as VideoEntity;
 
 class Video extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $stdKeys = array('title', 'url',);
+    private static $stdKeys = array('title', 'url', 'showOnHomePage');
 
     protected function doHydrate(array $data, $object = null)
     {
         if ($object === null) {
-            $object = new VideoEntity($data['title']);
+            $object = new VideoEntity();
         }
 
         return $this->stdHydrate($data, $object, self::$stdKeys);
@@ -23,7 +23,8 @@ class Video extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        return $this->stdExtract($object, self::$stdKeys);
+        $data = $this->stdExtract($object, self::$stdKeys);
+        return $data;
     }
 }
 

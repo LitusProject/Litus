@@ -36,13 +36,19 @@ class Video
     private $url;
 
     /**
+     * @var bool true if video is to be shown on home page
+     *
+     * @ORM\Column(name="show_on_home_page", type="boolean")
+     */
+    private $showOnHomePage;
+
+    /**
      * Creates a new video with the given title
      *
      * @param string $title The title of this video
      */
-    public function __construct($title)
+    public function __construct()
     {
-        $this->title = $title;
     }
 
     /**
@@ -86,12 +92,29 @@ class Video
      */
     public function setUrl($url)
     {
-        if (strpos($url, 'http://') !== 0) {
-            $url = 'http://' . $url;
+        if (str_contains($url, "youtu") && !str_contains($url, "embed")){
+            $yt_id = explode("?v=",$url)[1];
+            $url = "https://youtube.com/embed/" . $yt_id;
         }
 
         $this->url = $url;
 
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getShowOnHomePage(){
+        return $this->showOnHomePage;
+    }
+
+    /**
+     * @param bool $showOnHomePage
+     * @return self
+     */
+    public function setShowOnHomePage($showOnHomePage){
+        $this->showOnHomePage = $showOnHomePage;
         return $this;
     }
 }

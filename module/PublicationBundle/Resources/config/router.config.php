@@ -94,7 +94,7 @@ return array(
         'publication_video' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/archive/video[/:action[/:id]][/]',
+                'route'       => '[/:language]/archive/videos[/:action[/:id]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
@@ -115,6 +115,6 @@ return array(
 
         'publication_archive'            => 'PublicationBundle\Controller\Archive\ArchiveController',
         'publication_edition_html'       => 'PublicationBundle\Controller\Edition\HtmlController',
-        'publication_video'        => 'PublicationBundle\Controller\Video\VideoController',
+        'publication_video'              => 'PublicationBundle\Controller\Video\VideoController',
     ),
 );
