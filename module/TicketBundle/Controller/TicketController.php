@@ -651,7 +651,6 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
     public function payResponseAction()
     {
-        die("in payresponse");
         $startMail = new Message();
         $startMail->setEncoding('UTF-8')
             ->setBody("In Response Action")
