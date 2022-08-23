@@ -89,9 +89,11 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
             return new ViewModel();
         }
         $ticket->setStatus('sold');
-        $ticket->setQrCode();
+        if ($ticket->getEvent()->getQrEnabled()) {
+            $ticket->setQrCode();
+            $this->sendQrMail($ticket);
+        }
         $this->getEntityManager()->flush();
-        $this->sendQrMail($ticket);
 
         return new ViewModel(
             array(

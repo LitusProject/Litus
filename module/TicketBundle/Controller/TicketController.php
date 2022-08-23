@@ -625,9 +625,13 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             );
         } else {
             $ticket->setStatus('sold');
-            $ticket->setQrCode();
+            if ($ticket->getEvent()->getQrEnabled()) {
+                $ticket->setQrCode();
+            }
             $this->getEntityManager()->flush();
-            $this->sendQrMail($ticket);
+            if ($ticket->getEvent()->getQrEnabled()) {
+                $this->sendQrMail($ticket);
+            }
 
             $this->flashMessenger()->success(
                 'Success',
@@ -719,13 +723,15 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
         if (strtoupper($generatedHash) === $shasign) {
             $subject .= ' orderID: ' . $paymentParams['ORDERID'];
-            if (!($ticket->getStatus() == "sold"))
+            if (!($ticket->getStatus() == "Sold"))
             {
                 $subject .= " Not yet on sold";
                 $ticket->setStatus('sold');
-                $ticket->setQrCode();
+                if ($ticket->getEvent()->getQrEnabled()) {
+                    $ticket->setQrCode();
+                    $this->sendQrMail($ticket);
+                }
                 $this->getEntityManager()->flush();
-                $this->sendQrMail($ticket);
             }
         }
         else {

@@ -128,6 +128,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(
             array(
                 'type'     => 'checkbox',
+                'name'     => 'qr_enabled',
+                'label'    => 'Enable qr code for tickets',
+                'required' => false,
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'checkbox',
                 'name'     => 'generate_tickets',
                 'label'    => 'Generate Tickets (needed to print out ticket)',
                 'required' => false,

@@ -168,6 +168,13 @@ class Event
      */
     private $form;
 
+    /**
+     * @var boolean Whether or not qr codes are enabled
+     *
+     * @ORM\Column(name="qr_enabled", type="boolean", options={"default" : false})
+     */
+    private $qrEnabled;
+
     public function __construct()
     {
         $this->options = new ArrayCollection();
@@ -706,6 +713,25 @@ class Event
     public function setForm($form)
     {
         $this->form = $form;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getQrEnabled()
+    {
+        return $this->qrEnabled;
+    }
+
+    /**
+     * @param boolean $qr
+     * @return self
+     */
+    public function setQrEnabled($qr)
+    {
+        $this->qrEnabled = $qr;
 
         return $this;
     }
