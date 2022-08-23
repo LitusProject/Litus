@@ -791,9 +791,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 //        return new ViewModel();
     }
 
-    public function qrAction()
+    public function qrsenAction()
     {
-        $qr = $this->getParam('qrcode');
+        $qr = $this->getParam('qr');
         if ($qr === null) {
             return new ViewModel();
         }
