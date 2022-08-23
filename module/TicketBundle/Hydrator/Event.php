@@ -13,7 +13,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
      */
     private static $stdKeys = array(
         'active', 'bookable_praesidium', 'bookable', 'number_of_tickets',
-        'limit_per_person', 'only_members', 'description'
+        'limit_per_person', 'only_members', 'description', 'qr_enabled',
     );
 
     protected function doHydrate(array $data, $object = null)
@@ -135,6 +135,8 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                 $this->getEntityManager()->remove($ticket);
             }
         }
+
+
         $object->setActivity($calendarEvent)
             ->setBookingsCloseDate($closeDate)
             ->setTicketsGenerated($generateTickets)

@@ -25,6 +25,8 @@ use CommonBundle\Component\Form\Admin\Element\DateTime;
 use FormBundle\Entity\Node\Entry as FormEntry;
 use FormBundle\Entity\Node\Form;
 use Laminas\Mail\Message;
+use Laminas\Mime\Mime;
+use Laminas\Mime\Part;
 use Laminas\View\Model\ViewModel;
 use TicketBundle\Component\Payment\PaymentParam;
 use TicketBundle\Component\Ticket\Ticket as TicketBook;
@@ -623,8 +625,13 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             );
         } else {
             $ticket->setStatus('sold');
-
+            if ($ticket->getEvent()->getQrEnabled()) {
+                $ticket->setQrCode();
+            }
             $this->getEntityManager()->flush();
+            if ($ticket->getEvent()->getQrEnabled()) {
+                $this->sendQrMail($ticket);
+            }
 
             $this->flashMessenger()->success(
                 'Success',
@@ -644,6 +651,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
     public function payResponseAction()
     {
+        die("in payresponse");
         $startMail = new Message();
         $startMail->setEncoding('UTF-8')
             ->setBody("In Response Action")
@@ -715,10 +723,14 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
         if (strtoupper($generatedHash) === $shasign) {
             $subject .= ' orderID: ' . $paymentParams['ORDERID'];
-            if (!($ticket->getStatus() === "sold"))
+            if (!($ticket->getStatus() == "Sold"))
             {
                 $subject .= " Not yet on sold";
                 $ticket->setStatus('sold');
+                if ($ticket->getEvent()->getQrEnabled()) {
+                    $ticket->setQrCode();
+                    $this->sendQrMail($ticket);
+                }
                 $this->getEntityManager()->flush();
             }
         }
@@ -777,6 +789,82 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $this->redirect()->toUrl($link);
 
 //        return new ViewModel();
+    }
+
+    public function qrAction()
+    {
+        $qr = $this->getParam('qrcode');
+        if ($qr === null) {
+            return new ViewModel();
+        }
+
+        $event = $this->getEventEntity();
+        if ($event === null) {
+            return new ViewModel();
+        }
+
+        if ($this->getAuthentication()->isAuthenticated()) {
+            $person = $this->getAuthentication()->getPersonObject();
+        }
+
+        if ($person !== null) {
+            // Check if person has access to scan QR
+            if ($this->hasAccess()->toResourceAction('ticket', 'scanQr')) {
+                $visitor = $this->getEntityManager()
+                    ->getRepository('TicketBundle\Entity\Event\Visitor')
+                    ->findByEventAndQr($event, $qr);
+
+                if ($visitor == null) {
+                    // If no visitor, first entry
+                    $entry = true;
+
+                    $visitor = new Event\Visitor($event, $qr);
+                    $this->getEntityManager()->persist($visitor);
+                    $this->getEntityManager()->flush();
+                } else {
+                    // If visitor already exists, can't enter again
+                    $entry = false;
+                }
+
+                return new ViewModel(
+                    array(
+                        'event' => $event,
+                        'entry' => $entry,
+                    )
+                );
+            }
+        }
+
+        // From here, only when not authorized to scan QR
+
+        $encodedUrl = urlencode(
+            $this->url()
+                ->fromRoute(
+                    'ticket',
+                    array('action' => 'qr',
+                        'id' => $event->getId(),
+                        'code' => $qr
+                    ),
+                    array('force_canonical' => true)
+                )
+        );
+
+        $encodedUrl = str_replace('leia.', '', $encodedUrl);
+
+        $qrSource = str_replace(
+            '{{encodedUrl}}',
+            $encodedUrl,
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.google_qr_api')
+        );
+
+        return new ViewModel(
+            array(
+                'event'    => $event,
+                'qrSource' => $qrSource,
+            )
+        );
     }
 
     /**
@@ -984,5 +1072,76 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $cookie = $this->getRequest()->getCookie();
 
         return $cookie !== false && $cookie->offsetExists(\FormBundle\Entity\Node\GuestInfo::$cookieNamespace);
+    }
+
+    private function sendQrMail(Ticket $ticket)
+    {
+        $event = $ticket->getEvent();
+        $language = $this->getLanguage();
+
+        $entityManager = $this->getEntityManager();
+        if ($language === null) {
+            $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
+                ->findOneByAbbrev('en');
+        }
+
+        $mailData = unserialize(
+            $entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('ticket.subscription_mail_data')
+        );
+
+        $message = $mailData[$language->getAbbrev()]['content'];
+        $subject = str_replace('{{event}}', $event->getActivity()->getTitle($language), $mailData[$language->getAbbrev()]['subject']);
+
+        $mailAddress = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('ticket.subscription_mail');
+
+        $mailName = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('ticket.subscription_mail_name');
+
+        $url = $this->url()
+            ->fromRoute(
+                'ticket',
+                array('action' => 'qr',
+                    'id'       => $event->getId(),
+                    'qr'     => $ticket->getQrCode()
+                ),
+                array('force_canonical' => true)
+            );
+
+        $url = str_replace('leia.', '', $url);
+
+        $qrSource = str_replace(
+            '{{encodedUrl}}',
+            urlencode($url),
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.google_qr_api')
+        );
+
+        $message = str_replace('{{event}}', $event->getActivity()->getTitle($language), $message);
+        $message = str_replace('{{eventDate}}', $event->getActivity()->getStartDate()->format('d/m/Y'), $message);
+        $message = str_replace('{{qrSource}}', $qrSource, $message);
+        $message = str_replace('{{qrLink}}', $url, $message);
+        $message = str_replace('{{actiMail}}', $mailAddress, $message);
+
+        $part = new Part($message);
+
+        $part->type = Mime::TYPE_HTML;
+        $part->charset = 'utf-8';
+        $newMessage = new \Laminas\Mime\Message();
+        $newMessage->addPart($part);
+        $mail = new Message();
+        $mail->setEncoding('UTF-8')
+            ->setBody($newMessage)
+            ->setFrom($mailAddress, $mailName)
+            ->addTo($ticket->getEmail(), $ticket->getFullName())
+            ->setSubject($subject);
+        if (getenv('APPLICATION_ENV') != 'development') {
+            $this->getMailTransport()->send($mail);
+        }
     }
 }

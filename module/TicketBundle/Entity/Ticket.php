@@ -119,6 +119,13 @@ class Ticket
     private $orderId;
 
     /**
+     * @var string Unique identifier for QR code of the ticket
+     *
+     * @ORM\Column(name="qr_code", type="text", unique=true, nullable=true)
+     */
+    private $qrCode;
+
+    /**
      * @param EntityManager  $em
      * @param Event          $event
      * @param string         $status
@@ -461,5 +468,29 @@ class Ticket
         }
 
         return number_format($price / 100, 2);
+    }
+
+    /**
+     * @return string
+     */
+    public function getQrCode()
+    {
+        return $this->qrCode;
+    }
+
+    /**
+     * @return self
+     */
+    public function setQrCode()
+    {
+        if ($this->status === 'sold' && $this->qrCode === null) {
+            try {
+                $this->qrCode = bin2hex(random_bytes(10));
+            } catch (\Exception $e) {
+                echo 'Something went wrong with setting the QR code';
+            }
+        }
+
+//        return $this;
     }
 }
