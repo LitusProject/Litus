@@ -319,4 +319,20 @@ class Ticket extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function findOneByQREvent(\TicketBundle\Entity\Event $event, string $qrCode) {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('t')
+            ->from('TicketBundle\Entity\Ticket', 't')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('t.event', ':event'),
+                    $query->expr()->eq('t.qrCode', ':qr_code')
+                )
+            )
+            ->setParameter('qr_code', $qrCode)
+            ->setParameter('event', $event->getId())
+            ->getQuery()
+            ->getResult();
+    }
 }
