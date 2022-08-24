@@ -19,14 +19,14 @@ class IndexController extends \BrBundle\Component\Controller\CorporateController
             ->getRepository('CommonBundle\Entity\General\Organization\Unit')
             ->findAllActiveQuery()->getResult();
 
-            $br = null;
+        $br = null;
         foreach ($units as $unit) {
             if ($unit->getName() === 'Bedrijvenrelaties') {
                 $br = $unit;
             }
         }
 
-            $members = array();
+        $members = array();
         if ($br != null) {
             $members = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
@@ -63,6 +63,28 @@ class IndexController extends \BrBundle\Component\Controller\CorporateController
         $events = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Event')
             ->findAllActiveQuery()->getResult();
+
+        $person = $this->getCorporateEntity();
+
+        if ($person === null) {
+            foreach ($events as $event) {
+                $event->atEvent = false;
+            }
+        } else {
+            $company = $person->getCompany();
+
+            foreach ($events as $event) {
+                $companyMap = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Event\CompanyMap')
+                    ->findByEventAndCompany($event, $company);
+
+                if ($companyMap === null) {
+                    $event->atEvent = false;
+                } else {
+                    $event->atEvent = true;
+                }
+            }
+        }
 
         return new ViewModel(
             array(

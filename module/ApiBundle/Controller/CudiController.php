@@ -3,6 +3,7 @@
 namespace ApiBundle\Controller;
 
 use CommonBundle\Entity\User\Person;
+use CudiBundle\Entity\Article as General;
 use CudiBundle\Entity\Sale\Article;
 use CudiBundle\Entity\Sale\Booking;
 use CudiBundle\Entity\Sale\QueueItem;
@@ -389,6 +390,127 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                 )
             );
         }
+    }
+
+    /**
+     * input: json:
+     * {
+     *      "key": "api key",
+     *      "is_same": "true/false",
+     *      "barcode": barcode,
+     *      "black_white": "number",
+     *      "colored": "number",
+     *      "official": "true/false",
+     *      "recto_verso": "true/false",
+     *      "purchase_price": "number",
+     *      "sell_price": "number"
+     * })
+     */
+    public function isSameAction()
+    {
+        $this->initJson();
+
+        if (!$this->getRequest()->isPost()) {
+            return $this->error(405, 'This endpoint can only be accessed through POST');
+        }
+
+        $barcode = $this->getRequest()->getPost("barcode");
+
+        $saleArticle = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Article')
+            ->findOneByBarcode($barcode);
+
+        $articleId = $saleArticle->getMainArticle();
+
+        $article = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Article')
+            ->findBy(
+                array(
+                    'id' => $articleId
+                )
+            )[0];
+
+        $originalArticle = $article;
+
+        if ($article == null) {
+            return $this->error(404, 'This article doesn\'t exist');
+        }
+        if ($this->getRequest()->getPost("is_same") === 'True') {
+            $article->setIsSameAsPreviousYear(true);
+        } else {
+            $internal = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Article\Internal')
+                ->findBy(
+                    array(
+                        'id' => $articleId
+                    )
+                )[0];
+            $internal->setNbBlackAndWhite($this->getRequest()->getPost("black_white"));
+            $internal->setNbColored($this->getRequest()->getPost("colored"));
+            $internal->setIsOfficial($this->getRequest()->getPost("official"));
+            $internal->setIsRectoVerso($this->getRequest()->getPost("recto_verso"));
+            $article->setIsSameAsPreviousYear(false);
+        }
+
+        $this->copyArticleSubject($originalArticle);
+
+        $newBarcode = $this->changeBarcode($barcode);
+        $saleArticle->setBarcode($newBarcode);
+        $saleArticle->setPurchasePrice($this->getRequest()->getPost("purchase_price"));
+        $saleArticle->setSellPrice($this->getRequest()->getPost("sell_price"));
+        $saleArticle->setIsBookable(true);
+        $saleArticle->setIsUnbookable(true);
+        $saleArticle->setIsSellable(true);
+        $saleArticle->setCanExpire(true);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array(
+                    'front_page' => '/admin/cudi/article/file/front/' . $saleArticle->getId(),
+                )
+            )
+        );
+    }
+
+    private function copyArticleSubject(General $article)
+    {
+        $currentYear = $this->getCurrentAcademicYear();
+        $date = $currentYear->getEndDate();
+        $date2 = $currentYear->getEndDate();
+        date_add($date2, date_interval_create_from_date_string('30 days'));
+
+        date_sub($date, date_interval_create_from_date_string('9 months'));
+
+        $previousYear = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByDate($date);
+
+        $nextYear = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByDate($date2);
+
+        $currentSubjects = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Article\SubjectMap')
+            ->findAllByArticleAndAcademicYearQuery($article, $previousYear)
+            ->getResult();
+        foreach ($currentSubjects as $subjectMap) {
+            $newMap = new General\SubjectMap($article, $subjectMap->getSubject(), $nextYear, false);
+            $this->getEntityManager()->persist($newMap);
+        }
+    }
+
+    private function changeBarcode(string $barcode)
+    {
+        $currentYear = $this->getCurrentAcademicYear();
+        $date = $currentYear->getEndDate();
+        date_add($date, date_interval_create_from_date_string('30 days'));
+        $nextYear = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByDate($date);
+        $nextYearCode = $nextYear->getCode(true);
+
+        return substr($barcode, 0, 3) . $nextYearCode . substr($barcode, 7);
     }
 
     /**

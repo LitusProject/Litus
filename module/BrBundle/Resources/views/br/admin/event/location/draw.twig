@@ -1,0 +1,357 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'br/admin/event/partials/eventNavigation.twig' %}
+    {% include 'br/admin/event/location/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div class="flashmessage success_message full_width location_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The location was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width location_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete a location.</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-9">
+            <canvas id="map" width="500px" height="600px"></canvas>
+        </div>
+    </div>
+    <div id="controller_action">
+        
+        <table class="manage full_width">
+            <tr>
+                <th width="100px">Number</th>
+                <th width="100px">X-pos</th>
+                <th width="100px">Y-pos</th>
+                <th width="150px">Orientation</th>
+                <th width="150px">Type</th>
+                <th>Company</th>
+                <th width="100px">Action</th>
+            </tr>
+            {% for location in paginator %}
+                <tr class="item item-{{ location.getId() }}">
+                    <td>{{ location.getNumber() }}</td>
+                    <td>{{ location.getX() }}</td>
+                    <td>{{ location.getY() }}</td>
+                    <td>{{ location.getOrientation() }}</td>
+                    <td>{{ location.getType() }}</td>
+                    <td>{{ location.getCompany().getName() }}</td>
+                    <td class="actions">
+                        {% if hasAccess('br_admin_event_location', 'edit') %}
+                            <a href="{{  url('br_admin_event_location', {"action": "edit", "event": event.getId(), "id": location.getId()}) }}" class="edit">Edit</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_event_location', 'delete') %}
+                            <a href="#" class="delete" data-id="{{  location.getId() }}" data-number="{{ location.getNumber() }}">Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% include 'admin/partials/paginationControl.twig' %}
+
+    </div>
+
+    <div class="modal fade" id="removeLocation" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete location
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following location: <b class="locationName"></b>!
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('.item .delete').click(openModal);
+
+            $('.nav-sidebar li a').click(function (e) {
+                /*if ($(e.target).is('input'))
+                    return;*/
+                e.preventDefault();
+                
+                $(this).find('input').prop('checked', !$(this).find('input').prop('checked'));
+
+                if ($(this).is('#toggleAll')) {
+                    if ($('#toggleAll').find('input').is(':checked')) {
+                        $('.nav-sidebar input').prop('checked', true);
+                    } else {
+                        $('.nav-sidebar input').prop('checked', false);
+                    }
+                } else {
+                    $('#toggleAll input').prop('checked', $('.nav-sidebar li input:not(checked)').length == 0);
+                }
+
+                drawCompanies();
+            });
+
+            $('#map').attr('width', Math.min($('#map').parent().width(), canvasWidth));
+            $('#map').attr('height', $('#map').attr('width')*canvasRatio);
+            $('#map').attr('style', "border: 1px solid black");
+            drawCompanies();
+        });
+
+        function openModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeLocation = $('#removeLocation');
+            removeLocation.find('.locationName').html($(this).data('number'));
+            var id = $this.data('id');
+            removeLocation.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('br_admin_event_location', {"action": "delete", "event": event.getId()})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.location_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeLocation.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeLocation.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.location_removed_error').removeClass('hide');
+            $('#removelocation').modal('hide');
+        }
+
+        var companies = [
+            
+            {% for location in locations %}
+                {% if location.getNumber() != 0 %}
+                    {'id': '{{ location.getCompany().getId() }}', 'name': '{{ location.getCompany().getName() }}', 'location': '{{ location.getNumber() }}', 'url': '{{ url("br_career_company", {"action": "view", "company": location.getCompany().getSlug()}) }}', 'masters': {{ interestedMasters[location.getCompany().getid()]|json_encode|raw }}} {% if not (loop.last) %},{% endif %}
+                {% endif %}
+            {% endfor %}
+
+        ];
+
+        var locations = {
+            {% for location in locations %}
+                {% if location.getNumber() != 0 %}
+                    {{ location.getNumber() }}: {'x': {{ location.getX() }}, 'y': {{ location.getY() }}, 'orientation': '{{ location.getOrientation() }}', 'type': '{{ location.getType() }}', 'width': '{{ location.getWidth() }}', 'height': '{{ location.getHeight() }}'}{% if not loop.last %},{% endif %}
+                {% endif %}
+            {% endfor %}
+        };
+        var locationWidth = 50;
+        var locationHeight = 38;
+        var canvasRatio = 650/950;
+        var canvasWidth = 950;
+        var borderColor = '#1c294b';
+        var locationBackground = '#e5e3e9';
+
+        $(document).ready(function () {
+            
+        });
+
+        $(window).resize(function () {
+            $('#map').attr('width', Math.min($('#map').parent().width(), canvasWidth));
+            $('#map').attr('height', $('#map').attr('width')*canvasRatio);
+
+            drawCompanies();
+        });
+
+        function drawCompanies() {
+            $('#map').clearCanvas().removeLayers();
+            var scale = Math.min($('#map').parent().width(), canvasWidth)/canvasWidth;
+            
+            var width = $('#map').attr('width');
+            var height = $('#map').attr('height');
+            var step = 50;
+            var currentX = 0;
+            var currentY = 0;
+
+
+            $('#map').drawRect({
+                layer: true,
+                name: 'door-1',
+                strokeStyle: borderColor,
+                fillStyle: borderColor,
+                x: scale*canvasWidth, y: 0.21*canvasWidth*scale,
+                width: 5*scale,
+                height: 70*scale,
+            }).drawRect({
+                layer: true,
+                name: 'door-2',
+                strokeStyle: borderColor,
+                fillStyle: borderColor,
+                x: scale*canvasWidth, y: 0.52*canvasWidth*scale,
+                width: 5*scale,
+                height: 70*scale,
+            }).drawText({
+                layer: true,
+                name: 'food_drinks',
+                fillStyle: borderColor,
+                x: scale*canvasWidth-7, y: canvasRatio*canvasWidth/2*scale,
+                fontSize: 16*scale,
+                fontFamily: 'Verdana, sans-serif',
+                text: "Drink and Foods",
+                rotate: -90,
+            });
+
+            while (currentX < width-step){
+                currentX += step;
+                $('#map').drawLine({
+                    layer: true,
+                    strokeStyle: locationBackground,
+                    x1: currentX, y1: 0,
+                    x2: currentX, y2: height
+                }).drawText({
+                    layer: true,
+                    fillStyle: borderColor,
+                    x: currentX + 10, y: 7,
+                    fontSize: 10*scale,
+                    fontFamily: 'Verdana, sans-serif',
+                    text: String(currentX),
+                });
+            }
+            while (currentY < height-step){
+                currentY += step;
+                $('#map').drawLine({
+                    layer: true,
+                    strokeStyle: locationBackground,
+                    x1: 0, y1: currentY,
+                    x2: width, y2: currentY
+                }).drawText({
+                    layer: true,
+                    fillStyle: borderColor,
+                    x: 10, y: currentY+7,
+                    fontSize: 10*scale,
+                    fontFamily: 'Verdana, sans-serif',
+                    text: String(currentY),
+                });
+            }
+
+            var selectedMasters = [];
+            $('.nav-sidebar li a').each(function () {
+                if ($(this).find('input').is(':checked')){
+                    selectedMasters.push($(this).data('master'));
+                }
+            });
+            var legend = $('#legend');
+            
+
+            $(companies).each(function () {
+                var location = locations[this.location];
+
+                var highlight = false;
+
+                if (selectedMasters.length == 0){
+                    highlight = true;
+                }
+
+                var highlightColor = '#fff';
+
+                var companyMasters = this.masters;
+                if (!!companyMasters) {
+                    $(selectedMasters).each(function () {
+                        if (!!companyMasters[this]) {
+                            if (String(companyMasters[this]) == "interested") {
+                                highlight = true;
+                                highlightColor = '#a29bb0';
+                            }
+                        }
+                    });
+                }
+
+                legend.find('.company-' + this.id).toggle(highlight);
+                if (location.type == "circle"){
+                    $('#map').drawEllipse({
+                        layer: true,
+                        name: 'company-' + this.location,
+                        strokeStyle: borderColor,
+                        fillStyle: highlightColor,
+                        x: location.x*scale, y: location.y*scale,
+                        width: (location.orientation == 'horizontal' ? location.width : location.height)*scale,
+                        height: (location.orientation == 'horizontal' ? location.height : location.width)*scale,
+                        data: {
+                            company: this
+                        },
+                        mouseover: showTooltip,
+                        mouseout: hideTooltip,
+                        click: showTooltip
+                    });
+                } else {
+                    $('#map').drawRect({
+                        layer: true,
+                        name: 'company-' + this.location,
+                        strokeStyle: borderColor,
+                        fillStyle: highlightColor,
+                        x: location.x*scale, y: location.y*scale,
+                        width: (location.orientation == 'horizontal' ? location.width : location.height)*scale,
+                        height: (location.orientation == 'horizontal' ? location.height : location.width)*scale,
+                        data: {
+                            company: this
+                        },
+                        mouseover: showTooltip,
+                        mouseout: hideTooltip,
+                        click: showTooltip
+                    });
+                }
+                
+                $('#map').drawText({
+                    layer: true,
+                    name: 'company-' + this.location + '-text',
+                    fillStyle: highlight ? borderColor : locationBackground,
+                    x: location.x*scale, y: location.y*scale,
+                    fontSize: 20*scale,
+                    fontFamily: 'Verdana, sans-serif',
+                    text: this.location,
+                    click: showTooltip
+                });
+            });
+        }
+
+        function showTooltip(layer) {
+            if (layer.name.indexOf('-text') > 0)
+                layer = $('#map').getLayer('company-' + layer.text);
+
+            $('#tooltip-trigger').remove();
+            $('.tooltip').remove();
+            var div = $('<a>', {'id': 'tooltip-trigger'});
+            div.css({
+                'display': 'bock',
+                'position': 'absolute',
+                'top': layer.y + $('#map').offset().top - (layer.height)/2,
+                'left': layer.x + $('#map').offset().left - (layer.width)/2,
+                'width': layer.width,
+                'height': layer.height,
+                'cursor': 'pointer'
+            }).attr('href', layer.data.company.url).data('layer', layer.name);
+            $('body').append(div);
+            div.tooltip({'html': true, 'placement': 'top', 'trigger': 'manual', 'show': true, 'title': layer.data.company.name}).tooltip('show');
+        }
+
+        function hideTooltip(layer) {
+            $('#tooltip-trigger').remove();
+            $('.tooltip').remove();
+        }
+    </script>
+{% endblock %}

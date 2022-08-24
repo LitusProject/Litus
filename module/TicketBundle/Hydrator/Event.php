@@ -13,7 +13,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
      */
     private static $stdKeys = array(
         'active', 'bookable_praesidium', 'bookable', 'number_of_tickets',
-        'limit_per_person', 'only_members', 'description'
+        'limit_per_person', 'only_members', 'description', 'qr_enabled',
     );
 
     protected function doHydrate(array $data, $object = null)
@@ -28,6 +28,11 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findOneById($data['event']);
 
+        if ($data['form'] !== "") {
+            $form = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\Form')
+                ->findOneById($data['form']);
+        }
         $closeDate = self::loadDateTime($data['bookings_close_date']);
 
         $priceMembers = 0;
@@ -43,7 +48,6 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                     $option = $this->getEntityManager()
                         ->getRepository('TicketBundle\Entity\Event\Option')
                         ->findOneById($optionData['option_id']);
-
                     $option->setName($optionData['option'])
                         ->setPriceMembers($optionData['price_members'])
                         ->setMaximum(intval($optionData['maximum']));
@@ -132,6 +136,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             }
         }
 
+
         $object->setActivity($calendarEvent)
             ->setBookingsCloseDate($closeDate)
             ->setTicketsGenerated($generateTickets)
@@ -140,7 +145,8 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             ->setAllowRemove($data['allow_remove'])
             ->setInvoiceIdBase($data['invoice_base_id'])
             ->setOnlinePayment($data['online_payment'])
-            ->setOrderIdBase($data['order_base_id']);
+            ->setOrderIdBase($data['order_base_id'])
+            ->setForm($form);
 
         return $this->stdHydrate($data, $object, self::$stdKeys);
     }
@@ -154,6 +160,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['event'] = $object->getActivity()->getId();
+        $data['form'] = $object->getForm() ? $object->getForm()->getId() : '';
         $data['bookings_close_date'] = $object->getBookingsCloseDate() ? $object->getBookingsCloseDate()->format('d/m/Y H:i') : '';
         $data['generate_tickets'] = $object->areTicketsGenerated();
         $data['allow_remove'] = $object->allowRemove();
@@ -174,6 +181,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                     'maximum'           => $option->getMaximum(),
                     'price_members'     => number_format($option->getPriceMembers() / 100, 2),
                     'price_non_members' => $object->isOnlyMembers() ? '' : number_format($option->getPriceNonMembers() / 100, 2),
+                    'membershipDiscount' => $option->getPriceNonMembers() > 0,
                 );
             }
         }

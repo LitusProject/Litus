@@ -60,6 +60,13 @@ class Academic extends \CommonBundle\Entity\User\Person
     private $isInternational;
 
     /**
+     * @var boolean Does not want to receive Corporate Relations mail
+     *
+     * @ORM\Column(name="no_mail", type="boolean", options={"default" = false}, nullable=true)
+     */
+    private $noMail;
+
+    /**
      * @var boolean Is user in a working group
      *
      * @ORM\Column(name="is_in_workinggroup", type="boolean", options={"default" = false}, nullable=true)
@@ -195,6 +202,25 @@ class Academic extends \CommonBundle\Entity\User\Person
     public function setIsInternational($isInternational)
     {
         $this->isInternational = $isInternational;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getNoMail()
+    {
+        return $this->noMail;
+    }
+
+    /**
+     * @param boolean $noMail
+     * @return self
+     */
+    public function setNoMail(bool $noMail)
+    {
+        $this->noMail = $noMail;
 
         return $this;
     }

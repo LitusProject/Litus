@@ -1,4 +1,22 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
 namespace BrBundle\Entity;
 
@@ -42,32 +60,61 @@ class Event
     private $title;
 
     /**
-     * @var string The description for this event for students
+     * @var string The description for this event
      *
      * @ORM\Column(name="description_for_students", type="text", nullable=true)
      */
     private $descriptionForStudents;
 
     /**
-     * @var string The description for this event for companies
+     * @var string The description for this event
      *
      * @ORM\Column(name="description_for_companies", type="text", nullable=true)
      */
     private $descriptionForCompanies;
 
+    
     /**
-     * @var DateTime The start date and time of this reservation.
+     * @var string The description for this event for companies
+     *
+     * @ORM\Column(name="view_information_nl", type="text", nullable=true)
+     */
+    private $viewInformationNL;
+
+    /**
+     * @var string The description for this event for companies
+     *
+     * @ORM\Column(name="view_information_en", type="text", nullable=true)
+     */
+    private $viewInformationEN;
+
+    /**
+     * @var DateTime The start date and time of this event.
      *
      * @ORM\Column(name="start_date", type="datetime")
      */
     private $startDate;
 
     /**
-     * @var DateTime The end date and time of this reservation.
+     * @var DateTime The end date and time of this event.
      *
      * @ORM\Column(name="end_date", type="datetime")
      */
     private $endDate;
+
+    /**
+     * @var DateTime The start date and time of the subscriptions.
+     *
+     * @ORM\Column(name="subscription_date", type="datetime", nullable=true)
+     */
+    private $subscriptionDate;
+
+    /**
+     * @var DateTime The start date and time of the map view. After this time the map is displayed
+     *
+     * @ORM\Column(name="mapview_date", type="datetime", nullable=true)
+     */
+    private $mapviewDate;
 
     /**
      * @var integer The number of companies that will attend
@@ -112,6 +159,28 @@ class Event
      *
      */
     private $audience;
+
+    /**
+     * @var string Food on the event
+     *
+     * @ORM\Column(name="food", type="text", nullable=true)
+     *
+     */
+    private $food;
+
+    /**
+     * @var string The file name of the company guide
+     *
+     * @ORM\Column(name="file_name", type="string", unique=true, nullable=true)
+     */
+    private $guide;
+
+    /**
+     * @var string The file name of the busschema
+     *
+     * @ORM\Column(name="busschema", type="string", unique=true, nullable=true)
+     */
+    private $busschema;
 
     /**
      * @param Person $creator
@@ -189,6 +258,62 @@ class Event
     /**
      * @return DateTime
      */
+    public function getSubscriptionDate()
+    {
+        return $this->subscriptionDate;
+    }
+
+    /**
+     * @param  DateTime|null $subscriptionDate
+     * @return self
+     */
+    public function setSubscriptionDate(DateTime $subscriptionDate = null)
+    {
+        $this->subscriptionDate = $subscriptionDate;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function canSubscribe()
+    {
+        $now = new DateTime();
+        return ($this->subscriptionDate && $now >= $this->subscriptionDate);
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getMapviewDate()
+    {
+        return $this->mapviewDate;
+    }
+
+    /**
+     * @param  DateTime|null $mapviewDate
+     * @return self
+     */
+    public function setMapviewDate(DateTime $mapviewDate = null)
+    {
+        $this->mapviewDate = $mapviewDate;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function canViewMap()
+    {
+        $now = new DateTime();
+        return ($this->mapviewDate && $now >= $this->mapviewDate);
+    }
+
+    /**
+     * @return DateTime
+     */
     public function getEndDate()
     {
         return $this->endDate;
@@ -224,6 +349,51 @@ class Event
     public function setDescriptionForCompanies(string $descriptionForCompanies)
     {
         $this->descriptionForCompanies = $descriptionForCompanies;
+    }
+
+    /**
+     * @return string
+     */
+    public function getViewInformationNL()
+    {
+        return $this->viewInformationNL;
+    }
+
+    /**
+     * @param string $viewInformationNL
+     */
+    public function setViewInformationNL(string $viewInformationNL)
+    {
+        $this->viewInformationNL = $viewInformationNL;
+    }
+
+    /**
+     * @return string
+     */
+    public function getViewInformationEN()
+    {
+        return $this->viewInformationEN;
+    }
+
+    /**
+     * @param string $viewInformationNL
+     */
+    public function setViewInformationEN(string $viewInformationEN)
+    {
+        $this->viewInformationEN = $viewInformationEN;
+    }
+
+    /**
+     * @param string $lang
+     * @return string
+     */
+    public function getViewInformation(string $lang)
+    {
+        if ($lang == 'en' && $this->viewInformationEN) {
+            return $this->viewInformationEN;
+        } else {
+            return $this->viewInformationNL;
+        }
     }
 
     /**
@@ -293,32 +463,72 @@ class Event
     /**
      * @return string
      */
-    public function getLocation()
+    public function setDescription($description)
     {
-        return $this->location;
-    }
+        $this->description = $description;
 
-    /**
-     * @param string $location
-     */
-    public function setLocation(string $location)
-    {
-        $this->location = $location;
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getAudience()
+    public function getDescription()
     {
-        return $this->audience;
+        return $this->description;
     }
 
     /**
-     * @param string $audience
+     * @return array $food
      */
-    public function setAudience(string $audience)
+    public function getFood()
     {
-        $this->audience = $audience;
+        return unserialize($this->food);
+    }
+
+    /**
+     * @param array $food
+     * @return self
+     */
+    public function setFood($food)
+    {
+        $this->food = serialize($food);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGuide()
+    {
+        return $this->guide;
+    }
+
+    /**
+     * @param string $guide
+     * @return self
+     */
+    public function setGuide($guide)
+    {
+        $this->guide = $guide;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBusschema()
+    {
+        return $this->busschema;
+    }
+
+    /**
+     * @param string $busschema
+     * @return self
+     */
+    public function setBusschema($busschema)
+    {
+        $this->busschema = $busschema;
+        return $this;
     }
 }

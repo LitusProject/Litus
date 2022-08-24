@@ -1,4 +1,22 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
 namespace BrBundle\Form\Admin\Event;
 
@@ -40,9 +58,45 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'       => 'textarea',
+                'name'       => 'description_for_students',
+                'label'      => 'Description for students',
+                'attributes' => array(
+                    'id' => 'description_for_companies',
+                ),
+                'options'    => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'textarea',
+                'name'       => 'description_for_companies',
+                'label'      => 'Description for companies',
+                'attributes' => array(
+                    'id' => 'description_for_companies',
+                ),
+                'options'    => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
                 'type'    => 'textarea',
-                'name'    => 'description_for_students',
-                'label'   => 'Description For Students',
+                'name'    => 'view_information_nl',
+                'label'   => 'Information displayed on the page in NL',
                 'options' => array(
                     'input' => array(
                         'filters' => array(
@@ -56,8 +110,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(
             array(
                 'type'    => 'textarea',
-                'name'    => 'description_for_companies',
-                'label'   => 'Description For Companies',
+                'name'    => 'view_information_en',
+                'label'   => 'Information displayed on the page in EN',
                 'options' => array(
                     'input' => array(
                         'filters' => array(
@@ -113,9 +167,49 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'    => 'datetime',
+                'name'    => 'subscription_date',
+                'label'   => 'Subscription opening date',
+                'options' => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name'    => 'Date',
+                                'options' => array(
+                                    'format' => 'd/m/Y H:i',
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'    => 'datetime',
+                'name'    => 'mapview_date',
+                'label'   => 'Map viewing date',
+                'options' => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name'    => 'Date',
+                                'options' => array(
+                                    'format' => 'd/m/Y H:i',
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
                 'type'    => 'text',
-                'name'    => 'nb_companies',
-                'label'   => 'Amount of Companies',
+                'name'    => 'nb_students',
+                'label'   => 'Amount of Students',
                 'options' => array(
                     'input' => array(
                         'filters' => array(
@@ -132,8 +226,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(
             array(
                 'type'    => 'text',
-                'name'    => 'nb_students',
-                'label'   => 'Amount of Students',
+                'name'    => 'nb_companies',
+                'label'   => 'Amount of Companies',
                 'options' => array(
                     'input' => array(
                         'filters' => array(
@@ -176,6 +270,25 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 ),
             )
         );
+
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'food',
+                'label'      => 'Food options',
+                'attributes' => array(
+                    'data-help' => 'The options comma separated.',
+                ),
+                'options'    => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
 
         $this->add(
             array(

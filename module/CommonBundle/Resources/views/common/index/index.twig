@@ -16,7 +16,7 @@
     {% endif %}
 
 
-    {#Still needs verification#}
+    {# Still needs verification #}
     {# WOULD DITCH THIS #}
     {# {% if bookings is not null %}
         <div class="alert alert-success">
@@ -43,69 +43,44 @@
     <div class="vtk-home-header">
         <div class="vtk-home-image">
             <div class="container" style="text-align: center">
-                <h1 class="vtk-hometitle">{{ translate('welcome to')}} VTK</h1>
+                <h1 class="vtk-hometitle">{{ translate('welcome to') }} VTK</h1>
                 <div class="vtk-home-titleDecoration"></div>
-                <h2 class="vtk-home-subtitle" style="color: white; font-weight: 500">Vlaamse Technische Kring - partner in crime since 1920</h2>
+                <h2 class="vtk-home-subtitle" style="color: white; font-weight: 500">Vlaamse Technische Kring - partner
+                    in crime since 1920</h2>
                 <div style="height: 100px"></div>
             </div>
         </div>
     </div>
 
-    {% if calendarItems|length != 0 %} 
-    <div class="container calendarHolder">
-            <div class="calendar-grid" style="margin-bottom: 40px" >
-                {% for day in calendarItems | slice(0, 3)%}
-                    {% for event in day.events | slice(0, 1)%}
-                        <div style="position: relative" class="calendar-item">
-                            {# TO DO vervangen door echte calendar images #}
-                            <div class="DELETE-BGIMAGE" style="background-image:url({{ url('calendar',{'action':'poster', 'name': event.getPoster()}) }})"></div>
-{#                            <div class="DELETE-BGIMAGE"></div>#}
-{#                            <div class="DELETE-BGIMAGE" style="background-image: url({{ event.getPoster() }})"></div>#}
-                            <div class="calendar-item-tekst">
-                                <h4>{{event.getTitle(language)}} | {{ dateLocalized(day.date, 'LLL')|capitalize }} {{ dateLocalized(day.date, 'd') }} </h4>
-                                <p class="calendar-emptyfill">{{event.getSummary(150, language)}}</p>
-                                <div class="vtk-flex-horizontal" style="position: absolute; bottom: -10px">
-                                    <a class="myVtkButton" href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Read More') }}</a>
-                                    {% if event.hasTicket(entityManager) == true %}
-                                        <a class="myVtkButton" href="{{ url('ticket', {'id': event.getTicket(entityManager).getId()}) }}">{{ translate('Buy Tickets') }}</a>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                {% endfor %}
-            </div>
-            <a class="button blue unfilled" href="{{ url('calendar') }}">{{ translate('View the whole Calendar Here') }} →</a>
-        </div>
-    </div>
-    {% endif %}
-    
     {% if newsItems|length > 0 or cudi.openingHours|length > 0 %}
-    <div class="vtk-home-technical">
-        <div style="padding: 50px 15px" class="container">
-            <div class="row">
-                {% if newsItems|length > 0 %}
-                    <div class="col-md-6">
-                        <h2>{{ translate('Latest news') }}</h2>
-                        {% for item in newsItems %}
-                            <div style="background-color: white; padding: 20px; margin-bottom: 20px">
-                                <h4>{{ item.getTitle(language) }} <small>&mdash; {{ dateLocalized(item.getCreationTime(), 'd MMMM') }}</small></h4>
+        <div class="vtk-home-technical">
+            <div style="padding: 50px 15px" class="container">
+                <div class="row">
+                    {% if newsItems|length > 0 %}
+                        <div class="col-md-6">
+                            <h2>{{ translate('Latest news') }}</h2>
+                            {% for item in newsItems %}
+                                <div style="background-color: white; padding: 20px; margin-bottom: 20px">
+                                    <h4>{{ item.getTitle(language) }}
+                                        <small>&mdash; {{ dateLocalized(item.getCreationTime(), 'd MMMM') }}</small>
+                                    </h4>
 
-                                <div>
-                                    <p>{{ hideEmail(item.getSummary(300, language)) | replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}</p>
-                                    <div style="height: 10px"></div>
-                                    <a class="button blue unfilled" href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('Read More') }}</a>
+                                    <div>
+                                        <p>{{ hideEmail(item.getSummary(300, language)) | replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}</p>
+                                        <div style="height: 10px"></div>
+                                        <a class="button blue unfilled"
+                                           href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('Read More') }}</a>
+                                    </div>
                                 </div>
-                            </div>
-                        {# {% else %}
+                                {# {% else %}
                             <div class="alert alert-warning">
                                 {{ translate('No news items were posted recently.') }}
                             </div> #}
-                        {% endfor %}
-                    </div>
-                {% endif %}
-                {# TO DO CUDI STUFF GOED ZETTEN #}
-                {# {% if cudi.currentOpeningHour %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {# TO DO CUDI STUFF GOED ZETTEN #}
+                    {# {% if cudi.currentOpeningHour %}
                     <h3>{{ translate('Open Session') }}</h3>
                     {% autoescape false %}
                         <p>
@@ -141,25 +116,91 @@
                         <a href="{{ url('cudi_booking') }}" class="btn btn-sm btn-primary">{{ translate('Reservations') }}</a>
                     </p>
                 {% endif %} #}
-                {% if cudi.openingHours|length > 0 %}
-                    <div class="col-md-6"><h2>{{ translate('Cudi - Opening Hours') }}</h2>
-                        {% for opening in cudi.openingHours %}
-                            <div><p style="display:inline-block">{{ dateLocalized(opening.getStart(), 'EEEE (d/M)')|capitalize }}</p><p style="float:right">{{ opening.getStart().format('H:i') }}-{{ opening.getEnd().format('H:i') }}</p></div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            </div>
-            <div style="height: 20px;"></div>
-            <div class="row">
-                <div class="col-md-6"><h2>{{ translate('Theokot - Opening Hours') }}</h2>
-                    <div>
-                        <p style="display:inline-block">{{ shop.openingHours }}</p>
+                    {% if cudi.openingHours|length > 0 %}
+                        <div class="col-md-6"><h2>{{ translate('Cudi - Opening Hours') }}</h2>
+                            <b>{{ translate('No Timeslot') }} </b>
+                            {% for opening in cudi.openingHours %}
+                                <div>
+                                    <p style="display:inline-block">{{ dateLocalized(opening.getStart(), 'EEEE (d/M)')|capitalize }}</p>
+                                    <p style="float:right">{{ opening.getStart().format('H:i') }}
+                                        -{{ opening.getEnd().format('H:i') }}</p></div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div style="height: 20px;"></div>
+                <div class="row">
+                    <div class="col-md-6"><h2>{{ translate('Theokot - Opening Hours') }}</h2>
+                        <div>
+                            <p style="display:inline-block">{{ shop.openingHours }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     {% endif %}
+
+    {% if calendarItems|length != 0 %}
+        <div class="container calendarHolder">
+            <div class="calendar-grid" style="margin-bottom: 40px">
+                {% for event in calendarItems | slice(0, 3) %}
+                    <div style="position: relative" class="calendar-item">
+                        <div class="DELETE-BGIMAGE"
+                             style="background-image:url({{ url('calendar',{'action':'poster', 'name': event.getPoster()}) }})"></div>
+                        <div class="calendar-item-tekst">
+                            <h4>{{ event.getTitle(language) }}
+                                | {{ dateLocalized(event.getStartDate(), 'LLL')|capitalize }} {{ dateLocalized(event.getStartDate(), 'd') }} </h4>
+                            <p class="calendar-emptyfill">{{ event.getSummary(150, language) }}</p>
+                            <div class="vtk-flex-horizontal" style="position: absolute; bottom: -10px">
+                                <a class="myVtkButton"
+                                   href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Read More') }}</a>
+                                {% if event.hasTicket(entityManager) == true %}
+                                    <a class="myVtkButton"
+                                       href="{{ url('ticket', {'id': event.getTicket(entityManager).getId()}) }}">{{ translate('Buy Tickets') }}</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="calendar-grid" style="margin-bottom: 40px">
+                {% for event in calendarItems | slice(3, 3) %}
+                    <div style="position: relative" class="calendar-item">
+                        <div class="DELETE-BGIMAGE"
+                             style="background-image:url({{ url('calendar',{'action':'poster', 'name': event.getPoster()}) }})"></div>
+                        <div class="calendar-item-tekst">
+                            <h4>{{ event.getTitle(language) }}
+                                | {{ dateLocalized(event.getStartDate(), 'LLL')|capitalize }} {{ dateLocalized(event.getStartDate(), 'd') }} </h4>
+                            <p class="calendar-emptyfill">{{ event.getSummary(150, language) }}</p>
+                            <div class="vtk-flex-horizontal" style="position: absolute; bottom: -10px">
+                                <a class="myVtkButton"
+                                   href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Read More') }}</a>
+                                {% if event.hasTicket(entityManager) == true %}
+                                    <a class="myVtkButton"
+                                       href="{{ url('ticket', {'id': event.getTicket(entityManager).getId()}) }}">{{ translate('Buy Tickets') }}</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <a class="button blue unfilled" href="{{ url('calendar') }}">{{ translate('View the whole Calendar Here') }}
+                →</a>
+        </div>
+        </div>
+    {% endif %}
+
+    <div class="container">
+        <div style="display: flex; flex-direction:row; flex-wrap: wrap;">
+            {% for video in videos %}
+                <div style="margin: 0 50px 50px 0">
+                    <h3>{{ video.getTitle() }}</h3>
+                    <iframe src="{{ video.getUrl() }}" width="464px" height="261px" style="border:0"
+                            allowfullscreen></iframe>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 
     <div class="vtk-home-br">
         <div class="container">
@@ -167,8 +208,10 @@
             <p style="max-width: 400px; color:white"></p>
             <div class="spacer10"></div>
             <div>
-                <a class="button white unfilled" href="{{ url("br_career_index", {"language": language.getAbbrev()}) }}">{{ translate('Students') }}</a>
-                <a class="button white unfilled" href="{{ url("br_corporate_index", {"language": language.getAbbrev()}) }}">{{ translate('Companies') }}</a>
+                <a class="button white unfilled"
+                   href="{{ url("br_career_index", {"language": language.getAbbrev()}) }}">{{ translate('Students') }}</a>
+                <a class="button white unfilled"
+                   href="{{ url("br_corporate_index", {"language": language.getAbbrev()}) }}">{{ translate('Companies') }}</a>
             </div>
         </div>
     </div>
@@ -179,18 +222,21 @@
             {% if 'category' == item.type %}
                 <div class="home-menu-category">
                     <h3 style="margin-bottom: 22px" href="#">
-                        {{ item.name }} 
+                        {{ item.name }}
                     </h3>
                     {% for categoryItem in item.items | slice(0, 5) %}
                         {% if 'page' == categoryItem.type %}
                             {% if hasAccess('page', 'view') %}
-                                <div class="menulink"><a title=categoryItem.title href="{{ url('page', {"name": categoryItem.name}) }}">{{ categoryItem.title }}</a></div>
+                                <div class="menulink"><a title=categoryItem.title
+                                                         href="{{ url('page', {"name": categoryItem.name}) }}">{{ categoryItem.title }}</a>
+                                </div>
                             {% endif %}
                         {% endif %}
 
                         {% if 'link' == categoryItem.type %}
                             {% if hasAccess('page_link', 'view') %}
-                                <div class="menulink"><a title=categoryItem.title href="{{ categoryItem.url }}">{{ categoryItem.name }}</a></div>
+                                <div class="menulink"><a title=categoryItem.title
+                                                         href="{{ categoryItem.url }}">{{ categoryItem.name }}</a></div>
                             {% endif %}
                         {% endif %}
                     {% endfor %}

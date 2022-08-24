@@ -130,7 +130,7 @@
                         </fo:table-cell>
                         <fo:table-cell>
                             <xsl:if test="string-length(@percentage_bach)!=0">
-                                <fo:block><xsl:value-of select="@percentage_master"/>%</fo:block>
+                                <fo:block><xsl:value-of select="@percentage_master"/></fo:block>
                             </xsl:if>
                         </fo:table-cell>
                     </fo:table-row>
@@ -144,7 +144,7 @@
                         </fo:table-cell>
                         <fo:table-cell>
                             <xsl:if test="string-length(@percentage_bach)!=0">
-                                <fo:block><xsl:value-of select="@percentage_bach"/>%</fo:block>
+                                <fo:block><xsl:value-of select="@percentage_bach"/></fo:block>
                             </xsl:if>
                         </fo:table-cell>
                     </fo:table-row>

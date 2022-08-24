@@ -102,7 +102,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
         $events = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
-            ->findAllBetween($first, $last);
+            ->findAllBetweenAndNotHidden($first, $last);
 
         $dayFormatter = new IntlDateFormatter(
             $this->getTranslator()->getLocale(),

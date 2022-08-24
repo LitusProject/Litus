@@ -30,7 +30,7 @@ return array(
     'City'                                                                                                    => 'City',
     'Country'                                                                                                 => 'Country',
     'Internet'                                                                                                => 'Internet',
-    'University E-mail'                                                                                       => 'University E-mail',
+    'University EOther-mail'                                                                                       => 'University E-mail',
     'Personal E-mail'                                                                                         => 'Personal E-mail',
     'I want to receive e-mail at my personal e-mail address'                                                  => 'I want to receive e-mail at my personal e-mail address',
     'Student Organization'                                                                                    => 'Student Organization',
@@ -84,4 +84,15 @@ return array(
 
     'Reservation'                                                                                             => 'Reservation',
     'Order sandwiches and snacks.'                                                                            => 'Order sandwiches and snacks.',
+
+    'University'                                                                                              => 'University',
+    'Other university (if applicable)'                                                                        => 'Other university (if applicable)',
+    'Study'                                                                                                   => 'Study',
+    'Other study (if applicable)'                                                                             => 'Other study (if applicable)',
+    'Specialization'                                                                                          => 'Specialization',
+    'Year of study'                                                                                           => 'Year of study',
+    'Food during event'                                                                                       => 'Food during event',
+    'I will participate in the network reception.'                                                            => 'I will participate in the network reception',
+    'I consent that my personal information can be used within this event for necessary purposes.'            => 'I consent that my personal information can be used within this event for necessary purposes',
+    'Register'                                                                                                => 'Register'
 );

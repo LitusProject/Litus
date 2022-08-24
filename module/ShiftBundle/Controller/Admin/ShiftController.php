@@ -4,6 +4,7 @@ namespace ShiftBundle\Controller\Admin;
 
 use CalendarBundle\Entity\Node\Event;
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use DateInterval;
 use DateTime;
@@ -26,12 +27,12 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $this->getEntityManager()
                 ->getRepository('ShiftBundle\Entity\Shift')
                 ->findAllActiveQuery(),
-            $this->getParam('id')
+            $this->getParam('page')
         );
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -43,16 +44,16 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('ShiftBundle\Entity\Shift')
-                ->findAllActiveByEventQuery($event),
+                ->findAllByEventQuery($event),
             $this->getParam('page')
         );
 
         $shifts = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
-            ->findAllActiveByEventQuery($event)->getResult();
+            ->findAllByEventQuery($event)->getResult();
 
         $shifters = array();
-        foreach ($shifts as $shift){
+        foreach ($shifts as $shift) {
             $shifters['Volunteers'] += $shift->countVolunteers();
             $shifters['Responsibles'] += $shift->countResponsibles();
             $shifters['NbVolunteers'] += $shift->getNbVolunteers();
@@ -61,10 +62,10 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'event'     => $event,
-                'shifters'  => $shifters,
+                'event'             => $event,
+                'shifters'          => $shifters,
             )
         );
     }
@@ -80,7 +81,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -153,6 +154,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
             $fileName = $fileData['file']['tmp_name'];
 
+            $shiftArray = array();
+
             $open = fopen($fileName, 'r');
             if ($open !== false) {
                 $data = fgetcsv($open, 1000, ',');
@@ -195,6 +198,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $count = 0;
                 foreach ($shiftArray as $key => $data) {
+                    if (in_array(null, $data)) {
+                        continue;
+                    }
                     if ($key == '0') {
                         continue;
                     }
@@ -240,13 +246,6 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function templateAction()
     {
-        $rewards_enabled = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('shift.rewards_enabled');
-        $points_enabled = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('shift.points_enabled');
-
         $file = new CsvFile();
         $heading = array(
             'start_date',
@@ -382,8 +381,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'event' => $shift->getEvent() ?? null,
-                'form' => $form,
-                'em' => $this->getEntityManager(),
+                'form'  => $form,
+                'em'    => $this->getEntityManager(),
             )
         );
     }

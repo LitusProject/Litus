@@ -10,6 +10,7 @@
       <div style="height: 30px"></div>
 
        {% for event in events %}
+       <a href="{{ url('br_career_event',{ 'action': 'view', 'id': event.getId() }) }}">
            <div class="br-eventHolder" >
                <div class="br-eventTextHolder">
                    <h3 class="br-eventTitle">{{ event.getTitle() }}</h3>
@@ -65,6 +66,8 @@
                <div class="br-eventImageHolder">
                </div>
            </div>
+        </a>
+
        {% endfor %}
 
       <div style="height: 100px"></div>

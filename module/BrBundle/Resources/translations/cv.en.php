@@ -1,4 +1,22 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
 return array(
     'CV Book'                                                                                                                                                                                                                                                                                     => 'CV Book',
@@ -9,7 +27,6 @@ return array(
     'Email'                                                                                                                                                                                                                                                                                       => 'Email',
     'Profile Picture'                                                                                                                                                                                                                                                                             => 'Profile Picture',
     'Please update your account data and profile picture if necessary via vtk.be/en/account/edit/ and vtk.be/en/account/. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected automatically.'                => 'Please update your account data and profile picture if necessary via <a href="https://vtk.be/en/account/edit/" target="_blank">vtk.be/en/account/edit</a> or <a href="https://vtk.be/nl/account/" target="_blank">vtk.be/en/account/</a>. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected automatically.',
-    'I grant permission to use my personal information in the CV book, which will be made available in an online and in a paperback version to the companies that ordered a CV book. These companies are only allowed to use this data for communication for the purpose of jobs or internships.' => 'I grant permission to use my personal information in the CV book, which will be made available in an online and in a paperback version to the companies that ordered a CV book. These companies are only allowed to use this data for communication for the purpose of jobs or internships. In general, this data will stay available to VTK for 5 years, before it is destroyed. Your data can be deleted at any moment through <a href="https://vtk.be/en/cv">vtk.be/en/cv</a>. Data can only be deleted from the online version of CV book. Data is protected by the privacy policy of VTK.',
 
     'Education'                                                                                                                                                                                                                                                                                   => 'Education',
     'Primary Degree'                                                                                                                                                                                                                                                                              => 'Specialization',
@@ -58,14 +75,12 @@ return array(
     'Your photo'                                                                                                                                                                                                                                                                                  => 'Your photo',
     'Your birthday'                                                                                                                                                                                                                                                                               => 'Your birthday',
     'To add your information to the CV Book, you must complete these. Please click <a href=\'{{editurl}}\'>here</a> to edit your account.'                                                                                                                                                        => 'To add your information to the CV Book, you must complete these. Please click <a href=\'{{editurl}}\'>here</a> to edit your account.',
-
     'Prior Degree (e.g. Bachelor in Engineering, Industrial Engineering, ...)'                                                                                                                                                                                                                    => 'Previous Degree (e.g. Bachelor in Engineering, Industrial Engineering, ...)',
     'Grade for the Prior Degree (e.g. 65.48)'                                                                                                                                                                                                                                                     => 'Grade for the Previous Degree (e.g. 65.48)',
     '(Provisional) Grade for the Current Degree (e.g. 65.48)'                                                                                                                                                                                                                                     => '(Provisional) Grade for the Current Degree (e.g. 65.48)',
     'Extra Information (Year Abroad, Born Outside Belgium, ...)'                                                                                                                                                                                                                                  => 'Extra Information (Year Abroad, Born Outside Belgium, ...)',
     'Please update your account data if necessary. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected automatically.'                                                                                       => 'Please update your account data if necessary. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected automatically.',
-    'You are advised to use your mother tongue for your CV.'                                                                                                                                                                                                                                      => 'You are advised to use your mother tongue for your CV. You can select your language from the menu.',
-
+    'You are advised to use your mother tongue for your CV.'                                                                                                                                                                                                                                      => 'You are advised to fill in your CV in English.',
     'Additional Diplomas'                                                                                                                                                                                                                                                                         => 'Additional Diplomas',
     'Experiences'                                                                                                                                                                                                                                                                                 => 'Experiences',
     'Additional Info'                                                                                                                                                                                                                                                                             => 'Additional Info',
@@ -101,4 +116,6 @@ return array(
 
     'Delete CV'                                                                                                                                                                                                                                                                                   => 'Delete CV',
     'Your curriculum vitae has been removed.'                                                                                                                                                                                                                                                     => 'Your curriculum vitae has been removed.',
+
+    'I grant permission to use my personal information in the CV book, which will be made available in an online and in a paperback version to the companies that ordered a CV book. These companies are only allowed to use this data for communication for the purpose of jobs or internships.' => 'I grant permission to use my personal information in the CV book, which will be made available in an online and in a paperback version to the companies that ordered a CV book. These companies are only allowed to use this data for communication for the purpose of jobs or internships.',
 );

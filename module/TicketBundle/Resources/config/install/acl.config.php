@@ -6,10 +6,12 @@ return array(
             'add', 'delete', 'edit', 'manage', 'old', 'clean'
         ),
         'ticket_admin_ticket' => array(
-            'export', 'manage', 'print', 'search',
+            'export', 'manage', 'print', 'search', 'csv',
         ),
         'ticket_admin_consumptions' => array(
-            'add', 'delete', 'edit', 'manage', 'search', 'consume',
+            'add', 'delete', 'edit', 'manage', 'search', 'consume', 'transactions',
+            'total-transactions', 'delete_all', 'csv', 'template', 'search_transaction',
+            'export',
         ),
         'ticket_sale_index' => array(
             'sale', 'validate',
@@ -24,7 +26,7 @@ return array(
             'consume',
         ),
         'ticket' => array(
-            'delete', 'event', 'pay', 'payed'
+            'delete', 'event', 'pay', 'payed', 'pay-response', 'scanQr', 'qr'
         ),
     ),
 );

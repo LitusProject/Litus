@@ -315,6 +315,12 @@
                 }
             });
 
+            $('.btn-booking').mouseup(function() {
+                setTimeout(function () {
+                    $('.btn-booking').prop('disabled', true);
+                }, 20);
+            });
+
             {% if hasAccess('cudi_booking', 'keepUpdated') %}
                 $('#keepUpdated').click(function () {
                     $.ajax({

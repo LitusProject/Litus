@@ -185,7 +185,8 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         foreach ($shift->getVolunteers() as $volunteer) {
             if ($volunteer->getPerson() == $person) {
                 $volunteer->setPayed(
-                    $this->getParam('payed') == 'true'
+                    $this->getParam('payed') == 'true',
+                    $this->getParam('payed') == 'true' ? $this->getCurrentAcademicYear() : null
                 );
             }
         }
@@ -389,6 +390,36 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function totalPayedAction()
+    {
+        $academicYear = $this->getAcademicYear();
+
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        $shifts = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findAllPayedByAcademicYear($academicYear);
+
+        $total = 0;
+        foreach ($shifts as $shift) {
+            foreach ($shift->getVolunteers() as $volunteer) {
+                if ($volunteer->isPayed() && $volunteer->getPayedYear() == $academicYear) {
+                    $total += $shift->getReward();
+                }
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'activeAcademicYear' => $academicYear,
+                'academicYears'      => $academicYears,
+                'total'              => $total
+            )
+        );
+    }
+
     public function payoutAction()
     {
         $this->initAjax();
@@ -401,14 +432,19 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel();
         }
 
+        $date = null;
+        if ($this->getParam('academicyear') !== null) {
+            $date = $this->getAcademicYear();
+        }
+
         $shifts = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
-            ->findAllByPersonAsVolunteer($person);
+            ->findAllByPersonAsVolunteer($person, $date);
 
         foreach ($shifts as $shift) {
             foreach ($shift->getVolunteers() as $volunteer) {
                 if ($volunteer->getPerson() == $person) {
-                    $volunteer->setPayed(true);
+                    $volunteer->setPayed(true, $this->getCurrentAcademicYear());
                 }
             }
         }

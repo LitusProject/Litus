@@ -177,19 +177,22 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             }
         }
 
+        $currentAcademicYear = $this->getCurrentAcademicYear();
+
         return new ViewModel(
             array(
-                'resultString'     => $resultString,
-                'eventSearchForm'  => $eventSearchForm,
-                'unitSearchForm'   => $unitSearchForm,
-                'dateSearchForm'   => $dateSearchForm,
-                'myShifts'         => $myShifts,
-                'token'            => $token,
-                'searchResults'    => $searchResults,
-                'entityManager'    => $this->getEntityManager(),
-                'hasReadInsurance' => $hasReadInsurance,
-                'insuranceText'    => $insuranceText[$this->getLanguage()->getAbbrev()],
-                'insuranceEnabled' => $insuranceEnabled,
+                'resultString'        => $resultString,
+                'eventSearchForm'     => $eventSearchForm,
+                'unitSearchForm'      => $unitSearchForm,
+                'dateSearchForm'      => $dateSearchForm,
+                'myShifts'            => $myShifts,
+                'token'               => $token,
+                'searchResults'       => $searchResults,
+                'entityManager'       => $this->getEntityManager(),
+                'currentAcademicYear' => $currentAcademicYear,
+                'hasReadInsurance'    => $hasReadInsurance,
+                'insuranceText'       => $insuranceText[$this->getLanguage()->getAbbrev()],
+                'insuranceEnabled'    => $insuranceEnabled,
             )
         );
     }
@@ -347,15 +350,42 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $payed = true;
         }
 
-        $shift->addVolunteer(
-            $this->getEntityManager(),
-            new Volunteer(
-                $person,
-                $payed
-            )
-        );
+        $volunteers = $shift->getVolunteers();
+        $persons = array();
+        foreach ($volunteers as $vol) {
+            $persons[] = $vol->getPerson()->getId();
+        }
 
-        $this->getEntityManager()->flush();
+        if (!in_array($person->getId(), $persons)) {
+            $shift->addVolunteer(
+                $this->getEntityManager(),
+                new Volunteer(
+                    $person,
+                    $payed
+                )
+            );
+            $this->getEntityManager()->flush(); 
+        }
+
+        $shifter = $shift->getVolunteers();
+        $count = 0;
+        $personen = array();
+        foreach ($shifter as $vol) {
+            $personen[] = $vol->getPerson()->getId();
+        }
+
+        foreach ($personen as $per) {
+            if ($per == $person->getId()) {
+                $count++;
+            }
+        }
+        while ($count > 1) {
+            $remove = $this->getShiftEntity()->removePerson($person);
+            if ($remove !== null) {
+                $this->getEntityManager()->remove($remove);
+            }
+            $count--;
+        }
 
         return new ViewModel(
             array(

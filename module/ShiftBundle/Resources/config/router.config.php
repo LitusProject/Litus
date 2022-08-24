@@ -39,7 +39,7 @@ return array(
         'shift_admin_shift_counter' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/shift/counter[/:action[/:id[/:person[/:payed]]]][/:academicyear][/:field/:string][/]',
+                'route'       => '/admin/shift/counter[/:action[/:id[/:person[/:payed]]]][/academicyear/:academicyear][/:field/:string][/]',
                 'constraints' => array(
                     'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'           => '[0-9]*',

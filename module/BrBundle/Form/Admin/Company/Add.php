@@ -1,4 +1,22 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
 namespace BrBundle\Form\Admin\Company;
 
@@ -51,7 +69,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type'       => 'select',
                 'name'       => 'sector',
                 'label'      => 'Sector',
-                'required'   => true,
+                'required'   => false,
                 'attributes' => array(
                     'options' => Company::POSSIBLE_SECTORS,
                 ),
@@ -63,11 +81,31 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type'     => 'text',
                 'name'     => 'vat_number',
                 'label'    => 'VAT Number',
-                'required' => true,
+                'required' => false,
                 'options'  => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'    => 'text',
+                'name'    => 'matching_software_email',
+                'label'   => 'Email for Matching Software',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'EmailAddress',
+                            ),
                         ),
                     ),
                 ),
@@ -101,7 +139,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type'     => 'text',
                 'name'     => 'website',
                 'label'    => 'Website',
-                'required' => true,
+                'required' => false,
                 'options'  => array(
                     'input' => array(
                         'filters' => array(
@@ -131,18 +169,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'  => 'checkbox',
-                'name'  => 'large',
-                'label' => 'company has a Large spot in the company overview',
+                'type'     => 'common_address_add',
+                'name'     => 'address',
+                'label'    => 'Address',
+                'required' => false,
             )
         );
 
         $this->add(
             array(
-                'type'     => 'common_address_add',
-                'name'     => 'address',
-                'label'    => 'Address',
-                'required' => true,
+                'type'  => 'checkbox',
+                'name'  => 'attends_jobfair',
+                'label' => 'company is at Jobfair this year',
             )
         );
 
@@ -195,7 +233,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         'type'     => 'common_address_add',
                         'name'     => 'invoice_address',
                         'label'    => 'Invoice Address',
-                        'required' => true,
+                        'required' => false,
                     ),
                 ),
             )
@@ -235,52 +273,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         ),
                     ),
                     array(
-                        'type'       => 'textarea',
-                        'name'       => 'short_description',
-                        'label'      => 'Short Description',
-                        'attributes' => array(
-                            'id' => 'shortDescription',
-                        ),
-                        'options'    => array(
-                            'input' => array(
-                                'filters' => array(
-                                    array('name' => 'StringTrim'),
-                                ),
-                                'validators' => array(
-                                    array(
-                                        'name'    => 'FieldLength',
-                                        'options' => array(
-                                            'max_length' => 350,
-                                        ),
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                    array(
-                        'type'       => 'text',
-                        'name'       => 'youtube_url',
-                        'label'      => 'YouTube video URL code (https://www.youtube.com/watch?v=XXXXXXXXXXX)',
-                        'required'   => false,
-                        'attributes' => array(
-                            'id'          => 'youtubeURL',
-                            'placeholder' => 'AVJHzfv-Yis',
-                        ),
-                        'options'    => array(
-                            'input' => array(
-                                'filters' => array(
-                                    array('name' => 'StringTrim'),
-                                ),
-                                'validators' => array(
-                                    array('name' => 'Uri'),
-                                ),
-                            ),
-                        ),
+                        'type'  => 'checkbox',
+                        'name'  => 'atEvent',
+                        'label' => 'company is at internshipfair',
                     ),
                 ),
             )
         );
-
 
         $this->addSubmit('Add', 'company_add');
 

@@ -56,7 +56,7 @@ return array(
         'value'       => serialize(
             array(
                 'en' => array(
-                    'subject' => 'VTK Corporate Account',
+                    'subject' => 'Student IT Corporate Account',
                     'content' => 'Dear {{ name }},
 
 A corporate account was created for you with username {{ username }}.
@@ -65,10 +65,10 @@ You can use this account to view the CV Book at http://litus/corporate
 
 Kind regards,
 
-The VTK Corporate Relations Team',
+The Student IT Corporate Relations Team',
                 ),
                 'nl' => array(
-                    'subject' => 'VTK Bedrijfsaccount',
+                    'subject' => 'Student IT Bedrijfsaccount',
                     'content' => 'Beste {{ name }},
 
 Een bedrijfsaccount werd voor u aangemaakt met gebruikersnaam {{ username }}.
@@ -77,7 +77,7 @@ U kan dit account gebruiken om het CV Book te bekijken op http://litus/corporate
 
 Met vriendelijke groeten,
 
-Het VTK Bedrijvenrelaties Team',
+Het Student IT Bedrijvenrelaties Team',
                 ),
             )
         ),
@@ -90,7 +90,7 @@ Het VTK Bedrijvenrelaties Team',
     ),
     array(
         'key'         => 'br.contract_name',
-        'value'       => 'Vlaamse Technische Kring',
+        'value'       => 'Student IT',
         'description' => 'I have no idea',
     ),
     array(
@@ -102,8 +102,8 @@ Het VTK Bedrijvenrelaties Team',
         'key'         => 'br.contract_below_entries',
         'value'       => serialize(
             array(
-                'en' => 'Herewith I agree to the terms and conditions of VTK Leuven, found at the end of this contract.',
-                'nl' => 'Hiermede ga ik akkoord met de algemene verkoopsvoorwaarden van VTK Leuven, te vinden aan het einde van dit contract.',
+                'en' => 'Herewith I agree to the terms and conditions of Student IT, found at the end of this contract.',
+                'nl' => 'Hiermede ga ik akkoord met de algemene verkoopsvoorwaarden van Student IT, te vinden aan het einde van dit contract.',
             )
         ),
         'description' => 'Payment information',
@@ -154,7 +154,7 @@ Example content of this section.
     ),
     array(
         'key'         => 'br.organization_name',
-        'value'       => 'VTK Ondersteuning vzw',
+        'value'       => 'Student IT vzw',
         'description' => 'Name of corporate relations vzw',
     ),
     array(
@@ -283,125 +283,269 @@ Example content of this section.
         'description' => '',
     ),
     array(
-        'key'         => 'br.career_page_text',
+        'key'         => 'br.wave_nb_top_matches',
+        'value'       => 5,
+        'description' => 'The amount of matches in a companies\' wave',
+    ),
+    array(
+        'key'         => 'br.match_career_banner_text',
+        'value'       => 'Hier komt nog mooie text van BR',
+        'description' => 'banner text on career/match/overview',
+    ),
+    array(
+        'key'         => 'br.match_corporate_banner_text',
+        'value'       => 'Ook hier komt nog mooie text van BR',
+        'description' => 'banner text on corporate/match/overview',
+    ),
+    array(
+        'key'         => 'br.match_profile_max_importances',
         'value'       => serialize(
             array(
-                'nl' => array(
-                    'br_career_student_launch' => array(
-                        'main' => 'VTK als accelerator van jouw carrière',
-                        'sub'  => 'Ontdek wat wij voor jou als toekomstig ingenieur betekenen',
-                    ),
-                    'br_career_student_container' => array(
-                        'main' => 'VTK maakt voor jou het vershil',
-                        'sub'  => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
-                    ),
-                    'br_career_student_search' => array(
-                        'search' => 'Op zoek naar een stage, job of studentenjob?',
-                    ),
-                ),
-                'en' => array(
-                    'br_career_student_launch' => array(
-                        'main' => 'VTK as accelerator for your future',
-                        'sub'  => 'Discover what we can do for your future',
-                    ),
-                    'br_career_student_container' => array(
-                        'main' => 'VTK makes the difference',
-                        'sub'  => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
-                    ),
-                    'br_career_student_search' => array(
-                        'search' => 'Searching for an internship, job or student job?',
-                    ),
-                ),
+                100 => 5,
+                200 => 3
             )
         ),
-        'description' => 'The texts for the career page',
+        'description' => 'The maximum allowed features per importance value',
     ),
     array(
-        'key'         => 'br.corporate_page_text',
+        'key'         => 'br.match_career_profile_GDPR_text',
+        'description' => 'I agree that this data can be used to contact companies',
         'value'       => serialize(
             array(
-                'nl' => array(
-                    'br_corporate_launch' => array(
-                        'main' => 'VTK als partner voor jouw bedrijf',
-                        'sub'  => 'Kom te weten wat wij voor jou kunnen betekenen',
-                    ),
-                    'br_corporate_intro' => array(
-                        'main' => 'VTK maakt voor jou het vershil',
-                        'sub'  => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
-                    ),
-                    'br_corporate_events' => array(
-                        'main' => 'Zien we jou op één van onze volgende evenementen?',
-                        'sub'  => 'Evenementen bekijken',
-                    ),
-                    'br_corporate_services' => array(
-                        'title' => 'Hoe wij u bedrijf mee boosten',
-                        'one'   => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
-                        'two'   => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
-                        'three' => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
-                    ),
-                ),
-                'en' => array(
-                    'br_corporate_launch' => array(
-                        'main' => 'VTK as partner for your company',
-                        'sub'  => 'Get to know what we can do for you',
-                    ),
-                    'br_corporate_intro' => array(
-                        'main' => 'VTK makes the difference for you',
-                        'sub'  => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
-                    ),
-                    'br_corporate_events' => array(
-                        'main' => 'Do we see you on one of our next events?',
-                        'sub'  => 'See events',
-                    ),
-                    'br_corporate_services' => array(
-                        'title' => 'How we help to boost your company',
-                        'one'   => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
-                        'two'   => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
-                        'three' => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.',
-                    ),
-                ),
-            ),
-        ),
-        'description' => 'The texts for the corporate page'
+                'en' => 'I agree that this data can be used to contact companies, should you get a match or show them you\'re interested.',
+                'nl' => 'Ik ga akkoord dat deze gegevens gebruikt en bekeken kunnen worden door de bedrijven, als er een match gevormd wordt of als ik "Interesse toon".'
+            )
+        )
     ),
     array(
-        'key'         => 'br.communication_options',
+        'key'         => 'br.cv_grades_map_enabled',
+        'value'       => 0,
+        'description' => 'Use grades or the grades Map',
+    ),
+    array(
+        'key'         => 'br.cv_grades_map',
         'value'       => serialize(
             array(
-                'Mail',
-                'Facebook',
-                'Instagram',
-                'Bakske',
-                'IrReeel',
+                6800  => 'Cum fructu',
+                7700  => 'Cum laude',
+                8500  => 'Magna cum laude',
+                9000  => 'Summa cum laude',
+                10000 => 'Summa cum laude with the congratulations of the examination committee',
             )
         ),
-        'description' => 'The options displayed in the communications tab in the br admin',
+        'description' => '',
     ),
     array(
-        'key'         => 'br.communication_mail',
-        'value'       => 'stan.cardinaels@vtk.be',
-        'description' => 'The mail address to which notifications should be send when a duplicate communication date is chosen.',
+        'key'         => 'br.match_mail',
+        'value'       => 'bedrijvenrelaties@vtk.be',
+        'description' => 'The mail address from where matching software notifications should be sent.',
     ),
     array(
-        'key'         => 'br.communication_mail_name',
+        'key'         => 'br.match_mail_name',
         'value'       => 'VTK Bedrijvenrelaties',
         'description' => '',
     ),
     array(
-        'key'         => 'br.communication_mail_body',
+        'key'         => 'br.match_first_interested_mail_body',
         'value'       => serialize(
             array(
-                'subject' => 'Dubbele boeking voor communicatie op {{ date }}',
+                'subject' => 'First interested student',
                 'content' => 'Beste
-Er is een dubbele communicatie boeking aangemaakt op {{ date }} door {{ person }}.
-Communicatie optie: {{ option }}.
-Nieuw Doelpubliek: {{ newAudience }}.
-Nieuw Bedrijf: {{ newCompany }}.
-Bestaand Doelpubliek: {{ oldAudience }}.
-Bestaand Bedrijf: {{ oldCompany }}.
--- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
+Een student heeft zijn data doorgestuurd naar jou op het Matching Software platform!
+-- Dit is een automatisch gegenereerde email --',
             )
         ),
         'description' => 'The mail sent when a duplicate date is chosen for a communication'
+    ),
+    array(
+        'key'         => 'br.match_wave_companies_body',
+        'value'       => serialize(
+            array(
+                'subject' => 'Generated new matches',
+                'content' => 'Beste
+Er zijn nieuwe matches!
+-- Dit is een automatisch gegenereerde email --',
+            )
+        ),
+        'description' => 'The mail sent to all companies that have matches, when the button in the admin is used'
+    ),
+    array(
+        'key'         => 'br.match_wave_students_body',
+        'value'       => serialize(
+            array(
+                'subject' => 'Generated new matches',
+                'content' => 'Beste
+Er zijn nieuwe matches!
+-- Dit is een automatisch gegenereerde email --',
+            )
+        ),
+        'description' => 'The mail sent to all students that have matches, when the button in the admin is used'
+    ),
+    array(
+        'key'         => 'br.match_sector_feature_max_points',
+        'value'       => 6,
+        'description' => 'The amount of points to be distributed between the sectors.',
+    ),
+    array(
+        'key'         => 'br.match_enable_first_interested_mail',
+        'value'       => 1,
+        'description' => 'Enable sending a mail when the first person sends their data to a company.',
+    ),
+    array(
+        'key'         => 'br.google_qr_api',
+        'value'       => 'https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl={{encodedUrl}}&choe=UTF-8',
+        'description' => 'The google qr code generator api',
+    ),
+    array(
+        'key'         => 'br.study_colors',
+        'value'       => serialize(
+            array(
+                'architectural engineering'         => 'rgb(46, 184, 184)',// 'rgb(255, 105, 185)',
+                'biomedical engineering'            => 'rgb(240, 240, 219)',//'rgb(46, 170, 20)',
+                'civil engineering'                 => 'rgb(243, 239, 25)',//'rgb(0, 0, 0)',
+                'chemical engineering'              => 'rgb(46, 115, 184)',//'rgb(40, 65, 120)',
+                'computer science engineering'      => 'rgb(230, 92, 0)',//'rgb(255, 144, 36)',
+                'electrical engineering'            => 'rgb(137, 1, 46)',//'rgb(33, 200, 233)',
+                'energy engineering'                => 'rgb(0, 0, 0)',//'rgb(0, 150, 230)',
+                'logistics engineering'             => 'rgb(153, 204, 0)',//'rgb(205, 143, 120)',
+                'materials engineering'             => 'rgb(96, 0, 128)',//'rgb(135, 71, 149)',
+                'mathematical engineering'          => 'rgb(255, 255, 255)',//'rgb(255, 255, 255)',
+                'mechanical engineering'            => 'rgb(255, 0, 0)',//'rgb(255, 56, 53)',
+                'nanoengineering'                   => 'rgb(140, 140, 140)',//'rgb(255, 223, 0)',
+                'faculty of bio engineering'        => 'rgb(46, 118, 46)',//'rgb(0, 78, 36)',
+                'faculty of business and economics' => 'rgb(106, 206, 226)',//'rgb(180, 202, 202)',
+                'faculty of engineering technology' => 'rgb(64, 191, 96)',//'rgb(255, 255, 143)',
+                'other'                             => 'rgb(230, 25, 107)'//'rgb(255, 248, 233)'
+            )
+        ),
+        'description' => 'The colors associated with a specific study in RGB values',
+    ),
+    array(
+        'key'         => 'br.study_text_colors',
+        'value'       => serialize(
+            array(
+                'architectural engineering'         => 'black',
+                'biomedical engineering'            => 'black',
+                'construction engineering'          => 'black',
+                'chemical engineering'              => 'white',
+                'computer science'                  => 'black',
+                'electrical engineering'            => 'white',
+                'energy science'                    => 'white',
+                'materials engineering'             => 'white',
+                'mathematical engineering'          => 'black',
+                'mechanical engineering'            => 'white',
+                'nanoscience and nanotechnology'    => 'white',
+                'logistics and transport systems'   => 'black',
+                'faculty of bio engineering'        => 'white',
+                'faculty of business and economics' => 'black',
+                'faculty of engineering technology' => 'white',
+                'other'                             => 'white'
+            )
+        ),
+        'description' => 'The text colors associated with a specific study to be visible on the background',
+    ),
+    array(
+        'key'         => 'br.subscription_mail_data',
+        'value'       => serialize(
+            array(
+                'en' => array(
+                    'subject' => 'Subscription for {{event}}',
+                    'content' => 'Dear,
+    
+    You have subscribed for the event {{event}} on {{eventDate}}.
+    
+    This event uses QR codes for entry and other functionalities.
+    Your personal QR code can be found here:
+    <img src="{{qrSource}}" alt="QR code of this page generated by an api of google">
+    
+    This code links <a href="{{qrLink}}">here</a>.
+    If it does not work, please contact us: <a href="mailto:{{brMail}}">{{brMail}}</a>.
+    
+    We are looking forward to seeing you there.
+    
+    VTK Corporate Relations',
+                ),
+                'nl' => array(
+                    'subject' => 'Inschrijving voor {{event}}',
+                    'content' => 'Beste,
+    
+    U heeft zich ingeschreven voor het evenement {{event}} op {{eventDate}}.
+
+    Dit evenement gebruikt QR-codes voor o.a. de inkom en andere functionaliteiten.
+    Uw persoonlijke QR-code kan u hier vinden:
+    <img src="{{qrSource}}" alt="QR code of this page generated by an api of google">
+    
+    Deze code linkt met <a href="{{qrLink}}">deze pagina</a>.
+    Indien dit niet werkt, gelieve met ons contact op te nemen: <a href="mailto:{{brMail}}">{{brMail}}</a>.
+    
+    Wij kijken er naar uit om u daar te zien.
+    
+    VTK Bedrijvenrelaties',
+                ),
+            )
+        ),
+        'description' => 'De mail data for the subscription mails.',
+    ),
+    array(
+        'key'         => 'br.subscription_reminder_data',
+        'value'       => serialize(
+            array(
+                'en' => array(
+                    'subject' => 'Subscription for {{event}}',
+                    'content' => 'Dear,
+    
+    You have subscribed for the event {{event}} on {{eventDate}}.
+    
+    This event uses QR codes for entry and other functionalities.
+    Your personal QR code can be found here:
+    <img src="{{qrSource}}" alt="QR code of this page generated by an api of google">
+    
+    This code links <a href="{{qrLink}}">here</a>.
+    If it does not work, please contact us: <a href="mailto:{{brMail}}">{{brMail}}</a>.
+    
+    We are looking forward to seeing you there.
+    
+    VTK Corporate Relations',
+                ),
+                'nl' => array(
+                    'subject' => 'Inschrijving voor {{event}}',
+                    'content' => 'Beste,
+    
+    U heeft zich ingeschreven voor het evenement {{event}} op {{eventDate}}.
+
+    Dit evenement gebruikt QR-codes voor o.a. de inkom en andere functionaliteiten.
+    Uw persoonlijke QR-code kan u hier vinden:
+    <img src="{{qrSource}}" alt="QR code of this page generated by an api of google">
+    
+    Deze code linkt met <a href="{{qrLink}}">deze pagina</a>.
+    Indien dit niet werkt, gelieve met ons contact op te nemen: <a href="mailto:{{brMail}}">{{brMail}}</a>.
+    
+    Wij kijken er naar uit om u daar te zien.
+    
+    VTK Bedrijvenrelaties',
+                ),
+            )
+        ),
+        'description' => 'De mail data for the subscription mails.',
+    ),
+    array(
+        'key'         => 'br.subscription_mail',
+        'value'       => 'bedrijvenrelaties@vtk.be',
+        'description' => 'The mail address used in subscription communication.',
+    ),
+    array(
+        'key'         => 'br.subscription_mail_name',
+        'value'       => 'VTK Bedrijvenrelaties',
+        'description' => 'The signature name for subscription mails',
+    ),
+    array(
+        'key'         => 'br.event_graph_interval',
+        'value'       => 'PT1800S',
+        'description' => 'The interval for drawing the graphs',
+    ),
+    array(
+        'key'         => 'br.event_busschema_path',
+        'value'       => '/_br/jobfair/',
+        'description' => 'The path to the busschema files',
     ),
 );

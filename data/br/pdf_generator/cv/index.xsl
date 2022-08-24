@@ -50,7 +50,7 @@
                             </fo:table-cell>
 
                             <fo:table-cell>
-                                <fo:block>
+                                <fo:block text-align="right">
                                     <fo:page-number-citation>
                                         <xsl:attribute name="ref-id">
                                             <xsl:value-of select="@id"/>

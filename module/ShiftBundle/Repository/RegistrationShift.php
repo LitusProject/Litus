@@ -304,7 +304,7 @@ class RegistrationShift extends \CommonBundle\Component\Doctrine\ORM\EntityRepos
                     $query->expr()->andX(
                         $query->expr()->lt('s.startDate', ':now'),
                         $query->expr()->gt('s.endDate', ':now'),
-                        $query->expr()->lt('s.cudiTimeslot', 'true'),
+                        $query->expr()->eq('s.cudiTimeslot', 'true')
                     ),
                     $query->expr()->eq('r.person', ':person')
                 )

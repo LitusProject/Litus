@@ -79,7 +79,7 @@
         <div style="text-align: right" class="container">
             <a class="vtk-primary-menuitem" href="{{ url('cudi_retail') }}">{{ translate('Second Hand') }}</a>
             <a class="vtk-primary-menuitem" href="{{ url('cudi_booking', {'action': 'book'}) }}">{{ translate('Order Books') }}</a>
-            <a class="vtk-primary-menuitem" href="{{ url('shop', {'action': 'reserve'}) }}">{{ translate('Reservations') }}</a>
+            <a class="vtk-primary-menuitem" href="{{ url('shop', {'action': 'reserve'}) }}">{{ translate('Theokot Sandwiches') }}</a>
             <a class="vtk-primary-menuitem" href="{{ url('shift', {'action': 'index'}) }}">{{ translate('Shifts') }}</a>
             <a class="vtk-primary-menuitem" href="{{ url('registration_shift', {'action': 'index'}) }}">{{ translate('Timeslots') }}</a>
         </div>
@@ -191,7 +191,8 @@
                     {% else %}
                         <div class="vtk-menuitem-holder">
                             <a style="cursor: pointer" class="vtk-menuitem" href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('Login') }}{% endautoescape %}</a>
-                        </li>
+                        </div>
+                        </div>
                     {% endif %}
                 </div> 
 
@@ -211,23 +212,34 @@
         {# Hardcoded quicklinks #}
         <div class="container">
             <p style="color:white" class="vtk-footerheading" href="#">
-                {# TO DO #}
                 {{translate("Quicklinks")}}
             </p>
             {% if authenticatedPerson is not null %}
                     <a class="vtk-mobile-primary-menuitem" href="{{ url('cudi_booking', {'action': 'book'}) }}">{{ translate('Order Books') }}</a>
-                    <a class="vtk-mobile-primary-menuitem" href="{{ url('shop', {'action': 'reserve'}) }}">{{ translate('Reservations') }}</a>
+                    <a class="vtk-mobile-primary-menuitem" href="{{ url('shop', {'action': 'reserve'}) }}">{{ translate('Theokot Sandwiches') }}</a>
                     <a class="vtk-mobile-primary-menuitem" href="{{ url('shift', {'action': 'index'}) }}">{{ translate('Shifts') }}</a>
                     <a class="vtk-mobile-primary-menuitem" href="{{ url('registration_shift', {'action': 'index'}) }}">{{ translate('Timeslots') }}</a>                
                 {% if hasAccess('common_account', 'index') %}
-                    <a class="vtk-mobile-primary-menuitem" href="{{ url('common_account')}}">Mijn VTK</a>
+                    <a class="vtk-mobile-primary-menuitem" href="{{ url('common_account')}}">{{ translate('My VTK') }}</a>
                 {% endif %}
                     <a class="vtk-mobile-primary-menuitem" href="{{ url("common_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
+                {% if hasAccess('common_admin_index', 'index') %}
+                    <a class="vtk-mobile-primary-menuitem" href="{{ url('common_admin_index')}}">Admin</a>
+                {% endif %}
+
     
             {% else %}
                     <a class="vtk-mobile-primary-menuitem" href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('Login') }}{% endautoescape %}</a>
             {% endif %}
+            <p style="color:white" class="vtk-footerheading" href="#">
+                {{translate("Languages")}}
+            </p>
+            {% for language in languages %}
+                <a class="vtk-mobile-primary-menuitem" href="{{ url(getParam('controller'), {'language': language.getAbbrev(), 'action': getParam('action'), 'parent': getParam('parent'), 'name': getParam('name'), 'id': getParam('id')}) }}">{{ translate(language.getName()) }}</a>
+            {% endfor %}
+
         </div>
+
 
         <div style="height: 20px"></div>
 

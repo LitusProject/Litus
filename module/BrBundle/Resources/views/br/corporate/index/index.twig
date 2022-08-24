@@ -17,7 +17,9 @@
                 <h3 style="color:white; font-weight: 500">{{ texts['br_corporate_launch']['sub'] }}</h3>
                 <div style="height: 20px"></div>
                 {# TO DO buttons invullen & doen werken #}
-                <a class="button white unfilled" href="{{ url("br_corporate_index", {"action": "login"}) }}">{{ translate('Log In') }}</a>
+                {% if authenticatedPerson is null %}
+                    <a class="button white unfilled" href="{{ url("br_corporate_index", {"action": "login"}) }}">{{ translate('Log In') }}</a>
+                {% endif %}
             </div>
         </div>
 
@@ -85,8 +87,11 @@
                     <h3 style="position: relative; z-index: 1">{{ translate('What can you expect?') }}</h3>
                     <div class="br-titledecoration"></div>
                 </div>
-
                 <div style="height: 30px"></div>
+                <div class="br-markdown" style="margin-right: 40px; text-align: justify; line-height: 25px">
+                    {{ texts['br_corporate_expect']['text'] }}
+                    <div style="height: 20px"></div>
+                </div>
 
                 <div class="lightboxParent">
                     <!-- Images used to open the lightbox -->
@@ -185,15 +190,15 @@
             <div style="height: 50px"></div>
             <div class="servicesGrid">
                 <div class="servicesHolder">
-                    <h4 class="servicesTitle">Service 1</h4>
+                    <h4 class="servicesTitle">{{ translate('Visibility') }}</h4>
                     <p style="text-align: justify">{{ texts['br_corporate_services']['one'] }}</p>
                 </div>
                 <div class="servicesHolder">
-                    <h4 class="servicesTitle">Service 2</h4>
+                    <h4 class="servicesTitle">{{ translate('Flexibility') }}</h4>
                     <p style="text-align: justify">{{ texts['br_corporate_services']['two'] }}</p>
                 </div>
                 <div class="servicesHolder">
-                    <h4 class="servicesTitle">Service 3</h4>
+                    <h4 class="servicesTitle">{{ translate('Proffesionaliteit') }}</h4>
                     <p style="text-align: justify">{{ texts['br_corporate_services']['three'] }}</p>
                 </div>
             </div>

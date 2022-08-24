@@ -57,19 +57,83 @@ class GuestInfo
     private $universityIdentification;
 
     /**
+     * @var string phone number
+     *
+     * @ORM\Column(name="phone_number", type="string", nullable=true)
+     */
+    private $phoneNumber;
+
+    /**
+     * @var string address
+     *
+     * @ORM\Column(name="address", type="string", nullable=true)
+     */
+    private $address;
+
+    /**
+     * @var string studies (burgie of archie)
+     *
+     * @ORM\Column(name="studies", type="string", nullable=true)
+     */
+    private $studies;
+
+    /**
+     * @var string foodOptions (vlees/vegie/vegan)
+     *
+     * @ORM\Column(name="foodOptions", type="string", nullable=true)
+     */
+    private $foodOptions;
+
+    /**
+     * @var string allergies (vlees/vegie/vegan)
+     *
+     * @ORM\Column(name="allergies", type="string", nullable=true)
+     */
+    private $allergies;
+
+    /**
+     * @var string transportation (trein/eigen vervoer)
+     *
+     * @ORM\Column(name="transportation", type="string", nullable=true)
+     */
+    private $transportation;
+
+    /**
+     * @var string comments
+     *
+     * @ORM\Column(name="comments", type="string", nullable=true)
+     */
+    private $comments;
+
+    /**
+     * @var string The file name of the picture
+     *
+     * @ORM\Column(name="picture", type="string", unique=true, nullable=true)
+     */
+    private $picture;
+
+    /**
      * @param string $firstName
      * @param string $lastName
      * @param string $email
      * @param string $organization
      * @param string $universityIdentification
      */
-    public function __construct($firstName, $lastName, $email, $organization, $universityIdentification)
+    public function __construct($firstName, $lastName, $email, $organization, $universityIdentification, $phoneNumber, $address, $studies, $foodOptions, $allergies, $transportation, $comments)
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->email = $email;
         $this->organization = $organization;
         $this->universityIdentification = $universityIdentification;
+        $this->phoneNumber = $phoneNumber;
+        $this->address = $address;
+        $this->studies = $studies;
+        $this->foodOptions = $foodOptions;
+        $this->allergies = $allergies;
+        $this->transportation = $transportation;
+        $this->comments = $comments;
+//        $this->picture = $picture;
     }
 
     /**
@@ -126,5 +190,80 @@ class GuestInfo
     public function getUniversityIdentification()
     {
         return $this->universityIdentification;
+    }
+
+    /**
+     * @return string phoneNumber
+     */
+    public function getPhoneNumber()
+    {
+        return $this->phoneNumber;
+    }
+
+    /**
+     * @return string address
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * @return string studies
+     */
+    public function getStudies()
+    {
+        return $this->studies;
+    }
+
+    /**
+     * @return string foodOptions
+     */
+    public function getFoodOptions()
+    {
+        return $this->foodOptions;
+    }
+
+    /**
+     * @return string allergies
+     */
+    public function getAllergies()
+    {
+        return $this->allergies;
+    }
+
+    /**
+     * @return string transportation
+     */
+    public function getTransportation()
+    {
+        return $this->transportation;
+    }
+
+    /**
+     * @return string comments
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @return string picture
+     */
+    public function getPicture()
+    {
+        return $this->picture;
+    }
+
+    /**
+     * @param string picture
+     * @return GuestInfo
+     */
+    public function setPicture(string $picture)
+    {
+        $this->picture = $picture;
+
+        return $this;
     }
 }

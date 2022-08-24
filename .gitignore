@@ -31,3 +31,6 @@ vendor/
 # Output from external tools
 phpcs/
 phpstan/
+
+# IDE files
+.idea

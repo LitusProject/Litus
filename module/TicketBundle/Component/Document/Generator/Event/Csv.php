@@ -18,8 +18,8 @@ class Csv extends \CommonBundle\Component\Document\Generator\Csv
      */
     public function __construct(EntityManager $entityManager, Event $event)
     {
-        $headers = array('ID', 'Name', 'Email', 'Organization', 'Status', 'Option', 'Number', 'Book Date', 'Sold Date', 'Member', 'r-number');
-
+//        $headers = array('ID', 'Name', 'Email', 'Organization', 'Status', 'Option', 'Number', 'Book Date', 'Sold Date', 'Member', 'r-number');
+        $headers = array('ID', 'Name', 'Email', 'Status', 'Option', 'Book Date', 'Sold Date', 'Phone', 'Address', 'Study', 'Food', 'Allergies', 'Transport', 'Comments');
         $tickets = $entityManager
             ->getRepository('TicketBundle\Entity\Ticket')
             ->findAllActiveByEvent($event);
@@ -30,14 +30,21 @@ class Csv extends \CommonBundle\Component\Document\Generator\Csv
                 $ticket->getId(),
                 $ticket->getFullName(),
                 $ticket->getEmail(),
-                $ticket->getOrganization(),
+//                $ticket->getOrganization(),
                 $ticket->getStatus(),
                 ($ticket->getOption() ? $ticket->getOption()->getName() : '') . ' (' . ($ticket->isMember() ? 'Member' : 'Non Member') . ')',
-                $ticket->getNumber(),
+//                $ticket->getNumber(),
                 $ticket->getBookDate() ? $ticket->getBookDate()->format('d/m/Y H:i') : '',
                 $ticket->getSoldDate() ? $ticket->getSoldDate()->format('d/m/Y H:i') : '',
-                $ticket->isMember() ? '1' : '0',
-                $ticket->getUniversityIdentification(),
+//                $ticket->isMember() ? '1' : '0',
+//                $ticket->getUniversityIdentification(),
+                $ticket->getGuestInfo()->getPhoneNumber(),
+                $ticket->getGuestInfo()->getAddress(),
+                $ticket->getGuestInfo()->getStudies(),
+                $ticket->getGuestInfo()->getFoodOptions(),
+                $ticket->getGuestInfo()->getAllergies(),
+                $ticket->getGuestInfo()->getTransportation(),
+                $ticket->getGuestInfo()->getComments(),
             );
         }
 

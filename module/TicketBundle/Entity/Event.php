@@ -8,6 +8,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
+use FormBundle\Entity\Node\Form;
 use TicketBundle\Entity\Event\Option;
 
 /**
@@ -158,6 +159,21 @@ class Event
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
+
+    /**
+     * @var Form The form for the event
+     *
+     * @ORM\OneToOne(targetEntity="FormBundle\Entity\Node\Form")
+     * @ORM\JoinColumn(name="form", referencedColumnName="id", nullable=true)
+     */
+    private $form;
+
+    /**
+     * @var boolean Whether or not qr codes are enabled
+     *
+     * @ORM\Column(name="qr_enabled", type="boolean", options={"default" : false})
+     */
+    private $qrEnabled;
 
     public function __construct()
     {
@@ -678,6 +694,44 @@ class Event
     public function setDescription($description)
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Form
+     */
+    public function getForm()
+    {
+        return $this->form;
+    }
+
+    /**
+     * @param Form $form the form
+     * @return self
+     */
+    public function setForm($form)
+    {
+        $this->form = $form;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getQrEnabled()
+    {
+        return $this->qrEnabled;
+    }
+
+    /**
+     * @param boolean $qr
+     * @return self
+     */
+    public function setQrEnabled($qr)
+    {
+        $this->qrEnabled = $qr;
 
         return $this;
     }

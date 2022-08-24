@@ -9,6 +9,8 @@ use Zend\Validator\Identical;
 
 class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
 {
+    const FILE_SIZE = '5MB';
+
     /**
      * @var Event
      */
@@ -93,30 +95,27 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                     array(
                         'type'       => 'text',
-                        'name'       => 'guest_identification',
-                        'label'      => 'R-Number (optional)',
-                        'required'   => false,
+                        'name'       => 'phone_number',
+                        'label'      => 'Telefoonnummer',
+                        'required'   => true,
                         'attributes' => array(
-                            'id' => 'guest_identification',
+                            'id' => 'phone_number',
                         ),
                         'options'    => array(
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
-                                ),
-                                'validators' => array(
-                                    array('name' => 'UniversityIdentification'),
                                 ),
                             ),
                         ),
                     ),
                     array(
                         'type'       => 'text',
-                        'name'       => 'guest_organization',
-                        'label'      => 'Kring (optional)',
-                        'required'   => false,
+                        'name'       => 'address',
+                        'label'      => 'Adres',
+                        'required'   => true,
                         'attributes' => array(
-                            'id' => 'guest_organization',
+                            'id' => 'address',
                         ),
                         'options'    => array(
                             'input' => array(
@@ -126,6 +125,139 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                         ),
                     ),
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'studies',
+                        'label'      => 'Toekomstige Studie',
+                        'attributes' => array(
+                            'options' => $this->getStudiesOptions(),
+                        ),
+                        'options'    => array(
+                            'input' => array(
+                                'required' => true,
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'food_option',
+                        'label'      => 'Eetgewoonte',
+                        'attributes' => array(
+                            'options' => $this->getFoodOptions(),
+                        ),
+                        'options'    => array(
+                            'input' => array(
+                                'required' => true,
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'       => 'text',
+                        'name'       => 'allergies',
+                        'label'      => 'Allergieën',
+                        'required'   => false,
+                        'attributes' => array(
+                            'id' => 'allergies',
+                        ),
+                        'options'    => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'transportation',
+                        'label'      => 'Vervoer',
+                        'attributes' => array(
+                            'options' => $this->getTransportationOptions(),
+                        ),
+                        'options'    => array(
+                            'input' => array(
+                                'required' => true,
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'       => 'text',
+                        'name'       => 'comments',
+                        'label'      => 'Opmerkingen',
+                        'required'   => false,
+                        'attributes' => array(
+                            'id' => 'comments',
+                        ),
+                        'options'    => array(
+                            'input' => array(
+                                'filters' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'       => 'file',
+                        'name'       => 'picture',
+                        'label'      => 'Recente foto',
+                        'required'   => true,
+                        'attributes' => array(
+                            'data-help' => 'The maximum file size is ' . self::FILE_SIZE . '.',
+                        ),
+                        'options'    => array(
+                            'input' => array(
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'FileSize',
+                                        'options' => array(
+                                            'max' => self::FILE_SIZE,
+                                        ),
+                                    ),
+                                    array(
+                                        'name'    => 'FileExtension',
+                                        'options' => array(
+                                            'extension' => 'jpg, png',
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                    // array(
+                    //     'type'       => 'text',
+                    //     'name'       => 'guest_identification',
+                    //     'label'      => 'R-Number (optional)',
+                    //     'required'   => false,
+                    //     'attributes' => array(
+                    //         'id' => 'guest_identification',
+                    //     ),
+                    //     'options'    => array(
+                    //         'input' => array(
+                    //             'filters' => array(
+                    //                 array('name' => 'StringTrim'),
+                    //             ),
+                    //             'validators' => array(
+                    //                 array('name' => 'UniversityIdentification'),
+                    //             ),
+                    //         ),
+                    //     ),
+                    // ),
+                    // array(
+                    //     'type'       => 'text',
+                    //     'name'       => 'guest_organization',
+                    //     'label'      => 'Kring (optional)',
+                    //     'required'   => false,
+                    //     'attributes' => array(
+                    //         'id' => 'guest_organization',
+                    //     ),
+                    //     'options'    => array(
+                    //         'input' => array(
+                    //             'filters' => array(
+                    //                 array('name' => 'StringTrim'),
+                    //             ),
+                    //         ),
+                    //     ),
+                    // ),
                 ),
             )
         );
@@ -153,6 +285,16 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
                     'options'    => array(
                         'input' => array(
                             'required' => true,
+                            'validators' => array(
+                                array(
+                                    'name'    => 'NumberTicketsGuest',
+                                    'options' => array(
+                                        'event'   => $this->event,
+//                                        'person'  => $this->guestInfo,
+                                        'maximum' => $this->event->getLimitPerPerson(),
+                                    ),
+                                ),
+                            ),
                         ),
                     ),
                 )
@@ -170,6 +312,16 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
                         'options'    => array(
                             'input' => array(
                                 'required' => true,
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'NumberTicketsGuest',
+                                        'options' => array(
+                                            'event'   => $this->event,
+//                                            'person'  => $this->guestInfo,
+                                            'maximum' => $this->event->getLimitPerPerson(),
+                                        ),
+                                    ),
+                                ),
                             ),
                         ),
                     )
@@ -188,6 +340,16 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
                         'options'    => array(
                             'input' => array(
                                 'required' => true,
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'NumberTicketsGuest',
+                                        'options' => array(
+                                            'event'   => $this->event,
+//                                            'person'  => $this->guestInfo,
+                                            'maximum' => $this->event->getLimitPerPerson(),
+                                        ),
+                                    ),
+                                ),
                             ),
                         ),
                     )
@@ -205,6 +367,16 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
                             'options'    => array(
                                 'input' => array(
                                     'required' => true,
+                                    'validators' => array(
+                                        array(
+                                            'name'    => 'NumberTicketsGuest',
+                                            'options' => array(
+                                                'event'   => $this->event,
+//                                                'person'  => $this->guestInfo,
+                                                'maximum' => $this->event->getLimitPerPerson(),
+                                            ),
+                                        ),
+                                    ),
                                 ),
                             ),
                         )
@@ -216,8 +388,36 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add(
             array(
                 'type'       => 'checkbox',
+                'name'       => 'images',
+                'label'      => 'Hierbij geef ik toestemming om beeldmateriaal van mij te maken en te gebruiken (indien een gepubliceerde foto niet gewenst is kan je een mail sturen naar communicatie@vtk.be)',
+                'attributes' => array(
+                    'id' => 'images',
+                ),
+                'options'    => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name'    => 'identical',
+                                'options' => array(
+                                    'token'    => true,
+                                    'strict'   => false,
+                                    'messages' => array(
+                                        Identical::NOT_SAME => 'You must agree to the terms and conditions.',
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'checkbox',
                 'name'       => 'conditions',
-                'label'      => 'I have read and accept the GDPR terms and condition specified above',
+            //                'label'      => 'I have read and accept the GDPR terms and condition specified above',
+                'label'      => 'Bij deze ga ik akkoord dat VTK mijn gegevens mag gebruiken voor de werking van deze activiteit, om te gebruiken voor noodgevallen en mij te contacteren. Na afloop van de contacttracing worden mijn gegevens verwijderd.',
                 'attributes' => array(
                     'id' => 'conditions',
                 ),
@@ -253,6 +453,36 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         return $numbers;
+    }
+
+    private function getStudiesOptions()
+    {
+        $options = array();
+
+        $options['burgie'] = 'Ingenieurswetenschappen';
+        $options['archie'] = 'Ingenieurswetenschappen: Architectuur';
+
+        return $options;
+    }
+
+    private function getFoodOptions()
+    {
+        $options = array();
+
+        $options['Vlees'] = 'Vlees';
+        $options['Vegetariër'] = 'Vegetariër';
+
+        return $options;
+    }
+
+    private function getTransportationOptions()
+    {
+        $options = array();
+
+        $options['Eigen vervoer'] = 'Eigen vervoer';
+        $options['Trein'] = 'Ik kom met de trein naar Genk, en wordt daar opgehaald met de VTK bus';
+
+        return $options;
     }
 
     /**

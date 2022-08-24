@@ -41,6 +41,13 @@ return array(
             '@common_jqueryui_css',
             '@common_jqueryui_datepicker_css',
         ),
+        'publication_admin_video' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
         'publication_archive' => array(
             '@common_jquery',
             '@bootstrap_css',
@@ -54,6 +61,18 @@ return array(
             '@archive_css',
         ),
         'publication_edition_html' => array(
+        ),
+        'publication_video' => array(
+            '@common_jquery',
+            '@bootstrap_css',
+            '@site_css',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+            '@bootstrap_js_carousel',
+            '@bootstrap_js_collapse',
+            '@bootstrap_js_alert',
+            '@archive_css',
         ),
     ),
 

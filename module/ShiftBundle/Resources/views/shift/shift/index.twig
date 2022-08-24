@@ -286,7 +286,7 @@
                 <h3 style="margin-bottom: 0px">{{ translate('My Shifts') }}</h3>
             </div>
 
-            {{ self.displayShifts(entityManager, authenticatedPerson, myShifts, 'myShifts') }}
+            {{ self.displayShifts(entityManager, authenticatedPerson, myShifts, 'myShifts', currentAcademicYear) }}
 
             {% if authenticatedPerson != null and hasAccess('shift', 'export') %}
                 <div class="buttonHolder">
@@ -305,7 +305,7 @@
             </div>
 
             {% if searchResults is not null %}
-                {{ self.displayShifts(entityManager, authenticatedPerson, searchResults, 'search') }}
+                {{ self.displayShifts(entityManager, authenticatedPerson, searchResults, 'search', currentAcademicYear) }}
             {% else %}
                 <div class="alert alert-warning">
                     <a class="close" data-dismiss="alert">&times;</a>
@@ -488,7 +488,7 @@
 
 
     {# DISPLAYING ACTUAL SEARCH SHIFTS #}
-    {% macro displayShifts(entityManager, authenticatedPerson, shifts, accordionName) %}
+    {% macro displayShifts(entityManager, authenticatedPerson, shifts, accordionName, currentAcademicYear) %}
         {% import _self as self %}
         {% set previousShift = null %}
         <div class="panel-group" id="shifts-{{ accordionName }}">
@@ -497,7 +497,7 @@
                     <h4 style="margin-top: 15px">{#{{translate('Shifts on')}}#} {{ translate(shift.getStartDate().format('l')) }}  {{ dateLocalized(shift.getStartDate(), 'd/M/y') }}</h4>
                 {% endif %}
 
-                {% if shift.canHaveAsResponsible(entityManager, authenticatedPerson) or shift.canHaveAsVolunteer(entityManager, authenticatedPerson) %}
+                {% if ((shift.getNbVolunteers() != 0) or authenticatedPerson.isPraesidium(currentAcademicYear)) %}
                     {% set previousShift = shift %}
 
                     <div class="shiftHolder" {% if shift.canHaveAsResponsible(entityManager, authenticatedPerson) and 0 != shift.getNbResponsibles() %}style="border:solid #202348;"{% endif %}>

@@ -82,16 +82,18 @@
                             .append(actions = $('<td>', {'class': 'actions'}));
 
                         {% if hasAccess('shift_admin_shift_counter', 'payout') and rewards_enabled  %}
-                            actions.append('<a href="#" data-person="' + this.id + '" class="edit payout">Payout</a>');
+                        actions.append('<a href="#" data-person="' + this.id + '" class="edit payout">Payout</a>');
+                        actions.append('<a href="#" data-person="' + this.id +'/academicyear/{{ activeAcademicYear.getCode() }}" class="edit payoutYear">Payout Selected Year</a>');
                         {% endif %}
 
                         {% if hasAccess('shift_admin_shift_counter', 'view') %}
-                            actions.append('<a href="{{ url('shift_admin_shift_counter', {"action": "view"}) }}' + this.id +'/{{ activeAcademicYear.getCode() }}" class="view">View</a>');
+                            actions.append('<a href="{{ url('shift_admin_shift_counter', {"action": "view"}) }}' + this.id +'/academicyear/{{ activeAcademicYear.getCode() }}" class="view">View</a>');
                         {% endif %}
                     });
                     $('#shift_counter_search table').change();
 
                     $('.item .payout').click(payout);
+                    $('.item .payoutYear').click(payoutYear);
                 },
                 clear: function () {
                     $('#shift_counter_search table').find('tr.item').remove();
@@ -102,6 +104,19 @@
         });
 
         function payout(e) {
+            $.get('{{ url('shift_admin_shift_counter', {"action": "payout"}) }}0/'+ $(this).data('person'), function (data) {
+                if (data && 'success' == data.status) {
+                    $('.flashmessage').addClass('hide');
+                    $('.payout_success').removeClass('hide');
+                } else {
+                    errorPayout();
+                }
+            }, 'json').error(errorPayout);
+
+            $('.flashmessage').delay(2000).addClass('hide')
+        }
+
+        function payoutYear(e) {
             $.get('{{ url('shift_admin_shift_counter', {"action": "payout"}) }}0/'+ $(this).data('person'), function (data) {
                 if (data && 'success' == data.status) {
                     $('.flashmessage').addClass('hide');

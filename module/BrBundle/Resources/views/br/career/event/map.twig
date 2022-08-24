@@ -1,0 +1,290 @@
+{% extends 'career/partials/layout.twig' %}
+
+{% block page_content %}
+    <div class="container">
+
+        <div class="pageTitleHolder">
+            <h1>{{ event.getTitle(language) }}: Company map</h1>
+            <div class="pageTitleDeco"></div>
+        </div>
+        <div class="spacer40"></div>
+        
+        <a class="button blue unfilled" href="{{ url('br_career_event',{ 'action': 'view', 'id': event.getId() }) }}">← {{ translate('Return to the event information') }}</a>
+
+        <div class="row">
+        
+        <div class="col-sm-3">
+            <ul class="nav nav-sidebar">
+            {# <input type="checkbox"> #}
+                <li><a href="#" id="toggleAll"><input type="checkbox"> Select All</a></li>
+                <li class="divider"></li>
+                {% for key, value in masters %}
+                    <li><a href="#" data-master="{{ key }}"><input type="checkbox"> {{ value }}</a></li>
+                {% endfor %} 
+            </ul>
+        </div>
+        <div class="col-sm-9">
+            <canvas id="mapLegend" width="500px" height="50px"></canvas>
+            <canvas id="map" width="500px" height="600px"></canvas>
+        </div>
+        <div class="col-sm-12">
+            <div class="page-header">
+                <h4>Legend</h4>
+            </div>
+        </div>
+        <div id="legend">
+            {% for location in locations %}
+                {% if location.getNumber() != 0 %}
+                    <div class="company-{{ location.getCompany().getId() }} col-md-3 col-sm-4 col-xs-6">
+                        <span class="label label-default">{{ location.getNumber() }}</span>
+                        {{ location.getCompany().getName() }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        
+    </div>
+    </div>
+{% endblock %}
+
+
+{% block content_script %}
+    <script type="text/javascript">
+
+        var companies = [
+            
+            {% for location in locations %}
+                {% if location.getNumber() != 0 %}
+                    {'id': '{{ location.getCompany().getId() }}', 'name': '{{ location.getCompany().getName() }}', 'location': '{{ location.getNumber() }}', 'url': '{{ url("br_career_company", {"action": "view", "company": location.getCompany().getSlug()}) }}', 'masters': {{ interestedMasters[location.getCompany().getid()]|json_encode|raw }}} {% if not (loop.last) %},{% endif %}
+                {% endif %}
+            {% endfor %}
+
+        ];
+
+        var locations = {
+            {% for location in locations %}
+                {% if location.getNumber() != 0 %}
+                    {{ location.getNumber() }}: {'x': {{ location.getX() }}, 'y': {{ location.getY() }}, 'orientation': '{{ location.getOrientation() }}', 'type': '{{ location.getType() }}', 'width': '{{ location.getWidth() }}', 'height': '{{ location.getHeight() }}'}{% if not loop.last %},{% endif %}
+                {% endif %}
+            {% endfor %}
+        };
+        var locationWidth = 50;
+        var locationHeight = 38;
+        var canvasRatio = 650/950;
+        var canvasWidth = 950;
+        var borderColor = '#1c294b';
+        var locationBackground = '#e5e3e9';
+
+        $(document).ready(function () {
+            $('.nav-sidebar li a').click(function (e) {
+                /*if ($(e.target).is('input'))
+                    return;*/
+                e.preventDefault();
+                
+                $(this).find('input').prop('checked', !$(this).find('input').prop('checked'));
+
+                if ($(this).is('#toggleAll')) {
+                    if ($('#toggleAll').find('input').is(':checked')) {
+                        $('.nav-sidebar input').prop('checked', true);
+                    } else {
+                        $('.nav-sidebar input').prop('checked', false);
+                    }
+                } else {
+                    $('#toggleAll input').prop('checked', $('.nav-sidebar li input:not(checked)').length == 0);
+                }
+
+                drawCompanies();
+            });
+
+            $('#map').attr('width', Math.min($('#map').parent().width(), canvasWidth));
+            $('#mapLegend').attr('width', Math.min($('#map').parent().width(), canvasWidth));
+            $('#map').attr('height', $('#map').attr('width')*canvasRatio);
+            $('#map').attr('style', "border: 1px solid #e5e3e9");
+            drawMapLegend();
+            drawCompanies();
+        });
+
+        $(window).resize(function () {
+            $('#map').attr('width', Math.min($('#map').parent().width(), canvasWidth));
+            $('#map').attr('height', $('#map').attr('width')*canvasRatio);
+
+            drawCompanies();
+        });
+
+        function drawMapLegend() {
+            var locationWidth = 30;
+            var locationHeight = 20;
+            var scale = Math.min($('#map').parent().width(), canvasWidth)/canvasWidth;
+
+            $('#mapLegend').drawRect({
+                    layer: true,
+                    name: 'company-notInterested',
+                    strokeStyle: borderColor,
+                    fillStyle: '#fff',
+                    x: (5+locationWidth*0.5)*scale, y: 20*scale,
+                    width: locationWidth*scale,
+                    height: locationHeight*scale
+                }).drawText({
+                    layer: true,
+                    name: 'company-notInterested-text',
+                    fillStyle: borderColor,
+                    x: ((5+locationWidth)+2*locationWidth*1.2)*scale, y: 20*scale,
+                    fontSize: 18*scale,
+                    fontFamily: 'Verdana, sans-serif',
+                    text: 'Not Interested'
+                }).drawRect({
+                    layer: true,
+                    name: 'company-coreBusiness',
+                    strokeStyle: borderColor,
+                    fillStyle: '#a29bb0',
+                    x: (200+locationWidth*0.5)*scale, y: 20*scale,
+                    width: locationWidth*scale,
+                    height: locationHeight*scale
+                }).drawText({
+                    layer: true,
+                    name: 'company-coreBusiness-text',
+                    fillStyle: borderColor,
+                    x: ((205+locationWidth*1.2)+2*locationWidth)*scale, y: 20*scale,
+                    fontSize: 18*scale,
+                    fontFamily: 'Verdana, sans-serif',
+                    text: 'Interested'
+                });
+        }
+
+        function drawCompanies() {
+            $('#map').clearCanvas().removeLayers();
+            var scale = Math.min($('#map').parent().width(), canvasWidth)/canvasWidth;
+
+            $('#map').drawRect({
+                layer: true,
+                name: 'door-1',
+                strokeStyle: borderColor,
+                fillStyle: borderColor,
+                x: scale*canvasWidth, y: 0.21*canvasWidth*scale,
+                width: 5*scale,
+                height: 70*scale,
+            }).drawRect({
+                layer: true,
+                name: 'door-2',
+                strokeStyle: borderColor,
+                fillStyle: borderColor,
+                x: scale*canvasWidth, y: 0.52*canvasWidth*scale,
+                width: 5*scale,
+                height: 70*scale,
+            }).drawText({
+                layer: true,
+                name: 'food_drinks',
+                fillStyle: borderColor,
+                x: scale*canvasWidth-7, y: canvasRatio*canvasWidth/2*scale,
+                fontSize: 16*scale,
+                fontFamily: 'Verdana, sans-serif',
+                text: "Drink and Foods",
+                rotate: -90,
+            });
+
+            var selectedMasters = [];
+            $('.nav-sidebar li a').each(function () {
+                if ($(this).find('input').is(':checked')){
+                    selectedMasters.push($(this).data('master'));
+                }
+            });
+            var legend = $('#legend');
+            
+
+            $(companies).each(function () {
+                var location = locations[this.location];
+
+                var highlight = false;
+
+                if (selectedMasters.length == 0){
+                    highlight = true;
+                }
+
+                var highlightColor = '#fff';
+
+                var companyMasters = this.masters;
+                if (!!companyMasters) {
+                    $(selectedMasters).each(function () {
+                        if (!!companyMasters[this]) {
+                            if (String(companyMasters[this]) == "interested") {
+                                highlight = true;
+                                highlightColor = '#a29bb0';
+                            }
+                        }
+                    });
+                }
+
+                legend.find('.company-' + this.id).toggle(highlight);
+                if (location.type == "circle"){
+                    $('#map').drawEllipse({
+                        layer: true,
+                        name: 'company-' + this.location,
+                        strokeStyle: borderColor,
+                        fillStyle: highlightColor,
+                        x: location.x*scale, y: location.y*scale,
+                        width: (location.orientation == 'horizontal' ? location.width : location.height)*scale,
+                        height: (location.orientation == 'horizontal' ? location.height : location.width)*scale,
+                        data: {
+                            company: this
+                        },
+                        mouseover: showTooltip,
+                        mouseout: hideTooltip,
+                        click: showTooltip
+                    });
+                } else {
+                    $('#map').drawRect({
+                        layer: true,
+                        name: 'company-' + this.location,
+                        strokeStyle: borderColor,
+                        fillStyle: highlightColor,
+                        x: location.x*scale, y: location.y*scale,
+                        width: (location.orientation == 'horizontal' ? location.width : location.height)*scale,
+                        height: (location.orientation == 'horizontal' ? location.height : location.width)*scale,
+                        data: {
+                            company: this
+                        },
+                        mouseover: showTooltip,
+                        mouseout: hideTooltip,
+                        click: showTooltip
+                    });
+                }
+                
+                $('#map').drawText({
+                    layer: true,
+                    name: 'company-' + this.location + '-text',
+                    fillStyle: highlight ? borderColor : locationBackground,
+                    x: location.x*scale, y: location.y*scale,
+                    fontSize: 20*scale,
+                    fontFamily: 'Verdana, sans-serif',
+                    text: this.location,
+                    click: showTooltip
+                });
+            });
+        }
+
+        function showTooltip(layer) {
+            if (layer.name.indexOf('-text') > 0)
+                layer = $('#map').getLayer('company-' + layer.text);
+
+            $('#tooltip-trigger').remove();
+            $('.tooltip').remove();
+            var div = $('<a>', {'id': 'tooltip-trigger'});
+            div.css({
+                'display': 'bock',
+                'position': 'absolute',
+                'top': layer.y + $('#map').offset().top - (layer.height)/2,
+                'left': layer.x + $('#map').offset().left - (layer.width)/2,
+                'width': layer.width,
+                'height': layer.height,
+                'cursor': 'pointer'
+            }).attr('href', layer.data.company.url).data('layer', layer.name);
+            $('body').append(div);
+            div.tooltip({'html': true, 'placement': 'top', 'trigger': 'manual', 'show': true, 'title': layer.data.company.name}).tooltip('show');
+        }
+
+        function hideTooltip(layer) {
+            $('#tooltip-trigger').remove();
+            $('.tooltip').remove();
+        }
+    </script>
+{% endblock %}

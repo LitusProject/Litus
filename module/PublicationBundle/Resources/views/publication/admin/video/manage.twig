@@ -1,0 +1,132 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'publication/admin/video/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div class="flashmessage success_message full_width video_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The video was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width video_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete a video.</p>
+        </div>
+    </div>
+
+    <div id="controller_action">
+
+        <div id="normal_page">
+
+            <table class="full_width manage">
+                <tr>
+                    <th style="width: 50px;">ID</th>
+                    <th>Title</th>
+                    <th>Url</th>
+                    <th>Shown On Home Page</th>
+                    <th style="width:70px">Actions</th>
+                </tr>
+
+                {% for video in paginator %}
+
+                    <tr class="item item-{{ video.getId() }}">
+                        <td>{{ video.getId() }}</td>
+                        <td>{{ video.getTitle() }}</td>
+                        <td>{{ video.getUrl() }}</td>
+{#                        {% if video.getShowOnHomePage() %}#}
+{#                            <td>x</td>#}
+{#                        {% else %}#}
+{#                            <td></td>#}
+{#                        {% endif %}#}
+                        <td>{% if video.getShowOnHomePage() %}&times;{% endif %}</td>
+                        <td class="actions">
+                            {% if hasAccess('publication_admin_video', 'edit') %}
+                                <a href="{{ url('publication_admin_video', {"action": "edit", "id": video.getId() }) }}"
+                                   class="edit">Edit</a>
+                            {% endif %}
+                            {% if hasAccess('publication_admin_video', 'delete') %}
+                                <a href="#" class="delete" data-id="{{ video.getId() }}"
+                                   data-title="{{ video.getTitle() }}" data-url="{{ video.getUrl() }}">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                {% endfor %}
+
+            </table>
+
+        </div>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+    <div class="modal fade" id="removeVideo" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Video
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following video: <b class="videoTitle"></b>, <b
+                                class="videoUrl"></b>!
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('.item .delete').click(openModal);
+
+        });
+
+        function openModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeVideo = $('#removeVideo');
+            removeVideo.find('.videoTitle').html($(this).data('title'));
+            removeVideo.find('.videoUrl').html($(this).data('url'));
+            var id = $this.data('id');
+            removeVideo.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('publication_admin_video', {"action": "delete"}) }}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.video_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeVideo.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeVideo.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.video_removed_error').removeClass('hide');
+            $('#removeVideo').modal('hide');
+        }
+
+    </script>
+{% endblock %}

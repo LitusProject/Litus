@@ -1,4 +1,22 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
 namespace BrBundle\Hydrator;
 
@@ -16,7 +34,7 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $stdKeys = array('name', 'vat_number', 'phone_number', 'website', 'large');
+    private static $stdKeys = array('name', 'vat_number', 'phone_number', 'website', 'matching_software_email', 'large');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -43,6 +61,8 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
                 $hydrator->hydrate($data['invoice']['invoice_address'], $object->getRawInvoiceAddress())
             );
         }
+        
+        $object->setAttendsJobfair($data['attends_jobfair']);
 
         $object->setSector($data['sector']);
 
@@ -84,12 +104,11 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $object->getPage()->setYears($years)
-            ->setDescription($data['page']['description'])
-            ->setShortDescription($data['page']['short_description'])
-            ->setYoutubeURL($data['page']['youtube_url']);
+            ->setDescription($data['page']['description']);
         if (isset($data['page']['atEvent'])) {
             $object->getPage()->setAtEvent($data['page']['atEvent']);
         }
+
 
         return $this->stdHydrate($data, $object, self::$stdKeys);
     }
@@ -103,6 +122,8 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
         $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['sector'] = $object->getSectorCode();
+        
+        $data['attends_jobfair'] = $object->attendsJobfair();
 
         $data['cvbook'] = array();
         foreach ($object->getCvBookYears() as $year) {
@@ -132,8 +153,7 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
                 $data['page']['years'][] = $year->getId();
             }
             $data['page']['description'] = $page->getDescription();
-            $data['page']['short_description'] = $page->getShortDescription();
-            $data['page']['youtube_url'] = $page->getYoutubeURL();
+            $data['page']['atEvent'] = $page->isAtEvent();
         }
 
         return $data;

@@ -1,4 +1,4 @@
-{% macro displayEntry(entry, profilePath) %}
+{% macro displayEntry(entry, profilePath, gradesMapEnabled = 0, gradesMap = 0) %}
     <div class="row">
         <div class="col-md-4">
             <b>{{ entry.getFirstName() }} {{ entry.getLastName() }}</b><br>
@@ -31,12 +31,40 @@
                     <tr>
                         <td class="col-sm-8">{{ entry.getStudy().getTitle() }}</td>
                         <td class="col-sm-2">{{ entry.getMasterStart() }} &mdash; {{  entry.getMasterEnd() }}</td>
-                        <td class="col-sm-2">{%if entry.getGrade() != 0%}{{entry.getGrade()/100}}%{%else%}&mdash;{%endif%}</td>
+                        <td class="col-sm-2">
+                            {% if gradesMapEnabled == 0 %}
+                                {%if entry.getGrade() != 0%}
+                                    {{entry.getGrade()/100}}%
+                                {%else%}
+                                    &mdash;
+                                {%endif%}
+                            {% else %}
+                                {%if entry.getGrade() != 0%}
+                                    {{entry.getGradeMapped(gradesMap)}}
+                                {%else%}
+                                    &mdash;
+                                {%endif%}
+                            {% endif %}
+                        </td>
                     </tr>
                     <tr>
                         <td>{{ entry.getPriorStudy() }}</td>
                         <td>{{ entry.getBachelorStart() }} &mdash; {{  entry.getBachelorEnd() }}</td>
-                        <td>{%if entry.getPriorGrade() != 0%}{{entry.getPriorGrade()/100}}%{%else%}&mdash;{%endif%}</td>
+                        <td>
+                            {% if gradesMapEnabled == 0 %}
+                                {%if entry.getPriorGrade() != 0%}
+                                    {{entry.getPriorGrade()/100}}%
+                                {%else%}
+                                    &mdash;
+                                {%endif%}
+                            {% else %}
+                                {%if entry.getPriorGrade() != 0%}
+                                    {{entry.getPriorGradeMapped(gradesMap)}}
+                                {%else%}
+                                    &mdash;
+                                {%endif%}
+                            {% endif %}
+                        </td>
                     </tr>
                 </tbody>
             </table>

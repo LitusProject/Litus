@@ -43,7 +43,7 @@ class Company
     /**
      * @var string The company's VAT number
      *
-     * @ORM\Column(type="string", name="vat_number")
+     * @ORM\Column(type="string", name="vat_number", nullable=true)
      */
     private $vatNumber;
 
@@ -51,7 +51,7 @@ class Company
      * @var Address The address of the company
      *
      * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="address", referencedColumnName="id")
+     * @ORM\JoinColumn(name="address", referencedColumnName="id", nullable=true)
      */
     private $address;
 
@@ -87,14 +87,14 @@ class Company
     /**
      * @var string The company's website
      *
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $website;
 
     /**
      * @var string The sector of the company
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $sector;
 
@@ -132,6 +132,13 @@ class Company
     private $cvBookArchiveYears;
 
     /**
+     * @var string The Email address to use for matching software.
+     *
+     * @ORM\Column(name="matching_software_email", type="string", nullable=true)
+     */
+    private $matchingEmail;
+
+    /**
      * @var ArrayCollection The company's contacts
      *
      * @ORM\OneToMany(targetEntity="BrBundle\Entity\User\Person\Corporate", mappedBy="company")
@@ -148,9 +155,16 @@ class Company
     /**
      * @var boolean Whether this is a large company (on the company page)
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $large;
+
+    /**
+     * @var boolean Whether this is a large company (on the company page)
+     *
+     * @ORM\Column(type="boolean", name="attends_jobfair", nullable=true)
+     */
+    private $attendsJobfair;
 
     /**
      * @var array The possible masters for students
@@ -163,7 +177,7 @@ class Company
         'computer science engineering' => 'Computer Science Engineering',
         'electrical engineering'       => 'Electrical Engineering',
         'energy engineering'           => 'Energy Engineering',
-        'logistics engineering'        => 'Logistics Engineering',
+        'logistics engineering'        => 'Mobility & Supply Chain Engineering',
         'materials engineering'        => 'Materials Engineering',
         'mathematical engineering'     => 'Mathematical Engineering',
         'mechanical engineering'       => 'Mechanical Engineering',
@@ -552,6 +566,24 @@ class Company
     }
 
     /**
+     * @return boolean
+     */
+    public function attendsJobfair()
+    {
+        return $this->attendsJobfair;
+    }
+
+    /**
+     * @param boolean $attendsJobfair
+     * @return self
+     */
+    public function setAttendsJobfair($attendsJobfair)
+    {
+        $this->attendsJobfair = $attendsJobfair;
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getContacts()
@@ -588,6 +620,20 @@ class Company
     }
 
     /**
+     * @param $year
+     * @return self
+     */
+    public function addCvBookYear($year)
+    {
+
+        $current_years = $this->cvBookYears;
+        $current_years->add($year);
+        $this->cvBookYears = $current_years;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getCvBookArchiveYears()
@@ -612,5 +658,21 @@ class Company
         $this->cvBookArchiveYears = serialize($archiveYears);
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getMatchingSoftwareEmail()
+    {
+        return $this->matchingEmail;
+    }
+
+    /**
+     * @param string|null $matchingEmail
+     */
+    public function setMatchingSoftwareEmail($matchingEmail)
+    {
+        $this->matchingEmail = $matchingEmail;
     }
 }

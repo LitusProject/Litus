@@ -2,7 +2,6 @@
 
 {% block content %}
     <div class="container">
-
         <div class="page-header">
             {% block download %}{% endblock %}
 
@@ -37,28 +36,31 @@
                 <dd>{{ authenticatedPerson.getSex()|capitalize }}&nbsp;</dd>
                 <dt>{{ translate('Phone Number') }}</dt>
                 <dd>{{ authenticatedPerson.getPhoneNumber() }}&nbsp;</dd>
-                <dt>{{ translate('Email') }}</dt>
-                <dd>{{ authenticatedPerson.getPersonalEmail() }}&nbsp;</dd>
+                {#                <dt>{{ translate('Email') }}</dt>#}
+                {#                <dd>{{ authenticatedPerson.getPersonalEmail() }}&nbsp;</dd>#}
                 <dt>{{ translate('Address') }}</dt>
                 <dd>
                     {{ authenticatedPerson.getSecondaryAddress().getStreet() }} {{ authenticatedPerson.getSecondaryAddress().getNumber() }}
                     {% if authenticatedPerson.getSecondaryAddress().getMailbox() %}
-                        / {{ authenticatedPerson.getSecondaryAddress().getMailbox() }}
+                    / {{ authenticatedPerson.getSecondaryAddress().getMailbox() }}
                     {% endif %}<br>
-                    {{ authenticatedPerson.getSecondaryAddress().getPostal() }} {{ authenticatedPerson.getSecondaryAddress().getCity() }}<br>
+                    {{ authenticatedPerson.getSecondaryAddress().getPostal() }} {{ authenticatedPerson.getSecondaryAddress().getCity() }}
+                    <br>
                     {{ authenticatedPerson.getSecondaryAddress().getCountry() }}
                 </dd>
                 <dt>{{ translate('Profile Picture') }}</dt>
                 <dd>
-                    <div id="accountProfileImage" class="thumbnail" style="width: 180px; height: 135px; margin-top: 18px; position: relative;">
+                    <div id="accountProfileImage" class="thumbnail"
+                         style="width: 180px; height: 135px; margin-top: 18px; position: relative;">
                         <img src="{{ profilePath }}/{{ authenticatedPerson.getPhotoPath() }}" alt="">
-                        <button id="editProfile" class="btn btn-default btn-sm hidden-xs hidden-sm" style="position: absolute; bottom: 5px; right: 5px;">{{ translate('Edit') }}</button>
+                        <button id="editProfile" class="btn btn-default btn-sm hidden-xs hidden-sm"
+                                style="position: absolute; bottom: 5px; right: 5px;">{{ translate('Edit') }}</button>
                     </div>
                 </dd>
             </dl>
 
             <strong>
-                <p>{{ translate('Please update your account data and profile picture if necessary via vtk.be/en/account/edit/ and vtk.be/en/account/. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected automatically.')}}</p>
+                <p>{{ translate('Please update your account data and profile picture if necessary via vtk.be/en/account/edit/ and vtk.be/en/account/. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected automatically.') }}</p>
 
                 <p>{{ translate('You are advised to use your mother tongue for your CV.') }}</p>
             </strong>
@@ -81,9 +83,10 @@
                         <div class="imageCrop">
                             <div style="width: 320px; margin: 10px auto;">
                                 {% if authenticatedPerson.getPhotoPath() %}
-                                    <img class="image" src="{{ profilePath }}/{{ authenticatedPerson.getPhotoPath() }}" alt="" width="320">
+                                    <img class="image" src="{{ profilePath }}/{{ authenticatedPerson.getPhotoPath() }}"
+                                         alt="" width="320">
                                 {% else %}
-                                    <img class="image" width="320" />
+                                    <img class="image" width="320"/>
                                 {% endif %}
                             </div>
                             <div class="flashmessage alert alert-danger fade" id="file_size_error">
@@ -94,205 +97,213 @@
                             {% import 'site/partials/form.twig' as forms %}
                             {{ forms.renderForm(profileForm) }}
                         </div>
-
-                        <div class="imageForm" style="display: none;">
-                            {% import 'site/partials/form.twig' as forms %}
-                            {{ forms.renderForm(profileForm) }}
+                        <div class="flashmessage alert alert-danger fade" id="file_size_error">
+                            <div class="content">
+                                {{ translate('The selected file is too large.') }}
+                            </div>
                         </div>
+                        {% import 'site/partials/form.twig' as forms %}
+                        {{ forms.renderForm(profileForm) }}
                     </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-success save">{{ translate('Save') }}</button>
-                        <button class="btn btn-default" data-dismiss="modal">{{ translate('Close') }}</button>
+
+                    <div class="imageForm" style="display: none;">
+                        {% import 'site/partials/form.twig' as forms %}
+                        {{ forms.renderForm(profileForm) }}
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success save">{{ translate('Save') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('Close') }}</button>
                 </div>
             </div>
         </div>
     </div>
-{% endblock %}
 
-{% block content_script %}
-    <script type="text/javascript">
-        var languageCount = 0;
-        var experienceCount = 0;
-        var jcrop_api;
-        $(document).ready(function () {
-            while ($('input[name="languages[' + (languageCount) + '][language_name]"]').length) {
-                languageCount++;
+    {% endblock %}
+
+    {% block content_script %}
+        <script type="text/javascript">
+            var languageCount = 0;
+            var experienceCount = 0;
+            var jcrop_api;
+            $(document).ready(function () {
+                while ($('input[name="languages[' + (languageCount) + '][language_name]"]').length) {
+                    languageCount++;
+                }
+
+                if (languageCount == 0 || $('input[name="languages[' + (languageCount - 1) + '][language_name]"]').val().length > 0) {
+                    addLanguage();
+                } else {
+                    $('input[name="languages[' + (languageCount - 1) + '][language_name]"]').keyup(triggerKeyUpLanguage);
+                }
+
+                console.log($('input[name="capabilities[experiences][' + (experienceCount) + '][experience_function]"]'))
+                while ($('input[name="capabilities[experiences][' + (experienceCount) + '][experience_function]"]').length) {
+                    experienceCount++;
+                }
+
+                if (experienceCount == 0 || $('input[name="capabilities[experiences][' + (experienceCount - 1) + '][experience_function]"]').val().length > 0) {
+                    addExperience();
+                } else {
+                    $('input[name="capabilities[experiences][' + (experienceCount - 1) + '][experience_function]"]').keyup(triggerKeyUpExperience);
+                }
+
+                $('#editProfile').click(function () {
+                    var image = $('#modalProfileImage .image:first');
+                    $('#modalProfileImage').modal().off('shown.bs.modal').on('shown.bs.modal', function () {
+                        if (typeof jcrop_api != 'undefined')
+                            jcrop_api.destroy();
+
+                        if (image.attr('src'))
+                            enableJCrop(image);
+                    });
+
+                    if (window.File && window.FileReader && window.FileList && window.Blob) {
+                        $('#modalProfileImage input[type=file]').change(function () {
+                            var oFile = $(this)[0].files[0];
+
+                            $('#file_size_error').removeClass('in');
+
+                            if (oFile === undefined)
+                                return;
+
+                            if (oFile.size > 2000 * 1024) {
+                                $('#file_size_error').addClass('in');
+                                return;
+                            }
+
+                            var oReader = new FileReader();
+                            oReader.onload = function (e) {
+                                if (typeof jcrop_api != 'undefined')
+                                    jcrop_api.destroy();
+
+                                image.attr('src', e.target.result).attr('style', '');
+                                image.load(function () {
+                                    enableJCrop(image);
+                                });
+                            }
+                            oReader.readAsDataURL(oFile);
+
+                        });
+
+                        $('#modalProfileImage .save').one('click', function () {
+                            $('#modalProfileImage .imageCrop form').ajaxSubmit({
+                                'error': function () {
+                                    $('#profile_upload_error').addClass('in');
+                                    $('#modalProfileImage').modal('hide');
+                                },
+                                'success': function (data) {
+                                    if (data.status !== undefined && data.status == 'success') {
+                                        $('#accountProfileImage img').attr('src', data.profile + '?time=' + (new Date()).getTime());
+                                        image.attr('src', data.profile + '?time=' + (new Date()).getTime());
+                                        $('#profile_upload_error').removeClass('in');
+                                        $('#modalProfileImage').modal('hide');
+                                    } else {
+                                        $('#profile_upload_error').addClass('in');
+                                        $('#modalProfileImage').modal('hide');
+                                    }
+                                },
+                                'dataType': 'json'
+                            });
+                        });
+                    } else {
+                        $('#modalProfileImage .imageCrop').hide();
+                        $('#modalProfileImage .imageForm').show();
+
+                        $('#modalProfileImage .save').one('click', function () {
+                            $('#modalProfileImage .imageForm form').ajaxSubmit({
+                                'error': function () {
+                                    $('#profile_upload_error').addClass('in');
+                                    $('#modalProfileImage').modal('hide');
+                                },
+                                'success': function (data) {
+                                    if (data.status !== undefined && data.status == 'success') {
+                                        $('#accountProfileImage img').attr('src', data.profile + '?time=' + (new Date()).getTime());
+                                        image.attr('src', data.profile + '?time=' + (new Date()).getTime());
+                                        $('#modalProfileImage').modal('hide');
+                                    } else {
+                                        $('#profile_upload_error').addClass('in');
+                                        $('#modalProfileImage').modal('hide');
+                                    }
+                                },
+                                'dataType': 'json'
+                            });
+                        });
+                    }
+                });
+            });
+
+            function triggerKeyUpLanguage() {
+                if ($(this).val().length > 0) {
+                    $(this).unbind('keyup');
+                    addLanguage();
+                }
             }
 
-            if (languageCount == 0 || $('input[name="languages[' + (languageCount - 1) + '][language_name]"]').val().length > 0) {
-                addLanguage();
-            } else {
+            function triggerKeyUpExperience() {
+                if ($(this).val().length > 0) {
+                    $(this).unbind('keyup');
+                    addExperience();
+                }
+            }
+
+            function addLanguage() {
+                if (languageCount >= 4)
+                    return;
+                var template = $('#data-template-languages').data('template');
+                template = template.replace(/__index__/g, languageCount);
+                languageCount++;
+
+                $('form > fieldset#languages').append(template);
+                $('fieldset[name="languages[' + (languageCount - 1) + ']"] .count').each(function () {
+                    $(this).fieldCount()
+                });
                 $('input[name="languages[' + (languageCount - 1) + '][language_name]"]').keyup(triggerKeyUpLanguage);
             }
 
-            console.log($('input[name="capabilities[experiences][' + (experienceCount) + '][experience_function]"]'))
-            while ($('input[name="capabilities[experiences][' + (experienceCount) + '][experience_function]"]').length) {
+            function addExperience() {
+                if (experienceCount >= 4)
+                    return;
+                var template = $('#data-template-capabilities\\[experiences\\]').data('template');
+                template = template.replace(/__index__/g, experienceCount);
                 experienceCount++;
-            }
 
-            if (experienceCount == 0 || $('input[name="capabilities[experiences][' + (experienceCount - 1) + '][experience_function]"]').val().length > 0) {
-                addExperience();
-            } else {
-                $('input[name="capabilities[experiences][' + (experienceCount - 1) + '][experience_function]"]').keyup(triggerKeyUpExperience);
-            }
-
-            $('#editProfile').click(function () {
-                var image = $('#modalProfileImage .image:first');
-                $('#modalProfileImage').modal().off('shown.bs.modal').on('shown.bs.modal', function () {
-                    if (typeof jcrop_api != 'undefined')
-                        jcrop_api.destroy();
-
-                    if (image.attr('src'))
-                        enableJCrop(image);
+                $('form > fieldset > fieldset#capabilities\\[experiences\\]').append(template);
+                $('fieldset[name="capabilities[experiences][' + (experienceCount - 1) + ']"] .count').each(function () {
+                    $(this).fieldCount()
                 });
-
-                if (window.File && window.FileReader && window.FileList && window.Blob) {
-                    $('#modalProfileImage input[type=file]').change(function () {
-                        var oFile = $(this)[0].files[0];
-
-                        $('#file_size_error').removeClass('in');
-
-                        if (oFile === undefined)
-                            return;
-
-                        if (oFile.size > 2000 * 1024) {
-                            $('#file_size_error').addClass('in');
-                            return;
-                        }
-
-                        var oReader = new FileReader();
-                        oReader.onload = function(e) {
-                            if (typeof jcrop_api != 'undefined')
-                                jcrop_api.destroy();
-
-                            image.attr('src', e.target.result).attr('style', '');
-                            image.load(function () {
-                                enableJCrop(image);
-                            });
-                        }
-                        oReader.readAsDataURL(oFile);
-
-                    });
-
-                    $('#modalProfileImage .save').one('click', function () {
-                        $('#modalProfileImage .imageCrop form').ajaxSubmit({
-                            'error': function () {
-                                $('#profile_upload_error').addClass('in');
-                                $('#modalProfileImage').modal('hide');
-                            },
-                            'success': function (data) {
-                                if (data.status !== undefined && data.status == 'success') {
-                                    $('#accountProfileImage img').attr('src', data.profile + '?time=' + (new Date()).getTime());
-                                    image.attr('src', data.profile + '?time=' + (new Date()).getTime());
-                                    $('#profile_upload_error').removeClass('in');
-                                    $('#modalProfileImage').modal('hide');
-                                } else {
-                                    $('#profile_upload_error').addClass('in');
-                                    $('#modalProfileImage').modal('hide');
-                                }
-                            },
-                            'dataType': 'json'
-                        });
-                    });
-                } else {
-                    $('#modalProfileImage .imageCrop').hide();
-                    $('#modalProfileImage .imageForm').show();
-
-                    $('#modalProfileImage .save').one('click', function () {
-                        $('#modalProfileImage .imageForm form').ajaxSubmit({
-                            'error': function () {
-                                $('#profile_upload_error').addClass('in');
-                                $('#modalProfileImage').modal('hide');
-                            },
-                            'success': function (data) {
-                                if (data.status !== undefined && data.status == 'success') {
-                                    $('#accountProfileImage img').attr('src', data.profile + '?time=' + (new Date()).getTime());
-                                    image.attr('src', data.profile + '?time=' + (new Date()).getTime());
-                                    $('#modalProfileImage').modal('hide');
-                                } else {
-                                    $('#profile_upload_error').addClass('in');
-                                    $('#modalProfileImage').modal('hide');
-                                }
-                            },
-                            'dataType': 'json'
-                        });
-                    });
+                $('input[name="capabilities[experiences][' + (experienceCount - 1) + '][experience_function]"]').keyup(triggerKeyUpExperience);
+                if (experienceCount == 1) {
+                    $('form > fieldset > fieldset > fieldset#capabilities\\[experiences\\] > legend').hide();
                 }
-            });
-        });
-
-        function triggerKeyUpLanguage() {
-            if ($(this).val().length > 0) {
-                $(this).unbind('keyup');
-                addLanguage();
-            }
-        }
-
-        function triggerKeyUpExperience() {
-            if ($(this).val().length > 0) {
-                $(this).unbind('keyup');
-                addExperience();
-            }
-        }
-
-        function addLanguage() {
-            if (languageCount >= 4)
-                return;
-            var template = $('#data-template-languages').data('template');
-            template = template.replace(/__index__/g, languageCount);
-            languageCount++;
-
-            $('form > fieldset#languages').append(template);
-            $('fieldset[name="languages[' + (languageCount - 1) + ']"] .count').each(function() {
-                $(this).fieldCount()
-            });
-            $('input[name="languages[' + (languageCount - 1) + '][language_name]"]').keyup(triggerKeyUpLanguage);
-        }
-
-        function addExperience() {
-            if (experienceCount >= 4)
-                return;
-            var template = $('#data-template-capabilities\\[experiences\\]').data('template');
-            template = template.replace(/__index__/g, experienceCount);
-            experienceCount++;
-
-            $('form > fieldset > fieldset#capabilities\\[experiences\\]').append(template);
-            $('fieldset[name="capabilities[experiences][' + (experienceCount - 1) + ']"] .count').each(function() {
-                $(this).fieldCount()
-            });
-            $('input[name="capabilities[experiences][' + (experienceCount - 1) + '][experience_function]"]').keyup(triggerKeyUpExperience);
-            if (experienceCount == 1) {
-                $('form > fieldset > fieldset > fieldset#capabilities\\[experiences\\] > legend').hide();
-            }
-        }
-
-        function enableJCrop(image) {
-            var w = image.outerWidth();
-            var h = w*240/320;
-            if (h > image.outerHeight()) {
-                h = image.outerHeight(),
-                w = h*320/240;
             }
 
-            var x = image.outerWidth()/2 - w/2;
-            var y = image.outerHeight()/2 - h/2;
-
-            image.Jcrop({
-                keySupport: false,
-                aspectRatio: 320/240,
-                setSelect: [x, y, x+w, y+h],
-                onChange: function (e) {
-                    $('#modalProfileImage .imageCrop #x').val(Math.round(e.x));
-                    $('#modalProfileImage .imageCrop #y').val(Math.round(e.y));
-                    $('#modalProfileImage .imageCrop #x2').val(Math.round(e.x2));
-                    $('#modalProfileImage .imageCrop #x2').val(Math.round(e.y2));
-                    $('#modalProfileImage .imageCrop #w').val(Math.round(e.w));
-                    $('#modalProfileImage .imageCrop #h').val(Math.round(e.h));
+            function enableJCrop(image) {
+                var w = image.outerWidth();
+                var h = w * 240 / 320;
+                if (h > image.outerHeight()) {
+                    h = image.outerHeight(),
+                        w = h * 320 / 240;
                 }
-            }, function () {
-                jcrop_api = this;
-            });
-        }
-    </script>
-{% endblock %}
+
+                var x = image.outerWidth() / 2 - w / 2;
+                var y = image.outerHeight() / 2 - h / 2;
+
+                image.Jcrop({
+                    keySupport: false,
+                    aspectRatio: 320 / 240,
+                    setSelect: [x, y, x + w, y + h],
+                    onChange: function (e) {
+                        $('#modalProfileImage .imageCrop #x').val(Math.round(e.x));
+                        $('#modalProfileImage .imageCrop #y').val(Math.round(e.y));
+                        $('#modalProfileImage .imageCrop #x2').val(Math.round(e.x2));
+                        $('#modalProfileImage .imageCrop #x2').val(Math.round(e.y2));
+                        $('#modalProfileImage .imageCrop #w').val(Math.round(e.w));
+                        $('#modalProfileImage .imageCrop #h').val(Math.round(e.h));
+                    }
+                }, function () {
+                    jcrop_api = this;
+                });
+            }
+        </script>
+    {% endblock %}

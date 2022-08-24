@@ -1,0 +1,189 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'br/admin/event/partials/eventNavigation.twig' %}
+    {% include 'br/admin/event/subscription/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+{#  TODO: Make a graph and overview of all currently here  #}
+    <div class="flashmessage success_message full_width subscription_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The subscription was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width subscription_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete a subscription.</p>
+        </div>
+    </div>
+    <div id="subscription_search" style="display:none;">
+        <div style="padding:4px;text-align:right">
+            Search:
+            <select id="searchField">
+                <option value="name">Name</option>
+            </select>
+            is
+            <input type="text" id="searchString" size="30" />
+        </div>
+
+        <table class="full_width manage">
+            <tr>
+                <th>Name</th>
+                <th width="150px">University</th>
+                <th width="200px">Study</th>
+                <th width="180px">At network reception</th>
+                <th width="150px">QR</th>
+                <th width="100px">Action</th>
+            </tr>
+        </table>
+    </div>
+
+    <div id="controller_action">
+        <table class="manage full_width">
+            <tr>
+                <th>Name</th>
+                <th width="150px">University</th>
+                <th width="200px">Study</th>
+                <th width="180px">At network reception</th>
+                <th width="150px">QR</th>
+                <th width="100px">Action</th>
+            </tr>
+            {% for subscription in paginator %}
+                <tr class="item item-{{ subscription.getId() }}">
+                    <td>{{ subscription.getFirstName() }} {{ subscription.getLastName() }}</td>
+                    <td>{{ subscription.getUniversityString() }}</td>
+                    <td>{{ subscription.getStudyString() }}</td>
+                    <td>{% if subscription.isAtNetworkReception() %}X{% endif %}</td>
+                    <td>{{subscription.getQrCode()}}</td>
+                    <td class="actions">
+                        {% if hasAccess('br_admin_event_subscription', 'edit') %}
+                            <a href="{{  url('br_admin_event_subscription', {"action": "edit", "event": event.getId(), "id": subscription.getId()}) }}" class="edit">Edit</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_event_subscription', 'delete') %}
+                            <a href="#" class="delete" data-id="{{  subscription.getId() }}" data-name="{{ subscription.getFirstName() }} {{ subscription.getLastName() }}">Delete</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_event_subscription', 'mail') %}
+                            <a href="{{  url('br_admin_event_subscription', {"action": "mail", "event": event.getId(), "id": subscription.getId()}) }}" class="edit">Resend mail</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_event_subscription', 'qr') %}
+                            <a href="{{ url('br_admin_event_subscription', {"action": "qr", "event": event.getId(), "id": subscription.getId()}) }}">QR</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% include 'admin/partials/paginationControl.twig' %}
+
+    </div>
+
+    <div class="modal fade" id="removeSubscription" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Subscription
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following subscription: <b class="subscriptionName"></b>!
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            {% if hasAccess('br_admin_event_subscription', 'search') %}
+            $.searchDatabase({
+                defaultPage: $('#controller_action'),
+                searchDiv: $('#subscription_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                searchPage: '{{ url("br_admin_event_subscription", {"action": "overview", "event":event.getId()}) }}overview/',
+                url: '{{ url("br_admin_event_subscription", {"action": "search", "event": event.getId()}) }}',
+                display: function (data) {
+                    $('#subscription_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#subscription_search table').append(row = $('<tr>', {class: 'item'}));
+                        row.append('<td>' + this.name + '</td>')
+                            .append('<td>' + this.university + '</td>')
+                            .append('<td>' + this.study + '</td>')
+                            .append('<td>' + this.reception + '</td>')
+                            .append('<td>' + this.qr + '</td>')
+                            .append(
+                                actions = $('<td>', {'class': 'actions'})
+                            );
+                            {% if hasAccess('br_admin_event_subscription', 'edit') %}
+                                actions.append('<a href="{{  url("br_admin_event_subscription", {"action": "edit", "event": event.getId()}) }}' + this.id + '" class="edit">Edit</a>')
+                            {% endif %}
+                            {% if hasAccess('br_admin_event_subscription', 'delete') %}
+                                actions.append('<a href="#" class="delete" data-id="'+this.id+'" data-name="'+this.name+'">Delete</a>')
+                            {% endif %}
+                            {% if hasAccess('br_admin_event_subscription', 'mail') %}
+                                actions.append('<a href="{{  url("br_admin_event_subscription", {"action": "mail", "event": event.getId()}) }}'+this.id+'" class="edit">Resend mail</a>')
+                            {% endif %}
+                            {% if hasAccess('br_admin_event_subscription', 'qr') %}
+                                actions.append('<a href="{{ url("br_admin_event_subscription", {"action": "qr", "event": event.getId()}) }}'+this.id+'">QR</a>')
+                            {% endif %}
+                    });
+                    $('#subscription_search table').change();
+                    $('.item .delete').unbind('click').click(openModal);
+
+                },
+                clear: function () {
+                    $('#subscription_search table').find('tr.item').remove();
+                }
+            });
+            $('moreResults').remove();
+
+            {% endif %}
+
+            $('.item .delete').click(openModal);
+        });
+
+        
+
+        function openModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeSubscription = $('#removeSubscription');
+            removeSubscription.find('.subscriptionName').html($(this).data('first_name'));
+            var id = $this.data('id');
+            removeSubscription.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('br_admin_event_subscription', {"action": "delete", "event": event.getId()})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.subscription_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeSubscription.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeSubscription.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.subscription_removed_error').removeClass('hide');
+            $('#removeSubscription').modal('hide');
+        }
+
+    </script>
+{% endblock %}

@@ -58,7 +58,7 @@ class Booking extends \CommonBundle\Component\Form\Bootstrap\Form
             );
         }
 
-        $this->addSubmit('Book', 'btn btn-primary pull-right');
+        $this->addSubmit('Book', 'btn btn-primary pull-right btn-booking');
     }
 
     /**

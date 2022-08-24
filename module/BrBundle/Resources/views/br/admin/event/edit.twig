@@ -2,26 +2,14 @@
 
 {% block content %}
     {% include 'br/admin/event/partials/navigation.twig' %}
-
-    {% include 'admin/partials/flashMessenger.twig' %}
-
-    <div class="flashmessage success_message full_width attendee_removed_success hide">
-        <div class="title">Success</div>
-        <div class="content">
-            <p>The company was successfully removed!</p>
-        </div>
-    </div>
-    <div class="flashmessage error_message full_width attendee_removed_error hide">
-        <div class="title">Error</div>
-        <div class="content">
-            <p>An error occurred while trying to delete the company.</p>
-        </div>
-    </div>
+    {% include 'br/admin/event/partials/eventNavigation.twig' %}
 
     <div id="controller_action">
         {% import 'admin/partials/form.twig' as forms %}
         <h1>Edit</h1>
         {{ forms.renderForm(propertiesForm) }}
+    </div>
+    <div id="controller_action">
         <h1>Participants</h1>
         {{ forms.renderForm(companyMapForm) }}
         <br>
@@ -37,7 +25,10 @@
                     <tr class="item item-{{ eventCompanyMap.getId() }}">
                         <td>{{ eventCompanyMap.getCompany().getName() }}</td>
                         <td>{{ eventCompanyMap.getStatus() }}</td>
-                        <td>
+                        <td class="actions">
+                            {% if hasAccess('br_admin_event', 'editAttendee') %}
+                                <a href="{{ url('br_admin_event', {"action": "editAttendee", "id": event.getId(), "map": eventCompanyMap.getId()}) }}" class="edit">Edit</a>
+                            {% endif %}
                             {% if hasAccess('br_admin_event', 'deleteAttendee') %}
                                 <a href="#" data-id="{{ event.getId() }}" data-map="{{ eventCompanyMap.getId() }}" data-name="{{ eventCompanyMap.getCompany().getName() }}" class="delete">Delete</a>
                             {% endif %}

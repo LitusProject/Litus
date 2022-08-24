@@ -41,6 +41,28 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'     => 'select',
+                'name'     => 'form',
+                'label'    => 'Form',
+                'required' => false,
+                'attributes' => array(
+                    'options' => $this->createFormArray(),
+                ),
+                'options'    => array(
+                    'input' => array(
+                        'filter' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+//                        'validators' => array(
+//                            array('name' => 'Activity'),
+//                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
                 'type'     => 'checkbox',
                 'name'     => 'active',
                 'label'    => 'Active',
@@ -100,6 +122,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         ),
                     ),
                 ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'checkbox',
+                'name'     => 'qr_enabled',
+                'label'    => 'Enable qr code for tickets',
+                'required' => false,
             )
         );
 
@@ -333,6 +364,22 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         }
 
         return $eventsArray;
+    }
+
+    protected function createFormArray()
+    {
+        $forms = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Node\Form')
+            ->findAllActive();
+
+        $formArray = array(
+            '' => '',
+        );
+        foreach ($forms as $form) {
+            $formArray[$form->getId()] = $form->getTitle();
+        }
+
+        return $formArray;
     }
 
     public function getInputFilterSpecification()

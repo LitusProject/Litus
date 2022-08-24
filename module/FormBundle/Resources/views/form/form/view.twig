@@ -1,58 +1,60 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-    <div class="page-header">
-        <h1>{% if group %}{{ group.getTitle(language) }}: {% endif %}{{ specification.getTitle(language) }}</h1>
-    </div>
-
-    {% if group %}
-        {% include 'form/form/partials/group-progress.twig' %}
-    {% endif %}
-
-    {% autoescape false %}
-        {{ markdown(specification.getIntroduction(language)) }}
-    {% endautoescape %}
-
-    <hr/>
-
-    {% if formClosed %}
-        <div class="alert alert-warning">
-            {{ translate('This form is currently closed.') }}
+    <div class="container">
+        <div class="page-header">
+            <h1>{% if group %}{{ group.getTitle(language) }}: {% endif %}{{ specification.getTitle(language) }}</h1>
         </div>
-    {% endif %}
 
-    <dl class="dl-horizontal">
-        {% for fieldEntry in entry.getFieldEntries() %}
-            <dt>{{ fieldEntry.getField().getLabel(language) }}</dt>
-            <dd>
-                {% if fieldEntry.getField().getType() == 'checkbox' %}
-                    {% if fieldEntry.getValue() %}
-                        {{ translate('Yes') }}
-                    {% else %}
-                        {{ translate('No') }}
-                    {% endif %}
-                {% elseif fieldEntry.getField().getType() == 'dropdown' %}
-                    {{ fieldEntry.getValueString(language) }}
-                {% elseif fieldEntry.getField().getType() == 'file' %}
-                    {% if fieldEntry.getValue() %}
-                        {{ fieldEntry.getReadableValue() }}
-                        <a href="{{ url('form_view', {'action': 'downloadFile', 'id': fieldEntry.getValue()}) }}" class="btn btn-xs btn-default" style="margin-left: 10px;">{{ translate('Download') }}</a>
-                    {% else %}
-                        <i>{{ translate('(empty)') }}</i>
-                    {% endif %}
-                {% elseif fieldEntry.getField().getType() == 'string' %}
-                    {% if fieldEntry.getValueString(language) %}
+        {% if group %}
+            {% include 'form/form/partials/group-progress.twig' %}
+        {% endif %}
+
+        {% autoescape false %}
+            {{ markdown(specification.getIntroduction(language)) }}
+        {% endautoescape %}
+
+        <hr/>
+
+        {% if formClosed %}
+            <div class="alert alert-warning">
+                {{ translate('This form is currently closed.') }}
+            </div>
+        {% endif %}
+
+        <dl class="dl-horizontal">
+            {% for fieldEntry in entry.getFieldEntries() %}
+                <dt>{{ fieldEntry.getField().getLabel(language) }}</dt>
+                <dd>
+                    {% if fieldEntry.getField().getType() == 'checkbox' %}
+                        {% if fieldEntry.getValue() %}
+                            {{ translate('Yes') }}
+                        {% else %}
+                            {{ translate('No') }}
+                        {% endif %}
+                    {% elseif fieldEntry.getField().getType() == 'dropdown' %}
                         {{ fieldEntry.getValueString(language) }}
-                    {% else %}
-                        <i>{{ translate('(empty)') }}</i>
+                    {% elseif fieldEntry.getField().getType() == 'file' %}
+                        {% if fieldEntry.getValue() %}
+                            {{ fieldEntry.getReadableValue() }}
+                            <a href="{{ url('form_view', {'action': 'downloadFile', 'id': fieldEntry.getValue()}) }}" class="btn btn-xs btn-default" style="margin-left: 10px;">{{ translate('Download') }}</a>
+                        {% else %}
+                            <i>{{ translate('(empty)') }}</i>
+                        {% endif %}
+                    {% elseif fieldEntry.getField().getType() == 'string' %}
+                        {% if fieldEntry.getValueString(language) %}
+                            {{ fieldEntry.getValueString(language) }}
+                        {% else %}
+                            <i>{{ translate('(empty)') }}</i>
+                        {% endif %}
                     {% endif %}
-                {% endif %}
-                &nbsp;
-            </dd>
-        {% endfor %}
-    </dl>
+                    &nbsp;
+                </dd>
+            {% endfor %}
+        </dl>
 
-    <div style="clear: both;text-align: center;">
-        <a href="{{ url('form_view', {'action': 'index', 'id': specification.getId()}) }}" class="btn btn-default">{{ translate('Back') }}</a>
+        <div style="clear: both;text-align: center;">
+            <a href="{{ url('form_view', {'action': 'index', 'id': specification.getId()}) }}" class="btn btn-default">{{ translate('Back') }}</a>
+        </div>
     </div>
 {% endblock %}

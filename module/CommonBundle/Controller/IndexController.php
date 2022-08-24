@@ -42,6 +42,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'profilePath'        => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
+                'videos'             => $this->getVideos(),
             )
         );
     }
@@ -178,14 +179,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
         $calendarItems = array();
         foreach ($events as $event) {
-            $date = $event->getStartDate()->format('d-M');
-            if (!isset($calendarItems[$date])) {
-                $calendarItems[$date] = (object) array(
-                    'date'   => $event->getStartDate(),
-                    'events' => array(),
-                );
-            }
-            $calendarItems[$date]->events[] = $event;
+            $calendarItems[$event->getId()] = $event;
         }
         return $calendarItems;
     }
@@ -384,5 +378,13 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         return $academic;
+    }
+
+    private function getVideos()
+    {
+        return $this->getEntityManager()
+            ->getRepository('PublicationBundle\Entity\Video')
+            ->findAllOnHomePageQuery()
+            ->getResult();
     }
 }
