@@ -802,6 +802,10 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             return new ViewModel();
         }
 
+        $ticket = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Ticket')
+            ->findOneByQREvent($event, $qr)[0];
+
         if ($this->getAuthentication()->isAuthenticated()) {
             $person = $this->getAuthentication()->getPersonObject();
         }
@@ -829,6 +833,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                     array(
                         'event' => $event,
                         'entry' => $entry,
+                        'ticket_option' => $ticket->getOption()->getName(),
                     )
                 );
             }

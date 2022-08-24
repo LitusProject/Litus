@@ -1,0 +1,11 @@
+<header id="controller_header">
+    <div class="title"><span class="ticket">Tickets</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('ticket_admin_ticket', 'csv') %}
+                <li><a {% if 'csv' == getParam('action') %} class="active" {% endif %} href="{{ url("ticket_admin_ticket", {"action": "csv", 'id': event.getId()}) }}">Add from Csv</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
