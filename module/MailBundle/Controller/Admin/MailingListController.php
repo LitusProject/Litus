@@ -342,6 +342,8 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     {
         $this->initAjax();
 
+        $client = $this->getGoogleClient();
+
         $list = $this->getMailingListEntity();
         if ($list === null) {
             return new ViewModel();
@@ -350,7 +352,12 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
         if (!$this->checkAccess($list, false)) {
             return new ViewModel();
         }
+        $list_name = $list->getName();
+        $list_email = $list_name . '@vtk.be';
 
+        $directory = new \Google_Service_Directory($client);
+        $delete = $directory->groups->delete($list_email);
+        
         $this->getEntityManager()->remove($list);
         $this->getEntityManager()->flush();
 
