@@ -24,6 +24,7 @@ class Video extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $data = $this->stdExtract($object, self::$stdKeys);
+        $data["showOnHomePage"] = $object->isShowOnHomePage();
         return $data;
     }
 }

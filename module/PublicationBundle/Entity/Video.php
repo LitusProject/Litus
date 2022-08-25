@@ -86,26 +86,37 @@ class Video
         return $this->url;
     }
 
+    public function getEmbedUrl(){
+        $url = $this->url;
+        if (str_contains($url, "youtu") && !str_contains($url, "embed")){
+            $yt_id = explode("?v=",$url)[1];
+            return "https://youtube.com/embed/" . $yt_id;
+        }
+        return $url;
+    }
+
     /**
      * @param  string $url
      * @return self
      */
     public function setUrl($url)
     {
-        if (str_contains($url, "youtu") && !str_contains($url, "embed")){
-            $yt_id = explode("?v=",$url)[1];
-            $url = "https://youtube.com/embed/" . $yt_id;
-        }
-
         $this->url = $url;
 
         return $this;
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function getShowOnHomePage(){
+        return $this->showOnHomePage;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isShowOnHomePage(){
         return $this->showOnHomePage;
     }
 

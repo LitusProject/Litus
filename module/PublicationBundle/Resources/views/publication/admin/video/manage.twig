@@ -24,24 +24,17 @@
 
             <table class="full_width manage">
                 <tr>
-                    <th style="width: 50px;">ID</th>
                     <th>Title</th>
                     <th>Url</th>
-                    <th>Shown On Home Page</th>
+                    <th style="width: 140px">Shown On Home Page</th>
                     <th style="width:70px">Actions</th>
                 </tr>
 
                 {% for video in paginator %}
 
                     <tr class="item item-{{ video.getId() }}">
-                        <td>{{ video.getId() }}</td>
                         <td>{{ video.getTitle() }}</td>
                         <td>{{ video.getUrl() }}</td>
-{#                        {% if video.getShowOnHomePage() %}#}
-{#                            <td>x</td>#}
-{#                        {% else %}#}
-{#                            <td></td>#}
-{#                        {% endif %}#}
                         <td>{% if video.getShowOnHomePage() %}&times;{% endif %}</td>
                         <td class="actions">
                             {% if hasAccess('publication_admin_video', 'edit') %}

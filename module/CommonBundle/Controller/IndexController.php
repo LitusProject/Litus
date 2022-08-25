@@ -382,9 +382,15 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
     private function getVideos()
     {
-        return $this->getEntityManager()
+        $videos = $this->getEntityManager()
             ->getRepository('PublicationBundle\Entity\Video')
             ->findAllOnHomePageQuery()
             ->getResult();
+
+        foreach ($videos as $video){
+            $video->setUrl($video->getEmbedUrl());
+        }
+
+        return $videos;
     }
 }
