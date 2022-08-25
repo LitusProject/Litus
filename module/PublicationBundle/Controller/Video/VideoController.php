@@ -19,6 +19,10 @@ class VideoController extends \CommonBundle\Component\Controller\ActionControlle
             ->findAllQuery()
             ->getResult();
 
+        foreach ($videos as $video){
+            $video->setUrl($video->getEmbedUrl());
+        }
+
         return new ViewModel(
             array(
                 'videos'      => $videos,
