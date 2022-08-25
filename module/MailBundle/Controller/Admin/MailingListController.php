@@ -3,6 +3,7 @@
 namespace MailBundle\Controller\Admin;
 
 use CommonBundle\Entity\User\Person\Academic;
+use Google;
 use Laminas\View\Model\ViewModel;
 use MailBundle\Entity\MailingList;
 use MailBundle\Entity\MailingList\AdminMap as ListAdmin;
@@ -10,6 +11,8 @@ use MailBundle\Entity\MailingList\AdminRoleMap as ListAdminRole;
 use MailBundle\Entity\MailingList\Entry\MailingList as MailingListEntry;
 use MailBundle\Entity\MailingList\Entry\Person\Academic as AcademicEntry;
 use MailBundle\Entity\MailingList\Entry\Person\External as ExternalEntry;
+
+putenv('GOOGLE_APPLICATION_CREDENTIALS=/home/stanc/Projects/LitusProject/Litus/service-account.json');
 
 /**
  * MailingListController
@@ -68,6 +71,54 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
     public function addAction()
     {
+        // Dit is nodig voor de authenticatie
+        $client = new Google\Client();
+        $client->useApplicationDefaultCredentials();
+        $client->addScope(Google\Service\Directory::ADMIN_DIRECTORY_GROUP);
+        $client->addScope(Google\Service\Directory::ADMIN_DIRECTORY_GROUP_MEMBER);
+        $client->addScope(Google\Service\Directory::ADMIN_DIRECTORY_GROUP_MEMBER_READONLY);
+        $client->addScope(Google\Service\Directory::ADMIN_DIRECTORY_GROUP_READONLY);
+        $client->addScope(Google\Service\Groupssettings::APPS_GROUPS_SETTINGS);
+        $client->setSubject('stan.cardinaels@vtk.be');
+        $client->authorize();
+
+        /**
+         * Examples:
+         * Google directory API: $directory = new \Google_Service_Directory($client)
+         * Google Groups Settings API: $settings = new \Google_Service_Groupssettings($client)
+         * Create empty Group Object: $group = new \Google_Service_Directory_Group() of new Google\Service\Directory\Group()
+         * Create empty Member Objcet: $member = new \Google_Service_Group_Member() of new Google\Service\Directory\Member()
+         *
+         * Upload group to workspace: $upload = $directory->groups->insert($group)
+         * Insert members into group: $insert = $directory->members->insert('group email', $member)
+         * Delete member from group: $delete = $directory->members->delete('group email', 'member email')
+         */
+        $directory = new \Google_Service_Directory($client);
+        $setting_service = new \Google_Service_Groupssettings($client);
+
+//        $member = new \Google_Service_Directory_Member(array('email' => 'stancardinaels@gmail.com'));
+//        $member = new \Google_Service_Directory_Member();
+//        $member->setEmail("stancardinaels@gmail.com");
+
+//        $insert = $directory->members->insert('it@vtk.be', $member);
+//        $group = new \Google_Service_Directory_Group();
+//        $group->setEmail("testgroup@vtk.be");
+//        $group->setName("Test Group");
+//        $upload = $directory->groups->insert($group);
+
+//        $member = new Google\Service\Directory\Member();
+//        $member->setEmail('stan.cardinaels@vtk.be');
+//        $member->setKind('admin#directory#member');
+//        $member->setRole('OWNER');
+//        $member->setType("USER");
+
+//        $insert = $directory->members->insert('testgroup@vtk.be', $member);
+//        $delete = $directory->members->delete('testgroup@vtk.be', 'stan.cardinaels@vtk.be');
+//        $settings = $setting_service->groups->get('it@vtk.be', array('alt' => 'json'));
+        $test = $directory->groups->get('it@vtk.be');
+        die(var_dump($test));
+
+
         $form = $this->getForm('mail_mailingList_add');
 
         if ($this->getRequest()->isPost()) {
