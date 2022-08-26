@@ -97,6 +97,10 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
         $directory = new \Google_Service_Directory($client);
         $setting_service = new \Google_Service_Groupssettings($client);
 
+        $settings = new Google\Service\Groupssettings\Groups();
+        $settings->setWhoCanPostMessage('ANYONE_CAN_POST');
+        $settings->setWhoCanJoin('INVITED_CAN_JOIN');
+
 //        $member = new \Google_Service_Directory_Member(array('email' => 'stancardinaels@gmail.com'));
 //        $member = new \Google_Service_Directory_Member();
 //        $member->setEmail("stancardinaels@gmail.com");
@@ -195,24 +199,26 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
                 $entry = $academicForm->hydrateObject(
                     new AcademicEntry($list)
                 );
+                $mail = $entry->getEmailAddress();
             } elseif (isset($formData['external_add']) && $externalForm->isValid()) {
                 $entry = $externalForm->hydrateObject(
                     new ExternalEntry($list)
                 );
+                $mail = $entry->getEmailAddress();
             } elseif (isset($formData['list_add']) && $mailingListForm->isValid()) {
                 $entry = $mailingListForm->hydrateObject(
                     new MailingListEntry($list)
                 );
+                $mail = $entry->getEmailAddress() . '@vtk.be';
             }
 
             if ($entry !== null) {
-                $email = $entry->getEmailAddress();
                 $list_name = $list->getName();
                 $list_mail = $list_name . '@vtk.be';
                 $directory = new \Google_Service_Directory($client);
 
                 $member = new Google\Service\Directory\Member();
-                $member->setEmail($email);
+                $member->setEmail($mail);
 
                 $insert = $directory->members->insert($list_mail, $member);
 
@@ -357,7 +363,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
         $directory = new \Google_Service_Directory($client);
         $delete = $directory->groups->delete($list_email);
-        
+
         $this->getEntityManager()->remove($list);
         $this->getEntityManager()->flush();
 
@@ -658,6 +664,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     private function getGoogleClient()
     {
         $client = new Google\Client();
+
         $client->useApplicationDefaultCredentials();
         $client->addScope(Google\Service\Directory::ADMIN_DIRECTORY_GROUP);
         $client->addScope(Google\Service\Directory::ADMIN_DIRECTORY_GROUP_MEMBER);
