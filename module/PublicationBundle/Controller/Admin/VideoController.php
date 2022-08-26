@@ -17,7 +17,7 @@ class VideoController extends \CommonBundle\Component\Controller\ActionControlle
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('PublicationBundle\Entity\Video')
-                ->findAllQuery(),
+                ->findAllByDate(),
             $this->getParam('page')
         );
 

@@ -14,6 +14,10 @@ class Video extends \CommonBundle\Component\Hydrator\Hydrator
             $object = new VideoEntity();
         }
 
+        if (isset($data['date'])) {
+            $object->setDate(self::loadDate($data['date']));
+        }
+
         return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 
@@ -24,6 +28,7 @@ class Video extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $data = $this->stdExtract($object, self::$stdKeys);
+        $data['date'] = $object->getDate()->format('d/m/Y');
         $data["showOnHomePage"] = $object->isShowOnHomePage();
         return $data;
     }

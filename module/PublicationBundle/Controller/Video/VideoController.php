@@ -16,7 +16,7 @@ class VideoController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $videos = $this->getEntityManager()
             ->getRepository('PublicationBundle\Entity\Video')
-            ->findAllQuery()
+            ->findAllByDate()
             ->getResult();
 
         foreach ($videos as $video){

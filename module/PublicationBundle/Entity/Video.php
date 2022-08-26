@@ -2,6 +2,7 @@
 
 namespace PublicationBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -34,6 +35,13 @@ class Video
      * @ORM\Column(name="url", type="string", nullable=true)
      */
     private $url;
+
+    /**
+     * @var DateTime The datum of upload
+     *
+     * @ORM\Column(name="date", type="datetime")
+     */
+    private $date;
 
     /**
      * @var bool true if video is to be shown on home page
@@ -103,6 +111,24 @@ class Video
     {
         $this->url = $url;
 
+        return $this;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * @param DateTime $date
+     * @return self
+     */
+    public function setDate(DateTime $date)
+    {
+        $this->date = $date;
         return $this;
     }
 

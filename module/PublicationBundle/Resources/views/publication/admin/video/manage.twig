@@ -26,6 +26,7 @@
                 <tr>
                     <th>Title</th>
                     <th>Url</th>
+                    <th>Date</th>
                     <th style="width: 140px">Shown On Home Page</th>
                     <th style="width:70px">Actions</th>
                 </tr>
@@ -35,6 +36,7 @@
                     <tr class="item item-{{ video.getId() }}">
                         <td>{{ video.getTitle() }}</td>
                         <td>{{ video.getUrl() }}</td>
+                        <td>{{ video.getDate().format('d/m/Y') }}</td>
                         <td>{% if video.getShowOnHomePage() %}&times;{% endif %}</td>
                         <td class="actions">
                             {% if hasAccess('publication_admin_video', 'edit') %}

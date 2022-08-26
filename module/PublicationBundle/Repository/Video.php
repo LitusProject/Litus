@@ -19,6 +19,15 @@ class Video extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery();
     }
 
+    public function findAllByDate()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('r')
+            ->from('PublicationBundle\Entity\Video', 'r')
+            ->orderBy('r.date', 'DESC')
+            ->getQuery();
+    }
+
     public function findAllOnHomePageQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -27,7 +36,7 @@ class Video extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->where(
                     $query->expr()->eq('r.showOnHomePage', 'true')
             )
-            ->orderBy('r.id', 'DESC')
+            ->orderBy('r.date', 'DESC')
             ->getQuery();
     }
 }

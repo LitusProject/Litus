@@ -56,6 +56,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'     => 'date',
+                'name'     => 'date',
+                'label'    => 'Datum',
+                'required' => true,
+            )
+        );
+
+        $this->add(
+            array(
                 'type'     => 'checkbox',
                 'name'     => 'showOnHomePage',
                 'label'    => 'Show On Home Page',
