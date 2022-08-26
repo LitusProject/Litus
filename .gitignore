@@ -34,3 +34,6 @@ phpstan/
 
 # IDE files
 .idea
+
+# google OAuth
+service-account.json
