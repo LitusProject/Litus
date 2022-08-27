@@ -110,4 +110,24 @@ class Inventory
         $this->amount = $amount;
         return $this;
     }
+
+    /**
+     * @param $amount
+     * @return self
+     */
+    public function addAmount($amount)
+    {
+        $this->amount += $amount;
+        return $this;
+    }
+
+    /**
+     * @param $amount
+     * @return self
+     */
+    public function subtractAmount($amount)
+    {
+        $this->amount -= $amount;
+        return $this;
+    }
 }

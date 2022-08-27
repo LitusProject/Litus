@@ -34,6 +34,50 @@ class InventoryController extends \CommonBundle\Component\Controller\ActionContr
 
             if ($form->isValid()) {
                 $formData = $form->getData();
+
+                $article = $this->getEntityManager()
+                    ->getRepository('LogisticsBundle\Entity\Inventory')
+                    ->findOneBy(
+                        array('barcode' => $formData['barcode'])
+                    );
+
+                if ($article === null) {
+                    $article = $form->hydrateObject();
+                    $this->getEntityManager()->persist($article);
+                    $this->getEntityManager()->flush();
+
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'The article was succesfully created!'
+                    );
+
+                    $this->redirect()->toRoute(
+                        'logistics_admin_inventory',
+                        array(
+                            'action' => 'add',
+                        )
+                    );
+
+                    return new ViewModel();
+                } else {
+                    $amount = $formData['amount'];
+                    $article->addAmount($amount);
+                    $this->getEntityManager()->flush();
+
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'The article was succesfully created!'
+                    );
+
+                    $this->redirect()->toRoute(
+                        'logistics_admin_inventory',
+                        array(
+                            'action' => 'add',
+                        )
+                    );
+
+                    return new ViewModel();
+                }
             }
         }
 
