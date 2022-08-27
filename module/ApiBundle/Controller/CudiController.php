@@ -414,7 +414,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
-        $barcode = $this->getRequest()->getPost("barcode");
+        $barcode = $this->getRequest()->getPost('barcode');
 
         $saleArticle = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Article')
@@ -435,7 +435,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
         if ($article == null) {
             return $this->error(404, 'This article doesn\'t exist');
         }
-        if ($this->getRequest()->getPost("is_same") === 'True') {
+        if ($this->getRequest()->getPost('is_same') === 'True') {
             $article->setIsSameAsPreviousYear(true);
         } else {
             $internal = $this->getEntityManager()
@@ -445,10 +445,10 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                         'id' => $articleId
                     )
                 )[0];
-            $internal->setNbBlackAndWhite($this->getRequest()->getPost("black_white"));
-            $internal->setNbColored($this->getRequest()->getPost("colored"));
-            $internal->setIsOfficial($this->getRequest()->getPost("official"));
-            $internal->setIsRectoVerso($this->getRequest()->getPost("recto_verso"));
+            $internal->setNbBlackAndWhite($this->getRequest()->getPost('black_white'));
+            $internal->setNbColored($this->getRequest()->getPost('colored'));
+            $internal->setIsOfficial($this->getRequest()->getPost('official'));
+            $internal->setIsRectoVerso($this->getRequest()->getPost('recto_verso'));
             $article->setIsSameAsPreviousYear(false);
         }
 
@@ -456,8 +456,8 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         $newBarcode = $this->changeBarcode($barcode);
         $saleArticle->setBarcode($newBarcode);
-        $saleArticle->setPurchasePrice($this->getRequest()->getPost("purchase_price"));
-        $saleArticle->setSellPrice($this->getRequest()->getPost("sell_price"));
+        $saleArticle->setPurchasePrice($this->getRequest()->getPost('purchase_price'));
+        $saleArticle->setSellPrice($this->getRequest()->getPost('sell_price'));
         $saleArticle->setIsBookable(true);
         $saleArticle->setIsUnbookable(true);
         $saleArticle->setIsSellable(true);

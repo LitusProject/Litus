@@ -34,7 +34,7 @@ class Video extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         return $query->select('r')
             ->from('PublicationBundle\Entity\Video', 'r')
             ->where(
-                    $query->expr()->eq('r.showOnHomePage', 'true')
+                $query->expr()->eq('r.showOnHomePage', 'true')
             )
             ->orderBy('r.date', 'DESC')
             ->getQuery();
