@@ -42,6 +42,20 @@ class InventoryController extends \CommonBundle\Component\Controller\ActionContr
                     );
 
                 if ($article === null) {
+                    $amount = $formData['amount'];
+                    if ($amount <= 0) {
+                        $this->flashMessenger()->error(
+                            'Error',
+                            'Please give an amount other than zero!'
+                        );
+                        $this->redirect()->toRoute(
+                            'logistics_admin_inventory',
+                            array(
+                                'action' => 'add',
+                            )
+                        );
+                        return new ViewModel();
+                    }
                     $article = $form->hydrateObject();
                     $this->getEntityManager()->persist($article);
                     $this->getEntityManager()->flush();
@@ -61,7 +75,39 @@ class InventoryController extends \CommonBundle\Component\Controller\ActionContr
                     return new ViewModel();
                 } else {
                     $amount = $formData['amount'];
-                    $article->addAmount($amount);
+
+                    if ($amount > 0) {
+                        $article->addAmount($amount);
+                    } elseif ($amount < 0) {
+                        $new_amount = $article->getAmount() + $amount;
+                        if ($new_amount < 0) {
+                            $this->flashMessenger()->error(
+                                'Error',
+                                'Not enough articles left!'
+                            );
+                            $this->redirect()->toRoute(
+                                'logistics_admin_inventory',
+                                array(
+                                    'action' => 'add',
+                                )
+                            );
+                            return new ViewModel();
+                        }
+                        $article->subtractAmount($amount);
+                    } else {
+                        $this->flashMessenger()->error(
+                            'Error',
+                            'Please give an amount other than zero!'
+                        );
+                        $this->redirect()->toRoute(
+                            'logistics_admin_inventory',
+                            array(
+                                'action' => 'add',
+                            )
+                        );
+                        return new ViewModel();
+                    }
+
                     $this->getEntityManager()->flush();
 
                     $this->flashMessenger()->success(

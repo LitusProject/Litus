@@ -127,7 +127,7 @@ class Inventory
      */
     public function subtractAmount($amount)
     {
-        $this->amount -= $amount;
+        $this->amount += $amount;
         return $this;
     }
 }
