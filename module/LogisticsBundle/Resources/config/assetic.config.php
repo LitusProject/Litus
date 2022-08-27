@@ -83,6 +83,16 @@ return array(
             '@common_jqueryui_css',
             '@common_jqueryui_datepicker_css',
         ),
+        'logistics_admin_inventory' => array(
+            '@common_jquery',
+            '@common_remote_typeahead',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+            '@minicolor_css',
+            '@minicolor_js',
+        ),
 //        'logistics_admin_consumptions' => array(
 //            '@common_jquery',
 //            '@common_remote_typeahead',

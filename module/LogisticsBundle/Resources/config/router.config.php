@@ -125,6 +125,21 @@ return array(
                 ),
             ),
         ),
+        'logistics_admin_inventory' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/logistics/inventory[/:action[/:id]][/page/:page][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'logistics_admin_inventory',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
 //        'logistics_admin_consumptions' => array(
 //            'type'    => 'Laminas\Router\Http\Segment',
 //            'options' => array(
@@ -275,6 +290,7 @@ return array(
         'logistics_admin_van_reservation'   => 'LogisticsBundle\Controller\Admin\VanReservationController',
         'logistics_admin_piano_reservation' => 'LogisticsBundle\Controller\Admin\PianoReservationController',
         'logistics_admin_lease'             => 'LogisticsBundle\Controller\Admin\LeaseController',
+        'logistics_admin_inventory'         => 'LogisticsBundle\Controller\Admin\InventoryController',
 //        'logistics_admin_consumptions'      => 'LogisticsBundle\Controller\Admin\ConsumptionsController',
 
         'logistics_index'                   => 'LogisticsBundle\Controller\IndexController',
