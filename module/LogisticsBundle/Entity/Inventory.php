@@ -123,6 +123,7 @@ class Inventory
 
     /**
      * @param $amount
+     * The amount provided is a negative amount, so addition has to be done
      * @return self
      */
     public function subtractAmount($amount)
