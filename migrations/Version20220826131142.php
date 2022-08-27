@@ -18,7 +18,7 @@ class Version20220826131142 extends \Doctrine\Migrations\AbstractMigration
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('ALTER TABLE publications_videos ADD date TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL');
+        $this->addSql('ALTER TABLE publications_videos ADD date TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL');
     }
 
     /**

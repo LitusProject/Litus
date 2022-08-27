@@ -12,7 +12,7 @@ use MailBundle\Entity\MailingList\Entry\MailingList as MailingListEntry;
 use MailBundle\Entity\MailingList\Entry\Person\Academic as AcademicEntry;
 use MailBundle\Entity\MailingList\Entry\Person\External as ExternalEntry;
 
-putenv('GOOGLE_APPLICATION_CREDENTIALS=/home/stanc/Projects/LitusProject/Litus/service-account.json');
+putenv('GOOGLE_APPLICATION_CREDENTIALS=/home/it/service-account.json');
 
 /**
  * MailingListController
