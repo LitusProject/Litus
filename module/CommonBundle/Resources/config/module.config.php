@@ -16,6 +16,8 @@ use CommonBundle\Component\Doctrine\Common\Cache\ServiceManager\RedisCacheFactor
 use CommonBundle\Component\Doctrine\Migrations\Configuration\ServiceManager\ConfigurationFactory as DoctrineMigrationsConfigurationFactory;
 use CommonBundle\Component\Form\Factory as FormFactory;
 use CommonBundle\Component\Form\ServiceManager\FactoryFactory as FormFactoryFactory;
+use CommonBundle\Component\Google\ServiceManager\ClientFactory as GoogleClientFactory;
+use CommonBundle\Component\Google\ServiceManager\ServiceFactory as GoogleServiceFactory;
 use CommonBundle\Component\Hydrator\HydratorPluginManager;
 use CommonBundle\Component\Hydrator\ServiceManager\HydratorPluginManagerFactory;
 use CommonBundle\Component\Module\Config;
@@ -30,6 +32,9 @@ use CommonBundle\Component\Session\ServiceManager\SessionManagerFactory;
 use CommonBundle\Component\Validator\ServiceManager\AbstractValidatorFactory;
 use CommonBundle\Component\View\Helper\ServiceManager\AbstractHelperFactory;
 use Doctrine\Common\Cache\RedisCache as DoctrineRedisCache;
+use Google\Client as GoogleClient;
+use Google\Service\Directory as GoogleDirectoryService;
+use Google\Service\Groupssettings as GoogleGroupssettingsService;
 use Laminas\Cache\Storage\StorageInterface as CacheStorage;
 use Laminas\Form\ElementFactory;
 use Laminas\I18n\Translator\Resources as TranslatorResources;
@@ -56,20 +61,23 @@ return Config::create(
         ),
         'service_manager' => array(
             'factories' => array(
-                Authentication::class            => AuthenticationFactory::class,
-                CacheStorage::class              => CacheStorageFactory::class,
-                ConsoleApplication::class        => ConsoleApplicationFactory::class,
-                DoctrineCredentialAdapter::class => DoctrineCredentialAdapterFactory::class,
-                DoctrineRedisCache::class        => DoctrineRedisCacheFactory::class,
-                DoctrineService::class           => DoctrineServiceFactory::class,
-                FormFactory::class               => FormFactoryFactory::class,
-                HydratorPluginManager::class     => HydratorPluginManagerFactory::class,
-                Raven_Client::class              => RavenClientFactory::class,
-                RedisClient::class               => RedisClientFactory::class,
-                Sendmail::class                  => InvokableFactory::class,
-                SentryClient::class              => SentryClientFactory::class,
-                SessionContainer::class          => SessionContainerFactory::class,
-                ManagerInterface::class          => SessionManagerFactory::class,
+                Authentication::class              => AuthenticationFactory::class,
+                CacheStorage::class                => CacheStorageFactory::class,
+                ConsoleApplication::class          => ConsoleApplicationFactory::class,
+                DoctrineCredentialAdapter::class   => DoctrineCredentialAdapterFactory::class,
+                DoctrineRedisCache::class          => DoctrineRedisCacheFactory::class,
+                DoctrineService::class             => DoctrineServiceFactory::class,
+                FormFactory::class                 => FormFactoryFactory::class,
+                GoogleClient::class                => GoogleClientFactory::class,
+                GoogleDirectoryService::class      => GoogleServiceFactory::class,
+                GoogleGroupssettingsService::class => GoogleServiceFactory::class,
+                HydratorPluginManager::class       => HydratorPluginManagerFactory::class,
+                Raven_Client::class                => RavenClientFactory::class,
+                RedisClient::class                 => RedisClientFactory::class,
+                Sendmail::class                    => InvokableFactory::class,
+                SentryClient::class                => SentryClientFactory::class,
+                SessionContainer::class            => SessionContainerFactory::class,
+                ManagerInterface::class            => SessionManagerFactory::class,
             ),
             'abstract_factories' => array(
                 AbstractInstallerFactory::class,
@@ -80,10 +88,11 @@ return Config::create(
                 'authentication_service'            => DoctrineService::class,
                 'cache'                             => CacheStorage::class,
                 'console'                           => ConsoleApplication::class,
-                'redis_client'                      => RedisClient::class,
+                'google_client'                     => GoogleClient::class,
                 'hydrator_plugin_manager'           => HydratorPluginManager::class,
                 'mail_transport'                    => Sendmail::class,
                 'raven_client'                      => Raven_Client::class,
+                'redis_client'                      => RedisClient::class,
                 'sentry_client'                     => SentryClient::class,
                 'session_container'                 => SessionContainer::class,
                 'translator'                        => MvcTranslator::class,
