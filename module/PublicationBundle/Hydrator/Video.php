@@ -29,8 +29,7 @@ class Video extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $this->stdExtract($object, self::$stdKeys);
         $data['date'] = $object->getDate()->format('d/m/Y');
-        $data["showOnHomePage"] = $object->isShowOnHomePage();
+        $data['showOnHomePage'] = $object->isShowOnHomePage();
         return $data;
     }
 }
-

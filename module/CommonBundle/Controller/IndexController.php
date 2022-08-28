@@ -393,7 +393,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->findAllOnHomePageQuery()
             ->getResult();
 
-        foreach ($videos as $video){
+        foreach ($videos as $video) {
             $video->setUrl($video->getEmbedUrl());
         }
 

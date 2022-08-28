@@ -5,7 +5,6 @@ namespace CommonBundle\Component\Authentication\ServiceManager;
 use CommonBundle\Component\Authentication\Authentication;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use Laminas\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Factory to create an authentication instance.
@@ -26,14 +25,5 @@ class AuthenticationFactory implements FactoryInterface
             $container->get('authentication_credential_adapter'),
             $container->get('authentication_service')
         );
-    }
-
-    /**
-     * @param  ServiceLocatorInterface $locator
-     * @return Authentication
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        return $this($serviceLocator, 'CommonBundle\Component\Authentication\Authentication');
     }
 }

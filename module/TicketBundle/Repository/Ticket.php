@@ -320,7 +320,8 @@ class Ticket extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getOneOrNullResult();
     }
 
-    public function findOneByQREvent(\TicketBundle\Entity\Event $event, string $qrCode) {
+    public function findOneByQREvent(\TicketBundle\Entity\Event $event, string $qrCode)
+    {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('t')
             ->from('TicketBundle\Entity\Ticket', 't')

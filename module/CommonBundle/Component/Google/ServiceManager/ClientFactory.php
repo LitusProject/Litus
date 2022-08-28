@@ -1,14 +1,13 @@
 <?php
 
-namespace CommonBundle\Component\Sentry\ServiceManager;
+namespace CommonBundle\Component\Google\ServiceManager;
 
-use CommonBundle\Component\Sentry\Client;
+use Google\Client;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use Raven_Client;
 
 /**
- * Factory to create a Sentry client instance.
+ * Factory to create a Google client instance.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
@@ -18,13 +17,18 @@ class ClientFactory implements FactoryInterface
      * @param  ContainerInterface $container
      * @param  string             $requestedName
      * @param  array|null         $options
-     * @return Raven_Client
+     * @return Client
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        return new Client(
-            $container->get('raven_client'),
-            $container->get('authentication')
-        );
+        $config = $container->get('config');
+        if (!isset($config['google'])) {
+            throw new RuntimeException('Could not find Google config');
+        }
+
+        $client = new Google\Client();
+        $client->setAuthConfig($config['google']['auth']);
+
+        return $client;
     }
 }

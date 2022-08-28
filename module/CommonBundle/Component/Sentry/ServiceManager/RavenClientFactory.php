@@ -4,7 +4,6 @@ namespace CommonBundle\Component\Sentry\ServiceManager;
 
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use Laminas\ServiceManager\ServiceLocatorInterface;
 use Raven_Client;
 use RuntimeException;
 
@@ -28,20 +27,9 @@ class RavenClientFactory implements FactoryInterface
             throw new RuntimeException('Could not find Sentry config');
         }
 
-        $sentryConfig = $config['sentry'];
-
         return new Raven_Client(
-            $sentryConfig['dsn'],
-            $sentryConfig['options']
+            $config['sentry']['dsn'],
+            $config['sentry']['options']
         );
-    }
-
-    /**
-     * @param  ServiceLocatorInterface $locator
-     * @return Raven_Client
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        return $this($serviceLocator, 'Raven_Client');
     }
 }

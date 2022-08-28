@@ -290,7 +290,7 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
                                     'name'    => 'NumberTicketsGuest',
                                     'options' => array(
                                         'event'   => $this->event,
-//                                        'person'  => $this->guestInfo,
+                //                                        'person'  => $this->guestInfo,
                                         'maximum' => $this->event->getLimitPerPerson(),
                                     ),
                                 ),
@@ -317,7 +317,7 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
                                         'name'    => 'NumberTicketsGuest',
                                         'options' => array(
                                             'event'   => $this->event,
-//                                            'person'  => $this->guestInfo,
+                    //                                            'person'  => $this->guestInfo,
                                             'maximum' => $this->event->getLimitPerPerson(),
                                         ),
                                     ),
@@ -345,7 +345,7 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
                                         'name'    => 'NumberTicketsGuest',
                                         'options' => array(
                                             'event'   => $this->event,
-//                                            'person'  => $this->guestInfo,
+                    //                                            'person'  => $this->guestInfo,
                                             'maximum' => $this->event->getLimitPerPerson(),
                                         ),
                                     ),
@@ -372,7 +372,7 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
                                             'name'    => 'NumberTicketsGuest',
                                             'options' => array(
                                                 'event'   => $this->event,
-//                                                'person'  => $this->guestInfo,
+                        //                                                'person'  => $this->guestInfo,
                                                 'maximum' => $this->event->getLimitPerPerson(),
                                             ),
                                         ),

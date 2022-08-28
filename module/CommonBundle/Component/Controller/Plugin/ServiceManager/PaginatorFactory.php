@@ -5,7 +5,6 @@ namespace CommonBundle\Component\Controller\Plugin\ServiceManager;
 use CommonBundle\Component\Controller\Plugin\Paginator;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use Laminas\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Factory to instantiate a paginator.
@@ -26,14 +25,5 @@ class PaginatorFactory implements FactoryInterface
         $paginator->setServiceLocator($container);
 
         return $paginator;
-    }
-
-    /**
-     * @param  ServiceLocatorInterface $locator
-     * @return Paginator
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        return $this($serviceLocator, Paginator::class);
     }
 }

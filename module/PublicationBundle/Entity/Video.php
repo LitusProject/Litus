@@ -94,11 +94,12 @@ class Video
         return $this->url;
     }
 
-    public function getEmbedUrl(){
+    public function getEmbedUrl()
+    {
         $url = $this->url;
-        if (str_contains($url, "youtu") && !str_contains($url, "embed")){
-            $yt_id = explode("?v=",$url)[1];
-            return "https://youtube.com/embed/" . $yt_id;
+        if (str_contains($url, 'youtu') && !str_contains($url, 'embed')) {
+            $yt_id = explode('?v=', $url)[1];
+            return 'https://youtube.com/embed/' . $yt_id;
         }
         return $url;
     }
@@ -135,14 +136,16 @@ class Video
     /**
      * @return boolean
      */
-    public function getShowOnHomePage(){
+    public function getShowOnHomePage()
+    {
         return $this->showOnHomePage;
     }
 
     /**
      * @return boolean
      */
-    public function isShowOnHomePage(){
+    public function isShowOnHomePage()
+    {
         return $this->showOnHomePage;
     }
 
@@ -150,7 +153,8 @@ class Video
      * @param bool $showOnHomePage
      * @return self
      */
-    public function setShowOnHomePage($showOnHomePage){
+    public function setShowOnHomePage($showOnHomePage)
+    {
         $this->showOnHomePage = $showOnHomePage;
         return $this;
     }

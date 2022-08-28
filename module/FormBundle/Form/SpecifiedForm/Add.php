@@ -12,7 +12,7 @@ use FormBundle\Entity\Field\Text as StringFieldEntity;
 use FormBundle\Entity\Node\Entry as EntryEntity;
 use FormBundle\Entity\Node\Form\Form as FormEntity;
 use FormBundle\Entity\Node\GuestInfo as GuestInfoEntity;
-use TicketBundle\Entity\Event as Event;
+use TicketBundle\Entity\Event;
 use Zend\Validator\Identical;
 
 /**
@@ -260,14 +260,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'input' => array(
                                 'required' => true,
                                 'validators' => array(
-//                                    array(
-//                                        'name'    => 'NumberTickets',
-//                                        'options' => array(
-//                                            'event'   => $this->event,
-//                                            'person'  => $this->person ?: $this->guestInfo,
-//                                            'maximum' => $this->event->getLimitPerPerson(),
-//                                        ),
-//                                    ),
+                    //                                    array(
+                    //                                        'name'    => 'NumberTickets',
+                    //                                        'options' => array(
+                    //                                            'event'   => $this->event,
+                    //                                            'person'  => $this->person ?: $this->guestInfo,
+                    //                                            'maximum' => $this->event->getLimitPerPerson(),
+                    //                                        ),
+                    //                                    ),
                                     array(
                                         'name'    => 'NumberTicketsGuest',
                                         'options' => array(
@@ -294,14 +294,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'input' => array(
                                     'required' => true,
                                     'validators' => array(
-//                                        array(
-//                                            'name'    => 'NumberTickets',
-//                                            'options' => array(
-//                                                'event'   => $this->event,
-//                                                'person'  => $this->person ?: $this->guestInfo,
-//                                                'maximum' => $this->event->getLimitPerPerson(),
-//                                            ),
-//                                        ),
+                        //                                        array(
+                        //                                            'name'    => 'NumberTickets',
+                        //                                            'options' => array(
+                        //                                                'event'   => $this->event,
+                        //                                                'person'  => $this->person ?: $this->guestInfo,
+                        //                                                'maximum' => $this->event->getLimitPerPerson(),
+                        //                                            ),
+                        //                                        ),
                                         array(
                                             'name'    => 'NumberTicketsGuest',
                                             'options' => array(
@@ -329,14 +329,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'input' => array(
                                     'required' => true,
                                     'validators' => array(
-//                                        array(
-//                                            'name'    => 'NumberTickets',
-//                                            'options' => array(
-//                                                'event'   => $this->event,
-//                                                'person'  => $this->person ?: $this->guestInfo,
-//                                                'maximum' => $this->event->getLimitPerPerson(),
-//                                            ),
-//                                        ),
+                        //                                        array(
+                        //                                            'name'    => 'NumberTickets',
+                        //                                            'options' => array(
+                        //                                                'event'   => $this->event,
+                        //                                                'person'  => $this->person ?: $this->guestInfo,
+                        //                                                'maximum' => $this->event->getLimitPerPerson(),
+                        //                                            ),
+                        //                                        ),
                                         array(
                                             'name'    => 'NumberTicketsGuest',
                                             'options' => array(
@@ -363,14 +363,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                     'input' => array(
                                         'required' => true,
                                         'validators' => array(
-//                                            array(
-//                                                'name'    => 'NumberTickets',
-//                                                'options' => array(
-//                                                    'event'   => $this->event,
-//                                                    'person'  => $this->person ?: $this->guestInfo,
-//                                                    'maximum' => $this->event->getLimitPerPerson(),
-//                                                ),
-//                                            ),
+                            //                                            array(
+                            //                                                'name'    => 'NumberTickets',
+                            //                                                'options' => array(
+                            //                                                    'event'   => $this->event,
+                            //                                                    'person'  => $this->person ?: $this->guestInfo,
+                            //                                                    'maximum' => $this->event->getLimitPerPerson(),
+                            //                                                ),
+                            //                                            ),
                                             array(
                                                 'name'    => 'NumberTicketsGuest',
                                                 'options' => array(

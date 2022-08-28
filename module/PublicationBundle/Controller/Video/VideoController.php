@@ -11,7 +11,6 @@ use Laminas\View\Model\ViewModel;
  */
 class VideoController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
-
     public function viewAction()
     {
         $videos = $this->getEntityManager()
@@ -19,7 +18,7 @@ class VideoController extends \CommonBundle\Component\Controller\ActionControlle
             ->findAllByDate()
             ->getResult();
 
-        foreach ($videos as $video){
+        foreach ($videos as $video) {
             $video->setUrl($video->getEmbedUrl());
         }
 
