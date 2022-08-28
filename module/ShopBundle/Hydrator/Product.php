@@ -6,7 +6,7 @@ use ShopBundle\Entity\Product as ProductEntity;
 
 class Product extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $stdKeys = array('name', 'available');
+    private static $stdKeys = array('name', 'available', 'default_amount');
 
     /**
      * @param  Product|null $object

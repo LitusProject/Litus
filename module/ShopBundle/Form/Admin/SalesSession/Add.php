@@ -102,7 +102,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'attributes' => array(
                         'min'   => '0',
                         'max'   => '100',
-                        'value' => 0,
+                        'value' => $product->getDefaultAmount() ? $product->getDefaultAmount(): 0,
                     ),
                 )
             );

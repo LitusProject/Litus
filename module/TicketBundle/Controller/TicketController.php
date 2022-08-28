@@ -76,7 +76,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 if ($guestInfo) {
                     $entries = $this->getEntityManager()
                         ->getRepository('FormBundle\Entity\Node\Entry')
-                        ->findAllByFormAndGuestInfo($formSpecification,$guestInfo);
+                        ->findAllByFormAndGuestInfo($formSpecification, $guestInfo);
                 }
             }
 
@@ -335,7 +335,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                                 'id'     => $event->getId(),
                             )
                         );
-                }
+                    }
 //                $form->setData($this->getRequest()->getPost());
                 }
             }
@@ -355,8 +355,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                     )[$this->getLanguage()->getAbbrev()],
                     'isGuest'               => true,
                     'specification'         => $formSpecification,
-                    'infoform'              => $infoForm ?:false,
-                    'entries'               => $entries ?:null,
+                    'infoform'              => $infoForm ?: false,
+                    'entries'               => $entries ?: null,
                 )
             );
         } else {
@@ -445,7 +445,6 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             )
                         );
                     }
-
                 } else {
                     $form->setData($this->getRequest()->getPost());
 
@@ -653,7 +652,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
     {
         $startMail = new Message();
         $startMail->setEncoding('UTF-8')
-            ->setBody("In Response Action")
+            ->setBody('In Response Action')
             ->setFrom('payresponse@vtk.be')
             ->addTo('stan.cardinaels@vtk.be')
             ->setSubject('In response Action');
@@ -681,9 +680,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         }
 
         if ($paymentParams['ORDERID'] === null) {
-            $subject .= "no orderID provided";
+            $subject .= 'no orderID provided';
             $mail->setEncoding('UTF-8')
-                ->setBody("No OrderID provided. URL: " . $url)
+                ->setBody('No OrderID provided. URL: ' . $url)
                 ->setFrom('payresponse@vtk.be')
                 ->addTo('it@vtk.be')
                 ->addTo('kevin.lepinoy@vtk.be')
@@ -699,8 +698,11 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
         $ticket = $this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Ticket')
-            ->findOneBy(array(
-                'orderId' => $paymentParams['ORDERID']));
+            ->findOneBy(
+                array(
+                    'orderId' => $paymentParams['ORDERID']
+                )
+            );
 
         $subject .= 'Ticket ID: ' . $ticket->getId();
 
@@ -722,9 +724,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
         if (strtoupper($generatedHash) === $shasign) {
             $subject .= ' orderID: ' . $paymentParams['ORDERID'];
-            if (!($ticket->getStatus() == "Sold"))
-            {
-                $subject .= " Not yet on sold";
+            if (!($ticket->getStatus() == 'Sold')) {
+                $subject .= ' Not yet on sold';
                 $ticket->setStatus('sold');
                 if ($ticket->getEvent()->getQrEnabled()) {
                     $ticket->setQrCode();
@@ -732,14 +733,13 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 }
                 $this->getEntityManager()->flush();
             }
-        }
-        else {
-            $subject .= " SHA not correct";
+        } else {
+            $subject .= ' SHA not correct';
 
             $mail->setEncoding('UTF-8')
-                ->setBody("URL: " .$url)
-                ->setFrom("payresponse@vtk.be")
-                ->addTo("it@vtk.be")
+                ->setBody('URL: ' .$url)
+                ->setFrom('payresponse@vtk.be')
+                ->addTo('it@vtk.be')
                 ->addTo('kevin.lepinoy@vtk.be')
                 ->setSubject($subject);
 
@@ -752,9 +752,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         }
 
         $mail->setEncoding('UTF-8')
-            ->setBody("URL: " .$url)
-            ->setFrom("payresponse@vtk.be")
-            ->addTo("it@vtk.be")
+            ->setBody('URL: ' .$url)
+            ->setFrom('payresponse@vtk.be')
+            ->addTo('it@vtk.be')
             ->addTo('kevin.lepinoy@vtk.be')
             ->setSubject($subject);
 

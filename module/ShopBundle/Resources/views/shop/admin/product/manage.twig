@@ -33,6 +33,7 @@
                     <th>Name</th>
                     <th>Price</th>
                     <th>Available</th>
+                    <th>Default Amount</th>
                     <th width="70px">Actions</th>
                 </tr>
             </table>
@@ -44,6 +45,7 @@
                     <th>Name</th>
                     <th>Price</th>
                     <th>Available</th>
+                    <th>Default Amount</th>
                     <th width="70px">Actions</th>
                 </tr>
 
@@ -52,6 +54,7 @@
                         <td>{{ product.getName() }}</td>
                         <td>{{ product.getSellPrice() }}</td>
                         <td><input type="checkbox" {% if product.getAvailable() %}checked{% endif %} }} disabled/></td>
+                        <td>{{ product.getDefaultAmount() ? product.getDefaultAmount(): 0 }}</td>
                         <td class="actions">
                             {% if hasAccess('shop_admin_shop_product', 'edit') %}
                                 <a href="{{ url('shop_admin_shop_product', {"action": "edit", "id": product.getId()}) }}"
@@ -111,12 +114,14 @@
                 display: function (data) {
                     $('#product_search table').find('tr.item').remove();
                     $(data).each(function () {
+                        console.log(this)
                         $('#product_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
                         row.append('<td>' + this.name + '</td>')
                                 .append('<td>' + this.sellPrice + '</td>')
                                 .append($('<td>')
                                         .append($('<input>', {type: "checkbox"})
                                                 .attr('checked', this.available)))
+                                .append('<td>' + this.defaultAmount + '</td>')
                                 .append(
                                 $('<td>', {'class': 'actions'})
                                         .append('<a href="{{ url('shop_admin_shop_product', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')

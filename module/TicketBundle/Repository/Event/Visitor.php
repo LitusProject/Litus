@@ -3,7 +3,6 @@
 namespace TicketBundle\Repository\Event;
 
 use TicketBundle\Entity\Event;
-use DateTime;
 
 /**
  * Visitor

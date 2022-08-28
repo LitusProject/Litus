@@ -122,4 +122,12 @@ abstract class MailingList
 
         return false;
     }
+
+    /**
+     * @return string
+     */
+    public function getEmailAddress()
+    {
+        return $this->getName() . '@vtk.be';
+    }
 }

@@ -180,19 +180,21 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
             if ($form->isValid()) {
                 $count = 0;
-                foreach ($ticketArray as $key => $data) {
-
+                foreach ($ticketArray as $data) {
                     if (in_array(null, $data)) {
                         continue;
                     }
 
                     $ticket = $this->getEntityManager()
                         ->getRepository('TicketBundle\Entity\Ticket')
-                        ->findOneBy(array(
-                            'orderId' => $data[0]));
+                        ->findOneBy(
+                            array(
+                                'orderId' => $data[0]
+                            )
+                        );
 
                     if ($ticket !== null && $ticket->getEvent()->getId() === $this->getEventEntity()->getId()) {
-                        if ($ticket->getStatus() !== "Sold") {
+                        if ($ticket->getStatus() !== 'Sold') {
                             $ticket->setStatus('sold');
                             if ($ticket->getEvent()->getQrEnabled()) {
                                 $ticket->setQrCode();

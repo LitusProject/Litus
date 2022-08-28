@@ -49,6 +49,13 @@ class Product
     private $available;
 
     /**
+     * @var integer Standard amount for product
+     *
+     * @ORM\Column(name="default_amount", type="integer",  nullable=true)
+     */
+    private $defaultAmount;
+
+    /**
      * @return integer
      */
     public function getId()
@@ -128,5 +135,23 @@ class Product
     public function getAvailable()
     {
         return $this->available;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getDefaultAmount()
+    {
+        return $this->defaultAmount;
+    }
+
+    /**
+     * @param integer $amount
+     * @return self
+     */
+    public function setDefaultAmount($amount)
+    {
+        $this->defaultAmount = $amount;
+        return $this;
     }
 }

@@ -2,9 +2,9 @@
 
 namespace TicketBundle\Entity\Event;
 
-use TicketBundle\Entity\Event;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use TicketBundle\Entity\Event;
 
 /**
  * Visitor

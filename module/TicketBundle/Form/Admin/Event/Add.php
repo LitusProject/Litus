@@ -53,9 +53,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         'filter' => array(
                             array('name' => 'StringTrim'),
                         ),
-//                        'validators' => array(
-//                            array('name' => 'Activity'),
-//                        ),
+            //                        'validators' => array(
+            //                            array('name' => 'Activity'),
+            //                        ),
                     ),
                 ),
             )

@@ -28,7 +28,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findOneById($data['event']);
 
-        if ($data['form'] !== "") {
+        if ($data['form'] !== '') {
             $form = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Form')
                 ->findOneById($data['form']);

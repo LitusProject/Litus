@@ -6,7 +6,6 @@ use Interop\Container\ContainerInterface;
 use Laminas\Cache\Storage\StorageInterface;
 use Laminas\Cache\StorageFactory as LaminasStorageFactory;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use Laminas\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Factory to instantiate the configured cache storage adapter.
@@ -26,14 +25,5 @@ class StorageFactory implements FactoryInterface
         $config = $container->get('config');
 
         return LaminasStorageFactory::factory($config['cache']['storage']);
-    }
-
-    /**
-     * @param  ServiceLocatorInterface $locator
-     * @return StorageInterface
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        return $this($serviceLocator, 'Laminas\Cache\Storage\StorageInterface');
     }
 }

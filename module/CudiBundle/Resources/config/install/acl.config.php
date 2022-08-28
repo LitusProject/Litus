@@ -65,6 +65,9 @@ return array(
         'cudi_admin_sales_session_openinghour' => array(
             'add', 'edit', 'delete', 'manage', 'old',
         ),
+        'cudi_admin_sales_session_message' => array(
+            'add', 'edit', 'delete', 'manage',
+        ),
         'cudi_admin_special_action' => array(
             'manage', 'irreeel',
         ),

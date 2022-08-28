@@ -19,12 +19,13 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
      *      "company": "company name",
      * }
      */
-    public function AddCompanyAction()
+    public function addCompanyAction()
     {
         if (!$this->getRequest()->isPost()) {
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
-        $company_name = $this->getRequest()->getPost("company");
+
+        $company_name = $this->getRequest()->getPost('company');
 
         $company = new Company();
         $company->setName($company_name);
@@ -54,13 +55,13 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
-        $company_id = $this->getRequest()->getPost("company");
+        $company_id = $this->getRequest()->getPost('company');
 
         $company = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
             ->findById($company_id)[0];
 
-        $new_name = $this->getRequest()->getPost("new_name");
+        $new_name = $this->getRequest()->getPost('new_name');
 
         $company->setName($new_name);
 
@@ -88,13 +89,14 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
-        $company_id = $this->getRequest()->getPost("company");
+        $company_id = $this->getRequest()->getPost('company');
 
         $company = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
             ->findById($company_id)[0];
 
-        $year = $this->getRequest()->getPost("year");
+        $year = $this->getRequest()->getPost('year');
+
         $academic_year = $this->getAcademicYear($year);
         $company->addCvBookYear($academic_year);
 
@@ -121,7 +123,7 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
-        $company_id = $this->getRequest()->getPost("company");
+        $company_id = $this->getRequest()->getPost('company');
 
         $company = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
@@ -157,7 +159,7 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
-        $company_id = $this->getRequest()->getPost("company");
+        $company_id = $this->getRequest()->getPost('company');
 
         $company = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
@@ -165,12 +167,15 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
 
         $page = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Page')
-            ->findOneBy(array(
-                'company' => $company->getId()));
+            ->findOneBy(
+                array(
+                    'company' => $company->getId()
+                )
+            );
 
         $current_academic_year = $this->getCurrentAcademicYear();
 
-        $is_visible = in_array($current_academic_year ,$page->getYears());
+        $is_visible = in_array($current_academic_year, $page->getYears());
 
         return new ViewModel(
             array(
@@ -193,7 +198,11 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
+<<<<<<< HEAD
         $company_id = $this->getRequest()->getPost("company");
+=======
+        $company_id = $this->getRequest()->getPost('company');
+>>>>>>> master
 
         $company = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
@@ -201,8 +210,12 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
 
         $cv_years = $company->getCvBookYears();
         $years_array = new ArrayCollection();
+<<<<<<< HEAD
         foreach ($cv_years as $year)
         {
+=======
+        foreach ($cv_years as $year) {
+>>>>>>> master
             $years_array->add($year->getCode());
         }
 
@@ -210,7 +223,11 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
             array(
                 'result' => (object) array(
                     'status' => 'success',
+<<<<<<< HEAD
                     "years"  => (object) $years_array->toArray(),
+=======
+                    'years'  => (object) $years_array->toArray(),
+>>>>>>> master
                 ),
             )
         );
@@ -228,7 +245,11 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
+<<<<<<< HEAD
         $company_name = $this->getRequest()->getPost("company");
+=======
+        $company_name = $this->getRequest()->getPost('company');
+>>>>>>> master
 
         $company = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
@@ -241,7 +262,11 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
             array(
                 'result' => (object) array(
                     'status' => 'success',
+<<<<<<< HEAD
                     "id"  => $company_id,
+=======
+                    'id'  => $company_id,
+>>>>>>> master
                 ),
             )
         );
@@ -259,7 +284,11 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
+<<<<<<< HEAD
         $user_id = $this->getRequest()->getPost("user");
+=======
+        $user_id = $this->getRequest()->getPost('user');
+>>>>>>> master
 
         $person = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person')
@@ -280,7 +309,11 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
                 )
             );
         } else {
+<<<<<<< HEAD
             return $this->error(400, "The user is not found");
+=======
+            return $this->error(400, 'The user is not found');
+>>>>>>> master
         }
     }
 
@@ -302,17 +335,29 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
         }
 
         $person = new CorporateEntity();
+<<<<<<< HEAD
         $person->setUsername($this->getRequest()->getPost("user_name"));
         $person->setFirstName($this->getRequest()->getPost("first_name"));
         $person->setLastName($this->getRequest()->getPost("last_name"));
         $person->setEmail($this->getRequest()->getPost("email"));
+=======
+        $person->setUsername($this->getRequest()->getPost('user_name'));
+        $person->setFirstName($this->getRequest()->getPost('first_name'));
+        $person->setLastName($this->getRequest()->getPost('last_name'));
+        $person->setEmail($this->getRequest()->getPost('email'));
+>>>>>>> master
         //$person->setSex($this->getRequest()->getPost("sex"));
 
         $person->setRoles(array_unique(array_merge($this->dataToRoles(array('corporate')), $person->getSystemRoles())));
 
         $company = $this->getEntityManager()
+<<<<<<< HEAD
             ->getRepository("BrBundle\Entity\Company")
             ->findOneById($this->getRequest()->getPost("company"));
+=======
+            ->getRepository('BrBundle\Entity\Company')
+            ->findOneById($this->getRequest()->getPost('company'));
+>>>>>>> master
 
         $person->setCompany($company);
 
@@ -349,7 +394,11 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
+<<<<<<< HEAD
         $user_name = $this->getRequest()->getPost("user_name");
+=======
+        $user_name = $this->getRequest()->getPost('user_name');
+>>>>>>> master
 
         $person = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person')
@@ -376,11 +425,19 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
         $all_academic_years = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
+<<<<<<< HEAD
         foreach ($all_academic_years as $academic_year)
         {
             $code = $academic_year->getCode();
             if ($code == $year)
                 return $academic_year;
+=======
+        foreach ($all_academic_years as $academic_year) {
+            $code = $academic_year->getCode();
+            if ($code == $year) {
+                return $academic_year;
+            }
+>>>>>>> master
         }
         return null;
     }
@@ -397,4 +454,8 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
 
         return $roles;
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> master

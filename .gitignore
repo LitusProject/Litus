@@ -1,5 +1,6 @@
 # These files should be created explicitlys
 config/database.config.php
+config/google.config.php
 config/proxy.config.php
 config/redis.config.php
 config/sentry.config.php
@@ -34,6 +35,3 @@ phpstan/
 
 # IDE files
 .idea
-
-# google OAuth
-service-account.json
