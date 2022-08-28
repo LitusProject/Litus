@@ -214,6 +214,12 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour')
             ->findPeriodFromNow('P14D');
 
+        $messages = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Session\Message')
+            ->findAllActive();
+
+        $cudi['messages'] = $messages;
+
         return $cudi;
     }
 

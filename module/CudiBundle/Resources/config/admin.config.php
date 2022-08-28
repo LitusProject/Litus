@@ -23,6 +23,10 @@ return array(
                     'title'  => 'Financial',
                     'help'   => 'A financial overview of the cudi system can be found here.',
                 ),
+                'cudi_admin_sales_session_message' => array(
+                    'title' => 'Messages',
+                    'help'  => 'Manage the messages of the cudi. These message will be shown on the website next to the opening hours.',
+                ),
                 'cudi_admin_sales_session_openinghour' => array(
                     'title' => 'Opening Hours',
                     'help'  => 'Manage the opening hours of the cudi. These opening hours will be shown on the website.',
