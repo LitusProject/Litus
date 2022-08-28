@@ -2,6 +2,7 @@
 
 namespace CommonBundle\Component\Google\ServiceManager;
 
+use CommonBundle\Component\Controller\Exception\RuntimeException;
 use Google\Client;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
@@ -26,7 +27,7 @@ class ClientFactory implements FactoryInterface
             throw new RuntimeException('Could not find Google config');
         }
 
-        $client = new Google\Client();
+        $client = new Client();
         $client->setAuthConfig($config['google']['auth']);
 
         return $client;
