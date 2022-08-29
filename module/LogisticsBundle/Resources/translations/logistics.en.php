@@ -134,4 +134,6 @@ return array(
     'Article Name'                                                                                                                                                                                                                              => 'Article Name',
     'Order Name'                                                                                                                                                                                                                                => 'Order Name',
     'Material'                                                                                                                                                                                                                                  => 'Material',
+    'Inventory'                                                                                                                                                                                                                                 => 'Inventory',
+    'Flesserke Form'                                                                                                                                                                                                                            => 'Inventory Form',
 );
