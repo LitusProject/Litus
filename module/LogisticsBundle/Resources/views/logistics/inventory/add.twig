@@ -10,3 +10,23 @@
         {{ forms.renderForm(form) }}
     </div>
 {% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function (){
+            document.getElementById('barcode').focus();
+            $('#barcode').keydown( function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault()
+                    document.getElementById('name').focus();
+                }
+            });
+            $('#name').keydown( function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault()
+                    document.getElementById('amount').focus();
+                }
+            })
+        });
+    </script>
+{% endblock %}

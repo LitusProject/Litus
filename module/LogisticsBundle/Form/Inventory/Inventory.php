@@ -63,6 +63,10 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
                         ),
                     ),
                 ),
+                'attributes' => array(
+                    'id'           => 'amount',
+                    'placeholder'  => 'Amount',
+                ),
             )
         );
 
