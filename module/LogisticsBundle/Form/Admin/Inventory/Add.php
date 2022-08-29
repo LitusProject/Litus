@@ -38,7 +38,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type'     => 'text',
                 'name'     => 'name',
                 'label'    => 'Name',
-                'required' => true,
+                'required' => false,
                 'options'  => array(
                     'input' => array(
                         'filters' => array(
