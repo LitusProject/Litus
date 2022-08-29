@@ -40,8 +40,7 @@ class ServiceFactory implements FactoryInterface
         }
 
         $client->authorize();
-//        die(var_dump($requestedName));
-//        die(var_dump($client));
+
         return new $requestedName($client);
     }
 }

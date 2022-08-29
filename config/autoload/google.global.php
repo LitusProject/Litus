@@ -3,7 +3,6 @@
 use Google\Service\Directory;
 use Google\Service\Groupssettings;
 
-//if (getenv('APPLICATION_ENV') != 'development') {
 if (file_exists(__DIR__ . '/../google.config.php')) {
     // TODO: Remove this branch once all deployments have been containerized
     $googleConfig = include __DIR__ . '/../google.config.php';
@@ -53,6 +52,3 @@ return array(
         ),
     ),
 );
-//}
-
-//return array();
