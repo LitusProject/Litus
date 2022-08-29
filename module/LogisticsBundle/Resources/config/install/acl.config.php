@@ -41,5 +41,8 @@ return array(
         'logistics_catalog' => array(
             'addOrder', 'editOrder', 'overview', 'catalog', 'removeOrder', 'editRequest', 'removeRequest', 'editMap', 'deleteMap', 'view', 'search'
         ),
+        'logistics_inventory' => array(
+            'index', 'add',
+        )
     ),
 );

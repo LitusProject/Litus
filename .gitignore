@@ -5,6 +5,7 @@ config/proxy.config.php
 config/redis.config.php
 config/sentry.config.php
 config/session.config.php
+config/google.config.php
 
 # We don't want data in our repository
 data/banner/images/

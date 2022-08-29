@@ -265,6 +265,21 @@ return array(
                 ),
             ),
         ),
+        'logistics_inventory' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '[/:language]/logistics/inventory[/:action][/page/:page][/]',
+                'constraints' => array(
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'language' => '(en|nl)',
+                    'page'     => '[0-9]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'logistics_inventory',
+                    'action'     => 'index',
+                ),
+            ),
+        ),
     ),
 
     'controllers' => array(
@@ -282,5 +297,6 @@ return array(
         'logistics_piano'                   => 'LogisticsBundle\Controller\PianoController',
         'logistics_lease'                   => 'LogisticsBundle\Controller\LeaseController',
         'logistics_catalog'                 => 'LogisticsBundle\Controller\CatalogController',
+        'logistics_inventory'               => 'LogisticsBundle\Controller\InventoryController',
     ),
 );
