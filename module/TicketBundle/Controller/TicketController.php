@@ -783,11 +783,23 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             return new \ErrorException('This paylink contains the wrong ticket code...');
         }
 
-        $link = $this->generatePayLink($ticket);
+        $now = new \DateTime('now');
+        $book_date = $ticket->getBookDate();
+        $time_diff = $now->getTimestamp() - $book_date->getTimeStamp();
+        $days = $time_diff/(24*60*60); // Set Time Difference in seconds to day
 
-        $this->redirect()->toUrl($link);
+        if ($days <= 1) {
+            $link = $this->generatePayLink($ticket);
 
-//        return new ViewModel();
+            $this->redirect()->toUrl($link);
+        } else {
+            return new ViewModel(
+                array(
+                    'late' => true,
+                    'event' => $ticket->getEvent(),
+                )
+            );
+        }
     }
 
     public function qrAction()
