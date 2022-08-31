@@ -33,4 +33,5 @@ return array(
     'Maximum of '                                                                                                                                                                                                                          => 'Maximaal ',
     'I have read and accept the GDPR terms and condition specified above'                                                                                                                                                                  => 'Ik heb de bovenstaande privacy policy gelezen en ga er mee akkoord',
     'Return to the event information'                                                                                                                                                                                                      => 'Ga terug naar de event pagina',
+    'Your ticket has expired. Please book a new ticket!'                                                                                                                                                                                   => 'Uw ticket is vervallen. Gelieven een nieuw ticket te reserveren!'
 );

@@ -70,6 +70,26 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
             )
         );
 
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'expiry_date',
+                'label'    => 'Expiry Date',
+                'required' => false,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+                'attributes' => array(
+                    'id'           => 'expiry_date',
+                    'placeholder'  => 'Expiry Date',
+                ),
+            )
+        );
+
         $this->addSubmit('Add/Subtract', 'inventory_add');
     }
 }
