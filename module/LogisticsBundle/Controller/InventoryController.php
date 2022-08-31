@@ -77,6 +77,7 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
 
                     if ($amount > 0) {
                         $article->addAmount($amount);
+                        $article->setExpiryDate($formData['expiry_date']);
                     } elseif ($amount < 0) {
                         $new_amount = $article->getAmount() + $amount;
                         if ($new_amount < 0) {
@@ -92,6 +93,7 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
                             );
                             return new ViewModel();
                         }
+                        $article->setExpiryDate($formData['expiry_date']);
                         $article->subtractAmount($amount);
                     } else {
                         $this->flashMessenger()->error(

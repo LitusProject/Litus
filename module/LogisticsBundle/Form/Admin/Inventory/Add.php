@@ -65,6 +65,22 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'expiry_date',
+                'label'    => 'Expiry Date',
+                'required' => false,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
         $this->addSubmit('Add', 'inventory_add');
     }
 }

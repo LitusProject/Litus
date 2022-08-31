@@ -43,6 +43,13 @@ class Inventory
     private $amount;
 
     /**
+     * @var string The expiry date
+     *
+     * @ORM\Column(name="expiry_date", type="string", nullable=true)
+     */
+    private $expiryDate;
+
+    /**
      * Inventory constructor
      */
     public function __construct()
@@ -129,6 +136,24 @@ class Inventory
     public function subtractAmount($amount)
     {
         $this->amount += $amount;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExpiryDate()
+    {
+        return $this->expiryDate;
+    }
+
+    /**
+     * @param $expiry_date
+     * @return self
+     */
+    public function setExpiryDate($expiry_date)
+    {
+        $this->expiryDate = $expiry_date;
         return $this;
     }
 }

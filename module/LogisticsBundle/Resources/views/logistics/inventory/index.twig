@@ -24,6 +24,7 @@
                     <th width="130px">Name</th>
                     <th width="90px">Barcode</th>
                     <th width="150px">Amount</th>
+                    <th>Expiry Date</th>
 {#                    <th width="70px">Actions</th>#}
                 </tr>
             </table>
@@ -36,6 +37,7 @@
                     <th width="90px">Name</th>
                     <th width="130px">Barcode</th>
                     <th width="50px">Amount</th>
+                    <th>Expiry Date</th>
 {#                    <th width="70px">Actions</th>#}
                 </tr>
                 </thead>
@@ -45,6 +47,7 @@
                         <td>{{ article.getName() }}</td>
                         <td>{{ article.getBarcode() }}</td>
                         <td>{{ article.getAmount() }}</td>
+                        <td>{{ article.getExpiryDate() }}</td>
 {#                        <td class="actions">#}
 {#                            {% if hasAccess('logistics_admin_inventory', 'edit') %}#}
 {#                                <a href="{{ url('logistics_admin_inventory', {"action": "edit", "id": article.getId()}) }}" class="edit">Edit</a>#}

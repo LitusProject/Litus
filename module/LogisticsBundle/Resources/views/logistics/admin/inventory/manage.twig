@@ -39,6 +39,7 @@
                     <th width="90px">Barcode</th>
                     <th width="150px">Amount</th>
                     <th width="70px">Actions</th>
+                    <th>Expiry Date</th>
                 </tr>
             </table>
         </div>
@@ -50,6 +51,7 @@
                     <th width="130px">Barcode</th>
                     <th width="50px">Amount</th>
                     <th width="70px">Actions</th>
+                    <th>Expiry Date</th>
                 </tr>
 
                 {% for article in paginator %}
@@ -58,6 +60,7 @@
                         <td>{{ article.getName() }}</td>
                         <td>{{ article.getBarcode() }}</td>
                         <td>{{ article.getAmount() }}</td>
+                        <td>{{ article.getExpiryDate() }}</td>
                         <td class="actions">
                             {% if hasAccess('logistics_admin_inventory', 'edit') %}
                                 <a href="{{ url('logistics_admin_inventory', {"action": "edit", "id": article.getId()}) }}" class="edit">Edit</a>
