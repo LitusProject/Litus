@@ -840,12 +840,12 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                     // If visitor already exists, can't enter again
                     $entry = false;
                 }
-
                 return new ViewModel(
                     array(
                         'event' => $event,
                         'entry' => $entry,
-                        'ticket_option' => $ticket->getOption()->getName(),
+                        'ticket_option' => $ticket->getOption() ? $ticket->getOption()->getName() : 'default',
+                        'ticket' => $ticket,
                     )
                 );
             }
