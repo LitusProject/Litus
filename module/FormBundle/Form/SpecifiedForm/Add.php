@@ -130,7 +130,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 array(
                     'type'     => 'text',
                     'name'     => 'organization',
-                    'label'    => 'Organization',
+                    'label'    => 'Student Association',
                     'required' => false,
                     'value'    => $this->guestInfo ? $this->guestInfo->getOrganization() : '',
                     'options'  => array(

@@ -46,8 +46,8 @@
 
                     <div style="height: 20px;"></div>
 
-                    <div>
-                        <p>{{ event.getDescription() }}</p>
+                    <div class="markdown">
+                        {{ hideEmail(markdown(event.getDescription()))|raw }}
                     </div>
                 </div>
             </div>
