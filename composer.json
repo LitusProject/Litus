@@ -8,7 +8,7 @@
         "laminas/laminas-eventmanager": "^3.2",
         "laminas/laminas-file": "^2.8",
         "laminas/laminas-filter": "^2.8",
-        "laminas/laminas-form": "^2.17",
+        "laminas/laminas-form": "^2.12",
         "laminas/laminas-http": "^2.8",
         "laminas/laminas-i18n": "^2.9",
         "laminas/laminas-i18n-resources": "^2.6",
