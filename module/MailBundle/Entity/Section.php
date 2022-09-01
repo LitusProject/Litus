@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * })
  */
+
 class Section
 {
     /**
@@ -41,14 +42,29 @@ class Section
     private $attribute;
 
     /**
+     * @var bool The default preference value of this newsletter section for each user
+     *
+     * @ORM\Column(name="default_value", type="boolean")
+     */
+    private $defaultValue;
+
+    /**
      * Creates a new newsletter section with the given name.
      *
      * @param string $name The name for this newsletter section.
+     * @param string $attribute The SendInBlue attribute that corresponds to this newsletter section
+     * @param bool $defaultValue The default preference value of this newsletter section for each user
      */
-    public function __construct($name, $attribute)
+    public function __construct($name, $attribute=null, $defaultValue)
     {
         $this->name = $name;
-        $this->attribute = $attribute;
+        if ($attribute == null) {
+            $this->attribute = $name;
+        }
+        else {
+            $this->attribute = $attribute;
+        }
+        $this->defaultValue = $defaultValue;
     }
 
     /**
@@ -76,18 +92,47 @@ class Section
     }
 
     /**
-     * @param string $name
+     * @return bool
      */
-    public function setName(string $name): void
+    public function getDefaultValue()
+    {
+        return $this->defaultValue;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return self
+     */
+    public function setName(string $name)
     {
         $this->name = $name;
+        return $this;
     }
 
     /**
      * @param string $attribute
+     *
+     * @return self
      */
-    public function setAttribute(string $attribute): void
+    public function setAttribute(string $attribute)
     {
         $this->attribute = $attribute;
+
+        return $this;
     }
+
+    /**
+     * @param bool $defaultValue
+     *
+     * @return self
+     */
+    public function setDefaultValue(bool $defaultValue)
+    {
+        $this->defaultValue = $defaultValue;
+
+        return $this;
+    }
+
+
 }

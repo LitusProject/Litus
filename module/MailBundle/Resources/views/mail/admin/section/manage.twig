@@ -24,6 +24,8 @@
                 Search:
                 <select id="searchField">
                     <option value="section">Section</option>
+                    <option value="attribute">Attribute</option>
+                    <option value="default_preference">Preference</option>
                 </select>
                 is
                 <input type="text" id="searchString" size="30" />
@@ -31,8 +33,9 @@
 
             <table class="full_width manage">
                 <tr>
-                    <th>Section Name</th>
+                    <th>Section</th>
                     <th>SIB Attribute</th>
+                    <th>Default Preference</th>
                     <th width="70px">Action</th>
                 </tr>
             </table>
@@ -42,16 +45,17 @@
 
             <table class="full_width manage">
                 <tr>
-                    <th>Section Name</th>
+                    <th>Section</th>
                     <th>SIB Attribute</th>
-                    <th width="70px">Actions</th>
+                    <th>Default Preference</th>
+                    <th width="70px">Action</th>
                 </tr>
 
                 {% for section in paginator %}
-
                     <tr class="item item-{{ section.getId() }}">
                         <td>{{ section.getName() }}</td>
                         <td>{{ section.getAttribute() }}</td>
+                        <td>{{ section.getDefaultValue() ? "Yes" : "No" }}</td>
                         <td class="actions">
                             {% if hasAccess('mail_admin_section', 'delete') %}
                                 <a href="#" class="delete" data-id="{{ section.getId() }}" data-name="{{ section.getName() }}">Delete</a>
@@ -108,6 +112,7 @@
                         $('#section_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
                         row.append('<td>' + this.section + '</td>')
                             .append('<td>' + this.attribute + '</td>')
+                            .append('<td>' + this.default_value + '</td>')
                             .append(
                                 $('<td>', {'class': 'actions'})
                                     .append(deleteButton = $('<a href="#" class="delete">Delete</a>'))

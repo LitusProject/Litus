@@ -45,6 +45,14 @@ class add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
+        $this->add(
+            array(
+                'type'     => 'checkbox',
+                'name'     => 'default_value',
+                'label'    => 'Default Preference'
+            )
+        );
+
         $this->addSubmit('Add', 'mail_add');
     }
 }
