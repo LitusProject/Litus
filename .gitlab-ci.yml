@@ -43,7 +43,6 @@ deploy_leia:
     <<: *deploy
     variables:
         SSH_HOSTNAME: leia.vtk.be
-        SSH_PRIVATE_KEY: $SSH_PRIVATE_KEY_leia
     environment:
         name: leia
         url: https://vtk.be
@@ -52,7 +51,6 @@ deploy_liv:
     <<: *deploy
     variables:
         SSH_HOSTNAME: liv.vtk.be
-        SSH_PRIVATE_KEY: $SSH_PRIVATE_KEY_liv
     environment:
         name: liv
         url: https://liv.vtk.be
