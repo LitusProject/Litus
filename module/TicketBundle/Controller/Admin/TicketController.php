@@ -331,6 +331,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $message = str_replace('{{qrSource}}', $qrSource, $message);
         $message = str_replace('{{qrLink}}', $url, $message);
         $message = str_replace('{{actiMail}}', $mailAddress, $message);
+        $message = str_replace('{{ticketOption}}', $ticket->getOption()->getName(), $message);
 
         $part = new Part($message);
 

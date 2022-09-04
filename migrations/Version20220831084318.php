@@ -6,9 +6,9 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
- * Version 20220826131142
+ * Version 20220831084318
  */
-class Version20220826131142 extends \Doctrine\Migrations\AbstractMigration
+class Version20220831084318 extends \Doctrine\Migrations\AbstractMigration
 {
     /**
      * @param  \Doctrine\DBAL\Schema\Schema $schema
@@ -18,7 +18,7 @@ class Version20220826131142 extends \Doctrine\Migrations\AbstractMigration
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('ALTER TABLE publications_videos ADD date TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL');
+        $this->addSql('ALTER TABLE logistics_inventory ADD expiry_date VARCHAR(255) DEFAULT NULL');
     }
 
     /**

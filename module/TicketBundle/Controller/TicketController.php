@@ -783,11 +783,23 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             return new \ErrorException('This paylink contains the wrong ticket code...');
         }
 
-        $link = $this->generatePayLink($ticket);
+        $now = new \DateTime('now');
+        $book_date = $ticket->getBookDate();
+        $time_diff = $now->getTimestamp() - $book_date->getTimeStamp();
+        $days = $time_diff/(24*60*60); // Set Time Difference in seconds to day
 
-        $this->redirect()->toUrl($link);
+        if ($days <= 1) {
+            $link = $this->generatePayLink($ticket);
 
-//        return new ViewModel();
+            $this->redirect()->toUrl($link);
+        } else {
+            return new ViewModel(
+                array(
+                    'late' => true,
+                    'event' => $ticket->getEvent(),
+                )
+            );
+        }
     }
 
     public function qrAction()
@@ -828,12 +840,12 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                     // If visitor already exists, can't enter again
                     $entry = false;
                 }
-
                 return new ViewModel(
                     array(
                         'event' => $event,
                         'entry' => $entry,
-                        'ticket_option' => $ticket->getOption()->getName(),
+                        'ticket_option' => $ticket->getOption() ? $ticket->getOption()->getName() : 'default',
+                        'ticket' => $ticket,
                     )
                 );
             }
@@ -1131,6 +1143,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $message = str_replace('{{qrSource}}', $qrSource, $message);
         $message = str_replace('{{qrLink}}', $url, $message);
         $message = str_replace('{{actiMail}}', $mailAddress, $message);
+        $message = str_replace('{{ticketOption}}', $ticket->getOption()->getName(), $message);
 
         $part = new Part($message);
 
@@ -1143,7 +1156,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             ->setBody($newMessage)
             ->setFrom($mailAddress, $mailName)
             ->addTo($ticket->getEmail(), $ticket->getFullName())
-            ->setSubject($subject);
+            ->setSubject($subject)
+            ->addBcc($mailAddress);
         if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);
         }

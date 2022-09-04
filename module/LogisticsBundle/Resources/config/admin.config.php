@@ -12,6 +12,7 @@ return array(
                 'logistics_admin_article'           => array('title' => 'Articles'),
                 'logistics_admin_order'             => array('title' => 'Orders'),
                 'logistics_admin_request'           => array('title' => 'Requests'),
+                'logistics_admin_inventory'         => array('title' => 'Inventory'),
             ),
         ),
     ),
