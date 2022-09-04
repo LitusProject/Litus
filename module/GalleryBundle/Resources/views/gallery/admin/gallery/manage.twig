@@ -44,6 +44,9 @@
                             {% if hasAccess('gallery_admin_gallery', 'delete') %}
                                 <a href="#" data-id="{{ album.getId() }}" data-title="{{ album.getTitle(language) }}" class="delete">Delete</a>
                             {% endif %}
+                            {% if hasAccess('gallery_admin_gallery', 'poster') %}
+                                <a href="{{ url('gallery_admin_gallery', {"action": "editPoster", "id": album.getId()}) }}" class="image_edit">Poster</a>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
