@@ -27,6 +27,7 @@ $modules = array(
     'CommonBundle',
     'CudiBundle',
     'DoorBundle',
+    'FakBundle',
     'FormBundle',
     'GalleryBundle',
     'LogisticsBundle',

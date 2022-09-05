@@ -73,6 +73,7 @@
             "CommonBundle\\": "module/CommonBundle",
             "CudiBundle\\": "module/CudiBundle",
             "DoorBundle\\": "module/DoorBundle",
+            "FakBundle\\": "module/FakBundle",
             "FormBundle\\": "module/FormBundle",
             "GalleryBundle\\": "module/GalleryBundle",
             "LogisticsBundle\\": "module/LogisticsBundle",
