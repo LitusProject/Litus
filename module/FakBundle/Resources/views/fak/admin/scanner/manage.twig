@@ -1,0 +1,114 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'fak/admin/scanner/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div class="flashmessage success_message full_width consumptions_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The checkin was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width communication_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete checkin.</p>
+        </div>
+    </div>
+
+    <aside>
+        {% if hasAccess('fak_admin_scanner', 'delete_all') %}
+            <div class="sidebox">
+                <div class="title">Delete All</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to delete all check-ins!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('fak_admin_scanner', {"action": "delete_all"}) }}">&rarr; Delete All</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
+
+    <div id="controller_action">
+        <div id="scanner_search" style="display: none;">
+            <div style="padding: 4px; text-align: right">
+                Search:
+                <select id="searchField">
+                    <option value="username">username</option>
+                </select>
+                is
+                <input type="text" id="searchString" size="30"/>
+            </div>
+
+            <table class="full_width manage">
+                <tr>
+                    <th>Username</th>
+                    <th>Amount</th>
+                    <th width="70px">Action</th>
+                </tr>
+            </table>
+        </div>
+        <div id="default_page">
+            <table class="full_width manage">
+                <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Amount</th>
+                    <th width="70px">Action</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for checkin in paginator %}
+                    <tr class="item item-{{ checkin.getId() }}">
+                        <td>{{ checkin.getUserName() }}</td>
+                        <td>{{ checkin.getAmount() }}</td>
+                        <td class="actions">
+                            {% if hasAccess('fak_admin_scanner', 'edit') %}
+                                <a href="{{ url('fak_admin_scanner', {"action": "edit", "id": checkin.getId()}) }}" class="edit">Edit</a>
+                            {% endif %}
+                            {% if hasAccess('fak_admin_scanner', 'delete') %}
+                                <a href="#" class="delete" data-id="{{ checkin.getId() }}" data-person="{{ checkin.getFullName() }}">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+
+        <h1> The total amount of check ins: {{ totalAmount }}</h1>
+
+    </div>
+
+    <div class="modal fade" id="removeConsumptions" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Check Ins
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following check in: <b class="checkinPerson"></b>
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
