@@ -10,18 +10,29 @@ class ScannerController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function manageAction()
     {
+        $allCheckins = $this->getEntityManager()
+            ->getRepository('FakBundle\Entity\Scanner')
+            ->findAll();
+
         $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
-                ->getRepository('FakBundle\Entity\Scanner')
-                ->findAll(),
+            $allCheckins,
             $this->getParam('page')
         );
+
+        $totalAmount = 0;
+
+        foreach ($allCheckins as $checkin) {
+            $totalAmount += $checkin->getAmount();
+        }
 
         return new ViewModel(
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
+                'totalAmount' => $totalAmount,
             )
         );
     }
+
+    
 }
