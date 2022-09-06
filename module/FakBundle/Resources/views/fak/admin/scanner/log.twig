@@ -1,0 +1,33 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'fak/admin/scanner/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <div id="default_page">
+            <table class="full_width manage">
+                <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Time</th>
+                    <th>Is Double</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for log in paginator %}
+                    <tr class="item item-{{ log.getId() }}">
+                        <td>{{ log.getUserName() }}</td>
+                        <td>{{ log.getTime() }}</td>
+                        <td>{{ log.isDouble() }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+    </div>
+{% endblock %}

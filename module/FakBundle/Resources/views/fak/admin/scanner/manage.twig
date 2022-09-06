@@ -19,7 +19,7 @@
     </div>
 
     <aside>
-        {% if hasAccess('fak_admin_scanner', 'delete_all') %}
+        {% if hasAccess('fak_admin_scanner', 'deleteAll') %}
             <div class="sidebox">
                 <div class="title">Delete All</div>
                 <div class="content">
@@ -27,7 +27,7 @@
                         <i>Please hit the link below to delete all check-ins!</i>
                     </p>
                     <p>
-                        <a href="{{ url('fak_admin_scanner', {"action": "delete_all"}) }}">&rarr; Delete All</a>
+                        <a href="{{ url('fak_admin_scanner', {"action": "deleteAll"}) }}">&rarr; Delete All</a>
                     </p>
                 </div>
             </div>
