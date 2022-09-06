@@ -20,8 +20,8 @@
                 {% for log in paginator %}
                     <tr class="item item-{{ log.getId() }}">
                         <td>{{ log.getUserName() }}</td>
-                        <td>{{ log.getTime() }}</td>
-                        <td>{{ log.isDouble() }}</td>
+                        <td>{{ log.getTime().format('d-m-Y H:i:s') }}</td>
+                        <td>{{ log.isDouble() ? "Yes" : "No" }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>

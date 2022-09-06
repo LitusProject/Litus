@@ -54,6 +54,7 @@ class Log
         $this->username = $username;
         $this->time = $time;
         $this->isDouble = $isDouble;
+        return $this;
     }
 
     /**

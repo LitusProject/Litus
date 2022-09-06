@@ -38,8 +38,10 @@ class Scanner
     /**
      * Scanner constructor
      */
-    public function __construct()
+    public function __construct($username)
     {
+        $this->username = $username;
+        return $this;
     }
 
     /**

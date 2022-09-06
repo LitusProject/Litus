@@ -518,9 +518,12 @@ class ActionController extends \Laminas\Mvc\Controller\AbstractActionController 
         return $entity;
     }
 
-    public function getRNumberAPI($cardAppId, $serialNr)
+    public function getRNumberAPI($serialNr, $cardAppId, $entityManager = null)
     {
-        $bearerToken = $this->getBearerToken();
+        if ($entityManager === null) {
+            $entityManager = $this->getEntityManager();
+        }
+        $bearerToken = $this->getBearerToken($entityManager);
 
         $url = 'https://account.kuleuven.be/api/v1/idverification';
 
@@ -543,15 +546,14 @@ class ActionController extends \Laminas\Mvc\Controller\AbstractActionController 
         return json_decode($response)->userName;
     }
 
-    private function getBearerToken()
+    private function getBearerToken($entityManager)
     {
-        $clientId = $this->getEntityManager()
+        $clientId = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('common.studcard_client_id');
-        $clientSecret = $this->getEntityManager()
+        $clientSecret = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('common.studcard_client_secret');
-
         $endpoint = 'https://idp.kuleuven.be/auth/realms/kuleuven/protocol/openid-connect/token';
 
         $base64 = base64_encode($clientId . ':' . $clientSecret);
