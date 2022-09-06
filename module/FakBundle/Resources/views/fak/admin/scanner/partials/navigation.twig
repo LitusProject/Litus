@@ -9,9 +9,6 @@
             {%  if hasAccess('fak_admin_scanner', 'log') %}
                 <li><a {% if 'log' == getParam('action') %} class = 'active' {%  endif %} href="{{ url('fak_admin_scanner', {"action": "log"}) }}"> Log </a></li>
             {%  endif %}
-            {%  if hasAccess('fak_admin_scanner', 'add') %}
-                <li><a {% if 'add' == getParam('action') %} class = 'active' {%  endif %} href="{{ url('fak_admin_scanner', {"action": "add"}) }}"> Add </a></li>
-            {%  endif %}
             {% if hasAccess('fak_admin_scanner', 'manage') %}
                 <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') or 'delete' == getParam('action') %} class="active" {% endif %}
                             href="{{ url('fak_admin_scanner', {"action": "manage"}) }}">Manage</a></li>
