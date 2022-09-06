@@ -36,6 +36,13 @@ class Scanner
     private $amount;
 
     /**
+     * @var \DateTime The latest check in time for this person
+     *
+     * @ORM\Column(name="last_checkin", type="datetime", nullable=true)
+     */
+    private $lastCheckin;
+
+    /**
      * Scanner constructor
      */
     public function __construct($username)
@@ -95,6 +102,24 @@ class Scanner
     public function addCheckin($number)
     {
         $this->amount += $number;
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getLastCheckin()
+    {
+        return $this->lastCheckin;
+    }
+
+    /**
+     * @param \DateTime $lastCheckin
+     * @return self
+     */
+    public function setLastChecin($lastCheckin)
+    {
+        $this->lastCheckin = $lastCheckin;
         return $this;
     }
 }
