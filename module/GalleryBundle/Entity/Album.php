@@ -2,6 +2,7 @@
 
 namespace GalleryBundle\Entity;
 
+use CalendarBundle\Entity\Node\Event;
 use CommonBundle\Component\Util\Url as UrlUtil;
 use CommonBundle\Entity\General\Language;
 use CommonBundle\Entity\User\Person;
@@ -83,6 +84,14 @@ class Album
     /**
      * @param Person $person
      */
+
+    /**
+     * @var string The poster of this event
+     *
+     * @ORM\Column(name="poster", type="string", nullable=true)
+     */
+    private $poster;
+
     public function __construct(Person $person)
     {
         $this->createTime = new DateTime();
@@ -265,4 +274,25 @@ class Album
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getPoster()
+    {
+        return $this->poster;
+    }
+
+    /**
+     * @param string $poster
+     *
+     * @return self
+     */
+    public function setPoster($poster)
+    {
+        $this->poster = trim($poster, '/');
+
+        return $this;
+    }
+
 }
