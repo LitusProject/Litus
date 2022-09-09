@@ -56,6 +56,8 @@ class Form extends \CommonBundle\Component\Hydrator\Hydrator
             }
         }
 
+        $object->setStudentInfo($data['student_info']);
+
         if ($data['mail']) {
             $object->setMail(
                 $hydrator->hydrate($data['mail_form'], $object->getMail())
@@ -141,6 +143,7 @@ class Form extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
         $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
+        $data['student_info'] = $object->getStudentInfo();
         $data['mail'] = $object->hasMail();
 
         $hydrator = $this->getHydrator('FormBundle\Hydrator\Mail');
