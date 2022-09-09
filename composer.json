@@ -49,9 +49,8 @@
         "symfony/event-dispatcher": "^4.4",
         "widmogrod/zf2-assetic-module": "^2.4",
         "twitter/bootstrap": "^3.3",
-      "ext-curl": "*",
-      "ext-json": "*",
-      "ext-imagick": "*"
+        "ext-curl": "*",
+        "ext-json": "*"
     },
     "require-dev": {
         "laminas/laminas-developer-tools": "^2.0",
