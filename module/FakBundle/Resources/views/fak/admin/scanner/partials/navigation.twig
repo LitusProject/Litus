@@ -1,0 +1,18 @@
+<header id="controller_header">
+    <div class="title"><span class="scanner">Scanner</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('fak_admin_scanner', 'export') %}
+                <li><a {% if 'export' == getParam('action') %} class="active" {% endif %} href="{{ url("fak_admin_scanner", {"action": "export"}) }}">Export</a></li>
+            {% endif %}
+            {%  if hasAccess('fak_admin_scanner', 'log') %}
+                <li><a {% if 'log' == getParam('action') %} class = 'active' {%  endif %} href="{{ url('fak_admin_scanner', {"action": "log"}) }}"> Log </a></li>
+            {%  endif %}
+            {% if hasAccess('fak_admin_scanner', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') or 'delete' == getParam('action') %} class="active" {% endif %}
+                            href="{{ url('fak_admin_scanner', {"action": "manage"}) }}">Manage</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
