@@ -23,6 +23,9 @@ return array(
         'api_door' => array(
             'getRules', 'log',
         ),
+        'api_fak' => array(
+            'add-checkin',
+        ),
         'api_mail' => array(
             'getAliases', 'getLists', 'getListsArchive',
         ),
