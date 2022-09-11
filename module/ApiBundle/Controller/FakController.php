@@ -15,11 +15,10 @@ class FakController extends \ApiBundle\Component\Controller\ActionController\Api
 {
     public function addCheckInAction()
     {
-//        if (!$this->getRequest()->isPost()) {
-//            return $this->error(405, 'This endpoint can only be accessed through POST');
-//        }
+        if (!$this->getRequest()->isPost()) {
+            return $this->error(405, 'This endpoint can only be accessed through POST');
+        }
         $userData = $this->getRequest()->getPost('userData');
-        $userData = '04690942646880;3000050586';
         $seperatedString = explode(';', $userData);
 
         $actionController = new ActionController();
