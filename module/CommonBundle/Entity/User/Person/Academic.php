@@ -118,8 +118,6 @@ class Academic extends \CommonBundle\Entity\User\Person
      */
     private $preferences;
 
-
-
     public function __construct()
     {
         parent::__construct();

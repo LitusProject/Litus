@@ -50,8 +50,9 @@ class Preference
      * @param Section $section
      * @param bool $value
      */
-    public function __construct(Section $section, bool $value = true)
+    public function __construct(Academic $person, Section $section, bool $value = true)
     {
+        $this->person = $person;
         $this->section = $section;
         $this->value = $value;
     }

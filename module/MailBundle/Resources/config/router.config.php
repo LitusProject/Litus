@@ -35,9 +35,11 @@ return array(
         'mail_admin_section' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/mail/newsletter[/:action][/]',
+                'route'       => '/admin/mail/newsletter[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
                 ),
                 'defaults'    => array(
                     'controller' => 'mail_admin_section',

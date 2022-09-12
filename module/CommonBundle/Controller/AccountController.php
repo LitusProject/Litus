@@ -191,6 +191,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 array(
                     'meta_data' => $metaData,
                 )
+
             );
         } else {
             $form = $this->getForm(
@@ -596,6 +597,51 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             }
         }
     }
+
+    public function preferencesAction()
+    {
+        $academic = $this->getAcademicEntity();
+
+        // possible that new sections are added in admin that are not yet in academic's preferences, so we pull all sections
+        $sections = $this->getEntityById('MailBundle\Entity\Section');
+
+        if ($academic === null) {
+            return new ViewModel();
+        }
+
+        return new ViewModel(
+            array(
+                'preferences' => $academic->getPreferences(),
+                'sections' => $sections,
+            )
+        );
+    }
+
+    public function savePreferencesAction()
+    {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
+            return new ViewModel();
+        }
+
+        if (isset($data['preferences'])) {
+            $preferenceNames = array_map('getPreferenceName', $data['preferences']);
+            foreach ($preferenceNames as $name) {
+                if ($this->getEntityManager()
+                        ->getRepository()
+                )
+            }
+        }
+    }
+
+    /**
+     * @return string
+     */
+    private function getPreferenceName($preference)
+    {
+        return $preference->getName();
+    }
+
 
     /**
      * @return Academic|null
