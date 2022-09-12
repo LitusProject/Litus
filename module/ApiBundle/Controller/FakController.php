@@ -21,16 +21,16 @@ class FakController extends \ApiBundle\Component\Controller\ActionController\Api
         $userData = $this->getRequest()->getPost('userData');
         $seperatedString = explode(';', $userData);
 	
-	if ($seperatedString[1] === '') {
-	    return new ViewModel(
-                array(
-                    'result' => (object) array(
-                        'status' => 'error',
-                        'reason' => 'toShort',
+        if ($seperatedString[1] === '') {
+            return new ViewModel(
+                    array(
+                        'result' => (object) array(
+                            'status' => 'error',
+                            'reason' => 'toShort',
+                        ),
                     ),
-                ),
-            );
-	}
+                );
+        }
 
         $actionController = new ActionController();
         $rNumber = $actionController->getRNumberAPI($seperatedString[0], $seperatedString[1], $this->getEntityManager());
