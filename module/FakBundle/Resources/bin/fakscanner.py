@@ -32,7 +32,7 @@ while True:
     if studentInfo == 'STOP':
         exit()
 
-    request = requests.post('https://vtk.be/api/fak/add-checkin', data={"key": "99783417c1b06c8b39ae8025f5bfc937", "userData": studentInfo}, ).json()
+    request = requests.post('https://vtk.be/api/fak/add-checkin', data={"key": "api_key komt hier", "userData": studentInfo}, ).json()
 
     status = request['status']
     person = request['person']
