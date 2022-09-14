@@ -76,7 +76,8 @@ def getRules():
 
     cacheFile.close()
 
-def input(identification):
+def input(identification_data):
+    identification = requests.post('https://vtk.be/api/door/get-username', data={"key": API_KEY, "userData": identification}, ).json()['person']
     try:
         rules[identification]
     except KeyError:
