@@ -423,7 +423,6 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                 $fileName = '/' . sha1(uniqid());
             } while (file_exists($filePath . $fileName));
         }
-
         $image->writeImage($filePath . $fileName);
 
         $album->setPoster($fileName);

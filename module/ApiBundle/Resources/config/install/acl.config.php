@@ -21,7 +21,10 @@ return array(
             'articles', 'book', 'bookings', 'cancelBooking', 'currentSession', 'openingHours', 'signIn', 'signInStatus', 'is-same',
         ),
         'api_door' => array(
-            'getRules', 'log',
+            'getRules', 'log', 'get-username',
+        ),
+        'api_fak' => array(
+            'add-checkin',
         ),
         'api_mail' => array(
             'getAliases', 'getLists', 'getListsArchive',

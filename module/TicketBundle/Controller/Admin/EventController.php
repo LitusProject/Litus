@@ -152,7 +152,13 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             ->findAllByStatusAndEvent('booked', $event);
 
         foreach ($bookedNotSold as $expired) {
-            $this->getEntityManager()->remove($expired);
+            $now = new \DateTime('now');
+            $book_date = $expired->getBookDate();
+            $time_diff = $now->getTimestamp() - $book_date->getTimeStamp();
+            $days = $time_diff/(24*60*60); // Set Time Difference in seconds to day
+            if ($days > 1) {
+                $this->getEntityManager()->remove($expired);
+            }
         }
         $this->getEntityManager()->flush();
 

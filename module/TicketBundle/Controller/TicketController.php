@@ -164,10 +164,11 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             $currentAmount = count($this->getEntityManager()->getRepository('TicketBundle\Entity\Ticket')->findAllByOption($option));
                             $currentAmount += $numbers['option_' . $option->getId() . '_number_member'];
                             $currentAmount += $numbers['option_' . $option->getId() . '_number_non_member'];
-                            if ($option->getMaximum() != 0 && $currentAmount > $option->getMaximum()) {
+                            $selectedAmount = $numbers['option_' . $option->getId() . '_number_member'] + $numbers['option_' . $option->getId() . '_number_non_member'];
+                            if ($option->getMaximum() != 0 && $currentAmount > $option->getMaximum() && $selectedAmount > 0) {
                                 $this->flashMessenger()->error(
                                     'Error',
-                                    'The tickets could not be booked, option "' . $option->getName() . '" has reached the maximum amount of ' . $option->getMaximum() . ' tickets!'
+                                    'The tickets could not be booked, option "' . $option->getName() . '" has reached the maximum amount of  tickets!'
                                 );
                                 $this->redirect()->toRoute(
                                     'ticket',
@@ -254,10 +255,11 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             $currentAmount = count($this->getEntityManager()->getRepository('TicketBundle\Entity\Ticket')->findAllByOption($option));
                             $currentAmount += $numbers['option_' . $option->getId() . '_number_member'];
                             $currentAmount += $numbers['option_' . $option->getId() . '_number_non_member'];
-                            if ($option->getMaximum() != 0 && $currentAmount > $option->getMaximum()) {
+                            $selectedAmount = $numbers['option_' . $option->getId() . '_number_member'] + $numbers['option_' . $option->getId() . '_number_non_member'];
+                            if ($option->getMaximum() != 0 && $currentAmount > $option->getMaximum() && $selectedAmount > 0) {
                                 $this->flashMessenger()->error(
                                     'Error',
-                                    'The tickets could not be booked, option "' . $option->getName() . '" has reached the maximum amount of ' . $option->getMaximum() . ' tickets!'
+                                    'The tickets could not be booked, option "' . $option->getName() . '" has reached the maximum amount of tickets!'
                                 );
                                 $this->redirect()->toRoute(
                                     'ticket',
@@ -401,10 +403,11 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             $currentAmount = count($this->getEntityManager()->getRepository('TicketBundle\Entity\Ticket')->findAllByOption($option));
                             $currentAmount += $numbers['option_' . $option->getId() . '_number_member'];
                             $currentAmount += $numbers['option_' . $option->getId() . '_number_non_member'];
-                            if ($option->getMaximum() != 0 && $currentAmount > $option->getMaximum()) {
+                            $selectedAmount = $numbers['option_' . $option->getId() . '_number_member'] + $numbers['option_' . $option->getId() . '_number_non_member'];
+                            if ($option->getMaximum() != 0 && $currentAmount > $option->getMaximum() && $selectedAmount > 0) {
                                 $this->flashMessenger()->error(
                                     'Error',
-                                    'The tickets could not be booked, option "' . $option->getName() . '" has reached the maximum amount of ' . $option->getMaximum() . ' tickets!'
+                                    'The tickets could not be booked, option "' . $option->getName() . '" has reached the maximum amount of tickets!'
                                 );
                                 $this->redirect()->toRoute(
                                     'ticket',
@@ -462,10 +465,11 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             $currentAmount = count($this->getEntityManager()->getRepository('TicketBundle\Entity\Ticket')->findAllByOption($option));
                             $currentAmount += $numbers['option_' . $option->getId() . '_number_member'];
                             $currentAmount += $numbers['option_' . $option->getId() . '_number_non_member'];
-                            if ($option->getMaximum() != 0 && $currentAmount > $option->getMaximum()) {
+                            $selectedAmount = $numbers['option_' . $option->getId() . '_number_member'] + $numbers['option_' . $option->getId() . '_number_non_member'];
+                            if ($option->getMaximum() != 0 && $currentAmount > $option->getMaximum() && $selectedAmount > 0) {
                                 $this->flashMessenger()->error(
                                     'Error',
-                                    'The tickets could not be booked, option "' . $option->getName() . '" has reached the maximum amount of ' . $option->getMaximum() . ' tickets!'
+                                    'The tickets could not be booked, option "' . $option->getName() . '" has reached the maximum amount of tickets!'
                                 );
                                 $this->redirect()->toRoute(
                                     'ticket',

@@ -180,8 +180,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
             if ($form->isValid()) {
                 $count = 0;
+                $qrSend = 0;
                 foreach ($ticketArray as $data) {
-                    if (in_array(null, $data)) {
+                    if (in_array(null, array_slice($data, 0, 9))) {
                         continue;
                     }
 
@@ -189,16 +190,17 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                         ->getRepository('TicketBundle\Entity\Ticket')
                         ->findOneBy(
                             array(
-                                'orderId' => $data[0]
+                                'orderId' => $data[1]
                             )
                         );
 
-                    if ($ticket !== null && $ticket->getEvent()->getId() === $this->getEventEntity()->getId()) {
+                    if ($ticket !== null && $ticket->getEvent()->getId() === $this->getEventEntity()->getId() && ($data[3] === '9' || $data[3] === '5')) {
                         if ($ticket->getStatus() !== 'Sold') {
                             $ticket->setStatus('sold');
                             if ($ticket->getEvent()->getQrEnabled()) {
                                 $ticket->setQrCode();
                                 $this->sendQrMail($ticket);
+                                $qrSend += 1;
                             }
                             $this->getEntityManager()->flush();
                             $count += 1;
@@ -208,7 +210,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
                 $this->flashMessenger()->success(
                     'Succes',
-                    $count . ' tickets set as sold'
+                    $count . ' tickets set as sold and ' . $qrSend . ' qr codes send'
                 );
 
                 $this->redirect()->toRoute(

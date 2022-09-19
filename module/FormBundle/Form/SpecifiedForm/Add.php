@@ -65,6 +65,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
      */
     protected $isDraft;
 
+    /**
+     * @var boolean|null
+     */
+    protected $askStudentInfo;
+
     public function init()
     {
         if (!($this->form instanceof FormEntity)) {
@@ -126,39 +131,41 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 )
             );
 
-            $this->add(
-                array(
-                    'type'     => 'text',
-                    'name'     => 'organization',
-                    'label'    => 'Student Association',
-                    'required' => false,
-                    'value'    => $this->guestInfo ? $this->guestInfo->getOrganization() : '',
-                    'options'  => array(
-                        'input' => array(
-                            'filter' => array(
-                                array('name' => 'StringTrim'),
+            if ($this->askStudentInfo) {
+                $this->add(
+                    array(
+                        'type'     => 'text',
+                        'name'     => 'organization',
+                        'label'    => 'Student Association',
+                        'required' => false,
+                        'value'    => $this->guestInfo ? $this->guestInfo->getOrganization() : '',
+                        'options'  => array(
+                            'input' => array(
+                                'filter' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
                             ),
                         ),
-                    ),
-                )
-            );
+                    )
+                );
 
-            $this->add(
-                array(
-                    'type'     => 'text',
-                    'name'     => 'identification',
-                    'label'    => 'R-number',
-                    'required' => false,
-                    'value'    => $this->guestInfo ? $this->guestInfo->getUniversityIdentification() : '',
-                    'options'  => array(
-                        'input' => array(
-                            'filter' => array(
-                                array('name' => 'StringTrim'),
+                $this->add(
+                    array(
+                        'type'     => 'text',
+                        'name'     => 'identification',
+                        'label'    => 'R-number',
+                        'required' => false,
+                        'value'    => $this->guestInfo ? $this->guestInfo->getUniversityIdentification() : '',
+                        'options'  => array(
+                            'input' => array(
+                                'filter' => array(
+                                    array('name' => 'StringTrim'),
+                                ),
                             ),
                         ),
-                    ),
-                )
-            );
+                    )
+                );
+            }
         }
 
         $fields = $this->getEntityManager()
@@ -560,5 +567,16 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         return $numbers;
+    }
+
+    /**
+     * @param boolean $askStudentInfo
+     * @return self
+     */
+    public function setAskStudentInfo($askStudentInfo = false)
+    {
+        $this->askStudentInfo = $askStudentInfo;
+
+        return $this;
     }
 }

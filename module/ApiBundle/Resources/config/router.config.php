@@ -95,6 +95,19 @@ return array(
                 ),
             ),
         ),
+        'api_fak' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '[/:language]/api/fak[/:action][/]',
+                'constraints' => array(
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'language' => '(en|nl)',
+                ),
+                'defaults'    => array(
+                    'controller' => 'api_fak',
+                ),
+            ),
+        ),
         'api_mail' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -176,6 +189,7 @@ return array(
         'api_br'        => 'ApiBundle\Controller\BrController',
         'api_cudi'      => 'ApiBundle\Controller\CudiController',
         'api_door'      => 'ApiBundle\Controller\DoorController',
+        'api_fak'       => 'ApiBundle\Controller\FakController',
         'api_mail'      => 'ApiBundle\Controller\MailController',
         'api_member'    => 'ApiBundle\Controller\MemberController',
         'api_news'      => 'ApiBundle\Controller\NewsController',

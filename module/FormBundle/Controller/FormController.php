@@ -143,6 +143,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 'language'   => $this->getLanguage(),
                 'entry'      => $draftVersion,
                 'guest_info' => $guestInfo,
+                'ask_student_info' => $formSpecification->getStudentInfo(),
             )
         );
 
