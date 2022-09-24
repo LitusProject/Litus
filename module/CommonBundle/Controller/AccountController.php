@@ -5,7 +5,9 @@ namespace CommonBundle\Controller;
 use CommonBundle\Entity\User\Credential;
 use CommonBundle\Entity\User\Person;
 use CommonBundle\Entity\User\Person\Academic;
+use CommonBundle\Entity\User\Preference;
 use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
+use CudiBundle\Form\Admin\Sale\Article\View;
 use Imagick;
 use Laminas\View\Model\ViewModel;
 use SecretaryBundle\Entity\Registration;
@@ -129,6 +131,30 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 //            }
 //        }
 
+        // Retrieve the academic's preferences
+        // Possible that there are new sections added/removed in admin which are not yet/still in academic's preferences -> add/remove those
+        $preferences = $academic->getPreferences();
+        die(var_dump($academic->getId()));
+        $sections = $this->getEntityManager()
+            ->getRepository('MailBundle\Entity\Section')
+            ->findAll();
+        if ($sections != null) {
+            foreach ($sections as $section) {
+                // possible that new sections are added in admin that are not yet in academic's preferences -> add those with their default value
+                if (!($section->inPreferences($preferences))) {
+                    $academic->addPreference(new Preference($academic, $section, $section->getDefaultValue()));
+                }
+            }
+        }
+        if ($preferences != null ) {
+            foreach ($preferences as $preference) {
+                // possible that sections are removed in admin that are still in academic's preferences -> remove those
+                if (!($preference->inSections($sections))) {
+                    $academic->removePreference($preference);
+                }
+            }
+        }
+
         $profileForm = $this->getForm('common_account_profile');
         $profileForm->setAttribute(
             'action',
@@ -144,6 +170,11 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('enable_organization_signature');
 
+        error_log("profileAction");
+        foreach ($academic->getPreferences() as $preference) {
+            error_log(json_encode($preferences));
+        }
+
         return new ViewModel(
             array(
                 'academicYear'     => $this->getCurrentAcademicYear(),
@@ -156,6 +187,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
                 'profileForm'      => $profileForm,
+                'preferences' => $academic->getPreferences(),
             )
         );
     }
@@ -468,6 +500,59 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         );
     }
 
+    public function preferencesAction()
+    {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
+            return new ViewModel();
+        }
+        $preferences = $academic->getPreferences();
+        error_log("preferencesAction");
+        foreach($preferences as $preference) {
+            error_log($preference->getSection()->getName());
+        }
+        return new ViewModel(
+            array(
+                'preferences' => $preferences,
+            )
+        );
+    }
+
+    public function savePreferencesAction()
+    {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
+            return new ViewModel();
+        }
+
+        $form = $this->getForm('common_account_preferences_save');
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            error_log("formData: ");
+            error_log(json_encode($formData));
+            $form->setData($formData);
+            if ($form->isValid()) {
+                $data = $form->getData();
+            }
+
+            if (isset($data['preferences'])) {
+                foreach ($academic->getPreferences() as $preference) {
+                    $academic->removePreference($preference);
+                }
+                foreach ($data['preferences'] as $preference) {
+                    $academic->addPreference($preference);
+                }
+            }
+
+            return new ViewModel(
+                array(
+                    'result'    => (object) array('status' => 'success'),
+                )
+            );
+        }
+    }
+
     public function activateAction()
     {
         $user = $this->getPersonEntity();
@@ -598,48 +683,12 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         }
     }
 
-    public function preferencesAction()
-    {
-        $academic = $this->getAcademicEntity();
-
-        // possible that new sections are added in admin that are not yet in academic's preferences, so we pull all sections
-        $sections = $this->getEntityById('MailBundle\Entity\Section');
-
-        if ($academic === null) {
-            return new ViewModel();
-        }
-
-        return new ViewModel(
-            array(
-                'preferences' => $academic->getPreferences(),
-                'sections' => $sections,
-            )
-        );
-    }
-
-    public function savePreferencesAction()
-    {
-        $academic = $this->getAcademicEntity();
-        if ($academic === null) {
-            return new ViewModel();
-        }
-
-        if (isset($data['preferences'])) {
-            $preferenceNames = array_map('getPreferenceName', $data['preferences']);
-            foreach ($preferenceNames as $name) {
-                if ($this->getEntityManager()
-                        ->getRepository()
-                )
-            }
-        }
-    }
-
     /**
      * @return string
      */
-    private function getPreferenceName($preference)
+    private function getName($item)
     {
-        return $preference->getName();
+        return $item->getName();
     }
 
 

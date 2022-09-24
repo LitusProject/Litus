@@ -142,7 +142,6 @@
             var id = $this.data('id');
             removeSection.find('.delete').unbind('click').click(function () {
                 $.post('{{ url('mail_admin_section', {"action": "delete"})}}' + id, function (data) {
-                    console.log("here")
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.section_removed_success').removeClass('hide');

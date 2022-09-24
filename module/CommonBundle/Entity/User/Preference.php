@@ -15,10 +15,11 @@ use MailBundle\Entity\Section;
 class Preference
 {
     /**
-     * @var string The preference ID
+     * @var integer The ID of this university status
      *
      * @ORM\Id
-     * @ORM\Column(type="string", length=32)
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
      */
     private $id;
 
@@ -47,6 +48,7 @@ class Preference
     private $value;
 
     /**
+     * @param Academic $person
      * @param Section $section
      * @param bool $value
      */
@@ -67,6 +69,14 @@ class Preference
     }
 
     /**
+     * @return Academic
+     */
+    public function getPerson()
+    {
+        return $this->person;
+    }
+
+    /**
      * @return Section
      */
     public function getSection()
@@ -77,7 +87,7 @@ class Preference
     /**
      * @return bool
      */
-    public function isValue()
+    public function getValue()
     {
         return $this->value;
     }
@@ -92,6 +102,20 @@ class Preference
         $this->value = $value;
 
         return $this;
+    }
+
+    /**
+     * @param array $sections
+     *
+     * @return bool
+     */
+    public function inSections(array $sections) {
+        foreach ($sections as $section) {
+            if ($this->getSection()->getName() == $section->getName()) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

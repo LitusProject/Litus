@@ -114,7 +114,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     /**
      * @var ArrayCollection The user's newsletter preferences
      *
-     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Preference", mappedBy="person", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Preference", mappedBy="academic", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $preferences;
 
@@ -468,20 +468,26 @@ class Academic extends \CommonBundle\Entity\User\Person
      */
     public function removePreference(Preference $preference)
     {
-        $this->preferences-removeElement($preference);
+        $this->preferences->removeElement($preference);
 
         return $this;
     }
 
     /**
-     * @return array
+     * @return $this
+     */
+    public function removeAllPreferences()
+    {
+        $this->preferences = new ArrayCollection();
+
+        return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection|null
      */
     public function getPreferences()
     {
-        $preferences = array();
-        foreach ($this->preferences as $preference) {
-            $preferences[] = $preference;
-        }
-        return $preferences;
+        return $this->preferences;
     }
 }

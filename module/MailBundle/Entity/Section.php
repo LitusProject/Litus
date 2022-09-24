@@ -134,5 +134,19 @@ class Section
         return $this;
     }
 
+    /**
+     * @param \Doctrine\Common\Collections\ArrayCollection $preferences
+     *
+     * @return bool
+     */
+    public function inPreferences(\Doctrine\Common\Collections\ArrayCollection $preferences) {
+        foreach ($preferences as $preference) {
+            if ($this->name == $preference->getName()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 }

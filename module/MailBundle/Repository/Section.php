@@ -10,6 +10,14 @@ namespace MailBundle\Repository;
 
 class Section extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
+    public function findAllQuery()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('a')
+            ->from('MailBundle\Entity\Section', 'a')
+            ->getQuery();
+    }
+
     public function findAllByNameQuery($name)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
