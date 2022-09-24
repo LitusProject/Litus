@@ -119,8 +119,7 @@
                 {% endif %} #}
                 <div class="col-md-6"><h2>{{ translate('Cudi - Opening Hours') }}</h2>
                     {% for message in cudi.messages %}
-                        <div>
-                            {{ message.getContent(language) }}
+                        <div style="white-space: pre-wrap;">{{ message.getContent(language) }}
                         </div>
                     {% endfor %}
 {#                    {% if cudi.openingHours|length == 0 %}#}
