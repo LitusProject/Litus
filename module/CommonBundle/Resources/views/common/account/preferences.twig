@@ -27,6 +27,7 @@
             {{ translate('Choose Your Newsletter Preferences') }}
         </h3>
         {% for preference in preferences %}
+            {{ dump(preference.getId()) }}
             <div class="checkbox">
                 <label>
                     <input type="checkbox" class="subject_enroll" data-id="{{ preference.getId() }}" {% if preference.getValue() %}checked="checked"{% endif %}"> {{ preference.getSection.getName() }}

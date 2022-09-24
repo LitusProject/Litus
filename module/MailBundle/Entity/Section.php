@@ -2,7 +2,9 @@
 
 namespace MailBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Preference;
 
 /**
  * This is the entity for a newsletter section.
@@ -49,6 +51,13 @@ class Section
     private $defaultValue;
 
     /**
+     * @var ArrayCollection The preferences that refer to this section
+     *
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Preference", mappedBy="section")
+     */
+    private $preferences;
+
+    /**
      * Creates a new newsletter section with the given name.
      *
      * @param string $name The name for this newsletter section.
@@ -65,6 +74,7 @@ class Section
             $this->attribute = $attribute;
         }
         $this->defaultValue = $defaultValue;
+        $this->preferences = new ArrayCollection();
     }
 
     /**
@@ -135,11 +145,20 @@ class Section
     }
 
     /**
-     * @param \Doctrine\Common\Collections\ArrayCollection $preferences
-     *
+     * @return ArrayCollection
+     */
+    public function getPreferences()
+    {
+        return $this->preferences;
+    }
+
+    /**
      * @return bool
      */
-    public function inPreferences(\Doctrine\Common\Collections\ArrayCollection $preferences) {
+    public function inPreferences($preferences) {
+        if ($preferences == null) {
+            return false;
+        }
         foreach ($preferences as $preference) {
             if ($this->name == $preference->getName()) {
                 return true;

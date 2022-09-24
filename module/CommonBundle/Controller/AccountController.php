@@ -134,7 +134,6 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         // Retrieve the academic's preferences
         // Possible that there are new sections added/removed in admin which are not yet/still in academic's preferences -> add/remove those
         $preferences = $academic->getPreferences();
-        die(var_dump($academic->getId()));
         $sections = $this->getEntityManager()
             ->getRepository('MailBundle\Entity\Section')
             ->findAll();
@@ -146,6 +145,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 }
             }
         }
+
         if ($preferences != null ) {
             foreach ($preferences as $preference) {
                 // possible that sections are removed in admin that are still in academic's preferences -> remove those
@@ -154,6 +154,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 }
             }
         }
+
+        $this->getEntityManager()->persist($academic);
+        $this->getEntityManager()->flush();
 
         $profileForm = $this->getForm('common_account_profile');
         $profileForm->setAttribute(
@@ -170,11 +173,6 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('enable_organization_signature');
 
-        error_log("profileAction");
-        foreach ($academic->getPreferences() as $preference) {
-            error_log(json_encode($preferences));
-        }
-
         return new ViewModel(
             array(
                 'academicYear'     => $this->getCurrentAcademicYear(),
@@ -187,7 +185,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
                 'profileForm'      => $profileForm,
-                'preferences' => $academic->getPreferences(),
+                'preferences'      => $academic->getPreferences(),
             )
         );
     }
@@ -507,10 +505,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             return new ViewModel();
         }
         $preferences = $academic->getPreferences();
-        error_log("preferencesAction");
-        foreach($preferences as $preference) {
-            error_log($preference->getSection()->getName());
-        }
+        die(var_dump(count($preferences)));
         return new ViewModel(
             array(
                 'preferences' => $preferences,
@@ -529,8 +524,6 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
-            error_log("formData: ");
-            error_log(json_encode($formData));
             $form->setData($formData);
             if ($form->isValid()) {
                 $data = $form->getData();

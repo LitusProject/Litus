@@ -26,9 +26,7 @@ class Preference
     /**
      * @var Academic The person this newsletter preference belongs to
      *
-     * @ORM\ManyToOne(
-     *      targetEntity="CommonBundle\Entity\User\Person\Academic", inversedBy="preferences"
-     * )
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic", inversedBy="preferences")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
@@ -36,7 +34,8 @@ class Preference
     /**
      * @var Section The section that this preference is about
      *
-     * @ORM\Column(type="string")
+     * @ORM\ManyToOne(targetEntity="MailBundle\Entity\Section", inversedBy="preferences")
+     * @ORM\JoinColumn(name="section", referencedColumnName="id")
      */
     private $section;
 
