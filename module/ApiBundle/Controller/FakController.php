@@ -68,17 +68,17 @@ class FakController extends \ApiBundle\Component\Controller\ActionController\Api
 
             $lastCheckin = $checkIn->getLastCheckin();
 
-//            if ($lastCheckin->format('d-m-Y H-i-s') > $cutOffTime->format('d-m-Y H-i-s')) {
-//                return new ViewModel(
-//                    array(
-//                        'result' => (object) array(
-//                            'status' => 'error',
-//                            'person' => $rNumber,
-//                            'amount' => $checkIn->getAmount() ? :'0',
-//                        ),
-//                    ),
-//                );
-//            }
+            if ($lastCheckin->format('d-m-Y H-i-s') > $cutOffTime->format('d-m-Y H-i-s')) {
+                return new ViewModel(
+                    array(
+                        'result' => (object) array(
+                            'status' => 'error',
+                            'person' => $rNumber,
+                            'amount' => $checkIn->getAmount() ? :'0',
+                        ),
+                    ),
+                );
+            }
         }
 
         if ($checkIn === null) {
