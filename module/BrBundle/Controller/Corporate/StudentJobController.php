@@ -230,29 +230,8 @@ class StudentJobController extends \BrBundle\Component\Controller\CorporateContr
             return new ViewModel();
         }
 
-        $requests = $this->getOpenRequests($person->getCompany());
-
-        $unfinishedRequestsJobs = array();
-        foreach ($requests as $request) {
-            if ($request->getRequestType() == 'edit' || $request->getRequestType() == 'edit reject') {
-                $unfinishedRequestsJobs[$request->getEditJob()->getId()] = $request->getRequestType();
-            } else {
-                $unfinishedRequestsJobs[$request->getJob()->getId()] = $request->getRequestType();
-            }
-        }
-
-        if (isset($unfinishedRequestsJobs[$studentJob->getId()])) {
-            $this->redirect()->toRoute(
-                'br_corporate_student_job',
-                array(
-                    'action' => 'overview',
-                )
-            );
-        }
-
-        $request = new StudentJob($studentJob, 'delete', $person);
-
-        $this->getEntityManager()->persist($request);
+        $studentJob->remove();
+        $this->getEntityManager()->persist($studentJob);
         $this->getEntityManager()->flush();
 
         return new ViewModel(

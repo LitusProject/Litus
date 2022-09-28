@@ -230,29 +230,8 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
             return new ViewModel();
         }
 
-        $requests = $this->getOpenRequests($person->getCompany());
-
-        $unfinishedRequestsJobs = array();
-        foreach ($requests as $request) {
-            if ($request->getRequestType() == 'edit' || $request->getRequestType() == 'edit reject') {
-                $unfinishedRequestsJobs[$request->getEditJob()->getId()] = $request->getRequestType();
-            } else {
-                $unfinishedRequestsJobs[$request->getJob()->getId()] = $request->getRequestType();
-            }
-        }
-
-        if (isset($unfinishedRequestsJobs[$vacancy->getId()])) {
-            $this->redirect()->toRoute(
-                'br_corporate_vacancy',
-                array(
-                    'action' => 'overview',
-                )
-            );
-        }
-
-        $request = new Vacancy($vacancy, 'delete', $person);
-
-        $this->getEntityManager()->persist($request);
+        $vacancy->remove();
+        $this->getEntityManager()->persist($vacancy);
         $this->getEntityManager()->flush();
 
         return new ViewModel(

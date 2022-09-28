@@ -229,29 +229,8 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
             return new ViewModel();
         }
 
-        $requests = $this->getOpenRequests($person->getCompany());
-
-        $unfinishedRequestsJobs = array();
-        foreach ($requests as $request) {
-            if ($request->getRequestType() == 'edit' || $request->getRequestType() == 'edit reject') {
-                $unfinishedRequestsJobs[$request->getEditJob()->getId()] = $request->getRequestType();
-            } else {
-                $unfinishedRequestsJobs[$request->getJob()->getId()] = $request->getRequestType();
-            }
-        }
-
-        if (isset($unfinishedRequestsJobs[$internship->getId()])) {
-            $this->redirect()->toRoute(
-                'br_corporate_internship',
-                array(
-                    'action' => 'overview',
-                )
-            );
-        }
-
-        $request = new Internship($internship, 'delete', $person);
-
-        $this->getEntityManager()->persist($request);
+        $internship->remove();
+        $this->getEntityManager()->persist($internship);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
