@@ -119,21 +119,13 @@ class GuestInfo
      * @param string $organization
      * @param string $universityIdentification
      */
-    public function __construct($firstName, $lastName, $email, $organization, $universityIdentification, $phoneNumber, $address, $studies, $foodOptions, $allergies, $transportation, $comments)
+    public function __construct($firstName, $lastName, $email, $organization, $universityIdentification)
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->email = $email;
         $this->organization = $organization;
         $this->universityIdentification = $universityIdentification;
-        $this->phoneNumber = $phoneNumber;
-        $this->address = $address;
-        $this->studies = $studies;
-        $this->foodOptions = $foodOptions;
-        $this->allergies = $allergies;
-        $this->transportation = $transportation;
-        $this->comments = $comments;
-//        $this->picture = $picture;
     }
 
     /**

@@ -1,0 +1,13 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="container">
+        <div class="page-header">
+            <h2>{{ translate('Add printer Credits') }}</h2>
+        </div>
+        <div id="buy_form">
+            {% import 'site/partials/form.twig' as forms %}
+            {{ forms.renderForm(form) }}
+        </div>
+    </div>
+{% endblock %}
