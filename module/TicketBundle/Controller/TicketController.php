@@ -295,8 +295,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             $newFileName = sha1(uniqid());
                         } while (file_exists($filePath . '/' . $newFileName));
 
-                        $image->writeImage($filePath . '/' . $newFileName);
-                        $guestInfo->setPicture($newFileName);
+                        //$image->writeImage($filePath . '/' . $newFileName);
+                        //$guestInfo->setPicture($newFileName);
 
                         $this->getEntityManager()->persist($guestInfo);
                         $this->getEntityManager()->flush();
