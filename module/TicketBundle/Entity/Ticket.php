@@ -133,6 +133,13 @@ class Ticket
     private $amount;
 
     /**
+     * @var string the university mail. This is needed for the uniflow printer
+     *
+     * @ORM\Column(name="university_mail", type="text", nullable=true)
+     */
+    private $universityMail;
+
+    /**
      * @param EntityManager  $em
      * @param Event          $event
      * @param string         $status
@@ -516,6 +523,24 @@ class Ticket
     public function setAmount($amount)
     {
         $this->amount = $amount;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUniversityMail()
+    {
+        return $this->universityMail;
+    }
+
+    /**
+     * @param $mail
+     * @return self
+     */
+    public function setUniversityMail($mail)
+    {
+        $this->universityMail = $mail;
         return $this;
     }
 }
