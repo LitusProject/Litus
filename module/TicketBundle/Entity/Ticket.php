@@ -126,6 +126,13 @@ class Ticket
     private $qrCode;
 
     /**
+     * @var string The amount of the ticket
+     *
+     * @ORM\Column(name="amount", type="text", nullable=true)
+     */
+    private $amount;
+
+    /**
      * @param EntityManager  $em
      * @param Event          $event
      * @param string         $status
@@ -492,5 +499,23 @@ class Ticket
         }
 
 //        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAmount()
+    {
+        return $this->amount;
+    }
+
+    /**
+     * @param $amount
+     * @return self
+     */
+    public function setAmount($amount)
+    {
+        $this->amount = $amount;
+        return $this;
     }
 }

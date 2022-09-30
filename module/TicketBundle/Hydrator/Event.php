@@ -24,9 +24,13 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
 
         $enableOptions = (isset($data['enable_options']) && $data['enable_options']) || count($object->getOptions()) > 0;
 
-        $calendarEvent = $this->getEntityManager()
-            ->getRepository('CalendarBundle\Entity\Node\Event')
-            ->findOneById($data['event']);
+        try {
+            $calendarEvent = $this->getEntityManager()
+                ->getRepository('CalendarBundle\Entity\Node\Event')
+                ->findOneById($data['event']);
+        } catch (\Exception $e) {
+            $calendarEvent = null;
+        }
 
         if ($data['form'] !== '') {
             $form = $this->getEntityManager()

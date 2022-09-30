@@ -910,6 +910,22 @@ return array(
                 ),
             ),
         ),
+        'cudi_printer' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '[/:language]/cudi/printer[/:action[/:id[/code/:code]]][/]',
+                'constraints' => array(
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'language' => '(en|nl)',
+                    'id'       => '[0-9]*',
+                    'code'     => '[0-9]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'cudi_printer',
+                    'action'     => 'view',
+                ),
+            ),
+        ),
         'cudi_retail' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -1001,5 +1017,7 @@ return array(
 
         'cudi_isic'                                  => 'CudiBundle\Controller\IsicController',
         'cudi_retail'                                => 'CudiBundle\Controller\RetailController',
+
+        'cudi_printer'                               => 'CudiBundle\Controller\PrinterController',
     ),
 );

@@ -278,13 +278,6 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             $formData['guest_form']['guest_email'],
                             $formData['guest_form']['guest_organization'],
                             $formData['guest_form']['guest_identification'],
-                            $formData['guest_form']['phone_number'],
-                            $formData['guest_form']['address'],
-                            $formData['guest_form']['studies'],
-                            $formData['guest_form']['food_option'],
-                            $formData['guest_form']['allergies'],
-                            $formData['guest_form']['transportation'],
-                            $formData['guest_form']['comments'],
                         );
 
                         if ($formData['guest_form']['picture']) {
@@ -295,8 +288,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             $newFileName = sha1(uniqid());
                         } while (file_exists($filePath . '/' . $newFileName));
 
-                        $image->writeImage($filePath . '/' . $newFileName);
-                        $guestInfo->setPicture($newFileName);
+                        //$image->writeImage($filePath . '/' . $newFileName);
+                        //$guestInfo->setPicture($newFileName);
 
                         $this->getEntityManager()->persist($guestInfo);
                         $this->getEntityManager()->flush();

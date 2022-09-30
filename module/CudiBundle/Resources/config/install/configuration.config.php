@@ -665,4 +665,19 @@ Gelieve contact op te nemen met {{ name }} via {{ email }}.
         'value'       => '0',
         'description' => 'boolean for forcing registration shifts',
     ),
+    array(
+        'key'         => 'cudi.printer_event_id',
+        'value'       => 'here comes the id',
+        'description' => 'This is the Ticket Event ID for the printer',
+    ),
+    array(
+        'key'         => 'cudi.printer_uniflow_client_id',
+        'value'       => 'Here comes the Uniflow Client ID',
+        'description' => 'This is the Client ID for the uniflow aplication',
+    ),
+    array(
+        'key'         => 'cudi.printer_uniflow_client_secret',
+        'value'       => 'Here comes the uniflow Client Secret',
+        'description' => 'This is the Client secret for the uniflow application',
+    ),
 );

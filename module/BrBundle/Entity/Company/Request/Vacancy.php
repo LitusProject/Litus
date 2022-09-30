@@ -71,7 +71,6 @@ class Vacancy extends \BrBundle\Entity\Company\Request
         'edit'        => 'edit',
         'edit reject' => 'edit reject',
         'add'         => 'add',
-        'delete'      => 'delete',
     );
 
     /**
@@ -156,10 +155,6 @@ class Vacancy extends \BrBundle\Entity\Company\Request
                     $editJob->remove();
                 }
 
-                break;
-
-            case 'delete':
-                $this->getJob()->remove();
                 break;
 
             default:

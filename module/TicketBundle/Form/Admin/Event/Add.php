@@ -297,7 +297,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         'type'     => 'text',
                         'name'     => 'price_members',
                         'label'    => 'Price Members',
-                        'required' => true,
+                        'required' => false,
                         'options'  => array(
                             'input' => array(
                                 'filters' => array(
@@ -354,7 +354,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         $events = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
-            ->findAllActive(30);
+            ->findAllActive(50);
 
         $eventsArray = array(
             '' => '',
