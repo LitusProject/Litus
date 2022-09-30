@@ -103,6 +103,7 @@ class PrinterController extends \CommonBundle\Component\Controller\ActionControl
                         null,
                     );
                     $booked_ticket[0]->setAmount($amount);
+                    $booked_ticket[0]->setUniversityMail($universityMail);
                     $this->getEntityManager()->flush();
 
                     $payLinkDomain = $this->getEntityManager()
@@ -144,7 +145,77 @@ class PrinterController extends \CommonBundle\Component\Controller\ActionControl
 
     public function payedAction()
     {
-        // TODO: payed Action
+        $ticket = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Ticket')
+            ->findOneById($this->getParam('id'));
+        if ($ticket === null) {
+            return $this->notFoundAction();
+        }
+
+        if ($ticket->getNumber() !== $this->getParam('code')) {
+            return new \ErrorException('This paylink contains the wrong ticket code...');
+        }
+
+        $secretInfo = unserialize(
+            $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('common.kbc_secret_info')
+        );
+
+        $shaOut = $secretInfo['shaOut']; #Hash for params from the paypage to accepturl
+        $urlPrefix = $secretInfo['urlPrefix'];   #Change prod to test for testenvironment
+
+        $url = $this->getRequest()->getServer()->get('REQUEST_URI');
+        $allParams = substr($url, strpos($url, '?') + 1);
+        $data = array();
+        $paymentParams = array();
+        $shasign = '';
+
+        $params = explode('&', $allParams);
+        foreach ($params as $param) {
+            $keyAndVal = explode('=', $param);
+            if ($keyAndVal[0] !== 'SHASIGN') {
+                $paymentParams[strtoupper($keyAndVal[0])] = $keyAndVal[1];
+            } else {
+                $shasign = $keyAndVal[1];
+            }
+        }
+
+        ksort($paymentParams);
+        foreach (array_keys($paymentParams) as $paymentKey) {
+            $data[] = new PaymentParam($paymentKey, $paymentParams[$paymentKey]);
+        }
+        $paymentUrl = PaymentParam::getUrl($data, $shaOut, $urlPrefix);
+        $generatedHash = substr($paymentUrl, strpos($paymentUrl, 'SHASIGN=') + strlen('SHASIGN='));
+
+        if (strtoupper($generatedHash) !== $shasign) {
+            $this->flashMessenger()->error(
+                'Error',
+                'The transaction could not be verified!'
+            );
+
+            $this->redirect()->toRoute(
+                'cudi_printer',
+                array(
+                    'action' => 'view',
+                )
+            );
+        } else {
+            $ticket->setStatus('sold');
+            $this->runPowershell($ticket);
+
+            $this->flashMessenger()->success(
+                'Success',
+                'The ticket was successfully payed for!'
+            );
+
+            $this->redirect()->toRoute(
+                'cudi_printer',
+                array(
+                    'action' => 'view',
+                )
+            );
+        }
+        return new ViewModel();
     }
 
     private function generatePayLink($ticket) {
@@ -216,5 +287,42 @@ class PrinterController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         return $this->getAuthentication()->getPersonObject();
+    }
+
+//    private function runPowershell($ticket)
+//    {
+//        $universityMail = $ticket->getUniversityMail();
+//        $amount = $ticket->getAmount();
+//        $scriptPath =
+//
+//        $command = 'pwsh /home/'
+//    }
+
+    public function testAction()
+    {
+        $scriptPath = getcwd() . '/module/CudiBundle/Resources/bin/uniflow.ps1';
+//        echo $scriptPath;
+//        echo '<br>';
+//        echo './home/stanc/Projects/LitusProject/Litus/module/CudiBundle/Resources/bin/uniflow.ps1';
+//        die();
+        $universityMail = 'stan.cardinaels@student.kuleuven.be';
+        $amount = '5';
+        $clientId = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.printer_uniflow_client_id');
+        $clientSecret = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.printer_uniflow_client_secret');
+
+        $command = 'pwsh ' . " " . $scriptPath . " '". $clientId . "' '" . $clientSecret . "' '" . $universityMail . "' '" . $amount . "'";
+//        die($command);
+        try {
+            $query = shell_exec("$command 2>&1");
+            die($query);
+        } catch (\Exception $e) {
+            die(json_encode($e->getMessage()));
+        }
+        echo "na query";
+        return new ViewModel();
     }
 }
