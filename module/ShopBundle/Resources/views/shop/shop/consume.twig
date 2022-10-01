@@ -12,10 +12,12 @@
                 </div>
             </div>
         {%  endif %}
-        {% if reservation != null %}
+        {% if reservations != null %}
             <div class="content">
-                {{ dump(reservation) }}
-                Broodje(s) voor {{ reservation.getPerson().getFirstName() }}:
+                Broodje(s) voor {{ reservations[0].getPerson().getFirstName }} {{ reservations[0].getPerson().getLastName() }}:
+                {% for reservation in reservations %}
+                    <li>{{ reservation.getProduct().getName() }} {{ reservation.getAmount() }}</li>
+                {% endfor %}
             </div>
         {%  endif %}
     </div>

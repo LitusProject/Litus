@@ -221,10 +221,9 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                     );
                 }
 
-
                 return new ViewModel(
                     array(
-                        'reservation' => $entity[0],
+                        'reservations' => $entity,
                         'form' => $form,
                     )
                 );
