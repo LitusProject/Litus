@@ -187,6 +187,53 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel();
     }
 
+    public function consumeAction()
+    {
+        $form = $this->getForm('shop_shop_consume');
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->getRequest()->getPost());
+            if ($form->isValid()) {
+                $amount = $form->getData()['amount'];
+                $username = $form->getData()['username'];
+                if (str_contains($username, ';')) {
+                    $seperatedString = explode(';', $username);
+                    $rNumber = $this->getRNumberAPI($seperatedString[0], $seperatedString[1], $this->getEntityManager());
+
+                    $entity = $this->getEntityManager()
+                        ->getRepository('ShopBundle\Entity\Reservation')
+                        ->findAllByUserNameQuery($rNumber)->getResult();
+                } else {
+                    $entity = $this->getEntityManager()
+                        ->getRepository('ShopBundle\Entity\Reservation')
+                        ->findAllByUserNameQuery($username)->getResult();
+                }
+
+                if ($entity === null) {
+                    return new ViewModel(
+                        array(
+                            'noEntity' => 'No consumptions were found',
+                            'form' => $this->getForm('shop_consume'),
+                        )
+                    );
+                }
+                if ($entity instanceof Reservation) {
+                    return new ViewModel(
+                        array(
+                            'reservations' => $entity,
+                            'form' => $form,
+                        )
+                    );
+                }
+            }
+        }
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
+
+
     /**
      * @return boolean
      */
