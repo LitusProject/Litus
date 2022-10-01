@@ -197,7 +197,6 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
-                $amount = $form->getData()['amount'];
                 $username = $form->getData()['username'];
                 if (str_contains($username, ';')) {
                     $seperatedString = explode(';', $username);
@@ -211,7 +210,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                         ->getRepository('ShopBundle\Entity\Reservation')
                         ->getAllReservationsByUsernameAndSalesSessionQuery($username, $salesSession)->getResult();
                 }
-                // die(var_dump($entity[0]->getPerson()->getFirstName()));
+                
                 if ($entity === null) {
                     return new ViewModel(
                         array(
