@@ -109,7 +109,7 @@ class PrinterController extends \CommonBundle\Component\Controller\ActionControl
                     $payLinkDomain = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('ticket.pay_link_domain');
-                    $payLink = 'http://litus' . '/cudi/printer/pay/' . $booked_ticket[0]->getId() . '/code/' . $booked_ticket[0]->getNumber();
+                    $payLink = 'https://vtk.be' . '/cudi/printer/pay/' . $booked_ticket[0]->getId() . '/code/' . $booked_ticket[0]->getNumber();
 
                     $this->redirect()->toUrl($payLink);
                 }

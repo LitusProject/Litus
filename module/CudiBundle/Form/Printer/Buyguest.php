@@ -22,7 +22,7 @@ class Buyguest extends \CommonBundle\Component\Form\Bootstrap\Form
     public function init()
     {
         if ($this->event === null) {
-            throw new LogicException('Cannot buy credits for null');
+            throw new LogicException('Cannot buy budget for null');
         }
 
         parent::init();
@@ -94,7 +94,7 @@ class Buyguest extends \CommonBundle\Component\Form\Bootstrap\Form
             array(
                 'type'     => 'fieldset',
                 'name'     => 'spacer',
-                'label'    => 'Tickets',
+                'label'    => 'Print Budget',
                 'elements' => array(
                     // intentionally empty
                 ),
@@ -105,7 +105,7 @@ class Buyguest extends \CommonBundle\Component\Form\Bootstrap\Form
             array(
                 'type'       => 'text',
                 'name'       => 'amount',
-                'label'      => 'Amount',
+                'label'      => 'Budget',
                 'required'   => true,
                 'attributes' => array(
                     'style' => 'width: 75px;',

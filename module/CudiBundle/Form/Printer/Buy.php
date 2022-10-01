@@ -26,7 +26,7 @@ class Buy extends \CommonBundle\Component\Form\Bootstrap\Form
             throw new LogicException('Cannot buy credits for null');
         }
         if ($this->person === null) {
-            throw new RuntimeException('You have to be logged in to book tickets');
+            throw new RuntimeException('You have to be logged in to buy print Budget');
         }
 
         parent::init();
@@ -35,9 +35,20 @@ class Buy extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->add(
             array(
+                'type'     => 'fieldset',
+                'name'     => 'spacer',
+                'label'    => 'Print Budget',
+                'elements' => array(
+                    // intentionally empty
+                ),
+            )
+        );
+
+        $this->add(
+            array(
                 'type'       => 'text',
                 'name'       => 'amount',
-                'label'      => 'Amount',
+                'label'      => 'Budget',
                 'required'   => true,
                 'attributes' => array(
                     'style' => 'width: 75px;',
