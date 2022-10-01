@@ -50,16 +50,6 @@ class Consume extends \CommonBundle\Component\Form\Bootstrap\Form
             )
         );
 
-//        $this->add(
-//            array(
-//                'type'       => 'button',
-//                'name'       => 'submit',
-//                'label'      => 'Consume',
-//                'attributes' => array(
-//                    'id' => 'consume',
-//                ),
-//            )
-//        );
         $this->addSubmit('Consume', 'sale_consume', 'consume', array('id' => 'sale_consume'));
     }
 }
