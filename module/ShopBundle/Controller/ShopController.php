@@ -190,6 +190,10 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     public function consumeAction()
     {
         $form = $this->getForm('shop_shop_consume');
+        $salesSession = $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\Session')
+            ->findOneById($this->getParam('id'));
+
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
@@ -201,13 +205,13 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
 
                     $entity = $this->getEntityManager()
                         ->getRepository('ShopBundle\Entity\Reservation')
-                        ->findAllByUserNameQuery($rNumber)->getResult();
+                        ->getAllReservationsByUsernameAndSalesSessionQuery($rNumber, $salesSession)->getResult();
                 } else {
                     $entity = $this->getEntityManager()
                         ->getRepository('ShopBundle\Entity\Reservation')
-                        ->findAllByUserNameQuery($username)->getResult();
+                        ->getAllReservationsByUsernameAndSalesSessionQuery($username, $salesSession)->getResult();
                 }
-
+                // die(var_dump($entity[0]->getPerson()->getFirstName()));
                 if ($entity === null) {
                     return new ViewModel(
                         array(
@@ -216,14 +220,15 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                         )
                     );
                 }
-                if ($entity instanceof Reservation) {
-                    return new ViewModel(
-                        array(
-                            'reservations' => $entity,
-                            'form' => $form,
-                        )
-                    );
-                }
+
+
+                return new ViewModel(
+                    array(
+                        'reservation' => $entity[0],
+                        'form' => $form,
+                    )
+                );
+
             }
         }
         return new ViewModel(

@@ -11,7 +11,13 @@
                     <h2>Geen broodjes gevonden voor deze persoon!</h2>
                 </div>
             </div>
-        {% endif %}
+        {%  endif %}
+        {% if reservation != null %}
+            <div class="content">
+                {{ dump(reservation) }}
+                Broodje(s) voor {{ reservation.getPerson().getFirstName() }}:
+            </div>
+        {%  endif %}
     </div>
 
 {% endblock %}
