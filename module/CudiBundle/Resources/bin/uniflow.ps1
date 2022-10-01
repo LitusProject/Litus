@@ -12,7 +12,7 @@ Write-Host $clientId
 #}
 
 #Import-Module NTware.Ufo.PowerShell.ObjectManagement
-Import-Module .\NTware.Ufo.PowerShell.ObjectManagement.dll
+Import-Module /opt/microsoft/powershell/7-lts/NTware.Ufo.PowerShell.ObjectManagement
 $secStringPassword = ConvertTo-SecureString $clientSecret -AsPlainText -Force
 
 $credObject = New-Object System.Management.Automation.PSCredential($clientId, $secStringPassword)

@@ -289,24 +289,11 @@ class PrinterController extends \CommonBundle\Component\Controller\ActionControl
         return $this->getAuthentication()->getPersonObject();
     }
 
-//    private function runPowershell($ticket)
-//    {
-//        $universityMail = $ticket->getUniversityMail();
-//        $amount = $ticket->getAmount();
-//        $scriptPath =
-//
-//        $command = 'pwsh /home/'
-//    }
-
-    public function testAction()
+    private function runPowershell($ticket)
     {
         $scriptPath = getcwd() . '/module/CudiBundle/Resources/bin/uniflow.ps1';
-//        echo $scriptPath;
-//        echo '<br>';
-//        echo './home/stanc/Projects/LitusProject/Litus/module/CudiBundle/Resources/bin/uniflow.ps1';
-//        die();
-        $universityMail = 'stan.cardinaels@student.kuleuven.be';
-        $amount = '5';
+        $universityMail = $ticket->getUniversityMail();
+        $amount = $ticket->getAmount();
         $clientId = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.printer_uniflow_client_id');
@@ -315,14 +302,11 @@ class PrinterController extends \CommonBundle\Component\Controller\ActionControl
             ->getConfigValue('cudi.printer_uniflow_client_secret');
 
         $command = 'pwsh ' . " " . $scriptPath . " '". $clientId . "' '" . $clientSecret . "' '" . $universityMail . "' '" . $amount . "'";
-//        die($command);
+
         try {
             $query = shell_exec("$command 2>&1");
-            die($query);
         } catch (\Exception $e) {
-            die(json_encode($e->getMessage()));
+            $this->getSentryClient()->logException($e);
         }
-        echo "na query";
-        return new ViewModel();
     }
 }
