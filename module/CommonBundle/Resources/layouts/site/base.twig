@@ -137,7 +137,13 @@
                     {% if authenticatedPerson is not null %}
                         <div class="vtk-menuitem-holder dropdown">
                             <div class="vtk-menuitem">
-                                <div class="vtk-profile"></div>
+                                {% if authenticatedPerson.getPhotoPath() %}
+                                    <div class="vtk-profile" style="background-image: url({{ profilePath }}/{{ authenticatedPerson.getPhotoPath() }}">
+                                    </div>
+                                {% else %}
+                                    <div class="vtk-profile" style="background-image: url(../img/profile.png)">
+                                    </div>
+                                {% endif %}
                             </div>
                             <div class="vtk-dropdownitem-holder right">
 
@@ -313,7 +319,7 @@
                             <a target="_blank" class="button white unfilled" href="http://eng.kuleuven.be">FIrW</a>
                             <a target="_blank" class="button white unfilled" href="http://www.kuleuven.be">KU Leuven</a>
                             <a target="_blank" class="button white unfilled" href="http://alum.kuleuven.be/alumni-ingenieurs/">Alumni</a>
-                            <a target="_blank" class="button white unfilled" href="http://www.kviv.be">KVIV</a>
+                            <a target="_blank" class="button white unfilled" href="https://www.ie-net.be/">ie-net</a>
                             <a target="_blank" class="button white unfilled" href="http://best.vtk.be">BEST</a>
                             <a target="_blank" class="button white unfilled" href="http://existenz.be">Existenz</a>
                             <a target="_blank" class="button white unfilled" href="http://www.iaeste.be">IAESTE</a>

@@ -1,0 +1,22 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="container">
+        <div class="page-header">
+            <h2>{{ translate('Add printer Credits') }}</h2>
+        </div>
+
+        <div class="content">
+            <p>On this page, you can buy budget to use the printer in Theokot.</p>
+            <p>If you don't have an account, please use your university mail in the following format: </p>
+            <p>firstname.lastname@student.kuleuven.be Otherwise it won't work, and we can't refund you.</p>
+            <p>You can choose how much you want to upload in the box below.</p>
+            <h3>Important: don't close the window before you are redirected back to this page!</h3>
+        </div>
+
+        <div id="buy_form">
+            {% import 'site/partials/form.twig' as forms %}
+            {{ forms.renderForm(form) }}
+        </div>
+    </div>
+{% endblock %}

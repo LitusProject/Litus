@@ -22,6 +22,8 @@ namespace TicketBundle\Controller;
 
 use CommonBundle\Component\Controller\Exception\RuntimeException;
 use CommonBundle\Component\Form\Admin\Element\DateTime;
+use CudiBundle\Controller\PrinterController;
+use CudiBundle\Controller\PrinterController as Printer;
 use FormBundle\Entity\Node\Entry as FormEntry;
 use FormBundle\Entity\Node\Form;
 use Laminas\Mail\Message;
@@ -278,13 +280,6 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             $formData['guest_form']['guest_email'],
                             $formData['guest_form']['guest_organization'],
                             $formData['guest_form']['guest_identification'],
-                            $formData['guest_form']['phone_number'],
-                            $formData['guest_form']['address'],
-                            $formData['guest_form']['studies'],
-                            $formData['guest_form']['food_option'],
-                            $formData['guest_form']['allergies'],
-                            $formData['guest_form']['transportation'],
-                            $formData['guest_form']['comments'],
                         );
 
                         if ($formData['guest_form']['picture']) {
@@ -295,8 +290,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             $newFileName = sha1(uniqid());
                         } while (file_exists($filePath . '/' . $newFileName));
 
-                        $image->writeImage($filePath . '/' . $newFileName);
-                        $guestInfo->setPicture($newFileName);
+                        //$image->writeImage($filePath . '/' . $newFileName);
+                        //$guestInfo->setPicture($newFileName);
 
                         $this->getEntityManager()->persist($guestInfo);
                         $this->getEntityManager()->flush();
@@ -654,18 +649,10 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
     public function payResponseAction()
     {
-        $startMail = new Message();
-        $startMail->setEncoding('UTF-8')
-            ->setBody('In Response Action')
-            ->setFrom('payresponse@vtk.be')
-            ->addTo('stan.cardinaels@vtk.be')
-            ->setSubject('In response Action');
-        if (getenv('APPLICATION_ENV') != 'development') {
-            $this->getMailTransport()->send($startMail);
-        }
+        $printerEventId = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.printer_event_id');
 
-        $mail = new Message();
-        $subject = '';
         $url = $this->getRequest()->getServer()->get('REQUEST_URI');
 
         $allParams = substr($url, strpos($url, '?') + 1);
@@ -684,18 +671,6 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         }
 
         if ($paymentParams['ORDERID'] === null) {
-            $subject .= 'no orderID provided';
-            $mail->setEncoding('UTF-8')
-                ->setBody('No OrderID provided. URL: ' . $url)
-                ->setFrom('payresponse@vtk.be')
-                ->addTo('it@vtk.be')
-                ->addTo('kevin.lepinoy@vtk.be')
-                ->setSubject($subject);
-
-            if (getenv('APPLICATION_ENV') != 'development') {
-                $this->getMailTransport()->send($mail);
-            }
-
             $this->getResponse()->setStatusCode(404);
             return new ViewModel();
         }
@@ -707,8 +682,6 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                     'orderId' => $paymentParams['ORDERID']
                 )
             );
-
-        $subject .= 'Ticket ID: ' . $ticket->getId();
 
         ksort($paymentParams);
         foreach (array_keys($paymentParams) as $paymentKey) {
@@ -727,43 +700,20 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $generatedHash = substr($paymentUrl, strpos($paymentUrl, 'SHASIGN=') + strlen('SHASIGN='));
 
         if (strtoupper($generatedHash) === $shasign) {
-            $subject .= ' orderID: ' . $paymentParams['ORDERID'];
             if (!($ticket->getStatus() == 'Sold')) {
-                $subject .= ' Not yet on sold';
                 $ticket->setStatus('sold');
                 if ($ticket->getEvent()->getQrEnabled()) {
                     $ticket->setQrCode();
                     $this->sendQrMail($ticket);
                 }
+                if ($ticket->getEvent()->getId() === $printerEventId) {
+                    $this->runPowershell($ticket);
+                }
                 $this->getEntityManager()->flush();
             }
         } else {
-            $subject .= ' SHA not correct';
-
-            $mail->setEncoding('UTF-8')
-                ->setBody('URL: ' .$url)
-                ->setFrom('payresponse@vtk.be')
-                ->addTo('it@vtk.be')
-                ->addTo('kevin.lepinoy@vtk.be')
-                ->setSubject($subject);
-
-            if (getenv('APPLICATION_ENV') != 'development') {
-                $this->getMailTransport()->send($mail);
-            }
-
             $this->getResponse()->setStatusCode(404);
             return new ViewModel();
-        }
-
-        $mail->setEncoding('UTF-8')
-            ->setBody('URL: ' .$url)
-            ->setFrom('payresponse@vtk.be')
-            ->addTo('it@vtk.be')
-            ->addTo('kevin.lepinoy@vtk.be')
-            ->setSubject($subject);
-
-        if (getenv('APPLICATION_ENV') != 'development') {
-            $this->getMailTransport()->send($mail);
         }
 
         return new ViewModel();
@@ -1164,6 +1114,27 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             ->addBcc($mailAddress);
         if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);
+        }
+    }
+
+    private function runPowershell($ticket)
+    {
+        $scriptPath = getcwd() . '/module/CudiBundle/Resources/bin/uniflow.ps1';
+        $universityMail = $ticket->getUniversityMail();
+        $amount = $ticket->getAmount();
+        $clientId = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.printer_uniflow_client_id');
+        $clientSecret = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.printer_uniflow_client_secret');
+
+        $command = 'pwsh ' . " " . $scriptPath . " '". $clientId . "' '" . $clientSecret . "' '" . $universityMail . "' '" . $amount . "'";
+
+        try {
+            $query = shell_exec("$command 2>&1");
+        } catch (\Exception $e) {
+            $this->getSentryClient()->logException($e);
         }
     }
 }

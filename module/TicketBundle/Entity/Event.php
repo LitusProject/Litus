@@ -100,14 +100,14 @@ class Event
     /**
      * @var integer The price for members
      *
-     * @ORM\Column(name="price_members", type="smallint")
+     * @ORM\Column(name="price_members", type="smallint", nullable=true)
      */
     private $priceMembers;
 
     /**
      * @var integer The price for non members
      *
-     * @ORM\Column(name="price_non_members", type="smallint")
+     * @ORM\Column(name="price_non_members", type="smallint", nullable=true)
      */
     private $priceNonMembers;
 
@@ -199,10 +199,10 @@ class Event
     }
 
     /**
-     * @param  CalendarEvent $activity
+     * @param  CalendarEvent|null $activity
      * @return self
      */
-    public function setActivity(CalendarEvent $activity)
+    public function setActivity($activity)
     {
         $this->activity = $activity;
 
