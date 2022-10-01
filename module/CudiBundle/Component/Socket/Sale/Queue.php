@@ -168,11 +168,11 @@ class Queue
 
         $actionController = new ActionController();
 
-        $rNumber = $actionController->getRNumberAPI($seperatedString[0], $seperatedString[1]);
+//        $rNumber = $actionController->getRNumberAPI($seperatedString[0], $seperatedString[1]);
 
         $person = $this->entityManager
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
-            ->findOneByUsername($rNumber);
+            ->findOneByUsername($universityIdentification);
 
         if ($person === null) {
             return json_encode(
