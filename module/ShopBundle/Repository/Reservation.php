@@ -73,6 +73,27 @@ class Reservation extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery();
     }
 
+    public function getAllReservationsByUsernameAndSalesSessionQuery($rNumber, $salesSession)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+
+        return $query->select('r')
+            ->from('ShopBundle\Entity\Reservation', 'r')
+            ->innerJoin('r.person', 'p')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('r.salesSession', ':salesSession'),
+                    $query->expr()->like(
+                            $query->expr()->lower('p.username'),
+                            ':rNumber'
+                        )
+                )
+            )
+            ->setParameter('salesSession', $salesSession)
+            ->setParameter('rNumber', '%' . strtolower($rNumber) . '%')
+            ->getQuery();
+    }
+
     /**
      * @param  \ShopBundle\Entity\Session $salesSession
      * @return \Doctrine\ORM\Query

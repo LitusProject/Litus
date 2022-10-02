@@ -187,6 +187,60 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel();
     }
 
+    public function consumeAction()
+    {
+        $form = $this->getForm('shop_shop_consume');
+        $salesSession = $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\Session')
+            ->findOneById($this->getParam('id'));
+
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->getRequest()->getPost());
+            if ($form->isValid()) {
+                $username = $form->getData()['username'];
+                if (str_contains($username, ';')) {
+                    $seperatedString = explode(';', $username);
+                    $rNumber = $this->getRNumberAPI($seperatedString[0], $seperatedString[1], $this->getEntityManager());
+                    $reservations = $this->getEntityManager()
+                        ->getRepository('ShopBundle\Entity\Reservation')
+                        ->getAllReservationsByUsernameAndSalesSessionQuery($rNumber, $salesSession)->getResult();
+                } else {
+                    $reservations = $this->getEntityManager()
+                        ->getRepository('ShopBundle\Entity\Reservation')
+                        ->getAllReservationsByUsernameAndSalesSessionQuery($username, $salesSession)->getResult();
+                }
+                
+                if ($reservations[0] === null) {
+                    return new ViewModel(
+                        array(
+                            'noEntity' => 'No consumptions were found',
+                            'form' => $this->getForm('shop_shop_consume'),
+                        )
+                    );
+                } else {
+                    $consumed = $reservations[0]->getConsumed();
+                    foreach ($reservations as $reservation) {
+                        $reservation->setConsumed(true);
+                    }
+                    $this->getEntityManager()->flush();     // Sends cache to database
+                    return new ViewModel(
+                        array(
+                            'reservationsPresent' => $reservations,
+                            'consumed' => $consumed,
+                            'form' => $form,
+                        )
+                    );
+                }
+            }
+        }
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
+
+
     /**
      * @return boolean
      */
