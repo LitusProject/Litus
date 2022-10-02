@@ -5,6 +5,7 @@ namespace ShopBundle\Controller;
 use DateInterval;
 use DateTime;
 use Laminas\View\Model\ViewModel;
+use ShopBundle\Entity\History;
 use ShopBundle\Entity\Reservation;
 use ShopBundle\Entity\Session as SalesSession;
 
@@ -218,14 +219,29 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                         )
                     );
                 } else {
+                    $hist = new History();
+                    $hist->setSalesSession($salesSession);
+                    $hist->setReservation($reservations);
+                    $this->getEntityManager()->persist($hist); // Updates database
+                    $this->getEntityManager()->flush();
+
+                    $history = $this->getEntityManager()
+                        ->getRepository('ShopBundle\Entity\History')
+                        ->findBy(array('salesSession' => $salesSession));
+                    $history = array_slice($history, -3, 3);
+                    $history = array_reverse($history);
+
                     $consumed = $reservations[0]->getConsumed();
                     foreach ($reservations as $reservation) {
                         $reservation->setConsumed(true);
                     }
                     $this->getEntityManager()->flush();     // Sends cache to database
+
+                    // die(var_dump($history[1]->getReservation()[0]->getPerson()->getFirstName()));
+
                     return new ViewModel(
                         array(
-                            'reservationsPresent' => $reservations,
+                            'history' => $history,
                             'consumed' => $consumed,
                             'form' => $form,
                         )
