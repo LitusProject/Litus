@@ -5,7 +5,7 @@
         {% import 'site/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
         {% if noEntity != null %}
-            <div class="flashmessage alert alert-danger " id="ticket_sale_consume_error" >
+            <div class="flashmessage alert alert-danger " id="shop_consume_error" >
                 <a class="close" data-dismiss="alert">&times;</a>
                 <div class="content">
                     <h2>Geen broodjes gevonden voor deze persoon!</h2>
@@ -15,9 +15,38 @@
         {% if reservations != null %}
             <div class="content">
                 Broodje(s) voor {{ reservations[0].getPerson().getFirstName }} {{ reservations[0].getPerson().getLastName() }}:
+            </div>
+            <table class="table table-hover" style="margin-top: 15px;">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Broodje</th>
+                        <th scope="col">Aantal</th>
+                        <th scope="col">Prijs</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% set total = 0 %}
                 {% for reservation in reservations %}
-                    <li>{{ reservation.getProduct().getName() }} {{ reservation.getAmount() }}</li>
+                    <tr>
+                        <td>{{ reservation.getProduct().getName() }}</td>
+                        <td>{{ reservation.getAmount() }}</td>
+                        <td>€{{ reservation.getProduct().getSellPrice() }}</td>
+                    </tr>
+                    {% set total = total + reservation.getProduct().getSellPrice() * reservation.getAmount() %}
                 {% endfor %}
+                    <tr style="background-color: #ebecf0">
+                        <td></td>
+                        <td><b>Totale prijs:</b></td>
+                        <td><b>€ {{ total }}</b></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="content" style="color:darkred">
+                {% if total < 3 %}
+                    {{ consumed ? 'Dit broodje is al opgehaald.' : '' }}
+                {% else %}
+                    {{ consumed ? 'Deze broodjes zijn al opgehaald.' : '' }}
+                {% endif %}
             </div>
         {%  endif %}
     </div>

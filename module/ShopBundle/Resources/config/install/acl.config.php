@@ -3,7 +3,7 @@
 return array(
     'shopbundle' => array(
         'shop' => array(
-            'index', 'reserve', 'reservations', 'deleteReservation', 'reserveproducts',
+            'index', 'reserve', 'reservations', 'deleteReservation', 'reserveproducts', 'consume',
         ),
         'shop_admin_shop_product' => array(
             'manage', 'add', 'edit', 'delete', 'search',
