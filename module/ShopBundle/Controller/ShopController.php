@@ -201,16 +201,16 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                 if (str_contains($username, ';')) {
                     $seperatedString = explode(';', $username);
                     $rNumber = $this->getRNumberAPI($seperatedString[0], $seperatedString[1], $this->getEntityManager());
-                    $entity = $this->getEntityManager()
+                    $reservations = $this->getEntityManager()
                         ->getRepository('ShopBundle\Entity\Reservation')
                         ->getAllReservationsByUsernameAndSalesSessionQuery($rNumber, $salesSession)->getResult();
                 } else {
-                    $entity = $this->getEntityManager()
+                    $reservations = $this->getEntityManager()
                         ->getRepository('ShopBundle\Entity\Reservation')
                         ->getAllReservationsByUsernameAndSalesSessionQuery($username, $salesSession)->getResult();
                 }
                 
-                if ($entity[0] === null) {
+                if ($reservations[0] === null) {
                     return new ViewModel(
                         array(
                             'noEntity' => 'No consumptions were found',
@@ -218,14 +218,14 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                         )
                     );
                 } else {
-                    $consumed = $entity[0]->getConsumed();
-                    foreach ($entity as $reservation) {
+                    $consumed = $reservations[0]->getConsumed();
+                    foreach ($reservations as $reservation) {
                         $reservation->setConsumed(true);
                     }
                     $this->getEntityManager()->flush();     // Sends cache to database
                     return new ViewModel(
                         array(
-                            'reservations' => $entity,
+                            'reservationsPresent' => $reservations,
                             'consumed' => $consumed,
                             'form' => $form,
                         )

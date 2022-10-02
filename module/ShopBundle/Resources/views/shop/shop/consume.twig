@@ -8,13 +8,14 @@
             <div class="flashmessage alert alert-danger " id="shop_consume_error" >
                 <a class="close" data-dismiss="alert">&times;</a>
                 <div class="content">
-                    <h2>Geen broodjes gevonden voor deze persoon!</h2>
+                    <div style="color:white">Geen broodjes gevonden voor deze persoon!</div>
                 </div>
             </div>
         {%  endif %}
-        {% if reservations != null %}
+        {% if reservationsPresent != null %}
             <div class="content">
-                Broodje(s) voor {{ reservations[0].getPerson().getFirstName }} {{ reservations[0].getPerson().getLastName() }}:
+                Broodje(s) voor {{ reservationsPresent[0].getPerson().getFirstName }}
+                {{ reservationsPresent[0].getPerson().getLastName() }}:
             </div>
             <table class="table table-hover" style="margin-top: 15px;">
                 <thead class="thead-light">
@@ -26,7 +27,7 @@
                 </thead>
                 <tbody>
                 {% set total = 0 %}
-                {% for reservation in reservations %}
+                {% for reservation in reservationsPresent %}
                     <tr>
                         <td>{{ reservation.getProduct().getName() }}</td>
                         <td>{{ reservation.getAmount() }}</td>
