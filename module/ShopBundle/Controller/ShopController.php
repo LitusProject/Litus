@@ -5,6 +5,7 @@ namespace ShopBundle\Controller;
 use DateInterval;
 use DateTime;
 use Laminas\View\Model\ViewModel;
+use ShopBundle\Entity\History;
 use ShopBundle\Entity\Reservation;
 use ShopBundle\Entity\Session as SalesSession;
 
@@ -186,6 +187,75 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel();
     }
+
+    public function consumeAction()
+    {
+        $form = $this->getForm('shop_shop_consume');
+        $salesSession = $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\Session')
+            ->findOneById($this->getParam('id'));
+
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->getRequest()->getPost());
+            if ($form->isValid()) {
+                $username = $form->getData()['username'];
+                if (str_contains($username, ';')) {
+                    $seperatedString = explode(';', $username);
+                    $rNumber = $this->getRNumberAPI($seperatedString[0], $seperatedString[1], $this->getEntityManager());
+                    $reservations = $this->getEntityManager()
+                        ->getRepository('ShopBundle\Entity\Reservation')
+                        ->getAllReservationsByUsernameAndSalesSessionQuery($rNumber, $salesSession)->getResult();
+                } else {
+                    $reservations = $this->getEntityManager()
+                        ->getRepository('ShopBundle\Entity\Reservation')
+                        ->getAllReservationsByUsernameAndSalesSessionQuery($username, $salesSession)->getResult();
+                }
+                
+                if ($reservations[0] === null) {
+                    return new ViewModel(
+                        array(
+                            'noEntity' => 'No consumptions were found',
+                            'form' => $this->getForm('shop_shop_consume'),
+                        )
+                    );
+                } else {
+                    $hist = new History();
+                    $hist->setSalesSession($salesSession);
+                    $hist->setReservation($reservations);
+                    $this->getEntityManager()->persist($hist); // Updates database
+                    $this->getEntityManager()->flush();
+
+                    $history = $this->getEntityManager()
+                        ->getRepository('ShopBundle\Entity\History')
+                        ->findBy(array('salesSession' => $salesSession));
+                    $history = array_slice($history, -3, 3);
+                    $history = array_reverse($history);
+
+                    $consumed = $reservations[0]->getConsumed();
+                    foreach ($reservations as $reservation) {
+                        $reservation->setConsumed(true);
+                    }
+                    $this->getEntityManager()->flush();     // Sends cache to database
+
+                    // die(var_dump($history[1]->getReservation()[0]->getPerson()->getFirstName()));
+
+                    return new ViewModel(
+                        array(
+                            'history' => $history,
+                            'consumed' => $consumed,
+                            'form' => $form,
+                        )
+                    );
+                }
+            }
+        }
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
+
 
     /**
      * @return boolean

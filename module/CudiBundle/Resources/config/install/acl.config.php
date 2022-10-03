@@ -158,5 +158,8 @@ return array(
         'cudi_retail' => array(
             'overview', 'deal', 'myDeals', 'myRetails', 'deleteRetail', 'deleteDeal','articleTypeahead', 'recommendedRetails'
         ),
+        'cudi_printer' => array(
+            'view', 'pay', 'payed',
+        ),
     ),
 );

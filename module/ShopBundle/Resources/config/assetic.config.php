@@ -1,5 +1,7 @@
 <?php
 
+use Assetic\Filter\LessFilter;
+
 return array(
     'controllers' => array(
         'shop_admin_shop' => array(
@@ -66,6 +68,23 @@ return array(
             '@bootstrap_js_popover',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
+            '@consume_css',
+        ),
+    ),
+
+    'collections' => array(
+        'consume_css' => array(
+            'assets' => array(
+                'consume/less/base.less',
+            ),
+            'filters' => array(
+                '?LessFilter' => array(
+                    'name' => LessFilter::class,
+                ),
+            ),
+            'options' => array(
+                'output' => 'consume_css.css',
+            ),
         ),
     ),
 );

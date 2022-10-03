@@ -17,9 +17,20 @@ class ConsumeController extends \TicketBundle\Component\Controller\SaleControlle
             if ($form->isValid()) {
                 $amount = $form->getData()['amount'];
                 $username = $form->getData()['username'];
-                $entity = $this->getEntityManager()
-                    ->getRepository('TicketBundle\Entity\Consumptions')
-                    ->findAllByUserNameQuery($username)->getResult()[0];
+
+                if (str_contains($username, ';')) {
+                    $seperatedString = explode(';', $username);
+                    $rNumber = $this->getRNumberAPI($seperatedString[0], $seperatedString[1], $this->getEntityManager());
+
+                    $entity = $this->getEntityManager()
+                        ->getRepository('TicketBundle\Entity\Consumptions')
+                        ->findAllByUserNameQuery($rNumber)->getResult()[0];
+                } else {
+                    $entity = $this->getEntityManager()
+                        ->getRepository('TicketBundle\Entity\Consumptions')
+                        ->findAllByUserNameQuery($username)->getResult()[0];
+                }
+
                 if ($entity === null) {
                     return new ViewModel(
                         array(
