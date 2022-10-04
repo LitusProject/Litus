@@ -12,22 +12,22 @@
                 </div>
             </div>
         {%  endif %}
-        {% if reservationsPresent != null %}
+        {% if reservations != null %}
             <div class="content">
-                Broodje(s) voor {{ reservationsPresent[0].getPerson().getFirstName }}
-                {{ reservationsPresent[0].getPerson().getLastName() }}:
+                Broodje(s) voor {{ reservations[0].getPerson().getFirstName }}
+                {{ reservations[0].getPerson().getLastName() }}:
             </div>
             <table class="table table-hover" style="margin-top: 15px;">
                 <thead class="thead-light">
-                    <tr>
-                        <th scope="col">Broodje</th>
-                        <th scope="col">Aantal</th>
-                        <th scope="col">Prijs</th>
-                    </tr>
+                <tr>
+                    <th scope="col">Broodje</th>
+                    <th scope="col">Aantal</th>
+                    <th scope="col">Prijs</th>
+                </tr>
                 </thead>
                 <tbody>
                 {% set total = 0 %}
-                {% for reservation in reservationsPresent %}
+                {% for reservation in reservations %}
                     <tr>
                         <td>{{ reservation.getProduct().getName() }}</td>
                         <td>{{ reservation.getAmount() }}</td>
@@ -35,11 +35,11 @@
                     </tr>
                     {% set total = total + reservation.getProduct().getSellPrice() * reservation.getAmount() %}
                 {% endfor %}
-                    <tr style="background-color: #ebecf0">
-                        <td></td>
-                        <td><b>Totale prijs:</b></td>
-                        <td><b>€ {{ total }}</b></td>
-                    </tr>
+                <tr style="background-color: #ebecf0">
+                    <td></td>
+                    <td><b>Totale prijs:</b></td>
+                    <td><b>€ {{ total }}</b></td>
+                </tr>
                 </tbody>
             </table>
             <div class="content" style="color:darkred">

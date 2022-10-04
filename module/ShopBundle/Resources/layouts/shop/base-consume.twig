@@ -21,16 +21,6 @@
             </button>
             <a href="{{ organizationUrl }}" class="brand"><img src="/_ticket/img/logo.png" /></a>
         </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                {% if hasAccess('shop', 'consume') %}
-                    <li {% if 'consume' == getParam('action') and 'shop' == getParam('controller') %} class="active" {% endif %}>
-                        <a href="{{ url("shop", {"action": "consume"}) }}">Consume</a>
-                    </li>
-                {% endif %}
-
-            </ul>
-        </div>
     </div>
 </nav>
 

@@ -5,6 +5,7 @@ namespace ShopBundle\Controller;
 use DateInterval;
 use DateTime;
 use Laminas\View\Model\ViewModel;
+use ShopBundle\Entity\History;
 use ShopBundle\Entity\Reservation;
 use ShopBundle\Entity\Session as SalesSession;
 
@@ -223,9 +224,10 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                         $reservation->setConsumed(true);
                     }
                     $this->getEntityManager()->flush();     // Sends cache to database
+
                     return new ViewModel(
                         array(
-                            'reservationsPresent' => $reservations,
+                            'reservations' => $reservations,
                             'consumed' => $consumed,
                             'form' => $form,
                         )
