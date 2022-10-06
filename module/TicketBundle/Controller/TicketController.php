@@ -856,7 +856,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
     {
         $event = $this->getEntityById('TicketBundle\Entity\Event');
 
-        if (!($event instanceof Event) || !$event->isActive()) {
+        if (!($event instanceof Event)) {
             return;
         }
 
