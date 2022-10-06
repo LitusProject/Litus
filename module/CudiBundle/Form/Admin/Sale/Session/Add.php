@@ -24,19 +24,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $units = $this->getUnits();
         $unitElements = array();
-        $lastSession = $this->getLastSalesSession();
-        $amounts = $lastSession->getCloseRegister()->getMoneyUnitAmounts();
 
-        for ($i = 0; $i < sizeof($units); $i++){
-            $unit = $units[$i];
-            $amount = $amounts[$i]->getAmount();
-
+        foreach ($units as $unit) {
             $unitElements[] = array(
                 'type'       => 'text',
                 'name'       => $unit->getId(),
                 'label'      => '&euro; ' . number_format($unit->getUnit() / 100, 2),
                 'required'   => true,
-                'value'      => $amount,//todo deze aanpassen naar getal tussen haakjes
+                'value'      => 0,
                 'attributes' => array(
                     'id'           => 'unit_' . $unit->getId(),
                     'autocomplete' => 'off',
@@ -58,33 +53,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             );
         }
 
-        /*foreach ($units as $unit) {
-            $unitElements[] = array(
-                'type'       => 'text',
-                'name'       => $unit->getId(),
-                'label'      => '&euro; ' . number_format($unit->getUnit() / 100, 2),
-                'required'   => true,
-                'value'      => 0,//todo deze aanpassen naar getal tussen haakjes
-                'attributes' => array(
-                    'id'           => 'unit_' . $unit->getId(),
-                    'autocomplete' => 'off',
-                    'class'        => 'moneyunit',
-                    'data-value'   => $unit->getUnit(),
-                ),
-                'options'    => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'int',
-                            ),
-                        ),
-                    ),
-                ),
-            );
-        }*/
         $this->add(
             array(
                 'type'     => 'fieldset',
@@ -95,18 +63,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $devices = $this->getDevices();
         $deviceElements = array();
-        $amounts = $lastSession->getCloseRegister()->getBankDeviceAmounts();
 
-        for ($i = 0; $i < sizeof($devices); $i++){
-            $device = $devices[$i];
-            $amount = (($amounts[$i]->getAmount())/100);
-
+        foreach ($devices as $device) {
             $deviceElements[] = array(
                 'type'       => 'text',
                 'name'       => $device->getId(),
                 'label'      => $device->getName(),
                 'required'   => true,
-                'value'      => $amount,//todo deze aanpassen naar getal tussen haakjes
+                'value'      => 0,
                 'attributes' => array(
                     'id'           => 'device_' . $device->getId(),
                     'autocomplete' => 'off',
@@ -124,30 +88,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 ),
             );
         }
-        /*foreach ($devices as $device) {
-            $deviceElements[] = array(
-                'type'       => 'text',
-                'name'       => $device->getId(),
-                'label'      => $device->getName(),
-                'required'   => true,
-                'value'      => 0,//todo deze aanpassen naar getal tussen haakjes
-                'attributes' => array(
-                    'id'           => 'device_' . $device->getId(),
-                    'autocomplete' => 'off',
-                    'class'        => 'device',
-                ),
-                'options'    => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array('name' => 'Price'),
-                        ),
-                    ),
-                ),
-            );
-        }*/
 
         $this->add(
             array(
@@ -183,12 +123,5 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
             ->findAll();
-    }
-
-    private function getLastSalesSession()
-    {
-        return $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Session')
-            ->getLast();
     }
 }
