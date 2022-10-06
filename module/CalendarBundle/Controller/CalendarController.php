@@ -131,14 +131,24 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             'HH:mm'
         );
 
+        $weekdayFormatter = new IntlDateFormatter(
+            $this->getTranslator()->getLocale(),
+            IntlDateFormatter::NONE,
+            IntlDateFormatter::NONE,
+            date_default_timezone_get(),
+            IntlDateFormatter::GREGORIAN,
+            'EEE'
+        );
+
         $calendarItems = array();
         foreach ($events as $event) {
             $date = $event->getStartDate()->format('d-M');
             if (!isset($calendarItems[$date])) {
                 $calendarItems[$date] = (object) array(
-                    'day'    => ucfirst($event->getStartDate()->format('d')),
-                    'month'  => $monthFormatter->format($event->getStartDate()),
-                    'events' => array(),
+                    'weekday' => $weekdayFormatter->format($event->getStartDate()),
+                    'day'     => ucfirst($event->getStartDate()->format('d')),
+                    'month'   => $monthFormatter->format($event->getStartDate()),
+                    'events'  => array(),
                 );
             }
 
