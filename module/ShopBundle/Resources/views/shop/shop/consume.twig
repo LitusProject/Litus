@@ -57,13 +57,17 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function (){
-            document.getElementById('username').focus();
+            const username = document.getElementById('username');
+            username.value = '';
+            const consume = document.getElementById('shop_consume');
+            username.focus();
             $('#username').keydown( function(e) {
                 if (e.key === 'Enter') {
                     e.preventDefault()
-                    document.getElementById('amount').focus();
+                    consume.click();
                 }
             });
         });
     </script>
 {% endblock %}
+
