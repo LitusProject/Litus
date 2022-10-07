@@ -138,7 +138,7 @@
                         <div class="vtk-menuitem-holder dropdown">
                             <div class="vtk-menuitem">
                                 {% if authenticatedPerson.getPhotoPath() %}
-                                    <div class="vtk-profile" style="background-image: url({{ profilePath }}/{{ authenticatedPerson.getPhotoPath() }}">
+                                    <div class="vtk-profile" style="background-image: url(/_common/profile/{{ authenticatedPerson.getPhotoPath() }}">
                                     </div>
                                 {% else %}
                                     <div class="vtk-profile" style="background-image: url(../img/profile.png)">
