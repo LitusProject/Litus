@@ -36,12 +36,18 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             ->getTotalByProductBySalesQuery($salesSession)
             ->getResult();
 
+        $totalReservations = 0;
+        foreach($result as $reservation){
+            $totalReservations += $reservation[1];
+        }
+
         return new ViewModel(
             array(
                 'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
                 'totals'            => $result,
                 'salesSession'      => $salesSession,
+                'totalReservations' => $totalReservations,
             )
         );
     }
