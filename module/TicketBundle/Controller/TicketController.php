@@ -965,7 +965,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $mailBody = $mailData['content'];
         $mailSubject = $mailData['subject'];
 
-        $mailFrom = $this->getEntityManager()
+        $mailFrom = $ticket->getEvent()->getMailFrom() ? :$this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('ticket.confirmation_email_from');
 
@@ -1002,6 +1002,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             ->setFrom($mailFrom)
             ->addTo($mailTo)
             ->addBcc($mailFrom)
+            ->addBcc('it@vtk.be')
             ->setSubject(str_replace('{{ event }}', $eventName, $mailSubject));
 
         if (getenv('APPLICATION_ENV') != 'development') {
@@ -1064,7 +1065,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $message = $mailData[$language->getAbbrev()]['content'];
         $subject = str_replace('{{event}}', $event->getActivity()->getTitle($language), $mailData[$language->getAbbrev()]['subject']);
 
-        $mailAddress = $entityManager
+        $mailAddress = $ticket->getEvent()->getMailFrom() ? :$this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('ticket.subscription_mail');
 

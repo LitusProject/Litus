@@ -175,6 +175,13 @@ class Event
      */
     private $qrEnabled;
 
+    /**
+     * @var string The email address the mails are sent from
+     *
+     * @ORM\Column(name="mail_from", type="string", nullable=true)
+     */
+    private $mailFrom;
+
     public function __construct()
     {
         $this->options = new ArrayCollection();
@@ -733,6 +740,24 @@ class Event
     {
         $this->qrEnabled = $qr;
 
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMailFrom()
+    {
+        return $this->mailFrom;
+    }
+
+    /**
+     * @param string $mail
+     * @return self
+     */
+    public function setMailFrom($mail)
+    {
+        $this->mailFrom = $mail;
         return $this;
     }
 }

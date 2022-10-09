@@ -90,6 +90,28 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'       => 'text',
+                'name'       => 'mail_from',
+                'label'      => 'Email',
+                'required'   => false,
+                'attributes' => array(
+                    'id' => 'mail_from',
+                ),
+                'options'    => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'EmailAddress'),
+                        ),
+                    ),
+                ),
+            ),
+        );
+
+        $this->add(
+            array(
                 'type'     => 'datetime',
                 'name'     => 'bookings_close_date',
                 'label'    => 'Bookings Close Date',
