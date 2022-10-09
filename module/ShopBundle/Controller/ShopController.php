@@ -243,6 +243,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         }
         return new ViewModel(
             array(
+                'session' => $salesSession,
                 'form' => $form,
             )
         );

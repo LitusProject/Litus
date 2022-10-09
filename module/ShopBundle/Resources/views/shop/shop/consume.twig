@@ -3,8 +3,9 @@
 {% block content %}
     <div class="container modal-body">
         <div class="col-sm-offset-11" style="padding: 0 0 10px 0;">
-            <input href="{{ url('shop', {"action": "reward", "id": salesSession.getId()})}}"
-                   type="submit" name="Reward" class="btn btn-primary button" style="border-color: darkred" value="Rewards">
+            <a href="{{ url('shop', {"action": "reward", "id": session.getId()})}}">
+                <input type="button" name="Reward" class="btn btn-primary button" style="border-color: darkred" value="Rewards">
+            </a>
         </div>
         {% import 'site/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
