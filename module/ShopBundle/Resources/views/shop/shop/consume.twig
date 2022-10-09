@@ -54,9 +54,9 @@
                     {{ consumed ? 'Deze broodjes zijn al opgehaald.' : '' }}
                 {% endif %}
             </div>
+
             {% if reservations[0].getReward() %}
                 <div class="content" style="color: darkgreen">
-                    <audio controls autoplay hidden src="../_site/Reward-Sound.mp3"></audio>
                     We hebben prijs! Deze persoon heeft een gratis Cara gewonnen! Hoera! The game
                 </div>
             {% endif %}
