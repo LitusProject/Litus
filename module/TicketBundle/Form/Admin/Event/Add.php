@@ -112,6 +112,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'     => 'checkbox',
+                'name'     => 'deadline_enabled',
+                'label'    => 'Payable after 24 hours',
+                'required' => false,
+            )
+        );
+
+        $this->add(
+            array(
                 'type'     => 'datetime',
                 'name'     => 'bookings_close_date',
                 'label'    => 'Bookings Close Date',

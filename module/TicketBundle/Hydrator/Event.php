@@ -150,7 +150,8 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             ->setInvoiceIdBase($data['invoice_base_id'])
             ->setOnlinePayment($data['online_payment'])
             ->setOrderIdBase($data['order_base_id'])
-            ->setForm($form);
+            ->setForm($form)
+            ->setPayDeadline($data['deadline_enabled']);
 
         return $this->stdHydrate($data, $object, self::$stdKeys);
     }
@@ -168,6 +169,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         $data['bookings_close_date'] = $object->getBookingsCloseDate() ? $object->getBookingsCloseDate()->format('d/m/Y H:i') : '';
         $data['generate_tickets'] = $object->areTicketsGenerated();
         $data['allow_remove'] = $object->allowRemove();
+        $data['deadline_enabled'] = $object->getPayDeadline();
         $data['invoice_base_id'] = $object->getInvoiceIdBase();
         $data['order_base_id'] = $object->getOrderIdBase();
         $data['online_payment'] = $object->isOnlinePayment();

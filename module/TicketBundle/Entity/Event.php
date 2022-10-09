@@ -182,6 +182,13 @@ class Event
      */
     private $mailFrom;
 
+    /**
+     * @var boolean whether or not the pay page should be accessible after 24 hours
+     *
+     * @ORM\Column(name="deadline_enabled", type="boolean", nullable=true)
+     */
+    private $payDeadline;
+
     public function __construct()
     {
         $this->options = new ArrayCollection();
@@ -758,6 +765,24 @@ class Event
     public function setMailFrom($mail)
     {
         $this->mailFrom = $mail;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getPayDeadline()
+    {
+        return $this->payDeadline;
+    }
+
+    /**
+     * @param boolean $deadline
+     * @return self
+     */
+    public function setPayDeadline($deadline)
+    {
+        $this->payDeadline = $deadline;
         return $this;
     }
 }
