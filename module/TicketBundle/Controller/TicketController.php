@@ -742,7 +742,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $time_diff = $now->getTimestamp() - $book_date->getTimeStamp();
         $days = $time_diff/(24*60*60); // Set Time Difference in seconds to day
 
-        if ($days <= 1 || !($ticket->getEvent()->getPayDeadline())) {
+        if ($days <= 1 || $ticket->getEvent()->getPayDeadline()) {
             $link = $this->generatePayLink($ticket);
 
             $this->redirect()->toUrl($link);
