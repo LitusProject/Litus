@@ -2,6 +2,10 @@
 
 {% block content %}
     <div class="container modal-body">
+        <div class="col-sm-offset-11" style="padding: 0 0 10px 0;">
+            <input href="{{ url('shop', {"action": "reward", "id": salesSession.getId()})}}"
+                   type="submit" name="Reward" class="btn btn-primary button" style="border-color: darkred" value="Rewards">
+        </div>
         {% import 'site/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
         {% if noEntity != null %}
@@ -49,9 +53,14 @@
                     {{ consumed ? 'Deze broodjes zijn al opgehaald.' : '' }}
                 {% endif %}
             </div>
+            {% if reservations[0].getReward() %}
+                <div class="content" style="color: darkgreen">
+                    <audio controls autoplay hidden src="../_site/Reward-Sound.mp3"></audio>
+                    We hebben prijs! Deze persoon heeft een gratis Cara gewonnen! Hoera! The game
+                </div>
+            {% endif %}
         {%  endif %}
     </div>
-
 {% endblock %}
 
 {% block content_script %}

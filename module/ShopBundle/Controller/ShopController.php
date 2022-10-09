@@ -210,7 +210,12 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                         ->getRepository('ShopBundle\Entity\Reservation')
                         ->getAllReservationsByUsernameAndSalesSessionQuery($username, $salesSession)->getResult();
                 }
-                
+
+                // die(var_dump($this->getEntityManager()
+                //    ->getRepository('ShopBundle\Entity\Reservation')
+                //    ->getTotalByProductBySalesQuery($salesSession)
+                //    ->getResult()[0][0]));
+
                 if ($reservations[0] === null) {
                     return new ViewModel(
                         array(
@@ -230,6 +235,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                             'reservations' => $reservations,
                             'consumed' => $consumed,
                             'form' => $form,
+                            'session' => $salesSession
                         )
                     );
                 }
@@ -242,6 +248,43 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    public function rewardAction()
+    {
+        $salesSession = $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\Session')
+            ->findOneById($this->getParam('id'));
+
+        if (!$salesSession->getReward()) {
+            $numberRewards = 3;
+
+
+            $allReservations = $this->getEntityManager()
+                ->getRepository('ShopBundle\Entity\Reservation')
+                ->findBySalesSessionQuery($salesSession)
+                ->getResult();
+
+            if (count($allReservations) >= 3) {
+                for ($i = 0; $i < $numberRewards; $i++) {
+                    $rNumber = $allReservations[array_rand($allReservations)]->getPerson()->getUsername();
+                    $reservations = $this->getEntityManager()
+                        ->getRepository('ShopBundle\Entity\Reservation')
+                        ->getAllReservationsByUsernameAndSalesSessionQuery($rNumber, $salesSession)->getResult();
+
+                    while ($reservations[0]->getReward()) {
+                        $rNumber = $allReservations[array_rand($allReservations)]->getPerson()->getUsername();
+                        $reservations = $this->getEntityManager()
+                            ->getRepository('ShopBundle\Entity\Reservation')
+                            ->getAllReservationsByUsernameAndSalesSessionQuery($rNumber, $salesSession)->getResult();
+                    }
+
+                    foreach ($reservations as $reservation) {
+                        $reservation->setReward(true);
+                    }
+                }
+            }
+            $salesSession->setReward(true);
+        }
+    }
 
     /**
      * @return boolean
