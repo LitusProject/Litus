@@ -175,6 +175,20 @@ class Event
      */
     private $qrEnabled;
 
+    /**
+     * @var string The email address the mails are sent from
+     *
+     * @ORM\Column(name="mail_from", type="string", nullable=true)
+     */
+    private $mailFrom;
+
+    /**
+     * @var boolean whether or not the pay page should be accessible after 24 hours
+     *
+     * @ORM\Column(name="deadline_enabled", type="boolean", nullable=true)
+     */
+    private $payDeadline;
+
     public function __construct()
     {
         $this->options = new ArrayCollection();
@@ -733,6 +747,42 @@ class Event
     {
         $this->qrEnabled = $qr;
 
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMailFrom()
+    {
+        return $this->mailFrom;
+    }
+
+    /**
+     * @param string $mail
+     * @return self
+     */
+    public function setMailFrom($mail)
+    {
+        $this->mailFrom = $mail;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getPayDeadline()
+    {
+        return $this->payDeadline;
+    }
+
+    /**
+     * @param boolean $deadline
+     * @return self
+     */
+    public function setPayDeadline($deadline)
+    {
+        $this->payDeadline = $deadline;
         return $this;
     }
 }

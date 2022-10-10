@@ -2,6 +2,11 @@
 
 {% block content %}
     <div class="container modal-body">
+        <div class="col-sm-offset-11" style="padding: 0 0 10px 0;">
+            <a href="{{ url('shop', {"action": "reward", "id": session.getId()})}}">
+                <input type="button" name="Reward" class="btn btn-primary button" style="border-color: darkred" value="Rewards">
+            </a>
+        </div>
         {% import 'site/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
         {% if noEntity != null %}
@@ -49,9 +54,14 @@
                     {{ consumed ? 'Deze broodjes zijn al opgehaald.' : '' }}
                 {% endif %}
             </div>
+
+            {% if reservations[0].getReward() %}
+                <div class="content" style="color: darkgreen">
+                    We hebben prijs! Deze persoon heeft een gratis Cara gewonnen! Hoera! The game
+                </div>
+            {% endif %}
         {%  endif %}
     </div>
-
 {% endblock %}
 
 {% block content_script %}
