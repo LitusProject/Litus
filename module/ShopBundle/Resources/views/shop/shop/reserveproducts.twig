@@ -40,7 +40,7 @@
                                     </div>
 
                                     <div style="display: inline-block">
-                                        <span style="font-size: 12px">{{ element.attributes.max }} {{ translate('available') }}</span>
+                                        <span style="font-size: 12px">{% if element.attributes.max > 0 %} {{ element.attributes.max }} {{ translate('available') }} {% else %} {{ translate('soldout') }} {% endif %}</span>
                                     </div>
                                 </div>
                             {% endfor %}

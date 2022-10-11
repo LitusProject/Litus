@@ -27,5 +27,6 @@ return array(
     'An error occurred while trying to cancel your reservation'                    => 'Er trad een fout op tijdens het annuleren van uw reservatie.',
     'However, there are no future sales sessions open for reservations yet.'       => 'Er zijn echter nog geen verkoopsessies beschikbaar om reservaties te plaatsen.',
     'available'                                                                    => 'beschikbaar',
+    'soldout'                                                                      => 'Dit broodje is jammer genoeg uitverkocht, probeer volgende keer iets vroeger :)',
     'My Sandwiches'                                                                => 'Mijn Broodjes',
 );
