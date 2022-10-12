@@ -121,6 +121,25 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'       => 'text',
+                'name'       => 'deadline_time',
+                'label'      => 'Minutes that the link is valid',
+                'required'   => false,
+                'options'    => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
                 'type'     => 'datetime',
                 'name'     => 'bookings_close_date',
                 'label'    => 'Bookings Close Date',
