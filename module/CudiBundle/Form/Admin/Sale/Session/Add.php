@@ -24,14 +24,29 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $units = $this->getUnits();
         $unitElements = array();
+        $lastSession = $this->getLastSalesSession();
+        $closeRegister = $lastSession->getCloseRegister();
+        if(!is_null($closeRegister)) {
+            $amounts = $lastSession->getCloseRegister()->getMoneyUnitAmounts();
+            for($i = 0; $i < sizeof($amounts); $i++){
+                $amounts[$i] = $amounts[$i]->getAmount();
+            }
+        } else {
+            error_log("fill money units array with zeros");
+            $amounts = array_fill(0, sizeof($units),0);
+        }
 
-        foreach ($units as $unit) {
+        for ($i = 0; $i < sizeof($units); $i++){
+            $unit = $units[$i];
+            $amount = $amounts[$i];
+//            $amount = $amounts[$i]->getAmount();
+
             $unitElements[] = array(
                 'type'       => 'text',
                 'name'       => $unit->getId(),
                 'label'      => '&euro; ' . number_format($unit->getUnit() / 100, 2),
                 'required'   => true,
-                'value'      => 0,
+                'value'      => $amount,
                 'attributes' => array(
                     'id'           => 'unit_' . $unit->getId(),
                     'autocomplete' => 'off',
@@ -63,14 +78,29 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $devices = $this->getDevices();
         $deviceElements = array();
+        $closeRegister = $lastSession->getCloseRegister();
+        if(!is_null($closeRegister)) {
+            $amounts = $lastSession->getCloseRegister()->getBankDeviceAmounts();
+            for($i = 0; $i < sizeof($amounts); $i++){
+                $amounts[$i] = $amounts[$i]->getAmount()/100;
+            }
+        } else {
+            error_log("fill device array with zeros");
+            $amounts = array_fill(0, sizeof($devices),0);
+        }
 
-        foreach ($devices as $device) {
+
+        for ($i = 0; $i < sizeof($devices); $i++){
+            $device = $devices[$i];
+            $amount = $amounts[$i];
+//            $amount = (($amounts[$i]->getAmount())/100);
+
             $deviceElements[] = array(
                 'type'       => 'text',
                 'name'       => $device->getId(),
                 'label'      => $device->getName(),
                 'required'   => true,
-                'value'      => 0,
+                'value'      => $amount,
                 'attributes' => array(
                     'id'           => 'device_' . $device->getId(),
                     'autocomplete' => 'off',
@@ -123,5 +153,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
             ->findAll();
+    }
+
+    private function getLastSalesSession()
+    {
+        return $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Session')
+            ->getLast();
     }
 }
