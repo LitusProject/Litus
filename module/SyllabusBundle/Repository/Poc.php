@@ -131,7 +131,7 @@ class Poc extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         }
 
         $query = $this->getEntityManager()->createQueryBuilder();
-        return $query->select('p', 'g')
+        $result = $query->select('p', 'g')
             ->from('SyllabusBundle\Entity\poc', 'p')
             ->where(
                 $query->expr()->andX(
@@ -144,6 +144,7 @@ class Poc extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->innerJoin('p.groupId', 'g')
             ->orderBy('g.name', 'ASC')
             ->getQuery();
+        return $result;
     }
 
     /**

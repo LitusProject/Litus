@@ -707,7 +707,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                     $this->sendQrMail($ticket);
                 }
                 if ($ticket->getEvent()->getId() === $printerEventId) {
-                    $this->runPowershell($ticket);
+//                    $this->runPowershell($ticket);
                 }
                 $this->getEntityManager()->flush();
             }
