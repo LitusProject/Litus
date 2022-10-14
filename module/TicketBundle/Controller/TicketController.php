@@ -707,7 +707,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                     $this->sendQrMail($ticket);
                 }
                 if ($ticket->getEvent()->getId() === $printerEventId) {
-                    $this->runPowershell($ticket);
+//                    $this->runPowershell($ticket);
                 }
                 $this->getEntityManager()->flush();
             }
@@ -740,9 +740,11 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $now = new \DateTime('now');
         $book_date = $ticket->getBookDate();
         $time_diff = $now->getTimestamp() - $book_date->getTimeStamp();
-        $days = $time_diff/(24*60*60); // Set Time Difference in seconds to day
+        $time_in_minutes = $time_diff/(60); // Set Time Difference in seconds to minutes
 
-        if ($days <= 1 || $ticket->getEvent()->getPayDeadline()) {
+        $max_time = $ticket->getEvent()->getDeadlineTime();
+
+        if ($time_in_minutes <= $max_time || $ticket->getEvent()->getPayDeadline()) {
             $link = $this->generatePayLink($ticket);
 
             $this->redirect()->toUrl($link);

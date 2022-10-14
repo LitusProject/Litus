@@ -189,6 +189,13 @@ class Event
      */
     private $payDeadline;
 
+    /**
+     * @var integer The amount of time before a ticket is invalid
+     *
+     * @ORM\Column(name="deadline_time", type="bigint", nullable=true)
+     */
+    private $deadlineTime;
+
     public function __construct()
     {
         $this->options = new ArrayCollection();
@@ -783,6 +790,24 @@ class Event
     public function setPayDeadline($deadline)
     {
         $this->payDeadline = $deadline;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDeadlineTime()
+    {
+        return $this->deadlineTime;
+    }
+
+    /**
+     * @param integer $time
+     * @return self
+     */
+    public function setDeadlineTime($time)
+    {
+        $this->deadlineTime = $time;
         return $this;
     }
 }
