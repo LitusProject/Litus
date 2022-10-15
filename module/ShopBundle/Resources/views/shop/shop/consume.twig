@@ -9,6 +9,14 @@
         </div>
         {% import 'site/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
+        {% if noEntity == true %}
+            <div class="flashmessage alert alert-danger " id="shop_consume_error" >
+                <a class="close" data-dismiss="alert">&times;</a>
+                <div class="content">
+                    <div style="color:white">Geen broodjes gevonden voor deze persoon!</div>
+                </div>
+            </div>
+        {%  endif %}
         {% if noEntity != null %}
             <div class="flashmessage alert alert-danger " id="shop_consume_error" >
                 <a class="close" data-dismiss="alert">&times;</a>
@@ -47,6 +55,18 @@
                 </tr>
                 </tbody>
             </table>
+
+            {% if reservations[0].getReward() %}
+                <br>
+                <div class="content" style="color: darkgreen">
+                    <audio controls hidden autoplay>
+                        <source src="../../../../_site/Reward-Sound.mp3" type="audio/mpeg">
+                    </audio>
+                    We hebben prijs! Deze persoon heeft een gratis Cara gewonnen! Hoera! <b>The game</b>
+                </div>
+                <br>
+            {% endif %}
+
             <div class="content" style="color:darkred">
                 {% if total < 3 %}
                     {{ consumed ? 'Dit broodje is al opgehaald.' : '' }}
@@ -55,11 +75,6 @@
                 {% endif %}
             </div>
 
-            {% if reservations[0].getReward() %}
-                <div class="content" style="color: darkgreen">
-                    We hebben prijs! Deze persoon heeft een gratis Cara gewonnen! Hoera! The game
-                </div>
-            {% endif %}
         {%  endif %}
     </div>
 {% endblock %}

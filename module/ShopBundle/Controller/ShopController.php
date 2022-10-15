@@ -211,7 +211,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                         ->getAllReservationsByUsernameAndSalesSessionQuery($username, $salesSession)->getResult();
                 }
 
-                if ($reservations === null) {
+                if ($reservations[0] === null) {
                     return new ViewModel(
                         array(
                             'noEntity' => 'No consumptions were found',
@@ -256,7 +256,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                 ->getRepository('ShopBundle\Entity\Reservation')
                 ->findBySalesSessionQuery($salesSession)
                 ->getResult();
-            if (count($allReservations) > 3) {
+            if (count($allReservations) > $numberRewards) {
                 for ($i = 0; $i < $numberRewards; $i++) {
                     $rNumber = $allReservations[array_rand($allReservations)]->getPerson()->getUsername();
                     $reservations = $this->getEntityManager()
