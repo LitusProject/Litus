@@ -199,7 +199,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
                 $username = $form->getData()['username'];
-                if (str_contains($username, ';')) {
+                if ((str_contains($username, ';')) && (strlen($username) == 25)) {
                     $seperatedString = explode(';', $username);
                     $rNumber = $this->getRNumberAPI($seperatedString[0], $seperatedString[1], $this->getEntityManager());
                     $reservations = $this->getEntityManager()

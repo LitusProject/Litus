@@ -9,14 +9,6 @@
         </div>
         {% import 'site/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
-        {% if noEntity == true %}
-            <div class="flashmessage alert alert-danger " id="shop_consume_error" >
-                <a class="close" data-dismiss="alert">&times;</a>
-                <div class="content">
-                    <div style="color:white">Geen broodjes gevonden voor deze persoon!</div>
-                </div>
-            </div>
-        {%  endif %}
         {% if noEntity != null %}
             <div class="flashmessage alert alert-danger " id="shop_consume_error" >
                 <a class="close" data-dismiss="alert">&times;</a>
