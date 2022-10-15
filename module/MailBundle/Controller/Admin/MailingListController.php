@@ -12,7 +12,7 @@ use MailBundle\Entity\MailingList\Entry\MailingList as MailingListEntry;
 use MailBundle\Entity\MailingList\Entry\Person\Academic as AcademicEntry;
 use MailBundle\Entity\MailingList\Entry\Person\External as ExternalEntry;
 
-putenv('GOOGLE_APPLICATION_CREDENTIALS=/home/stanc/service-account.json');
+putenv('GOOGLE_APPLICATION_CREDENTIALS=/home/it/service-account.json');
 
 /**
  * MailingListController
@@ -144,7 +144,11 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
                 $group->setName($list_name);
                 $group->setEmail($list_mail);
 
-                $directory->groups->insert($group);
+                try {
+                    $directory->groups->insert($group);
+                } catch (\Exception $e) {
+
+                }
 
                 $setting_service->groups->update($list_mail, $default_settings);
 
@@ -223,7 +227,11 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
                 $member = new Google\Service\Directory\Member();
                 $member->setEmail($mail);
 
-                $insert = $directory->members->insert($list_mail, $member);
+                try {
+                    $insert = $directory->members->insert($list_mail, $member);
+                } catch (\Exception $e) {
+
+                }
 
                 $this->getEntityManager()->persist($entry);
                 $this->getEntityManager()->flush();
@@ -365,7 +373,11 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
         $list_email = $list_name . '@vtk.be';
 
         $directory = new \Google_Service_Directory($client);
-        $delete = $directory->groups->delete($list_email);
+        try {
+            $delete = $directory->groups->delete($list_email);
+        } catch (\Exception $e) {
+
+        }
 
         $this->getEntityManager()->remove($list);
         $this->getEntityManager()->flush();
@@ -397,7 +409,11 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
         $client = $this->getGoogleClient();
 
         $directory = new \Google_Service_Directory($client);
-        $delete = $directory->members->delete($list_email, $email);
+        try {
+            $delete = $directory->members->delete($list_email, $email);
+        } catch (\Exception $e) {
+
+        }
 
         $this->getEntityManager()->remove($entry);
         $this->getEntityManager()->flush();
