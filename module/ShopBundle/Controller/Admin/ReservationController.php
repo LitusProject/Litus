@@ -193,6 +193,8 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             $item->amount = $reservation->getAmount();
             $item->total = $reservation->getAmount() * $reservation->getProduct()->getSellPrice();
             $item->noShow = $reservation->getNoShow();
+            $item->consumed = $reservation->getConsumed();
+            $item->reward = $reservation->getReward();
 
             $result[] = $item;
         }
