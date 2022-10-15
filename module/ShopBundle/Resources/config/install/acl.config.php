@@ -3,7 +3,11 @@
 return array(
     'shopbundle' => array(
         'shop' => array(
+<<<<<<< HEAD
             'index', 'reserve', 'reservations', 'deleteReservation', 'reserveproducts', 'consume', 'reward',
+=======
+            'index', 'reserve', 'reservations', 'deleteReservation', 'reserveproducts', 'consume', 'reward'
+>>>>>>> e097b747dd941cff111fddffe94e08ad6f880322
         ),
         'shop_admin_shop_product' => array(
             'manage', 'add', 'edit', 'delete', 'search',
