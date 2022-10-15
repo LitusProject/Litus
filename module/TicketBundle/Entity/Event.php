@@ -802,7 +802,7 @@ class Event
     }
 
     /**
-     * @param integer $time
+     * @param integer|null $time
      * @return self
      */
     public function setDeadlineTime($time)
