@@ -251,7 +251,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (!$salesSession->getReward()) {
-            $numberRewards = 3;
+            $numberRewards = $salesSession->getAmountRewards();
             $allReservations = $this->getEntityManager()
                 ->getRepository('ShopBundle\Entity\Reservation')
                 ->findBySalesSessionQuery($salesSession)
