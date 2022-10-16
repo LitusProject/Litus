@@ -284,6 +284,9 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                 }
             }
             $salesSession->setReward(true);
+            $this->flashMessenger()->success('Succes', $this->getTranslator()->translate('The rewards are now randomized'));
+        } else {
+            $this->flashMessenger()->error('Error', $this->getTranslator()->translate('The rewards are already randomized'));
         }
         $this->getEntityManager()->flush();
 
