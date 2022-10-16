@@ -65,6 +65,13 @@ class Session
     private $reward;
 
     /**
+     * @var integer Amount of rewards that will be given this session
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $amountRewards;
+
+    /**
      * @return integer
      */
     public function getId()
@@ -168,6 +175,25 @@ class Session
     public function getReward()
     {
         return $this->reward;
+    }
+
+    /**
+     * @param  integer $amountRewards
+     * @return self
+     */
+    public function setAmountRewards($amountRewards)
+    {
+        $this->amountRewards = $amountRewards;
+
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getAmountRewards()
+    {
+        return $this->amountRewards;
     }
 
     /**
