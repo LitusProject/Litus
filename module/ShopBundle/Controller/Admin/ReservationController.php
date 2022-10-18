@@ -37,8 +37,12 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             ->getResult();
 
         $totalReservations = 0;
-        foreach($result as $reservation){
-            $totalReservations += $reservation[1];
+        for($i = 0; $i < sizeof($result); $i++) {
+            $totalReservations += $result[$i][1];
+            $totalAmount = $this->getEntityManager()
+                ->getRepository('ShopBundle\Entity\Session\Stock')
+                ->getProductAvailability($result[$i][0], $salesSession);
+            $result[$i][2] = $totalAmount;
         }
 
         return new ViewModel(

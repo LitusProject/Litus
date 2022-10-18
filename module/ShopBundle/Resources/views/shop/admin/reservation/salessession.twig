@@ -66,13 +66,15 @@
         <table class="full_width manage">
             <tr>
                 <th>Product</th>
-                <th>Amount</th>
+                <th style="width: 100px">Amount</th>
+                <th style="width: 100px">Total Amount</th>
             </tr>
 
             {% for reservation in totals %}
                 <tr class="item item-{{ reservation[0].getId() }}">
                     <td>{{ reservation[0].getName() }}</td>
                     <td>{{ reservation[1] }}</td>
+                    <td>{{ reservation[2] }}</td>
                 </tr>
             {% endfor %}
         </table>
