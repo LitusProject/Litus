@@ -192,7 +192,7 @@
         {% if myPocers.enable  %}
             {% if myPocers.pocItem is not null %}
                 {% if not myPocers.pocItem is empty %}
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="page-header" style="margin-top: 20px;">
                             <a class="heading" href={{pocUrlOverview}}>
                                 <h3>{{ translate('POC') }}</h3>
@@ -210,7 +210,7 @@
                                 <a href="mailto:{{ pocStuff['pocExample'].getEmailAdress()}}">{{ pocStuff['pocExample'].getEmailAdress() }}</a>
                                 <div class="row">
                                     {% for  poc in pocStuff['pocGroupList'] %}
-                                        <div class="col-xs-6 col-md-6">
+                                        <div class="col-xs-3 col-md-3">
                                             <div class="thumbnail" style="height: 200px; text-align: center">
                                                 {% if poc.getAcademic().getPhotoPath() %}
                                                     <img class="profileImagePreloaded holderjs" data-url="{{ profilePath }}/{{ poc.getAcademic().getPhotoPath() }}" style="background:url(?holder.js/144x108/auto/text:Image) no-repeat; width: 144px; height: 108px;" alt="">
