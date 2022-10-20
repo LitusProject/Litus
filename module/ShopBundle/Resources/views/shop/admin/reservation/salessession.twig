@@ -78,8 +78,9 @@
                 </tr>
             {% endfor %}
         </table>
-        <br>
 
+        <h1> Total amount of reservations: {{ totalReservations }} </h1>
+        
         <div id="reservation_search" style="display: none;">
             <div style="padding: 4px; text-align: right">
                 Search:
@@ -147,9 +148,6 @@
             </table>
 
             {% include 'admin/partials/paginationControl.twig' %}
-
-            <h1> Total amount of reservations: {{ totalReservations }} </h1>
-
         </div>
     </div>
 
