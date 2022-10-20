@@ -108,7 +108,7 @@
                                 this.title + " | " + value.weekday + " " + value.day + " " + value.month
                             ),
                             // $('<div>', {'class': 'button', 'style': 'margin-bottom: 20px; margin-top: 20px'}).append($('<a>', {'href': this.url}).append('Lees meer')),
-                            $('<div>', {'class': 'calendarImagePlaceHolder'}),
+                            $('<div>', {'class': 'calendarImagePlaceHolder', 'style': '  background-image: url(\'https://vtk.be' + this.poster + '\');'}),
                             $('<p>', {'style': 'min-height: 63px'}).append(this.summary),
                             $('<a>', {'class': 'button blue unfilled', 'href': this.url}).append('Lees meer')
                         )
