@@ -262,7 +262,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                     $reservations = $this->getEntityManager()
                         ->getRepository('ShopBundle\Entity\Reservation')
                         ->getAllReservationsByUsernameAndSalesSessionQuery($rNumber, $salesSession)->getResult();
-                    while ($reservations[0]->getReward()) {
+                    while ($reservations[0]->getReward() && $reservations[0]->getConsumed()) {
                         $rNumber = $allReservations[array_rand($allReservations)]->getPerson()->getUsername();
                         $reservations = $this->getEntityManager()
                             ->getRepository('ShopBundle\Entity\Reservation')
