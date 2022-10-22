@@ -56,7 +56,6 @@ return array(
     'pending'                                                                                                                                                                              => 'in behandeling',
     'rejected'                                                                                                                                                                             => 'geweigerd',
     'currently listed on our website'                                                                                                                                                      => 'momenteel weergegeven op onze website',
-<<<<<<< HEAD
     'Log In'                                                                                                                                                                               => 'Log In',
     'More Information'                                                                                                                                                                     => 'Meer weten',
     'Corporate Relations'                                                                                                                                                                  => 'Bedrijvenrelaties',
@@ -64,7 +63,5 @@ return array(
     'Visibility'                                                                                                                                                                           => 'Zichtbaarheid',
     'Flexibility'                                                                                                                                                                          => 'Flexibiliteit',
     'Proffesionaliteit'                                                                                                                                                                    => 'Professionaliteit & kwaliteit',
-=======
     'bedrijvenrelaties'                                                                                                                                                                    => 'Bedrijvenrelaties',
->>>>>>> master
 );
