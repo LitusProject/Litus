@@ -57,6 +57,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                         ->setMaximum(intval($optionData['maximum']));
                     $price_non_members = $optionData['membershipDiscount'] == 1 ? $optionData['price_non_members'] : null;
                     $option->setPriceNonMembers($price_non_members);
+                    $option->setIsVisible($optionData['visible']);
                 } else {
                     $price_non_members = $optionData['membershipDiscount'] == 1 ? $optionData['price_non_members'] : null;
                     $option = new OptionEntity(
@@ -64,7 +65,8 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                         $optionData['option'],
                         $optionData['price_members'],
                         $price_non_members,
-                        intval($optionData['maximum'])
+                        intval($optionData['maximum']),
+                        $optionData['visible']
                     );
                     $this->getEntityManager()->persist($option);
                 }
@@ -190,6 +192,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                     'price_members'     => number_format($option->getPriceMembers() / 100, 2),
                     'price_non_members' => $object->isOnlyMembers() ? '' : number_format($option->getPriceNonMembers() / 100, 2),
                     'membershipDiscount' => $option->getPriceNonMembers() > 0,
+                    'visible'           => $option->isVisible() ? $option->isVisible() : '',
                 );
             }
         }
