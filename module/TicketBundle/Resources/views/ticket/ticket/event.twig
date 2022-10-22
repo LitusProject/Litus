@@ -70,15 +70,17 @@
                 {% else %}
                     <dl class="dl-horizontal" style="width: 50%;">
                         {% for option in event.getOptions() %}
-                            <div class="row" style="border-bottom: solid black 1px; margin-bottom: 5px;">
-                                <dt style="width: fit-content;">{{ option.getName() }}{% if not option.getPriceNonMembers() == 0 %}&mdash;{{ translate('Member') }}{% endif %}</dt>
-                                <dd class="pull-right">&euro;{{ (option.getPriceMembers()/100)|number_format(2) }}</dd>
-                            </div>
-                            {% if not event.isOnlyMembers() and not option.getPriceNonMembers() == 0 %}
+                            {% if option.isVisible()%}
                                 <div class="row" style="border-bottom: solid black 1px; margin-bottom: 5px;">
-                                    <dt style="width: fit-content">{{ option.getName() }}&mdash;{{ translate('Non Member') }}</dt>
-                                    <dd class="pull-right">&euro;{{ (option.getPriceNonMembers()/100)|number_format(2) }}</dd>
+                                    <dt style="width: fit-content;">{{ option.getName() }}{% if not option.getPriceNonMembers() == 0 %}&mdash;{{ translate('Member') }}{% endif %}</dt>
+                                    <dd class="pull-right">&euro;{{ (option.getPriceMembers()/100)|number_format(2) }}</dd>
                                 </div>
+                                {% if not event.isOnlyMembers() and not option.getPriceNonMembers() == 0 %}
+                                    <div class="row" style="border-bottom: solid black 1px; margin-bottom: 5px;">
+                                        <dt style="width: fit-content">{{ option.getName() }}&mdash;{{ translate('Non Member') }}</dt>
+                                        <dd class="pull-right">&euro;{{ (option.getPriceNonMembers()/100)|number_format(2) }}</dd>
+                                    </div>
+                                {% endif %}
                             {% endif %}
                         {% endfor %}
                     </dl>

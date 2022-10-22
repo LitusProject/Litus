@@ -120,6 +120,14 @@ class Option extends \CommonBundle\Component\Form\Fieldset implements InputFilte
                 ),
             )
         );
+        $this->add(
+            array(
+                'type' => 'checkbox',
+                'name' => 'visible',
+                'label' => 'Option is visible',
+                'required' => false,
+            )
+        );
     }
 
     public function getInputFilterSpecification()
