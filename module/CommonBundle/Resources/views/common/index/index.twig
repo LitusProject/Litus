@@ -211,10 +211,10 @@
                                 <div class="row">
                                     {% for  poc in pocStuff['pocGroupList'] %}
                                         <div class="col-xs-3 col-md-3">
-                                            <div class="thumbnail" style="height: 200px; text-align: center">
+                                            <div class="thumbnail" style="height: 200px; text-align: center; border-style: none">
                                                 {% if poc.getAcademic().getPhotoPath() %}
                                                     <img class="profileImagePreloaded holderjs" data-url="{{ profilePath }}/{{ poc.getAcademic().getPhotoPath() }}"
-                                                         style="background: url(?holder.js/90x67/auto/text:Image) no-repeat; width: 90px; height: 90px; object-fit: cover; border-radius: 50%" alt="">
+                                                         style="background: url(?holder.js/90x67/auto/text:Image) no-repeat; width: 80px; height: 80px; object-fit: cover; border-radius: 50%" alt="">
                                                 {% else %}
                                                     <img data-src="holder.js/144x108/auto/text:Image" alt="">
                                                 {% endif %}
