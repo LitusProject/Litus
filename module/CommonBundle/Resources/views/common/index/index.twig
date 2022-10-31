@@ -41,13 +41,13 @@
 
     <div class="vtk-home-header">
         <div class="vtk-home-image">
-            <div class="container" style="text-align: center">
-                <h1 class="vtk-hometitle">{{ translate('welcome to') }} VTK</h1>
-                <div class="vtk-home-titleDecoration"></div>
-                <h2 class="vtk-home-subtitle" style="color: white; font-weight: 500">Vlaamse Technische Kring - partner
-                    in crime since 1920</h2>
-                <div style="height: 100px"></div>
-            </div>
+{#            <div class="container" style="text-align: center">#}
+{#                <h1 class="vtk-hometitle">{{ translate('welcome to') }} VTK</h1>#}
+{#                <div class="vtk-home-titleDecoration"></div>#}
+{#                <h2 class="vtk-home-subtitle" style="color: white; font-weight: 500">Vlaamse Technische Kring - partner#}
+{#                    in crime since 1920</h2>#}
+{#                <div style="height: 100px"></div>#}
+{#            </div>#}
         </div>
     </div>
 
@@ -213,7 +213,8 @@
                                         <div class="col-xs-3 col-md-3">
                                             <div class="thumbnail" style="height: 200px; text-align: center">
                                                 {% if poc.getAcademic().getPhotoPath() %}
-                                                    <img class="profileImagePreloaded holderjs" data-url="{{ profilePath }}/{{ poc.getAcademic().getPhotoPath() }}" style="background:url(?holder.js/144x108/auto/text:Image) no-repeat; width: 144px; height: 108px;" alt="">
+                                                    <img class="profileImagePreloaded holderjs" data-url="{{ profilePath }}/{{ poc.getAcademic().getPhotoPath() }}"
+                                                         style="background: url(?holder.js/90x67/auto/text:Image) no-repeat; width: 90px; height: 90px; object-fit: cover; border-radius: 50%" alt="">
                                                 {% else %}
                                                     <img data-src="holder.js/144x108/auto/text:Image" alt="">
                                                 {% endif %}
