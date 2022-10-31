@@ -14,6 +14,9 @@ return array(
         'api_calendar' => array(
             'activeEvents', 'poster',
         ),
+        'api_commu' => array(
+            'get-cudi-openinghours',
+        ),
         'api_config' => array(
             'entries',
         ),
