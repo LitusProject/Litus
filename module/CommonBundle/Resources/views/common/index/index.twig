@@ -214,9 +214,9 @@
                                             <div class="thumbnail" style="height: 200px; text-align: center; border-style: none">
                                                 {% if poc.getAcademic().getPhotoPath() %}
                                                     <img class="profileImagePreloaded holderjs" data-url="{{ profilePath }}/{{ poc.getAcademic().getPhotoPath() }}"
-                                                         style="background: url(?holder.js/90x67/auto/text:Image) no-repeat; width: 100px; height: 100px; object-fit: cover; border-radius: 50%" alt="">
+                                                         style="background: url(?holder.js/90x67/auto/text:Image) no-repeat; width: 120px; height: 120px; object-fit: cover; border-radius: 50%" alt="">
                                                 {% else %}
-                                                    <img class="poc-member" style="background-image: url(/_site/img/generic_profile.png)">
+                                                    <img class="memberPhoto" style="background-image: url(/_site/img/generic_profile.png); height: 120px; width: 120px; margin-bottom: 0">
                                                 {% endif %}
                                                 <br>
                                                 <h4>{{ poc.getAcademic().getFullName() }}</h4>
