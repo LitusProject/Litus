@@ -114,7 +114,7 @@
                         <a href="{{ url('cudi_booking') }}" class="btn btn-sm btn-primary">{{ translate('Reservations') }}</a>
                     </p>
                 {% endif %} #}
-                <div class="col-md-6"><h2>{{ translate('Cudi - Opening Hours') }}</h2>
+                <div class="col-md-6"><h2>Cudi - {{ translate('Opening Hours') }}</h2>
                     {% for message in cudi.messages %}
                         <div style="white-space: pre-wrap;">{{ message.getContent(language) }}
                         </div>
@@ -129,7 +129,7 @@
                                 -{{ opening.getEnd().format('H:i') }}</p></div>
                     {% endfor %}
                 </div>
-                <div class="col-md-6"><h2>{{ translate('Theokot - Opening Hours') }}</h2>
+                <div class="col-md-6"><h2>Theokot - {{ translate('Opening Hours') }}</h2>
                     <div>
                         <p style="display:inline-block">{{ shop.openingHours }}</p>
                     </div>
@@ -189,6 +189,51 @@
     {% endif %}
 
     <div class="container">
+        {% if myPocers.enable  %}
+            {% if myPocers.pocItem is not null %}
+                {% if not myPocers.pocItem is empty %}
+                    <div class="col-md-12">
+                        <div class="page-header" style="margin-top: 20px;">
+                            <a class="heading" href={{pocUrlOverview}}>
+                                <h3>{{ translate('POC') }}</h3>
+                            </a>
+                        </div>
+
+                        <div class="heading-spacer"></div>
+                        <div>
+                            {{translate('The POC\'ers are elected! You can find your POC\'ers here!')}}
+                            {#                        {{translate('Visit the POC page for more ')}}#}
+                            {#                        <a href={{pocUrl}}>info</a>#}
+
+                            {% for pocStuff in myPocers.pocItem%}
+                                <h3>{{ pocStuff['groupId'].getName() }}<small>&mdash;</small></h3>
+                                <a href="mailto:{{ pocStuff['pocExample'].getEmailAdress()}}">{{ pocStuff['pocExample'].getEmailAdress() }}</a>
+                                <div class="row">
+                                    {% for  poc in pocStuff['pocGroupList'] %}
+                                        <div class="col-xs-3 col-md-3">
+                                            <div class="thumbnail" style="height: 200px; text-align: center; border-style: none">
+                                                {% if poc.getAcademic().getPhotoPath() %}
+                                                    <img class="profileImagePreloaded holderjs" data-url="{{ profilePath }}/{{ poc.getAcademic().getPhotoPath() }}"
+                                                         style="background: url(?holder.js/90x67/auto/text:Image) no-repeat; width: 120px; height: 120px; object-fit: cover; border-radius: 50%" alt="">
+                                                {% else %}
+                                                    <img class="memberPhoto" style="background-image: url(/_site/img/generic_profile.png); height: 120px; width: 120px; margin-bottom: 0">
+                                                {% endif %}
+                                                <br>
+                                                <h4>{{ poc.getAcademic().getFullName() }}</h4>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <div class="container">
         <div style="display: flex; flex-direction:row; flex-wrap: wrap;">
             {% for video in videos %}
                 <div style="margin: 0 50px 50px 0">
@@ -245,4 +290,14 @@
         {% endfor %}
 
     </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.profileImagePreloaded').each(function () {
+                $(this).attr('src', $(this).data('url'));
+            });
+        });
+    </script>
 {% endblock %}

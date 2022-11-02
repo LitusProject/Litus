@@ -13,7 +13,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
      */
     private static $stdKeys = array(
         'active', 'bookable_praesidium', 'bookable', 'number_of_tickets',
-        'limit_per_person', 'only_members', 'description', 'qr_enabled',
+        'limit_per_person', 'only_members', 'description', 'qr_enabled', 'mail_from',
     );
 
     protected function doHydrate(array $data, $object = null)
@@ -57,6 +57,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                         ->setMaximum(intval($optionData['maximum']));
                     $price_non_members = $optionData['membershipDiscount'] == 1 ? $optionData['price_non_members'] : null;
                     $option->setPriceNonMembers($price_non_members);
+                    $option->setIsVisible($optionData['visible']);
                 } else {
                     $price_non_members = $optionData['membershipDiscount'] == 1 ? $optionData['price_non_members'] : null;
                     $option = new OptionEntity(
@@ -64,7 +65,8 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                         $optionData['option'],
                         $optionData['price_members'],
                         $price_non_members,
-                        intval($optionData['maximum'])
+                        intval($optionData['maximum']),
+                        $optionData['visible']
                     );
                     $this->getEntityManager()->persist($option);
                 }
@@ -150,7 +152,9 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             ->setInvoiceIdBase($data['invoice_base_id'])
             ->setOnlinePayment($data['online_payment'])
             ->setOrderIdBase($data['order_base_id'])
-            ->setForm($form);
+            ->setForm($form)
+            ->setPayDeadline($data['deadline_enabled'])
+            ->setDeadlineTime($data['deadline_time'] ? : null);
 
         return $this->stdHydrate($data, $object, self::$stdKeys);
     }
@@ -168,6 +172,8 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         $data['bookings_close_date'] = $object->getBookingsCloseDate() ? $object->getBookingsCloseDate()->format('d/m/Y H:i') : '';
         $data['generate_tickets'] = $object->areTicketsGenerated();
         $data['allow_remove'] = $object->allowRemove();
+        $data['deadline_enabled'] = $object->getPayDeadline();
+        $data['deadline_time'] = $object->getDeadlineTime() ? : '';
         $data['invoice_base_id'] = $object->getInvoiceIdBase();
         $data['order_base_id'] = $object->getOrderIdBase();
         $data['online_payment'] = $object->isOnlinePayment();
@@ -186,6 +192,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                     'price_members'     => number_format($option->getPriceMembers() / 100, 2),
                     'price_non_members' => $object->isOnlyMembers() ? '' : number_format($option->getPriceNonMembers() / 100, 2),
                     'membershipDiscount' => $option->getPriceNonMembers() > 0,
+                    'visible'           => $option->isVisible() ? $option->isVisible() : '',
                 );
             }
         }

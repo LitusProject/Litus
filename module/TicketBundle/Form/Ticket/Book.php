@@ -99,38 +99,12 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
             }
         } else {
             foreach ($this->event->getOptions() as $option) {
-                $this->add(
-                    array(
-                        'type'       => 'select',
-                        'name'       => 'option_' . $option->getId() . '_number_member',
-                        'label'      => $option->getPriceNonMembers() != 0 ? ucfirst($option->getName()) . ' (Member)' : ucfirst($option->getName()),
-                        'attributes' => array(
-                            'options' => $this->getNumberOptions(),
-                        ),
-                        'options'    => array(
-                            'input' => array(
-                                'required'   => true,
-                                'validators' => array(
-                                    array(
-                                        'name'    => 'NumberTickets',
-                                        'options' => array(
-                                            'event'   => $this->event,
-                                            'person'  => $this->person,
-                                            'maximum' => $this->event->getLimitPerPerson(),
-                                        ),
-                                    ),
-                                ),
-                            ),
-                        ),
-                    )
-                );
-
-                if (!$this->event->isOnlyMembers() && $option->getPriceNonMembers() != 0) {
+                if ($option->isVisible()) {
                     $this->add(
                         array(
                             'type'       => 'select',
-                            'name'       => 'option_' . $option->getId() . '_number_non_member',
-                            'label'      => ucfirst($option->getName()) . ' (Non Member)',
+                            'name'       => 'option_' . $option->getId() . '_number_member',
+                            'label'      => $option->getPriceNonMembers() != 0 ? ucfirst($option->getName()) . ' (Member)' : ucfirst($option->getName()),
                             'attributes' => array(
                                 'options' => $this->getNumberOptions(),
                             ),
@@ -151,6 +125,34 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                         )
                     );
+
+                    if (!$this->event->isOnlyMembers() && $option->getPriceNonMembers() != 0) {
+                        $this->add(
+                            array(
+                                'type' => 'select',
+                                'name' => 'option_' . $option->getId() . '_number_non_member',
+                                'label' => ucfirst($option->getName()) . ' (Non Member)',
+                                'attributes' => array(
+                                    'options' => $this->getNumberOptions(),
+                                ),
+                                'options' => array(
+                                    'input' => array(
+                                        'required' => true,
+                                        'validators' => array(
+                                            array(
+                                                'name' => 'NumberTickets',
+                                                'options' => array(
+                                                    'event' => $this->event,
+                                                    'person' => $this->person,
+                                                    'maximum' => $this->event->getLimitPerPerson(),
+                                                ),
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                            )
+                        );
+                    }
                 }
             }
         }

@@ -318,6 +318,8 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         $pocers = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Poc')
             ->findPocersByAcademicAndAcademicYear($academic, $currentAcademicYear);
+
+//        die(var_dump(count($pocers)));
         $lastPocGroup = null;
         $pocGroupList = array();
         $pocItem = array();

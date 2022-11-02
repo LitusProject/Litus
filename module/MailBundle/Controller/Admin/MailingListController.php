@@ -3,11 +3,7 @@
 namespace MailBundle\Controller\Admin;
 
 use CommonBundle\Entity\User\Person\Academic;
-use Google\Service\Directory as GoogleDirectoryService;
-use Google\Service\Directory\Group;
-use Google\Service\Directory\Member;
-use Google\Service\Groupssettings as GoogleGroupssettingsService;
-use Google\Service\Groupssettings\Groups;
+use Google;
 use Laminas\View\Model\ViewModel;
 use MailBundle\Entity\MailingList;
 use MailBundle\Entity\MailingList\AdminMap as ListAdmin;
@@ -15,6 +11,8 @@ use MailBundle\Entity\MailingList\AdminRoleMap as ListAdminRole;
 use MailBundle\Entity\MailingList\Entry\MailingList as MailingListEntry;
 use MailBundle\Entity\MailingList\Entry\Person\Academic as AcademicEntry;
 use MailBundle\Entity\MailingList\Entry\Person\External as ExternalEntry;
+
+putenv('GOOGLE_APPLICATION_CREDENTIALS=/home/it/service-account.json');
 
 /**
  * MailingListController
@@ -73,6 +71,62 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
     public function addAction()
     {
+        // Dit is nodig voor de authenticatie
+        $client = $this->getGoogleClient();
+
+        /**
+         * Reference:
+         * Groups: https://developers.google.com/admin-sdk/directory/reference/rest/v1/groups#Group
+         * Members: https://developers.google.com/admin-sdk/directory/reference/rest/v1/members
+         * Settings: https://developers.google.com/admin-sdk/groups-settings/v1/reference/groups
+         *
+         * Examples:
+         * Google directory API: $directory = new \Google_Service_Directory($client)
+         * Google Groups Settings API: $settings = new \Google_Service_Groupssettings($client)
+         * Create empty Group Object: $group = new \Google_Service_Directory_Group() of new Google\Service\Directory\Group()
+         * Create empty Member Objcet: $member = new \Google_Service_Group_Member() of new Google\Service\Directory\Member()
+         *
+         * Upload group to workspace: $upload = $directory->groups->insert($group)
+         * Insert members into group: $insert = $directory->members->insert('group email', $member)
+         * Delete member from group: $delete = $directory->members->delete('group email', 'member email')
+         *
+         * Get group settings: $group_settings = $settings->groups->get('group email', array('alt' => 'json'))
+         *
+         *
+         */
+        $directory = new \Google_Service_Directory($client);
+        $setting_service = new \Google_Service_Groupssettings($client);
+
+        $default_settings = new Google\Service\Groupssettings\Groups();
+        $default_settings->setWhoCanPostMessage('ANYONE_CAN_POST'); // Allow external people to send a mail to this list
+        $default_settings->setWhoCanJoin('INVITED_CAN_JOIN'); // Only invited users can join
+        $default_settings->setWhoCanViewMembership('ALL_MEMBERS_CAN_VIEW'); // Members of this group can view messages
+        $default_settings->setWhoCanViewGroup('ALL_MEMBERS_CAN_VIEW'); // Members of this group can view who's a member
+        $default_settings->setAllowWebPosting('false'); // Only messages through mail
+
+//        $member = new \Google_Service_Directory_Member(array('email' => 'stancardinaels@gmail.com'));
+//        $member = new \Google_Service_Directory_Member();
+//        $member->setEmail("stancardinaels@gmail.com");
+
+//        $insert = $directory->members->insert('it@vtk.be', $member);
+//        $group = new \Google_Service_Directory_Group();
+//        $group->setEmail("testgroup@vtk.be");
+//        $group->setName("Test Group");
+//        $upload = $directory->groups->insert($group);
+
+//        $member = new Google\Service\Directory\Member();
+//        $member->setEmail('stan.cardinaels@vtk.be');
+//        $member->setKind('admin#directory#member');
+//        $member->setRole('OWNER');
+//        $member->setType("USER");
+
+//        $insert = $directory->members->insert('testgroup@vtk.be', $member);
+//        $delete = $directory->members->delete('testgroup@vtk.be', 'stan.cardinaels@vtk.be');
+//        $settings = $setting_service->groups->get('it@vtk.be', array('alt' => 'json'));
+//        $test = $directory->groups->get('it@vtk.be');
+//        die(var_dump($test));
+
+
         $form = $this->getForm('mail_mailingList_add');
 
         if ($this->getRequest()->isPost()) {
@@ -82,26 +136,21 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
             if ($form->isValid()) {
                 $list = $form->hydrateObject();
 
-                $group = new Group();
-                $group->setName($list->getName());
-                $group->setEmail($list->getEmailAddress());
+                $data = $form->getData();
+                $list_name = $data['name'];
+                $list_mail = $data['name'] . '@vtk.be';
 
-                $this->getServiceLocator()
-                    ->get(GoogleDirectoryService::class)
-                    ->groups
-                    ->insert($group);
+                $group = new Google\Service\Directory\Group();
+                $group->setName($list_name);
+                $group->setEmail($list_mail);
 
-                $groups = new Groups();
-                $groups->setWhoCanPostMessage('ANYONE_CAN_POST');
-                $groups->setWhoCanJoin('INVITED_CAN_JOIN');
-                $groups->setWhoCanViewMembership('ALL_MEMBERS_CAN_VIEW');
-                $groups->setWhoCanViewGroup('ALL_MEMBERS_CAN_VIEW');
-                $groups->setAllowWebPosting('FALSE');
+                try {
+                    $directory->groups->insert($group);
+                } catch (\Exception $e) {
 
-                $this->getServiceLocator()
-                    ->get(GoogleGroupssettingsService::class)
-                    ->groups
-                    ->update($list->getEmailAddress(), $groups);
+                }
+
+                $setting_service->groups->update($list_mail, $default_settings);
 
                 $this->getEntityManager()->persist($list);
                 $this->getEntityManager()->flush();
@@ -131,6 +180,8 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
     public function entriesAction()
     {
+        $client = $this->getGoogleClient();
+
         $list = $this->getMailingListEntity();
         if ($list === null) {
             return new ViewModel();
@@ -140,21 +191,9 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
             return new ViewModel();
         }
 
-        $academicForm = $this->getForm(
-            'mail_mailingList_entry_person_academic',
-            array('list' => $list),
-        );
-        $externalForm = $this->getForm(
-            'mail_mailingList_entry_person_external',
-            array('list' => $list),
-        );
-        $mailingListForm = $this->getForm(
-            'mail_mailingList_entry_mailingList',
-            array(
-                'person' => $this->getAuthentication()->getPersonObject(),
-                'list' => $list,
-            ),
-        );
+        $academicForm = $this->getForm('mail_mailingList_entry_person_academic', array('list' => $list));
+        $externalForm = $this->getForm('mail_mailingList_entry_person_external', array('list' => $list));
+        $mailingListForm = $this->getForm('mail_mailingList_entry_mailingList', array('person' => $this->getAuthentication()->getPersonObject(), 'list' => $list));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -181,13 +220,18 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
             }
 
             if ($entry !== null) {
-                $member = new Member();
+                $list_name = $list->getName();
+                $list_mail = $list_name . '@vtk.be';
+                $directory = new \Google_Service_Directory($client);
+
+                $member = new Google\Service\Directory\Member();
                 $member->setEmail($mail);
 
-                $this->getServiceLocator()
-                    ->get(GoogleDirectoryService::class)
-                    ->members
-                    ->insert($list->getEmailAddress(), $member);
+                try {
+                    $insert = $directory->members->insert($list_mail, $member);
+                } catch (\Exception $e) {
+
+                }
 
                 $this->getEntityManager()->persist($entry);
                 $this->getEntityManager()->flush();
@@ -315,6 +359,8 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     {
         $this->initAjax();
 
+        $client = $this->getGoogleClient();
+
         $list = $this->getMailingListEntity();
         if ($list === null) {
             return new ViewModel();
@@ -323,11 +369,15 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
         if (!$this->checkAccess($list, false)) {
             return new ViewModel();
         }
+        $list_name = $list->getName();
+        $list_email = $list_name . '@vtk.be';
 
-        $this->getServiceLocator()
-            ->get(GoogleDirectoryService::class)
-            ->groups
-            ->delete($list->getEmailAddress());
+        $directory = new \Google_Service_Directory($client);
+        try {
+            $delete = $directory->groups->delete($list_email);
+        } catch (\Exception $e) {
+
+        }
 
         $this->getEntityManager()->remove($list);
         $this->getEntityManager()->flush();
@@ -348,17 +398,22 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
             return new ViewModel();
         }
 
+        $list_name = $entry->getList()->getName();
+        $list_email = $list_name . '@vtk.be';
+        $email = $entry->getEmailAddress();
+
         if (!$this->checkAccess($entry->getList(), false)) {
             return new ViewModel();
         }
 
-        $this->getServiceLocator()
-            ->get(GoogleDirectoryService::class)
-            ->members
-            ->delete(
-                $entry->getList()->getEmailAddress(),
-                $entry->getEmailAddress()
-            );
+        $client = $this->getGoogleClient();
+
+        $directory = new \Google_Service_Directory($client);
+        try {
+            $delete = $directory->members->delete($list_email, $email);
+        } catch (\Exception $e) {
+
+        }
 
         $this->getEntityManager()->remove($entry);
         $this->getEntityManager()->flush();
@@ -382,14 +437,6 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
             ->findByList($list);
 
         foreach ($entries as $entry) {
-            $this->getServiceLocator()
-                ->get(GoogleDirectoryService::class)
-                ->members
-                ->delete(
-                    $entry->getList()->getEmailAddress(),
-                    $entry->getEmailAddress()
-                );
-
             $this->getEntityManager()->remove($entry);
         }
 
@@ -486,45 +533,53 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
     public function addAllAction()
     {
-        $groups = new Groups();
-        $groups->setWhoCanPostMessage('ANYONE_CAN_POST');
-        $groups->setWhoCanJoin('INVITED_CAN_JOIN');
-        $groups->setWhoCanViewMembership('ALL_MEMBERS_CAN_VIEW');
-        $groups->setWhoCanViewGroup('ALL_MEMBERS_CAN_VIEW');
-        $groups->setAllowWebPosting('FALSE');
+        $client = $this->getGoogleClient();
+
+        $directory = new \Google_Service_Directory($client);
+        $setting_service = new \Google_Service_Groupssettings($client);
+
+        $default_settings = new Google\Service\Groupssettings\Groups();
+        $default_settings->setWhoCanPostMessage('ANYONE_CAN_POST'); // Allow external people to send a mail to this list
+        $default_settings->setWhoCanJoin('INVITED_CAN_JOIN'); // Only invited users can join
+        $default_settings->setWhoCanViewMembership('ALL_MEMBERS_CAN_VIEW'); // Members of this group can view messages
+        $default_settings->setWhoCanViewGroup('ALL_MEMBERS_CAN_VIEW'); // Members of this group can view who's a member
+        $default_settings->setAllowWebPosting('false'); // Only messages through mail
 
         $lists = $this->getEntityManager()
             ->getRepository('MailBundle\Entity\MailingList')
             ->findAll();
 
         foreach ($lists as $list) {
-            $group = new Group();
-            $group->setName($list->getName());
-            $group->setEmail($list->getEmailAddress());
+            $list_name = $list->getName();
+            $list_mail = $list_name . '@vtk.be';
 
-            $this->getServiceLocator()
-                ->get(GoogleDirectoryService::class)
-                ->groups
-                ->insert($group);
+            $group = new Google\Service\Directory\Group();
+            $group->setName($list_name);
+            $group->setEmail($list_mail);
 
-            $this->getServiceLocator()
-                ->get(GoogleGroupssettingsService::class)
-                ->groups
-                ->update($list->getEmailAddress(), $groups);
+            try {
+                $directory->groups->insert($group);
+                $setting_service->groups->update($list_mail, $default_settings);
+            } catch (\Exception $e) {
+                error_log($list_mail);
+                error_log($e->getMessage());
+            }
 
-            foreach ($list->getEntries() as $entry) {
-                $emailAddress = $entry->getEmailAddress();
-                if (strpos($emailAddress, '@') === false) {
-                    $emailAddress .= '@vtk.be';
+            $entries = $list->getEntries();
+            foreach ($entries as $entry) {
+                $mail = $entry->getEmailAddress();
+                if (strpos($mail, '@') === false) {
+                    $mail .= '@vtk.be';
                 }
 
-                $member = new Member();
-                $member->setEmail($emailAddress);
-
-                $this->getServiceLocator()
-                    ->get(GoogleDirectoryService::class)
-                    ->members
-                    ->insert($list->getEmailAddress(), $member);
+                $member = new Google\Service\Directory\Member();
+                $member->setEmail($mail);
+                try {
+                    $directory->members->insert($list_mail, $member);
+                } catch (\Exception $e) {
+                    error_log($mail);
+                    error_log($e->getMessage());
+                }
             }
         }
 
@@ -678,5 +733,21 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
         }
 
         return true;
+    }
+
+    private function getGoogleClient()
+    {
+        $client = new Google\Client();
+
+        $client->useApplicationDefaultCredentials();
+        $client->addScope(Google\Service\Directory::ADMIN_DIRECTORY_GROUP);
+        $client->addScope(Google\Service\Directory::ADMIN_DIRECTORY_GROUP_MEMBER);
+        $client->addScope(Google\Service\Directory::ADMIN_DIRECTORY_GROUP_MEMBER_READONLY);
+        $client->addScope(Google\Service\Directory::ADMIN_DIRECTORY_GROUP_READONLY);
+        $client->addScope(Google\Service\Groupssettings::APPS_GROUPS_SETTINGS);
+        $client->setSubject('stan.cardinaels@vtk.be');
+        $client->authorize();
+
+        return $client;
     }
 }

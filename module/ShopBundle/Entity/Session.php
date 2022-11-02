@@ -58,6 +58,20 @@ class Session
     private $remarks;
 
     /**
+     * @var boolean Whether there are already people selected who will get reward
+     *
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $reward;
+
+    /**
+     * @var integer Amount of rewards that will be given this session
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $amountRewards;
+
+    /**
      * @return integer
      */
     public function getId()
@@ -142,6 +156,44 @@ class Session
     public function getReservationsPossible()
     {
         return $this->reservationsPossible;
+    }
+
+    /**
+     * @param  boolean $reward
+     * @return self
+     */
+    public function setReward($reward)
+    {
+        $this->reward = $reward;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getReward()
+    {
+        return $this->reward;
+    }
+
+    /**
+     * @param  integer $amountRewards
+     * @return self
+     */
+    public function setAmountRewards($amountRewards)
+    {
+        $this->amountRewards = $amountRewards;
+
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getAmountRewards()
+    {
+        return $this->amountRewards;
     }
 
     /**

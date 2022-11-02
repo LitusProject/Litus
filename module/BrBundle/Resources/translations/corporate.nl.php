@@ -74,4 +74,5 @@ return array(
     'pending'                                                                                                                                                                              => 'in behandeling',
     'rejected'                                                                                                                                                                             => 'geweigerd',
     'currently listed on our website'                                                                                                                                                      => 'momenteel weergegeven op onze website',
+    'bedrijvenrelaties'                                                                                                                                                                    => 'Bedrijvenrelaties',
 );

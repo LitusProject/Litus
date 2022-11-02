@@ -23,6 +23,7 @@ class Registration extends \CommonBundle\Component\Document\Generator\Csv
         $headers = array(
             'First Name',
             'Last Name',
+            'Username',
             'E-mail',
             'Street (Primary Address)',
             'Number (Primary Address)',
@@ -60,6 +61,7 @@ class Registration extends \CommonBundle\Component\Document\Generator\Csv
             $result[$mapping->getAcademic()->getId()] = array(
                 'academicFirstName'               => $academic->getFirstName(),
                 'academicLastName'                => $academic->getLastName(),
+                'username'                        => $academic->getUniversityIdentification(),
                 'academicEmail'                   => $academic->getEmail(),
                 'academicPrimaryAddressStreet'    => $primaryAddress ? $primaryAddress->getStreet() : '',
                 'academicPrimaryAddressNumber'    => $primaryAddress ? $primaryAddress->getNumber() : '',
