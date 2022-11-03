@@ -74,10 +74,13 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
                     return new ViewModel();
                 } else {
                     $amount = $formData['amount'];
+                    $expiry_date = $formData['expiry_date'];
 
                     if ($amount > 0) {
                         $article->addAmount($amount);
-                        $article->setExpiryDate($formData['expiry_date']);
+                        if (strlen($expiry_date) > 0) {
+                            $article->setExpiryDate($expiry_date);
+                        }
                     } elseif ($amount < 0) {
                         $new_amount = $article->getAmount() + $amount;
                         if ($new_amount < 0) {
@@ -93,7 +96,9 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
                             );
                             return new ViewModel();
                         }
-                        $article->setExpiryDate($formData['expiry_date']);
+                        if (strlen($expiry_date) > 0) {
+                            $article->setExpiryDate($expiry_date);
+                        }
                         $article->subtractAmount($amount);
                     } else {
                         $this->flashMessenger()->error(
@@ -133,5 +138,10 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
                 'form' => $form,
             )
         );
+    }
+
+    public function reserveAction()
+    {
+
     }
 }
