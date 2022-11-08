@@ -38,7 +38,7 @@ jobs:
         run: docker-compose up -d
 
       - name: Initialise Litus
-        run: docker-compose run --rm php-cli init
+        run: docker-compose run --rm litus init
 
       - name: Test response
         run: curl -fsSL -I --retry 5 --retry-delay 0 --retry-max-time 30 http://localhost:8080

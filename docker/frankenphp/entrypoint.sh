@@ -19,7 +19,7 @@ case "$1" in
         ;;
 
     "")
-        exit 0
+        docker-php-entrypoint --config /etc/Caddyfile
         ;;
 
     *)
