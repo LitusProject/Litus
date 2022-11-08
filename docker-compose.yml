@@ -10,36 +10,8 @@ volumes:
 services:
   litus:
     image: litusproject/litus:latest
-    container_name: litus-litus-1
     build:
       context: .
-    depends_on:
-      - php-fpm
-    ports:
-      - 127.0.0.1:8080:8080
-    volumes:
-      - assetic:/app/public/_assetic
-    restart: unless-stopped
-
-  pgweb:
-    image: sosedoff/pgweb:latest
-    container_name: litus-pgweb-1
-    depends_on:
-      - postgres
-    environment:
-      - DATABASE_URL=postgres://litus:huQeyU8te3aXusaz@postgres:5432/litus?sslmode=disable
-    ports:
-      - 127.0.0.1:8081:8081
-    restart: unless-stopped
-
-  php-cli:
-    image: litusproject/litus:php-cli-latest
-    build:
-      context: .
-      target: php-cli
-    depends_on:
-      - postgres
-      - redis
     environment:
       LITUS_DATABASE_HOST: postgres
       LITUS_DATABASE_USER: litus
@@ -47,30 +19,14 @@ services:
       LITUS_DATABASE_DBNAME: litus
 
       LITUS_REDIS_HOST: redis
-
-  php-fpm:
-    image: litusproject/litus:php-fpm-latest
-    container_name: litus-php-fpm-1
-    build:
-      context: .
-      target: php-fpm
-    depends_on:
-      - postgres
-      - redis
-    environment:
-      LITUS_DATABASE_HOST: postgres
-      LITUS_DATABASE_USER: litus
-      LITUS_DATABASE_PASSWORD: huQeyU8te3aXusaz
-      LITUS_DATABASE_DBNAME: litus
-
-      LITUS_REDIS_HOST: redis
+    ports:
+      - 127.0.0.1:8080:80
     volumes:
       - assetic:/app/public/_assetic
     restart: unless-stopped
 
   postgres:
     image: postgres:latest
-    container_name: litus-postgres-1
     environment:
       POSTGRES_USER: litus
       POSTGRES_PASSWORD: huQeyU8te3aXusaz
@@ -79,5 +35,4 @@ services:
 
   redis:
     image: redis:latest
-    container_name: litus-redis-1
     restart: unless-stopped

@@ -52,10 +52,6 @@ ENV APPLICATION_ENV=${APPLICATION_ENV}
 ARG COMMIT_SHA
 ENV COMMIT_SHA=${COMMIT_SHA}
 
-RUN mv "${PHP_INI_DIR}/php.ini-production" "${PHP_INI_DIR}/php.ini"
-
-COPY docker/frankenphp/litus.ini /usr/local/etc/php/conf.d/
-
 RUN install-php-extensions \
   imagick \
   intl \
@@ -78,6 +74,8 @@ RUN curl -fsSL -o /tmp/fop-2.7-bin.tar.gz https://downloads.apache.org/xmlgraphi
   tar --strip-components=1 -C /opt -xzf /tmp/fop-2.7-bin.tar.gz fop-2.7/fop && \
   rm /tmp/fop-2.7-bin.tar.gz
 
+RUN mv "${PHP_INI_DIR}/php.ini-production" "${PHP_INI_DIR}/php.ini"
+
 RUN mkdir -p /app/public/_assetic && \
   mkdir -p /app/public/_common/profile && \
   mkdir -p /app/public/_gallery/albums && \
@@ -88,6 +86,9 @@ RUN mkdir -p /app/public/_assetic && \
 
 COPY --from=composer /app/ /app/
 
+COPY docker/frankenphp/litus.ini /usr/local/etc/php/conf.d/
+COPY docker/frankenphp/entrypoint.sh /
+
 VOLUME ["/app/public/_assetic"]
 VOLUME ["/app/public/_common/profile"]
 VOLUME ["/app/public/_gallery/albums"]
@@ -96,3 +97,5 @@ VOLUME ["/app/public/_publications/html"]
 VOLUME ["/app/public/_br/img"]
 
 VOLUME ["/data"]
+
+ENTRYPOINT ["/entrypoint.sh"]
