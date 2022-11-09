@@ -209,6 +209,8 @@ class PrinterController extends \CommonBundle\Component\Controller\ActionControl
             $ticket->setStatus('sold');
             $this->runPowershell($ticket);
 
+            $this->getSentryClient()->logMessage("Printer set sold, after powershell: " . $ticket->getId());
+
             $this->flashMessenger()->success(
                 'Success',
                 'The ticket was successfully payed for!'
