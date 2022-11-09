@@ -24,7 +24,7 @@ return array(
             'getRules', 'log', 'get-username',
         ),
         'api_fak' => array(
-            'add-checkin',
+            'add-checkin', 'add-checkin-username',
         ),
         'api_mail' => array(
             'getAliases', 'getLists', 'getListsArchive',
