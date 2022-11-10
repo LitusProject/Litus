@@ -56,6 +56,19 @@ return array(
                 ),
             ),
         ),
+        'api_commu' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '[/:language]/api/commu[/:action][/]',
+                'constraints' => array(
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'language' => '(en|nl)',
+                ),
+                'defaults'    => array(
+                    'controller' => 'api_commu',
+                ),
+            ),
+        ),
         'api_config' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -187,6 +200,7 @@ return array(
         'api_calendar'  => 'ApiBundle\Controller\CalendarController',
         'api_config'    => 'ApiBundle\Controller\ConfigController',
         'api_br'        => 'ApiBundle\Controller\BrController',
+        'api_commu'     => 'ApiBundle\Controller\CommuController',
         'api_cudi'      => 'ApiBundle\Controller\CudiController',
         'api_door'      => 'ApiBundle\Controller\DoorController',
         'api_fak'       => 'ApiBundle\Controller\FakController',
