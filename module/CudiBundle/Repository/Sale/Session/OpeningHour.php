@@ -150,17 +150,12 @@ class OpeningHour extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     }
 
     /**
-     * @param string $week_start_date_str
+     * @param $start DateTime
+     * @param $end DateTime
      * @return \Doctrine\ORM\Query
      */
-    public function findWeekQuery($week_start_date_str)
+    public function findBetweenQuery($start, $end)
     {
-        $start = new DateTime($week_start_date_str);
-
-        $end = clone $start;
-        $end->setTime(0, 0);
-        $end->add(new DateInterval('P1W'));
-
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('o')
             ->from('CudiBundle\Entity\Sale\Session\OpeningHour', 'o')

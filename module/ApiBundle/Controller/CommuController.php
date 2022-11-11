@@ -15,7 +15,8 @@ class CommuController extends \ApiBundle\Component\Controller\ActionController\A
     /**
      * input: {
      *      "key": "api key",
-     *      "week_start_date": "YYYYMMDD"
+     *      "start_date": "YYYYMMDD"
+     *      "amount_of_days": "amount of days",
      * }
      */
     public function getCudiOpeningHoursAction()
@@ -24,11 +25,17 @@ class CommuController extends \ApiBundle\Component\Controller\ActionController\A
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
-        $week_start_date_str = $this->getRequest()->getPost('week_start_date');
+        $start_date = $this->getRequest()->getPost('start_date');
+        $amount_of_days = $this->getRequest()->getPost('amount_of_days');
+
+        $start = new DateTime($start_date);
+        $end = clone $start;
+        $end->setTime(0, 0);
+        $end->add(new DateInterval('P' . $amount_of_days . 'D'));
 
         $openingHours = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour')
-            ->findWeek($week_start_date_str);
+            ->findBetween($start, $end);
 
         $count = 0;
         $result = array();
@@ -53,8 +60,8 @@ class CommuController extends \ApiBundle\Component\Controller\ActionController\A
     /**
      * input: {
      *      "key": "api key",
-     *      "week_start_date": "YYYYMMDD",
-     *      "amount": "amount of weeks",
+     *      "start_date": "YYYYMMDD",
+     *      "amount_of_days": "amount of days",
      * }
      */
     public function getEventsAction()
@@ -63,17 +70,17 @@ class CommuController extends \ApiBundle\Component\Controller\ActionController\A
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
-        $week_start_date_str = $this->getRequest()->getPost('week_start_date');
-        $amount_of_weeks = $this->getRequest()->getPost('amount');
+        $start_date = $this->getRequest()->getPost('start_date');
+        $amount_of_days = $this->getRequest()->getPost('amount_of_days');
 
-        $first = new DateTime($week_start_date_str);
-        $last = clone $first;
-        $last->setTime(0, 0);
-        $last->add(new DateInterval('P2W'));
+        $start = new DateTime($start_date);
+        $end = clone $start;
+        $end->setTime(0, 0);
+        $end->add(new DateInterval('P' . $amount_of_days . 'D'));
 
         $events = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
-            ->findAllBetweenAndNotHidden($first, $last);
+            ->findAllBetweenAndNotHidden($start, $end);
 
         $result = array();
         foreach ($events as $event) {
