@@ -136,4 +136,5 @@ return array(
     'Material'                                                                                                                                                                                                                                  => 'Material',
     'Inventory'                                                                                                                                                                                                                                 => 'Inventory',
     'Flesserke Form'                                                                                                                                                                                                                            => 'Inventory Form',
+    'Reserve'                                                                                                                                                                                                                                   => 'Reserve',
 );
