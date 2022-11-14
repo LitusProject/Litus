@@ -36,7 +36,7 @@
                 <tr>
                     <th style="width: 30%">Name</th>
                     <th style="width: 20%">Barcode</th>
-                    <th style="width: 15%">Amount</th>
+                    <th style="width: 20%">Reserved / Available</th>
                     <th style="width: 15%">Expiry Date</th>
                     <th style="width: 20%">Actions</th>
                 </tr>
@@ -46,9 +46,9 @@
                     <tr class="item item-{{ article.getId() }}">
                         <td>{{ article.getName() }}</td>
                         <td>{{ article.getBarcode() }}</td>
-                        <td>{{ article.getAmount() }}</td>
+                        <td>{{ article.getReserved()!=null? article.getReserved(): 0}} / {{ article.getAmount() }}</td>
                         <td>{{ article.getExpiryDate() }}</td>
-                        <td><a href="{{ url('logistics_catalog', {"action" : 'addOrder'}) }}" class="btn btn-success pull-right">{{ translate('Reserve') }}</a></td>
+                        <td><a href="{{ url('logistics_catalog', {"action" : 'addOrder'}) }}" class="btn btn-success">{{ translate('Reserve') }}</a></td>
                         {#                        <td class="actions">#}
                         {#                            {% if hasAccess('logistics_admin_inventory', 'edit') %}#}
                         {#                                <a href="{{ url('logistics_admin_inventory', {"action": "edit", "id": article.getId()}) }}" class="edit">Edit</a>#}
