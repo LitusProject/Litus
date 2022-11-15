@@ -2,59 +2,29 @@
 
 namespace LogisticsBundle\Form\Inventory;
 
-class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
+class Reserve extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    protected $hydrator = 'LogisticsBundle\Hydrator\Inventory';
 
     public function init()
     {
         parent::init();
 
-        $this->add(
-            array(
-                'type'       => 'text',
-                'name'       => 'barcode',
-                'label'      => 'Barcode Product',
-                'required'   => true,
-                'attributes' => array(
-                    'id'           => 'barcode',
-                    'placeholder'  => 'Barcode',
-                ),
-                'options'  => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
-                ),
-            )
+        $product = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Inventory')
+            ->findOneById($this->getParam('id'));
+
+        $amount = max(
+            0,
+            $this->getEntityManager()
+                ->getRepository('LogisticsBundle\Entity\Inventory')
+                ->getAmount($product)
         );
 
         $this->add(
             array(
                 'type'     => 'text',
-                'name'     => 'name',
-                'label'    => 'Product Name',
-                'required' => false,
-                'options'  => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
-                ),
-                'attributes' => array(
-                    'id'           => 'name',
-                    'placeholder'  => 'Product Name',
-                ),
-            )
-        );
-
-        $this->add(
-            array(
-                'type'     => 'text',
-                'name'     => 'amount',
-                'label'    => 'Amount',
+                'name'     => 'reserve',
+                'label'    => 'Reserve',
                 'required' => true,
                 'options'  => array(
                     'input' => array(
@@ -64,32 +34,15 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
                 'attributes' => array(
-                    'id'           => 'amount',
-                    'placeholder'  => 'Amount',
+                    'id'           => 'reserve',
+                    'placeholder'  => 'Reserve',
+                    'value' => '0',
+                    'min'   => '0',
+                    'max'   => $amount,
                 ),
             )
         );
 
-        $this->add(
-            array(
-                'type'     => 'text',
-                'name'     => 'expiry_date',
-                'label'    => 'Expiry Date',
-                'required' => false,
-                'options'  => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
-                ),
-                'attributes' => array(
-                    'id'           => 'expiry_date',
-                    'placeholder'  => 'Expiry Date',
-                ),
-            )
-        );
-
-        $this->addSubmit('Add/Subtract', 'inventory_add');
+        $this->addSubmit('Reserve', 'inventory_reserve');
     }
 }
