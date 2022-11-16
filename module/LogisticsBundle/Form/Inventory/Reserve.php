@@ -9,17 +9,6 @@ class Reserve extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         parent::init();
 
-        $product = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Inventory')
-            ->findOneById($this->getParam('id'));
-
-        $amount = max(
-            0,
-            $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Inventory')
-                ->getAmount($product)
-        );
-
         $this->add(
             array(
                 'type'     => 'text',
@@ -38,11 +27,11 @@ class Reserve extends \CommonBundle\Component\Form\Bootstrap\Form
                     'placeholder'  => 'Reserve',
                     'value' => '0',
                     'min'   => '0',
-                    'max'   => $amount,
+                    'max'   => 10000,
                 ),
             )
         );
 
-        $this->addSubmit('Reserve', 'inventory_reserve');
+        $this->addSubmit('Reserve', 'inventory_reserve', 'reserve', array('id' => 'inventory_reserve'));
     }
 }
