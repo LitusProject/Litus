@@ -140,11 +140,6 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
         );
     }
 
-    public function reserveAction()
-    {
-        $form = $this->getForm('logistics_inventory_reserve');
-    }
-
     public function editAction()
     {
         $form = $this->getForm('logistics_inventory_edit');
