@@ -85,7 +85,7 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
                 ),
                 'attributes' => array(
                     'id'           => 'expiry_date',
-                    'placeholder'  => 'Expiry Date',
+                    'placeholder'  => '0',
                 ),
             )
         );
