@@ -34,7 +34,7 @@
                         <i>Please hit the link below to edit the teams!</i>
                     </p>
                     <p>
-                        <a href="{{ url('quiz_admin_team', {"quizid": quiz.getId()|json_encode}) }}">&rarr; Manage Teams</a>
+                        <a href="{{ url('quiz_admin_team', {"quizid": quiz.getId()}) }}">&rarr; Manage Teams</a>
                     </p>
                 </div>
             </div>
@@ -48,7 +48,7 @@
                         <i>Please hit the link below to edit the rounds!</i>
                     </p>
                     <p>
-                        <a href="{{ url('quiz_admin_round', {"quizid": quiz.getId()|json_encode}) }}">&rarr; Manage Rounds</a>
+                        <a href="{{ url('quiz_admin_round', {"quizid": quiz.getId()}) }}">&rarr; Manage Rounds</a>
                     </p>
                 </div>
             </div>
