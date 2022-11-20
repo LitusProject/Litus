@@ -66,7 +66,6 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
                     'Success',
                     'The round was successfully added!'
                 );
-
                 $this->redirect()->toRoute(
                     'quiz_admin_round',
                     array(
@@ -74,8 +73,6 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
                         'quizid' => $quiz->getId(),
                     )
                 );
-
-                return new ViewModel();
             }
         }
 

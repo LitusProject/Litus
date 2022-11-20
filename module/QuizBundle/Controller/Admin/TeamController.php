@@ -74,8 +74,6 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
                         'quizid' => $quiz->getId(),
                     )
                 );
-
-                return new ViewModel();
             }
         }
 
