@@ -158,7 +158,13 @@
                                 {% if authenticatedPerson.getCompany() != '' %}
                                     <div class="vtk-menuitem-holder dropdown">
                                     <div class="vtk-menuitem">
-                                        <div class="vtk-profile"></div>
+                                        {% if authenticatedPerson.getPhotoPath() %}
+                                            <div class="vtk-profile" style="background-image: url(../_common/profile/{{ authenticatedPerson.getPhotoPath() }}">
+                                            </div>
+                                        {% else %}
+                                            <div class="vtk-profile" style="background-image: url(../img/profile.png)">
+                                            </div>
+                                        {% endif %}
                                     </div>
                                     <div class="vtk-dropdownitem-holder right">
 
