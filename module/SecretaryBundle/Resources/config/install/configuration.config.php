@@ -80,4 +80,9 @@ return array(
         'value'       => '0',
         'description' => 'Set this to 1 if ISIC cards are needed for membership. People who want to become member will be redirected to the ISIC form.',
     ),
+    array(
+        'key'         => 'secretary.pull_event_id',
+        'value'       => 'here comes the id',
+        'description' => 'This is the Ticket Event ID for the pulls',
+    ),
 );
