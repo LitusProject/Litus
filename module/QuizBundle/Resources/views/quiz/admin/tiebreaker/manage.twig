@@ -5,72 +5,72 @@
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
-    <div class="flashmessage success_message full_width round_remove_success hide">
+    <div class="flashmessage success_message full_width tiebreaker_remove_success hide">
         <div class="title">Success</div>
         <div class="content">
-            <p>The round was successfully removed!</p>
+            <p>The tiebreaker was successfully removed!</p>
         </div>
     </div>
-    <div class="flashmessage error_message full_width round_remove_error hide">
+    <div class="flashmessage error_message full_width tiebreaker_remove_error hide">
         <div class="title">Error</div>
         <div class="content">
-            <p>An error occurred while trying to delete the round.</p>
+            <p>An error occurred while trying to delete the tiebreaker.</p>
         </div>
     </div>
 
-    <div class="flashmessage info_message full_width round_sort_saving hide">
+    <div class="flashmessage info_message full_width tiebreaker_sort_saving hide">
         <div class="title">Saving</div>
         <div class="content">
-            <p>Saving the ordering of the rounds.</p>
+            <p>Saving the ordering of the tiebreakers.</p>
         </div>
     </div>
 
-    <div class="flashmessage success_message full_width round_sort_success hide">
+    <div class="flashmessage success_message full_width tiebreaker_sort_success hide">
         <div class="title">Success</div>
         <div class="content">
-            <p>The rounds were successfully reordered.</p>
+            <p>The tiebreakers were successfully reordered.</p>
         </div>
     </div>
 
-    <div class="flashmessage error_message full_width round_sort_error hide">
+    <div class="flashmessage error_message full_width tiebreaker_sort_error hide">
         <div class="title">Error</div>
         <div class="content">
-            <p>An error occurred while trying to reorder the rounds.</p>
+            <p>An error occurred while trying to reorder the tiebreakers.</p>
         </div>
     </div>
 
     <div id="controller_action">
-        <h1>{{ quiz.getName() }}: Rounds</h1>
+        <h1>{{ quiz.getName() }}: Tiebreakers</h1>
         <table class="manage">
             <thead>
             <tr>
                 <th width="50px">#</th>
                 <th>Name</th>
-                <th width="100px">Max. Points</th>
+                <th>Correct Answer</th>
                 <th width="100px">Actions</th>
             </tr>
             </thead>
 
             <tbody>
-            {% for round in paginator %}
-                <tr class="item" data-id="{{ round.getId() }}">
-                    <td>{{ round.getOrder() }}</td>
-                    <td>{{ round.getName() }}</td>
-                    <td>{{ round.getMaxPoints() }}</td>
+            {% for tiebreaker in paginator %}
+                <tr class="item" data-id="{{ tiebreaker.getId() }}">
+                    <td>{{ tiebreaker.getOrder() }}</td>
+                    <td>{{ tiebreaker.getName() }}</td>
+                    <td>{{ tiebreaker.getCorrectAnswer() }}</td>
                     <td class="actions">
-                        {% if hasAccess('quiz_admin_round', 'edit') %}
-                            <a href="{{ url('quiz_admin_round', {"action": "edit", "id": round.getId(), "quizid": quiz.getId() }) }}"
+                        {% if hasAccess('quiz_admin_tiebreaker', 'edit') %}
+                            <a href="{{ url('quiz_admin_tiebreaker', {"action": "edit", "id": tiebreaker.getId(), "quizid": quiz.getId()}) }}"
                                class="edit">Edit</a>
                         {% endif %}
-                        {% if hasAccess('quiz_admin_round', 'delete') %}
-                            <a href="#" data-id="{{ round.getId() }}" data-name="{{ round.getName() }}" class="delete">Delete</a>
+                        {% if hasAccess('quiz_admin_tiebreaker', 'delete') %}
+                            <a href="#" data-id="{{ tiebreaker.getId() }}" data-name="{{ tiebreaker.getName() }}"
+                               class="delete">Delete</a>
                         {% endif %}
                     </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-
         {% include 'admin/partials/paginationControl.twig' %}
 
         <div style="text-align: right; font-size: 7pt">(Drag and drop to change the order)</div>
@@ -78,16 +78,16 @@
         <button class="js-sortable-cancel delete hide">Cancel</button>
     </div>
 
-    <div class="modal fade" id="removeRound" tabindex="-1">
+    <div class="modal fade" id="removeTiebreaker" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <span>Litus Admin</span>
-                    /Delete Round
+                    /Delete Tiebreaker
                 </div>
                 <div class="modal-body">
                     <p>
-                        You are about to delete the following round: <b class="name"></b>?
+                        You are about to delete the following tiebreaker: <b class="name"></b>?
                         Please note that this operation cannot be undone!
                     </p>
                     <p>
@@ -118,16 +118,16 @@
             </div>
         {% endif %}
 
-        {% if hasAccess('quiz_admin_round', 'add') %}
+        {% if hasAccess('quiz_admin_tiebreaker', 'add') %}
             <div class="sidebox">
-                <div class="title">Add Round</div>
+                <div class="title">Add Tiebreaker</div>
                 <div class="content">
                     <p>
-                        <i>Please hit the link below to add a round to this quiz!</i>
+                        <i>Please hit the link below to add a tiebreaker to this quiz!</i>
                     </p>
                     <p>
-                        <a href="{{ url('quiz_admin_round', {"action": "add", "quizid": quiz.getId()}) }}">&rarr; Add
-                            Round</a>
+                        <a href="{{ url('quiz_admin_tiebreaker', {"action": "add", "quizid": quiz.getId()}) }}">&rarr;
+                            Add Tiebreaker</a>
                     </p>
                 </div>
             </div>
@@ -147,16 +147,15 @@
             </div>
         {% endif %}
 
-        {% if hasAccess('quiz_admin_tiebreaker', 'manage') %}
+        {% if hasAccess('quiz_admin_round', 'manage') %}
             <div class="sidebox">
-                <div class="title">Manage Tiebreakers</div>
+                <div class="title">Manage Rounds</div>
                 <div class="content">
                     <p>
-                        <i>Please hit the link below to edit the tiebreakers!</i>
+                        <i>Please hit the link below to edit the rounds!</i>
                     </p>
                     <p>
-                        <a href="{{ url('quiz_admin_tiebreaker', {"quizid": quiz.getId()}) }}">&rarr; Manage
-                            Tiebreakers</a>
+                        <a href="{{ url('quiz_admin_round', {"quizid": quiz.getId()}) }}">&rarr; Manage Rounds</a>
                     </p>
                 </div>
             </div>
@@ -174,22 +173,22 @@
                     save: $('.js-sortable-save'),
                     cancel: $('.js-sortable-cancel')
                 },
-                submitUrl: "{{ url('quiz_admin_round', {"action": "sort", "quizid": quiz.getId()}) }}",
+                submitUrl: "{{ url('quiz_admin_tiebreaker', {"action": "sort", "quizid": quiz.getId()}) }}",
                 callbacks: {
                     saveSuccess: function () {
                         $('.manage tbody tr').each(function (i) {
                             $(this).find('td:first-child').text(i + 1);
                         });
                         $('.flashmessage').addClass('hide');
-                        $('.round_sort_success').removeClass('hide');
+                        $('.tiebreaker_sort_success').removeClass('hide');
                     },
                     saveError: function () {
                         $('.flashmessage').addClass('hide');
-                        $('.round_sort_error').removeClass('hide');
+                        $('.tiebreaker_sort_error').removeClass('hide');
                     },
                     beforeSave: function () {
                         $('.flashmessage').addClass('hide');
-                        $('.round_sort_saving').removeClass('hide');
+                        $('.tiebreaker_sort_saving').removeClass('hide');
                     }
                 }
             });
@@ -199,28 +198,28 @@
             var $this = $(this);
 
             e.preventDefault();
-            var removeRound = $('#removeRound');
-            removeRound.find('.name').html($(this).data('name'));
+            var removeTiebreaker = $('#removeTiebreaker');
+            removeTiebreaker.find('.name').html($(this).data('name'));
             var id = $(this).data('id');
-            removeRound.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('quiz_admin_round', {"action": "delete", "quizid": quiz.getId()}) }}' + $this.data('id'), function (data) {
+            removeTiebreaker.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('quiz_admin_tiebreaker', {"action": "delete", "quizid": quiz.getId()}) }}' + $this.data('id'), function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
-                        $('.round_remove_success').removeClass('hide');
+                        $('.tiebreaker_remove_success').removeClass('hide');
                         $('.item[data-id=' + id + ']').remove();
-                        removeRound.modal('hide');
+                        removeTiebreaker.modal('hide');
                     } else {
                         errorRemove();
                     }
                 }, 'json').error(errorRemove);
             });
-            removeRound.modal();
+            removeTiebreaker.modal();
         }
 
         function errorRemove() {
             $('.flashmessage').addClass('hide');
-            $('.round_remove_error').removeClass('hide');
-            $('#removeRound').modal('hide');
+            $('.tiebreaker_remove_error').removeClass('hide');
+            $('#removeTiebreaker').modal('hide');
         }
     </script>
 {% endblock %}

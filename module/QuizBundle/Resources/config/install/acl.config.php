@@ -11,6 +11,9 @@ return array(
         'quiz_admin_team' => array(
             'manage', 'add', 'delete', 'edit',
         ),
+        'quiz_admin_tiebreaker' => array(
+            'manage', 'add', 'delete', 'edit',
+        ),
         'quiz_quiz' => array(
             'manage', 'update', 'view', 'results',
         ),
