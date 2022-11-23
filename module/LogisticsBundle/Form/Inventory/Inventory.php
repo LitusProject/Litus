@@ -6,9 +6,18 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     protected $hydrator = 'LogisticsBundle\Hydrator\Inventory';
 
+    /**
+     * @var inventory The session to edit.
+     */
+    private $inventory;
+
     public function init()
     {
         parent::init();
+
+        $amount = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Inventory')
+            ->getAmount($this->inventory);
 
         $this->add(
             array(
@@ -85,7 +94,8 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
                 ),
                 'attributes' => array(
                     'id'           => 'expiry_date',
-                    'placeholder'  => '0',
+                    'placeholder'  => 'Expiry date',
+                    'value'        => '',
                 ),
             )
         );
