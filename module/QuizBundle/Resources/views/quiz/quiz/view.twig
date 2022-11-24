@@ -22,6 +22,9 @@
                 {% for round in rounds %}
                     <th class="round">{{ round.getName() }}</th>
                 {% endfor %}
+                {% for tiebreaker in tiebreakers %}
+                    <th class="round">{{ tiebreaker.getName() }}</th>
+                {% endfor %}
                 <th class="total">Total</th>
             </tr>
         </thead>
@@ -33,6 +36,11 @@
                     {% for round in rounds %}
                         <td class="round">
                             {{ points[teamId][round.getId()] ?? 0 }}
+                        </td>
+                    {% endfor %}
+                    {% for tiebreaker in tiebreakers %}
+                        <td class="round">
+                            {{ tiebreaker_answers[teamId][tiebreaker.getId()] ?? 0 }}
                         </td>
                     {% endfor %}
                     <td class="team">{{ total_points[teamId] }}</td>

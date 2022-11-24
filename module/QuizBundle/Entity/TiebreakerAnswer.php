@@ -4,7 +4,6 @@ namespace QuizBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
-use InvalidArgumentException;
 
 /**
  * This is the entity for a tiebreaker answer.
@@ -28,12 +27,12 @@ class TiebreakerAnswer
     private $id;
 
     /**
-     * @var Round The round this tiebreaker answer belongs to
+     * @var Tiebreaker The tiebreaker this tiebreaker answer belongs to
      *
-     * @ORM\ManyToOne(targetEntity="QuizBundle\Entity\Round")
+     * @ORM\ManyToOne(targetEntity="QuizBundle\Entity\Tiebreaker")
      * @ORM\JoinColumn(name="round", referencedColumnName="id")
      */
-    private $round;
+    private $tiebreaker;
 
     /**
      * @var Team The team this tiebreaker answer belongs to
@@ -51,13 +50,13 @@ class TiebreakerAnswer
     private $answer;
 
     /**
-     * @param Round   $round
-     * @param Team    $team
+     * @param Tiebreaker $tiebreaker
+     * @param Team $team
      * @param integer $answer
      */
-    public function __construct(Round $round, Team $team, $answer)
+    public function __construct(Tiebreaker $tiebreaker, Team $team, int $answer)
     {
-        $this->round = $round;
+        $this->tiebreaker = $tiebreaker;
         $this->team = $team;
         $this->setAnswer($answer);
     }
@@ -71,11 +70,11 @@ class TiebreakerAnswer
     }
 
     /**
-     * @return Round
+     * @return Tiebreaker
      */
-    public function getRound()
+    public function getTiebreaker()
     {
-        return $this->round;
+        return $this->tiebreaker;
     }
 
     /**
@@ -95,7 +94,7 @@ class TiebreakerAnswer
     }
 
     /**
-     * @param  integer $answer
+     * @param integer $answer
      * @return self
      */
     public function setAnswer($answer)

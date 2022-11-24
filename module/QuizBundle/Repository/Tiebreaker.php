@@ -20,7 +20,7 @@ class Tiebreaker extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
 
-        return $query->select('r')
+        return $query->select('t')
             ->from('QuizBundle\Entity\Tiebreaker', 't')
             ->where(
                 $query->expr()->eq('t.quiz', ':quiz')

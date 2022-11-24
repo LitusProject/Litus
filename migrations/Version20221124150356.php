@@ -6,9 +6,9 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
- * Version 20221123201542
+ * Version 20221124150356
  */
-class Version20221123201542 extends \Doctrine\Migrations\AbstractMigration
+class Version20221124150356 extends \Doctrine\Migrations\AbstractMigration
 {
     /**
      * @param  \Doctrine\DBAL\Schema\Schema $schema
@@ -26,7 +26,7 @@ class Version20221123201542 extends \Doctrine\Migrations\AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX tiebreaker_answer_unique ON quiz_tiebreaker_answers (round, team)');
         $this->addSql('CREATE TABLE quiz_tiebreakers (id BIGINT NOT NULL, quiz BIGINT DEFAULT NULL, name VARCHAR(255) NOT NULL, tiebreaker_order SMALLINT NOT NULL, correct_answer SMALLINT NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_52308C87A412FA92 ON quiz_tiebreakers (quiz)');
-        $this->addSql('ALTER TABLE quiz_tiebreaker_answers ADD CONSTRAINT FK_1AEFCE6FC5EEEA34 FOREIGN KEY (round) REFERENCES quiz_rounds (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE quiz_tiebreaker_answers ADD CONSTRAINT FK_1AEFCE6FC5EEEA34 FOREIGN KEY (round) REFERENCES quiz_tiebreakers (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE quiz_tiebreaker_answers ADD CONSTRAINT FK_1AEFCE6FC4E0A61F FOREIGN KEY (team) REFERENCES quiz_teams (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE quiz_tiebreakers ADD CONSTRAINT FK_52308C87A412FA92 FOREIGN KEY (quiz) REFERENCES quiz_quizes (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
     }

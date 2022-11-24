@@ -8,6 +8,8 @@ use QuizBundle\Entity\Point;
 use QuizBundle\Entity\Quiz;
 use QuizBundle\Entity\Round;
 use QuizBundle\Entity\Team;
+use QuizBundle\Entity\Tiebreaker;
+use QuizBundle\Entity\TiebreakerAnswer;
 
 /**
  * QuizController
@@ -37,17 +39,31 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('QuizBundle\Entity\Point')
             ->findAllByQuiz($quiz);
 
+        $tiebreakers = $this->getEntityManager()
+            ->getRepository('QuizBundle\Entity\Tiebreaker')
+            ->findAllByQuiz($quiz);
+
+        $allTiebreakersAnswers = $this->getEntityManager()
+            ->getRepository('QuizBundle\Entity\TiebreakerAnswer')
+            ->findAllByQuiz($quiz);
+
         $points = array();
         foreach ($allPoints as $point) {
             $points[$point->getTeam()->getId()][$point->getRound()->getId()] = $point->getPoint();
         }
 
+        $tiebreakerAnswers = array();
+        foreach ($allTiebreakersAnswers as $answer) {
+            $tiebreakerAnswers[$answer->getTeam()->getId()][$answer->getTiebreaker()->getId()] = $answer->getAnswer();
+        }
         return new ViewModel(
             array(
-                'quiz'   => $quiz,
+                'quiz' => $quiz,
                 'rounds' => $rounds,
-                'teams'  => $teams,
+                'teams' => $teams,
                 'points' => $points,
+                'tiebreakers' => $tiebreakers,
+                'tiebreaker_answers' => $tiebreakerAnswers,
             )
         );
     }
@@ -70,7 +86,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('QuizBundle\Entity\Point')
             ->findOneBy(
                 array(
-                    'team'  => $team,
+                    'team' => $team,
                     'round' => $round,
                 )
             );
@@ -83,6 +99,58 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         $postData = $this->getRequest()->getPost();
         if (isset($postData['score']) && is_numeric($postData['score'])) {
             $point->setPoint($postData['score']);
+        } else {
+            return new ViewModel(
+                array(
+                    'result' => array(
+                        'status' => 'error',
+                    ),
+                )
+            );
+        }
+
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success',
+                ),
+            )
+        );
+    }
+
+    public function updateTiebreakerAction()
+    {
+        $this->initAjax();
+
+        $team = $this->getTeamEntity();
+        if ($team === null) {
+            return new ViewModel();
+        }
+
+        $tiebreaker = $this->getTiebreakerEntity();
+        if ($tiebreaker === null) {
+            return new ViewModel();
+        }
+
+        $answer = $this->getEntityManager()
+            ->getRepository('QuizBundle\Entity\TiebreakerAnswer')
+            ->findOneBy(
+                array(
+                    'team' => $team,
+                    'tiebreaker' => $tiebreaker,
+                )
+            );
+
+        if ($answer === null) {
+            $answer = new TiebreakerAnswer($tiebreaker, $team, 0);
+            $this->getEntityManager()->persist($answer);
+        }
+
+        $postData = $this->getRequest()->getPost();
+        if (isset($postData['answer']) && is_numeric($postData['answer'])) {
+            $answer->setAnswer($postData['answer']);
         } else {
             return new ViewModel(
                 array(
@@ -123,6 +191,14 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('QuizBundle\Entity\Point')
             ->findAllByQuiz($quiz);
 
+        $tiebreakers = $this->getEntityManager()
+            ->getRepository('QuizBundle\Entity\Tiebreaker')
+            ->findAllByQuiz($quiz);
+
+        $allTiebreakersAnswers = $this->getEntityManager()
+            ->getRepository('QuizBundle\Entity\TiebreakerAnswer')
+            ->findAllByQuiz($quiz);
+
         $points = array();
         $totals = array();
         foreach ($allPoints as $point) {
@@ -131,6 +207,11 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
                 $totals[$point->getTeam()->getId()] = 0;
             }
             $totals[$point->getTeam()->getId()] += $point->getPoint();
+        }
+
+        $tiebreakerAnswers = array();
+        foreach ($allTiebreakersAnswers as $answer) {
+            $tiebreakerAnswers[$answer->getTeam()->getId()][$answer->getTiebreaker()->getId()] = $answer->getAnswer();
         }
 
         arsort($totals);
@@ -142,12 +223,14 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'quiz'         => $quiz,
-                'rounds'       => $rounds,
-                'teams'        => $teams_indexed,
-                'points'       => $points,
+                'quiz' => $quiz,
+                'rounds' => $rounds,
+                'teams' => $teams_indexed,
+                'points' => $points,
                 'total_points' => $totals,
-                'order'        => $this->getRequest()->getQuery('order', 'ASC'),
+                'tiebreakers' => $tiebreakers,
+                'tiebreaker_answers' => $tiebreakerAnswers,
+                'order' => $this->getRequest()->getQuery('order', 'ASC'),
             )
         );
     }
@@ -205,8 +288,6 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
                     'action' => 'manage',
                 )
             );
-
-            return;
         }
 
         return $quiz;
@@ -272,5 +353,35 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         }
 
         return $team;
+    }
+
+    /**
+     * @return Tiebreaker|null
+     */
+    private function getTiebreakerEntity()
+    {
+        $person = $this->getPersonEntity();
+        if ($person === null) {
+            return;
+        }
+
+        $tiebreaker = $this->getEntityById('QuizBundle\Entity\Tiebreaker', 'roundid');
+        if (!($tiebreaker instanceof Tiebreaker) || !$tiebreaker->getQuiz()->canBeEditedBy($person)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No tiebreaker was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'quiz_admin_quiz',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return;
+        }
+
+        return $tiebreaker;
     }
 }
