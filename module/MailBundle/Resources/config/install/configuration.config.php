@@ -2,6 +2,11 @@
 
 return array(
     array(
+        'key'         => 'sib_api',
+        'value'       => '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',
+        'description' => 'SendInBlue API key',
+    ),
+    array(
         'key'         => 'mail.bakske_mail',
         'value'       => 'bakske@vtk.be',
         'description' => 'The mail address from which Het Bakske is sent',

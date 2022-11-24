@@ -174,13 +174,14 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function sibAddAttribute(string $name) {
+        $api = $this->sibGetAPI();
         $client = new \GuzzleHttp\Client();
 
         $response = $client->request('POST', 'https://api.sendinblue.com/v3/contacts/attributes/normal/'.$name, [
             'body' => '{"type":"boolean"}',
             'headers' => [
                 'accept' => 'application/json',
-                'api-key' => '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',
+                'api-key' => $api,
                 'content-type' => 'application/json',
             ],
         ]);
@@ -194,13 +195,14 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function sibRemoveAttribute(string $name) {
+        $api = $this->sibGetAPI();
         $client = new \GuzzleHttp\Client();
 
         $response = $client->request('DELETE', 'https://api.sendinblue.com/v3/contacts/attributes/normal/'.$name, [
             'body' => '{"type":"boolean"}',
             'headers' => [
                 'accept' => 'application/json',
-                'api-key' => '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',
+                'api-key' => $api,
                 'content-type' => 'application/json',
             ],
         ]);
@@ -218,13 +220,15 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
      * @return void
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function updateContact(int $id, string $attributeName, string $value) {
+    public function updateContact(int $id, string $attributeName, bool $value) {
+        $api = $this->sibGetAPI();
         $client = new \GuzzleHttp\Client();
-        $response = $client->request('POST', 'https://api.sendinblue.com/v3/contacts/batch', [
+        $value = $value ? "true" : "false";
+        $client->request('POST', 'https://api.sendinblue.com/v3/contacts/batch', [
             'body' => '{"contacts":[{"attributes":{"'.$attributeName.'":'.$value.'},"id":'.$id.'}]}',
             'headers' => [
                 'accept' => 'application/json',
-                'api-key' => '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',
+                'api-key' => $api,
                 'content-type' => 'application/json',
             ],
         ]);
@@ -282,11 +286,12 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getUserBatch(int $offset, int $limit) {
+        $api = $this->sibGetAPI();
         $client = new \GuzzleHttp\Client();
         $response = $client->request('GET', 'https://api.sendinblue.com/v3/contacts?limit='.$limit.'&offset='.$offset.'&sort=desc', [
             'headers' => [
                 'accept' => 'application/json',
-                'api-key' => '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',
+                'api-key' => $api,
             ],
         ]);
         return $response->getBody();
@@ -323,22 +328,17 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function sibUpdateAllUsers(string $attributeName, bool $value) {
-        $client = new \GuzzleHttp\Client();
-        $value = $value ? "true" : "false";
-        $response = $client->request('PUT', 'https://api.sendinblue.com/v3/contacts/dries.vanspauwen@vtk.be', [
-            'body' => '{"attributes":{"'.$attributeName.'":'.$value.'}}',
-            'headers' => [
-                'accept' => 'application/json',
-                'content-type' => 'application/json',
-                'api-key' => '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',
-            ],
-        ]);
-//        $ids = $this->getAllUserIds();
-//        foreach($ids as $id) {
-////        echo $id;
-////        echo "\r\n";
-//            $this->updateContact($id, "CANTUS", "true");
-//        }
+        $ids = $this->getAllUserIds();
+        foreach($ids as $id) {
+            $this->updateContact($id, $attributeName, $value);
+        }
+    }
+
+    public function sibGetAPI() {
+        $api = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('sib_api');
+        return $api;
     }
 
 }

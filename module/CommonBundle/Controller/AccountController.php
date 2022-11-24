@@ -536,7 +536,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         $this->getEntityManager()->persist($academic);
         $this->getEntityManager()->flush();
 
-        $academic->updateSibAttributes();
+        $this->updateSibAttributes($academic);
 
         return new ViewModel(
             array(
@@ -821,5 +821,32 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
         $this->getEntityManager()->persist($academic);
         $this->getEntityManager()->flush();
+    }
+
+    /**
+     * Updates all the SIB attributes to the current values of the Academic's preferences.
+     *
+     * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function updateSibAttributes($academic)
+    {
+        $api = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('sib_api');
+        $client = new \GuzzleHttp\Client();
+        $email = $academic->getPersonalEmail();
+        foreach ($academic->getPreferences() as $preference) {
+            $name = $preference->getSection()->getAttribute();
+            $value = $preference->getValue()? "true" : "false";
+            $client->request('PUT', 'https://api.sendinblue.com/v3/contacts/'.$email, [
+                'body' => '{"attributes":{"'.$name.'":'.$value.'}}',
+                'headers' => [
+                    'accept' => 'application/json',
+                    'content-type' => 'application/json',
+                    'api-key' => $api,
+                ],
+            ]);
+        }
     }
 }

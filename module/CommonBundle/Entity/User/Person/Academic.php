@@ -490,30 +490,4 @@ class Academic extends \CommonBundle\Entity\User\Person
     {
         return $this->preferences->toArray();
     }
-
-    /**
-     * Updates all the SIB attributes to the current values of the Academic's preferences.
-     *
-     * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function updateSibAttributes()
-    {
-        $email = $this->getPersonalEmail();
-        foreach ($this->getPreferences() as $preference) {
-            $client = new \GuzzleHttp\Client();
-            $name = $preference->getSection()->getAttribute();
-            error_log(json_encode($name));
-            $value = $preference->getValue()? "true" : "false";
-            $response = $client->request('PUT', 'https://api.sendinblue.com/v3/contacts/'.$email, [
-                'body' => '{"attributes":{"'.$name.'":'.$value.'}}',
-                'headers' => [
-                    'accept' => 'application/json',
-                    'content-type' => 'application/json',
-                    'api-key' => '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',
-                ],
-            ]);
-            error_log(json_encode($response->getBody()));
-        }
-    }
 }
