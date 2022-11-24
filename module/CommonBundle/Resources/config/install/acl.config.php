@@ -47,6 +47,9 @@ return array(
         'common_auth' => array(
             'login', 'logout', 'shibboleth',
         ),
+        'common_contact' => array(
+            'index',
+        ),
         'common_index' => array(
             'index',
         ),

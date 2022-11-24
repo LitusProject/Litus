@@ -5,17 +5,13 @@ namespace MailBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use CommonBundle\Entity\User\Preference;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * This is the entity for a newsletter section.
  *
  * @ORM\Entity(repositoryClass="MailBundle\Repository\Section")
  * @ORM\Table(name="mail_sections")
- * @ORM\InheritanceType("JOINED")
- * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
- * @ORM\DiscriminatorMap({
- *
- * })
  */
 
 class Section
@@ -53,7 +49,7 @@ class Section
     /**
      * @var ArrayCollection The preferences that refer to this section
      *
-     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Preference", mappedBy="section")
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Preference", mappedBy="section", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $preferences;
 
@@ -145,6 +141,38 @@ class Section
     }
 
     /**
+     * @param  Preference $preference
+     * @return self
+     */
+    public function addPreference(Preference $preference)
+    {
+        $this->preferences->add($preference);
+
+        return $this;
+    }
+
+    /**
+     * @param  Preference $preference
+     * @return self
+     */
+    public function removePreference(Preference $preference)
+    {
+        $this->preferences->removeElement($preference);
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function removeAllPreferences()
+    {
+        $this->preferences = new ArrayCollection();
+
+        return $this;
+    }
+
+    /**
      * @return ArrayCollection
      */
     public function getPreferences()
@@ -155,12 +183,9 @@ class Section
     /**
      * @return bool
      */
-    public function inPreferences($preferences) {
-        if ($preferences == null) {
-            return false;
-        }
-        foreach ($preferences as $preference) {
-            if ($this->name == $preference->getName()) {
+    public function inPreferences($preferencesToCheck) {
+        foreach ($preferencesToCheck as $preference) {
+            if ($this->name == $preference->getSection()->getName()) {
                 return true;
             }
         }

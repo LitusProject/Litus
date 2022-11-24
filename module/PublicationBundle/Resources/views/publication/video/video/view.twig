@@ -1,0 +1,17 @@
+{% extends 'site/base.twig' %}
+{% block content %}
+    <div class="container">
+        <div class="page-header">
+            <h1>Aftermovies</h1>
+        </div>
+        <div style="display: flex; flex-direction:row; flex-wrap: wrap;">
+            {% for video in videos %}
+                <div style="margin: 0 50px 50px 0">
+                    <h3>{{ video.getTitle() }}</h3>
+                    <iframe src="{{ video.getUrl() }}" width="464px" height="261px" style="border:0"
+                            allowfullscreen></iframe>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

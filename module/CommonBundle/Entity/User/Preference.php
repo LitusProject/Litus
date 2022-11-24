@@ -56,6 +56,9 @@ class Preference
         $this->person = $person;
         $this->section = $section;
         $this->value = $value;
+
+        $person->addPreference($this);
+        $section->addPreference($this);
     }
 
 
@@ -108,7 +111,7 @@ class Preference
      *
      * @return bool
      */
-    public function inSections(array $sections) {
+    public function inSections($sections) {
         foreach ($sections as $section) {
             if ($this->getSection()->getName() == $section->getName()) {
                 return true;

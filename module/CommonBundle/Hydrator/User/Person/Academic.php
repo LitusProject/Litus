@@ -34,7 +34,6 @@ class Academic extends \CommonBundle\Hydrator\User\Person
                 // 'preferences'       => $object->getPreferences(),
             )
         );
-        die($object->getPreferences());
         $data['preferences'] = $object->getPreferences();
 
         $data = array_merge(
@@ -109,7 +108,6 @@ class Academic extends \CommonBundle\Hydrator\User\Person
             }
         }
 
-        $object->removeAllPreferences();
         if (isset($data['preferences'])) {
             foreach ($data['preferences'] as $preference) {
                 $object->addPreference($preference);

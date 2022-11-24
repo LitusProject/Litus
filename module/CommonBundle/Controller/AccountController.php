@@ -8,6 +8,7 @@ use CommonBundle\Entity\User\Person\Academic;
 use CommonBundle\Entity\User\Preference;
 use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
 use CudiBundle\Form\Admin\Sale\Article\View;
+use Doctrine\Common\Collections\ArrayCollection;
 use Imagick;
 use Laminas\View\Model\ViewModel;
 use SecretaryBundle\Entity\Registration;
@@ -131,32 +132,12 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 //            }
 //        }
 
-        // Retrieve the academic's preferences
-        // Possible that there are new sections added/removed in admin which are not yet/still in academic's preferences -> add/remove those
         $preferences = $academic->getPreferences();
         $sections = $this->getEntityManager()
             ->getRepository('MailBundle\Entity\Section')
             ->findAll();
-        if ($sections != null) {
-            foreach ($sections as $section) {
-                // possible that new sections are added in admin that are not yet in academic's preferences -> add those with their default value
-                if (!($section->inPreferences($preferences))) {
-                    $academic->addPreference(new Preference($academic, $section, $section->getDefaultValue()));
-                }
-            }
-        }
 
-        if ($preferences != null ) {
-            foreach ($preferences as $preference) {
-                // possible that sections are removed in admin that are still in academic's preferences -> remove those
-                if (!($preference->inSections($sections))) {
-                    $academic->removePreference($preference);
-                }
-            }
-        }
-
-        $this->getEntityManager()->persist($academic);
-        $this->getEntityManager()->flush();
+        $this->syncPreferencesSections($academic, $preferences, $sections);
 
         $profileForm = $this->getForm('common_account_profile');
         $profileForm->setAttribute(
@@ -504,11 +485,19 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         if ($academic === null) {
             return new ViewModel();
         }
+
         $preferences = $academic->getPreferences();
-        die(var_dump(count($preferences)));
+        $sections = $this->getEntityManager()
+            ->getRepository('MailBundle\Entity\Section')
+            ->findAll();
+        error_log(json_encode("TYPE OF sections IN AccountController"));
+        error_log(json_encode(gettype($sections)));
+
+        $this->syncPreferencesSections($academic, $preferences, $sections);
+
         return new ViewModel(
             array(
-                'preferences' => $preferences,
+                'preferences' => $academic->getPreferences(),
             )
         );
     }
@@ -520,30 +509,40 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             return new ViewModel();
         }
 
-        $form = $this->getForm('common_account_preferences_save');
+        $data = $this->getRequest()->getPost()->toArray();
 
-        if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
-            if ($form->isValid()) {
-                $data = $form->getData();
+        if (isset($data['preferences_true'])) {
+            foreach ($data['preferences_true'] as $id) {
+                $preference = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\User\Preference')
+                    ->findOnebyId($id);
+                $preference->setValue(true);
+                $this->getEntityManager()->persist($preference);
+                $this->getEntityManager()->flush();
             }
-
-            if (isset($data['preferences'])) {
-                foreach ($academic->getPreferences() as $preference) {
-                    $academic->removePreference($preference);
-                }
-                foreach ($data['preferences'] as $preference) {
-                    $academic->addPreference($preference);
-                }
-            }
-
-            return new ViewModel(
-                array(
-                    'result'    => (object) array('status' => 'success'),
-                )
-            );
         }
+
+        if (isset($data['preferences_false'])) {
+            foreach ($data['preferences_false'] as $id) {
+                $preference = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\User\Preference')
+                    ->findOnebyId($id);
+                $preference->setValue(false);
+                $this->getEntityManager()->persist($preference);
+                $this->getEntityManager()->flush();
+            }
+        }
+
+        $this->getEntityManager()->persist($academic);
+        $this->getEntityManager()->flush();
+
+        $academic->updateSibAttributes();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
     }
 
     public function activateAction()
@@ -684,7 +683,6 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         return $item->getName();
     }
 
-
     /**
      * @return Academic|null
      */
@@ -787,5 +785,41 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         foreach ($werkendGroups as $werkend) {
             $werkend->addToExcluded($email);
         }
+    }
+
+    /**
+     * Newly added sections in Litus admin are added to account preferences of academic with default value, and
+     * removed sections in Litus admin are removed from account preferences of academic.
+     *
+     * @param Academic $academic
+     * @param ArrayCollection $preferences
+     * @param $sections
+     * @return void
+     */
+    private function syncPreferencesSections($academic, $preferences, $sections) {
+        if ($sections != null) {
+            foreach ($sections as $section) {
+                // possible that new sections are added in admin that are not yet in academic's preferences -> add those with their default value
+                if (!($section->inPreferences($preferences))) {
+                    $prefToAdd = new Preference($academic, $section, $section->getDefaultValue());
+                    $this->getEntityManager()->persist($prefToAdd);
+                    $this->getEntityManager()->flush();
+                }
+            }
+        }
+
+        if ($preferences != null ) {
+            foreach ($preferences as $preference) {
+                // possible that sections are removed in admin that are still in academic's preferences -> remove those
+                if (!($preference->inSections($sections))) {
+                    $academic->removePreference($preference);
+                    $this->getEntityManager()->remove($preference);
+                    $this->getEntityManager()->flush();
+                }
+            }
+        }
+
+        $this->getEntityManager()->persist($academic);
+        $this->getEntityManager()->flush();
     }
 }
