@@ -24,9 +24,16 @@ class Pull
     /**
      * @var string The study to which the pull belongs
      *
-     * @ORM\Column(name="study", type="string")
+     * @ORM\Column(name="study_nl", type="string")
      */
-    private $study;
+    private $study_nl;
+
+    /**
+     * @var string The study to which the pull belongs
+     *
+     * @ORM\Column(name="study_en", type="string")
+     */
+    private $study_en;
 
     /**
      * @var string The photopath of the pull
@@ -57,9 +64,17 @@ class Pull
     /**
      * @return string
      */
-    public function getStudy()
+    public function getStudyNl()
     {
-        return $this->study;
+        return $this->study_nl;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStudyEn()
+    {
+        return $this->study_en;
     }
 
     /**
@@ -82,9 +97,20 @@ class Pull
      * @param string $study
      * @return self
      */
-    public function setStudy($study)
+    public function setStudyNl($study)
     {
-        $this->study = $study;
+        $this->study_nl = $study;
+
+        return $this;
+    }
+
+    /**
+     * @param string $study
+     * @return self
+     */
+    public function setStudyEn($study)
+    {
+        $this->study_en = $study;
 
         return $this;
     }

@@ -100,6 +100,21 @@ return array(
                 ),
             ),
         ),
+        'secretary_admin_pull' => array(
+            'type' => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route' => '/admin/secretary/pull[/:action[/:id][/page/:page]][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id' => '[0-9]*',
+                    'page'   => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'secreatry_admin_pull',
+                    'action' => 'manage',
+                ),
+            ),
+        ),
     ),
 
     'controllers' => array(
@@ -109,5 +124,6 @@ return array(
         'secretary_admin_photos'        => 'SecretaryBundle\Controller\Admin\PhotosController',
         'secretary_registration'        => 'SecretaryBundle\Controller\RegistrationController',
         'secretary_admin_working_group' => 'SecretaryBundle\Controller\Admin\WorkingGroupController',
+        'secretary_admin_pull'          => 'SecretaryBundle\Controller\Admin\PullController',
     ),
 );

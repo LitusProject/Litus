@@ -29,7 +29,38 @@ class PullController extends \CommonBundle\Component\Controller\ActionController
      */
     public function addAction()
     {
+        $form = $this->getForm('secretary_admin_pull_add');
 
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->getRequest()->getPost());
+
+            if ($form->isValid()) {
+                $pull = $form->hydrateObject();
+
+                $this->getEntityManager()->persist($pull);
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The event was successfully created!'
+                );
+
+                $this->redirect()->toRoute(
+                    'secretary_admin_pull',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
     }
 
     public function editAction()
