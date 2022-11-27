@@ -110,7 +110,7 @@ return array(
                     'page'   => '[0-9]*',
                 ),
                 'defaults' => array(
-                    'controller' => 'secreatry_admin_pull',
+                    'controller' => 'secretary_admin_pull',
                     'action' => 'manage',
                 ),
             ),

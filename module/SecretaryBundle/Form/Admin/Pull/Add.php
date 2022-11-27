@@ -4,6 +4,8 @@ namespace SecretaryBundle\Form\Admin\Pull;
 
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
+    protected $hydrator = 'SecretaryBundle\Hydrator\Pull';
+
     public function init()
     {
         parent::init();
@@ -12,6 +14,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             array(
                 'type' => 'text',
                 'name' => 'study_nl',
+                'label' => 'Study NL',
                 'attributes' => array(
                     'id' => 'study_nl',
                 ),
@@ -27,17 +30,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                array(
-                    'type' => 'text',
-                    'name' => 'study_en',
-                    'attributes' => array(
-                        'id' => 'study_en',
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
+                'type' => 'text',
+                'name' => 'study_en',
+                'label' => 'Study EN',
+                'attributes' => array(
+                    'id' => 'study_en',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
                         ),
                     ),
                 ),

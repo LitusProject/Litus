@@ -59,6 +59,14 @@ return array(
             '@bootstrap_js_modal',
             '@common_remote_typeahead',
         ),
+        'secretary_admin_pull' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+            '@common_remote_typeahead',
+        ),
     ),
 
     'collections' => array(

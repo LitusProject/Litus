@@ -49,8 +49,16 @@ class Pull
      */
     private $available;
 
+    /**
+     * @var integer The amount of pulls of this study that are ordered
+     *
+     * @ORM\Column(name="ordered", type="integer", nullable=true)
+     */
+    private $ordered;
+
     public function __construct()
     {
+        $this->ordered = 0;
     }
 
     /**
@@ -83,6 +91,13 @@ class Pull
     public function getPhotoPath()
     {
         return $this->photoPath;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOrdered() {
+        return $this->ordered;
     }
 
     /**
@@ -135,5 +150,14 @@ class Pull
         $this->available = $available;
 
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function addOrdered() {
+        $this->ordered += 1;
+
+        return $this->ordered;
     }
 }

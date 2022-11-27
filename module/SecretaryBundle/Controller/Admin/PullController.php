@@ -2,6 +2,7 @@
 
 namespace SecretaryBundle\Controller\Admin;
 
+use CudiBundle\Form\Admin\Sale\Article\View;
 use Laminas\View\Model\ViewModel;
 use SecretaryBundle\Entity\Pull;
 
@@ -11,7 +12,7 @@ class PullController extends \CommonBundle\Component\Controller\ActionController
     {
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
-                ->getRepository('SecretaryBundle\Entity\Event')
+                ->getRepository('SecretaryBundle\Entity\Pull')
                 ->findAllQuery(),
             $this->getParam('page')
         );
@@ -70,6 +71,49 @@ class PullController extends \CommonBundle\Component\Controller\ActionController
 
     public function deleteAction()
     {
+        $this->initAjax();
 
+        $pull = $this->getPullEntity();
+        if ($pull === null) {
+            return new ViewModel();
+        }
+
+        $this->getEntityManager()->remove($pull);
+        $this->getEntityManager()->flush();
+
+//        $this->redirect()->toRoute(
+//            'secretary_admin_pull',
+//            array(
+//                'action_manage',
+//            )
+//        );
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+    private function getPullEntity()
+    {
+        $pull = $this->getEntityById('SecretaryBundle\Entity\Pull');
+
+        if (!($pull instanceof Pull)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No event was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'secretary_admin_pull',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return;
+        }
+        return $pull;
     }
 }
