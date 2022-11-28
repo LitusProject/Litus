@@ -15,10 +15,6 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         parent::init();
 
-        $amount = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Inventory')
-            ->getAmount($this->inventory);
-
         $this->add(
             array(
                 'type'       => 'text',

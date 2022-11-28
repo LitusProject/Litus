@@ -14,5 +14,10 @@ class Edit extends \LogisticsBundle\Form\Inventory\Inventory
     {
         parent::init();
 
+        $nameField = $this->get('name');
+        $nameField->setRequired();
+
+        $this->remove('submit')
+            ->addSubmit('Save', 'inventory_edit');
     }
 }
