@@ -70,6 +70,20 @@ class Reservation
     private $timestamp;
 
     /**
+     * @var boolean If a person already got his sandwich
+     *
+     * @ORM\Column(name="consumed", type="boolean", nullable=true)
+     */
+    private $consumed;
+
+    /**
+     * @var boolean If a person already got his sandwich
+     *
+     * @ORM\Column(name="reward", type="boolean", nullable=true)
+     */
+    private $reward;
+
+    /**
      * @return integer
      */
     public function getId()
@@ -189,6 +203,42 @@ class Reservation
     public function getTimestamp()
     {
         return $this->timestamp;
+    }
+
+    /**
+     * @param  boolean $consumed
+     * @return self
+     */
+    public function setConsumed($consumed)
+    {
+        $this->consumed = $consumed;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getConsumed()
+    {
+        return $this->consumed;
+    }
+
+    /**
+     * @param  boolean $reward
+     * @return self
+     */
+    public function setReward($reward)
+    {
+        $this->reward = $reward;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getReward()
+    {
+        return $this->reward;
     }
 
     /**

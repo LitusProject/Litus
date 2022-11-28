@@ -23,9 +23,9 @@ return array(
         'logistics_admin_lease' => array(
             'add', 'delete', 'edit', 'manage',
         ),
-//        'logistics_admin_consumptions' => array(
-//            'add', 'delete', 'edit', 'manage', 'search',
-//        ),
+        'logistics_admin_inventory' => array(
+            'add', 'manage',
+        ),
         'logistics_index' => array(
             'add', 'delete', 'edit', 'export', 'fetch', 'index', 'move',
         ),
@@ -41,5 +41,8 @@ return array(
         'logistics_catalog' => array(
             'addOrder', 'editOrder', 'overview', 'catalog', 'removeOrder', 'editRequest', 'removeRequest', 'editMap', 'deleteMap', 'view', 'search'
         ),
+        'logistics_inventory' => array(
+            'index', 'add',
+        )
     ),
 );

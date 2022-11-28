@@ -57,17 +57,25 @@ class Option
     private $maximum;
 
     /**
+     * @var boolean Whether this option is visible or not
+     *
+     * @ORM\Column(name="visible", type="boolean", nullable=true)
+     */
+    private $visible;
+
+    /**
      * @param Event               $event
      * @param string              $name
      * @param integer             $priceMembers
      * @param integer|null        $priceNonMembers
      * @param integer|string|null $maximum
      */
-    public function __construct(Event $event, $name, $priceMembers, $priceNonMembers, $maximum)
+    public function __construct(Event $event, $name, $priceMembers, $priceNonMembers, $maximum, $visible)
     {
         $this->event = $event;
         $this->name = $name;
         $this->maximum = $maximum;
+        $this->visible = $visible;
 
         $this->setPriceMembers($priceMembers)
             ->setPriceNonMembers($priceNonMembers);
@@ -163,5 +171,23 @@ class Option
     public function getMaximum()
     {
         return $this->maximum;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isVisible()
+    {
+        return $this->visible;
+    }
+
+    /**
+     * @param bool $visible
+     * @return self
+     */
+    public function setIsVisible($visible)
+    {
+        $this->visible = $visible;
+        return $this;
     }
 }

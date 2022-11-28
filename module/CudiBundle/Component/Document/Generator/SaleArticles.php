@@ -4,7 +4,6 @@ namespace CudiBundle\Component\Document\Generator;
 
 use CommonBundle\Entity\General\AcademicYear;
 use CudiBundle\Entity\Sale\Article;
-use CudiBundle\Entity\Sale\Article\Discount\Discount;
 use Doctrine\ORM\EntityManager;
 
 /**
@@ -85,18 +84,16 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
         return $data;
     }
 
-    private function getSubjectCode(EntityManager $entityManager, AcademicYear $academicYear,Article $saleArticle)
+    private function getSubjectCode(EntityManager $entityManager, AcademicYear $academicYear, Article $saleArticle)
     {
         $article = $entityManager
             ->getRepository('CudiBundle\Entity\Article')
             ->find($saleArticle->getMainArticle());
 
-        $codes = $entityManager
+        return $entityManager
             ->getRepository('CudiBundle\Entity\Article\SubjectMap')
             ->findAllByArticleAndAcademicYearQuery($article, $academicYear)
             ->getResult();
-
-        return $codes;
     }
 
     private function getPagesBW(EntityManager $entityManager, Article $saleArticle)
@@ -105,9 +102,9 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
             ->getRepository('CudiBundle\Entity\Article')
             ->find($saleArticle->getMainArticle());
 
-        if ($article->isExternal())
+        if ($article->isExternal()) {
             return null;
-        else {
+        } else {
             $internal = $entityManager
                 ->getRepository('CudiBundle\Entity\Article\Internal')
                 ->find($saleArticle->getMainArticle());
@@ -122,9 +119,9 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
             ->getRepository('CudiBundle\Entity\Article')
             ->find($saleArticle->getMainArticle());
 
-        if ($article->isExternal())
+        if ($article->isExternal()) {
             return null;
-        else {
+        } else {
             $internal = $entityManager
                 ->getRepository('CudiBundle\Entity\Article\Internal')
                 ->find($saleArticle->getMainArticle());
@@ -135,10 +132,9 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
 
     private function getNbSold(EntityManager $entityManager, Article $saleArticle, AcademicYear $academicYear)
     {
-        $sold =  $entityManager
+        return $entityManager
             ->getRepository('CudiBundle\Entity\Sale\SaleItem')
             ->findNumberByArticleAndAcademicYear($saleArticle, $academicYear, null);
-        return $sold;
     }
 
     private function getRectoVerso(Entitymanager $entityManager, Article $saleArticle)
@@ -147,9 +143,9 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
             ->getRepository('CudiBundle\Entity\Article')
             ->find($saleArticle->getMainArticle());
 
-        if ($article->isExternal())
+        if ($article->isExternal()) {
             return null;
-        else {
+        } else {
             $internal = $entityManager
                 ->getRepository('CudiBundle\Entity\Article\Internal')
                 ->find($saleArticle->getMainArticle());

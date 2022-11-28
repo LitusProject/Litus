@@ -93,136 +93,6 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                         ),
                     ),
-                    array(
-                        'type'       => 'text',
-                        'name'       => 'phone_number',
-                        'label'      => 'Telefoonnummer',
-                        'required'   => true,
-                        'attributes' => array(
-                            'id' => 'phone_number',
-                        ),
-                        'options'    => array(
-                            'input' => array(
-                                'filters' => array(
-                                    array('name' => 'StringTrim'),
-                                ),
-                            ),
-                        ),
-                    ),
-                    array(
-                        'type'       => 'text',
-                        'name'       => 'address',
-                        'label'      => 'Adres',
-                        'required'   => true,
-                        'attributes' => array(
-                            'id' => 'address',
-                        ),
-                        'options'    => array(
-                            'input' => array(
-                                'filters' => array(
-                                    array('name' => 'StringTrim'),
-                                ),
-                            ),
-                        ),
-                    ),
-                    array(
-                        'type'       => 'select',
-                        'name'       => 'studies',
-                        'label'      => 'Toekomstige Studie',
-                        'attributes' => array(
-                            'options' => $this->getStudiesOptions(),
-                        ),
-                        'options'    => array(
-                            'input' => array(
-                                'required' => true,
-                            ),
-                        ),
-                    ),
-                    array(
-                        'type'       => 'select',
-                        'name'       => 'food_option',
-                        'label'      => 'Eetgewoonte',
-                        'attributes' => array(
-                            'options' => $this->getFoodOptions(),
-                        ),
-                        'options'    => array(
-                            'input' => array(
-                                'required' => true,
-                            ),
-                        ),
-                    ),
-                    array(
-                        'type'       => 'text',
-                        'name'       => 'allergies',
-                        'label'      => 'Allergieën',
-                        'required'   => false,
-                        'attributes' => array(
-                            'id' => 'allergies',
-                        ),
-                        'options'    => array(
-                            'input' => array(
-                                'filters' => array(
-                                    array('name' => 'StringTrim'),
-                                ),
-                            ),
-                        ),
-                    ),
-                    array(
-                        'type'       => 'select',
-                        'name'       => 'transportation',
-                        'label'      => 'Vervoer',
-                        'attributes' => array(
-                            'options' => $this->getTransportationOptions(),
-                        ),
-                        'options'    => array(
-                            'input' => array(
-                                'required' => true,
-                            ),
-                        ),
-                    ),
-                    array(
-                        'type'       => 'text',
-                        'name'       => 'comments',
-                        'label'      => 'Opmerkingen',
-                        'required'   => false,
-                        'attributes' => array(
-                            'id' => 'comments',
-                        ),
-                        'options'    => array(
-                            'input' => array(
-                                'filters' => array(
-                                    array('name' => 'StringTrim'),
-                                ),
-                            ),
-                        ),
-                    ),
-                    array(
-                        'type'       => 'file',
-                        'name'       => 'picture',
-                        'label'      => 'Recente foto',
-                        'required'   => true,
-                        'attributes' => array(
-                            'data-help' => 'The maximum file size is ' . self::FILE_SIZE . '.',
-                        ),
-                        'options'    => array(
-                            'input' => array(
-                                'validators' => array(
-                                    array(
-                                        'name'    => 'FileSize',
-                                        'options' => array(
-                                            'max' => self::FILE_SIZE,
-                                        ),
-                                    ),
-                                    array(
-                                        'name'    => 'FileExtension',
-                                        'options' => array(
-                                            'extension' => 'jpg, png',
-                                        ),
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
                     // array(
                     //     'type'       => 'text',
                     //     'name'       => 'guest_identification',
@@ -285,6 +155,16 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
                     'options'    => array(
                         'input' => array(
                             'required' => true,
+                            'validators' => array(
+                                array(
+                                    'name'    => 'NumberTicketsGuest',
+                                    'options' => array(
+                                        'event'   => $this->event,
+                //                                        'person'  => $this->guestInfo,
+                                        'maximum' => $this->event->getLimitPerPerson(),
+                                    ),
+                                ),
+                            ),
                         ),
                     ),
                 )
@@ -302,6 +182,16 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
                         'options'    => array(
                             'input' => array(
                                 'required' => true,
+                                'validators' => array(
+                                    array(
+                                        'name'    => 'NumberTicketsGuest',
+                                        'options' => array(
+                                            'event'   => $this->event,
+                    //                                            'person'  => $this->guestInfo,
+                                            'maximum' => $this->event->getLimitPerPerson(),
+                                        ),
+                                    ),
+                                ),
                             ),
                         ),
                     )
@@ -309,38 +199,60 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
             }
         } else {
             foreach ($this->event->getOptions() as $option) {
-                $this->add(
-                    array(
-                        'type'       => 'select',
-                        'name'       => 'option_' . $option->getId() . '_number_member',
-                        'label'      => $option->getPriceNonMembers() != 0 ? ucfirst($option->getName()) . ' (Member)' : ucfirst($option->getName()),
-                        'attributes' => array(
-                            'options' => $this->getNumberOptions(),
-                        ),
-                        'options'    => array(
-                            'input' => array(
-                                'required' => true,
-                            ),
-                        ),
-                    )
-                );
-
-                if (!$this->event->isOnlyMembers() && $option->getPriceNonMembers() != 0) {
+                if ($option->isVisible()) {
                     $this->add(
                         array(
-                            'type'       => 'select',
-                            'name'       => 'option_' . $option->getId() . '_number_non_member',
-                            'label'      => ucfirst($option->getName()) . ' (Non Member)',
+                            'type' => 'select',
+                            'name' => 'option_' . $option->getId() . '_number_member',
+                            'label' => $option->getPriceNonMembers() != 0 ? ucfirst($option->getName()) . ' (Member)' : ucfirst($option->getName()),
                             'attributes' => array(
                                 'options' => $this->getNumberOptions(),
                             ),
-                            'options'    => array(
+                            'options' => array(
                                 'input' => array(
                                     'required' => true,
+                                    'validators' => array(
+                                        array(
+                                            'name' => 'NumberTicketsGuest',
+                                            'options' => array(
+                                                'event' => $this->event,
+                                                //                                            'person'  => $this->guestInfo,
+                                                'maximum' => $this->event->getLimitPerPerson(),
+                                            ),
+                                        ),
+                                    ),
                                 ),
                             ),
                         )
                     );
+
+                    if (!$this->event->isOnlyMembers() && $option->getPriceNonMembers() != 0) {
+                        $this->add(
+                            array(
+                                'type' => 'select',
+                                'name' => 'option_' . $option->getId() . '_number_non_member',
+                                'label' => ucfirst($option->getName()) . ' (Non Member)',
+                                'attributes' => array(
+                                    'options' => $this->getNumberOptions(),
+                                ),
+                                'options' => array(
+                                    'input' => array(
+                                        'required' => true,
+                                        'validators' => array(
+                                            array(
+                                                'name' => 'NumberTicketsGuest',
+                                                'options' => array(
+                                                    'event' => $this->event,
+                                                    //                                                'person'  => $this->guestInfo,
+                                                    'maximum' => $this->event->getLimitPerPerson(),
+                                                ),
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                            )
+                        );
+                    }
                 }
             }
         }

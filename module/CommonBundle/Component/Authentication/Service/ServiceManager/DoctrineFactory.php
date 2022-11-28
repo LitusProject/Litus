@@ -8,7 +8,6 @@ use CommonBundle\Entity\User\Session;
 use Interop\Container\ContainerInterface;
 use Laminas\Authentication\Storage\Session as SessionStorage;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use Laminas\ServiceManager\ServiceLocatorInterface;
 use RuntimeException;
 
 /**
@@ -46,14 +45,5 @@ class DoctrineFactory implements FactoryInterface
             $config['session_config']['cookie_secure'],
             $doctrineAction
         );
-    }
-
-    /**
-     * @param  ServiceLocatorInterface $locator
-     * @return DoctrineService
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        return $this($serviceLocator, 'CommonBundle\Component\Authentication\Service\Doctrine');
     }
 }

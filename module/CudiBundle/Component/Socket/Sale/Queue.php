@@ -2,6 +2,7 @@
 
 namespace CudiBundle\Component\Socket\Sale;
 
+use CommonBundle\Component\Controller\ActionController;
 use CommonBundle\Component\Socket\User;
 use CommonBundle\Component\Util\AcademicYear;
 use CudiBundle\Entity\Sale\Booking;
@@ -163,6 +164,12 @@ class Queue
      */
     public function addPerson(Session $session, $universityIdentification, $forced = false)
     {
+        $seperatedString = explode(';', $universityIdentification);
+
+        $actionController = new ActionController();
+
+//        $rNumber = $actionController->getRNumberAPI($seperatedString[0], $seperatedString[1]);
+
         $person = $this->entityManager
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
             ->findOneByUsername($universityIdentification);

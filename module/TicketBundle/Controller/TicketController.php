@@ -21,7 +21,14 @@
 namespace TicketBundle\Controller;
 
 use CommonBundle\Component\Controller\Exception\RuntimeException;
+use CommonBundle\Component\Form\Admin\Element\DateTime;
+use CudiBundle\Controller\PrinterController;
+use CudiBundle\Controller\PrinterController as Printer;
+use FormBundle\Entity\Node\Entry as FormEntry;
+use FormBundle\Entity\Node\Form;
 use Laminas\Mail\Message;
+use Laminas\Mime\Mime;
+use Laminas\Mime\Part;
 use Laminas\View\Model\ViewModel;
 use TicketBundle\Component\Payment\PaymentParam;
 use TicketBundle\Component\Ticket\Ticket as TicketBook;
@@ -44,6 +51,83 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         }
 
         $person = $this->getPersonEntity();
+
+        $formSpecification = $this->getFormEntity($event->getForm());
+        if ($formSpecification !== null) {
+            $now = new DateTime();
+            if ($now < $formSpecification->getStartDate() || $now > $formSpecification->getEndDate() || !$formSpecification->isActive()) {
+                return new ViewModel(
+                    array(
+                        'message'       => 'This form is currently closed.',
+                        'specification' => $formSpecification,
+                    )
+                );
+            }
+            $guestInfo = null;
+            $entries = null;
+
+            if ($person !== null) {
+                $entries = $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\Node\Entry')
+                    ->findAllByFormAndPerson($formSpecification, $person);
+            } elseif ($this->isCookieSet()) {
+                $guestInfo = $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\Node\GuestInfo')
+                    ->findOneBySessionId($this->getCookie());
+
+                if ($guestInfo) {
+                    $entries = $this->getEntityManager()
+                        ->getRepository('FormBundle\Entity\Node\Entry')
+                        ->findAllByFormAndGuestInfo($formSpecification, $guestInfo);
+                }
+            }
+
+            if ($person === null && !$formSpecification->isNonMember()) {
+                return new ViewModel(
+                    array(
+                        'message'   => 'Please login to view this form',
+                        'specification' => $formSpecification,
+                    )
+                );
+            } elseif (!$formSpecification->isMultiple() && count($entries) > 0) {
+                return new ViewModel(
+                    array(
+                        'message' => 'You can\'t fill this form more than once',
+                        'specification' => $formSpecification,
+                        'entries' => $entries,
+                    )
+                );
+            }
+
+            $entriesCount = count(
+                $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\Node\Entry')
+                    ->findAllByForm($formSpecification)
+            );
+
+            if ($formSpecification->getMax() != 0 && $entriesCount >= $formSpecification->getMax()) {
+                return new ViewModel(
+                    array(
+                        'message'       => 'This form has reached the maximum number of submissions.',
+                        'specification' => $formSpecification,
+                        'entries'       => $entries,
+                    )
+                );
+            }
+
+            $infoForm = $this->getForm(
+                'form_specified-form_add',
+                array(
+                    'form'       => $formSpecification,
+                    'person'     => $person,
+                    'language'   => $this->getLanguage(),
+                    'guest_info' => $guestInfo,
+                    'event'      => $event,
+                    'is_event_form' => true,
+                )
+            );
+        }
+
         if ($person === null) {
             $canBook = true;
             if ($event->getNumberOfTickets() != 0 && $event->getNumberFree() <= 0) {
@@ -52,111 +136,204 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             $form = $this->getForm('ticket_ticket_bookguest', array('event' => $event));
 
             if ($this->getRequest()->isPost()) {
-//                $form->setData($this->getRequest()->getPost());
-                $form->setData(
-                    array_merge_recursive(
-                        $this->getRequest()->getPost()->toArray(),
-                        $this->getRequest()->getFiles()->toArray(),
-                    )
-                );
-
-                $filePath = 'public/_ticket/img';
-
-                if ($form->isValid()) {
-                    $formData = $form->getData();
-
-                    $numbers = array(
-                        'member'     => $formData['number_member'] ?? 0,
-                        'non_member' => $formData['number_non_member'] ?? 0,
-                    );
-
-                    foreach ($event->getOptions() as $option) {
-                        $numbers['option_' . $option->getId() . '_number_member'] = $formData['option_' . $option->getId() . '_number_member'];
-                        $numbers['option_' . $option->getId() . '_number_non_member'] = $formData['option_' . $option->getId() . '_number_non_member'];
-                        $currentAmount = count($this->getEntityManager()->getRepository('TicketBundle\Entity\Ticket')->findAllByOption($option));
-                        $currentAmount += $numbers['option_' . $option->getId() . '_number_member'];
-                        $currentAmount += $numbers['option_' . $option->getId() . '_number_non_member'];
-                        if ($option->getMaximum() != 0 && $currentAmount > $option->getMaximum()) {
-                            $this->flashMessenger()->error(
-                                'Error',
-                                'The tickets could not be booked, option "' . $option->getName() . '" has reached the maximum amount of ' . $option->getMaximum() . ' tickets!'
-                            );
-                            $this->redirect()->toRoute(
-                                'ticket',
-                                array(
-                                    'action' => 'event',
-                                    'id'     => $event->getId(),
-                                )
-                            );
-                            return new ViewModel();
-                        }
-                    }
-
-                    $guestInfo = new GuestInfo(
-                        $formData['guest_form']['guest_first_name'],
-                        $formData['guest_form']['guest_last_name'],
-                        $formData['guest_form']['guest_email'],
-                        $formData['guest_form']['guest_organization'],
-                        $formData['guest_form']['guest_identification'],
-                        $formData['guest_form']['phone_number'],
-                        $formData['guest_form']['address'],
-                        $formData['guest_form']['studies'],
-                        $formData['guest_form']['food_option'],
-                        $formData['guest_form']['allergies'],
-                        $formData['guest_form']['transportation'],
-                        $formData['guest_form']['comments'],
-                    );
-
-                    if ($formData['guest_form']['picture']) {
-                        $image = new \Imagick($formData['guest_form']['picture']['tmp_name']);
-                    }
-
-                    do {
-                        $newFileName = sha1(uniqid());
-                    } while (file_exists($filePath . '/' . $newFileName));
-
-                    $image->writeImage($filePath . '/' . $newFileName);
-                    $guestInfo->setPicture($newFileName);
-
-                    $this->getEntityManager()->persist($guestInfo);
-                    $this->getEntityManager()->flush();
-
-                    $booked_tickets = TicketBook::book(
-                        $event,
-                        $numbers,
-                        false,
-                        $this->getEntityManager(),
-                        null,
-                        $guestInfo
-                    );
-
-                    // if guestinfo (idk of deze nodig is)
-                    // foreach ticket in generated tickets (nie gwn tickets)
-                    //      send mail to ticket.getGuestInfo().getEMail()
-                    //      Met de generatePayUrl($ticket) en mss een kleine uitleg
-
-                    $this->getEntityManager()->flush();
-
-                    if ($guestInfo === null) {
-                        throw new RuntimeException('Guestinfo is null');
-                    }
-
-                    foreach ($booked_tickets as $ticket) {
-                        $this->sendMail($ticket);
-                    }
-
-                    $this->flashMessenger()->success(
-                        'Success',
-                        'The tickets were succesfully booked'
-                    );
-
-                    $this->redirect()->toRoute(
-                        'ticket',
-                        array(
-                            'action' => 'event',
-                            'id'     => $event->getId(),
+                if ($infoForm !== null) {
+                    $infoForm->setData(
+                        array_merge_recursive(
+                            $this->getRequest()->getPost()->toArray(),
+                            $this->getRequest()->getFiles()->toArray()
                         )
                     );
+
+                    if ($infoForm->isValid()) {
+                        $formEntry = new FormEntry($formSpecification, $person);
+                        if ($person === null) {
+                            $formEntry->setGuestInfo(
+                                new \FormBundle\Entity\Node\GuestInfo($this->getEntityManager(), $this->getRequest())
+                            );
+                        }
+                        $formEntry = $infoForm->hydrateObject($formEntry);
+                        $this->getEntityManager()->persist($formEntry);
+
+                        $formData = $infoForm->getData();
+                        $numbers = array(
+                            'member'     => $formData['number_member'] ?? 0,
+                            'non_member' => $formData['number_non_member'] ?? 0,
+                        );
+
+                        foreach ($event->getOptions() as $option) {
+                            $numbers['option_' . $option->getId() . '_number_member'] = $formData['option_' . $option->getId() . '_number_member'];
+                            $numbers['option_' . $option->getId() . '_number_non_member'] = $formData['option_' . $option->getId() . '_number_non_member'];
+                            $currentAmount = count($this->getEntityManager()->getRepository('TicketBundle\Entity\Ticket')->findAllByOption($option));
+                            $currentAmount += $numbers['option_' . $option->getId() . '_number_member'];
+                            $currentAmount += $numbers['option_' . $option->getId() . '_number_non_member'];
+                            $selectedAmount = $numbers['option_' . $option->getId() . '_number_member'] + $numbers['option_' . $option->getId() . '_number_non_member'];
+                            if ($option->getMaximum() != 0 && $currentAmount > $option->getMaximum() && $selectedAmount > 0) {
+                                $this->flashMessenger()->error(
+                                    'Error',
+                                    'The tickets could not be booked, option "' . $option->getName() . '" has reached the maximum amount of  tickets!'
+                                );
+                                $this->redirect()->toRoute(
+                                    'ticket',
+                                    array(
+                                        'action' => 'event',
+                                        'id'     => $event->getId(),
+                                    )
+                                );
+                                return new ViewModel();
+                            }
+                        }
+
+                        $guestInfo = new GuestInfo(
+                            $formData['first_name'],
+                            $formData['last_name'],
+                            $formData['email'],
+                            $formData['organization'],
+                            $formData['identification'],
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null
+                        );
+
+                        $this->getEntityManager()->persist($guestInfo);
+                        $this->getEntityManager()->flush();
+
+                        $booked_tickets = TicketBook::book(
+                            $event,
+                            $numbers,
+                            false,
+                            $this->getEntityManager(),
+                            null,
+                            $guestInfo
+                        );
+
+                        $this->getEntityManager()->flush();
+
+                        if ($guestInfo === null) {
+                            throw new RuntimeException('Guestinfo is null');
+                        }
+
+                        foreach ($booked_tickets as $ticket) {
+                            $this->sendMail($ticket);
+                        }
+
+                        $this->flashMessenger()->success(
+                            'Success',
+                            'The tickets were succesfully booked'
+                        );
+
+                        $this->redirect()->toRoute(
+                            'ticket',
+                            array(
+                                'action' => 'event',
+                                'id'     => $event->getId(),
+                            )
+                        );
+                    }
+                } else {
+                    $form->setData(
+                        array_merge_recursive(
+                            $this->getRequest()->getPost()->toArray(),
+                            $this->getRequest()->getFiles()->toArray(),
+                        )
+                    );
+
+                    $filePath = 'public/_ticket/img';
+
+                    if ($form->isValid()) {
+                        $formData = $form->getData();
+
+                        $numbers = array(
+                            'member'     => $formData['number_member'] ?? 0,
+                            'non_member' => $formData['number_non_member'] ?? 0,
+                        );
+
+                        foreach ($event->getOptions() as $option) {
+                            $numbers['option_' . $option->getId() . '_number_member'] = $formData['option_' . $option->getId() . '_number_member'];
+                            $numbers['option_' . $option->getId() . '_number_non_member'] = $formData['option_' . $option->getId() . '_number_non_member'];
+                            $currentAmount = count($this->getEntityManager()->getRepository('TicketBundle\Entity\Ticket')->findAllByOption($option));
+                            $currentAmount += $numbers['option_' . $option->getId() . '_number_member'];
+                            $currentAmount += $numbers['option_' . $option->getId() . '_number_non_member'];
+                            $selectedAmount = $numbers['option_' . $option->getId() . '_number_member'] + $numbers['option_' . $option->getId() . '_number_non_member'];
+                            if ($option->getMaximum() != 0 && $currentAmount > $option->getMaximum() && $selectedAmount > 0) {
+                                $this->flashMessenger()->error(
+                                    'Error',
+                                    'The tickets could not be booked, option "' . $option->getName() . '" has reached the maximum amount of tickets!'
+                                );
+                                $this->redirect()->toRoute(
+                                    'ticket',
+                                    array(
+                                        'action' => 'event',
+                                        'id'     => $event->getId(),
+                                    )
+                                );
+                                return new ViewModel();
+                            }
+                        }
+
+                        $guestInfo = new GuestInfo(
+                            $formData['guest_form']['guest_first_name'],
+                            $formData['guest_form']['guest_last_name'],
+                            $formData['guest_form']['guest_email'],
+                            $formData['guest_form']['guest_organization'],
+                            $formData['guest_form']['guest_identification'],
+                        );
+
+                        if ($formData['guest_form']['picture']) {
+                            $image = new \Imagick($formData['guest_form']['picture']['tmp_name']);
+                        }
+
+                        do {
+                            $newFileName = sha1(uniqid());
+                        } while (file_exists($filePath . '/' . $newFileName));
+
+                        //$image->writeImage($filePath . '/' . $newFileName);
+                        //$guestInfo->setPicture($newFileName);
+
+                        $this->getEntityManager()->persist($guestInfo);
+                        $this->getEntityManager()->flush();
+
+                        $booked_tickets = TicketBook::book(
+                            $event,
+                            $numbers,
+                            false,
+                            $this->getEntityManager(),
+                            null,
+                            $guestInfo
+                        );
+
+                        // if guestinfo (idk of deze nodig is)
+                        // foreach ticket in generated tickets (nie gwn tickets)
+                        //      send mail to ticket.getGuestInfo().getEMail()
+                        //      Met de generatePayUrl($ticket) en mss een kleine uitleg
+
+                        $this->getEntityManager()->flush();
+
+                        if ($guestInfo === null) {
+                            throw new RuntimeException('Guestinfo is null');
+                        }
+
+                        foreach ($booked_tickets as $ticket) {
+                            $this->sendMail($ticket);
+                        }
+
+                        $this->flashMessenger()->success(
+                            'Success',
+                            'The tickets were succesfully booked'
+                        );
+
+                        $this->redirect()->toRoute(
+                            'ticket',
+                            array(
+                                'action' => 'event',
+                                'id'     => $event->getId(),
+                            )
+                        );
+                    }
+//                $form->setData($this->getRequest()->getPost());
                 }
             }
             return new ViewModel(
@@ -174,6 +351,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             ->getConfigValue('ticket.upper_text')
                     )[$this->getLanguage()->getAbbrev()],
                     'isGuest'               => true,
+                    'specification'         => $formSpecification,
+                    'infoform'              => $infoForm ?: false,
+                    'entries'               => $entries ?: null,
                 )
             );
         } else {
@@ -188,65 +368,143 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             $form = $this->getForm('ticket_ticket_book', array('event' => $event, 'person' => $person));
 
             if ($this->getRequest()->isPost()) {
-                $form->setData($this->getRequest()->getPost());
-
-                if ($form->isValid()) {
-                    $formData = $form->getData();
-
-                    $numbers = array(
-                        'member'     => $formData['number_member'] ?? 0,
-                        'non_member' => $formData['number_non_member'] ?? 0,
-                    );
-
-                    foreach ($event->getOptions() as $option) {
-                        $numbers['option_' . $option->getId() . '_number_member'] = $formData['option_' . $option->getId() . '_number_member'];
-                        $numbers['option_' . $option->getId() . '_number_non_member'] = $formData['option_' . $option->getId() . '_number_non_member'];
-                        $currentAmount = count($this->getEntityManager()->getRepository('TicketBundle\Entity\Ticket')->findAllByOption($option));
-                        $currentAmount += $numbers['option_' . $option->getId() . '_number_member'];
-                        $currentAmount += $numbers['option_' . $option->getId() . '_number_non_member'];
-                        if ($option->getMaximum() != 0 && $currentAmount > $option->getMaximum()) {
-                            $this->flashMessenger()->error(
-                                'Error',
-                                'The tickets could not be booked, option "' . $option->getName() . '" has reached the maximum amount of ' . $option->getMaximum() . ' tickets!'
-                            );
-                            $this->redirect()->toRoute(
-                                'ticket',
-                                array(
-                                    'action' => 'event',
-                                    'id'     => $event->getId(),
-                                )
-                            );
-                            return new ViewModel();
-                        }
-                    }
-
-                    $booked_tickets = TicketBook::book(
-                        $event,
-                        $numbers,
-                        false,
-                        $this->getEntityManager(),
-                        $person,
-                        null
-                    );
-
-                    $this->getEntityManager()->flush();
-
-                    foreach ($booked_tickets as $ticket) {
-                        $this->sendMail($ticket);
-                    }
-
-                    $this->flashMessenger()->success(
-                        'Success',
-                        'The tickets were succesfully booked'
-                    );
-
-                    $this->redirect()->toRoute(
-                        'ticket',
-                        array(
-                            'action' => 'event',
-                            'id'     => $event->getId(),
+                if ($infoForm !== null) {
+                    $infoForm->setData(
+                        array_merge_recursive(
+                            $this->getRequest()->getPost()->toArray(),
+                            $this->getRequest()->getFiles()->toArray()
                         )
                     );
+
+                    if ($infoForm->isValid()) {
+                        $formEntry = new FormEntry($formSpecification, $person);
+                        if ($person === null) {
+                            $formEntry->setGuestInfo(
+                                new \FormBundle\Entity\Node\GuestInfo($this->getEntityManager(), $this->getRequest())
+                            );
+                        }
+                        $formEntry = $infoForm->hydrateObject($formEntry);
+                        $this->getEntityManager()->persist($formEntry);
+
+                        $formData = $infoForm->getData();
+                        $numbers = array(
+                            'member'     => $formData['number_member'] ?? 0,
+                            'non_member' => $formData['number_non_member'] ?? 0,
+                        );
+
+                        foreach ($event->getOptions() as $option) {
+                            $numbers['option_' . $option->getId() . '_number_member'] = $formData['option_' . $option->getId() . '_number_member'];
+                            $numbers['option_' . $option->getId() . '_number_non_member'] = $formData['option_' . $option->getId() . '_number_non_member'];
+                            $currentAmount = count($this->getEntityManager()->getRepository('TicketBundle\Entity\Ticket')->findAllByOption($option));
+                            $currentAmount += $numbers['option_' . $option->getId() . '_number_member'];
+                            $currentAmount += $numbers['option_' . $option->getId() . '_number_non_member'];
+                            $selectedAmount = $numbers['option_' . $option->getId() . '_number_member'] + $numbers['option_' . $option->getId() . '_number_non_member'];
+                            if ($option->getMaximum() != 0 && $currentAmount > $option->getMaximum() && $selectedAmount > 0) {
+                                $this->flashMessenger()->error(
+                                    'Error',
+                                    'The tickets could not be booked, option "' . $option->getName() . '" has reached the maximum amount of tickets!'
+                                );
+                                $this->redirect()->toRoute(
+                                    'ticket',
+                                    array(
+                                        'action' => 'event',
+                                        'id'     => $event->getId(),
+                                    )
+                                );
+                                return new ViewModel();
+                            }
+                        }
+
+                        $booked_tickets = TicketBook::book(
+                            $event,
+                            $numbers,
+                            false,
+                            $this->getEntityManager(),
+                            $person,
+                            null
+                        );
+
+                        $this->getEntityManager()->flush();
+
+                        foreach ($booked_tickets as $ticket) {
+                            $this->sendMail($ticket);
+                        }
+
+                        $this->flashMessenger()->success(
+                            'Success',
+                            'The tickets were succesfully booked'
+                        );
+
+                        $this->redirect()->toRoute(
+                            'ticket',
+                            array(
+                                'action' => 'event',
+                                'id'     => $event->getId(),
+                            )
+                        );
+                    }
+                } else {
+                    $form->setData($this->getRequest()->getPost());
+
+                    if ($form->isValid()) {
+                        $formData = $form->getData();
+
+                        $numbers = array(
+                            'member'     => $formData['number_member'] ?? 0,
+                            'non_member' => $formData['number_non_member'] ?? 0,
+                        );
+
+                        foreach ($event->getOptions() as $option) {
+                            $numbers['option_' . $option->getId() . '_number_member'] = $formData['option_' . $option->getId() . '_number_member'];
+                            $numbers['option_' . $option->getId() . '_number_non_member'] = $formData['option_' . $option->getId() . '_number_non_member'];
+                            $currentAmount = count($this->getEntityManager()->getRepository('TicketBundle\Entity\Ticket')->findAllByOption($option));
+                            $currentAmount += $numbers['option_' . $option->getId() . '_number_member'];
+                            $currentAmount += $numbers['option_' . $option->getId() . '_number_non_member'];
+                            $selectedAmount = $numbers['option_' . $option->getId() . '_number_member'] + $numbers['option_' . $option->getId() . '_number_non_member'];
+                            if ($option->getMaximum() != 0 && $currentAmount > $option->getMaximum() && $selectedAmount > 0) {
+                                $this->flashMessenger()->error(
+                                    'Error',
+                                    'The tickets could not be booked, option "' . $option->getName() . '" has reached the maximum amount of tickets!'
+                                );
+                                $this->redirect()->toRoute(
+                                    'ticket',
+                                    array(
+                                        'action' => 'event',
+                                        'id'     => $event->getId(),
+                                    )
+                                );
+                                return new ViewModel();
+                            }
+                        }
+
+                        $booked_tickets = TicketBook::book(
+                            $event,
+                            $numbers,
+                            false,
+                            $this->getEntityManager(),
+                            $person,
+                            null
+                        );
+
+                        $this->getEntityManager()->flush();
+
+                        foreach ($booked_tickets as $ticket) {
+                            $this->sendMail($ticket);
+                        }
+
+                        $this->flashMessenger()->success(
+                            'Success',
+                            'The tickets were succesfully booked'
+                        );
+
+                        $this->redirect()->toRoute(
+                            'ticket',
+                            array(
+                                'action' => 'event',
+                                'id'     => $event->getId(),
+                            )
+                        );
+                    }
                 }
             }
         }
@@ -268,6 +526,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                         ->getConfigValue('ticket.upper_text')
                 )[$this->getLanguage()->getAbbrev()],
                 'isGuest'               => false,
+                'specification'         => $formSpecification,
+                'infoform'              => $infoForm,
+                'entries'               => $entries,
             )
         );
     }
@@ -362,8 +623,13 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             );
         } else {
             $ticket->setStatus('sold');
-
+            if ($ticket->getEvent()->getQrEnabled()) {
+                $ticket->setQrCode();
+            }
             $this->getEntityManager()->flush();
+            if ($ticket->getEvent()->getQrEnabled()) {
+                $this->sendQrMail($ticket);
+            }
 
             $this->flashMessenger()->success(
                 'Success',
@@ -383,8 +649,11 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
     public function payResponseAction()
     {
+        $printerEventId = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.printer_event_id');
+
         $url = $this->getRequest()->getServer()->get('REQUEST_URI');
-        $this->logMessage('url: ' . $url);
 
         $allParams = substr($url, strpos($url, '?') + 1);
         $data = array();
@@ -402,16 +671,17 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         }
 
         if ($paymentParams['ORDERID'] === null) {
-            $this->logMessage("no orderID provided");
             $this->getResponse()->setStatusCode(404);
             return new ViewModel();
         }
 
         $ticket = $this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Ticket')
-            ->findOneBy(array(
-                'orderId' => $paymentParams['ORDERID']));
-        $this->logMessage("Ticket ID: " . $ticket->getId());
+            ->findOneBy(
+                array(
+                    'orderId' => $paymentParams['ORDERID']
+                )
+            );
 
         ksort($paymentParams);
         foreach (array_keys($paymentParams) as $paymentKey) {
@@ -430,16 +700,18 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $generatedHash = substr($paymentUrl, strpos($paymentUrl, 'SHASIGN=') + strlen('SHASIGN='));
 
         if (strtoupper($generatedHash) === $shasign) {
-            $this->logMessage("SHA correct for orderId " . $paymentParams['ORDERID']);
-            if (!($ticket->getStatus() === "sold"))
-            {
-                $this->logMessage("Ticket not yet on sold");
+            if (!($ticket->getStatus() == 'Sold')) {
                 $ticket->setStatus('sold');
+                if ($ticket->getEvent()->getQrEnabled()) {
+                    $ticket->setQrCode();
+                    $this->sendQrMail($ticket);
+                }
+                if ($ticket->getEvent()->getId() === $printerEventId) {
+//                    $this->runPowershell($ticket);
+                }
                 $this->getEntityManager()->flush();
             }
-        }
-        else {
-            $this->logMessage("SHA sign not correct");
+        } else {
             $this->getResponse()->setStatusCode(404);
             return new ViewModel();
         }
@@ -465,11 +737,106 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             return new \ErrorException('This paylink contains the wrong ticket code...');
         }
 
-        $link = $this->generatePayLink($ticket);
+        $now = new \DateTime('now');
+        $book_date = $ticket->getBookDate();
+        $time_diff = $now->getTimestamp() - $book_date->getTimeStamp();
+        $time_in_minutes = $time_diff/(60); // Set Time Difference in seconds to minutes
 
-        $this->redirect()->toUrl($link);
+        $max_time = $ticket->getEvent()->getDeadlineTime();
 
-//        return new ViewModel();
+        if ($time_in_minutes <= $max_time || $ticket->getEvent()->getPayDeadline()) {
+            $link = $this->generatePayLink($ticket);
+
+            $this->redirect()->toUrl($link);
+        } else {
+            return new ViewModel(
+                array(
+                    'late' => true,
+                    'event' => $ticket->getEvent(),
+                )
+            );
+        }
+    }
+
+    public function qrAction()
+    {
+        $qr = $this->getParam('qr');
+        if ($qr === null) {
+            return new ViewModel();
+        }
+
+        $event = $this->getEventEntity();
+        if ($event === null) {
+            return new ViewModel();
+        }
+
+        $ticket = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Ticket')
+            ->findOneByQREvent($event, $qr)[0];
+
+        if ($this->getAuthentication()->isAuthenticated()) {
+            $person = $this->getAuthentication()->getPersonObject();
+        }
+
+        if ($person !== null) {
+            // Check if person has access to scan QR
+            if ($this->hasAccess()->toResourceAction('ticket', 'scanQr')) {
+                $visitor = $this->getEntityManager()
+                    ->getRepository('TicketBundle\Entity\Event\Visitor')
+                    ->findByEventAndQr($event, $qr);
+
+                if ($visitor == null) {
+                    // If no visitor, first entry
+                    $entry = true;
+
+                    $visitor = new Event\Visitor($event, $qr);
+                    $this->getEntityManager()->persist($visitor);
+                    $this->getEntityManager()->flush();
+                } else {
+                    // If visitor already exists, can't enter again
+                    $entry = false;
+                }
+                return new ViewModel(
+                    array(
+                        'event' => $event,
+                        'entry' => $entry,
+                        'ticket_option' => $ticket->getOption() ? $ticket->getOption()->getName() : 'default',
+                        'ticket' => $ticket,
+                    )
+                );
+            }
+        }
+
+        // From here, only when not authorized to scan QR
+
+        $encodedUrl = urlencode(
+            $this->url()
+                ->fromRoute(
+                    'ticket',
+                    array('action' => 'qr',
+                        'id' => $event->getId(),
+                        'code' => $qr
+                    ),
+                    array('force_canonical' => true)
+                )
+        );
+
+        $encodedUrl = str_replace('leia.', '', $encodedUrl);
+
+        $qrSource = str_replace(
+            '{{encodedUrl}}',
+            $encodedUrl,
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.google_qr_api')
+        );
+
+        return new ViewModel(
+            array(
+                'event'    => $event,
+                'qrSource' => $qrSource,
+            )
+        );
     }
 
     /**
@@ -491,7 +858,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
     {
         $event = $this->getEntityById('TicketBundle\Entity\Event');
 
-        if (!($event instanceof Event) || !$event->isActive()) {
+        if (!($event instanceof Event)) {
             return;
         }
 
@@ -600,7 +967,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $mailBody = $mailData['content'];
         $mailSubject = $mailData['subject'];
 
-        $mailFrom = $this->getEntityManager()
+        $mailFrom = $ticket->getEvent()->getMailFrom() ? :$this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('ticket.confirmation_email_from');
 
@@ -637,10 +1004,141 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             ->setFrom($mailFrom)
             ->addTo($mailTo)
             ->addBcc($mailFrom)
+            ->addBcc('it@vtk.be')
             ->setSubject(str_replace('{{ event }}', $eventName, $mailSubject));
 
         if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);
+        }
+    }
+
+    private function getFormEntity($formId)
+    {
+        $form = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Node\Form')
+            ->findOneById($formId);
+
+        if (!($form instanceof Form)) {
+            return;
+        }
+
+        $form->setEntityManager($this->getEntityManager());
+
+        return $form;
+    }
+
+    /**
+     * @return boolean
+     */
+    private function isCookieSet()
+    {
+        $cookie = $this->getRequest()->getCookie();
+
+        return $cookie !== false && $cookie->offsetExists(\FormBundle\Entity\Node\GuestInfo::$cookieNamespace);
+    }
+
+    /**
+     * @return string
+     */
+    private function getCookie()
+    {
+        $cookie = $this->getRequest()->getCookie();
+
+        return $cookie !== false && $cookie->offsetExists(\FormBundle\Entity\Node\GuestInfo::$cookieNamespace);
+    }
+
+    private function sendQrMail(Ticket $ticket)
+    {
+        $event = $ticket->getEvent();
+        $language = $this->getLanguage();
+
+        $entityManager = $this->getEntityManager();
+        if ($language === null) {
+            $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
+                ->findOneByAbbrev('en');
+        }
+
+        $mailData = unserialize(
+            $entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('ticket.subscription_mail_data')
+        );
+
+        $message = $mailData[$language->getAbbrev()]['content'];
+        $subject = str_replace('{{event}}', $event->getActivity()->getTitle($language), $mailData[$language->getAbbrev()]['subject']);
+
+        $mailAddress = $ticket->getEvent()->getMailFrom() ? :$this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('ticket.subscription_mail');
+
+        $mailName = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('ticket.subscription_mail_name');
+
+        $url = $this->url()
+            ->fromRoute(
+                'ticket',
+                array('action' => 'qr',
+                    'id'       => $event->getId(),
+                    'qr'     => $ticket->getQrCode()
+                ),
+                array('force_canonical' => true)
+            );
+
+        $url = str_replace('leia.', '', $url);
+
+        $qrSource = str_replace(
+            '{{encodedUrl}}',
+            urlencode($url),
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.google_qr_api')
+        );
+
+        $message = str_replace('{{event}}', $event->getActivity()->getTitle($language), $message);
+        $message = str_replace('{{eventDate}}', $event->getActivity()->getStartDate()->format('d/m/Y'), $message);
+        $message = str_replace('{{qrSource}}', $qrSource, $message);
+        $message = str_replace('{{qrLink}}', $url, $message);
+        $message = str_replace('{{actiMail}}', $mailAddress, $message);
+        $message = str_replace('{{ticketOption}}', $ticket->getOption()->getName(), $message);
+
+        $part = new Part($message);
+
+        $part->type = Mime::TYPE_HTML;
+        $part->charset = 'utf-8';
+        $newMessage = new \Laminas\Mime\Message();
+        $newMessage->addPart($part);
+        $mail = new Message();
+        $mail->setEncoding('UTF-8')
+            ->setBody($newMessage)
+            ->setFrom($mailAddress, $mailName)
+            ->addTo($ticket->getEmail(), $ticket->getFullName())
+            ->setSubject($subject)
+            ->addBcc('it@vtk.be')
+            ->addBcc($mailAddress);
+        if (getenv('APPLICATION_ENV') != 'development') {
+            $this->getMailTransport()->send($mail);
+        }
+    }
+
+    private function runPowershell($ticket)
+    {
+        $scriptPath = getcwd() . '/module/CudiBundle/Resources/bin/uniflow.ps1';
+        $universityMail = $ticket->getUniversityMail();
+        $amount = $ticket->getAmount();
+        $clientId = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.printer_uniflow_client_id');
+        $clientSecret = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.printer_uniflow_client_secret');
+
+        $command = 'pwsh ' . " " . $scriptPath . " '". $clientId . "' '" . $clientSecret . "' '" . $universityMail . "' '" . $amount . "'";
+
+        try {
+            $query = shell_exec("$command 2>&1");
+        } catch (\Exception $e) {
+            $this->getSentryClient()->logException($e);
         }
     }
 }

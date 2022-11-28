@@ -112,6 +112,13 @@ abstract class Form extends \CommonBundle\Entity\Node
     protected $entityManager;
 
     /**
+     * @var bool Whether or not the student info (association, r-number) is asked in the form
+     *
+     * @ORM\Column(name="student_info", type="boolean", nullable=true)
+     */
+    private $studentInfo;
+
+    /**
      * @param Person $person
      */
     public function __construct(Person $person)
@@ -532,4 +539,23 @@ abstract class Form extends \CommonBundle\Entity\Node
      * @return string
      */
     abstract protected function getSummary(Entry $entry, Language $language);
+
+    /**
+     * @return bool Whether or not the assocation and r-number needs to be asked
+     */
+    public function getStudentInfo()
+    {
+        return $this->studentInfo;
+    }
+
+    /**
+     * @param bool $studentinfo
+     * @return self
+     */
+    public function setStudentInfo($studentinfo)
+    {
+        $this->studentInfo = $studentinfo;
+
+        return $this;
+    }
 }

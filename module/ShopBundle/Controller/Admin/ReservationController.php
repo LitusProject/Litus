@@ -36,12 +36,22 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             ->getTotalByProductBySalesQuery($salesSession)
             ->getResult();
 
+        $totalReservations = 0;
+        for($i = 0; $i < sizeof($result); $i++) {
+            $totalReservations += $result[$i][1];
+            $totalAmount = $this->getEntityManager()
+                ->getRepository('ShopBundle\Entity\Session\Stock')
+                ->getProductAvailability($result[$i][0], $salesSession);
+            $result[$i][2] = $totalAmount;
+        }
+
         return new ViewModel(
             array(
                 'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
                 'totals'            => $result,
                 'salesSession'      => $salesSession,
+                'totalReservations' => $totalReservations,
             )
         );
     }
@@ -187,6 +197,8 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             $item->amount = $reservation->getAmount();
             $item->total = $reservation->getAmount() * $reservation->getProduct()->getSellPrice();
             $item->noShow = $reservation->getNoShow();
+            $item->consumed = $reservation->getConsumed();
+            $item->reward = $reservation->getReward();
 
             $result[] = $item;
         }

@@ -2,10 +2,12 @@
 
 namespace GalleryBundle\Controller;
 
+use CalendarBundle\Entity\Node\Event;
 use CommonBundle\Component\Util\AcademicYear;
 use DateInterval;
 use GalleryBundle\Entity\Album;
 use GalleryBundle\Entity\Album\Photo;
+use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
 
 /**
@@ -53,6 +55,36 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                 'currentYear' => AcademicYear::getAcademicYear(),
                 'filePath'    => $filePath,
                 'archiveUrl'  => $archiveUrl,
+            )
+        );
+    }
+
+    public function posterAction()
+    {
+        $album = $this->getAlbumEntityByPoster();
+        if ($album === null) {
+            return $this->notFoundAction();
+        }
+
+        $filePath = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('gallery.poster_path') . '/';
+
+        $headers = new Headers();
+        $headers->addHeaders(
+            array(
+                'Content-Type' => mime_content_type($filePath . $album->getPoster()),
+            )
+        );
+        $this->getResponse()->setHeaders($headers);
+
+        $handle = fopen($filePath . $album->getPoster(), 'r');
+        $data = fread($handle, filesize($filePath . $album->getPoster()));
+        fclose($handle);
+
+        return new ViewModel(
+            array(
+                'data' => $data,
             )
         );
     }
@@ -192,4 +224,16 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         return $photo;
     }
+
+    private function getEventEntityByPoster()
+    {
+        $album = $this->getEntityById('GalleryBundle\Entity\Album', 'name', 'poster');
+
+        if (!($album instanceof Event)) {
+            return;
+        }
+
+        return $album;
+    }
 }
+

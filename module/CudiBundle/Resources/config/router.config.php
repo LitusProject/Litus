@@ -231,6 +231,21 @@ return array(
                 ),
             ),
         ),
+        'cudi_admin_sales_session_message' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/cudi/sales/session/messages[/:action[/page/:page][/:id]][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'cudi_admin_sales_session_message',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
         'cudi_admin_sales_financial' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -895,6 +910,22 @@ return array(
                 ),
             ),
         ),
+        'cudi_printer' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '[/:language]/cudi/printer[/:action[/:id[/code/:code]]][/]',
+                'constraints' => array(
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'language' => '(en|nl)',
+                    'id'       => '[0-9]*',
+                    'code'     => '[0-9]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'cudi_printer',
+                    'action'     => 'view',
+                ),
+            ),
+        ),
         'cudi_retail' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -940,6 +971,7 @@ return array(
         'cudi_admin_sales_session'                   => 'CudiBundle\Controller\Admin\Sale\SessionController',
         'cudi_admin_sales_session_restriction'       => 'CudiBundle\Controller\Admin\Sale\Session\RestrictionController',
         'cudi_admin_sales_session_openinghour'       => 'CudiBundle\Controller\Admin\Sale\Session\OpeningHourController',
+        'cudi_admin_sales_session_message'           => 'CudiBundle\Controller\Admin\Sale\Session\MessageController',
         'cudi_admin_sales_financial'                 => 'CudiBundle\Controller\Admin\Sale\FinancialController',
         'cudi_admin_sales_financial_sold'            => 'CudiBundle\Controller\Admin\Sale\Financial\SoldController',
         'cudi_admin_sales_financial_returned'        => 'CudiBundle\Controller\Admin\Sale\Financial\ReturnedController',
@@ -985,5 +1017,7 @@ return array(
 
         'cudi_isic'                                  => 'CudiBundle\Controller\IsicController',
         'cudi_retail'                                => 'CudiBundle\Controller\RetailController',
+
+        'cudi_printer'                               => 'CudiBundle\Controller\PrinterController',
     ),
 );

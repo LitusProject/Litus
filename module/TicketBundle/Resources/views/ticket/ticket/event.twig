@@ -1,7 +1,7 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-    <div class="container">
+    <div class="container" style="max-width: 85%">
         <div class="flashmessage alert alert-success fade" id="ticket_delete_success">
             <a class="close">&times;</a>
             <div class="content">
@@ -46,72 +46,79 @@
 
                     <div style="height: 20px;"></div>
 
-                    <div>
-                        <p>{{ event.getDescription() }}</p>
+                    <div class="markdown">
+                        {{ hideEmail(markdown(event.getDescription()))|raw }}
                     </div>
                 </div>
             </div>
         </div>
 
-            <div style="text-indent: 0">
-                <div class="row">
-                        <div class="page-header">
-                            <h2>{{ translate('Prices') }}</h2>
-                        </div>
-                        {% if event.getOptions()|length == 0 %}
-                            <dl class="dl-horizontal">
-                                <dt>{{ translate('Member') }}</dt>
-                                <dd>&euro;{{ (event.getPriceMembers()/100)|number_format(2) }}</dd>
-                                {% if not event.isOnlyMembers() %}
-                                    <dt>{{ translate('Non Member') }}</dt>
-                                    <dd>&euro;{{ (event.getPriceNonMembers()/100)|number_format(2) }}</dd>
-                                {% endif %}
-                            </dl>
-                        {% else %}
-                            <dl class="dl-horizontal" style="width: 50%;">
-                                {% for option in event.getOptions() %}
-                                    <div class="row" style="border-bottom: solid black 1px; margin-bottom: 5px;">
-                                        <dt style="width: fit-content;">{{ option.getName() }}{% if not option.getPriceNonMembers() == 0 %}&mdash;{{ translate('Member') }}{% endif %}</dt>
-                                        <dd class="pull-right">&euro;{{ (option.getPriceMembers()/100)|number_format(2) }}</dd>
-                                    </div>
-                                    {% if not event.isOnlyMembers() and not option.getPriceNonMembers() == 0 %}
-                                        <div class="row" style="border-bottom: solid black 1px; margin-bottom: 5px;">
-                                            <dt style="width: fit-content">{{ option.getName() }}&mdash;{{ translate('Non Member') }}</dt>
-                                            <dd class="pull-right">&euro;{{ (option.getPriceNonMembers()/100)|number_format(2) }}</dd>
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
-                            </dl>
-                        {% endif %}
+        <div style="text-indent: 0">
+            <div class="row">
+                <div class="page-header">
+                    <h2>{{ translate('Prices') }}</h2>
                 </div>
-                <div class="row">
-                    {% if canBook == true and (event.isStillBookable() or (event.isStillBookablePraesidium() and isPraesidium)) %}
-                        <div class="page-header">
-                            <p>{{ upperText }}</p>
-                            <h2>{{ translate('Book Tickets') }}</h2>
-                            {% if maximumAmount != 0 %}
-                                <h5>{{ translate('Maximum of ') ~ maximumAmount}}
-                                    {% if maximumAmount > 1 %}
-                                        {{ translate('tickets') ~ "." }}
-                                    {% else %}
-                                        {{ translate('ticket') ~ "." }}
-                                    {% endif %}</h5>
-                            {% endif %}
-                        </div>
-                        {% if isGuest %}
-                            <p>{{ translate('We recommend logging in or creating an account on the site before ordering tickets if you can. With an account you can manage your tickets through our site, without account you will only receive an email with the ticket details.') }}</p>
+                {% if event.getOptions()|length == 0 %}
+                    <dl class="dl-horizontal">
+                        <dt>{{ translate('Member') }}</dt>
+                        <dd>&euro;{{ (event.getPriceMembers()/100)|number_format(2) }}</dd>
+                        {% if not event.isOnlyMembers() %}
+                            <dt>{{ translate('Non Member') }}</dt>
+                            <dd>&euro;{{ (event.getPriceNonMembers()/100)|number_format(2) }}</dd>
                         {% endif %}
+                    </dl>
+                {% else %}
+                    <dl class="dl-horizontal" style="width: 50%;">
+                        {% for option in event.getOptions() %}
+                            {% if option.isVisible()%}
+                                <div class="row" style="border-bottom: solid black 1px; margin-bottom: 5px;">
+                                    <dt style="width: fit-content;">{{ option.getName() }}{% if not option.getPriceNonMembers() == 0 %}&mdash;{{ translate('Member') }}{% endif %}</dt>
+                                    <dd class="pull-right">&euro;{{ (option.getPriceMembers()/100)|number_format(2) }}</dd>
+                                </div>
+                                {% if not event.isOnlyMembers() and not option.getPriceNonMembers() == 0 %}
+                                    <div class="row" style="border-bottom: solid black 1px; margin-bottom: 5px;">
+                                        <dt style="width: fit-content">{{ option.getName() }}&mdash;{{ translate('Non Member') }}</dt>
+                                        <dd class="pull-right">&euro;{{ (option.getPriceNonMembers()/100)|number_format(2) }}</dd>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </dl>
+                {% endif %}
+            </div>
+            <div class="row">
+                {% if canBook == true and (event.isStillBookable() or (event.isStillBookablePraesidium() and isPraesidium)) %}
+                    <div class="page-header">
+                        <p>{{ upperText }}</p>
+                        <h2>{{ translate('Book Tickets') }}</h2>
+                        {% if maximumAmount != 0 %}
+                            <h5>{{ translate('Maximum of ') ~ maximumAmount}}
+                                {% if maximumAmount > 1 %}
+                                    {{ translate('tickets') ~ "." }}
+                                {% else %}
+                                    {{ translate('ticket') ~ "." }}
+                                {% endif %}</h5>
+                        {% endif %}
+                    </div>
+                    {% if isGuest %}
+                        <p>{{ translate('We recommend logging in or creating an account on the site before ordering tickets if you can. With an account you can manage your tickets through our site, without account you will only receive an email with the ticket details.') }}</p>
+                    {% endif %}
 
+                    {% if infoform %}
+                        {% import 'site/partials/form.twig' as forms %}
+                        {{ forms.renderForm(infoform) }}
+                    {% else %}
                         {% import 'site/partials/form.twig' as forms %}
                         {{ forms.renderForm(form) }}
-                    {% else %}
-                        <div class="page-header">
-                            <h4>{{ translate('You can not book any more tickets.') }}</h4>
-                        </div>
                     {% endif %}
-                </div>
+                {% else %}
+                    <div class="page-header">
+                        <h4>{{ translate('You can not book any more tickets.') }}</h4>
+                    </div>
+                {% endif %}
+            </div>
 
-                {% if tickets|length != 0 %}
+            {% if tickets|length != 0 %}
                 <div>
                     <div class="page-header">
                         <h2>{{ translate('Your Tickets') }}</h2>
@@ -137,7 +144,7 @@
                                 <td class="hidden-xs">{{ dateLocalized(ticket.getBookDate(), 'd/MM/YYYY HH:mm') }}</td>
                                 <td class="hidden-xs">{{ dateLocalized(ticket.getSoldDate(), 'd/MM/YYYY HH:mm') }}</td>
                                 <td class="actions">
-                                    {% if hasAccess('ticket', 'delete') and canRemoveReservations %}
+                                    {% if hasAccess('ticket', 'delete') and canRemoveReservations and ticket.getStatus() != 'Sold' %}
                                         <a href="#" data-id="{{ ticket.getId() }}" class="btn btn-danger btn-sm deleteTicket">{{ translate('Remove') }}</a>
                                     {% endif %}
                                     {% if hasAccess('ticket', 'pay') and ticket.getStatus() != 'Sold' %}
@@ -149,8 +156,8 @@
                         </tbody>
                     </table>
                 </div>
-                {% endif %}
-            </div>
+            {% endif %}
+{#        </div>#}
         </div>
 
         <div id="modalDelete" class="modal fade">

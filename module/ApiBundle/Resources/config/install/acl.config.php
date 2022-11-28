@@ -14,6 +14,9 @@ return array(
         'api_calendar' => array(
             'activeEvents', 'poster',
         ),
+        'api_commu' => array(
+            'get-cudi-openinghours', 'get-events',
+        ),
         'api_config' => array(
             'entries',
         ),
@@ -21,7 +24,10 @@ return array(
             'articles', 'book', 'bookings', 'cancelBooking', 'currentSession', 'openingHours', 'signIn', 'signInStatus', 'is-same',
         ),
         'api_door' => array(
-            'getRules', 'log',
+            'getRules', 'log', 'get-username',
+        ),
+        'api_fak' => array(
+            'add-checkin', 'add-checkin-username',
         ),
         'api_mail' => array(
             'getAliases', 'getLists', 'getListsArchive',

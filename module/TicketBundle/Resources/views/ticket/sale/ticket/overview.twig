@@ -75,6 +75,7 @@
                     <th width="40px">Price</th>
                     <th width="110px">Book Date</th>
                     <th width="110px">Sold Date</th>
+                    <th>QR Code</th>
                 </tr>
                 </thead>
             </table>
@@ -97,6 +98,7 @@
                     <th width="90px">{{ translate('Invoice ID') }}</th>
                     <th width="130px">{{ translate('Book Date') }}</th>
                     <th width="130px">{{ translate('Sold Date') }}</th>
+                    <th>QR Code</th>
                     <th width="190px">{{ translate('Action') }}</th>
                 </tr>
                 </thead>
@@ -125,6 +127,7 @@
                         <td>{{ ticket.getOrderId() }}</td>
                         <td class="bookDate">{{ dateLocalized(ticket.getBookDate(), 'd/MM/YYYY HH:mm') }}</td>
                         <td class="soldDate">{{ dateLocalized(ticket.getSoldDate(), 'd/MM/YYYY HH:mm') }}</td>
+                        <td class="qrCode">{{ ticket.getQrCode() }}</td>
                         <td class="actions">
                             {% if hasAccess('ticket_sale_ticket', 'unassign') and event.areTicketsGenerated() and ticket.getFullName() %}
                                 <a href="#" data-id="{{ ticket.getId() }}" data-person="{{ ticket.getFullName() }}" class="btn btn-danger btn-sm unassignTicket">{{ translate('Unassign') }}</a>
@@ -138,6 +141,7 @@
                             {% if hasAccess('ticket_sale_ticket', 'unsale') %}
                                 <a href="#" data-id="{{ ticket.getId() }}" data-person="{{ ticket.getFullName() }}" class="btn btn-info btn-sm undoSaleTicket" {% if ticket.getStatusCode() != 'sold' %}style="display: none"{% endif %}>{{ translate('Undo Sale') }}</a>
                             {% endif %}
+{#                            <a href="{{ url('form_view', {'action': 'view', 'id': 43124}) }}">View Results</a>#}
                         </td>
                     </tr>
                 {% endfor %}
@@ -249,6 +253,7 @@
                             .append('<td>' + '€' + this.price + '</td>')
                             .append('<td>' + this.bookDate + '</td>')
                             .append('<td>' + this.soldDate + '</td>')
+                            .append('<td>' + this.qrCode + '</td>')
                             .append('<td>' +
                                         '<a href="#" data-id=' + this.id + ' data-person=' + this.person + ' class="btn btn-danger btn-sm deleteTicket">Delete</a>' +
                                         '<a href="#" data-id=' + this.id + ' data-person=' + this.person + ' class="btn btn-success btn-sm saleTicket"' + (this.status != 'Booked' ? 'style="display: none"' : '') + '>Sale</a>' +

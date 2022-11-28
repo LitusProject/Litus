@@ -2,6 +2,11 @@
 
 {% block content %}
     <div class="container modal-body">
+        <div class="col-sm-offset-11" style="padding: 0 0 10px 0;">
+            <a href="{{ url('shop', {"action": "reward", "id": session.getId()})}}">
+                <input type="button" name="Reward" class="btn btn-primary button" style="border-color: darkred" value="Rewards">
+            </a>
+        </div>
         {% import 'site/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
         {% if noEntity != null %}
@@ -12,58 +17,72 @@
                 </div>
             </div>
         {%  endif %}
-        {% for reservations in history %}
-            {% if reservations != null %}
-                <div class="content">
-                    Broodje(s) voor {{ reservations.getReservation()[0].getPerson().getFirstName() }}
-                    {{ reservations.getReservation()[0].getPerson().getLastName() }}:
-                </div>
-                <table class="table table-hover" style="margin-top: 15px;">
-                    <thead class="thead-light">
-                        <tr>
-                            <th scope="col">Broodje</th>
-                            <th scope="col">Aantal</th>
-                            <th scope="col">Prijs</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% set total = 0 %}
-                    {% for reservation in reservations.getReservation() %}
-                        <tr>
-                            <td>{{ reservation.getProduct().getName() }}</td>
-                            <td>{{ reservation.getAmount() }}</td>
-                            <td>€{{ reservation.getProduct().getSellPrice() }}</td>
-                        </tr>
-                        {% set total = total + reservation.getProduct().getSellPrice() * reservation.getAmount() %}
-                    {% endfor %}
-                        <tr style="background-color: #ebecf0">
-                            <td></td>
-                            <td><b>Totale prijs:</b></td>
-                            <td><b>€ {{ total }}</b></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="content" style="color:darkred; margin-bottom: 10px">
-                    {% if total < 3 %}
-                        {{ consumed ? 'Dit broodje is al opgehaald.' : '' }}
-                    {% else %}
-                        {{ consumed ? 'Deze broodjes zijn al opgehaald.' : '' }}
-                    {% endif %}
-                </div>
-            {%  endif %}
-        {% endfor %}
-    </div>
 
+        {% if reservations != null %}
+            <div class="content">
+                Broodje(s) voor {{ reservations[0].getPerson().getFirstName }}
+                {{ reservations[0].getPerson().getLastName() }}:
+            </div>
+            <table class="table table-hover" style="margin-top: 15px;">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">Broodje</th>
+                    <th scope="col">Aantal</th>
+                    <th scope="col">Prijs</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% set total = 0 %}
+                {% for reservation in reservations %}
+                    <tr>
+                        <td>{{ reservation.getProduct().getName() }}</td>
+                        <td>{{ reservation.getAmount() }}</td>
+                        <td>€{{ reservation.getProduct().getSellPrice() }}</td>
+                    </tr>
+                    {% set total = total + reservation.getProduct().getSellPrice() * reservation.getAmount() %}
+                {% endfor %}
+                <tr style="background-color: #ebecf0">
+                    <td></td>
+                    <td><b>Totale prijs:</b></td>
+                    <td><b>€ {{ total }}</b></td>
+                </tr>
+                </tbody>
+            </table>
+
+            {% if reservations[0].getReward() %}
+                <br>
+                <div class="content" style="color: darkgreen">
+                    <audio controls hidden autoplay>
+                        <source src="../../../../_site/Reward-Sound.mp3" type="audio/mpeg">
+                    </audio>
+                    We hebben prijs! Deze persoon heeft een gratis Cara gewonnen! Hoera! <b>The game</b>
+                </div>
+                <br>
+            {% endif %}
+
+            <div class="content" style="color:darkred">
+                {% if total < 3 %}
+                    {{ consumed ? 'Dit broodje is al opgehaald.' : '' }}
+                {% else %}
+                    {{ consumed ? 'Deze broodjes zijn al opgehaald.' : '' }}
+                {% endif %}
+            </div>
+
+        {%  endif %}
+    </div>
 {% endblock %}
 
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function (){
-            document.getElementById('username').focus();
+            const username = document.getElementById('username');
+            username.value = '';
+            const consume = document.getElementById('shop_consume');
+            username.focus();
             $('#username').keydown( function(e) {
                 if (e.key === 'Enter') {
                     e.preventDefault()
-                    document.getElementById('amount').focus();
+                    consume.click();
                 }
             });
         });

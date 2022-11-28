@@ -1,42 +1,40 @@
 .vtk-home-header {
   width: 100%;
   height: ~"calc(100vh - 135px)";
-  padding: 15px; 
+  padding: 15px;
 }
 
 .vtk-home-image {
-  // background: 
-  background: linear-gradient(
-      0deg,
-      rgba(0, 0, 0, 0.2) 0%,
-      rgba(0, 0, 0, 0.2) 35%,
-      rgba(0, 0, 0, 0) 80%
-    ),
-    // url(https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
-  url(../img/Home_vtk.jpg);
-  background-position: 50% 80%;
-  background-size: cover;
-  width: 100%;
-  height: 100%; 
+    // background:
+    background: linear-gradient(0deg,
+    rgba(0, 0, 0, 0.2) 0%,
+    rgba(0, 0, 0, 0.2) 35%,
+    rgba(0, 0, 0, 0) 80%),
+      // url(https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+    url(../img/Home_vtk.jpg);
+    background-position: 50% 80%;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
 
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-flex-wrap: nowrap;
-  -ms-flex-wrap: nowrap;
-  flex-wrap: nowrap;
-  -webkit-justify-content: flex-end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
-  -webkit-align-content: stretch;
-  -ms-flex-line-pack: stretch;
-  align-content: stretch;
-  -webkit-align-items: flex-start;
-  -ms-flex-align: start;
-  align-items: flex-start;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-justify-content: flex-end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    -webkit-align-content: stretch;
+    -ms-flex-line-pack: stretch;
+    align-content: stretch;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: start;
+    align-items: flex-start;
 }
 
 .vtk-textspan {
@@ -56,7 +54,7 @@
 }
 
 .vtk-home-br {
-  padding: 250px 0px;
+  padding: 160px 0px;
   background: linear-gradient(
       0deg,
       rgba(50, 50, 50, 0.6),
@@ -90,6 +88,10 @@
 
 .menulink {
   margin-bottom: 17px;
+}
+
+.category-title:hover {
+  color: @color-yellow
 }
 
 .calendar-button {
@@ -212,13 +214,6 @@
   .menuitems-flexbox {
     justify-content: flex-start;
     -ms-flex-line-pack: flex-start;
-  }
-
-  .menulink {
-    margin-bottom: 0px;
-    padding: 10px;
-    background-color: whitesmoke;
-    margin-bottom: 5px;
   }
 
   .calendar-grid {

@@ -338,7 +338,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 $message = $mailData[$language->getAbbrev()]['content'];
                 $subject = $mailData[$language->getAbbrev()]['subject'];
 
-                $shiftString = $shift->getName() . ' from ' . $shift->getStartDate()->format('d/m/Y h:i') . ' to ' . $shift->getEndDate()->format('d/m/Y h:i');
+                $shiftString = $shift->getName() . ' from ' . $shift->getStartDate()->format('d/m/Y H:i') . ' to ' . $shift->getEndDate()->format('d/m/Y H:i');
 
                 $mail = new Message();
                 $mail->setEncoding('UTF-8')
@@ -416,7 +416,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $message = $mailData[$language->getAbbrev()]['content'];
         $subject = $mailData[$language->getAbbrev()]['subject'];
 
-        $shiftString = $shift->getName() . ' from ' . $shift->getStartDate()->format('d/m/Y h:i') . ' to ' . $shift->getEndDate()->format('d/m/Y h:i');
+        $shiftString = $shift->getName() . ' from ' . $shift->getStartDate()->format('d/m/Y H:i') . ' to ' . $shift->getEndDate()->format('d/m/Y H:i');
 
         $mail = new Message();
         $mail->setEncoding('UTF-8')

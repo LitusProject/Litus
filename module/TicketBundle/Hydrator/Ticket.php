@@ -24,13 +24,13 @@ class Ticket extends \CommonBundle\Component\Hydrator\Hydrator
                 $data['guest_form']['guest_email'],
                 null,
                 null,
-                $data['guest_form']['phone_number'],
-                $data['guest_form']['address'],
-                $data['guest_form']['studies'],
-                $data['guest_form']['food_option'],
-                $data['guest_form']['allergies'],
-                $data['guest_form']['transportation'],
-                $data['guest_form']['comments']
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
             );
             $this->getEntityManager()->persist($guestInfo);
         } else {

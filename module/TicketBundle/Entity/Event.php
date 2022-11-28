@@ -8,6 +8,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
+use FormBundle\Entity\Node\Form;
 use TicketBundle\Entity\Event\Option;
 
 /**
@@ -99,14 +100,14 @@ class Event
     /**
      * @var integer The price for members
      *
-     * @ORM\Column(name="price_members", type="smallint")
+     * @ORM\Column(name="price_members", type="smallint", nullable=true)
      */
     private $priceMembers;
 
     /**
      * @var integer The price for non members
      *
-     * @ORM\Column(name="price_non_members", type="smallint")
+     * @ORM\Column(name="price_non_members", type="smallint", nullable=true)
      */
     private $priceNonMembers;
 
@@ -159,6 +160,42 @@ class Event
      */
     private $description;
 
+    /**
+     * @var Form The form for the event
+     *
+     * @ORM\OneToOne(targetEntity="FormBundle\Entity\Node\Form")
+     * @ORM\JoinColumn(name="form", referencedColumnName="id", nullable=true)
+     */
+    private $form;
+
+    /**
+     * @var boolean Whether or not qr codes are enabled
+     *
+     * @ORM\Column(name="qr_enabled", type="boolean", options={"default" : false})
+     */
+    private $qrEnabled;
+
+    /**
+     * @var string The email address the mails are sent from
+     *
+     * @ORM\Column(name="mail_from", type="string", nullable=true)
+     */
+    private $mailFrom;
+
+    /**
+     * @var boolean whether or not the pay page should be accessible after 24 hours
+     *
+     * @ORM\Column(name="deadline_enabled", type="boolean", nullable=true)
+     */
+    private $payDeadline;
+
+    /**
+     * @var integer The amount of time before a ticket is invalid
+     *
+     * @ORM\Column(name="deadline_time", type="bigint", nullable=true)
+     */
+    private $deadlineTime;
+
     public function __construct()
     {
         $this->options = new ArrayCollection();
@@ -183,10 +220,10 @@ class Event
     }
 
     /**
-     * @param  CalendarEvent $activity
+     * @param  CalendarEvent|null $activity
      * @return self
      */
-    public function setActivity(CalendarEvent $activity)
+    public function setActivity($activity)
     {
         $this->activity = $activity;
 
@@ -679,6 +716,98 @@ class Event
     {
         $this->description = $description;
 
+        return $this;
+    }
+
+    /**
+     * @return Form
+     */
+    public function getForm()
+    {
+        return $this->form;
+    }
+
+    /**
+     * @param Form $form the form
+     * @return self
+     */
+    public function setForm($form)
+    {
+        $this->form = $form;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getQrEnabled()
+    {
+        return $this->qrEnabled;
+    }
+
+    /**
+     * @param boolean $qr
+     * @return self
+     */
+    public function setQrEnabled($qr)
+    {
+        $this->qrEnabled = $qr;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMailFrom()
+    {
+        return $this->mailFrom;
+    }
+
+    /**
+     * @param string $mail
+     * @return self
+     */
+    public function setMailFrom($mail)
+    {
+        $this->mailFrom = $mail;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getPayDeadline()
+    {
+        return $this->payDeadline;
+    }
+
+    /**
+     * @param boolean $deadline
+     * @return self
+     */
+    public function setPayDeadline($deadline)
+    {
+        $this->payDeadline = $deadline;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDeadlineTime()
+    {
+        return $this->deadlineTime;
+    }
+
+    /**
+     * @param integer|null $time
+     * @return self
+     */
+    public function setDeadlineTime($time)
+    {
+        $this->deadlineTime = $time;
         return $this;
     }
 }

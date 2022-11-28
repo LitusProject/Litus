@@ -5,7 +5,6 @@ namespace CommonBundle\Component\Doctrine\Common\Cache\ServiceManager;
 use Doctrine\Common\Cache\RedisCache;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use Laminas\ServiceManager\ServiceLocatorInterface;
 use Redis;
 use RedisException;
 use RuntimeException;
@@ -68,14 +67,5 @@ class RedisCacheFactory implements FactoryInterface
         $redisCache->setRedis($redis);
 
         return $redisCache;
-    }
-
-    /**
-     * @param  ServiceLocatorInterface $locator
-     * @return RedisCache
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        return $this($serviceLocator, 'Doctrine\Common\Cache\RedisCache');
     }
 }

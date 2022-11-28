@@ -6,7 +6,7 @@ return array(
             'add', 'delete', 'edit', 'manage', 'old', 'clean'
         ),
         'ticket_admin_ticket' => array(
-            'export', 'manage', 'print', 'search',
+            'export', 'manage', 'print', 'search', 'csv',
         ),
         'ticket_admin_consumptions' => array(
             'add', 'delete', 'edit', 'manage', 'search', 'consume', 'transactions',
@@ -26,7 +26,7 @@ return array(
             'consume',
         ),
         'ticket' => array(
-            'delete', 'event', 'pay', 'payed', 'pay-response',
+            'delete', 'event', 'pay', 'payed', 'pay-response', 'scanQr', 'qr'
         ),
     ),
 );

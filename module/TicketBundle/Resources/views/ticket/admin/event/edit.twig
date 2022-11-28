@@ -77,6 +77,19 @@
                 </div>
             </div>
         {% endif %}
+        {% if info_form and hasAccess('form_manage', 'view')%}
+            <div class="sidebox">
+                <div class="title">Go to Form Results</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to go to the result of the form!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('form_manage', {'action': 'view', 'id': info_form.getId()}) }}">&rarr; Results</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
     </aside>
 {% endblock %}
 

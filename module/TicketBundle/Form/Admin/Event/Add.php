@@ -41,6 +41,28 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'     => 'select',
+                'name'     => 'form',
+                'label'    => 'Form',
+                'required' => false,
+                'attributes' => array(
+                    'options' => $this->createFormArray(),
+                ),
+                'options'    => array(
+                    'input' => array(
+                        'filter' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+            //                        'validators' => array(
+            //                            array('name' => 'Activity'),
+            //                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
                 'type'     => 'checkbox',
                 'name'     => 'active',
                 'label'    => 'Active',
@@ -63,6 +85,56 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'name'     => 'bookable_praesidium',
                 'label'    => 'Bookable For Praesidium',
                 'required' => false,
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'mail_from',
+                'label'      => 'Email',
+                'required'   => false,
+                'attributes' => array(
+                    'id' => 'mail_from',
+                ),
+                'options'    => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'EmailAddress'),
+                        ),
+                    ),
+                ),
+            ),
+        );
+
+        $this->add(
+            array(
+                'type'     => 'checkbox',
+                'name'     => 'deadline_enabled',
+                'label'    => 'Payable after 24 hours',
+                'required' => false,
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'deadline_time',
+                'label'      => 'Minutes that the link is valid',
+                'required'   => false,
+                'options'    => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
+                        ),
+                    ),
+                ),
             )
         );
 
@@ -106,11 +178,20 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(
             array(
                 'type'     => 'checkbox',
-                'name'     => 'generate_tickets',
-                'label'    => 'Generate Tickets (needed to print out ticket)',
+                'name'     => 'qr_enabled',
+                'label'    => 'Enable qr code for tickets',
                 'required' => false,
             )
         );
+
+//        $this->add(
+//            array(
+//                'type'     => 'checkbox',
+//                'name'     => 'generate_tickets',
+//                'label'    => 'Generate Tickets (needed to print out ticket)',
+//                'required' => false,
+//            )
+//        );
 
         $this->add(
             array(
@@ -266,7 +347,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         'type'     => 'text',
                         'name'     => 'price_members',
                         'label'    => 'Price Members',
-                        'required' => true,
+                        'required' => false,
                         'options'  => array(
                             'input' => array(
                                 'filters' => array(
@@ -323,7 +404,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         $events = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
-            ->findAllActive(30);
+            ->findAllActive(50);
 
         $eventsArray = array(
             '' => '',
@@ -333,6 +414,22 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         }
 
         return $eventsArray;
+    }
+
+    protected function createFormArray()
+    {
+        $forms = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Node\Form')
+            ->findAllActive();
+
+        $formArray = array(
+            '' => '',
+        );
+        foreach ($forms as $form) {
+            $formArray[$form->getId()] = $form->getTitle();
+        }
+
+        return $formArray;
     }
 
     public function getInputFilterSpecification()

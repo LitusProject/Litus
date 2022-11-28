@@ -71,6 +71,32 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'default_amount',
+                'label'    => 'Default Amount',
+                //                'value' => 0,
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'int'),
+                            array(
+                                'name'    => 'greaterthan',
+                                'options' => array(
+                                    'min' => 0,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            )
+        );
+
         $this->addSubmit('Add', 'add');
     }
 }

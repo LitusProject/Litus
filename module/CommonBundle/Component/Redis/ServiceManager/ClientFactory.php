@@ -5,7 +5,6 @@ namespace CommonBundle\Component\Redis\ServiceManager;
 use CommonBundle\Component\Redis\Client;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use Laminas\ServiceManager\ServiceLocatorInterface;
 use RuntimeException;
 
 /**
@@ -29,14 +28,5 @@ class ClientFactory implements FactoryInterface
         }
 
         return new Client($config['redis']);
-    }
-
-    /**
-     * @param  ServiceLocatorInterface $locator
-     * @return Client
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        return $this($serviceLocator, 'CommonBundle\Component\Redis\Client');
     }
 }

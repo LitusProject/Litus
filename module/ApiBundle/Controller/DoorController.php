@@ -2,6 +2,7 @@
 
 namespace ApiBundle\Controller;
 
+use CommonBundle\Component\Controller\ActionController;
 use CommonBundle\Entity\User\Person\Academic;
 use DoorBundle\Entity\Log;
 use Laminas\View\Model\ViewModel;
@@ -93,6 +94,38 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
             array(
                 'result' => (object) array('status' => 'success'),
             )
+        );
+    }
+
+    public function getUsernameAction()
+    {
+        if (!$this->getRequest()->isPost()) {
+            return $this->error(405, 'This endpoint can only be accessed through POST');
+        }
+        $userData = $this->getRequest()->getPost('userData');
+        $seperatedString = explode(';', $userData);
+
+        if ($seperatedString[1] === '') {
+            return new ViewModel(
+                array(
+                    'result' => (object) array(
+                        'status' => 'error',
+                        'reason' => 'toShort',
+                    ),
+                ),
+            );
+        }
+
+        $actionController = new ActionController();
+        $rNumber = $actionController->getRNumberAPI($seperatedString[0], $seperatedString[1], $this->getEntityManager());
+
+        return new ViewModel(
+            array(
+                'result' => (object) array(
+                    'status' => 'success',
+                    'person' => $rNumber,
+                ),
+            ),
         );
     }
 

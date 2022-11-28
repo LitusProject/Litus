@@ -65,6 +65,9 @@ return array(
         'cudi_admin_sales_session_openinghour' => array(
             'add', 'edit', 'delete', 'manage', 'old',
         ),
+        'cudi_admin_sales_session_message' => array(
+            'add', 'edit', 'delete', 'manage',
+        ),
         'cudi_admin_special_action' => array(
             'manage', 'irreeel',
         ),
@@ -154,6 +157,9 @@ return array(
         ),
         'cudi_retail' => array(
             'overview', 'deal', 'myDeals', 'myRetails', 'deleteRetail', 'deleteDeal','articleTypeahead', 'recommendedRetails'
+        ),
+        'cudi_printer' => array(
+            'view', 'pay', 'payed',
         ),
     ),
 );

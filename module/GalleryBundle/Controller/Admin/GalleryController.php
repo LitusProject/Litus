@@ -2,6 +2,7 @@
 
 namespace GalleryBundle\Controller\Admin;
 
+use CalendarBundle\Entity\Node\Event;
 use GalleryBundle\Entity\Album;
 use GalleryBundle\Entity\Album\Photo;
 use Imagick;
@@ -205,6 +206,64 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function uploadPosterAction()
+    {
+        $album = $this->getAlbumEntity();
+        if ($album === null) {
+            return new ViewModel();
+        }
+
+        $form = $this->getForm('gallery_album_poster');
+        if ($this->getRequest()->isPost()) {
+
+            $form->setData(
+                array_merge_recursive(
+                    $this->getRequest()->getPost()->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
+
+            if ($form->isValid()) {
+                $formData = $form->getData();
+
+                $this->receive($formData['poster'], $album);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The event\'s poster has successfully been updated!'
+                );
+
+                return new ViewModel(
+                    array(
+                        'status' => 'success',
+                        'info'   => array(
+                            'info' => array(
+                                'name' => $album->getPoster(),
+                            ),
+                        ),
+                    )
+                );
+            } else {
+                return new ViewModel(
+                    array(
+                        'status' => 'error',
+                        'form'   => array(
+                            'errors' => $form->getMessages(),
+                        ),
+                    )
+                );
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'status' => 'error',
+            )
+        );
+    }
+
     public function uploadAction()
     {
         if ($this->getRequest()->isPost()) {
@@ -319,6 +378,54 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                 ),
             )
         );
+    }
+
+    public function editPosterAction()
+    {
+        $album = $this->getAlbumEntity();
+        if ($album === null) {
+            return new ViewModel();
+        }
+
+        $form = $this->getForm('gallery_album_poster');
+        $form->setAttribute(
+            'action',
+            $this->url()->fromRoute(
+                'gallery_admin_gallery',
+                array(
+                    'action' => 'uploadPoster',
+                    'id'     => $album->getId(),
+                )
+            )
+        );
+
+        return new ViewModel(
+            array(
+                'album' => $album,
+                'form'  => $form,
+            )
+        );
+    }
+
+    private function receive($file, Album $album)
+    {
+        $filePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('gallery.path');
+
+        $image = new Imagick($file['tmp_name']);
+        $image->thumbnailImage(380, 200, true);
+
+        if ($album->getPoster() != '' || $album->getPoster() !== null) {
+            $fileName = '/' . $album->getPoster();
+        } else {
+            do {
+                $fileName = '/' . sha1(uniqid());
+            } while (file_exists($filePath . $fileName));
+        }
+        $image->writeImage($filePath . $fileName);
+
+        $album->setPoster($fileName);
     }
 
     public function censorPhotoAction()

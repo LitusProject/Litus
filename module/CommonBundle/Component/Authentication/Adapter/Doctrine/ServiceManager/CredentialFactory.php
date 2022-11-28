@@ -6,7 +6,6 @@ use CommonBundle\Component\Authentication\Adapter\Doctrine\Credential;
 use CommonBundle\Entity\User\Person;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use Laminas\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Factory to instantiate a Doctrine credential adapter.
@@ -28,14 +27,5 @@ class CredentialFactory implements FactoryInterface
             Person::class,
             'username'
         );
-    }
-
-    /**
-     * @param  ServiceLocatorInterface $locator
-     * @return Credential
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        return $this($serviceLocator, 'CommonBundle\Component\Authentication\Adapter\Doctrine\Credential');
     }
 }

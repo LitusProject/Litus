@@ -119,6 +119,27 @@ class Ticket
     private $orderId;
 
     /**
+     * @var string Unique identifier for QR code of the ticket
+     *
+     * @ORM\Column(name="qr_code", type="text", unique=true, nullable=true)
+     */
+    private $qrCode;
+
+    /**
+     * @var string The amount of the ticket
+     *
+     * @ORM\Column(name="amount", type="text", nullable=true)
+     */
+    private $amount;
+
+    /**
+     * @var string the university mail. This is needed for the uniflow printer
+     *
+     * @ORM\Column(name="university_mail", type="text", nullable=true)
+     */
+    private $universityMail;
+
+    /**
      * @param EntityManager  $em
      * @param Event          $event
      * @param string         $status
@@ -461,5 +482,65 @@ class Ticket
         }
 
         return number_format($price / 100, 2);
+    }
+
+    /**
+     * @return string
+     */
+    public function getQrCode()
+    {
+        return $this->qrCode;
+    }
+
+    /**
+     * @return self
+     */
+    public function setQrCode()
+    {
+        if ($this->status === 'sold' && $this->qrCode === null) {
+            try {
+                $this->qrCode = bin2hex(random_bytes(10));
+            } catch (\Exception $e) {
+                echo 'Something went wrong with setting the QR code';
+            }
+        }
+
+//        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAmount()
+    {
+        return $this->amount;
+    }
+
+    /**
+     * @param $amount
+     * @return self
+     */
+    public function setAmount($amount)
+    {
+        $this->amount = $amount;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUniversityMail()
+    {
+        return $this->universityMail;
+    }
+
+    /**
+     * @param $mail
+     * @return self
+     */
+    public function setUniversityMail($mail)
+    {
+        $this->universityMail = $mail;
+        return $this;
     }
 }

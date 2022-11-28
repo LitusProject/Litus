@@ -42,6 +42,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'profilePath'        => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
+                'videos'             => $this->getVideos(),
             )
         );
     }
@@ -213,6 +214,12 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour')
             ->findPeriodFromNow('P14D');
 
+        $messages = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Session\Message')
+            ->findAllActive();
+
+        $cudi['messages'] = $messages;
+
         return $cudi;
     }
 
@@ -311,6 +318,8 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         $pocers = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Poc')
             ->findPocersByAcademicAndAcademicYear($academic, $currentAcademicYear);
+
+//        die(var_dump(count($pocers)));
         $lastPocGroup = null;
         $pocGroupList = array();
         $pocItem = array();
@@ -377,5 +386,19 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         return $academic;
+    }
+
+    private function getVideos()
+    {
+        $videos = $this->getEntityManager()
+            ->getRepository('PublicationBundle\Entity\Video')
+            ->findAllOnHomePageQuery()
+            ->getResult();
+
+        foreach ($videos as $video) {
+            $video->setUrl($video->getEmbedUrl());
+        }
+
+        return $videos;
     }
 }

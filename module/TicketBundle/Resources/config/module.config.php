@@ -26,6 +26,7 @@ return Config::create(
                 'numbertickets'     => Component\Validator\NumberTickets::class,
                 'numberTickets'     => Component\Validator\NumberTickets::class,
                 'NumberTickets'     => Component\Validator\NumberTickets::class,
+                'NumberTicketsGuest' => Component\Validator\NumberTicketsGuest::class,
                 'InvoiceId'         => Component\Validator\InvoiceId::class,
                 'invoiceId'         => Component\Validator\InvoiceId::class,
                 'invoiceid'         => Component\Validator\InvoiceId::class,

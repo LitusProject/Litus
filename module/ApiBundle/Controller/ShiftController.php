@@ -164,7 +164,7 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
                     $message = $mailData[$language->getAbbrev()]['content'];
                     $subject = $mailData[$language->getAbbrev()]['subject'];
 
-                    $shiftString = $shift->getName() . ' from ' . $shift->getStartDate()->format('d/m/Y h:i') . ' to ' . $shift->getEndDate()->format('d/m/Y h:i');
+                    $shiftString = $shift->getName() . ' from ' . $shift->getStartDate()->format('d/m/Y H:i') . ' to ' . $shift->getEndDate()->format('d/m/Y H:i');
 
                     $mail = new Message();
                     $mail->setBody(str_replace('{{ shift }}', $shiftString, $message))

@@ -6,7 +6,6 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\Version\Version;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use Laminas\ServiceManager\ServiceLocatorInterface;
 use Raven_ErrorHandler;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\ConsoleEvents;
@@ -46,15 +45,6 @@ class ApplicationFactory implements FactoryInterface
         $this->addCommands($application, $container);
 
         return $application;
-    }
-
-    /**
-     * @param  ServiceLocatorInterface $locator
-     * @return Application
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        return $this($serviceLocator, 'CommonBundle\Component\Console');
     }
 
     /**

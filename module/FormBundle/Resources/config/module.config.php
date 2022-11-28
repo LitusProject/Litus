@@ -3,6 +3,7 @@
 namespace FormBundle;
 
 use CommonBundle\Component\Module\Config;
+use TicketBundle\Component\Validator\NumberTicketsGuest;
 
 return Config::create(
     array(
@@ -26,6 +27,7 @@ return Config::create(
                 'timeslot'      => Component\Validator\TimeSlot::class,
                 'timeSlot'      => Component\Validator\TimeSlot::class,
                 'TimeSlot'      => Component\Validator\TimeSlot::class,
+                'NumberTicketsGuest' => NumberTicketsGuest::class,
             ),
         ),
     )

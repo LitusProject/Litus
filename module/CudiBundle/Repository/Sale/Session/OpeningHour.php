@@ -148,4 +148,26 @@ class OpeningHour extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    /**
+     * @param $start DateTime
+     * @param $end DateTime
+     * @return \Doctrine\ORM\Query
+     */
+    public function findBetweenQuery($start, $end)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('o')
+            ->from('CudiBundle\Entity\Sale\Session\OpeningHour', 'o')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gt('o.endDate', ':start'),
+                    $query->expr()->lt('o.endDate', ':end')
+                )
+            )
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
+            ->orderBy('o.startDate')
+            ->getQuery();
+    }
 }

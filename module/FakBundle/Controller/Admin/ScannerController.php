@@ -55,7 +55,6 @@ class ScannerController extends \CommonBundle\Component\Controller\ActionControl
 
     public function deleteAllAction()
     {
-        die("in delete all");
         $allCheckins = $this->getEntityManager()
             ->getRepository('FakBundle\Entity\Scanner')
             ->findAll();

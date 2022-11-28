@@ -16,22 +16,23 @@
             </div>
 
             <div style="height: 15px"></div>
-            <h4>{{ translate('Studies') }}:
-                {% for study in studies %}
-                    {{ study.getTitle() }}{% if loop.index0 >0 %} - {% endif %}
-                {% endfor %}
-            </h4>
+            <h4>{{ translate('Studies') }}: </h4>
+
+                    {% for study in studies %}
+                        {{ study.getStudy().getTitle() }}{% if loop.index0 >0 %} - {% endif %} <br>
+                    {% endfor %}
+
             <div style="height: 30px"></div>
 
             <div class="columnGrid">
                 <div class="semester-left">
                     <h5>Semester 1</h5>
                     {% for subject in subjects %}
-                        {% if subject.getSemester() == 1 %}
+                        {% if subject.getSubject().getSemester() == 1 %}
                             <div class="itemHolder">
-                                <p>{{ subject.getName() }}</p>
+                                <p>{{ subject.getSubject().getName() }}</p>
                                 <div class="flexStretch"></div>
-                                <p style="opacity: 50%">{{ subject.getCode() }}</p>
+                                <p style="opacity: 50%">{{ subject.getSubject().getCode() }}</p>
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -39,11 +40,11 @@
                 <div class="semester-right">
                     <h5>Semester 2</h5>
                     {% for subject in subjects %}
-                        {% if subject.getSemester() == 2 %}
+                        {% if subject.getSubject().getSemester() == 2 %}
                             <div class="itemHolder">
-                                <p>{{ subject.getName() }}</p>
+                                <p>{{ subject.getSubject().getName() }}</p>
                                 <div class="flexStretch"></div>
-                                <p style="opacity: 50%">{{ subject.getCode() }}</p>
+                                <p style="opacity: 50%">{{ subject.getSubject().getCode() }}</p>
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -52,11 +53,11 @@
             <div>
                 <h5>{{ translate('Year-long Subjects') }}</h5>
                 {% for subject in subjects %}
-                    {% if subject.getSemester() == 3 %}
+                    {% if subject.getSubject().getSemester() == 3 %}
                         <div class="itemHolder">
-                            <p>{{ subject.getName() }}</p>
+                            <p>{{ subject.getSubject().getName() }}</p>
                             <div class="flexStretch"></div>
-                            <p style="opacity: 50%">{{ subject.getCode() }}</p>
+                            <p style="opacity: 50%">{{ subject.getSubject().getCode() }}</p>
                         </div>
                     {% endif %}
                 {% endfor %}
@@ -267,7 +268,7 @@
 
         <div id="modalSignature" class="modal fade">
 
-            <div class="modal-dialog" style="width:40%;">
+            <div class="modal-dialog" style="width:30%;">
                 <div class="modal-content">
                     <div class="modal-header">
                         <a class="close" data-dismiss="modal">&times;</a>
@@ -292,7 +293,7 @@
                             </div>
                         </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary" id="rawHTML" style="float: left;">Genereer raw HTML</button><br><br>
+                        <button class="btn btn-primary" id="rawHTML" style="float: left;">Genereer raw HTML</button><br>
                         <label for="rawHTML" style="font-size: 14px; float: left">(je kan de handtekening ook rechtstreeks kopiëren)</label>
                     </div>
                 </div>
@@ -339,7 +340,7 @@
 
             igCheckbox.addEventListener('change', (event) => {
                 if (event.target.checked) {
-                    socialMedia.innerHTML += '<!-- ### INSTA BUTTON ### --><a id = "igSpot" href = "https://www.instagram.com/vtkleuven/" style = "border-width:0px; border:0px; text-decoration: none"><img width = "20" height = "20" style = "border: none; width: 20px; max-width: 25px !important; height: 20px; max-height: 20px !important;" src = "https://cdn.icon-icons.com/icons2/1211/PNG/512/1491579602-yumminkysocialmedia36_83067.png"> </a>';
+                    socialMedia.innerHTML += '<!-- ### INSTA BUTTON ### --><a id = "igSpot" href = "https://www.instagram.com/vtkleuven/" style = "border-width:0px; border:0px; text-decoration: none"><img width = "20" height = "20" style = "border: none; width: 20px; max-width: 25px !important; height: 20px; max-height: 20px !important;" src = "https://blog-assets.hootsuite.com/wp-content/uploads/2018/09/glyph-logo_May2016-150x150.png"> </a>';
                 } else {
                     socialMedia.removeChild(document.getElementById("igSpot"));
                 }

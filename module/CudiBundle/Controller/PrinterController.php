@@ -54,7 +54,8 @@ class PrinterController extends \CommonBundle\Component\Controller\ActionControl
                         'non_member' => 1,
                     );
 
-                    $booked_tickets = TicketBook::book(
+
+                    $booked_ticket = TicketBook::book(
                         $event,
                         $numbers,
                         false,
@@ -62,10 +63,17 @@ class PrinterController extends \CommonBundle\Component\Controller\ActionControl
                         null,
                         $guestInfo,
                     );
-
+                    
+                    $booked_ticket[0]->setAmount($amount);
+                    $booked_ticket[0]->setUniversityMail($universityMail);
                     $this->getEntityManager()->flush();
 
-                    $this->redirect()->toUrl('');
+                    $payLinkDomain = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('ticket.pay_link_domain');
+                    $payLink = 'https://vtk.be' . '/cudi/printer/pay/' . $booked_ticket[0]->getId() . '/code/' . $booked_ticket[0]->getNumber();
+
+                    $this->redirect()->toUrl($payLink);
                 }
             }
         } else {
@@ -138,6 +146,7 @@ class PrinterController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         $link = $this->generatePayLink($ticket);
+
         $this->redirect()->toUrl($link);
 
         return new ViewModel();
@@ -202,6 +211,8 @@ class PrinterController extends \CommonBundle\Component\Controller\ActionControl
         } else {
             $ticket->setStatus('sold');
             $this->runPowershell($ticket);
+
+            $this->getSentryClient()->logMessage("Printer set sold, after powershell: " . $ticket->getId());
 
             $this->flashMessenger()->success(
                 'Success',

@@ -5,6 +5,7 @@ namespace ShopBundle\Controller;
 use DateInterval;
 use DateTime;
 use Laminas\View\Model\ViewModel;
+use ShopBundle\Entity\History;
 use ShopBundle\Entity\Reservation;
 use ShopBundle\Entity\Session as SalesSession;
 
@@ -184,6 +185,118 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             )
         );
 
+        return new ViewModel();
+    }
+
+    public function consumeAction()
+    {
+        $form = $this->getForm('shop_shop_consume');
+        $salesSession = $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\Session')
+            ->findOneById($this->getParam('id'));
+
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->getRequest()->getPost());
+            if ($form->isValid()) {
+                $username = $form->getData()['username'];
+                if ((str_contains($username, ';')) && (strlen($username) == 25)) {
+                    $seperatedString = explode(';', $username);
+                    $rNumber = $this->getRNumberAPI($seperatedString[0], $seperatedString[1], $this->getEntityManager());
+                    $reservations = $this->getEntityManager()
+                        ->getRepository('ShopBundle\Entity\Reservation')
+                        ->getAllReservationsByUsernameAndSalesSessionQuery($rNumber, $salesSession)->getResult();
+                } else {
+                    $reservations = $this->getEntityManager()
+                        ->getRepository('ShopBundle\Entity\Reservation')
+                        ->getAllReservationsByUsernameAndSalesSessionQuery($username, $salesSession)->getResult();
+                }
+
+                if ($reservations[0] === null) {
+                    return new ViewModel(
+                        array(
+                            'noEntity' => 'No consumptions were found',
+                            'form' => $this->getForm('shop_shop_consume'),
+                        )
+                    );
+                } else {
+                    $consumed = $reservations[0]->getConsumed();
+                    foreach ($reservations as $reservation) {
+                        $reservation->setConsumed(true);
+                    }
+                    $this->getEntityManager()->flush();     // Sends cache to database
+
+                    return new ViewModel(
+                        array(
+                            'reservations' => $reservations,
+                            'consumed' => $consumed,
+                            'form' => $form,
+                            'session' => $salesSession
+                        )
+                    );
+                }
+            }
+        }
+        return new ViewModel(
+            array(
+                'session' => $salesSession,
+                'form' => $form,
+            )
+        );
+    }
+
+    public function rewardAction()
+    {
+        $salesSession = $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\Session')
+            ->findOneById($this->getParam('id'));
+
+        if (!$salesSession->getReward()) {
+            $numberRewards = $salesSession->getAmountRewards()? $salesSession->getAmountRewards(): 3;
+            $allReservations = $this->getEntityManager()
+                ->getRepository('ShopBundle\Entity\Reservation')
+                ->findBySalesSessionQuery($salesSession)
+                ->getResult();
+            if (count($allReservations) > $numberRewards) {
+                for ($i = 0; $i < $numberRewards; $i++) {
+                    $rNumber = $allReservations[array_rand($allReservations)]->getPerson()->getUsername();
+                    $reservations = $this->getEntityManager()
+                        ->getRepository('ShopBundle\Entity\Reservation')
+                        ->getAllReservationsByUsernameAndSalesSessionQuery($rNumber, $salesSession)->getResult();
+                    while ($reservations[0]->getReward() && $reservations[0]->getConsumed()) {
+                        $rNumber = $allReservations[array_rand($allReservations)]->getPerson()->getUsername();
+                        $reservations = $this->getEntityManager()
+                            ->getRepository('ShopBundle\Entity\Reservation')
+                            ->getAllReservationsByUsernameAndSalesSessionQuery($rNumber, $salesSession)->getResult();
+                    }
+
+                    foreach ($reservations as $reservation) {
+                        $reservation->setReward(true);
+                    }
+                }
+            } else {
+                $allReservations = $this->getEntityManager()
+                    ->getRepository('ShopBundle\Entity\Reservation')
+                    ->findBySalesSessionQuery($salesSession)
+                    ->getResult();
+
+                foreach ($allReservations as $reservation) {
+                    $reservation->setReward(true);
+                }
+            }
+            $salesSession->setReward(true);
+            $this->flashMessenger()->success('Succes', $this->getTranslator()->translate('The rewards are now randomized'));
+        } else {
+            $this->flashMessenger()->error('Error', $this->getTranslator()->translate('The rewards are already randomized'));
+        }
+        $this->getEntityManager()->flush();
+
+        $this->redirect()->toRoute(
+            'shop',
+            array(
+                'action' => 'consume',
+                'id'     => $salesSession->getId()
+            )
+        );
         return new ViewModel();
     }
 
