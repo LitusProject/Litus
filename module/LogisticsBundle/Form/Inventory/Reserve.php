@@ -2,8 +2,15 @@
 
 namespace LogisticsBundle\Form\Inventory;
 
+use LogisticsBundle\Entity\Inventory as InventoryEntity;
+
 class Reserve extends \CommonBundle\Component\Form\Bootstrap\Form
 {
+
+    /**
+     * @var InventoryEntity|null
+     */
+    protected $inventory;
 
     public function init()
     {

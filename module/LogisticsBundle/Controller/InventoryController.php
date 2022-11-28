@@ -150,8 +150,6 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
-
-
             if ($form->isValid()) {
                 $this->getEntityManager()->flush(); // Sends cache to database
 
@@ -160,6 +158,7 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
                 );
             }
         }
+
         return new ViewModel(
             array(
                 'form' => $form,
@@ -172,5 +171,23 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
             ->getRepository('LogisticsBundle\Entity\Inventory')
             ->findOneById($this->getParam('id'));
         $form = $this->getForm('logistics_inventory_reserve');
+
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->getRequest()->getPost());
+            if ($form->isValid()) {
+                $this->getEntityManager()->flush(); // Sends cache to database
+
+                $this->redirect()->toRoute(
+                    'logistics_inventory'
+                );
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'inventory' => $inventory,
+            )
+        );
     }
 }
