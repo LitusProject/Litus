@@ -166,4 +166,11 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
             )
         );
     }
+
+    public function reserveAction(){
+        $inventory = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Inventory')
+            ->findOneById($this->getParam('id'));
+        $form = $this->getForm('logistics_inventory_reserve');
+    }
 }
