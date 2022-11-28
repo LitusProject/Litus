@@ -65,4 +65,5 @@ return array(
     'Flexibility'                                                                                                                                                                          => 'Flexibility',
     'Proffesionaliteit'                                                                                                                                                                    => 'Professionalism & Quality',
     'bedrijvenrelaties'                                                                                                                                                                    => 'Corporate Relations',
+    'My Profile'                                                                                                                                                                           => 'My Profile',
 );
