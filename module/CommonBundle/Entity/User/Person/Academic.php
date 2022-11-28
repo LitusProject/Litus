@@ -4,6 +4,7 @@ namespace CommonBundle\Entity\User\Person;
 
 use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
 use CommonBundle\Entity\General\Address;
+use CommonBundle\Entity\User\Preference;
 use CommonBundle\Entity\User\Status\University as UniversityStatus;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -110,6 +111,13 @@ class Academic extends \CommonBundle\Entity\User\Person
      */
     private $unitMap;
 
+    /**
+     * @var ArrayCollection The user's newsletter preferences
+     *
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Preference", mappedBy="person", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $preferences;
+
     public function __construct()
     {
         parent::__construct();
@@ -117,6 +125,7 @@ class Academic extends \CommonBundle\Entity\User\Person
         $this->universityStatuses = new ArrayCollection();
         $this->organizationMap = new ArrayCollection();
         $this->unitMap = new ArrayCollection();
+        $this->preferences = new ArrayCollection();
     }
 
     /**
@@ -440,5 +449,45 @@ class Academic extends \CommonBundle\Entity\User\Person
         }
 
         return $roles;
+    }
+
+    /**
+     * @param  Preference $preference
+     * @return self
+     */
+    public function addPreference(Preference $preference)
+    {
+        $this->preferences->add($preference);
+
+        return $this;
+    }
+
+    /**
+     * @param  Preference $preference
+     * @return self
+     */
+    public function removePreference(Preference $preference)
+    {
+        $this->preferences->removeElement($preference);
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
+    public function removeAllPreferences()
+    {
+        $this->preferences = new ArrayCollection();
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getPreferences()
+    {
+        return $this->preferences->toArray();
     }
 }

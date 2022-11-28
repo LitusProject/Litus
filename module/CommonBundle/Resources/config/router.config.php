@@ -322,6 +322,19 @@ return array(
                 ),
             ),
         ),
+        'common_contact' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '[/:language]/contact[/:action][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'common_contact',
+                    'action'     => 'index',
+                ),
+            ),
+        ),
 
     ),
 
@@ -339,7 +352,7 @@ return array(
         'common_admin_visit'    => 'CommonBundle\Controller\Admin\VisitController',
         'common_admin_faq'      => 'CommonBundle\Controller\Admin\FAQController',
 
-
+        'common_contact'        => 'CommonBundle\Controller\ContactController',
         'common_index'          => 'CommonBundle\Controller\IndexController',
         'common_account'        => 'CommonBundle\Controller\AccountController',
         'common_session'        => 'CommonBundle\Controller\SessionController',

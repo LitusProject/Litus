@@ -54,6 +54,7 @@ class PrinterController extends \CommonBundle\Component\Controller\ActionControl
                         'non_member' => 1,
                     );
 
+
                     $booked_ticket = TicketBook::book(
                         $event,
                         $numbers,
@@ -62,6 +63,7 @@ class PrinterController extends \CommonBundle\Component\Controller\ActionControl
                         null,
                         $guestInfo,
                     );
+                    
                     $booked_ticket[0]->setAmount($amount);
                     $booked_ticket[0]->setUniversityMail($universityMail);
                     $this->getEntityManager()->flush();
@@ -111,6 +113,7 @@ class PrinterController extends \CommonBundle\Component\Controller\ActionControl
                     $booked_ticket[0]->setAmount($amount);
                     $booked_ticket[0]->setUniversityMail($universityMail);
                     $this->getEntityManager()->flush();
+
                     $payLinkDomain = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('ticket.pay_link_domain');
@@ -143,7 +146,7 @@ class PrinterController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         $link = $this->generatePayLink($ticket);
-        
+
         $this->redirect()->toUrl($link);
 
         return new ViewModel();

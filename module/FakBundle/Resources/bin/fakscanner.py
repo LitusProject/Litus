@@ -29,7 +29,6 @@ display.lcd_clear()
 display.lcd_display_string("    Scan je     ", 1)
 display.lcd_display_string(" studentenkaart ", 2)
 
-
 def get_bearer_token():
     client_id = config.client_id
     client_secret = config.client_secret

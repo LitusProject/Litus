@@ -39,13 +39,16 @@ return array(
             'add', 'delete', 'edit', 'manage', 'search', 'typeahead'
         ),
         'common_account' => array(
-            'activate', 'edit', 'index', 'profile', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'uploadProfileImage',
+            'activate', 'edit', 'index', 'profile', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'uploadProfileImage', 'preferences', 'savePreferences'
         ),
         'common_session' => array(
             'manage', 'expire',
         ),
         'common_auth' => array(
             'login', 'logout', 'shibboleth',
+        ),
+        'common_contact' => array(
+            'index',
         ),
         'common_index' => array(
             'index',

@@ -17,6 +17,7 @@
                 </div>
             </div>
         {%  endif %}
+
         {% if reservations != null %}
             <div class="content">
                 Broodje(s) voor {{ reservations[0].getPerson().getFirstName }}
@@ -87,4 +88,3 @@
         });
     </script>
 {% endblock %}
-
