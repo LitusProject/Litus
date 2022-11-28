@@ -266,9 +266,10 @@ return array(
         'logistics_inventory' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '[/:language]/logistics/inventory[/:action][/:id][/page/:page][/]',
+                'route'       => '[/:language]/logistics/inventory[/:action[/page/:page][/:id]][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'       => '[0-9]*',
                     'language' => '(en|nl)',
                     'page'     => '[0-9]*',
                 ),
