@@ -2,9 +2,16 @@
 
 namespace LogisticsBundle\Form\Inventory;
 
+use LogisticsBundle\Entity\Inventory as InventoryEntity;
+
 class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     protected $hydrator = 'LogisticsBundle\Hydrator\Inventory';
+
+    /**
+     * @var InventoryEntity|null
+     */
+    protected $inventory;
 
     public function init()
     {
@@ -85,11 +92,27 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
                 ),
                 'attributes' => array(
                     'id'           => 'expiry_date',
-                    'placeholder'  => 'Expiry Date',
+                    'placeholder'  => 'Expiry date',
+                    'value'        => '',
                 ),
             )
         );
 
         $this->addSubmit('Add/Subtract', 'inventory_add');
+
+        if ($this->inventory !== null) {
+            $this->bind($this->inventory);
+        }
+    }
+
+    /**
+     * @param  InventoryEntity $inventory
+     * @return self
+     */
+    public function setInventory(InventoryEntity $inventory)
+    {
+        $this->inventory = $inventory;
+
+        return $this;
     }
 }

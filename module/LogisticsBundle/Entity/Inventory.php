@@ -43,6 +43,13 @@ class Inventory
     private $amount;
 
     /**
+     * @var integer The amount reserved
+     *
+     * @ORM\Column(name="reserved", type="integer", nullable=true)
+     */
+    private $reserved;
+
+    /**
      * @var string The expiry date
      *
      * @ORM\Column(name="expiry_date", type="string", nullable=true)
@@ -136,6 +143,47 @@ class Inventory
     public function subtractAmount($amount)
     {
         $this->amount += $amount;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getReserved()
+    {
+        return $this->reserved;
+    }
+
+    /**
+     * @param $reserved
+     * @return self
+     */
+    public function setReserved($reserved)
+    {
+        $this->reserved = $reserved;
+        $this->amount -= $reserved;
+        return $this;
+    }
+
+    /**
+     * @param $reserved
+     * @return self
+     */
+    public function addReserved($reserved)
+    {
+        $this->reserved += $reserved;
+        $this->amount -= $reserved;
+        return $this;
+    }
+
+    /**
+     * @param $reserved
+     * The amount provided is a negative amount, so addition has to be done
+     * @return self
+     */
+    public function subtractReserved($reserved)
+    {
+        $this->reserved += $reserved;
         return $this;
     }
 
