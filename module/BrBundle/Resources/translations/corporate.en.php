@@ -76,4 +76,5 @@ return array(
     'rejected'                                                                                                                                                                             => 'rejected',
     'currently listed on our website'                                                                                                                                                      => 'currently listed on our website',
     'bedrijvenrelaties'                                                                                                                                                                    => 'Corporate Relations',
+    'My Profile'                                                                                                                                                                           => 'My Profile',
 );
