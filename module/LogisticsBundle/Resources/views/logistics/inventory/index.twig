@@ -22,10 +22,10 @@
             <table class="table table-striped inventory">
                 <tr>
                     <th style="width: 30%">Name</th>
-                    <th style="width: 30%">Barcode</th>
-                    <th style="width: 20%">Amount</th>
-                    <th style="width: 20%">Expiry Date</th>
-{#                    <th width="70px">Actions</th>#}
+                    <th style="width: 20%">Barcode</th>
+                    <th style="width: 15%">Amount</th>
+                    <th style="width: 15%">Expiry Date</th>
+                    <th style="width: 15%">Actions</th>
                 </tr>
             </table>
         </div>
@@ -35,10 +35,10 @@
                 <thead>
                 <tr>
                     <th style="width: 30%">Name</th>
-                    <th style="width: 30%">Barcode</th>
-                    <th style="width: 20%">Amount</th>
-                    <th style="width: 20%">Expiry Date</th>
-{#                    <th width="70px">Actions</th>#}
+                    <th style="width: 20%">Barcode</th>
+                    <th style="width: 15%">Amount</th>
+                    <th style="width: 15%">Expiry Date</th>
+                    <th style="width: 15%">Actions</th>
                 </tr>
                 </thead>
                 {% for article in paginator %}
@@ -48,14 +48,12 @@
                         <td>{{ article.getBarcode() }}</td>
                         <td>{{ article.getAmount() }}</td>
                         <td>{{ article.getExpiryDate() }}</td>
-{#                        <td class="actions">#}
-{#                            {% if hasAccess('logistics_admin_inventory', 'edit') %}#}
-{#                                <a href="{{ url('logistics_admin_inventory', {"action": "edit", "id": article.getId()}) }}" class="edit">Edit</a>#}
-{#                            {% endif %}#}
+                        <td class="actions">
+                            <a href="{{ url('logistics_inventory', {"action": "edit", "id": article.getId()}) }}" class="edit">Edit</a>
 {#                            {% if hasAccess('logistics_admin_inventory', 'delete') %}#}
 {#                                <a href="#" class="delete" data-id="{{ article.getId() }}" data-name="{{ article.getName() }}">Delete</a>#}
 {#                            {% endif %}#}
-{#                        </td>#}
+                        </td>
                     </tr>
 
                 {% endfor %}
