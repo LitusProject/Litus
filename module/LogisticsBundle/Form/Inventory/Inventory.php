@@ -2,14 +2,16 @@
 
 namespace LogisticsBundle\Form\Inventory;
 
+use LogisticsBundle\Entity\Inventory as InventoryEntity;
+
 class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     protected $hydrator = 'LogisticsBundle\Hydrator\Inventory';
 
     /**
-     * @var inventory The session to edit.
+     * @var InventoryEntity|null
      */
-    private $inventory;
+    protected $inventory;
 
     public function init()
     {
@@ -97,5 +99,20 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
         );
 
         $this->addSubmit('Add/Subtract', 'inventory_add');
+
+        if ($this->inventory !== null) {
+            $this->bind($this->inventory);
+        }
+    }
+
+    /**
+     * @param  InventoryEntity $inventory
+     * @return self
+     */
+    public function setInventory(InventoryEntity $inventory)
+    {
+        $this->inventory = $inventory;
+
+        return $this;
     }
 }

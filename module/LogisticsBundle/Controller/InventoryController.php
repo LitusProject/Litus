@@ -142,21 +142,27 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
 
     public function editAction()
     {
-        $form = $this->getForm('logistics_inventory_edit');
-
         $inventory = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Inventory')
             ->findOneById($this->getParam('id'));
-        #
+        $form = $this->getForm('logistics_inventory_edit', array('inventory' => $inventory));
+
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
+
+
             if ($form->isValid()) {
-                $form->hydrateObject($inventory);
                 $this->getEntityManager()->flush(); // Sends cache to database
+
                 $this->redirect()->toRoute(
                     'logistics_inventory'
                 );
             }
         }
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
     }
 }

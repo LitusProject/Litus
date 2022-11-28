@@ -49,9 +49,7 @@
                         <td>{{ article.getAmount() }}</td>
                         <td>{{ article.getExpiryDate() }}</td>
                         <td class="actions">
-                            {% if hasAccess('logistics_admin_inventory', 'edit') %}
-                                <a href="{{ url('logistics_admin_inventory', {"action": "edit", "id": article.getId()}) }}" class="edit">Edit</a>
-                            {% endif %}
+                            <a href="{{ url('logistics_inventory', {"action": "edit", "id": article.getId()}) }}" class="edit">Edit</a>
 {#                            {% if hasAccess('logistics_admin_inventory', 'delete') %}#}
 {#                                <a href="#" class="delete" data-id="{{ article.getId() }}" data-name="{{ article.getName() }}">Delete</a>#}
 {#                            {% endif %}#}

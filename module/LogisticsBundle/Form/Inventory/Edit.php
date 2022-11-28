@@ -10,6 +10,8 @@ namespace LogisticsBundle\Form\Inventory;
 
 class Edit extends \LogisticsBundle\Form\Inventory\Inventory
 {
+    protected $hydrator = 'LogisticsBundle\Hydrator\Inventory';
+
     public function init()
     {
         parent::init();
