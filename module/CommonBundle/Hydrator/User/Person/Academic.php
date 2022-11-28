@@ -31,8 +31,10 @@ class Academic extends \CommonBundle\Hydrator\User\Person
                 'birthday'          => $object->getBirthday() !== null ? $object->getBirthday()->format('d/m/Y') : '',
                 'secondary_address' => $hydratorAddress->extract($object->getSecondaryAddress()),
                 'primary_address'   => $hydratorPrimaryAddress->extract($object->getPrimaryAddress()),
+                // 'preferences'       => $object->getPreferences(),
             )
         );
+        $data['preferences'] = $object->getPreferences();
 
         $data = array_merge(
             $data,
@@ -103,6 +105,12 @@ class Academic extends \CommonBundle\Hydrator\User\Person
                 $object->removeUniversityStatus(
                     $object->getUniversityStatus($academicYear)
                 );
+            }
+        }
+
+        if (isset($data['preferences'])) {
+            foreach ($data['preferences'] as $preference) {
+                $object->addPreference($preference);
             }
         }
 

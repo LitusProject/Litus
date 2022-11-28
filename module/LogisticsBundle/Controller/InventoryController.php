@@ -74,6 +74,7 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
                     return new ViewModel();
                 } else {
                     $amount = $formData['amount'];
+
                     $expiry_date = $formData['expiry_date'];
 
                     if ($amount > 0) {
@@ -139,7 +140,7 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
             )
         );
     }
-
+    
     public function reserveAction()
     {
 

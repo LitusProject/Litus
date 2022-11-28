@@ -21,6 +21,8 @@ return Config::create(
                 'AdminRole'        => Component\Validator\AdminRole::class,
                 'alias'            => Component\Validator\Alias::class,
                 'Alias'            => Component\Validator\Alias::class,
+                'section'          => Component\Validator\Section::class,
+                'Section'          => Component\Validator\Section::class,
                 'entryacademic'    => Component\Validator\Entry\Academic::class,
                 'entryAcademic'    => Component\Validator\Entry\Academic::class,
                 'EntryAcademic'    => Component\Validator\Entry\Academic::class,

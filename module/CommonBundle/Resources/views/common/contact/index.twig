@@ -1,0 +1,32 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="container">
+        <div class="page-header">
+            <h1>Contact</h1>
+        </div>
+
+        <table class="table bookings">
+            <thead>
+            <tr>
+                <th>{{ translate('Email') }}</th>
+                <th style="min-width: 100px">{{ translate('Omschrijving') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for key,value in contactInfo %}
+                Email : {{ key }}
+                Description : {{ value }}
+                <tr>
+                    <td >{% Email %}</td>
+                    <td >{% Description %}</td>
+                </tr>
+                <tr class="spacer">
+                    <td colspan="7"></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+{% endblock %}
