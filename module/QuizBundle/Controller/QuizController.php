@@ -215,6 +215,42 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         }
 
         arsort($totals);
+        $totals_by_index = array();
+        foreach ($totals as $teamid => $total) {
+            $totals_by_index[] = [$teamid, $total];
+        }
+
+        $totals_with_tiebreaker = array();
+        $equal_scores = array();
+        for ($i = 0; $i < count($totals_by_index); $i++) {
+            error_log($i);
+            $equal_scores[] = $totals_by_index[$i];
+            if ($i < count($totals_by_index) - 1 && $totals_by_index[$i + 1][1] == $equal_scores[$i][1]) {
+                continue;
+            } else {
+                if (count($equal_scores) > 1) {
+                    foreach ($tiebreakers as $tiebreaker) {
+                        $correctAnswer = $tiebreaker->getCorrectAnswer();
+                        for ($j = 0; $j < count($equal_scores); $j++) {
+                            $equal_scores[$j][1] = abs($correctAnswer - $tiebreakerAnswers[$equal_scores[$j][0]][$tiebreaker->getId()]);
+                        }
+                        arsort($equal_scores);
+                        //todo check if still equal, if so go to next tiebreaker
+                        break;
+                    }
+                }
+                foreach ($equal_scores as $score) {
+                    $score[1] = $totals[$score[0]];
+                    $totals_with_tiebreaker[] = $score;
+                }
+                $equal_scores = array();
+            }
+        }
+
+        $totals_by_teamid = array();
+        foreach ($totals_with_tiebreaker as $total){
+            $totals_by_teamid[$total[0]] = $total[1];
+        }
 
         $teams_indexed = array();
         foreach ($teams as $team) {
@@ -227,7 +263,8 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
                 'rounds' => $rounds,
                 'teams' => $teams_indexed,
                 'points' => $points,
-                'total_points' => $totals,
+//                'total_points' => $totals,
+                'total_points' => $totals_by_teamid,
                 'tiebreakers' => $tiebreakers,
                 'tiebreaker_answers' => $tiebreakerAnswers,
                 'order' => $this->getRequest()->getQuery('order', 'ASC'),
