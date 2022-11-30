@@ -3,6 +3,7 @@
 namespace SecretaryBundle\Form\Pull;
 
 use CommonBundle\Entity\User\Person;
+use Doctrine\Common\Collections\ArrayCollection;
 use LogicException;
 use RuntimeException;
 use TicketBundle\Entity\Event;
@@ -46,6 +47,24 @@ class Account extends \CommonBundle\Component\Form\Bootstrap\Form
         /**
          * To Do: Add Pull option menu
          */
+        $this->add(
+            array(
+                'type' => 'select',
+                'name' => 'pull',
+                'label' => 'Option',
+                'required' => true,
+                'attributes' => array(
+                    'options' => $this->createPullArray(),
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filter' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
 
         $this->add(
             array(
@@ -94,5 +113,23 @@ class Account extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->person = $person;
 
         return $this;
+    }
+
+    protected function createPullArray()
+    {
+        $options = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Pull')
+            ->findAllAvailableQuery()
+            ->getResult();
+
+        $pullArray = array(
+            '' => '',
+        );
+
+        foreach ($options as $option) {
+            $pullArray[$option->getId()] = $option->getStudyEn();
+        }
+
+        return $pullArray;
     }
 }
