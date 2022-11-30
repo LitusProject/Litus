@@ -2,9 +2,13 @@
 
 namespace SecretaryBundle\Form\Admin\Pull;
 
+use SecretaryBundle\Entity\Pull;
+
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     protected $hydrator = 'SecretaryBundle\Hydrator\Pull';
+
+    protected $pull;
 
     public function init()
     {
@@ -58,5 +62,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         );
 
         $this->addSubmit('Add', 'pull_add');
+
+        if ($this->pull !== null) {
+            $this->bind($this->pull);
+        }
+    }
+
+    public function setPull(Pull $pull) {
+        $this->pull = $pull;
+
+        return $this;
     }
 }

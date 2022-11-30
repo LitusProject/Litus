@@ -66,7 +66,41 @@ class PullController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
+        $pull = $this->getPullEntity();
 
+        if ($pull === null) {
+            return new ViewModel();
+        }
+
+        $form = $this->getForm('secretary_admin_pull_edit', array('pull' => $pull));
+
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->getRequest()->getPost());
+
+            if ($form->isValid()) {
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The pull was succesfully updated!'
+                );
+
+                $this->redirect()->toRoute(
+                    'secretary_admin_pull',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
     }
 
     public function deleteAction()

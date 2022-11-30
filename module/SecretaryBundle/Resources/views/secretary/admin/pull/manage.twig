@@ -36,7 +36,7 @@
                     <tr class="item item--{{ pull.getId() }}">
                         <td>{{ pull.getStudyEn() }}</td>
                         <td>{{ pull.getStudyNl() }}</td>
-                        <td>{{ pull.available ? 'true' : 'false' }}</td>
+                        <td>{{ pull.isAvailable ? 'true' : 'false' }}</td>
                         <td>{{ pull.ordered }}</td>
                         <td class="actions">
                             {% if hasAccess('secretary_admin_pull', 'edit') %}

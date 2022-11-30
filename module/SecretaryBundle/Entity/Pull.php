@@ -103,7 +103,7 @@ class Pull
     /**
      * @return boolean
      */
-    public function available()
+    public function isAvailable()
     {
         return $this->available;
     }
