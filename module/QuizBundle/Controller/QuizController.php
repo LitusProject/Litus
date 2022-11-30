@@ -235,8 +235,22 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
                             $equal_scores[$j][1] = abs($correctAnswer - $tiebreakerAnswers[$equal_scores[$j][0]][$tiebreaker->getId()]);
                         }
                         arsort($equal_scores);
-                        //todo check if still equal, if so go to next tiebreaker
-                        break;
+
+                        $point = $totals[$equal_scores[0][0]];
+                        $still_equal = false;
+                        for ($i = 1; $i < count($equal_scores); $i++) {
+                            $teamid = $equal_scores[$i][0];
+                            $team_points = $totals[$teamid];
+                            if ($team_points == $point) {
+                                $still_equal = true;
+                                break;
+                            } else {
+                                $point = $team_points;
+                            }
+                        }
+                        if (!$still_equal) {
+                            break;
+                        }
                     }
                 }
                 foreach ($equal_scores as $score) {
@@ -248,7 +262,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $totals_by_teamid = array();
-        foreach ($totals_with_tiebreaker as $total){
+        foreach ($totals_with_tiebreaker as $total) {
             $totals_by_teamid[$total[0]] = $total[1];
         }
 

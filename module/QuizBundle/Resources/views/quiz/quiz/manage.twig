@@ -45,7 +45,7 @@
                             <input type="number" step="1"
                                    id="input-{{ team.getId() }}-{{ tiebreaker.getId() }}" data-team="{{ team.getId() }}"
                                    data-tiebreaker="{{ tiebreaker.getId() }}" class="form-control tiebreakerAnswer"
-                                   value="{{ points[team.getId()][tiebreaker.getId()] ?? 0 }}">
+                                   value="{{ tiebreaker_answers[team.getId()][tiebreaker.getId()] ?? 0 }}">
                             <span class="help-block hide">The answer couldn't be saved.</span>
                         </div>
                     </div>
