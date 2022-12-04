@@ -83,6 +83,22 @@ return array(
                 ),
             ),
         ),
+        'secretary_pull' => array(
+            'type' => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route' => '[/:language]/secretary/pull[/:action[/:id[/code/:code]]][/]',
+                'constraints' => array(
+                    'action'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'language'  => '(en|nl)',
+                    'id'        => '[0-9]*',
+                    'code'      => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'secretary_pull',
+                    'action'     => 'view',
+                ),
+            ),
+        ),
         'secretary_admin_working_group' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -125,5 +141,6 @@ return array(
         'secretary_registration'        => 'SecretaryBundle\Controller\RegistrationController',
         'secretary_admin_working_group' => 'SecretaryBundle\Controller\Admin\WorkingGroupController',
         'secretary_admin_pull'          => 'SecretaryBundle\Controller\Admin\PullController',
+        'secretary_pull'                => 'SecretaryBundle\Controller\PullController',
     ),
 );

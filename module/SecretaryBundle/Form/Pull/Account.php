@@ -38,7 +38,7 @@ class Account extends \CommonBundle\Component\Form\Bootstrap\Form
             array(
                 'type' => 'fieldset',
                 'name' => 'spacer',
-                'label' => 'Print Budget',
+                'label' => 'Departmental Pull',
                 'elements' => array(// intentionally empty
                 ),
             )

@@ -52,6 +52,10 @@ class PullController extends \CommonBundle\Component\Controller\ActionController
 
                     $option = $formData['pull'];
 
+                    $pull = $this->getEntityManager()
+                        ->getRepository('SecretaryBundle\Entity\Pull')
+                        ->findOneById($option);
+
                     $numbers = array(
                         'member' => 0,
                         'non_member' => 1,
@@ -66,7 +70,11 @@ class PullController extends \CommonBundle\Component\Controller\ActionController
                         $guestInfo,
                     );
 
-                    $booked_ticket[0]->setAmount(26);
+                    $amount = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('secretary.pull_price');
+
+                    $booked_ticket[0]->setAmount($amount);
                     $this->getEntityManager()->flush();
 
                     $payLinkDomain = $this->getEntityManager()
@@ -98,6 +106,12 @@ class PullController extends \CommonBundle\Component\Controller\ActionController
                         );
                     }
 
+                    $option = $formData['pull'];
+
+                    $pull = $this->getEntityManager()
+                        ->getRepository('SecretaryBundle\Entity\Pull')
+                        ->findOneById($option);
+
                     $booked_ticket = TicketBook::book(
                         $event,
                         $numbers,
@@ -106,7 +120,11 @@ class PullController extends \CommonBundle\Component\Controller\ActionController
                         $person,
                         null,
                     );
-                    $booked_ticket[0]->setAmount(26);
+                    $amount = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('secretary.pull_price');
+
+                    $booked_ticket[0]->setAmount($amount);
 
                     $this->getEntityManager()->flush();
 
