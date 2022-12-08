@@ -75,4 +75,5 @@ return array(
     'rejected'                                                                                                                                                                             => 'geweigerd',
     'currently listed on our website'                                                                                                                                                      => 'momenteel weergegeven op onze website',
     'bedrijvenrelaties'                                                                                                                                                                    => 'Bedrijvenrelaties',
+    'My Profile'                                                                                                                                                                           => 'Mijn Profiel',
 );

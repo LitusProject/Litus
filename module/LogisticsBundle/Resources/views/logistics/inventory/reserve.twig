@@ -1,0 +1,27 @@
+{% extends 'logistics/base.twig' %}
+
+{% block content %}
+    <div> {{ inventory.getA }}</div>
+
+    <div class="container modal-body">
+        {% import 'site/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function (){
+            const amount = document.getElementById('username');
+            amount.value = '';
+            const reserve = document.getElementById('inventory_reserve');
+            amount.focus();
+            $('#amount').keydown( function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault()
+                    reserve.click();
+                }
+            });
+        });
+    </script>
+{% endblock %}

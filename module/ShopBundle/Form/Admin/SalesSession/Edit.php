@@ -37,7 +37,6 @@ class Edit extends \ShopBundle\Form\Admin\SalesSession\Add
                     'attributes' => array(
                         'min'   => '0',
                         'max'   => '100',
-                        'value' => $currentAvailability,
                     ),
                 )
             );
