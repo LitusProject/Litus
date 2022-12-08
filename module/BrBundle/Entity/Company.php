@@ -547,6 +547,13 @@ class Company
         return $this;
     }
 
+    public function activate()
+    {
+        $this->active = true;
+
+        return $this;
+    }
+
     /**
      * @return boolean
      */
