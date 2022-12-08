@@ -73,13 +73,16 @@ class CompanyName extends \CommonBundle\Component\Validator\AbstractValidator
         $company = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
             ->findOneBySlug(Url::createSlug($value));
+        
+        if (!$company->isActive()) {
+            return true;
+        }
 
         if ($company === null || ($this->options['company'] && ($company == $this->options['company'] || !$company->isActive()))) {
             return true;
         }
 
-//        $this->error(self::NOT_VALID);
-        $company->activate();
-        return true;
+        $this->error(self::NOT_VALID);
+        return false;
     }
 }
