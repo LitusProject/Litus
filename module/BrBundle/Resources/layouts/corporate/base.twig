@@ -153,23 +153,12 @@
                                 </div>
                             </div>
 
-                            {# Button to My Profile | only showed when logged in #}
-                            {% if authenticatedPerson is not null %}
-                                {% if authenticatedPerson.getCompany() != '' %}
-                                    <div class="vtk-menuitem-holder br">
-                                        <a class="vtk-dropdownitem-link" href="{{ url("br_corporate_company", {"action": "edit", "language": language.getAbbrev()}) }}">
-                                            <b class="fullName">{{ translate('My Profile') }}</b>
-                                        </a>
-                                    </div>
-                                {% endif %}
-                            {% endif %}
-
                             {# KNOP AANMELDEN OP PC #}
                             {% if authenticatedPerson is not null %}
                                 {% if authenticatedPerson.getCompany() != '' %}
                                     <div class="vtk-menuitem-holder dropdown">
                                     <div class="vtk-menuitem">
-                                        <div class="vtk-profile" style="background-image: url(../../img/profile.png)"></div>
+                                        <div class="vtk-profile" style="background-image: url(../../../img/profile.png)"></div>
                                     </div>
                                     <div class="vtk-dropdownitem-holder right">
 
@@ -188,7 +177,7 @@
                                 {% else %}
                                     <div class="vtk-menuitem-holder dropdown">
                                         <div class="vtk-menuitem">
-                                            <div class="vtk-profile" style="background-image: url(../../img/profile.png)"></div>
+                                            <div class="vtk-profile" style="background-image: url(../../../img/profile.png)"></div>
                                         </div>
                                         <div class="vtk-dropdownitem-holder right">
 
@@ -210,6 +199,7 @@
                                 </li>
                             {% endif %}
                         </div>
+
                     </div>
 
                     {# Toggle and menu items for mobile #}

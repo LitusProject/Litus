@@ -4,14 +4,14 @@ namespace LogisticsBundle\Form\Inventory;
 
 use LogisticsBundle\Entity\Inventory as InventoryEntity;
 
+/**
+ * Edit Inventory
+ *
+ * @author Pedro Devogelaere <pedro.devogelaere@vtk.be>
+ */
+
 class Reserve extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-
-    /**
-     * @var InventoryEntity|null
-     */
-    protected $inventory;
-
     public function init()
     {
         parent::init();
@@ -32,9 +32,6 @@ class Reserve extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'id'           => 'reserve',
                     'placeholder'  => 'Reserve',
-                    'value' => '0',
-                    'min'   => '0',
-                    'max'   => 10000,
                 ),
             )
         );
