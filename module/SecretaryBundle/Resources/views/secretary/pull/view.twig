@@ -1,0 +1,24 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="container">
+        <div class="page-header">
+            <h2>{{ translate('Buy a Departmental Pull') }}</h2>
+        </div>
+
+        <div class="content">
+            <p>Dear students and enthusiasts. On this page you can buy a departmental pull.</p>
+            <p>The following pulls are available to order: </p>
+            {% for option in options %}
+                {{ option.getStudyEn() }}<br>
+            {% endfor %}
+            <br>
+            <p>Each pull costs €26.00. </p>
+        </div>
+
+        <div id="pull_form">
+            {% import 'site/partials/form.twig' as forms %}
+            {{ forms.renderForm(form) }}
+        </div>
+    </div>
+{% endblock %}

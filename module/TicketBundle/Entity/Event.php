@@ -65,7 +65,7 @@ class Event
     /**
      * @var boolean Flag whether the tickets are generated
      *
-     * @ORM\Column(name="tickets_generated", type="boolean")
+     * @ORM\Column(name="tickets_generated", type="boolean", nullable=true)
      */
     private $ticketsGenerated;
 
