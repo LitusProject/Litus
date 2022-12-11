@@ -1,0 +1,120 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'secretary/admin/pull/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div class="flashmessage success_message full_width pull_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The pull was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width pull_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the pull.</p>
+        </div>
+    </div>
+
+    <div id="controller_action">
+        <div id="default_page">
+            <table class="full_width manage">
+                <thead>
+                    <tr>
+                        <th>Study En</th>
+                        <th>Study Nl</th>
+                        <th>Available</th>
+                        <th>Ordered</th>
+                        <th>In Stock</th>
+                        <th width="70px">Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for pull in paginator %}
+                    <tr class="item item--{{ pull.getId() }}">
+                        <td>{{ pull.getStudyEn() }}</td>
+                        <td>{{ pull.getStudyNl() }}</td>
+                        <td>{{ pull.isAvailable ? 'true' : 'false' }}</td>
+                        <td>{{ pull.ordered }}</td>
+                        <td>{{ pull.getAmountAvailable() }}</td>
+                        <td class="actions">
+                            {% if hasAccess('secretary_admin_pull', 'edit') %}
+                                <a href="{{ url('secretary_admin_pull', {"action": "edit", "id": pull.getId()}) }}" class="edit">Edit</a>
+                            {% endif %}
+                            {% if hasAccess('secretary_admin_pull', 'delete') %}
+                                <a href="#" class="delete" data-id="{{ pull.getId() }}" data-study="{{ pull.getStudyEn() }}">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+    </div>
+
+    <div class="modal fade" id="removePull" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Pull
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following pull: <b class="pullStudy"></b>
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .delete').click(openModal);
+        });
+
+        function openModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removePull = $('#removePull');
+            removePull.find('.pullStudy').html($(this).data('study'));
+            var id = $this.data('id');
+            removePull.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('secretary_admin_pull', {"action": "delete"}) }}' + id, function (data) {
+                    console.log(data);
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.communication_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removePull.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removePull.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.communication_removed_error').removeClass('hide');
+            $('#removeCommunication').modal('hide');
+        }
+    </script>
+{% endblock %}
