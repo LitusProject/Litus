@@ -78,6 +78,8 @@ class PullController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
+//                die(json_encode($form->getData()));
+
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(

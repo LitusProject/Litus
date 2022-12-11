@@ -52,6 +52,28 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type' => 'text',
+                'name' => 'amount_available',
+                'label' => 'Amount in stock',
+                'attributes' => array(
+                    'id' => 'amount_available',
+                ),
+                'required' => false,
+                'options'    => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
+                        ),
+                    ),
+                ),
+            ),
+        );
+
+        $this->add(
+            array(
                 'type' => 'checkbox',
                 'name' => 'available',
                 'label' => 'Available to book',

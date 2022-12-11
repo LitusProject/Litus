@@ -71,7 +71,7 @@ class Guest extends \CommonBundle\Component\Form\Bootstrap\Form
                     array(
                         'type'       => 'text',
                         'name'       => 'guest_email',
-                        'label'      => 'University Email. firsName.lastName@student.kuleuven.be',
+                        'label'      => 'E-mail',
                         'required'   => true,
                         'attributes' => array(
                             'id' => 'guest_email',

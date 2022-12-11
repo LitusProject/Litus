@@ -27,6 +27,7 @@
                         <th>Study Nl</th>
                         <th>Available</th>
                         <th>Ordered</th>
+                        <th>In Stock</th>
                         <th width="70px">Action</th>
                     </tr>
                 </thead>
@@ -38,6 +39,7 @@
                         <td>{{ pull.getStudyNl() }}</td>
                         <td>{{ pull.isAvailable ? 'true' : 'false' }}</td>
                         <td>{{ pull.ordered }}</td>
+                        <td>{{ pull.getAmountAvailable() }}</td>
                         <td class="actions">
                             {% if hasAccess('secretary_admin_pull', 'edit') %}
                                 <a href="{{ url('secretary_admin_pull', {"action": "edit", "id": pull.getId()}) }}" class="edit">Edit</a>

@@ -22,6 +22,9 @@ return array(
         ),
         'secretary_admin_pull' => array(
             'manage', 'add', 'delete', 'edit',
-        )
+        ),
+        'secretary_pull' => array(
+            'pay', 'payed', 'view',
+        ),
     ),
 );

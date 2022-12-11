@@ -71,7 +71,7 @@ class Account extends \CommonBundle\Component\Form\Bootstrap\Form
                 'type' => 'checkbox',
                 'name' => 'conditions',
                 //                'label'      => 'I have read and accept the GDPR terms and condition specified above',
-                'label' => 'Bij deze ga ik akkoord dat VTK mijn gegevens mag gebruiken voor de werking van de printer.',
+                'label' => 'I consent that my information will be used to help you further with your order.',
                 'attributes' => array(
                     'id' => 'conditions',
                 ),

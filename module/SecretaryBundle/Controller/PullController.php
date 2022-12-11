@@ -3,6 +3,9 @@
 namespace SecretaryBundle\Controller;
 
 use CommonBundle\Component\Controller\Exception\RuntimeException;
+use Laminas\Mail\Message;
+use Laminas\Mime\Mime;
+use Laminas\Mime\Part;
 use TicketBundle\Component\Payment\PaymentParam;
 use TicketBundle\Component\Ticket\Ticket as TicketBook;
 use TicketBundle\Entity\Event;
@@ -26,6 +29,11 @@ class PullController extends \CommonBundle\Component\Controller\ActionController
         if ($event === null) {
             return $this->notFoundAction();
         }
+
+        $options = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Pull')
+            ->findAllAvailableQuery()
+            ->getResult();
 
         $person = $this->getPersonEntity();
 
@@ -60,6 +68,8 @@ class PullController extends \CommonBundle\Component\Controller\ActionController
                         'member' => 0,
                         'non_member' => 1,
                     );
+
+                    $pull->addOrdered();
 
                     $booked_ticket = TicketBook::book(
                         $event,
@@ -112,6 +122,10 @@ class PullController extends \CommonBundle\Component\Controller\ActionController
                         ->getRepository('SecretaryBundle\Entity\Pull')
                         ->findOneById($option);
 
+                    $pull->addOrdered();
+
+                    $this->getEntityManager()->flush();
+
                     $booked_ticket = TicketBook::book(
                         $event,
                         $numbers,
@@ -140,6 +154,7 @@ class PullController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
+                'options' => $options,
                 'form' => $form,
             )
         );
@@ -226,6 +241,8 @@ class PullController extends \CommonBundle\Component\Controller\ActionController
         } else {
             $ticket->setStatus('sold');
 
+            $this->sendMail($ticket);
+
             $this->flashMessenger()->success(
                 'Success',
                 'The ticket was successfully payed for!'
@@ -311,5 +328,36 @@ class PullController extends \CommonBundle\Component\Controller\ActionController
         }
 
         return $this->getAuthentication()->getPersonObject();
+    }
+
+    private function sendMail(Ticket $ticket)
+    {
+        $entityManager = $this->getEntityManager();
+        $mailData = unserialize(
+            $entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.pull_confirmation_mail')
+        );
+
+        $message = $mailData['content'];
+        $subject = $mailData['subject'];
+
+        $part = new Part($message);
+
+        $part->type = Mime::TYPE_HTML;
+        $part->charset = 'utf-8';
+        $newMessage = new \Laminas\Mime\Message();
+        $newMessage->addPart($part);
+        $mail = new Message();
+        $mail->setEncoding('UTF-8')
+            ->setBody($newMessage)
+            ->setFrom('secretaris@vtk.be', 'secretaris@vtk.be')
+            ->addTo($ticket->getEmail(), $ticket->getFullName())
+            ->setSubject($subject)
+            ->addBcc('it@vtk.be')
+            ->addBcc('secretaris@vtk.be');
+        if (getenv('APPLICATION_ENV') != 'development') {
+            $this->getMailTransport()->send($mail);
+        }
     }
 }

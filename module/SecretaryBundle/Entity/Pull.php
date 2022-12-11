@@ -56,6 +56,13 @@ class Pull
      */
     private $ordered;
 
+    /**
+     * @var integer The amount that is still available
+     *
+     * @ORM\Column(name="amount_available", type="integer", nullable=true)
+     */
+    private $amount_available;
+
     public function __construct()
     {
         $this->ordered = 0;
@@ -98,6 +105,14 @@ class Pull
      */
     public function getOrdered() {
         return $this->ordered;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAmountAvailable()
+    {
+        return $this->amount_available;
     }
 
     /**
@@ -153,10 +168,25 @@ class Pull
     }
 
     /**
+     * @param int $amount
+     * @return self
+     */
+    public function setAmountAvailable($amount) {
+        $this->amount_available = $amount;
+
+        return $this;
+    }
+
+    /**
      * @return int
      */
     public function addOrdered() {
         $this->ordered += 1;
+        $this->amount_available -= 1;
+
+        if ($this->amount_available == 0) {
+            $this->available = false;
+        }
 
         return $this->ordered;
     }

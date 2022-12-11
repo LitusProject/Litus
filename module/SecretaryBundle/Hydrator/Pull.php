@@ -7,7 +7,7 @@ use SecretaryBundle\Entity\Pull as PullEntity;
 
 class Pull extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $stdKeys = array('study_nl', 'study_en', 'available');
+    private static $stdKeys = array('study_nl', 'study_en', 'amount_available', 'available', );
 
     protected function doHydrate(array $data, $object = null)
     {
