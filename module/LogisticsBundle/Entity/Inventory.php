@@ -161,7 +161,6 @@ class Inventory
     public function setReserved($reserved)
     {
         $this->reserved = $reserved;
-        $this->amount -= $reserved;
         return $this;
     }
 
@@ -172,7 +171,6 @@ class Inventory
     public function addReserved($reserved)
     {
         $this->reserved += $reserved;
-        $this->amount -= $reserved;
         return $this;
     }
 
