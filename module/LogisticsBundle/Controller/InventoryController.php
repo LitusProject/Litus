@@ -178,8 +178,14 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
                 $formData = $form->getData();
                 $reserved = $formData['reserve'];
 
+                // If the available amount (amount - already reserved) subtracted with the newly reserved items is
+                // smaller than zero, there has to be thrown an error
                 $new_amount = $inventory->getAmount() - $inventory->getReserved() - $reserved;
+
+                // When reserved items will be put back in inventory, reserved will be < 0
+                // If the final reserved amount < 0, there will be thrown an error
                 $new_reserved = $inventory->getReserved() + $reserved;
+
                 if ($new_amount < 0) {
                     $this->flashMessenger()->error(
                         'Error',
@@ -192,7 +198,6 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
                             'id'     => $inventory->getId(),
                         )
                     );
-                    return new ViewModel();
                 } else if ($new_reserved < 0) {
                     $this->flashMessenger()->error(
                         'Error',
@@ -205,16 +210,15 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
                             'id'     => $inventory->getId(),
                         )
                     );
-                    return new ViewModel();
+                } else {
+                    // Used to add  or subtract reserved form available
+                    $inventory->addReserved($reserved);
+                    $this->getEntityManager()->flush();
+
+                    $this->redirect()->toRoute(
+                        'logistics_inventory'
+                    );
                 }
-
-                // Used to add  or subtract reserved form available
-                $inventory->addReserved($reserved);
-                $this->getEntityManager()->flush();
-
-                $this->redirect()->toRoute(
-                    'logistics_inventory'
-                );
             }
         }
 
