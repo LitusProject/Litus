@@ -178,7 +178,7 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
                 $formData = $form->getData();
                 $reserved = $formData['reserve'];
 
-                $new_amount = $inventory->getAmount() - $reserved;
+                $new_amount = $inventory->getAmount() - $inventory->getReserved() - $reserved;
                 $new_reserved = $inventory->getReserved() + $reserved;
                 if ($new_amount < 0) {
                     $this->flashMessenger()->error(
