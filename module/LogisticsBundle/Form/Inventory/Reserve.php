@@ -31,11 +31,11 @@ class Reserve extends \CommonBundle\Component\Form\Bootstrap\Form
                 ),
                 'attributes' => array(
                     'id'           => 'reserve',
-                    'placeholder'  => 'Reserve',
+                    'placeholder'  => 'Geef het aantal items in om te reserveren',
                 ),
             )
         );
 
-        $this->addSubmit('Reserve', 'inventory_reserve', 'reserve', array('id' => 'inventory_reserve'));
+        $this->addSubmit('Reserve', 'inventory_reserve', 'reserve_button', array('id' => 'inventory_reserve'));
     }
 }

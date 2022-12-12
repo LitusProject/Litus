@@ -51,9 +51,9 @@
                         <td class="actions">
                             <a href="{{ url('logistics_inventory', {"action": "edit", "id": article.getId()}) }}" class="edit" style="margin-right: 10px">Edit</a>
                             <a href="{{ url('logistics_inventory', {"action": "reserve", "id": article.getId()}) }}" class="edit">Reserve</a>
-{#                            {% if hasAccess('logistics_admin_inventory', 'delete') %}#}
-{#                                <a href="#" class="delete" data-id="{{ article.getId() }}" data-name="{{ article.getName() }}">Delete</a>#}
-{#                            {% endif %}#}
+                            {#                            {% if hasAccess('logistics_admin_inventory', 'delete') %}#}
+                            {#                                <a href="#" class="delete" data-id="{{ article.getId() }}" data-name="{{ article.getName() }}">Delete</a>#}
+                            {#                            {% endif %}#}
                         </td>
                     </tr>
 

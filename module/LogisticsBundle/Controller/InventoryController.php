@@ -83,11 +83,11 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
                             $article->setExpiryDate($expiry_date);
                         }
                     } elseif ($amount < 0) {
-                        $new_amount = $article->getAmount() + $amount;
-                        if ($new_amount < 0) {
+                        $new_reserved = $article->getReserved() + $amount;
+                        if ($new_reserved < 0) {
                             $this->flashMessenger()->error(
                                 'Error',
-                                'Not enough articles left!'
+                                'Not enough articles reserved!'
                             );
                             $this->redirect()->toRoute(
                                 'logistics_inventory',
@@ -100,7 +100,7 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
                         if (strlen($expiry_date) > 0) {
                             $article->setExpiryDate($expiry_date);
                         }
-                        $article->subtractAmount($amount);
+                        $article->subtractReserved($amount);
                     } else {
                         $this->flashMessenger()->error(
                             'Error',
@@ -175,7 +175,42 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
-                $this->getEntityManager()->flush(); // Sends cache to database
+                $formData = $form->getData();
+                $reserved = $formData['reserve'];
+
+                $new_amount = $inventory->getAmount() - $reserved;
+                $new_reserved = $inventory->getReserved() + $reserved;
+                if ($new_amount < 0) {
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'Not enough articles available!'
+                    );
+                    $this->redirect()->toRoute(
+                        'logistics_inventory',
+                        array(
+                            'action' => 'reserve',
+                            'id'     => $inventory->getId(),
+                        )
+                    );
+                    return new ViewModel();
+                } else if ($new_reserved < 0) {
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'Not enough articles reserved to return!'
+                    );
+                    $this->redirect()->toRoute(
+                        'logistics_inventory',
+                        array(
+                            'action' => 'reserve',
+                            'id'     => $inventory->getId(),
+                        )
+                    );
+                    return new ViewModel();
+                }
+
+                // Used to add  or subtract reserved form available
+                $inventory->addReserved($reserved);
+                $this->getEntityManager()->flush();
 
                 $this->redirect()->toRoute(
                     'logistics_inventory'
