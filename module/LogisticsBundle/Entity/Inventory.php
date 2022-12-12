@@ -178,7 +178,7 @@ class Inventory
 
     /**
      * @param $reserved
-     * The amount provided is a negative amount, so addition has to be done
+     * Only used to deduct reserved when the items are used
      * @return self
      */
     public function subtractReserved($reserved)
