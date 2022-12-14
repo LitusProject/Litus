@@ -28,6 +28,8 @@ return array(
     'Archive'                                                                                                                                                                              => 'Archief',
     'By Study'                                                                                                                                                                             => 'Op Studierichting',
     'Alphabetically'                                                                                                                                                                       => 'Alfabetisch',
+    'Alphabetically By First Name'                                                                                                                                                         => 'Alfabetisch Op Voornaam',
+    'Alphabetically By Last Name'                                                                                                                                                          => 'Alfabetisch Op Achternaam',
     'An error occurred while trying to perform the search.'                                                                                                                                => 'Er is een fout opgetreden tijdens het uitvoeren van de zoekopdracht.',
     'By Name'                                                                                                                                                                              => 'Op Naam',
     'By Minimum Grade'                                                                                                                                                                     => 'Op Minimum Graad',

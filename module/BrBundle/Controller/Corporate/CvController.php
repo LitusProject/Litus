@@ -119,6 +119,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
                     array(
                         'action'       => 'list',
                         'academicyear' => $person->getCompany()->getCvBookYears()[count($person->getCompany()->getCvBookYears()) - 1]->getCode(),
+                        'sortby'       => is_null($this->getParam("sortby")) ?? "lastname", $this->getParam("sortby"),
                     )
                 );
 
@@ -144,7 +145,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             }
         }
 
-        $entries = $this->getList($academicYear);
+        $entries = $this->getList($academicYear, $this->getParam('sortby'));
 
         $gradesMapEnabled = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.cv_grades_map_enabled');
@@ -214,7 +215,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             }
         }
 
-        $filtered = $this->doFilter($this->getList($academicYear), $filters);
+        $filtered = $this->doFilter($this->getList($academicYear, $this->getParam('sortby')), $filters);
         $result = array();
         foreach ($filtered as $entry) {
             $result[] = $entry->getId();
@@ -293,13 +294,19 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
     /**
      * @param  AcademicYear $academicYear
+     * @param  $sortBy
      * @return array
      */
-    private function getList(AcademicYear $academicYear)
+    private function getList(AcademicYear $academicYear, $sortBy)
     {
+        if($sortBy === "firstname"){
+            return $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Cv\Entry')
+                ->findAllByAcademicYearByFirstname($academicYear);
+        }
         return $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Cv\Entry')
-            ->findAllByAcademicYear($academicYear);
+            ->findAllByAcademicYearByLastname($academicYear);
     }
 
     /**
