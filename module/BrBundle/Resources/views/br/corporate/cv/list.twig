@@ -1,16 +1,21 @@
 {% extends 'corporate/partials/cv.twig' %}
 
 {% block cv_content %}
-    <div class="panel-group" id="accordion">
+    <div class="contentBlock panel-group" id="accordion">
         {% for entry in entries %}
-            <div class="panel panel-default panel-group-entry" id="accordion-group-{{ entry.getId() }}">
-                <div class="panel-heading">
-                    <a class="panel-title entry-toggle" data-target="body-entry-{{ entry.getId() }}" href="#" onclick="event.preventDefault();">
-                        {{ entry.getFirstName() }} {{ entry.getLastName() }}
-                    </a>
+{#            <div class="panel panel-default panel-group-entry" id="accordion-group-{{ entry.getId() }}">#}
+            <div class="groupHolder panel-group-entry" id="accordion-group-{{ entry.getId() }}">
+{#                <div class="panel-heading">#}
+                <div class="groupHeader entry-toggle" data-target="body-entry-{{ entry.getId() }}">
+{#                    <a class="panel-title entry-toggle" data-target="body-entry-{{ entry.getId() }}" href="#" onclick="event.preventDefault();">#}
+{#                    <a class="entry-toggle" data-target="body-entry-{{ entry.getId() }}" href="#" onclick="event.preventDefault();">#}
+{#                        {{ entry.getFirstName() }} {{ entry.getLastName() }}#}
+{#                    </a>#}
+                    <h4 style="margin-bottom: 0">{{ entry.getFirstName() }} {{ entry.getLastName() }}</h4>
                 </div>
                 <div id="body-entry-{{ entry.getId() }}">
                     <div class="panel-body" style="display: none;">
+                        <hr style="border-top: 2px solid #1a1f4a;">
                         {% import 'corporate/partials/showcv.twig' as cv %}
                         {{ cv.displayEntry(entry, profilePath, gradesMapEnabled, gradesMap) }}
                     </div>
