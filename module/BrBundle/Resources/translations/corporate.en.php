@@ -10,6 +10,8 @@ return array(
     'Archive'                                                                                                                                                                              => 'Archive',
     'By Study'                                                                                                                                                                             => 'By Study',
     'Alphabetically'                                                                                                                                                                       => 'Alphabetically',
+    'Alphabetically By First Name'                                                                                                                                                         => 'Alphabetically By First Name',
+    'Alphabetically By Last Name'                                                                                                                                                          => 'Alphabetically By Last Name',
     'An error occurred while trying to perform the search.'                                                                                                                                => 'An error occurred while trying to perform the search.',
     'By Name'                                                                                                                                                                              => 'By Name',
     'By Minimum Grade'                                                                                                                                                                     => 'By Minimum Grade',

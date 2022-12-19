@@ -534,7 +534,7 @@ return array(
         'br_corporate_cv' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '[/:language]/corporate/cv[/:action[/type/:type][/string/:string][/min/:min][/max/:max][/image/:image][/academicyear/:academicyear]][/]',
+                'route'       => '[/:language]/corporate/cv[/:action[/type/:type][/string/:string][/min/:min][/max/:max][/image/:image][/academicyear/:academicyear][/sortby/:sortby]][/]',
                 'constraints' => array(
                     'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
@@ -544,6 +544,7 @@ return array(
                     'string'       => '[%a-zA-Z0-9:.,_-]*',
                     'min'          => '[0-9]*',
                     'max'          => '[0-9]*',
+                    'sortby'       => '[a-zA-Z]*',
                 ),
                 'defaults'    => array(
                     'controller' => 'br_corporate_cv',
