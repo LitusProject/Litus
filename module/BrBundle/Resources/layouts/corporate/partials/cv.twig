@@ -110,7 +110,7 @@
             });
 
             $('.entry-toggle').click(function() {
-                var element = $(this).parent().parent().find('.profile-picture');
+                var element = $(this).parent().find('.profile-picture');
                 var target = $(this).data('target');
                 var display = document.getElementById(target).children[0].style.display;
                 document.getElementById(target).children[0].style.display = display === 'none' ? 'block' : 'none';
