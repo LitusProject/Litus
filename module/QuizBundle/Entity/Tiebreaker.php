@@ -32,17 +32,10 @@ class Tiebreaker
     /**
      * @var Quiz The quiz this tiebreaker belongs to
      *
-     * @ORM\ManyToOne(targetEntity="QuizBundle\Entity\Quiz")
+     * @ORM\OneToOne (targetEntity="QuizBundle\Entity\Quiz", inversedBy="tiebreaker")
      * @ORM\JoinColumn(name="quiz", referencedColumnName="id")
      */
     private $quiz;
-
-    /**
-     * @var integer The order of the tiebreaker
-     *
-     * @ORM\Column(name="tiebreaker_order", type="smallint")
-     */
-    private $order;
 
     /**
      * @var integer The correct answer to this tiebreaker
@@ -64,6 +57,7 @@ class Tiebreaker
     public function __construct(Quiz $quiz)
     {
         $this->quiz = $quiz;
+        $this->quiz->setTiebreaker($this);
         $this->answers = new ArrayCollection();
     }
 
@@ -98,25 +92,6 @@ class Tiebreaker
     public function setName($name)
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getOrder()
-    {
-        return $this->order;
-    }
-
-    /**
-     * @param  integer $order
-     * @return self
-     */
-    public function setOrder($order)
-    {
-        $this->order = $order;
 
         return $this;
     }

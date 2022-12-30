@@ -32,7 +32,6 @@ return array(
         'quiz_admin_tiebreaker' => array(
             '@common_jquery',
             '@common_jqueryui',
-            '@common_jquery_table_sort',
             '@admin_css',
             '@admin_js',
             '@bootstrap_js_transition',

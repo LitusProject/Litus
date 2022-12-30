@@ -6,7 +6,7 @@ use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 
 class Tiebreaker extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $stdKeys = array('name', 'correct_answer', 'order');
+    private static $stdKeys = array('name', 'correct_answer');
 
     protected function doExtract($object = null)
     {

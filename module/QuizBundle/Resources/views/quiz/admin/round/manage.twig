@@ -138,7 +138,7 @@
                 <div class="title">Manage Teams</div>
                 <div class="content">
                     <p>
-                        <i>Please hit the link below to edit the teams!</i>
+                        <i>Please hit the link below to manage the teams!</i>
                     </p>
                     <p>
                         <a href="{{ url('quiz_admin_team', {"quizid": quiz.getId()}) }}">&rarr; Manage Teams</a>
@@ -149,14 +149,14 @@
 
         {% if hasAccess('quiz_admin_tiebreaker', 'manage') %}
             <div class="sidebox">
-                <div class="title">Manage Tiebreakers</div>
+                <div class="title">Manage Tiebreaker</div>
                 <div class="content">
                     <p>
-                        <i>Please hit the link below to edit the tiebreakers!</i>
+                        <i>Please hit the link below to manage the tiebreaker!</i>
                     </p>
                     <p>
                         <a href="{{ url('quiz_admin_tiebreaker', {"quizid": quiz.getId()}) }}">&rarr; Manage
-                            Tiebreakers</a>
+                            Tiebreaker</a>
                     </p>
                 </div>
             </div>

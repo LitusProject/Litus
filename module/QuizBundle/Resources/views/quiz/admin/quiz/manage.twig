@@ -45,7 +45,7 @@
                                 <a href="{{ url('quiz_admin_round', {"quizid": quiz.getId()}) }}" class="view">Rounds</a>
                             {% endif %}
                             {% if hasAccess('quiz_admin_tiebreaker', 'manage') %}
-                                <a href="{{ url('quiz_admin_tiebreaker', {"quizid": quiz.getId()}) }}" class="view">Tiebreakers</a>
+                                <a href="{{ url('quiz_admin_tiebreaker', {"quizid": quiz.getId()}) }}" class="view">Tiebreaker</a>
                             {% endif %}
                             {% if hasAccess('quiz_quiz', 'manage') %}
                                 <a href="{{ url('quiz_quiz', {"quizid": quiz.getId()}) }}" class="quiz_moderate">Moderate</a>

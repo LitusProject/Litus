@@ -18,43 +18,20 @@
         </div>
     </div>
 
-    <div class="flashmessage info_message full_width tiebreaker_sort_saving hide">
-        <div class="title">Saving</div>
-        <div class="content">
-            <p>Saving the ordering of the tiebreakers.</p>
-        </div>
-    </div>
-
-    <div class="flashmessage success_message full_width tiebreaker_sort_success hide">
-        <div class="title">Success</div>
-        <div class="content">
-            <p>The tiebreakers were successfully reordered.</p>
-        </div>
-    </div>
-
-    <div class="flashmessage error_message full_width tiebreaker_sort_error hide">
-        <div class="title">Error</div>
-        <div class="content">
-            <p>An error occurred while trying to reorder the tiebreakers.</p>
-        </div>
-    </div>
-
     <div id="controller_action">
-        <h1>{{ quiz.getName() }}: Tiebreakers</h1>
-        <table class="manage">
+        <h1>{{ quiz.getName() }}: Tiebreaker</h1>
+        <table>
             <thead>
             <tr>
-                <th width="50px">#</th>
                 <th>Name</th>
                 <th>Correct Answer</th>
-                <th width="100px">Actions</th>
+                <th style="width:100px">Actions</th>
             </tr>
             </thead>
 
             <tbody>
-            {% for tiebreaker in paginator %}
+            {% if tiebreaker is not null %}
                 <tr class="item" data-id="{{ tiebreaker.getId() }}">
-                    <td>{{ tiebreaker.getOrder() }}</td>
                     <td>{{ tiebreaker.getName() }}</td>
                     <td>{{ tiebreaker.getCorrectAnswer() }}</td>
                     <td class="actions">
@@ -68,14 +45,10 @@
                         {% endif %}
                     </td>
                 </tr>
-            {% endfor %}
+            {% endif %}
             </tbody>
         </table>
         {% include 'admin/partials/paginationControl.twig' %}
-
-        <div style="text-align: right; font-size: 7pt">(Drag and drop to change the order)</div>
-        <button class="js-sortable-save edit hide">Save</button>
-        <button class="js-sortable-cancel delete hide">Cancel</button>
     </div>
 
     <div class="modal fade" id="removeTiebreaker" tabindex="-1">
@@ -167,31 +140,6 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('.item .delete').click(openRemoveModal);
-
-            $('.manage').sortableTable({
-                buttons: {
-                    save: $('.js-sortable-save'),
-                    cancel: $('.js-sortable-cancel')
-                },
-                submitUrl: "{{ url('quiz_admin_tiebreaker', {"action": "sort", "quizid": quiz.getId()}) }}",
-                callbacks: {
-                    saveSuccess: function () {
-                        $('.manage tbody tr').each(function (i) {
-                            $(this).find('td:first-child').text(i + 1);
-                        });
-                        $('.flashmessage').addClass('hide');
-                        $('.tiebreaker_sort_success').removeClass('hide');
-                    },
-                    saveError: function () {
-                        $('.flashmessage').addClass('hide');
-                        $('.tiebreaker_sort_error').removeClass('hide');
-                    },
-                    beforeSave: function () {
-                        $('.flashmessage').addClass('hide');
-                        $('.tiebreaker_sort_saving').removeClass('hide');
-                    }
-                }
-            });
         });
 
         function openRemoveModal(e) {

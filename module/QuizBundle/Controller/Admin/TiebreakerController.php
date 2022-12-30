@@ -22,22 +22,11 @@ class TiebreakerController extends \CommonBundle\Component\Controller\ActionCont
             return new ViewModel();
         }
 
-        $paginator = $this->paginator()->createFromEntity(
-            'QuizBundle\Entity\Tiebreaker',
-            $this->getParam('page'),
-            array(
-                'quiz' => $quiz,
-            ),
-            array(
-                'order' => 'ASC',
-            )
-        );
-
+        $tiebreaker = $quiz->getTiebreaker();
         return new ViewModel(
             array(
                 'quiz'              => $quiz,
-                'paginator'         => $paginator,
-                'paginationControl' => $this->paginator()->createControl(),
+                'tiebreaker'        => $tiebreaker,
             )
         );
     }
@@ -75,13 +64,6 @@ class TiebreakerController extends \CommonBundle\Component\Controller\ActionCont
                 );
             }
         }
-
-        $next_tiebreaker_number = $this->getEntityManager()
-            ->getRepository('QuizBundle\Entity\Tiebreaker')
-            ->getNextTiebreakerOrderForQuiz($quiz);
-
-        $form->get('order')
-            ->setValue($next_tiebreaker_number);
 
         return new ViewModel(
             array(
@@ -138,42 +120,8 @@ class TiebreakerController extends \CommonBundle\Component\Controller\ActionCont
             return new ViewModel();
         }
 
+        $tiebreaker->getQuiz()->
         $this->getEntityManager()->remove($tiebreaker);
-        $this->getEntityManager()->flush();
-
-        return new ViewModel(
-            array(
-                'result' => array(
-                    'status' => 'success',
-                ),
-            )
-        );
-    }
-
-    public function sortAction()
-    {
-        $this->initAjax();
-
-        $quiz = $this->getQuizEntity();
-        if ($quiz === null) {
-            return new ViewModel();
-        }
-
-        if (!$this->getRequest()->isPost()) {
-            return new ViewModel();
-        }
-
-        $data = $this->getRequest()->getPost();
-
-        if (!$data['items']) {
-            return new ViewModel();
-        }
-
-        foreach ($data['items'] as $order => $id) {
-            $tiebreaker = $this->getEntityManager()->find('QuizBundle\Entity\Tiebreaker', $id);
-            $tiebreaker->setOrder($order + 1);
-        }
-
         $this->getEntityManager()->flush();
 
         return new ViewModel(

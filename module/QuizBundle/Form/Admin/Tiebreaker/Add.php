@@ -68,37 +68,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        $this->add(
-            array(
-                'type'     => 'text',
-                'name'     => 'order',
-                'label'    => 'Tiebreaker Number',
-                'required' => true,
-                'options'  => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'Int',
-                            ),
-                            array(
-                                'name' => 'PositiveNumber',
-                            ),
-                            array(
-                                'name'    => 'TiebreakerNumber',
-                                'options' => array(
-                                    'quiz'  => $this->quiz,
-                                    'tiebreaker' => $this->tiebreaker,
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            )
-        );
-
         $this->addSubmit('Add', 'add');
     }
 

@@ -20,9 +20,6 @@ return Config::create(
                 'teamnumber'  => Component\Validator\TeamNumber::class,
                 'teamNumber'  => Component\Validator\TeamNumber::class,
                 'TeamNumber'  => Component\Validator\TeamNumber::class,
-                'tiebreakernumber'  => Component\Validator\TiebreakerNumber::class,
-                'tiebreakerNumber'  => Component\Validator\TiebreakerNumber::class,
-                'TiebreakerNumber'  => Component\Validator\TiebreakerNumber::class,
             ),
         ),
     )
