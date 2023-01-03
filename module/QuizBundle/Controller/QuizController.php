@@ -8,7 +8,6 @@ use QuizBundle\Entity\Point;
 use QuizBundle\Entity\Quiz;
 use QuizBundle\Entity\Round;
 use QuizBundle\Entity\Team;
-use QuizBundle\Entity\Tiebreaker;
 use QuizBundle\Entity\TiebreakerAnswer;
 
 /**
@@ -39,22 +38,31 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('QuizBundle\Entity\Point')
             ->findAllByQuiz($quiz);
 
-        $tiebreakers = $this->getEntityManager()
-            ->getRepository('QuizBundle\Entity\Tiebreaker')
-            ->findAllByQuiz($quiz);
-
-        $allTiebreakersAnswers = $this->getEntityManager()
-            ->getRepository('QuizBundle\Entity\TiebreakerAnswer')
-            ->findAllByQuiz($quiz);
-
         $points = array();
         foreach ($allPoints as $point) {
             $points[$point->getTeam()->getId()][$point->getRound()->getId()] = $point->getPoint();
         }
 
+        $tiebreaker = $quiz->getTiebreaker();
+
+        if (is_null($tiebreaker)) {
+            return new ViewModel(
+                array(
+                    'quiz' => $quiz,
+                    'rounds' => $rounds,
+                    'teams' => $teams,
+                    'points' => $points,
+                )
+            );
+        }
+
+        $allTiebreakersAnswers = $this->getEntityManager()
+            ->getRepository('QuizBundle\Entity\TiebreakerAnswer')
+            ->findAllByTiebreaker($tiebreaker);
+
         $tiebreakerAnswers = array();
         foreach ($allTiebreakersAnswers as $answer) {
-            $tiebreakerAnswers[$answer->getTeam()->getId()][$answer->getTiebreaker()->getId()] = $answer->getAnswer();
+            $tiebreakerAnswers[$answer->getTeam()->getId()] = $answer->getAnswer();
         }
         return new ViewModel(
             array(
@@ -62,7 +70,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
                 'rounds' => $rounds,
                 'teams' => $teams,
                 'points' => $points,
-                'tiebreakers' => $tiebreakers,
+                'tiebreaker' => $tiebreaker,
                 'tiebreaker_answers' => $tiebreakerAnswers,
             )
         );
@@ -129,7 +137,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $tiebreaker = $this->getTiebreakerEntity();
+        $tiebreaker = $this->getQuizEntity()->getTiebreaker();
         if ($tiebreaker === null) {
             return new ViewModel();
         }
@@ -191,16 +199,15 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('QuizBundle\Entity\Point')
             ->findAllByQuiz($quiz);
 
-        $tiebreakers = $this->getEntityManager()
-            ->getRepository('QuizBundle\Entity\Tiebreaker')
-            ->findAllByQuiz($quiz);
+        $tiebreaker = $quiz->getTiebreaker();
 
-        $allTiebreakersAnswers = $this->getEntityManager()
-            ->getRepository('QuizBundle\Entity\TiebreakerAnswer')
-            ->findAllByQuiz($quiz);
+        $teams_indexed = array();
+        foreach ($teams as $team) {
+            $teams_indexed[$team->getId()] = $team;
+        }
 
-        $points = array();
-        $totals = array();
+        $points = array(); // [ [teamid][roundid] => point ]
+        $totals = array(); // [ [teamid] => totalPoints]
         foreach ($allPoints as $point) {
             $points[$point->getTeam()->getId()][$point->getRound()->getId()] = $point->getPoint();
             if (!isset($totals[$point->getTeam()->getId()])) {
@@ -208,67 +215,65 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             }
             $totals[$point->getTeam()->getId()] += $point->getPoint();
         }
+        arsort($totals); // totals sorted by totalPoints
 
-        $tiebreakerAnswers = array();
+        if (is_null($tiebreaker)) {
+            return new ViewModel(
+                array(
+                    'quiz' => $quiz,
+                    'rounds' => $rounds,
+                    'teams' => $teams_indexed,
+                    'points' => $points,
+                    'total_points' => $totals,
+                    'order' => $this->getRequest()->getQuery('order', 'ASC'),
+                )
+            );
+        }
+
+        $allTiebreakersAnswers = $this->getEntityManager()
+            ->getRepository('QuizBundle\Entity\TiebreakerAnswer')
+            ->findAllByTiebreaker($tiebreaker);
+
+        $tiebreakerAnswers = array(); // [ [teamid] => tiebreakeranswer]
         foreach ($allTiebreakersAnswers as $answer) {
-            $tiebreakerAnswers[$answer->getTeam()->getId()][$answer->getTiebreaker()->getId()] = $answer->getAnswer();
+            $tiebreakerAnswers[$answer->getTeam()->getId()] = $answer->getAnswer();
         }
 
-        arsort($totals);
-        $totals_by_index = array();
-        foreach ($totals as $teamid => $total) {
-            $totals_by_index[] = [$teamid, $total];
+        $totals_by_index = array(); // [ [index] => [teamid, totalPoints]
+        foreach ($totals as $teamid => $totalPoints) {
+            $totals_by_index[] = [$teamid, $totalPoints];
         }
 
-        $totals_with_tiebreaker = array();
-        $equal_scores = array();
+
+        $totals_with_tiebreaker = array(); // [ [index] => [teamid, totalPoints], tiebreaker considered
+        $equal_scores = array(); // Deel van $totals_by_index met dezelfde totalPoints
         for ($i = 0; $i < count($totals_by_index); $i++) {
             error_log($i);
             $equal_scores[] = $totals_by_index[$i];
-            if ($i < count($totals_by_index) - 1 && $totals_by_index[$i + 1][1] == $equal_scores[$i][1]) {
+            if ($i < count($totals_by_index) - 1 && $totals_by_index[$i + 1][1] == $totals_by_index[$i][1]) {
                 continue;
+                // Zolang er nog elementen in $totals_by_index zitten en de totalPoints gelijk zijn, blijf toevoegen
+                // aan $equal_scores
             } else {
                 if (count($equal_scores) > 1) {
-                    foreach ($tiebreakers as $tiebreaker) {
-                        $correctAnswer = $tiebreaker->getCorrectAnswer();
-                        for ($j = 0; $j < count($equal_scores); $j++) {
-                            $equal_scores[$j][1] = abs($correctAnswer - $tiebreakerAnswers[$equal_scores[$j][0]][$tiebreaker->getId()]);
-                        }
-                        arsort($equal_scores);
+                    $correctAnswer = $tiebreaker->getCorrectAnswer();
 
-                        $point = $totals[$equal_scores[0][0]];
-                        $still_equal = false;
-                        for ($i = 1; $i < count($equal_scores); $i++) {
-                            $teamid = $equal_scores[$i][0];
-                            $team_points = $totals[$teamid];
-                            if ($team_points == $point) {
-                                $still_equal = true;
-                                break;
-                            } else {
-                                $point = $team_points;
-                            }
-                        }
-                        if (!$still_equal) {
-                            break;
-                        }
-                    }
+                    // Sorteer equal values op afstand tot correct tiebreakeranswer,
+                    //als ze gelijk zijn is de volgorde undefined
+                    usort($equal_scores,
+                        fn($a, $b) => abs($correctAnswer - $tiebreakerAnswers[$a[0]]) <=>
+                            abs($correctAnswer - $tiebreakerAnswers[$b[0]]));
                 }
                 foreach ($equal_scores as $score) {
-                    $score[1] = $totals[$score[0]];
                     $totals_with_tiebreaker[] = $score;
                 }
-                $equal_scores = array();
+                $equal_scores = array(); //wis equal scores
             }
         }
 
-        $totals_by_teamid = array();
+        $totals_by_teamid = array(); // [ [teamid] => totalPoints] (zelfde als $totals, maar tiebreaker in acht genomen)
         foreach ($totals_with_tiebreaker as $total) {
             $totals_by_teamid[$total[0]] = $total[1];
-        }
-
-        $teams_indexed = array();
-        foreach ($teams as $team) {
-            $teams_indexed[$team->getId()] = $team;
         }
 
         return new ViewModel(
@@ -277,9 +282,8 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
                 'rounds' => $rounds,
                 'teams' => $teams_indexed,
                 'points' => $points,
-//                'total_points' => $totals,
                 'total_points' => $totals_by_teamid,
-                'tiebreakers' => $tiebreakers,
+                'tiebreaker' => $tiebreaker,
                 'tiebreaker_answers' => $tiebreakerAnswers,
                 'order' => $this->getRequest()->getQuery('order', 'ASC'),
             )
@@ -404,35 +408,5 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         }
 
         return $team;
-    }
-
-    /**
-     * @return Tiebreaker|null
-     */
-    private function getTiebreakerEntity()
-    {
-        $person = $this->getPersonEntity();
-        if ($person === null) {
-            return;
-        }
-
-        $tiebreaker = $this->getEntityById('QuizBundle\Entity\Tiebreaker', 'roundid');
-        if (!($tiebreaker instanceof Tiebreaker) || !$tiebreaker->getQuiz()->canBeEditedBy($person)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No tiebreaker was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'quiz_admin_quiz',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $tiebreaker;
     }
 }

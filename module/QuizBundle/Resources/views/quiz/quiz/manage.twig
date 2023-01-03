@@ -11,11 +11,11 @@
                 <a href="#round-{{ round.getId() }}" data-toggle="tab">{{ round.getName() }}</a>
             </li>
         {% endfor %}
-        {% for tiebreaker in tiebreakers %}
+        {% if tiebreaker is not null %}
             <li>
                 <a href="#tiebreaker-{{ tiebreaker.getId() }}" data-toggle="tab">{{ tiebreaker.getName() }}</a>
             </li>
-        {% endfor %}
+        {% endif %}
     </ul>
     <div class="tab-content" id="rounds_tab-content">
         {% for round in rounds %}
@@ -35,23 +35,21 @@
                 {% endfor %}
             </div>
         {% endfor %}
-        {% for tiebreaker in tiebreakers %}
-            <div id="tiebreaker-{{ tiebreaker.getId() }}" class="tab-pane fade in form-horizontal">
-                {% for team in teams %}
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label"
-                               for="input-{{ team.getId() }}-{{ tiebreaker.getId() }}">{{ team.getName() }}</label>
-                        <div class="col-md-10">
-                            <input type="number" step="1"
-                                   id="input-{{ team.getId() }}-{{ tiebreaker.getId() }}" data-team="{{ team.getId() }}"
-                                   data-tiebreaker="{{ tiebreaker.getId() }}" class="form-control tiebreakerAnswer"
-                                   value="{{ tiebreaker_answers[team.getId()][tiebreaker.getId()] ?? 0 }}">
-                            <span class="help-block hide">The answer couldn't be saved.</span>
-                        </div>
+        <div id="tiebreaker-{{ tiebreaker.getId() }}" class="tab-pane fade in form-horizontal">
+            {% for team in teams %}
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"
+                           for="input-{{ team.getId() }}-{{ tiebreaker.getId() }}">{{ team.getName() }}</label>
+                    <div class="col-md-10">
+                        <input type="number" step="1"
+                               id="input-{{ team.getId() }}-{{ tiebreaker.getId() }}" data-team="{{ team.getId() }}"
+                               data-tiebreaker="{{ tiebreaker.getId() }}" class="form-control tiebreakerAnswer"
+                               value="{{ tiebreaker_answers[team.getId()] ?? 0 }}">
+                        <span class="help-block hide">The answer couldn't be saved.</span>
                     </div>
-                {% endfor %}
-            </div>
-        {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}
 

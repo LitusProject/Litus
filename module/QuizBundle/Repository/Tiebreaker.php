@@ -2,8 +2,6 @@
 
 namespace QuizBundle\Repository;
 
-use QuizBundle\Entity\Quiz as QuizEntity;
-
 /**
  * Tiebreaker
  *
@@ -12,45 +10,4 @@ use QuizBundle\Entity\Quiz as QuizEntity;
  */
 class Tiebreaker extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
-    /**
-     * Gets all tiebreakers belonging to a quiz
-     * @param QuizEntity $quiz The quiz the tiebreakers must belong to
-     */
-    public function findAllByQuizQuery(QuizEntity $quiz)
-    {
-        $query = $this->getEntityManager()->createQueryBuilder();
-
-        return $query->select('t')
-            ->from('QuizBundle\Entity\Tiebreaker', 't')
-            ->where(
-                $query->expr()->eq('t.quiz', ':quiz')
-            )
-            ->orderBy('t.order', 'ASC')
-            ->setParameter('quiz', $quiz)
-            ->getQuery();
-    }
-
-    /**
-     * Gets the order for the next tiebreaker in the quiz
-     * @param  QuizEntity $quiz
-     * @return integer
-     */
-    public function getNextTiebreakerOrderForQuiz(QuizEntity $quiz)
-    {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('MAX(t.order)')
-            ->from('QuizBundle\Entity\Tiebreaker', 't')
-            ->where(
-                $query->expr()->eq('t.quiz', ':quiz')
-            )
-            ->setParameter('quiz', $quiz)
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        if ($resultSet === null) {
-            return 1;
-        }
-
-        return $resultSet + 1;
-    }
 }

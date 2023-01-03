@@ -2,7 +2,7 @@
 
 namespace QuizBundle\Repository;
 
-use QuizBundle\Entity\Quiz as QuizEntity;
+use QuizBundle\Entity\Tiebreaker as TiebreakerEntity;
 
 /**
  * TiebreakerAnswer
@@ -13,21 +13,18 @@ use QuizBundle\Entity\Quiz as QuizEntity;
 class TiebreakerAnswer extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
     /**
-     * Gets all tiebreaker answers belonging to a quiz
-     * @param QuizEntity $quiz The quiz the points must belong to
+     * Gets all tiebreaker answers belonging to a tiebreaker
+     * @param TiebreakerEntity $tiebreaker The tiebreaker the answers must belong to
      */
-    public function findAllByQuizQuery(QuizEntity $quiz)
+    public function findAllByTiebreakerQuery(TiebreakerEntity $tiebreaker)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        return $query->select('p')
-            ->from('QuizBundle\Entity\TiebreakerAnswer', 'p')
-            ->innerJoin('p.tiebreaker', 'tb')
-            ->innerJoin('p.team', 't')
+        return $query->select('a')
+            ->from('QuizBundle\Entity\TiebreakerAnswer', 'a')
             ->where(
-                $query->expr()->eq('tb.quiz', ':quiz')
+                $query->expr()->eq('a.tiebreaker', ':tiebreaker')
             )
-            ->orderBy('tb.order', 'ASC')
-            ->setParameter('quiz', $quiz)
+            ->setParameter('tiebreaker', $tiebreaker)
             ->getQuery();
     }
 }

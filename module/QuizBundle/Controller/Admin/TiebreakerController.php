@@ -120,7 +120,6 @@ class TiebreakerController extends \CommonBundle\Component\Controller\ActionCont
             return new ViewModel();
         }
 
-        $tiebreaker->getQuiz()->
         $this->getEntityManager()->remove($tiebreaker);
         $this->getEntityManager()->flush();
 

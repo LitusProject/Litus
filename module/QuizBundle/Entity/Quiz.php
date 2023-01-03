@@ -64,7 +64,7 @@ class Quiz
      * @var Tiebreaker The tiebreaker to determine winner if equal
      *
      * @ORM\OneToOne(targetEntity="QuizBundle\Entity\Tiebreaker", mappedBy="quiz")
-     * @ORM\JoinColumn(name="tiebreaker", referencedColumnName="id", onDelete="set null")
+     * @ORM\JoinColumn(name="tiebreaker", referencedColumnName="id", nullable=true, onDelete="set null")
      */
     private $tiebreaker;
 
