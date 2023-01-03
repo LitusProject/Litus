@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping\UniqueConstraint;
  * @ORM\Table(name="quiz_tiebreaker_answers",
  *        uniqueConstraints={
  *            @UniqueConstraint(name="tiebreaker_answer_unique",
- *                  columns={"round", "team"})
+ *                  columns={"tiebreaker", "team"})
  *    })
  */
 class TiebreakerAnswer
@@ -30,7 +30,7 @@ class TiebreakerAnswer
      * @var Tiebreaker The tiebreaker this tiebreaker answer belongs to
      *
      * @ORM\ManyToOne(targetEntity="QuizBundle\Entity\Tiebreaker")
-     * @ORM\JoinColumn(name="round", referencedColumnName="id")
+     * @ORM\JoinColumn(name="tiebreaker", referencedColumnName="id", onDelete="CASCADE")
      */
     private $tiebreaker;
 
