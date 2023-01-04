@@ -17,7 +17,7 @@ return array(
     'By Minimum Grade'                                                                                                                                                                     => 'Op Minimum Graad',
     'The following years are available from the CV Book archive:'                                                                                                                          => 'De volgende jaren zijn beschikbaar van uit het CV Boek archief:',
     'Minimum Grade (e.g. 80)'                                                                                                                                                              => 'Minimum Graad (e.g. 80)',
-    'Studies'                                                                                                                                                                              => 'Studierichtingen',
+    'Studies'                                                                                                                                                                              => 'Studies',
     'Additional Diplomas'                                                                                                                                                                  => '"Extra Diploma\'s',
     'Erasmus'                                                                                                                                                                              => 'Erasmus',
     'Languages'                                                                                                                                                                            => 'Talen',
