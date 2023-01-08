@@ -38,6 +38,17 @@ class TiebreakerController extends \CommonBundle\Component\Controller\ActionCont
             return new ViewModel();
         }
 
+        if(!is_null($quiz->getTiebreaker())){
+            $this->redirect()->toRoute(
+                'quiz_admin_tiebreaker',
+                array(
+                    'action' => 'edit',
+                    'quizid' => $quiz->getId(),
+                    'id' => $quiz->getTiebreaker()->getId(),
+                )
+            );
+        }
+
         $form = $this->getForm('quiz_tiebreaker_add', array('quiz' => $quiz));
 
         if ($this->getRequest()->isPost()) {

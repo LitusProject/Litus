@@ -93,14 +93,14 @@
 
         {% if hasAccess('quiz_admin_tiebreaker', 'add') %}
             <div class="sidebox">
-                <div class="title">Add Tiebreaker</div>
+                <div class="title">Add/Edit Tiebreaker</div>
                 <div class="content">
                     <p>
-                        <i>Please hit the link below to add a tiebreaker to this quiz!</i>
+                        <i>Please hit the link below to add/edit a tiebreaker to this quiz!</i>
                     </p>
                     <p>
                         <a href="{{ url('quiz_admin_tiebreaker', {"action": "add", "quizid": quiz.getId()}) }}">&rarr;
-                            Add Tiebreaker</a>
+                            Add/Edit Tiebreaker</a>
                     </p>
                 </div>
             </div>
