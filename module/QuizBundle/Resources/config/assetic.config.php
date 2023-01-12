@@ -29,6 +29,14 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
+        'quiz_admin_tiebreaker' => array(
+            '@common_jquery',
+            '@common_jqueryui',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
         'quiz_quiz' => array(
             '@common_jquery',
             '@bootstrap_css',
