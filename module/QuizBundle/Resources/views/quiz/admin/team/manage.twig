@@ -107,10 +107,24 @@
                 <div class="title">Manage Rounds</div>
                 <div class="content">
                     <p>
-                        <i>Please hit the link below to edit the rounds!</i>
+                        <i>Please hit the link below to manage the rounds!</i>
                     </p>
                     <p>
                         <a href="{{ url('quiz_admin_round', {"quizid": quiz.getId()}) }}">&rarr; Manage Rounds</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if hasAccess('quiz_admin_tiebreaker', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Manage Tiebreaker</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage the tiebreaker!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('quiz_admin_tiebreaker', {"quizid": quiz.getId()}) }}">&rarr; Manage Tiebreaker</a>
                     </p>
                 </div>
             </div>

@@ -61,6 +61,14 @@ class Quiz
     private $teams;
 
     /**
+     * @var Tiebreaker The tiebreaker to determine winner if equal
+     *
+     * @ORM\OneToOne(targetEntity="QuizBundle\Entity\Tiebreaker", mappedBy="quiz")
+     * @ORM\JoinColumn(name="tiebreaker", referencedColumnName="id", nullable=true, onDelete="set null")
+     */
+    private $tiebreaker;
+
+    /**
      * @var ArrayCollection The roles that can edit this quiz
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
@@ -110,7 +118,7 @@ class Quiz
     }
 
     /**
-     * @param  string $name
+     * @param string $name
      * @return self
      */
     public function setName($name)
@@ -129,7 +137,7 @@ class Quiz
     }
 
     /**
-     * @param  array $editRoles
+     * @param array $editRoles
      * @return self
      */
     public function setEditRoles(array $editRoles)
@@ -150,7 +158,7 @@ class Quiz
     /**
      * Checks whether or not the given user can edit the quiz.
      *
-     * @param  Person|null $person The person that should be checked
+     * @param Person|null $person The person that should be checked
      * @return boolean
      */
     public function canBeEditedBy(Person $person = null)
@@ -182,5 +190,24 @@ class Quiz
     public function getTeams()
     {
         return $this->teams->toArray();
+    }
+
+    /**
+     * @return Tiebreaker
+     */
+    public function getTiebreaker()
+    {
+        return $this->tiebreaker;
+    }
+
+    /**
+     * @param Tiebreaker $tiebreaker
+     * @return self
+     */
+    public function setTiebreaker(Tiebreaker $tiebreaker)
+    {
+        $this->tiebreaker = $tiebreaker;
+
+        return $this;
     }
 }
