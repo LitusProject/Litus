@@ -217,7 +217,7 @@ class Queue
             if ($forceRegistrationShift == true && count($timeslots) !== 1) {
                 return json_encode(
                     (object)array(
-                        'error' => json_encode("forced: " . $forced . ", forced is null: " . is_null($forced)),
+                        'error' => json_encode($forced),
                     )
                 );
             }
