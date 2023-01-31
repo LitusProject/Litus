@@ -164,7 +164,7 @@ class Queue
      * @param bool $check_reg_shift check if person has registred for a cudi shift if true
      * @return string
      */
-    public function addPerson(Session $session, $universityIdentification, $forced = false, $check_reg_shift = false)
+    public function addPerson(Session $session, $universityIdentification, bool $forced = false, bool $check_reg_shift = false)
     {
         $seperatedString = explode(';', $universityIdentification);
 
@@ -206,15 +206,15 @@ class Queue
             );
         }
 
-        $forceRegistrationShift = $this->entityManager
+        $forceRegistrationShift = $check_reg_shift ? $this->entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.queue_force_registration_shift');
+            ->getConfigValue('cudi.queue_force_registration_shift') : false;
 
         $timeslots = $this->entityManager
             ->getRepository('ShiftBundle\Entity\RegistrationShift')
             ->findAllCurrentAndCudiTimeslotByPerson($person);
 
-        if ($forceRegistrationShift == true && $check_reg_shift == true && count($timeslots) !== 1) {
+        if ($forceRegistrationShift == true && count($timeslots) !== 1) {
             return json_encode(
                 (object) array(
                     'error' => 'no_timeslot',
