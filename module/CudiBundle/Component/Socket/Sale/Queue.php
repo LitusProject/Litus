@@ -166,7 +166,6 @@ class Queue
      */
     public function addPerson(Session $session, $universityIdentification, $forced = false, $check_reg_shift = false)
     {
-        die(var_dump($check_reg_shift));
         $seperatedString = explode(';', $universityIdentification);
 
         $actionController = new ActionController();
