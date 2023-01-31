@@ -333,7 +333,7 @@ class Sale extends \CommonBundle\Component\Socket\Socket
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOneById($user->session);
 
-        $item = $this->queue->addPerson($session, $universityIdentification);
+        $item = $this->queue->addPerson($session, $universityIdentification, false, true);
         if (is_string($item)) {
             $user->send($item);
         } else {
