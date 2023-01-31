@@ -163,7 +163,7 @@ class Queue
      * @param bool $forced
      * @return string
      */
-    public function addPerson(Session $session, $universityIdentification, bool $forced = false)
+    public function addPerson(Session $session, $universityIdentification, $forced = false)
     {
         $seperatedString = explode(';', $universityIdentification);
 
@@ -205,20 +205,22 @@ class Queue
             );
         }
 
-        $forceRegistrationShift = $this->entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.queue_force_registration_shift');
+        if(!$forced) {
+            $forceRegistrationShift = $this->entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.queue_force_registration_shift');
 
-        $timeslots = $this->entityManager
-            ->getRepository('ShiftBundle\Entity\RegistrationShift')
-            ->findAllCurrentAndCudiTimeslotByPerson($person);
+            $timeslots = $this->entityManager
+                ->getRepository('ShiftBundle\Entity\RegistrationShift')
+                ->findAllCurrentAndCudiTimeslotByPerson($person);
 
-        if (!$forced && $forceRegistrationShift == true && count($timeslots) !== 1) {
-            return json_encode(
-                (object) array(
-                    'error' => 'no_timeslot',
-                )
-            );
+            if ($forceRegistrationShift == true && count($timeslots) !== 1) {
+                return json_encode(
+                    (object)array(
+                        'error' => 'no_timeslot',
+                    )
+                );
+            }
         }
 
         $queueItem = $this->entityManager
