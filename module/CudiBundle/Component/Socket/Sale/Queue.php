@@ -166,6 +166,7 @@ class Queue
      */
     public function addPerson(Session $session, $universityIdentification, $forced = false, $check_reg_shift = false)
     {
+        die(var_dump($check_reg_shift));
         $seperatedString = explode(';', $universityIdentification);
 
         $actionController = new ActionController();
@@ -206,24 +207,20 @@ class Queue
             );
         }
 
-        // check if the person has registered for a time slot at this moment
-        // but only when check_reg_shift is true (ex. when a user signs in to the queue, but not when cudi adds them)
-        if ($check_reg_shift) {
-            $forceRegistrationShift = $this->entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('cudi.queue_force_registration_shift');
+        $forceRegistrationShift = $this->entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.queue_force_registration_shift');
 
-            $timeslots = $this->entityManager
-                ->getRepository('ShiftBundle\Entity\RegistrationShift')
-                ->findAllCurrentAndCudiTimeslotByPerson($person);
+        $timeslots = $this->entityManager
+            ->getRepository('ShiftBundle\Entity\RegistrationShift')
+            ->findAllCurrentAndCudiTimeslotByPerson($person);
 
-            if ($forceRegistrationShift && count($timeslots) !== 1) {
-                return json_encode(
-                    (object)array(
-                        'error' => 'no_timeslot',
-                    )
-                );
-            }
+        if ($forceRegistrationShift == true && $check_reg_shift == true && count($timeslots) !== 1) {
+            return json_encode(
+                (object) array(
+                    'error' => 'no_timeslot',
+                )
+            );
         }
 
         $queueItem = $this->entityManager
