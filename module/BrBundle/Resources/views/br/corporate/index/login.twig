@@ -41,6 +41,15 @@
                     {% endfor %}
                     {{ form().closeTag() }}
                 {% endautoescape %}
+
+                <div style="height: 40px"></div>
+                <a href="#" onclick="showReset()">Forgot password?</a>
+                <div style="display: none" id="resetPassword">
+                    <input type="email" name="email" class="form-control" style="margin-right: 10px" placeholder="Recovery email">
+                    <a href="{{ url('br_corporate_auth', {"action": "resetPassword", "email": "test"}) }}">
+                        <input type="button" name="resetPassword" class="btn btn-primary button btn btn-default" value="Send activation">
+                    </a>
+                </div>
             {% endif %}
         </div>
 
@@ -88,6 +97,10 @@
         slides[slideIndex-1].style.display = "flex";
         dots[slideIndex-1].className += " active";
         captionText.innerHTML = dots[slideIndex-1].alt;
+        }
+
+        function showReset(){
+            document.getElementById("resetPassword").style.display = "flex";
         }
     </script>
 {% endblock %}

@@ -572,7 +572,7 @@ return array(
         'br_corporate_auth' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '[/:language]/corporate/auth[/:action][/]',
+                'route'       => '[/:language]/corporate/auth[/:action][/:email][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'session'  => '[0-9]*',

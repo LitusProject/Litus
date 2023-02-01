@@ -77,4 +77,19 @@ class AuthController extends \BrBundle\Component\Controller\CorporateController
 
         return new ViewModel();
     }
+
+    public function resetPasswordAction(){
+        $this->flashMessenger()->success(
+            'SUCCESS',
+            'The activation email has been send!'
+        );
+        $this->redirect()->toRoute(
+            'br_corporate_index',
+            array(
+                'language' => $this->getLanguage()->getAbbrev(),
+            )
+        );
+
+        return new ViewModel();
+    }
 }
