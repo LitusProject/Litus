@@ -78,4 +78,6 @@ return array(
     'currently listed on our website'                                                                                                                                                      => 'momenteel weergegeven op onze website',
     'bedrijvenrelaties'                                                                                                                                                                    => 'Bedrijvenrelaties',
     'My Profile'                                                                                                                                                                           => 'Mijn Profiel',
+    'Forgot password?'                                                                                                                                                                     => 'Wachtwoord vergeten?',
+    'Reset password'                                                                                                                                                                       => 'Wachtwoord opnieuw instellen',
 );

@@ -79,4 +79,6 @@ return array(
     'currently listed on our website'                                                                                                                                                      => 'currently listed on our website',
     'bedrijvenrelaties'                                                                                                                                                                    => 'Corporate Relations',
     'My Profile'                                                                                                                                                                           => 'My Profile',
+    'Forgot password?'                                                                                                                                                                     => 'Forgot password?',
+    'Reset password'                                                                                                                                                                       => 'Reset password',
 );

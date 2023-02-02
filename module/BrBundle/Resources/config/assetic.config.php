@@ -261,6 +261,15 @@ return array(
             '@common_jqueryui_css',
             '@common_jqueryui_datepicker_css',
         ),
+        'br_corporate_auth' => array(
+            '@bootstrap_css',
+            '@corporate_css',
+            '@common_jquery',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_alert',
+            '@bootstrap_js_collapse',
+        ),
         'br_corporate_index' => array(
             '@bootstrap_css',
             '@corporate_css',
