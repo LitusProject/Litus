@@ -92,7 +92,7 @@ return array(
             'cv', 'edit', 'complete', 'delete', 'download', 'uploadProfileImage',
         ),
         'br_corporate_auth' => array(
-            'login', 'logout', 'resetPassword',
+            'login', 'logout', 'requestUsername', 'resetPassword',
         ),
         'br_corporate_index' => array(
             'index',
