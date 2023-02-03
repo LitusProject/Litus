@@ -67,4 +67,7 @@ return array(
     'Proffesionaliteit'                                                                                                                                                                    => 'Professionaliteit & kwaliteit',
     'bedrijvenrelaties'                                                                                                                                                                    => 'Bedrijvenrelaties',
     'My Profile'                                                                                                                                                                           => 'Mijn Profiel',
+    'Forgot password?'                                                                                                                                                                     => 'Wachtwoord vergeten?',
+    'Reset password'                                                                                                                                                                       => 'Wachtwoord opnieuw instellen',
+    'Request username'                                                                                                                                                                     => 'Gebruikersnaam opvragen',
 );

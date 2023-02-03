@@ -68,4 +68,7 @@ return array(
     'Proffesionaliteit'                                                                                                                                                                    => 'Professionalism & Quality',
     'bedrijvenrelaties'                                                                                                                                                                    => 'Corporate Relations',
     'My Profile'                                                                                                                                                                           => 'My Profile',
+    'Forgot password?'                                                                                                                                                                     => 'Forgot password?',
+    'Reset password'                                                                                                                                                                       => 'Reset password',
+    'Request username'                                                                                                                                                                     => 'Request username',
 );
