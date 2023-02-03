@@ -68,6 +68,7 @@ return array(
     'bedrijvenrelaties'                                                                                                                                                                    => 'Bedrijvenrelaties',
     'My Profile'                                                                                                                                                                           => 'Mijn Profiel',
     'Forgot password?'                                                                                                                                                                     => 'Wachtwoord vergeten?',
+    'Forgot username?'                                                                                                                                                                     => 'Gebruikersnaam vergeten?',
     'Reset password'                                                                                                                                                                       => 'Wachtwoord opnieuw instellen',
     'Request username'                                                                                                                                                                     => 'Gebruikersnaam opvragen',
 );
