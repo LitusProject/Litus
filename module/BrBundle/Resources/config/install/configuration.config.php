@@ -84,6 +84,36 @@ Het Student IT Bedrijvenrelaties Team',
         'description' => 'The email sent when an account is activated',
     ),
     array(
+        'key'         => 'br.account_username_mail',
+        'value'       => serialize(
+            array(
+                'en' => array(
+                    'subject' => 'Student IT Corporate Account Username',
+                    'content' => 'Dear {{ name }},
+
+A corporate account with this email was found with username {{ username }}.
+You can use this account to view the CV Book at http://litus/corporate
+
+Kind regards,
+
+The Student IT Corporate Relations Team',
+                ),
+                'nl' => array(
+                    'subject' => 'Student IT Bedrijfsaccount',
+                    'content' => 'Beste {{ name }},
+
+Een bedrijfsaccount met dit emailadres werd gevonden met gebruikersnaam {{ username }}.
+U kan dit account gebruiken om het CV Book te bekijken op http://litus/corporate
+
+Met vriendelijke groeten,
+
+Het Student IT Bedrijvenrelaties Team',
+                ),
+            )
+        ),
+        'description' => 'The email sent when a username is requested',
+    ),
+    array(
         'key'         => 'br.cv_book_language',
         'value'       => 'nl',
         'description' => 'The language used in the printed version of the CV Book',

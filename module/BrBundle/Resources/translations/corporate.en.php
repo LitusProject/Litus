@@ -81,4 +81,5 @@ return array(
     'My Profile'                                                                                                                                                                           => 'My Profile',
     'Forgot password?'                                                                                                                                                                     => 'Forgot password?',
     'Reset password'                                                                                                                                                                       => 'Reset password',
+    'Request username'                                                                                                                                                                     => 'Request username',
 );
