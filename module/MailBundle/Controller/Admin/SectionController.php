@@ -5,6 +5,8 @@ namespace MailBundle\Controller\Admin;
 use Laminas\View\Model\ViewModel;
 use MailBundle\Command\SIB;
 use MailBundle\Entity\Section;
+use GuzzleHttp\Psr7;
+use GuzzleHttp\Exception\ClientException;
 
 class SectionController extends \MailBundle\Component\Controller\AdminController
 {
@@ -100,6 +102,9 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
         );
     }
 
+    /*
+     * Search is currently not working, could be fixed in the future
+     */
     public function searchAction()
     {
         $this->initAjax();
@@ -167,7 +172,7 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
     }
 
     /**
-     * Add attribute in SendInBlue with name $name.
+     * Add attribute of type boolean in SendInBlue with name $name.
      *
      * @param string $name
      * @return void
@@ -218,20 +223,26 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
      * @param string $attributeName
      * @param string $value
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws ClientException
      */
     public function updateContact(int $id, string $attributeName, bool $value) {
         $api = $this->sibGetAPI();
         $client = new \GuzzleHttp\Client();
         $value = $value ? "true" : "false";
-        $client->request('POST', 'https://api.sendinblue.com/v3/contacts/batch', [
-            'body' => '{"contacts":[{"attributes":{"'.$attributeName.'":'.$value.'},"id":'.$id.'}]}',
-            'headers' => [
-                'accept' => 'application/json',
-                'api-key' => $api,
-                'content-type' => 'application/json',
-            ],
-        ]);
+        try {
+            $client->request('POST', 'https://api.sendinblue.com/v3/contacts/batch', [
+                'body' => '{"contacts":[{"attributes":{"'.$attributeName.'":'.$value.'},"id":'.$id.'}]}',
+                'headers' => [
+                    'accept' => 'application/json',
+                    'api-key' => $api,
+                    'content-type' => 'application/json',
+                ],
+            ]);
+        }
+        catch (ClientException $e) {
+            error_log(json_encode(Psr7\Message::toString($e->getRequest())));
+            error_log(json_encode(Psr7\Message::toString($e->getResponse())));
+        }
     }
 
     /**
@@ -268,7 +279,7 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
     public function getAllUserIds() {
         $offset = 0;
         $limit = 1000;
-        $ids = $this->getUserIds($offset, $limit); // add ids from first 1000 contacts
+        $ids = $this->getUserIds($offset, $limit); // add ids from first 1000 contacts (limit imposed by sendinblue)
         while (count($ids)%1000 == 0) { // take next thousand, as long as they exist
             $offset += 1000;
             $ids = array_merge($ids, $this->getUserIds($offset, $limit));
@@ -308,7 +319,7 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
     public function getUserIds(int $offset, int $limit)
     {
         $batch = $this->getUserBatch($offset, $limit);
-        $idsPos = $this->strPosAll($batch, "\"id");
+        $idsPos = $this->strPosAll($batch, "\"id"); // code to subtract id's from all user information
         $ids = array();
         foreach ($idsPos as $pos) {
             $beginPos = $pos + 5;
@@ -328,10 +339,12 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function sibUpdateAllUsers(string $attributeName, bool $value) {
+        set_time_limit(900); // increase php timeout limit
         $ids = $this->getAllUserIds();
         foreach($ids as $id) {
             $this->updateContact($id, $attributeName, $value);
         }
+        set_time_limit(90); // set back to default php timeout limit
     }
 
     public function sibGetAPI() {

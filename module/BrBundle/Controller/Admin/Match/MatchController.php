@@ -285,6 +285,28 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function deleteAllAction()
+    {
+        $allMatches = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Match')
+            ->findAll();
+        foreach ($allMatches as $currentMatch)
+        {
+            $this->getEntityManager()->remove($currentMatch);
+        }
+
+        $this->getEntityManager()->flush();
+
+        $this->redirect()->toRoute(
+            'br_admin_match_match',
+            array(
+                'action' => 'manage',
+            )
+        );
+
+        return new ViewModel();
+    }
+
     /**
      * @return Match|null
      */
