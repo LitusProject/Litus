@@ -56,7 +56,7 @@ return array(
             'manage', 'add', 'edit', 'delete', 'bonusMalus'
         ),
         'br_admin_match_profile' => array(
-            'manage', 'add', 'edit', 'delete', 'matches'
+            'manage', 'add', 'edit', 'delete', 'matches', 'deleteAllStudentProfiles', 'deleteAllCompanyProfiles',
         ),
         'br_admin_match_match' => array(
             'manage', 'view', 'delete', 'generateMatches', 'stats', 'sendMailStudents', 'sendMailCompanies', 'deleteAll'
