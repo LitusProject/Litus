@@ -1,8 +1,8 @@
 # dependencies
-FROM caddy:2.6.2 AS caddy
+FROM caddy:2.6.3 AS caddy
 
 # development
-FROM composer:2.5.1 AS composer
+FROM composer:2.5.3 AS composer
 
 ARG APPLICATION_ENV=development
 ENV APPLICATION_ENV=${APPLICATION_ENV}

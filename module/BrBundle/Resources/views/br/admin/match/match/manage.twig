@@ -44,6 +44,22 @@
         </div>
     </div>
 
+    <aside>
+        {% if hasAccess('br_admin_match_match', 'deleteAll') %}
+            <div class="sidebox">
+                <div class="title">Delete All</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to delete all matches!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('br_admin_match_match', {"action": "deleteAll"}) }}">&rarr; Delete All</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
+
     <div id="controller_action">
         <table class="full_width manage">
             <tr>

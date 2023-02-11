@@ -275,6 +275,67 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function deleteAllCompanyProfilesAction()
+    {
+        $allCompanyProfiles = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Match\Profile\CompanyProfile')
+            ->findAll();
+
+        foreach ($allCompanyProfiles as $companyProfile)
+        {
+            $matches = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Match')
+                ->findAllByProfile($companyProfile);
+
+            foreach ($matches as $match) {
+                $this->getEntityManager()->remove($match);
+            }
+
+            $this->getEntityManager()->remove($companyProfile);
+        }
+
+        $this->getEntityManager()->flush();
+
+        $this->redirect()->toRoute(
+            'br_admin_match_profile',
+            array(
+                'action' => 'manage'
+            )
+        );
+
+        return new ViewModel();
+    }
+
+    public function deleteAllStudentProfilesAction()
+    {
+        $allStudentProfiles = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Match\Profile\StudentProfile')
+            ->findAll();
+
+        foreach ($allStudentProfiles as $studentProfile) {
+            $matches = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Match')
+                ->findAllByProfile($studentProfile);
+
+            foreach ($matches as $match) {
+                $this->getEntityManager()->remove($match);
+            }
+
+            $this->getEntityManager()->remove($studentProfile);
+        }
+
+        $this->getEntityManager()->flush();
+
+        $this->redirect()->toRoute(
+            'br_admin_match_profile',
+            array(
+                'action' => 'manage'
+            )
+        );
+
+        return new ViewModel();
+    }
+
     /**
      * @return Profile|null
      */

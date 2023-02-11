@@ -19,6 +19,38 @@
         </div>
     </div>
 
+    <aside>
+        {% if hasAccess('br_admin_match_profile', 'deleteAllStudentProfiles') %}
+            <div class="sidebox">
+                <div class="title">Delete All Student Profiles</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to delete all student profiles!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('br_admin_match_profile', {"action": "deleteAllStudentProfiles"}) }}">&rarr; Delete All</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
+
+    <aside>
+        {% if hasAccess('br_admin_match_profile', 'deleteAllCompanyProfiles') %}
+            <div class="sidebox">
+                <div class="title">Delete All Company Profiles</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to delete all company profiles!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('br_admin_match_profile', {"action": "deleteAllCompanyProfiles"}) }}">&rarr; Delete All</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
+
     <div id="controller_action">
         <table class="full_width manage">
             <tr>
