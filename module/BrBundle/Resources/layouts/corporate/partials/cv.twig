@@ -57,6 +57,9 @@
                                 <li {% if getParam("action") == "list" and getParam("sortby") != "firstname" %}class="active"{% endif %}>
                                     <a href="{{ url('br_corporate_cv', {"action": "list", "academicyear": getParam('academicyear'), "sortby": "lastname"}) }}">{{ translate('Alphabetically By Last Name') }}</a>
                                 </li>
+                                <li {% if getParam("action") == "pdf"%}class="active"{% endif %}>
+                                    <a href="{{ url('br_corporate_cv', {"action": "pdf", "academicyear": getParam('academicyear')}) }}">{{ translate('PDF') }}</a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -69,13 +72,15 @@
                     </div>
                 </div>
 
-                <div style="margin-bottom: 20px; text-align: right;" class="form-inline">
-                    <select style="margin-bottom: 0px;" class="form-control" id="searchtype" name="searchtype">
-                        <option value="text">{{ translate('By Name') }}</option>
-{#                        <option value="grade">{{ translate('By Minimum Grade') }}</option>#}
-                    </select>
-                    <input id="searchbox" type="text" class="search-query form-control" placeholder="{{ translate('Search') }}">
-                </div>
+                {% if getParam("action") != "pdf"%}
+                    <div style="margin-bottom: 20px; text-align: right;" class="form-inline" >
+                        <select style="margin-bottom: 0px;" class="form-control" id="searchtype" name="searchtype">
+                            <option value="text">{{ translate('By Name') }}</option>
+    {#                        <option value="grade">{{ translate('By Minimum Grade') }}</option>#}
+                        </select>
+                        <input id="searchbox" type="text" class="search-query form-control" placeholder="{{ translate('Search') }}">
+                    </div>
+                {% endif %}
 
                 {% block cv_content %} {% endblock %}
             </div>

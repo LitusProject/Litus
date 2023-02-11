@@ -24,7 +24,7 @@ return array(
             'manage', 'edit', 'view', 'history', 'sign', 'signedList', 'download', 'delete', 'csv', 'unfinishedList', 'archiveUnsigned'
         ),
         'br_admin_cv_entry' => array(
-            'manage', 'delete', 'export', 'exportAcademics', 'exportCvCsv'
+            'manage', 'delete', 'export', 'exportAcademics', 'exportCvCsv', 'synchronize'
         ),
         'br_admin_event' => array(
             'manage', 'delete', 'add', 'edit', 'old', 'statistics','deleteAttendee', 'editAttendee', 'guide', 'busschema',
@@ -105,7 +105,7 @@ return array(
             'overview',
         ),
         'br_corporate_cv' => array(
-            'downloadArchive', 'grouped', 'list', 'search',
+            'downloadArchive', 'grouped', 'list', 'search', 'pdf',
         ),
         'br_corporate_internship' => array(
             'overview', 'add', 'delete', 'edit',

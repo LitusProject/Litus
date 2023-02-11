@@ -700,4 +700,14 @@ Er zijn nieuwe matches!
         'value'       => '/_br/jobfair/',
         'description' => 'The path to the busschema files',
     ),
+    array(
+        'key'         => 'br.cvbook_path',
+        'value'       => '/vtk/data/br/files/cv',
+        'description' => 'The path to the cvbooks',
+    ),
+    array(
+        'key'         => 'br.adobe_embed_api_clientid',
+        'value'       => 'key',
+        'description' => 'The client ID for Adobe Embed API for displaying CV books',
+    ),
 );
