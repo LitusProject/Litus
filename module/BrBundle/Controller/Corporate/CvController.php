@@ -169,6 +169,60 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         );
     }
 
+    public function pdfAction() {
+        $person = $this->getCorporateEntity();
+        if ($person === null) {
+            return new ViewModel();
+        }
+
+        $academicYear = $this->getAcademicYear();
+        $onlyArchive = false;
+
+        if (!in_array($academicYear, $person->getCompany()->getCvBookYears())) {
+            if ($this->getParam('academicyear') === null
+                && count($person->getCompany()->getCvBookYears()) > 0
+            ) {
+                $this->redirect()->toRoute(
+                    'br_corporate_cv',
+                    array(
+                        'action'       => 'pdf',
+                        'academicyear' => $person->getCompany()->getCvBookYears()[count($person->getCompany()->getCvBookYears()) - 1]->getCode(),
+                    )
+                );
+
+                return new ViewModel();
+            } elseif ($this->getParam('academicyear') === null
+                && count($person->getCompany()->getCvBookArchiveYears()) > 0
+            ) {
+                $onlyArchive = true;
+            } else {
+                $this->flashMessenger()->error(
+                    'Error',
+                    'You don\'t have access to the CVs of this year.'
+                );
+
+                $this->redirect()->toRoute(
+                    'br_corporate_index',
+                    array(
+                        'language' => $this->getLanguage()->getAbbrev(),
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'academicYear'     => $academicYear,
+//                'onlyArchive'      => $onlyArchive,
+//                'profilePath'      => $this->getEntityManager()
+//                    ->getRepository('CommonBundle\Entity\General\Config')
+//                    ->getConfigValue('common.profile_path'),
+            )
+        );
+    }
+
     public function searchAction()
     {
         $this->initAjax();

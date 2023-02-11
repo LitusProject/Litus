@@ -101,7 +101,7 @@ return array(
             'overview',
         ),
         'br_corporate_cv' => array(
-            'downloadArchive', 'grouped', 'list', 'search',
+            'downloadArchive', 'grouped', 'list', 'search', 'pdf',
         ),
         'br_corporate_internship' => array(
             'overview', 'add', 'delete', 'edit',
