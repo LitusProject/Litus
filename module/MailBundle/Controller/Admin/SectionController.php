@@ -3,10 +3,11 @@
 namespace MailBundle\Controller\Admin;
 
 use Laminas\View\Model\ViewModel;
-use MailBundle\Command\SIB;
 use MailBundle\Entity\Section;
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\GuzzleException;
+use Psr\Http\Message\StreamInterface;
 
 class SectionController extends \MailBundle\Component\Controller\AdminController
 {
@@ -29,6 +30,11 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
         );
     }
 
+    /**
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws GuzzleException
+     */
     public function addAction()
     {
         $form = $this->getForm('mail_section_add');
@@ -83,6 +89,11 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
         );
     }
 
+    /**
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws GuzzleException
+     * @throws \Doctrine\ORM\ORMException
+     */
     public function deleteAction()
     {
         $this->initAjax();
@@ -164,10 +175,8 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
                     'action' => 'manage',
                 )
             );
-
             return;
         }
-
         return $section;
     }
 
@@ -176,7 +185,7 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
      *
      * @param string $name
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function sibAddAttribute(string $name) {
         $api = $this->sibGetAPI();
@@ -197,7 +206,7 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
      *
      * @param string $name
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function sibRemoveAttribute(string $name) {
         $api = $this->sibGetAPI();
@@ -221,28 +230,22 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
      *
      * @param int $id
      * @param string $attributeName
-     * @param string $value
+     * @param bool $value
      * @return void
-     * @throws ClientException
+     * @throws GuzzleException
      */
     public function updateContact(int $id, string $attributeName, bool $value) {
         $api = $this->sibGetAPI();
         $client = new \GuzzleHttp\Client();
         $value = $value ? "true" : "false";
-        try {
-            $client->request('POST', 'https://api.sendinblue.com/v3/contacts/batch', [
-                'body' => '{"contacts":[{"attributes":{"'.$attributeName.'":'.$value.'},"id":'.$id.'}]}',
-                'headers' => [
-                    'accept' => 'application/json',
-                    'api-key' => $api,
-                    'content-type' => 'application/json',
-                ],
-            ]);
-        }
-        catch (ClientException $e) {
-            error_log(json_encode(Psr7\Message::toString($e->getRequest())));
-            error_log(json_encode(Psr7\Message::toString($e->getResponse())));
-        }
+        $client->request('POST', 'https://api.sendinblue.com/v3/contacts/batch', [
+            'body' => '{"contacts":[{"attributes":{"'.$attributeName.'":'.$value.'},"id":'.$id.'}]}',
+            'headers' => [
+                'accept' => 'application/json',
+                'api-key' => $api,
+                'content-type' => 'application/json',
+            ],
+        ]);
     }
 
     /**
@@ -253,20 +256,15 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
      * @return array
      */
     public function strPosAll($haystack, $needle) {
-
         $s = 0;
         $i = 0;
-
         while(is_integer($i)) {
-
             $i = mb_stripos($haystack, $needle, $s);
-
             if(is_integer($i)) {
                 $aStrPos[] = $i;
                 $s = $i + mb_strlen($needle);
             }
         }
-
         if(isset($aStrPos)) return $aStrPos;
         else return array();
     }
@@ -275,6 +273,7 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
      * Returns an array containing al the ids of SendInBlue contacts.
      *
      * @return array
+     * @throws GuzzleException
      */
     public function getAllUserIds() {
         $offset = 0;
@@ -293,8 +292,8 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
      *
      * @param int $offset
      * @param int $limit
-     * @return \Psr\Http\Message\StreamInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @return StreamInterface
+     * @throws GuzzleException
      */
     public function getUserBatch(int $offset, int $limit) {
         $api = $this->sibGetAPI();
@@ -314,7 +313,7 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
      * @param int $offset
      * @param int $limit
      * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function getUserIds(int $offset, int $limit)
     {
@@ -334,9 +333,9 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
      * the new value is the same as the old value.
      *
      * @param string $attributeName
-     * @param string $value
+     * @param bool $value
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function sibUpdateAllUsers(string $attributeName, bool $value) {
         set_time_limit(900); // increase php timeout limit
@@ -348,10 +347,9 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
     }
 
     public function sibGetAPI() {
-        $api = $this->getEntityManager()
+        return $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('sib_api');
-        return $api;
     }
 
 }
