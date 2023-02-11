@@ -23,7 +23,7 @@ return array(
             'manage', 'edit', 'view', 'history', 'sign', 'signedList', 'download', 'delete', 'csv', 'unfinishedList', 'archiveUnsigned'
         ),
         'br_admin_cv_entry' => array(
-            'manage', 'delete', 'export', 'exportAcademics', 'exportCvCsv'
+            'manage', 'delete', 'export', 'exportAcademics', 'exportCvCsv', 'synchronize'
         ),
         'br_admin_event' => array(
             'manage', 'delete', 'add', 'edit', 'old', 'statistics','deleteAttendee', 'editAttendee', 'guide', 'busschema',

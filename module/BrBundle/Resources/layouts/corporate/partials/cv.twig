@@ -58,7 +58,7 @@
                                     <a href="{{ url('br_corporate_cv', {"action": "list", "academicyear": getParam('academicyear'), "sortby": "lastname"}) }}">{{ translate('Alphabetically By Last Name') }}</a>
                                 </li>
                                 <li {% if getParam("action") == "pdf"%}class="active"{% endif %}>
-                                    <a href="{{ url('br_corporate_cv', {"action": "pdf", "academicyear": getParam('academicyear')}) }}">{{ translate('Pdf') }}</a>
+                                    <a href="{{ url('br_corporate_cv', {"action": "pdf", "academicyear": getParam('academicyear')}) }}">{{ translate('PDF') }}</a>
                                 </li>
                             </ul>
                         </div>

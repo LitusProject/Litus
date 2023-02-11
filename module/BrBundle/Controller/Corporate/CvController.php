@@ -212,13 +212,19 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             }
         }
 
+        $clientID = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.adobe_embed_api_clientid');
+        $cvbookPath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.cvbook_path') . '/';
+        $fileName = "cvbook-" . $academicYear->getCode(true) . ".pdf";
+
         return new ViewModel(
             array(
-                'academicYear'     => $academicYear,
-//                'onlyArchive'      => $onlyArchive,
-//                'profilePath'      => $this->getEntityManager()
-//                    ->getRepository('CommonBundle\Entity\General\Config')
-//                    ->getConfigValue('common.profile_path'),
+                'clientID'       => $clientID,
+                'pathName'       => $cvbookPath,
+                'fileName'       => $fileName,
             )
         );
     }
