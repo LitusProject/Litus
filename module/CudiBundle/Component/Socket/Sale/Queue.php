@@ -212,7 +212,7 @@ class Queue
 
             $timeslots = $this->entityManager
                 ->getRepository('ShiftBundle\Entity\RegistrationShift')
-                ->findAllCurrentAndCudiTimeslotByPerson($person);
+                ->findAllCurrentAndCudiTimeslotByPersonWithMargin($person, 5);
 
             if ($forceRegistrationShift == true && count($timeslots) !== 1) {
                 return json_encode(
