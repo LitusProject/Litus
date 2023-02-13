@@ -165,18 +165,15 @@ class Queue
      */
     public function addPerson(Session $session, $universityIdentification, $forced = false)
     {
+        $seperatedString = explode(';', $universityIdentification);
 
-        if ((str_contains($universityIdentification, ';')) && (strlen($universityIdentification) == 25)) {
-            $seperatedString = explode(';', $universityIdentification);
-            $actionController = new ActionController();
-            $rNumber = $actionController->getRNumberAPI($seperatedString[0], $seperatedString[1], $this->getEntityManager());
-        } else {
-            $rNumber = $universityIdentification;
-        }
+        $actionController = new ActionController();
+
+//        $rNumber = $actionController->getRNumberAPI($seperatedString[0], $seperatedString[1]);
 
         $person = $this->entityManager
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
-            ->findOneByUsername($rNumber);
+            ->findOneByUsername($universityIdentification);
 
         if ($person === null) {
             return json_encode(
