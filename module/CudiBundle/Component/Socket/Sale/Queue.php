@@ -210,9 +210,13 @@ class Queue
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.queue_force_registration_shift');
 
+            $marginInMinutes = $this->entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.queue_margin_sign_in');
+
             $timeslots = $this->entityManager
                 ->getRepository('ShiftBundle\Entity\RegistrationShift')
-                ->findAllCurrentAndCudiTimeslotByPersonWithMargin($person, 5);
+                ->findAllCurrentAndCudiTimeslotByPersonWithMargin($person, $marginInMinutes);
 
             if ($forceRegistrationShift == true && count($timeslots) !== 1) {
                 return json_encode(
