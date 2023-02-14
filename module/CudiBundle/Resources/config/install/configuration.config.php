@@ -666,6 +666,11 @@ Gelieve contact op te nemen met {{ name }} via {{ email }}.
         'description' => 'boolean for forcing registration shifts',
     ),
     array(
+        'key'         => 'cudi.queue_margin_sign_in',
+        'value'       => '0',
+        'description' => 'number of minutes someone can sign in to the queue before and after the registration shift',
+    ),
+    array(
         'key'         => 'cudi.printer_event_id',
         'value'       => 'here comes the id',
         'description' => 'This is the Ticket Event ID for the printer',

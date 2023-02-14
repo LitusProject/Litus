@@ -165,11 +165,20 @@ class Queue
      */
     public function addPerson(Session $session, $universityIdentification, $forced = false)
     {
+<<<<<<< HEAD
         $seperatedString = explode(';', $universityIdentification);
 
         $actionController = new ActionController();
 
 //        $rNumber = $actionController->getRNumberAPI($seperatedString[0], $seperatedString[1]);
+=======
+        if ((str_contains($universityIdentification, ';')) && (strlen($universityIdentification) == 25)) {
+            $seperatedString = explode(';', $universityIdentification);
+            $rNumber = (new ActionController())->getRNumberAPI($seperatedString[0], $seperatedString[1], $this->entityManager);
+        } else {
+            $rNumber = $universityIdentification;
+        }
+>>>>>>> master
 
         $person = $this->entityManager
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
@@ -210,9 +219,13 @@ class Queue
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.queue_force_registration_shift');
 
+            $marginInMinutes = $this->entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.queue_margin_sign_in');
+
             $timeslots = $this->entityManager
                 ->getRepository('ShiftBundle\Entity\RegistrationShift')
-                ->findAllCurrentAndCudiTimeslotByPersonWithMargin($person, 5);
+                ->findAllCurrentAndCudiTimeslotByPersonWithMargin($person, $marginInMinutes);
 
             if ($forceRegistrationShift == true && count($timeslots) !== 1) {
                 return json_encode(
