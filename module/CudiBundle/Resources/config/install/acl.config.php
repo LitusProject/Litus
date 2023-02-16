@@ -78,7 +78,7 @@ return array(
             'add', 'delete', 'manage', 'supplier', 'typeahead',
         ),
         'cudi_admin_stock_order' => array(
-            'add', 'cancel', 'csv', 'delete', 'deleteAll','edit', 'editItem', 'export', 'manage', 'overview', 'place', 'pdf', 'search', 'supplier',
+            'add', 'cancel', 'csv', 'delete', 'deleteAll','edit', 'editItem', 'export', 'manage', 'overview', 'place', 'pdf', 'search', 'supplier', 'delivered'
         ),
         'cudi_admin_stock_period' => array(
             'manage', 'new', 'search', 'view', 'revertNew'

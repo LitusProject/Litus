@@ -486,15 +486,19 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                  ->getRepository('CommonBundle\Entity\General\AcademicYear')
                  ->findOneByDate($date);
 
-//             die(json_encode($previousYear->getId()));
-
              $currentSubjects = $this->getEntityManager()
                  ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                  ->findAllByArticleAndAcademicYearQuery($article, $previousYear)
                  ->getResult();
              foreach ($currentSubjects as $subjectMap) {
-                 $newMap = new General\SubjectMap($article, $subjectMap->getSubject(), $currentYear, false);
-                 $this->getEntityManager()->persist($newMap);
+                 $mapping = $this->getEntityManager()
+                     ->getRepository('CudiBundle\Entity\Article\SubjectMap')
+                     ->findOneByArticleAndSubjectAndAcademicYear($article, $subjectMap->getSubject(), $currentYear);
+
+                 if ($mapping === null) {
+                     $newMap = new General\SubjectMap($article, $subjectMap->getSubject(), $currentYear, false);
+                     $this->getEntityManager()->persist($newMap);
+                 }
              }
         } else {
             $currentYear = $this->getCurrentAcademicYear();
@@ -517,8 +521,14 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                 ->findAllByArticleAndAcademicYearQuery($article, $previousYear)
                 ->getResult();
             foreach ($currentSubjects as $subjectMap) {
-                $newMap = new General\SubjectMap($article, $subjectMap->getSubject(), $nextYear, false);
-                $this->getEntityManager()->persist($newMap);
+                $mapping = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Article\SubjectMap')
+                    ->findOneByArticleAndSubjectAndAcademicYear($article, $subjectMap->getSubject(), $nextYear);
+
+                if ($mapping === null) {
+                    $newMap = new General\SubjectMap($article, $subjectMap->getSubject(), $nextYear, false);
+                    $this->getEntityManager()->persist($newMap);
+                }
             }
         }
     }
