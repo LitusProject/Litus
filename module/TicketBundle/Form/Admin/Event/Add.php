@@ -163,12 +163,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                     'format'     => 'd/m/Y H:i',
                                 ),
                             ),
-                            array(
-                                'name'    => 'BookingCloseData',
-                                'options' => array(
-                                    'format' => 'd/m/Y H:i',
-                                ),
-                            ),
+//                            array(
+//                                'name'    => 'BookingCloseData',
+//                                'options' => array(
+//                                    'format' => 'd/m/Y H:i',
+//                                ),
+//                            ),
                         ),
                     ),
                 ),
