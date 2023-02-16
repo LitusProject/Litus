@@ -299,16 +299,16 @@ class CvController extends \BrBundle\Component\Controller\CvController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.cv_book_language');
         $translator->setLocale($locale);
-        $document = new CvBookGenerator($this->getEntityManager(), $year, $tmpFile, $translator);
 
+        $document = new CvBookGenerator($this->getEntityManager(), $year, $tmpFile, $translator);
         $document->generate();
 
-//        $filePath = $this->getEntityManager()
-//            ->getRepository('CommonBundle\Entity\General\Config')
-//            ->getConfigValue('br.cvbook_path') . '/';
-        $filePath = "/tmp/";
-        $file = fopen($filePath . "cvbook-" . $year->getCode(true) . ".pdf", "w+");
-        $result = fwrite($file, $tmpFile->getContent());
+        $filePath = 'public' . $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.cvbook_path') . '/';      // when this raises an error, it could be because the server has changed from liv to a new server,
+                                                                // the config value contains the server name in it.
+        $file = fopen($filePath . "cvbook-" . $year->getCode(true) . ".pdf", "w");
+        $result = fwrite($file, $tmpFile->getContent());  // will return false if failed
 
         if (!$result) {
             $this->flashMessenger()->error(
