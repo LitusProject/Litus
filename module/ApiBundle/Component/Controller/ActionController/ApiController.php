@@ -17,6 +17,7 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAware\ViewRendererTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
 use CommonBundle\Entity\General\Language;
 use CommonBundle\Entity\General\Visit;
 use Laminas\Http\Header\HeaderInterface;
@@ -365,7 +366,7 @@ class ApiController extends \Laminas\Mvc\Controller\AbstractActionController imp
      * Get the current academic year.
      *
      * @param  boolean $organization
-     * @return AcademicYear
+     * @return AcademicYearEntity
      */
     protected function getCurrentAcademicYear($organization = false)
     {

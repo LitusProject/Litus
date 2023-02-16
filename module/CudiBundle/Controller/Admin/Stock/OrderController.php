@@ -8,8 +8,10 @@ use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use CudiBundle\Component\Document\Generator\Order\Pdf as OrderPdfGenerator;
 use CudiBundle\Component\Document\Generator\Order\Xml as OrderXmlGenerator;
+use CudiBundle\Entity\Stock\Delivery;
 use CudiBundle\Entity\Stock\Order;
 use CudiBundle\Entity\Stock\Order\Item as OrderItem;
+use CudiBundle\Entity\Stock\Order\Virtual as VirtualOrder;
 use CudiBundle\Entity\Stock\Period;
 use CudiBundle\Entity\Supplier;
 use DateTime;
@@ -40,9 +42,9 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'paginator'         => $paginator,
+                'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'suppliers'         => $suppliers,
+                'suppliers' => $suppliers,
             )
         );
     }
@@ -75,10 +77,10 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'paginator'         => $paginator,
+                'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'suppliers'         => $suppliers,
-                'period'            => $period,
+                'suppliers' => $suppliers,
+                'period' => $period,
             )
         );
     }
@@ -100,7 +102,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
         $result = array();
         foreach ($orders as $order) {
-            $item = (object) array();
+            $item = (object)array();
             $item->id = $order->getId();
             $item->articleId = $order->getArticle()->getId();
             $item->title = $order->getArticle()->getMainArticle()->getTitle();
@@ -147,10 +149,10 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'supplier'          => $supplier,
-                'paginator'         => $paginator,
+                'supplier' => $supplier,
+                'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(),
-                'suppliers'         => $suppliers,
+                'suppliers' => $suppliers,
             )
         );
     }
@@ -190,7 +192,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                     'cudi_admin_stock_order',
                     array(
                         'action' => 'edit',
-                        'id'     => $order->getId(),
+                        'id' => $order->getId(),
                     )
                 );
 
@@ -200,10 +202,10 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'order'     => $order,
-                'supplier'  => $order->getSupplier(),
+                'order' => $order,
+                'supplier' => $order->getSupplier(),
                 'suppliers' => $suppliers,
-                'form'      => $form,
+                'form' => $form,
             )
         );
     }
@@ -211,8 +213,8 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
     public function addAction()
     {
         $prefix = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.article_barcode_prefix') . $this->getAcademicYearEntity()->getCode(true);
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.article_barcode_prefix') . $this->getAcademicYearEntity()->getCode(true);
 
         $form = $this->getForm(
             'cudi_stock_order_add',
@@ -248,7 +250,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                     'cudi_admin_stock_order',
                     array(
                         'action' => 'edit',
-                        'id'     => $item->getOrder()->getId(),
+                        'id' => $item->getOrder()->getId(),
                     )
                 );
 
@@ -266,8 +268,8 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'form'                => $form,
-                'suppliers'           => $suppliers,
+                'form' => $form,
+                'suppliers' => $suppliers,
                 'currentAcademicYear' => $academicYear,
             )
         );
@@ -306,7 +308,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                     'cudi_admin_stock_order',
                     array(
                         'action' => 'edit',
-                        'id'     => $item->getOrder()->getId(),
+                        'id' => $item->getOrder()->getId(),
                     )
                 );
 
@@ -320,11 +322,11 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'order'     => $item->getOrder(),
-                'item'      => $item,
-                'form'      => $form,
+                'order' => $item->getOrder(),
+                'item' => $item,
+                'form' => $form,
                 'suppliers' => $suppliers,
-                'supplier'  => $item->getOrder()->getSupplier(),
+                'supplier' => $item->getOrder()->getSupplier(),
             )
         );
     }
@@ -354,7 +356,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             'cudi_admin_stock_order',
             array(
                 'action' => 'edit',
-                'id'     => $order->getId(),
+                'id' => $order->getId(),
             )
         );
     }
@@ -373,7 +375,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'result' => (object) array('status' => 'success'),
+                'result' => (object)array('status' => 'success'),
             )
         );
     }
@@ -398,7 +400,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             'cudi_admin_stock_order',
             array(
                 'action' => 'edit',
-                'id'     => $order->getId(),
+                'id' => $order->getId(),
             )
         );
 
@@ -422,7 +424,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         $headers->addHeaders(
             array(
                 'Content-Disposition' => 'attachment; filename=' . $filename,
-                'Content-Type'        => 'application/pdf',
+                'Content-Type' => 'application/pdf',
             )
         );
         $this->getResponse()->setHeaders($headers);
@@ -466,13 +468,13 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         foreach ($items as $item) {
             if ($item->getArticle()->getMainArticle()->isInternal()) {
                 $results[] = array(
-                    (string) $item->getArticle()->getBarcode(),
+                    (string)$item->getArticle()->getBarcode(),
                     $item->getArticle()->getMainArticle()->getTitle(),
                     $item->getArticle()->getMainArticle()->isRectoVerso() ? '1' : '0',
                     $item->getArticle()->getMainArticle()->getBinding()->getName(),
                     $item->getArticle()->getMainArticle()->isColored() ? '1' : '0',
-                    (string) ($item->getArticle()->getMainArticle()->getNbBlackAndWhite() + $item->getArticle()->getMainArticle()->getNbColored()),
-                    (string) $item->getNumber(),
+                    (string)($item->getArticle()->getMainArticle()->getNbBlackAndWhite() + $item->getArticle()->getMainArticle()->getNbColored()),
+                    (string)$item->getNumber(),
                     OrderController::NOT_APPLICABLE,
                     OrderController::NOT_APPLICABLE,
                     OrderController::NOT_APPLICABLE,
@@ -485,8 +487,8 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                     OrderController::NOT_APPLICABLE,
                     OrderController::NOT_APPLICABLE,
                     OrderController::NOT_APPLICABLE,
-                    (string) $item->getNumber(),
-                    (string) $item->getArticle()->getMainArticle()->getIsbn(),
+                    (string)$item->getNumber(),
+                    (string)$item->getArticle()->getMainArticle()->getIsbn(),
                     $item->getArticle()->getMainArticle()->getAuthors(),
                     $item->getArticle()->getMainArticle()->getPublishers(),
                 );
@@ -502,7 +504,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         $headers->addHeaders(
             array(
                 'Content-Disposition' => 'attachment; filename=' . $filename,
-                'Content-Type'        => 'text/csv',
+                'Content-Type' => 'text/csv',
             )
         );
         $this->getResponse()->setHeaders($headers);
@@ -544,7 +546,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                 'cudi_admin_stock_order',
                 array(
                     'action' => 'edit',
-                    'id'     => $order->getId(),
+                    'id' => $order->getId(),
                 )
             );
 
@@ -555,8 +557,8 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         $headers->addHeaders(
             array(
                 'Content-Disposition' => 'attachment; filename="order.zip"',
-                'Content-Type'        => 'application/zip',
-                'Content-Length'      => filesize($archive->getFileName()),
+                'Content-Type' => 'application/zip',
+                'Content-Length' => filesize($archive->getFileName()),
             )
         );
         $this->getResponse()->setHeaders($headers);
@@ -587,15 +589,82 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             'cudi_admin_stock_order',
             array(
                 'action' => 'edit',
-                'id'     => $order->getId(),
+                'id' => $order->getId(),
             )
         );
 
         return new ViewModel();
     }
 
+    public function deliveredAction()
+    {
+        $order = $this->getOrderEntity();
+        $form = $this->getForm('cudi_stock_order_set-delivered', array('order' => $order));
+
+        $suppliers = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Supplier')
+            ->findAll();
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+            if ($form->isValid()) {
+                foreach ($formData['articles'] as $id => $amount) {
+
+                    $article = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sale\Article')
+                        ->findOneById($id);
+
+                    $item = new Delivery($article, $amount, $this->getAuthentication()->getPersonObject());
+                    $this->getEntityManager()->persist($item);
+                    $this->getEntityManager()->flush();
+
+                    $enableAssignment = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('cudi.enable_automatic_assignment') &&
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('cudi.enable_assign_after_stock_update');
+
+                    if ($enableAssignment) {
+                        $this->getEntityManager()
+                            ->getRepository('CudiBundle\Entity\Sale\Booking')
+                            ->assignAllByArticle($article, $this->getMailTransport());
+                        $this->getEntityManager()->flush();
+                    }
+                }
+
+                $order->setDelivered(true);
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The delivery was successfully added!'
+                );
+
+                $this->redirect()->toRoute(
+                    'cudi_admin_stock_order',
+                    array(
+                        'action' => 'edit',
+                        'id'     => $order->getId(),
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'supplier' => $order->getSupplier(),
+                'suppliers' => $suppliers,
+                'form' => $form,
+            )
+        );
+    }
+
     /**
-     * @param  Period $period
+     * @param Period $period
      * @return \Doctrine\ORM\Query|null
      */
     private function search(Period $period)

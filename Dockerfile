@@ -1,8 +1,8 @@
 # dependencies
-FROM caddy:2.6.3 AS caddy
+FROM caddy:2.6.4 AS caddy
 
 # development
-FROM composer:2.5.3 AS composer
+FROM composer:2.5.4 AS composer
 
 ARG APPLICATION_ENV=development
 ENV APPLICATION_ENV=${APPLICATION_ENV}
@@ -47,7 +47,7 @@ RUN \
       --optimize; \
   fi
 
-FROM php:8.2.2-cli-alpine AS php-cli
+FROM php:8.2.3-cli-alpine AS php-cli
 
 ARG APPLICATION_ENV=development
 ENV APPLICATION_ENV=${APPLICATION_ENV}
@@ -99,7 +99,7 @@ COPY docker/php-cli/entrypoint.sh /
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-FROM php:8.2.2-fpm-alpine AS php-fpm
+FROM php:8.2.3-fpm-alpine AS php-fpm
 
 ARG APPLICATION_ENV=development
 ENV APPLICATION_ENV=${APPLICATION_ENV}
