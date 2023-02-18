@@ -702,8 +702,9 @@ Er zijn nieuwe matches!
     ),
     array(
         'key'         => 'br.cvbook_path',
-        'value'       => '/vtk/data/br/files/cv',
-        'description' => 'The path to the cvbooks',
+        'value'       => '/var/www/vtk.be/liv/public/_br/cvbooks',
+        'description' => 'The path to the cvbooks, if XYZ is the part of the path after public/, CvController 
+        uses www.vtk.be/XYZ to access the cvbooks',
     ),
     array(
         'key'         => 'br.adobe_embed_api_clientid',

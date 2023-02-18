@@ -158,7 +158,6 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         }
 
         $academicYear = $this->getAcademicYear();
-        $onlyArchive = false;
 
         if (!in_array($academicYear, $person->getCompany()->getCvBookYears())) {
             if ($this->getParam('academicyear') === null
@@ -173,10 +172,6 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
                 );
 
                 return new ViewModel();
-            } elseif ($this->getParam('academicyear') === null
-                && count($person->getCompany()->getCvBookArchiveYears()) > 0
-            ) {
-                $onlyArchive = true;
             } else {
                 $this->flashMessenger()->error(
                     'Error',
@@ -196,16 +191,17 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
         $clientID = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('br.adobe_embed_api_clientid');
+                ->getConfigValue('br.adobe_embed_api_clientid'); // the clientID is linked to the domain www.vtk.be, so testing this locally will not work
         $cvbookPath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.cvbook_path') . '/';
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.cvbook_path') . '/';
+        $cvbookPublicPath = "www.vtk.be" . substr($cvbookPath, strpos($cvbookPath, "public") + 6);
         $fileName = "cvbook-" . $academicYear->getCode(true) . ".pdf";
 
         return new ViewModel(
             array(
                 'clientID'       => $clientID,
-                'pathName'       => $cvbookPath,
+                'filePath'       => $cvbookPublicPath . $fileName,
                 'fileName'       => $fileName,
             )
         );
