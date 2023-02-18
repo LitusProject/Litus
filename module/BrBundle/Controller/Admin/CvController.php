@@ -303,7 +303,7 @@ class CvController extends \BrBundle\Component\Controller\CvController
         $document = new CvBookGenerator($this->getEntityManager(), $year, $tmpFile, $translator);
         $document->generate();
 
-        $filePath = 'public' . $this->getEntityManager()
+        $filePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.cvbook_path') . '/';      // when this raises an error, it could be because the server has changed from liv to a new server,
                                                                 // the config value contains the server name in it.
