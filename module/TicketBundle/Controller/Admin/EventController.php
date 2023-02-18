@@ -155,7 +155,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             $now = new \DateTime('now');
             $book_date = $expired->getBookDate();
             $time_diff = $now->getTimestamp() - $book_date->getTimeStamp();
-            $days = $time_diff/(24*60*60); // Set Time Difference in seconds to day
+            $days = $time_diff/(1*60*60); // Set Time Difference in seconds to day
             if ($days > 1) {
                 $this->getEntityManager()->remove($expired);
             }
