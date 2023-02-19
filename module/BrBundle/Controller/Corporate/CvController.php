@@ -189,16 +189,21 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             }
         }
 
+        $clientID = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.adobe_embed_api_clientid'); // the clientID is linked to the domain www.vtk.be, so testing this locally will not work
         $cvbookPath = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('br.cvbook_path') . '/';
+        $cvbookPublicPath = "www.vtk.be" . substr($cvbookPath, strpos($cvbookPath, "public") + 6); // the adobe embed api expects a public url to the file
         $fileName = "cvbook-" . $academicYear->getCode(true) . ".pdf";
 
         return new ViewModel(
             array(
                 'action'         => 'pdf',
                 'academicYear'   => $academicYear,
-                'filePath'       => $cvbookPath . $fileName,
+                'clientID'       => $clientID,
+                'filePath'       => $cvbookPublicPath . $fileName,
                 'fileName'       => $fileName,
             )
         );
