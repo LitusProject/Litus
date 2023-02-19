@@ -1,17 +1,11 @@
 {% extends 'corporate/partials/cv.twig' %}
+
 {% block cv_content %}
-    <div id="adobe-dc-view" style="width: 100%;"></div>
+    {# TODO: disable right-click download #}
+    <div class="contentBlock panel-group" id="accordion">
+        <iframe id="pdf" src="{{filePath}}#toolbar=0" width="100%" height="650" ></iframe>
+    </div>
 {% endblock %}
-{# This function displays a cv-book pdf file by using Adobe Embed API. #}
+
 {% block content_script %}
-    <script src="https://documentservices.adobe.com/view-sdk/viewer.js"></script>
-    <script type="text/javascript">
-        document.addEventListener("adobe_dc_view_sdk.ready", function(){
-            var adobeDCView = new AdobeDC.View({clientId: "{{ clientID }}", divId: "adobe-dc-view"});
-            adobeDCView.previewFile({
-                content:{location: {url: "{{ filePath }}" }},
-                metaData:{fileName: "{{ fileName }}" },
-            }, {embedMode: "IN_LINE", showDownloadPDF: false, showPrintPDF: false});
-        });
-    </script>
 {% endblock %}

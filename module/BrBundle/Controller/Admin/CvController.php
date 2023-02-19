@@ -285,10 +285,9 @@ class CvController extends \BrBundle\Component\Controller\CvController
         $document = new CvBookGenerator($this->getEntityManager(), $year, $tmpFile, $translator);
         $document->generate();
 
-        $filePath = $this->getEntityManager()
+        $filePath = "./public" . $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.cvbook_path') . '/';      // when this raises an error, it could be because the server has changed from liv to a new server,
-                                                                // the config value contains the server name in it.
+            ->getConfigValue('br.cvbook_path') . '/';
         $file = fopen($filePath . "cvbook-" . $year->getCode(true) . ".pdf", "w");
         $result = fwrite($file, $tmpFile->getContent());  // will return false if failed
 

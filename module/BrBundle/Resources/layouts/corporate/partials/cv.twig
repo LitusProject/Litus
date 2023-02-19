@@ -23,7 +23,11 @@
                                 <li {% if year.getCode() == academicYear.getCode() %}class="active"{% endif %}><a
                                             href="{{ url('br_corporate_cv', {"action": getParam("action"), "academicyear": year.getCode(), "sortby": getParam("sortby")}) }}">{{ year.getCode() }}</a>
                                 </li>
-                            {% else %}
+                            {% elseif getParam("action") == "grouped" %}
+                                <li {% if year.getCode() == academicYear.getCode() %}class="active"{% endif %}><a
+                                            href="{{ url('br_corporate_cv', {"action": getParam("action"), "academicyear": year.getCode()}) }}">{{ year.getCode() }}</a>
+                                </li>
+                            {% elseif getParam("action") == "pdf" %}
                                 <li {% if year.getCode() == academicYear.getCode() %}class="active"{% endif %}><a
                                             href="{{ url('br_corporate_cv', {"action": getParam("action"), "academicyear": year.getCode()}) }}">{{ year.getCode() }}</a>
                                 </li>

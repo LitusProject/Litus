@@ -440,11 +440,35 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             ->findAllByCompanyMapQuery($companyMap)
             ->getResult();
 
-        
+        $entries = array();
+        if (!is_null($matches) && in_array($this->getCurrentAcademicYear(), $person->getCompany()->getCvBookYears())) {
+            $gradesMapEnabled = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.cv_grades_map_enabled');
+
+            $gradesMap = unserialize(
+                $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('br.cv_grades_map')
+            );
+            foreach ($matches as $match) {
+                $entry = $match->getStudentCV($this->getEntityManager(), $this->getCurrentAcademicYear());
+                if ($entry != false) {
+                    $entries[] = array('id' => $match->getId(), 'cv' => $entry);
+                }
+            }
+        }
+
         return new ViewModel(
             array(
                 'event'   => $event,
                 'matches' => $matches,
+                'entityManager' => $this->getEntityManager(),
+                'academicYearObject' => $this->getCurrentAcademicYear(),
+                'gradesMapEnabled' => $gradesMapEnabled,
+                'gradesMap'        => $gradesMap,
+                'profilePath'      => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.profile_path'),
+                'entries'       => $entries,
             )
         );
     }

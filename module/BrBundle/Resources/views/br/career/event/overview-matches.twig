@@ -25,7 +25,7 @@
                     <th>{{ translate('Study') }}</th>
                     <th>{{ translate('Specialization') }}</th>
                     <th class="hidden-xs">{{ translate('Email') }}</th>
-                    <th class="hidden-xs">{{ translate('Phone number') }}</th>
+                    <th class="hidden-xs">{{ translate('CV Book') }}</th>
                     <th>{{ translate('Actions') }}</th>
                 </tr>
                 {% for match in matches %}
@@ -35,7 +35,14 @@
                         <td>{{ match.getSubscription().getStudyString() }}</td>
                         <td>{% if match.getSubscription().getSpecialization() == '' %}/{% endif %}{{ match.getSubscription().getSpecialization() }}</td>
                         <td class="hidden-xs">{{ match.getSubscription().getEmail() }}</td>
-                        <td class="hidden-xs">{% if match.getSubscription().getPhoneNumber() == '' %}/{% endif %}{{ match.getSubscription().getPhoneNumber() }}</td>
+{#                        <td class="hidden-xs">{{ match.getStudentCv(entityManager, academicYearObject) }}</td>#}
+                        <td class="actions">
+                            {% if match.getStudentCV(entityManager, academicYearObject) and entries %}
+                                <a class="button blue pull-left cv_search" data-toggle="modal" data-target="#searchCV-{{ match.getId() }}">{{ translate('View CV') }}</a>
+                            {% else %}
+                                /
+                            {% endif %}
+                        </td>
                         <td class="actions">
                             <a href="#" class="btn btn-default btn-sm remove" data-id="{{ match.getId() }}" data-name="{{ match.getSubscription().getFirstName() }} {{match.getSubscription().getLastName()}}">
                                 {{ translate('Remove match') }}
@@ -69,6 +76,23 @@
             </div>
         </div>
     </div>
+
+    {% for entry in entries %}
+        <div class="modal fade" id="searchCV-{{ entry['id'] }}" tabindex="-1">
+            <div class="modal-dialog" style="width: 50%">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a class="close" data-dismiss="modal">&times;</a>
+                        <h3>CV</h3>
+                    </div>
+                    <div class="modal-body">
+                        {% import 'corporate/partials/showcv.twig' as cv %}
+                        {{ cv.displayEntry(entry['cv'], profilePath, gradesMapEnabled, gradesMap) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 {% endblock %}
 
 
@@ -76,6 +100,11 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('.item .remove').click(openModal);
+        });
+        $(document).ready(function() {
+            $('.cv_search').bind("click", function(){
+
+            });
         });
 
         function openModal(e) {

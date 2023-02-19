@@ -147,6 +147,8 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $event = $this->getEventEntity();
 
+        $payTime = $event->getDeadlineTime();
+
         $bookedNotSold = $this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Ticket')
             ->findAllByStatusAndEvent('booked', $event);
@@ -155,9 +157,21 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             $now = new \DateTime('now');
             $book_date = $expired->getBookDate();
             $time_diff = $now->getTimestamp() - $book_date->getTimeStamp();
-            $days = $time_diff/(24*60*60); // Set Time Difference in seconds to day
-            if ($days > 1) {
-                $this->getEntityManager()->remove($expired);
+
+            if ($event->getPayDeadline()) {
+                // In this case, people can pay their ticket longer than 24 hours.
+                // We clean all tickets older than an hour
+                $days = $time_diff/(24*60*60); // Set Time Difference in seconds to day
+                if ($days > 1) {
+                    $this->getEntityManager()->remove($expired);
+                }
+            } else {
+                // Here, we check how long the pay time is
+                // We clean all tickets that are older than the pay deadline
+                $time = $time_diff/(60); // Set Time Diff from seconds to minutes
+                if ($time > $payTime) {
+                    $this->getEntityManager()->remove($expired);
+                }
             }
         }
         $this->getEntityManager()->flush();
