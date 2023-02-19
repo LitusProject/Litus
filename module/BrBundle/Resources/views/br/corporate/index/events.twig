@@ -17,10 +17,10 @@
                <p style="text-align: justify">{{ event.getDescriptionForCompanies() }}</p>
                <div style="height: 20px"></div>
                <div class="br-eventInfoHolder">
-                  {% if event.getStartDate().format('Y-m-d') == event.getEndDate().format('Y-m-d') %}
+                  {% if event.getStartDate().format('d-m-Y') == event.getEndDate().format('d-m-Y') %}
                      <div style="margin-right: 20px">
                         <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('Date') }}</h6>
-                        <p class="br-eventInfoTitle">{{ event.getStartDate().format('Y-m-d') }}</p>
+                        <p class="br-eventInfoTitle">{{ event.getStartDate().format('d-m-Y') }}</p>
                      </div>
                      <div style="margin-right: 20px">
                         <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate("Time") }}</h6>
@@ -30,11 +30,11 @@
                   {% else %}
                      <div style="margin-right: 20px">
                         <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('Start Date') }}</h6>
-                        <p class="br-eventInfoTitle">{{ event.getStartDate().format('Y-m-d H:i') }}</p>
+                        <p class="br-eventInfoTitle">{{ event.getStartDate().format('d-m-Y H:i') }}</p>
                      </div>
                      <div style="margin-right: 20px">
                         <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('End Date') }}</h6>
-                        <p class="br-eventInfoTitle">{{ event.getEndDate().format('Y-m-d H:i') }}</p>
+                        <p class="br-eventInfoTitle">{{ event.getEndDate().format('d-m-Y H:i') }}</p>
                      </div>
                   {% endif %}
                   {% if event.getLocation() %}
@@ -61,7 +61,7 @@
                   </div>
                   {% endif %}
                   {% if event.atEvent %}
-                     <a class="button blue unfilled" href="{{ url('br_career_event',{ 'action': 'overviewMatches', 'id': event.getId() }) }}">Your matches</a>
+                     <a class="button blue unfilled" href="{{ url('br_career_event',{ 'action': 'overviewMatches', 'id': event.getId() }) }}">Your Scans</a>
                   {% endif %}
                </div>
             </div>
