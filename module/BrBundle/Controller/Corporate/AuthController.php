@@ -91,11 +91,7 @@ class AuthController extends \BrBundle\Component\Controller\CorporateController
 
                 $users = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\User\Person\Corporate')
-                    ->findBy(
-                        array(
-                            'email' => $formData['email'],
-                        )
-                    );
+                    ->findAllByEmail($formData['email']);
 
                 if (count($users) > 1) { // multiple users with this email -> don't send username
                     $brEmail = $this->getEntityManager()
@@ -112,9 +108,7 @@ class AuthController extends \BrBundle\Component\Controller\CorporateController
                         'There is no account associated with this email.'
                     );
                 } else { // exactly 1 user with this email -> send username
-
                     $user = $users[0];
-
 
                     $mailData = unserialize(
                         $this->getEntityManager()
@@ -143,9 +137,6 @@ class AuthController extends \BrBundle\Component\Controller\CorporateController
                     if (getenv('APPLICATION_ENV') != 'development') {
                         $this->getMailTransport()->send($mail);
                     }
-
-
-
 
                     $this->flashMessenger()->success(
                         'Succes',
@@ -193,11 +184,7 @@ class AuthController extends \BrBundle\Component\Controller\CorporateController
 
                 $users = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\User\Person\Corporate')
-                    ->findBy(
-                        array(
-                            'email' => $formData['email'],
-                        )
-                    );
+                    ->findAllByEmail($formData['email']);
 
                 if (count($users) > 1) { // multiple users with this email -> don't reset
                     $brEmail = $this->getEntityManager()
