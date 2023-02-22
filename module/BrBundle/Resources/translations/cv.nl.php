@@ -108,6 +108,7 @@ return array(
 
     'Delete CV'                                                                                                                                                                                                                                                                                   => 'Delete CV',
     'Your curriculum vitae has been removed.'                                                                                                                                                                                                                                                     => 'Your curriculum vitae has been removed.',
+    'Please note that to comply with GDPR regulations, you are not permitted to download the CV Books from our website.'                                                                                                                                                                          => 'Let op: Om te voldoen aan de GDPR-regelgeving is het niet toegestaan om de CV-boeken van onze website te downloaden.'
 );
 
 //CV Moeten in engels weergegeven worden dus NL translations gecomment
