@@ -233,8 +233,8 @@ class Match
             );
             $max += $trait->getImportanceWorth() / 100;
         }
-        $max = $max == 0 ? 1 : $max;
 
+        $max = $max == 0 ? 1 : $max;
 
         $positives = 0;
         $negatives = 0;
@@ -243,20 +243,29 @@ class Match
                 if ($ST['id'] == $CT['id']) {
                     $positives += ($ST['importance'] + $CT['importance']) / 100;
                 }
-                if (in_array($ST['id'], $CT['bonusIds'])) {
-                    $positives += ($ST['importance'] + $CT['importance']) / 100;
+//                if (in_array($ST['id'], $CT['bonusIds'])) {
+//                    $positives += ($ST['importance'] + $CT['importance']) / 100;
+//                }
+                foreach ($CT['bonusIds'] as $bonus) {
+                    if ($bonus->getId() == $ST['id']) {
+                        $positives += ($ST['importance'] + $CT['importance']) / 100;
+                    }
                 }
-                if (in_array($ST['id'], $CT['malusIds'])) {
-                    $negatives += ($ST['importance'] + $CT['importance']) / 100;
+//                if (in_array($ST['id'], $CT['malusIds'])) {
+//                    $negatives += ($ST['importance'] + $CT['importance']) / 100;
+//                }
+                foreach ($CT['malusIds'] as $malus) {
+                    if ($malus->getId() == $ST['id']) {
+                        $negatives += ($ST['importance'] + $CT['importance']) / 100;
+                    }
                 }
             }
         }
 
-
         $val = ceil(
             5000 + 5000 * ($positives - $negatives) / $max
         );
-        error_log('SO: positives '.$positives. ' and negatives '.$negatives.', max '.$max.', val '.$val);
+//        error_log('SO: positives '.$positives. ' and negatives '.$negatives.', max '.$max.', val '.$val);
         if ($val > 10000) {
             $val = 10000;
         }
