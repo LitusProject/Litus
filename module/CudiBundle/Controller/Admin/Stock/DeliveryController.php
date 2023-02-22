@@ -90,13 +90,10 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
         );
 
         if ($this->getRequest()->isPost()) {
-            die(var_dump($this->getRequest()->getPost()));
-
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
                 $formData = $form->getData();
-                die(var_dump($formData));
 
                 $article = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
