@@ -26,6 +26,7 @@
                     <th>{{ translate('Specialization') }}</th>
                     <th class="hidden-xs">{{ translate('Email') }}</th>
                     <th class="hidden-xs">{{ translate('CV Book') }}</th>
+                    <th class="hidden-xs">{{ translate('Notes') }}</th>
                     <th>{{ translate('Actions') }}</th>
                 </tr>
                 {% for match in matches %}
@@ -43,6 +44,7 @@
                                 /
                             {% endif %}
                         </td>
+                        <td>{{ match.getNotes() }}</td>
                         <td class="actions">
                             <a href="#" class="btn btn-default btn-sm remove" data-id="{{ match.getId() }}" data-name="{{ match.getSubscription().getFirstName() }} {{match.getSubscription().getLastName()}}">
                                 {{ translate('Remove match') }}
