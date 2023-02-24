@@ -14,6 +14,22 @@
             </div>
         </div>
 
+        <div id="modalAddNote" class="modal fade" style="z-index: 1500;">
+            <div class="modal-dialog" style="width: 50%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a class="close" data-dismiss="modal">&times;</a>
+                        <h4>{{ translate('Notes') }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        {% import 'site/partials/form.twig' as forms %}
+                        {{ forms.renderForm(notesForm) }}
+                        <button class="button btn-info btn-sm save-note">Test</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         {% if authenticatedPerson is null %}
             {{ translate('Please login to view your matches.') }}
         {% else %}
@@ -44,7 +60,11 @@
                                 /
                             {% endif %}
                         </td>
-                        <td>{{ match.getNotes() }}</td>
+                        <td class="actions">
+                            <button class="btn btn-info btn-sm add-note" data-id="{{ match.getId() }}">
+                                {{ translate('Take Note') }}
+                            </button>
+                        </td>
                         <td class="actions">
                             <a href="#" class="btn btn-default btn-sm remove" data-id="{{ match.getId() }}" data-name="{{ match.getSubscription().getFirstName() }} {{match.getSubscription().getLastName()}}">
                                 {{ translate('Remove match') }}
@@ -106,6 +126,36 @@
         $(document).ready(function() {
             $('.cv_search').bind("click", function(){
 
+            });
+        });
+
+        $(document).ready(function() {
+            $('.add-note').click(function (e){
+                e.preventDefault();
+
+                let id = '#modalAddNote';
+
+                var note_id = $(this).data('id');
+
+                $(id).modal();
+
+                let save = $('.save-note');
+
+                save.click(function (e) {
+                    console.log('clicked button');
+
+                    $(id).modal('hide');
+                })
+
+                // $(id +' .confirm').one('click', function (){
+                //     throw new Error("after click");
+                //     $(id).modal('hide');
+                //
+                // });
+                //
+                // $(id +' .deny').one('click', function () {
+                //     $(id).modal('hide');
+                // });
             });
         });
 
