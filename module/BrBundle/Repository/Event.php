@@ -33,6 +33,19 @@ class Event extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery();
     }
 
+    public function findAllVisibleQuery()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('r')
+            ->from('BrBundle\Entity\Event', 'r')
+            ->where(
+                $query->expr()->gte('r.endDateVisible', ':start')
+            )
+            ->setParameter('start', new DateTime())
+            ->orderBy('r.startDate')
+            ->getQuery();
+    }
+
     public function findAllOldQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();

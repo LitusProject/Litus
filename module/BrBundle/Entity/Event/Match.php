@@ -73,6 +73,13 @@ class Match
     private $timestamp;
 
     /**
+     * @var string Notes for the match
+     *
+     * @ORM\Column(name="notes", type="text", nullable=true)
+     */
+    private $notes;
+
+    /**
      * @param CompanyMap   $companyMap
      * @param Subscription $subscription
      */
@@ -131,5 +138,24 @@ class Match
             return $entry;
         }
         return false;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNotes()
+    {
+        return $this->notes;
+    }
+
+    /**
+     * @param string $notes
+     * @return self
+     */
+    public function setNotes(string $notes)
+    {
+        $this->notes = $notes;
+
+        return $this;
     }
 }

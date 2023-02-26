@@ -147,6 +147,29 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
+
+        $this->add(
+            array(
+                'type'     => 'datetime',
+                'name'     => 'end_date_visible',
+                'label'    => 'End Date Visible',
+                'required' => false,
+                'options'  => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name'    => 'DateCompare',
+                                'options' => array(
+                                    'first_date' => 'end_date',
+                                    'format'     => 'd/m/Y H:i',
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            )
+        );
+
         $this->add(
             array(
                 'type'    => 'datetime',

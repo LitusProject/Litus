@@ -86,6 +86,13 @@ class Event
     private $endDate;
 
     /**
+     * @var DateTime The end date and time until this event is visible
+     *
+     * @ORM\Column(name="end_date_visible", type="datetime")
+     */
+    private $endDateVisible;
+
+    /**
      * @var DateTime The start date and time of the subscriptions.
      *
      * @ORM\Column(name="subscription_date", type="datetime", nullable=true)
@@ -235,6 +242,25 @@ class Event
     {
         $this->endDate = $endDate;
 
+        return $this;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getEndDateVisible()
+    {
+        return $this->endDateVisible;
+    }
+
+    /**
+     * @param DateTime $endDateVisible
+     *
+     * @return self
+     */
+    public function setEndDateVisible(DateTime $endDateVisible): Event
+    {
+        $this->endDateVisible = $endDateVisible;
         return $this;
     }
 
