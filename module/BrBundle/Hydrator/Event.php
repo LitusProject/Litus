@@ -31,7 +31,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         'description_for_students',
         'description_for_companies',
         'view_information_nl',
-        'view_information_en',        
+        'view_information_en',
 //        'nb_companies',
 //        'nb_students',
         'visible_for_companies',
@@ -49,6 +49,9 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         $data = $this->stdExtract($object, self::$stdKeys);
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
         $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
+        if (!is_null($object->getEndDateVisible())) {
+            $data['end_date_visible'] = $object->getEndDateVisible()->format('d/m/Y H:i');
+        }
         $date = $object->getSubscriptionDate();
         if ($date != null) {
             $data['subscription_date'] = $date->format('d/m/Y H:i');
@@ -80,6 +83,10 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
 
         if (isset($data['end_date'])) {
             $object->setEndDate(self::loadDateTime($data['end_date']));
+        }
+
+        if (isset($data['end_date_visible'])) {
+            $object->setEndDateVisible(self::loadDateTime($data['end_date_visible']));
         }
 
         if (isset($data['subscription_date'])) {
