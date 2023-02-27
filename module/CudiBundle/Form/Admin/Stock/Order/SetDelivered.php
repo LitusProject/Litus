@@ -24,8 +24,13 @@ class SetDelivered extends \CommonBundle\Component\Form\Admin\Form
             $hydrator = $this->getHydrator();
             $this->populateValues($hydrator->extract($this->order));
         }
-        $items = array();
-        foreach ($this->order->getItems() as $item) {
+//        $orderItems = $this->order->getItems();
+        $orderItems = $this->getEntityManager()->getRepository("CudiBundle\Entity\Stock\Order\Item")
+            ->findAllByOrderOnBarcode($this->order);
+//        $orderItems = $this->getEntityManager()->getRepository("CudiBundle\Entity\Stock\Order\Item")
+//            ->findAllByOrderOnAlphaQuery($this->order);
+
+        foreach ($orderItems as $item) {
             $items[] = array(
                 'type' => 'text',
                 'name' => $item->getArticle()->getId(),
