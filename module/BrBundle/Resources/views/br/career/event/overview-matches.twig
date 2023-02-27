@@ -62,7 +62,7 @@
                             {% endif %}
                         </td>
                         <td class="actions">
-                            <button class="btn btn-info btn-sm add-note" data-toggle="note-modal" data-target="#addNote--{{ match.getId() }}" data-id="{{ match.getId() }}">
+                            <button class="btn btn-info btn-sm add-note" id="note-id" data-toggle="note-modal" data-target="#addNote--{{ match.getId() }}" data-id="{{ match.getId() }}" data-content="{{ match.getNotes() }}">
                                 {{ translate('Take Note') }}
                             </button>
                         </td>
@@ -132,23 +132,29 @@
         });
 
         $(document).ready(function() {
+            var match_id;
             $('.add-note').click(function (e){
                 e.preventDefault();
 
                 $('#modalAddNote').modal();
 
-                let match_id = $(this).data('id');
-                let save = $('.save-note');
+                match_id = $(this).data('id');
 
-                let textField = $('.note_text');
+                // console.log($(this).data('content'));
+                let old_note = $(this).data('content');
+                $('.note_text').val(old_note);
+            });
 
-                textField.val("Dit is een test " + match_id);
+            $(document).on('click', '.save-note', function (e) {
+                e.preventDefault();
+                // let textField = $('.note_text');
 
-                save.click(function (e) {
-                    e.preventDefault();
+                let new_notes = $('.note_text').val();
+                // let match_id = $('#note-id').data('id');
+                console.log(match_id);
+                $.post('{{ url('br_career_event', {"action": "updateNotes", "id": event.getId()}) }}match/' + match_id, JSON.stringify({'note': new_notes, }));
 
-                    $('#modalAddNote').modal('hide');
-                })
+                $('#modalAddNote').modal('hide');
             });
         });
 
