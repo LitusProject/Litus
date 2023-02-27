@@ -7,7 +7,9 @@ use BrBundle\Entity\Event\Match;
 use BrBundle\Entity\Event\Subscription;
 use BrBundle\Entity\Event\Visitor;
 use BrBundle\Entity\User\Person\Corporate;
+use CommonBundle\Component\Version\Version;
 use CommonBundle\Entity\User\Person\Academic;
+use CudiBundle\Form\Admin\Sale\Article\View;
 use DateTime;
 use Laminas\Mail\Message;
 use Laminas\Mime\Mime;
@@ -451,6 +453,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             );
             foreach ($matches as $match) {
                 $entry = $match->getStudentCV($this->getEntityManager(), $this->getCurrentAcademicYear());
+
                 if ($entry != false) {
                     $entries[] = array('id' => $match->getId(), 'cv' => $entry);
                 }
@@ -469,6 +472,40 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
                 'entries'       => $entries,
+            )
+        );
+    }
+
+    public function updateNotesAction()
+    {
+        $this->initAjax();
+
+        $event = $this->getEventEntity();
+        $match = $this->getEntityById('BrBundle\Entity\Event\Match', 'match');
+
+        $data = json_decode($this->getRequest()->getContent());
+        $new_note = $data->{'note'};
+
+        $match->setNotes($new_note);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+    public function getNotesAction()
+    {
+        $this->initAjax();
+        $match = $this->getEntityById('BrBundle\Entity\Event\Match', 'match');
+
+        $old_note = $match->getNotes();
+
+        return new ViewModel(
+            array(
+                'result' => $old_note
             )
         );
     }
