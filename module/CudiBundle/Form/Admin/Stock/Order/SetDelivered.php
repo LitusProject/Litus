@@ -16,6 +16,11 @@ class SetDelivered extends \CommonBundle\Component\Form\Admin\Form
      */
     private $order;
 
+    /**
+     * @var string
+     */
+    private $sortby;
+
     public function init()
     {
         parent::init();
@@ -24,8 +29,15 @@ class SetDelivered extends \CommonBundle\Component\Form\Admin\Form
             $hydrator = $this->getHydrator();
             $this->populateValues($hydrator->extract($this->order));
         }
-        $items = array();
-        foreach ($this->order->getItems() as $item) {
+        if ($this->sortby == "alpha") {
+            $orderItems = $this->getEntityManager()->getRepository("CudiBundle\Entity\Stock\Order\Item")
+                ->findAllByOrderOnAlpha($this->order);
+        } else {
+            $orderItems = $this->getEntityManager()->getRepository("CudiBundle\Entity\Stock\Order\Item")
+                ->findAllByOrderOnBarcode($this->order);
+        }
+
+        foreach ($orderItems as $item) {
             $items[] = array(
                 'type' => 'text',
                 'name' => $item->getArticle()->getId(),
@@ -62,6 +74,13 @@ class SetDelivered extends \CommonBundle\Component\Form\Admin\Form
     public function setOrder(Order $order)
     {
         $this->order = $order;
+
+        return $this;
+    }
+
+    public function setSortBy(string $sortby)
+    {
+        $this->sortby = $sortby;
 
         return $this;
     }

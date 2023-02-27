@@ -599,7 +599,9 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
     public function deliveredAction()
     {
         $order = $this->getOrderEntity();
-        $form = $this->getForm('cudi_stock_order_set-delivered', array('order' => $order));
+        $sortby = $this->getParam('order', 'barcode');
+
+        $form = $this->getForm('cudi_stock_order_set-delivered', array('order' => $order, 'sortby' => $sortby));
 
         $suppliers = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Supplier')
@@ -659,6 +661,8 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                 'supplier' => $order->getSupplier(),
                 'suppliers' => $suppliers,
                 'form' => $form,
+                'order' => $order,
+                'sortby' => $sortby,
             )
         );
     }
