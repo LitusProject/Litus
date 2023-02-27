@@ -55,8 +55,16 @@
             {% if match.getSubscription().getPhoneNumber() != '' %}
                 <p>Phone number: {{ match.getSubscription().getPhoneNumber() }}</p>
             {% endif %}
-            <div style="height: 100px"></div>
+            <div style="height: 50px"></div>
 
+            <div>
+                <div>
+                    <textarea rows="10" style="width: 80%" class="note_text" data-content="{{ match.getNotes() }}"></textarea>
+                </div>
+                <button style="margin-top: 2%" class="button btn-info btn-sm save-note">Save Notes</button>
+            </div>
+
+            <div style="height: 50px"></div>
             <a class="button blue unfilled" href="{{ url('br_career_event',{ 'action': 'overviewMatches', 'id': event.getId() }) }}">{{ translate('View your matches here') }} →</a>
         {% else %}
             <div class="page-header">
@@ -77,4 +85,24 @@
 
 
     </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var match_id =  {{ match.getId() }};
+
+            let text_area = $('.note_text');
+            let old_note = $(text_area).data('content');
+
+            text_area.val(old_note);
+
+            $(document).on('click', '.save-note', function (e) {
+                e.preventDefault();
+
+                let new_notes = $('.note_text').val();
+                $.post('{{ url('br_career_event', {"action": "updateNotes", "id": event.getId()}) }}match/' + match_id, JSON.stringify({'note': new_notes, }));
+            });
+        })
+    </script>
 {% endblock %}

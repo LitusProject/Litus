@@ -14,6 +14,23 @@
             </div>
         </div>
 
+        <div id="modalAddNote" class="modal fade" style="z-index: 1500;">
+            <div class="modal-dialog" style="width: 50%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a class="close" data-dismiss="modal">&times;</a>
+                        <h4>{{ translate('Notes') }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <textarea rows="10" style="width: 100%" class="note_text"></textarea>
+                        </div>
+                        <button style="margin-top: 2%" class="button btn-info btn-sm save-note">Save Notes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         {% if authenticatedPerson is null %}
             {{ translate('Please login to view your matches.') }}
         {% else %}
@@ -44,7 +61,11 @@
                                 /
                             {% endif %}
                         </td>
-                        <td>{{ match.getNotes() }}</td>
+                        <td class="actions">
+                            <button class="btn btn-info btn-sm add-note" id="note-id" data-toggle="note-modal" data-target="#addNote--{{ match.getId() }}" data-id="{{ match.getId() }}" data-content="{{ match.getNotes() }}">
+                                {{ translate('Take Note') }}
+                            </button>
+                        </td>
                         <td class="actions">
                             <a href="#" class="btn btn-default btn-sm remove" data-id="{{ match.getId() }}" data-name="{{ match.getSubscription().getFirstName() }} {{match.getSubscription().getLastName()}}">
                                 {{ translate('Remove match') }}
@@ -95,6 +116,7 @@
             </div>
         </div>
     {% endfor %}
+
 {% endblock %}
 
 
@@ -106,6 +128,33 @@
         $(document).ready(function() {
             $('.cv_search').bind("click", function(){
 
+            });
+        });
+
+        $(document).ready(function() {
+            var match_id;
+            $('.add-note').click(function (e){
+                e.preventDefault();
+
+                $('#modalAddNote').modal();
+
+                match_id = $(this).data('id');
+
+                // console.log($(this).data('content'));
+                let old_note = $(this).data('content');
+                $('.note_text').val(old_note);
+            });
+
+            $(document).on('click', '.save-note', function (e) {
+                e.preventDefault();
+                // let textField = $('.note_text');
+
+                let new_notes = $('.note_text').val();
+                // let match_id = $('#note-id').data('id');
+                console.log(match_id);
+                $.post('{{ url('br_career_event', {"action": "updateNotes", "id": event.getId()}) }}match/' + match_id, JSON.stringify({'note': new_notes, }));
+
+                $('#modalAddNote').modal('hide');
             });
         });
 
