@@ -22,9 +22,10 @@
                         <h4>{{ translate('Notes') }}</h4>
                     </div>
                     <div class="modal-body">
-                        {% import 'site/partials/form.twig' as forms %}
-                        {{ forms.renderForm(notesForm) }}
-                        <button class="button btn-info btn-sm save-note">Test</button>
+                        <div>
+                            <textarea rows="10" style="width: 100%" class="note_text"></textarea>
+                        </div>
+                        <button style="margin-top: 2%" class="button btn-info btn-sm save-note">Save Notes</button>
                     </div>
                 </div>
             </div>
@@ -61,7 +62,7 @@
                             {% endif %}
                         </td>
                         <td class="actions">
-                            <button class="btn btn-info btn-sm add-note" data-id="{{ match.getId() }}">
+                            <button class="btn btn-info btn-sm add-note" data-toggle="note-modal" data-target="#addNote--{{ match.getId() }}" data-id="{{ match.getId() }}">
                                 {{ translate('Take Note') }}
                             </button>
                         </td>
@@ -115,6 +116,7 @@
             </div>
         </div>
     {% endfor %}
+
 {% endblock %}
 
 
@@ -133,29 +135,20 @@
             $('.add-note').click(function (e){
                 e.preventDefault();
 
-                let id = '#modalAddNote';
+                $('#modalAddNote').modal();
 
-                var note_id = $(this).data('id');
-
-                $(id).modal();
-
+                let match_id = $(this).data('id');
                 let save = $('.save-note');
 
+                let textField = $('.note_text');
+
+                textField.val("Dit is een test " + match_id);
+
                 save.click(function (e) {
-                    console.log('clicked button');
+                    e.preventDefault();
 
-                    $(id).modal('hide');
+                    $('#modalAddNote').modal('hide');
                 })
-
-                // $(id +' .confirm').one('click', function (){
-                //     throw new Error("after click");
-                //     $(id).modal('hide');
-                //
-                // });
-                //
-                // $(id +' .deny').one('click', function () {
-                //     $(id).modal('hide');
-                // });
             });
         });
 

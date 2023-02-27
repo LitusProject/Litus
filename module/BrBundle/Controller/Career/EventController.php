@@ -449,8 +449,6 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             return new ViewModel();
         }
 
-        $notesForm = $this->getForm('br_career_event_match_note');
-
         $companyMap = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Event\CompanyMap')
             ->findByEventAndCompany($event, $person->getCompany());
@@ -471,26 +469,10 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             );
             foreach ($matches as $match) {
                 $entry = $match->getStudentCV($this->getEntityManager(), $this->getCurrentAcademicYear());
+
                 if ($entry != false) {
                     $entries[] = array('id' => $match->getId(), 'cv' => $entry);
                 }
-            }
-        }
-
-        if ($this->getRequest()->isPost()) {
-            $data = $this->getRequest()->getPost();
-            die(json_encode($data));
-            $notesForm->setData($data);
-
-            if ($notesForm->isValid()) {
-                $note = $notesForm->hydrateObject();
-                $this->getEntityManager()->persist($note);
-                $this->getEntityManager()->flush();
-
-                $this->flashMessenger()->success(
-                    'Success',
-                    'The consumptions were succesfully created!'
-                );
             }
         }
 
@@ -506,7 +488,6 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
                 'entries'       => $entries,
-                'notesForm'     => $notesForm,
             )
         );
     }
