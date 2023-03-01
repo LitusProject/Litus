@@ -24,6 +24,22 @@ class Subscription extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery();
     }
 
+    public function findAllByEventAndStartingIDQuery(Event $event, int $id)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('s')
+            ->from('BrBundle\Entity\Event\Subscription', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('s.event', ':event'),
+                    $query->expr()->gt('s.id', ':id'),
+                )
+            )
+            ->setParameter('event', $event->getId())
+            ->setParameter('id', $id)
+            ->getQuery();
+    }
+
     public function findOneByQREvent(Event $event, string $qrCode)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
