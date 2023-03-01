@@ -9,8 +9,6 @@ use BrBundle\Entity\Event\Subscription as SubscriptionEntity;
 use CommonBundle\Entity\General\AcademicYear;
 use Doctrine\Common\Collections\ArrayCollection;
 use Laminas\View\Model\ViewModel;
-use Laminas\Paginator\Paginator as LaminasPaginator;
-use Laminas\Paginator\Adapter\ArrayAdapter;
 
 /**
  * BrController
