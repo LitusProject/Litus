@@ -9,6 +9,8 @@ use BrBundle\Entity\Event\Subscription as SubscriptionEntity;
 use CommonBundle\Entity\General\AcademicYear;
 use Doctrine\Common\Collections\ArrayCollection;
 use Laminas\View\Model\ViewModel;
+use Laminas\Paginator\Paginator as LaminasPaginator;
+use Laminas\Paginator\Adapter\ArrayAdapter;
 
 /**
  * BrController
@@ -381,10 +383,11 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
      */
     public function getSubscriptionsAction()
     {
-//        $this->initJson();
+        $this->initJson();
 
         // Get Event ID from request, either through a query param or a header
         // Probably way to complicated to do this
+
         $eventIdParam = $this->getRequest()->getQuery('event');
         $eventIdHeader = $this->getRequest()->getHeaders()->get('Event') ? $this->getRequest()->getHeaders()->get('Event')->getFieldValue() : null;
 
@@ -423,12 +426,48 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
             return $this->error(404, 'No subscriptions were found');
         }
 
-        // Create Response
+        // Get page number from query
+        $pageNumber = $this->getRequest()->getQuery('page');
+        if (is_null($pageNumber)) {
+            $pageNumber = 1;
+        }
 
+        // Get page length from query
+        $pageLength = $this->getRequest()->getQuery('length');
+        if (is_null($pageLength)) {
+            $pageLength = 100;
+        }
+
+        // Create Response
+        $startingIndex = ($pageNumber-1)*$pageLength;
+
+        $result = array();
+        $slice = array_slice($allSubscriptions, $startingIndex, $pageLength);
+
+        foreach ($slice as $subscription) {
+            $url = $this->url()
+                ->fromRoute(
+                    'br_career_event',
+                    array('action' => 'qr',
+                        'id'       => $event->getId(),
+                        'code'     => $subscription->getQrCode()
+                    ),
+                    array('force_canonical' => true)
+                );
+            $url = str_replace('leia.', '', $url);
+            $url = str_replace('liv.', '', $url);
+
+            $result[] = array(
+                'id' => $subscription->getId(),
+                'name' => $subscription->getFirstName() . ' ' . $subscription->getLastName(),
+                'study' => $subscription->getStudy(),
+                'url' => $url,
+            );
+        }
 
         return new ViewModel(
             array(
-                'result' => 'success',
+                'result' => (object) $result,
             )
         );
     }
