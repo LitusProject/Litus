@@ -378,7 +378,7 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
      * This API endpoint serves as an endpoint for the MIXX printers at the entrance of the jobfair.
      * At this endpoint, one gets a list of all subscriptions since a given date, if properly authenticated.
      *
-     * URL: vtk.be/api/br/getSubscriptions?key=apiKey
+     * URL: vtk.be/api/br/getSubscriptions?key=apiKey&page=pageNumber&length=pageLength
      * headers: Event: 22
      */
     public function getSubscriptionsAction()
