@@ -376,7 +376,7 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
      * This API endpoint serves as an endpoint for the MIXX printers at the entrance of the jobfair.
      * At this endpoint, one gets a list of all subscriptions since a given date, if properly authenticated.
      *
-     * URL: vtk.be/api/br/getSubscriptions?key=apiKey&page=pageNumber&length=pageLength
+     * URL: vtk.be/api/br/getSubscriptions?key=apiKey&event=eventId&page=pageNumber&length=pageLength
      * headers: Event: 22
      */
     public function getSubscriptionsAction()
@@ -414,11 +414,23 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
         }
 
         // Get subscriptions for this event
+        // Check first if a previous ID is given.
+        // If this is the case, get subscriptions with higher ID
 
-        $allSubscriptions = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Event\Subscription')
-            ->findAllByEventQuery($event)
-            ->getResult();
+        $lastId = $this->getRequest()->getHeaders()->get('Last-ID') ? $this->getRequest()->getHeaders()->get('Last-ID')->getFieldValue() : null;
+
+        if ($lastId == null) {
+            $allSubscriptions = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Event\Subscription')
+                ->findAllByEventQuery($event)
+                ->getResult();
+        } else {
+            $allSubscriptions = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Event\Subscription')
+                ->findAllByEventAndStartingIDQuery($event, $lastId)
+                ->getResult();
+        }
+
 
         if (is_null($allSubscriptions)) {
             return $this->error(404, 'No subscriptions were found');
