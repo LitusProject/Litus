@@ -4,6 +4,8 @@ namespace ApiBundle\Controller;
 
 use BrBundle\Entity\Company;
 use BrBundle\Entity\User\Person\Corporate as CorporateEntity;
+use BrBundle\Entity\Event as EventEntity;
+use BrBundle\Entity\Event\Subscription as SubscriptionEntity;
 use CommonBundle\Entity\General\AcademicYear;
 use Doctrine\Common\Collections\ArrayCollection;
 use Laminas\View\Model\ViewModel;
@@ -366,6 +368,67 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
                     'status' => 'success',
                     'id'     => $person->getId(),
                 ),
+            )
+        );
+    }
+
+    /**
+     * This API endpoint serves as an endpoint for the MIXX printers at the entrance of the jobfair.
+     * At this endpoint, one gets a list of all subscriptions since a given date, if properly authenticated.
+     *
+     * URL: vtk.be/api/br/getSubscriptions?key=apiKey
+     * headers: Event: 22
+     */
+    public function getSubscriptionsAction()
+    {
+//        $this->initJson();
+
+        // Get Event ID from request, either through a query param or a header
+        // Probably way to complicated to do this
+        $eventIdParam = $this->getRequest()->getQuery('event');
+        $eventIdHeader = $this->getRequest()->getHeaders()->get('Event') ? $this->getRequest()->getHeaders()->get('Event')->getFieldValue() : null;
+
+        if ($eventIdParam == null && $eventIdHeader == null) {
+            return $this->error(400, 'No event ID was supplied');
+        } elseif ($eventIdParam !== null && $eventIdHeader !== null) {
+            if ($eventIdParam != $eventIdHeader) {
+                return $this->error(400, 'The Get Event param and Header event param are different');
+            } else {
+                $event = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Event')
+                    ->findOneById($eventIdHeader);
+            }
+        } elseif ($eventIdParam == null) {
+            $event = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Event')
+                ->findOneById($eventIdHeader);
+        } else {
+            $event = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Event')
+                ->findOneById($eventIdParam);
+        }
+
+        if (is_null($event)) {
+            return $this->error(404, 'The event was not found');
+        }
+
+        // Get subscriptions for this event
+
+        $allSubscriptions = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Event\Subscription')
+            ->findAllByEventQuery($event)
+            ->getResult();
+
+        if (is_null($allSubscriptions)) {
+            return $this->error(404, 'No subscriptions were found');
+        }
+
+        // Create Response
+
+
+        return new ViewModel(
+            array(
+                'result' => 'success',
             )
         );
     }
