@@ -4,9 +4,13 @@ namespace ApiBundle\Controller;
 
 use BrBundle\Entity\Company;
 use BrBundle\Entity\User\Person\Corporate as CorporateEntity;
+use BrBundle\Entity\Event as EventEntity;
+use BrBundle\Entity\Event\Subscription as SubscriptionEntity;
 use CommonBundle\Entity\General\AcademicYear;
 use Doctrine\Common\Collections\ArrayCollection;
 use Laminas\View\Model\ViewModel;
+use Laminas\Paginator\Paginator as LaminasPaginator;
+use Laminas\Paginator\Adapter\ArrayAdapter;
 
 /**
  * BrController
@@ -365,6 +369,104 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
                     'status' => 'success',
                     'id'     => $person->getId(),
                 ),
+            )
+        );
+    }
+
+    /**
+     * This API endpoint serves as an endpoint for the MIXX printers at the entrance of the jobfair.
+     * At this endpoint, one gets a list of all subscriptions since a given date, if properly authenticated.
+     *
+     * URL: vtk.be/api/br/getSubscriptions?key=apiKey&page=pageNumber&length=pageLength
+     * headers: Event: 22
+     */
+    public function getSubscriptionsAction()
+    {
+        $this->initJson();
+
+        // Get Event ID from request, either through a query param or a header
+        // Probably way to complicated to do this
+
+        $eventIdParam = $this->getRequest()->getQuery('event');
+        $eventIdHeader = $this->getRequest()->getHeaders()->get('Event') ? $this->getRequest()->getHeaders()->get('Event')->getFieldValue() : null;
+
+        if ($eventIdParam == null && $eventIdHeader == null) {
+            return $this->error(400, 'No event ID was supplied');
+        } elseif ($eventIdParam !== null && $eventIdHeader !== null) {
+            if ($eventIdParam != $eventIdHeader) {
+                return $this->error(400, 'The Get Event param and Header event param are different');
+            } else {
+                $event = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Event')
+                    ->findOneById($eventIdHeader);
+            }
+        } elseif ($eventIdParam == null) {
+            $event = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Event')
+                ->findOneById($eventIdHeader);
+        } else {
+            $event = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Event')
+                ->findOneById($eventIdParam);
+        }
+
+        if (is_null($event)) {
+            return $this->error(404, 'The event was not found');
+        }
+
+        // Get subscriptions for this event
+
+        $allSubscriptions = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Event\Subscription')
+            ->findAllByEventQuery($event)
+            ->getResult();
+
+        if (is_null($allSubscriptions)) {
+            return $this->error(404, 'No subscriptions were found');
+        }
+
+        // Get page number from query
+        $pageNumber = $this->getRequest()->getQuery('page');
+        if (is_null($pageNumber)) {
+            $pageNumber = 1;
+        }
+
+        // Get page length from query
+        $pageLength = $this->getRequest()->getQuery('length');
+        if (is_null($pageLength)) {
+            $pageLength = 100;
+        }
+
+        // Create Response
+        $startingIndex = ($pageNumber-1)*$pageLength;
+
+        $result = array();
+        $slice = array_slice($allSubscriptions, $startingIndex, $pageLength);
+
+        foreach ($slice as $subscription) {
+            $url = $this->url()
+                ->fromRoute(
+                    'br_career_event',
+                    array('action' => 'qr',
+                        'id'       => $event->getId(),
+                        'code'     => $subscription->getQrCode()
+                    ),
+                    array('force_canonical' => true)
+                );
+            $url = str_replace('leia.', '', $url);
+            $url = str_replace('liv.', '', $url);
+
+            $result[] = array(
+                'id' => $subscription->getId(),
+                'name' => $subscription->getFirstName() . ' ' . $subscription->getLastName(),
+                'study' => $subscription->getStudy(),
+                'url' => $url,
+            );
+        }
+
+        return new ViewModel(
+            array(
+                'result' => (object) $result,
             )
         );
     }
