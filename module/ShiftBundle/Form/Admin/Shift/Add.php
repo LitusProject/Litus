@@ -176,6 +176,25 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'     => 'text',
+                'name'     => 'nb_volunteers_min',
+                'label'    => 'Minimum number of Volunteers',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
                 'type'       => 'select',
                 'name'       => 'unit',
                 'label'      => 'Unit',
