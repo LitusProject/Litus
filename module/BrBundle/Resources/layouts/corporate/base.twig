@@ -77,7 +77,7 @@
                         {% if hasAccess('br_corporate_index', 'index') %}
                             <div class="vtk-menuitem-holder br">
                                 <a {% if 'index' == getParam('action') and 'br_corporate_index' == getParam('controller') %} class="br-menuUnderlineStyle active" {% else %} class="br-menuUnderlineStyle" {% endif %} href="{{ url("br_corporate_index", {"language": language.getAbbrev()}) }}">
-                                    {{ translate('Launch') }}
+                                    {{ translate('Home') }}
                                 </a>
                             </div>
                         {% endif %}
