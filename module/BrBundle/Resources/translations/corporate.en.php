@@ -71,4 +71,5 @@ return array(
     'Forgot password?'                                                                                                                                                                     => 'Forgot password?',
     'Reset password'                                                                                                                                                                       => 'Reset password',
     'Request username'                                                                                                                                                                     => 'Request username',
+    'Our team'                                                                                                                                                                             => 'Our team',
 );
