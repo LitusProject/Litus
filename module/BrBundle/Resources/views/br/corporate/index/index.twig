@@ -167,7 +167,7 @@
             <div class="container">
                 <h2 style="color:white">{{ texts['br_corporate_events']['main'] }}</h2>
                 {# TO DO links toevoegen #}
-                <a class="button yellow unfilled">{{ texts['br_corporate_events']['sub'] }}</a>
+                <a class="button yellow unfilled" href="{{ url("br_corporate_index", {"action": 'events', "language": language.getAbbrev()}) }}">{{ texts['br_corporate_events']['sub'] }}</a>
             </div>
         </div>
 
