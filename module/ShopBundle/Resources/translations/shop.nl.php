@@ -4,8 +4,8 @@ return array(
     'Shop'                                                                         => 'Winkel',
     'You can reserve some items from the shop. Be aware that you might lose the permission to reserve items if you don\'t come and buy your reserved items on the right date.'
         => 'U kunt items reserveren. Let op! U kunt dit privilege verliezen als u de items niet op het aangeduide ogenblik komt ophalen en betalen.',
-    'You cannot reserve items from the shop. Make sure you\'re logged in. This privilege might require you to do some shifts in the shop as well.'
-                                                                                   => 'U kunt geen items reserveren in de winkel. U moet hiervoor ingelogd zijn. Het privilege om reservaties te kunnen plaatsen kunt u verkrijgen door shiftjes te doen in de winkel.',
+    'You cannot reserve items from the shop. Make sure you\'re logged in. You may be on the blacklist because you didn\'t collect your sandwich, please contact Theokot.'
+                                                                                   => 'U kunt geen items reserveren in de winkel. U moet hiervoor ingelogd zijn. Je staat misschien op de zwarte lisjt omdat je je broodje niet hebt opgehaald, contacteer Theokot.',
     'Reservations'                                                                 => 'Reservaties',
     'Below is a list of all your reservations in the shop.'                        => 'Hieronder vindt u een overzicht van uw reservaties.',
     'Reservation time'                                                             => 'Ogenblik van reservatie',
