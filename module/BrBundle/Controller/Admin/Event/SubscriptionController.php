@@ -433,7 +433,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             );
 
         $url = str_replace('leia.', '', $url);
-        $url = str_replace('/en/', '/be/', $url);
+        $url = str_replace('/en/', '/nl/', $url);
 
         $qrSource = str_replace(
             '{{encodedUrl}}',
