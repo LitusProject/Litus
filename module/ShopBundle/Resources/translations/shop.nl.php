@@ -4,8 +4,9 @@ return array(
     'Shop'                                                                         => 'Winkel',
     'You can reserve some items from the shop. Be aware that you might lose the permission to reserve items if you don\'t come and buy your reserved items on the right date.'
         => 'U kunt items reserveren. Let op! U kunt dit privilege verliezen als u de items niet op het aangeduide ogenblik komt ophalen en betalen.',
-    'You cannot reserve items from the shop. Make sure you\'re logged in. This privilege might require you to do some shifts in the shop as well.'
-                                                                                   => 'U kunt geen items reserveren in de winkel. U moet hiervoor ingelogd zijn. Het privilege om reservaties te kunnen plaatsen kunt u verkrijgen door shiftjes te doen in de winkel.',
+    'You can\'t make new reservations. Make sure you are logged in.'               => 'U kunt geen nieuwe reservaties maken. Kijk na of u ingelogd bent.',
+    'If you are logged in and you still get this message, unfortunately you are put on the black list because you didn\'t come and buy your reserved items on the right date. This means you won\'t be able to make new reservations. Get in touch with Theokot to solve this.'
+                                                                                   => 'Als u wel ingelogd bent, staat u staat helaas op de zwarte lijst omdat u te vaak uw gereserveerde items niet op het aangeduide ogenblik bent komen ophalen en betalen. U kunt bijgevolg geen broodjes reserveren. Neem contact op met Theokot om dit op te lossen.',
     'Reservations'                                                                 => 'Reservaties',
     'Below is a list of all your reservations in the shop.'                        => 'Hieronder vindt u een overzicht van uw reservaties.',
     'Reservation time'                                                             => 'Ogenblik van reservatie',
