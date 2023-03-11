@@ -4,7 +4,14 @@
 {% block page_content %}
     <div class="container">
         <div class="page-header">
-            <h2>{{ translate('My Matches') }}</h2>
+            <div>
+                <h2>{{ translate('My Matches') }}</h2>
+            </div>
+            <div style="float: top">
+                <a href="{{ url('br_career_event',{ 'action': 'csv', 'id': event.getId() }) }}" class="btn btn-default btn-sm export" data-id="{{ match.getId() }}">
+                    {{ translate('Export matches') }}
+                </a>
+            </div>
         </div>
 
         <div class="flashmessage alert alert-danger match_removed_error fade">
