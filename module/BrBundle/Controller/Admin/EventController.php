@@ -209,7 +209,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         );
 
         $logGraphData = array(
-            'expirationTime' => $now->add($interval),
+            'expirationTime' => $event->getEndDate(),
             'labels'         => array(),
             'dataset'        => array(),
         );

@@ -10,6 +10,7 @@ class Shift extends \CommonBundle\Component\Hydrator\Hydrator
     private static $stdKeys = array(
         'nb_responsibles',
         'nb_volunteers',
+        'nb_volunteers_min',
         'name',
         'description',
         'reward',

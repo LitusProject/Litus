@@ -40,42 +40,8 @@
                         <div style="height: 20px"></div>
                     </div>
                     <div class="temporaryImage" style="min-width: 60%" class="temporaryImage">
-                        <iframe class="videoIframe" width="680px" height="340px" src="https://www.youtube.com/embed/lA0DMPXDlWU"></iframe>
+                        <iframe class="videoIframe" width="680px" height="340px" src="https://www.youtube.com/embed/xLo7wmnIby0"></iframe>
                     </div>
-                </div>
-            </div>
-
-            <div style="height: 50px"></div>
-
-            {# Praesidium voorstelling #}
-            <div>
-                <div style="position:relative">
-                    <h3 style="position: relative; z-index: 1">{{ translate('Corporate Relations') }}</h3>
-                    <div class="br-titledecoration"></div>
-                </div>
-
-                <div class="memberHolder">
-                    {% for member in members %}
-                        <div class="member">
-                            {# TO DO profilePath werkt niet #}
-                            {% if member.getPhotoPath() %}
-                                <div class="memberPhoto" style="background-image: url({{ profilePath }}/{{ member.getPhotoPath() }})"></div>
-                            {% else %}
-                            {# TO DO fallback image werkt niet #}
-                                <img data-src="holder.js/180x135/auto/text:Image" alt="">
-                            {% endif %}
-                            <h4 style="margin-bottom: 0px">{{ member.getFullName() }}</h4>
-                            {% if member.isCoordinator() %}
-                                <p style="text-align: center;">{{ translate('Groupcoordinator') }}</p>
-                            {% endif %}
-                            {% if not member.getDescription() == '' %}
-                                <p style="text-align: center;">{{ member.getDescription() }}</p>
-                            {% endif %}
-                            {% for extraUnit in extraUnits[member.getId()] %}
-                                <p style="text-align: center;">{{ hideEmail('<a href="mailto:' ~ extraUnit.getMail() ~ '">' ~ extraUnit.getName() ~ '</a>') }}</p>
-                            {% endfor %}
-                        </div>
-                    {% endfor %}
                 </div>
             </div>
 
@@ -116,23 +82,23 @@
                             <div style="height: 100%; flex-grow: 1">
 
                                 <div class="mySlides">
-                                    <img class="lightboxZoomedImage" src="url(/_br/img/impression-01.jpg)"></img>
+                                    <img class="lightboxZoomedImage" src="/_br/img/impression-01.jpg">
                                 </div>
 
                                 <div class="mySlides">
-                                    <img class="lightboxZoomedImage" src="url(/_br/img/impression-02.jpg)"></img>
+                                    <img class="lightboxZoomedImage" src="/_br/img/impression-02.jpg">
                                 </div>
 
                                 <div class="mySlides">
-                                    <img class="lightboxZoomedImage" src="url(/_br/img/impression-03.jpg)"></img>
+                                    <img class="lightboxZoomedImage" src="/_br/img/impression-03.jpg">
                                 </div>
 
                                 <div class="mySlides">
-                                    <img class="lightboxZoomedImage" src="url(/_br/img/impression-04.jpg)"></img>
+                                    <img class="lightboxZoomedImage" src="/_br/img/impression-04.jpg">
                                 </div>
 
                                 <div class="mySlides">
-                                    <img class="lightboxZoomedImage" src="url(/_br/img/impression-05.jpg)"></img>
+                                    <img class="lightboxZoomedImage" src="/_br/img/impression-05.jpg">
                                 </div>
 
                             </div>
@@ -169,6 +135,31 @@
         </div>
 
 
+    <div style="height: 80px"></div>
+
+    <div class="container">
+        <div style="position:relative">
+            <h3 style="position: relative; z-index: 1">{{ texts['br_corporate_services']['title'] }}</h3>
+            <div class="br-titledecoration"></div>
+        </div>
+        <div style="height: 50px"></div>
+        <div class="servicesGrid">
+            <div class="servicesHolder">
+                <h4 class="servicesTitle">{{ translate('Visibility') }}</h4>
+                <p style="text-align: justify">{{ texts['br_corporate_services']['one'] }}</p>
+            </div>
+            <div class="servicesHolder">
+                <h4 class="servicesTitle">{{ translate('Flexibility') }}</h4>
+                <p style="text-align: justify">{{ texts['br_corporate_services']['two'] }}</p>
+            </div>
+            <div class="servicesHolder">
+                <h4 class="servicesTitle">{{ translate('Proffesionaliteit') }}</h4>
+                <p style="text-align: justify">{{ texts['br_corporate_services']['three'] }}</p>
+            </div>
+        </div>
+
+    </div>
+
         <div style="height: 100px"></div>
 
         {# Doorklikknop vacatures/stages/studentenjobs #}
@@ -176,36 +167,45 @@
             <div class="container">
                 <h2 style="color:white">{{ texts['br_corporate_events']['main'] }}</h2>
                 {# TO DO links toevoegen #}
-                <a class="button yellow unfilled">{{ texts['br_corporate_events']['sub'] }}</a>
+                <a class="button yellow unfilled" href="{{ url("br_corporate_index", {"action": 'events', "language": language.getAbbrev()}) }}">{{ texts['br_corporate_events']['sub'] }}</a>
             </div>
-        </div>
-
-        <div style="height: 80px"></div>
-
-        <div class="container">
-            <div style="position:relative">
-                <h3 style="position: relative; z-index: 1">{{ texts['br_corporate_services']['title'] }}</h3>
-                <div class="br-titledecoration"></div>
-            </div>
-            <div style="height: 50px"></div>
-            <div class="servicesGrid">
-                <div class="servicesHolder">
-                    <h4 class="servicesTitle">{{ translate('Visibility') }}</h4>
-                    <p style="text-align: justify">{{ texts['br_corporate_services']['one'] }}</p>
-                </div>
-                <div class="servicesHolder">
-                    <h4 class="servicesTitle">{{ translate('Flexibility') }}</h4>
-                    <p style="text-align: justify">{{ texts['br_corporate_services']['two'] }}</p>
-                </div>
-                <div class="servicesHolder">
-                    <h4 class="servicesTitle">{{ translate('Proffesionaliteit') }}</h4>
-                    <p style="text-align: justify">{{ texts['br_corporate_services']['three'] }}</p>
-                </div>
-            </div>
-
         </div>
 
         <div style="height: 50px"></div>
+
+    {# Praesidium voorstelling #}
+    <div class="container">
+        <div style="position:relative">
+            <h3 style="position: relative; z-index: 1">{{ translate('Our team') }}</h3>
+            <div class="br-titledecoration"></div>
+        </div>
+
+        <div class="memberHolder">
+            {% for member in members %}
+                <div class="member">
+                    {# TO DO profilePath werkt niet #}
+                    {% if member.getPhotoPath() %}
+                        <div class="memberPhoto" style="background-image: url({{ profilePath }}/{{ member.getPhotoPath() }})"></div>
+                    {% else %}
+                        {# TO DO fallback image werkt niet #}
+                        <img data-src="holder.js/180x135/auto/text:Image" alt="">
+                    {% endif %}
+                    <h4 style="margin-bottom: 0px">{{ member.getFullName() }}</h4>
+                    {% if member.isCoordinator() %}
+                        <p style="text-align: center;">{{ translate('Groupcoordinator') }}</p>
+                    {% endif %}
+                    {% if not member.getDescription() == '' %}
+                        <p style="text-align: center;">{{ member.getDescription() }}</p>
+                    {% endif %}
+                    {% for extraUnit in extraUnits[member.getId()] %}
+                        <p style="text-align: center;">{{ hideEmail('<a href="mailto:' ~ extraUnit.getMail() ~ '">' ~ extraUnit.getName() ~ '</a>') }}</p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div style="height: 50px"></div>
 
 
     {{ inlineScript () }}
@@ -213,7 +213,7 @@
         <script>
         // Open the Modal
         function openModal() {
-            console.log("JUUU"); 
+            console.log("JUUU");
         document.getElementById("myModal").style.display = "block";
         }
 

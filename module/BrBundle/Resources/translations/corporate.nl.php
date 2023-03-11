@@ -82,4 +82,5 @@ return array(
     'Forgot username?'                                                                                                                                                                     => 'Gebruikersnaam vergeten?',
     'Reset password'                                                                                                                                                                       => 'Wachtwoord opnieuw instellen',
     'Request username'                                                                                                                                                                     => 'Gebruikersnaam opvragen',
+    'Our team'                                                                                                                                                                             => 'Ons team',
 );
