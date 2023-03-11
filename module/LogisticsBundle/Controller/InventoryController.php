@@ -166,7 +166,8 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
         );
     }
 
-    public function reserveAction(){
+    public function reserveAction()
+    {
         $inventory = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Inventory')
             ->findOneById($this->getParam('id'));
@@ -211,7 +212,7 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
                         )
                     );
                 } else {
-                    // Used to add  or subtract reserved form available
+                    // Used to add or subtract reserved form available
                     $inventory->addReserved($reserved);
                     $this->getEntityManager()->flush();
 
@@ -228,5 +229,10 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
                 'inventory' => $inventory,
             )
         );
+    }
+
+    public function searchAction()
+    {
+        $this->initAjax();
     }
 }

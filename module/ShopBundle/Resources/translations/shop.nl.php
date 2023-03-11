@@ -3,9 +3,10 @@
 return array(
     'Shop'                                                                         => 'Winkel',
     'You can reserve some items from the shop. Be aware that you might lose the permission to reserve items if you don\'t come and buy your reserved items on the right date.'
-        => 'U kunt items reserveren. Let op! U kunt dit privilege verliezen als u de items niet op het aangeduide ogenblik komt ophalen en betalen.',
-    'You cannot reserve items from the shop. Make sure you\'re logged in. You may be on the blacklist because you didn\'t collect your sandwich, please contact Theokot.'
-                                                                                   => 'U kunt geen items reserveren in de winkel. U moet hiervoor ingelogd zijn. Je staat misschien op de zwarte lisjt omdat je je broodje niet hebt opgehaald, contacteer Theokot.',
+    => 'U kunt items reserveren. Let op! U kunt dit privilege verliezen als u de items niet op het aangeduide ogenblik komt ophalen en betalen.',
+    'You can\'t make new reservations. Make sure you are logged in.'               => 'U kunt geen nieuwe reservaties maken. Kijk na of u ingelogd bent.',
+    'If you are logged in and you still get this message, unfortunately you are put on the black list because you didn\'t come and buy your reserved items on the right date. This means you won\'t be able to make new reservations. Get in touch with Theokot to solve this.'
+    => 'Als u wel ingelogd bent, staat u staat helaas op de zwarte lijst omdat u te vaak uw gereserveerde items niet op het aangeduide ogenblik bent komen ophalen en betalen. U kunt bijgevolg geen broodjes reserveren. Neem contact op met Theokot om dit op te lossen.',
     'Reservations'                                                                 => 'Reservaties',
     'Below is a list of all your reservations in the shop.'                        => 'Hieronder vindt u een overzicht van uw reservaties.',
     'Reservation time'                                                             => 'Ogenblik van reservatie',
