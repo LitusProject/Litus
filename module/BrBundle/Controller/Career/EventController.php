@@ -7,10 +7,11 @@ use BrBundle\Entity\Event\Match;
 use BrBundle\Entity\Event\Subscription;
 use BrBundle\Entity\Event\Visitor;
 use BrBundle\Entity\User\Person\Corporate;
-use CommonBundle\Component\Version\Version;
 use CommonBundle\Entity\User\Person\Academic;
-use CudiBundle\Form\Admin\Sale\Article\View;
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use DateTime;
+use Laminas\Http\Headers;
 use Laminas\Mail\Message;
 use Laminas\Mime\Mime;
 use Laminas\Mime\Part;
@@ -472,6 +473,61 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
                 'entries'       => $entries,
+            )
+        );
+    }
+
+    public function csvAction() {
+        $file = new CsvFile();
+        $heading = array('first_name', 'last_name', 'study', 'specialization', 'email', 'phone', 'notes');
+        $results = array();
+
+        $event = $this->getEventEntity();
+        if ($event === null) {
+            return new ViewModel();
+        }
+
+        if ($this->getAuthentication()->isAuthenticated()) {
+            $person = $this->getAuthentication()->getPersonObject();
+        }
+
+        $companyMap = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Event\CompanyMap')
+            ->findByEventAndCompany($event, $person->getCompany());
+
+        $matches = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Event\Match')
+            ->findAllByCompanyMapQuery($companyMap)
+            ->getResult();
+
+        foreach ($matches as $match) {
+            $subscription = $match->getSubscription();
+            $results[] = array(
+                $subscription->getFirstName(),
+                $subscription->getLastName(),
+                $subscription->getStudyString(),
+                $subscription->getSpecialization(),
+                $subscription->getEmail(),
+                $subscription->getPhoneNumber(),
+                $match->getNotes(),
+            );
+        }
+        $document = new CsvGenerator($heading, $results);
+        $document->generateDocument($file);
+
+
+        $headers = new Headers();
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="subscriptions_'. $event->getTitle() . '.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
             )
         );
     }
