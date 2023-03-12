@@ -47,7 +47,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                 if (strlen($optionData['option']) == 0) {
                     continue;
                 }
-
+                error_log(json_encode($optionData['limit_per_person_option']));
                 if (isset($optionData['option_id']) && is_numeric($optionData['option_id'])) {
                     $option = $this->getEntityManager()
                         ->getRepository('TicketBundle\Entity\Event\Option')
@@ -58,6 +58,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                     $price_non_members = $optionData['membershipDiscount'] == 1 ? $optionData['price_non_members'] : null;
                     $option->setPriceNonMembers($price_non_members);
                     $option->setIsVisible($optionData['visible']);
+                    $option->setLimitPerPerson($optionData['limit_per_person_option']);
                 } else {
                     $price_non_members = $optionData['membershipDiscount'] == 1 ? $optionData['price_non_members'] : null;
                     $option = new OptionEntity(
@@ -66,7 +67,8 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                         $optionData['price_members'],
                         $price_non_members,
                         intval($optionData['maximum']),
-                        $optionData['visible']
+                        $optionData['visible'],
+                        $optionData['limit_per_person_option'],
                     );
                     $this->getEntityManager()->persist($option);
                 }
@@ -193,6 +195,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                     'price_non_members' => $object->isOnlyMembers() ? '' : number_format($option->getPriceNonMembers() / 100, 2),
                     'membershipDiscount' => $option->getPriceNonMembers() > 0,
                     'visible'           => $option->isVisible() ? $option->isVisible() : '',
+                    'limit_per_person_option' => $option->getLimitPerPerson() ? : 0,
                 );
             }
         }

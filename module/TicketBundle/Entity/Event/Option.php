@@ -64,18 +64,27 @@ class Option
     private $visible;
 
     /**
+     * @var integer The maximum amount of tickets for an option per person
+     *
+     * @ORM\Column(name="limit_per_person_option", type="integer", nullable=true)
+     */
+    private $limitPerPerson;
+
+    /**
      * @param Event               $event
      * @param string              $name
      * @param integer             $priceMembers
      * @param integer|null        $priceNonMembers
      * @param integer|string|null $maximum
+     * @param integer|null $limit
      */
-    public function __construct(Event $event, $name, $priceMembers, $priceNonMembers, $maximum, $visible)
+    public function __construct(Event $event, $name, $priceMembers, $priceNonMembers, $maximum, $visible, $limit)
     {
         $this->event = $event;
         $this->name = $name;
         $this->maximum = $maximum;
         $this->visible = $visible;
+        $this->limitPerPerson = $limit;
 
         $this->setPriceMembers($priceMembers)
             ->setPriceNonMembers($priceNonMembers);
@@ -188,6 +197,24 @@ class Option
     public function setIsVisible($visible)
     {
         $this->visible = $visible;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getLimitPerPerson()
+    {
+        return $this->limitPerPerson;
+    }
+
+    /**
+     * @param $limit
+     * @return self
+     */
+    public function setLimitPerPerson($limit)
+    {
+        $this->limitPerPerson = $limit;
         return $this;
     }
 }
