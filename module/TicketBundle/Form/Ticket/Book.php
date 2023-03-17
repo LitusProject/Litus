@@ -106,7 +106,8 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                             'name'       => 'option_' . $option->getId() . '_number_member',
                             'label'      => $option->getPriceNonMembers() != 0 ? ucfirst($option->getName()) . ' (Member)' : ucfirst($option->getName()),
                             'attributes' => array(
-                                'options' => $this->getNumberOptions(),
+//                                'options' => $this->getNumberOptions(),
+                                'options' => $this->getLimitForOption($option),
                             ),
                             'options'    => array(
                                 'input' => array(
@@ -133,7 +134,8 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'name' => 'option_' . $option->getId() . '_number_non_member',
                                 'label' => ucfirst($option->getName()) . ' (Non Member)',
                                 'attributes' => array(
-                                    'options' => $this->getNumberOptions(),
+//                                    'options' => $this->getNumberOptions(),
+                                    'options' => $this->getLimitForOption($option),
                                 ),
                                 'options' => array(
                                     'input' => array(
@@ -191,6 +193,24 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         $numbers = array();
         $max = $this->event->getLimitPerPerson() == 0 ? 10 : $this->event->getLimitPerPerson();
+
+        for ($i = 0; $i <= $max; $i++) {
+            $numbers[$i] = $i;
+        }
+
+        return $numbers;
+    }
+
+    private function getLimitForOption(Event\Option $option) {
+        $numbers = array();
+
+        if ($option->getLimitPerPerson() == 0) {
+            $max = $this->event->getLimitPerPerson() == 0 ? 10 : $this->event->getLimitPerPerson();
+        } elseif ($option->getLimitPerPerson() > $this->event->getLimitPerPerson()) {
+            $max = $this->event->getLimitPerPerson() == 0 ? 10 : $this->event->getLimitPerPerson();
+        } else {
+            $max = $option->getLimitPerPerson();
+        }
 
         for ($i = 0; $i <= $max; $i++) {
             $numbers[$i] = $i;

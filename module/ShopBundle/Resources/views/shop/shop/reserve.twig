@@ -51,7 +51,9 @@
                     {% endif %}
                 </div>
             {% else %}
-                {{ translate("You cannot reserve items from the shop. Make sure you're logged in. This privilege might require you to do some shifts in the shop as well.") }}
+                {{ translate("You can\'t make new reservations. Make sure you are logged in.") }}
+                <br> <br>
+                {{ translate("If you are logged in and you still get this message, unfortunately you are put on the black list because you didn\'t come and buy your reserved items on the right date. This means you won\'t be able to make new reservations. Get in touch with Theokot to solve this.") }}
             {% endif %}
         </div>
     </div>

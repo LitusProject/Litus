@@ -4,7 +4,14 @@
 {% block page_content %}
     <div class="container">
         <div class="page-header">
-            <h2>{{ translate('My Matches') }}</h2>
+            <div>
+                <h2>{{ translate('My Matches') }}</h2>
+            </div>
+            <div style="float: top">
+                <a href="{{ url('br_career_event',{ 'action': 'csv', 'id': event.getId() }) }}" class="btn btn-default btn-sm export" data-id="{{ match.getId() }}">
+                    {{ translate('Export matches') }}
+                </a>
+            </div>
         </div>
 
         <div class="flashmessage alert alert-danger match_removed_error fade">
@@ -42,6 +49,7 @@
                     <th>{{ translate('Study') }}</th>
                     <th>{{ translate('Specialization') }}</th>
                     <th class="hidden-xs">{{ translate('Email') }}</th>
+                    <th class="hidden-xs">{{ translate('Phone') }}</th>
                     <th class="hidden-xs">{{ translate('CV Book') }}</th>
                     <th class="hidden-xs">{{ translate('Notes') }}</th>
                     <th>{{ translate('Actions') }}</th>
@@ -53,6 +61,7 @@
                         <td>{{ match.getSubscription().getStudyString() }}</td>
                         <td>{% if match.getSubscription().getSpecialization() == '' %}/{% endif %}{{ match.getSubscription().getSpecialization() }}</td>
                         <td class="hidden-xs">{{ match.getSubscription().getEmail() }}</td>
+                        <td class="hidden-xs">{{ match.getSubscription().getPhoneNumber() }}</td>
 {#                        <td class="hidden-xs">{{ match.getStudentCv(entityManager, academicYearObject) }}</td>#}
                         <td class="actions">
                             {% if match.getStudentCV(entityManager, academicYearObject) and entries %}

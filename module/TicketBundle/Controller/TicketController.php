@@ -216,8 +216,10 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             throw new RuntimeException('Guestinfo is null');
                         }
 
-                        foreach ($booked_tickets as $ticket) {
-                            $this->sendMail($ticket);
+                        if($event->isOnlinePayment()){
+                            foreach ($booked_tickets as $ticket) {
+                                $this->sendMail($ticket);
+                            }
                         }
 
                         $this->flashMessenger()->success(
@@ -316,8 +318,10 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             throw new RuntimeException('Guestinfo is null');
                         }
 
-                        foreach ($booked_tickets as $ticket) {
-                            $this->sendMail($ticket);
+                        if($event->isOnlinePayment()){
+                            foreach ($booked_tickets as $ticket) {
+                                $this->sendMail($ticket);
+                            }
                         }
 
                         $this->flashMessenger()->success(
@@ -342,6 +346,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                     'tickets'               => array(),
                     'form'                  => $form,
                     'canRemoveReservations' => $event->canRemoveReservation($this->getEntityManager()),
+                    'isOnlinePayment'       => $event->isOnlinePayment(),
                     'isPraesidium'          => false,
                     'canBook'               => $canBook,
                     'maximumAmount'         => $event->getLimitPerPerson(),
@@ -426,8 +431,10 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
                         $this->getEntityManager()->flush();
 
-                        foreach ($booked_tickets as $ticket) {
-                            $this->sendMail($ticket);
+                        if($event->isOnlinePayment()){
+                            foreach ($booked_tickets as $ticket) {
+                                $this->sendMail($ticket);
+                            }
                         }
 
                         $this->flashMessenger()->success(
@@ -488,8 +495,10 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
                         $this->getEntityManager()->flush();
 
-                        foreach ($booked_tickets as $ticket) {
-                            $this->sendMail($ticket);
+                        if($event->isOnlinePayment()){
+                            foreach ($booked_tickets as $ticket) {
+                                $this->sendMail($ticket);
+                            }
                         }
 
                         $this->flashMessenger()->success(
@@ -517,6 +526,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 'tickets'               => $tickets,
                 'form'                  => $form,
                 'canRemoveReservations' => $event->canRemoveReservation($this->getEntityManager()),
+                'isOnlinePayment'       => $event->isOnlinePayment(),
                 'isPraesidium'          => $organizationStatus ? $organizationStatus->getStatus() == 'praesidium' : false,
                 'canBook'               => $canBook,
                 'maximumAmount'         => $event->getLimitPerPerson(),
