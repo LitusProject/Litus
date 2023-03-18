@@ -48,6 +48,7 @@ class Event extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 $query->expr()->lt('a.startDate', ':now')
             )
             ->setParameter('now', new DateTime())
+            ->orderBy('e.bookingsCloseDate', 'DESC')
             ->getQuery();
     }
 }

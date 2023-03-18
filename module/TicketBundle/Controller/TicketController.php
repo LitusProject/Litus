@@ -643,7 +643,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
             $this->flashMessenger()->success(
                 'Success',
-                'The ticket was successfully payed for!'
+                'The ticket was successfully paid for!'
             );
 
             $this->redirect()->toRoute(
