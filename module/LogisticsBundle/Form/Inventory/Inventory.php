@@ -37,24 +37,24 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
             )
         );
 
-//        $this->add(
-//            array(
-//                'type'       => 'select',
-//                'name'       => 'category',
-//                'label'      => 'Category',
-//                'required'   => true,
-//                'attributes' => array(
-//                    'options' => InventoryEntity::$possibleCategories,
-//                ),
-//                'options'    => array(
-//                    'input' => array(
-//                        'filter' => array(
-//                            array('name' => 'StringTrim'),
-//                        ),
-//                    ),
-//                ),
-//            )
-//        );
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'category',
+                'label'      => 'Category',
+                'required'   => true,
+                'attributes' => array(
+                    'options' => InventoryEntity::$possibleCategories,
+                ),
+                'options'    => array(
+                    'input' => array(
+                        'filter' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
 
         $this->add(
             array(
