@@ -24,6 +24,27 @@ class Inventory
     /**
      * @var string
      *
+     * @ORM\Column(name="category", type="string", nullable=true)
+     */
+    private $category;
+
+    /**
+     * @var array The possible types of a category
+     */
+    public static $possibleCategories = array(
+        'Frisdrank' => 'Frisdrank',
+        'Alcohol' => 'Alcohol',
+        'Snacks' => 'Snacks',
+        'Koffie & thee' => 'Koffie & thee',
+        'Kruiden' => 'Kruiden',
+        'Saus' => 'Saus',
+        'Conserven' => 'Conserven',
+        'Andere' => 'Andere'
+    );
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="barcode", type="string")
      */
     private $barcode;
@@ -69,6 +90,24 @@ class Inventory
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param $category
+     * @return self
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
+        return $this;
     }
 
     /**
