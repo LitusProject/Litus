@@ -6,9 +6,9 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
- * Version 20230319211458
+ * Version 20230319225809
  */
-class Version20230319211458 extends \Doctrine\Migrations\AbstractMigration
+class Version20230319225809 extends \Doctrine\Migrations\AbstractMigration
 {
     /**
      * @param  \Doctrine\DBAL\Schema\Schema $schema
@@ -18,7 +18,7 @@ class Version20230319211458 extends \Doctrine\Migrations\AbstractMigration
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('ALTER TABLE logistics_inventory RENAME COLUMN categorie TO category');
+        $this->addSql('ALTER TABLE logistics_inventory ADD category VARCHAR(255) DEFAULT NULL');
 
     }
 
