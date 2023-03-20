@@ -308,7 +308,7 @@ class Event
      */
     public function isActive()
     {
-        if ($this->activity->getStartDate() < new DateTime()) {
+        if ($this->activity->getEndDate() < new DateTime()) {
             return false;
         }
 
