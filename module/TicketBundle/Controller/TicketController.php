@@ -825,13 +825,14 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                     'ticket',
                     array('action' => 'qr',
                         'id' => $event->getId(),
-                        'code' => $qr
+                        'qr' => $qr
                     ),
                     array('force_canonical' => true)
                 )
         );
 
         $encodedUrl = str_replace('leia.', '', $encodedUrl);
+        $encodedUrl = str_replace('liv.', '', $encodedUrl);
 
         $qrSource = str_replace(
             '{{encodedUrl}}',

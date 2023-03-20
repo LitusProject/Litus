@@ -271,7 +271,9 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
                 ),
                 array('force_canonical' => true)
             );
+
         $url = str_replace('leia.', '', $url);
+        $url = str_replace('liv.', '', $url);
 
         $qrSource = str_replace(
             '{{encodedUrl}}',
@@ -299,6 +301,7 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
             ->setFrom($mailAddress, $mailName)
             ->addTo($ticket->getEmail(), $ticket->getFullName())
             ->setSubject($subject);
+
         if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);
         }
