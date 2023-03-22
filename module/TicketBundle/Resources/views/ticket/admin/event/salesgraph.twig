@@ -1,60 +1,77 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
+    {% include 'ticket/admin/event/partials/navigation.twig' %}
 
     <h1 style="font-size: 15pt">{{ event.getActivity().getTitle() }}</h1>
-    <h2 style="font-size: 12pt">Sales per moment</h2>
+    <h2>{{ event.getActivity().getStartDate().format("d/m/Y H:i") }} - {{ event.getActivity().getEndDate().format("d/m/Y H:i") }}</h2>
+    <h2 style="font-size: 12pt">Total sales</h2>
     <div class="chart full_width full_width">
-        <canvas id="salesGraph" height="500px" ></canvas>
-    </div>
-    <h2 style="font-size: 12pt">Sales accumulated</h2>
-    <div class="chart full_width full_width">
-        <canvas id="salesGraphAccumulated" height="500px" ></canvas>
+        <canvas id="salesGraph" ></canvas>
     </div>
 
 {% endblock %}
 
 {% block content_script %}
-{#    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.min.js"></script>#}
+    <!--Chart.js version 4.2.1 -->
+    <script src="https:/cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.umd.js"></script>
+    <!--Date adapter for time scale -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/date-fns/1.30.1/date_fns.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             drawSalesGraph();
         });
 
         function drawSalesGraph() {
-            const data = {
-                labels : {% autoescape false %}{{ salesGraphData['labels']|json_encode }}{% endautoescape %},
-                datasets : [
-                    {
-                        fillColor : "rgba(98, 207, 252, 0.25)",
-                        strokeColor : "rgba(98, 207, 252, 1)",
-                        pointColor : "rgba(98, 207, 252, 1)",
-                        pointStrokeColor : "#fff",
-                        data : {% autoescape false %}{{ salesGraphData['dataset']|json_encode }}{% endautoescape %}
-                    }
-                ]
-            };
 
-            const data_accumulated = {
-                labels: {% autoescape false %}{{ salesGraphDataAccumulated['labels']|json_encode }}{% endautoescape %},
+            const data = {
+                labels: {% autoescape false %}{{ salesGraphData['labels']|json_encode }}{% endautoescape %},
                 datasets: [
                     {
+                        label: 'Total sales',
                         fillColor: "rgba(98, 207, 252, 0.25)",
                         strokeColor: "rgba(98, 207, 252, 1)",
                         pointColor: "rgba(98, 207, 252, 1)",
                         pointStrokeColor: "#fff",
-                        data: {% autoescape false %}{{ salesGraphDataAccumulated['dataset']|json_encode }}{% endautoescape %}
+                        data: {% autoescape false %}{{ salesGraphData['dataset']|json_encode }}{% endautoescape %}
                     }
                 ]
             };
 
-            $('#salesGraph').attr('width', $('#salesGraph').parent().width());
-            let salesChart = new Chart($('#salesGraph').get(0).getContext('2d'));
-            salesChart.Line(data);
+            let config = {
+                type: 'line',
+                data: data,
+                options: {
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+                                tooltipFormat: 'yyyy-MM-dd HH:mm',
+                                displayFormats: {
+                                    millisecond: 'dd/MM HH:mm:ss.SSS',
+                                    second: 'dd/MM HH:mm:ss',
+                                    minute: 'dd/MM HH:mm',
+                                    hour: 'dd/MM HH:mm',
+                                    day: 'dd/MM/yyyy',
+                                    month: 'dd/MM/yyyy',
+                                    year:'dd/MM/yyyy',
+                                }
+                            },
+                            ticks: {
+                                maxRotation: 30,
+                                autoSkipPadding: 2,
+                            },
+                        },
+                    },
+                },
+            };
 
-            $('#salesGraphAccumulated').attr('width', $('#salesGraphAccumulated').parent().width());
-            let accumulatedSalesChart = new Chart($('#salesGraphAccumulated').get(0).getContext('2d'));
-            accumulatedSalesChart.Line(data_accumulated);
+            new Chart(document.getElementById("salesGraph"), config);
         }
     </script>
 {% endblock %}

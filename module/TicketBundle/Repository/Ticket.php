@@ -83,6 +83,7 @@ class Ticket extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             )
             ->setParameter('event', $event)
             ->setParameter('status', $status)
+            ->orderBy('t.soldDate')
             ->getQuery()
             ->getResult();
     }
