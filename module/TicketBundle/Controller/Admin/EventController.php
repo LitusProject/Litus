@@ -2,6 +2,8 @@
 
 namespace TicketBundle\Controller\Admin;
 
+use DateInterval;
+use DateTime;
 use Laminas\View\Model\ViewModel;
 use TicketBundle\Entity\Event;
 
@@ -185,6 +187,67 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         );
 
         return new ViewModel();
+    }
+
+    /**
+     * Show a graph with sales data
+     */
+    public function salesgraphAction(){
+        $now = new DateTime();
+
+        $salesGraphData = array(
+            'labels'         => array(),
+            'dataset'        => array(),
+        );
+
+        $sales = $this->getEntityManager()
+            ->getRepository("TicketBundle\Entity\Ticket")
+            ->findAllByStatusAndEvent("sold", $this->getEventEntity());
+
+        $data = array();
+        foreach ($sales as $sale){
+//            if(array_key_exists($sale->getSoldDate()->format('d/m/Y'), $data)) {
+            if(array_key_exists($sale->getSoldDate()->format('d/m/Y H'), $data)) {
+//            if(array_key_exists($sale->getSoldDate()->format('d/m/Y H:i'), $data)) {
+//                $data[$sale->getSoldDate()->format('d/m/Y')]++;
+                $data[$sale->getSoldDate()->format('d/m/Y H')]++;
+//                $data[$sale->getSoldDate()->format('d/m/Y H:i')]++;
+            }else {
+//                $data[$sale->getSoldDate()->format('d/m/Y')] = 1;
+                $data[$sale->getSoldDate()->format('d/m/Y H')] = 1;
+//                $data[$sale->getSoldDate()->format('d/m/Y H:i')] = 1;
+            }
+        }
+
+        $dates = array();
+        $sales_each_day = array();
+
+        foreach ($data as $date => $nb_of_sales){
+            $dates[] = $date;
+            $sales_each_day[] = $nb_of_sales;
+        }
+
+        $sales_accumulated = array();
+
+        for($i = 0; $i < sizeof($sales_each_day); $i++){
+            $sales_accumulated[$i] = array_sum(array_slice($sales_each_day, 0, $i));
+        }
+
+        foreach ($data as $label => $value) {
+            $salesGraphData['labels'][] = $label;
+            $salesGraphData['dataset'][] = $value;
+        }
+
+        $salesGraphDataAccumulated['labels'] = $dates;
+        $salesGraphDataAccumulated['dataset'] = $sales_accumulated;
+
+        return new ViewModel(
+            array(
+                'event' => $this->getEventEntity(),
+                'salesGraphData' => $salesGraphData,
+                'salesGraphDataAccumulated' => $salesGraphDataAccumulated,
+            )
+        );
     }
 
     /**

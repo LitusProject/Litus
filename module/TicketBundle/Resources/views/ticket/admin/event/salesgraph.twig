@@ -1,0 +1,60 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+
+    <h1 style="font-size: 15pt">{{ event.getActivity().getTitle() }}</h1>
+    <h2 style="font-size: 12pt">Sales per moment</h2>
+    <div class="chart full_width full_width">
+        <canvas id="salesGraph" height="500px" ></canvas>
+    </div>
+    <h2 style="font-size: 12pt">Sales accumulated</h2>
+    <div class="chart full_width full_width">
+        <canvas id="salesGraphAccumulated" height="500px" ></canvas>
+    </div>
+
+{% endblock %}
+
+{% block content_script %}
+{#    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.min.js"></script>#}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            drawSalesGraph();
+        });
+
+        function drawSalesGraph() {
+            const data = {
+                labels : {% autoescape false %}{{ salesGraphData['labels']|json_encode }}{% endautoescape %},
+                datasets : [
+                    {
+                        fillColor : "rgba(98, 207, 252, 0.25)",
+                        strokeColor : "rgba(98, 207, 252, 1)",
+                        pointColor : "rgba(98, 207, 252, 1)",
+                        pointStrokeColor : "#fff",
+                        data : {% autoescape false %}{{ salesGraphData['dataset']|json_encode }}{% endautoescape %}
+                    }
+                ]
+            };
+
+            const data_accumulated = {
+                labels: {% autoescape false %}{{ salesGraphDataAccumulated['labels']|json_encode }}{% endautoescape %},
+                datasets: [
+                    {
+                        fillColor: "rgba(98, 207, 252, 0.25)",
+                        strokeColor: "rgba(98, 207, 252, 1)",
+                        pointColor: "rgba(98, 207, 252, 1)",
+                        pointStrokeColor: "#fff",
+                        data: {% autoescape false %}{{ salesGraphDataAccumulated['dataset']|json_encode }}{% endautoescape %}
+                    }
+                ]
+            };
+
+            $('#salesGraph').attr('width', $('#salesGraph').parent().width());
+            let salesChart = new Chart($('#salesGraph').get(0).getContext('2d'));
+            salesChart.Line(data);
+
+            $('#salesGraphAccumulated').attr('width', $('#salesGraphAccumulated').parent().width());
+            let accumulatedSalesChart = new Chart($('#salesGraphAccumulated').get(0).getContext('2d'));
+            accumulatedSalesChart.Line(data_accumulated);
+        }
+    </script>
+{% endblock %}
