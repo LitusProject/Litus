@@ -27,6 +27,9 @@
                             {% if hasAccess('ticket_admin_event', 'edit') %}
                                 <a href="{{ url('ticket_admin_event', {"action": "edit", "id": event.getId()}) }}" class="edit">Edit</a></li>
                             {% endif %}
+                            {% if hasAccess('ticket_admin_event', 'salesgraph') %}
+                                <a href="{{ url('ticket_admin_event', {"action": "salesgraph", "id": event.getId()}) }}" class="view">Graph</a></li>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}

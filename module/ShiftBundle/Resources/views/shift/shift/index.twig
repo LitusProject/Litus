@@ -507,7 +507,7 @@
                                 <p style="font-size: 14px; margin-bottom: 0px">{{ dateLocalized(shift.getStartDate(), 'd/M/y') }}
                                     | {{ dateLocalized(shift.getStartDate(), 'HH:mm') }}
                                     -{{ dateLocalized(shift.getEndDate(), 'HH:mm') }}
-                                    {% if shift.getNbVolunteersMin() != shift.getNbVolunteers() %}
+                                    {% if shift.getNbVolunteersMin() != shift.getNbVolunteers() and authenticatedPerson.isPraesidium(currentAcademicYear)%}
                                     | {{ translate("Minimum volunteers") }}: {{ shift.getNbVolunteersMin() }}
                                     {% endif %}</p>
                             </div>
