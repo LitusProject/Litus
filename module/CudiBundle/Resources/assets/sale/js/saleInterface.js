@@ -333,9 +333,14 @@
                 $('<button>', {'class': 'btn btn-success addArticle'}).html(settings.tAdd).click(function () {
                     _addArticle($this, $(this).closest('tr').data('info').articleId);
                 }).hide(),
-                $('<button>', {'class': 'btn btn-danger removeArticle'}).html(settings.tRemove).click(function () {
-                    _removeArticle($this, $(this).closest('tr').data('info').articleId);
-                }).hide()
+                $('<div>', {'class': 'pushRight'}).append(
+                    $('<button>', {'class': 'btn btn-danger removeArticle'}).html(settings.tRemove).click(function () {
+                        _removeArticle($this, $(this).closest('tr').data('info').articleId);
+                    }).hide(),
+                    $('<button>', {'class': 'btn btn-danger cancelArticle'}).html(settings.tCancel).click(function () {
+                        _cancelArticle($this, $(this).closest('tr').data('info').articleId);
+                    })
+                )
             );
             _updateRow($this, row);
         }
@@ -412,6 +417,10 @@
 
         if (settings.isSell)
             _updatePrice($this);
+    }
+
+    function _cancelArticle($this, id) {
+        //TODO open modal to cancel article
     }
 
     function _updateRow($this, row) {
