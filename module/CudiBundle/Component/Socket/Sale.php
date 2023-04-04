@@ -232,6 +232,10 @@ class Sale extends \CommonBundle\Component\Socket\Socket
 
                 break;
 
+            case 'cancelArticle':
+                //TODO cancel article
+                break;
+
             default:
                 $this->writeln('Received invalid action <comment>' . $command->action . '</comment>');
         }
