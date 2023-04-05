@@ -430,6 +430,12 @@ abstract class Form extends \CommonBundle\Entity\Node
             return false;
         }
 
+        foreach ($person->getFlattenedRoles() as $role) {
+            if ($role->getName() == 'form_editor') {
+                return true;
+            }
+        }
+
         $result = $this->entityManager
             ->getRepository('FormBundle\Entity\ViewerMap')
             ->findOneByPersonAndForm($person, $this);
