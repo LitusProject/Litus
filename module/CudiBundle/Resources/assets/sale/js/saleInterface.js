@@ -75,7 +75,7 @@
         cancel: function (id) {},
         translateStatus: function (status) {return status;},
         addArticle: function (id, articleId) {},
-        cancelArticle: function (id, articleId) {},
+        cancelArticle: function (id, bookingId) {},
         printNextInQueue: function () {},
     };
 
@@ -444,8 +444,9 @@
                             )
                         ),
                         $('<div>', {'class': 'modal-footer'}).append(
-                            $('<button>', {'class': 'btn btn-primary', 'data-key': 13}).html(settings.tcancelArticle).click(function () {
-                                settings.cancelArticle($this.data('data').id, data.articleId)
+                            $('<button>', {'class': 'btn btn-primary', 'data-key': 13}).html(settings.tcancelArticle).data('id', data.id).click(function () {
+                                settings.cancelArticle($this.data('data').id, $(this).data('id')) // first is QueueItem id, second is booking id
+                                //TODO remove article from view
                                 $(this).closest('.modal').modal('hide').on('hidden', function () {
                                     $(this).remove();
                                 });

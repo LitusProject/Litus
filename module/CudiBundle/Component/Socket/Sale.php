@@ -233,7 +233,9 @@ class Sale extends \CommonBundle\Component\Socket\Socket
                 break;
 
             case 'cancelArticle':
-                //TODO cancel article
+                $this->cancelBooking($command->bookingId);
+                $this->sendQueueItemToAll($command->id);
+
                 break;
 
             default:
@@ -547,5 +549,33 @@ class Sale extends \CommonBundle\Component\Socket\Socket
         if ($lightVersion == '1') {
             $this->startSale($user, $id);
         }
+    }
+
+    /**
+     * @param integer $id
+     * @return void
+     */
+    private function cancelBooking($id){
+        $booking = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
+            ->findOneById($id);
+
+        if ($booking === null){
+            //TODO error no booking found
+            return;
+        }
+
+        if (!$booking->getArticle()->isUnbookable()) {
+            //TODO error not cancelable
+            return;
+        }
+
+        $booking->setStatus('canceled', $this->getEntityManager());
+        $this->getEntityManager()->flush();
+
+        $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
+            ->assignAllByArticle($booking->getArticle(), $this->getMailTransport());
+
     }
 }
