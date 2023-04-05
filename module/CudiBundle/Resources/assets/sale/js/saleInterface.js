@@ -446,7 +446,8 @@
                         $('<div>', {'class': 'modal-footer'}).append(
                             $('<button>', {'class': 'btn btn-primary', 'data-key': 13}).html(settings.tcancelArticle).data('id', data.id).click(function () {
                                 settings.cancelArticle($this.data('data').id, $(this).data('id')) // first is QueueItem id, second is booking id
-                                //TODO remove article from view
+                                //TODO remove only when item is unBookable, see Sale.php line 570
+                                $this.find('#article-' + data.articleId).remove();
                                 $(this).closest('.modal').modal('hide').on('hidden', function () {
                                     $(this).remove();
                                 });

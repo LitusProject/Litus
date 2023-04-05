@@ -552,21 +552,23 @@ class Sale extends \CommonBundle\Component\Socket\Socket
     }
 
     /**
-     * @param integer $id
+     * @param integer $booking_id
      * @return void
      */
-    private function cancelBooking($id){
+    private function cancelBooking($booking_id){
         $booking = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')
-            ->findOneById($id);
+            ->findOneById($booking_id);
 
         if ($booking === null){
-            //TODO error no booking found
+            //TODO error no booking found -> happens when article is added by cudi, this is not saved in database so has no booking_id
+            $this->writeln("No booking found");
             return;
         }
 
         if (!$booking->getArticle()->isUnbookable()) {
-            //TODO error not cancelable
+            //TODO error not cancellable -> make booking stay, now the line is always removed at saleInterface.js:_cancelArticle line 449
+            $this->writeln("Booking not cancellable: ". $booking_id);
             return;
         }
 
