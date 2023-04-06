@@ -561,13 +561,14 @@ class Sale extends \CommonBundle\Component\Socket\Socket
             ->findOneById($booking_id);
 
         if ($booking === null){
-            //TODO error no booking found -> happens when article is added by cudi, this is not saved in database so has no booking_id
+            // Happens when article is added by cudi, this is not saved in database so has no booking_id
+            // No problem here, line with article is just removed in UI
             $this->writeln("No booking found");
             return;
         }
 
         if (!$booking->getArticle()->isUnbookable()) {
-            //TODO error not cancellable -> make booking stay, now the line is always removed at saleInterface.js:_cancelArticle line 449
+            // Should never occur, cancel button is only active when isUnbookable() == true
             $this->writeln("Booking not cancellable: ". $booking_id);
             return;
         }

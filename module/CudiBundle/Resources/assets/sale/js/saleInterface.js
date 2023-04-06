@@ -335,16 +335,26 @@
             actions.append(
                 $('<button>', {'class': 'btn btn-success addArticle'}).html(settings.tAdd).click(function () {
                     _addArticle($this, $(this).closest('tr').data('info').articleId);
-                }).hide(),
-                $('<div>', {'class': 'pushRight'}).append(
-                    $('<button>', {'class': 'btn btn-danger removeArticle'}).html(settings.tRemove).click(function () {
-                        _removeArticle($this, $(this).closest('tr').data('info').articleId);
-                    }).hide(),
+                }).hide()
+            );
+
+            var pushRight = $('<div>', {'class': 'pushRight'}).append(
+                $('<button>', {'class': 'btn btn-danger removeArticle'}).html(settings.tRemove).click(function () {
+                    _removeArticle($this, $(this).closest('tr').data('info').articleId);
+                }).hide()
+            );
+            if(data.unbookable){
+                pushRight.append(
                     $('<button>', {'class': 'btn btn-danger cancelArticle'}).html(settings.tCancel).click(function () {
                         _cancelArticle($this, $(this).closest('tr').data('info'));
                     })
-                )
-            );
+                );
+            } else {
+                pushRight.append(
+                    $('<button>', {'class': 'btn btn-danger cancelArticle disabled'}).html(settings.tCancel)
+                );
+            }
+            actions.append(pushRight);
             _updateRow($this, row);
         }
 
@@ -445,8 +455,7 @@
                         ),
                         $('<div>', {'class': 'modal-footer'}).append(
                             $('<button>', {'class': 'btn btn-primary', 'data-key': 13}).html(settings.tcancelArticle).data('id', data.id).click(function () {
-                                settings.cancelArticle($this.data('data').id, $(this).data('id')) // first is QueueItem id, second is booking id
-                                //TODO remove only when item is unBookable, see Sale.php line 570
+                                settings.cancelArticle($this.data('data').id, $(this).data('id')); // first is QueueItem id, second is booking id
                                 $this.find('#article-' + data.articleId).remove();
                                 $(this).closest('.modal').modal('hide').on('hidden', function () {
                                     $(this).remove();
