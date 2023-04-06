@@ -115,6 +115,16 @@ var currentView = 'selectPaydesk';
                     })
                 });
             },
+            cancelArticle: function (id, bookingId) {
+                $.webSocket('send', {name: settings.socketName, text:
+                    JSON.stringify({
+                        'command': 'action',
+                        'action': 'cancelArticle',
+                        'id': id,
+                        'bookingId': bookingId
+                    })
+                });
+            },
             printNextInQueue: function () {
                 queue.queue('printNextInQueue');
             },
@@ -173,6 +183,16 @@ var currentView = 'selectPaydesk';
                         'id': id,
                         'articleId': articleId,
                     })
+                });
+            },
+            cancelArticle: function (id, bookingId) {
+                $.webSocket('send', {name: settings.socketName, text:
+                        JSON.stringify({
+                            'command': 'action',
+                            'action': 'cancelArticle',
+                            'id': id,
+                            'bookingId': bookingId
+                        })
                 });
             },
             printNextInQueue: function () {

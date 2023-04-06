@@ -464,6 +464,7 @@ class QueueItem
                     'number'    => $booking->getNumber(),
                     'status'    => $booking->getStatus(),
                     'sellable'  => $booking->getArticle()->isSellable(),
+                    'unbookable'=> $booking->getArticle()->isUnbookable(),
                     'collected' => $this->articles->{$booking->getArticle()->getId()} ?? 0,
                     'discounts' => array(),
                 );
