@@ -34,8 +34,9 @@ class Inventory
     public static $possibleCategories = array(
         'Frisdrank' => 'Frisdrank',
         'Alcohol' => 'Alcohol',
-        'Snacks' => 'Snacks',
         'Koffie & thee' => 'Koffie & thee',
+        'Fruit & groenten' => 'Fruit & groenten',
+        'Snacks' => 'Snacks',
         'Kruiden' => 'Kruiden',
         'Saus' => 'Saus',
         'Conserven' => 'Conserven',
