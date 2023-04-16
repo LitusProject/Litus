@@ -35,7 +35,7 @@ class Inventory
         'Frisdrank' => 'Frisdrank',
         'Alcohol' => 'Alcohol',
         'Koffie & thee' => 'Koffie & thee',
-        'Fruit & groenten' => 'Fruit & groenten',
+        'Groenten & fruit' => 'Groenten & fruit',
         'Snacks' => 'Snacks',
         'Kruiden' => 'Kruiden',
         'Saus' => 'Saus',
