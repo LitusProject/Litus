@@ -58,10 +58,26 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->add(
             array(
+                'type'       => 'text',
+                'name'       => 'brand',
+                'label'      => 'Brand',
+                'required'   => false,
+                'options'    => array(
+                    'input' => array(
+                        'filter' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
                 'type'     => 'text',
                 'name'     => 'name',
                 'label'    => 'Product Name',
-                'required' => false,
+                'required' => true,
                 'options'  => array(
                     'input' => array(
                         'filters' => array(
