@@ -16,6 +16,8 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
             $this->getParam('page')
         );
 
+        $presentDate = date('');
+
         return new ViewModel(
             array(
                 'paginator'         => $paginator,

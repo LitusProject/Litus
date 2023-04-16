@@ -45,6 +45,13 @@ class Inventory
     /**
      * @var string
      *
+     * @ORM\Column(name="brand", type="string", nullable=true)
+     */
+    private $brand;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="barcode", type="string")
      */
     private $barcode;
@@ -107,6 +114,24 @@ class Inventory
     public function setCategory($category)
     {
         $this->category = $category;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBrand()
+    {
+        return $this->brand;
+    }
+
+    /**
+     * @param $brand
+     * @return self
+     */
+    public function setBrand($brand)
+    {
+        $this->brand = $brand;
         return $this;
     }
 
