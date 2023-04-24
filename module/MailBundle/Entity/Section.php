@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use CommonBundle\Entity\User\Preference;
 use Doctrine\ORM\PersistentCollection;
+use MailBundle\Entity\Section\Group;
 
 /**
  * This is the entity for a newsletter section.
@@ -54,23 +55,33 @@ class Section
     private $preferences;
 
     /**
+     * @var Group|null The group that this section belongs to
+     *
+     * @ORM\ManyToOne(targetEntity="MailBundle\Entity\Section\Group", inversedBy="children")
+     * @ORM\JoinColumn(name="section_group", referencedColumnName="id", nullable=true)
+     */
+    private $group;
+
+    /**
      * Creates a new newsletter section with the given name.
      *
      * @param string $name The name for this newsletter section.
      * @param string $attribute The SendInBlue attribute that corresponds to this newsletter section
      * @param bool $defaultValue The default preference value of this newsletter section for each user
+     * @param Group $group The group that this section belongs to
      */
-    public function __construct($name, $attribute=null, $defaultValue)
+    public function __construct($name=null, $attribute=null, $defaultValue=false, $group=null)
     {
-        $this->name = $name;
-        if ($attribute == null) {
-            $this->attribute = $name;
-        }
-        else {
-            $this->attribute = $attribute;
-        }
-        $this->defaultValue = $defaultValue;
-        $this->preferences = new ArrayCollection();
+//        $this->name = $name;
+//        $this->attribute = $attribute;
+//        if ($group == null) {
+//            $this->group = new Group();
+//        }
+//        else {
+//            $this->group = $group;
+//        }
+//        $this->defaultValue = $defaultValue;
+//        $this->preferences = new ArrayCollection();
     }
 
     /**
@@ -103,6 +114,22 @@ class Section
     public function getDefaultValue()
     {
         return $this->defaultValue;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getPreferences()
+    {
+        return $this->preferences;
+    }
+
+    /**
+     * @return Group|null
+     */
+    public function getGroup()
+    {
+        return $this->group;
     }
 
     /**
@@ -141,6 +168,17 @@ class Section
     }
 
     /**
+     * @param Group $group
+     *
+     * @return self
+     */
+    public function setGroup(Group $group)
+    {
+        $this->group = $group;
+        return $this;
+    }
+
+    /**
      * @param  Preference $preference
      * @return self
      */
@@ -173,14 +211,6 @@ class Section
     }
 
     /**
-     * @return ArrayCollection
-     */
-    public function getPreferences()
-    {
-        return $this->preferences;
-    }
-
-    /**
      * @return bool
      */
     public function inPreferences($preferencesToCheck) {
@@ -191,6 +221,5 @@ class Section
         }
         return false;
     }
-
 
 }

@@ -7,13 +7,22 @@ use MailBundle\Entity\Section;
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
+use MailBundle\Entity\Section\Group;
 use Psr\Http\Message\StreamInterface;
 
 class SectionController extends \MailBundle\Component\Controller\AdminController
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
+        $groups = $this->paginator()->createFromEntity(
+            'MailBundle\Entity\Section\Group',
+            $this->getParam('page'),
+            array(),
+            array(
+                'name' => 'ASC',
+            )
+        );
+        $sections = $this->paginator()->createFromEntity(
             'MailBundle\Entity\Section',
             $this->getParam('page'),
             array(),
@@ -24,7 +33,8 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
 
         return new ViewModel(
             array(
-                'paginator'         => $paginator,
+                'groups'         => $groups,
+                'sections'         => $sections,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -45,13 +55,6 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
 
             if ($form->isValid()) {
                 $section = $form->hydrateObject();
-
-                $dup = $this->getEntityManager()
-                    ->getRepository('MailBundle\Entity\Section')
-                    ->findAllByNameQuery($section->getName());
-                error_log(json_encode("DUP:"));
-                error_log(json_encode($dup));
-
                 if(!preg_match('/^[A-Za-z0-9_]+$/',$section->getAttribute())) {
                     $this->flashMessenger()->error(
                         'Error',
@@ -62,14 +65,57 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
                     $this->getEntityManager()->persist($section);
                     $this->getEntityManager()->flush();
 
-                    $this->sibAddAttribute($section->getAttribute());
-                    $this->sibUpdateAllUsers($section->getAttribute(), $section->getDefaultValue());
+                    // for local testing the next two lines should be commented out
+//                    $this->sibAddAttribute($section->getAttribute());
+//                    $this->sibUpdateAllUsers($section->getAttribute(), $section->getDefaultValue());
 
                     $this->flashMessenger()->success(
                         'Success',
                         'The section was succesfully added!'
                     );
                 }
+
+                $this->redirect()->toRoute(
+                    'mail_admin_section',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
+
+    /**
+     * @return ViewModel
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function addGroupAction()
+    {
+        $form = $this->getForm('mail_section_addGroup');
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $group = $form->hydrateObject();
+
+                $this->getEntityManager()->persist($group);
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The group was succesfully added!'
+                );
 
                 $this->redirect()->toRoute(
                     'mail_admin_section',
@@ -98,7 +144,7 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
     {
         $this->initAjax();
 
-        $section = $this->getSectionEntity();
+        $section = $this->getGroupEntity();
         if ($section === null) {
             return new ViewModel();
         }
@@ -106,6 +152,30 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
         $this->getEntityManager()->remove($section);
         $this->getEntityManager()->flush();
         $this->sibRemoveAttribute($section->getName());
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+    /**
+     * @return ViewModel
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function deleteGroupAction()
+    {
+        die("del");
+        $this->initAjax();
+
+        $group = $this->getGroupEntity();
+        if ($group === null) {
+            return new ViewModel();
+        }
+
+        $this->getEntityManager()->remove($group);
+        $this->getEntityManager()->flush();
         return new ViewModel(
             array(
                 'result' => (object) array('status' => 'success'),
@@ -157,6 +227,14 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
     }
 
     /**
+     * @return void
+     */
+    public function editGroupAction()
+    {
+        // TODO
+    }
+
+    /**
      * @return Section|null
      */
     private function getSectionEntity()
@@ -178,6 +256,27 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
             return;
         }
         return $section;
+    }
+
+    private function getGroupEntity()
+    {
+        $group = $this->getEntityById('MailBundle\Entity\Section\Group');
+
+        if (!($group instanceof Group)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No group was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'mail_admin_section',
+                array(
+                    'action' => 'manage',
+                )
+            );
+            return;
+        }
+        return $group;
     }
 
     /**
