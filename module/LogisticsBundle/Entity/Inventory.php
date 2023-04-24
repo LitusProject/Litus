@@ -34,13 +34,21 @@ class Inventory
     public static $possibleCategories = array(
         'Frisdrank' => 'Frisdrank',
         'Alcohol' => 'Alcohol',
-        'Snacks' => 'Snacks',
         'Koffie & thee' => 'Koffie & thee',
+        'Groenten & fruit' => 'Groenten & fruit',
+        'Snacks' => 'Snacks',
         'Kruiden' => 'Kruiden',
         'Saus' => 'Saus',
         'Conserven' => 'Conserven',
         'Andere' => 'Andere'
     );
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="brand", type="string", nullable=true)
+     */
+    private $brand;
 
     /**
      * @var string
@@ -107,6 +115,24 @@ class Inventory
     public function setCategory($category)
     {
         $this->category = $category;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBrand()
+    {
+        return $this->brand;
+    }
+
+    /**
+     * @param $brand
+     * @return self
+     */
+    public function setBrand($brand)
+    {
+        $this->brand = $brand;
         return $this;
     }
 

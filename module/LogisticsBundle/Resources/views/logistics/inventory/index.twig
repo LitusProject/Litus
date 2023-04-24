@@ -36,10 +36,11 @@
             <table class="table table-striped inventory">
                 <thead>
                 <tr>
-                    <th style="width: 25%">Name</th>
-                    <th style="width: 15%">Category</th>
+                    <th style="width: 20%">Name</th>
+                    <th style="width: 12.5%">Brand</th>
+                    <th style="width: 12.5%">Category</th>
                     <th style="width: 15%">Barcode</th>
-                    <th style="width: 15%">Reserved / Available</th>
+                    <th style="width: 10%">Res. / Avail.</th>
                     <th style="width: 15%">Expiry Date</th>
                     {% if hasAccess('logistics_inventory', 'reserve') %}
                         <th style="width: 15%">Actions</th>
@@ -47,23 +48,24 @@
                 </tr>
                 </thead>
                 {% for article in paginator %}
-
-                    <tr class="item item-{{ article.getId() }}">
-                        <td>{{ article.getName() }}</td>
-                        <td>{{ article.getCategory() }}</td>
-                        <td>{{ article.getBarcode() }}</td>
-                        <td>{{ article.getReserved()!=null? article.getReserved(): 0}} / {{ article.getAmount() - article.getReserved() }}</td>
-                        <td>{{ article.getExpiryDate() }}</td>
-                        {% if hasAccess('logistics_inventory', 'reserve') %}
-                            <td class="actions">
-                                <a href="{{ url('logistics_inventory', {"action": "edit", "id": article.getId()}) }}" class="edit" style="margin-right: 10px">Edit</a>
-                                <a href="{{ url('logistics_inventory', {"action": "reserve", "id": article.getId()}) }}" class="edit">Reserve</a>
-                                {#                            {% if hasAccess('logistics_admin_inventory', 'delete') %}#}
-                                {#                                <a href="#" class="delete" data-id="{{ article.getId() }}" data-name="{{ article.getName() }}">Delete</a>#}
-                                {#                            {% endif %}#}
-                            </td>
-                        {% endif %}
-                    </tr>
+{#                    {% if article.getExpiryDate() <= date('d/m/y')  %}#}
+                        <tr class="item item-{{ article.getId() }}">
+                            <td>{{ article.getName() }}</td>
+                            <td>{{ article.getBrand() }}</td>
+                            <td>{{ article.getCategory() }}</td>
+                            <td>{{ article.getBarcode() }}</td>
+                            <td>{{ article.getReserved()!=null? article.getReserved(): 0}} / {{ article.getAmount() - article.getReserved() }}</td>
+                            <td>{{ article.getExpiryDate() }}</td>
+                            {% if hasAccess('logistics_inventory', 'reserve') %}
+                                <td class="actions">
+                                    <a href="{{ url('logistics_inventory', {"action": "edit", "id": article.getId()}) }}" class="edit" style="margin-right: 10px">Edit</a>
+                                    <a href="{{ url('logistics_inventory', {"action": "reserve", "id": article.getId()}) }}" class="edit">Reserve</a>
+                                    {#                            {% if hasAccess('logistics_admin_inventory', 'delete') %}#}
+                                    {#                                <a href="#" class="delete" data-id="{{ article.getId() }}" data-name="{{ article.getName() }}">Delete</a>#}
+                                    {#                            {% endif %}#}
+                                </td>
+                            {% endif %}
+                        </tr>
 
                 {% endfor %}
 
