@@ -2,7 +2,12 @@
 
 return array(
     array(
-        'key'         => 'sib_api',
+        'key'         => 'mail.enable_sib_api',
+        'value'       => '1',
+        'description' => '1: API is used, 0: API is skipped (for local use)',
+    ),
+    array(
+        'key'         => 'mail.sib_api',
         'value'       => 'API key comes here',
         'description' => 'SendInBlue API key',
     ),

@@ -65,9 +65,13 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
                     $this->getEntityManager()->persist($section);
                     $this->getEntityManager()->flush();
 
-                    // for local testing the next two lines should be commented out
-//                    $this->sibAddAttribute($section->getAttribute());
-//                    $this->sibUpdateAllUsers($section->getAttribute(), $section->getDefaultValue());
+                    $enableSibApi = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('mail.enable_sib_api');
+                    if ($enableSibApi == "1") {
+                        $this->sibAddAttribute($section->getAttribute());
+                        $this->sibUpdateAllUsers($section->getAttribute(), $section->getDefaultValue());
+                    }
 
                     $this->flashMessenger()->success(
                         'Success',
@@ -151,7 +155,14 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
 
         $this->getEntityManager()->remove($section);
         $this->getEntityManager()->flush();
-        $this->sibRemoveAttribute($section->getName());
+
+        $enableSibApi = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('mail.enable_sib_api');
+        if ($enableSibApi == "1") {
+            $this->sibRemoveAttribute($section->getName());
+        }
+
         return new ViewModel(
             array(
                 'result' => (object) array('status' => 'success'),
@@ -448,7 +459,7 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
     public function sibGetAPI() {
         return $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('sib_api');
+            ->getConfigValue('mail.sib_api');
     }
 
 }
