@@ -834,7 +834,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
     {
         $api = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('sib_api');
+            ->getConfigValue('mail.sib_api');
         $client = new \GuzzleHttp\Client();
         $email = $academic->getPersonalEmail();
         foreach ($academic->getPreferences() as $preference) {

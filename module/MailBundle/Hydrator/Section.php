@@ -2,21 +2,27 @@
 
 namespace MailBundle\Hydrator;
 
-use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 use MailBundle\Entity\Section as SectionEntity;
 
 class Section extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $stdKeys = array('name', 'attribute', 'default_value');
-
-    protected function doHydrate(array $data, $object = null)
+    protected function doHydrate(array $array, $object = null)
     {
         if ($object === null) {
-            $default_value = isset($data['default_value']);
-            $object = new SectionEntity($data['name'], $data['attribute'], $default_value);
+            $object = new SectionEntity();
         }
 
-        return $this->stdHydrate($data, $object, self::$stdKeys);
+        $object->setName($array['name']);
+        $group = $this->getEntityManager()
+            ->getRepository('MailBundle\Entity\Section\Group')
+            ->findOneById($array['section_group']);
+        if ($group !== null) {
+            $object->setGroup($group);
+        }
+        $object->setDefaultValue(isset($array['default_value']));
+        $object->setAttribute($array['attribute']);
+
+        return $object;
     }
 
     protected function doExtract($object = null)
@@ -25,6 +31,12 @@ class Section extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        return $this->stdExtract($object, self::$stdKeys);
+        $data = array();
+        $data['name'] = $object->getName();
+        $data['section_group'] = $object->getGroup() !== null ? $object->getGroup()->getId() : -1;
+        $data['default_value'] = $object->getDefaultValue();
+        $data['attribute'] = $object->getAttribute();
+
+        return $data;
     }
 }

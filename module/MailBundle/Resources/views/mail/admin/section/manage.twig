@@ -8,38 +8,45 @@
     <div class="flashmessage success_message full_width section_removed_success hide">
         <div class="title">Success</div>
         <div class="content">
-            <p>The section was successfully removed!</p>
+            <p>The section/group was successfully removed!</p>
         </div>
     </div>
     <div class="flashmessage error_message full_width section_removed_error hide">
         <div class="title">Error</div>
         <div class="content">
-            <p>An error occurred while trying to delete a section.</p>
+            <p>An error occurred while trying to delete a section/group.</p>
         </div>
     </div>
 
+    {# Groups table #}
     <div id="controller_action">
-        <div id="section_search" style="display: none;">
-            <div style="padding: 4px; text-align: right">
-                Search:
-                <select id="searchField">
-                    <option value="section">Section</option>
-                    <option value="attribute">Attribute</option>
-                    <option value="default_preference">Preference</option>
-                </select>
-                is
-                <input type="text" id="searchString" size="30" />
-            </div>
+        <div id="normal_page">
 
             <table class="full_width manage">
                 <tr>
-                    <th>Section</th>
-                    <th>SIB Attribute</th>
-                    <th>Default Preference</th>
+                    <th>Name</th>
                     <th width="70px">Action</th>
                 </tr>
+
+                {% for group in groups %}
+                    <tr class="item item-{{ group.getId() }}">
+                        <td>{{ group.getName() }}</td>
+                        <td class="actions">
+                            {% if hasAccess('mail_admin_section', 'deleteGroup') %}
+                                <a href="#" class="delete" data-id="{{ group.getId() }}" data-name="{{ group.getName() }}">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                {% endfor %}
+
             </table>
+
         </div>
+    </div>
+
+    {# Sections table #}
+    <div id="controller_action" style="margin-top: 30px;">
 
         <div id="normal_page">
 
@@ -51,7 +58,7 @@
                     <th width="70px">Action</th>
                 </tr>
 
-                {% for section in paginator %}
+                {% for section in sections %}
                     <tr class="item item-{{ section.getId() }}">
                         <td>{{ section.getName() }}</td>
                         <td>{{ section.getAttribute() }}</td>
