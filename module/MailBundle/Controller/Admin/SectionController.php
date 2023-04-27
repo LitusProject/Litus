@@ -52,9 +52,10 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
-
             if ($form->isValid()) {
                 $section = $form->hydrateObject();
+
+                // sendinblue attribute character checking
                 if(!preg_match('/^[A-Za-z0-9_]+$/',$section->getAttribute())) {
                     $this->flashMessenger()->error(
                         'Error',
@@ -65,6 +66,7 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
                     $this->getEntityManager()->persist($section);
                     $this->getEntityManager()->flush();
 
+                    // config value that indicates if the api should be used or skipped (for local development)
                     $enableSibApi = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('mail.enable_sib_api');
@@ -148,7 +150,7 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
     {
         $this->initAjax();
 
-        $section = $this->getGroupEntity();
+        $section = $this->getSectionEntity();
         if ($section === null) {
             return new ViewModel();
         }
@@ -177,10 +179,10 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
      */
     public function deleteGroupAction()
     {
-        die("del");
         $this->initAjax();
 
         $group = $this->getGroupEntity();
+
         if ($group === null) {
             return new ViewModel();
         }
