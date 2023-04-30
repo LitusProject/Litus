@@ -137,7 +137,7 @@ class Order
     /**
      * @var boolean If this order needs a van ride (een kar-rit).
      *
-     * @ORM\Column(name="needs_ride", type="boolean", options={"default" = false})
+     * @ORM\Column(name="needs_ride", type="boolean", options={"default" = false}, nullable=true)
      */
     private $needsRide;
 
