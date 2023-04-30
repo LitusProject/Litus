@@ -699,6 +699,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
         $new->setName($order->getName());
         $new->setStartDate($order->getStartDate());
         $new->setUnit($order->getUnit());
+        # In comment: should be fixed later on when adding van system
         # $new->setNeedsRide($order->needsRide());
 
         return $new;
@@ -732,7 +733,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
             ->setBody(
                 str_replace(
                     array('{{ name }}', '{{ type }}', '{{ person }}', '{{ end }}', '{{ start }}'),
-                    array($order->getName(), $request->getRequestType(), $order->getCreator()->getFullName(), $order->getEndDate()->format('d/m/Y H:m'), $order->getStartDate()->format('d/m/Y H:m')),
+                    array($order->getName(), $request->getRequestType(), $order->getCreator()->getFullName(), $order->getEndDate()->format('d/m/Y H:i'), $order->getStartDate()->format('d/m/Y H:i')),
                     $message
                 )
             )
@@ -780,7 +781,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
                     ->setBody(
                         str_replace(
                             array('{{ name }}', '{{ article }}', '{{ amount }}', '{{ person }}', '{{ end }}', '{{ start }}'),
-                            array($order->getName(), $map->getArticle()->getName(), $map->getAmount(), $order->getCreator()->getFullName(), $order->getEndDate()->format('d/m/Y H:m'), $order->getStartDate()->format('d/m/Y H:m')),
+                            array($order->getName(), $map->getArticle()->getName(), $map->getAmount(), $order->getCreator()->getFullName(), $order->getEndDate()->format('d/m/Y H:i'), $order->getStartDate()->format('d/m/Y H:i')),
                             $message
                         )
                     )
