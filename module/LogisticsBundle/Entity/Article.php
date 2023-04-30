@@ -231,6 +231,7 @@ class Article
     public function setAlertMail($alertMail)
     {
         $this->alertMail = $alertMail;
+        return $this;
     }
 
     /**

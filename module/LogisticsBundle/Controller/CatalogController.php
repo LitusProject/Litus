@@ -699,7 +699,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
         $new->setName($order->getName());
         $new->setStartDate($order->getStartDate());
         $new->setUnit($order->getUnit());
-        $new->setNeedsRide($order->needsRide());
+        # $new->setNeedsRide($order->needsRide());
 
         return $new;
     }
@@ -707,7 +707,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
     /**
      * @param Request $request
      */
-    private function sendMailToLogi(Request $request)
+    private function sendMailToLogi(Request $request) // Mail for Logistiek
     {
         $order = $request->getRecentOrder();
         $mailAddress = $this->getEntityManager()
@@ -748,7 +748,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
     /**
      * @param Request $request
      */
-    private function sendAlertMails(Request $request)
+    private function sendAlertMails(Request $request) // Extra mails for specific items (ex. to Theokot)
     {
         $order = $request->getRecentOrder();
         $mappings = $this->getEntityManager()
@@ -773,7 +773,8 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
         $subject = $mailData['subject'];
 
         foreach ($mappings as $map) {
-            if ($map->getArticle()->getAlertMail() !== null) {
+            $alertMail = $map->getArticle()->getAlertMail();
+            if ($alertMail != Null && $alertMail !== '') {
                 $mail = new Message();
                 $mail->setEncoding('UTF-8')
                     ->setBody(
@@ -786,6 +787,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
                     ->setFrom($mailAddress, $mailName)
                     ->addTo($map->getArticle()->getAlertMail(), $mailName)
                     ->setSubject(str_replace(array('{{ name }}', '{{ article }}'), array($order->getName(), $map->getArticle()->getName()), $subject));
+
 
                 if (getenv('APPLICATION_ENV') != 'development') {
                     $this->getMailTransport()->send($mail);
