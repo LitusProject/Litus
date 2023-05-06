@@ -537,8 +537,10 @@ class Queue
             'number'    => 1,
             'status'    => 'assigned',
             'sellable'  => $article->isSellable(),
+            'unbookable'=> $article->isUnbookable(),
             'collected' => 0,
             'discounts' => array(),
+
         );
 
         foreach ($article->getDiscounts() as $discount) {
