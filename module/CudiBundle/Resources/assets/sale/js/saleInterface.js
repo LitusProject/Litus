@@ -331,6 +331,18 @@
 
         if ("booked" == data.status || data.sellable == false) {
             row.addClass('inactive');
+            
+            if(data.unbookable){
+                actions.append(
+                    $('<button>', {'class': 'btn btn-danger cancelArticle'}).html(settings.tCancel).click(function () {
+                        _cancelArticle($this, $(this).closest('tr').data('info'));
+                    })
+                );
+            } else {
+                actions.append(
+                    $('<button>', {'class': 'btn btn-danger cancelArticle disabled'}).html(settings.tCancel)
+                );
+            }
         } else {
             actions.append(
                 $('<button>', {'class': 'btn btn-success addArticle'}).html(settings.tAdd).click(function () {
@@ -343,6 +355,7 @@
                     _removeArticle($this, $(this).closest('tr').data('info').articleId);
                 }).hide()
             );
+
             if(data.unbookable){
                 pushRight.append(
                     $('<button>', {'class': 'btn btn-danger cancelArticle'}).html(settings.tCancel).click(function () {
