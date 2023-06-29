@@ -101,6 +101,10 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             return $this->notFoundAction();
         }
 
+        $max_booking_number = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.maximum_booking_number');
+
         $enableBookings = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_bookings');
@@ -322,6 +326,11 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                     $this->flashMessenger()->warn(
                         'Warning',
                         'You have not booked any textbooks!'
+                    );
+                } else if ($total > $max_booking_number) {
+                    $this->flashMessenger()->warn(
+                        'Warning',
+                        'You have booked too many textbooks!'
                     );
                 } else {
                     $this->flashMessenger()->success(

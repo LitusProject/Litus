@@ -59,8 +59,8 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         if ($academic !== $order->getCreator()
-            &&(!$academic->getOrganizationStatus($this->getCurrentAcademicYear())
-            ||$academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
+            && (!$academic->getOrganizationStatus($this->getCurrentAcademicYear())
+            || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
         ) {
             return $this->notFoundAction();
         }
