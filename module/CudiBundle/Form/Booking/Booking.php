@@ -44,9 +44,6 @@ class Booking extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array(
                                     'name' => 'Digits',
                                 ),
-                                array(
-                                    'name'    => 'Between',
-                                ),
                             ),
                         ),
                     ),
