@@ -685,4 +685,9 @@ Gelieve contact op te nemen met {{ name }} via {{ email }}.
         'value'       => 'Here comes the uniflow Client Secret',
         'description' => 'This is the Client secret for the uniflow application',
     ),
+    array(
+        'key'         => 'cudi.maximum_booking_number',
+        'value'       => 'Max booking number',
+        'description' => 'This is the maximum size of things someone can order in Cudi',
+    )
 );
