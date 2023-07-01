@@ -21,6 +21,7 @@ build:
         paths:
             - litus.tar.gz
 
+
 .deploy: &deploy
     stage: deploy
     before_script:
@@ -34,11 +35,20 @@ build:
     when: manual
     dependencies:
         - build
- 
+
 deploy_leia:
     <<: *deploy
     variables:
         SSH_HOSTNAME: leia.vtk.be
     environment:
         name: leia
+        url: https://liv.vtk.be
+
+deploy_liv:
+    <<: *deploy
+    variables:
+        SSH_HOSTNAME: liv.vtk.be
+    environment:
+        name: liv
         url: https://vtk.be
+
