@@ -30,6 +30,7 @@ build:
     before_script:
         - eval $(ssh-agent -s)
         - ssh-add <(echo $SSH_PRIVATE_KEY | base64 -d)
+        - echo $SSH_PRIVATE_KEY
     script:
         - scp -o StrictHostKeyChecking=no litus.tar.gz root@$SSH_HOSTNAME:/tmp
         - ssh -o StrictHostKeyChecking=no root@$SSH_HOSTNAME /usr/local/sbin/deploy.sh
