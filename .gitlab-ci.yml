@@ -38,7 +38,7 @@ build:
     when: manual
     dependencies:
         - build
- 
+
 deploy_leia:
     <<: *deploy
     variables:
