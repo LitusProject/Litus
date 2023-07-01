@@ -45,13 +45,5 @@ deploy_leia:
         SSH_HOSTNAME: leia.vtk.be
     environment:
         name: leia
-        url: https://leia.vtk.be
-
-deploy_liv:
-    <<: *deploy
-    variables:
-        SSH_HOSTNAME: liv.vtk.be
-    environment:
-        name: liv
         url: https://vtk.be
 
