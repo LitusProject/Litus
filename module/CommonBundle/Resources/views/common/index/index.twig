@@ -202,6 +202,7 @@
                         <div class="heading-spacer"></div>
                         <div>
                             {{translate('The POC\'ers are elected! You can find your POC\'ers here!')}}
+
                             {#                        {{translate('Visit the POC page for more ')}}#}
                             {#                        <a href={{pocUrl}}>info</a>#}
 
@@ -300,4 +301,22 @@
             });
         });
     </script>
+
+    {% if fathom is not null %}
+        <script type="text/javascript">
+            (function(f, a, t, h, o, m) {
+                a[h] = a[h] || function() {
+                    (a[h].q = a[h].q || []).push(arguments)
+                };
+                o = f.createElement('script'),
+                    m = f.getElementsByTagName('script')[0];
+                o.async = 1;
+                o.src = t;
+                o.id = 'fathom-script';
+                m.parentNode.insertBefore(o, m)
+            })(document, window, '//{{ fathom['url'] }}/tracker.js', 'fathom');
+            fathom('set', 'siteId', '{{ fathom['site_id'] }}');
+            fathom('trackPageview');
+        </script>
+    {% endif %}
 {% endblock %}
