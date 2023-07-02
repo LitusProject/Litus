@@ -687,7 +687,7 @@ Gelieve contact op te nemen met {{ name }} via {{ email }}.
     ),
     array(
         'key'         => 'cudi.maximum_booking_number',
-        'value'       => 'Max booking number',
+        'value'       => '10',
         'description' => 'This is the maximum size of things someone can order in Cudi',
     )
 );

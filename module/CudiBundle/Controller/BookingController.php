@@ -51,6 +51,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 'enableExtraText' => $enableReservationText,
                 'reservationText' => $reservationText,
                 'retailEnabled'   => $enableRetail,
+                'fathom'          => $this->getFathomInfo(),
             )
         );
     }

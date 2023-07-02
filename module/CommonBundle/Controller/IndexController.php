@@ -223,28 +223,29 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         return $cudi;
     }
 
-    /**
-     * @return array|null
-     */
-    private function getFathomInfo()
-    {
-        $enableFathom = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.enable_fathom');
-
-        if (getenv('APPLICATION_ENV') == 'development' || !$enableFathom) {
-            return null;
-        }
-
-        return array(
-            'url' => $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('common.fathom_url'),
-            'site_id' => $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('common.fathom_site_id'),
-        );
-    }
+//    MOVED TO SITECONTROLLER - to be able to use the function in all pages
+//    /**
+//     * @return array|null
+//     */
+//    private function getFathomInfo()
+//    {
+//        $enableFathom = $this->getEntityManager()
+//            ->getRepository('CommonBundle\Entity\General\Config')
+//            ->getConfigValue('common.enable_fathom');
+//
+//        if (getenv('APPLICATION_ENV') == 'development' || !$enableFathom) {
+//            return null;
+//        }
+//
+//        return array(
+//            'url' => $this->getEntityManager()
+//                ->getRepository('CommonBundle\Entity\General\Config')
+//                ->getConfigValue('common.fathom_url'),
+//            'site_id' => $this->getEntityManager()
+//                ->getRepository('CommonBundle\Entity\General\Config')
+//                ->getConfigValue('common.fathom_site_id'),
+//        );
+//    }
 
     /**
      * @return array|null
