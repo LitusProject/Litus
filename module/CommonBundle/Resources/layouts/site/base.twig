@@ -18,6 +18,9 @@
       <script src="/js/html5shiv.js"></script>
     <![endif]-->
 
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="-1"/>
 </head>
 
 {# Script for dropdown functionality  #}
@@ -410,7 +413,7 @@
     {% block content_script %} {% endblock %}
 
 {#
-            This view is loaded in every view
+            This view is loaded in every other view
             To add a page to tracker add following code to controller of page:
             'fathom'             => $this->getFathomInfo(),
 #}
