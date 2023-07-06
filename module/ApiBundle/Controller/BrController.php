@@ -31,6 +31,8 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
         $company = new Company();
         $company->setName($company_name);
 
+        $id = $company->getId();
+        
         $this->getEntityManager()->persist($company);
         $this->getEntityManager()->flush();
 
@@ -38,6 +40,7 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
             array(
                 'result' => (object) array(
                     'status' => 'success',
+                    'id'     => $id,
                 ),
             )
         );
