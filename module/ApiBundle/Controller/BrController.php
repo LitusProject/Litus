@@ -310,8 +310,13 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
+
         $person = new CorporateEntity();
-        $person->setUsername($this->getRequest()->getPost('user_name'));
+        try {
+            $person->setUsername($this->getRequest()->getPost('user_name'));
+        } catch (\Exception $e) {
+            die($e->getMessage());
+        }
         $person->setFirstName($this->getRequest()->getPost('first_name'));
         $person->setLastName($this->getRequest()->getPost('last_name'));
         $person->setEmail($this->getRequest()->getPost('email'));
@@ -325,9 +330,24 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
 
         $person->setCompany($company);
 
-        $this->getEntityManager()->persist($person);
-        $this->getEntityManager()->flush();
+        try {
+            $this->getEntityManager()->persist($person);
+            $this->getEntityManager()->flush();
+        } catch (\Exception $e) {
+            $error_mes = $e->getMessage();
+//            die($error_mes);
+            if (str_contains($error_mes, "already exists") and str_contains($error_mes, "Key (username)")) {
+                return new ViewModel(
+                    array(
+                        'result' => (object)array(
+                            'status' => 'error',
+                            'reason' => 'duplicate key',
+                        ),
+                    )
+                );
+            }
 
+        }
         $person->activate(
             $this->getEntityManager(),
             $this->getMailTransport(),
