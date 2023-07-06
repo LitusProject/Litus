@@ -318,7 +318,6 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
         $enableFathom = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('common.enable_fathom');
-
         if (getenv('APPLICATION_ENV') == 'development' || !$enableFathom) {
             return null;
         }

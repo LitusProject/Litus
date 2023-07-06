@@ -31,7 +31,7 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
 
         $company = new Company();
         $company->setName($company_name);
-        
+
         $this->getEntityManager()->persist($company);
         $this->getEntityManager()->flush();
 
