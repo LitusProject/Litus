@@ -30,12 +30,12 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
 
         $company = new Company();
         $company->setName($company_name);
-
-        $id = $company->getId();
         
         $this->getEntityManager()->persist($company);
         $this->getEntityManager()->flush();
 
+        $id = $company->getId();
+        
         return new ViewModel(
             array(
                 'result' => (object) array(
