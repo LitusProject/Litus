@@ -10,4 +10,19 @@ namespace PageBundle\Repository\Node;
  */
 class CategoryPage extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
+    public function findOneByCategory($category)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('p')
+            ->from('PageBundle\Entity\Node\CategoryPage', 'p')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('p.category', ':category'),
+                )
+            )
+            ->setParameter('category', $category)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

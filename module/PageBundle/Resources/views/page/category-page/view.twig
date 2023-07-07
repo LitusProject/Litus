@@ -1,0 +1,19 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+
+    {# Script for dropdown functionality  #}
+    {{ inlineScript() }}
+
+    <div class="container">
+
+        <div class="pageTitleHolder">
+            <h1>{{ categoryPage.getCategory().getName(language) }}</h1>
+            <div class="pageTitleDeco"></div>
+        </div>
+        <div class="spacer40"></div>
+
+        This will contain some editable containers in the near future.
+
+    </div>
+{% endblock %}

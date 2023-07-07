@@ -13,6 +13,7 @@ class CategoryPage extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected function doHydrate(array $data, $object = null)
     {
+//        die(var_dump($data['category']));
         if ($object === null) {
             $object = new CategoryPageEntity($this->getPersonEntity());
         }
@@ -27,6 +28,17 @@ class CategoryPage extends \CommonBundle\Component\Hydrator\Hydrator
             $object->setCategory(null);
         }
 
+        $editRoles = array();
+        if (isset($data['edit_roles'])) {
+            foreach ($data['edit_roles'] as $editRole) {
+                $editRoles[] = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Acl\Role')
+                    ->findOneByName($editRole);
+            }
+        }
+
+        $object->setEditRoles($editRoles);
+
         return $object;
     }
 
@@ -39,6 +51,10 @@ class CategoryPage extends \CommonBundle\Component\Hydrator\Hydrator
         $data = array();
 
         $data['category'] = $object->getCategory() ? $object->getCategory()->getId() : '';
+        $data['edit_roles'] = array();
+        foreach ($object->getEditRoles() as $role) {
+            $data['edit_roles'][] = $role->getName();
+        }
 
         return $data;
     }

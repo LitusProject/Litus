@@ -53,7 +53,6 @@ class CategoryPage extends \CommonBundle\Entity\Node
     public function setCategory(Category $category)
     {
         $this->category = $category;
-
         return $this;
     }
 

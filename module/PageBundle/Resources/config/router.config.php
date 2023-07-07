@@ -90,6 +90,20 @@ return array(
                 ),
             ),
         ),
+        'page_categorypage' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '[/:language]/category[/:name][/]',
+                'constraints' => array(
+                    'name'   => '[a-zA-Z0-9_-]*',
+                    'language' => '(en|nl)',
+                ),
+                'defaults'    => array(
+                    'controller' => 'page_categorypage',
+                    'action'     => 'view',
+                ),
+            ),
+        ),
         'page' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -128,5 +142,6 @@ return array(
 
         'page_link'           => 'PageBundle\Controller\LinkController',
         'page'                => 'PageBundle\Controller\PageController',
+        'page_categorypage'   => 'PageBundle\Controller\CategoryPageController',
     ),
 );
