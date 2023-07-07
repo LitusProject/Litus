@@ -47,6 +47,12 @@ class Category
      */
     private $active;
 
+    /**
+     * @var Page The category's default page (only used when parent is null)
+     */
+    private $defaultPage;
+
+
     public function __construct()
     {
         $this->active = true;

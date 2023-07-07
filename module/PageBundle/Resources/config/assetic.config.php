@@ -34,6 +34,14 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
+        'page_admin_categorypage' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_tab',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
 
         'page' => array(
             '@common_jquery',

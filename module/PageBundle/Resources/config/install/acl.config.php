@@ -11,6 +11,9 @@ return array(
         'page_admin_link' => array(
             'add', 'delete', 'edit', 'manage',
         ),
+        'page_admin_categorypage' => array(
+            'add', 'delete', 'edit', 'manage',
+        ),
         'page_link' => array(
             'view',
         ),

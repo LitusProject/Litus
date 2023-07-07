@@ -49,6 +49,20 @@
     </div>
 
     <aside>
+        {% if hasAccess('page_admin_categorypage', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Categorie Pages</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage and create Categorie Pages!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('page_admin_categorypage', {"action": "manage"}) }}">&rarr; Categorie Pages</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+
         {% if hasAccess('page_admin_page', 'manage') %}
             <div class="sidebox">
                 <div class="title">Pages</div>

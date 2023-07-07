@@ -8,6 +8,9 @@ return array(
             'page_admin_page' => array(
                 'add', 'delete', 'edit', 'manage', 'upload',
             ),
+            'page_admin_categorypage' => array(
+                'add', 'delete', 'edit', 'manage',
+            ),
         ),
     ),
     'guest' => array(
