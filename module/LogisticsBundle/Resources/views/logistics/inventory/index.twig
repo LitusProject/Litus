@@ -5,11 +5,19 @@
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
-    {% if authenticatedPerson is null %}
-        <div class="page-header">
+    <div class="page-header"  style="overflow: hidden;">
+        <div style="float:left; width: 80%;">
             <h1>{{ translate('Flesserke') }}</h1>
         </div>
+        <div style="overflow: hidden; width: 20%; margin-top: 20px; padding-left: 50px;">
+            <a href="{{ url('logistics_inventory', {"action": "add"})}}">
+                <input type="button" name="AddFormButton" class="btn btn-primary button" style="width: 80px" value="Add">
+            </a>
+        </div>
+    </div>
 
+    {# Checken of authenticated #}
+    {% if authenticatedPerson is null %}
         <div>{{ translate('Please login to view Flesserke.') }}</div>
     {% else %}
         <div id="controller_action">
